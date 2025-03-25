@@ -39,7 +39,7 @@ class WordPressDotComAuthenticatorTests: CoreDataTestCase {
     func testAuthenticateWithAccessDenied() async {
         let authenticator = WordPressDotComAuthenticator(authenticator: fakeAuthenticator(callback: ["error": "access_denied"]))
         do {
-            let _ = try await authenticator.authenticate(from: .init(), prefersEphemeralWebBrowserSession: false)
+            let _ = try await authenticator.authenticate(from: .init(), prefersEphemeralWebBrowserSession: false, recoverDenyAccess: false)
             XCTFail("Unexpected successful result")
         } catch .loginDenied {
             // Do nothing
