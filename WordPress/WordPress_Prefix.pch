@@ -9,8 +9,6 @@
 	// 3rd Party    
     @import CocoaLumberjack;
 
-#define AssertSubclassMethod() NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
-
 // CocoaLumberjack Default Logging Level
 #ifndef COCOA_LUMBERJACK
 #define COCOA_LUMBERJACK
