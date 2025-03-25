@@ -73,8 +73,6 @@
 #import "WPAuthTokenIssueSolver.h"
 #import "WPUploadStatusButton.h"
 #import "WPError.h"
-#import "WPStyleGuide+Pages.h"
-#import "WPStyleGuide+WebView.h"
 #import "WPTableViewHandler.h"
 #import "WPWebViewController.h"
 #import "WPTabBarController.h"
