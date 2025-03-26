@@ -1,4 +1,5 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
+
 @import WordPressSharedObjC;
 
 @class Blog, AbstractPost, AccountService;

@@ -1,5 +1,5 @@
-@import UIKit;
-@import CoreData;
+#import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 
 @class WPTableViewHandler;
 
