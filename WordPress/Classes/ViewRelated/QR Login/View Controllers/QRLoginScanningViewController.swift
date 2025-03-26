@@ -1,5 +1,6 @@
 import UIKit
 import AVFoundation
+import WordPressShared
 
 class QRLoginScanningViewController: UIViewController {
     @IBOutlet weak var overlayView: UIView!

@@ -1,4 +1,6 @@
 import Foundation
+import CoreData
+import WordPressShared
 
 /// Encapsulates a command to block a user
 final class ReaderBlockUserAction {

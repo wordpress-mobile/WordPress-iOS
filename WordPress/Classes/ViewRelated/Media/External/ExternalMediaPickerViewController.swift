@@ -1,5 +1,6 @@
 import UIKit
 import AsyncImageKit
+import WordPressShared
 
 protocol ExternalMediaPickerViewDelegate: AnyObject {
     /// If the user cancels the flow, the selection is empty.

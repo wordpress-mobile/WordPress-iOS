@@ -6,6 +6,7 @@ import Foundation
 import WordPressData
 import WordPressKit
 import WordPressFlux
+import WordPressShared
 
 protocol PostCoordinatorDelegate: AnyObject {
     func postCoordinator(_ postCoordinator: PostCoordinator, promptForPasswordForBlog blog: Blog)

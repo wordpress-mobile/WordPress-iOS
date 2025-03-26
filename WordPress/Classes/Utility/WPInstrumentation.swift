@@ -1,5 +1,6 @@
 import Foundation
 import Sentry
+import WordPressShared
 
 // MARK: - Assertions
 

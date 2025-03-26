@@ -1,5 +1,6 @@
 import Foundation
 import AutomatticTracks
+import WordPressShared
 
 struct JetpackBrandingAnalyticsHelper {
     private static let screenPropertyKey = "screen"

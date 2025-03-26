@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 class BlogDashboardPostCardGhostCell: UITableViewCell, NibReusable {
     @IBOutlet weak var titleLabel: UILabel!

@@ -1,6 +1,7 @@
 import UIKit
 import PhotosUI
 import SVProgressHUD
+import WordPressShared
 
 /// The main Site Media screen.
 final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewControllerDelegate {

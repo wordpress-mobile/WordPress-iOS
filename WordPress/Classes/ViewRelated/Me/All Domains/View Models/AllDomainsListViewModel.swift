@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 import WordPressData
+import WordPressShared
 
 class AllDomainsListViewModel {
 

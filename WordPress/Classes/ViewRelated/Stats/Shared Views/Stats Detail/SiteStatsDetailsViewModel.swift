@@ -1,6 +1,7 @@
 import Foundation
 import WordPressFlux
 import Combine
+import WordPressShared
 
 /// The view model used by SiteStatsDetailTableViewController to show
 /// all data for a selected stat.

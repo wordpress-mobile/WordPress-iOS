@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// Dynamic implementation of `JetpackFullscreenOverlayViewModel` based on the general phase
 /// Should be used for feature-specific and feature-collection overlays.

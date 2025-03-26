@@ -5,7 +5,6 @@
 #pragma clang diagnostic ignored "-Wnullability-completeness"
 
 @import WordPressKit;
-@import WordPressSharedObjC;
 
 @class ReaderPost;
 @class ReaderAbstractTopic;

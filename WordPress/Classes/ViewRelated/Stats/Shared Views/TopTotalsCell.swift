@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// This cell type displays the top data rows for a Stat type, with optional subtitles for the items and data.
 /// Ex: Insights Tags and Categories, Period Post and Pages.

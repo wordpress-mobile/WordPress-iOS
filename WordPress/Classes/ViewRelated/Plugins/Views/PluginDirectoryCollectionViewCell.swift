@@ -1,6 +1,7 @@
 import UIKit
-import WordPressKit
 import Gridicons
+import WordPressKit
+import WordPressShared
 
 class PluginDirectoryCollectionViewCell: UICollectionViewCell {
 

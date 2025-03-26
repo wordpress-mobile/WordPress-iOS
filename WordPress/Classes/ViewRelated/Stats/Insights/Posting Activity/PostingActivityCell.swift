@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 class PostingActivityCell: StatsBaseCell, NibLoadable, Accessible {
 

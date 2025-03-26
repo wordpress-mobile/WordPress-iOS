@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import WordPressShared
 
 struct OverviewTabData: FilterTabBarItem, Hashable {
     var tabTitle: String

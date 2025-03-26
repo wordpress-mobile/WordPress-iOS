@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 final class DashboardPageCreationCompactCell: DashboardPageCreationCell, Reusable {
     override var isCompact: Bool {

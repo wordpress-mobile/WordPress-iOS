@@ -1,5 +1,5 @@
-
 import UIKit
+import WordPressShared
 
 class StatsSubscribersChartCell: StatsBaseCell, NibLoadable {
     private typealias Style = WPStyleGuide.Stats

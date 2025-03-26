@@ -1,6 +1,7 @@
 import UIKit
 import WordPressFlux
 import WordPressKit
+import WordPressShared
 
 protocol SettingsController: ImmuTableController {
     var trackingKey: String { get }

@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressShared
 
 protocol AppUpdatePresenterProtocol {
     func showNotice(using appStoreInfo: AppStoreLookupResponse.AppStoreInfo)

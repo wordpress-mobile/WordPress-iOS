@@ -2,6 +2,7 @@ import SwiftUI
 import DesignSystem
 import UIKit
 import StoreKit
+import WordPressShared
 
 final class BlockingUpdateViewController: UIHostingController<BlockingUpdateView> {
     init(viewModel: AppStoreInfoViewModel, onButtonTapped: @escaping () -> Void) {

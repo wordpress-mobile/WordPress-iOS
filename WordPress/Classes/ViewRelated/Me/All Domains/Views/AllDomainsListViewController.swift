@@ -2,6 +2,7 @@ import UIKit
 import Combine
 import AutomatticTracks
 import DesignSystem
+import WordPressShared
 
 final class AllDomainsListViewController: UIViewController {
 

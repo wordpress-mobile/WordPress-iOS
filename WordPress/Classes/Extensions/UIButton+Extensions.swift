@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 extension UIButton {
     /// Creates a bar button item that looks like the native title menu

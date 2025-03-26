@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 // UITableViewCell that displays a full width button with a border.
 // Properties:

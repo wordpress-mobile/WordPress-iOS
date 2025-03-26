@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 /// Encapsulates a command to visit a site
 final class ReaderVisitSiteAction {
     func execute(with post: ReaderPost, context: NSManagedObjectContext, origin: UIViewController) {

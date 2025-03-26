@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 // View Controller for the Revision HML preview
 //
 class RevisionDiffViewController: UIViewController, StoryboardLoadable {

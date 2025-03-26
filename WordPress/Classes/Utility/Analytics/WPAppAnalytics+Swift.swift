@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// Utility extension to track specific data for passing to on to WPAppAnalytics.
 extension WPAppAnalytics {

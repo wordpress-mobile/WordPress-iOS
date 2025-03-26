@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressShared
 
 struct StatsTrafficSection: Hashable {
     let periodType: PeriodType

@@ -1,6 +1,7 @@
-import WordPressAuthenticator
 import AutomatticTracks
 import BuildSettingsKit
+import WordPressAuthenticator
+import WordPressShared
 
 @objc extension WordPressAppDelegate {
     public func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {

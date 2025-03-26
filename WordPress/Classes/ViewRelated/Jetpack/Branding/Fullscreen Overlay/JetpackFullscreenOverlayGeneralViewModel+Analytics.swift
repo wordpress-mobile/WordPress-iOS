@@ -1,5 +1,6 @@
 import Foundation
 import AutomatticTracks
+import WordPressShared
 
 extension JetpackFullscreenOverlayGeneralViewModel {
 

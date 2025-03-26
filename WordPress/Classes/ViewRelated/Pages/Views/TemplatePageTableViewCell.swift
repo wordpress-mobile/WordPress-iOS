@@ -1,4 +1,6 @@
+import UIKit
 import SwiftUI
+import WordPressShared
 
 class TemplatePageTableViewCell: UITableViewCell {
 

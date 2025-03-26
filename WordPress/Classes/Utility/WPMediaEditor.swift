@@ -1,6 +1,7 @@
 import Foundation
 import MediaEditor
 import Gridicons
+import WordPressShared
 
 /**
  Displays the Media Editor with our custom styles and tracking

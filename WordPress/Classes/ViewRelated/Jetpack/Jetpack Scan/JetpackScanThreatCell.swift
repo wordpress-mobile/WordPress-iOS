@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 class JetpackScanThreatCell: UITableViewCell, NibReusable {
     @IBOutlet weak var iconBackgroundImageView: UIImageView!

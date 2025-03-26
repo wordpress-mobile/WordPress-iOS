@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import WordPressShared
 
 extension HomeSiteHeaderViewController {
 

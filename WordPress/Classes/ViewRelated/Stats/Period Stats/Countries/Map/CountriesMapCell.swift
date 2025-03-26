@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 class CountriesMapCell: StatsBaseCell, NibLoadable, Accessible {
     private let countriesMapView = CountriesMapView.loadFromNib()

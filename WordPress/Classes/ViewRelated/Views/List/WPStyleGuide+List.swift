@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 /// Convenience constants catalog related for styling List components.
 ///
 extension WPStyleGuide {

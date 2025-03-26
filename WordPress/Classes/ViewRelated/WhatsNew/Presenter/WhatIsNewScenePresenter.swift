@@ -1,6 +1,7 @@
 import UIKit
 import BuildSettingsKit
 import WordPressFlux
+import WordPressShared
 
 class WhatIsNewScenePresenter: ScenePresenter {
 

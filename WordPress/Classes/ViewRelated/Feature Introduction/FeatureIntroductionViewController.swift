@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 @objc protocol FeatureIntroductionDelegate: AnyObject {
     func primaryActionSelected()

@@ -1,5 +1,6 @@
 import UIKit
 import AsyncImageKit
+import WordPressShared
 
 struct StatsTotalRowData: Equatable {
     var id: UUID?

@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import WordPressShared
 
 class DomainPurchaseChoicesViewModel: ObservableObject {
     @Published var isGetDomainLoading: Bool = false

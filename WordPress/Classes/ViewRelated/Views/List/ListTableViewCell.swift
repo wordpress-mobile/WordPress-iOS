@@ -1,5 +1,7 @@
+import UIKit
 import WordPressUI
 import Gravatar
+import WordPressShared
 
 /// Table view cell for the List component.
 ///
