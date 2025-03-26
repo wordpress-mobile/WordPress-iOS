@@ -10,23 +10,18 @@ extension WPAccount {
     /// This used to be defined in the Objective-C layer, but we moved it here in a Swift extension in an attempt to decouple the model code from it.
     /// This was done in the context of https://github.com/wordpress-mobile/WordPress-iOS/pull/24165 .
     @objc var wordPressComRestApi: WordPressComRestApi? {
-        get {
-            if let api = objc_getAssociatedObject(self, &apiAssociatedKey) as? WordPressComRestApi {
-                return api
-            }
-            guard !authToken.isEmpty else {
-                DispatchQueue.main.async {
-                    WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
-                }
-                return nil
-            }
-            let api = makeWordPressComRestApi()
-            self.wordPressComRestApi = api
+        if let api = _private_wordPressComRestApi {
             return api
         }
-        set(api) {
-            objc_setAssociatedObject(self, &apiAssociatedKey, api, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        guard !authToken.isEmpty else {
+            DispatchQueue.main.async {
+                WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
+            }
+            return nil
         }
+        let api = makeWordPressComRestApi()
+        self._private_wordPressComRestApi = api
+        return api
     }
 
     private func makeWordPressComRestApi() -> WordPressComRestApi {
@@ -78,5 +73,3 @@ extension WPAccount {
     }
 
 }
-
-private var apiAssociatedKey: UInt8 = 0
