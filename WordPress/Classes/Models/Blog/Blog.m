@@ -804,21 +804,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     return [NSSet setWithArray:allowedFileTypes];
 }
 
-- (void)setOptions:(NSDictionary *)options
-{
-    [self willChangeValueForKey:@"options"];
-    [self setPrimitiveValue:options forKey:@"options"];
-    [self didChangeValueForKey:@"options"];
-
-    self.siteVisibility = (SiteVisibility)([[self getOptionValue:@"blog_public"] integerValue]);
-    // HACK:Sergio Estevao (2015-08-31): Because there is no direct way to
-    // know if a user has permissions to change the options we check if the blog title property is read only or not.
-    // (Moved from BlogService, 2016-01-28 by aerych)
-    if ([self.options numberForKeyPath:@"blog_title.readonly"]) {
-        self.isAdmin = ![[self.options numberForKeyPath:@"blog_title.readonly"] boolValue];
-    }
-}
-
 + (NSSet *)keyPathsForValuesAffectingJetpack
 {
     return [NSSet setWithObject:@"options"];
