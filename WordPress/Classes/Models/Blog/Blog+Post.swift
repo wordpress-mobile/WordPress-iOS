@@ -1,3 +1,4 @@
+import CoreData
 import Foundation
 
 // MARK: - Lookup posts
@@ -8,7 +9,7 @@ extension Blog {
     /// - Parameter postID: The ID associated with the post.
     /// - Returns: The `AbstractPost` associated with the given post ID.
     @objc(lookupPostWithID:inContext:)
-    func lookupPost(withID postID: NSNumber, in context: NSManagedObjectContext) -> AbstractPost? {
+    public func lookupPost(withID postID: NSNumber, in context: NSManagedObjectContext) -> AbstractPost? {
         lookupPost(withID: postID.int64Value, in: context)
     }
 
@@ -16,7 +17,7 @@ extension Blog {
     ///
     /// - Parameter postID: The ID associated with the post.
     /// - Returns: The `AbstractPost` associated with the given post ID.
-    func lookupPost(withID postID: Int, in context: NSManagedObjectContext) -> AbstractPost? {
+    public func lookupPost(withID postID: Int, in context: NSManagedObjectContext) -> AbstractPost? {
         lookupPost(withID: Int64(postID), in: context)
     }
 
@@ -49,7 +50,7 @@ extension Blog {
 
     /// Create a post in the blog.
     @objc
-    func createPost() -> Post {
+    public func createPost() -> Post {
         guard let context = managedObjectContext else {
             fatalError("The `Blog` instance is not associated with an `NSManagedObjectContext`")
         }
@@ -80,7 +81,7 @@ extension Blog {
     }
 
     /// Create a draft post in the blog.
-    func createDraftPost() -> Post {
+    public func createDraftPost() -> Post {
         let post = createPost()
         markAsDraft(post)
         return post
@@ -88,7 +89,7 @@ extension Blog {
 
     /// Create a page in the blog.
     @objc
-    func createPage() -> Page {
+    public func createPage() -> Page {
         guard let context = managedObjectContext else {
             fatalError("The `Blog` instance is not associated with a `NSManagedObjectContext`")
         }
@@ -111,7 +112,7 @@ extension Blog {
     }
 
     /// Create a draft page in the blog.
-    func createDraftPage() -> Page {
+    public func createDraftPage() -> Page {
         let page = createPage()
         markAsDraft(page)
         return page
