@@ -220,7 +220,7 @@ class ContextManagerTests: XCTestCase {
         let contextManager = ContextManager.forTesting()
         let accounts: () -> Set<String> = {
             let all = (try? contextManager.mainContext.fetch(NSFetchRequest<WPAccount>(entityName: "Account"))) ?? []
-            return Set(all.map { $0.username! })
+            return Set(all.map { $0.username })
         }
         XCTAssertTrue(accounts().isEmpty)
 
@@ -250,7 +250,7 @@ class ContextManagerTests: XCTestCase {
         let contextManager = ContextManager.forTesting()
         let accounts: () -> Set<String> = {
             let all = (try? contextManager.mainContext.fetch(NSFetchRequest<WPAccount>(entityName: "Account"))) ?? []
-            return Set(all.map { $0.username! })
+            return Set(all.map { $0.username })
         }
         XCTAssertTrue(accounts().isEmpty)
 

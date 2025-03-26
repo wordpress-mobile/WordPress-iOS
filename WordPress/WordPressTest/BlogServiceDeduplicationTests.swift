@@ -25,14 +25,14 @@ class BlogServiceDeduplicationTests: CoreDataTestCase {
         createDraft(title: "Draft 2 in Blog 2", blog: blog2)
         let blog3 = createBlog(id: 3, url: "blog3.example.com", account: account)
 
-        XCTAssertEqual(account.blogs.count, 3)
+        XCTAssertEqual(account.blogs?.count, 3)
         XCTAssertEqual(blog1.posts?.count, 0)
         XCTAssertEqual(blog2.posts?.count, 2)
         XCTAssertEqual(blog3.posts?.count, 0)
 
         deduplicateAndSave(account)
 
-        XCTAssertEqual(account.blogs.count, 3)
+        XCTAssertEqual(account.blogs?.count, 3)
         XCTAssertEqual(blog1.posts?.count, 0)
         XCTAssertEqual(blog2.posts?.count, 2)
         XCTAssertEqual(blog3.posts?.count, 0)
@@ -44,11 +44,11 @@ class BlogServiceDeduplicationTests: CoreDataTestCase {
         createBlog(id: 2, url: "blog2.example.com", account: account)
         createBlog(id: 2, url: "blog2.example.com", account: account)
 
-        XCTAssertEqual(account.blogs.count, 3)
+        XCTAssertEqual(account.blogs?.count, 3)
 
         deduplicateAndSave(account)
 
-        XCTAssertEqual(account.blogs.count, 2)
+        XCTAssertEqual(account.blogs?.count, 2)
     }
 
     func testDeduplicationPrefersCandidateWithLocalDrafts() {
@@ -66,7 +66,7 @@ class BlogServiceDeduplicationTests: CoreDataTestCase {
         createDraft(title: "Post 1 in Blog 3", blog: blog3b, id: 1)
         createDraft(title: "Draft 2 in Blog 3", blog: blog3b)
 
-        XCTAssertEqual(account.blogs.count, 5)
+        XCTAssertEqual(account.blogs?.count, 5)
         XCTAssertEqual(blog1.posts?.count, 0)
         XCTAssertEqual(blog2a.posts?.count, 2)
         XCTAssertEqual(blog2b.posts?.count, 0)
@@ -75,7 +75,7 @@ class BlogServiceDeduplicationTests: CoreDataTestCase {
 
         deduplicateAndSave(account)
 
-        XCTAssertEqual(account.blogs.count, 3)
+        XCTAssertEqual(account.blogs?.count, 3)
         XCTAssertEqual(account.blogs, Set(arrayLiteral: blog1, blog2a, blog3b))
 
         XCTAssertFalse(isDeleted(blog1))
@@ -102,21 +102,21 @@ class BlogServiceDeduplicationTests: CoreDataTestCase {
         createDraft(title: "Post 3 in Blog 2", blog: blog2b, id: 3)
         createDraft(title: "Draft 4 in Blog 2", blog: blog2b)
 
-        XCTAssertEqual(account.blogs.count, 3)
+        XCTAssertEqual(account.blogs?.count, 3)
         XCTAssertEqual(blog1.posts?.count, 0)
         XCTAssertEqual(blog2a.posts?.count, 2)
         XCTAssertEqual(blog2b.posts?.count, 3)
 
         deduplicateAndSave(account)
 
-        XCTAssertEqual(account.blogs.count, 2)
+        XCTAssertEqual(account.blogs?.count, 2)
 
         XCTAssertFalse(isDeleted(blog1))
         // We don't care which one is deleted, but one of them should be
         XCTAssertTrue(isDeleted(blog2a) != isDeleted(blog2b), "Exactly one copy of Blog 2 should have been deleted")
 
         XCTAssertEqual(blog1.posts?.count, 0)
-        guard let blog2Final = account.blogs.first(where: { $0.dotComID == 2 }) else {
+        guard let blog2Final = account.blogs?.first(where: { $0.dotComID == 2 }) else {
             return XCTFail("There should be one blog with ID = 2")
         }
         XCTAssertTrue(findPost(title: "Post 1 in Blog 2", in: blog2Final))

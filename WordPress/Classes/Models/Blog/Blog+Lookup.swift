@@ -81,7 +81,7 @@ public extension Blog {
     /// - Returns: the blog if one was found, otherwise it returns nil
     static func lookup(xmlrpc: String, andRemoveDuplicateBlogsOf account: WPAccount, in context: NSManagedObjectContext) -> Blog? {
         let predicate = NSPredicate(format: "xmlrpc like %@", xmlrpc)
-        let foundBlogs = account.blogs.filter { predicate.evaluate(with: $0) }
+        let foundBlogs = account.blogs?.filter { predicate.evaluate(with: $0) } ?? Set()
 
         guard foundBlogs.count > 1 else {
             return foundBlogs.first

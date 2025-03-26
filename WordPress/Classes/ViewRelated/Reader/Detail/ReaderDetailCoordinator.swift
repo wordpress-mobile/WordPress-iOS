@@ -167,7 +167,8 @@ class ReaderDetailCoordinator {
             guard let self else { return }
 
             var filteredUsers = users
-            if let userID = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.userID.int64Value,
+            if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext),
+               let userID = account.userID?.int64Value,
                let userIndex = filteredUsers.firstIndex(where: { $0.userID == userID }) {
                 filteredUsers.remove(at: userIndex)
             }

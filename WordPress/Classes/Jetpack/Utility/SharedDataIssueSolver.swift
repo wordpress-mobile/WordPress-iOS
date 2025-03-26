@@ -29,11 +29,10 @@ final class SharedDataIssueSolver: NSObject {
     }
 
     func migrateAuthKey() {
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext),
-              let username = account.username else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext) else {
             return
         }
-        migrateAuthKey(for: username)
+        migrateAuthKey(for: account.username)
     }
 
     /// Resolve shared data issue by splitting the keys used to store authentication token and supporting data.

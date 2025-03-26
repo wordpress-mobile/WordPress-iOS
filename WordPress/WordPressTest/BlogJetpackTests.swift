@@ -85,9 +85,9 @@ class BlogJetpackTests: CoreDataTestCase {
         // wp.com + jetpack (legacy)
         XCTAssertEqual(2, Blog.count(in: mainContext))
         // dotcom1.wordpress.com
-        XCTAssertEqual(1, wpComAccount.blogs.count)
+        XCTAssertEqual(1, wpComAccount.blogs?.count)
 
-        XCTAssertNotNil(wpComAccount.blogs.first { $0.dotComID?.intValue == 1 })
+        XCTAssertNotNil(wpComAccount.blogs?.first { $0.dotComID?.intValue == 1 })
 
         let syncExpectation = expectation(description: "Blogs sync")
         blogService.syncBlogs(for: wpComAccount) {
@@ -100,15 +100,15 @@ class BlogJetpackTests: CoreDataTestCase {
         // wp.com
         XCTAssertEqual(1, try WPAccount.lookupNumberOfAccounts(in: mainContext))
         // dotcom1.wordpress.com + jetpack.example.com
-        XCTAssertEqual(2, wpComAccount.blogs.count)
+        XCTAssertEqual(2, wpComAccount.blogs?.count)
         // wp.com + jetpack (wpcc)
         XCTAssertEqual(2, Blog.count(in: mainContext))
 
-        let testBlog = wpComAccount.blogs.first { $0.dotComID?.intValue == 1 }
+        let testBlog = wpComAccount.blogs?.first { $0.dotComID?.intValue == 1 }
         XCTAssertNotNil(testBlog)
         XCTAssertEqual(testBlog?.xmlrpc, "https://dotcom1.wordpress.com/xmlrpc.php")
 
-        let testBlog2 = wpComAccount.blogs.first { $0.dotComID?.intValue == 2 }
+        let testBlog2 = wpComAccount.blogs?.first { $0.dotComID?.intValue == 2 }
         XCTAssertNotNil(testBlog2)
         XCTAssertEqual(testBlog2?.xmlrpc, "http://jetpack.example.com/xmlrpc.php")
     }
@@ -134,7 +134,7 @@ class BlogJetpackTests: CoreDataTestCase {
         // wp.com + jetpack (legacy)
         XCTAssertEqual(2, Blog.count(in: mainContext))
         // dotcom1.wordpress.com
-        XCTAssertEqual(1, wpComAccount.blogs.count)
+        XCTAssertEqual(1, wpComAccount.blogs?.count)
 
         let syncExpectation = expectation(description: "Blogs sync")
         blogService.syncBlogs(for: wpComAccount) {
@@ -147,7 +147,7 @@ class BlogJetpackTests: CoreDataTestCase {
         // test.blog + wp.com
         XCTAssertEqual(1, try WPAccount.lookupNumberOfAccounts(in: mainContext))
         // dotcom1.wordpress.com + jetpack.example.com
-        XCTAssertEqual(2, wpComAccount.blogs.count)
+        XCTAssertEqual(2, wpComAccount.blogs?.count)
         // wp.com + jetpack (wpcc)
         XCTAssertEqual(2, Blog.count(in: mainContext))
     }

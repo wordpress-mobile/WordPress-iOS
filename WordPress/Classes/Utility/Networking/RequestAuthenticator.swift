@@ -41,8 +41,7 @@ class RequestAuthenticator: NSObject {
     }
 
     @objc convenience init?(account: WPAccount, blog: Blog? = nil) {
-        guard let username = account.username,
-            let token = account.authToken else {
+        guard let token = account.authToken else {
                 return nil
         }
 
@@ -57,7 +56,7 @@ class RequestAuthenticator: NSObject {
             }
         }
 
-        self.init(credentials: .dotCom(username: username, authToken: token, authenticationType: authenticationType))
+        self.init(credentials: .dotCom(username: account.username, authToken: token, authenticationType: authenticationType))
     }
 
     @objc convenience init?(blog: Blog) {

@@ -14,11 +14,9 @@ struct SidebarProfileView: View {
                     Text(displayName)
                         .font(.subheadline.weight(.medium))
                 }
-                if let username = account.username {
-                    Text("@\(username)")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                }
+                Text("@\(account.username)")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
 
             Spacer()

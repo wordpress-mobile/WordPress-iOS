@@ -633,20 +633,20 @@ import AutomatticTracks
 
     private func removeBlockedPosts() {
         // Fetch account
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext) else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext), let userID = account.userID else {
             return
         }
 
         // Author Predicate
         var predicates = [NSPredicate]()
-        let blockedAuthors = BlockedAuthor.find(.accountID(account.userID), context: viewContext).map { $0.authorID }
+        let blockedAuthors = BlockedAuthor.find(.accountID(userID), context: viewContext).map { $0.authorID }
         if !blockedAuthors.isEmpty {
             predicates.append(NSPredicate(format: "\(#keyPath(ReaderPost.authorID)) IN %@", blockedAuthors))
         }
 
         // Site Predicate
         if let topic = readerTopic as? ReaderSiteTopic,
-           let blocked = BlockedSite.findOne(accountID: account.userID, blogID: topic.siteID, context: viewContext) {
+           let blocked = BlockedSite.findOne(accountID: userID, blogID: topic.siteID, context: viewContext) {
             predicates.append(NSPredicate(format: "\(#keyPath(ReaderPost.siteID)) = %@", blocked.blogID))
         }
 

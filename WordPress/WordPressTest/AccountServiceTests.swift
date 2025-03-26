@@ -168,7 +168,7 @@ class AccountServiceTests: CoreDataTestCase {
 
         let blogs = (try? BlogQuery().blogs(in: contextManager.mainContext)) ?? []
         XCTAssertEqual(blogs.count, 6)
-        XCTAssertTrue(account1.blogs.count == 6)
+        XCTAssertTrue(account1.blogs?.count == 6)
     }
 
     func testMergeDuplicateAccountsKeepingNonDups() throws {

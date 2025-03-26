@@ -18,8 +18,8 @@ struct WordPressSite {
 
     init(blog: Blog) throws {
         let url = try ParsedUrl.parse(input: blog.getUrlString())
-        if let account = blog.account {
-            self.init(baseUrl: url, type: .dotCom(authToken: account.authToken))
+        if let account = blog.account, let authToken = account.authToken {
+            self.init(baseUrl: url, type: .dotCom(authToken: authToken))
         } else {
             self.init(baseUrl: url, type: .selfHosted(
                 username: try blog.getUsername(),

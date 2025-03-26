@@ -5,10 +5,10 @@ import WordPressFlux
 import WordPressUI
 
 func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewController? {
-    guard let api = account.wordPressComRestApi else {
+    guard let api = account.wordPressComRestApi, let userID = account.userID else {
         return nil
     }
-    let service = AccountSettingsService(userID: account.userID.intValue, api: api)
+    let service = AccountSettingsService(userID: userID.intValue, api: api)
     return AccountSettingsViewController(accountSettingsService: service)
 }
 

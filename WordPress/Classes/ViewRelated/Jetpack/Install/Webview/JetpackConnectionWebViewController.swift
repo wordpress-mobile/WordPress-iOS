@@ -294,9 +294,8 @@ private extension JetpackConnectionWebViewController {
 
     func performDotComLogin(redirect: URL) {
         if let account = defaultAccount(),
-            let token = account.authToken,
-            let username = account.username {
-            authenticateWithDotCom(username: username, token: token, redirect: redirect)
+            let token = account.authToken {
+            authenticateWithDotCom(username: account.username, token: token, redirect: redirect)
         } else {
             presentDotComLogin(redirect: redirect)
         }

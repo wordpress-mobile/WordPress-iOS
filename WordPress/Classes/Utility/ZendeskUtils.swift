@@ -644,12 +644,12 @@ private extension ZendeskUtils {
 
     static func getUserInformationFrom(wpAccount: WPAccount) {
 
-        guard let api = wpAccount.wordPressComRestApi else {
+        guard let api = wpAccount.wordPressComRestApi, let userID = wpAccount.userID else {
             DDLogInfo("Zendesk: No wordPressComRestApi.")
             return
         }
 
-        let service = AccountSettingsService(userID: wpAccount.userID.intValue, api: api)
+        let service = AccountSettingsService(userID: userID.intValue, api: api)
 
         guard let accountSettings = service.settings else {
             DDLogInfo("Zendesk: No accountSettings.")

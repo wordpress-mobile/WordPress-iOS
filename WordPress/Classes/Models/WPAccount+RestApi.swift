@@ -12,7 +12,7 @@ extension WPAccount {
     @objc var wordPressComRestApi: WordPressComRestApi? {
         get {
             guard let api = objc_getAssociatedObject(self, &apiAssociatedKey) as? WordPressComRestApi else {
-                guard authToken.isEmpty else {
+                if let authToken, !authToken.isEmpty {
                     let api = WordPressComRestApi.defaultApi(
                         oAuthToken: authToken,
                         userAgent: WPUserAgent.defaultUserAgent(),

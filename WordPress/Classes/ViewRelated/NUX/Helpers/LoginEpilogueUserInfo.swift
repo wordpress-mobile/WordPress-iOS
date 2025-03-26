@@ -14,9 +14,7 @@ public struct LoginEpilogueUserInfo {
     /// Initializes the EpilogueUserInfo with all of the metadata contained within WPAccount.
     ///
     init(account: WPAccount) {
-        if let name = account.username {
-            username = name
-        }
+        username = account.username
         if let accountEmail = account.email {
             email = accountEmail
         }

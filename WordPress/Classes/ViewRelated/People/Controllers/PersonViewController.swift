@@ -498,7 +498,7 @@ private extension PersonViewController {
 private extension PersonViewController {
 
     var isMyself: Bool {
-        return blog.account!.userID.intValue == person.ID || blog.account!.userID.intValue == person.linkedUserID
+        return blog.account!.userID?.intValue == person.ID || blog.account!.userID?.intValue == person.linkedUserID
     }
 
     var isFullnamePrivate: Bool {

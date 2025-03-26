@@ -3,13 +3,12 @@
 class GutenbergRequestAuthenticator: RequestAuthenticator {
     convenience init?(account: WPAccount, blog: Blog? = nil) {
         guard
-            let username = account.username,
             let token = account.authToken
         else {
             return nil
         }
 
         // To load gutenberg web editor (or wp-admin in general) we need regular authentication type.
-        self.init(credentials: .dotCom(username: username, authToken: token, authenticationType: .regular))
+        self.init(credentials: .dotCom(username: account.username, authToken: token, authenticationType: .regular))
     }
 }

@@ -26,7 +26,7 @@ public extension WPAccount {
     ///
     @objc
     var hasBlogs: Bool {
-        return !blogs.isEmpty
+        return blogs?.isEmpty == false
     }
 
     // MARK: - Object Lookups

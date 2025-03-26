@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Blog;
 @class ManagedAccountSettings;
 @class WordPressComRestApi;
@@ -11,24 +13,29 @@
 /// @name Properties
 ///-----------------
 
-@property (nonatomic, strong)   NSNumber    *userID;
-@property (nonatomic, strong)   NSString    *avatarURL;
-@property (nonatomic, copy)     NSString    *username;
-@property (nonatomic, copy)     NSString    *uuid;
-@property (nonatomic, strong)   NSDate      *dateCreated;
-@property (nonatomic, strong)   NSString    *email;
-@property (nonatomic, strong)   NSString    *displayName;
-@property (nonatomic, strong)   NSNumber    *emailVerified;
-@property (nonatomic, strong)   NSNumber    *primaryBlogID;
-@property (nonatomic, strong)   NSSet<Blog *>       *blogs;
-@property (nonatomic, strong)   Blog        *defaultBlog;
-@property (nonatomic, strong)   ManagedAccountSettings *settings;
+/*
+ The nullablity annotation on the Core Data properties follows the data scheme in the model file. Some of these
+ annotations do not make much sense (like how can userId be nullable?). But we'll follow the Core Data scheme to be
+ extra safe.
+ */
+
+@property (nonatomic, strong, nullable)   NSNumber    *userID;
+@property (nonatomic, strong, nullable)   NSString    *avatarURL;
+@property (nonatomic, copy, nonnull)     NSString    *username;
+@property (nonatomic, copy, nullable)     NSString    *uuid;
+@property (nonatomic, strong, nullable)   NSDate      *dateCreated;
+@property (nonatomic, strong, nullable)   NSString    *email;
+@property (nonatomic, strong, nullable)   NSString    *displayName;
+@property (nonatomic, strong, nullable)   NSNumber    *emailVerified;
+@property (nonatomic, strong, nullable)   NSNumber    *primaryBlogID;
+@property (nonatomic, strong, nullable)   NSSet<Blog *>       *blogs;
+@property (nonatomic, strong, nullable)   Blog        *defaultBlog;
+@property (nonatomic, strong, nullable)   ManagedAccountSettings *settings;
 
 /**
  The OAuth2 auth token for WordPress.com accounts
  */
-@property (nonatomic, copy) NSString *authToken;
-
+@property (nonatomic, copy, nullable) NSString *authToken;
 
 ///------------------
 /// @name API Helpers
@@ -53,3 +60,5 @@
 - (BOOL)hasAtomicSite;
 
 @end
+
+NS_ASSUME_NONNULL_END

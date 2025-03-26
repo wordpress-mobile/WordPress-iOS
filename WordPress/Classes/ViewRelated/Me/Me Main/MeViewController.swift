@@ -444,13 +444,13 @@ class MeViewController: UITableViewController {
     }
 
     @objc fileprivate func refreshAccountDetailsAndSettings() {
-        guard let account = defaultAccount(), let api = account.wordPressComRestApi else {
+        guard let account = defaultAccount(), let userID = account.userID, let api = account.wordPressComRestApi else {
             reloadViewModel()
             return
         }
 
         let accountService = AccountService(coreDataStack: ContextManager.shared)
-        let accountSettingsService = AccountSettingsService(userID: account.userID.intValue, api: api)
+        let accountSettingsService = AccountSettingsService(userID: userID.intValue, api: api)
 
         Task {
             do {

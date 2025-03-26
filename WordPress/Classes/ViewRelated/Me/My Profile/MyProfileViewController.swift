@@ -2,11 +2,11 @@ import UIKit
 import WordPressShared
 
 func MyProfileViewController(account: WPAccount) -> ImmuTableViewController? {
-    guard let api = account.wordPressComRestApi else {
+    guard let api = account.wordPressComRestApi, let userID = account.userID else {
         return nil
     }
 
-    let service = AccountSettingsService(userID: account.userID.intValue, api: api)
+    let service = AccountSettingsService(userID: userID.intValue, api: api)
     let headerView = makeHeaderView(account: account)
     return MyProfileViewController(account: account, service: service, headerView: headerView)
 }
