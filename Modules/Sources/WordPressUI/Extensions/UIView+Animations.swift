@@ -43,18 +43,18 @@ extension UIView {
     /// Applies a spring animation, from size 0 to final size
     ///
     public func expandSpringAnimation(_ completion: ((Bool) -> Void)? = nil) {
-        let duration        = 0.5
-        let delay           = 0.2
-        let damping         = CGFloat(0.7)
-        let velocity        = CGFloat(0.5)
-        let scaleInitial    = CGFloat(0.0)
-        let scaleFinal      = CGFloat(1.0)
+        let duration = 0.5
+        let delay = 0.2
+        let damping = CGFloat(0.7)
+        let velocity = CGFloat(0.5)
+        let scaleInitial = CGFloat(0.0)
+        let scaleFinal = CGFloat(1.0)
 
-        isHidden              = false
-        transform           = CGAffineTransform(scaleX: scaleInitial, y: scaleInitial)
+        isHidden = false
+        transform = CGAffineTransform(scaleX: scaleInitial, y: scaleInitial)
 
         let animations = {
-            self.transform  = CGAffineTransform(scaleX: scaleFinal, y: scaleFinal)
+            self.transform = CGAffineTransform(scaleX: scaleFinal, y: scaleFinal)
         }
 
         UIView.animate(withDuration: duration,

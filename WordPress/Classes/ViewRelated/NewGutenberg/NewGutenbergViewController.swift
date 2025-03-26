@@ -62,7 +62,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     // TODO: reimplemet
 //    internal private(set) var contentInfo: ContentInfo?
     lazy var editorSettingsService: BlockEditorSettingsService? = {
-        BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.sharedInstance())
+        BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.shared)
     }()
 
     // MARK: - GutenbergKit
@@ -663,7 +663,7 @@ extension NewGutenbergViewController {
     private func makeMoreMenuActions() -> [UIAction] {
         var actions: [UIAction] = []
 
-        let toggleModeTitle = editorViewController.isCodeEditorEnabled ? Strings.visualEditor: Strings.codeEditor
+        let toggleModeTitle = editorViewController.isCodeEditorEnabled ? Strings.visualEditor : Strings.codeEditor
         let toggleModeIconName = editorViewController.isCodeEditorEnabled ? "doc.richtext" : "curlybraces"
         actions.append(UIAction(title: toggleModeTitle, image: UIImage(systemName: toggleModeIconName)) { [weak self] _ in
             self?.toggleEditingMode()

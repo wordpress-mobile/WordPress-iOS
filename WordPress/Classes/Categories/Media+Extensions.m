@@ -1,7 +1,8 @@
 #import "Media+Extensions.h"
 #import "MediaService.h"
 #import "Blog.h"
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
+@import WordPressShared;
 #import "WordPress-Swift.h"
 
 @implementation Media (Extensions)

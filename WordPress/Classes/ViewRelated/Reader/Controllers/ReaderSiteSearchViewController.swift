@@ -1,6 +1,7 @@
 import UIKit
 import Combine
 import SwiftUI
+import WordPressUI
 
 /// Displays search results from a reader site search.
 ///
@@ -233,7 +234,7 @@ private extension ReaderSiteSearchViewController {
 
 extension ReaderSiteSearchViewController: WPContentSyncHelperDelegate {
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
-        let nextPage = Int(round(Float(feeds.count)/Float(ReaderSiteSearchService.pageSize)))
+        let nextPage = Int(round(Float(feeds.count) / Float(ReaderSiteSearchService.pageSize)))
 
         performSearch(with: searchQuery,
                       page: nextPage,

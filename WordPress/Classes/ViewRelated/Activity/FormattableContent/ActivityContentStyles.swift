@@ -1,3 +1,4 @@
+import FormattableContentKit
 
 class ActivityContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedString.Key: Any] {

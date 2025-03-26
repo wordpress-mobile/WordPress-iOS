@@ -1,3 +1,6 @@
+import UIKit
+import WordPressUI
+
 extension DiffAbstractValue {
     var attributes: [NSAttributedString.Key: Any]? {
         switch operation {

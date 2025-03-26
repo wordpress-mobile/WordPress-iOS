@@ -1,6 +1,7 @@
 import UIKit
 import WebKit
 import WordPressShared
+import WordPressUI
 
 /// A view to show progress when loading web pages.
 ///

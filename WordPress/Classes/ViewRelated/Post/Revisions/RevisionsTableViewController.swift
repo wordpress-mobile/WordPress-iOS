@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 class RevisionsTableViewController: UITableViewController {
     var onRevisionSelected: ((Revision) -> Void)?
@@ -153,7 +154,7 @@ private extension RevisionsTableViewController {
 
 extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     func managedObjectContext() -> NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {

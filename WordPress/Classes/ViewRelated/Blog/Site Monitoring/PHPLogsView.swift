@@ -1,6 +1,7 @@
 import SwiftUI
-import WordPressKit
 import UIKit
+import WordPressKit
+import WordPressUI
 
 struct PHPLogsView: View {
     @StateObject var viewModel: PHPLogsViewModel

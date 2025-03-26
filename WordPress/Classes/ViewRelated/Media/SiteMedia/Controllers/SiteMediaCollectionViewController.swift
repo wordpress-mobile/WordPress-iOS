@@ -1,5 +1,6 @@
 import UIKit
 import PhotosUI
+import WordPressUI
 
 protocol SiteMediaCollectionViewControllerDelegate: AnyObject {
     func siteMediaViewController(_ viewController: SiteMediaCollectionViewController, didUpdateSelection selection: [Media])

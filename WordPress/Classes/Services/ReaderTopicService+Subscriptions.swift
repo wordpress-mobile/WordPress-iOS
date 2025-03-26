@@ -1,5 +1,6 @@
 import Foundation
 import WordPressKit
+import WordPressShared
 
 private enum SubscriptionAction {
     case notifications(siteId: Int)
@@ -13,7 +14,7 @@ extension ReaderTopicService {
 
     private func apiRequest() -> WordPressComRestApi {
         let api = coreDataStack.performQuery { context in
-            try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.wordPressComRestApi
+            try? WPAccount.defaultWordPressComAccountRestAPI(in: context)
         }
         if let api, api.hasCredentials() {
             return api

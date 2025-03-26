@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 @preconcurrency import WebKit
 
 @objc protocol BlazeWebViewControllerDelegate {

@@ -183,7 +183,7 @@ import UniformTypeIdentifiers
                 return
             }
 
-            let unwrappedView  = attachmentView!
+            let unwrappedView = attachmentView!
             unwrappedView.frame.origin = self.textView.frameForTextInRange(range).integral.origin
             self.textView.addSubview(unwrappedView)
             self.attachmentViews.append(unwrappedView)

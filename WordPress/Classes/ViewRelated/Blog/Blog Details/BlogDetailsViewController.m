@@ -3,8 +3,7 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "CommentsViewController.h"
-#import "CoreDataStack.h"
-#import "ReachabilityUtils.h"
+@import WordPressDataObjC;
 #import "SiteSettingsViewController.h"
 #import "SharingViewController.h"
 #import "StatsViewController.h"
@@ -1202,19 +1201,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
         [rows addObject:[self blazeRow]];
     }
 
-// Temporarily disabled
-//    if ([self.blog supports:BlogFeaturePlans] && ![self.blog isWPForTeams]) {
-//        BlogDetailsRow *plansRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
-//                                                         identifier:BlogDetailsPlanCellIdentifier
-//                                                              image:[UIImage gridiconOfType:GridiconTypePlans]
-//                                                           callback:^{
-//                                                               [weakSelf showPlansFromSource:BlogDetailsNavigationSourceRow];
-//                                                           }];
-//
-//        plansRow.detail = self.blog.planTitle;
-//        [rows addObject:plansRow];
-//    }
-
     if (rows.count == 0) {
         return nil;
     }
@@ -1666,15 +1652,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 - (void)preloadBlogData
 {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate shared];
-    BOOL isOnWifi = [appDelegate.internetReachability isReachableViaWiFi];
-
     // only preload on wifi
-    if (isOnWifi) {
-        [self preloadComments];
-        [self preloadMetadata];
-        [self preloadDomains];
+    if ([ReachabilityUtils.internetReachability isReachableViaWiFi] == false) {
+        return;
     }
+
+    [self preloadComments];
+    [self preloadMetadata];
+    [self preloadDomains];
 }
 
 - (void)preloadComments
@@ -1784,14 +1769,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     }
 
     PluginDirectoryViewController *controller = [self makePluginDirectoryViewControllerWithBlog:self.blog];
-    controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    [self.presentationDelegate presentBlogDetailsViewController:controller];
-}
-
-- (void)showPlansFromSource:(BlogDetailsNavigationSource)source
-{
-    [self trackEvent:WPAnalyticsStatOpenedPlans fromSource:source];
-    PlanListViewController *controller = [[PlanListViewController alloc] initWithStyle:UITableViewStyleGrouped];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 }

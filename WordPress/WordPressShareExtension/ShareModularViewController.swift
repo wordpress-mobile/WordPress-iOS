@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import ShareExtensionCore
 import WordPressKit
 import WordPressShared
 import WordPressUI
@@ -458,15 +459,15 @@ fileprivate extension ShareModularViewController {
                 cell.detailTextLabel?.text = tags
                 cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade70)
             } else {
-                cell.detailTextLabel?.text =  AppLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
+                cell.detailTextLabel?.text = AppLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
                 cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade30)
             }
         case .summary:
             // Summary section
-            cell.textLabel?.text            = summaryRowText()
-            cell.textLabel?.textAlignment   = .natural
-            cell.accessoryType              = .none
-            cell.isUserInteractionEnabled   = false
+            cell.textLabel?.text = summaryRowText()
+            cell.textLabel?.textAlignment = .natural
+            cell.accessoryType = .none
+            cell.isUserInteractionEnabled = false
             WPStyleGuide.Share.configureTableViewSummaryCell(cell)
         }
     }
@@ -796,7 +797,7 @@ fileprivate extension ShareModularViewController {
 
         // Next, save the selected site for later use
         if let selectedSiteName = shareData.selectedSiteName {
-            ShareExtensionService.configureShareExtensionLastUsedSiteID(siteID, lastUsedSiteName: selectedSiteName)
+            ShareExtensionService().configureShareExtensionLastUsedSiteID(siteID, lastUsedSiteName: selectedSiteName)
         }
 
         // Then proceed uploading the actual post

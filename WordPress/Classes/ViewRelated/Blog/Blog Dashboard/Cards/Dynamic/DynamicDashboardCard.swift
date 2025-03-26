@@ -130,17 +130,6 @@ final class DynamicDashboardCardViewController: UIHostingController<DynamicDashb
     }
 }
 
-// DesignSystem.DSButtonStyle extension to omit `isJetpack` from project target.
-extension DSButtonStyle {
-    init(emphasis: DSButtonStyle.Emphasis, size: DSButtonStyle.Size) {
-        self.init(
-            emphasis: emphasis,
-            size: size,
-            isJetpack: AppConfiguration.isJetpack
-        )
-    }
-}
-
 #if DEBUG
 struct DynamicDashboardCard_Previews: PreviewProvider {
     static var previews: some View {

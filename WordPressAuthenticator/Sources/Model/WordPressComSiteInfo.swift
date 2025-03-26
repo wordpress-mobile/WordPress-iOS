@@ -47,15 +47,15 @@ public class WordPressComSiteInfo {
     /// Initializes the current SiteInfo instance with a raw dictionary.
     ///
     public init(remote: [AnyHashable: Any]) {
-        name                = remote["name"] as? String                 ?? ""
-        tagline             = remote["description"] as? String          ?? ""
-        url                 = remote["urlAfterRedirects"] as? String    ?? ""
-        hasJetpack          = remote["hasJetpack"] as? Bool             ?? false
-        isJetpackActive     = remote["isJetpackActive"] as? Bool        ?? false
-        isJetpackConnected  = remote["isJetpackConnected"] as? Bool     ?? false
-        icon                = remote["icon.img"] as? String             ?? ""
-        isWPCom             = remote["isWordPressDotCom"] as? Bool      ?? false
-        isWP                = remote["isWordPress"] as? Bool            ?? false
-        exists              = remote["exists"] as? Bool                 ?? false
+        name = remote["name"] as? String ?? ""
+        tagline = remote["description"] as? String ?? ""
+        url = remote["urlAfterRedirects"] as? String ?? ""
+        hasJetpack = remote["hasJetpack"] as? Bool ?? false
+        isJetpackActive = remote["isJetpackActive"] as? Bool ?? false
+        isJetpackConnected = remote["isJetpackConnected"] as? Bool ?? false
+        icon = remote["icon.img"] as? String ?? ""
+        isWPCom = remote["isWordPressDotCom"] as? Bool ?? false
+        isWP = remote["isWordPress"] as? Bool ?? false
+        exists = remote["exists"] as? Bool ?? false
     }
 }

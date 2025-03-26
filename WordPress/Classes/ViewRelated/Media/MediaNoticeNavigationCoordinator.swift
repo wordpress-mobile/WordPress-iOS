@@ -32,7 +32,7 @@ class MediaNoticeNavigationCoordinator {
     }
 
     private static func blog(from userInfo: NSDictionary) -> Blog? {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
 
         guard let blogID = userInfo[MediaNoticeUserInfoKey.blogID] as? String,
             let URIRepresentation = URL(string: blogID),
@@ -54,7 +54,7 @@ class MediaNoticeNavigationCoordinator {
     }
 
     private static func media(from userInfo: NSDictionary, withKey key: String) -> [Media] {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
 
         if let mediaIDs = userInfo[key] as? [String] {
             let media = mediaIDs.compactMap({ mediaID -> Media? in

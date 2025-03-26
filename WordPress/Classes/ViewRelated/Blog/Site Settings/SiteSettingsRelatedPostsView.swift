@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import SVProgressHUD
 import WordPressShared
+import WordPressUI
 
 struct RelatedPostsSettingsView: View {
     private let blog: Blog

@@ -19,7 +19,7 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     var shortcutsProvider: ApplicationShortcutsProvider
-    @objc let mainContext = ContextManager.sharedInstance().mainContext
+    @objc let mainContext = ContextManager.shared.mainContext
 
     fileprivate let logInShortcutIconImageName = "icon-shortcut-signin"
     fileprivate let notificationsShortcutIconImageName = "icon-shortcut-notifications"
@@ -115,9 +115,7 @@ open class WP3DTouchShortcutCreator: NSObject {
                 visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.stats.rawValue])
             }
 
-            if AppConfiguration.allowsNewPostShortcut {
-                visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPost.rawValue])
-            }
+            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPost.rawValue])
 
             strongSelf.shortcutsProvider.shortcutItems = visibleShortcutArray
         }

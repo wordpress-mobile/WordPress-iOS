@@ -1,5 +1,5 @@
-
 import Foundation
+import FormattableContentKit
 
 extension FormattableRangeKind {
     static let `default` = FormattableRangeKind("default")

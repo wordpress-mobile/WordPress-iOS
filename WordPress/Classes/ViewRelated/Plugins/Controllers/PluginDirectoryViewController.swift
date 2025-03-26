@@ -1,5 +1,6 @@
 import UIKit
 import WordPressFlux
+import WordPressUI
 import Gridicons
 
 class PluginDirectoryViewController: UITableViewController {

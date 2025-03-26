@@ -1,5 +1,6 @@
 import Combine
 import UIKit
+import WordPressUI
 
 class JetpackBannerView: UIView {
 

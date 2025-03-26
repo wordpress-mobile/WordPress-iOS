@@ -417,7 +417,7 @@ private extension SiteStatsPeriodViewModel {
         }
 
         let currentInterval = summaryData[currentEntryIndex]
-        let previousInterval = currentEntryIndex >= 1 ? summaryData[currentEntryIndex-1] : nil
+        let previousInterval = currentEntryIndex >= 1 ? summaryData[currentEntryIndex - 1] : nil
 
         let currentCount: Int
         let previousCount: Int

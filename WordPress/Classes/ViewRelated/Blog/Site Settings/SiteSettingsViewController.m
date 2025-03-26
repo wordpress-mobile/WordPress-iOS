@@ -2,7 +2,7 @@
 
 #import "Blog.h"
 #import "BlogService.h"
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
 #import "PostCategory.h"
 #import "PostCategoryService.h"
 #import "SettingsSelectionViewController.h"
@@ -116,7 +116,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 - (void)viewDidLoad
 {
-    DDLogMethod();
+    DDLogInfo(@"SiteSettingsViewController viewDidLoad");
     [super viewDidLoad];
 
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;

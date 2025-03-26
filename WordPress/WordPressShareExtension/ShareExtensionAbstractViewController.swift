@@ -1,6 +1,10 @@
 import CoreData
+import BuildSettingsKit
 import UIKit
+import TracksMini
 import WordPressKit
+import WordPressShared
+import ShareExtensionCore
 
 enum OriginatingExtension: String {
     case share
@@ -85,32 +89,30 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
     /// WordPress.com Username
     ///
     internal lazy var wpcomUsername: String? = {
-        ShareExtensionService.retrieveShareExtensionUsername()
+        ShareExtensionService().retrieveShareExtensionUsername()
     }()
 
     /// Primary Site's ID
     ///
     internal lazy var primarySiteID: Int? = {
-        ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID
+        ShareExtensionService().retrieveShareExtensionPrimarySite()?.siteID
     }()
 
     /// Primary Site's Name
     ///
     internal lazy var primarySiteName: String? = {
-        ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteName
+        ShareExtensionService().retrieveShareExtensionPrimarySite()?.siteName
     }()
 
     /// WordPress.com OAuth Token
     ///
     internal lazy var oauth2Token: String? = {
-        ShareExtensionService.retrieveShareExtensionToken()
+        ShareExtensionService().retrieveShareExtensionToken()
     }()
 
     /// Tracks Instance
     ///
-    internal lazy var tracks: Tracks = {
-        Tracks(appGroupName: WPAppGroupName)
-    }()
+    internal lazy var tracks = Tracks()
 
     // MARK: - Lifecycle Methods
 

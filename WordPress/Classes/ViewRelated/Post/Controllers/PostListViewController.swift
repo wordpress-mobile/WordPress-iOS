@@ -2,6 +2,7 @@ import Foundation
 import WordPressShared
 import Gridicons
 import UIKit
+import WordPressUI
 
 final class PostListViewController: AbstractPostListViewController, InteractivePostViewDelegate {
     /// If set, when the post list appear it will show the tab for this status
@@ -236,7 +237,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
     func comments(_ post: AbstractPost) {
         WPAnalytics.track(.postListCommentsAction, properties: propertiesForAnalytics())
-        let contentCoordinator = DefaultContentCoordinator(controller: self, context: ContextManager.sharedInstance().mainContext)
+        let contentCoordinator = DefaultContentCoordinator(controller: self, context: ContextManager.shared.mainContext)
         try? contentCoordinator.displayCommentsWithPostId(post.postID, siteID: blog.dotComID, commentID: nil, source: .postsList)
     }
 

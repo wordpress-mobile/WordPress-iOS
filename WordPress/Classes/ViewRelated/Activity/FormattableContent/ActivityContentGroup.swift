@@ -1,3 +1,4 @@
+import FormattableContentKit
 
 class ActivityContentGroup: FormattableContentGroup {
     class func create(with subject: [[String: AnyObject]]) -> FormattableContentGroup {

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// Singleton class to contain site related information for Stats.
 ///

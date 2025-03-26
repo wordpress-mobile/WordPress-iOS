@@ -1,6 +1,8 @@
 import UIKit
 import ColorStudio
 import WordPressReader
+import WordPressShared
+import WordPressUI
 
 /// A WKWebView that renders post content with styles applied
 ///

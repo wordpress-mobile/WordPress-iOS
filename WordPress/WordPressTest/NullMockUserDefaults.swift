@@ -1,4 +1,5 @@
 @testable import WordPress
+import WordPressShared
 
 /// A null mock implementation of the KeyValueDatabase protocol
 class NullMockUserDefaults: KeyValueDatabase {

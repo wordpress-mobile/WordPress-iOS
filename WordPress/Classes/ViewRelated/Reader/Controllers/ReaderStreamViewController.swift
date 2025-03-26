@@ -1,8 +1,7 @@
 import Foundation
 import SVProgressHUD
-import WordPressShared
 import WordPressFlux
-import AsyncImageKit
+import WordPressShared
 import UIKit
 import Combine
 import WordPressUI
@@ -137,7 +136,7 @@ import AutomatticTracks
             if let newTopic = readerTopic,
                let context = newTopic.managedObjectContext {
                 newTopic.inUse = true
-                ContextManager.sharedInstance().save(context)
+                ContextManager.shared.save(context)
             }
 
             if readerTopic != nil && readerTopic != oldValue {
@@ -275,7 +274,7 @@ import AutomatticTracks
     deinit {
         if let topic = readerTopic {
             topic.inUse = false
-            ContextManager.sharedInstance().save(topic.managedObjectContext!)
+            ContextManager.shared.save(topic.managedObjectContext!)
         }
 
         NotificationCenter.default.removeObserver(self)
@@ -332,7 +331,7 @@ import AutomatticTracks
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        let mainContext = ContextManager.sharedInstance().mainContext
+        let mainContext = ContextManager.shared.mainContext
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.NSManagedObjectContextDidSave, object: mainContext)
 
         bumpStats()
@@ -410,7 +409,7 @@ import AutomatticTracks
             isFeed: isFeed,
             success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
 
-                let context = ContextManager.sharedInstance().mainContext
+                let context = ContextManager.shared.mainContext
                 guard let objectID,
                       let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing site topic by its objectID")
@@ -441,7 +440,7 @@ import AutomatticTracks
         service.tagTopicForTag(withSlug: tagSlug,
             success: { [weak self] (objectID: NSManagedObjectID?) in
 
-                let context = ContextManager.sharedInstance().mainContext
+                let context = ContextManager.shared.mainContext
                 guard let objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing tag topic by its objectID")
                     self?.displayLoadingStreamFailed()
@@ -791,21 +790,17 @@ import AutomatticTracks
     ///     - objectID: The objectID of the topic that was synced.
     ///
     private func updateLastSyncedForTopic(_ objectID: NSManagedObjectID) {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         guard let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
             DDLogError("Failed to retrive an existing topic when updating last sync date.")
             return
         }
         topic.lastSynced = Date()
-        ContextManager.sharedInstance().save(context)
+        ContextManager.shared.save(context)
     }
 
     private func canSync() -> Bool {
         return (readerTopic != nil || isLoadingDiscover) && connectionAvailable()
-    }
-
-    @objc func connectionAvailable() -> Bool {
-        return WordPressAppDelegate.shared?.connectionAvailable ?? false
     }
 
     /// Kicks off a "background" sync without updating the UI if certain conditions

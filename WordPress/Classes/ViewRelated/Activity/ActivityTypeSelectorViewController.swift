@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressUI
 
 protocol ActivityTypeSelectorDelegate: AnyObject {
     func didCancel(selectorViewController: ActivityTypeSelectorViewController)

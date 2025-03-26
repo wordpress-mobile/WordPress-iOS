@@ -1,5 +1,6 @@
 import UIKit
 import simd
+import WordPressUI
 
 class SparklineView: UIView {
     private let lineLayer = CAShapeLayer()
@@ -108,7 +109,7 @@ class SparklineView: UIView {
               }
 
         // Calculate points to fit along X axis, using existing interpolated Y values
-        let segmentWidth = bounds.width / CGFloat(chartData.count-1)
+        let segmentWidth = bounds.width / CGFloat(chartData.count - 1)
         let points = chartData.enumerated().map({ CGPoint(x: CGFloat($0.offset) * segmentWidth, y: $0.element) })
 
         // Scale Y values to fit within our bounds

@@ -204,10 +204,10 @@ extension NotificationsTableViewCellContent {
 
             let action: () -> Void
 
-            let accessibilityLabel: LocalizedString
-            let accessibilityHint: LocalizedString
+            let accessibilityLabel: String
+            let accessibilityHint: String
 
-            init(icon: SwiftUI.Image, color: Color? = nil, accessibilityLabel: LocalizedString, accessibilityHint: LocalizedString, action: @escaping () -> Void) {
+            init(icon: SwiftUI.Image, color: Color? = nil, accessibilityLabel: String, accessibilityHint: String, action: @escaping () -> Void) {
                 self.icon = icon
                 self.color = color
                 self.accessibilityLabel = accessibilityLabel

@@ -28,7 +28,7 @@ struct AvatarView<S: Shape>: View {
             case .double:
                 return 5
             case .triple:
-                return .DS.Padding.split/2
+                return .DS.Padding.split / 2
             }
         }
     }
@@ -120,7 +120,7 @@ struct AvatarView<S: Shape>: View {
             avatar(url: secondaryURL)
                 .avatarBorderOverlay(shape: avatarShape)
                 .offset(y: -.DS.Padding.split * scale)
-                .padding(.bottom, .DS.Padding.split/2 * scale)
+                .padding(.bottom, .DS.Padding.split / 2 * scale)
             avatar(url: primaryURL)
                 .avatarBorderOverlay(shape: avatarShape)
                 .padding(.leading, .DS.Padding.medium * scale)

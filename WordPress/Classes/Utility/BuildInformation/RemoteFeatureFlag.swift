@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 
 @objc
 enum RemoteFeatureFlag: Int, CaseIterable {
@@ -83,7 +84,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .inAppUpdates:
             return false
         case .gravatarQuickEditor:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
+            return BuildConfiguration.current.isInternal
         case .dotComWebLogin:
             return false
         }

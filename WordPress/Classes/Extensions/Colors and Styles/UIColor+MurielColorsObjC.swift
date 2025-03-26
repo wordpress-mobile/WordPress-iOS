@@ -1,3 +1,6 @@
+import UIKit
+import WordPressUI
+
 /// Objective-C *only* API for the Muriel colors
 @objc extension UIColor {
 

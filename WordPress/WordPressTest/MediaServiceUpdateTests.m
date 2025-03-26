@@ -5,11 +5,6 @@
 @import WordPressKit;
 @import OCMock;
 
-// Redefine `WPAccount` to make `wordPressComRestApi` writable.
-@interface WPAccount ()
-@property (nonatomic, readwrite) WordPressComRestApi *wordPressComRestApi;
-@end
-
 // Re-implement `MediaService` to mock the remote service `MediaServiceRemote`.
 @interface MediaServiceForStubbing : MediaService
 @property (nonatomic, strong) MediaServiceRemoteREST *remoteForStubbing;

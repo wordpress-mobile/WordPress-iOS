@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 
 /// General purpose container view with a rounded rectangle background
 struct RoundRectangleView<Content: View>: View {

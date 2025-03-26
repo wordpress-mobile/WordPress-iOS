@@ -1,6 +1,7 @@
+import UIKit
 import SwiftUI
 import WordPressKit
-import UIKit
+import WordPressUI
 
 struct WebServerLogsView: View {
     @StateObject var viewModel: WebServerLogsViewModel

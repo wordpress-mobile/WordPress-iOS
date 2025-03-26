@@ -1,11 +1,20 @@
+import Foundation
 import JetpackStatsWidgetsCore
+import BuildSettingsKit
+import SFHFKeychainUtils
 import WidgetKit
 
 class StatsWidgetsStore {
     private let coreDataStack: CoreDataStack
+    private let appGroupName: String
+    private let appKeychainAccessGroup: String
 
-    init(coreDataStack: CoreDataStack = ContextManager.shared) {
+    init(coreDataStack: CoreDataStack = ContextManager.shared,
+         appGroupName: String = BuildSettings.current.appGroupName,
+         appKeychainAccessGroup: String = BuildSettings.current.appKeychainAccessGroup) {
         self.coreDataStack = coreDataStack
+        self.appGroupName = appGroupName
+        self.appKeychainAccessGroup = appKeychainAccessGroup
 
         observeAccountChangesForWidgets()
         observeAccountSignInForWidgets()
@@ -18,44 +27,45 @@ class StatsWidgetsStore {
         initializeStatsWidgetsIfNeeded()
 
         if let newTodayData = refreshStats(type: HomeWidgetTodayData.self) {
-            HomeWidgetTodayData.write(items: newTodayData)
+            setCachedItems(newTodayData)
             WidgetCenter.shared.reloadTodayTimelines()
         }
 
         if let newAllTimeData = refreshStats(type: HomeWidgetAllTimeData.self) {
-            HomeWidgetAllTimeData.write(items: newAllTimeData)
+            setCachedItems(newAllTimeData)
             WidgetCenter.shared.reloadAllTimeTimelines()
         }
 
         if let newThisWeekData = refreshStats(type: HomeWidgetThisWeekData.self) {
-            HomeWidgetThisWeekData.write(items: newThisWeekData)
+            setCachedItems(newThisWeekData)
             WidgetCenter.shared.reloadThisWeekTimelines()
         }
     }
 
     /// Initialize the local cache for widgets, if it does not exist
     @objc func initializeStatsWidgetsIfNeeded() {
-        UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
-        UserDefaults(suiteName: WPAppGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
+        UserDefaults(suiteName: appGroupName)?.setValue(AccountHelper.isLoggedIn, forKey: WidgetStatsConfiguration.userDefaultsLoggedInKey)
+        UserDefaults(suiteName: appGroupName)?.setValue(AccountHelper.defaultSiteId, forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey)
+
         storeCredentials()
 
         var isReloadRequired = false
 
-        if !HomeWidgetTodayData.cacheDataExists() {
+        if !hasCachedItems(for: HomeWidgetTodayData.self) {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetTodayData.plist")
-            HomeWidgetTodayData.write(items: initializeHomeWidgetData(type: HomeWidgetTodayData.self))
+            setCachedItems(initializeHomeWidgetData(type: HomeWidgetTodayData.self))
             isReloadRequired = true
         }
 
-        if !HomeWidgetThisWeekData.cacheDataExists() {
+        if !hasCachedItems(for: HomeWidgetThisWeekData.self) {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetThisWeekData.plist")
-            HomeWidgetThisWeekData.write(items: initializeHomeWidgetData(type: HomeWidgetThisWeekData.self))
+            setCachedItems(initializeHomeWidgetData(type: HomeWidgetThisWeekData.self))
             isReloadRequired = true
         }
 
-        if !HomeWidgetAllTimeData.cacheDataExists() {
+        if !hasCachedItems(for: HomeWidgetAllTimeData.self) {
             DDLogInfo("StatsWidgets: Writing initialization data into HomeWidgetAllTimeData.plist")
-            HomeWidgetAllTimeData.write(items: initializeHomeWidgetData(type: HomeWidgetAllTimeData.self))
+            setCachedItems(initializeHomeWidgetData(type: HomeWidgetAllTimeData.self))
             isReloadRequired = true
         }
 
@@ -73,7 +83,7 @@ class StatsWidgetsStore {
             return
         }
 
-        var homeWidgetCache = T.read() ?? initializeHomeWidgetData(type: widgetType)
+        var homeWidgetCache = getCachedItems(for: T.self) ?? initializeHomeWidgetData(type: widgetType)
         guard let oldData = homeWidgetCache[siteID.intValue] else {
             DDLogError("StatsWidgets: Failed to find a matching site")
             return
@@ -83,7 +93,7 @@ class StatsWidgetsStore {
             DDLogError("StatsWidgets: the site does not exist anymore")
             // if for any reason that site does not exist anymore, remove it from the cache.
             homeWidgetCache.removeValue(forKey: siteID.intValue)
-            T.write(items: homeWidgetCache)
+            setCachedItems(homeWidgetCache)
             return
         }
 
@@ -92,36 +102,80 @@ class StatsWidgetsStore {
         if widgetType == HomeWidgetTodayData.self, let stats = stats as? TodayWidgetStats {
             widgetReload = WidgetCenter.shared.reloadTodayTimelines
 
-            homeWidgetCache[siteID.intValue] = HomeWidgetTodayData(siteID: siteID.intValue,
-                                                                   siteName: blog.title ?? oldData.siteName,
-                                                                   url: blog.url ?? oldData.url,
-                                                                   timeZone: blog.timeZone ?? TimeZone.current,
-                                                                   date: Date(),
-                                                                   stats: stats) as? T
+            homeWidgetCache[siteID.intValue] = HomeWidgetTodayData(
+                siteID: siteID.intValue,
+                siteName: blog.title ?? oldData.siteName,
+                url: blog.url ?? oldData.url,
+                timeZone: blog.timeZone ?? TimeZone.current,
+                date: Date(),
+                stats: stats
+            ) as? T
 
         } else if widgetType == HomeWidgetAllTimeData.self, let stats = stats as? AllTimeWidgetStats {
             widgetReload = WidgetCenter.shared.reloadAllTimeTimelines
 
-            homeWidgetCache[siteID.intValue] = HomeWidgetAllTimeData(siteID: siteID.intValue,
-                                                                     siteName: blog.title ?? oldData.siteName,
-                                                                     url: blog.url ?? oldData.url,
-                                                                     timeZone: blog.timeZone ?? TimeZone.current,
-                                                                     date: Date(),
-                                                                     stats: stats) as? T
+            homeWidgetCache[siteID.intValue] = HomeWidgetAllTimeData(
+                siteID: siteID.intValue,
+                siteName: blog.title ?? oldData.siteName,
+                url: blog.url ?? oldData.url,
+                timeZone: blog.timeZone ?? TimeZone.current,
+                date: Date(),
+                stats: stats
+            ) as? T
 
         } else if widgetType == HomeWidgetThisWeekData.self, let stats = stats as? ThisWeekWidgetStats {
             widgetReload = WidgetCenter.shared.reloadThisWeekTimelines
 
-            homeWidgetCache[siteID.intValue] = HomeWidgetThisWeekData(siteID: siteID.intValue,
-                                                                      siteName: blog.title ?? oldData.siteName,
-                                                                      url: blog.url ?? oldData.url,
-                                                                      timeZone: blog.timeZone ?? TimeZone.current,
-                                                                      date: Date(),
-                                                                      stats: stats) as? T
+            homeWidgetCache[siteID.intValue] = HomeWidgetThisWeekData(
+                siteID: siteID.intValue,
+                siteName: blog.title ?? oldData.siteName,
+                url: blog.url ?? oldData.url,
+                timeZone: blog.timeZone ?? TimeZone.current,
+                date: Date(),
+                stats: stats
+            ) as? T
         }
 
-        T.write(items: homeWidgetCache)
+        setCachedItems(homeWidgetCache)
         widgetReload?()
+    }
+
+    // MARK: HomeWidgetCache (Helpers)
+
+    private func getCachedItems<T: HomeWidgetData>(for type: T.Type) -> [Int: T]? {
+        do {
+            return try makeCache(for: type).read()
+        } catch {
+            DDLogError("HomeWidgetCache: failed to read items: \(error)")
+            return nil
+        }
+    }
+
+    private func hasCachedItems<T: HomeWidgetData>(for type: T.Type) -> Bool {
+        guard let items = getCachedItems(for: type) else {
+            return false
+        }
+        return !items.isEmpty
+    }
+
+    private func deleteCachedItems<T: HomeWidgetData>(for type: T.Type) {
+        do {
+            try makeCache(for: T.self).delete()
+        } catch {
+            DDLogError("HomeWidgetCache: failed to delete items: \(error)")
+        }
+    }
+
+    private func setCachedItems<T: HomeWidgetData>(_ items: [Int: T]) {
+        do {
+            try makeCache(for: T.self).write(items: items)
+        } catch {
+            DDLogError("HomeWidgetCache: failed to write items: \(error)")
+        }
+    }
+
+    private func makeCache<T: HomeWidgetData>(for type: T.Type) -> HomeWidgetCache<T> {
+        HomeWidgetCache<T>(appGroup: appGroupName)
     }
 }
 
@@ -132,18 +186,18 @@ private extension StatsWidgetsStore {
     var initializedWeekdays: [ThisWeekWidgetDay] {
         var days = [ThisWeekWidgetDay]()
         for index in 0...7 {
-            days.insert(ThisWeekWidgetDay(date: NSCalendar.current.date(byAdding: .day,
-                                                                        value: -index,
-                                                                        to: Date()) ?? Date(),
-                                          viewsCount: 0,
-                                          dailyChangePercent: 0),
-                        at: index)
+            let day = ThisWeekWidgetDay(
+                date: NSCalendar.current.date(byAdding: .day, value: -index, to: Date()) ?? Date(),
+                viewsCount: 0,
+                dailyChangePercent: 0
+            )
+            days.insert(day, at: index)
         }
         return days
     }
 
     func refreshStats<T: HomeWidgetData>(type: T.Type) -> [Int: T]? {
-        guard let currentData = T.read() else {
+        guard let currentData = getCachedItems(for: T.self) else {
             return nil
         }
         let updatedSiteList = (try? BlogQuery().hostedByWPCom(true).blogs(in: coreDataStack.mainContext)) ?? []
@@ -169,33 +223,39 @@ private extension StatsWidgetsStore {
 
                 let stats = (existingSite as? HomeWidgetTodayData)?.stats ?? TodayWidgetStats()
 
-                sitesList[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
-                                                                 siteName: siteName,
-                                                                 url: siteURL,
-                                                                 timeZone: timeZone,
-                                                                 date: date,
-                                                                 stats: stats) as? T
+                sitesList[blogID.intValue] = HomeWidgetTodayData(
+                    siteID: blogID.intValue,
+                    siteName: siteName,
+                    url: siteURL,
+                    timeZone: timeZone,
+                    date: date,
+                    stats: stats
+                ) as? T
             } else if type == HomeWidgetAllTimeData.self {
 
                 let stats = (existingSite as? HomeWidgetAllTimeData)?.stats ?? AllTimeWidgetStats()
 
-                sitesList[blogID.intValue] = HomeWidgetAllTimeData(siteID: blogID.intValue,
-                                                                   siteName: siteName,
-                                                                   url: siteURL,
-                                                                   timeZone: timeZone,
-                                                                   date: date,
-                                                                   stats: stats) as? T
+                sitesList[blogID.intValue] = HomeWidgetAllTimeData(
+                    siteID: blogID.intValue,
+                    siteName: siteName,
+                    url: siteURL,
+                    timeZone: timeZone,
+                    date: date,
+                    stats: stats
+                ) as? T
 
             } else if type == HomeWidgetThisWeekData.self {
 
                 let stats = (existingSite as? HomeWidgetThisWeekData)?.stats ?? ThisWeekWidgetStats(days: initializedWeekdays)
 
-                sitesList[blogID.intValue] = HomeWidgetThisWeekData(siteID: blogID.intValue,
-                                                                    siteName: siteName,
-                                                                    url: siteURL,
-                                                                    timeZone: timeZone,
-                                                                    date: date,
-                                                                    stats: stats) as? T
+                sitesList[blogID.intValue] = HomeWidgetThisWeekData(
+                    siteID: blogID.intValue,
+                    siteName: siteName,
+                    url: siteURL,
+                    timeZone: timeZone,
+                    date: date,
+                    stats: stats
+                ) as? T
             }
         }
         return newData
@@ -211,26 +271,40 @@ private extension StatsWidgetsStore {
                 let title = (element.title ?? url).isEmpty ? url : element.title ?? url
                 let timeZone = blog.timeZone
                 if type == HomeWidgetTodayData.self {
-                    result[blogID.intValue] = HomeWidgetTodayData(siteID: blogID.intValue,
-                                                                  siteName: title,
-                                                                  url: url,
-                                                                  timeZone: timeZone ?? TimeZone.current,
-                                                                  date: Date(timeIntervalSinceReferenceDate: 0),
-                                                                  stats: TodayWidgetStats()) as? T
+                    result[blogID.intValue] = HomeWidgetTodayData(
+                        siteID: blogID.intValue,
+                        siteName: title,
+                        url: url,
+                        timeZone: timeZone ?? TimeZone.current,
+                        date: Date(
+                            timeIntervalSinceReferenceDate: 0
+                        ),
+                        stats: TodayWidgetStats()
+                    ) as? T
                 } else if type == HomeWidgetAllTimeData.self {
-                    result[blogID.intValue] = HomeWidgetAllTimeData(siteID: blogID.intValue,
-                                                                    siteName: title,
-                                                                    url: url,
-                                                                    timeZone: timeZone ?? TimeZone.current,
-                                                                    date: Date(timeIntervalSinceReferenceDate: 0),
-                                                                    stats: AllTimeWidgetStats()) as? T
+                    result[blogID.intValue] = HomeWidgetAllTimeData(
+                        siteID: blogID.intValue,
+                        siteName: title,
+                        url: url,
+                        timeZone: timeZone ?? TimeZone.current,
+                        date: Date(
+                            timeIntervalSinceReferenceDate: 0
+                        ),
+                        stats: AllTimeWidgetStats()
+                    ) as? T
                 } else if type == HomeWidgetThisWeekData.self {
-                    result[blogID.intValue] = HomeWidgetThisWeekData(siteID: blogID.intValue,
-                                                                     siteName: title,
-                                                                     url: url,
-                                                                     timeZone: timeZone ?? TimeZone.current,
-                                                                     date: Date(timeIntervalSinceReferenceDate: 0),
-                                                                     stats: ThisWeekWidgetStats(days: initializedWeekdays)) as? T
+                    result[blogID.intValue] = HomeWidgetThisWeekData(
+                        siteID: blogID.intValue,
+                        siteName: title,
+                        url: url,
+                        timeZone: timeZone ?? TimeZone.current,
+                        date: Date(
+                            timeIntervalSinceReferenceDate: 0
+                        ),
+                        stats: ThisWeekWidgetStats(
+                            days: initializedWeekdays
+                        )
+                    ) as? T
                 }
             }
         }
@@ -267,16 +341,17 @@ private extension StatsWidgetsStore {
 
     @objc func handleAccountChangedNotification() {
         let isLoggedIn = AccountHelper.isLoggedIn
-        let userDefaults = UserDefaults(suiteName: WPAppGroupName)
-        userDefaults?.setValue(isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
+
+        let userDefaults = UserDefaults(suiteName: appGroupName)
+        userDefaults?.setValue(isLoggedIn, forKey: WidgetStatsConfiguration.userDefaultsLoggedInKey)
 
         guard !isLoggedIn else { return }
 
-        HomeWidgetTodayData.delete()
-        HomeWidgetThisWeekData.delete()
-        HomeWidgetAllTimeData.delete()
+        deleteCachedItems(for: HomeWidgetTodayData.self)
+        deleteCachedItems(for: HomeWidgetThisWeekData.self)
+        deleteCachedItems(for: HomeWidgetAllTimeData.self)
 
-        userDefaults?.setValue(nil, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
+        userDefaults?.setValue(nil, forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey)
 
         WidgetCenter.shared.reloadAllTimelines()
     }
@@ -306,13 +381,13 @@ private extension StatsWidgetsStore {
         // If user is logged in but defaultSiteIdKey is not set
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext),
               let siteId = account.defaultBlog?.dotComID,
-              let userDefaults = UserDefaults(suiteName: WPAppGroupName),
-              userDefaults.value(forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey) == nil else {
+              let userDefaults = UserDefaults(suiteName: appGroupName),
+              userDefaults.value(forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey) == nil else {
             return
         }
 
-        userDefaults.setValue(AccountHelper.isLoggedIn, forKey: AppConfiguration.Widget.Stats.userDefaultsLoggedInKey)
-        userDefaults.setValue(siteId, forKey: AppConfiguration.Widget.Stats.userDefaultsSiteIdKey)
+        userDefaults.setValue(AccountHelper.isLoggedIn, forKey: WidgetStatsConfiguration.userDefaultsLoggedInKey)
+        userDefaults.setValue(siteId, forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey)
         initializeStatsWidgetsIfNeeded()
     }
 
@@ -328,10 +403,10 @@ private extension StatsWidgetsStore {
 
         do {
             try SFHFKeychainUtils.storeUsername(
-                AppConfiguration.Widget.Stats.keychainTokenKey,
+                WidgetStatsConfiguration.keychainTokenKey,
                 andPassword: token,
-                forServiceName: AppConfiguration.Widget.Stats.keychainServiceName,
-                accessGroup: WPAppKeychainAccessGroup,
+                forServiceName: WidgetStatsConfiguration.keychainServiceName,
+                accessGroup: appKeychainAccessGroup,
                 updateExisting: true
             )
         } catch {

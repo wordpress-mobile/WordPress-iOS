@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 class BlogDetailsSectionFooterView: UITableViewHeaderFooterView {
     private let titleLabel: UILabel = {

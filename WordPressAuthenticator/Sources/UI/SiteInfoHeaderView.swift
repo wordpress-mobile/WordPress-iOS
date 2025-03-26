@@ -94,7 +94,7 @@ class SiteInfoHeaderView: UIView {
 private extension SiteInfoHeaderView {
 
     func refreshLabelStyles() {
-        let titleWeight: UIFont.Weight = subtitleIsHidden ? .regular  : .semibold
+        let titleWeight: UIFont.Weight = subtitleIsHidden ? .regular : .semibold
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: titleWeight)
         titleLabel.textColor = WPStyleGuide.darkGrey()
 

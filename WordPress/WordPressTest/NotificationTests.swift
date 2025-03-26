@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 @testable import WordPress
+@testable import FormattableContentKit
 
 /// Notifications Tests
 ///

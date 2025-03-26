@@ -1,4 +1,5 @@
 import Foundation
+import WordPressUI
 
 /// A protocol to add default reuse identifiers for reusable objects.
 public protocol Reusable {

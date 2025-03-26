@@ -1,10 +1,10 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "AccountService.h"
-#import "CoreDataStack.h"
-#import "Constants.h"
-#import "WPUserAgent.h"
+@import WordPressDataObjC;
+@import WordPressShared;
 #import "WordPress-Swift.h"
+@import SFHFKeychainUtils;
 
 @import NSObject_SafeExpectations;
 @import NSURL_IDN;

@@ -1,2 +1,2 @@
 #include "WordPressAuthenticator.xcconfig"
-#include "Common.enterprise.xcconfig"
+#include "Common.alpha.xcconfig"

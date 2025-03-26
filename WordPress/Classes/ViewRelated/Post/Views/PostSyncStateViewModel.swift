@@ -1,4 +1,5 @@
 import Foundation
+import WordPressUI
 
 final class PostSyncStateViewModel {
     enum State {

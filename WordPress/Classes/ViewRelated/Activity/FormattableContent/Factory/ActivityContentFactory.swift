@@ -1,3 +1,4 @@
+import FormattableContentKit
 
 struct ActivityContentFactory: FormattableContentFactory {
 

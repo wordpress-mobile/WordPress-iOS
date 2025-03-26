@@ -1,5 +1,6 @@
 import UIKit
 import WordPressKit
+import WordPressUI
 
 final class AddressTableViewCell: UITableViewCell {
 

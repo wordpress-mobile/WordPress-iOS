@@ -6,7 +6,7 @@ class PostTagPickerViewController: UIViewController {
     private let originalTags: [String]
     @objc var onValueChanged: ((String) -> Void)?
     @objc let blog: Blog
-    @objc let keyboardObserver = TableViewKeyboardObserver()
+    private let keyboardObserver = TableViewKeyboardObserver()
 
     @objc init(tags: String, blog: Blog) {
         originalTags = PostTagPickerViewController.extractTags(from: tags)
@@ -150,7 +150,7 @@ class PostTagPickerViewController: UIViewController {
 private extension PostTagPickerViewController {
     func loadTags() {
         dataSource = LoadingDataSource()
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         let service = PostTagService(managedObjectContext: context)
         service.getTopTags(
             for: blog,

@@ -1,6 +1,7 @@
-import Gridicons
+import UIKit
 import WebKit
 import WordPressShared
+import WordPressUI
 
 /// An augmentation of WebKitViewController to provide Previewing for different devices
 class PreviewWebKitViewController: WebKitViewController {

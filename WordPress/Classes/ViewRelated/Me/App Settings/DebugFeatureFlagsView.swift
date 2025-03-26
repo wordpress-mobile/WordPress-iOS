@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 
 struct DebugFeatureFlagsView: View {
     @StateObject private var viewModel = DebugFeatureFlagsViewModel()

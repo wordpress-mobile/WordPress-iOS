@@ -1,10 +1,14 @@
 import Foundation
+import CocoaLumberjackSwift
 import MobileCoreServices
 import UniformTypeIdentifiers
 import UIKit
 import ZIPFoundation
+import ShareExtensionCore
 import Down
 import Aztec
+import TextBundle
+import WordPressShared
 
 /// A type that represents the information we can extract from an extension context
 ///
@@ -235,7 +239,7 @@ private extension TypeBasedExtensionContentExtractor {
     /// Maximum Image Size
     ///
     var maximumImageSize: CGSize {
-        let dimension = ShareExtensionService.retrieveShareExtensionMaximumMediaDimension() ?? Constants.defaultMaxDimension
+        let dimension = ShareExtensionService().retrieveShareExtensionMaximumMediaDimension() ?? Constants.defaultMaxDimension
         return CGSize(width: dimension, height: dimension)
     }
 

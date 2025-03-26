@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressUI
 
 /// The purpose of this class is to render an interface that allows the user to Insert / Edit / Delete
 /// a set of strings.

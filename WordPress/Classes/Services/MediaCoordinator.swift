@@ -1,5 +1,7 @@
 import Foundation
+import WordPressData
 import WordPressFlux
+import WordPressShared
 
 import class AutomatticTracks.CrashLogging
 import enum Alamofire.AFError

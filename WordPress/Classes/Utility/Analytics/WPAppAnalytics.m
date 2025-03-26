@@ -1,6 +1,6 @@
 #import "WPAppAnalytics.h"
 
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAnalyticsTrackerAutomatticTracks.h"
 #import "WPTabBarController.h"

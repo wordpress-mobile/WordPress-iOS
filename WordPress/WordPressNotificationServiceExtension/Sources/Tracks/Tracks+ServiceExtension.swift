@@ -1,4 +1,5 @@
 import Foundation
+import TracksMini
 
 /// Characterizes the types of service extension events we're interested in tracking.
 /// The raw value corresponds to the event name in Tracks.
@@ -9,12 +10,12 @@ import Foundation
 /// - assembled: the service extension successfully prepared content
 ///
 private enum ServiceExtensionEvents: String {
-    case launched   = "notification_service_extension_launched"
-    case discarded  = "notification_service_extension_discarded"
-    case failed     = "notification_service_extension_failed"
-    case assembled  = "notification_service_extension_assembled"
-    case malformed  = "notification_service_extension_malformed_payload"
-    case timedOut   = "notification_service_extension_timed_out"
+    case launched = "notification_service_extension_launched"
+    case discarded = "notification_service_extension_discarded"
+    case failed = "notification_service_extension_failed"
+    case assembled = "notification_service_extension_assembled"
+    case malformed = "notification_service_extension_malformed_payload"
+    case timedOut = "notification_service_extension_timed_out"
 }
 
 // MARK: - Supports tracking notification service extension events.

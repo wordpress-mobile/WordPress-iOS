@@ -1,6 +1,7 @@
 import Gridicons
 import UIKit
 import AutomatticTracks
+import WordPressUI
 
 class PrivacySettingsViewController: UITableViewController {
     fileprivate var handler: ImmuTableViewHandler!

@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressUI
 
 /// A circular 'play' icon for use on videos that should match the system
 /// play button appearance in web views.

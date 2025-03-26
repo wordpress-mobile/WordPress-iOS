@@ -1,5 +1,8 @@
+import SFHFKeychainUtils
 import UIKit
+import BuildSettingsKit
 import CocoaLumberjackSwift
+import ShareExtensionCore
 import Reachability
 import AutomatticTracks
 import AutomatticEncryptedLogs
@@ -24,14 +27,13 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         guard let window else {
             fatalError("The App cannot run without a window.")
         }
-
-        return AppDependency.windowManager(window: window)
+        return switch BuildSettings.current.brand {
+        case .wordpress: WindowManager(window: window)
+        case .jetpack: JetpackWindowManager(window: window)
+        }
     }()
 
     var analytics: WPAppAnalytics?
-
-    @objc var internetReachability: Reachability?
-    @objc var connectionAvailable: Bool = true
 
     // Private
 
@@ -85,7 +87,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureWordPressAuthenticator()
 
-        configureReachability()
+        ReachabilityUtils.configure()
+
         configureSelfHostedChallengeHandler()
         updateFeatureFlags()
         updateRemoteConfig()
@@ -93,7 +96,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         window.makeKeyAndVisible()
 
         // Restore a disassociated account prior to fixing tokens.
-        AccountService(coreDataStack: ContextManager.sharedInstance()).restoreDisassociatedAccountIfNecessary()
+        AccountService(coreDataStack: ContextManager.shared).restoreDisassociatedAccountIfNecessary()
 
         customizeAppearance()
         configureAnalytics()
@@ -131,6 +134,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
             WKWebView.warmup()
+        }
+
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext) {
+            BlogSyncFacade().syncBlogs(for: account, success: { /* Do nothing */ }, failure: { _ in /* Do nothing */ })
         }
 
         return true
@@ -172,12 +179,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         updateFeatureFlags()
         updateRemoteConfig()
 
-#if IS_JETPACK
         // JetpackWindowManager is only available in the Jetpack target.
         if let windowManager = windowManager as? JetpackWindowManager {
             windowManager.startMigrationFlowIfNeeded()
         }
-#endif
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -201,8 +206,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
         // 21-Oct-2017: We are only handling background URLSessions initiated by the share extension so there
         // is no need to inspect the identifier beyond the simple check here.
-        if identifier.contains(WPAppGroupName) {
-            let manager = ShareExtensionSessionManager(appGroup: WPAppGroupName, backgroundSessionIdentifier: identifier)
+        let appGroupName = BuildSettings.current.appGroupName
+        if identifier.contains(appGroupName) {
+            let manager = ShareExtensionSessionManager(appGroup: appGroupName, backgroundSessionIdentifier: identifier)
             manager.backgroundSessionCompletionBlock = completionHandler
             manager.startBackgroundSession()
         }
@@ -290,7 +296,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func mergeDuplicateAccountsIfNeeded() {
-        AccountService(coreDataStack: ContextManager.sharedInstance()).mergeDuplicatesIfNecessary()
+        AccountService(coreDataStack: ContextManager.shared).mergeDuplicatesIfNecessary()
     }
 
     private func setupPingHub() {
@@ -374,34 +380,6 @@ extension WordPressAppDelegate {
         utility.setVersion(version)
     }
 
-    func configureReachability() {
-        internetReachability = Reachability.forInternetConnection()
-
-        let reachabilityBlock: NetworkReachable = { [weak self] reachability in
-            guard let reachability else {
-                return
-            }
-
-            DispatchQueue.main.async {
-                let wifi = reachability.isReachableViaWiFi() ? "Y" : "N"
-                let wwan = reachability.isReachableViaWWAN() ? "Y" : "N"
-
-                DDLogInfo("Reachability - Internet - WiFi: \(wifi) WWAN: \(wwan)")
-                let newValue = reachability.isReachable()
-                self?.connectionAvailable = newValue
-
-                NotificationCenter.default.post(name: .reachabilityChanged, object: self, userInfo: [Foundation.Notification.reachabilityKey: newValue])
-            }
-        }
-
-        internetReachability?.reachableBlock = reachabilityBlock
-        internetReachability?.unreachableBlock = reachabilityBlock
-
-        internetReachability?.startNotifier()
-
-        connectionAvailable = internetReachability?.isReachable() ?? true
-    }
-
     func configureSelfHostedChallengeHandler() {
         WordPressOrgXMLRPCApi.onChallenge = { (challenge, completionHandler) in
             guard let alertController = HTTPAuthenticationAlertController.controller(for: challenge, handler: completionHandler) else {
@@ -414,7 +392,12 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureWordPressAuthenticator() {
-        let authManager = AppDependency.authenticationManager(windowManager: windowManager)
+        let isJetpack = BuildSettings.current.brand == .jetpack
+        let authManager = WordPressAuthenticationManager(
+            windowManager: windowManager,
+            authenticationHandler: isJetpack ? JetpackAuthenticationManager() : nil,
+            remoteFeaturesStore: RemoteFeatureFlagStore()
+        )
 
         authManager.initializeWordPressAuthenticator()
         authManager.startRelayingSupportNotifications()
@@ -519,12 +502,10 @@ extension WordPressAppDelegate {
             return "Post Editor"
         case is LoginNavigationController:
             return "Login View"
-#if IS_JETPACK
         case is MigrationNavigationController:
             return "Jetpack Migration View"
         case is MigrationLoadWordPressViewController:
             return "Jetpack Migration Load WordPress View"
-#endif
         default:
             return RootViewCoordinator.sharedPresenter.currentlySelectedScreen()
         }
@@ -540,7 +521,7 @@ extension WordPressAppDelegate {
     /// Otherwise an anonymous remote will be used
     func updateFeatureFlags(authToken: String? = nil, completion: (() -> Void)? = nil) {
         // Enable certain feature flags on test builds.
-        if BuildConfiguration.current ~= [.a8cPrereleaseTesting, .a8cBranchTest, .localDeveloper] {
+        if BuildConfiguration.current.isInternal {
             FeatureFlagOverrideStore().override(RemoteFeatureFlag.dotComWebLogin, withValue: true)
         }
 
@@ -721,11 +702,11 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     func setupWordPressExtensions() {
-        let accountService = AccountService(coreDataStack: ContextManager.sharedInstance())
+        let accountService = AccountService(coreDataStack: ContextManager.shared)
         accountService.setupAppExtensionsWithDefaultAccount()
 
         let maxImagesize = MediaSettings().maxImageSizeSetting
-        ShareExtensionService.configureShareExtensionMaximumMediaDimension(maxImagesize)
+        ShareExtensionService().configureShareExtensionMaximumMediaDimension(maxImagesize)
 
         saveRecentSitesForExtensions()
     }
@@ -735,18 +716,18 @@ extension WordPressAppDelegate {
     func setupShareExtensionToken() {
 
         if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
-            ShareExtensionService.configureShareExtensionToken(authToken)
-            ShareExtensionService.configureShareExtensionUsername(account.username)
+            ShareExtensionService().configureShareExtensionToken(authToken)
+            ShareExtensionService().configureShareExtensionUsername(account.username)
         }
     }
 
     func removeShareExtensionConfiguration() {
-        ShareExtensionService.removeShareExtensionConfiguration()
+        ShareExtensionService().removeShareExtensionConfiguration()
     }
 
     @objc func saveRecentSitesForExtensions() {
         let recentSites = RecentSitesService().recentSites
-        ShareExtensionService.configureShareExtensionRecentSites(recentSites)
+        ShareExtensionService().configureShareExtensionRecentSites(recentSites)
     }
 
     // MARK: - Notification Service Extension
@@ -754,22 +735,18 @@ extension WordPressAppDelegate {
     func configureNotificationExtension() {
 
         if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
-            NotificationSupportService.insertContentExtensionToken(authToken)
-            NotificationSupportService.insertContentExtensionUsername(account.username)
-
-            NotificationSupportService.insertServiceExtensionToken(authToken)
-            NotificationSupportService.insertServiceExtensionUsername(account.username)
-            NotificationSupportService.insertServiceExtensionUserID(account.userID.stringValue)
+            let service = NotificationSupportService()
+            service.insertServiceExtensionToken(authToken)
+            service.insertServiceExtensionUsername(account.username)
+            service.insertServiceExtensionUserID(account.userID.stringValue)
         }
     }
 
     func removeNotificationExtensionConfiguration() {
-        NotificationSupportService.deleteContentExtensionToken()
-        NotificationSupportService.deleteContentExtensionUsername()
-
-        NotificationSupportService.deleteServiceExtensionToken()
-        NotificationSupportService.deleteServiceExtensionUsername()
-        NotificationSupportService.deleteServiceExtensionUserID()
+        let service = NotificationSupportService()
+        service.deleteServiceExtensionToken()
+        service.deleteServiceExtensionUsername()
+        service.deleteServiceExtensionUserID()
     }
 }
 

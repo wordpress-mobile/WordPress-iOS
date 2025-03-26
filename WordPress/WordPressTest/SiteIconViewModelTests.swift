@@ -9,7 +9,7 @@ final class SiteIconViewModelTests: XCTestCase {
     /// Tests that a dotcom image URL with default image size is valid.
     func testDotcomURLWithDefaultSize() {
         // Given
-        let path =  Constants.dotcomPath
+        let path = Constants.dotcomPath
 
         // When
         let optimizedURL = SiteIconViewModel.optimizedURL(for: path)

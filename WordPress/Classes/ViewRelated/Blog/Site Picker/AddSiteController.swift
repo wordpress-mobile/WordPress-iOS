@@ -82,7 +82,7 @@ struct AddSiteMenuViewModel {
 
     init(context: ContextManager = .shared, onSelection: @escaping (Selection) -> Void) {
         let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context.mainContext)
-        let canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton
+        let canAddSelfHostedSite = FeatureFlag.selfHostedSites.enabled
 
         var actions: [Action] = []
         if defaultAccount != nil {

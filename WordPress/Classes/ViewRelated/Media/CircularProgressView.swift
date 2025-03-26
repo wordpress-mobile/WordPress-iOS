@@ -1,6 +1,6 @@
 import UIKit
 import Gridicons
-import WordPressShared
+import WordPressUI
 
 /// Progress view displayed in cells in the media library to indicate that an
 /// asset is currently being processed, uploaded, or has failed to upload.

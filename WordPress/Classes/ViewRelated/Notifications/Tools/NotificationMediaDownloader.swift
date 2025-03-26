@@ -43,8 +43,8 @@ class NotificationMediaDownloader: NSObject {
     ///     - completion: Is a closure that will get executed once all of the assets are ready
     ///
     func downloadMedia(urls: Set<URL>, maximumWidth: CGFloat, completion: @escaping () -> Void) {
-        let missingUrls         = urls.filter { self.shouldDownloadImage(url: $0) }
-        let group               = DispatchGroup()
+        let missingUrls = urls.filter { self.shouldDownloadImage(url: $0) }
+        let group = DispatchGroup()
         let shouldHitCompletion = !missingUrls.isEmpty
 
         for url in missingUrls {
@@ -89,12 +89,12 @@ class NotificationMediaDownloader: NSObject {
     ///     - completion: Is a closure that will get executed just one time, after all of the assets get resized
     ///
     func resizeMediaWithIncorrectSize(_ maximumWidth: CGFloat, completion: @escaping () -> Void) {
-        let group               = DispatchGroup()
+        let group = DispatchGroup()
         var shouldHitCompletion = false
 
         for (url, originalImage) in originalImagesMap {
-            let targetSize      = cappedImageSize(originalImage.size, maximumWidth: maximumWidth)
-            let resizedImage    = resizedImagesMap[url]
+            let targetSize = cappedImageSize(originalImage.size, maximumWidth: maximumWidth)
+            let resizedImage = resizedImagesMap[url]
 
             if resizedImage == nil || resizedImage?.size == targetSize || resizedImage as? AnimatedImage != nil {
                 continue
@@ -243,7 +243,7 @@ class NotificationMediaDownloader: NSObject {
 private extension NotificationMediaDownloader {
 
     struct Constants {
-        static let maximumRetryCount   = 3
+        static let maximumRetryCount = 3
     }
 }
 

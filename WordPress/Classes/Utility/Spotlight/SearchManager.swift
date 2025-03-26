@@ -296,7 +296,7 @@ fileprivate extension SearchManager {
     func fetchBlog(_ blogID: NSNumber,
                    onSuccess: @escaping (_ blog: Blog) -> Void,
                    onFailure: @escaping () -> Void) {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
 
         guard let blog = Blog.lookup(withID: blogID, in: context) else {
             onFailure()
@@ -308,7 +308,7 @@ fileprivate extension SearchManager {
     func fetchSelfHostedBlog(_ blogXMLRpcString: String,
                              onSuccess: @escaping (_ blog: Blog) -> Void,
                              onFailure: @escaping () -> Void) {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         guard let blog = Blog.selfHosted(in: context).first(where: { $0.xmlrpc == blogXMLRpcString }) else {
             onFailure()
             return

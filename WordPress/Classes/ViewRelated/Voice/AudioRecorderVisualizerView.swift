@@ -1,5 +1,6 @@
 import SwiftUI
 import AVFoundation
+import WordPressUI
 
 struct AudioRecorderVisualizerView: View {
     let recorder: AVAudioRecorder

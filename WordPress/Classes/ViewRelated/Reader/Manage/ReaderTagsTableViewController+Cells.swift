@@ -1,4 +1,6 @@
 import UIKit
+import Gridicons
+import WordPressUI
 
 extension ReaderTagsTableViewModel {
     func configure(cell: UITableViewCell, for topic: ReaderTagTopic?) {

@@ -1,6 +1,7 @@
 import UIKit
 import Gutenberg
 import Gridicons
+import WordPressUI
 
 class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
 

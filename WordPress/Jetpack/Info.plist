@@ -2,6 +2,38 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>WPAppBrand</key>
+	<string>jetpack</string>
+	<key>WPAppGroupName</key>
+	<string>${WP_APP_GROUP_NAME}</string>
+	<key>WPAppKeychainAccessGroup</key>
+	<string>${WP_APP_KEYCHAIN_ACCESS_GROUP}</string>
+	<key>WPPushNotificationAppID</key>
+	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
+	<key>WPEventNamePrefix</key>
+	<string>jpios</string>
+	<key>WPExplatPlatform</key>
+	<string>wpios</string>
+	<key>WPItunesAppID</key>
+	<string>1565481562</string>
+	<key>WPBuildConfiguration</key>
+	<string>${WP_BUILD_CONFIGURATION}</string>
+	<key>WPAppURLScheme</key>
+	<string>${WP_APP_URL_SCHEME}</string>
+  <key>WPJetpackAppURLScheme</key>
+  <string>${WP_JETPACK_APP_URL_SCHEME}</string>
+	<key>WPProductTwitterHandle</key>
+	<string>@jetpack</string>
+	<key>WPProductTwitterURL</key>
+	<string>twitter.com/jetpack</string>
+	<key>WPProductBlogURL</key>
+	<string>jetpack.com/blog</string>
+	<key>WPZendeskSourcePlatform</key>
+	<string>mobile_-_jp_ios</string>
+	<key>WPMobileAnnounceAppID</key>
+	<string>6</string>
+	<key>WPAuthKeychainServiceName</key>
+	<string>jetpack.public-api.wordpress.com</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>
@@ -551,7 +583,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>wordpress-oauth-v2</string>
-				<string>${WPCOM_SCHEME}</string>
+				<string>${WP_APP_URL_SCHEME}</string>
 				<string>jetpacknotificationmigration</string>
 			</array>
 		</dict>

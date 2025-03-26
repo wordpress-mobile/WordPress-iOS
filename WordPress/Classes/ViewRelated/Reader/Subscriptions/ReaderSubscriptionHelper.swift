@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressData
 
 struct ReaderSubscriptionHelper {
     let contextManager: CoreDataStackSwift = ContextManager.shared

@@ -1,5 +1,7 @@
 import UIKit
 import SwiftUI
+import WordPressUI
+import FormattableContentKit
 
 final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableViewCellContent> {
 
@@ -131,7 +133,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
 
     private func likeInlineActionIcon(filled: Bool) -> (image: Image, color: Color?) {
         let image: Image = Image.DS.icon(named: filled ? .starFill : .starOutline)
-        let color: Color? = filled ? AppColor.primary: nil
+        let color: Color? = filled ? AppColor.primary : nil
         return (image: image, color: color)
     }
 

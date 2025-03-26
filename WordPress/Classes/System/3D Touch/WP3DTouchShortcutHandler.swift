@@ -29,7 +29,7 @@ open class WP3DTouchShortcutHandler: NSObject {
             case ShortcutIdentifier.Stats.type:
                 WPAnalytics.track(.shortcutStats)
                 clearCurrentViewController()
-                if let mainBlog = Blog.lastUsedOrFirst(in: ContextManager.sharedInstance().mainContext) {
+                if let mainBlog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
                     rootViewPresenter.showStats(for: mainBlog, source: .shortcut)
                 }
                 return true

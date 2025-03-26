@@ -1,11 +1,9 @@
+import WordPressShared
+
 func makeNetworkAvailable() {
-    if let delegate = UIApplication.shared.delegate as? TestingAppDelegate {
-        delegate.connectionAvailable = true
-    }
+    ReachabilityUtils.connectionAvailable = true
 }
 
 func makeNetworkUnavailable() {
-    if let delegate = UIApplication.shared.delegate as? TestingAppDelegate {
-        delegate.connectionAvailable = false
-    }
+    ReachabilityUtils.connectionAvailable = false
 }

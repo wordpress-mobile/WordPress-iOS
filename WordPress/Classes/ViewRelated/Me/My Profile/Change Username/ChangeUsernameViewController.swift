@@ -1,4 +1,6 @@
+import UIKit
 import Combine
+import WordPressUI
 
 class ChangeUsernameViewController: SignupUsernameTableViewController {
     typealias CompletionBlock = (String?) -> Void

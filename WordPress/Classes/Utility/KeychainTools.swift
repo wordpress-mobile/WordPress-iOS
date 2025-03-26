@@ -1,5 +1,7 @@
 import Foundation
+import BuildSettingsKit
 import Security
+import WordPressShared
 
 private let keychainDebugWipeArgument = "WipeKeychainItem"
 
@@ -22,7 +24,7 @@ final class KeychainTools: NSObject {
     /// - Attention: This is only enabled in debug builds.
     ///
     @objc static func processKeychainDebugArguments() {
-        guard BuildConfiguration.current == .localDeveloper else {
+        guard BuildConfiguration.current == .debug else {
             return
         }
 
@@ -41,7 +43,7 @@ final class KeychainTools: NSObject {
     static fileprivate func serviceForItem(_ item: String) -> String? {
         switch item {
         case "wordpress.com":
-            return AppConstants.authKeychainServiceName
+            return BuildSettings.current.authKeychainServiceName
         case "*", "all":
             return nil
         default:

@@ -1,5 +1,6 @@
 import UIKit
 import WordPressFlux
+import WordPressUI
 import Combine
 
 @objc protocol SiteStatsPeriodDelegate {
@@ -22,7 +23,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     // MARK: - Properties
 
     private lazy var mainContext: NSManagedObjectContext = {
-        return ContextManager.sharedInstance().mainContext
+        return ContextManager.shared.mainContext
     }()
 
     private let store = StatsPeriodStore()

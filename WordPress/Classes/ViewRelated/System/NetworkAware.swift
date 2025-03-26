@@ -1,3 +1,4 @@
+import WordPressShared
 
 /// Abstracts elements that need to be aware of the network connection status.
 protocol NetworkAware {

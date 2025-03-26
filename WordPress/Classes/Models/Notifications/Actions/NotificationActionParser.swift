@@ -1,4 +1,5 @@
 import WordPressKit
+import FormattableContentKit
 
 /// Parses the Notification payload. Behaves as a factory that creates different instances of FormattableContentAction for different types of notifications
 struct NotificationActionParser: FormattableContentActionParser {

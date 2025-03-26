@@ -1,3 +1,6 @@
+import UIKit
+import WordPressUI
+
 extension UIColor {
 
     static var invertedSystem5: UIColor {

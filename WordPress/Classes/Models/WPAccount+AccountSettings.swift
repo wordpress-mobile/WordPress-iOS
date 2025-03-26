@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 
 extension WPAccount {
     enum VerificationStatus: String {
@@ -32,5 +33,9 @@ extension WPAccount {
 
     var needsEmailVerification: Bool {
         return verificationStatus == .unverified
+    }
+
+    @objc class var authKeychainServiceName: String {
+        BuildSettings.current.authKeychainServiceName
     }
 }

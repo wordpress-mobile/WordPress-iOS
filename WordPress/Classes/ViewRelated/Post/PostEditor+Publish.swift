@@ -60,7 +60,7 @@ extension PublishingEditor {
                 guard let context = self.post.managedObjectContext else {
                     return
                 }
-                ContextManager.sharedInstance().save(context)
+                ContextManager.shared.save(context)
             }
         }
     }
@@ -337,7 +337,7 @@ extension PublishingEditor {
             post = post // Update the UI
         }
 
-        ContextManager.sharedInstance().save(managedObjectContext)
+        ContextManager.shared.save(managedObjectContext)
     }
 
     var uploadFailureNoticeTag: Notice.Tag {

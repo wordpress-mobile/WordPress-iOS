@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressUI
 
 /// Defines the methods implemented by the LanguageSelectorViewController delegate
 ///

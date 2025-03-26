@@ -1,6 +1,7 @@
 import Foundation
 import WordPressShared
 import WordPressFlux
+import WordPressUI
 import UIKit
 
 final class PageListViewController: AbstractPostListViewController {

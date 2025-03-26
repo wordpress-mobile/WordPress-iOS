@@ -21,7 +21,7 @@ extension Text {
         parts.enumerated().forEach { (index, part) in
             let partText = Text(part)
 
-            if index == parts.count-2 { // last-but-one part
+            if index == parts.count - 2 { // last-but-one part
                 text = text + partText.bold()
             } else {
                 text = text + partText

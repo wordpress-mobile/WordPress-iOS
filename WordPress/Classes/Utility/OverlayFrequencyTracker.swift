@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 protocol OverlaySource {
     var key: String { get }

@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 /// Encapsulates UINavigationController Helper Methods.
 ///

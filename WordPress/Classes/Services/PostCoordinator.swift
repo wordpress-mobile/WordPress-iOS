@@ -1,9 +1,11 @@
+import AutomatticTracks
 import Aztec
+import AztecExtensions
+import Combine
 import Foundation
+import WordPressData
 import WordPressKit
 import WordPressFlux
-import Combine
-import AutomatticTracks
 
 protocol PostCoordinatorDelegate: AnyObject {
     func postCoordinator(_ postCoordinator: PostCoordinator, promptForPasswordForBlog blog: Blog)
@@ -60,7 +62,7 @@ class PostCoordinator: NSObject {
 
     init(mediaCoordinator: MediaCoordinator? = nil,
          actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
-         coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance()) {
+         coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.coreDataStack = coreDataStack
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
         self.actionDispatcherFacade = actionDispatcherFacade

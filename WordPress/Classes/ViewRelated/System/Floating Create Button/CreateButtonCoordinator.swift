@@ -1,5 +1,6 @@
 import Gridicons
 import WordPressFlux
+import WordPressShared
 import WordPressUI
 
 @objc class CreateButtonCoordinator: NSObject {

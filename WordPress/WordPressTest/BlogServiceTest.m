@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 #import "AccountService.h"
 #import "BlogService.h"
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
 #import "Blog.h"
 #import "WPAccount.h"
 #import "WordPressTest-Swift.h"

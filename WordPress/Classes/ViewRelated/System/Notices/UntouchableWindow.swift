@@ -1,5 +1,5 @@
 @objc class UntouchableWindow: UIWindow {
-    let untouchableViewController  = UntouchableViewController()
+    let untouchableViewController = UntouchableViewController()
 
     override init(frame: CGRect) {
         super.init(frame: frame)

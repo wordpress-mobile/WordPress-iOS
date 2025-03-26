@@ -38,7 +38,7 @@ public class LinkMailPresenter {
         let message = String.localizedStringWithFormat(NSLocalizedString("We just emailed a link to %@. Please check your mail app and tap the link to log in.",
                                                                          comment: "message to ask a user to check their email for a WordPress.com email"), emailAddress)
 
-        let alertController =  UIAlertController(title: title,
+        let alertController = UIAlertController(title: title,
                                                  message: message,
                                                  preferredStyle: .alert)
         alertController.addCancelActionWithTitle(NSLocalizedString("OK",

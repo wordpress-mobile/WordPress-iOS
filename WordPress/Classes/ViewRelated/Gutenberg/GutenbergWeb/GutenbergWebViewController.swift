@@ -2,6 +2,7 @@ import UIKit
 import WebKit
 import Gutenberg
 import Combine
+import WordPressUI
 
 class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitAuthenticatable, NoResultsViewHost {
     enum GutenbergWebError: Error {

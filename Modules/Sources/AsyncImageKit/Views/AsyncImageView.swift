@@ -30,9 +30,6 @@ public final class AsyncImageView: UIView {
         /// By default, `background`.
         public var loadingStyle = LoadingStyle.background
 
-        // TODO: remove when WPRichTextImage is removed
-        public var passTouchesToSuperview = false
-
         public init() {}
     }
 
@@ -163,14 +160,6 @@ public final class AsyncImageView: UIView {
         ])
         self.errorView = errorView
         return errorView
-    }
-
-    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        if configuration.passTouchesToSuperview && self.bounds.contains(point) {
-            // Pass the touch to the superview
-            return nil
-        }
-        return super.hitTest(point, with: event)
     }
 }
 

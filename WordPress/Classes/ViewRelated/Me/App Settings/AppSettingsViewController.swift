@@ -1,8 +1,10 @@
 import Foundation
+import BuildSettingsKit
 import UIKit
 import SwiftUI
 import Gridicons
 import WordPressShared
+import ShareExtensionCore
 import SVProgressHUD
 import WordPressFlux
 import DesignSystem
@@ -152,7 +154,7 @@ class AppSettingsViewController: UITableViewController {
     @objc func imageSizeChanged() -> (Int) -> Void {
         return { value in
             MediaSettings().maxImageSizeSetting = value
-            ShareExtensionService.configureShareExtensionMaximumMediaDimension(value)
+            ShareExtensionService().configureShareExtensionMaximumMediaDimension(value)
 
             self.debounce(#selector(self.trackImageSizeChanged), afterDelay: 0.5)
         }
@@ -574,7 +576,7 @@ private extension AppSettingsViewController {
 
         var rows: [ImmuTableRow] = [experimentalFeaturesRow, settingsRow]
 
-        if AppConfiguration.allowsCustomAppIcons && UIApplication.shared.supportsAlternateIcons {
+        if FeatureFlag.customAppIcons.enabled && UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack
             rows.insert(iconRow, at: 0)
         }
@@ -586,9 +588,8 @@ private extension AppSettingsViewController {
 
         if let presenter = RootViewCoordinator.shared.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements,
-            AppConfiguration.showsWhatIsNew {
-            let whatIsNewRow = NavigationItemRow(title: AppConstants.Settings.whatIsNewTitle,
-                                                 action: presentWhatIsNew())
+            FeatureFlag.whatsNew.enabled {
+            let whatIsNewRow = NavigationItemRow(title: WhatIsNewScenePresenter.title, action: presentWhatIsNew())
             rows.append(whatIsNewRow)
         }
 

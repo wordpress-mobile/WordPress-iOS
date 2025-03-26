@@ -1,5 +1,6 @@
 import UIKit
 import WordPressEditor
+import WordPressUI
 
 class RegisterDomainDetailsViewController: UITableViewController {
 

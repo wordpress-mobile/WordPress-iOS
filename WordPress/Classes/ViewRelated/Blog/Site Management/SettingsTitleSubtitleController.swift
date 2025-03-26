@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 /// Types the closures than can be provided as completion blocks
 typealias SettingsTitleSubtitleAction = ((SettingsTitleSubtitleController.Content) -> Void)
@@ -207,7 +208,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
             return
         }
 
-        let title =  confirmation.title
+        let title = confirmation.title
         let message = confirmation.subtitle
         let actionTitle = confirmation.actionTitle
         let cancelTitle = confirmation.cancelTitle

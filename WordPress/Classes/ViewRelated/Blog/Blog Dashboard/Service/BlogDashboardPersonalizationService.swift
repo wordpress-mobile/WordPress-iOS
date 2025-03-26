@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// `BlogDashboardPersonalizable` is a protocol that defines the requirements for personalizing blog dashboard items.
 /// It provides properties to access personalization key and settings scope specific to the blog dashboard.

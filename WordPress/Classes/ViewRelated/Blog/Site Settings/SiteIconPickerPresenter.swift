@@ -61,8 +61,8 @@ final class SiteIconPickerPresenter: NSObject {
                 if !modified, let media = self.originalMedia {
                     self.onCompletion?(media, nil)
                 } else {
-                    let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-                    let importService = MediaImportService(coreDataStack: ContextManager.sharedInstance())
+                    let mediaService = MediaService(managedObjectContext: ContextManager.shared.mainContext)
+                    let importService = MediaImportService(coreDataStack: ContextManager.shared)
 
                     WPAnalytics.track(.siteSettingsSiteIconCropped)
 

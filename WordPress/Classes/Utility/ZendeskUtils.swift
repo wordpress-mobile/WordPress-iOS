@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 import WordPressAuthenticator
 import WordPressKit
 import WordPressShared
@@ -528,7 +529,7 @@ private extension ZendeskUtils {
          2. If not, use selected site.
          */
 
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
 
         // 1. Check for WP account
         if let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context) {
@@ -753,7 +754,7 @@ private extension ZendeskUtils {
     }
 
     static func getCurrentSiteDescription() -> String {
-        guard let blog = Blog.lastUsed(in: ContextManager.sharedInstance().mainContext) else {
+        guard let blog = Blog.lastUsed(in: ContextManager.shared.mainContext) else {
             return Constants.noValue
         }
 
@@ -762,7 +763,7 @@ private extension ZendeskUtils {
     }
 
     static func getBlogInformation() -> String {
-        let allBlogs = (try? BlogQuery().blogs(in: ContextManager.sharedInstance().mainContext)) ?? []
+        let allBlogs = (try? BlogQuery().blogs(in: ContextManager.shared.mainContext)) ?? []
         guard allBlogs.count > 0 else {
             return Constants.noValue
         }
@@ -779,7 +780,7 @@ private extension ZendeskUtils {
 
     static func getTags() -> [String] {
 
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         let allBlogs = (try? BlogQuery().blogs(in: context)) ?? []
         var tags = [String]()
 
@@ -1107,7 +1108,6 @@ private extension ZendeskUtils {
         static let unknownValue = "unknown"
         static let noValue = "none"
         static let platformTag = "iOS"
-        static let ticketSubject = AppConstants.Zendesk.ticketSubject
         static let blogSeperator = "\n----------\n"
         static let jetpackTag = "jetpack"
         static let wpComTag = "wpcom"
@@ -1118,9 +1118,18 @@ private extension ZendeskUtils {
         static let profileNameKey = "name"
         static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
         static let nameFieldCharacterLimit = 50
-        static let sourcePlatform = AppConstants.zendeskSourcePlatform
+        static var sourcePlatform = BuildSettings.current.zendeskSourcePlatform
         static let gutenbergIsDefault = "mobile_gutenberg_is_default"
         static let mobileSelfHosted = "selected_site_self_hosted"
+
+        static var ticketSubject: String {
+            switch BuildSettings.current.brand {
+            case .wordpress:
+                NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
+            case .jetpack:
+                NSLocalizedString("Jetpack for iOS Support", comment: "Subject of new Zendesk ticket.")
+            }
+        }
     }
 
     enum TicketFieldIDs {

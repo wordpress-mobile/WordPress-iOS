@@ -109,22 +109,20 @@ class NotificationSettingsViewController: UIViewController {
     // MARK: - Service Helpers
 
     fileprivate func reloadSettings() {
-        let service = NotificationSettingsService(coreDataStack: ContextManager.sharedInstance())
+        let service = NotificationSettingsService(coreDataStack: ContextManager.shared)
 
         let dispatchGroup = DispatchGroup()
         let siteService = ReaderTopicService(coreDataStack: ContextManager.shared)
 
         activityIndicatorView.startAnimating()
 
-        if AppConfiguration.showsFollowedSitesSettings {
-            dispatchGroup.enter()
-            siteService.fetchAllFollowedSites(success: {
-                dispatchGroup.leave()
-            }, failure: { (error) in
-                dispatchGroup.leave()
-                DDLogError("Could not sync sites: \(String(describing: error))")
-            })
-        }
+        dispatchGroup.enter()
+        siteService.fetchAllFollowedSites(success: {
+            dispatchGroup.leave()
+        }, failure: { (error) in
+            dispatchGroup.leave()
+            DDLogError("Could not sync sites: \(String(describing: error))")
+        })
 
         dispatchGroup.enter()
         service.getAllSettings({ [weak self] (settings: [NotificationSettings]) in
@@ -189,9 +187,9 @@ class NotificationSettingsViewController: UIViewController {
     //
     fileprivate func setupSections() {
         var section: [Section] = groupedSettings.isEmpty ? [] : [.blog, .other, .wordPressCom]
-        if !followedSites.isEmpty && !section.isEmpty && AppConfiguration.showsFollowedSitesSettings {
+        if !followedSites.isEmpty && !section.isEmpty {
             section.insert(.followedSites, at: 1)
-        } else if !followedSites.isEmpty && section.isEmpty && AppConfiguration.showsFollowedSitesSettings {
+        } else if !followedSites.isEmpty && section.isEmpty {
             section.append(.followedSites)
         }
 

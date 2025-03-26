@@ -1,11 +1,12 @@
 import BackgroundTasks
 import SwiftUI
+import WordPressShared
 
 struct BlueButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
-            .background(configuration.isPressed ?  Color.white : Color(red: 0.5, green: 0.5, blue: 0.8))
+            .background(configuration.isPressed ? Color.white : Color(red: 0.5, green: 0.5, blue: 0.8))
             .foregroundColor(.white)
             .clipShape(Capsule())
     }

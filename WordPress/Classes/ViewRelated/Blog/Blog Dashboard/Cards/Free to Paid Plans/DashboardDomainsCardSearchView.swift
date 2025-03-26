@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 
 struct DashboardDomainsCardSearchView: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme

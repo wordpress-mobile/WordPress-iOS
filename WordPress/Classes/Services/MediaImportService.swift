@@ -1,5 +1,6 @@
 import Foundation
 import PhotosUI
+import WordPressData
 
 /// Encapsulates importing assets such as images, videos, or files at URLs to Media objects.
 ///

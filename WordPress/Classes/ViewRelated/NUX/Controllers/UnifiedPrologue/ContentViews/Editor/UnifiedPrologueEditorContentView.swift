@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 
 /// Prologue editor page contents
 struct UnifiedPrologueEditorContentView: View {
@@ -40,7 +41,7 @@ struct UnifiedPrologueEditorContentView: View {
                         CircledIcon(
                             size: alignImageLeftIconSize,
                             xOffset: -alignImageLeftIconSize * 0.75,
-                            yOffset: alignImageLeftIconSize  * 0.75,
+                            yOffset: alignImageLeftIconSize * 0.75,
                             iconType: .alignImageLeft,
                             backgroundColor: Color(UIAppColor.purple(.shade50))
                         )

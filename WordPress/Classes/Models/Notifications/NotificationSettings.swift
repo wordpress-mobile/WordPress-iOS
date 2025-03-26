@@ -44,7 +44,7 @@ open class NotificationSettings {
     public init(channel: Channel, streams: [Stream], blog: Blog?) {
         self.channel = channel
         self.streams = streams
-        self.blog    = blog
+        self.blog = blog
         self.blogManagedObjectID = blog?.objectID
     }
 

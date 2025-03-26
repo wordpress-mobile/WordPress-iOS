@@ -298,7 +298,7 @@ final class MediaItemViewController: UITableViewController {
     private func saveChanges() {
         mediaMetadata.update(media)
 
-        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = MediaService(managedObjectContext: ContextManager.shared.mainContext)
         service.update(media, success: { [weak self] in
             WPAppAnalytics.track(.mediaLibraryEditedItemMetadata, with: self?.media.blog)
         }, failure: { _ in
@@ -335,7 +335,7 @@ final class MediaItemViewController: UITableViewController {
             let editableRow = row as! EditableTextRow
             self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Description", comment: "Hint for image description on image settings."),
                                         onValueChanged: { value in
-                self?.mediaMetadata.desc  = value
+                self?.mediaMetadata.desc = value
                 self?.reloadViewModel()
             })
         }
@@ -346,7 +346,7 @@ final class MediaItemViewController: UITableViewController {
             let editableRow = row as! EditableTextRow
             self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Alt", comment: "Hint for image alt on image settings."),
                                          onValueChanged: { value in
-                                            self?.mediaMetadata.alt  = value
+                                            self?.mediaMetadata.alt = value
                                             self?.reloadViewModel()
             })
         }

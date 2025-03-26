@@ -6,7 +6,7 @@ class MediaHelper: NSObject {
     @objc(updateMedia:withRemoteMedia:)
     static func update(media: Media, with remoteMedia: RemoteMedia) {
         if media.mediaID != remoteMedia.mediaID {
-            media.mediaID =  remoteMedia.mediaID
+            media.mediaID = remoteMedia.mediaID
         }
         if media.remoteURL != remoteMedia.url?.absoluteString {
             media.remoteURL = remoteMedia.url?.absoluteString
@@ -124,7 +124,7 @@ extension Media {
     }
 
     static func removeTemporaryData() {
-        _ =  remoteDataTemporaryDirectoryURL
+        _ = remoteDataTemporaryDirectoryURL
     }
 
     private static let remoteDataTemporaryDirectoryURL: URL = {

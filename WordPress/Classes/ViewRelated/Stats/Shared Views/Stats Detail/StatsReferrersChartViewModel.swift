@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import WordPressUI
 
 struct StatsReferrersChartViewModel {
     let referrers: StatsTopReferrersTimeIntervalData
@@ -28,7 +29,7 @@ struct StatsReferrersChartViewModel {
         }
 
         // Then add groups from the top of the list to make up our target group count
-        while topReferrers.count < (Constants.referrersMaxGroupCount-1) && allReferrers.count > 0 {
+        while topReferrers.count < (Constants.referrersMaxGroupCount - 1) && allReferrers.count > 0 {
             topReferrers.append(allReferrers.removeFirst())
         }
 

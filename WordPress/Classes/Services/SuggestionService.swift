@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// A service to fetch and persist a list of users that can be @-mentioned in a post or comment.
 class SuggestionService {
@@ -54,7 +55,7 @@ class SuggestionService {
         // add this blog to currently being requested list
         blogsCurrentlyBeingRequested.append(blogId)
 
-        defaultAccount()?.wordPressComRestApi.GET(suggestPath, parameters: params, success: { [weak self] responseObject, httpResponse in
+        defaultAccount()?.wordPressComRestApi?.GET(suggestPath, parameters: params, success: { [weak self] responseObject, httpResponse in
             guard let `self` = self else { return }
             guard let payload = responseObject as? [String: Any] else { return }
             guard let restSuggestions = payload["suggestions"] as? [[String: Any]] else { return }

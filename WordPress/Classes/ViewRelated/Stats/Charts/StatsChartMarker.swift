@@ -1,4 +1,6 @@
+import UIKit
 import DGCharts
+import WordPressUI
 
 class StatsChartMarker: MarkerView {
     var dotColor: UIColor

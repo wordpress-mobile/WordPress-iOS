@@ -43,10 +43,10 @@ open class SettingsPickerViewController: UITableViewController {
 
     // MARK: - View Lifecycle
     open override func viewDidLoad() {
-        assert(selectionText     != nil)
+        assert(selectionText != nil)
         assert(pickerSelectedValue != nil)
-        assert(pickerMinimumValue  != nil)
-        assert(pickerMaximumValue  != nil)
+        assert(pickerMinimumValue != nil)
+        assert(pickerMaximumValue != nil)
 
         super.viewDidLoad()
         setupTableView()
@@ -117,31 +117,31 @@ open class SettingsPickerViewController: UITableViewController {
     }
 
     fileprivate func configureSwitchCell(_ cell: SwitchTableViewCell) {
-        cell.selectionStyle         = .none
-        cell.name                   = switchText
-        cell.on                     = switchOn
-        cell.onChange               = { [weak self] in
+        cell.selectionStyle = .none
+        cell.name = switchText
+        cell.on = switchOn
+        cell.onChange = { [weak self] in
             self?.switchDidChange($0)
         }
     }
 
     fileprivate func configureTextCell(_ cell: WPTableViewCell) {
-        let format                  = selectionFormat ?? "%d"
+        let format = selectionFormat ?? "%d"
 
-        cell.selectionStyle         = .none
-        cell.textLabel?.text        = selectionText
-        cell.detailTextLabel?.text  = String(format: format, pickerSelectedValue)
+        cell.selectionStyle = .none
+        cell.textLabel?.text = selectionText
+        cell.detailTextLabel?.text = String(format: format, pickerSelectedValue)
 
         WPStyleGuide.configureTableViewCell(cell)
     }
 
     fileprivate func configurePickerCell(_ cell: PickerTableViewCell) {
-        cell.selectionStyle         = .none
-        cell.minimumValue           = pickerMinimumValue!
-        cell.maximumValue           = max(pickerSelectedValue, pickerMaximumValue)
-        cell.selectedValue          = pickerSelectedValue
-        cell.textFormat             = pickerFormat
-        cell.onChange               = { [weak self] in
+        cell.selectionStyle = .none
+        cell.minimumValue = pickerMinimumValue!
+        cell.maximumValue = max(pickerSelectedValue, pickerMaximumValue)
+        cell.selectedValue = pickerSelectedValue
+        cell.textFormat = pickerFormat
+        cell.onChange = { [weak self] in
             self?.pickerDidChange($0)
         }
     }
@@ -206,6 +206,6 @@ open class SettingsPickerViewController: UITableViewController {
     }
 
     // MARK: - Private Constants
-    fileprivate let estimatedRowHeight  = CGFloat(300)
-    fileprivate let sectionWithFooter   = 0
+    fileprivate let estimatedRowHeight = CGFloat(300)
+    fileprivate let sectionWithFooter = 0
 }

@@ -1,5 +1,4 @@
-import Foundation
-@testable import WordPress
+import WordPressShared
 
 class InMemoryUserDefaults: UserPersistentRepository {
 

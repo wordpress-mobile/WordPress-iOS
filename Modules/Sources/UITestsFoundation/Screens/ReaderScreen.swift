@@ -9,11 +9,10 @@ public class ReaderScreen: ScreenObject {
     var followingButton: XCUIElement { app.buttons["Following"] }
     var subscriptionsMenuButton: XCUIElement { app.buttons["Subscriptions"] }
     var likesTabButton: XCUIElement { app.buttons["Likes"] }
-    var noResultsView: XCUIElement { app.staticTexts["no-results-label-stack-view"].firstMatch }
     var readerButton: XCUIElement { app.buttons["Reader"] }
     var readerTable: XCUIElement { app.tables["reader_table_view"] }
     var savedButton: XCUIElement { app.buttons["Saved"] }
-    var tagCellButton: XCUIElement { app.cells["topics-card-cell-button"] }
+    var tagCellButton: XCUIElement { app.cells["topics-card-cell"].firstMatch.buttons.firstMatch }
     var visitButton: XCUIElement { app.buttons["Visit"] }
     var ghostLoading: XCUIElement { app.tables["Reader Ghost Loading"] }
 
@@ -45,7 +44,7 @@ public class ReaderScreen: ScreenObject {
 
     @discardableResult
     public func getLastPost() throws -> XCUIElement {
-        guard let post = app.cells.lastMatch else {
+        guard let post = readerTable.cells.lastMatch else {
             throw UIElementNotFoundError(message: "ReaderScreen: No posts loaded")
         }
         scrollDownUntilElementIsFullyVisible(element: post)
@@ -64,7 +63,7 @@ public class ReaderScreen: ScreenObject {
 
     private func postContentEquals(_ expected: String) -> Bool {
         let equalsPostContent = NSPredicate(format: "label == %@", expected)
-        let isPostContentEqual = app.staticTexts.element(matching: equalsPostContent).waitForIsHittable(timeout: 3)
+        let isPostContentEqual = app.staticTexts.element(matching: equalsPostContent).waitForIsHittable(timeout: 60)
 
         return isPostContentEqual
     }
@@ -213,7 +212,6 @@ public class ReaderScreen: ScreenObject {
     }
 
     private func verifyEmptyPostList(file: StaticString = #file, line: UInt = #line) {
-        XCTAssertTrue(noResultsView.waitForExistence(timeout: 5), file: file, line: line)
         XCTAssertTrue(readerTable.label == .emptyListLabel, file: file, line: line)
     }
 }

@@ -7,12 +7,6 @@ final class CompliancePopoverViewModelTests: CoreDataTestCase {
     override func setUp() {
         super.setUp()
         testDefaults?.removeObject(forKey: UserDefaults.didShowCompliancePopupKey)
-
-        let windowManager = WindowManager(window: UIWindow())
-        WordPressAuthenticationManager(
-            windowManager: windowManager,
-            remoteFeaturesStore: RemoteFeatureFlagStore()
-        ).initializeWordPressAuthenticator()
     }
 
     override func tearDown() {

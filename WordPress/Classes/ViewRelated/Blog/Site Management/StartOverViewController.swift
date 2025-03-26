@@ -1,6 +1,7 @@
 import UIKit
 import MessageUI
 import WordPressShared
+import WordPressUI
 
  /// StartOverViewController allows user to trigger help session to remove site content.
  ///

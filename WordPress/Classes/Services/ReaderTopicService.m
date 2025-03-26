@@ -1,7 +1,7 @@
 #import "ReaderTopicService.h"
 
 #import "AccountService.h"
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "WPAccount.h"

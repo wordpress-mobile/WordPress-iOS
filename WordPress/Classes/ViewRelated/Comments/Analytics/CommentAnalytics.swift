@@ -1,4 +1,5 @@
 import Foundation
+import FormattableContentKit
 
 @objc class CommentAnalytics: NSObject {
 

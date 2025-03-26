@@ -1,5 +1,6 @@
-import Foundation
+import UIKit
 import WordPressShared
+import WordPressUI
 
 @objc public protocol ReaderCardDiscoverAttributionViewDelegate: NSObjectProtocol {
     func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView)

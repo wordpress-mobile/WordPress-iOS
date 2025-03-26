@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// A struct that returns the Reader CSS URL
 /// If you need to fix an issue in the CSS, see pbArwn-GU-p2

@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressUI
 
 /**
  *  @brief      Support for filtering themes by purchasability
@@ -265,7 +266,7 @@ public protocol ThemePresenter: AnyObject {
     /**
      *  @brief      The themes service we'll use in this VC and its helpers
      */
-    fileprivate let themeService = ThemeService(coreDataStack: ContextManager.sharedInstance())
+    fileprivate let themeService = ThemeService(coreDataStack: ContextManager.shared)
     fileprivate var themesSyncHelper: WPContentSyncHelper!
     fileprivate var themesSyncingPage = 0
     fileprivate var customThemesSyncHelper: WPContentSyncHelper!

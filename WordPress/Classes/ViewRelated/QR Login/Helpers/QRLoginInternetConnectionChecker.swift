@@ -1,13 +1,9 @@
 import Foundation
+import WordPressShared
 
 struct QRLoginInternetConnectionChecker: QRLoginConnectionChecker {
-    var connectionAvailable: Bool {
-        let appDelegate = WordPressAppDelegate.shared
 
-        guard let connectionAvailable = appDelegate?.connectionAvailable, connectionAvailable == true else {
-            return false
-        }
+    let getConectionAvailability: () -> Bool = { ReachabilityUtils.connectionAvailable }
 
-        return true
-    }
+    var connectionAvailable: Bool { getConectionAvailability() }
 }

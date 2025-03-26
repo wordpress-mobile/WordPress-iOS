@@ -1,3 +1,4 @@
+import BuildSettingsKit
 import WordPressFlux
 import WordPressKit
 
@@ -170,7 +171,7 @@ private extension CachedAnnouncementsStore {
     }
 
     enum Identifiers {
-        static let appId = AppConstants.mobileAnnounceAppId
+        static let appId = BuildSettings.current.mobileAnnounceAppID
         static var appVersion: String {
             Bundle.main.shortVersionString() ?? ""
         }

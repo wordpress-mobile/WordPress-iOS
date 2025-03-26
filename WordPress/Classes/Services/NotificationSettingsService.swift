@@ -1,12 +1,14 @@
 import Foundation
+import BuildSettingsKit
 import WordPressKit
+import WordPressShared
 
 /// This service encapsulates the Restful API related to WordPress Notifications.
 ///
 class NotificationSettingsService {
     // MARK: - Aliases
-    public typealias Channel    = NotificationSettings.Channel
-    public typealias Stream     = NotificationSettings.Stream
+    public typealias Channel = NotificationSettings.Channel
+    public typealias Stream = NotificationSettings.Stream
 
     /// Designated Initializer
     ///
@@ -142,10 +144,12 @@ class NotificationSettingsService {
             return
         }
 
-        notificationsServiceRemote?.registerDeviceForPushNotifications(token,
-                                                                       pushNotificationAppId: AppConstants.pushNotificationAppId,
-                                                                       success: success,
-                                                                       failure: failure)
+        notificationsServiceRemote?.registerDeviceForPushNotifications(
+            token,
+            pushNotificationAppId: BuildSettings.current.pushNotificationAppID,
+            success: success,
+            failure: failure
+        )
     }
 
     /// Unregisters the given deviceID for Push Notification Events.
@@ -217,8 +221,8 @@ class NotificationSettingsService {
         var parsed = Array<NotificationSettings.Stream>()
 
         for remoteStream in remote {
-            let kind    = remoteStream.kind.rawValue
-            let stream  = NotificationSettings.Stream(kind: kind, preferences: remoteStream.preferences)
+            let kind = remoteStream.kind.rawValue
+            let stream = NotificationSettings.Stream(kind: kind, preferences: remoteStream.preferences)
             parsed.append(stream)
         }
 

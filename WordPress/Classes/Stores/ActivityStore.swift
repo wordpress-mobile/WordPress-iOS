@@ -1,6 +1,7 @@
 import Foundation
 import WordPressKit
 import WordPressFlux
+import WordPressShared
 
 // MARK: - Store helper types
 
@@ -100,7 +101,7 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
          activityServiceRemote: ActivityServiceRemote? = nil,
          backupService: JetpackBackupService? = nil) {
         self.activityServiceRemote = activityServiceRemote
-        self.backupService = backupService ?? JetpackBackupService(coreDataStack: ContextManager.sharedInstance())
+        self.backupService = backupService ?? JetpackBackupService(coreDataStack: ContextManager.shared)
         super.init(initialState: ActivityStoreState(), dispatcher: dispatcher)
     }
 

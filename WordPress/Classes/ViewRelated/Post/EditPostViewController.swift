@@ -203,7 +203,7 @@ extension EditPostViewController {
         UserDefaults.standard.removeObject(forKey: restorationBlogURLKey)
         restorationDate = Date()
 
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         guard let postID = context.persistentStoreCoordinator?.safeManagedObjectID(forURIRepresentation: postURL),
               let object = try? context.existingObject(with: postID),
               let post = (object as? AbstractPost)?.latest() else {

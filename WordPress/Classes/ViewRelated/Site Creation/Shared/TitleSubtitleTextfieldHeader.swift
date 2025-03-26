@@ -9,12 +9,12 @@ final class SearchTextField: UITextField {
     // MARK: Properties
 
     private struct Constants {
-        static let defaultPadding   = CGFloat(16)
-        static let iconDimension    = CGFloat(18)
-        static let iconInset        = CGFloat(19)
+        static let defaultPadding = CGFloat(16)
+        static let iconDimension = CGFloat(18)
+        static let iconInset = CGFloat(19)
         static let clearButtonInset = CGFloat(-9)
-        static let searchHeight     = CGFloat(44)
-        static let textInset        = CGFloat(56)
+        static let searchHeight = CGFloat(44)
+        static let textInset = CGFloat(56)
     }
 
     // MARK: UIView

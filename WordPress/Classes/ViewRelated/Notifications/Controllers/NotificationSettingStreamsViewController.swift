@@ -1,5 +1,6 @@
-import Foundation
+import UIKit
 import WordPressShared
+import WordPressUI
 
 /// This class will simply render the collection of Streams available for a given NotificationSettings
 /// collection.
@@ -130,11 +131,11 @@ class NotificationSettingStreamsViewController: UITableViewController {
         let stream = streamAtSection(indexPath.section)
         let disabled = stream.kind == .device && pushNotificationsAuthorized == false
 
-        cell.imageView?.image       = imageForStreamKind(stream.kind)
-        cell.imageView?.tintColor   = UIAppColor.neutral(.shade20)
-        cell.textLabel?.text        = stream.kind.description()
-        cell.detailTextLabel?.text  = disabled ? NSLocalizedString("Off", comment: "Disabled") : String()
-        cell.accessoryType          = .disclosureIndicator
+        cell.imageView?.image = imageForStreamKind(stream.kind)
+        cell.imageView?.tintColor = UIAppColor.neutral(.shade20)
+        cell.textLabel?.text = stream.kind.description()
+        cell.detailTextLabel?.text = disabled ? NSLocalizedString("Off", comment: "Disabled") : String()
+        cell.accessoryType = .disclosureIndicator
 
         WPStyleGuide.configureTableViewCell(cell)
     }

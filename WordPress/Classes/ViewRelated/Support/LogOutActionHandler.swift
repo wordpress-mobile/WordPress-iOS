@@ -1,4 +1,5 @@
 import UIKit
+import BuildSettingsKit
 
 struct LogOutActionHandler {
 
@@ -9,7 +10,7 @@ struct LogOutActionHandler {
     }
 
     func logOut(with viewController: UIViewController) {
-        let alert  = UIAlertController(title: logOutAlertTitle, message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: logOutAlertTitle, message: nil, preferredStyle: .alert)
         alert.addActionWithTitle(Strings.alertCancelAction, style: .cancel)
         alert.addActionWithTitle(Strings.alertLogoutAction, style: .destructive) { [weak viewController] _ in
             viewController?.dismiss(animated: true) {
@@ -21,7 +22,7 @@ struct LogOutActionHandler {
     }
 
     private var logOutAlertTitle: String {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
         let count = AbstractPost.countLocalPosts(in: context)
 
         guard count > 0 else {
@@ -33,7 +34,10 @@ struct LogOutActionHandler {
     }
 
     private struct Strings {
-        static let alertDefaultTitle = AppConstants.Logout.alertTitle
+        static var alertDefaultTitle: String {
+            MeViewController.LogoutAlert.defaultTitle
+        }
+
         static let alertUnsavedTitleSingular = NSLocalizedString("You have changes to %d post that hasn't been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
                                                             comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (SINGULAR!)")
         static let alertUnsavedTitlePlural = NSLocalizedString("You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?",

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// Encapsulates UIUserInterfaceStyle getting and setting for the app's
 /// main window. Allows users to override the interface style for the app.

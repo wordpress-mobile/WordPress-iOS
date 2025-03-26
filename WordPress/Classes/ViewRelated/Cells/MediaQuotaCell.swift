@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import WordPressShared
+import WordPressUI
 
 // MARK: - View Model
 

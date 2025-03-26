@@ -164,7 +164,7 @@ class StatsBaseCell: UITableViewCell {
         let properties: [String: String] = ["type": statSection.analyticsProperty]
 
         if let blogId = SiteStatsInformation.sharedInstance.siteID,
-           let blog = Blog.lookup(withID: blogId, in: ContextManager.sharedInstance().mainContext) {
+           let blog = Blog.lookup(withID: blogId, in: ContextManager.shared.mainContext) {
             WPAnalytics.track(event, properties: properties, blog: blog)
         } else {
             WPAnalytics.track(event, properties: properties)

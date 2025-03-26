@@ -23,8 +23,27 @@ final class BlogListViewModel: NSObject, ObservableObject {
 
     var onAddSiteTapped: (AddSiteMenuViewModel.Selection) -> Void = { _ in }
 
+    weak var sidebarViewModel: SidebarViewModel?
+
+    var currentSite: BlogListSiteViewModel? {
+        guard let sidebarViewModel,
+              case let .blog(selectedBlogID) = sidebarViewModel.selection else {
+            return nil
+        }
+
+        do {
+            if let blog = try contextManager.mainContext.existingObject(with: selectedBlogID.objectID) as? Blog {
+                return BlogListSiteViewModel(blog: blog)
+            }
+        } catch {
+            DDLogError("Failed to fetch blog with ID \(selectedBlogID): \(error)")
+        }
+
+        return nil
+    }
+
     init(configuration: BlogListConfiguration = .defaultConfig,
-         contextManager: ContextManager = ContextManager.sharedInstance(),
+         contextManager: ContextManager = ContextManager.shared,
          recentSitesService: RecentSitesService = RecentSitesService(),
          eventTracker: EventTracker = DefaultEventTracker()) {
         self.configuration = configuration

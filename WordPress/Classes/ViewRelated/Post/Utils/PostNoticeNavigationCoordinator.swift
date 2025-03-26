@@ -59,7 +59,7 @@ class PostNoticeNavigationCoordinator {
     }
 
     private static func post(from userInfo: NSDictionary) -> AbstractPost? {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.shared.mainContext
 
         guard let postID = userInfo[PostNoticeUserInfoKey.postID] as? String,
             let URIRepresentation = URL(string: postID),

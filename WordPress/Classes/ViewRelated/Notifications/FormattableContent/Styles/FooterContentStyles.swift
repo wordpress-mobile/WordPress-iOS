@@ -1,3 +1,4 @@
+import FormattableContentKit
 
 class FooterContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedString.Key: Any] {

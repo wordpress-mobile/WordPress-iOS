@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressShared
 
 extension ReachabilityUtils {
     private enum DefaultNoConnectionMessage {

@@ -1,3 +1,6 @@
+import UIKit
+import WordPressUI
+
 /// A subclass implementation of `UITableViewHeaderFooterView` that displays a text with a tappable link.
 /// Specifically used for Twitter deprecation purposes.
 ///

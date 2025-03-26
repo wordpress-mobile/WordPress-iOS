@@ -1,3 +1,4 @@
+import FormattableContentKit
 
 class RichTextContentStyles: FormattableContentStyles {
 

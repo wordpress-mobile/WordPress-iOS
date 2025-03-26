@@ -1,3 +1,5 @@
+import UIKit
+import WordPressUI
 
 class FindOutMoreCell: UITableViewCell, Reusable {
 

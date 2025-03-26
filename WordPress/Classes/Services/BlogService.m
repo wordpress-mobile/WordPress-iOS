@@ -2,7 +2,7 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "AccountService.h"
-#import "CoreDataStack.h"
+@import WordPressDataObjC;
 #import "WPError.h"
 #import "Media.h"
 #import "PostCategoryService.h"
@@ -28,7 +28,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                     success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
 {
-    DDLogMethod();
+    DDLogInfo(@"BlogService syncBlogsForAccount");
 
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     
