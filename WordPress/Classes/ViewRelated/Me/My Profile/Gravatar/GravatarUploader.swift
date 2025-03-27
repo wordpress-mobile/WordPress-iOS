@@ -1,3 +1,5 @@
+import UIKit
+
 enum GravatarUploaderStatus {
     case idle
     case uploading(image: UIImage)

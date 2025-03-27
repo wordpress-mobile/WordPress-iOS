@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import Combine
 
 final class CommentCellViewModel: NSObject {

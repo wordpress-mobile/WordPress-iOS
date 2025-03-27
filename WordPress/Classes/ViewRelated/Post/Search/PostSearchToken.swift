@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 protocol PostSearchToken {
     var icon: UIImage? { get }

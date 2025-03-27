@@ -1,3 +1,5 @@
+import UIKit
+
 @objc class UntouchableWindow: UIWindow {
     let untouchableViewController = UntouchableViewController()
 

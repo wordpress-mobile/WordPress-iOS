@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 enum AppScheme: String {
     case wordpress = "wordpress://"

@@ -1,3 +1,5 @@
+import UIKit
+
 /// Encapsulates a command to toggle a post's liked status
 final class ReaderLikeAction {
     func execute(with post: ReaderPost, source: String? = nil, isFeedbackNeeded: Bool = true, completion: (() -> Void)? = nil) {

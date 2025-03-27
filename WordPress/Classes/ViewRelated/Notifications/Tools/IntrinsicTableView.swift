@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// This TableView subclass allows us to use UIStackView along with TableViews. Intrinsic Content Size
 /// will be automatically calculated, based on the Table's Content Size.

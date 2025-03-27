@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import WordPressUI
 
 /// Methods used by the Reader in the Follow Conversation flow to:

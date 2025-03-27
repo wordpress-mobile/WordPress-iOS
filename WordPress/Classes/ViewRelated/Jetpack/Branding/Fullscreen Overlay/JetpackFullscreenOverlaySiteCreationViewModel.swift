@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// Dynamic implementation of `JetpackFullscreenOverlayViewModel` based on the site creation phase
 /// Should be used for Site Creation overlays.

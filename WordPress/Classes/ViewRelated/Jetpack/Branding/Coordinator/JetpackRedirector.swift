@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import BuildSettingsKit
 
 class JetpackRedirector {

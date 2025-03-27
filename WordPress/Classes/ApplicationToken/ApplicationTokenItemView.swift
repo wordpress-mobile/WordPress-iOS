@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import Network
 
 struct ApplicationTokenItemView: View {
     @State private var isConfirmingDeletion: Bool = false

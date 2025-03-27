@@ -1,3 +1,5 @@
+import Foundation
+
 @objcMembers public class JetpackState: NSObject {
     public static let minimumVersionRequired = "3.4.3"
 

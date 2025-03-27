@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 enum MySitesRoute: CaseIterable {
     case pages

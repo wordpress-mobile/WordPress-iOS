@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// A drop in collection view that will configure the collection view to display the topics chip group:
 /// - Overrides the layout to be `ReaderInterestsCollectionViewFlowLayout`

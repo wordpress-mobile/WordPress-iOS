@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import WordPressFlux
 
 // MARK: - copy comment URL to Clipboard

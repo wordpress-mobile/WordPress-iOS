@@ -1,3 +1,4 @@
+import UIKit
 
 /// Site Creation: Site Segments
 final class SiteSegmentsStep: WizardStep {
