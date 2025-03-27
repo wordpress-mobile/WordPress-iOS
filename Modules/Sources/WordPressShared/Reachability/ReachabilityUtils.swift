@@ -58,7 +58,7 @@ public class ReachabilityUtils: NSObject {
                 connectionAvailable = newValue
 
                 notificationCenter.post(
-                    name: .reachabilityChanged,
+                    name: .reachabilityUpdated,
                     object: self,
                     userInfo: [Notification.reachabilityKey: newValue]
                 )

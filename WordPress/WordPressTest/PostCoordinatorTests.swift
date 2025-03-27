@@ -232,7 +232,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         // GIVEN the app quickly restoring connectivity after the first failure
         coordinator.syncEvents.sink {
             if case .finished(_, let result) = $0, case .failure = result {
-                NotificationCenter.default.post(name: .reachabilityChanged, object: nil, userInfo: [Foundation.Notification.reachabilityKey: true])
+                NotificationCenter.default.post(name: .reachabilityUpdated, object: nil, userInfo: [Foundation.Notification.reachabilityKey: true])
             }
         }.store(in: &cancellables)
 

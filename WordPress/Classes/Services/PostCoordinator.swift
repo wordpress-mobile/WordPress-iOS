@@ -70,7 +70,7 @@ class PostCoordinator: NSObject {
 
         super.init()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityUpdated, object: nil)
     }
 
     struct PublishingOptions {

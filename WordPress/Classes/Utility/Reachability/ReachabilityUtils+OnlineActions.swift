@@ -34,7 +34,7 @@ extension ReachabilityUtils {
     @discardableResult
     @objc class func observeOnceInternetAvailable(action: @escaping () -> Void) -> NSObjectProtocol {
         return NotificationCenter.default.observeOnce(
-            forName: .reachabilityChanged,
+            forName: .reachabilityUpdated,
             object: nil,
             queue: .main,
             using: { _ in action() },
