@@ -14,7 +14,8 @@ extension WordPressOrgRestApi {
     @objc
     convenience init?(
         blog: Blog,
-        userAgent: String = WPUserAgent.wordPress()
+        userAgent: String = WPUserAgent.wordPress(),
+        wordPressComApiURL: URL = AppEnvironment.current.wordPressComApiBase
     ) {
         if let dotComID = blog.dotComID?.uint64Value,
            let token = blog.account?.authToken,
@@ -23,7 +24,7 @@ extension WordPressOrgRestApi {
                 dotComSiteID: dotComID,
                 bearerToken: token,
                 userAgent: userAgent,
-                apiURL: AppEnvironment.current.wordPressComApiBase
+                apiURL: wordPressComApiURL
             )
         } else if let apiBase = apiBase(blog: blog),
                   let loginURL = try? blog.loginUrl().asURL(),
