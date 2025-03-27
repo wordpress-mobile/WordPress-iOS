@@ -41,7 +41,7 @@
 
 - (void)performActivity
 {
-    [[UIApplication sharedApplication] openURL:_URL options:nil completionHandler:^(BOOL success) {
+    [[UIApplication sharedApplication] openURL:_URL options:[:] completionHandler:^(BOOL success) {
         [self activityDidFinish:success];
     }];
 
