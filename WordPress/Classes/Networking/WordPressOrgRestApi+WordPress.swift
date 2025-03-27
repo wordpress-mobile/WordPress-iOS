@@ -7,7 +7,12 @@ private func apiBase(blog: Blog) -> URL? {
         assertionFailure(".com support has not been implemented yet")
         return nil
     }
-    return try? blog.url(withPath: "wp-json/")?.asURL()
+
+    guard let urlString = blog.url(withPath: "wp-json/") else {
+        return nil
+    }
+
+    return URL(string: urlString)
 }
 
 extension WordPressOrgRestApi {
@@ -23,8 +28,8 @@ extension WordPressOrgRestApi {
                 apiURL: AppEnvironment.current.wordPressComApiBase
             )
         } else if let apiBase = apiBase(blog: blog),
-                  let loginURL = try? blog.loginUrl().asURL(),
-                  let adminURL = try? blog.adminUrl(withPath: "").asURL(),
+                  let loginURL = URL(string: blog.loginUrl()),
+                  let adminURL = URL(string: blog.adminUrl(withPath: "")),
                   let username = blog.username,
                   let password = blog.password {
             self.init(
