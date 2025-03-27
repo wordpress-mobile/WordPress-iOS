@@ -20,7 +20,6 @@ class ApiCredentials: NSObject {
     // Other Services
     static let tenorApiKey = ""
     static let sentryDSN = ""
-    static let appCenterAppId = ""
     static let encryptedLogKey = ""
     static let debuggingKey = ""
     static let docsBotId = ""

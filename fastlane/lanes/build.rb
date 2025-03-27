@@ -1,10 +1,25 @@
 # frozen_string_literal: true
 
+# Sentry
 SENTRY_ORG_SLUG = 'a8c'
 SENTRY_PROJECT_SLUG_WORDPRESS = 'wordpress-ios'
 SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
-APPCENTER_OWNER_NAME = 'automattic'
-APPCENTER_OWNER_TYPE = 'organization'
+
+# Prototype Builds in Firebase App Distribution
+PROTOTYPE_BUILD_XCODE_CONFIGURATION = 'Release-Alpha'
+FIREBASE_APP_CONFIG_WORDPRESS = {
+  app_name: 'WordPress',
+  app_icon: ':wordpress:', # Use Buildkite emoji
+  app_id: '1:124902176124:ios:ff9714d0b53aac821620f9',
+  testers_group: 'wordpress-ios---prototype-builds'
+}.freeze
+FIREBASE_APP_CONFIG_JETPACK = {
+  app_name: 'Jetpack',
+  app_icon: ':jetpack:', # Use Buildkite emoji
+  app_id: '1:124902176124:ios:121c494b82f283ec1620f9',
+  testers_group: 'jetpack-ios---prototype-builds'
+}.freeze
+
 CONCURRENT_SIMULATORS = 2
 
 # Shared options to use when invoking `build_app` (`gym`).
@@ -251,7 +266,7 @@ platform :ios do
     )
   end
 
-  # Builds the WordPress app for a Prototype Build ("WordPress Alpha" scheme), and uploads it to App Center
+  # Builds the WordPress app for a Prototype Build ("WordPress Alpha" scheme), and uploads it to Firebase App Distribution
   #
   # @called_by CI
   #
@@ -264,14 +279,13 @@ platform :ios do
     build_and_upload_prototype_build(
       scheme: 'WordPress',
       output_app_name: 'WordPress Alpha',
-      appcenter_app_name: 'WPiOS-One-Offs',
-      app_icon: ':wordpress:', # Use Buildkite emoji
+      firebase_app_config: FIREBASE_APP_CONFIG_WORDPRESS,
       sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
       app_identifier: 'org.wordpress.alpha'
     )
   end
 
-  # Builds the Jetpack app for a Prototype Build ("Jetpack" scheme), and uploads it to App Center
+  # Builds the Jetpack app for a Prototype Build ("Jetpack" scheme), and uploads it to Firebase App Distribution
   #
   # @called_by CI
   #
@@ -284,8 +298,7 @@ platform :ios do
     build_and_upload_prototype_build(
       scheme: 'Jetpack',
       output_app_name: 'Jetpack Alpha',
-      appcenter_app_name: 'jetpack-installable-builds',
-      app_icon: ':jetpack:', # Use Buildkite emoji
+      firebase_app_config: FIREBASE_APP_CONFIG_JETPACK,
       sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK,
       app_identifier: 'com.jetpack.alpha'
     )
@@ -306,49 +319,19 @@ platform :ios do
   # Helper Functions
   #################################################
 
-
-  # Generates a build number for Prototype Builds, based on the PR number and short commit SHA1
+  # Builds a Prototype Build for WordPress or Jetpack, then uploads it to Firebase App Distribution and comment with a link to it on the PR.
   #
-  # @note This function uses Buildkite-specific ENV vars
-  #
-  def generate_prototype_build_number
-    if ENV['BUILDKITE']
-      commit = ENV.fetch('BUILDKITE_COMMIT', nil)[0, 7]
-      branch = ENV.fetch('BUILDKITE_BRANCH', nil)
-      pr_num = ENV.fetch('BUILDKITE_PULL_REQUEST', nil)
-
-      pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_num}-#{commit}"
-    else
-      repo = Git.open(PROJECT_ROOT_FOLDER)
-      commit = repo.current_branch
-      branch = repo.revparse('HEAD')[0, 7]
-
-      "#{branch}-#{commit}"
-    end
-  end
-
-  # Builds a Prototype Build for WordPress or Jetpack, then uploads it to App Center and comment with a link to it on the PR.
-  #
-  # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/ParameterLists
-  def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, app_icon:, sentry_project_slug:, app_identifier:)
-    configuration = 'Release-Alpha'
-
-    # Get the current build version, and update it if needed
-    version_config_path = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.public.xcconfig')
-    versions = Xcodeproj::Config.new(File.new(version_config_path)).to_hash
-    build_number = generate_prototype_build_number
-    UI.message("Updating build version to #{build_number}")
-    versions['VERSION_LONG'] = build_number
-    new_config = Xcodeproj::Config.new(versions)
-    new_config.save_as(Pathname.new(version_config_path))
+  def build_and_upload_prototype_build(scheme:, output_app_name:, firebase_app_config:, sentry_project_slug:, app_identifier:)
+    build_number = ENV.fetch('BUILDKITE_BUILD_NUMBER', '0')
+    pr_or_branch = pull_request_number&.then { |num| "PR ##{num}" } || ENV.fetch('BUILDKITE_BRANCH', nil)
 
     # Build
     build_app(
       scheme: scheme,
       workspace: WORKSPACE_PATH,
-      configuration: configuration,
+      configuration: PROTOTYPE_BUILD_XCODE_CONFIGURATION,
       clean: true,
+      xcargs: { VERSION_LONG: build_number, VERSION_SHORT: pr_or_branch }.compact,
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: output_app_name,
       derived_data_path: DERIVED_DATA_PATH,
@@ -357,21 +340,8 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
     )
 
-    # Upload to App Center
-    commit = ENV.fetch('BUILDKITE_COMMIT', 'Unknown')
-    pr = ENV.fetch('BUILDKITE_PULL_REQUEST', nil)
-    release_notes = <<~NOTES
-      - Branch: `#{ENV.fetch('BUILDKITE_BRANCH', 'Unknown')}`\n
-      - Commit: [#{commit[0...7]}](https://github.com/#{GITHUB_REPO}/commit/#{commit})\n
-      - Pull Request: [##{pr}](https://github.com/#{GITHUB_REPO}/pull/#{pr})\n
-    NOTES
-
-    upload_build_to_app_center(
-      name: appcenter_app_name,
-      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
-      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      release_notes: release_notes,
-      distribute_to_everyone: false
+    upload_build_to_firebase_app_distribution(
+      firebase_app_config: firebase_app_config
     )
 
     # Upload dSYMs to Sentry
@@ -388,33 +358,7 @@ platform :ios do
       build_version: build_number,
       app_identifier: app_identifier
     )
-
-    # Post PR Comment
-    comment_body = prototype_build_details_comment(
-      app_display_name: output_app_name,
-      app_icon: app_icon,
-      app_center_org_name: APPCENTER_OWNER_NAME,
-      metadata: { Configuration: configuration },
-      fold: true
-    )
-
-    comment_on_pr(
-      project: GITHUB_REPO,
-      pr_number: Integer(ENV.fetch('BUILDKITE_PULL_REQUEST', nil)),
-      reuse_identifier: "prototype-build-link-#{appcenter_app_name}",
-      body: comment_body
-    )
-
-    # Attach version information as Buildkite metadata and annotation
-    appcenter_id = lane_context.dig(SharedValues::APPCENTER_BUILD_INFORMATION, 'id')
-    metadata = versions.merge(build_type: 'Prototype', 'appcenter:id': appcenter_id)
-    buildkite_metadata(set: metadata)
-    appcenter_install_url = "https://install.appcenter.ms/orgs/#{APPCENTER_OWNER_NAME}/apps/#{appcenter_app_name}/releases/#{appcenter_id}"
-    list = metadata.map { |k, v| " - **#{k}**: #{v}" }.join("\n")
-    buildkite_annotate(context: "appcenter-info-#{output_app_name}", style: 'info', message: "#{output_app_name} [App Center Build](#{appcenter_install_url}) Info:\n\n#{list}")
   end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/ParameterLists
 
   def inject_buildkite_analytics_environment(xctestrun_path:)
     require 'plist'
@@ -467,23 +411,39 @@ platform :ios do
     )
   end
 
-  def upload_build_to_app_center(
-    name:,
-    file:,
-    dsym:,
-    release_notes:,
-    distribute_to_everyone:
-  )
-    appcenter_upload(
-      api_token: get_required_env('APPCENTER_API_TOKEN'),
-      owner_name: APPCENTER_OWNER_NAME,
-      owner_type: APPCENTER_OWNER_TYPE,
-      app_name: name,
-      file: file,
-      dsym: dsym,
+  # Uploads a build to Firebase App Distribution and post the corresponding PR comment
+  #
+  # @param [Hash<Symbol, String>] firebase_app_config A hash with the app name as the key and the Firebase app ID and testers group as the value
+  #   Typically one of FIREBASE_APP_CONFIG_WORDPRESS or FIREBASE_APP_CONFIG_JETPACK
+  #
+  def upload_build_to_firebase_app_distribution(firebase_app_config:)
+    release_notes = <<~NOTES
+      Pull Request: ##{pull_request_number || 'N/A'}
+      Branch: `#{ENV.fetch('BUILDKITE_BRANCH', 'N/A')}`
+      Commit: #{ENV.fetch('BUILDKITE_COMMIT', 'N/A')[0...7]}
+    NOTES
+
+    firebase_app_distribution(
+      app: firebase_app_config[:app_id],
+      service_credentials_json_data: get_required_env('FIREBASE_APP_DISTRIBUTION_ACCOUNT_KEY'),
       release_notes: release_notes,
-      destinations: distribute_to_everyone ? '*' : 'Collaborators',
-      notify_testers: false
+      groups: firebase_app_config[:testers_group]
+    )
+
+    return if pull_request_number.nil?
+
+    # PR Comment
+    comment_body = prototype_build_details_comment(
+      app_display_name: firebase_app_config[:app_name],
+      app_icon: firebase_app_config[:app_icon],
+      metadata: { Configuration: PROTOTYPE_BUILD_XCODE_CONFIGURATION },
+      fold: true
+    )
+    comment_on_pr(
+      project: GITHUB_REPO,
+      pr_number: pull_request_number,
+      reuse_identifier: "prototype-build-link-#{firebase_app_config[:app_id]}",
+      body: comment_body
     )
   end
 
