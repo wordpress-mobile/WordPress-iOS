@@ -36,7 +36,7 @@ extern NSString * const WPAppAnalyticsValueSiteTypeP2;
 /**
  *  @brief      Timestamp of the app's opening time.
  */
-@property (nonatomic, strong, readwrite) NSDate* _Nullable applicationOpenedTime;
+@property (nonatomic, strong, readwrite, nullable) NSDate* applicationOpenedTime;
 
 #pragma mark - Init
 

@@ -14,7 +14,7 @@ extension WPAppAnalytics {
     // MARK: WPAppAnalytics (Blog)
 
     @objc(track:withBlog:)
-    class func track(_ stat: WPAnalyticsStat, blog: Blog) {
+    class func track(_ stat: WPAnalyticsStat, blog: Blog?) {
         track(stat, properties: nil, blog: blog)
     }
 
