@@ -1,6 +1,7 @@
-#import "Media.h"
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+
+#import "Media.h"
 
 @interface Media (Extensions)
 

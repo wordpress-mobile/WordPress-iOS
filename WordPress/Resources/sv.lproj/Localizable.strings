@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-01-28 14:54:09+0000 */
+/* Translation-Revision-Date: 2025-03-22 10:01:32+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sv_SE */
@@ -2361,9 +2361,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "Slutdatum";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "Starta fullskärmsläge";
-
 /* Enter a custom value */
 "Enter a custom value" = "Mata in ett anpassat värde";
 
@@ -2516,9 +2513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Exklusive teman, tillägg och uppladdade filer";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "Avsluta fullskärmsläge";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Expanderad";
@@ -5045,14 +5039,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Svar på dina kommentarer";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Svara";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Svar skickat!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Svarstext";
@@ -5061,9 +5051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Svar till %1$@";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "Svara på inlägg";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Kräv manuellt godkännande för kommentarer som innehåller fler än detta antal länkar.";
@@ -6221,9 +6208,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "Ett oväntat fel uppstod vid hämtningen av dina notisinställningar";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "Ett oväntat fel inträffade vid redigering av kommentaren";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Ett oväntat fel inträffade vid redigering av kommentaren";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6234,9 +6218,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "Ett oväntat fel inträffade när din inbjudan skickades";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "Ett oväntat fel inträffade när ditt svar skulle skickas";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Ett oväntat fel uppstod vid uppdateringen av dina notisinställningar";
@@ -7700,6 +7681,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "Rubrik";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "Lägg till kommentar";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "Webbplatsen på denna adress är inte en WordPress-webbplats. För att vi ska kunna ansluta till den måste webbplatsen använda WordPress.";
 
@@ -7811,6 +7795,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Applikationslösenord är ett säkrare sätt att ansluta till din webbplats som drivs på egen server och möjliggör stöd för funktioner som %@.";
+
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "Hantering av tillägg";
 
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Användarhantering";
@@ -8034,6 +8021,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Svar till %1$@";
+
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "Ta bort utkast";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "Fortsätt redigera";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "Spara utkast";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "Misslyckades att skicka kommentar";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "Kommentera";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "Svara";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "Lämna en kommentar …";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "Lämna ett svar …";
+
+/* Navigation bar button title */
+"commentCreate.send" = "Skicka";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "Kasta ändringar";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "Fortsätt redigera";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "Misslyckades att spara kommentar";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "Redigera kommentar";
+
+/* Error title */
+"comments.failedToLike" = "Misslyckades att gilla kommentar";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Användarnamnet eller lösenordet som är lagrat i appen kan vara inaktuellt. Ange ditt lösenord i inställningarna och försök igen.";
@@ -8393,6 +8422,18 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "Skicka feedback";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "Inte nu";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "Är du villig att dela feedback om den experimentella redigeraren?";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "Dela feedback";
 
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "Experimentella funktioner";
@@ -9348,6 +9389,90 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Paket";
 
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "Aktivera";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "Aktiverat";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "Vänta medan tillägget aktiveras …";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "Aktiverar tillägg";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "Av %@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "Inaktivera";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "Vänta medan tillägget inaktiveras …";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "Inaktiverar tillägg";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "Ta bort";
+
+/* Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name */
+"pluginDetails.delete.confirmationMessage" = "Är du säker på att du vill ta bort %@?";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "Ta bort tillägg?";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "Installera";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "Vänta medan tillägget installeras …";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "Installera tillägg";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "Laddar tilläggsinformation…";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "Ändringslogg";
+
+/* Title of the description section in plugin details */
+"pluginDetails.section.description" = "Beskrivning";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "Detaljer";
+
+/* Title of the FAQ section in plugin details */
+"pluginDetails.section.faq" = "Vanliga frågor";
+
+/* Title of the installation section in plugin details */
+"pluginDetails.section.installation" = "Installation";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "Recensioner";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "Skärmdumpar";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "Vänta medan tillägget tas bort …";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "Avinstallerar tillägg";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "Uppdatera nu";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "Uppdatering tillgänglig";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "Version %@ är tillgänglig. Uppdatera via adminpanelen för din WordPress-webbplats.";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "Visa på WordPress.org";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Kasta ändringar";
 
@@ -9877,6 +10002,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "Avsluta prenumeration";
 
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "Kommentarer stängda";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Visar inlägg från webbplatsen";
 
@@ -10092,11 +10220,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blogg";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "Den här webbplatsens ägare tillåter endast att vi visar en kort sammanfattning av innehållet. Visa hela inlägget genom att besöka deras webbplats.";
+/* Button title */
+"reader.postDetails.viewFullPost" = "Visa helt inlägg";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "Besök %@  för det fullständiga inlägget";
+"reader.postDetails.viewModeDescription" = "Den här webbplatsens ägare tillåter endast att vi visar en kort sammanfattning av innehållet. Visa hela inlägget genom att besöka deras webbplats.";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Godis";
@@ -10331,6 +10459,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Sluta följa %@";
+
+/* Field title */
+"reader.userProfile.site" = "Webbplats";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Tillbaka";
@@ -10572,6 +10703,59 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "Uppgradera till ett paket";
 
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "Utvalt";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "Populär";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "Rekommenderat";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "Sökresultat";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "Inga tillägg hittades";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "Installerat";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "Det gick inte att ladda tillägg. Tryck här för att försöka igen";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "Laddar in tillägg …";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "Lägg till nytt tillägg";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "Inga aktiva tillägg";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "Lägg till tillägg";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "Inga inaktiva tillägg";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "Alla";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "Filtrera";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "Laddar in installerade tillägg …";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "Du har inte installerat några tillägg än";
+
+/* Installed plugins list title */
+"site.plugins.title" = "Tillägg";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domäner";
 
@@ -10673,6 +10857,25 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for site switcher screen */
 "sitePicker.title" = "Mina webbplatser";
+
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "Av %@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "Tilläggets författare angav ingen beskrivning för detta tillägg.";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "Aktivera";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "Inaktivera";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "Ta bort";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "Visa på WordPress.org";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Integritet";
@@ -11098,6 +11301,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "these items will be deleted:" = "Dessa saker kommer att raderas:";
 
 /* Tip for sidebar */
+"tips.sidebar.message" = "Svep åt höger för att komma till dina webbplatser, läsaren, aviseringar och din profil";
+
+/* Tip for sidebar */
 "tips.sidebar.title" = "Sidopanel";
 
 /* Tip for site picker */
@@ -11373,6 +11579,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "Något gick fel, försök igen senare.";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "Kan inte hitta mediafilen på enheten";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Byt till Jetpack-appen";

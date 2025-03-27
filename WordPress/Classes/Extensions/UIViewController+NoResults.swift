@@ -1,3 +1,6 @@
+import UIKit
+import WordPressUI
+
 protocol NoResultsViewHost: AnyObject { }
 
 extension NoResultsViewHost where Self: UIViewController {

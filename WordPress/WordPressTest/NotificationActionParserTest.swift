@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+@testable import FormattableContentKit
 
 final class NotificationActionParserTest: XCTestCase {
     private let payload = [

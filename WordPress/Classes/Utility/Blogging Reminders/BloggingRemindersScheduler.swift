@@ -434,3 +434,23 @@ class BloggingRemindersScheduler {
         static let notificationBody = NSLocalizedString("This is your reminder to blog today ✍️", comment: "The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text.")
     }
 }
+
+extension BloggingPromptSettingsReminderDays {
+
+    func getActiveWeekdays() -> [BloggingRemindersScheduler.Weekday] {
+        return [
+            sunday,
+            monday,
+            tuesday,
+            wednesday,
+            thursday,
+            friday,
+            saturday
+        ].enumerated().compactMap { (index: Int, isReminderActive: Bool) in
+            guard isReminderActive else {
+                return nil
+            }
+            return BloggingRemindersScheduler.Weekday(rawValue: index)
+        }
+    }
+}

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// A service to fetch and persist a list of sites that can be xpost to from a post.
 class SiteSuggestionService {

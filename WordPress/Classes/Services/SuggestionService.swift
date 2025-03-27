@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// A service to fetch and persist a list of users that can be @-mentioned in a post or comment.
 class SuggestionService {

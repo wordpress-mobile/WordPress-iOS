@@ -157,7 +157,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     }];
 
     NSMutableDictionary *userProperties = [NSMutableDictionary new];
-    userProperties[@"app_scheme"] = WPComScheme;
+    userProperties[@"app_scheme"] = WPAnalyticsTesting.appURLScheme ?: WordPressAppDelegate.appURLScheme;
     userProperties[@"platform"] = @"iOS";
     userProperties[@"dotcom_user"] = @(dotcom_user);
     userProperties[@"jetpack_user"] = @(jetpackBlogsPresent);

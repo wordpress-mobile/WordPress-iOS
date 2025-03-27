@@ -1,5 +1,6 @@
 import UIKit
 import PhotosUI
+import SVProgressHUD
 
 /// The main Site Media screen.
 final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewControllerDelegate {

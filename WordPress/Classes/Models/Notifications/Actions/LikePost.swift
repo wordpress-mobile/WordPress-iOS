@@ -1,3 +1,5 @@
+import FormattableContentKit
+
 /// Encapsulates logic to Like a Post
 final class LikePost: DefaultNotificationActionCommand {
     override var actionTitle: String {

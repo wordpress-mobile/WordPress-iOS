@@ -1,6 +1,6 @@
 import Foundation
 
-extension AbstractPost {
+public extension AbstractPost {
     /// Count posts that have never been uploaded to the server.
     ///
     /// - Parameter context: A `NSManagedObjectContext` in which to count the posts

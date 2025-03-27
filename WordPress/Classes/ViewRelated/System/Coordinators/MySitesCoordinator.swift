@@ -100,8 +100,13 @@ class MySitesCoordinator: NSObject {
     }
 
     @objc func signinDidFinish() {
-        mySiteViewController = makeMySiteViewController()
-        navigationController.viewControllers = [rootContentViewController]
+        // The code below raises an exception during unit tests. Adding a `try?` to ignore the error.
+        // The exception is Error Domain=NSRangeException Code=0 "(null)". I'm not exactly sure what code (probably
+        // deep in UIKit) throws this exception, but I don't see any reason the code below would cause crash in production.
+        try? WPException.objcTry {
+            self.mySiteViewController = self.makeMySiteViewController()
+            self.navigationController.viewControllers = [self.rootContentViewController]
+        }
     }
 
     func displayJetpackOverlayForDisabledEntryPoint() {

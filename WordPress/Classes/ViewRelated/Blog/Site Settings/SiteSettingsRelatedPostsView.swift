@@ -104,7 +104,7 @@ struct RelatedPostsSettingsView: View {
             isSaving = false
         }, failure: { _ in
             isSaving = false
-            SVProgressHUD.showDismissibleError(withStatus: Strings.saveFailed)
+            SVProgressHUD.showDismissibleError(status: Strings.saveFailed)
         })
     }
 }

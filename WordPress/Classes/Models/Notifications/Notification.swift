@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import WordPressKit
+import FormattableContentKit
 
 // MARK: - Notification Entity
 //
@@ -62,7 +63,7 @@ class Notification: NSManagedObject {
     ///
     fileprivate var cachedTimestampAsDate: Date?
 
-    let formatter = FormattableContentFormatter()
+    private let formatter = FormattableContentFormatter()
 
     /// Subject Blocks Transient Storage.
     ///

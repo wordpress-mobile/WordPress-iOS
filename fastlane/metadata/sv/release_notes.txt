@@ -1,0 +1,3 @@
+Vad är nytt den här månaden?
+- Bättre kommentarer: Uppdaterad design, djupindikatorer för trådar, förbättrat stöd för formaterat innehåll och en helskärmskomponerare med utkastssparande.
+- Buggkorrigeringar samt stabilitets- och prestandaförbättringar.

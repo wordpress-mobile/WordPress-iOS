@@ -21,10 +21,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mNJ-fg-sKO" userLabel="Highlighted Bar View">
-                        <rect key="frame" x="0.0" y="0.0" width="5" height="340"/>
+                        <rect key="frame" x="0.0" y="0.0" width="4" height="340"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="5" id="zU4-st-LVq"/>
+                            <constraint firstAttribute="width" constant="4" id="zU4-st-LVq"/>
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hcN-S7-sLG" userLabel="Container Stack View">
@@ -175,6 +175,7 @@
                 <outlet property="contentContainerView" destination="M0y-BK-TEh" id="bC5-Hn-XRQ"/>
                 <outlet property="dateLabel" destination="ghT-Xy-q8c" id="ffa-qV-3tn"/>
                 <outlet property="headerView" destination="f2E-yC-BJS" id="d5t-k4-d2B"/>
+                <outlet property="highlightBarLeadingSpacingConstraint" destination="eId-Od-5wj" id="jKm-f7-sqd"/>
                 <outlet property="highlightBarView" destination="mNJ-fg-sKO" id="fjf-gA-HoE"/>
                 <outlet property="likeButton" destination="X2J-8b-R5F" id="6w2-io-GXb"/>
                 <outlet property="nameLabel" destination="HpE-B7-6wr" id="MLa-k9-IlC"/>

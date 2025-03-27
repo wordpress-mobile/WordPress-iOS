@@ -1,5 +1,6 @@
 import UIKit
 import WordPressFlux
+import WordPressUI
 
 final class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpdating {
     var storeReceipt: Receipt?

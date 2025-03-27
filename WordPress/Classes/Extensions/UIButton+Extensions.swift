@@ -18,7 +18,7 @@ extension UIButton {
             configuration.title = title
             configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
                 var attributes = $0
-                attributes.font = AppStyleGuide.navigationBarStandardFont
+                attributes.font = AppStyleGuide.current.navigationBarStandardFont
                 return attributes
             }
             configuration.image = UIImage(systemName: "chevron.down.circle.fill")?.withBaselineOffset(fromBottom: 4)

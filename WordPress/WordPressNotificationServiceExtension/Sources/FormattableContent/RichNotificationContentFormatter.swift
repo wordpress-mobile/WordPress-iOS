@@ -1,6 +1,6 @@
 import Foundation
-
 import WordPressKit
+import FormattableContentKit
 
 // MARK: - RichNotificationContentFormatter
 
@@ -162,5 +162,11 @@ private extension RichNotificationContentFormatter {
 private extension URL {
     func isEmojiURL() -> Bool {
         return self.absoluteString.contains("i/emoji")
+    }
+}
+
+extension RemoteNotification: @retroactive Notifiable {
+    public var notificationIdentifier: String {
+        return notificationId
     }
 }

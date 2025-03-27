@@ -14,6 +14,26 @@
 	<string>wpios</string>
 	<key>WPExplatPlatform</key>
 	<string>wpios</string>
+	<key>WPItunesAppID</key>
+	<string>335703880</string>
+	<key>WPBuildConfiguration</key>
+	<string>${WP_BUILD_CONFIGURATION}</string>
+	<key>WPAppURLScheme</key>
+	<string>${WP_APP_URL_SCHEME}</string>
+  <key>WPJetpackAppURLScheme</key>
+  <string>${WP_JETPACK_APP_URL_SCHEME}</string>
+	<key>WPProductTwitterHandle</key>
+	<string>@WordPressiOS</string>
+	<key>WPProductTwitterURL</key>
+	<string>twitter.com/WordPressiOS</string>
+	<key>WPProductBlogURL</key>
+	<string>wordpress.org/news/</string>
+	<key>WPZendeskSourcePlatform</key>
+	<string>mobile_-_ios</string>
+	<key>WPMobileAnnounceAppID</key>
+	<string>2</string>
+	<key>WPAuthKeychainServiceName</key>
+	<string>public-api.wordpress.com</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>
@@ -488,7 +508,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>wordpress-oauth-v2</string>
-				<string>${WPCOM_SCHEME}</string>
+				<string>${WP_APP_URL_SCHEME}</string>
 				<string>wordpressmigration+v1</string>
 				<string>wordpressnotificationmigration</string>
 			</array>

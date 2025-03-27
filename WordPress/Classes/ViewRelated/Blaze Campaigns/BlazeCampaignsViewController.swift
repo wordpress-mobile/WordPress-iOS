@@ -1,6 +1,7 @@
 import UIKit
 import WordPressKit
 import WordPressFlux
+import WordPressUI
 import DesignSystem
 
 final class BlazeCampaignsViewController: UIViewController, NoResultsViewHost, BlazeCampaignsStreamDelegate {

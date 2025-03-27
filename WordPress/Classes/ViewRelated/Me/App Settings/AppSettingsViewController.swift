@@ -1,8 +1,10 @@
 import Foundation
+import BuildSettingsKit
 import UIKit
 import SwiftUI
 import Gridicons
 import WordPressShared
+import ShareExtensionCore
 import SVProgressHUD
 import WordPressFlux
 import DesignSystem
@@ -587,8 +589,7 @@ private extension AppSettingsViewController {
         if let presenter = RootViewCoordinator.shared.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements,
             FeatureFlag.whatsNew.enabled {
-            let whatIsNewRow = NavigationItemRow(title: AppConstants.Settings.whatIsNewTitle,
-                                                 action: presentWhatIsNew())
+            let whatIsNewRow = NavigationItemRow(title: WhatIsNewScenePresenter.title, action: presentWhatIsNew())
             rows.append(whatIsNewRow)
         }
 

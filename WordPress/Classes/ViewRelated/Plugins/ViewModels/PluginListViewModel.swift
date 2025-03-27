@@ -1,5 +1,6 @@
 import WordPressKit
 import WordPressFlux
+import WordPressUI
 
 protocol PluginPresenter: AnyObject {
     func present(plugin: Plugin, capabilities: SitePluginCapabilities)
@@ -172,6 +173,8 @@ class PluginListViewModel: Observable {
         }
     }
 
+    var getConnectionAvailability: () -> Bool = { ReachabilityUtils.connectionAvailable }
+
     var noResultsViewModel: NoResultsViewController.Model? {
         switch state {
         case .loading:
@@ -188,15 +191,16 @@ class PluginListViewModel: Observable {
             return NoResultsViewController.Model(title: NoResultsText.noResultsTitle)
 
         case .error:
-            let appDelegate = WordPressAppDelegate.shared
-            if (appDelegate?.connectionAvailable)! {
-                return NoResultsViewController.Model(title: NoResultsText.errorTitle,
-                                                     subtitle: NoResultsText.errorSubtitle,
-                                                     buttonText: NoResultsText.errorButtonText)
-            } else {
+            guard getConnectionAvailability() else {
                 return NoResultsViewController.Model(title: NoResultsText.noConnectionTitle,
                                                      subtitle: NoResultsText.noConnectionSubtitle)
             }
+
+            return NoResultsViewController.Model(
+                title: NoResultsText.errorTitle,
+                subtitle: NoResultsText.errorSubtitle,
+                buttonText: NoResultsText.errorButtonText
+            )
         }
     }
 

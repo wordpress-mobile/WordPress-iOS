@@ -1595,9 +1595,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Krypterte logger";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "Gå inn i fullskjerm";
-
 /* Enter a custom value */
 "Enter a custom value" = "Skriv inn en egendefinert verdi";
 
@@ -1702,9 +1699,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
 "Excerpts are optional hand-crafted summaries of your content." = "Utdrag er valgfrie, håndskrevne oppsummeringer av innholdet ditt.";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "Gå ut av fullskjerm";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Utvidet";
@@ -3465,14 +3459,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Svar på dine kommentarer";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Svar";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Svar sendt!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Svartekst";
@@ -4323,9 +4313,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "Det har oppstått en uventet feil under sending av invitasjonen";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "Det har oppstått en uventet feil under sending av ditt svar";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Det oppstod en uventet feil under oppdatering av dine varslingsinnstillinger";

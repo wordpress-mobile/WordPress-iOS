@@ -1,0 +1,3 @@
+Apa yang Baru di Bulan Ini?
+- Komentar Lebih Baik: Desain terbaru, indikator kedalaman utas, peningkatan dukungan konten kaya, dan komposer layar penuh dengan kemampuan penyimpanan konsep.
+- Perbaikan Bug & Peningkatan Stabilitas & Performa

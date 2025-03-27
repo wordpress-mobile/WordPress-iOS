@@ -94,7 +94,7 @@ extension HomeSiteHeaderViewController {
     }
 
     func showErrorForSiteIconUpdate() {
-        SVProgressHUD.showDismissibleError(withStatus: SiteIconAlertStrings.Errors.iconUpdateFailed)
+        SVProgressHUD.showDismissibleError(status: SiteIconAlertStrings.Errors.iconUpdateFailed)
         blogDetailHeaderView.updatingIcon = false
     }
 

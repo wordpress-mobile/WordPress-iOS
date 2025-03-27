@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import WordPressUI
+import FormattableContentKit
 
 final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableViewCellContent> {
 

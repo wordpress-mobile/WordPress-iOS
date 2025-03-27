@@ -22,7 +22,7 @@
 @dynamic userID;
 @dynamic avatarURL;
 @dynamic settings;
-@synthesize wordPressComRestApi;
+@synthesize _private_wordPressComRestApi;
 @synthesize cachedToken;
 
 #pragma mark - NSManagedObject subclass methods
@@ -34,15 +34,15 @@
         return;
     }
 
-    [self.wordPressComRestApi invalidateAndCancelTasks];
-    self.wordPressComRestApi = nil;
+    [_private_wordPressComRestApi invalidateAndCancelTasks];
+    _private_wordPressComRestApi = nil;
     self.authToken = nil;
 }
 
 - (void)didTurnIntoFault
 {
     [super didTurnIntoFault];
-    self.wordPressComRestApi = nil;
+    _private_wordPressComRestApi = nil;
     self.cachedToken = nil;
 }
 
@@ -114,7 +114,7 @@
     }
 
     // Make sure to release any RestAPI alloc'ed, since it might have an invalid token
-    self.wordPressComRestApi = nil;
+    _private_wordPressComRestApi = nil;
 }
 
 - (BOOL)hasAtomicSite {
@@ -128,10 +128,13 @@
 
 #pragma mark - Static methods
 
-+ (NSString *)tokenForUsername:(NSString *)username
++ (NSString *)tokenForUsername:(NSString *)username isJetpack:(BOOL)isJetpack
 {
+    if (isJetpack) {
+        [WPAccount migrateAuthKeyForUsername:username];
+    }
+
     NSError *error = nil;
-    [WPAccount migrateAuthKeyForUsername:username];
     NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:username
                                                      andServiceName:[WPAccount authKeychainServiceName]
                                                         accessGroup:nil
@@ -147,16 +150,9 @@
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        if ([AppConfiguration isJetpack]) {
-            SharedDataIssueSolver *sharedDataIssueSolver = [SharedDataIssueSolver instance];
-            [sharedDataIssueSolver migrateAuthKeyFor:username];
-        }
+        SharedDataIssueSolver *sharedDataIssueSolver = [SharedDataIssueSolver instance];
+        [sharedDataIssueSolver migrateAuthKeyFor:username];
     });
-}
-
-+ (NSString *)authKeychainServiceName
-{
-    return [AppConstants authKeychainServiceName];
 }
 
 @end

@@ -3,12 +3,24 @@ import Foundation
 /// The container for Xcode previews.
 extension BuildSettings {
     nonisolated(unsafe) static var preview = BuildSettings(
+        configuration: .debug,
         brand: .jetpack,
         pushNotificationAppID: "xcpreview_push_notification_id",
         appGroupName: "xcpreview_app_group_name",
         appKeychainAccessGroup: "xcpreview_app_keychain_access_group",
         eventNamePrefix: "xcpreview",
-        explatPlatform: "xcpreview"
+        explatPlatform: "xcpreview",
+        itunesAppID: "1234567890",
+        appURLScheme: "xcpreview",
+        jetpackAppURLScheme: "jetpack",
+        about: ProductAboutDetails(
+            twitterHandle: "@wordpress",
+            twitterURL: URL(string: "www.example.com")!,
+            blogURL: URL(string: "www.example.com")!
+        ),
+        zendeskSourcePlatform: "zen",
+        mobileAnnounceAppID: "1234567890",
+        authKeychainServiceName: "public-api.wordpress.com"
     )
 }
 

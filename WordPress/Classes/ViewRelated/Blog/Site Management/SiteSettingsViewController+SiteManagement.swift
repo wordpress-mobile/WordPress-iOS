@@ -52,7 +52,7 @@ public extension SiteSettingsViewController {
             success: {
                 WPAppAnalytics.track(.siteSettingsExportSiteResponseOK, with: trackedBlog)
                 let status = NSLocalizedString("Email sent!", comment: "Overlay message displayed when export content started")
-                SVProgressHUD.showDismissibleSuccess(withStatus: status)
+                SVProgressHUD.showDismissibleSuccess(status: status)
             },
             failure: { error in
                 DDLogError("Error exporting content: \(error.localizedDescription)")

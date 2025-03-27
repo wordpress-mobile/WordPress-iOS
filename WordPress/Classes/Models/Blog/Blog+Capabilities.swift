@@ -79,7 +79,7 @@ extension Blog {
         return isUserCapableOf(.EditPosts) && JetpackNotificationMigrationService.shared.shouldPresentNotifications()
     }
 
-    var userCanUploadMedia: Bool {
+    public var userCanUploadMedia: Bool {
         // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
         capabilities != nil ? isUploadingFilesAllowed() : true
     }

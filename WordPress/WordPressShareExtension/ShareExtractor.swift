@@ -1,8 +1,10 @@
 import Foundation
+import CocoaLumberjackSwift
 import MobileCoreServices
 import UniformTypeIdentifiers
 import UIKit
 import ZIPFoundation
+import ShareExtensionCore
 import Down
 import Aztec
 import TextBundle

@@ -1,0 +1,4 @@
+Apa yang Baru di Bulan Ini?
+- Komentar Lebih Baik: Desain terbaru, indikator kedalaman utas, peningkatan dukungan konten kaya, dan komposer layar penuh dengan kemampuan penyimpanan konsep.
+- Gambar Andalan: Memperbaiki masalah yang membuat Pembaca tidak menampilkan gambar andalan untuk beberapa pos.
+- Perbaikan Bug & Peningkatan Stabilitas & Performa

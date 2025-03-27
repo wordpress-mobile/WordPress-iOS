@@ -1,4 +1,4 @@
-extension Blog {
+public extension Blog {
     func getOption<T>(name: String) -> T? {
         return getOptionValue(name) as? T
     }

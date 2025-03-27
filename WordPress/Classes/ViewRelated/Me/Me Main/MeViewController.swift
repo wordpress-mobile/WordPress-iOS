@@ -1,4 +1,5 @@
 import UIKit
+import BuildSettingsKit
 import WordPressShared
 import AutomatticAbout
 
@@ -37,6 +38,7 @@ class MeViewController: UITableViewController {
         }
 
         ImmuTable.registerRows([
+            VerifyEmailRow.self,
             NavigationItemRow.self,
             IndicatorNavigationItemRow.self,
             ButtonRow.self,
@@ -47,6 +49,7 @@ class MeViewController: UITableViewController {
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.accountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.refreshAccountDetailsAndSettings), name: UIApplication.didBecomeActiveNotification, object: nil)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.accessibilityIdentifier = "Me Table"
@@ -114,8 +117,12 @@ class MeViewController: UITableViewController {
 
     fileprivate func tableViewModel(with account: WPAccount?) -> ImmuTable {
         let accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator
-
         let loggedIn = account != nil
+
+        var verificationSection: ImmuTableSection?
+        if let account, account.verificationStatus == .unverified {
+            verificationSection = ImmuTableSection(rows: [VerifyEmailRow()])
+        }
 
         let myProfile = NavigationItemRow(
             title: RowTitles.myProfile,
@@ -162,7 +169,14 @@ class MeViewController: UITableViewController {
 
         let shouldShowQRLoginRow = FeatureFlag.qrCodeLogin.enabled && !(account?.settings?.twoStepEnabled ?? false)
 
-        var sections: [ImmuTableSection] = [
+        var sections: [ImmuTableSection] = []
+
+        // Add verification section first if it exists
+        if let verificationSection {
+            sections.append(verificationSection)
+        }
+
+        sections.append(contentsOf: [
             ImmuTableSection(rows: {
                 var rows: [ImmuTableRow] = [appSettingsRow]
                 if loggedIn {
@@ -176,10 +190,9 @@ class MeViewController: UITableViewController {
                 return rows
             }()),
             ImmuTableSection(rows: [helpAndSupportIndicator]),
-        ]
+        ])
 
-#if IS_JETPACK
-        if RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
+        if BuildSettings.current.brand == .jetpack, RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
             sections.append(.init(rows: [
                 NavigationItemRow(
                     title: AllDomainsListViewController.Strings.title,
@@ -195,7 +208,6 @@ class MeViewController: UITableViewController {
             ])
             )
         }
-#endif
 
         sections.append(
             ImmuTableSection(rows: [
@@ -317,7 +329,7 @@ class MeViewController: UITableViewController {
                 return
             }
 
-            self.sharePresenter.present(for: AppConstants.shareAppName, in: self, source: .me, sourceView: selectedCell)
+            self.sharePresenter.present(for: BuildSettings.current.shareAppName, in: self, source: .me, sourceView: selectedCell)
         }
     }
 
@@ -350,9 +362,7 @@ class MeViewController: UITableViewController {
     /// Selects the All Domains row and pushes the All Domains view controller
     ///
     public func navigateToAllDomains() {
-    #if IS_JETPACK
         navigateToTarget(for: AllDomainsListViewController.Strings.title)
-    #endif
     }
 
     /// Selects the App Settings row and pushes the App Settings view controller
@@ -405,6 +415,7 @@ class MeViewController: UITableViewController {
             }
             return false
         }
+
         guard let sections = handler?.viewModel.sections,
               let section = sections.firstIndex(where: { $0.rows.contains(where: matchRow) }),
               let row = sections[section].rows.firstIndex(where: matchRow) else {
@@ -432,7 +443,7 @@ class MeViewController: UITableViewController {
         return try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
     }
 
-    fileprivate func refreshAccountDetailsAndSettings() {
+    @objc fileprivate func refreshAccountDetailsAndSettings() {
         guard let account = defaultAccount(), let api = account.wordPressComRestApi else {
             reloadViewModel()
             return
@@ -545,7 +556,7 @@ extension MeViewController: SearchableActivityConvertable {
 
 // MARK: - Constants
 
-private extension MeViewController {
+extension MeViewController {
     enum RowTitles {
         static let appSettings = NSLocalizedString("App Settings", comment: "Link to App Settings section")
         static let myProfile = NSLocalizedString("My Profile", comment: "Link to My Profile section")
@@ -554,7 +565,14 @@ private extension MeViewController {
         static let support = NSLocalizedString("Help & Support", comment: "Link to Help section")
         static let logIn = NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account")
         static let logOut = NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")
-        static let about = AppConstants.Settings.aboutTitle
+        static var about: String {
+            switch BuildSettings.current.brand {
+            case .wordpress:
+                NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
+            case .jetpack:
+                NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
+            }
+        }
     }
 
     enum HeaderTitles {
@@ -562,7 +580,15 @@ private extension MeViewController {
     }
 
     enum LogoutAlert {
-        static let defaultTitle = AppConstants.Logout.alertTitle
+        static var defaultTitle: String {
+            switch BuildSettings.current.brand {
+            case .wordpress:
+                NSLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
+            case .jetpack:
+                NSLocalizedString("Log out of Jetpack?", comment: "LogOut confirmation text, whenever there are no local changes")
+            }
+        }
+
         static let unsavedTitleSingular = NSLocalizedString("You have changes to %d post that hasn't been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
                                                             comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (SINGULAR!)")
         static let unsavedTitlePlural = NSLocalizedString("You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?",

@@ -1,13 +1,14 @@
 import Foundation
+import CocoaLumberjackSwift
 
 @objc(BlockedSite)
-final class BlockedSite: NSManagedObject {
+public final class BlockedSite: NSManagedObject {
 
-    @NSManaged var accountID: NSNumber
-    @NSManaged var blogID: NSNumber
+    @NSManaged public var accountID: NSNumber
+    @NSManaged public var blogID: NSNumber
 }
 
-extension BlockedSite {
+public extension BlockedSite {
 
     // MARK: Fetch Elements
 

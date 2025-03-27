@@ -1,4 +1,5 @@
 import WordPressData
+import WordPressShared
 import WordPressUI
 
 protocol PrepublishingSocialAccountsDelegate: NSObjectProtocol {

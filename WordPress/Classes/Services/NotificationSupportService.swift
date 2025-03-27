@@ -1,17 +1,25 @@
 import Foundation
 import BuildSettingsKit
 import SFHFKeychainUtils
+import NotificationServiceExtensionCore
 
 @objc
 open class NotificationSupportService: NSObject {
     private let appKeychainAccessGroup: String
+    private let configuration: NotificationServiceExtensionConfiguration
 
     @objc convenience override init() {
-        self.init(appKeychainAccessGroup: BuildSettings.current.appKeychainAccessGroup)
+        let settings = BuildSettings.current
+        self.init(
+            appKeychainAccessGroup: settings.appKeychainAccessGroup,
+            configuration: settings.notificationServiceExtensionConfiguration
+        )
     }
 
-    init(appKeychainAccessGroup: String) {
+    init(appKeychainAccessGroup: String,
+         configuration: NotificationServiceExtensionConfiguration) {
         self.appKeychainAccessGroup = appKeychainAccessGroup
+        self.configuration = configuration
     }
 
     /// Sets the OAuth Token that should be used by the Notification Service Extension to access WPCOM.
@@ -22,9 +30,9 @@ open class NotificationSupportService: NSObject {
     func insertServiceExtensionToken(_ oauthToken: String) {
         do {
             try SFHFKeychainUtils.storeUsername(
-                AppConfiguration.Extension.NotificationsService.keychainTokenKey,
+                configuration.keychainTokenKey,
                 andPassword: oauthToken,
-                forServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
+                forServiceName: configuration.keychainServiceName,
                 accessGroup: appKeychainAccessGroup,
                 updateExisting: true
             )
@@ -41,9 +49,9 @@ open class NotificationSupportService: NSObject {
     func insertServiceExtensionUsername(_ username: String) {
         do {
             try SFHFKeychainUtils.storeUsername(
-                AppConfiguration.Extension.NotificationsService.keychainUsernameKey,
+                configuration.keychainUsernameKey,
                 andPassword: username,
-                forServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
+                forServiceName: configuration.keychainServiceName,
                 accessGroup: appKeychainAccessGroup,
                 updateExisting: true
             )
@@ -60,9 +68,9 @@ open class NotificationSupportService: NSObject {
     func insertServiceExtensionUserID(_ userID: String) {
         do {
             try SFHFKeychainUtils.storeUsername(
-                AppConfiguration.Extension.NotificationsService.keychainUserIDKey,
+                configuration.keychainUserIDKey,
                 andPassword: userID,
-                forServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
+                forServiceName: configuration.keychainServiceName,
                 accessGroup: appKeychainAccessGroup,
                 updateExisting: true
             )
@@ -77,8 +85,8 @@ open class NotificationSupportService: NSObject {
     func deleteServiceExtensionToken() {
         do {
             try SFHFKeychainUtils.deleteItem(
-                forUsername: AppConfiguration.Extension.NotificationsService.keychainTokenKey,
-                andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
+                forUsername: configuration.keychainTokenKey,
+                andServiceName: configuration.keychainServiceName,
                 accessGroup: appKeychainAccessGroup
             )
         } catch {
@@ -92,8 +100,8 @@ open class NotificationSupportService: NSObject {
     func deleteServiceExtensionUsername() {
         do {
             try SFHFKeychainUtils.deleteItem(
-                forUsername: AppConfiguration.Extension.NotificationsService.keychainUsernameKey,
-                andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
+                forUsername: configuration.keychainUsernameKey,
+                andServiceName: configuration.keychainServiceName,
                 accessGroup: appKeychainAccessGroup
             )
         } catch {
@@ -107,8 +115,8 @@ open class NotificationSupportService: NSObject {
     func deleteServiceExtensionUserID() {
         do {
             try SFHFKeychainUtils.deleteItem(
-                forUsername: AppConfiguration.Extension.NotificationsService.keychainUserIDKey,
-                andServiceName: AppConfiguration.Extension.NotificationsService.keychainServiceName,
+                forUsername: configuration.keychainUserIDKey,
+                andServiceName: configuration.keychainServiceName,
                 accessGroup: appKeychainAccessGroup
             )
         } catch {

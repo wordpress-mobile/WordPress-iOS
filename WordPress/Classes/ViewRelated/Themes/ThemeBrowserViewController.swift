@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressUI
 
 /**
  *  @brief      Support for filtering themes by purchasability

@@ -26,3 +26,11 @@ class WP3DTouchShortcutCreatorTests: XCTestCase {
         XCTAssertEqual(UIApplication.shared.shortcutItems!.count, is3DTouchAvailable() ? 1 : 0)
     }
 }
+
+extension UIApplication {
+    @objc var mainWindow: UIWindow? {
+        connectedScenes
+            .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+            .first
+    }
+}

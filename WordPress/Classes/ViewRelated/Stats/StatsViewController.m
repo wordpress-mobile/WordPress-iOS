@@ -5,6 +5,7 @@
 #import "BlogService.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
+@import WordPressShared;
 
 @import WordPressShared;
 @import Reachability;
@@ -64,8 +65,7 @@
         self.title = self.blog.settings.name;
     }
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate shared];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:appDelegate.internetReachability];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:ReachabilityUtils.internetReachability];
 
     [self initStats];
 }

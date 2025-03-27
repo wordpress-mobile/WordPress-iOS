@@ -20,7 +20,6 @@ NSString * const WPAppAnalyticsKeyPostAuthorID                      = @"post_aut
 NSString * const WPAppAnalyticsKeyFeedID                            = @"feed_id";
 NSString * const WPAppAnalyticsKeyFeedItemID                        = @"feed_item_id";
 NSString * const WPAppAnalyticsKeyIsJetpack                         = @"is_jetpack";
-NSString * const WPAppAnalyticsKeySessionCount                      = @"session_count";
 NSString * const WPAppAnalyticsKeySubscriptionCount                 = @"subscription_count";
 NSString * const WPAppAnalyticsKeyEditorSource                      = @"editor_source";
 NSString * const WPAppAnalyticsKeyCommentID                         = @"comment_id";
@@ -37,26 +36,8 @@ NSString * const WPAppAnalyticsKeySiteType                          = @"site_typ
 NSString * const WPAppAnalyticsKeyHasGutenbergBlocks                = @"has_gutenberg_blocks";
 NSString * const WPAppAnalyticsKeyHasStoriesBlocks                  = @"has_wp_stories_blocks";
 
-static NSString * const WPAppAnalyticsKeyLastVisibleScreen          = @"last_visible_screen";
-static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_app";
-
 NSString * const WPAppAnalyticsValueSiteTypeBlog                    = @"blog";
 NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
-
-
-@interface WPAppAnalytics ()
-
-/**
- *  @brief      Timestamp of the app's opening time.
- */
-@property (nonatomic, strong, readwrite) NSDate* applicationOpenedTime;
-
-/**
- *  @brief      If set, this block will be called whenever this object needs to know what the last
- *              visible screen was, for tracking purposes.
- */
-@property (nonatomic, copy, readwrite) WPAppAnalyticsLastVisibleScreenCallback lastVisibleScreenCallback;
-@end
 
 @implementation WPAppAnalytics
 
@@ -64,19 +45,9 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
 
 - (instancetype)init
 {
-    [self doesNotRecognizeSelector:_cmd];
-    return nil;
-}
-
-- (instancetype)initWithLastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback;
-{
-    NSParameterAssert(lastVisibleScreenCallback);
-    
     self = [super init];
     
     if (self) {
-        _lastVisibleScreenCallback = lastVisibleScreenCallback;
-
         [self initializeAppTracking];
         [self startObservingNotifications];
     }
@@ -125,34 +96,12 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
 - (void)startObservingNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationDidBecomeActive:)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationDidEnterBackground:)
-                                                 name:UIApplicationDidEnterBackgroundNotification
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(accountSettingsDidChange:)
                                                  name:NSNotification.AccountSettingsChanged
                                                object:nil];
 }
 
 #pragma mark - Notifications
-
-- (void)applicationDidBecomeActive:(NSNotification*)notification
-{
-    [self incrementSessionCount];
-    [self trackApplicationOpened];
-    [WidgetAnalytics trackLoadedWidgetsOnApplicationOpened];
-}
-
-- (void)applicationDidEnterBackground:(NSNotification*)notification
-{
-    [self trackApplicationClosed];
-}
 
 - (void)accountSettingsDidChange:(NSNotification*)notification
 {
@@ -165,70 +114,7 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
     [self setUserHasOptedOut:defaultAccount.settings.tracksOptOut];
 }
 
-#pragma mark - Session
-
-+ (NSInteger)sessionCount
-{
-    return [[NSUserDefaults standardUserDefaults] integerForKey:WPAppAnalyticsKeySessionCount];
-}
-
-- (NSInteger)incrementSessionCount
-{
-    NSInteger sessionCount = [[self class] sessionCount];
-    sessionCount++;
-
-    if (sessionCount == 1) {
-        [WPAnalytics track:WPAnalyticsStatAppInstalled];
-    }
-
-    [[NSUserDefaults standardUserDefaults] setInteger:sessionCount forKey:WPAppAnalyticsKeySessionCount];
-
-    return sessionCount;
-}
-
 #pragma mark - App Tracking
-
-/**
- *  @brief      Tracks that the application has been closed.
- */
-- (void)trackApplicationClosed
-{
-    NSMutableDictionary *analyticsProperties = [NSMutableDictionary new];
-    
-    analyticsProperties[WPAppAnalyticsKeyLastVisibleScreen] = self.lastVisibleScreenCallback();
-    
-    if (self.applicationOpenedTime != nil) {
-        NSDate *applicationClosedTime = [NSDate date];
-        NSTimeInterval timeInApp = round([applicationClosedTime timeIntervalSinceDate:self.applicationOpenedTime]);
-        analyticsProperties[WPAppAnalyticsKeyTimeInApp] = @(timeInApp);
-        self.applicationOpenedTime = nil;
-    }
-
-    [WPAnalytics track:WPAnalyticsStatApplicationClosed withProperties:analyticsProperties];
-    [WPAnalytics endSession];
-}
-
-/**
- *  @brief      Tracks that the application has been opened.
- */
-- (void)trackApplicationOpened
-{
-    // UIApplicationDidBecomeActiveNotification will be dispatched if the user
-    // returns from a system overlay (like notification center) or when multi
-    // tasking on the iPad and adjusting the split screen divider. This happens
-    // without previously dispatching UIApplicationDidEnterBackgroundNotification.
-    // We don't want to track application opened in thise cases so check for a
-    // nil applicationOpenedTime first.
-    if (self.applicationOpenedTime != nil) {
-        return;
-    }
-    self.applicationOpenedTime = [NSDate date];
-    
-    // This stat is part of a funnel that provides critical information.  Before
-    // making ANY modification to this stat please refer to: p4qSXL-35X-p2
-    [WPAnalytics track:WPAnalyticsStatApplicationOpened];
-}
-
 
 /**
  *  @brief      Tracks stats with the blog details when available

@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import PDFKit
 import Aztec
+import AztecExtensions
 import Gridicons
 import WordPressShared
 import MobileCoreServices

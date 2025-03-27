@@ -2,6 +2,7 @@ import CoreData
 import Foundation
 import XCTest
 @testable import WordPress
+@testable import FormattableContentKit
 
 class NotificationUtility {
     private let coreDataStack: CoreDataStack

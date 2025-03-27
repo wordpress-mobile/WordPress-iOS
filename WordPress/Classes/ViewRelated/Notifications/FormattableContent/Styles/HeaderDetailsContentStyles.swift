@@ -1,3 +1,5 @@
+import FormattableContentKit
+
 class HeaderDetailsContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedString.Key: Any] {
         return WPStyleGuide.Notifications.headerDetailsRegularStyle

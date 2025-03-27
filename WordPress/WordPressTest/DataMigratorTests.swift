@@ -25,6 +25,7 @@ class DataMigratorTests: XCTestCase {
             keychainUtils: keychainUtils,
             localDefaults: localUserDefaults,
             sharedDefaults: sharedUserDefaults,
+            crashLogger: nil,
             appGroupName: appGroupName
         )
     }
@@ -74,6 +75,7 @@ class DataMigratorTests: XCTestCase {
             backupLocation: URL(string: "/dev/null"),
             keychainUtils: keychainUtils,
             sharedDefaults: nil,
+            crashLogger: nil,
             appGroupName: appGroupName
         )
 
@@ -152,6 +154,7 @@ class DataMigratorTests: XCTestCase {
             keychainUtils: keychainUtils,
             localDefaults: localUserDefaults,
             sharedDefaults: sharedUserDefaults,
+            crashLogger: nil,
             appGroupName: appGroupName
         )
 
@@ -201,6 +204,7 @@ class DataMigratorTests: XCTestCase {
             keychainUtils: keychainUtils,
             localDefaults: localUserDefaults,
             sharedDefaults: sharedUserDefaults,
+            crashLogger: nil,
             appGroupName: appGroupName
         )
 

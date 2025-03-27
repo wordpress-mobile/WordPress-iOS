@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+@testable import FormattableContentKit
 
 final class ApproveCommentActionTests: CoreDataTestCase {
     private class TestableApproveComment: ApproveComment {

@@ -891,14 +891,10 @@
 /* User action to remove video. */
 "Remove video" = "Fjern video";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Svar";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Svar sendt!";
 
 /* Title displayed for restore action.
    Title for button allowing user to restore their Jetpack site

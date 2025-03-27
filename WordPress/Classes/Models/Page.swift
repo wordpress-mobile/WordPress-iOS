@@ -2,12 +2,12 @@ import Foundation
 import CoreData
 
 @objc(Page)
-class Page: AbstractPost {
+public class Page: AbstractPost {
     /// Returns if the Page has a visible parent Page
-    @objc var hasVisibleParent: Bool = true
+    @objc public var hasVisibleParent: Bool = true
 
     /// The hierarchy index within a Pages list
-    @objc var hierarchyIndex: Int = 0
+    @objc public var hierarchyIndex: Int = 0
 
     /// Returns if the Page is a top level
     @objc var isTopLevelPage: Bool {
@@ -43,7 +43,7 @@ class Page: AbstractPost {
 
     // MARK: - Homepage Settings
 
-    @objc var isSiteHomepage: Bool {
+    @objc public var isSiteHomepage: Bool {
         guard let postID,
             let homepageID = blog.homepagePageID,
             let homepageType = blog.homepageType,
@@ -54,7 +54,7 @@ class Page: AbstractPost {
         return homepageID == postID.intValue
     }
 
-    @objc var isSitePostsPage: Bool {
+    @objc public var isSitePostsPage: Bool {
         guard let postID,
             let postsPageID = blog.homepagePostsPageID,
             let homepageType = blog.homepageType,

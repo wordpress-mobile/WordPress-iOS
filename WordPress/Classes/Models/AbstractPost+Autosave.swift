@@ -1,6 +1,6 @@
 import Foundation
 
-extension AbstractPost {
+public extension AbstractPost {
     /// An autosave revision may include post title, content and/or excerpt.
     var hasAutosaveRevision: Bool {
         guard let autosaveRevisionIdentifier = autosaveIdentifier?.intValue else {

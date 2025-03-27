@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-enum BlockEditorSettingElementTypes: String {
+public enum BlockEditorSettingElementTypes: String {
     case color
     case gradient
     case experimentalFeatures
@@ -44,7 +44,7 @@ extension BlockEditorSettingElement {
 }
 
 extension BlockEditorSettingElement: Identifiable {
-    var rawRepresentation: [String: String]? {
+    public var rawRepresentation: [String: String]? {
         guard let type = BlockEditorSettingElementTypes(rawValue: self.type) else { return nil }
         return [
             #keyPath(BlockEditorSettingElement.slug): self.slug,
@@ -53,7 +53,7 @@ extension BlockEditorSettingElement: Identifiable {
         ]
     }
 
-    convenience init(fromRawRepresentation rawObject: [String: String], type: BlockEditorSettingElementTypes, order: Int, context: NSManagedObjectContext) {
+    public convenience init(fromRawRepresentation rawObject: [String: String], type: BlockEditorSettingElementTypes, order: Int, context: NSManagedObjectContext) {
         self.init(name: rawObject[ #keyPath(BlockEditorSettingElement.name)],
                   value: rawObject[type.valueKey],
                   slug: rawObject[#keyPath(BlockEditorSettingElement.slug)],
@@ -62,7 +62,7 @@ extension BlockEditorSettingElement: Identifiable {
                   context: context)
     }
 
-    convenience init(name: String?, value: String?, slug: String?, type: BlockEditorSettingElementTypes, order: Int, context: NSManagedObjectContext) {
+    public convenience init(name: String?, value: String?, slug: String?, type: BlockEditorSettingElementTypes, order: Int, context: NSManagedObjectContext) {
         self.init(context: context)
 
         self.type = type.rawValue

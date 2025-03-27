@@ -1,0 +1,3 @@
+Novità di questo mese
+- Commenti migliorati: design aggiornato, indicatori di profondità per i thread, supporto per i contenuti ricchi migliorato e un compositore a schermo intero con salvataggio delle bozze.
+- Correzioni dei bug, miglioramento della stabilità e delle prestazioni.

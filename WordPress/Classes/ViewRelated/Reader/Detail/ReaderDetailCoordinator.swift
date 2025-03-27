@@ -1,5 +1,6 @@
 import Foundation
 import WordPressReader
+import WordPressShared
 import WordPressUI
 import Combine
 

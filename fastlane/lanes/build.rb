@@ -277,7 +277,7 @@ platform :ios do
     update_certs_and_profiles_wordpress_enterprise
 
     build_and_upload_prototype_build(
-      scheme: 'WordPress Alpha',
+      scheme: 'WordPress',
       output_app_name: 'WordPress Alpha',
       firebase_app_config: FIREBASE_APP_CONFIG_WORDPRESS,
       sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,

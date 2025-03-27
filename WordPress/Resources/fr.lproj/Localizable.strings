@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-01-28 09:54:08+0000 */
+/* Translation-Revision-Date: 2025-03-11 14:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: fr */
@@ -2355,9 +2355,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "Date de fin";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "Entrer en plein écran";
-
 /* Enter a custom value */
 "Enter a custom value" = "Saisissez une valeur personnalisée";
 
@@ -2510,9 +2507,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Exclut les thèmes, les extensions et les chargements";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "Sortir du plein écran";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Développé";
@@ -3817,7 +3811,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
    Trashes the comment */
-"Move to Trash" = "Mettre dans la Corbeille";
+"Move to Trash" = "Déplacer dans la corbeille";
 
 /* No comment provided by engineer. */
 "Move to bottom" = "Déplacer tout en bas";
@@ -5036,14 +5030,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Réponses à vos commentaires";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Répondre";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Réponse envoyée !";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Texte de réponse";
@@ -5052,9 +5042,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Répondre à %1$@";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "Répondre à l’article";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Exigez l'approbation manuelle pour les commentaires comprenant un nombre de liens plus élevé que celui-ci.";
@@ -6212,9 +6199,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "Un problème est survenu pendant le chargement de vos paramètres de notification";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "Une erreur inattendue est survenue lors de la modification du commentaire";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Une erreur inattendue est survenue lors de la modification de votre commentaire";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6225,9 +6209,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "Une erreur inattendue est survenue lors de l'envoi de votre invitation";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "Une erreur inattendue est survenue lors de l’envoi de votre réponse :";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Une erreur inattendue est survenue lors de la mise à jour de vos paramètres de notification";
@@ -7685,6 +7666,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "Titre";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "Ajouter un commentaire";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "Le site à cette adresse n’est pas un site WordPress. Pour que nous puissions nous y connecter, le site doit utiliser WordPress.";
 
@@ -7784,6 +7768,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Les mots de passe d’application sont un moyen plus sûr de vous connecter à votre site auto-hébergé et activer des fonctionnalités telles que %@.";
+
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "Gestion des extensions";
 
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Gestion des utilisateurs";
@@ -7995,6 +7982,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Répondre à %1$@";
+
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "Supprimer le brouillon";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "Poursuivre l’édition";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "Enregistrer le brouillon";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "Échec de l’envoi du commentaire";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "Commenter";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "Répondre";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "Laissez un commentaire…";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "Laissez une réponse…";
+
+/* Navigation bar button title */
+"commentCreate.send" = "Envoyer";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "Abandonner les modifications";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "Poursuivre l’édition";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "Échec de l’enregistrement du commentaire";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "Modifier le commentaire";
+
+/* Error title */
+"comments.failedToLike" = "Échec de l’ajout d’une mention J’aime au commentaire";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "L‘identifiant ou le mot de passe enregistré dans l‘application est peut-être obsolète. Veuillez saisir à nouveau votre mot de passe dans les réglages et ressayer.";
@@ -8342,6 +8371,18 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "exemple.com";
+
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "Envoyer des commentaires";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "Pas maintenant";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "Souhaitez-vous partager des commentaires sur l’éditeur expérimental ?";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "Partager votre avis";
 
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "Fonctionnalités expérimentales";
@@ -9288,6 +9329,81 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Plans";
 
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "Activer";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "Activée";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "Veuillez patienter pendant l’activation de l’extension…";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "Activation de l’extension";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "Par %@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "Désactiver";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "Veuillez patienter pendant la désactivation de l’extension…";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "Désactivation de l’extension";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "Supprimer";
+
+/* Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name */
+"pluginDetails.delete.confirmationMessage" = "Voulez-vous vraiment supprimer %@ ?";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "Supprimer l’extension ?";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "Installer";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "Veuillez patienter pendant l’installation de l’extension…";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "Installer l’extension";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "Chargement des informations de l’extension…";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "Journal des modifications";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "Détails";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "Avis";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "Captures d’écran";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "Veuillez patienter pendant la suppression de l’extension…";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "Désinstallation de l’extension";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "Mettre à jour maintenant";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "Mise à jour disponible";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "La version %@ est disponible. Veuillez la mettre à jour à partir du tableau de bord de votre site WordPress.";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "Voir sur WordPress.org";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Abandonner les modifications";
 
@@ -9436,7 +9552,7 @@ Example: Reply to Pamela Nguyen */
 "postList.swipeActionView" = "Voir";
 
 /* Trash option in the trash post or page confirmation alert. */
-"postList.trash.actionTitle" = "Envoyer dans la corbeille";
+"postList.trash.actionTitle" = "Déplacer dans la corbeille";
 
 /* Message of the trash post or page confirmation alert. */
 "postList.trash.alertMessage" = "Voulez-vous vraiment envoyer « %@ » dans la corbeille ? Les modifications qui n’ont pas été envoyées précédemment sur le serveur seront perdues.";
@@ -9592,7 +9708,7 @@ Example: Reply to Pamela Nguyen */
 "posts.stats.actionTitle" = "Statistiques";
 
 /* Label for a option that moves a post to the trash folder */
-"posts.trash.actionTitle" = "Envoyer dans la corbeille";
+"posts.trash.actionTitle" = "Déplacer dans la corbeille";
 
 /* Label for the view post button. Tapping displays the post as it appears on the web. */
 "posts.view.actionTitle" = "Voir";
@@ -9786,6 +9902,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "Se désabonner";
+
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "Commentaires fermés";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Affiche les articles du site";
@@ -9996,11 +10115,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Voir dans le navigateur";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "Le propriétaire de ce site nous autorise uniquement à présenter un bref aperçu de son contenu. Pour consulter l’article complet, vous devez visiter son site.";
+/* Button title */
+"reader.postDetails.viewFullPost" = "Voir l’article entier";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "Visiter %@ pour accéder à l’article complet";
+"reader.postDetails.viewModeDescription" = "Le propriétaire de ce site nous autorise uniquement à présenter un bref aperçu de son contenu. Pour consulter l’article complet, vous devez visiter son site.";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";
@@ -10461,6 +10580,59 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "Mettre à niveau vers un plan";
 
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "À la une";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "Populaires";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "Recommandées";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "Résultats de recherche";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "Aucune extension trouvée";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "Installée";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "Échec du chargement des extensions. Appuyer ici pour réessayer";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "Chargement des extensions…";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "Ajouter une nouvelle extension";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "Aucune extension active";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "Ajouter une extension";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "Aucune extension inactive";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "Tout";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "Filtre";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "Chargement des extensions installées…";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "Vous n’avez pas encore installé d’extensions";
+
+/* Installed plugins list title */
+"site.plugins.title" = "Extensions";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domaines";
 
@@ -10541,6 +10713,25 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for site switcher screen */
 "sitePicker.title" = "Mes sites";
+
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "Par %@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "L’auteur de l’extension n’a pas fourni de description pour cette extension.";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "Activer";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "Désactiver";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "Supprimer";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "Voir sur WordPress.org";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Confidentialité";
@@ -11238,6 +11429,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "Un problème est survenu, veuillez réessayer ultérieurement.";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "Impossible de localiser le fichier média sur l’appareil";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Basculer vers l’application Jetpack";

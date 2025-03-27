@@ -1,7 +1,3 @@
-Para la versión de este mes, hemos:
-- ¡Añadido soporte para Image Playgrounds! Úsalo para añadir imágenes a tus entradas, generar una imagen destacada o un icono del sitio.
-- Añadido deshacer y rehacer al editor experimental (¿has probado ya el editor? si no... ¡deberías!)
-- Se ha mejorado el Editor Rápido de Gravatar.
-- Añadido un acceso directo para cambiar la imagen destacada de una entrada.
-- Mejorado el modo en que se muestran las imágenes de tu biblioteca multimedia: ahora debería ser un poco más agradable.
-- Se han corregido los errores habituales y se ha mejorado el rendimiento (sobre todo en el editor).
+¿Qué novedades hay este mes?
+- Mejores comentarios. Diseño actualizado, indicadores de profundidad en hilos, compatibilidad mejorada con contenido enriquecido, y un editor a pantalla completa con guardado de borradores.
+- Correcciones de fallos y mejoras de estabilidad y rendimiento.

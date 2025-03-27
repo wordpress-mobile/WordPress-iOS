@@ -64,7 +64,7 @@
     NSManagedObjectContext *context = self.manager.mainContext;
     Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    blog.account.wordPressComRestApi = api;
+    blog.account._private_wordPressComRestApi = api;
     ThemeService *service = nil;
     NSNumber *blogId = @1;
     NSString *url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/themes/mine", blogId];
@@ -102,7 +102,7 @@
     NSString *url = [NSString stringWithFormat:@"rest/v1.2/sites/%@/themes", blogId];
 
     blog.dotComID = blogId;
-    blog.account.wordPressComRestApi = api;
+    blog.account._private_wordPressComRestApi = api;
 
     OCMStub([api get:[OCMArg isEqual:url]
           parameters:[OCMArg isNotNil]
@@ -142,7 +142,7 @@
     theme.themeId = @"SomeThemeId";
 
     blog.dotComID = blogId;
-    blog.account.wordPressComRestApi = api;
+    blog.account._private_wordPressComRestApi = api;
 
     OCMStub([api post:[OCMArg isEqual:url]
            parameters:[OCMArg isNotNil]
@@ -165,7 +165,7 @@
     ThemeService *service = nil;
 
     blog.dotComID = blogId;
-    blog.account.wordPressComRestApi = api;
+    blog.account._private_wordPressComRestApi = api;
 
     XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertThrows([service activateTheme:nil

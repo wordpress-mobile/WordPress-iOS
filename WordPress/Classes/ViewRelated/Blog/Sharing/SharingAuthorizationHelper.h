@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+@import UIKit;
 
 @protocol SharingAuthorizationHelperDelegate;
 @class PublicizeService;

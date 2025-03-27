@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressUI
 import UserNotifications
 
 /// The purpose of this class is to render a collection of NotificationSettings for a given Stream,

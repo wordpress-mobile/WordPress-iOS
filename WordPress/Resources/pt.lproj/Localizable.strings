@@ -1893,14 +1893,10 @@
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Respostas aos seus comentários";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Responder";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Resposta enviada!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Texto de resposta";

@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+@testable import FormattableContentKit
 
 final class NotificationContentRangeTests: CoreDataTestCase {
     private var subject: NotificationContentRange?
