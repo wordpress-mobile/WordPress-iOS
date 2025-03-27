@@ -1,3 +1,4 @@
+import UIKit
 
 protocol AnnouncementsDataSource: UITableViewDataSource {
     func registerCells(for tableView: UITableView)

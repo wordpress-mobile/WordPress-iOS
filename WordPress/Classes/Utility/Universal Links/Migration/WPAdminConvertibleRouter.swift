@@ -1,3 +1,5 @@
+import UIKit
+
 /// A router that handles routes that can be converted to /wp-admin links.
 ///
 /// Note that this is a workaround for an infinite redirect issue between WordPress and Jetpack

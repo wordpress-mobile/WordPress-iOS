@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// Routes to handle WordPress.com app banner "Open in app" links.
 /// Banner routes always begin https://apps.wordpress.com/get and can contain

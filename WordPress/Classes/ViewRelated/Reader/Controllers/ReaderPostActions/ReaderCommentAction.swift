@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// Encapsulates a command to navigate to a post's comments
 final class ReaderCommentAction {

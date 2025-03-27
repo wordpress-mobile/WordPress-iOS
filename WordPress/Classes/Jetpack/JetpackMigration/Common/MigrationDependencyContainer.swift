@@ -1,3 +1,5 @@
+import UIKit
+
 struct MigrationDependencyContainer {
 
     let migrationCoordinator = MigrationFlowCoordinator()

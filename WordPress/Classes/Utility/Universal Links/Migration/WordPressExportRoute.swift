@@ -1,3 +1,5 @@
+import UIKit
+
 /// Triggers the data export process on WordPress.
 ///
 /// Note: this is only meant to be used in WordPress!

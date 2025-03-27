@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 class SplashPrologueViewController: UIViewController {
     override func viewDidLoad() {

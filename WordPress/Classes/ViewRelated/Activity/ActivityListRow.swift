@@ -1,3 +1,4 @@
+import UIKit
 
 struct ActivityListRow: ImmuTableRow {
     typealias CellType = ActivityTableViewCell

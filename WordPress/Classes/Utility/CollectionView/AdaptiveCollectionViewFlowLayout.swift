@@ -1,3 +1,5 @@
+import UIKit
+
 /// A flow layout that properly invalidates the layout when the collection view's bounds changed,
 /// (e.g., orientation changes).
 ///

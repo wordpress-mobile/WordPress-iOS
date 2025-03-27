@@ -1,3 +1,5 @@
+import Foundation
+
 public enum PostVisibility: Identifiable, CaseIterable {
     case `public`
     case `private`

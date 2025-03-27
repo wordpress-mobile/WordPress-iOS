@@ -1,3 +1,5 @@
+import UIKit
+
 /// Coordinates the UI flow for creating a new site
 final class SiteCreationWizard: Wizard {
     private lazy var navigation: WizardNavigation? = {

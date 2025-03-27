@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import WordPressShared
 
 /// Encapsulates logic that configures `ListTableViewCell` with `Notification` models.

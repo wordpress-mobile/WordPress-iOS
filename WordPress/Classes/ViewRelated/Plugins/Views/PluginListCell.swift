@@ -1,3 +1,5 @@
+import UIKit
+
 class PluginListCell: UITableViewCell {
 
     @IBOutlet var accessoryViewContainer: UIView!

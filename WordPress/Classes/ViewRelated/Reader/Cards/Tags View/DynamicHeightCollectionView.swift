@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 class DynamicHeightCollectionView: UICollectionView {
     override func layoutSubviews() {

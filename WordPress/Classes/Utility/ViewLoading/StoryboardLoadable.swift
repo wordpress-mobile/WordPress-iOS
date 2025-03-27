@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// Protocol to conform for views that can be loaded from storyboards.
 public protocol StoryboardLoadable {

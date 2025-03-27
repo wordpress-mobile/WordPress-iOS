@@ -1,3 +1,4 @@
+import UIKit
 
 /// Handles user alerts regarding video limits allowances
 protocol VideoLimitsAlertPresenter {

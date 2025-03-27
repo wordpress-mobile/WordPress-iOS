@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// A universal link route, used to encapsulate a URL path and action
 /// A path can contain placeholder components, which can later be extracted

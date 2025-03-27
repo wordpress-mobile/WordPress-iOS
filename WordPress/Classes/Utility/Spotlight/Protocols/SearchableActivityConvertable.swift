@@ -1,3 +1,4 @@
+import UIKit
 import CoreSpotlight
 import Intents
 import MobileCoreServices

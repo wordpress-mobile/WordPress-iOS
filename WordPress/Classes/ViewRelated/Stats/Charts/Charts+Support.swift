@@ -1,4 +1,4 @@
-
+import UIKit
 import DGCharts
 
 // MARK: - Charts extensions

@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 struct ReferrerDetailsHeaderRow: ImmuTableRow {
     private typealias CellType = ReferrerDetailsHeaderCell

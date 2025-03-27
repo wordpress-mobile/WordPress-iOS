@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import MobileCoreServices
 import UniformTypeIdentifiers
 

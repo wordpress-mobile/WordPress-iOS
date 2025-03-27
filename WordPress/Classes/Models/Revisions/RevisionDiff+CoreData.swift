@@ -1,3 +1,5 @@
+import Foundation
+
 // MARK: Generated accessors for contentDiffs
 //
 extension RevisionDiff {

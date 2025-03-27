@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 @objc protocol SiteStatsInsightsDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)

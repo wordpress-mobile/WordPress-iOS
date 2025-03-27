@@ -1,3 +1,4 @@
+import Foundation
 import FormattableContentKit
 
 /// Encapsulates logic to Edit a comment

@@ -1,3 +1,4 @@
+import UIKit
 
 /// Site Creation: Domains
 final class WebAddressStep: WizardStep {
