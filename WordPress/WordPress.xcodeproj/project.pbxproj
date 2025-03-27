@@ -2860,6 +2860,11 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
+		0CED35262D959427003015CF /* Misc */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Misc;
+			sourceTree = "<group>";
+		};
 		24CE57C42CD3375200C7B37D /* Classes */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Classes;
@@ -3550,6 +3555,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0CED35262D959427003015CF /* Misc */,
 				0C77A5AE2CDE5668005BC0DA /* Images */,
 				801D94F4291AB36A0051993E /* Lottie Animations */,
 				433840C622C2BA5B00CB13F8 /* AppImages.xcassets */,
@@ -6283,6 +6289,7 @@
 				4AD953C62C21451700D0EEFA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				0CED35262D959427003015CF /* Misc */,
 				24CE57C42CD3375200C7B37D /* Classes */,
 			);
 			name = WordPress;
@@ -6552,6 +6559,7 @@
 				4AD9555D2C21716A00D0EEFA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				0CED35262D959427003015CF /* Misc */,
 				24CE57C42CD3375200C7B37D /* Classes */,
 			);
 			name = Jetpack;
