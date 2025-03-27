@@ -8825,6 +8825,12 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = "$(VERSION_SHORT)";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wno-format-security",
+					"-DDEBUG",
+					"-Wno-format",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -8878,6 +8884,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = "$(VERSION_SHORT)";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wno-format-security",
+					"-Wno-format",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -10086,6 +10097,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = "$(VERSION_SHORT)";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wno-format-security",
+					"-Wno-format",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -10691,6 +10707,12 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = "${VERSION_SHORT}";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wno-format-security",
+					"-DDEBUG",
+					"-Wno-format",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -10746,6 +10768,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = "${VERSION_SHORT}";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wno-format-security",
+					"-Wno-format",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -10796,6 +10823,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = "${VERSION_SHORT}";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wno-format-security",
+					"-Wno-format",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
