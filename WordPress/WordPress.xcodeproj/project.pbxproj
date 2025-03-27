@@ -7393,6 +7393,7 @@
 		};
 		0CED01782D95B897003015CF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3F9DD3F62CC214BF00DF1760 /* Common.debug.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -7455,6 +7456,7 @@
 		};
 		0CED01792D95B897003015CF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0C96AC202D92FC17000779B8 /* Common.release.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -7512,6 +7514,7 @@
 		};
 		0CED017A2D95B897003015CF /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3F9DD3F72CC2188400DF1760 /* Common.alpha.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ANALYZER_NONNULL = YES;
