@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-01-28 22:57:15+0000 */
+/* Translation-Revision-Date: 2025-03-22 22:41:00+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -2361,9 +2361,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "Enddatum";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "Vollbild starten";
-
 /* Enter a custom value */
 "Enter a custom value" = "Gib einen individuellen Wert ein";
 
@@ -2516,9 +2513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Mit Ausnahme von Themes, Plugins und Uploads";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "Vollbild verlassen";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Erweitert";
@@ -3166,7 +3160,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Invalid URL, please check if you wrote a valid site address." = "Ungültige URL. Bitte prüfe, ob du eine gültige Website-Adresse geschrieben hast.";
 
 /* No comment provided by engineer. */
-"Invalid URL." = "Ungültige URL.";
+"Invalid URL." = "Die URL ist ungültig.";
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "Ungültige URL. Audiodatei nicht gefunden.";
@@ -5045,14 +5039,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Antworten zu deinen Kommentaren";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Antwort";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Antwort gesendet!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Antworttext";
@@ -5061,9 +5051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "%1$@ antworten";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "Auf Beitrag antworten";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Kommentare mit mehr als dieser Anzahl von Links müssen manuell genehmigt werden.";
@@ -5305,7 +5292,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Search settings" = "Sucheinstellungen";
 
 /* Menus search bar placeholder text. */
-"Search..." = "Suchen ...";
+"Search..." = "Suchen …";
 
 /* Accessibility hint for the domains search field in Site Creation. */
 "Searches for available domains to use for your site." = "Sucht nach verfügbaren Domains, um sie für deine Website zu verwenden.";
@@ -6221,9 +6208,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "Problem beim Laden deiner Benachrichtigungseinstellungen";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "Beim Bearbeiten des Kommentars ist ein unerwarteter Fehler aufgetreten";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Beim Bearbeiten deines Kommentars ist ein unerwarteter Fehler aufgetreten";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6234,9 +6218,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "Es gab einen unerwarteten Fehler beim Senden deiner Einladung.";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "Beim Senden deiner Antwort ist ein unerwarteter Fehler aufgetreten.";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Ein unerwarteter Fehler ist aufgetreten beim Aktualisieren der Benachrichtigungseinstellungen";
@@ -7700,6 +7681,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "Titel";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "Kommentar hinzufügen";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "Die Website mit dieser Adresse ist keine WordPress-Website. Damit wir uns mit ihr verbinden können, muss die Website WordPress verwenden.";
 
@@ -7811,6 +7795,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Anwendungspasswörter sind eine noch sicherere Methode, auf deine selbst gehostete Website zuzugreifen und Funktionen wie %@ zu nutzen.";
+
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "Plugin-Verwaltung";
 
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Benutzerverwaltung";
@@ -8035,6 +8022,48 @@ Example: Comment on
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Antwort auf %1$@";
 
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "Entwurf löschen";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "Weiter bearbeiten";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "Entwurf speichern";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "Kommentar konnte nicht gesendet werden";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "Kommentieren";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "Antworten";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "Einen Kommentar hinterlassen …";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "Eine Antwort hinterlassen …";
+
+/* Navigation bar button title */
+"commentCreate.send" = "Senden";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "Änderungen verwerfen";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "Weiter bearbeiten";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "Kommentar konnte nicht gespeichert werden";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "Kommentar bearbeiten";
+
+/* Error title */
+"comments.failedToLike" = "Kommentar konnte nicht mit einem „Like“ markiert werden";
+
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Der in der App gespeicherte Benutzername oder das Passwort ist unter Umständen veraltet. Bitte gib dein Passwort in den Einstellungen erneut ein und versuche es noch einmal.";
 
@@ -8072,7 +8101,7 @@ Example: Reply to Pamela Nguyen */
 "customizeInsightsCell.dismissButton.accessibilityHint" = "Tippen, um diese Karte zu schließen";
 
 /* Customize Insights button title */
-"customizeInsightsCell.dismissButton.title" = "Schließen";
+"customizeInsightsCell.dismissButton.title" = "Verwerfen";
 
 /* Customize Insights title */
 "customizeInsightsCell.title" = "Passe deine Einsichten an";
@@ -8394,6 +8423,18 @@ Example: Reply to Pamela Nguyen */
    Site Address placeholder */
 "example.com" = "example.com";
 
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "Feedback senden";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "Nicht jetzt";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "Hättest du einen Moment Zeit, um uns Feedback zum experimentellen Editor zu geben?";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "Feedback teilen";
+
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "Experimentelle Funktionen";
 
@@ -8464,7 +8505,7 @@ Example: Reply to Pamela Nguyen */
 "growAudienceCell.bloggingReminders.details" = "Regelmäßiges Veröffentlichen kann dir helfen, eine Zielgruppe aufzubauen. Erinnerungen helfen dir, dein Ziel zu erreichen.";
 
 /* Title for button that will dismiss the Grow Your Audience card. */
-"growAudienceCell.dismiss" = "Schließen";
+"growAudienceCell.dismiss" = "Verwerfen";
 
 /* Title for button that will open up the subscribe topics screen. */
 "growAudienceCell.readerDiscover.actionButton" = "Blogs zum Abonnieren entdecken";
@@ -8946,6 +8987,9 @@ Example: Reply to Pamela Nguyen */
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "Elemente auswählen";
 
+/* A name of the action in the context menu */
+"mediaPicker.imagePlayground" = "Playground für Bilder";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "Diese App benötigt das Recht, auf die Kamera zuzugreifen, um neue Medien aufzunehmen. Wenn du dies zulassen möchtest, ändere bitte die Datenschutzeinstellungen.";
 
@@ -9157,7 +9201,7 @@ Example: Reply to Pamela Nguyen */
 "noLogs.retry" = "Erneut versuchen";
 
 /* Dismiss button title. */
-"noResultsViewController.dismissButton" = "Schließen";
+"noResultsViewController.dismissButton" = "Verwerfen";
 
 /* Setting: indicates if New Subscriptions will be notified */
 "notification.settings.description.subscriber" = "Website-Abonnements";
@@ -9344,6 +9388,90 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the plan selection view */
 "planSelection.title" = "Tarife";
+
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "Aktivieren";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "Aktiviert";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "Bitte warte, während das Plugin aktiviert wird …";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "Plugin wird aktiviert";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "Von %@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "Deaktivieren";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "Bitte warte, während das Plugin deaktiviert wird …";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "Plugin wird deaktiviert";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "Löschen";
+
+/* Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name */
+"pluginDetails.delete.confirmationMessage" = "Möchtest du %@ wirklich löschen?";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "Plugin löschen?";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "Installieren";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "Bitte warte, während das Plugin installiert wird …";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "Plugin installieren";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "Plugininformationen werden geladen …";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "Änderungsprotokoll";
+
+/* Title of the description section in plugin details */
+"pluginDetails.section.description" = "Beschreibung";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "Details";
+
+/* Title of the FAQ section in plugin details */
+"pluginDetails.section.faq" = "FAQ";
+
+/* Title of the installation section in plugin details */
+"pluginDetails.section.installation" = "Installation";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "Bewertungen";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "Screenshots";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "Bitte warte, während das Plugin entfernt wird …";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "Plugin wird deinstalliert";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "Jetzt aktualisieren";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "Update verfügbar";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "Version %@ ist verfügbar. Bitte führe eine Aktualisierung über dein WordPress-Website-Dashboard durch.";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "Auf WordPress.org ansehen";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Änderungen verwerfen";
@@ -9830,7 +9958,7 @@ Tapping on this row allows the user to edit the sharing message. */
 "qrLogin.codeHasToBeScannedFromTheAppNotice.title" = "Scanne den Code in der App";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
-"qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Schließen";
+"qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Verwerfen";
 
 /* Subtitle instructing the user to tap the dismiss button to leave the log in flow. %@ is a placeholder for the dismiss button name. */
 "qrLoginVerifyAuthorization.completedInstructions.subtitle" = "Tippe auf '%@' und gehe zurück zu deinem Webbrowser, um fortzufahren.";
@@ -9873,6 +10001,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "Deabonnieren";
+
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "Kommentare geschlossen";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Zeigt Beiträge von der Website an";
@@ -10089,11 +10220,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "Blog";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "Der Eigentümer dieser Website erlaubt uns nur, eine kurze Zusammenfassung seiner Inhalte anzuzeigen. Um den gesamten Beitrag anzuzeigen, musst du seine Website besuchen.";
+/* Button title */
+"reader.postDetails.viewFullPost" = "Vollständigen Beitrag anzeigen";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "Den vollständigen Beitrag findest du unter %@";
+"reader.postDetails.viewModeDescription" = "Der Eigentümer dieser Website erlaubt uns nur, eine kurze Zusammenfassung seiner Inhalte anzuzeigen. Um den gesamten Beitrag anzuzeigen, musst du seine Website besuchen.";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";
@@ -10329,11 +10460,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "%@ nicht mehr folgen";
 
+/* Field title */
+"reader.userProfile.site" = "Website";
+
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Zurück";
 
 /* Spoken accessibility label */
-"readerDetail.dismissButton.accessibilityLabel" = "Schließen";
+"readerDetail.dismissButton.accessibilityLabel" = "Verwerfen";
 
 /* Spoken accessibility label for the Reading Preferences menu. */
 "readerDetail.displaySettingButton.displaySettingsLabel" = "Lesepräferenzen";
@@ -10432,7 +10566,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "revisions.title" = "Revisionen";
 
 /* User action to dismiss media options. */
-"shareExtension.editor.attachmentActions.dismiss" = "Schließen";
+"shareExtension.editor.attachmentActions.dismiss" = "Verwerfen";
 
 /* User action to remove media. */
 "shareExtension.editor.attachmentActions.remove" = "Entfernen";
@@ -10444,7 +10578,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shareModularViewController.retryAlert.accept" = "Erneut versuchen";
 
 /* Share extension error dialog cancel button label. */
-"shareModularViewController.retryAlert.dismiss" = "Schließen";
+"shareModularViewController.retryAlert.dismiss" = "Verwerfen";
 
 /* Share extension error dialog text. */
 "shareModularViewController.retryAlert.message" = "Ups, beim Teilen ist etwas schiefgelaufen. Du kannst es erneut versuchen, vielleicht war es nur eine kurze Störung.";
@@ -10569,6 +10703,59 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "Tarif-Upgrade durchführen";
 
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "Vorgestellt";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "Beliebt";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "Empfohlen";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "Suchergebnisse";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "Keine Plugins gefunden";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "Installiert";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "Plugins konnten nicht geladen werden. Tippen, um es erneut zu versuchen";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "Plugins werden geladen …";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "Neues Plugin hinzufügen";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "Keine aktiven Plugins";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "Plugin hinzufügen";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "Keine inaktiven Plugins";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "Alle";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "Filtern";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "Plugins werden geladen …";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "Du hast noch keine Plugins installiert";
+
+/* Installed plugins list title */
+"site.plugins.title" = "Plugins";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domains";
 
@@ -10670,6 +10857,25 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for site switcher screen */
 "sitePicker.title" = "Meine Websites";
+
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "Von %@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "Der Plugin-Autor hat keine Beschreibung für dieses Plugin angegeben.";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "Aktivieren";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "Deaktivieren";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "Löschen";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "Auf WordPress.org ansehen";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Datenschutz";
@@ -11373,6 +11579,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "Etwas ist schiefgelaufen. Bitte versuche es später erneut.";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "Die Mediendatei kann auf dem Gerät nicht gefunden werden";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Zur Jetpack-App wechseln";

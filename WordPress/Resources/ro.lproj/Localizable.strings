@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-01-23 09:59:15+0000 */
+/* Translation-Revision-Date: 2025-03-19 19:27:15+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ro */
@@ -1513,7 +1513,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect" = "Conectare";
+"Connect" = "Conectează";
 
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connect Another Account" = "Conectează alt cont";
@@ -2361,9 +2361,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "Dată de încheiere";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "Intră pe ecran complet";
-
 /* Enter a custom value */
 "Enter a custom value" = "Introdu o valoare personalizată";
 
@@ -2516,9 +2513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Exclude teme, module și încărcări";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "Ieși din ecranul întreg";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Extinse";
@@ -2895,7 +2889,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Help icon" = "Icon pentru ajutor";
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
-"Hidden" = "Ascunse";
+"Hidden" = "Ascuns";
 
 /* Title of a button used to collapse a group */
 "Hide" = "Ascunde";
@@ -3088,7 +3082,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Insert Link" = "Inserează legătura";
 
 /* Discoverability title for insert media keyboard shortcut. */
-"Insert Media" = "Inserare media";
+"Insert Media" = "Inserează Media";
 
 /* No comment provided by engineer. */
 "Insert Video Block" = "Inserează blocul Video";
@@ -3097,7 +3091,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Insert crosspost" = "Inserează crosspost";
 
 /* Accessibility label for insert media button on formatting toolbar. */
-"Insert media" = "Inserează media";
+"Insert media" = "Inserează Media";
 
 /* No comment provided by engineer. */
 "Insert mention" = "Inserează mențiunea";
@@ -3501,7 +3495,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Loading Plugin..." = "Încarc modulul...";
 
 /* Text displayed while loading plugins for a site */
-"Loading Plugins..." = "Încarc module...";
+"Loading Plugins..." = "Încarc modulele...";
 
 /* Text displayed while loading the scan history for a site */
 "Loading Scan History..." = "Încarc istoricul scanărilor...";
@@ -3516,7 +3510,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Loading menu..." = "Încărcare meniu...";
 
 /* Messaged displayed when fetching plugins. */
-"Loading plugins..." = "Încarc module...";
+"Loading plugins..." = "Încarc modulele...";
 
 /* Displayed while blogging prompts are being loaded. */
 "Loading prompts..." = "Încarc îndemnurile...";
@@ -4671,7 +4665,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
-"Popular" = "Popular";
+"Popular" = "Populare";
 
 /* Section title for Popular Languages */
 "Popular languages" = "Limbi populare";
@@ -4685,7 +4679,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Post Categories" = "Categorii de articole";
 
 /* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Format de articol";
+"Post Format" = "Format articol";
 
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
@@ -5045,14 +5039,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Răspunsuri la comentariile tale";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Răspunde";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Răspuns trimis!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Text pentru răspuns";
@@ -5061,9 +5051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Răspunde-i lui %1$@";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "Răspunde la articol";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "E necesară aprobarea manuală a comentariilor ce includ mai mult decât acest număr de legături.";
@@ -5743,7 +5730,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Discussion Settings Title
    Settings: Comments Sort Order */
-"Sort By" = "Sortare după";
+"Sort By" = "Sortează după";
 
 /* Title of button that displays the App's source code information */
 "Source Code" = "Cod sursă";
@@ -6221,9 +6208,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "A apărut o problemă în timpul încărcării setărilor pentru notificări";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "A fost o eroare neașteptată în timpul editării comentariului";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "A fost o eroare neașteptată în timpul editării comentariului tău";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6234,9 +6218,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "A fost o eroare neașteptată în timpul trimiterii invitației tale.";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "A apărut o eroare neașteptată în timpul trimiterii răspunsului tău";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "A apărut o eroare neașteptată în timpul actualizării setărilor pentru notificări";
@@ -7026,7 +7007,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Visit %@ for more" = "Vizitează %@ pentru mai mult";
 
 /* Text of a button that links to the VaultPress dashboard. */
-"Visit Dashboard" = "Du-te la Panou control";
+"Visit Dashboard" = "Mergi la Panou control";
 
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Vizitează site-ul";
@@ -7700,6 +7681,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "Titlu";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "Adaugă un comentariu";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "Site-ul de la această adresă nu este un site WordPress. Pentru a-l putea conecta, site-ul trebuie să folosească WordPress.";
 
@@ -7811,6 +7795,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Parolele aplicației sunt o modalitate mai sigură de a-ți conecta site-ul auto-găzduit și de a activa suportul pentru funcționalități, cum ar fi %@.";
+
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "Administrare module";
 
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Administrare utilizatori";
@@ -8034,6 +8021,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Răspunde-i lui %1$@";
+
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "Șterge ciorna";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "Continuă editarea";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "Salvează ciorna";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "Trimiterea comentariului a eșuat";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "Comentează";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "Răspunde";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "Lasă un comentariu...";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "Lasă un răspuns...";
+
+/* Navigation bar button title */
+"commentCreate.send" = "Trimite";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "Renunță la modificări";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "Continuă editarea";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "Salvarea comentariului a eșuat";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "Editează comentariul";
+
+/* Error title */
+"comments.failedToLike" = "Aprecierea comentariului a eșuat";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Numele de utilizator sau parola stocate în aplicație pot fi învechite. Te rog reintrodu parola ta în setări și încearcă din nou.";
@@ -8393,6 +8422,18 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "exemplu.com";
+
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "Trimite-ne impresii";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "Nu acum";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "Vrei să-ți împărtășești impresiile despre editorul experimental?";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "Spune-ne părerea";
 
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "Funcționalități experimentale";
@@ -9348,6 +9389,90 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Planuri";
 
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "Activează";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "Activat";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "Te rog să aștepți până când modulul este activat...";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "Activez modulul";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "De %@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "Dezactivează";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "Te rog să aștepți până când modulul este dezactivat...";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "Dezactivez modulul";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "Șterge";
+
+/* Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name */
+"pluginDetails.delete.confirmationMessage" = "Sigur vrei să ștergi %@?";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "Ștergi modulul?";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "Instalează";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "Te rog să aștepți până când modulul este instalat...";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "Instalează modulul";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "Încarc informațiile despre modul...";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "Istoric modificări";
+
+/* Title of the description section in plugin details */
+"pluginDetails.section.description" = "Descriere";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "Detalii";
+
+/* Title of the FAQ section in plugin details */
+"pluginDetails.section.faq" = "Întrebări frecvente";
+
+/* Title of the installation section in plugin details */
+"pluginDetails.section.installation" = "Instalare";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "Recenzii";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "Capturi ecran";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "Te rog să aștepți până când modulul este înlăturat...";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "Dezinstalez modulul";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "Actualizează acum";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "Este disponibilă o actualizare";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "Este disponibilă versiunea %@. Te rog să actualizezi din panoul de control al site-ului tău WordPress.";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "Vezi pe WordPress.org";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Renunță la modificări";
 
@@ -9877,6 +10002,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "Dezabonează-te";
 
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "Comentariile sunt închise";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Vezi articolele de pe site";
 
@@ -10092,11 +10220,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blog";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "Proprietarul acestui site ne permite doar să arătăm un rezumat scurt al conținutului. Pentru a vizualiza articolul complet, va trebui să vizitezi site-ul lor.";
+/* Button title */
+"reader.postDetails.viewFullPost" = "Vezi articolul întreg";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "Vizitează %@ pentru a vedea articolul întreg";
+"reader.postDetails.viewModeDescription" = "Proprietarul acestui site ne permite doar să arătăm un rezumat scurt al conținutului. Pentru a vizualiza articolul complet, va trebui să vizitezi site-ul lor.";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";
@@ -10331,6 +10459,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Anulează urmărirea %@";
+
+/* Field title */
+"reader.userProfile.site" = "Site";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Înapoi";
@@ -10572,6 +10703,59 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "Actualizează la un plan";
 
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "Reprezentative";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "Populare";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "Recomandate";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "Rezultate de căutare";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "Nu am găsit niciun modul";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "Instalate";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "Încărcarea modulelor a eșuat. Atinge aici pentru a reîncerca";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "Încarc modulele...";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "Adaugă modul nou";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "Nu ai module active";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "Adaugă modul";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "Nu ai module inactive";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "Toate";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "Filtrează";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "Încarc modulele instalate...";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "Nu ai instalat niciun modul până acum";
+
+/* Installed plugins list title */
+"site.plugins.title" = "Module";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domenii";
 
@@ -10673,6 +10857,25 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for site switcher screen */
 "sitePicker.title" = "Site-urile mele";
+
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "De %@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "Autorul modulului nu a oferit o descriere pentru acest modul.";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "Activează";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "Dezactivează";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "Șterge";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "Vezi pe WordPress.org";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Confidențialitate";
@@ -11376,6 +11579,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "Ceva nu a mers bine, te rog să reîncerci mai târziu.";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "Nu pot să localizez fișierul media pe dispozitiv";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Comută la aplicația Jetpack";

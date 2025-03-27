@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressShared
 
 open class PublicizeService: NSManagedObject {
     @objc static let googlePlusServiceID = "google_plus"

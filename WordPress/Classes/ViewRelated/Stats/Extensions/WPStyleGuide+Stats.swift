@@ -1,6 +1,7 @@
 import Foundation
 import Gridicons
 import DesignSystem
+import WordPressShared
 
 extension WPStyleGuide {
     // MARK: - Styles Used by Stats

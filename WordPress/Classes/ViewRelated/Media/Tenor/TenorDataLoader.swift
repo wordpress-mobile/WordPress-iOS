@@ -1,3 +1,5 @@
+import WordPressShared
+
 /// Implementations of this protocol will be notified when data is loaded from the TenorService
 protocol TenorDataLoaderDelegate: AnyObject {
     func didLoad(media: [TenorMedia], reset: Bool)

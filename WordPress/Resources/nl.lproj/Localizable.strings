@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-01-23 07:59:15+0000 */
+/* Translation-Revision-Date: 2025-03-07 07:46:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: nl */
@@ -2361,9 +2361,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "Einddatum";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "Volledig scherm openen";
-
 /* Enter a custom value */
 "Enter a custom value" = "Voeg een aangepaste waarde in";
 
@@ -2516,9 +2513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Exclusief thema's, plugins en uploads";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "Volledig scherm afsluiten";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Uitgeklapt";
@@ -5045,14 +5039,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Antwoorden op je reacties";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Reactie";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Antwoord verstuurd!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Antwoordtekst";
@@ -5061,9 +5051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Antwoord aan %1$@";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "Reageer op bericht";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Vereist handmatige goedkeuring voor reacties die meer dan dit aantal links bevatten.";
@@ -6221,9 +6208,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "Er is een fout opgetreden bij het laden van je meldingsinstellingen";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "Er is een onverwachte fout opgetreden bij het bewerken van de reactie";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Er is een onverwachte fout opgetreden bij het bewerken van je reactie";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6234,9 +6218,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "Er is een onverwachte fout opgetreden bij het versturen van je uitnodiging";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "Er is een onverwachte fout opgetreden tijdens het versturen van je reactie";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Er is een onverwachte fout opgetreden bij het bijwerken van je meldingsinstellingen";
@@ -7700,6 +7681,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "Titel";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "Reactie toevoegen";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "De site op dit adres is geen WordPress site. Om er verbinding mee te kunnen maken, moet de site gebruikmaken van WordPress.";
 
@@ -7811,6 +7795,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Applicatie wachtwoorden zijn een veiligere manier om verbinding te maken met je zelf-gehoste site, en inschakelen ondersteuning voor functies zoals %@.";
+
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "Pluginbeheer";
 
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Gebruikersbeheer";
@@ -8034,6 +8021,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Reageer op %1$@";
+
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "Concept verwijderen";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "Blijf bewerken";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "Concept opslaan";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "Reactie verzenden mislukt";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "Reactie";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "Beantwoorden";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "Laat een reactie achter…";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "Laat een reactie achter…";
+
+/* Navigation bar button title */
+"commentCreate.send" = "Verzenden";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "Wijzigingen negeren";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "Blijf bewerken";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "Reactie opslaan mislukt";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "Reactie bewerken";
+
+/* Error title */
+"comments.failedToLike" = "Niet gelukt om reactie te liken";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Gebruikersnaam en wachtwoord die in de app zijn opgeslagen zijn wellicht verouderd. Voer je wachtwoord opnieuw in bij de instellingen en probeer het nogmaals.";
@@ -8393,6 +8422,18 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "voorbeeld.nl";
+
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "Feedback verzenden";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "Niet nu";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "Weet je het zeker dat je feedback wil geven over de experimentele editor?";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "Deel je feedback";
 
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "Experimentele functies";
@@ -9348,6 +9389,90 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Abonnementen";
 
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "Activeren";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "Geactiveerd";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "Even geduld terwijl de plugin wordt geactiveerd...";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "Plugin aan het activeren";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "Door %@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "Deactiveren";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "Even geduld terwijl de plugin wordt gedeactiveerd...";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "Plugin aan het deactiveren";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "Verwijderen";
+
+/* Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name */
+"pluginDetails.delete.confirmationMessage" = "Weet je het zeker dat je %@ wil verwijderen?";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "Plugin verwijderen?";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "Installeren";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "Even geduld terwijl de plugin wordt geïnstalleerd...";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "Plugin installeren";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "Plugin informatie aan het laden...";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "Changelog";
+
+/* Title of the description section in plugin details */
+"pluginDetails.section.description" = "Beschrijving";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "Details";
+
+/* Title of the FAQ section in plugin details */
+"pluginDetails.section.faq" = "FAQ";
+
+/* Title of the installation section in plugin details */
+"pluginDetails.section.installation" = "Installatie";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "Beoordelingen";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "Schermafbeeldingen";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "Even geduld terwijl de plugin wordt verwijderd...";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "Plugin aan het verwijderen";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "Update nu";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "Update beschikbaar";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "Versie %@ is beschikbaar. Update het vanuit je WordPress site dashboard.";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "Bekijken op WordPress.org";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Wijzigingen negeren";
 
@@ -9877,6 +10002,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "Uitschrijven";
 
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "Reacties gesloten";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Bekijkt berichten van de site";
 
@@ -10092,11 +10220,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blog";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "We mogen van de eigenaar van deze site alleen een korte samenvatting van zijn of haar content weergeven. Om het volledige bericht te bekijken, moet je zijn of haar site bezoeken.";
+/* Button title */
+"reader.postDetails.viewFullPost" = "Bekijk volledig bericht";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "Bezoek %@ voor het volledige bericht";
+"reader.postDetails.viewModeDescription" = "We mogen van de eigenaar van deze site alleen een korte samenvatting van zijn of haar content weergeven. Om het volledige bericht te bekijken, moet je zijn of haar site bezoeken.";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";
@@ -10331,6 +10459,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Ontvolg %@";
+
+/* Field title */
+"reader.userProfile.site" = "Site";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Terug";
@@ -10572,6 +10703,59 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "Upgrade naar een abonnement";
 
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "Uitgelicht";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "Populair";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "Aanbevolen";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "Zoekresultaten";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "Geen plugins gevonden";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "Geïnstalleerd";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "Mislukt om plugins te laden. Hier tikken om opnieuw te proberen";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "Plugins laden...";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "Nieuwe plugin toevoegen";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "Geen actieve plugins";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "Plugin toevoegen";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "Geen inactieve plugins";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "Alles";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "Filteren";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "Bezig met laden van geïnstalleerde plugins…";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "Je hebt nog geen plugins geïnstalleerd";
+
+/* Installed plugins list title */
+"site.plugins.title" = "Plugins";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domeinen";
 
@@ -10673,6 +10857,25 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for site switcher screen */
 "sitePicker.title" = "Mijn sites";
+
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "Door %@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "De plugin auteur heeft geen beschrijving voor deze plugin gegeven.";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "Activeren";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "Deactiveren";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "Verwijderen";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "Bekijken op WordPress.org";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
@@ -11376,6 +11579,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "Er ging iets fout, probeer het later nog eens.";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "Kan het mediabestand niet vinden op het apparaat";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Schakel over naar de Jetpack app";

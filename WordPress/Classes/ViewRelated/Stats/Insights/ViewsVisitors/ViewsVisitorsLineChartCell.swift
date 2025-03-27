@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 struct StatsSegmentedControlData: Equatable {
     var segmentTitle: String

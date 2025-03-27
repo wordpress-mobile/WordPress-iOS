@@ -1,3 +1,6 @@
+import Foundation
+import WordPressShared
+
 /// Encapsulates logic that configures `ListTableViewCell` with `Notification` models.
 ///
 extension ListTableViewCell {

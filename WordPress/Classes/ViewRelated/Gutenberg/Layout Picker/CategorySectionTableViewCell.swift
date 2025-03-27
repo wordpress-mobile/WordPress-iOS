@@ -1,5 +1,6 @@
 import UIKit
 import Gutenberg
+import WordPressShared
 
 protocol CategorySectionTableViewCellDelegate: AnyObject {
     func didSelectItemAt(_ position: Int, forCell cell: CategorySectionTableViewCell, slug: String)

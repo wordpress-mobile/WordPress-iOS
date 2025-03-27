@@ -1,5 +1,6 @@
 import UIKit
 import DesignSystem
+import WordPressShared
 
 class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
 

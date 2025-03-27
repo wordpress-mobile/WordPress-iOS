@@ -1,0 +1,4 @@
+Quoi de neuf ce mois-ci ?
+- Des commentaires revus et améliorés : design mis à jour, indicateurs de profondeur pour les fils de discussion, meilleure prise en charge du contenu enrichi et compositeur plein écran avec enregistrement du brouillon.
+- Images mises en avant : correction d’un problème qui faisait que le Lecteur n’affichait pas les images mises en avant pour certains articles.
+- Correction de bugs et amélioration de la stabilité et des performances

@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import DesignSystem
+import WordPressShared
 
 struct PostNoticePublishSuccessView: View {
     let post: Post

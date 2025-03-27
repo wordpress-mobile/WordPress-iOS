@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// A button that represents a filter chip
 ///

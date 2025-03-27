@@ -548,8 +548,7 @@
    Remove Action */
 "Remove" = "Ukloni";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Odgovor";

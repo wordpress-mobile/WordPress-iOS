@@ -1,0 +1,3 @@
+Bu ay için Yenilikler Neler?
+- Daha İyi Yorumlar: Güncellenmiş tasarım, Threads için derinlik göstergeleri, iyileştirilmiş zengin içerik desteği ve taslak kaydetmeyle tam ekran düzenleyici.
+- Hata Düzeltmeleri ve Stabilite ve Performans İyileştirmeleri.

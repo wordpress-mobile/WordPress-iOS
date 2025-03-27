@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import WordPressShared
 
 class MediaCacheSettingsViewController: UITableViewController {
     fileprivate var handler: ImmuTableViewHandler?

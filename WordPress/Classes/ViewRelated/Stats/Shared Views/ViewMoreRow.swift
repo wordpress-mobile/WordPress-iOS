@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 protocol ViewMoreRowDelegate: AnyObject {
     func viewMoreSelectedForStatSection(_ statSection: StatSection)

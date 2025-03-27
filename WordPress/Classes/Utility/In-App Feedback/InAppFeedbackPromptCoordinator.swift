@@ -1,5 +1,6 @@
 import Foundation
 import StoreKit
+import WordPressShared
 
 protocol InAppFeedbackPromptPresenting {
     func presentIfNeeded(in controller: UIViewController) -> Bool

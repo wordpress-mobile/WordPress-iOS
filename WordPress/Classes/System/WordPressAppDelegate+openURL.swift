@@ -1,9 +1,10 @@
-import WordPressAuthenticator
 import AutomatticTracks
 import BuildSettingsKit
+import WordPressAuthenticator
+import WordPressShared
 
 @objc extension WordPressAppDelegate {
-    internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    public func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
 
         let redactedURL = LoggingURLRedactor.redactedURL(url)
         DDLogInfo("Application launched with URL: \(redactedURL)")
@@ -28,6 +29,10 @@ import BuildSettingsKit
 
         if url.scheme == JetpackNotificationMigrationService.wordPressScheme {
             return JetpackNotificationMigrationService.shared.handleNotificationMigrationOnWordPress()
+        }
+
+        if WordPressDotComAuthenticator.handleAppOpeningURL(url) {
+            return true
         }
 
         guard url.scheme == BuildSettings.current.appURLScheme else {

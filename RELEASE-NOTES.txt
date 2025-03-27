@@ -1,5 +1,6 @@
 25.9
 -----
+
 * [*] Updated site display logic in sidebar to prioritize showing the currently selected site on iPad. [#24277]
 
 25.8

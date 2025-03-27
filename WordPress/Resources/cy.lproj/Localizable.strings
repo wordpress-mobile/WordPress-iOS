@@ -1526,14 +1526,10 @@
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Atebion i'ch sylwadau";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Ateb";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Anfonwyd Ymateb!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Testun Ateb";

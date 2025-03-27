@@ -1652,14 +1652,10 @@
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Svör við athugasemdum þínum";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Svara";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Svar sent!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Svartexti";

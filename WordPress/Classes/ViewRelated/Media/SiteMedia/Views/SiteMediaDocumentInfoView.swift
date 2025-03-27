@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 struct SiteMediaDocumentInfoViewModel {
     let image: UIImage

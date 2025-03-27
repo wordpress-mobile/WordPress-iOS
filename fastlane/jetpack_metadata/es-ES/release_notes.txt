@@ -1,0 +1,4 @@
+¿Qué novedades traemos este mes?
+- Mejores comentarios: diseño actualizado, indicadores de profundidad para los hilos, soporte mejorado de contenido enriquecido y un editor en pantalla completa con posibilidad de guardar borradores.
+- Imágenes destacadas: hemos corregido un problema que hacía que el Lector no mostrara imágenes destacadas en algunas entradas.
+- Corrección de errores y mejoras de rendimiento.

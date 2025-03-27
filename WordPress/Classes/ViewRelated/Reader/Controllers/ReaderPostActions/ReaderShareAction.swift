@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// Encapsulates a command share a post
 final class ReaderShareAction {

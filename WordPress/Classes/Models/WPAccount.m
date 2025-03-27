@@ -22,7 +22,7 @@
 @dynamic userID;
 @dynamic avatarURL;
 @dynamic settings;
-@synthesize wordPressComRestApi;
+@synthesize _private_wordPressComRestApi;
 @synthesize cachedToken;
 
 #pragma mark - NSManagedObject subclass methods
@@ -34,15 +34,15 @@
         return;
     }
 
-    [self.wordPressComRestApi invalidateAndCancelTasks];
-    self.wordPressComRestApi = nil;
+    [_private_wordPressComRestApi invalidateAndCancelTasks];
+    _private_wordPressComRestApi = nil;
     self.authToken = nil;
 }
 
 - (void)didTurnIntoFault
 {
     [super didTurnIntoFault];
-    self.wordPressComRestApi = nil;
+    _private_wordPressComRestApi = nil;
     self.cachedToken = nil;
 }
 
@@ -114,7 +114,7 @@
     }
 
     // Make sure to release any RestAPI alloc'ed, since it might have an invalid token
-    self.wordPressComRestApi = nil;
+    _private_wordPressComRestApi = nil;
 }
 
 - (BOOL)hasAtomicSite {

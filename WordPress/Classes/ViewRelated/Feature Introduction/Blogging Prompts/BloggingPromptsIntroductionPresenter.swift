@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressShared
 
 /// Presents the BloggingPromptsFeatureIntroduction with actionable buttons
 /// and directs the flow according to which action button is tapped.

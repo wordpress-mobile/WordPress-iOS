@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 protocol SiteStatsTableHeaderDelegate: AnyObject {
     func dateChangedTo(_ newDate: Date?)

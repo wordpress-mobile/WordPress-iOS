@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 class ActivityListSectionHeaderView: UITableViewHeaderFooterView {
     @IBOutlet weak var titleLabel: UILabel!

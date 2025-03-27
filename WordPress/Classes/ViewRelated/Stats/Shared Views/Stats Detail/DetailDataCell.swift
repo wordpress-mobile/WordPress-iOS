@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// This cell type displays data rows for Site Stats Details (SiteStatsDetailTableViewController).
 /// Ex: Period Post and Pages.

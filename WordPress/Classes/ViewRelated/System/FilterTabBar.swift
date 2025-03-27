@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// Filter Tab Bar is a tabbed control (much like a segmented control), but
 /// has an appearance similar to Android tabs.

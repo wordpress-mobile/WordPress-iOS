@@ -1,5 +1,6 @@
 import Foundation
 import BuildSettingsKit
+import WordPressShared
 
 protocol LinkRouter {
     init(routes: [Route])

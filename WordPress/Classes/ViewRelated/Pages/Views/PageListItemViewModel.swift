@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 final class PageListItemViewModel {
     let page: Page

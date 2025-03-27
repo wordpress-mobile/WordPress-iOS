@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 // MARK: - WizardNavigation
 final class WizardNavigation: UINavigationController {

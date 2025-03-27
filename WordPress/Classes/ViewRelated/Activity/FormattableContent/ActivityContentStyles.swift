@@ -1,4 +1,5 @@
 import FormattableContentKit
+import WordPressShared
 
 class ActivityContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedString.Key: Any] {

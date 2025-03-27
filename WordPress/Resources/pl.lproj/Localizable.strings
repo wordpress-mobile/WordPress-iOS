@@ -2016,17 +2016,10 @@
 /* No comment provided by engineer. */
 "Replace video" = "Zamień film";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Odpowiedz";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Komentarz został wysłany!";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "Dodaj komentarz do wpisu";
 
 /* Settings: Comments Approval settings */
 "Require name and email" = "Wymagane nazwa i adres e-mail";
@@ -2452,9 +2445,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Motywy";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "Wystąpił nieoczekiwany błąd podczas wysyłania odpowiedzi";
 
 /* Displayed whenever a Comment Update Fails */
 "There has been an unexpected error while updating your comment" = "Wystąpił nieoczekiwany błąd podczas aktualizowania komentarza";

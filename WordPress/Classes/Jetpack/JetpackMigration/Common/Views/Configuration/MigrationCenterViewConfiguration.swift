@@ -1,3 +1,6 @@
+import Foundation
+import WordPressShared
+
 struct MigrationCenterViewConfiguration {
 
     let attributedText: NSAttributedString

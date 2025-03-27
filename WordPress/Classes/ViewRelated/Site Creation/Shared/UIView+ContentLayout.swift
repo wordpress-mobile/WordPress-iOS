@@ -1,5 +1,5 @@
-
 import UIKit
+import WordPressShared
 
 // MARK: - UILabel
 

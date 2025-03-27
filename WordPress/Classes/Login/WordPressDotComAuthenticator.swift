@@ -2,8 +2,11 @@ import Alamofire
 import AuthenticationServices
 import Foundation
 import UIKit
+import SVProgressHUD
 import WordPressData
 import WordPressShared
+import BuildSettingsKit
+@preconcurrency import Combine
 
 /// Log in or sign up a WordPress.com account via web.
 ///
@@ -48,15 +51,33 @@ struct WordPressDotComAuthenticator {
         case loadingSites(Error)
     }
 
+    private static let callbackNotification = Foundation.Notification.Name(rawValue: "WordPressDotComAuthenticatorCallbackURL")
+
+    static func redirectURI(for scheme: String) -> String {
+        "\(scheme)://oauth2-callback"
+    }
+
+    static func handleAppOpeningURL(_ url: URL, appURLScheme: String = BuildSettings.current.appURLScheme) -> Bool {
+        guard url.scheme == appURLScheme, url.absoluteString.hasPrefix(redirectURI(for: appURLScheme)) else {
+            return false
+        }
+
+        NotificationCenter.default.post(name: callbackNotification, object: url)
+        return true
+    }
+
+    let redirectURIScheme: String
     private let coreDataStack: CoreDataStackSwift
     private let authenticator: ((URL) throws(AuthenticationError) -> URL)?
 
     init(
         coreDataStack: CoreDataStackSwift = ContextManager.shared,
-        authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil
+        authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil,
+        redirectURIScheme: String = BuildSettings.current.appURLScheme
     ) {
         self.coreDataStack = coreDataStack
         self.authenticator = authenticator
+        self.redirectURIScheme = redirectURIScheme
     }
 
     /// Sign in WP.com account.
@@ -174,7 +195,7 @@ struct WordPressDotComAuthenticator {
     ) async throws(AuthenticationError) -> String {
         let clientId = ApiCredentials.client
         let clientSecret = ApiCredentials.secret
-        let redirectURI = "x-wordpress-app://oauth2-callback"
+        let redirectURI = Self.redirectURI(for: redirectURIScheme)
 
         var queries: [String: Any] = [
             "client_id": clientId,
@@ -192,7 +213,7 @@ struct WordPressDotComAuthenticator {
         let authorizeURL = try? URLEncoding.queryString.encode(URLRequest(url: URL(string: "https://public-api.wordpress.com/oauth2/authorize")!), with: queries).url
         guard let authorizeURL else { throw .urlError(URLError(.badURL)) }
 
-        let callbackURL = try await authorize(from: viewController, url: authorizeURL, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession)
+        let callbackURL = try await authorize(from: viewController, url: authorizeURL, prefersEphemeralWebBrowserSession: prefersEphemeralWebBrowserSession, redirectURI: redirectURI)
 
         do {
             return try await handleAuthorizeCallbackURL(callbackURL, clientId: clientId, clientSecret: clientSecret, redirectURI: redirectURI)
@@ -205,28 +226,80 @@ struct WordPressDotComAuthenticator {
         }
     }
 
-    private func authorize(from viewController: UIViewController, url authorizeURL: URL, prefersEphemeralWebBrowserSession: Bool) async throws(AuthenticationError) -> URL {
+    @MainActor
+    private func authorize(from viewController: UIViewController, url authorizeURL: URL, prefersEphemeralWebBrowserSession: Bool, redirectURI: String) async throws(AuthenticationError) -> URL {
         if let authenticator {
             return try authenticator(authorizeURL)
         }
 
-        return try await withCheckedTypedThrowingContinuation { continuation in
-            DispatchQueue.main.async {
-                let provider = WebAuthenticationPresentationAnchorProvider(anchor: viewController.view.window ?? UIWindow())
-                let session = ASWebAuthenticationSession(url: authorizeURL, callbackURLScheme: "x-wordpress-app") { url, error in
-                    let result: Result<URL, AuthenticationError>
-                    if let url {
-                        result = .success(url)
-                    } else {
-                        DDLogWarn("Error from authentication session: \(String(describing: error))")
-                        result = .failure(.cancelled)
-                    }
-                    continuation(result)
-                }
-                session.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession
-                session.presentationContextProvider = provider
-                session.start()
+        class CancellableHolder: Cancellable, @unchecked Sendable {
+            var cancellable: AnyCancellable?
+
+            func cancel() {
+                cancellable?.cancel()
+                cancellable = nil
             }
+        }
+        let cancellable = CancellableHolder()
+
+        // When the login account is unverified, the user receives an email with a login link. Opening the login link takes
+        // the user to Safari, where they can authorize/deny the OAuth request. After authorization/denial, the website
+        // opens the app via the OAuth callback URL. In this scenario, the callback URL is received by the open URL
+        // delegate method instead of the ASWebAuthenticationSession instance.
+        let callbackURLViaOpenAppURL = NotificationCenter.default
+            .publisher(for: Self.callbackNotification)
+            .compactMap {
+                if let url = $0.object as? URL {
+                    return url
+                }
+                return nil
+            }
+            .filter { (url: URL) in
+                url.absoluteString.hasPrefix(redirectURI)
+            }
+            .setFailureType(to: AuthenticationError.self)
+            .first()
+
+        let callbackURLViaWebAuthenticationSession = PassthroughSubject<URL, AuthenticationError>()
+        let provider = WebAuthenticationPresentationAnchorProvider(anchor: viewController.view.window ?? UIWindow())
+        let session = ASWebAuthenticationSession(url: authorizeURL, callbackURLScheme: redirectURIScheme) { url, error in
+            if let url {
+                callbackURLViaWebAuthenticationSession.send(url)
+                callbackURLViaWebAuthenticationSession.send(completion: .finished)
+            } else {
+                DDLogWarn("Error from authentication session: \(String(describing: error))")
+                callbackURLViaWebAuthenticationSession.send(completion: .failure(.cancelled))
+            }
+        }
+        session.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession
+        session.presentationContextProvider = provider
+        session.start()
+
+        do {
+            return try await withTaskCancellationHandler {
+                try await withCheckedThrowingContinuation { continuation in
+                    cancellable.cancellable = Publishers.Merge(callbackURLViaOpenAppURL, callbackURLViaWebAuthenticationSession)
+                        .first()
+                        .sink(receiveCompletion: { [session] in
+                            session.cancel()
+
+                            if case let .failure(error) = $0 {
+                                continuation.resume(throwing: error)
+                            }
+                        }, receiveValue: { url in
+                            continuation.resume(returning: url)
+                        })
+                }
+            } onCancel: { [session] in
+                session.cancel()
+                cancellable.cancel()
+            }
+        } catch {
+            // We can't get the `AuthenticationError` type from the syntax level, because
+            // the `withTaskCancellationHandler` and `withCheckedThrowingContinuation` functions are not updated to
+            // support typed throw. But the error can only be `AuthenticationError` at runtime.
+            wpAssert(error is AuthenticationError)
+            throw (error as? AuthenticationError) ?? .cancelled
         }
     }
 
@@ -315,19 +388,6 @@ struct WordPressDotComAuthenticator {
 
         // Use an ephemeral session here to ignore the existing account in Safari and allow user to sign in with whatever account they'd like to use.
         return try await self.authenticate(from: viewController, prefersEphemeralWebBrowserSession: true, accountEmail: accountEmail, recoverDenyAccess: false)
-    }
-}
-
-/// typed-throw version of `withCheckedThrowingContinuation`
-private func withCheckedTypedThrowingContinuation<T, E: Error>(body: (@escaping ((Result<T, E>) -> Void)) -> Void) async throws(E) -> T {
-    do {
-        return try await withCheckedThrowingContinuation { continuation in
-            body {
-                continuation.resume(with: $0)
-            }
-        }
-    } catch {
-        throw (error as! E)
     }
 }
 

@@ -1,7 +1,6 @@
 #import "SharingDetailViewController.h"
 #import "Blog.h"
 #import "BlogService.h"
-#import "SVProgressHUD+Dismiss.h"
 #import "SharingAuthorizationHelper.h"
 #import "WordPress-Swift.h"
 

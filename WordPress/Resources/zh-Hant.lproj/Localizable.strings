@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-01-15 00:23:01+0000 */
+/* Translation-Revision-Date: 2025-03-11 15:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -2358,9 +2358,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "結束日期";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "進入全螢幕";
-
 /* Enter a custom value */
 "Enter a custom value" = "輸入自訂值";
 
@@ -2513,9 +2510,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "排除佈景主題、外掛程式和上傳內容";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "結束全螢幕";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "已展開";
@@ -5039,14 +5033,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "留言的回覆";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "回覆";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "回覆已傳送！";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "回覆文字";
@@ -5055,9 +5045,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "回覆 %1$@";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "回覆文章";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "如果留言包含的連結超過此數量，需要進行人工審核。";
@@ -5430,10 +5417,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Service" = "服務";
 
 /* No comment provided by engineer. */
-"Set as Featured Image" = "設為特色圖片";
+"Set as Featured Image" = "設定為精選圖片";
 
 /* Notice confirming that an image has been set as the post's featured image. */
-"Set as featured image" = "設為特色圖片";
+"Set as featured image" = "設定為精選圖片";
 
 /* The Jetpack view button title for the success state */
 "Set up" = "設定";
@@ -6215,9 +6202,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "載入你的通知設定時發生問題。";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "編輯留言時發生未預期的錯誤";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "編輯你的留言時發生未預期的錯誤";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6228,9 +6212,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "傳送邀請時發生未預期的錯誤";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "傳送你的回覆時發生未預期的錯誤";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "更新你的通知設定時發生意外錯誤";
@@ -7691,6 +7672,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "標題";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "新增留言";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "此地址的網站不是 WordPress 網站。 網站必須使用 WordPress，以利連結作業。";
 
@@ -7803,6 +7787,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "應用程式密碼可提供更安全的自助託管網站連結方式，還支援「%@」等功能。";
 
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "外掛程式管理";
+
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "使用者管理";
 
@@ -7826,6 +7813,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An alert suggesting to load autosaved revision for a published post */
 "autosaveAlert.viewChanges" = "檢視變更";
+
+/* An error message displayed when attempting to update an avatar while the user's email address is not verified. */
+"avatar.update.email.verification.required" = "若想更新大頭貼，請先驗證電子郵件地址。";
 
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "無法載入圖片。 請選擇其他圖片，或稍後再試。";
@@ -7972,6 +7962,15 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "關閉";
 
+/* Title of the set goals button in the Blogging Reminders Settings flow. */
+"bloggingRemindersPrompt.intro.continueButton" = "設定提醒";
+
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"bloggingRemindersPrompt.intro.details" = "在你想張貼文章的日期設定網誌提醒。";
+
+/* Title of the Blogging Reminders Settings screen. */
+"bloggingRemindersPrompt.intro.title" = "網誌提醒";
+
 /* Add self-hosted site button */
 "button.addSelfHostedSite" = "新增自助託管網站";
 
@@ -8007,6 +8006,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "回覆 %1$@";
+
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "刪除草稿";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "繼續編輯";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "儲存草稿";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "無法傳送留言";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "留言";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "回覆";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "進行留言...";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "進行回覆...";
+
+/* Navigation bar button title */
+"commentCreate.send" = "傳送";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "捨棄變更";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "繼續編輯";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "無法儲存留言";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "編輯留言";
+
+/* Error title */
+"comments.failedToLike" = "無法對留言按讚";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "儲存在應用程式中的使用者名稱或密碼可能已過期。 請在設定中重新輸入密碼，然後再試一次。";
@@ -8363,6 +8404,18 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "傳送意見";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "先不要";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "你願意對試用版編輯器分享意見回饋嗎？";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "分享意見";
 
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "實驗性功能";
@@ -8916,6 +8969,9 @@ Example: Reply to Pamela Nguyen */
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "選取商品";
 
+/* A name of the action in the context menu */
+"mediaPicker.imagePlayground" = "影像樂園";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "此應用程式需要取得權限才能存取相機，以擷取新的媒體。若你願意允許此應用程式功能，請變更隱私設定。";
 
@@ -9315,6 +9371,90 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "方案";
 
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "啟用";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "已啟用";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "正在啟用外掛程式，請稍候...";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "啟用外掛程式";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "作者：%@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "停用";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "正在停用外掛程式，請稍候...";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "停用外掛程式";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "刪除";
+
+/* Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name */
+"pluginDetails.delete.confirmationMessage" = "你確定要刪除「%@」嗎？";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "要刪除外掛程式嗎？";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "安裝";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "正在安裝外掛程式，請稍候...";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "安裝外掛程式";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "正在載入外掛程式資訊...";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "變更記錄";
+
+/* Title of the description section in plugin details */
+"pluginDetails.section.description" = "描述";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "詳細資料";
+
+/* Title of the FAQ section in plugin details */
+"pluginDetails.section.faq" = "常見問題";
+
+/* Title of the installation section in plugin details */
+"pluginDetails.section.installation" = "安裝";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "評論";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "螢幕截圖";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "正在移除外掛程式，請稍候...";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "正在解除安裝外掛程式";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "立即更新";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "有可用更新";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "版本 %@ 可供使用。 請透過 WordPress 網站儀表板更新外掛程式。";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "從 WordPress.org 檢視";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "捨棄變更";
 
@@ -9356,6 +9496,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.saveDraft" = "儲存草稿";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.sendFeedback" = "傳送意見回饋";
 
 /* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "視覺化編輯器";
@@ -9530,6 +9673,21 @@ Example: Reply to Pamela Nguyen */
 
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "無標題";
+
+/* Cancel upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.cancelUpload" = "取消上傳";
+
+/* Replace image upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.replaceImage" = "取代";
+
+/* Button in Post Settings */
+"postSettings.featuredImage.setFeaturedImageButton" = "設定精選圖片";
+
+/* Snackbar title */
+"postSettings.featuredImage.uploadFailed" = "無法上傳新的精選圖片";
+
+/* Post Settings */
+"postSettings.featuredImage.uploading" = "上傳中...";
 
 /* The 'Parent Page' setting of the post */
 "postSettings.parentPage" = "上層頁面";
@@ -9775,6 +9933,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Post publish success view: button 'View post' */
 "publishSuccessView.view" = "檢視文章";
 
+/* Informational notice title. Showed when you scan a code using a camera app outside of the app, which is not allowed. */
+"qrLogin.codeHasToBeScannedFromTheAppNotice.title" = "請透過應用程式掃描條碼";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "關閉";
 
@@ -9802,8 +9963,26 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A message title */
 "reader.blog.search.no.results.title" = "找不到網誌";
 
+/* A shared button title for Reader */
+"reader.button.addToFavorites" = "加入「我的最愛」";
+
+/* A shared button title for Reader */
+"reader.button.notificationSettings" = "通知設定";
+
+/* A shared button title for Reader */
+"reader.button.removeFromFavorites" = "從「我的最愛」移除";
+
+/* A shared button title for Reader */
+"reader.button.subscribe" = "訂閱";
+
 /* Reader sidebar button title */
 "reader.button.unfollow" = "停止追蹤";
+
+/* A shared button title for Reader */
+"reader.button.unsubscribe" = "取消訂閱";
+
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "留言已關閉";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "檢視網站的文章";
@@ -10000,6 +10179,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.manageNotifications" = "管理通知";
 
 /* Context menu action */
+"reader.postContextMenu.markRead" = "標記為已讀";
+
+/* Context menu action */
+"reader.postContextMenu.markUnread" = "標記為未讀";
+
+/* Context menu action */
 "reader.postContextMenu.reportPost" = "檢舉文章";
 
 /* Context menu action */
@@ -10014,11 +10199,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "網誌";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "此網站的擁有者只允許我們顯示簡短的內容摘要。 若想檢視完整文章，請造訪對方的網站。";
+/* Button title */
+"reader.postDetails.viewFullPost" = "檢視完整文章";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "造訪 %@ 閱讀完整文章";
+"reader.postDetails.viewModeDescription" = "此網站的擁有者只允許我們顯示簡短的內容摘要。 若想檢視完整文章，請造訪對方的網站。";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "糖果";
@@ -10242,6 +10427,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "停止追蹤 %@";
 
+/* Field title */
+"reader.userProfile.site" = "網站";
+
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "返回";
 
@@ -10410,6 +10598,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A shared button title used in different contexts */
 "shared.button.view" = "檢視";
 
+/* A generic error title indicating that a screen failed to fetch the latest data */
+"shared.error.failiedToReloadData" = "資料更新失敗";
+
 /* A generic error message */
 "shared.error.geneirc" = "發生錯誤";
 
@@ -10475,6 +10666,59 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "升級方案";
+
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "精選";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "熱門";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "推薦";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "搜尋結果";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "找不到外掛程式";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "已安裝";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "無法載入外掛程式。 點選這裡重試";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "正在載入外掛程式...";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "新增新的外掛程式";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "沒有使用中的外掛程式";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "新增外掛程式";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "沒有閒置的外掛程式";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "全部";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "篩選";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "正在載入安裝的外掛程式...";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "你目前未安裝任何外掛程式";
+
+/* Installed plugins list title */
+"site.plugins.title" = "外掛程式";
 
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "網域";
@@ -10575,6 +10819,25 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for site switcher screen */
 "sitePicker.title" = "我的網站";
 
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "作者：%@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "外掛程式作者未提供此外掛程式的說明。";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "啟用";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "停用";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "刪除";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "從 WordPress.org 檢視";
+
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "隱私權";
 
@@ -10637,6 +10900,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "由於 Twitter 變更條款和定價，Twitter 自動分享功能已無法使用。";
+
+/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
+"socialSharing.connectionDetails.nAccount" = "%d 個帳號";
 
 /* Title of Subscribers stats tab. */
 "stats.dashboard.tab.subscribers" = "訂閱者";
@@ -11119,6 +11385,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "關閉";
 
+/* Button label to share a web page */
+"webKit.button.share" = "分享";
+
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterEndDate" = "結束日期";
 
@@ -11268,6 +11537,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "發生錯誤，請稍後再試一次。";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "找不到裝置的媒體檔案位置";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "切換至 Jetpack 應用程式";

@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import WordPressShared
 
 struct SiteMonitoringView: View {
     @StateObject var viewModel: SiteMonitoringViewModel

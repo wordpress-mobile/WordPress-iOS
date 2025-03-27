@@ -2,7 +2,7 @@ import CoreSpotlight
 import MobileCoreServices
 import UniformTypeIdentifiers
 
-@objc enum SearchItemType: Int {
+@objc public enum SearchItemType: Int {
     case abstractPost
     case readerPost
     case none

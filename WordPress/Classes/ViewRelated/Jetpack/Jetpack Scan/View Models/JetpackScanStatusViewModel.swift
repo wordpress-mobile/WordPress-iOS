@@ -1,3 +1,5 @@
+import WordPressShared
+
 struct JetpackScanStatusViewModel {
     let imageName: String
     let title: String

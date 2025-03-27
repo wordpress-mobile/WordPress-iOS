@@ -2,6 +2,7 @@ import UIKit
 import Gridicons
 import DesignSystem
 import AsyncImageKit
+import WordPressShared
 
 protocol LatestPostSummaryConfigurable {
     func configure(withInsightData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?)

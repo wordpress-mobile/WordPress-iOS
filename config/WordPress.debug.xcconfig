@@ -1,7 +1,6 @@
-#include "Version.public.xcconfig"
 #include "Common.debug.xcconfig"
+#include "Version.public.xcconfig"
 
-BUILD_SCHEME = WordPress
 WP_PUSH_NOTIFICATION_APP_ID = org.wordpress.appstore.dev
 WP_BUILD_CONFIGURATION = debug
 WP_APP_URL_SCHEME = wpdebug

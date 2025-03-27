@@ -223,7 +223,7 @@ open class DeleteSiteViewController: UITableViewController {
                 WPAppAnalytics.track(.siteSettingsDeleteSiteResponseOK, blog: trackedBlog)
             }
             let status = NSLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
-            SVProgressHUD.showDismissibleSuccess(withStatus: status)
+            SVProgressHUD.showDismissibleSuccess(status: status)
 
             self?.updateNavigationStackAfterSiteDeletion()
 

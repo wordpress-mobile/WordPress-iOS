@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 struct QRLoginCameraPermissionsHandler: QRCameraPermissionsHandler {
     func needsCameraAccess() -> Bool {

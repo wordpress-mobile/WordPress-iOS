@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-01-28 16:54:09+0000 */
+/* Translation-Revision-Date: 2025-03-12 10:54:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ru */
@@ -2361,9 +2361,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "Дата окончания";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "Показать во весь экран";
-
 /* Enter a custom value */
 "Enter a custom value" = "Введите пользовательское значение";
 
@@ -2516,9 +2513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Исключает темы, плагины и загруженные файлы";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "Выйти из полноэкранного режима";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Развернутый";
@@ -5045,14 +5039,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Ответы на ваши комментарии";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Ответить";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Ответ отправлен.";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Текст ответа";
@@ -5061,9 +5051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Ответить на %1$@";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "Ответить на запись";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Включить обязательный этап одобрения для комментариев, которые содержат число ссылок, больше указанного.";
@@ -6221,9 +6208,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "Не удалось обновить настройки уведомлений";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "Возникла непредвиденная ошибка при редактировании комментария";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "При изменении вашего комментария произошла непредвиденная ошибка.";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6234,9 +6218,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "При отправке приглашения произошла непредвиденная ошибка.";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "При отправке вашего ответа произошла непредвиденная ошибка";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "При обновлении настроек уведомлений произошла неожиданная ошибка.";
@@ -7700,6 +7681,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "Заголовок";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "Добавить комментарий";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "Сайт по этому адресу не имеет отношения к WordPress. Для того чтобы мы могли выполнить подключение к сайту, он должен работать на WordPress.";
 
@@ -7811,6 +7795,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Пароли приложений — это более надёжный способ подключения к автономным сайтам, дающий возможность поддержки таких функций, как %@.";
+
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "Управление плагинами";
 
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Управление пользователями";
@@ -8031,6 +8018,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Ответ пользователю %1$@";
+
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "Удалить черновик";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "Продолжить редактирование";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "Сохранить черновик";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "Не удалось отправить комментарий.";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "Оставить комментарий";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "Ответить";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "Оставить комментарий…";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "Ответить…";
+
+/* Navigation bar button title */
+"commentCreate.send" = "Отправить";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "Отменить изменения";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "Продолжить редактирование";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "Не удалось сохранить комментарий";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "Редактировать комментарий";
+
+/* Error title */
+"comments.failedToLike" = "Не удалось поставить комментарию отметку «Нравится»";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Имя пользователя или пароль, сохранённые в приложении, могли устареть. Введите ещё раз ваш пароль в настройках и попробуйте снова.";
@@ -8387,6 +8416,18 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "Отправить отзыв";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "Не сейчас";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "Хотите поделиться отзывом об экспериментальном редакторе?";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "Отправить отзыв";
 
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "Экспериментальные функции";
@@ -9339,6 +9380,87 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Тарифы";
 
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "Активировать";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "Активировано";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "Дождитесь завершения активации плагина…";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "Активация плагина";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "Автор: %@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "Деактивировать";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "Дождитесь деактивации плагина…";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "Деактивация плагина";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "Удалить";
+
+/* Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name */
+"pluginDetails.delete.confirmationMessage" = "Вы уверены, что хотите удалить %@?";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "Удалить плагин?";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "Установить";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "Дождитесь завершения установки плагина…";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "Установить плагин";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "Загрузка сведений о плагине…";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "Журнал изменений";
+
+/* Title of the description section in plugin details */
+"pluginDetails.section.description" = "Описание";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "Сведения";
+
+/* Title of the installation section in plugin details */
+"pluginDetails.section.installation" = "Установка";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "Отзывы";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "Снимки экрана";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "Подождите, пока плагин не будет удалён…";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "Удаление плагина";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "Обновить сейчас";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "Доступно обновление";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "Доступна версия %@. Обновите его в консоли сайта WordPress.";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "Просмотреть на WordPress.org";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Отменить изменения";
 
@@ -9868,6 +9990,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "Отменить подписку";
 
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "Комментарии закрыты";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Просмотр записей с сайта";
 
@@ -10083,11 +10208,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "блог";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "Владелец этого сайта разрешает показывать только краткое содержание. Чтобы просмотреть запись полностью, посетите сайт.";
+/* Button title */
+"reader.postDetails.viewFullPost" = "Показать запись полностью";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "Читайте запись полностью на веб-сайте %@";
+"reader.postDetails.viewModeDescription" = "Владелец этого сайта разрешает показывать только краткое содержание. Чтобы просмотреть запись полностью, посетите сайт.";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Карамель";
@@ -10319,6 +10444,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Отписаться от %@";
+
+/* Field title */
+"reader.userProfile.site" = "Сайт";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Назад";
@@ -10560,6 +10688,59 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "Улучшение тарифа";
 
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "Избранные";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "Популярные";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "Рекомендуемые";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "Результаты поиска";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "Плагинов не найдено";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "Установленные";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "Не удалось загрузить плагины. Нажмите, чтобы повторить попытку";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "Загрузка плагинов…";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "Добавить новый плагин";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "Нет активных плагинов";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "Добавить плагин";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "Нет неактивных плагинов";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "Все";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "Фильтр";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "Загрузка установленных плагинов…";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "Вы ещё не установили ни одного плагина";
+
+/* Installed plugins list title */
+"site.plugins.title" = "Плагины";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Домены";
 
@@ -10661,6 +10842,25 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for site switcher screen */
 "sitePicker.title" = "Мои сайты";
+
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "Автор: %@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "Автор плагина не предоставил описания этого плагина.";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "Активировать";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "Деактивировать";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "Удалить";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "Просмотреть на WordPress.org";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Конфиденциальность";
@@ -11364,6 +11564,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "Что-то пошло не так, пожалуйста, повторите попытку позже.";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "Не удалось найти медиафайл на устройстве";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Перейти в приложение Jetpack";

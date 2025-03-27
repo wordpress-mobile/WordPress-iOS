@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 /// Renders a table header view with bottom separator, and meant to be used
 /// alongside `ListTableViewCell`.
 ///

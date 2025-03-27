@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import SafariServices
+import WordPressShared
 
 struct ReaderPostMenu {
     let post: ReaderPost

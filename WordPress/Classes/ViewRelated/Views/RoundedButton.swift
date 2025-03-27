@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 @IBDesignable
 class RoundedButton: UIButton {

@@ -1,6 +1,7 @@
 import UIKit
 import BuildSettingsKit
 import StoreKit
+import WordPressShared
 
 // MARK: - App Ratings
 //

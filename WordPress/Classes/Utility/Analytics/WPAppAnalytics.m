@@ -100,6 +100,128 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
 #pragma mark - App Tracking
 
 /**
+<<<<<<< HEAD
+=======
+ *  @brief      Tracks stats with the blog details when available
+ */
++ (void)track:(WPAnalyticsStat)stat withBlog:(Blog *)blog {
+    [WPAppAnalytics track:stat withBlogID:blog.dotComID];
+}
+
+/**
+ *  @brief      Tracks stats with the blog_id when available
+ */
++ (void)track:(WPAnalyticsStat)stat withBlogID:(NSNumber *)blogID {
+    if (NSThread.isMainThread) {
+        [WPAppAnalytics track:stat withProperties:nil withBlogID:blogID];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [WPAppAnalytics track:stat withProperties:nil withBlogID:blogID];
+        });
+    }
+}
+
+/**
+ *  @brief      Tracks stats with the blog details when available
+ */
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlog:(Blog *)blog {
+    [WPAppAnalytics track:stat withProperties:properties withBlogID:blog.dotComID];
+}
+
+/**
+ *  @brief      Tracks stats with the blog_id when available
+ */
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlogID:(NSNumber *)blogID {
+    NSMutableDictionary *mutableProperties;
+    if (properties) {
+        mutableProperties = [NSMutableDictionary dictionaryWithDictionary:properties];
+    } else {
+        mutableProperties = [NSMutableDictionary new];
+    }
+    
+    if (blogID) {
+        [mutableProperties setObject:blogID forKey:WPAppAnalyticsKeyBlogID];
+
+        NSString *siteType = [self siteTypeForBlogWithID:blogID];
+        [mutableProperties setObject:siteType forKey:WPAppAnalyticsKeySiteType];
+    }
+    
+    if ([mutableProperties count] > 0) {
+        [WPAppAnalytics track:stat withProperties:mutableProperties];
+    } else {
+        [WPAppAnalytics track:stat];
+    }
+}
+
++ (void)track:(WPAnalyticsStat)stat withPost:(AbstractPost *)postOrPage {
+    [WPAppAnalytics track:stat withProperties:nil withPost:postOrPage];
+}
+
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withPost:(AbstractPost *)postOrPage {
+    NSMutableDictionary *mutableProperties;
+    if (properties) {
+        mutableProperties = [NSMutableDictionary dictionaryWithDictionary:properties];
+    } else {
+        mutableProperties = [NSMutableDictionary new];
+    }
+
+    if (postOrPage.postID.integerValue > 0) {
+        mutableProperties[WPAppAnalyticsKeyPostID] = postOrPage.postID;
+    }
+    mutableProperties[WPAppAnalyticsKeyHasGutenbergBlocks] = @([postOrPage containsGutenbergBlocks]);
+    mutableProperties[WPAppAnalyticsKeyHasStoriesBlocks] = @([postOrPage containsStoriesBlocks]);
+
+    [WPAppAnalytics track:stat withProperties:mutableProperties withBlog:postOrPage.blog];
+}
+
+
++ (void)trackTrainTracksInteraction:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
+{
+    NSMutableDictionary *mutableProperties;
+    if (properties) {
+        mutableProperties = [NSMutableDictionary dictionaryWithDictionary:properties];
+    } else {
+        mutableProperties = [NSMutableDictionary new];
+    }
+    // TrainTracks are specific to the AutomatticTracks tracker.
+    // The action property should be the event string for the stat.
+    // Other trackers should ignore `WPAnalyticsStatTrainTracksInteract`
+    NSString *eventName = [WPAnalyticsTrackerAutomatticTracks eventNameForStat:stat];
+    [mutableProperties setObject:eventName forKey:@"action"];
+
+    [self track:WPAnalyticsStatTrainTracksInteract withProperties:mutableProperties];
+}
+
+/**
+ *  @brief      Pass-through method to [WPAnalytics track:stat]. Use this method instead of calling WPAnalytics directly.
+ */
++ (void)track:(WPAnalyticsStat)stat {
+    [WPAnalytics track:stat];
+}
+
+/**
+ *  @brief      Pass-through method to WPAnalytics. Use this method instead of calling WPAnalytics directly.
+ */
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties {
+    [WPAnalytics track:stat withProperties:properties];
+}
+
++ (void)track:(WPAnalyticsStat)stat error:(NSError * _Nonnull)error withBlogID:(NSNumber *)blogID {
+    NSError *err = [self sanitizedErrorFromError:error];
+    NSDictionary *properties = @{
+                                 @"error_code": [@(err.code) stringValue],
+                                 @"error_domain": err.domain,
+                                 @"error_description": err.description
+    };
+    [self track:stat withProperties: properties withBlogID:blogID];
+}
+
++ (void)track:(WPAnalyticsStat)stat error:(NSError * _Nonnull)error {
+    [self track:stat error:error withBlogID:nil];
+}
+
+/**
+>>>>>>> trunk
  * @brief   Sanitize an NSError so we're not tracking unnecessary or usless information.
  */
 + (NSError * _Nonnull)sanitizedErrorFromError:(NSError * _Nonnull)error

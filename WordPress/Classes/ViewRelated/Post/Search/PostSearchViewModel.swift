@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import WordPressShared
 
 final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
     @Published var searchTerm = ""

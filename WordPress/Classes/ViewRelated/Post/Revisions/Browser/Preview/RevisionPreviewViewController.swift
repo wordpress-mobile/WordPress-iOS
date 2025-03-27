@@ -1,5 +1,7 @@
+import UIKit
 import Aztec
 import WordPressEditor
+import WordPressShared
 
 // View Controller for the Revision Visual preview
 //

@@ -1,5 +1,6 @@
 import UIKit
 import Gridicons
+import WordPressShared
 
 // This exists in addition to `SiteStatsInsightsDelegate` because `[StatSection]`
 // can't be represented in an Obj-C protocol.

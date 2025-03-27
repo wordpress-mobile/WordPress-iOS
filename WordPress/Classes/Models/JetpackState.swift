@@ -1,14 +1,14 @@
-@objcMembers class JetpackState: NSObject {
-    static let minimumVersionRequired = "3.4.3"
+@objcMembers public class JetpackState: NSObject {
+    public static let minimumVersionRequired = "3.4.3"
 
-    var siteID: NSNumber?
-    var version: String?
-    var connectedUsername: String?
-    var connectedEmail: String?
+    public var siteID: NSNumber?
+    public var version: String?
+    public internal(set) var connectedUsername: String?
+    public internal(set) var connectedEmail: String?
     var automatedTransfer: Bool = false
 
     /// Returns true if Jetpack is installed and activated on the site.
-    var isInstalled: Bool {
+    public var isInstalled: Bool {
         return version != nil
     }
 
@@ -16,7 +16,7 @@
     ///
     /// - Warning: Before Jetpack 3.6, a site might appear connected if it was connected and then disconnected. See https://github.com/Automattic/jetpack/issues/2137
     ///
-    var isConnected: Bool {
+    public var isConnected: Bool {
         guard isInstalled,
             let siteID,
             siteID.intValue > 0 else {
@@ -26,7 +26,7 @@
     }
 
     /// Return true is Jetpack has site-connection (Jetpack plugin connected to the site but not connected to WP.com account)
-    var isSiteConnection: Bool {
+    public var isSiteConnection: Bool {
         let isUserConnected = connectedUsername != nil || connectedEmail != nil
 
         return isConnected && !isUserConnected
@@ -36,14 +36,14 @@
 
     /// - SeeAlso: JetpackVersionMinimumRequired
     ///
-    var isUpdatedToRequiredVersion: Bool {
+    public var isUpdatedToRequiredVersion: Bool {
         guard let version else {
             return false
         }
         return version.compare(JetpackState.minimumVersionRequired, options: .numeric) != .orderedAscending
     }
 
-    override var description: String {
+    public override var description: String {
         if isConnected {
             let connectedAs = connectedUsername?.nonEmptyString()
                 ?? connectedEmail?.nonEmptyString()

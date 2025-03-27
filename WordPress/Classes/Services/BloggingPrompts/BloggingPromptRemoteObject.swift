@@ -1,7 +1,7 @@
 import Foundation
 
 /// Encapsulates a single blogging prompt object from the v3 API.
-struct BloggingPromptRemoteObject {
+public struct BloggingPromptRemoteObject {
     let promptID: Int
     let text: String
     let attribution: String
@@ -14,7 +14,7 @@ struct BloggingPromptRemoteObject {
     let bloganuaryId: String?
 
     /// Used for comparison on import
-    var dateString: String {
+    public var dateString: String {
         Self.dateFormatter.string(from: date)
     }
 }
@@ -50,7 +50,7 @@ extension BloggingPromptRemoteObject: Decodable {
         return formatter
     }()
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         self.promptID = try container.decode(Int.self, forKey: .id)

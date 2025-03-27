@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 import WordPressShared
 
 /// `BlogDashboardPersonalizable` is a protocol that defines the requirements for personalizing blog dashboard items.
@@ -141,4 +142,27 @@ extension NSNotification.Name {
     /// Sent whenever any of the blog settings managed by ``BlogDashboardPersonalizationService``
     /// are changed.
     static let blogDashboardPersonalizationSettingsChanged = NSNotification.Name("BlogDashboardPersonalizationSettingsChanged")
+}
+
+extension BloggingPromptSettings {
+
+    func configure(with remoteSettings: RemoteBloggingPromptsSettings, siteID: Int32, context: NSManagedObjectContext) {
+        self.siteID = siteID
+        self.promptCardEnabled = remoteSettings.promptCardEnabled
+        self.reminderTime = remoteSettings.reminderTime
+        self.promptRemindersEnabled = remoteSettings.promptRemindersEnabled
+        self.isPotentialBloggingSite = remoteSettings.isPotentialBloggingSite
+        updatePromptSettingsIfNecessary(siteID: Int(siteID), enabled: isPotentialBloggingSite)
+        self.reminderDays = reminderDays ?? BloggingPromptSettingsReminderDays(context: context)
+        reminderDays?.configure(with: remoteSettings.reminderDays)
+    }
+
+    private func updatePromptSettingsIfNecessary(siteID: Int, enabled: Bool) {
+        DispatchQueue.main.async {
+            let service = BlogDashboardPersonalizationService(siteID: siteID)
+            if !service.hasPreference(for: .prompts) {
+                service.setEnabled(enabled, for: .prompts)
+            }
+        }
+    }
 }

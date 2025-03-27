@@ -1,3 +1,6 @@
+import CoreData
+import WordPressShared
+
 /// Encapsulates a command to toggle following a post
 final class ReaderFollowAction {
     func execute(with post: ReaderPost,

@@ -1,6 +1,7 @@
 import UIKit
 import Photos
 import PhotosUI
+import WordPressShared
 
 final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate, ExternalMediaPickerViewDelegate, UIDocumentPickerDelegate, ImagePlaygroundPickerDelegate {
     let blog: Blog

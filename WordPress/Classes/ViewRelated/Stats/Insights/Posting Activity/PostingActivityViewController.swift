@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 struct PostingActivityViewModel {
     private let insightsStore: StatsInsightsStore

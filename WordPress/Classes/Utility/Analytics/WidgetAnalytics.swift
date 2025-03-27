@@ -1,6 +1,7 @@
 import Foundation
 import WidgetKit
 import JetpackStatsWidgetsCore
+import WordPressShared
 
 struct WidgetAnalytics {
     static func trackLoadedWidgetsOnApplicationOpened() {

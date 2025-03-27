@@ -5,6 +5,7 @@ import SwiftUI
 import AuthenticationServices
 import WordPressKit
 import WordPressAuthenticator
+import WordPressShared
 
 final actor SelfHostedSiteAuthenticator {
 

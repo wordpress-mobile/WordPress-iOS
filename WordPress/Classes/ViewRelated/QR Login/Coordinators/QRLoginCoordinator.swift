@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 struct QRLoginCoordinator: QRLoginParentCoordinator {
     enum QRLoginOrigin: String {

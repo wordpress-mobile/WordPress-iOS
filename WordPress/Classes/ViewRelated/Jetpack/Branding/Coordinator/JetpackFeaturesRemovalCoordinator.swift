@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// A class containing convenience methods for the the Jetpack features removal experience
 class JetpackFeaturesRemovalCoordinator: NSObject {

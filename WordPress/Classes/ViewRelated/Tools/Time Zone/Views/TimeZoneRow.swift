@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 struct TimeZoneRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(TimeZoneTableViewCell.self)

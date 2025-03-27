@@ -1,3 +1,5 @@
+import WordPressShared
+
 struct BloganuaryTracker {
 
     enum ModalAction: String {
