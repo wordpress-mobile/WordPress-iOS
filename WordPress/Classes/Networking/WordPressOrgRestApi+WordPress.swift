@@ -12,14 +12,17 @@ private func apiBase(blog: Blog) -> URL? {
 
 extension WordPressOrgRestApi {
     @objc
-    convenience init?(blog: Blog) {
+    convenience init?(
+        blog: Blog,
+        userAgent: String = WPUserAgent.wordPress()
+    ) {
         if let dotComID = blog.dotComID?.uint64Value,
            let token = blog.account?.authToken,
            token.count > 0 {
             self.init(
                 dotComSiteID: dotComID,
                 bearerToken: token,
-                userAgent: WPUserAgent.wordPress(),
+                userAgent: userAgent,
                 apiURL: AppEnvironment.current.wordPressComApiBase
             )
         } else if let apiBase = apiBase(blog: blog),
@@ -35,7 +38,7 @@ extension WordPressOrgRestApi {
                     password: password,
                     adminURL: adminURL
                 ),
-                userAgent: WPUserAgent.wordPress()
+                userAgent: userAgent
             )
         } else {
             return nil
