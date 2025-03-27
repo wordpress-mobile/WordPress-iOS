@@ -1,6 +1,6 @@
 import Foundation
 
-extension ReaderSiteTopic {
+public extension ReaderSiteTopic {
 
     /// Find a site topic by its site id
     ///

@@ -1,6 +1,6 @@
 import Foundation
 
-extension ReaderAbstractTopic {
+public extension ReaderAbstractTopic {
 
     /// Fetch all `ReaderAbstractTopics` currently in Core Data.
     ///

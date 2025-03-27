@@ -4,7 +4,7 @@ import WordPressKit
 
 public typealias Domain = RemoteDomain
 
-extension Domain {
+public extension Domain {
     init(managedDomain: ManagedDomain) {
         self.init(domainName: managedDomain.domainName,
                   isPrimaryDomain: managedDomain.isPrimary,
@@ -17,16 +17,16 @@ extension Domain {
     }
 }
 
-class ManagedDomain: NSManagedObject {
+public class ManagedDomain: NSManagedObject {
 
     // MARK: - NSManagedObject
 
-    override class func entityName() -> String {
+    public override class func entityName() -> String {
         return "Domain"
     }
 
-    struct Attributes {
-        static let domainName = "domainName"
+    public struct Attributes {
+        public static let domainName = "domainName"
         static let isPrimary = "isPrimary"
         static let domainType = "domainType"
         static let autoRenewing = "autoRenewing"
@@ -36,21 +36,21 @@ class ManagedDomain: NSManagedObject {
         static let expiryDate = "expiryDate"
     }
 
-    struct Relationships {
-        static let blog = "blog"
+    public struct Relationships {
+        public static let blog = "blog"
     }
 
-    @NSManaged var domainName: String
-    @NSManaged var isPrimary: Bool
-    @NSManaged var domainType: DomainType
-    @NSManaged var blog: Blog
-    @NSManaged var autoRenewing: Bool
-    @NSManaged var autoRenewalDate: String
-    @NSManaged var expirySoon: Bool
-    @NSManaged var expired: Bool
-    @NSManaged var expiryDate: String
+    @NSManaged public var domainName: String
+    @NSManaged public var isPrimary: Bool
+    @NSManaged public var domainType: DomainType
+    @NSManaged public var blog: Blog
+    @NSManaged public var autoRenewing: Bool
+    @NSManaged public var autoRenewalDate: String
+    @NSManaged public var expirySoon: Bool
+    @NSManaged public var expired: Bool
+    @NSManaged public var expiryDate: String
 
-    func updateWith(_ domain: Domain, blog: Blog) {
+    public func updateWith(_ domain: Domain, blog: Blog) {
         self.domainName = domain.domainName
         self.isPrimary = domain.isPrimaryDomain
         self.domainType = domain.domainType

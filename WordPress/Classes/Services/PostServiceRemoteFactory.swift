@@ -2,8 +2,8 @@ import Foundation
 import WordPressKit
 import WordPressShared
 
-@objc class PostServiceRemoteFactory: NSObject {
-    @objc func forBlog(_ blog: Blog) -> PostServiceRemote? {
+@objc public class PostServiceRemoteFactory: NSObject {
+    @objc public func forBlog(_ blog: Blog) -> PostServiceRemote? {
         if blog.supports(.wpComRESTAPI),
            let api = blog.wordPressComRestApi(),
            let dotComID = blog.dotComID {
@@ -19,7 +19,7 @@ import WordPressShared
         return nil
     }
 
-    @objc func restRemoteFor(siteID: NSNumber, context: NSManagedObjectContext) -> PostServiceRemoteREST? {
+    @objc public func restRemoteFor(siteID: NSNumber, context: NSManagedObjectContext) -> PostServiceRemoteREST? {
         guard let api = apiForRESTRequest(using: context) else {
             return nil
         }

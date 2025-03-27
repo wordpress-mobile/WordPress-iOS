@@ -43,7 +43,7 @@ extension PageTemplateCategory {
 
 }
 
-extension PageTemplateCategory {
+public extension PageTemplateCategory {
 
     convenience init(context: NSManagedObjectContext, category: RemoteLayoutCategory, ordinal: Int) {
         self.init(context: context)

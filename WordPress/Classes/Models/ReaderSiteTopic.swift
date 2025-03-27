@@ -36,7 +36,7 @@ import Foundation
         SiteOrganizationType(rawValue: organizationID) ?? .none
     }
 
-    var isP2Type: Bool {
+    public var isP2Type: Bool {
         return organizationType == .p2 || organizationType == .automattic
     }
 
@@ -48,7 +48,7 @@ import Foundation
         return postSubscription?.sendPosts ?? false
     }
 
-    var canManageNotifications: Bool {
+    public var canManageNotifications: Bool {
         !isExternal
     }
 

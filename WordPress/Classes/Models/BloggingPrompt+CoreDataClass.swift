@@ -17,7 +17,7 @@ public class BloggingPrompt: NSManagedObject {
         self.displayAvatarURLs = []
     }
 
-    var promptAttribution: BloggingPromptsAttribution? {
+    public var promptAttribution: BloggingPromptsAttribution? {
         BloggingPromptsAttribution(rawValue: attribution.lowercased())
     }
 
@@ -26,7 +26,7 @@ public class BloggingPrompt: NSManagedObject {
     /// - Parameters:
     ///   - remotePrompt: The remote prompt model to convert
     ///   - siteID: The ID of the site that the prompt is intended for
-    func configure(with remotePrompt: BloggingPromptRemoteObject, for siteID: Int32) {
+    public func configure(with remotePrompt: BloggingPromptRemoteObject, for siteID: Int32) {
         self.promptID = Int32(remotePrompt.promptID)
         self.siteID = siteID
         self.text = remotePrompt.text
@@ -42,7 +42,7 @@ public class BloggingPrompt: NSManagedObject {
         }
     }
 
-    func textForDisplay() -> String {
+    public func textForDisplay() -> String {
         return text.stringByDecodingXMLCharacters().trim()
     }
 
@@ -54,24 +54,24 @@ public class BloggingPrompt: NSManagedObject {
     /// - Parameters:
     ///   - localDate: The date to compare against in local timezone.
     /// - Returns: True if the year, month, and day components of the `localDate` matches the prompt's localized date.
-    func inSameDay(as dateToCompare: Date) -> Bool {
+    public func inSameDay(as dateToCompare: Date) -> Bool {
         return DateFormatters.utc.string(from: date) == DateFormatters.local.string(from: dateToCompare)
     }
 
     /// Used for comparison on upsert  – there can't be two `BloggingPrompt` objects with the same date, so we can use it as a unique identifier
     @objc
-    var dateString: String {
+    public var dateString: String {
         DateFormatters.local.string(from: date)
     }
 }
 
 // MARK: - Notification Payload
 
-extension BloggingPrompt {
+public extension BloggingPrompt {
 
     struct NotificationKeys {
-        static let promptID = "prompt_id"
-        static let siteID = "site_id"
+        public static let promptID = "prompt_id"
+        public static let siteID = "site_id"
     }
 
 }

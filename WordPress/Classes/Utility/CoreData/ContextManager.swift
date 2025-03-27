@@ -282,7 +282,7 @@ extension ContextManager {
     /// Tests purpose only
     static var overrideInstance: ContextManager?
 
-    @objc class func sharedInstance() -> ContextManager {
+    @objc public class func sharedInstance() -> ContextManager {
         if let overrideInstance {
             return overrideInstance
         }
@@ -290,14 +290,14 @@ extension ContextManager {
         return ContextManager.internalSharedInstance
     }
 
-    static var shared: ContextManager {
+    public static var shared: ContextManager {
         return sharedInstance()
     }
 }
 
 extension ContextManager {
     /// - warning: This is designed to be used only for testing purposes.
-    func resetEverything() {
+    public func resetEverything() {
         let container = persistentContainer.persistentStoreCoordinator
         assert(container.persistentStores.count == 1)
         guard let store = container.persistentStores.first, let storeURL = store.url else {

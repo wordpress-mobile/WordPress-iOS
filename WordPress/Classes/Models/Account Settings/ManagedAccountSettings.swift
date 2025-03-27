@@ -4,15 +4,15 @@ import WordPressKit
 
 // MARK: - Reflects the user's Account Settings, as stored in Core Data.
 //
-class ManagedAccountSettings: NSManagedObject {
+public class ManagedAccountSettings: NSManagedObject {
 
     // MARK: - NSManagedObject
 
-    override class func entityName() -> String {
+    public override class func entityName() -> String {
         return "AccountSettings"
     }
 
-    func updateWith(_ accountSettings: AccountSettings) {
+    public func updateWith(_ accountSettings: AccountSettings) {
         firstName = accountSettings.firstName
         lastName = accountSettings.lastName
         displayName = accountSettings.displayName
@@ -38,7 +38,7 @@ class ManagedAccountSettings: NSManagedObject {
     ///
     /// - Returns: the change object needed to revert this change
     ///
-    func applyChange(_ change: AccountSettingsChange) -> AccountSettingsChange {
+    public func applyChange(_ change: AccountSettingsChange) -> AccountSettingsChange {
         let reverse = reverseChange(change)
 
         switch change {
@@ -95,7 +95,7 @@ class ManagedAccountSettings: NSManagedObject {
     }
 }
 
-extension AccountSettings {
+public extension AccountSettings {
     init(managed: ManagedAccountSettings) {
         self.init(firstName: managed.firstName.stringByDecodingXMLCharacters(),
                   lastName: managed.lastName.stringByDecodingXMLCharacters(),

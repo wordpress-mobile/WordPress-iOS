@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-extension Post {
+public extension Post {
 
     @NSManaged var commentCount: NSNumber?
     @NSManaged var disabledPublicizeConnections: [NSNumber: [String: String]]?
