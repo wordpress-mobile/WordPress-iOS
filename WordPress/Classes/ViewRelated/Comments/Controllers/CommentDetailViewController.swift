@@ -719,7 +719,8 @@ private extension CommentStatusType {
 
 private extension CommentDetailViewController {
     func unapproveComment() {
-        if isNotificationComment { WPAppAnalytics.track(.notificationsCommentUnapproved, properties: Constants.notificationDetailSource, blogID: notification?.metaSiteID)
+        if isNotificationComment {
+            WPAppAnalytics.track(.notificationsCommentUnapproved, properties: Constants.notificationDetailSource, blogID: notification?.metaSiteID)
         } else {
             CommentAnalytics.trackCommentUnApproved(comment: comment)
         }

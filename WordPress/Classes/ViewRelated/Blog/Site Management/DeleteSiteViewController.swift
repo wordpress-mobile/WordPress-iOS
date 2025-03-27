@@ -214,14 +214,12 @@ open class DeleteSiteViewController: UITableViewController {
         SVProgressHUD.show(withStatus: status)
 
         let trackedBlog = blog
-        if let trackedBlog {
-            WPAppAnalytics.track(.siteSettingsDeleteSiteRequested, blog: trackedBlog)
-        }
+        WPAppAnalytics.track(.siteSettingsDeleteSiteRequested, blog: trackedBlog)
+
         let service = SiteManagementService(coreDataStack: ContextManager.shared)
         service.deleteSiteForBlog(blog, success: { [weak self] in
-            if let trackedBlog {
-                WPAppAnalytics.track(.siteSettingsDeleteSiteResponseOK, blog: trackedBlog)
-            }
+            WPAppAnalytics.track(.siteSettingsDeleteSiteResponseOK, blog: trackedBlog)
+
             let status = NSLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
             SVProgressHUD.showDismissibleSuccess(status: status)
 
@@ -236,9 +234,8 @@ open class DeleteSiteViewController: UITableViewController {
             }
         }, failure: { error in
             DDLogError("Error deleting site: \(error.localizedDescription)")
-            if let trackedBlog {
-                WPAppAnalytics.track(.siteSettingsDeleteSiteResponseError, blog: trackedBlog)
-            }
+            WPAppAnalytics.track(.siteSettingsDeleteSiteResponseError, blog: trackedBlog)
+
             SVProgressHUD.dismiss()
 
             let errorTitle = NSLocalizedString("Delete Site Error", comment: "Title of alert when site deletion fails")

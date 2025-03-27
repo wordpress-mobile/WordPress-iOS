@@ -775,9 +775,7 @@ public protocol ThemePresenter: AnyObject {
         _ = themeService.activate(theme,
             for: blog,
             success: { [weak self] (theme: Theme?) in
-                if let blog = self?.blog {
-                    WPAppAnalytics.track(.themesChangedTheme, properties: ["theme_id": theme?.themeId ?? ""], blog: blog)
-                }
+                WPAppAnalytics.track(.themesChangedTheme, properties: ["theme_id": theme?.themeId ?? ""], blog: blog)
 
                 self?.collectionView?.reloadData()
 
