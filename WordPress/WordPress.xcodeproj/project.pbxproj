@@ -1252,7 +1252,6 @@
 		FEAA6F79298CE4A600ADB44C /* PluginJetpackProxyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAA6F78298CE4A600ADB44C /* PluginJetpackProxyServiceTests.swift */; };
 		FECA44322836647100D01F15 /* PromptRemindersSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FECA44312836647100D01F15 /* PromptRemindersSchedulerTests.swift */; };
 		FEE48EFF2A4C9855008A48E0 /* Blog+PublicizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE48EFE2A4C9855008A48E0 /* Blog+PublicizeTests.swift */; };
-		FEE54C4C2C12393A00740A68 /* ReaderPostStreamServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE54C4B2C12393A00740A68 /* ReaderPostStreamServiceTest.swift */; };
 		FEF7F3402AFEA0C200F793FC /* blogging-prompts-bloganuary.json in Resources */ = {isa = PBXBuildFile; fileRef = FEF7F33F2AFEA0C200F793FC /* blogging-prompts-bloganuary.json */; };
 		FEFA263E26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEFA263D26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift */; };
 		FEFA6AC62A86824A004EE5E6 /* PostHelperJetpackSocialTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEFA6AC52A86824A004EE5E6 /* PostHelperJetpackSocialTests.swift */; };
@@ -2796,7 +2795,6 @@
 		FEAA6F78298CE4A600ADB44C /* PluginJetpackProxyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginJetpackProxyServiceTests.swift; sourceTree = "<group>"; };
 		FECA44312836647100D01F15 /* PromptRemindersSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptRemindersSchedulerTests.swift; sourceTree = "<group>"; };
 		FEE48EFE2A4C9855008A48E0 /* Blog+PublicizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+PublicizeTests.swift"; sourceTree = "<group>"; };
-		FEE54C4B2C12393A00740A68 /* ReaderPostStreamServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostStreamServiceTest.swift; sourceTree = "<group>"; };
 		FEF7F33F2AFEA0C200F793FC /* blogging-prompts-bloganuary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "blogging-prompts-bloganuary.json"; sourceTree = "<group>"; };
 		FEFA263D26C58427009CCB7E /* ShareAppTextActivityItemSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppTextActivityItemSourceTests.swift; sourceTree = "<group>"; };
 		FEFA6AC52A86824A004EE5E6 /* PostHelperJetpackSocialTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHelperJetpackSocialTests.swift; sourceTree = "<group>"; };
@@ -5048,7 +5046,6 @@
 				5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */,
 				4AEF2DD829A84B2C00345734 /* ReaderSiteServiceTests.swift */,
 				E66969C71B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift */,
-				FEE54C4B2C12393A00740A68 /* ReaderPostStreamServiceTest.swift */,
 				FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */,
 				59FBD5611B5684F300734466 /* ThemeServiceTests.m */,
 				40E4698E2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift */,
@@ -8224,7 +8221,6 @@
 				7E53AB0A20FE83A9005796FE /* MockContentCoordinator.swift in Sources */,
 				932645A41E7C206600134988 /* GutenbergSettingsTests.swift in Sources */,
 				933D1F471EA64108009FB462 /* TestingAppDelegate.m in Sources */,
-				FEE54C4C2C12393A00740A68 /* ReaderPostStreamServiceTest.swift in Sources */,
 				C8567498243F41CA001A995E /* MockTenorService.swift in Sources */,
 				1D19C56629C9DB0A00FB0087 /* GutenbergVideoPressUploadProcessorTests.swift in Sources */,
 				4A2C73F72A9585B000ACE79E /* PostRepositoryTests.swift in Sources */,
