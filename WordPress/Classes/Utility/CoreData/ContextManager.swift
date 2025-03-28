@@ -222,7 +222,7 @@ private extension ContextManager {
 
 private extension ContextManager {
     static func createPersistentContainer(storeURL: URL, modelName: String) -> NSPersistentContainer {
-        guard var modelFileURL = Bundle.main.url(forResource: "WordPress", withExtension: "momd") else {
+        guard var modelFileURL = Bundle(for: ContextManager.self).url(forResource: "WordPress", withExtension: "momd") else {
             fatalError("Can't find WordPress.momd")
         }
 
