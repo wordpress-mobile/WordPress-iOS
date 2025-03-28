@@ -1,16 +1,6 @@
 import CoreData
 import WordPressShared
 
-public extension Blog {
-    /// Only WordPress.com hosted sites we administer may be managed
-    ///
-    /// - Returns: Whether site management is permitted
-    ///
-    @objc func supportsSiteManagementServices() -> Bool {
-        return isHostedAtWPcom && isAdmin
-    }
-}
-
 /// Site Deletion Notification
 ///
 extension NSNotification.Name {
