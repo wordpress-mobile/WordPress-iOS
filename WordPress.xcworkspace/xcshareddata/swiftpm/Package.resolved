@@ -1,5 +1,5 @@
 {
-  "originHash" : "8117dae8b3d06437bc38067b5c732e1508045719f050cca08922ff947919bda4",
+  "originHash" : "b637515cdb9c1c25894b401b59b20ad56c195cd52aa6bee2ada1b56cd753ece8",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -391,8 +391,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
       "state" : {
-        "branch" : "add-search-param-in-theme-service-remote",
-        "revision" : "4fbd973b499f1312103311ff5c883fba19c44dc6"
+        "branch" : "wpios-edition",
+        "revision" : "7dc4ed37223be387e95a5d68e23f1dc956db318b"
       }
     },
     {
