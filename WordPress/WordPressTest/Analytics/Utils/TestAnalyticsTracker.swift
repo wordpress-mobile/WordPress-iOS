@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 @testable import WordPress
 
 class TestAnalyticsTracker: NSObject {
