@@ -6,13 +6,11 @@ private enum Constants {
     static let Ranges = "ranges"
 }
 
-extension Notification {
-    enum ContentType: String {
-        case comment
-        case user
-        case text
-        case image
-    }
+enum ContentType: String {
+    case comment
+    case user
+    case text
+    case image
 }
 
 public class NotificationContentFactory: FormattableContentFactory {
@@ -36,7 +34,7 @@ public class NotificationContentFactory: FormattableContentFactory {
     }
 
     private static func content(for type: String, with rawBlock: [String: AnyObject], actions: [FormattableContentAction], ranges: [FormattableContentRange], parent: Notifiable) -> FormattableContent? {
-        guard let type = Notification.ContentType(rawValue: type) else {
+        guard let type = ContentType(rawValue: type) else {
             return NotificationTextContent(dictionary: rawBlock, actions: actions, ranges: ranges, parent: parent)
         }
 
