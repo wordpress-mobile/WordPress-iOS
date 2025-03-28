@@ -2,6 +2,7 @@ import UIKit
 import CoreData
 import Combine
 import WordPressKit
+import WordPressShared
 import SwiftUI
 
 extension PostSettingsViewController {

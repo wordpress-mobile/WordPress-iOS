@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 
 /// This class will help track whether or not a user should be prompted for an
 /// app review.  This class is loosely based on
@@ -16,7 +17,7 @@ class AppRatingUtility: NSObject {
     /// The App Review URL that we send off to UIApplication to open up the app
     /// store review page.
     ///
-    @objc let appReviewUrl: URL = Constants.defaultAppReviewURL
+    @objc var appReviewUrl: URL { Constants.defaultAppReviewURL }
 
     /// Sets the number of days that have to pass between AppReview prompts
     /// Apple only allows 3 prompts per year. We're trying to be a bit more conservative and are doing
@@ -337,6 +338,6 @@ class AppRatingUtility: NSObject {
     }
 
     private enum Constants {
-        static let defaultAppReviewURL = URL(string: "https://itunes.apple.com/app/id\(AppConstants.itunesAppID)?mt=8&action=write-review")!
+        static let defaultAppReviewURL = URL(string: "https://itunes.apple.com/app/id\(BuildSettings.current.itunesAppID)?mt=8&action=write-review")!
     }
 }

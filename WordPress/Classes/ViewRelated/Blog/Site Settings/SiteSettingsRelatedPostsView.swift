@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import SVProgressHUD
 import WordPressShared
+import WordPressUI
 
 struct RelatedPostsSettingsView: View {
     private let blog: Blog
@@ -103,7 +104,7 @@ struct RelatedPostsSettingsView: View {
             isSaving = false
         }, failure: { _ in
             isSaving = false
-            SVProgressHUD.showDismissibleError(withStatus: Strings.saveFailed)
+            SVProgressHUD.showDismissibleError(status: Strings.saveFailed)
         })
     }
 }

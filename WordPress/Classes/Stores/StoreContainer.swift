@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 class StoreContainer {
     static let shared = StoreContainer()

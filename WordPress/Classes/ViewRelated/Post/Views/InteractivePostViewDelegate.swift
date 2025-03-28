@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 protocol InteractivePostViewDelegate: AnyObject {
     func edit(_ post: AbstractPost)

@@ -7,10 +7,6 @@
 @import WordPressKit;
 @import OCMock;
 
-@interface WPAccount ()
-@property (nonatomic, readwrite) WordPressComRestApi *wordPressComRestApi;
-@end
-
 @interface PostCategoryServiceForStubbing : PostCategoryService
 
 @property (nonatomic, strong) TaxonomyServiceRemoteREST *remoteForStubbing;
@@ -44,7 +40,7 @@
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
 
     Blog *blog = [ModelTestHelper insertDotComBlogWithContext:self.manager.mainContext];
-    blog.account.wordPressComRestApi = api;
+    blog.account._private_wordPressComRestApi = api;
     blog.dotComID = @1;
     self.blog = blog;
 

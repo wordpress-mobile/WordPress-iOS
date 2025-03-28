@@ -1,4 +1,7 @@
+import UIKit
+import BuildSettingsKit
 import WordPressFlux
+import WordPressShared
 
 class WhatIsNewScenePresenter: ScenePresenter {
 
@@ -9,6 +12,8 @@ class WhatIsNewScenePresenter: ScenePresenter {
     private var startPresenting: (() -> Void)?
 
     private let store: AnnouncementsStore
+
+    static var title: String { WhatIsNewStrings.title }
 
     private func shouldPresentWhatIsNew(on viewController: UIViewController) -> Bool {
         if UIDevice.isPad() && versionsDisabledForIpad.contains(self.store.appVersionName) {
@@ -142,7 +147,15 @@ private extension WhatIsNewScenePresenter {
     }
 
     enum WhatIsNewStrings {
-        static let title = AppConstants.Settings.whatIsNewTitle
+        static var title: String {
+            switch BuildSettings.current.brand {
+            case .wordpress:
+                NSLocalizedString("What's New in WordPress", comment: "Opens the What's New / Feature Announcement modal")
+            case .jetpack:
+                NSLocalizedString("What's New in Jetpack", comment: "Opens the What's New / Feature Announcement modal")
+            }
+        }
+
         static let versionPrefix = NSLocalizedString("Version ", comment: "Description for the version label in the What's new page.")
         static let continueButtonTitle = NSLocalizedString("Continue", comment: "Title for the continue button in the What's New page.")
         static let gotItButtonTitle = NSLocalizedString("Got it", comment: "Title for the continue button in the dashboard's custom What's New page.")

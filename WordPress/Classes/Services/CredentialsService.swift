@@ -1,3 +1,4 @@
+import BuildSettingsKit
 import SFHFKeychainUtils
 
 protocol CredentialsProvider {
@@ -18,6 +19,6 @@ class CredentialsService {
     }
 
     func getOAuthToken(site: JetpackSiteRef) -> String? {
-        return provider.getPassword(username: site.username, service: AppConstants.authKeychainServiceName)
+        return provider.getPassword(username: site.username, service: BuildSettings.current.authKeychainServiceName)
     }
 }

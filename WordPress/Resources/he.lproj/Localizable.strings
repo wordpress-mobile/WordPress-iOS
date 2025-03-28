@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-01-28 14:54:09+0000 */
+/* Translation-Revision-Date: 2025-03-11 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: he_IL */
@@ -2361,9 +2361,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "תאריך סיום";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "להיכנס לתצוגה של מסך מלא";
-
 /* Enter a custom value */
 "Enter a custom value" = "הזנת ערך מותאם אישית";
 
@@ -2516,9 +2513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "לא כולל ערכות עיצוב, תוספים והעלאות";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "לצאת מתצוגה של מסך מלא";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "הורחב";
@@ -5042,14 +5036,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "מענה לתגובות שלך";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "תגובה";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "התגובה נשלחה!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "טקסט תגובה";
@@ -5058,9 +5048,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "לענות ל-%1$@";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "מענה לפוסט";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "אישור ידני דרוש לתגובות שכוללות כמות קישורים גבוהה מזה.";
@@ -6218,9 +6205,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "אירעה בעיה בעת טעינת ההגדרות של הודעות שלך";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "אירעה שגיאה בלתי צפויה בעת עריכת התגובה";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "חלה שגיאה בלתי צפויה בעת עריכת התגובה";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6231,9 +6215,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "אירעה שגיאה לא צפויה בעת שליחת ההזמנה שלך";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "אירעה שגיאה לא צפויה בעת שליחת התגובה שלך";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "אירעה שגיאה לא צפויה בעת עדכון ההגדרות של הודעות שלך";
@@ -7694,6 +7675,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "כותרת";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "תגובה חדשה";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "כתובת האתר שהזנת אינה עבור אתר ב-WordPress. כדי שנוכל להתחבר לאתר, האתר חייב להשתמש בפלטפורמה של WordPress.";
 
@@ -7805,6 +7789,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "סיסמאות אפליקציה הן דרך מאובטחת יותר להתחבר לאתר באחסון עצמי, והן מאפשרות תמיכה באפשרויות כמו %@.";
+
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "ניהול תוספים";
 
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "ניהול משתמשים";
@@ -8022,6 +8009,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "לענות ל-%1$@";
+
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "למחוק טיוטה";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "להמשיך לערוך";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "לשמור טיוטה";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "שליחת התגובה נכשלה";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "להוסיף תגובה";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "להגיב";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "לכתוב תגובה...";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "לכתוב תשובה...";
+
+/* Navigation bar button title */
+"commentCreate.send" = "לשלוח";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "לבטל את השינויים";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "להמשיך לערוך";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "שמירת התגובה נכשלה";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "ערוך תגובה";
+
+/* Error title */
+"comments.failedToLike" = "סימון הלייק בתגובה נכשל";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "ייתכן ששם המשתמש או הסיסמה המאוחסנים באפליקציה אינם מעודכנים. יש להזין מחדש את הסיסמה בהגדרות ולנסות שוב.";
@@ -8381,6 +8410,18 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "לשלוח משוב";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "לא עכשיו";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "האם ברצונך לשתף משוב על העורך הניסיוני?";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "לשתף משוב";
 
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "תכונות ניסיוניות";
@@ -9336,6 +9377,90 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "תוכניות";
 
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "להפעיל";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "הופעל";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "יש להמתין כמה רגעים, אנחנו מפעילים את התוסף...";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "מפעיל את התוסף";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "מאת %@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "לכבות";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "יש להמתין כמה רגעים, אנחנו משביתים את התוסף...";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "משבית את התוסף";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "למחוק";
+
+/* Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name */
+"pluginDetails.delete.confirmationMessage" = "האם ברצונך למחוק את %@?";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "האם למחוק את התוסף?";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "להתקין";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "יש להמתין כמה רגעים, אנחנו מתקינים את התוסף...";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "להתקין תוסף";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "טוען את פרטי בדומיין…";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "תיעוד שינויים";
+
+/* Title of the description section in plugin details */
+"pluginDetails.section.description" = "תיאור";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "פרטים";
+
+/* Title of the FAQ section in plugin details */
+"pluginDetails.section.faq" = "שאלות נפוצות";
+
+/* Title of the installation section in plugin details */
+"pluginDetails.section.installation" = "ההתקנה";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "ביקורות";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "צילומי מסך";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "יש להמתין כמה רגעים, אנחנו מסירים את התוסף...";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "מסיר את ההתקנה של התוסף";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "לעדכן כעת";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "עדכון זמין";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "הגרסה %@ זמינה. עליך לבצע את העדכון מלוח הבקרה של האתר ב-WordPress.";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "להציג ב-WordPress.org";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "לבטל את השינויים";
 
@@ -9862,6 +9987,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "לבטל את ההרשמה";
 
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "תוכן זה סגור לתגובות";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "מציג פוסטים של האתר";
 
@@ -10077,11 +10205,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "בלוג";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "בעלי אתר זה מרשים לנו להציג רק תמצית מתוכן האתר. הפוסט המלא יוצג רק למבקרים באתר.";
+/* Button title */
+"reader.postDetails.viewFullPost" = "להצגת הפוסט המלא";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "הפוסט המלא מחכה לך ב-%@";
+"reader.postDetails.viewModeDescription" = "בעלי אתר זה מרשים לנו להציג רק תמצית מתוכן האתר. הפוסט המלא יוצג רק למבקרים באתר.";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "מתקתק";
@@ -10307,6 +10435,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "להפסיק את המעקב אחר %@";
+
+/* Field title */
+"reader.userProfile.site" = "אתר";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "חזרה";
@@ -10545,6 +10676,59 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "לשדרג לתוכנית";
 
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "פריטים נבחרים";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "פופולריים";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "מומלץ";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "תוצאות חיפוש";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "לא נמצאו תוספים";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "מותקן";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "טעינת התוספים נכשלה. יש להקיש כאן כדי לנסות שוב";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "טוען תוספים...";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "להוסיף תוסף חדש";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "אין תוספים פעילים";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "להוסיף תוסף";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "אין תוספים לא פעילים";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "הכול";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "לסנן";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "טוען תוספים מותקנים…";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "עדיין לא התקנת תוספים";
+
+/* Installed plugins list title */
+"site.plugins.title" = "תוספים";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "דומיינים";
 
@@ -10646,6 +10830,25 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for site switcher screen */
 "sitePicker.title" = "האתרים שלי";
+
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "מאת %@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "מחבר התוסף לא סיפק תיאור לתוסף זה.";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "להפעיל";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "לכבות";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "למחוק";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "להציג ב-WordPress.org";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "פרטיות";
@@ -11346,6 +11549,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "משהו השתבש, יש לנסות שוב מאוחר יותר.";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "לא ניתן לאתר את קובץ המדיה במכשיר";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "החלפה לאפליקציה של Jetpack";

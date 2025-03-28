@@ -1,5 +1,6 @@
-import Foundation
+import UIKit
 import WordPressShared
+import WordPressUI
 
 extension WPStyleGuide {
 
@@ -30,5 +31,19 @@ extension WPStyleGuide {
         static let buttonBorderColor = UIColor.systemGray3
         static let switchOnTintColor = UIColor.systemGreen
         static let switchInProgressTintColor = UIAppColor.primary
+    }
+}
+
+private extension NSAttributedString.Key {
+    /// Converts a collection of NSAttributedString Attributes, with 'NSAttributedStringKey' instances as 'Keys', into an
+    /// equivalent collection that uses regular 'String' instances as keys.
+    ///
+    static func convertToRaw(attributes: [NSAttributedString.Key: Any]) -> [String: Any] {
+        var output = [String: Any]()
+        for (key, value) in attributes {
+            output[key.rawValue] = value
+        }
+
+        return output
     }
 }

@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import WordPressShared
 
 class PreviewDeviceSelectionViewController: UIViewController {
     enum PreviewDevice: String, CaseIterable {

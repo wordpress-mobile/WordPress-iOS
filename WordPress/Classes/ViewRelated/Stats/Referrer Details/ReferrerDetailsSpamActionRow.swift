@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 struct ReferrerDetailsSpamActionRow: ImmuTableRow {
     private typealias CellType = ReferrerDetailsSpamActionCell

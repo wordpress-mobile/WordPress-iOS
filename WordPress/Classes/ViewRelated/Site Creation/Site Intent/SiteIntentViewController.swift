@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 class SiteIntentViewController: CollapsableHeaderViewController {
     private let selection: SiteIntentStep.SiteIntentSelection

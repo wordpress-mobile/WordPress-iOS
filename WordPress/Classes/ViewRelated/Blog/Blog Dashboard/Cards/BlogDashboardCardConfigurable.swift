@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 protocol BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardCardModel)

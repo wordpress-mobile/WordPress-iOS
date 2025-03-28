@@ -1,4 +1,6 @@
+import UIKit
 import Gridicons
+import WordPressUI
 
 class RevisionOperation: NSObject {
     @IBOutlet private(set) var internalView: RevisionOperationView!

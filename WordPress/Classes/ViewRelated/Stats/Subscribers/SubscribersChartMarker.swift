@@ -1,3 +1,4 @@
+import UIKit
 import DGCharts
 
 class SubscribersChartMarker: StatsChartMarker {

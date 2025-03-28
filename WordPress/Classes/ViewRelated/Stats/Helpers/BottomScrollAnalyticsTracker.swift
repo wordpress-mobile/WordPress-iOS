@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import WordPressShared
 
 // MARK: - BottomScrollAnalyticsTracker
 

@@ -1,3 +1,5 @@
+import WordPressShared
+
 @objc enum StatSection: Int {
     case periodToday
     case periodOverviewViews

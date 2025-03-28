@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressShared
 
 struct DomainResultView: View {
     @State private var subtitleHeight: CGFloat = .zero

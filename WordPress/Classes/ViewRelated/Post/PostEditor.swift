@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import SVProgressHUD
 import WordPressFlux
 
 enum EditMode {

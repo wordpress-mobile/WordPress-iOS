@@ -1,5 +1,6 @@
 import UIKit
 import WordPressFlux
+import WordPressUI
 
 class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, StoryboardLoadable {
     static var defaultStoryboardName: String = "SiteStatsDashboard"

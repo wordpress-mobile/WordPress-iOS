@@ -1,3 +1,5 @@
+import UIKit
+
 enum JetpackRemoteInstallState: Equatable {
     case install
     case installing

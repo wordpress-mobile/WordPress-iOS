@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 class StatsGhostBaseCell: StatsBaseCell {
     private typealias Style = WPStyleGuide.Stats
     private(set) var topBorder: UIView?

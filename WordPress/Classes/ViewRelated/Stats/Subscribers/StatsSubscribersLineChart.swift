@@ -1,5 +1,6 @@
 import Foundation
 import DGCharts
+import WordPressUI
 
 private struct SubscriberLineChartData: LineChartDataConvertible {
     let accessibilityDescription: String

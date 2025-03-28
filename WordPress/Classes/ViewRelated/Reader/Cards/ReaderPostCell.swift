@@ -2,8 +2,6 @@ import SwiftUI
 import UIKit
 import Combine
 import WordPressUI
-import WordPressShared
-import AsyncImageKit
 
 final class ReaderPostCell: ReaderStreamBaseCell {
     private let view = ReaderPostCellView()

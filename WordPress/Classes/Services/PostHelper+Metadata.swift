@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 extension PostHelper {
     @objc static let foreignIDKey = "wp_jp_foreign_id"

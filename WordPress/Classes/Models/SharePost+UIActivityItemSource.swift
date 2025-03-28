@@ -1,13 +1,14 @@
 import MobileCoreServices
 import UniformTypeIdentifiers
 import UIKit
+import ShareExtensionCore
 
-extension SharePost: UIActivityItemSource {
-    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+extension SharePost: @retroactive UIActivityItemSource {
+    public func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
         return url as Any
     }
 
-    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+    public func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
         switch activityType {
         case SharePost.activityType?:
             return data
@@ -16,11 +17,11 @@ extension SharePost: UIActivityItemSource {
         }
     }
 
-    func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
+    public func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
         return title ?? ""
     }
 
-    func activityViewController(_ activityViewController: UIActivityViewController, dataTypeIdentifierForActivityType activityType: UIActivity.ActivityType?) -> String {
+    public func activityViewController(_ activityViewController: UIActivityViewController, dataTypeIdentifierForActivityType activityType: UIActivity.ActivityType?) -> String {
         guard let activityType else {
             return UTType.url.identifier
         }

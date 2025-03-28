@@ -1,10 +1,11 @@
 import Foundation
+import WordPressKit
 
-enum HomepageType: String {
+public enum HomepageType: String {
     case page
     case posts
 
-    var title: String {
+    public var title: String {
         switch self {
         case .page:
             return NSLocalizedString("Static Homepage", comment: "Name of setting configured when a site uses a static page as its homepage")
@@ -13,7 +14,7 @@ enum HomepageType: String {
         }
     }
 
-    var remoteType: RemoteHomepageType {
+    public var remoteType: RemoteHomepageType {
         switch self {
         case .page:
             return .page
@@ -23,7 +24,7 @@ enum HomepageType: String {
     }
 }
 
-extension Blog {
+public extension Blog {
     private enum OptionsKeys {
         static let homepageType = "show_on_front"
         static let homepageID = "page_on_front"

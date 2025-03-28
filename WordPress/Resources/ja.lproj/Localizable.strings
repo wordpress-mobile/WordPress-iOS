@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-01-28 09:54:09+0000 */
+/* Translation-Revision-Date: 2025-03-11 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ja_JP */
@@ -2361,9 +2361,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "終了日";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "フルスクリーン表示";
-
 /* Enter a custom value */
 "Enter a custom value" = "カスタム値を入力してください";
 
@@ -2516,9 +2513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "テーマ、プラグイン、アップロードを除く";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "フルスクリーン表示を終了";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "展開表示";
@@ -5042,14 +5036,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "自分のコメントへの返信";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "返信";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "返信を送信しました。";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "返信テキスト";
@@ -5058,9 +5048,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "%1$@ への返信";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "投稿に返信";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "この数より多くのリンクがコメントに含まれる場合、手動での承認が必要です。";
@@ -6218,9 +6205,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "通知設定を読み込む際に問題が発生しました";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "コメントの編集中に予期しないエラーが発生しました";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "コメントの編集中に予期しないエラーが発生しました";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6231,9 +6215,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "「招待」を送信する際に予期しないエラーが発生しました";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "返信を送信する際に予期しないエラーが発生しました";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "通知設定を更新する際に予期しないエラーが発生しました";
@@ -7694,6 +7675,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "タイトル";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "コメントする";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "このアドレスのサイトは WordPress のサイトではありません。 接続するには、接続先のサイトが WordPress を使用している必要があります。";
 
@@ -7805,6 +7789,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "アプリケーションパスワードを使用するとインストール型のサイトにより安全に接続でき、%@ などの機能がサポートされます。";
+
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "プラグイン管理";
 
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "ユーザー管理";
@@ -8019,6 +8006,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "%1$@ への返信";
+
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "下書きを削除";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "編集を続行";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "下書きを保存";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "コメントを送信できませんでした";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "コメント";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "返信";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "コメントを残す…";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "返信を残す…";
+
+/* Navigation bar button title */
+"commentCreate.send" = "送信";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "変更を破棄";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "編集を続行";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "コメントを保存できませんでした";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "コメントを編集";
+
+/* Error title */
+"comments.failedToLike" = "コメントに「いいね」できませんでした";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "アプリに格納されているユーザー名またはパスワードが古い可能性があります。 設定にパスワードを再度入力して、もう一度お試しください。";
@@ -8375,6 +8404,18 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "フィードバックを送る";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "後で";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "試験用エディターのフィードバックを共有しますか ?";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "フィードバックを共有";
 
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "試験用の機能";
@@ -9330,6 +9371,90 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "プラン";
 
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "有効化する";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "有効化済み";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "プラグインを有効化しています。しばらくお待ちください...";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "プラグインを有効化しています";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "作成者: %@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "停止する";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "プラグインを停止しています。しばらくお待ちください…";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "プラグインを停止しています";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "削除";
+
+/* Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name */
+"pluginDetails.delete.confirmationMessage" = "%@ を削除してもよろしいですか ?";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "プラグインを削除しますか ?";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "インストール";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "プラグインをインストールしています。しばらくお待ちください…";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "プラグインのインストール";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "プラグイン情報を読み込んでいます…";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "変更履歴";
+
+/* Title of the description section in plugin details */
+"pluginDetails.section.description" = "説明";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "詳細";
+
+/* Title of the FAQ section in plugin details */
+"pluginDetails.section.faq" = "よくある質問";
+
+/* Title of the installation section in plugin details */
+"pluginDetails.section.installation" = "インストール";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "レビュー";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "スクリーンショット";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "プラグインを削除しています。しばらくお待ちください…";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "プラグインをアンインストールしています";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "今すぐ更新";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "利用可能な更新があります";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "バージョン%@を利用できます。 WordPress サイトダッシュボードから更新してください。";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "WordPress.org で表示";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "変更を破棄";
 
@@ -9856,6 +9981,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "購読解除";
 
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "コメントは受け付けていません";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "サイトからの投稿を表示します";
 
@@ -10071,11 +10199,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "ブログ";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "このサイトの所有者は、簡単な概要のみを表示するように設定しています。 投稿の全文を読むには、サイトにアクセスしてください。";
+/* Button title */
+"reader.postDetails.viewFullPost" = "すべての投稿を表示";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "投稿の全文を読むには %@ にアクセスしてください";
+"reader.postDetails.viewModeDescription" = "このサイトの所有者は、簡単な概要のみを表示するように設定しています。 投稿の全文を読むには、サイトにアクセスしてください。";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "キャンディー";
@@ -10301,6 +10429,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "%@ のフォローを解除";
+
+/* Field title */
+"reader.userProfile.site" = "サイト";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "戻る";
@@ -10533,6 +10664,59 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "プランをアップグレード";
 
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "おすすめ";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "人気";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "おすすめ";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "検索結果";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "プラグインが見つかりませんでした";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "インストール済み";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "プラグインを読み込めませんでした。 ここをタップして再試行";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "プラグインを読み込んでいます...";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "新しいプラグインを追加";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "有効なプラグインはありません";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "プラグインを追加";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "停止中のプラグインはありません";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "すべて";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "フィルター";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "インストールされたプラグインを読み込んでいます…";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "プラグインがまだインストールされていません";
+
+/* Installed plugins list title */
+"site.plugins.title" = "プラグイン";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "ドメイン";
 
@@ -10634,6 +10818,25 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for site switcher screen */
 "sitePicker.title" = "自分のサイト";
+
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "作成者: %@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "プラグイン作成者はこのプラグインの説明を提供しませんでした。";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "有効化する";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "停止する";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "削除";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "WordPress.org で表示";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "プライバシー";
@@ -11334,6 +11537,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "エラーが発生しました。後ほどもう一度お試しください。";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "端末にメディアファイルが見つかりません";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Jetpack アプリに切り替える";

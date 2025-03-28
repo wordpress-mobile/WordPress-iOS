@@ -1,5 +1,7 @@
 import Foundation
+import SVProgressHUD
 import WordPressFlux
+import WordPressUI
 
 extension PostEditor {
 

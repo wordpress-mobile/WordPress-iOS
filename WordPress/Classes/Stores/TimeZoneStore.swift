@@ -1,5 +1,6 @@
 import WordPressFlux
 import WordPressKit
+import WordPressShared
 
 struct TimeZoneQuery {}
 

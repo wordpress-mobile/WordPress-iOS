@@ -1,5 +1,6 @@
 import Foundation
 import WordPressKit
+import WordPressShared
 
 extension RemotePostCreateParameters {
     /// Initializes the parameters required to create the given post.

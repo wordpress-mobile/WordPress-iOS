@@ -1,3 +1,4 @@
+import UIKit
 import MobileCoreServices
 
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar

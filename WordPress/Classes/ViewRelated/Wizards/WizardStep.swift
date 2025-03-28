@@ -1,4 +1,5 @@
 import UIKit
+import FormattableContentKit
 
 protocol WizardStep {
     static var identifier: Identifier { get }

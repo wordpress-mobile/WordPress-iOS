@@ -2,6 +2,7 @@ import Foundation
 import SVProgressHUD
 import WordPressShared
 import WordPressFlux
+import WordPressUI
 
 struct ActivityListConfiguration {
     /// An identifier of the View Controller

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-01-28 09:54:09+0000 */
+/* Translation-Revision-Date: 2025-03-11 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -2361,9 +2361,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "结束日期";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "进入全屏";
-
 /* Enter a custom value */
 "Enter a custom value" = "输入自定义值";
 
@@ -2516,9 +2513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "排除主题、插件和上传项目";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "退出全屏";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "已展开";
@@ -5045,14 +5039,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "评论回复";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "回复";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "回复已发出！";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "回复文本";
@@ -5061,9 +5051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "回复 %1$@";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "回复文章";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "评论中包含的链接数量超过此数值后，要进行人工审核。";
@@ -6221,9 +6208,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "加载“通知设置”时出现问题";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "编辑评论时发生意外错误";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "编辑您的评论时出现意外错误";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6234,9 +6218,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "发送您的邀请时出现意外错误";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "发送您的回复时出现意外错误";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "更新“通知设置”时发生意外错误";
@@ -7700,6 +7681,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "标题";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "添加评论";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "此地址下的站点不是 WordPress 站点。 站点必须使用 WordPress，我们才能建立连接。";
 
@@ -7811,6 +7795,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "应用程序密码能让您更安全地连接到您的自托管站点，并且支持 %@ 等功能。";
+
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "插件管理";
 
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "用户管理";
@@ -8034,6 +8021,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "回复 %1$@";
+
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "删除草稿";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "继续编辑";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "保存草稿";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "无法发送评论";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "评论";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "回复";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "发表评论...";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "发表回复...";
+
+/* Navigation bar button title */
+"commentCreate.send" = "发送";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "放弃更改";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "继续编辑";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "无法保存评论";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "编辑评论";
+
+/* Error title */
+"comments.failedToLike" = "无法点赞评论";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "应用程序中存储的用户名或密码可能已过期。 请在设置中重新输入密码，然后重试。";
@@ -8393,6 +8422,18 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "发送反馈";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "稍后再说";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "您是否愿意分享关于实验性编辑器的反馈？";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "分享反馈";
 
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "实验性功能";
@@ -9345,6 +9386,90 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "套餐";
 
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "激活";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "已激活";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "正在激活插件，请稍候...";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "正在激活插件";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "程序设计者：%@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "停用";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "正在停用插件，请稍候...";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "正在停用插件";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "删除";
+
+/* Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name */
+"pluginDetails.delete.confirmationMessage" = "是否确定要删除 %@？";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "删除插件？";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "安装";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "正在安装插件，请稍候...";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "安装插件";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "正在加载插件信息...";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "变更日志";
+
+/* Title of the description section in plugin details */
+"pluginDetails.section.description" = "描述";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "详细信息";
+
+/* Title of the FAQ section in plugin details */
+"pluginDetails.section.faq" = "常见问题解答";
+
+/* Title of the installation section in plugin details */
+"pluginDetails.section.installation" = "安装";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "评论";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "屏幕截图";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "正在删除插件，请稍候...";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "正在卸载插件";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "立即更新";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "有可用更新";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "版本 %@ 已推出。 请从您的 WordPress 站点仪表盘进行更新。";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "在 WordPress.org 上查看";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "放弃更改";
 
@@ -9874,6 +9999,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "退订";
 
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "评论已关闭";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "查看站点中的文章";
 
@@ -10089,11 +10217,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "博客";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "此站点的所有者仅允许我们显示其内容的一段简短摘要。 要查看全文，您必须访问他们的站点。";
+/* Button title */
+"reader.postDetails.viewFullPost" = "查看全文";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "访问 %@ 查看全文";
+"reader.postDetails.viewModeDescription" = "此站点的所有者仅允许我们显示其内容的一段简短摘要。 要查看全文，您必须访问他们的站点。";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "糖果";
@@ -10328,6 +10456,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "取消关注 %@";
+
+/* Field title */
+"reader.userProfile.site" = "站点";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "返回";
@@ -10566,6 +10697,59 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "升级到套餐";
 
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "精选";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "热门";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "推荐";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "搜索结果";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "未找到插件";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "已安装";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "无法加载插件。 轻点此处以重试";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "正在加载插件...";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "添加新插件";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "没有已激活的插件";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "添加插件";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "没有未激活的插件";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "全部";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "筛选";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "正在加载已安装的插件...";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "您尚未安装任何插件";
+
+/* Installed plugins list title */
+"site.plugins.title" = "插件";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "域名";
 
@@ -10667,6 +10851,25 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for site switcher screen */
 "sitePicker.title" = "我的站点";
+
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "程序设计者：%@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "插件程序设计者未提供关于此插件的描述。";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "激活";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "停用";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "删除";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "在 WordPress.org 上查看";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "隐私";
@@ -11370,6 +11573,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "出错了，请稍后重试。";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "无法在设备上找到媒体文件";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "切换到 Jetpack 应用";

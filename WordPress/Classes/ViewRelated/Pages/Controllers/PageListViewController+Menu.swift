@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 extension PageListViewController: InteractivePostViewDelegate {
     func edit(_ apost: AbstractPost) {

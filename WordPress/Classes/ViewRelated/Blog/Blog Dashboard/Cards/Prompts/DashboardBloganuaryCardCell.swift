@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressShared
 
 class DashboardBloganuaryCardCell: DashboardCollectionViewCell {
 

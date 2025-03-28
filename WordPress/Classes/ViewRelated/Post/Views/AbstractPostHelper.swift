@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 enum AbstractPostHelper {
     static func getLocalizedStatusWithDate(for post: AbstractPost) -> String? {

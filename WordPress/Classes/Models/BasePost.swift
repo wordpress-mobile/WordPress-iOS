@@ -7,13 +7,13 @@ extension BasePost {
     // We can't use #keyPath on a non-@objc property, and we can't expose
     // status to Objc-C since it returns an optional enum.
     // I'd prefer #keyPath over a string constant, but the enum brings way more value.
-    static let statusKeyPath = "status"
+    public static let statusKeyPath = "status"
 
     /// The status of the post.
     ///
     /// - warning: The only component that can change the post status is
     /// ``PostRepository``. Never change the status of the post directly.
-    var status: Status? {
+    public var status: Status? {
         get {
             return rawValue(forKey: BasePost.statusKeyPath)
         }
@@ -24,7 +24,7 @@ extension BasePost {
 
     /// For Obj-C compatibility only
     @objc(status)
-    var statusString: String? {
+    public var statusString: String? {
         get {
             return status?.rawValue
         }
@@ -33,7 +33,7 @@ extension BasePost {
         }
     }
 
-    enum Status: String {
+    public enum Status: String {
         case draft = "draft"
         case pending = "pending"
         case publishPrivate = "private"
@@ -43,7 +43,7 @@ extension BasePost {
         case deleted = "deleted" // Returned by wpcom REST API when a post is permanently deleted.
     }
 
-    @objc var featuredImageURL: URL? {
+    @objc public var featuredImageURL: URL? {
         guard let pathForDisplayImage,
             let url = URL(string: pathForDisplayImage) else {
             return nil

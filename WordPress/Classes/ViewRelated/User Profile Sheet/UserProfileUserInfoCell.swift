@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 class UserProfileUserInfoCell: UITableViewCell, NibReusable {
 
     // MARK: - Properties

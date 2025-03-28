@@ -1,5 +1,6 @@
 import Foundation
 import Gutenberg
+import WordPressShared
 
 class GutenbergFeaturedImageHelper: NSObject {
     fileprivate let post: AbstractPost

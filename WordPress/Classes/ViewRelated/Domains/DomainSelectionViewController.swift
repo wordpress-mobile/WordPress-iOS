@@ -1,5 +1,7 @@
 import UIKit
 import SwiftUI
+import SVProgressHUD
+import WordPressShared
 
 enum DomainSelectionType: Int, Identifiable {
     var id: Int { rawValue }

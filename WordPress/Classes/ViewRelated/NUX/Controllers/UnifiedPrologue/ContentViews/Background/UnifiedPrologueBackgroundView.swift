@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 
 struct UnifiedPrologueBackgroundView: View {
     var body: some View {

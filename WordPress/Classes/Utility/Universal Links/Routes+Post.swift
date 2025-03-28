@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 struct NewPostRoute: Route {
     let path = "/post"

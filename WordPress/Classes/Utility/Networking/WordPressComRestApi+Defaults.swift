@@ -1,5 +1,6 @@
 import Foundation
 import WordPressKit
+import WordPressShared
 
 extension WordPressComRestApi {
     @objc public static func defaultApi(oAuthToken: String? = nil,

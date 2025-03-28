@@ -1,5 +1,6 @@
 import UIKit
 import Aztec
+import WordPressUI
 
 final class SiteMediaCollectionCellSelectionOverlayView: UIView {
     private let overlayView = UIView()

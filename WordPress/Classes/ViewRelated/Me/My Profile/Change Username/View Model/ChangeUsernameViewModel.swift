@@ -1,5 +1,6 @@
 import Reachability
 import WordPressFlux
+import WordPressShared
 
 class ChangeUsernameViewModel {
     typealias Listener = () -> Void

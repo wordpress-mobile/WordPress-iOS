@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-01-28 12:54:09+0000 */
+/* Translation-Revision-Date: 2025-03-11 11:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: id */
@@ -2361,9 +2361,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "Tanggal Selesai";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "Masuk ke Layar Penuh";
-
 /* Enter a custom value */
 "Enter a custom value" = "Masukkan nilai kustom";
 
@@ -2516,9 +2513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Kecuali tema, plugin, dan unggahan";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "Keluar dari Layar Penuh";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Diperluas";
@@ -5045,14 +5039,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Membalas komentar Anda";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Balasan";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Balasan Terkirim!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Teks Jawab";
@@ -5061,9 +5051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Balas ke %1$@";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "Balas pos";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Wajibkan persetujuan manual untuk komentar yang memuat lebih dari jumlah tautan ini.";
@@ -6221,9 +6208,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "Ada masalah saat memuat pengaturan Pemberitahuan Anda";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "Terjadi kesalahan yang tidak terduga saat menyunting komentar";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Telah terjadi kesalahan yang tidak terduga saat menyunting komentar Anda";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6234,9 +6218,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "Terjadi error tidak terduga saat mengirimkan Undangan Anda";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "Terjadi error yang tidak terduga saat mengirimkan balasan Anda";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Terjadi kesalahan yang tidak terduga saat memperbarui Pengaturan Pemberitahuan";
@@ -7700,6 +7681,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "Judul";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "Tambah Komentar";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "Situs di alamat ini bukan situs WordPress. Agar kami dapat menghubungkannya, situs harus menggunakan WordPress.";
 
@@ -7811,6 +7795,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Agar lebih aman, gunakan kata sandi aplikasi untuk terhubung dengan situs Anda yang dihosting sendiri sehingga Anda mendapatkan dukungan bagi fitur seperti %@.";
+
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "Pengelolaan Plugin";
 
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Pengelolaan Pengguna";
@@ -8034,6 +8021,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "Balasan untuk %1$@";
+
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "Hapus Konsep";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "Lanjutkan Mengedit";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "Simpan Konsep";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "Gagal mengirim komentar";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "Komentar";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "Balas";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "Tinggalkan komentar…";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "Tinggalkan balasan…";
+
+/* Navigation bar button title */
+"commentCreate.send" = "Kirim";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "Buang Perubahan";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "Lanjutkan Mengedit";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "Gagal menyimpan komentar";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "Edit Komentar";
+
+/* Error title */
+"comments.failedToLike" = "Gagal menyukai komentar";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Nama pengguna atau kata sandi yang disimpan di dalam aplikasi ini mungkin sudah usang. Masukkan kembali kata sandi Anda dalam pengaturan dan coba lagi.";
@@ -8393,6 +8422,18 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "contoh.com";
+
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "Kirim feedback";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "Lain kali";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "Apakah Anda bersedia untuk membagikan feedback tentang editor eksperimental?";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "Bagikan Feedback";
 
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "Fitur Eksperimental";
@@ -9348,6 +9389,87 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Paket";
 
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "Aktifkan";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "Diaktifkan";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "Harap tunggu sementara plugin diaktifkan...";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "Mengaktifkan Plugin";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "Oleh %@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "Nonaktifkan";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "Harap tunggu sementara plugin dinonaktifkan...";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "Menonaktifkan Plugin";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "Hapus";
+
+/* Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name */
+"pluginDetails.delete.confirmationMessage" = "Apakah Anda yakin ingin menghapus %@?";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "Hapus Plugin?";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "Instal";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "Harap tunggu sementara plugin diinstal...";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "Instal Plugin";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "Memuat informasi plugin…";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "Log perubahan";
+
+/* Title of the description section in plugin details */
+"pluginDetails.section.description" = "Deskripsi";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "Rincian";
+
+/* Title of the installation section in plugin details */
+"pluginDetails.section.installation" = "Instalasi";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "Ulasan";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "Tangkapan layar";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "Harap tunggu sementara plugin dihapus...";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "Menghapus Instalan Plugin";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "Perbarui Sekarang";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "Pembaruan Tersedia";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "Versi %@ tersedia. Perbarui dari dasbor situs WordPress Anda.";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "Lihat di WordPress.org";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Buang Perubahan";
 
@@ -9877,6 +9999,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "Berhenti Berlangganan";
 
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "Komentar Ditutup";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Melihat pos dari situs";
 
@@ -10092,11 +10217,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blog";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "Pemilik situs ini hanya mengizinkan kami menampilkan ringkasan isi situsnya. Untuk melihat pos lengkap, Anda harus mengunjungi situsnya.";
+/* Button title */
+"reader.postDetails.viewFullPost" = "Lihat pos lengkap";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "Kunjungi %@ untuk pos lengkap.";
+"reader.postDetails.viewModeDescription" = "Pemilik situs ini hanya mengizinkan kami menampilkan ringkasan isi situsnya. Untuk melihat pos lengkap, Anda harus mengunjungi situsnya.";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "Candy";
@@ -10332,11 +10457,17 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Batal Mengikuti %@";
 
+/* Field title */
+"reader.userProfile.site" = "Situs";
+
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Kembali";
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Tutup";
+
+/* Spoken accessibility label for the Reading Preferences menu. */
+"readerDetail.displaySettingButton.displaySettingsLabel" = "Preferensi Membaca";
 
 /* Section title for global related posts. */
 "readerDetail.globalPostsSection.accessibilityLabel" = "Lainnya di WordPress.com";
@@ -10569,6 +10700,59 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "Upgrade paket";
 
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "Unggulan";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "Populer";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "Rekomendasi";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "Hasil Pencarian";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "Tidak ada plugin ditemukan";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "Terinstal";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "Gagal memuat plugin. Ketuk di sini untuk mencoba lagi";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "Memuat plugin...";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "Tambahkan Plugin Baru";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "Tidak ada plugin aktif";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "Tambahkan Plugin";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "Tidak ada plugin yang tidak aktif";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "Semua";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "Saring";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "Memuat plugin yang diinstal…";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "Anda belum menginstal plugin";
+
+/* Installed plugins list title */
+"site.plugins.title" = "Plugin";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domain";
 
@@ -10670,6 +10854,25 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for site switcher screen */
 "sitePicker.title" = "Situs Saya";
+
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "Oleh %@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "Penyusun plugin tidak memberikan deskripsi untuk plugin ini.";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "Aktifkan";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "Nonaktifkan";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "Hapus";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "Lihat di WordPress.org";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privasi";
@@ -11373,6 +11576,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "Terjadi masalah. Silakan coba lagi nanti.";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "Tidak dapat menemukan lokasi berkas media di perangkat";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Ganti ke aplikasi Jetpack";

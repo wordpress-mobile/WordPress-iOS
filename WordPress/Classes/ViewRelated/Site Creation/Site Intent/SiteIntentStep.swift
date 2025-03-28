@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// Site Creation: Allows selection of the the site's vertical (a.k.a. intent or industry).
 final class SiteIntentStep: WizardStep {

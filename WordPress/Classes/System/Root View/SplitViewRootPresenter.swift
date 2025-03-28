@@ -135,16 +135,10 @@ final class SplitViewRootPresenter: RootViewPresenter {
         case .addSite(let selection):
             showAddSiteScreen(selection: selection)
         case .domains:
-#if IS_JETPACK
             let domainsVC = AllDomainsListViewController()
             let navigationVC = UINavigationController(rootViewController: domainsVC)
             navigationVC.modalPresentationStyle = .formSheet
             splitVC.present(navigationVC, animated: true)
-#endif
-
-#if IS_WORDPRESS
-            wpAssertionFailure("domains are not supported in wpios")
-#endif
         case .help:
             let supportVC = SupportTableViewController()
             let navigationVC = UINavigationController(rootViewController: supportVC)
@@ -199,8 +193,9 @@ final class SplitViewRootPresenter: RootViewPresenter {
 
         if let newSite = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
             self.sidebarViewModel.selection = .blog(TaggedManagedObjectID(newSite))
-        } else {
+        } else if AccountHelper.isDotcomAvailable() {
             self.sidebarViewModel.selection = .welcome
+        } else {
             WordPressAppDelegate.shared?.windowManager.showSignInUI()
         }
     }

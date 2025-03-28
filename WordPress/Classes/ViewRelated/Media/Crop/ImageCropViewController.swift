@@ -1,6 +1,5 @@
-import Foundation
-import WordPressShared
 import UIKit
+import WordPressUI
 
 /// This ViewController allows the user to resize and crop any given UIImage.
 ///

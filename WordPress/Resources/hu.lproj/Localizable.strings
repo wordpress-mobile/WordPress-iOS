@@ -518,14 +518,10 @@
    Remove Action */
 "Remove" = "Eltávolítás";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Válasz";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Válasz elküldve!";
 
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.

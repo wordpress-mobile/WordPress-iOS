@@ -212,6 +212,11 @@ task :lint do
   sh 'pushd BuildTools; export SDKROOT=$(xcrun --sdk macosx --show-sdk-path); swift package plugin --allow-writing-to-directory .. --allow-writing-to-package-directory swiftlint --working-directory .. --quiet; popd'
 end
 
+desc 'Automatically fix linting errors where possible'
+task :lintfix do
+  sh 'pushd BuildTools; export SDKROOT=$(xcrun --sdk macosx --show-sdk-path); swift package plugin --allow-writing-to-directory .. --allow-writing-to-package-directory swiftlint --fix --working-directory .. --quiet; popd'
+end
+
 namespace :git do
   hooks = %w[pre-commit post-checkout post-merge]
 

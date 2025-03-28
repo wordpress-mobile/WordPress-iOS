@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 struct UITestConfigurator {
     static func isUITesting() -> Bool {

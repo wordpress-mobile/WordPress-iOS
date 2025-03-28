@@ -1,5 +1,8 @@
 import UIKit
+import SVProgressHUD
 import WordPressEditor
+import WordPressUI
+import WordPressShared
 
 class RegisterDomainDetailsViewController: UITableViewController {
 

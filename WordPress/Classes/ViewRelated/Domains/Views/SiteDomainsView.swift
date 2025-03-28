@@ -1,5 +1,7 @@
 import SwiftUI
+import BuildSettingsKit
 import WordPressKit
+import WordPressShared
 import DesignSystem
 
 /// The Site Domains  screen, accessible from My Site
@@ -274,7 +276,9 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
     // MARK: - Setup
 
     private func setupAllDomainsBarButtonItem() {
-#if IS_JETPACK
+        guard BuildSettings.current.brand == .jetpack else {
+            return
+        }
         guard domainManagementFeatureFlag.enabled() else {
             return
         }
@@ -287,6 +291,5 @@ final class SiteDomainsViewController: UIHostingController<SiteDomainsView> {
             WPAnalytics.track(.domainsDashboardAllDomainsTapped)
         }
         self.navigationItem.rightBarButtonItem = .init(title: title, primaryAction: action)
-#endif
     }
 }

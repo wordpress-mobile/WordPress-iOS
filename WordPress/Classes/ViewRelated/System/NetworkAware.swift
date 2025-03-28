@@ -1,3 +1,4 @@
+import WordPressShared
 
 /// Abstracts elements that need to be aware of the network connection status.
 protocol NetworkAware {
@@ -84,7 +85,7 @@ fileprivate final class ReachabilityNotificationObserver: NSObject {
     }
 
     private func observeErrors() {
-        NotificationCenter.default.addObserver(self, selector: #selector(receive), name: .reachabilityChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(receive), name: .reachabilityUpdated, object: nil)
     }
 
     @objc func receive(notification: Foundation.Notification) {

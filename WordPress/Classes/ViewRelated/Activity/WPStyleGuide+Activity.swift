@@ -1,6 +1,7 @@
-import Foundation
+import UIKit
 import Gridicons
 import WordPressShared
+import WordPressUI
 
 /// This class groups all of the styles used by all of the ActivityListViewController.
 ///

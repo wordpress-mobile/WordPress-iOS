@@ -2271,9 +2271,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "Koncové datum";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "Vstupte na celou obrazovku";
-
 /* Enter a custom value */
 "Enter a custom value" = "Zadejte vlastní hodnotu";
 
@@ -2423,9 +2420,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Nezahrnuje šablony, pluginy a obrázky";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "Ukončit celou obrazovku";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Rozšířený";
@@ -4886,14 +4880,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Odpovědi na vaše komentáře";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Odpovědět";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Odpověď byla odeslána!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Text odpovědi";
@@ -4902,9 +4892,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Odpovědět na %1$@";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "Odpovědět na příspěvek...";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Vyžadovat schválení pro komentáře, které obsahují více než tento počet odkazů.";
@@ -6035,9 +6022,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "Došlo k potížím při načítání nastavení oznámení";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "Došlo k neočekávané chybě při úpravě komentáře";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "Došlo k neočekávané chybě při úpravě vašeho komentáře";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6048,9 +6032,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "Došlo k neočekávané chybě při odesílání pozvánky";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "Během odesílání odpovědi se vyskytla neočekávaná chyba";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Došlo k neočekávané chybě při aktualizaci nastavení oznámení";

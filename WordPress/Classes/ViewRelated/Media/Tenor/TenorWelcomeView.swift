@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 final class TenorWelcomeView: UIView {
     override init(frame: CGRect) {

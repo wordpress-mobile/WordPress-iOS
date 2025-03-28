@@ -1,5 +1,6 @@
-import Foundation
+import UIKit
 import WordPressShared
+import WordPressUI
 
 /// This class will simply render the collection of Streams available for a given NotificationSettings
 /// collection.

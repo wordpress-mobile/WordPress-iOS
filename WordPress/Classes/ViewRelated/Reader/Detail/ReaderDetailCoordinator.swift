@@ -1,7 +1,7 @@
 import Foundation
-import WordPressShared
 import WordPressReader
-import AsyncImageKit
+import WordPressShared
+import WordPressUI
 import Combine
 
 class ReaderDetailCoordinator {

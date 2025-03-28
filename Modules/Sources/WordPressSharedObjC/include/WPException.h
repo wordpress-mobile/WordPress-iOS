@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param outError If an exception is raised this variable returns the an error that wraps the exception.
  @return return true if no exception is raised and false otherwise.
  */
-+ (BOOL)objcTryBlock:(void (^)(void))block error:(NSError * __autoreleasing *)outError;
++ (BOOL)objcTryBlock:(void (NS_NOESCAPE ^)(void))block error:(NSError * __autoreleasing *)outError;
 
 @end
 

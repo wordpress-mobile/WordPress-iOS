@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 protocol SiteMediaPageViewControllerDelegate: AnyObject {
     func siteMediaPageViewController(_ viewController: SiteMediaPageViewController, getMediaBeforeMedia media: Media) -> Media?

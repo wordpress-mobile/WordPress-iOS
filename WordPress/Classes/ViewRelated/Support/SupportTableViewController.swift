@@ -1,6 +1,7 @@
 import UIKit
 import WordPressAuthenticator
 import WordPressShared
+import WordPressUI
 
 class SupportTableViewController: UITableViewController {
 

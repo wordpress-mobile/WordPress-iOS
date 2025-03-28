@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+@testable import FormattableContentKit
 import Foundation
 
 final class FormattableContentFormatterTests: XCTestCase {

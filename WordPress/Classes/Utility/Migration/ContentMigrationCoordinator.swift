@@ -32,7 +32,7 @@ import BuildSettingsKit
          dataMigrator: ContentDataMigrating = DataMigrator(),
          notificationCenter: NotificationCenter = .default,
          userPersistentRepository: UserPersistentRepository = UserDefaults.standard,
-         sharedPersistentRepository: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.appGroupName),
+         sharedPersistentRepository: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
          eligibilityProvider: ContentMigrationEligibilityProvider = AppConfiguration(),
          tracker: MigrationAnalyticsTracker = .init()) {
         self.coreDataStack = coreDataStack

@@ -1,5 +1,7 @@
-import WordPressShared
 import UIKit
+import WordPressShared
+import WordPressUI
+
 /// This class groups all of the styles used by the comment detail screen.
 ///
 extension WPStyleGuide {

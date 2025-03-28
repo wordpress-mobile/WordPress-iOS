@@ -1,4 +1,6 @@
 import Foundation
+import FormattableContentKit
+import WordPressShared
 
 class LikeUserTableViewCell: UITableViewCell, NibReusable {
 

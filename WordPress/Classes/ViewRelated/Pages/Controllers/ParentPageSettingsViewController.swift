@@ -1,4 +1,6 @@
 import UIKit
+import WordPressUI
+import WordPressShared
 
 private struct Row: ImmuTableRow {
     static let cell = ImmuTableCell.class(CheckmarkTableViewCell.self)

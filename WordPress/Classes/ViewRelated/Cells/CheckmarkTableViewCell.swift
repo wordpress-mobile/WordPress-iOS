@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import WordPressShared
 
 /// The purpose of this class is to simply display a regular TableViewCell, with a Checkmark as accessoryType.
 ///

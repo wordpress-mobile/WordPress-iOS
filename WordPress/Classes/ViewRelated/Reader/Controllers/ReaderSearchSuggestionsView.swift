@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import WordPressShared
+import WordPressUI
 
 struct ReaderSearchSuggestionsView: View {
     @ObservedObject var viewModel: ReaderSearchSuggestionsViewModel

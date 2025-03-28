@@ -1,0 +1,4 @@
+Was gibt es Neues in diesem Monat?
+- Bessere Kommentare: Aktualisiertes Design, Tiefenindikatoren für Threads, verbesserte Unterstützung für umfangreiche Inhalte und ein Vollbild-Composer mit der Möglichkeit zur Entwurfsspeicherung.
+- Beitragsbilder: Das Problem, dass der Reader für einige Beiträge keine Beitragsbilder anzeigte, wurde behoben.
+- Fehlerbehebungen sowie Optimierungen von Verfügbarkeit und Performance.

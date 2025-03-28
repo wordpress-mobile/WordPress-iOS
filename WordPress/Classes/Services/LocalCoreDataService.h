@@ -1,4 +1,5 @@
-#import <Foundation/Foundation.h>
+@import Foundation;
+@import CoreData;
 
 NS_ASSUME_NONNULL_BEGIN
 

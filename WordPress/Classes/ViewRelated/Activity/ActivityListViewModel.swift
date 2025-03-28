@@ -1,4 +1,6 @@
 import WordPressFlux
+import WordPressShared
+import WordPressUI
 
 protocol ActivityPresenter: AnyObject {
     func presentDetailsFor(activity: FormattableActivity)
@@ -123,7 +125,7 @@ class ActivityListViewModel: Observable {
         ActionDispatcher.dispatch(ActivityAction.refreshGroups(site: site, afterDate: after, beforeDate: before))
     }
 
-    func noResultsViewModel() -> NoResultsViewController.Model? {
+    func noResultsViewModel(connectionAvailable: Bool = ReachabilityUtils.connectionAvailable) -> NoResultsViewController.Model? {
         guard store.getActivities(site: site) == nil ||
               store.getActivities(site: site)?.isEmpty == true else {
             return nil
@@ -141,17 +143,18 @@ class ActivityListViewModel: Observable {
             }
         }
 
-        let appDelegate = WordPressAppDelegate.shared
-        if (appDelegate?.connectionAvailable)! {
-            return NoResultsViewController.Model(title: NoResultsText.errorTitle,
-                                                 subtitle: NoResultsText.errorSubtitle,
-                                                 buttonText: NoResultsText.errorButtonText)
-        } else {
+        guard connectionAvailable else {
             return NoResultsViewController.Model(title: NoResultsText.noConnectionTitle, subtitle: NoResultsText.noConnectionSubtitle)
         }
+
+        return NoResultsViewController.Model(
+            title: NoResultsText.errorTitle,
+            subtitle: NoResultsText.errorSubtitle,
+            buttonText: NoResultsText.errorButtonText
+        )
     }
 
-    func noResultsGroupsViewModel() -> NoResultsViewController.Model? {
+    func noResultsGroupsViewModel(connectionAvailable: Bool = ReachabilityUtils.connectionAvailable) -> NoResultsViewController.Model? {
         guard store.getGroups(site: site) == nil ||
               store.getGroups(site: site)?.isEmpty == true else {
             return nil
@@ -165,14 +168,15 @@ class ActivityListViewModel: Observable {
             return NoResultsViewController.Model(title: NoResultsText.noGroupsTitle, subtitle: NoResultsText.noGroupsSubtitle)
         }
 
-        let appDelegate = WordPressAppDelegate.shared
-        if (appDelegate?.connectionAvailable)! {
-            return NoResultsViewController.Model(title: NoResultsText.errorTitle,
-                                                 subtitle: NoResultsText.errorSubtitle,
-                                                 buttonText: NoResultsText.groupsErrorButtonText)
-        } else {
+        guard connectionAvailable else {
             return NoResultsViewController.Model(title: NoResultsText.noConnectionTitle, subtitle: NoResultsText.noConnectionSubtitle)
         }
+
+        return NoResultsViewController.Model(
+            title: NoResultsText.errorTitle,
+            subtitle: NoResultsText.errorSubtitle,
+            buttonText: NoResultsText.groupsErrorButtonText
+        )
     }
 
     func tableViewModel(presenter: ActivityPresenter) -> ImmuTable {

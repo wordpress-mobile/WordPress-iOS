@@ -1,3 +1,5 @@
+import FormattableContentKit
+import WordPressShared
 
 class HeaderContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedString.Key: Any] {

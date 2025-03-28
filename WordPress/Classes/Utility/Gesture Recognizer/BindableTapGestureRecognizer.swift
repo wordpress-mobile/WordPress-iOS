@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// A tap gesture recognizer that works with a closure, instead of an action and target.
 ///

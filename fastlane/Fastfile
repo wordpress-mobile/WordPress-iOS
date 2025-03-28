@@ -240,3 +240,9 @@ end
 def editorial_branch_name(version: release_version_current)
   "release_notes/#{version}"
 end
+
+def pull_request_number
+  # Buildkite sets this env var to the PR number if on a PR, but to 'false' (and not nil) if not on a PR
+  pr_num = ENV.fetch('BUILDKITE_PULL_REQUEST', 'false')
+  pr_num == 'false' ? nil : Integer(pr_num)
+end

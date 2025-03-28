@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 /// This displays a Feature Introduction specifically for Blogging Prompts.
 

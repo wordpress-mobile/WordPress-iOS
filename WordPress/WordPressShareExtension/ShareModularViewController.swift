@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import ShareExtensionCore
 import WordPressKit
 import WordPressShared
 import WordPressUI

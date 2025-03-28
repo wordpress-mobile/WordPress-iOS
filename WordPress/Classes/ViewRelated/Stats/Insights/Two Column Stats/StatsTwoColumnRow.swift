@@ -1,5 +1,6 @@
 import UIKit
 import DesignSystem
+import WordPressShared
 
 struct StatsTwoColumnRowData: Equatable {
     var leftColumnName: String

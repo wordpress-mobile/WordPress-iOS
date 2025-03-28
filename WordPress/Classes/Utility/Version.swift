@@ -1,3 +1,5 @@
+import WordPressShared
+
 /// A version according to the semantic versioning specification.
 ///
 public struct Version: Sendable {

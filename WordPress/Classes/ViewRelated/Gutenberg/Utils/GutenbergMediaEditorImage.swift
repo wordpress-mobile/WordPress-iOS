@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import MediaEditor
 import AsyncImageKit
 

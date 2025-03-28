@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 extension UIViewController {
     /// iOS's `isBeingDismissed` can return `false` if the VC is being dismissed indirectly, by one of its ancestors

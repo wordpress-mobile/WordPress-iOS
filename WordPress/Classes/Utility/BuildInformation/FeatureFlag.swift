@@ -1,3 +1,5 @@
+import BuildSettingsKit
+
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
 @objc
@@ -50,9 +52,9 @@ enum FeatureFlag: Int, CaseIterable {
         case .bloggingPrompts:
             return AppConfiguration.isJetpack
         case .jetpackDisconnect:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current == .debug
         case .siteIconCreator:
-            return BuildConfiguration.current != .appStore
+            return BuildConfiguration.current.isInternal
         case .betaSiteDesigns:
             return false
         case .commentModerationUpdate:
@@ -62,7 +64,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .googleDomainsCard:
             return false
         case .voiceToContent:
-            return AppConfiguration.isJetpack && BuildConfiguration.current ~= [.localDeveloper, .alpha]
+            return AppConfiguration.isJetpack && BuildConfiguration.current.isInternal
         case .authenticateUsingApplicationPassword:
             return false
         case .newGutenberg:

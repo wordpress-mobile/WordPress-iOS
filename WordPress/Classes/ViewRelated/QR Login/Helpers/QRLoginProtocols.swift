@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import QuartzCore
 
 /// Encapsulates the interactions between the child and parent coordinators

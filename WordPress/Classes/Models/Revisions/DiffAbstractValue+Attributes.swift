@@ -1,3 +1,6 @@
+import UIKit
+import WordPressUI
+
 extension DiffAbstractValue {
     var attributes: [NSAttributedString.Key: Any]? {
         switch operation {
@@ -39,5 +42,22 @@ extension Array where Element == DiffAbstractValue {
         }
         left.append(attribute)
         return left
+    }
+}
+
+extension RevisionDiff {
+
+    var contentToAttributedString: NSAttributedString? {
+        return (contentDiffs?.operations ?? []).toAttributedString()
+    }
+
+    var titleToAttributedString: NSAttributedString? {
+        return (titleDiffs?.operations ?? []).toAttributedString()
+    }
+}
+
+private extension NSSet {
+    var operations: [DiffAbstractValue]? {
+        return allObjects as? [DiffAbstractValue]
     }
 }

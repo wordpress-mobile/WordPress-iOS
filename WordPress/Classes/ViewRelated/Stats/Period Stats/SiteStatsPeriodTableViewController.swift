@@ -1,5 +1,6 @@
 import UIKit
 import WordPressFlux
+import WordPressUI
 import Combine
 
 @objc protocol SiteStatsPeriodDelegate {

@@ -1,6 +1,7 @@
 import Foundation
-import WordPressKit
 import CoreData
+import WordPressKit
+import WordPressShared
 
 struct FullyQuotedDomainSuggestion {
     public let domainName: String

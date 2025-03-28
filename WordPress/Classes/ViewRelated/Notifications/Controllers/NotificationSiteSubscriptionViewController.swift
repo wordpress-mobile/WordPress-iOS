@@ -1,5 +1,6 @@
 import UIKit
 import WordPressKit
+import WordPressShared
 
 /// The purpose of this class is to render a collection of notifications sunscriptions for a Site Topic,
 /// and to provide the user a simple interface to update those settings, as needed.

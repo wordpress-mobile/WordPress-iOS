@@ -1,5 +1,5 @@
 import UIKit
-import AsyncImageKit
+import WordPressUI
 
 final class ReaderAvatarView: UIView {
     private let asyncImageView = AsyncImageView()

@@ -6,6 +6,7 @@ import UniformTypeIdentifiers
 import QuickLook
 import QuickLookThumbnailing
 import AVFoundation
+import WordPressUI
 
 struct ZendeskAttachmentsSection: View {
     @ObservedObject var viewModel: ZendeskAttachmentsSectionViewModel

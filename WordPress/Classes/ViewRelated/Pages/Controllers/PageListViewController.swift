@@ -1,7 +1,7 @@
-import Foundation
+import UIKit
 import WordPressShared
 import WordPressFlux
-import UIKit
+import WordPressUI
 
 final class PageListViewController: AbstractPostListViewController {
     private struct Constant {

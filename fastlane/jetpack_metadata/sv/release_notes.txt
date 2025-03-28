@@ -1,0 +1,4 @@
+Vad är nytt den här månaden?
+- Bättre kommentarer: Uppdaterad design, djupindikatorer för trådar, förbättrat stöd för formaterat innehåll och en helskärmskomponerare med utkastssparande.
+- Utvalda bilder: Vi har åtgärdat ett problem som gjorde att läsaren inte visade utvalda bilder för vissa inlägg.
+- Buggkorrigeringar samt stabilitets- och prestandaförbättringar.

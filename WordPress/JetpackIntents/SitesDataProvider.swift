@@ -60,7 +60,7 @@ class SitesDataProvider {
     // MARK: - Default Site
 
     private var defaultSiteID: Int? {
-        UserDefaults(suiteName: BuildSettings.appGroupName)?.object(forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey) as? Int
+        UserDefaults(suiteName: BuildSettings.current.appGroupName)?.object(forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey) as? Int
     }
 
     var defaultSite: Site? {
@@ -70,6 +70,18 @@ class SitesDataProvider {
 
         return sites.first { site in
             return site.identifier == String(defaultSiteID)
+        }
+    }
+}
+
+private extension HomeWidgetData {
+    static func read(from cache: HomeWidgetCache<Self>? = nil) -> [Int: Self]? {
+
+        let cache = cache ?? HomeWidgetCache<Self>(fileName: Self.filename, appGroup: BuildSettings.current.appGroupName)
+        do {
+            return try cache.read()
+        } catch {
+            return nil
         }
     }
 }

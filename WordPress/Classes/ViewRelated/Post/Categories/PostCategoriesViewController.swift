@@ -1,5 +1,6 @@
-import Foundation
+import UIKit
 import SwiftUI
+import WordPressShared
 
 @objc protocol PostCategoriesViewControllerDelegate {
     @objc optional func postCategoriesViewController(_ controller: PostCategoriesViewController, didSelectCategory category: PostCategory)

@@ -148,32 +148,32 @@ class BloggingRemindersScheduler {
             .appendingPathComponent(defaultDataFileName)
     }
 
-    private static func sharedDataFileURL() -> URL? {
-        let sharedDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.appGroupName)
+    private static func sharedDataFileURL(appGroupName: String) -> URL? {
+        let sharedDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupName)
         return sharedDirectory?.appendingPathComponent(defaultDataFileName)
     }
 
-    static func handleRemindersMigration() {
+    static func handleRemindersMigration(appGroupName: String = BuildSettings.current.appGroupName) {
         if AppConfiguration.isWordPress {
-            copyStoreToSharedFile()
+            copyStoreToSharedFile(appGroupName: appGroupName)
         } else if AppConfiguration.isJetpack {
-            copyStoreToLocalFile()
+            copyStoreToLocalFile(appGroupName: appGroupName)
         }
     }
 
     /// Deletes backup reminders if it exists.
     ///
-    static func deleteBackupReminders() {
-        guard let sharedFileURL = sharedDataFileURL() else {
+    static func deleteBackupReminders(appGroupName: String) {
+        guard let sharedFileURL = sharedDataFileURL(appGroupName: appGroupName) else {
             return
         }
 
         try? FileManager.default.removeItem(at: sharedFileURL)
     }
 
-    private static func copyStoreToSharedFile() {
+    private static func copyStoreToSharedFile(appGroupName: String) {
         guard let store = try? defaultStore(),
-              let sharedFileUrl = sharedDataFileURL() else {
+              let sharedFileUrl = sharedDataFileURL(appGroupName: appGroupName) else {
             return
         }
 
@@ -194,9 +194,9 @@ class BloggingRemindersScheduler {
         }
     }
 
-    private static func copyStoreToLocalFile() {
+    private static func copyStoreToLocalFile(appGroupName: String) {
         guard let localStore = try? defaultStore(),
-              let sharedFileUrl = sharedDataFileURL(),
+              let sharedFileUrl = sharedDataFileURL(appGroupName: appGroupName),
               FileManager.default.fileExists(at: sharedFileUrl),
               let data = try? Data(contentsOf: sharedFileUrl),
               let sharedConfig = try? PropertyListDecoder().decode([String: ScheduledReminders].self, from: data) else {
@@ -432,5 +432,25 @@ class BloggingRemindersScheduler {
         static let notificationTitle = NSLocalizedString("It's time to blog on %@!",
                                                          comment: "Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title.")
         static let notificationBody = NSLocalizedString("This is your reminder to blog today ✍️", comment: "The body of a notification displayed to the user prompting them to create a new blog post. The emoji should ideally remain, as part of the text.")
+    }
+}
+
+extension BloggingPromptSettingsReminderDays {
+
+    func getActiveWeekdays() -> [BloggingRemindersScheduler.Weekday] {
+        return [
+            sunday,
+            monday,
+            tuesday,
+            wednesday,
+            thursday,
+            friday,
+            saturday
+        ].enumerated().compactMap { (index: Int, isReminderActive: Bool) in
+            guard isReminderActive else {
+                return nil
+            }
+            return BloggingRemindersScheduler.Weekday(rawValue: index)
+        }
     }
 }

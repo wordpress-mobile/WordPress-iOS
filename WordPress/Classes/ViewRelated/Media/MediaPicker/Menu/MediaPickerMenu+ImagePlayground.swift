@@ -1,5 +1,6 @@
 import UIKit
 import ImagePlayground
+import WordPressShared
 
 extension MediaPickerMenu {
     static var isImagePlaygroundAvailable: Bool {

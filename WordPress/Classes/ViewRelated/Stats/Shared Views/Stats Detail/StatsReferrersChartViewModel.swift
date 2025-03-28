@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import WordPressUI
 
 struct StatsReferrersChartViewModel {
     let referrers: StatsTopReferrersTimeIntervalData

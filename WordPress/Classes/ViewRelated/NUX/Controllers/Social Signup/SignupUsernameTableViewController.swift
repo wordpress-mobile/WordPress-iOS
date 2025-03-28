@@ -1,5 +1,7 @@
+import UIKit
 import SVProgressHUD
 import WordPressAuthenticator
+import WordPressUI
 
 class SignupUsernameTableViewController: UITableViewController, SearchTableViewCellDelegate {
     open var currentUsername: String?

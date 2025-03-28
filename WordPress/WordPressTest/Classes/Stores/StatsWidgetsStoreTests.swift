@@ -5,13 +5,25 @@ import JetpackStatsWidgetsCore
 
 class StatsWidgetsStoreTests: CoreDataTestCase {
     private var sut: StatsWidgetsStore!
+    private var appGroupName: String!
+    private let appKeychainAccessGroup = "xctest_appKeychainAccessGroup"
 
     override func setUp() {
+        super.setUp()
+
+        let prefix = HomeWidgetCache<HomeWidgetTodayData>.testAppGroupNamePrefix
+        appGroupName = "\(prefix)_\(UUID().uuidString)"
         deleteHomeWidgetData()
-        sut = StatsWidgetsStore(coreDataStack: contextManager)
+        sut = StatsWidgetsStore(
+            coreDataStack: contextManager,
+            appGroupName: appGroupName,
+            appKeychainAccessGroup: appKeychainAccessGroup
+        )
     }
 
     override func tearDown() {
+        super.tearDown()
+
         deleteHomeWidgetData()
         sut = nil
     }
@@ -40,20 +52,36 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(50)) {
             XCTAssertFalse(self.statsWidgetsHaveData())
         }
-
     }
 }
 
 private extension StatsWidgetsStoreTests {
     private func statsWidgetsHaveData() -> Bool {
-        return HomeWidgetTodayData.read() != nil
-        || HomeWidgetThisWeekData.read() != nil
-        || HomeWidgetAllTimeData.read() != nil
+        hasData(for: HomeWidgetTodayData.self) &&
+        hasData(for: HomeWidgetThisWeekData.self) &&
+        hasData(for: HomeWidgetAllTimeData.self)
     }
 
     private func deleteHomeWidgetData() {
-        HomeWidgetTodayData.delete()
-        HomeWidgetThisWeekData.delete()
-        HomeWidgetAllTimeData.delete()
+        do {
+            try makeCache(for: HomeWidgetTodayData.self).delete()
+            try makeCache(for: HomeWidgetThisWeekData.self).delete()
+            try makeCache(for: HomeWidgetAllTimeData.self).delete()
+        } catch {
+            // OK if it doesn't exist
+        }
+    }
+
+    private func hasData<T: HomeWidgetData>(for type: T.Type) -> Bool {
+        do {
+            return try makeCache(for: type).read() != nil
+        } catch {
+            XCTFail("failed to read cache: \(error)")
+            return false
+        }
+    }
+
+    private func makeCache<T: HomeWidgetData>(for type: T.Type) -> HomeWidgetCache<T> {
+        HomeWidgetCache<T>(appGroup: appGroupName)
     }
 }

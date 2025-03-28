@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 /// Types the closures than can be provided as completion blocks
 typealias SettingsTitleSubtitleAction = ((SettingsTitleSubtitleController.Content) -> Void)

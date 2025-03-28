@@ -1,4 +1,5 @@
 import WordPressFlux
+import WordPressUI
 
 struct TimeZoneSelectorViewModel: Observable {
     enum State {
@@ -90,6 +91,8 @@ struct TimeZoneSelectorViewModel: Observable {
         )
     }
 
+    var getConnectionAvailability: () -> Bool = { ReachabilityUtils.connectionAvailable }
+
     var noResultsViewModel: NoResultsViewController.Model? {
         switch state {
         case .loading:
@@ -97,9 +100,7 @@ struct TimeZoneSelectorViewModel: Observable {
         case .ready:
             return nil
         case .error:
-            let appDelegate = WordPressAppDelegate.shared
-
-            guard let connectionAvailable = appDelegate?.connectionAvailable, connectionAvailable == true else {
+            guard getConnectionAvailability() else {
                 return NoResultsViewController.Model(title: LocalizedText.noConnectionTitle,
                                                      subtitle: LocalizedText.noConnectionSubtitle)
             }

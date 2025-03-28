@@ -1,0 +1,54 @@
+import Foundation
+import Aztec
+import Gridicons
+import WordPressShared
+
+// MARK: - Header and List presentation extensions
+//
+extension Header.HeaderType {
+    public var formattingIdentifier: FormattingIdentifier {
+        switch self {
+        case .none: return FormattingIdentifier.p
+        case .h1: return FormattingIdentifier.header1
+        case .h2: return FormattingIdentifier.header2
+        case .h3: return FormattingIdentifier.header3
+        case .h4: return FormattingIdentifier.header4
+        case .h5: return FormattingIdentifier.header5
+        case .h6: return FormattingIdentifier.header6
+        @unknown default: fatalError()
+        }
+    }
+
+    public var description: String {
+        switch self {
+        case .none: return AppLocalizedString("Default", comment: "Description of the default paragraph formatting style in the editor.")
+        case .h1: return AppLocalizedString("Heading 1", comment: "H1 Aztec Style")
+        case .h2: return AppLocalizedString("Heading 2", comment: "H2 Aztec Style")
+        case .h3: return AppLocalizedString("Heading 3", comment: "H3 Aztec Style")
+        case .h4: return AppLocalizedString("Heading 4", comment: "H4 Aztec Style")
+        case .h5: return AppLocalizedString("Heading 5", comment: "H5 Aztec Style")
+        case .h6: return AppLocalizedString("Heading 6", comment: "H6 Aztec Style")
+        @unknown default: fatalError()
+        }
+    }
+
+    public var accessibilityLabel: String {
+        switch self {
+        case .none: return AppLocalizedString("Switches to the default Font Size", comment: "Accessibility Identifier for the Default Font Aztec Style.")
+        case .h1: return AppLocalizedString("Switches to the Heading 1 font size", comment: "Accessibility Identifier for the H1 Aztec Style")
+        case .h2: return AppLocalizedString("Switches to the Heading 2 font size", comment: "Accessibility Identifier for the H2 Aztec Style")
+        case .h3: return AppLocalizedString("Switches to the Heading 3 font size", comment: "Accessibility Identifier for the H3 Aztec Style")
+        case .h4: return AppLocalizedString("Switches to the Heading 4 font size", comment: "Accessibility Identifier for the H4 Aztec Style")
+        case .h5: return AppLocalizedString("Switches to the Heading 5 font size", comment: "Accessibility Identifier for the H5 Aztec Style")
+        case .h6: return AppLocalizedString("Switches to the Heading 6 font size", comment: "Accessibility Identifier for the H6 Aztec Style")
+        @unknown default: fatalError()
+        }
+    }
+
+    public var iconImage: UIImage? {
+        switch self {
+        case .none: return UIImage(color: .clear, size: Gridicon.defaultSize)
+        default: return formattingIdentifier.iconImage
+        }
+    }
+}

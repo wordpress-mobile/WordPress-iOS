@@ -1,5 +1,6 @@
 import WordPressFlux
 import WordPressAuthenticator
+import WordPressShared
 
 class SelfHostedJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
     var onChangeState: ((JetpackRemoteInstallState, JetpackRemoteInstallStateViewModel) -> Void)?

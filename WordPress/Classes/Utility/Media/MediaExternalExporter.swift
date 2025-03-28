@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import AsyncImageKit
 
 /// Media export handling assets from external sources i.e.: Stock Photos

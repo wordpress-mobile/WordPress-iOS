@@ -1,5 +1,6 @@
 import Foundation
 import WordPressUI
+import WordPressShared
 
 /// Manages data for our package dependencies
 ///

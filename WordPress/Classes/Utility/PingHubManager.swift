@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import Reachability
 
 // This is added as a top level function to avoid cluttering PingHubManager.init

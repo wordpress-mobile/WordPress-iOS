@@ -1,3 +1,5 @@
+import UIKit
+
 final class ReaderHeaderAction {
     func execute(post: ReaderPost, origin: UIViewController, source: ReaderStreamViewController.StatSource? = nil) {
         let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 class BloggingPromptsHeaderView: UIView, NibLoadable {
     @IBOutlet private weak var containerStackView: UIStackView!

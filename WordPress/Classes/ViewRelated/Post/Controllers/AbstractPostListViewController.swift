@@ -453,11 +453,11 @@ class AbstractPostListViewController: UIViewController,
 
     // MARK: - Syncing
 
-    private func automaticallySyncIfAppropriate() {
+    private func automaticallySyncIfAppropriate(
+        connectionAvailable: Bool = ReachabilityUtils.connectionAvailable
+    ) {
         // Do not start auto-sync if connection is down
-        let appDelegate = WordPressAppDelegate.shared
-
-        if appDelegate?.connectionAvailable == false {
+        guard connectionAvailable else {
             refreshResults()
             dismissAllNetworkErrorNotices()
             handleConnectionError()

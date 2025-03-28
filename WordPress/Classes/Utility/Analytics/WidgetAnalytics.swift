@@ -1,8 +1,9 @@
 import Foundation
 import WidgetKit
 import JetpackStatsWidgetsCore
+import WordPressShared
 
-@objcMembers class WidgetAnalytics: NSObject {
+struct WidgetAnalytics {
     static func trackLoadedWidgetsOnApplicationOpened() {
         guard AppConfiguration.isJetpack else { return }
 

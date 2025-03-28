@@ -1,6 +1,7 @@
 
 import XCTest
 @testable import WordPress
+@testable import FormattableContentKit
 
 final class SiteSegmentsCellTests: XCTestCase {
     private struct MockValues {

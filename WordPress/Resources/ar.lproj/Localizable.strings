@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-01-27 16:54:09+0000 */
+/* Translation-Revision-Date: 2025-03-11 14:54:07+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ar */
@@ -2361,9 +2361,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "تاريخ الانتهاء";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "الدخول إلى وضع ملء الشاشة";
-
 /* Enter a custom value */
 "Enter a custom value" = "أدخل قيمة مخصصة";
 
@@ -2516,9 +2513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "استثناء القوالب والإضافات، وملفات الوسائط المرفوعة";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "إنهاء وضع ملء الشاشة";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "موسعة";
@@ -5045,14 +5039,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "الردود على تعليقاتك";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "رد";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "تم إرسال الرد!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "نص الرد";
@@ -5061,9 +5051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "الرد على %1$@";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "الرد على المقالة";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "يتطلب موافقة يدوية للتعليقات التي تتضمن أكثر من هذا العدد من الروابط.";
@@ -6221,9 +6208,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "ظهرت مشكلة أثناء تحميل إعدادات التنبيهات";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "حدث خطأ غير متوقع أثناء تحرير التعليق";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "حدث خطأ غير متوقع أثناء تحرير تعليقك";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6234,9 +6218,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "حدث خطأ غير متوقع أثناء إرسال دعوتك";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "حدث خطأ غير متوقع أثناء إرسال ردّك";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "حدث خطأ غير متوقع أثناء تحديث إعدادات التنبيهات";
@@ -7700,6 +7681,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "العنوان";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "إضافة تعليق";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "الموقع الموجود على هذا العنوان ليس موقع ووردبريس. لكي نتصل بالموقع، يجب أن يستخدم ووردبريس.";
 
@@ -7811,6 +7795,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "كلمات مرور التطبيقات هي طريقة أكثر أمانًا للاتصال بموقعك المستضاف ذاتيًا، وتمكين الدعم لميزات، مثل: %@.";
+
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "إدارة الإضافة";
 
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "إدارة المستخدم";
@@ -8031,6 +8018,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "الرد على %1$@";
+
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "حذف المسودة";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "متابعة التحرير";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "حفظ المسودة";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "فشل إرسال التعليق";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "تعليق";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "رد";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "ترك تعليق...";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "ترك رد...";
+
+/* Navigation bar button title */
+"commentCreate.send" = "إرسال";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "تجاهل التغييرات";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "متابعة التحرير";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "فشل حفظ التعليق";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "تحرير التعليق";
+
+/* Error title */
+"comments.failedToLike" = "فشل الإعجاب بالتعليق";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "قد يكون اسم المستخدم أو كلمة المرور المخزَّنان في التطبيق غير محدَّثين. يرجى إعادة إدخال كلمة المرور في الإعدادات والمحاولة مرة أخرى.";
@@ -8384,6 +8413,18 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "إرسال الملاحظات";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "ليس الآن";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "هل أنت مستعد لمشاركة الملاحظات بشأن المحرر التجريبي؟";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "مشاركة الملاحظات";
 
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "الميزات التجريبية";
@@ -9339,6 +9380,87 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "الخطط";
 
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "تفعيل";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "مُفعَّل";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "يرجى الانتظار بينما يتم تفعيل الإضافة...";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "تفعيل الإضافة";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "بواسطة %@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "تعطيل";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "يرجى الانتظار بينما يتم تعطيل الإضافة...";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "تعطيل الإضافة";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "حذف";
+
+/* Message of the confirmation alert when deleting a plugin. The placeholder is the plugin name */
+"pluginDetails.delete.confirmationMessage" = "هل أنت متأكد من رغبتك في حذف %@؟";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "هل تريد حذف الإضافة؟";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "تثبيت";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "يرجى الانتظار بينما يتم تثبيت الإضافة...";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "تثبيت الإضافة";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "جارٍ تحميل معلومات الإضافة…";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "سجّل التغييرات";
+
+/* Title of the description section in plugin details */
+"pluginDetails.section.description" = "وصف";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "تفاصيل";
+
+/* Title of the installation section in plugin details */
+"pluginDetails.section.installation" = "تثبيت";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "المراجعات";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "لقطات شاشة";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "يرجى الانتظار بينما تتم إزالة الإضافة...";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "إلغاء تثبيت الإضافة";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "تحديث الآن";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "التحديث متوفر";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "الإصدار %@ متوفر. يرجى تحديثه من لوحة تحكم موقعك على ووردبريس.";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "العرض على ووردبريس.أورج";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "تجاهل التغييرات";
 
@@ -9868,6 +9990,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A shared button title for Reader */
 "reader.button.unsubscribe" = "إلغاء الاشتراك";
 
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "تم إغلاق التعليقات";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "لعرض التدوينات الواردة من الموقع";
 
@@ -10083,11 +10208,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "المدونة";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "مالك هذا الموقع هو وحده من يسمح لنا بعرض موجز مختصر عن محتوياته. لعرض التدوينة بالكامل، سيتعين عليك زيارة موقعه.";
+/* Button title */
+"reader.postDetails.viewFullPost" = "عرض تدوينة كاملة";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "تفضل بزيارة %@ للاطلاع على التدوينة الكاملة";
+"reader.postDetails.viewModeDescription" = "مالك هذا الموقع هو وحده من يسمح لنا بعرض موجز مختصر عن محتوياته. لعرض التدوينة بالكامل، سيتعين عليك زيارة موقعه.";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "حلوى";
@@ -10319,6 +10444,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "إلغاء متابعة %@";
+
+/* Field title */
+"reader.userProfile.site" = "الموقع";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "رجوع";
@@ -10557,6 +10685,59 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "الترقية إلى خطة";
 
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "بارز";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "شائع";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "موصى به";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "نتائج البحث";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "لم يتم العثور على إضافات";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "تم التثبيت";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "فشل تحميل الإضافات. النقر هنا لإعادة المحاولة";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "جارٍ تحميل الإضافات...";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "إضافة إضافةٍ جديدة";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "لا توجد إضافات نشطة";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "إضافة الإضافة";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "لا توجد إضافات غير نشطة";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "الكل";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "التصفية";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "جارٍ تحميل الإضافات...";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "لم تقم بتثبيت أي إضافات حتى الآن";
+
+/* Installed plugins list title */
+"site.plugins.title" = "إضافات";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "النطاقات";
 
@@ -10658,6 +10839,25 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for site switcher screen */
 "sitePicker.title" = "مواقعي";
+
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "بواسطة %@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "لم يقدِّم مؤلف الإضافة وصفًا لهذه الإضافة.";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "تفعيل";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "تعطيل";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "حذف";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "العرض على ووردبريس.أورج";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "الخصوصية";
@@ -11361,6 +11561,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "حدث خطأ ما، ترجى المحاولة مجددًا في وقت لاحق.";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "يتعذر تحديد موقع ملف الوسائط على الجهاز";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "التبديل إلى تطبيق Jetpack";

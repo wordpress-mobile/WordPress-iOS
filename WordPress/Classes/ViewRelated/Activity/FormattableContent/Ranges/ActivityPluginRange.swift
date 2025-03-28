@@ -1,3 +1,4 @@
+import FormattableContentKit
 
 class ActivityPluginRange: ActivityRange {
     let siteSlug: String

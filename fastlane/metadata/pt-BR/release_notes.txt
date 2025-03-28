@@ -1,0 +1,3 @@
+O que há de novo neste mês?
+- Melhores comentários: design atualizado, indicadores de quantidade de respostas, compatibilidade aprimorada com conteúdo rico e um compositor de tela cheia com salvamento de rascunhos.
+- Correções de erros e melhorias de desempenho.

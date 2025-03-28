@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 final class PostListItemViewModel {
     let post: Post

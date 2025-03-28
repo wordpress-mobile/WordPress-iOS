@@ -1,3 +1,5 @@
+import WordPressShared
+
 // MARK: - Tab Access Tracking
 
 @objc enum WPTab: Int {

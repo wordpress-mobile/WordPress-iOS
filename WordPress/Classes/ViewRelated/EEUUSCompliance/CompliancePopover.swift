@@ -1,5 +1,6 @@
 import SwiftUI
 import JetpackStatsWidgetsCore
+import WordPressUI
 
 struct CompliancePopover: View {
     @StateObject

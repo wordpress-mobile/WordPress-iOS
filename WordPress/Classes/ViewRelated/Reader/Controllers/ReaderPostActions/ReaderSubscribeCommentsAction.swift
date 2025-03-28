@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 /// Encapsulates a command to subscribe or unsubscribe to a posts comments.
 final class ReaderSubscribeCommentsAction {
     func execute(with post: ReaderPost,

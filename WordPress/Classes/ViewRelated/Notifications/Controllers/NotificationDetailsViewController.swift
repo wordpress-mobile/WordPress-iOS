@@ -4,6 +4,7 @@ import Gridicons
 import SVProgressHUD
 import WordPressShared
 import WordPressUI
+import FormattableContentKit
 
 ///
 ///

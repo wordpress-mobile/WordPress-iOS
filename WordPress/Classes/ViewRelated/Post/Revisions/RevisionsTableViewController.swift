@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 class RevisionsTableViewController: UITableViewController {
     var onRevisionSelected: ((Revision) -> Void)?

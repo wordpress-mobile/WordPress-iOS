@@ -1,6 +1,6 @@
-
 import Foundation
 import WordPressKit
+import WordPressShared
 
 @objc class PostServiceRemoteFactory: NSObject {
     @objc func forBlog(_ blog: Blog) -> PostServiceRemote? {
@@ -34,8 +34,7 @@ import WordPressKit
     /// - Returns: an instance of WordPressComRestApi
     private func apiForRESTRequest(using context: NSManagedObjectContext) -> WordPressComRestApi? {
 
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
-              let api = account.wordPressComRestApi else {
+        guard let api = try? WPAccount.defaultWordPressComAccountRestAPI(in: context) else {
             return nil
         }
 

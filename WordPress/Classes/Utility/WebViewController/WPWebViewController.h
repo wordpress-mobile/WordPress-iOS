@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-@import WebKit;
+#import <WebKit/WebKit.h>
 
 @class Blog;
 @class WPAccount;

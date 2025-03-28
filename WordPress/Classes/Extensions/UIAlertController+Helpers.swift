@@ -1,20 +1,5 @@
-import Foundation
+import UIKit
 import WordPressFlux
-
-@objc extension UIAlertController {
-    @objc func presentFromRootViewController() {
-        // Note:
-        // This method is required because the presenter ViewController must be visible, and we've got several
-        // flows in which the VC that triggers the alert, might not be visible anymore.
-        //
-        guard let leafViewController = UIApplication.shared.leafViewController else {
-            return
-        }
-        popoverPresentationController?.sourceView = view
-        popoverPresentationController?.permittedArrowDirections = []
-        leafViewController.present(self, animated: true)
-    }
-}
 
 // MARK: - copy comment URL to Clipboard
 

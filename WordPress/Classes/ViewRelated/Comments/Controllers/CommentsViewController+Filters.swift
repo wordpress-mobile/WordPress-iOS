@@ -1,3 +1,5 @@
+import WordPressShared
+
 extension CommentsViewController {
 
     enum CommentFilter: Int, FilterTabBarItem, CaseIterable {

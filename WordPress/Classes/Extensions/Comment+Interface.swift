@@ -1,3 +1,5 @@
+import Foundation
+
 /// Allows comment objects to be sectioned by relative date.
 ///
 /// This implementation is copied from Notification+Interface.swift. It pains me having to copy paste code,

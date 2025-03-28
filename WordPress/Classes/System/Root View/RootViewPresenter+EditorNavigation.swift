@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 extension RootViewPresenter {
     func currentOrLastBlog() -> Blog? {

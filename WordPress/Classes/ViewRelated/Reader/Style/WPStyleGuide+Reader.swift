@@ -1,6 +1,6 @@
-import Foundation
+import UIKit
 import WordPressShared
-import Gridicons
+import WordPressUI
 
 /// A WPStyleGuide extension with styles and methods specific to the Reader feature.
 ///

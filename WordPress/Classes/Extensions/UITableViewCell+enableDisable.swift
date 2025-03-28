@@ -1,4 +1,6 @@
+import UIKit
 import WordPressShared
+import WordPressUI
 
 extension UITableViewCell {
     /// Enable cell interaction

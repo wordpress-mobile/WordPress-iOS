@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 class StatsStackViewCell: StatsBaseCell, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
 

@@ -1,3 +1,5 @@
+import FormattableContentKit
+import WordPressShared
 
 class FooterContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedString.Key: Any] {

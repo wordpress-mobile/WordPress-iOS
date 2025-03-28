@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-12-26 01:37:19+0000 */
+/* Translation-Revision-Date: 2025-03-11 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ko_KR */
@@ -2361,9 +2361,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "종료일";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "전체 화면으로 보기";
-
 /* Enter a custom value */
 "Enter a custom value" = "사용자 정의 값 입력";
 
@@ -2516,9 +2513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "테마, 플러그인, 그리고 업로드 제외하기";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "전체 화면 닫기";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "확장됨";
@@ -5045,14 +5039,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "댓글에 대한 답글";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "응답";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "응답 보냄!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "회신 메시지";
@@ -5061,9 +5051,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "%1$@에 회신";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "글에 답글 달기";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "이 링크 수보다 링크가 많이 포함된 댓글에 대한 수동 승인이 필요합니다.";
@@ -6221,9 +6208,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "알림 설정을 로드하는 중에 오류가 발생했습니다.";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "댓글을 편집하는 동안 예기치 않은 오류가 발생했습니다.";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "댓글 편집 중에 예기치 않은 오류가 발생했습니다.";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6234,9 +6218,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "초대를 보내는 과정에서 예기치 않은 오류가 발생했습니다.";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "응답을 보내는 과정에서 예기치 않은 오류가 발생했습니다.";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "알림 설정을 업데이트하는 중에 예기치 않은 오류가 발생했습니다.";
@@ -7700,6 +7681,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Cell placeholder */
 "addCategory.titlePlaceholder" = "제목";
 
+/* Accessibility identifier for an 'Add Comment' button */
+"addCommentButton.accessibilityIdentifity" = "댓글 추가";
+
 /* Error message shown a URL does not point to an existing site. */
 "addSite.restApiNotAvailable" = "이 주소의 사이트는 워드프레스 사이트가 아닙니다. 연결하려면 사이트에서 워드프레스를 사용해야 합니다.";
 
@@ -7812,6 +7796,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "애플리케이션 비밀번호를 사용하면 독립 호스트 사이트에 더욱 안전하게 연결할 수 있고 %@을(를) 비롯한 기능을 지원할 수 있습니다.";
 
+/* Feature name for managing plugins in the app */
+"applicationPasswordRequired.feature.plugins" = "플러그인 관리";
+
 /* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "사용자 관리";
 
@@ -7835,6 +7822,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An alert suggesting to load autosaved revision for a published post */
 "autosaveAlert.viewChanges" = "변경 사항 보기";
+
+/* An error message displayed when attempting to update an avatar while the user's email address is not verified. */
+"avatar.update.email.verification.required" = "아바타를 업데이트하려면 먼저 이메일 주소를 확인해야 합니다.";
 
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "이미지를 로드할 수 없습니다. 다른 하나를 선택하거나 나중에 다시 시도하세요.";
@@ -7941,6 +7931,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "무시";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "사이트 방문하기";
+
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "스테이징";
 
@@ -7984,6 +7977,15 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "무시";
 
+/* Title of the set goals button in the Blogging Reminders Settings flow. */
+"bloggingRemindersPrompt.intro.continueButton" = "알림 설정";
+
+/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+"bloggingRemindersPrompt.intro.details" = "게시하려는 일자의 블로깅 알림을 설정하세요.";
+
+/* Title of the Blogging Reminders Settings screen. */
+"bloggingRemindersPrompt.intro.title" = "블로깅 알림";
+
 /* Add self-hosted site button */
 "button.addSelfHostedSite" = "독립 호스트 사이트 추가";
 
@@ -8019,6 +8021,48 @@ Example: Comment on
 %1$@ is a placeholder for the comment author's name that's been replied to.
 Example: Reply to Pamela Nguyen */
 "comment.header.subText.reply" = "%1$@에 회신";
+
+/* Button in an alert confirming discaring a new draft */
+"commentCreate.closeConfirmationAlert.deleteDraft" = "임시글 삭제";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentCreate.closeConfirmationAlert.keepEditing" = "계속 편집하기";
+
+/* Button in an alert confirming saving a new draft */
+"commentCreate.closeConfirmationAlert.saveDraft" = "임시글 저장";
+
+/* Error title */
+"commentCreate.failedToSentComment" = "댓글을 보내지 못했습니다.";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleComment" = "댓글";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.navigationTitleReply" = "답글";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveComment" = "댓글을 남겨 주세요...";
+
+/* Navigation bar title when leaving a reply to a comment */
+"commentCreate.placeholderLeaveReply" = "답글을 남겨 주세요...";
+
+/* Navigation bar button title */
+"commentCreate.send" = "보내기";
+
+/* Button in an alert confirming discaring a new draft */
+"commentEdit.closeConfirmationAlert.deleteDraft" = "변경 사항 취소";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"commentEdit.closeConfirmationAlert.keepEditing" = "계속 편집하기";
+
+/* Error title */
+"commentEdit.failedToSaveComment" = "댓글을 저장하지 못했습니다.";
+
+/* Navigation bar title when leaving a editing an existing comment */
+"commentEdit.navigationTitle" = "댓글 편집";
+
+/* Error title */
+"comments.failedToLike" = "댓글에 좋아요를 표시하지 못했습니다.";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "앱에 저장된 사용자 이름 또는 비밀번호가 만료되었을 수 있습니다. 설정에서 비밀번호를 재입력 후 다시 시도해 보세요.";
@@ -8378,6 +8422,18 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Accept button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackAccept" = "피드백 보내기";
+
+/* Dismiss button title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackDecline" = "지금 안 함";
+
+/* Message for the alert asking for feedback on the experimental editor */
+"experimentalFeatures.editorFeedbackMessage" = "실험 버전 편집기에 대한 피드백을 공유하시겠습니까?";
+
+/* Title for the alert asking for feedback */
+"experimentalFeatures.editorFeedbackTitle" = "피드백 공유";
 
 /* The title for the experimental features list */
 "experimentalFeaturesList.heading" = "실험적 기능";
@@ -8931,6 +8987,9 @@ Example: Reply to Pamela Nguyen */
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "항목 선택";
 
+/* A name of the action in the context menu */
+"mediaPicker.imagePlayground" = "이미지 플레이그라운드";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "새 미디어를 캡처하려면 카메라에 접근하는 권한이 이 앱에 필요합니다. 접근을 허용하려면 프라이버시 설정을 변경하세요.";
 
@@ -9330,6 +9389,84 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "요금제";
 
+/* Button label to activate a plugin */
+"pluginDetails.activate.button" = "활성화";
+
+/* Button label showing plugin is activated */
+"pluginDetails.activated.button" = "활성화됨";
+
+/* Message shown while a plugin is being activated */
+"pluginDetails.activating.message" = "플러그인이 활성화되는 동안 기다려 주세요...";
+
+/* Title shown while a plugin is being activated */
+"pluginDetails.activating.title" = "플러그인 활성화 중";
+
+/* Plugin author information. The placeholder is the author name */
+"pluginDetails.author" = "제작자: %@";
+
+/* Button label to deactivate a plugin */
+"pluginDetails.deactivate.button" = "비활성화";
+
+/* Message shown while a plugin is being deactivated */
+"pluginDetails.deactivating.message" = "플러그인이 비활성화되는 동안 기다려 주세요...";
+
+/* Title shown while a plugin is being deactivated */
+"pluginDetails.deactivating.title" = "플러그인 비활성화 중";
+
+/* Button label to delete a plugin */
+"pluginDetails.delete.button" = "삭제";
+
+/* Title of the confirmation alert when deleting a plugin */
+"pluginDetails.delete.confirmationTitle" = "플러그인을 삭제할까요?";
+
+/* Button label to install a plugin */
+"pluginDetails.install.button" = "설치";
+
+/* Message shown while a plugin is being installed */
+"pluginDetails.install.message" = "플러그인이 설치되는 동안 기다려 주세요...";
+
+/* Title shown while a plugin is being installed */
+"pluginDetails.install.title" = "플러그인 설치";
+
+/* Message shown while loading plugin details */
+"pluginDetails.loading" = "플러그인 정보 로드 중...";
+
+/* Title of the changelog section in plugin details */
+"pluginDetails.section.changelog" = "변경 로그";
+
+/* Title of the description section in plugin details */
+"pluginDetails.section.description" = "설명";
+
+/* Title of the details section in plugin details */
+"pluginDetails.section.details" = "상세 정보";
+
+/* Title of the installation section in plugin details */
+"pluginDetails.section.installation" = "설치";
+
+/* Title of the reviews section in plugin details */
+"pluginDetails.section.reviews" = "리뷰";
+
+/* Title of the screenshots section in plugin details */
+"pluginDetails.section.screenshots" = "스크린샷";
+
+/* Message shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.message" = "플러그인이 제거되는 동안 기다려 주세요...";
+
+/* Title shown while a plugin is being uninstalled */
+"pluginDetails.uninstalling.title" = "플러그인 제거 중";
+
+/* Button title to update a plugin */
+"pluginDetails.update.action" = "지금 업데이트";
+
+/* Title shown when a plugin update is available */
+"pluginDetails.update.title" = "업데이트 가능";
+
+/* Message shown when a plugin update is available. The placeholder is the new version number */
+"pluginDetails.update.versionAvailable" = "%@ 버전을 사용할 수 있습니다. 워드프레스 사이트 알림판에서 업데이트하세요.";
+
+/* Button label to view plugin on WordPress.org */
+"pluginDetails.viewOnWordPressOrg.button" = "WordPress.org에서 보기";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "변경사항 폐기";
 
@@ -9371,6 +9508,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.saveDraft" = "임시글 저장";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.sendFeedback" = "피드백 보내기";
 
 /* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "비주얼 편집기";
@@ -9545,6 +9685,21 @@ Example: Reply to Pamela Nguyen */
 
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "제목이 없습니다";
+
+/* Cancel upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.cancelUpload" = "업로드 취소";
+
+/* Replace image upload button in Post Settings / Featured Image cell */
+"postSettings.featuredImage.replaceImage" = "교체";
+
+/* Button in Post Settings */
+"postSettings.featuredImage.setFeaturedImageButton" = "특성 이미지 설정";
+
+/* Snackbar title */
+"postSettings.featuredImage.uploadFailed" = "새 특성 이미지 업로드 실패";
+
+/* Post Settings */
+"postSettings.featuredImage.uploading" = "업로드 중...";
 
 /* The 'Parent Page' setting of the post */
 "postSettings.parentPage" = "상위 페이지";
@@ -9793,6 +9948,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Post publish success view: button 'View post' */
 "publishSuccessView.view" = "글 보기";
 
+/* Informational notice title. Showed when you scan a code using a camera app outside of the app, which is not allowed. */
+"qrLogin.codeHasToBeScannedFromTheAppNotice.title" = "앱을 사용하여 코드를 스캔하세요.";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "해제";
 
@@ -9820,8 +9978,26 @@ Tapping on this row allows the user to edit the sharing message. */
 /* A message title */
 "reader.blog.search.no.results.title" = "블로그를 찾을 수 없음";
 
+/* A shared button title for Reader */
+"reader.button.addToFavorites" = "즐겨찾기에 추가";
+
+/* A shared button title for Reader */
+"reader.button.notificationSettings" = "알림 설정";
+
+/* A shared button title for Reader */
+"reader.button.removeFromFavorites" = "즐겨찾기에서 제거";
+
+/* A shared button title for Reader */
+"reader.button.subscribe" = "구독";
+
 /* Reader sidebar button title */
 "reader.button.unfollow" = "팔로우 취소";
+
+/* A shared button title for Reader */
+"reader.button.unsubscribe" = "구독 해지";
+
+/* Informational message, should be short. */
+"reader.comments.commentsClosed" = "댓글 작성 금지됨";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "사이트의 글 미리보기";
@@ -10018,6 +10194,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.manageNotifications" = "알림 관리";
 
 /* Context menu action */
+"reader.postContextMenu.markRead" = "읽음으로 표시";
+
+/* Context menu action */
+"reader.postContextMenu.markUnread" = "읽지 않음으로 표시";
+
+/* Context menu action */
 "reader.postContextMenu.reportPost" = "글 신고";
 
 /* Context menu action */
@@ -10032,11 +10214,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "블로그";
 
-/* Reader post details view */
-"reader.postDetails.viewModeDescription" = "이 사이트의 소유주만 당사에서 콘텐츠 요약을 살펴보도록 허용할 수 있습니다. 전체 글을 보려면 사이트에 방문해야 합니다.";
+/* Button title */
+"reader.postDetails.viewFullPost" = "글 전체 보기";
 
 /* Reader post details view */
-"reader.postDetails.viewMoreOn" = "전체 글을 보려면 %@을(를) 방문하세요.";
+"reader.postDetails.viewModeDescription" = "이 사이트의 소유주만 당사에서 콘텐츠 요약을 살펴보도록 허용할 수 있습니다. 전체 글을 보려면 사이트에 방문해야 합니다.";
 
 /* Name for the Candy color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.candy" = "캔디";
@@ -10272,6 +10454,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "%@ 팔로우 취소";
 
+/* Field title */
+"reader.userProfile.site" = "사이트";
+
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "뒤로";
 
@@ -10440,6 +10625,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* A shared button title used in different contexts */
 "shared.button.view" = "보기";
 
+/* A generic error title indicating that a screen failed to fetch the latest data */
+"shared.error.failiedToReloadData" = "데이터 업데이트 실패";
+
 /* A generic error message */
 "shared.error.geneirc" = "문제가 발생했습니다";
 
@@ -10505,6 +10693,59 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "유료 요금제로 업그레이드";
+
+/* Title for the featured plugins section */
+"site.plugins.add.category.featured" = "추천";
+
+/* Title for the popular plugins section */
+"site.plugins.add.category.popular" = "인기";
+
+/* Title for the recommended plugins section */
+"site.plugins.add.category.recommended" = "권장";
+
+/* Title for the search results section */
+"site.plugins.add.category.searchResults" = "검색 결과";
+
+/* Message shown when no plugins are found in the list */
+"site.plugins.add.empty" = "플러그인을 찾을 수 없음";
+
+/* Tag shown next to plugins that are already installed */
+"site.plugins.add.installed.tag" = "설치됨";
+
+/* Error message shown when plugins failed to load, with retry option */
+"site.plugins.add.loadError" = "플러그인을 로드하지 못했습니다. 여기를 눌러서 다시 시도";
+
+/* Message shown while loading plugins in the list */
+"site.plugins.add.loading" = "플러그인 로드 중...";
+
+/* Navigation title for the add new plugin screen */
+"site.plugins.add.title" = "새 플러그인 추가";
+
+/* Message shown when there are no active plugins on the site */
+"site.plugins.empty.active" = "활성화된 플러그인 없음";
+
+/* Button label to add a new plugin when no plugins are installed */
+"site.plugins.empty.addButton" = "플러그인 추가";
+
+/* Message shown when there are no inactive plugins on the site */
+"site.plugins.empty.inactive" = "비활성화된 플러그인 없음";
+
+/* The plugin fillter option for displaying active plugins
+   The plugin fillter option for displaying all plugins
+   The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.all" = "전체";
+
+/* Title of the plugin filter picker */
+"site.plugins.filter.title" = "필터";
+
+/* Message displayed when fetching installed plugins from the site */
+"site.plugins.loading" = "설치된 플러그인 로드 중...";
+
+/* No installed plugins message */
+"site.plugins.noInstalledPlugins" = "아직 설치된 플러그인이 없습니다.";
+
+/* Installed plugins list title */
+"site.plugins.title" = "플러그인";
 
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "도메인";
@@ -10608,6 +10849,25 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "내 사이트";
 
+/* The plugin author displayed in the plugins list. The first argument is plugin author name
+   The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.author" = "제작자: %@";
+
+/* The message displayed when a plugin has no description */
+"sitePluginsList.item.noDescriptionAvailable" = "플러그인 제작자가 이 플러그인에 대한 설명을 제공하지 않았습니다.";
+
+/* Button to activate a plugin */
+"sitePluginsList.itemAction.activate" = "활성화";
+
+/* Button to deactivate a plugin */
+"sitePluginsList.itemAction.deactivate" = "비활성화";
+
+/* Button to delete a plugin */
+"sitePluginsList.itemAction.delete" = "삭제";
+
+/* Button to view the plugin on WordPress.org website */
+"sitePluginsList.itemAction.viewOnWordPressOrg" = "WordPress.org에서 보기";
+
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "개인정보";
 
@@ -10670,6 +10930,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Twitter의 약관 및 가격 변경으로 인해 Twitter 자동 공유를 더는 이용할 수 없습니다.";
+
+/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
+"socialSharing.connectionDetails.nAccount" = "%d개 계정";
 
 /* Title of Subscribers stats tab. */
 "stats.dashboard.tab.subscribers" = "구독자";
@@ -11155,6 +11418,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "무시";
 
+/* Button label to share a web page */
+"webKit.button.share" = "공유";
+
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterEndDate" = "종료 날짜";
 
@@ -11304,6 +11570,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Error message that describes an unknown error had occured */
 "wordpress-api.error.unknown" = "문제가 발생했습니다. 나중에 다시 시도하세요.";
+
+/* Error message when failing to find selected media file on the user's device. */
+"wordpress.api.upload.media.fileNotFound" = "기기에서 미디어 파일을 찾을 수 없습니다.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "젯팩 앱으로 전환";

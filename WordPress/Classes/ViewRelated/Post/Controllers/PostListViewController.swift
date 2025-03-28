@@ -2,6 +2,7 @@ import Foundation
 import WordPressShared
 import Gridicons
 import UIKit
+import WordPressUI
 
 final class PostListViewController: AbstractPostListViewController, InteractivePostViewDelegate {
     /// If set, when the post list appear it will show the tab for this status

@@ -1,5 +1,4 @@
 import UIKit
-import AsyncImageKit
 import WordPressUI
 import WordPressReader
 

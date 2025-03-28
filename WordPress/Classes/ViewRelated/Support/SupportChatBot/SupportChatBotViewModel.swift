@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 struct SupportChatBotViewModel {
     private let zendeskUtils: ZendeskUtilsProtocol

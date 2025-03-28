@@ -1,8 +1,7 @@
 import Foundation
 import SVProgressHUD
-import WordPressShared
 import WordPressFlux
-import AsyncImageKit
+import WordPressShared
 import UIKit
 import Combine
 import WordPressUI
@@ -802,10 +801,6 @@ import AutomatticTracks
 
     private func canSync() -> Bool {
         return (readerTopic != nil || isLoadingDiscover) && connectionAvailable()
-    }
-
-    @objc func connectionAvailable() -> Bool {
-        return WordPressAppDelegate.shared?.connectionAvailable ?? false
     }
 
     /// Kicks off a "background" sync without updating the UI if certain conditions

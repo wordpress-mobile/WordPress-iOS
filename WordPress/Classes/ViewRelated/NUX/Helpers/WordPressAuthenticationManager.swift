@@ -1,9 +1,10 @@
-import Foundation
+import UIKit
+import BuildSettingsKit
 import SFHFKeychainUtils
 import WordPressAuthenticator
 import WordPressShared
+import WordPressUI
 import Gridicons
-import UIKit
 
 // MARK: - WordPressAuthenticationManager
 //
@@ -58,12 +59,12 @@ extension WordPressAuthenticationManager {
     private func authenticatorConfiguation() -> WordPressAuthenticatorConfiguration {
         // SIWA can not be enabled for internal builds
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
-        let enableSignInWithApple = !(BuildConfiguration.current ~= [.alpha])
+        let enableSignInWithApple = BuildConfiguration.current != .alpha
 
         return WordPressAuthenticatorConfiguration(
             wpcomClientId: ApiCredentials.client,
             wpcomSecret: ApiCredentials.secret,
-            wpcomScheme: WPComScheme,
+            wpcomScheme: BuildSettings.current.appURLScheme,
             wpcomTermsOfServiceURL: URL(string: WPAutomatticTermsOfServiceURL)!,
             wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseURL,
             wpcomAPIBaseURL: AppEnvironment.current.wordPressComApiBase,

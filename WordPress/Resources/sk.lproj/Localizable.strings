@@ -2491,20 +2491,13 @@
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Odpovede na vaše komentáre";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Odpovedať";
 
-/* The app successfully sent a comment */
-"Reply Sent!" = "Odpoveď odoslaná!";
-
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Text odpovede";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "Odpovedať na článok...";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Vyžadovať schválenie pre komentáre, ktoré obsahujú viacej než tento počet odkazov.";
@@ -3133,9 +3126,6 @@
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "Došlo k neočakávanej chybe pri odosielaní pozvánky";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "Nastala neočakávaná chyba pri odosielaní vašej odpovede";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Vyskytla sa neočakávaná chyba počas aktualizácie nastavení upozornení";

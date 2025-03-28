@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 
 /// Prologue stats page contents
 struct UnifiedPrologueStatsContentView: View {

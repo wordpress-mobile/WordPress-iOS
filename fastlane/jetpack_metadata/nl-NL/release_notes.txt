@@ -1,0 +1,4 @@
+Wat is er nieuw voor deze maand?
+- Betere reacties: bijgewerkt ontwerp, diepte-indicatoren voor threads, verbeterde ondersteuning voor uitgebreide content en een composer met volledig scherm met de mogelijkheid voor concepten opslaan.
+- Uitgelichte afbeeldingen: los een probleem op waarbij Reader geen uitgelichte afbeeldingen weergaf in sommige berichten.
+- Bugfixes en stabiliteits- en prestatieverbeteringen.

@@ -1,7 +1,11 @@
 import Aztec
+import AztecExtensions
 import BuildSettingsKit
+import CocoaLumberjackSwift
 import CoreData
+import TracksMini
 import WordPressKit
+import ShareExtensionCore
 
 /// Provides site fetching and post/media uploading functionality to app extensions.
 ///
@@ -23,7 +27,7 @@ class AppExtensionsService {
     /// Unique identifier for background sessions
     ///
     fileprivate lazy var backgroundSessionIdentifier: String = {
-        let identifier = BuildSettings.appGroupName + "." + UUID().uuidString
+        let identifier = BuildSettings.current.appGroupName + "." + UUID().uuidString
         return identifier
     }()
 
@@ -40,7 +44,7 @@ class AppExtensionsService {
                             userAgent: nil,
                             backgroundUploads: false,
                             backgroundSessionIdentifier: backgroundSessionIdentifier,
-                            sharedContainerIdentifier: BuildSettings.appGroupName)
+                            sharedContainerIdentifier: BuildSettings.current.appGroupName)
     }()
 
     /// Backgrounding Rest API
@@ -50,14 +54,12 @@ class AppExtensionsService {
                                    userAgent: nil,
                                    backgroundUploads: true,
                                    backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                   sharedContainerIdentifier: BuildSettings.appGroupName)
+                                   sharedContainerIdentifier: BuildSettings.current.appGroupName)
     }()
 
     /// Tracks Instance
     ///
-    fileprivate lazy var tracks: Tracks = {
-        Tracks(appGroupName: BuildSettings.appGroupName)
-    }()
+    fileprivate lazy var tracks = Tracks()
 
     /// WordPress.com Username
     ///
@@ -416,23 +418,25 @@ fileprivate extension AppExtensionsService {
             self?.coreDataStack.saveContext()
 
             // Associate the remote media with the newly-uploaded post
-            let updatedMedia = mediaUploadOps.compactMap({return $0.remoteMedia})
+            let updatedMedia = mediaUploadOps.compactMap { $0.remoteMedia }
             self?.updateMedia(updatedMedia, postID: postID, siteID: siteID, onComplete: {
                 // Schedule a local success notification
-                ExtensionNotificationManager.scheduleSuccessNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
-                                                                         postID: String(uploadPostOp.remotePostID),
-                                                                         blogID: String(uploadPostOp.siteID),
-                                                                         mediaItemCount: mediaUploadOps.count,
-                                                                         postStatus: postStatus)
+                ExtensionNotificationManager.scheduleSuccessNotification(
+                    postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
+                    postID: String(uploadPostOp.remotePostID),
+                    blogID: String(uploadPostOp.siteID),
+                    mediaItemCount: mediaUploadOps.count,
+                    postStatus: postStatus)
             })
         }, onFailure: {
             // Schedule a local failure notification
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
-                ExtensionNotificationManager.scheduleFailureNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
-                                                                         postID: String(uploadPostOp.remotePostID),
-                                                                         blogID: String(uploadPostOp.siteID),
-                                                                         mediaItemCount: mediaUploadOps.count,
-                                                                         postStatus: postStatus)
+                ExtensionNotificationManager.scheduleFailureNotification(
+                    postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
+                    postID: String(uploadPostOp.remotePostID),
+                    blogID: String(uploadPostOp.siteID),
+                    mediaItemCount: mediaUploadOps.count,
+                    postStatus: postStatus)
             }
         })
     }

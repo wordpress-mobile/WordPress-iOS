@@ -1,4 +1,6 @@
 import UIKit
+import WordPressUI
+import WordPressShared
 
 extension RegisterDomainDetailsViewController {
 

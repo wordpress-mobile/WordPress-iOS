@@ -1,5 +1,6 @@
-import Foundation
+import UIKit
 import DGCharts
+import WordPressUI
 
 // MARK: - StatsInsightsFilterDimension
 

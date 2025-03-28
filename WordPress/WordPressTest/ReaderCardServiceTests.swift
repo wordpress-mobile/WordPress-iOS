@@ -107,7 +107,7 @@ final class ReaderPostServiceRemoteMock: ReaderCardServiceRemote {
             return
         }
 
-        guard let fileUrl = Bundle.main.url(forResource: "reader-cards.json", withExtension: nil),
+        guard let fileUrl = Bundle(for: ReaderPostServiceRemoteMock.self).url(forResource: "reader-cards.json", withExtension: nil),
               let data = try? Data(contentsOf: fileUrl),
               let cards = try? JSONDecoder().decode([RemoteReaderCard].self, from: data) else {
             XCTFail("Error setting up mock data")

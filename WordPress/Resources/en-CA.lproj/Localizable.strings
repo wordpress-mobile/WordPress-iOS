@@ -2346,9 +2346,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder for the end date in calendar range selection */
 "End Date" = "End Date";
 
-/* Accessibility Label for the enter full screen button on the comment reply text view */
-"Enter Full Screen" = "Enter Full Screen";
-
 /* Enter a custom value */
 "Enter a custom value" = "Enter a custom value";
 
@@ -2498,9 +2495,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Excludes themes, plugins, and uploads";
-
-/* Accessibility Label for the exit full screen button on the full screen comment reply mode */
-"Exit Full Screen" = "Exit Full Screen";
 
 /* Screen reader text to represent the expanded state of a UI control */
 "Expanded" = "Expanded";
@@ -5021,14 +5015,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "Replies to your comments";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "Reply";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "Reply Sent!";
 
 /* Notifications Reply Accessibility Identifier */
 "Reply Text" = "Reply Text";
@@ -5037,9 +5027,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Placeholder text for the reply text field.%1$@ is a placeholder for the comment author.Example: Reply to Pamela Nguyen
    Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Reply to %1$@";
-
-/* Placeholder text for replying to a post */
-"Reply to post" = "Reply to post";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Require manual approval for comments that include more than this number of links.";
@@ -6188,9 +6175,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "There has been a problem while loading your Notification Settings" = "There has been a problem while loading your Notification Settings";
 
 /* Error displayed if a comment fails to get updated */
-"There has been an unexpected error while editing the comment" = "There has been an unexpected error while editing the comment";
-
-/* Error displayed if a comment fails to get updated */
 "There has been an unexpected error while editing your comment" = "There has been an unexpected error while editing your comment";
 
 /* Message shown when comments for a post can not be loaded. */
@@ -6201,9 +6185,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Invite Failed Message */
 "There has been an unexpected error while sending your Invitation" = "There has been an unexpected error while sending your Invitation";
-
-/* Reply Failure Message */
-"There has been an unexpected error while sending your reply" = "There has been an unexpected error while sending your reply";
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "There has been an unexpected error while updating your Notification Settings";

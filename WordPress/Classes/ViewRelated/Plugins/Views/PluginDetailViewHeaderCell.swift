@@ -1,6 +1,6 @@
 import UIKit
-import WordPressShared
 import Gridicons
+import WordPressUI
 
 class PluginDetailViewHeaderCell: UITableViewCell {
 

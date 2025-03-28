@@ -1,0 +1,4 @@
+O que há de novo neste mês?
+- Comentários melhores: design atualizado, indicadores de quantidade de respostas, compatibilidade aprimorada com rich media e um compositor em tela cheia com salvamento de rascunhos.
+- Imagens destacadas: corrigimos um problema em que o Leitor não exibia imagens destacadas de alguns posts.
+- Correções de bugs e melhorias de desempenho.

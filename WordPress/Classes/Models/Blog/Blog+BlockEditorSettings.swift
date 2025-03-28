@@ -9,7 +9,7 @@ extension Blog {
     @NSManaged public var blockEditorSettings: BlockEditorSettings?
 
     @objc
-    func supportsBlockEditorSettings() -> Bool {
+    public func supportsBlockEditorSettings() -> Bool {
         return hasRequiredWordPressVersion("5.8")
     }
 }

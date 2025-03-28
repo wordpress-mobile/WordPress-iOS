@@ -132,7 +132,7 @@ final class PostMediaUploadItemViewModel: ObservableObject, Identifiable {
         title = media.filename ?? "–"
         update()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityUpdated, object: nil)
     }
 
     fileprivate func update() {

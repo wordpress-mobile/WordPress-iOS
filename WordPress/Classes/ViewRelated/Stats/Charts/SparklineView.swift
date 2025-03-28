@@ -1,5 +1,6 @@
 import UIKit
 import simd
+import WordPressUI
 
 class SparklineView: UIView {
     private let lineLayer = CAShapeLayer()

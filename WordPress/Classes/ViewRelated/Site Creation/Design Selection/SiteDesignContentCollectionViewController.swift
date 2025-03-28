@@ -1,6 +1,7 @@
 import Gridicons
 import UIKit
 import WordPressKit
+import WordPressUI
 
 class SiteDesignContentCollectionViewController: CollapsableHeaderViewController {
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice

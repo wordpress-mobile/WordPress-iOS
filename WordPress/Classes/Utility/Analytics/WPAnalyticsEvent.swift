@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 // WPiOS-only events
 @objc enum WPAnalyticsEvent: Int {

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 @objc final class DomainsDashboardCoordinator: NSObject {
     @objc(presentDomainsDashboardWithPresenter:source:blog:)

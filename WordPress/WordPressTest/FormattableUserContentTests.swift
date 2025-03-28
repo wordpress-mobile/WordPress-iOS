@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+@testable import FormattableContentKit
 
 final class FormattableUserContentTests: CoreDataTestCase {
     private let entityName = Notification.classNameWithoutNamespaces()

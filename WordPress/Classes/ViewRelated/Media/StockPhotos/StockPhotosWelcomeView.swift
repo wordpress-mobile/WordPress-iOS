@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 final class StockPhotosWelcomeView: UIView {
     override init(frame: CGRect) {

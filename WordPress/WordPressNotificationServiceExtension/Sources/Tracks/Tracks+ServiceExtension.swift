@@ -1,4 +1,5 @@
 import Foundation
+import TracksMini
 
 /// Characterizes the types of service extension events we're interested in tracking.
 /// The raw value corresponds to the event name in Tracks.

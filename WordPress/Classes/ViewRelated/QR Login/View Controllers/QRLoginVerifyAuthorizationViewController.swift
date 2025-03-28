@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 class QRLoginVerifyAuthorizationViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!

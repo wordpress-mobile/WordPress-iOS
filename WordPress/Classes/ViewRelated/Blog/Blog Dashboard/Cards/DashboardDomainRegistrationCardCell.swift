@@ -1,5 +1,6 @@
 import UIKit
 import WordPressFlux
+import WordPressShared
 
 final class DashboardDomainRegistrationCardCell: BaseDashboardDomainsCardCell {
 

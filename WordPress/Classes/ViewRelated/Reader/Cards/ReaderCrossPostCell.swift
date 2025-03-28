@@ -1,8 +1,6 @@
 import Foundation
 import AutomatticTracks
-import WordPressShared
 import WordPressUI
-import AsyncImageKit
 
 final class ReaderCrossPostCell: ReaderStreamBaseCell {
     private let view = ReaderCrossPostView()

@@ -1,12 +1,13 @@
 import Foundation
+import BuildSettingsKit
 
-/**
- * WordPress Configuration
- * - Warning:
- * This configuration class has a **Jetpack** counterpart in the Jetpack bundle.
- * Make sure to keep them in sync to avoid build errors when building the Jetpack target.
- */
+/// - warning: Soft-deprecated. Use `BuildSettings` directly.
 @objc class AppConfiguration: NSObject {
-    @objc static let isJetpack: Bool = false
-    @objc static let isWordPress: Bool = true
+    @objc static var isJetpack: Bool {
+        BuildSettings.current.brand == .jetpack
+    }
+
+    @objc static var isWordPress: Bool {
+        BuildSettings.current.brand == .wordpress
+    }
 }

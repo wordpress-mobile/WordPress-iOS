@@ -1,8 +1,9 @@
-import Foundation
 import UIKit
 import SwiftUI
+import SVProgressHUD
 import WordPressShared
 import WordPressFlux
+import WordPressUI
 
 func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewController? {
     guard let api = account.wordPressComRestApi else {
@@ -285,7 +286,7 @@ private class AccountSettingsController: SettingsController {
             case .success:
                 WPAnalytics.track(.accountCloseCompleted, properties: ["status": "success"])
                 let status = NSLocalizedString("Account closed", comment: "Overlay message displayed when account successfully closed")
-                SVProgressHUD.showDismissibleSuccess(withStatus: status)
+                SVProgressHUD.showDismissibleSuccess(status: status)
                 AccountHelper.logOutDefaultWordPressComAccount()
             case .failure(let error):
                 let errorCode = self.errorCode(error) ?? "unknown"

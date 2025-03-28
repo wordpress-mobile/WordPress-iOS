@@ -1067,14 +1067,10 @@
 /* Setting: indicates if Replies to Comments will be notified */
 "Replies to your comments" = "ข้อความตอบกลับมาที่ความเห็นของคุณ";
 
-/* Accessibility label for the reply button
-   Reply to a comment (verb)
+/* Reply to a comment (verb)
    Reply to a comment.
    Verb. Button title. Reply to a comment. */
 "Reply" = "ตอบกลับ";
-
-/* The app successfully sent a comment */
-"Reply Sent!" = "ส่งความเห็นแล้ว";
 
 /* An explaination of a setting. */
 "Require manual approval for comments that include more than this number of links." = "ต้องการการอนุมัติด้วยมือสำหรับความเห็นที่ประกอบด้วยลิงก์ที่มากกว่าจำนวนนี้";

@@ -1,3 +1,6 @@
+import UIKit
+import WordPressUI
+
 /// A `ImmuTableRow` that contains a `UICollectionView`.
 /// Currently the `CollectionViewContainerCell` is fairly specific to needs of Plugin Directory,
 /// but it should be possible to make it more generic in the future if there's a need to — it was deliberately

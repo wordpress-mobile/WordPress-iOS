@@ -8,10 +8,6 @@
 
 @import OCMock;
 
-@interface WPAccount ()
-@property (nonatomic, readwrite) WordPressComRestApi *wordPressComRestApi;
-@end
-
 @interface MenusServiceTests : XCTestCase
 @property (nonatomic, strong) id<CoreDataStack> manager;
 @end
@@ -35,7 +31,7 @@
     NSManagedObjectContext *context = self.manager.mainContext;
     Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    blog.account.wordPressComRestApi = api;
+    blog.account._private_wordPressComRestApi = api;
     blog.dotComID = @1;
     blog.isAdmin = YES;
 
@@ -51,7 +47,7 @@
     NSManagedObjectContext *context = self.manager.mainContext;
     Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    blog.account.wordPressComRestApi = api;
+    blog.account._private_wordPressComRestApi = api;
     blog.dotComID = @1;
     blog.isAdmin = NO;
     
@@ -67,7 +63,7 @@
     NSManagedObjectContext *context = self.manager.mainContext;
     Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    blog.account.wordPressComRestApi = api;
+    blog.account._private_wordPressComRestApi = api;
     blog.dotComID = @1;
     blog.isAdmin = YES;
 
@@ -89,7 +85,7 @@
     NSManagedObjectContext *context = self.manager.mainContext;
     Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    blog.account.wordPressComRestApi = api;
+    blog.account._private_wordPressComRestApi = api;
     blog.dotComID = @1;
     blog.isAdmin = YES;
     
@@ -122,7 +118,7 @@
     NSManagedObjectContext *context = self.manager.mainContext;
     Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    blog.account.wordPressComRestApi = api;
+    blog.account._private_wordPressComRestApi = api;
     blog.dotComID = @1;
     blog.isAdmin = YES;
     
@@ -171,7 +167,7 @@
     NSManagedObjectContext *context = self.manager.mainContext;
     Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    blog.account.wordPressComRestApi = api;
+    blog.account._private_wordPressComRestApi = api;
     blog.dotComID = @1;
     blog.isAdmin = YES;
 
@@ -198,7 +194,7 @@
     NSManagedObjectContext *context = self.manager.mainContext;
     Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    blog.account.wordPressComRestApi = api;
+    blog.account._private_wordPressComRestApi = api;
     blog.dotComID = @1;
     blog.isAdmin = YES;
 

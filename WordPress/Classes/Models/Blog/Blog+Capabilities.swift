@@ -79,8 +79,16 @@ extension Blog {
         return isUserCapableOf(.EditPosts) && JetpackNotificationMigrationService.shared.shouldPresentNotifications()
     }
 
-    var userCanUploadMedia: Bool {
+    public var userCanUploadMedia: Bool {
         // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
         capabilities != nil ? isUploadingFilesAllowed() : true
+    }
+
+    /// Only WordPress.com hosted sites we administer may be managed
+    ///
+    /// - Returns: Whether site management is permitted
+    ///
+    @objc func supportsSiteManagementServices() -> Bool {
+        return isHostedAtWPcom && isAdmin
     }
 }

@@ -2,6 +2,7 @@ import UIKit
 import SVProgressHUD
 import WordPressShared
 import Gridicons
+import WordPressUI
 
 /// DeleteSiteViewController allows user delete their site.
 ///
@@ -218,7 +219,7 @@ open class DeleteSiteViewController: UITableViewController {
         service.deleteSiteForBlog(blog, success: { [weak self] in
             WPAppAnalytics.track(.siteSettingsDeleteSiteResponseOK, with: trackedBlog)
             let status = NSLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
-            SVProgressHUD.showDismissibleSuccess(withStatus: status)
+            SVProgressHUD.showDismissibleSuccess(status: status)
 
             self?.updateNavigationStackAfterSiteDeletion()
 
@@ -260,6 +261,9 @@ open class DeleteSiteViewController: UITableViewController {
 
             // Pop the primary navigation controller back to the sites list
             primaryNavigationController.popToRootViewController(animated: true)
+        } else if let presentingViewController {
+            // This view is presented as a modal on iPad.
+            presentingViewController.dismiss(animated: true)
         }
     }
 
