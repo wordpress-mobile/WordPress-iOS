@@ -20,7 +20,7 @@ class GutenbergMediaEditorImage: AsyncImage {
 
         urlComponents.query = nil
 
-        return try? urlComponents.asURL()
+        return urlComponents.url
     }
 
     private lazy var mediaUtility: EditorMediaUtility = {
