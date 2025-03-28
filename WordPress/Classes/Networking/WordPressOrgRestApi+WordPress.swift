@@ -12,6 +12,14 @@ private func apiBase(blog: Blog) -> URL? {
 
 extension WordPressOrgRestApi {
     @objc
+    convenience init?(blog: Blog) {
+        self.init(
+            blog: blog,
+            userAgent: WPUserAgent.wordPress(),
+            wordPressComApiURL: WordPressComRestApi.apiBaseURL
+        )
+    }
+
     convenience init?(
         blog: Blog,
         userAgent: String = WPUserAgent.wordPress(),
