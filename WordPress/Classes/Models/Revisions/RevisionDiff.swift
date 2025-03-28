@@ -12,6 +12,9 @@ class RevisionDiff: NSManagedObject {
     @NSManaged var titleDiffs: NSSet?
 
     @NSManaged var revision: Revision?
+}
+
+extension RevisionDiff {
 
     var contentToAttributedString: NSAttributedString? {
         return (contentDiffs?.operations ?? []).toAttributedString()
