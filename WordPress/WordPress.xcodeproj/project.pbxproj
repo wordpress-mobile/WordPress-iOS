@@ -5052,7 +5052,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				0CED01712D95B897003015CF /* Keystone */,
-				24CE57C42CD3375200C7B37D /* Classes */,
 			);
 			name = Keystone;
 			packageProductDependencies = (
@@ -5090,6 +5089,7 @@
 			fileSystemSynchronizedGroups = (
 				0C1C180E2D95DA5200494A8C /* Icons */,
 				0CED35262D959427003015CF /* Misc */,
+				24CE57C42CD3375200C7B37D /* Classes */,
 			);
 			name = WordPress;
 			packageProductDependencies = (
@@ -5372,6 +5372,7 @@
 			fileSystemSynchronizedGroups = (
 				0C1C18F32D95DA6D00494A8C /* Icons */,
 				0CED35262D959427003015CF /* Misc */,
+				24CE57C42CD3375200C7B37D /* Classes */,
 			);
 			name = Jetpack;
 			packageProductDependencies = (
