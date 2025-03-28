@@ -1568,7 +1568,6 @@
 		3F86A83629D19C15005D20C0 /* SignupEpilogueTableViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupEpilogueTableViewControllerTests.swift; sourceTree = "<group>"; };
 		3F9DD3F62CC214BF00DF1760 /* Common.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.debug.xcconfig; sourceTree = "<group>"; };
 		3F9DD3F72CC2188400DF1760 /* Common.alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.alpha.xcconfig; sourceTree = "<group>"; };
-		3F9DD3F82CC21E7B00DF1760 /* WordPressAuthenticator.enterprise.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = WordPressAuthenticator.enterprise.xcconfig; sourceTree = "<group>"; };
 		3FA640652670CEFE0064401E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3FB6D13C2AD0F67300768C07 /* CachedAnnouncementsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAnnouncementsStoreTests.swift; sourceTree = "<group>"; };
 		3FB6D13E2AD2AC5A00768C07 /* Announcement+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Announcement+Fixture.swift"; sourceTree = "<group>"; };
@@ -1605,7 +1604,6 @@
 		4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
 		4A2C73E32A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggedManagedObjectIDTests.swift; sourceTree = "<group>"; };
 		4A2C73F62A9585B000ACE79E /* PostRepositoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostRepositoryTests.swift; sourceTree = "<group>"; };
-		4A2F746A2C2198CB00E72117 /* WordPressAuthenticatorTests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = WordPressAuthenticatorTests.xcconfig; sourceTree = "<group>"; };
 		4A5598842B05AC180083C220 /* PagesListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagesListTests.swift; sourceTree = "<group>"; };
 		4A5EDD802CE58B9900A605FC /* ZendeskUtilsTests+A8CEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZendeskUtilsTests+A8CEmail.swift"; sourceTree = "<group>"; };
 		4A690C142BA790BC00A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -1792,7 +1790,6 @@
 		4AD9549F2C2145CB00D0EEFA /* StoredCredentialsAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoredCredentialsAuthenticator.swift; sourceTree = "<group>"; };
 		4AD954A02C2145CB00D0EEFA /* StoredCredentialsPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoredCredentialsPicker.swift; sourceTree = "<group>"; };
 		4AD954A32C2145CB00D0EEFA /* WordPressAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressAuthenticator.h; sourceTree = "<group>"; };
-		4AD955572C2155B300D0EEFA /* WordPressAuthenticator.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = WordPressAuthenticator.xcconfig; sourceTree = "<group>"; };
 		4AD9555F2C2171F000D0EEFA /* AnalyticsTrackerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsTrackerTests.swift; sourceTree = "<group>"; };
 		4AD955612C2171F000D0EEFA /* PasteboardTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasteboardTests.swift; sourceTree = "<group>"; };
 		4AD955622C2171F000D0EEFA /* WordPressAuthenticator+TestsUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WordPressAuthenticator+TestsUtils.swift"; sourceTree = "<group>"; };
@@ -4880,9 +4877,6 @@
 				24350E7C264DB76E009BB2B6 /* Jetpack.debug.xcconfig */,
 				24351059264DC1E2009BB2B6 /* Jetpack.release.xcconfig */,
 				2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */,
-				4AD955572C2155B300D0EEFA /* WordPressAuthenticator.xcconfig */,
-				3F9DD3F82CC21E7B00DF1760 /* WordPressAuthenticator.enterprise.xcconfig */,
-				4A2F746A2C2198CB00E72117 /* WordPressAuthenticatorTests.xcconfig */,
 			);
 			name = config;
 			path = ../config;
@@ -7743,7 +7737,7 @@
 		};
 		4AD953CA2C21451800D0EEFA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4AD955572C2155B300D0EEFA /* WordPressAuthenticator.xcconfig */;
+			baseConfigurationReference = 3F9DD3F62CC214BF00DF1760 /* Common.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -7798,7 +7792,7 @@
 		};
 		4AD953CB2C21451800D0EEFA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4AD955572C2155B300D0EEFA /* WordPressAuthenticator.xcconfig */;
+			baseConfigurationReference = 0C96AC202D92FC17000779B8 /* Common.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -7849,7 +7843,7 @@
 		};
 		4AD953CD2C21451800D0EEFA /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3F9DD3F82CC21E7B00DF1760 /* WordPressAuthenticator.enterprise.xcconfig */;
+			baseConfigurationReference = 3F9DD3F72CC2188400DF1760 /* Common.alpha.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -7900,7 +7894,7 @@
 		};
 		4AD953CE2C21451800D0EEFA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4A2F746A2C2198CB00E72117 /* WordPressAuthenticatorTests.xcconfig */;
+			baseConfigurationReference = 3F9DD3F62CC214BF00DF1760 /* Common.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -7938,7 +7932,7 @@
 		};
 		4AD953CF2C21451800D0EEFA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4A2F746A2C2198CB00E72117 /* WordPressAuthenticatorTests.xcconfig */;
+			baseConfigurationReference = 0C96AC202D92FC17000779B8 /* Common.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -7971,7 +7965,7 @@
 		};
 		4AD953D12C21451800D0EEFA /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4A2F746A2C2198CB00E72117 /* WordPressAuthenticatorTests.xcconfig */;
+			baseConfigurationReference = 3F9DD3F72CC2188400DF1760 /* Common.alpha.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
