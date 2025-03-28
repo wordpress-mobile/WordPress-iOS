@@ -7,7 +7,11 @@ import Foundation
 /// to explore a standard way to perform query. https://github.com/wordpress-mobile/WordPress-iOS/pull/19394 made
 /// an attempt, but still has lots of unknowns.
 public struct BlogQuery {
-    private var predicates = [NSPredicate]()
+    private var predicates: [NSPredicate]
+
+    public init() {
+        predicates = []
+    }
 
     public func blogID(_ id: Int) -> Self {
         blogID(Int64(id))
