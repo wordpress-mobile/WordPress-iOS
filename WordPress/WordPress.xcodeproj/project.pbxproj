@@ -125,8 +125,6 @@
 		0CB424F42ADF3CBE0080B807 /* PostSearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424F32ADF3CBE0080B807 /* PostSearchViewModelTests.swift */; };
 		0CD382862A4B6FCF00612173 /* DashboardBlazeCardCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */; };
 		0CD6299B2B9AAA9A00325EA4 /* Foundation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD6299A2B9AAA9A00325EA4 /* Foundation+Extensions.swift */; };
-		0CED01762D95B897003015CF /* Keystone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CED01702D95B897003015CF /* Keystone.framework */; };
-		0CED01772D95B897003015CF /* Keystone.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CED01702D95B897003015CF /* Keystone.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0CED2AD82D95BB46003015CF /* XcodeTarget_App in Frameworks */ = {isa = PBXBuildFile; productRef = 0CED2AD72D95BB46003015CF /* XcodeTarget_App */; };
 		0CED2AD92D95BB46003015CF /* Gutenberg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3902D2C4BA3008ACD86 /* Gutenberg.xcframework */; };
 		0CED2ADB2D95BB46003015CF /* hermes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3922D2C4BA3008ACD86 /* hermes.xcframework */; };
@@ -963,13 +961,6 @@
 			remoteGlobalIDString = 0107E13828FE9DB200DE87DB;
 			remoteInfo = JetpackIntents;
 		};
-		0CED01742D95B897003015CF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0CED016F2D95B897003015CF;
-			remoteInfo = Keystone;
-		};
 		0CED2AE32D95BB46003015CF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -1223,7 +1214,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0CED01772D95B897003015CF /* Keystone.framework in Embed Frameworks */,
 				3F60D3972D2C4BA4008ACD86 /* Gutenberg.xcframework in Embed Frameworks */,
 				3F60D3992D2C4BA4008ACD86 /* RNTAztecView.xcframework in Embed Frameworks */,
 				4AD953C82C21451700D0EEFA /* WordPressAuthenticator.framework in Embed Frameworks */,
@@ -2278,11 +2268,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		0C1CB0CD2D95C63C00494A8C /* Sources */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Sources;
-			sourceTree = "<group>";
-		};
 		0C1C180E2D95DA5200494A8C /* Icons */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			name = Icons;
@@ -2292,6 +2277,11 @@
 		0C1C18F32D95DA6D00494A8C /* Icons */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Icons;
+			sourceTree = "<group>";
+		};
+		0C1CB0CD2D95C63C00494A8C /* Sources */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		0C5083352D8DB82F007987AB /* Sources */ = {
@@ -2356,7 +2346,6 @@
 			files = (
 				F111B88D2658103C00057942 /* Combine.framework in Frameworks */,
 				3F60D39A2D2C4BA4008ACD86 /* hermes.xcframework in Frameworks */,
-				0CED01762D95B897003015CF /* Keystone.framework in Frameworks */,
 				7E21C761202BBC8E00837CF5 /* iAd.framework in Frameworks */,
 				8298F3921EEF3BA7008EB7F0 /* StoreKit.framework in Frameworks */,
 				93F2E5441E9E5A570050D489 /* CoreSpotlight.framework in Frameworks */,
@@ -5084,7 +5073,6 @@
 				7457667B202B558C00F42E40 /* PBXTargetDependency */,
 				7358E6BE210BD318002323EB /* PBXTargetDependency */,
 				4AD953C62C21451700D0EEFA /* PBXTargetDependency */,
-				0CED01752D95B897003015CF /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0C1C180E2D95DA5200494A8C /* Icons */,
@@ -6889,11 +6877,6 @@
 			isa = PBXTargetDependency;
 			target = 0107E13828FE9DB200DE87DB /* JetpackIntents */;
 			targetProxy = 0107E15628FEA03800DE87DB /* PBXContainerItemProxy */;
-		};
-		0CED01752D95B897003015CF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0CED016F2D95B897003015CF /* Keystone */;
-			targetProxy = 0CED01742D95B897003015CF /* PBXContainerItemProxy */;
 		};
 		0CED2AE42D95BB46003015CF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
