@@ -1,3 +1,1 @@
 #include "Common.xcconfig"
-
-GCC_TREAT_WARNINGS_AS_ERRORS = NO
