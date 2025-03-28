@@ -318,21 +318,21 @@ private extension SiteStatsPeriodViewModel {
         if mostRecentChartData == nil {
             mostRecentChartData = periodSummary
         } else if let mostRecentChartData,
-            let periodSummary,
-            mostRecentChartData.periodEndDate == periodSummary.periodEndDate {
+                  let periodSummary,
+                  mostRecentChartData.periodEndDate == periodSummary.periodEndDate {
             self.mostRecentChartData = periodSummary
-        } else if let periodSummary,   // when there is API data that has more recent API period date
-                  let chartData = mostRecentChartData, // than our local chartData
-                  periodSummary.periodEndDate > chartData.periodEndDate {
+        } else if let periodSummary,   // when there is API data that has more recent API period date than our local chartData
+                  let chartData = mostRecentChartData {
 
-            // we validate if our periodDates match and if so we set the currentEntryIndex to the last index of the summaryData
-            // fixes issue #19688
-            if let lastSummaryDataEntry = summaryData.last,
-               periodSummary.periodEndDate == lastSummaryDataEntry.periodStartDate {
+            // Always prefer newer data
+            if periodSummary.periodEndDate >= chartData.periodEndDate {
                 mostRecentChartData = periodSummary
-                currentEntryIndex = summaryData.count - 1
-            } else {
-                mostRecentChartData = chartData
+
+                // Update currentEntryIndex if needed
+                let lastIndex = summaryData.count - 1
+                if lastIndex >= 0 {
+                    currentEntryIndex = min(currentEntryIndex, lastIndex)
+                }
             }
         }
 
