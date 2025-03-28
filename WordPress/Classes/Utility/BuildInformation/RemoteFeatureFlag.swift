@@ -151,7 +151,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .dotComWebLogin:
             return "jp_wpcom_web_login"
         case .newGutenbergPluginsAvailability:
-            return "new_gutenberg_plugins_availability"
+            return "gutenberg_kit_plugins_availability"
         }
     }
 
