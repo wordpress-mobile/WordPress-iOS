@@ -5105,6 +5105,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0CED017C2D95B897003015CF /* Build configuration list for PBXNativeTarget "Keystone" */;
 			buildPhases = (
+				0C5C46F72D9837FE00F2CD55 /* Generate Credentials */,
 				0CED016B2D95B897003015CF /* Headers */,
 				0CED016C2D95B897003015CF /* Sources */,
 				0CED016D2D95B897003015CF /* Frameworks */,
@@ -6009,6 +6010,26 @@
 			shellPath = "/bin/bash -eu";
 			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		0C5C46F72D9837FE00F2CD55 /* Generate Credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/../Scripts/BuildPhases/GenerateCredentials.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "Generate Credentials";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILD_DIR)/Secrets/Secrets.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
 		};
 		0C96F99E2D92E28E000779B8 /* Generate Credentials */ = {
 			isa = PBXShellScriptBuildPhase;
