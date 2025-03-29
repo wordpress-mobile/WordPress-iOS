@@ -1,4 +1,4 @@
-@import WordPressDataObjC;
+#import "CoreDataService.h"
 
 @class Blog;
 @class Theme;

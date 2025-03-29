@@ -1,10 +1,9 @@
 #import <Foundation/Foundation.h>
+#import <WordPressKit/WordPressKit.h>
 #import "CoreDataService.h"
-@import WordPressDataObjC;
+#import "CoreDataService.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-@import WordPressKit;
 
 extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 

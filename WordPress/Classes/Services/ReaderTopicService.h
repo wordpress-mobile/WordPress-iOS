@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "CoreDataService.h"
-@import WordPressDataObjC;
+#import "CoreDataService.h"
 
 extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 

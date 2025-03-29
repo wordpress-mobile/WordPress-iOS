@@ -1,12 +1,15 @@
 #import <Foundation/Foundation.h>
 
 //! Project version number for Keystone.
-FOUNDATION_EXPORT double KeystoneVersionNumber;
+FOUNDATION_EXPORT double WordPressVersionNumber;
 
 //! Project version string for Keystone.
-FOUNDATION_EXPORT const unsigned char KeystoneVersionString[];
+FOUNDATION_EXPORT const unsigned char WordPressVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <Keystone/PublicHeader.h>
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wquoted-include-in-framework-header"
 
 #import "ActivityLogViewController.h"
 #import "AccountService.h"
@@ -82,3 +85,5 @@ FOUNDATION_EXPORT const unsigned char KeystoneVersionString[];
 #import "WPLogger.h"
 
 FOUNDATION_EXTERN void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue);
+
+#pragma clang diagnostic pop

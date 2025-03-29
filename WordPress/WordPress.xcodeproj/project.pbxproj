@@ -2334,6 +2334,8 @@
 		0C5C47012D9839DE00F2CD55 /* Exceptions for "Keystone" folder in "Keystone" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			publicHeaders = (
+				Temporary/CoreDataService.h,
+				Temporary/CoreDataStack.h,
 				WordPress.h,
 			);
 			target = 0CED016F2D95B897003015CF /* Keystone */;
