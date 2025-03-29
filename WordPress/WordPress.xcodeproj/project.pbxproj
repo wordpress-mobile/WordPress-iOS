@@ -2337,9 +2337,9 @@
 		0C5C47012D9839DE00F2CD55 /* Exceptions for "Keystone" folder in "Keystone" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			publicHeaders = (
+				Keystone.h,
 				Temporary/CoreDataService.h,
 				Temporary/CoreDataStack.h,
-				WordPress.h,
 			);
 			target = 0CED016F2D95B897003015CF /* Keystone */;
 		};
@@ -7562,7 +7562,6 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.Keystone;
-				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -7622,7 +7621,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.Keystone;
-				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -7680,7 +7678,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.Keystone;
-				PRODUCT_MODULE_NAME = WordPress;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
