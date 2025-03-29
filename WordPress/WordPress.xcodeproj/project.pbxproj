@@ -2268,6 +2268,9 @@
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		0C5C46F42D98343300F2CD55 /* Exceptions for "Classes" folder in "Keystone" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"System/WordPress-Bridging-Header.h",
+			);
 			publicHeaders = (
 				"Categories/Media+Extensions.h",
 				"Categories/NSObject+Helpers.h",
