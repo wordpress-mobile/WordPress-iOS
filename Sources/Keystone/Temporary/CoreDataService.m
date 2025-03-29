@@ -1,7 +1,5 @@
 #import "CoreDataService.h"
 
-@import WordPressDataObjC;
-
 @implementation CoreDataService
 
 - (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
