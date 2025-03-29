@@ -2330,6 +2330,13 @@
 			);
 			target = 0CED016F2D95B897003015CF /* Keystone */;
 		};
+		0C5C46F52D98371000F2CD55 /* Exceptions for "Keystone" folder in "Keystone" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			publicHeaders = (
+				Keystone.h,
+			);
+			target = 0CED016F2D95B897003015CF /* Keystone */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -2356,6 +2363,9 @@
 		};
 		0CED01712D95B897003015CF /* Keystone */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0C5C46F52D98371000F2CD55 /* Exceptions for "Keystone" folder in "Keystone" target */,
+			);
 			name = Keystone;
 			path = ../Sources/Keystone;
 			sourceTree = "<group>";
