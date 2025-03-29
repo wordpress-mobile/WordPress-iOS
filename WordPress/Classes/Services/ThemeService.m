@@ -4,7 +4,11 @@
 #import "Theme.h"
 #import "WPAccount.h"
 @import WordPressDataObjC;
+#ifdef KEYSTONE
+#import "Keystone-Swift.h"
+#else
 #import "WordPress-Swift.h"
+#endif
 @import WordPressKit;
 
 /**

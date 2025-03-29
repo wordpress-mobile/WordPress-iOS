@@ -4,7 +4,11 @@
 #import "BlogService.h"
 #import "SharingDetailViewController.h"
 #import "SharingAuthorizationHelper.h"
+#ifdef KEYSTONE
+#import "Keystone-Swift.h"
+#else
 #import "WordPress-Swift.h"
+#endif
 
 @import WordPressShared;
 

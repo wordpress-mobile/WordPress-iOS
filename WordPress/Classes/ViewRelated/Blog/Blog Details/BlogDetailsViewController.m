@@ -9,7 +9,11 @@
 #import "StatsViewController.h"
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
+#ifdef KEYSTONE
+#import "Keystone-Swift.h"
+#else
 #import "WordPress-Swift.h"
+#endif
 #import "MenusViewController.h"
 #import "NSMutableArray+NullableObjects.h"
 

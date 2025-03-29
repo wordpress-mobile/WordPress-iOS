@@ -2,7 +2,11 @@
 #import "Blog.h"
 #import "PostTag.h"
 @import WordPressDataObjC;
+#ifdef KEYSTONE
+#import "Keystone-Swift.h"
+#else
 #import "WordPress-Swift.h"
+#endif
 @import WordPressKit;
 
 NS_ASSUME_NONNULL_BEGIN
