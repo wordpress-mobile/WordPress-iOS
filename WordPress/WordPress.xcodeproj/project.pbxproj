@@ -5035,6 +5035,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				0CED01712D95B897003015CF /* Keystone */,
+				24CE57C42CD3375200C7B37D /* Classes */,
 			);
 			name = Keystone;
 			packageProductDependencies = (
