@@ -2277,6 +2277,8 @@
 				"Categories/UIApplication+Helpers.h",
 				"Categories/UIView+Subviews.h",
 				Models/Blog/Blog.h,
+				Models/CoreDataStack/CoreDataService.h,
+				Models/CoreDataStack/CoreDataStack.h,
 				Models/Media.h,
 				Models/MenuItem.h,
 				Models/PostCategory.h,
@@ -2338,8 +2340,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			publicHeaders = (
 				Keystone.h,
-				Temporary/CoreDataService.h,
-				Temporary/CoreDataStack.h,
 			);
 			target = 0CED016F2D95B897003015CF /* Keystone */;
 		};
