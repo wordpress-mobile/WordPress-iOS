@@ -13,18 +13,18 @@ extension WPAccount {
         if let api = _private_wordPressComRestApi {
             return api
         }
-        guard !authToken.isEmpty else {
+        guard let authToken, !authToken.isEmpty else {
             DispatchQueue.main.async {
                 WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
             }
             return nil
         }
-        let api = makeWordPressComRestApi()
+        let api = makeWordPressComRestApi(authToken: authToken)
         self._private_wordPressComRestApi = api
         return api
     }
 
-    private func makeWordPressComRestApi() -> WordPressComRestApi {
+    private func makeWordPressComRestApi(authToken: String) -> WordPressComRestApi {
         let api = WordPressComRestApi.defaultApi(
             oAuthToken: authToken,
             userAgent: WPUserAgent.defaultUserAgent(),

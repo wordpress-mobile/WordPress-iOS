@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Important: Do not set this directly!
 ///
 /// It's reserved for Objective-C to Swift interoperability in the context of separating this model from the app target and will be removed at some point.
-@property (nonatomic, strong) WordPressComRestApi *_private_wordPressComRestApi;
+@property (nonatomic, strong, nullable) WordPressComRestApi *_private_wordPressComRestApi;
 
 @end
 
