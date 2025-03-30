@@ -1,6 +1,7 @@
 import SwiftUI
 import BuildSettingsKit
 import WordPressKit
+import WordPressShared
 import DesignSystem
 
 /// The Site Domains  screen, accessible from My Site

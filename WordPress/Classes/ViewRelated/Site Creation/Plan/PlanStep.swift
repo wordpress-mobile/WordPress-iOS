@@ -1,3 +1,5 @@
+import UIKit
+
 final class PlanStep: WizardStep {
     weak var delegate: WizardDelegate?
 

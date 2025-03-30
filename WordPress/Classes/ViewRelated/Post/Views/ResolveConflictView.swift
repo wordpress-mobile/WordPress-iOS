@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 import WordPressKit
+import WordPressShared
 
 struct ResolveConflictView: View {
     enum Source: String {

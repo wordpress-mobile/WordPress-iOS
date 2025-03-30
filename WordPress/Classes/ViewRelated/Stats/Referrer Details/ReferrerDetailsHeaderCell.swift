@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 final class ReferrerDetailsHeaderCell: UITableViewCell {
     private let referrerLabel = UILabel()

@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import WordPressShared
 
 enum UnifiedProloguePageType: CaseIterable {
     case intro

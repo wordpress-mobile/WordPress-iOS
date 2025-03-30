@@ -1,4 +1,5 @@
 import FormattableContentKit
+import WordPressShared
 
 class RichTextContentStyles: FormattableContentStyles {
 

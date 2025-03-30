@@ -50,12 +50,8 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     [[analyticsMock expect] beginSession];
     
     WPAppAnalytics *analytics = nil;
-    WPAppAnalyticsLastVisibleScreenCallback lastVisibleScreenCallback = ^NSString*{
-        return @"TEST";
-    };
 
-    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:lastVisibleScreenCallback],
-                     @"Allocating or initializing this object shouldn't throw an exception");
+    XCTAssertNoThrow(analytics = [WPAppAnalytics new], @"Allocating or initializing this object shouldn't throw an exception");
     XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
     
     [apiCredentialsMock verify];
@@ -72,12 +68,8 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     [[analyticsMock reject] beginSession];
     
     WPAppAnalytics *analytics = nil;
-    WPAppAnalyticsLastVisibleScreenCallback lastVisibleScreenCallback = ^NSString*{
-        return @"TEST";
-    };
-    
-    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:lastVisibleScreenCallback],
-                     @"Allocating or initializing this object shouldn't throw an exception");
+
+    XCTAssertNoThrow(analytics = [WPAppAnalytics new], @"Allocating or initializing this object shouldn't throw an exception");
     XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
 
     [apiCredentialsMock verify];
@@ -90,12 +82,8 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
 - (void)testUserOptedOut
 {
     WPAppAnalytics *analytics = nil;
-    WPAppAnalyticsLastVisibleScreenCallback lastVisibleScreenCallback = ^NSString*{
-        return @"TEST";
-    };
 
-    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:lastVisibleScreenCallback],
-                     @"Allocating or initializing this object shouldn't throw an exception");
+    XCTAssertNoThrow(analytics = [WPAppAnalytics new], @"Allocating or initializing this object shouldn't throw an exception");
     XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
 
     [analytics setUserHasOptedOut:YES];
@@ -106,12 +94,8 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
 - (void)testUserHasNotOptedOut
 {
     WPAppAnalytics *analytics = nil;
-    WPAppAnalyticsLastVisibleScreenCallback lastVisibleScreenCallback = ^NSString*{
-        return @"TEST";
-    };
 
-    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:lastVisibleScreenCallback],
-                     @"Allocating or initializing this object shouldn't throw an exception");
+    XCTAssertNoThrow(analytics = [WPAppAnalytics new], @"Allocating or initializing this object shouldn't throw an exception");
     XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
 
     [analytics setUserHasOptedOut:NO];
@@ -125,12 +109,8 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
 
     WPAppAnalytics *analytics = nil;
-    WPAppAnalyticsLastVisibleScreenCallback lastVisibleScreenCallback = ^NSString*{
-        return @"TEST";
-    };
 
-    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:lastVisibleScreenCallback],
-                     @"Allocating or initializing this object shouldn't throw an exception");
+    XCTAssertNoThrow(analytics = [WPAppAnalytics new], @"Allocating or initializing this object shouldn't throw an exception");
     XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
 
     XCTAssertFalse([WPAppAnalytics userHasOptedOut]);
@@ -142,12 +122,8 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
 
     WPAppAnalytics *analytics = nil;
-    WPAppAnalyticsLastVisibleScreenCallback lastVisibleScreenCallback = ^NSString*{
-        return @"TEST";
-    };
 
-    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:lastVisibleScreenCallback],
-                     @"Allocating or initializing this object shouldn't throw an exception");
+    XCTAssertNoThrow(analytics = [WPAppAnalytics new], @"Allocating or initializing this object shouldn't throw an exception");
     XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
 
     XCTAssertTrue([WPAppAnalytics userHasOptedOut]);

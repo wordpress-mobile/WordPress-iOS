@@ -1,6 +1,7 @@
 import SwiftUI
 import DesignSystem
 import WordPressReader
+import WordPressShared
 
 /// The tracking source values for the customization sheet.
 /// The values are kept in sync with Android.

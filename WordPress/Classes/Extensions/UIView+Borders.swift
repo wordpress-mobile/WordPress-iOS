@@ -1,3 +1,5 @@
+import UIKit
+
 extension UIView {
     @discardableResult
     func addTopBorder(withColor bgColor: UIColor) -> UIView {

@@ -9,6 +9,7 @@
 @class RemotePost;
 @class RemoteUser;
 @class PostServiceRemoteFactory;
+@class PostServiceSyncOptions;
 
 NS_ASSUME_NONNULL_BEGIN
 

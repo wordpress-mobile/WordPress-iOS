@@ -1,3 +1,5 @@
+import Foundation
+
 struct MigrationActionsViewConfiguration {
 
     let primaryTitle: String?

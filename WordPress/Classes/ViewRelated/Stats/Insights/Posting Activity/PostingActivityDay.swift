@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 protocol PostingActivityDayDelegate: AnyObject {
     func daySelected(_ day: PostingActivityDay)

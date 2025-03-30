@@ -1,20 +1,20 @@
 import Foundation
 import CoreData
 
-extension Blog {
-    @NSManaged public var authors: Set<BlogAuthor>?
+public extension Blog {
+    @NSManaged var authors: Set<BlogAuthor>?
 
     @objc(addAuthorsObject:)
-    @NSManaged public func addToAuthors(_ value: BlogAuthor)
+    @NSManaged func addToAuthors(_ value: BlogAuthor)
 
     @objc(removeAuthorsObject:)
-    @NSManaged public func removeFromAuthors(_ value: BlogAuthor)
+    @NSManaged func removeFromAuthors(_ value: BlogAuthor)
 
     @objc(addAuthors:)
-    @NSManaged public func addToAuthors(_ values: NSSet)
+    @NSManaged func addToAuthors(_ values: NSSet)
 
     @objc(removeAuthors:)
-    @NSManaged public func removeFromAuthors(_ values: NSSet)
+    @NSManaged func removeFromAuthors(_ values: NSSet)
 
     @objc
     func getAuthorWith(id: NSNumber) -> BlogAuthor? {

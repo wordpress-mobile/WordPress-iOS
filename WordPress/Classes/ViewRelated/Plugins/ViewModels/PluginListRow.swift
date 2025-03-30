@@ -1,3 +1,4 @@
+import UIKit
 import Gridicons
 
 struct PluginListRow: ImmuTableRow {

@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import WordPressShared
 
 // MARK: StatsChartLegendView
 

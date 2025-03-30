@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import WordPressShared
 
 @objc
 protocol JetpackConnectionDelegate {

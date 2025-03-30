@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import Alamofire
 
 /// Handles mbar redirects.  These are marketing redirects to URLs that mobile should handle.

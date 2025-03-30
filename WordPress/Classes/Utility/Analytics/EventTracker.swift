@@ -1,3 +1,5 @@
+import WordPressShared
+
 /// Convenient tracking abstraction, which allows this to be a visible and injectable dependency.
 ///
 protocol EventTracker {

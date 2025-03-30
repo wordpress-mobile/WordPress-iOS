@@ -1,3 +1,5 @@
+import UIKit
+
 /// A text-type UIActivityItemSource for the share app activity.
 ///
 /// Provides additional subject string so the subject line is filled when sharing the app via mail.

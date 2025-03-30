@@ -1,5 +1,6 @@
 import Foundation
 import WordPressAuthenticator
+import WordPressShared
 
 extension NSNotification.Name {
     static let WPAppUITypeChanged = NSNotification.Name(rawValue: "WPAppUITypeChanged")

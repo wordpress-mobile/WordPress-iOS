@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import WordPressShared
 
 struct DomainsDashboardFactory {
     static func makeDomainsDashboardViewController(blog: Blog) -> UIViewController {

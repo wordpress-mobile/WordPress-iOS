@@ -1,4 +1,6 @@
-BUILD_SCHEME = Jetpack
+#include "Common.release.xcconfig"
+#include "Version.public.xcconfig"
+
 WP_PUSH_NOTIFICATION_APP_ID = com.jetpack.appstore
 WP_BUILD_CONFIGURATION = release
 WP_APP_URL_SCHEME = ${WP_JETPACK_APP_URL_SCHEME}

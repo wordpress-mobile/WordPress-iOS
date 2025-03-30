@@ -1,5 +1,6 @@
-import Foundation
+import UIKit
 import Combine
+import WordPressShared
 
 final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
     private let viewModel: StatsSubscribersViewModel

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 extension AbstractPost {
     /// Returns the original post by navigating the entire list of revisions

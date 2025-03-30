@@ -1,3 +1,5 @@
+import UIKit
+
 class ChangePasswordViewController: SettingsTextViewController, UITextFieldDelegate {
     typealias ChangePasswordSaveAction = (String) -> ()
 

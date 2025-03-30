@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 final class IntentCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var title: UILabel!

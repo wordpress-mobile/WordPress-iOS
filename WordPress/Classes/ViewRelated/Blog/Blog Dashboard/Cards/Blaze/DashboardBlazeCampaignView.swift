@@ -1,7 +1,8 @@
 import Foundation
 import UIKit
-import WordPressKit
 import AsyncImageKit
+import WordPressKit
+import WordPressShared
 
 final class DashboardBlazeCampaignView: UIView {
     private let statusView = BlazeCampaignStatusView()

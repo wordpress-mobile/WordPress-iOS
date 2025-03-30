@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 
-
 #pragma mark - External Constants
 extern NSString * const SettingsSelectionTitleKey;
 extern NSString * const SettingsSelectionTitlesKey;

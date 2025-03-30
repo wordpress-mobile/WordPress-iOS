@@ -1,5 +1,72 @@
+import Foundation
+import WordPressShared
+
 /// Utility extension to track specific data for passing to on to WPAppAnalytics.
-public extension WPAppAnalytics {
+extension WPAppAnalytics {
+    private enum Constants {
+        static let sessionCountKey = "session_count"
+        static let lastVisibleScreenKey = "last_visible_screen"
+        static let timeInAppKey = "time_in_app"
+    }
+
+    func trackApplicationDidBecomeActive() {
+        incrementSessionCount()
+        trackApplicationOpened()
+        WidgetAnalytics.trackLoadedWidgetsOnApplicationOpened()
+    }
+
+    func trackApplicationDidEnterBackground(screenName: String) {
+        trackApplicationClosed(screenName: screenName)
+    }
+
+    private func trackApplicationOpened() {
+        // UIApplicationDidBecomeActiveNotification will be dispatched if the user
+        // returns from a system overlay (like notification center) or when multi
+        // tasking on the iPad and adjusting the split screen divider. This happens
+        // without previously dispatching UIApplicationDidEnterBackgroundNotification.
+        // We don't want to track application opened in thise cases so check for a
+        // nil applicationOpenedTime first.
+        guard applicationOpenedTime == nil else {
+            return
+        }
+        self.applicationOpenedTime = Date()
+
+        // This stat is part of a funnel that provides critical information.  Before
+        // making ANY modification to this stat please refer to: p4qSXL-35X-p2
+        WPAnalytics.track(.applicationOpened)
+    }
+
+    private func trackApplicationClosed(screenName: String) {
+        var properties: [String: Any] = [:]
+        properties[Constants.lastVisibleScreenKey] = screenName
+
+        if let applicationOpenedTime {
+            let applicationClosedTime = Date()
+            let timeInApp = applicationClosedTime.timeIntervalSince(applicationOpenedTime).rounded()
+            properties[Constants.timeInAppKey] = NSNumber(value: timeInApp)
+            self.applicationOpenedTime = nil
+        }
+
+        WPAnalytics.track(.applicationClosed, withProperties: properties)
+        WPAnalytics.endSession()
+    }
+
+    // MARK: Session
+
+    public static var sessionCount: Int {
+        UserDefaults.standard.integer(forKey: Constants.sessionCountKey)
+    }
+
+    private func incrementSessionCount() {
+        var sessionCount = WPAppAnalytics.sessionCount
+        sessionCount += 1
+        if sessionCount == 1 {
+            WPAnalytics.track(.appInstalled)
+        }
+        UserDefaults.standard.set(sessionCount, forKey: Constants.sessionCountKey)
+    }
+
+    // MARK: Misc
 
     /// Get a dictionary of tracking properties for a Media object with the media selection method.
     ///

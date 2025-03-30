@@ -1,3 +1,4 @@
+import UIKit
 import SwiftUI
 import WordPressUI
 import Photos

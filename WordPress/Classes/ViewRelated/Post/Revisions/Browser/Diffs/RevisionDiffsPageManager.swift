@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 protocol RevisionDiffsPageManagerDelegate: AnyObject {
     func currentIndex() -> Int

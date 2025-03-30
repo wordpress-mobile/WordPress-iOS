@@ -22,6 +22,8 @@
 //
 // Based on FontFit: https://github.com/joncardasis/FontFit
 
+import UIKit
+
 public extension UIFont {
     /**
      Provides the largest font which fits the text in the given bounds.

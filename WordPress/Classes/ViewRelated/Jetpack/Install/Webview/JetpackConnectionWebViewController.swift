@@ -2,6 +2,7 @@ import UIKit
 @preconcurrency import WebKit
 import Gridicons
 import Combine
+import WordPressShared
 
 protocol JetpackConnectionWebDelegate: AnyObject {
     func jetpackConnectionCompleted()

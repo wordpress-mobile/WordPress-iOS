@@ -1,4 +1,6 @@
+import UIKit
 import Gutenberg
+import WordPressShared
 
 class GutenbergWebNavigationController: UINavigationController {
     private let gutenbergWebController: GutenbergWebViewController

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 class PostingActivityLegend: UIView, NibLoadable {
 

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 // This facilitates showing the CommentDetailViewController within the context of Notifications.
 

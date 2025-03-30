@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 class FilterBarView: UIScrollView {
     let filterStackView = UIStackView()

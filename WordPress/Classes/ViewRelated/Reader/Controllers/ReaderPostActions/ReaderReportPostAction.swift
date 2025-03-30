@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 /// Encapsulates a command to report a post
 final class ReaderReportPostAction {
     func execute(with post: ReaderPost, target: Target = .post, context: NSManagedObjectContext, origin: UIViewController) {

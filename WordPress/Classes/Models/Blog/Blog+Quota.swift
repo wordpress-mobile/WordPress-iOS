@@ -1,7 +1,7 @@
 import Foundation
 
 /// This extension add methods to make the manipulation of disk quota values for a blog easier
-extension Blog {
+public extension Blog {
 
     /// Returns true if quota values are available for the site
     @objc var isQuotaAvailable: Bool {

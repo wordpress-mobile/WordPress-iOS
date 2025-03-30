@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 final class TimeZoneSearchHeaderView: UIView {
     @IBOutlet private weak var suggestionLabel: UILabel!

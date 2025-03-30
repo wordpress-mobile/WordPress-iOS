@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 struct MeRoute: Route {
     let path = "/me"

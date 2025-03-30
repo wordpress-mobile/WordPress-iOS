@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 class StatsRowsCell: StatsBaseCell {
     struct StatsTotalRowConfiguration {

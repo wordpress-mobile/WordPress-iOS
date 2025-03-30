@@ -2,7 +2,7 @@ import Foundation
 
 // Array etension to handle Pages on a Page list
 //
-extension Array where Element == Page {
+public extension Array where Element == Page {
     /// Return the first index
     var firstIndex: Int {
         return 0

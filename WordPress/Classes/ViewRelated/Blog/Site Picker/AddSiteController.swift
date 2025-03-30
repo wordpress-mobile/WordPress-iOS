@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import WordPressAuthenticator
+import WordPressShared
 
 /// Manages the site creation flows.
 struct AddSiteController {

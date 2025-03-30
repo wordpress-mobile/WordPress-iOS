@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 final class ReaderButtonScrollToTop: UIButton {
     private var isButtonHidden = false

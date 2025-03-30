@@ -5,11 +5,12 @@ public extension Notification {
 }
 
 public extension Notification.Name {
-    static var reachabilityChanged: Notification.Name {
-        return Notification.Name("\(Notification.reachabilityKey).changed")
+    /// - warning: Using a different name that auto-imported `kReachabilityChangedNotification`.
+    static var reachabilityUpdated: Notification.Name {
+        return Notification.Name("\(Notification.reachabilityKey).updated")
     }
 }
 
 @objc extension NSNotification {
-    public static let ReachabilityChangedNotification = Notification.Name.reachabilityChanged
+    public static let ReachabilityUpdatedNotification = Notification.Name.reachabilityUpdated
 }

@@ -47,12 +47,8 @@ function ensure_is_in_input_files_list() {
   fi
 }
 
-PRODUCTION_SECRETS_FILE="${SECRETS_ROOT}/WordPress-Secrets.swift"
-ensure_is_in_input_files_list $PRODUCTION_SECRETS_FILE
-INTERNAL_SECRETS_FILE="${SECRETS_ROOT}/WordPress-Secrets-Internal.swift"
-ensure_is_in_input_files_list $INTERNAL_SECRETS_FILE
-ALPHA_SECRETS_FILE="${SECRETS_ROOT}/WordPress-Secrets-Alpha.swift"
-ensure_is_in_input_files_list $ALPHA_SECRETS_FILE
+WORDPRESS_SECRETS_FILE="${SECRETS_ROOT}/WordPress-Secrets.swift"
+ensure_is_in_input_files_list $WORDPRESS_SECRETS_FILE
 JETPACK_SECRETS_FILE="${SECRETS_ROOT}/Jetpack-Secrets.swift"
 ensure_is_in_input_files_list $JETPACK_SECRETS_FILE
 
@@ -65,28 +61,14 @@ SECRETS_DESTINATION_FILE="${BUILD_DIR}/Secrets/Secrets.swift"
 mkdir -p $(dirname "$SECRETS_DESTINATION_FILE")
 
 # If the WordPress Production Secrets are available for WordPress, use them
-if [ -f "$PRODUCTION_SECRETS_FILE" ] && [ "$BUILD_SCHEME" == "WordPress" ]; then
+if [ -f "$WORDPRESS_SECRETS_FILE" ] && [ "${TARGET_NAME}" == "WordPress" ]; then
     echo "Applying Production Secrets"
-    cp -v "$PRODUCTION_SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
-    exit 0
-fi
-
-# If the WordPress Internal Secrets are available, use them
-if [ -f "$INTERNAL_SECRETS_FILE" ] && [ "${BUILD_SCHEME}" == "WordPress Internal" ]; then
-    echo "Applying Internal Secrets"
-    cp -v "$INTERNAL_SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
-    exit 0
-fi
-
-# If the WordPress Alpha Secrets are available, use them
-if [ -f "$ALPHA_SECRETS_FILE" ] && [ "${BUILD_SCHEME}" == "WordPress Alpha" ]; then
-    echo "Applying Alpha Secrets"
-    cp -v "$ALPHA_SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
+    cp -v "$WORDPRESS_SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
     exit 0
 fi
 
 # If the Jetpack Secrets are available (and if we're building Jetpack) use them
-if [ -f "$JETPACK_SECRETS_FILE" ] && [ "${BUILD_SCHEME}" == "Jetpack" ]; then
+if [ -f "$JETPACK_SECRETS_FILE" ] && [ "${TARGET_NAME}" == "Jetpack" ]; then
     echo "Applying Jetpack Secrets"
     cp -v "$JETPACK_SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
     exit 0

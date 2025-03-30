@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import WordPressShared
 
 final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
     private var blog: Blog?

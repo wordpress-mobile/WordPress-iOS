@@ -1,3 +1,5 @@
+import UIKit
+
 extension UIFont {
     /// Returns a UIFont instance with the italic trait applied.
     func italic() -> UIFont {

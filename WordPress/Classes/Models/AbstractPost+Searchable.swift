@@ -1,11 +1,11 @@
 import Foundation
 
 extension AbstractPost: SearchableItemConvertable {
-    var searchItemType: SearchItemType {
+    public var searchItemType: SearchItemType {
         return .abstractPost
     }
 
-    var isSearchable: Bool {
+    public var isSearchable: Bool {
         guard status != .trash else {
             // Don't index trashed posts
             return false
@@ -13,14 +13,14 @@ extension AbstractPost: SearchableItemConvertable {
         return true
     }
 
-    var searchIdentifier: String? {
+    public var searchIdentifier: String? {
         guard let postID, postID.intValue > 0 else {
             return nil
         }
         return postID.stringValue
     }
 
-    var searchDomain: String? {
+    public var searchDomain: String? {
         if let dotComID = blog.dotComID, dotComID.intValue > 0 {
             return dotComID.stringValue
         } else {
@@ -29,22 +29,22 @@ extension AbstractPost: SearchableItemConvertable {
         }
     }
 
-    var searchTitle: String? {
+    public var searchTitle: String? {
         return generateTitle(from: postTitle)
     }
 
-    var searchDescription: String? {
+    public var searchDescription: String? {
         guard let postPreview = contentPreviewForDisplay(), !postPreview.isEmpty else {
             return blog.displayURL as String? ?? contentForDisplay()
         }
         return postPreview
     }
 
-    var searchKeywords: [String]? {
+    public var searchKeywords: [String]? {
         return generateKeywordsFromContent()
     }
 
-    var searchExpirationDate: Date? {
+    public var searchExpirationDate: Date? {
         // Use the default expiration in spotlight.
         return nil
     }

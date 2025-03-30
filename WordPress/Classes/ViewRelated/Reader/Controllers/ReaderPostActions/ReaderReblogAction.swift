@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 /// Encapsulates a command to reblog a post
 class ReaderReblogAction {
     // tells if the origin is the reader list or detail, for analytics purposes

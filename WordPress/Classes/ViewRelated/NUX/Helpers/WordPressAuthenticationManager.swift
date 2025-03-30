@@ -1,11 +1,10 @@
-import Foundation
+import UIKit
 import BuildSettingsKit
 import SFHFKeychainUtils
 import WordPressAuthenticator
 import WordPressShared
 import WordPressUI
 import Gridicons
-import UIKit
 
 // MARK: - WordPressAuthenticationManager
 //

@@ -1,5 +1,6 @@
 import Photos
 import PhotosUI
+import WordPressShared
 
 final class MediaPickerMenuController: NSObject {
     var onSelection: ((MediaPickerSelection) -> Void)?

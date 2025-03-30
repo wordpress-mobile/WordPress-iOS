@@ -1,3 +1,5 @@
+import UIKit
+
 protocol ActionSheetItem {
     var handler: () -> Void { get }
     func makeButton() -> ActionSheetButton

@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import WordPressShared
 
 struct DashboardGoogleDomainsCardView: View {
     private var buttonAction: () -> ()

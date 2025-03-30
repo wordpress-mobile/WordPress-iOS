@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressShared
 
 final class CommentCreateViewModel {
     var title: String {

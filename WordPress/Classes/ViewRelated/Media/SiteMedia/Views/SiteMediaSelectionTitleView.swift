@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 final class SiteMediaSelectionTitleView: UIView {
     private let textLabel = UILabel()

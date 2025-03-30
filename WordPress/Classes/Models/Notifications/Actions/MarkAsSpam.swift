@@ -1,3 +1,4 @@
+import Foundation
 import FormattableContentKit
 
 /// Encapsulates logic to mark a comment as spam

@@ -2,7 +2,6 @@
 #import "Blog.h"
 #import "BlogService.h"
 #import "SharingConnectionsViewController.h"
-#import "SVProgressHUD+Dismiss.h"
 #import "WordPress-Swift.h"
 
 @import WordPressUI;

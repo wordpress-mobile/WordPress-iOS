@@ -1,3 +1,4 @@
+import UIKit
 
 struct RewindStatusRow: ImmuTableRow {
 

@@ -1,6 +1,7 @@
 import Foundation
 import AVFoundation
 import WordPressKit
+import WordPressShared
 
 final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorderDelegate {
     @Published private(set) var title: String = ""

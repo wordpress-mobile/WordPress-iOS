@@ -1,5 +1,6 @@
 import SwiftUI
 import WordPressReader
+import WordPressShared
 
 struct ReaderFollowButton: View {
 

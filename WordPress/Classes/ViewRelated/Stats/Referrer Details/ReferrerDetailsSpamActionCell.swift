@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 final class ReferrerDetailsSpamActionCell: UITableViewCell {
     private let actionLabel = UILabel()

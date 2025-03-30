@@ -1,3 +1,5 @@
+import UIKit
+
 struct MigrationHeaderConfiguration {
 
     let title: String?

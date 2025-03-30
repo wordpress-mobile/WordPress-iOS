@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 class PageCoordinator {
     typealias TemplateSelectionCompletion = (_ layout: PageTemplateLayout?) -> Void

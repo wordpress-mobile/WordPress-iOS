@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 extension PostCoordinator {
     static func makeUploadSuccessNotice(for post: AbstractPost, previousStatus: AbstractPost.Status? = nil) -> Notice {

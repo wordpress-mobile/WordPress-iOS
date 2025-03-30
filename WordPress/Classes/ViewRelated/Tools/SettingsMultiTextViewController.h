@@ -1,9 +1,7 @@
 #import <UIKit/UIKit.h>
 
-
 typedef void (^SettingsMultiTextAction)(void);
 typedef void (^SettingsMultiTextChanged)(NSString * _Nonnull);
-
 
 /// Reusable component that renders a UITextView + Hint onscreen. Useful for Text / Password.
 ///

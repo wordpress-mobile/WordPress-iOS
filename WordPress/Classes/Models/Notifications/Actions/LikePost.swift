@@ -1,3 +1,4 @@
+import Foundation
 import FormattableContentKit
 
 /// Encapsulates logic to Like a Post

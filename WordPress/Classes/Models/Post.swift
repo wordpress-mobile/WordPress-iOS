@@ -1,19 +1,20 @@
 import Foundation
 import CoreData
+import CocoaLumberjackSwift
 
 @objc(Post)
-class Post: AbstractPost {
+public class Post: AbstractPost {
     @objc static let typeDefaultIdentifier = "post"
 
-    struct Constants {
-        static let publicizeIdKey = "id"
+    public struct Constants {
+        public static let publicizeIdKey = "id"
         static let publicizeValueKey = "value"
-        static let publicizeKeyKey = "key"
+        public static let publicizeKeyKey = "key"
         static let publicizeDisabledValue = "1"
         static let publicizeEnabledValue = "0"
     }
 
-    enum PublicizeMetadataSkipPrefix: String {
+    public enum PublicizeMetadataSkipPrefix: String {
         case keyring = "_wpas_skip_"
         case connection = "_wpas_skip_publicize_"
 
@@ -21,7 +22,7 @@ class Post: AbstractPost {
         ///
         /// - Parameter key: String.
         /// - Returns: A `PublicizeMetadataSkipPrefix` value, or nil if nothing matched.
-        static func prefix(of key: String) -> PublicizeMetadataSkipPrefix? {
+        public static func prefix(of key: String) -> PublicizeMetadataSkipPrefix? {
             // try to match the `keyring` format first, since it's a substring of the `connection` format.
             guard key.hasPrefix(Self.keyring.rawValue) else {
                 return nil
@@ -32,17 +33,17 @@ class Post: AbstractPost {
 
     // MARK: - NSManagedObject
 
-    override class func entityName() -> String {
+    public override class func entityName() -> String {
         return "Post"
     }
 
     // MARK: - Format
 
-    @objc func postFormatText() -> String? {
+    @objc public func postFormatText() -> String? {
         return blog.postFormatText(fromSlug: postFormat)
     }
 
-    @objc func setPostFormatText(_ postFormatText: String) {
+    @objc public func setPostFormatText(_ postFormatText: String) {
 
         assert(blog.postFormats is [String: String])
         guard let postFormats = blog.postFormats as? [String: String] else {
@@ -66,7 +67,7 @@ class Post: AbstractPost {
 
     /// Returns categories as a comma-separated list
     ///
-    @objc func categoriesText() -> String {
+    @objc public func categoriesText() -> String {
 
         guard let allStrings = categories?.map({ return $0.categoryName as String }) else {
             return ""
@@ -84,7 +85,7 @@ class Post: AbstractPost {
     /// - Parameter categoryNames: a `NSArray` with the names of the categories for this post. If
     ///                     a given category name doesn't exist it's ignored.
     ///
-    @objc func setCategoriesFromNames(_ categoryNames: [String]) {
+    @objc public func setCategoriesFromNames(_ categoryNames: [String]) {
 
         var newCategories = Set<PostCategory>()
 
@@ -108,13 +109,13 @@ class Post: AbstractPost {
 
     // MARK: - Sharing
 
-    @objc func canEditPublicizeSettings() -> Bool {
+    @objc public func canEditPublicizeSettings() -> Bool {
         return !self.hasRemote() || self.status != .publish
     }
 
     // MARK: - PublicizeConnections
 
-    @objc func publicizeConnectionDisabledForKeyringID(_ keyringID: NSNumber) -> Bool {
+    @objc public func publicizeConnectionDisabledForKeyringID(_ keyringID: NSNumber) -> Bool {
         let isKeyringEntryDisabled = disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
 
         // try to check in case there's an entry for the PublicizeConnection that's keyed by the connectionID.
@@ -129,7 +130,7 @@ class Post: AbstractPost {
         return isConnectionEntryDisabled || isKeyringEntryDisabled
     }
 
-    @objc func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
+    @objc public func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
         // if there's another entry keyed by connectionID references to the same connection,
         // we need to make sure that the values are kept in sync.
         if let connections = blog.connections as? Set<PublicizeConnection>,
@@ -141,7 +142,7 @@ class Post: AbstractPost {
         enablePublicizeConnection(keyedBy: keyringID)
     }
 
-    @objc func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
+    @objc public func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
         // if there's another entry keyed by connectionID references to the same connection,
         // we need to make sure that the values are kept in sync.
         if let connections = blog.connections as? Set<PublicizeConnection>,
@@ -199,33 +200,33 @@ class Post: AbstractPost {
 
     // MARK: - Comments
 
-    @objc func numberOfComments() -> Int {
+    @objc public func numberOfComments() -> Int {
         return commentCount?.intValue ?? 0
     }
 
     // MARK: - Likes
 
-    @objc func numberOfLikes() -> Int {
+    @objc public func numberOfLikes() -> Int {
         return likeCount?.intValue ?? 0
     }
 
     // MARK: - AbstractPost
 
-    override func hasCategories() -> Bool {
+    override public func hasCategories() -> Bool {
         categories?.isEmpty == false
     }
 
-    override func hasTags() -> Bool {
+    override public func hasTags() -> Bool {
         tags?.trim().isEmpty == false
     }
 
-    override func authorForDisplay() -> String? {
+    override public func authorForDisplay() -> String? {
         author ?? blog.account?.displayName
     }
 
     // MARK: - BasePost
 
-    override func contentPreviewForDisplay() -> String {
+    override public func contentPreviewForDisplay() -> String {
         if let excerpt = mt_excerpt, excerpt.count > 0 {
             if let preview = PostPreviewCache.shared.excerpt[excerpt] {
                 return preview
@@ -245,7 +246,7 @@ class Post: AbstractPost {
         }
     }
 
-    override func titleForDisplay() -> String {
+    override public func titleForDisplay() -> String {
         var title = postTitle?.trimmingCharacters(in: CharacterSet.whitespaces) ?? ""
         title = title
             .stringByDecodingXMLCharacters()

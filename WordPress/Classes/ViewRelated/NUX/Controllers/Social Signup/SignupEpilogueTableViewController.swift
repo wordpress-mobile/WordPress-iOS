@@ -1,5 +1,6 @@
 import UIKit
 import WordPressAuthenticator
+import WordPressShared
 
 protocol SignupEpilogueTableViewControllerDelegate: AnyObject {
     func displayNameUpdated(newDisplayName: String)

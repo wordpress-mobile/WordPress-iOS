@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import AsyncImageKit
 
 // MARK: - ImageDownloader (Closures)

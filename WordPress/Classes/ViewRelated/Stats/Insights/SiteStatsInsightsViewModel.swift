@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressShared
 
 enum StatsSummaryTimeIntervalDataAsAWeek {
     case thisWeek(data: StatsSummaryTimeIntervalData)

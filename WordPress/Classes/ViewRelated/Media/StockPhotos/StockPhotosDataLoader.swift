@@ -1,3 +1,5 @@
+import WordPressShared
+
 /// Implementations of this protocol will be notified when data is loaded from the StockPhotosService
 protocol StockPhotosDataLoaderDelegate: AnyObject {
     func didLoad(media: [StockPhotosMedia], reset: Bool)

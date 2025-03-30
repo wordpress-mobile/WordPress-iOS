@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 // UITableViewCell that displays an editable UITextView to allow text to be modified inline.
 // The cell height resizes as the text is modified.

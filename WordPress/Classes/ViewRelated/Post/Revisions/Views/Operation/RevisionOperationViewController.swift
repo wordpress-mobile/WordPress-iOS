@@ -1,3 +1,5 @@
+import UIKit
+
 class RevisionOperationViewController: UIViewController {
     var revision: Revision? {
         didSet {

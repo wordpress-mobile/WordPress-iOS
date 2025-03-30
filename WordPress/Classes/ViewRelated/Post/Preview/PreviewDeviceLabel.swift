@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 class PreviewDeviceLabel: UILabel {
     @IBInspectable var insets: UIEdgeInsets = .zero {

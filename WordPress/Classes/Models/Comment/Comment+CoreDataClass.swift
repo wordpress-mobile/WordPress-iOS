@@ -17,7 +17,7 @@ public class Comment: NSManagedObject {
     }
 
     @objc func isApproved() -> Bool {
-        return status.isEqual(to: CommentStatusType.approved.description)
+        return status == CommentStatusType.approved.description
     }
 
     private func isReadOnly() -> Bool {
@@ -51,8 +51,8 @@ public class Comment: NSManagedObject {
     }
 
     @objc func deleteWillBePermanent() -> Bool {
-        return status.isEqual(to: Comment.descriptionFor(.spam)) || status.isEqual(to: Comment.descriptionFor(.unapproved))
-    }
+        return status == Comment.descriptionFor(.spam) || status == Comment.descriptionFor(.unapproved)
+   }
 
     func canEditAuthorData() -> Bool {
         // If the authorID is zero, the user is unregistered. Therefore, the data can be edited.

@@ -1,5 +1,6 @@
 import Combine
 import UIKit
+import WordPressShared
 
 class MigrationNavigationController: UINavigationController {
     /// Navigation coordinator

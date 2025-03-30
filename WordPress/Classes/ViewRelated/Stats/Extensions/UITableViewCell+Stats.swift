@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// Convenience enum to easily indicate what type of rows are being added.
 ///

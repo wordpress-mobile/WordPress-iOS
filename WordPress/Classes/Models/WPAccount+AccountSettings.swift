@@ -34,8 +34,4 @@ extension WPAccount {
     var needsEmailVerification: Bool {
         return verificationStatus == .unverified
     }
-
-    @objc class var authKeychainServiceName: String {
-        BuildSettings.current.authKeychainServiceName
-    }
 }

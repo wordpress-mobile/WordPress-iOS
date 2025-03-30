@@ -1,9 +1,11 @@
+import CocoaLumberjackSwift
 import Foundation
 import CoreData
 
 /// CoreDataIterativeMigrator: Migrates through a series of models to allow for users to skip app versions without risk.
 ///
-class CoreDataIterativeMigrator: NSObject {
+// FIXME: public access-level needed for unit tests because of no @testable support in Objective-C.
+public class CoreDataIterativeMigrator: NSObject {
 
     private static func error(with code: IterativeMigratorErrorCodes, description: String) -> NSError {
         return NSError(domain: "IterativeMigrator", code: code.rawValue, userInfo: [NSLocalizedDescriptionKey: description])
@@ -21,7 +23,8 @@ class CoreDataIterativeMigrator: NSObject {
     ///
     /// - Throws: A whole bunch of crap is possible to be thrown between Core Data and FileManager.
     ///
-    @objc static func iterativeMigrate(sourceStore: URL, storeType: String, to targetModel: NSManagedObjectModel, using modelNames: [String]) throws {
+    // FIXME: public access-level needed for unit tests because of no @testable support in Objective-C.
+    @objc public static func iterativeMigrate(sourceStore: URL, storeType: String, to targetModel: NSManagedObjectModel, using modelNames: [String]) throws {
         // If the persistent store does not exist at the given URL,
         // assume that it hasn't yet been created and return success immediately.
         guard FileManager.default.fileExists(atPath: sourceStore.path) == true else {

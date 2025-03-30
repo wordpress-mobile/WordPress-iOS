@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 struct NewPageRoute: Route {
     let path = "/page"

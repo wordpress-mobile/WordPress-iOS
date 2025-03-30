@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 final class TitleSubtitleHeader: UIView {
     struct Margins {

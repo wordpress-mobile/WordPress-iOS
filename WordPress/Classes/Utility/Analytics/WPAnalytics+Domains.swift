@@ -1,5 +1,6 @@
 import Foundation
 import BuildSettingsKit
+import WordPressShared
 
 extension WPAnalytics {
     @objc class var eventNamePrefix: String {
