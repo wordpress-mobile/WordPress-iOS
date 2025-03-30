@@ -1,21 +1,21 @@
 import Foundation
 import CoreData
 
-class Revision: NSManagedObject {
-    @NSManaged var siteId: NSNumber
-    @NSManaged var revisionId: NSNumber
-    @NSManaged var postId: NSNumber
+public class Revision: NSManagedObject {
+    @NSManaged public var siteId: NSNumber
+    @NSManaged public var revisionId: NSNumber
+    @NSManaged public var postId: NSNumber
 
-    @NSManaged var postAuthorId: NSNumber?
+    @NSManaged public var postAuthorId: NSNumber?
 
-    @NSManaged var postTitle: String?
-    @NSManaged var postContent: String?
-    @NSManaged var postExcerpt: String?
+    @NSManaged public var postTitle: String?
+    @NSManaged public var postContent: String?
+    @NSManaged public var postExcerpt: String?
 
-    @NSManaged var postDateGmt: String?
-    @NSManaged var postModifiedGmt: String?
+    @NSManaged public var postDateGmt: String?
+    @NSManaged public var postModifiedGmt: String?
 
-    @NSManaged var diff: RevisionDiff?
+    @NSManaged public var diff: RevisionDiff?
 
     private lazy var revisionFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -25,11 +25,11 @@ class Revision: NSManagedObject {
         return formatter
     }()
 
-    var revisionDate: Date {
+    public var revisionDate: Date {
         return revisionFormatter.date(from: postDateGmt ?? "") ?? Date()
     }
 
-    @objc var revisionDateForSection: String {
+    @objc public var revisionDateForSection: String {
         return revisionDate.longUTCStringWithoutTime()
     }
 }

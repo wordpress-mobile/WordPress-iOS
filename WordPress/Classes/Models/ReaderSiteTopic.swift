@@ -32,7 +32,7 @@ import Foundation
         }
     }
 
-    var organizationType: SiteOrganizationType {
+    public var organizationType: SiteOrganizationType {
         SiteOrganizationType(rawValue: organizationID) ?? .none
     }
 

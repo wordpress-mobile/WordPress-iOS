@@ -1,11 +1,11 @@
 import Foundation
 
 extension BlogDetailsViewController: SearchableActivityConvertable {
-    var activityType: String {
+    public var activityType: String {
         return WPActivityType.siteDetails.rawValue
     }
 
-    var activityTitle: String {
+    public var activityTitle: String {
         if let siteName {
             return siteName
         } else if let displayURL {
@@ -15,7 +15,7 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
         return NSLocalizedString("My Site", comment: "Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.")
     }
 
-    var activityKeywords: Set<String>? {
+    public var activityKeywords: Set<String>? {
         let keyWordString = NSLocalizedString("wordpress, sites, site, blogs, blog", comment: "This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab.")
         var keywordArray = keyWordString.arrayOfTags()
 
@@ -34,7 +34,7 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
         return Set(keywordArray)
     }
 
-    var activityUserInfo: [String: String]? {
+    public var activityUserInfo: [String: String]? {
         var siteID: String
         if let dotComID = blog.dotComID, dotComID.intValue > 0 {
             siteID = dotComID.stringValue
@@ -46,7 +46,7 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
         return [WPActivityUserInfoKeys.siteId.rawValue: siteID]
     }
 
-    var activityDescription: String? {
+    public var activityDescription: String? {
         guard let displayURL else {
             return nil
         }

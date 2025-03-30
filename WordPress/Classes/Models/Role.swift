@@ -8,7 +8,7 @@ public class Role: NSManagedObject {
     @NSManaged public var order: NSNumber!
 }
 
-extension Role {
+public extension Role {
     func toUnmanaged() -> RemoteRole {
         return RemoteRole(slug: slug, name: name)
     }

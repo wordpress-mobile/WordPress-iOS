@@ -3,7 +3,7 @@ import WordPressShared
 
 /// Type of the local Media directory URL in implementation.
 ///
-enum MediaDirectory {
+public enum MediaDirectory {
     /// Default, system Documents directory, for persisting media files for upload.
     case uploads
     /// System Caches directory, for creating discardable media files, such as thumbnails.
@@ -12,11 +12,11 @@ enum MediaDirectory {
     case temporary(id: UUID)
 
     /// Use a new ID for every test scenario to make sure all tests are isolated.
-    static var temporary: MediaDirectory { .temporary(id: UUID()) }
+    public static var temporary: MediaDirectory { .temporary(id: UUID()) }
 
     /// Returns the directory URL for the directory type.
     ///
-    var url: URL {
+    public var url: URL {
         let fileManager = FileManager.default
         // Get a parent directory, based on the type.
         let parentDirectory: URL
@@ -34,7 +34,8 @@ enum MediaDirectory {
 
 /// Encapsulates Media functions relative to the local Media directory.
 ///
-class MediaFileManager: NSObject {
+@objc
+public class MediaFileManager: NSObject {
 
     fileprivate static let mediaDirectoryName = "Media"
 
@@ -64,7 +65,7 @@ class MediaFileManager: NSObject {
     ///   We shouldn't change this default directory lightly as older versions of the app may rely on Media files being in
     ///   the documents directory for upload.
     ///
-    init(directory: MediaDirectory = .uploads) {
+    public init(directory: MediaDirectory = .uploads) {
         self.directory = directory
     }
 
@@ -90,7 +91,7 @@ class MediaFileManager: NSObject {
     /// - Note: if a file already exists with the same name, the file name is appended with a number
     ///   and incremented until a unique filename is found.
     ///
-    @objc func makeLocalMediaURL(withFilename filename: String, fileExtension: String?, incremented: Bool = true) throws -> URL {
+    @objc public func makeLocalMediaURL(withFilename filename: String, fileExtension: String?, incremented: Bool = true) throws -> URL {
         let baseURL = try directoryURL()
         var url: URL
         if let fileExtension {
@@ -107,7 +108,7 @@ class MediaFileManager: NSObject {
 
     /// Objc friendly signature without specifying the `incremented` parameter.
     ///
-    @objc func makeLocalMediaURL(withFilename filename: String, fileExtension: String?) throws -> URL {
+    @objc public func makeLocalMediaURL(withFilename filename: String, fileExtension: String?) throws -> URL {
         return try makeLocalMediaURL(withFilename: filename, fileExtension: fileExtension, incremented: true)
     }
 
@@ -188,13 +189,13 @@ class MediaFileManager: NSObject {
 
     /// Helper method for clearing unused Media upload files.
     ///
-    @objc class func clearUnusedMediaUploadFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+    @objc public class func clearUnusedMediaUploadFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
         MediaFileManager.default.clearUnusedFilesFromDirectory(onCompletion: onCompletion, onError: onError)
     }
 
     /// Helper method for calculating the size of the Media directories.
     ///
-    class func calculateSizeOfMediaDirectories(onCompletion: @escaping (Int64?) -> Void) {
+    public class func calculateSizeOfMediaDirectories(onCompletion: @escaping (Int64?) -> Void) {
         let cacheManager = MediaFileManager(directory: .cache)
         cacheManager.calculateSizeOfDirectory { (cacheSize) in
             let defaultManager = MediaFileManager.default
@@ -206,7 +207,7 @@ class MediaFileManager: NSObject {
 
     /// Helper method for clearing the Media cache directory.
     ///
-    @objc class func clearAllMediaCacheFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+    @objc public class func clearAllMediaCacheFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
         let cacheManager = MediaFileManager(directory: .cache)
         cacheManager.clearFilesFromDirectory(onCompletion: {
             MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: onCompletion, onError: onError)
