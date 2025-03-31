@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "CoreDataService.h"
+#import "CoreDataStack.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
