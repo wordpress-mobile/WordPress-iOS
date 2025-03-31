@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "CoreDataService.h"
+#import "CoreDataStack.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -10,7 +10,13 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
 extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 
-@interface AccountService : CoreDataService
+@interface AccountService : NSObject
+
+@property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
+
+- (nonnull instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 ///------------------------------------
 /// @name Default WordPress.com account
