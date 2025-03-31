@@ -6,7 +6,7 @@ typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void
 
 /// Allows searching for sites / feeds in the Reader.
 ///
-@objc class ReaderSiteSearchService: CoreDataService {
+class ReaderSiteSearchService: CoreDataService {
 
     // The size of a single page of results when performing a search.
     static let pageSize = 20
