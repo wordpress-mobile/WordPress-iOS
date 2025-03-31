@@ -2466,6 +2466,7 @@
 			isa = PBXGroup;
 			children = (
 				0C5A1A042D9B080900C25301 /* WordPressAuthenticatorTests */,
+				3F7AE0C22D9B30A200AB4892 /* WordPressDataTests */,
 			);
 			name = Tests;
 			path = ../Tests;
@@ -2582,7 +2583,6 @@
 				FF2716901CAAC87B0006E2D4 /* UITests */,
 				8511CFB71C607A7000B7CEED /* WordPressScreenshotGeneration */,
 				FAF64BC82637DF0600E8A1DF /* JetpackScreenshotGeneration */,
-				3F7AE0C22D9B30A200AB4892 /* WordPressDataTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				93FA0F0118E451A80007903B /* LICENSE */,
