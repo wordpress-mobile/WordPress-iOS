@@ -2477,6 +2477,7 @@
 				0C5A3FAB2D9B1EF400C25301 /* Reader */,
 				0C5C46FE2D98397A00F2CD55 /* Keystone */,
 				0C238F782D9ADF0200981631 /* WordPressAuthenticator */,
+				3F7AE0B62D9B30A100AB4892 /* WordPressData */,
 			);
 			name = Sources;
 			path = ../Sources;
@@ -2581,7 +2582,6 @@
 				FF2716901CAAC87B0006E2D4 /* UITests */,
 				8511CFB71C607A7000B7CEED /* WordPressScreenshotGeneration */,
 				FAF64BC82637DF0600E8A1DF /* JetpackScreenshotGeneration */,
-				3F7AE0B62D9B30A100AB4892 /* WordPressData */,
 				3F7AE0C22D9B30A200AB4892 /* WordPressDataTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
