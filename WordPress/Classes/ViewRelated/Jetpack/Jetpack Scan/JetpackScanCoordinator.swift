@@ -66,7 +66,7 @@ class JetpackScanCoordinator {
     init(blog: Blog,
          view: JetpackScanView,
          service: JetpackScanService? = nil,
-         coreDataStack: CoreDataStack = ContextManager.shared) {
+         coreDataStack: CoreDataStackSwift = ContextManager.shared) {
 
         self.service = service ?? JetpackScanService(coreDataStack: coreDataStack)
         self.blog = blog

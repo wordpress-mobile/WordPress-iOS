@@ -36,7 +36,7 @@ class JetpackScanHistoryCoordinator {
     init(blog: Blog,
          view: JetpackScanHistoryView,
          service: JetpackScanService? = nil,
-         coreDataStack: CoreDataStack = ContextManager.shared) {
+         coreDataStack: CoreDataStackSwift = ContextManager.shared) {
 
         self.service = service ?? JetpackScanService(coreDataStack: coreDataStack)
         self.blog = blog
