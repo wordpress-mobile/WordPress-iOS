@@ -17,6 +17,15 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 @implementation ReaderSiteService
 
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+{
+    self = [super init];
+    if (self) {
+        _coreDataStack = coreDataStack;
+    }
+    return self;
+}
+
 - (void)followSiteByURL:(NSURL *)siteURL success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
     WordPressComRestApi *api = [self apiForRequest];
