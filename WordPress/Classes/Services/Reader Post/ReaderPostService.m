@@ -31,6 +31,15 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 @implementation ReaderPostService
 
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+{
+    self = [super init];
+    if (self) {
+        _coreDataStack = coreDataStack;
+    }
+    return self;
+}
+
 #pragma mark - Fetch Methods
 
 - (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
