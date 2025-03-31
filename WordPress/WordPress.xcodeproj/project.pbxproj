@@ -1858,7 +1858,6 @@
 				"Categories/UIApplication+Helpers.h",
 				"Categories/UIView+Subviews.h",
 				Models/Blog/Blog.h,
-				Models/CoreDataStack/CoreDataService.h,
 				Models/CoreDataStack/CoreDataStack.h,
 				Models/Media.h,
 				Models/MenuItem.h,
