@@ -5,7 +5,13 @@ import WordPressKit
 /// SharingService is responsible for wrangling publicize services, publicize
 /// connections, and keyring connections.
 ///
-@objc class SharingSyncService: CoreDataService {
+@objc class SharingSyncService: NSObject {
+
+    let coreDataStack: CoreDataStack
+
+    @objc init(coreDataStack: CoreDataStack) {
+        self.coreDataStack = coreDataStack
+    }
 
     /// Returns the remote to use with the service.
     ///
@@ -114,5 +120,4 @@ import WordPressKit
     enum Error: Swift.Error {
         case siteWithNoRemote
     }
-
 }
