@@ -1848,6 +1848,13 @@
 			);
 			target = 4AD953B32C21451700D0EEFA /* WordPressAuthenticator */;
 		};
+		0C5A3FB42D9B214200C25301 /* Exceptions for "Reader" folder in "Reader" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 0C5A3F8B2D9B1E3700C25301 /* Reader */;
+		};
 		0C5C46F42D98343300F2CD55 /* Exceptions for "Classes" folder in "Keystone" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -1959,6 +1966,9 @@
 		};
 		0C5A3FAB2D9B1EF400C25301 /* Reader */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0C5A3FB42D9B214200C25301 /* Exceptions for "Reader" folder in "Reader" target */,
+			);
 			path = Reader;
 			sourceTree = "<group>";
 		};
