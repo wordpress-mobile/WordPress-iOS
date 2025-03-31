@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "CoreDataService.h"
-#import "CoreDataService.h"
+#import "CoreDataStack.h"
 
 extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
@@ -9,7 +8,13 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 @class ReaderSiteTopic;
 @class ReaderSearchTopic;
 
-@interface ReaderTopicService : CoreDataService
+@interface ReaderTopicService : NSObject
+
+@property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
+
+- (nonnull instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 - (ReaderAbstractTopic *)currentTopicInContext:(NSManagedObjectContext *)context;
 
