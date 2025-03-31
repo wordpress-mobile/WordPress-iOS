@@ -19,6 +19,15 @@ const NSInteger ThemeOrderTrailing = 9999;
 
 @implementation ThemeService
 
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+{
+    self = [super init];
+    if (self) {
+        _coreDataStack = coreDataStack;
+    }
+    return self;
+}
+
 #pragma mark - Themes availability
 
 - (BOOL)blogSupportsThemeServices:(Blog *)blog

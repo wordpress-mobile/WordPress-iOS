@@ -1,4 +1,4 @@
-#import "CoreDataService.h"
+#import "CoreDataStack.h"
 
 @class Blog;
 @class Theme;
@@ -9,7 +9,13 @@ typedef void(^ThemeServiceThemeRequestSuccessBlock)(Theme *theme);
 typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray<Theme *> *themes, BOOL hasMore, NSInteger totalThemeCount);
 typedef void(^ThemeServiceFailureBlock)(NSError *error);
 
-@interface ThemeService : CoreDataService
+@interface ThemeService : NSObject
+
+@property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
+
+- (nonnull instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 #pragma mark - Themes availability
 
