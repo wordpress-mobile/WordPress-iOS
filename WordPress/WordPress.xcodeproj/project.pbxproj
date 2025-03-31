@@ -1956,6 +1956,11 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
+		0C5A1A042D9B080900C25301 /* WordPressAuthenticatorTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = WordPressAuthenticatorTests;
+			sourceTree = "<group>";
+		};
 		0C5C46FE2D98397A00F2CD55 /* Keystone */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -2324,6 +2329,15 @@
 			name = Media;
 			sourceTree = "<group>";
 		};
+		0C5A19CB2D9B07E700C25301 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				0C5A1A042D9B080900C25301 /* WordPressAuthenticatorTests */,
+			);
+			name = Tests;
+			path = ../Tests;
+			sourceTree = SOURCE_ROOT;
+		};
 		0C5C46FB2D98395300F2CD55 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -2411,6 +2425,7 @@
 			isa = PBXGroup;
 			children = (
 				0C5C46FB2D98395300F2CD55 /* Sources */,
+				0C5A19CB2D9B07E700C25301 /* Tests */,
 				F14B5F6F208E648200439554 /* config */,
 				E1B34C091CCDFFCE00889709 /* Credentials */,
 				24CE57C42CD3375200C7B37D /* Classes */,
@@ -4239,6 +4254,9 @@
 			);
 			dependencies = (
 				4AD953BE2C21451700D0EEFA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				0C5A1A042D9B080900C25301 /* WordPressAuthenticatorTests */,
 			);
 			name = WordPressAuthenticatorTests;
 			packageProductDependencies = (
