@@ -15,6 +15,8 @@ let package = Package(
         .library(name: "NotificationServiceExtensionCore", targets: ["NotificationServiceExtensionCore"]),
         .library(name: "ShareExtensionCore", targets: ["ShareExtensionCore"]),
         .library(name: "SFHFKeychainUtils", targets: ["SFHFKeychainUtils"]),
+        // Note: WordPressData the Swift package is currently unused.
+        // We are leaving it here to be ready for the future when we'll be able to write the current WordPressData framework as a Swift package.
         .library(name: "WordPressData", targets: ["WordPressData"]),
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
@@ -252,7 +254,6 @@ enum XcodeSupport {
                 "NotificationServiceExtensionCore",
                 "SFHFKeychainUtils",
                 "ShareExtensionCore",
-                "WordPressData",
                 "WordPressFlux",
                 "WordPressShared",
                 "WordPressReader",
