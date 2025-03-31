@@ -7,24 +7,41 @@ private func apiBase(blog: Blog) -> URL? {
         assertionFailure(".com support has not been implemented yet")
         return nil
     }
-    return try? blog.url(withPath: "wp-json/")?.asURL()
+
+    guard let urlString = blog.url(withPath: "wp-json/") else {
+        return nil
+    }
+
+    return URL(string: urlString)
 }
 
 extension WordPressOrgRestApi {
     @objc
     convenience init?(blog: Blog) {
+        self.init(
+            blog: blog,
+            userAgent: WPUserAgent.wordPress(),
+            wordPressComApiURL: WordPressComRestApi.apiBaseURL
+        )
+    }
+
+    convenience init?(
+        blog: Blog,
+        userAgent: String = WPUserAgent.wordPress(),
+        wordPressComApiURL: URL = WordPressComRestApi.apiBaseURL
+    ) {
         if let dotComID = blog.dotComID?.uint64Value,
            let token = blog.account?.authToken,
            token.count > 0 {
             self.init(
                 dotComSiteID: dotComID,
                 bearerToken: token,
-                userAgent: WPUserAgent.wordPress(),
-                apiURL: AppEnvironment.current.wordPressComApiBase
+                userAgent: userAgent,
+                apiURL: wordPressComApiURL
             )
         } else if let apiBase = apiBase(blog: blog),
-                  let loginURL = try? blog.loginUrl().asURL(),
-                  let adminURL = try? blog.adminUrl(withPath: "").asURL(),
+                  let loginURL = URL(string: blog.loginUrl()),
+                  let adminURL = URL(string: blog.adminUrl(withPath: "")),
                   let username = blog.username,
                   let password = blog.password {
             self.init(
@@ -35,7 +52,7 @@ extension WordPressOrgRestApi {
                     password: password,
                     adminURL: adminURL
                 ),
-                userAgent: WPUserAgent.wordPress()
+                userAgent: userAgent
             )
         } else {
             return nil

@@ -11,13 +11,13 @@ class MediaNoticeNavigationCoordinator {
     }
 
     static func presentEditor(for blog: Blog, source: String, media: [Media]) {
-        WPAppAnalytics.track(.notificationsUploadMediaSuccessWritePost, with: blog)
+        WPAppAnalytics.track(.notificationsUploadMediaSuccessWritePost, blog: blog)
 
         let editor = EditPostViewController(blog: blog)
         editor.modalPresentationStyle = .fullScreen
         editor.insertedMedia = media
         RootViewCoordinator.sharedPresenter.rootViewController.present(editor, animated: false)
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyPostType: "post"], with: blog)
+        WPAppAnalytics.track(.editorCreatedPost, properties: [WPAppAnalyticsKeyTapSource: source, WPAppAnalyticsKeyPostType: "post"], blog: blog)
     }
 
     static func navigateToMediaLibrary(with userInfo: NSDictionary) {

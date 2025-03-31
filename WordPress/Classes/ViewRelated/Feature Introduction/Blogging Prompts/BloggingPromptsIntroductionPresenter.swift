@@ -124,9 +124,7 @@ private extension BloggingPromptsIntroductionPresenter {
     }
 
     func trackPostEditorShown(_ blog: Blog) {
-        WPAppAnalytics.track(.editorCreatedPost,
-                             withProperties: [WPAppAnalyticsKeyTapSource: "blogging_prompts_feature_introduction", WPAppAnalyticsKeyPostType: "post"],
-                             with: blog)
+        WPAppAnalytics.track(.editorCreatedPost, properties: [WPAppAnalyticsKeyTapSource: "blogging_prompts_feature_introduction", WPAppAnalyticsKeyPostType: "post"], blog: blog)
     }
 
     // MARK: Prompt Fetching

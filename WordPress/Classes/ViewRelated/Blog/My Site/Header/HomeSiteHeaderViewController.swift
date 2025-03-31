@@ -240,7 +240,7 @@ extension HomeSiteHeaderViewController {
     }
 
     private func showViewSite() {
-        WPAppAnalytics.track(.openedViewSite, withProperties: [WPAppAnalyticsKeyTapSource: "link"], with: blog)
+        WPAppAnalytics.track(.openedViewSite, properties: [WPAppAnalyticsKeyTapSource: "link"], blog: blog)
 
         guard let urlString = blog.homeURL as String?,
               let url = URL(string: urlString) else {

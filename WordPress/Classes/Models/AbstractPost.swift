@@ -120,10 +120,6 @@ extension AbstractPost {
         return content?.contains("<!-- wp:") ?? false
     }
 
-    @objc func containsStoriesBlocks() -> Bool {
-        return content?.contains("<!-- wp:jetpack/story") ?? false
-    }
-
     var analyticsUserInfo: [String: Any] {
         [
             "post_type": analyticsPostType ?? "",

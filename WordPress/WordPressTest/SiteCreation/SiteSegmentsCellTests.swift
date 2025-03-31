@@ -1,5 +1,6 @@
 
 import XCTest
+import WordPressShared
 @testable import WordPress
 @testable import FormattableContentKit
 

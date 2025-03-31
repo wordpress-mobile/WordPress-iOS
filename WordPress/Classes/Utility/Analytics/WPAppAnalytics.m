@@ -1,19 +1,12 @@
-#import "WPAppAnalytics.h"
-
 @import WordPressDataObjC;
-#import "WPAnalyticsTrackerWPCom.h"
-#import "WPAnalyticsTrackerAutomatticTracks.h"
-#import "WPTabBarController.h"
-#import "AccountService.h"
-#import "BlogService.h"
-#import "Blog.h"
-#import "AbstractPost.h"
-#import "WordPress-Swift.h"
-
 @import NSObject_SafeExpectations;
 
+#import "WPAppAnalytics.h"
+#import "WPAnalyticsTrackerWPCom.h"
+#import "WPAnalyticsTrackerAutomatticTracks.h"
+#import "WordPress-Swift.h"
+
 NSString * const WPAppAnalyticsDefaultsUserOptedOut                 = @"tracks_opt_out";
-NSString * const WPAppAnalyticsDefaultsKeyUsageTracking_deprecated  = @"usage_tracking_enabled";
 NSString * const WPAppAnalyticsKeyBlogID                            = @"blog_id";
 NSString * const WPAppAnalyticsKeyPostID                            = @"post_id";
 NSString * const WPAppAnalyticsKeyPostAuthorID                      = @"post_author_id";
@@ -32,9 +25,6 @@ NSString * const WPAppAnalyticsKeyTapSource                         = @"tap_sour
 NSString * const WPAppAnalyticsKeyTabSource                         = @"tab_source";
 NSString * const WPAppAnalyticsKeyReplyingTo                        = @"replying_to";
 NSString * const WPAppAnalyticsKeySiteType                          = @"site_type";
-
-NSString * const WPAppAnalyticsKeyHasGutenbergBlocks                = @"has_gutenberg_blocks";
-NSString * const WPAppAnalyticsKeyHasStoriesBlocks                  = @"has_wp_stories_blocks";
 
 NSString * const WPAppAnalyticsValueSiteTypeBlog                    = @"blog";
 NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
@@ -84,13 +74,6 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
     [WPAnalytics clearTrackers];
 }
 
-+ (NSString *)siteTypeForBlogWithID:(NSNumber *)blogID
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    Blog *blog = [Blog lookupWithID:blogID in:context];
-    return [blog isWPForTeams] ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog;
-}
-
 #pragma mark - Notifications
 
 - (void)startObservingNotifications
@@ -117,125 +100,6 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
 #pragma mark - App Tracking
 
 /**
- *  @brief      Tracks stats with the blog details when available
- */
-+ (void)track:(WPAnalyticsStat)stat withBlog:(Blog *)blog {
-    [WPAppAnalytics track:stat withBlogID:blog.dotComID];
-}
-
-/**
- *  @brief      Tracks stats with the blog_id when available
- */
-+ (void)track:(WPAnalyticsStat)stat withBlogID:(NSNumber *)blogID {
-    if (NSThread.isMainThread) {
-        [WPAppAnalytics track:stat withProperties:nil withBlogID:blogID];
-    } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [WPAppAnalytics track:stat withProperties:nil withBlogID:blogID];
-        });
-    }
-}
-
-/**
- *  @brief      Tracks stats with the blog details when available
- */
-+ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlog:(Blog *)blog {
-    [WPAppAnalytics track:stat withProperties:properties withBlogID:blog.dotComID];
-}
-
-/**
- *  @brief      Tracks stats with the blog_id when available
- */
-+ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlogID:(NSNumber *)blogID {
-    NSMutableDictionary *mutableProperties;
-    if (properties) {
-        mutableProperties = [NSMutableDictionary dictionaryWithDictionary:properties];
-    } else {
-        mutableProperties = [NSMutableDictionary new];
-    }
-    
-    if (blogID) {
-        [mutableProperties setObject:blogID forKey:WPAppAnalyticsKeyBlogID];
-
-        NSString *siteType = [self siteTypeForBlogWithID:blogID];
-        [mutableProperties setObject:siteType forKey:WPAppAnalyticsKeySiteType];
-    }
-    
-    if ([mutableProperties count] > 0) {
-        [WPAppAnalytics track:stat withProperties:mutableProperties];
-    } else {
-        [WPAppAnalytics track:stat];
-    }
-}
-
-+ (void)track:(WPAnalyticsStat)stat withPost:(AbstractPost *)postOrPage {
-    [WPAppAnalytics track:stat withProperties:nil withPost:postOrPage];
-}
-
-+ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withPost:(AbstractPost *)postOrPage {
-    NSMutableDictionary *mutableProperties;
-    if (properties) {
-        mutableProperties = [NSMutableDictionary dictionaryWithDictionary:properties];
-    } else {
-        mutableProperties = [NSMutableDictionary new];
-    }
-
-    if (postOrPage.postID.integerValue > 0) {
-        mutableProperties[WPAppAnalyticsKeyPostID] = postOrPage.postID;
-    }
-    mutableProperties[WPAppAnalyticsKeyHasGutenbergBlocks] = @([postOrPage containsGutenbergBlocks]);
-    mutableProperties[WPAppAnalyticsKeyHasStoriesBlocks] = @([postOrPage containsStoriesBlocks]);
-
-    [WPAppAnalytics track:stat withProperties:mutableProperties withBlog:postOrPage.blog];
-}
-
-
-+ (void)trackTrainTracksInteraction:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
-{
-    NSMutableDictionary *mutableProperties;
-    if (properties) {
-        mutableProperties = [NSMutableDictionary dictionaryWithDictionary:properties];
-    } else {
-        mutableProperties = [NSMutableDictionary new];
-    }
-    // TrainTracks are specific to the AutomatticTracks tracker.
-    // The action property should be the event string for the stat.
-    // Other trackers should ignore `WPAnalyticsStatTrainTracksInteract`
-    NSString *eventName = [WPAnalyticsTrackerAutomatticTracks eventNameForStat:stat];
-    [mutableProperties setObject:eventName forKey:@"action"];
-
-    [self track:WPAnalyticsStatTrainTracksInteract withProperties:mutableProperties];
-}
-
-/**
- *  @brief      Pass-through method to [WPAnalytics track:stat]. Use this method instead of calling WPAnalytics directly.
- */
-+ (void)track:(WPAnalyticsStat)stat {
-    [WPAnalytics track:stat];
-}
-
-/**
- *  @brief      Pass-through method to WPAnalytics. Use this method instead of calling WPAnalytics directly.
- */
-+ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties {
-    [WPAnalytics track:stat withProperties:properties];
-}
-
-+ (void)track:(WPAnalyticsStat)stat error:(NSError * _Nonnull)error withBlogID:(NSNumber *)blogID {
-    NSError *err = [self sanitizedErrorFromError:error];
-    NSDictionary *properties = @{
-                                 @"error_code": [@(err.code) stringValue],
-                                 @"error_domain": err.domain,
-                                 @"error_description": err.description
-    };
-    [self track:stat withProperties: properties withBlogID:blogID];
-}
-
-+ (void)track:(WPAnalyticsStat)stat error:(NSError * _Nonnull)error {
-    [self track:stat error:error withBlogID:nil];
-}
-
-/**
  * @brief   Sanitize an NSError so we're not tracking unnecessary or usless information.
  */
 + (NSError * _Nonnull)sanitizedErrorFromError:(NSError * _Nonnull)error
@@ -253,21 +117,6 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
     return error;
 }
 
-#pragma mark - Usage tracking
-
-+ (BOOL)isTrackingUsage
-{
-    return [[UserPersistentStoreFactory userDefaultsInstance] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
-}
-
-- (void)setTrackingUsage:(BOOL)trackingUsage
-{
-    if (trackingUsage != [WPAppAnalytics isTrackingUsage]) {
-        [[UserPersistentStoreFactory userDefaultsInstance] setBool:trackingUsage
-                                                forKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
-    }
-}
-
 #pragma mark - Tracks Opt Out
 
 - (void)initializeOptOutTracking {
@@ -275,16 +124,7 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
         // We've already configured the opt out setting
         return;
     }
-
-    if ([[UserPersistentStoreFactory userDefaultsInstance] objectForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated] == nil) {
-        [self setUserHasOptedOutValue:NO];
-    } else if ([[UserPersistentStoreFactory userDefaultsInstance] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated] == NO) {
-        // If the user has already explicitly disabled tracking,
-        // then we should mirror that to the new setting
-        [self setUserHasOptedOutValue:YES];
-    } else {
-        [self setUserHasOptedOutValue:NO];
-    }
+    [self setUserHasOptedOutValue:NO];
 }
 
 + (BOOL)userHasOptedOutIsSet {

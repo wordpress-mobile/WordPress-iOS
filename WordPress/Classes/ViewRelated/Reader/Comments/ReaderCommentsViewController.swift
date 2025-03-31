@@ -467,7 +467,6 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
     private func trackReply(isReplyingToComment: Bool) {
         guard let post else { return }
 
-        let railcar = post.railcarDictionary()
         var properties: [String: Any] = [
             WPAppAnalyticsKeyBlogID: post.siteID ?? 0,
             WPAppAnalyticsKeyPostID: post.postID ?? 0,
@@ -481,10 +480,6 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         }
 
         WPAnalytics.trackReaderStat(.readerArticleCommentedOn, properties: properties)
-
-        if let railcar {
-            WPAppAnalytics.trackTrainTracksInteraction(.trainTracksInteract, withProperties: railcar)
-        }
     }
 }
 

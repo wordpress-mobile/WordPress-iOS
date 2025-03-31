@@ -94,7 +94,7 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
     fileprivate func contactSupport() {
         tableView.deselectSelectedRowWithAnimation(true)
 
-        WPAppAnalytics.track(.siteSettingsStartOverContactSupportClicked, with: blog)
+        WPAppAnalytics.track(.siteSettingsStartOverContactSupportClicked, blog: blog)
         if MFMailComposeViewController.canSendMail() {
             showAppleMailComposer()
         } else if let googleMailURL,

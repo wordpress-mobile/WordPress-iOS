@@ -42,7 +42,7 @@ struct PostListEditorPresenter {
 
         openEditor(with: newPost, in: postListViewController)
 
-        WPAppAnalytics.track(.postListDuplicateAction, withProperties: postListViewController.propertiesForAnalytics(), with: post)
+        WPAppAnalytics.track(.postListDuplicateAction, properties: postListViewController.propertiesForAnalytics(), post: post)
     }
 
     private static func openEditor(with post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {

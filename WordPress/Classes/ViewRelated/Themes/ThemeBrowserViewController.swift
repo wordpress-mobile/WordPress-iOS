@@ -730,7 +730,7 @@ public protocol ThemePresenter: AnyObject {
     }
 
     open func didPresentSearchController(_ searchController: UISearchController) {
-        WPAppAnalytics.track(.themesAccessedSearch, with: blog)
+        WPAppAnalytics.track(.themesAccessedSearch, blog: blog)
     }
 
     open func willDismissSearchController(_ searchController: UISearchController) {
@@ -844,7 +844,7 @@ public protocol ThemePresenter: AnyObject {
         _ = themeService.activate(theme,
             for: blog,
             success: { [weak self] (theme: Theme?) in
-                WPAppAnalytics.track(.themesChangedTheme, withProperties: ["theme_id": theme?.themeId ?? ""], with: self?.blog)
+            WPAppAnalytics.track(.themesChangedTheme, properties: ["theme_id": theme?.themeId ?? ""], blog: self?.blog)
 
                 self?.collectionView?.reloadData()
 
@@ -891,12 +891,12 @@ public protocol ThemePresenter: AnyObject {
     }
 
     @objc open func presentCustomizeForTheme(_ theme: Theme?) {
-        WPAppAnalytics.track(.themesCustomizeAccessed, with: self.blog)
+        WPAppAnalytics.track(.themesCustomizeAccessed, blog: self.blog)
         presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false, modalStyle: .fullScreen)
     }
 
     @objc open func presentPreviewForTheme(_ theme: Theme?) {
-        WPAppAnalytics.track(.themesPreviewedSite, with: self.blog)
+        WPAppAnalytics.track(.themesPreviewedSite, blog: self.blog)
         // In order to Try & Customize a theme we first need to install it (Jetpack sites)
         if let theme, self.blog.supports(.customThemes) && !theme.custom {
             installThemeAndPresentCustomizer(theme)
@@ -906,17 +906,17 @@ public protocol ThemePresenter: AnyObject {
     }
 
     @objc open func presentDetailsForTheme(_ theme: Theme?) {
-        WPAppAnalytics.track(.themesDetailsAccessed, with: self.blog)
+        WPAppAnalytics.track(.themesDetailsAccessed, blog: self.blog)
         presentUrlForTheme(theme, url: theme?.detailsUrl())
     }
 
     @objc open func presentSupportForTheme(_ theme: Theme?) {
-        WPAppAnalytics.track(.themesSupportAccessed, with: self.blog)
+        WPAppAnalytics.track(.themesSupportAccessed, blog: self.blog)
         presentUrlForTheme(theme, url: theme?.supportUrl())
     }
 
     @objc open func presentViewForTheme(_ theme: Theme?) {
-        WPAppAnalytics.track(.themesDemoAccessed, with: self.blog)
+        WPAppAnalytics.track(.themesDemoAccessed, blog: self.blog)
         presentUrlForTheme(theme, url: theme?.viewUrl(), onClose: onWebkitViewControllerClose)
     }
 

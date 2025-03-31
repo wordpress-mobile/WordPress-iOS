@@ -161,7 +161,7 @@ extension DashboardPostsListCardCell {
         }
 
         PostListViewController.showForBlog(blog, from: viewController, withPostStatus: status)
-        WPAppAnalytics.track(.openedPosts, withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "posts_card"], with: blog)
+        WPAppAnalytics.track(.openedPosts, properties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "posts_card"], blog: blog)
     }
 
 }

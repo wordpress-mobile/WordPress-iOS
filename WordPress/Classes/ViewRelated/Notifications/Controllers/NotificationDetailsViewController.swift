@@ -730,12 +730,12 @@ private extension NotificationDetailsViewController {
         UINotificationFeedbackGenerator().notificationOccurred(.success)
 
         actionsService.followSiteWithBlock(block)
-        WPAppAnalytics.track(.notificationsSiteFollowAction, withBlogID: block.metaSiteID)
+        WPAppAnalytics.track(.notificationsSiteFollowAction, blogID: block.metaSiteID)
     }
 
     func unfollowSiteWithBlock(_ block: FormattableUserContent) {
         actionsService.unfollowSiteWithBlock(block)
-        WPAppAnalytics.track(.notificationsSiteUnfollowAction, withBlogID: block.metaSiteID)
+        WPAppAnalytics.track(.notificationsSiteUnfollowAction, blogID: block.metaSiteID)
     }
 }
 

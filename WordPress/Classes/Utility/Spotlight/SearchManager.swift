@@ -374,7 +374,7 @@ fileprivate extension SearchManager {
     }
 
     func navigateToScreen(for post: Post, isDotCom: Bool) {
-        WPAppAnalytics.track(.spotlightSearchOpenedPost, with: post)
+        WPAppAnalytics.track(.spotlightSearchOpenedPost, post: post)
         let postIsPublishedOrScheduled = (post.status == .publish || post.status == .scheduled)
         if postIsPublishedOrScheduled && isDotCom {
             openReader(for: post, onFailure: {
@@ -389,7 +389,7 @@ fileprivate extension SearchManager {
     }
 
     func navigateToScreen(for page: Page, isDotCom: Bool) {
-        WPAppAnalytics.track(.spotlightSearchOpenedPage, with: page)
+        WPAppAnalytics.track(.spotlightSearchOpenedPage, post: page)
         let pageIsPublishedOrScheduled = (page.status == .publish || page.status == .scheduled)
         if pageIsPublishedOrScheduled && isDotCom {
             openReader(for: page, onFailure: {

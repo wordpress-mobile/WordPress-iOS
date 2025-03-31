@@ -47,17 +47,17 @@ extension StockPhotosMedia.ThumbnailCollection: Decodable {
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        largeURL = try values.decode(String.self, forKey: .large).asURL()
-        mediumURL = try values.decode(String.self, forKey: .medium).asURL()
-        postThumbnailURL = try values.decode(String.self, forKey: .postThumbnail).asURL()
-        thumbnailURL = try values.decode(String.self, forKey: .thumbnail).asURL()
+        largeURL = try values.decode(URL.self, forKey: .large)
+        mediumURL = try values.decode(URL.self, forKey: .medium)
+        postThumbnailURL = try values.decode(URL.self, forKey: .postThumbnail)
+        thumbnailURL = try values.decode(URL.self, forKey: .thumbnail)
     }
 }
 
 extension StockPhotosMedia: Decodable {
     enum CodingKeys: String, CodingKey {
-        case ID
-        case URL
+        case id = "ID"
+        case url = "URL"
         case title
         case name
         case thumbnails
@@ -66,14 +66,16 @@ extension StockPhotosMedia: Decodable {
 
     convenience init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        let id = try values.decode(String.self, forKey: .ID)
-        let URL = try values.decode(String.self, forKey: .URL).asURL()
+        let id = try values.decode(String.self, forKey: .id)
+        // Notice the Foundation namespace. It's required to disambiguate from the URL property.
+        // Will get to rename that eventually, but it's out of scope at the time of this change.
+        let url = try values.decode(Foundation.URL.self, forKey: .url)
         let title = try values.decode(String.self, forKey: .title)
         let name = try values.decode(String.self, forKey: .name)
         let caption = try values.decode(String.self, forKey: .caption)
         let size: CGSize = .zero
         let thumbnails = try values.decode(ThumbnailCollection.self, forKey: .thumbnails)
 
-        self.init(id: id, URL: URL, title: title, name: name, caption: caption, size: size, thumbnails: thumbnails)
+        self.init(id: id, URL: url, title: title, name: name, caption: caption, size: size, thumbnails: thumbnails)
     }
 }
