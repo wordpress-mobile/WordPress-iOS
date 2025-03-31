@@ -1,4 +1,3 @@
-
 import Foundation
 import WordPressKit
 
@@ -9,7 +8,7 @@ struct AppEnvironment {
     // MARK: - Globals
 
     /// A type to create derived context, save context, etc...
-    let contextManager: CoreDataStack
+    let contextManager: CoreDataStackSwift
 
     /// The base url to use for WP.com api requests
     let wordPressComApiBase: URL
@@ -29,7 +28,7 @@ struct AppEnvironment {
     // MARK: - Initialization
 
     private init(
-        contextManager: CoreDataStack = ContextManager.shared,
+        contextManager: CoreDataStackSwift = ContextManager.shared,
         wordPressComApiBase: URL = WordPressComRestApi.apiBaseURL) {
 
         self.contextManager = contextManager
@@ -42,7 +41,7 @@ extension AppEnvironment {
     ///
     @discardableResult
     static func replaceEnvironment(
-        contextManager: CoreDataStack = AppEnvironment.current.contextManager,
+        contextManager: CoreDataStackSwift = AppEnvironment.current.contextManager,
         wordPressComApiBase: URL = AppEnvironment.current.wordPressComApiBase) -> AppEnvironment {
 
         current = AppEnvironment(
