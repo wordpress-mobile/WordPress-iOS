@@ -1,5 +1,5 @@
-import MessageUI
 import UIKit
+import MessageUI
 
 /// App selector that selects an app from a list and opens it
 /// Note: it's a wrapper of UIAlertController (which cannot be sublcassed)

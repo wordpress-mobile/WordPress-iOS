@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 // MARK: - UIViewController Helpers
 extension UIViewController {

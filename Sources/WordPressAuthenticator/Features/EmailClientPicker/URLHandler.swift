@@ -1,3 +1,5 @@
+import UIKit
+
 /// Generic type that handles URL Schemes
 public protocol URLHandler {
     /// checks if the specified URL can be opened

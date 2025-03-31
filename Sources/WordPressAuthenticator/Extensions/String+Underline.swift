@@ -1,3 +1,5 @@
+import UIKit
+
 extension String {
     /// Creates an attributed string from one underlined section that's surrounded by underscores
     ///

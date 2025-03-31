@@ -1,3 +1,5 @@
+import UIKit
+
 extension UIPasteboard {
 
     /// Detects patterns and values from the UIPasteboard. This will not trigger the pasteboard alert in iOS 14.
