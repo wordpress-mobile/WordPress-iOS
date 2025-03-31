@@ -1,6 +1,6 @@
 import Foundation
 
-@objc class JetpackRestoreService: CoreDataService {
+class JetpackRestoreService: CoreDataService {
 
     private lazy var serviceV1: ActivityServiceRemote_ApiVersion1_0 = {
         let api = coreDataStack.performQuery {
