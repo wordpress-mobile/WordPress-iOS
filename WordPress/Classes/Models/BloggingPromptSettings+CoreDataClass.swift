@@ -4,7 +4,7 @@ import WordPressKit
 
 public class BloggingPromptSettings: NSManagedObject {
 
-    static func of(_ blog: Blog) throws -> BloggingPromptSettings? {
+    public static func of(_ blog: Blog) throws -> BloggingPromptSettings? {
         guard let context = blog.managedObjectContext else { return nil }
 
         // This getting site id logic is copied from the BloggingPromptsService initializer.
@@ -20,14 +20,14 @@ public class BloggingPromptSettings: NSManagedObject {
         return try lookup(withSiteID: siteID, in: context)
     }
 
-    static func lookup(withSiteID siteID: NSNumber, in context: NSManagedObjectContext) throws -> BloggingPromptSettings? {
+    public static func lookup(withSiteID siteID: NSNumber, in context: NSManagedObjectContext) throws -> BloggingPromptSettings? {
         let fetchRequest = BloggingPromptSettings.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "\(#keyPath(BloggingPromptSettings.siteID)) = %@", siteID)
         fetchRequest.fetchLimit = 1
         return try context.fetch(fetchRequest).first
     }
 
-    func reminderTimeDate() -> Date? {
+    public func reminderTimeDate() -> Date? {
         guard let reminderTime else {
             return nil
         }
@@ -37,7 +37,7 @@ public class BloggingPromptSettings: NSManagedObject {
     }
 }
 
-extension RemoteBloggingPromptsSettings {
+public extension RemoteBloggingPromptsSettings {
 
     init(with model: BloggingPromptSettings) {
         self.init(promptCardEnabled: model.promptCardEnabled,

@@ -32,7 +32,7 @@ import UniformTypeIdentifiers
 
 // MARK: - SearchableItemConvertable
 
-@objc protocol SearchableItemConvertable {
+@objc public protocol SearchableItemConvertable {
     /// Identifies the item type this is
     ///
     var searchItemType: SearchItemType {get}
@@ -74,15 +74,15 @@ import UniformTypeIdentifiers
     @objc optional var searchExpirationDate: Date? {get}
 }
 
-extension SearchableItemConvertable {
-    internal var uniqueIdentifier: String? {
+public extension SearchableItemConvertable {
+    var uniqueIdentifier: String? {
         guard let searchDomain, let searchIdentifier else {
             return nil
         }
         return SearchIdentifierGenerator.composeUniqueIdentifier(itemType: searchItemType, domain: searchDomain, identifier: searchIdentifier)
     }
 
-    internal func indexableItem() -> CSSearchableItem? {
+    func indexableItem() -> CSSearchableItem? {
         guard isSearchable == true,
             let uniqueIdentifier,
             let searchTitle,

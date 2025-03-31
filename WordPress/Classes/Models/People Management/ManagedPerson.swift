@@ -8,9 +8,9 @@ public typealias Person = RemotePerson
 
 // MARK: - Reflects a Person, stored in Core Data
 //
-class ManagedPerson: NSManagedObject {
+public class ManagedPerson: NSManagedObject {
 
-    func updateWith<T: Person>(_ person: T) {
+    public func updateWith<T: Person>(_ person: T) {
         let canonicalAvatarURL = person.avatarURL.flatMap { AvatarURL(url: $0)?.canonicalURL }
 
         avatarURL = canonicalAvatarURL?.absoluteString
@@ -26,7 +26,7 @@ class ManagedPerson: NSManagedObject {
         kind = Int16(type(of: person).kind.rawValue)
     }
 
-    func toUnmanaged() -> Person {
+    public func toUnmanaged() -> Person {
         switch Int(kind) {
         case PersonKind.user.rawValue:
             return User(managedPerson: self)
@@ -42,7 +42,7 @@ class ManagedPerson: NSManagedObject {
 
 // MARK: - Extensions
 //
-extension Person {
+public extension Person {
     init(managedPerson: ManagedPerson) {
         self.init(ID: Int(managedPerson.userID),
                   username: managedPerson.username,
@@ -57,7 +57,7 @@ extension Person {
     }
 }
 
-extension User {
+public extension User {
     init(managedPerson: ManagedPerson) {
         self.init(ID: Int(managedPerson.userID),
                   username: managedPerson.username,
@@ -72,7 +72,7 @@ extension User {
     }
 }
 
-extension Follower {
+public extension Follower {
     init(managedPerson: ManagedPerson) {
         self.init(ID: Int(managedPerson.userID),
                   username: managedPerson.username,
@@ -87,7 +87,7 @@ extension Follower {
     }
 }
 
-extension Viewer {
+public extension Viewer {
     init(managedPerson: ManagedPerson) {
         self.init(ID: Int(managedPerson.userID),
                   username: managedPerson.username,
@@ -102,7 +102,7 @@ extension Viewer {
     }
 }
 
-extension EmailFollower {
+public extension EmailFollower {
     init(managedPerson: ManagedPerson) {
         self.init(ID: Int(managedPerson.userID),
                   username: managedPerson.username,

@@ -13,19 +13,19 @@ import Foundation
     // MARK: - Computed Properties
 
     /// The `slug` property is URL encoded. Use this property for display instead.
-    var slugForDisplay: String? {
+    public var slugForDisplay: String? {
         return slug.removingPercentEncoding
     }
 
     // MARK: - Logged Out Helpers
 
     /// The tagID used if an interest was added locally and not sync'd with the server
-    class var loggedOutTagID: NSNumber {
+    public class var loggedOutTagID: NSNumber {
         return NSNotFound as NSNumber
     }
 
     /// Creates a new ReaderTagTopic object from a RemoteReaderInterest
-    convenience init(remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext, isFollowing: Bool = false) {
+    convenience public init(remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext, isFollowing: Bool = false) {
         self.init(context: context)
 
         title = remoteInterest.title
@@ -38,7 +38,7 @@ import Foundation
 
     /// Returns an existing ReaderTagTopic or creates a new one based on remote interest
     /// If an existing topic is returned, the title will be updated with the remote interest
-    class func createOrUpdateIfNeeded(from remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext) -> ReaderTagTopic {
+    public class func createOrUpdateIfNeeded(from remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext) -> ReaderTagTopic {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: self.classNameWithoutNamespaces())
         fetchRequest.predicate = NSPredicate(format: "slug = %@", remoteInterest.slug)
         let topics = try? context.fetch(fetchRequest) as? [ReaderTagTopic]
@@ -52,17 +52,17 @@ import Foundation
         return topic
     }
 
-    var formattedTitle: String {
+    public var formattedTitle: String {
         title.split(separator: "-").map(\.capitalized).joined(separator: " ")
     }
 
     /// Convenience method to update the tag's `following` state and also updates `showInMenu`.
-    @objc func toggleFollowing(_ isFollowing: Bool) {
+    @objc public func toggleFollowing(_ isFollowing: Bool) {
         following = isFollowing
         showInMenu = (following || isRecommended)
     }
 }
 
-extension ReaderTagTopic {
+public extension ReaderTagTopic {
     static let dailyPromptTag = "dailyprompt"
 }

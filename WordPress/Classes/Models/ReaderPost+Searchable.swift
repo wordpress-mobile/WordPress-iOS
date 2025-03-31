@@ -1,29 +1,29 @@
 import Foundation
 
 extension ReaderPost: SearchableItemConvertable {
-    var searchItemType: SearchItemType {
+    public var searchItemType: SearchItemType {
         return .readerPost
     }
 
-    var isSearchable: Bool {
+    public var isSearchable: Bool {
         return true
     }
 
-    var searchIdentifier: String? {
+    public var searchIdentifier: String? {
         guard let postID, postID.intValue > 0 else {
             return nil
         }
         return postID.stringValue
     }
 
-    var searchDomain: String? {
+    public var searchDomain: String? {
         guard let siteID, siteID.intValue > 0 else {
             return nil
         }
         return siteID.stringValue
     }
 
-    var searchTitle: String? {
+    public var searchTitle: String? {
         var title = titleForDisplay() ?? ""
         if title.isEmpty {
             // If titleForDisplay() happens to be empty, try using the content preview instead...
@@ -32,18 +32,18 @@ extension ReaderPost: SearchableItemConvertable {
         return title
     }
 
-    var searchDescription: String? {
+    public var searchDescription: String? {
         guard let readerPostPreview = contentPreviewForDisplay(), !readerPostPreview.isEmpty else {
             return blogURL ?? contentForDisplay()
         }
         return readerPostPreview
     }
 
-    var searchKeywords: [String]? {
+    public var searchKeywords: [String]? {
         return generateKeywordsFromContent()
     }
 
-    var searchExpirationDate: Date? {
+    public var searchExpirationDate: Date? {
         let oneWeekFromNow = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: Date())
         return oneWeekFromNow
     }

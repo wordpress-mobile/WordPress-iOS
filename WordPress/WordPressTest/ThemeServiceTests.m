@@ -112,6 +112,7 @@
     XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertNoThrow([service getThemesForBlog:blog
                                           page:1
+                                        search:nil
                                           sync:NO
                                        success:nil
                                        failure:nil]);
@@ -124,6 +125,7 @@
     XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
     XCTAssertThrows([service getThemesForBlog:nil
                                          page:1
+                                       search:nil
                                          sync:NO
                                       success:nil
                                       failure:nil]);

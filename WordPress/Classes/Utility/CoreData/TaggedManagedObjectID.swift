@@ -27,11 +27,11 @@ import WordPressShared
 /// we can't perform the validation described in `init(objectID:)`.
 ///
 /// - SeeAlso: swift-tagged: https://github.com/pointfreeco/swift-tagged
-struct TaggedManagedObjectID<Model: NSManagedObject>: Hashable {
-    let objectID: NSManagedObjectID
+public struct TaggedManagedObjectID<Model: NSManagedObject>: Hashable {
+    public let objectID: NSManagedObjectID
 
     /// Create an `TaggedManagedObjectID` instance of the given object.
-    init(_ object: Model) {
+    public init(_ object: Model) {
         var objectID = object.objectID
 
         if objectID.isTemporaryID {
@@ -69,7 +69,7 @@ struct TaggedManagedObjectID<Model: NSManagedObject>: Hashable {
     }
 }
 
-extension NSManagedObjectContext {
+public extension NSManagedObjectContext {
 
     /// Find the object associated with this object id in the given `context`.
     ///

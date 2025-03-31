@@ -34,7 +34,7 @@ extension PageTemplateLayout {
     @NSManaged public func removeFromCategories(_ values: Set<PageTemplateCategory>)
 }
 
-extension PageTemplateLayout {
+public extension PageTemplateLayout {
 
     convenience init(context: NSManagedObjectContext, layout: RemoteLayout) {
         self.init(context: context)

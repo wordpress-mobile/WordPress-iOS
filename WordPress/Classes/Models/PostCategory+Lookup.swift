@@ -1,6 +1,6 @@
 import Foundation
 
-extension PostCategory {
+public extension PostCategory {
 
     static func lookup(withBlogID id: NSManagedObjectID, categoryID: NSNumber, in context: NSManagedObjectContext) throws -> PostCategory? {
         try lookup(withBlogID: id, predicate: NSPredicate(format: "categoryID == %@", categoryID), in: context)
@@ -28,7 +28,7 @@ extension PostCategory {
 
 // MARK: - Objective-C API
 
-extension PostCategory {
+public extension PostCategory {
 
     @objc(lookupWithBlogObjectID:categoryID:inContext:)
     static func objc_lookup(withBlogID id: NSManagedObjectID, categoryID: NSNumber, in context: NSManagedObjectContext) -> PostCategory? {

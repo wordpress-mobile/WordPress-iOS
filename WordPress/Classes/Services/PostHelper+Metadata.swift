@@ -1,7 +1,7 @@
 import Foundation
 import WordPressShared
 
-extension PostHelper {
+public extension PostHelper {
     @objc static let foreignIDKey = "wp_jp_foreign_id"
 
     static func mapDictionaryToMetadataItems(_ dictionary: [String: Any]) -> RemotePostMetadataItem? {
