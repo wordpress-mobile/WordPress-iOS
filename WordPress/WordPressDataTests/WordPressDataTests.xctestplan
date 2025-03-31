@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "4A78A2D0-FB06-481E-B333-C1BA9A78D4FE",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "3F7AE0BB2D9B30A200AB4892",
+        "name" : "WordPressDataTests"
+      }
+    }
+  ],
+  "version" : 1
+}
