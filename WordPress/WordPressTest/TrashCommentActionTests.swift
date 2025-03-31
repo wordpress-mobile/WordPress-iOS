@@ -9,7 +9,7 @@ final class TrashCommentActionTests: CoreDataTestCase {
             return service
         }
 
-        init(on: Bool, coreDataStack: CoreDataStack) {
+        init(on: Bool, coreDataStack: CoreDataStackSwift) {
             service = MockNotificationActionsService(coreDataStack: coreDataStack)
             super.init(on: on)
         }
