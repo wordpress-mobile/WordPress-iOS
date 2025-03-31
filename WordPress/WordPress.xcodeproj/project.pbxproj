@@ -6409,7 +6409,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				WARNING_CFLAGS = (
-					"-Wno-nullability-completeness",
+					"$(inherited)",
 					"-Wno-quoted-include-in-framework-header",
 				);
 			};
@@ -6471,7 +6471,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				WARNING_CFLAGS = (
-					"-Wno-nullability-completeness",
+					"$(inherited)",
 					"-Wno-quoted-include-in-framework-header",
 				);
 			};
@@ -6533,7 +6533,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				WARNING_CFLAGS = (
-					"-Wno-nullability-completeness",
+					"$(inherited)",
 					"-Wno-quoted-include-in-framework-header",
 				);
 			};
