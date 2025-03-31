@@ -1,0 +1,6 @@
+#include "Common.alpha.xcconfig"
+#include "Version.public.xcconfig"
+
+WP_PUSH_NOTIFICATION_APP_ID = TBD
+WP_BUILD_CONFIGURATION = alpha
+WP_APP_URL_SCHEME = TBD
