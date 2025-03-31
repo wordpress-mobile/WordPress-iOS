@@ -806,13 +806,6 @@
 			remoteGlobalIDString = 3F7AE0B42D9B30A100AB4892;
 			remoteInfo = WordPressData;
 		};
-		3F7AE0C02D9B30A200AB4892 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
-			remoteInfo = WordPress;
-		};
 		3F7AE0C62D9B30A200AB4892 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -4433,7 +4426,6 @@
 			);
 			dependencies = (
 				3F7AE0BF2D9B30A200AB4892 /* PBXTargetDependency */,
-				3F7AE0C12D9B30A200AB4892 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				3F7AE0C22D9B30A200AB4892 /* WordPressDataTests */,
@@ -4819,7 +4811,6 @@
 					};
 					3F7AE0BB2D9B30A200AB4892 = {
 						CreatedOnToolsVersion = 16.2;
-						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
 					4AD953B32C21451700D0EEFA = {
 						CreatedOnToolsVersion = 15.4;
@@ -6139,11 +6130,6 @@
 			target = 3F7AE0B42D9B30A100AB4892 /* WordPressData */;
 			targetProxy = 3F7AE0BE2D9B30A200AB4892 /* PBXContainerItemProxy */;
 		};
-		3F7AE0C12D9B30A200AB4892 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
-			targetProxy = 3F7AE0C02D9B30A200AB4892 /* PBXContainerItemProxy */;
-		};
 		3F7AE0C72D9B30A200AB4892 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3F7AE0B42D9B30A100AB4892 /* WordPressData */;
@@ -7327,7 +7313,6 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WordPress";
 			};
 			name = Debug;
 		};
@@ -7366,7 +7351,6 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WordPress";
 			};
 			name = Release;
 		};
@@ -7405,7 +7389,6 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WordPress";
 			};
 			name = "Release-Alpha";
 		};
