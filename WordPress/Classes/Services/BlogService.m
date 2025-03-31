@@ -28,6 +28,15 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
 @implementation BlogService
 
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+{
+    self = [super init];
+    if (self) {
+        _coreDataStack = coreDataStack;
+    }
+    return self;
+}
+
 - (void)syncBlogsForAccount:(WPAccount *)account
                     success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
