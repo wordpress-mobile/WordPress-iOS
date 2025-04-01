@@ -132,7 +132,7 @@
 
 #pragma mark - Static methods
 
-+ (NSString *)tokenForUsername:(NSString *)username isJetpack:(BOOL)isJetpack
++ (NSString *)tokenForUsername:(NSString *)username isJetpack:(BOOL)isJetpack error:(NSError **)outError
 {
     if (isJetpack) {
         [WPAccount migrateAuthKeyForUsername:username];
@@ -145,6 +145,11 @@
                                                               error:&error];
     if (error) {
         DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
+
+        if (outError) {
+            *outError = error;
+        }
+        return nil;
     }
 
     return authToken;
