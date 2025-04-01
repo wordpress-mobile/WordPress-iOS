@@ -24,7 +24,8 @@ public final class SharedDataIssueSolver: NSObject {
 
     /// Helper method for creating an instance in Obj-C
     ///
-    class func instance() -> SharedDataIssueSolver {
+    @objc
+    public class func instance() -> SharedDataIssueSolver {
         return SharedDataIssueSolver()
     }
 

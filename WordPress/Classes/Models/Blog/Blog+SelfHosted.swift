@@ -64,7 +64,7 @@ extension Blog {
 
     @available(swift, obsoleted: 1.0)
     @objc(deleteApplicationToken)
-    func objc_deleteApplicationToken() {
+    public func objc_deleteApplicationToken() {
         _ = try? deleteApplicationToken()
     }
 

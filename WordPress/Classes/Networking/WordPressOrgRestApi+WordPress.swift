@@ -17,7 +17,7 @@ private func apiBase(blog: Blog) -> URL? {
 
 extension WordPressOrgRestApi {
     @objc
-    convenience init?(blog: Blog) {
+    public convenience init?(blog: Blog) {
         self.init(
             blog: blog,
             userAgent: WPUserAgent.wordPress(),
