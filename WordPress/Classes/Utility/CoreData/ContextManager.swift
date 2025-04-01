@@ -1,4 +1,5 @@
 import CoreData
+import CocoaLumberjackSwift
 import Foundation
 import WordPressData
 import WordPressShared
@@ -234,13 +235,14 @@ private extension ContextManager {
             fatalError("Can't create object model named \(modelName) at \(modelFileURL)")
         }
 
-        let startupEvent = SentryStartupEvent()
+        // FIXME: Import the Sentry stuff, too — But it accesses the app delegate!
+        // let startupEvent = SentryStartupEvent()
 
         do {
             try migrateDataModelsIfNecessary(storeURL: storeURL, objectModel: objectModel)
         } catch {
             DDLogError("Unable to migrate store: \(error)")
-            startupEvent.add(error: error as NSError)
+            // startupEvent.add(error: error as NSError)
         }
 
         let storeDescription = NSPersistentStoreDescription(url: storeURL)
@@ -254,16 +256,16 @@ private extension ContextManager {
             }
 
             DDLogError("Error opening the database. \(error)\nDeleting the file and trying again")
-            startupEvent.add(error: error)
+            // startupEvent.add(error: error)
 
             // make a backup of the old database
             do {
                 try CoreDataIterativeMigrator.backupDatabase(at: storeURL)
             } catch {
-                startupEvent.add(error: error)
+                // startupEvent.add(error: error)
             }
 
-            startupEvent.send(title: "Can't initialize Core Data stack")
+            // startupEvent.send(title: "Can't initialize Core Data stack")
             objc_exception_throw(
                 NSException(
                     name: NSExceptionName(rawValue: "Can't initialize Core Data stack"),
