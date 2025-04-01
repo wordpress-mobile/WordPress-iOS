@@ -2,6 +2,8 @@
 #import "ReaderTopicService.h"
 #import "CoreDataStack.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSUInteger, ReaderSiteServiceError) {
     ReaderSiteServiceErrorNotLoggedIn,
     ReaderSiteServiceErrorAlreadyFollowingSite
@@ -13,7 +15,7 @@ extern NSString * const ReaderSiteServiceErrorDomain;
 
 @property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
 
-- (nonnull instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -81,3 +83,5 @@ extern NSString * const ReaderSiteServiceErrorDomain;
 - (void)syncPostsForFollowedSites;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -35,7 +35,7 @@ class ReaderSiteServiceTests: CoreDataTestCase {
 
         let service = makeService()
         let success = expectation(description: "The success block should be called")
-        service.followSite(by: URL(string: "https://test.blog")!, success: success.fulfill, failure: nil)
+        service.followSite(by: URL(string: "https://test.blog")!, success: success.fulfill, failure: { _ in })
         wait(for: [success], timeout: 0.5)
     }
 
@@ -56,7 +56,7 @@ class ReaderSiteServiceTests: CoreDataTestCase {
 
         let service = makeService()
         let success = expectation(description: "The success block should be called")
-        service.followSite(withID: 42, success: success.fulfill, failure: nil)
+        service.followSite(withID: 42, success: success.fulfill, failure: { _ in })
         wait(for: [success], timeout: 0.5)
     }
 
@@ -67,7 +67,7 @@ class ReaderSiteServiceTests: CoreDataTestCase {
 
         let service = makeService()
         let success = expectation(description: "The success block should be called")
-        service.unfollowSite(withID: 42, success: success.fulfill, failure: nil)
+        service.unfollowSite(withID: 42, success: success.fulfill, failure: { _ in })
         wait(for: [success], timeout: 0.5)
     }
 
