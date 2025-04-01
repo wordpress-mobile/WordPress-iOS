@@ -26,27 +26,42 @@ extension AccountService {
         }
 
         let defaultAccountObjectID = TaggedManagedObjectID(defaultAccount)
+        let siteID = defaultBlog.dotComID?.intValue
+        let siteName = defaultBlog.settings?.name
 
         DispatchQueue.main.async {
             do {
                 let defaultAccount = try self.coreDataStack.mainContext.existingObject(with: defaultAccountObjectID)
 
-                if let siteID = defaultBlog.dotComID?.intValue, let siteName = defaultBlog.settings?.name {
+                if let siteID, let siteName {
                     shareExtensionService.storeDefaultSiteID(siteID, defaultSiteName: siteName)
+                } else {
+                    wpAssertionFailure("siteID and/or siteName missing")
                 }
+
                 if let authToken = defaultAccount.authToken {
                     shareExtensionService.storeToken(authToken)
                     notificationSupportService.storeToken(authToken)
+                } else {
+                    wpAssertionFailure("authToken missing")
                 }
+
                 shareExtensionService.storeUsername(defaultAccount.username)
                 notificationSupportService.storeUsername(defaultAccount.username)
+
                 if let userID = defaultAccount.userID?.stringValue {
                     notificationSupportService.storeUserID(userID)
+                } else {
+                    wpAssertionFailure("userID missing")
                 }
             } catch {
                 wpAssertionFailure("failed to fetch the default account")
             }
         }
+    }
+
+    private func setupAppExtension(for blog: Blog) throws {
+
     }
 
     /// Loads the default WordPress account's cookies into shared cookie storage.
