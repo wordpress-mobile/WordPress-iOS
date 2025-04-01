@@ -255,6 +255,7 @@ enum XcodeSupport {
                 "SFHFKeychainUtils",
                 "ShareExtensionCore",
                 "WordPressFlux",
+                "WordPressDataObjC", // Currently empty, here for future proofing
                 "WordPressShared",
                 "WordPressReader",
                 "WordPressUI",
@@ -291,6 +292,7 @@ enum XcodeSupport {
             ]),
             .xcodeTarget("XcodeTarget_WordPressTests", dependencies: testDependencies + [
                 "SFHFKeychainUtils",
+                "WordPressDataObjC", // Currently empty, here for future proofing
                 "WordPressShared",
                 "WordPressUI",
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
