@@ -65,7 +65,7 @@ typedef void(^ThemeServiceFailureBlock)(NSError * _Nullable error);
  */
 - (NSProgress *)getThemesForBlog:(Blog *)blog
                             page:(NSInteger)page
-                          search:(NSString *)search
+                          search:(nullable NSString *)search
                             sync:(BOOL)sync
                          success:(nullable ThemeServiceThemesRequestSuccessBlock)success
                          failure:(nullable ThemeServiceFailureBlock)failure;

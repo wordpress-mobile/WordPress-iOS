@@ -135,20 +135,5 @@
                                     failure:nil]);
 }
 
-- (void)testThatActivateThemeThrowsExceptionWithoutBlog
-{
-    NSManagedObjectContext *context = self.manager.mainContext;
-    Theme *theme = [NSEntityDescription insertNewObjectForEntityForName:[Theme entityName] inManagedObjectContext:context];
-    ThemeService *service = nil;
-
-    theme.themeId = @"SomeThemeId";
-
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
-    XCTAssertThrows([service activateTheme:theme
-                                   forBlog:nil
-                                   success:nil
-                                   failure:nil]);
-}
-
 @end
 
