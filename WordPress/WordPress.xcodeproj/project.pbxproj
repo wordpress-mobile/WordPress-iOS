@@ -101,6 +101,7 @@
 		24E55D4F2CC9A5CD008D071D /* ImagePlayground.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E55D4D2CC9A5C8008D071D /* ImagePlayground.framework */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
+		3F0F25A62D9BDB5800CD05D6 /* XcodeTarget_WordPressData in Frameworks */ = {isa = PBXBuildFile; productRef = 3F0F25A52D9BDB5800CD05D6 /* XcodeTarget_WordPressData */; };
 		3F0FD9FC2D9B92F700CD05D6 /* WordPressData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; };
 		3F0FD9FD2D9B92F700CD05D6 /* WordPressData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F0FDA002D9B930100CD05D6 /* WordPressData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; };
@@ -1353,6 +1354,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F0F25A62D9BDB5800CD05D6 /* XcodeTarget_WordPressData in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2165,6 +2167,7 @@
 			);
 			name = WordPressData;
 			packageProductDependencies = (
+				3F0F25A52D9BDB5800CD05D6 /* XcodeTarget_WordPressData */,
 			);
 			productName = WordPressData;
 			productReference = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */;
@@ -7124,6 +7127,10 @@
 		0CFFFECA2C36F5760044709B /* XcodeTarget_WordPressAuthentificatorTests */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = XcodeTarget_WordPressAuthentificatorTests;
+		};
+		3F0F25A52D9BDB5800CD05D6 /* XcodeTarget_WordPressData */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = XcodeTarget_WordPressData;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
