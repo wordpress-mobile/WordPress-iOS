@@ -2,7 +2,7 @@ import WordPressShared
 
 // MARK: - Tab Access Tracking
 
-@objc enum WPTab: Int {
+@objc public enum WPTab: Int {
     case mySites
     case reader
     case notifications

@@ -1,13 +1,13 @@
 import SVProgressHUD
 
 extension SVProgressHUD {
-    @objc class func showDismissibleError(status: String) {
+    @objc public class func showDismissibleError(status: String) {
         registerForHUDNotifications()
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.showError(withStatus: status)
     }
 
-    @objc class func showDismissibleSuccess(status: String) {
+    @objc public class func showDismissibleSuccess(status: String) {
         registerForHUDNotifications()
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.showSuccess(withStatus: status)

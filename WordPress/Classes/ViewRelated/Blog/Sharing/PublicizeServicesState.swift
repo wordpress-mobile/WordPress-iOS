@@ -1,11 +1,11 @@
 import Foundation
 
-@objc final class PublicizeServicesState: NSObject {
+@objc public final class PublicizeServicesState: NSObject {
     private var connections = Set<PublicizeConnection>()
 }
 
 // MARK: - Public Methods
-@objc extension PublicizeServicesState {
+@objc public extension PublicizeServicesState {
     func addInitialConnections(_ connections: [PublicizeConnection]) {
         connections.forEach { self.connections.insert($0) }
     }

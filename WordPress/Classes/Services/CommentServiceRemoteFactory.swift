@@ -2,13 +2,13 @@ import Foundation
 import WordPressKit
 
 /// Provides service remote instances for CommentService
-@objc class CommentServiceRemoteFactory: NSObject {
+@objc public class CommentServiceRemoteFactory: NSObject {
 
     /// Returns a CommentServiceRemote for a given Blog object
     ///
     /// - Parameter blog: A valid Blog object
     /// - Returns: A CommentServiceRemote instance
-    @objc func remote(blog: Blog) -> CommentServiceRemote? {
+    @objc public func remote(blog: Blog) -> CommentServiceRemote? {
         if blog.supports(.wpComRESTAPI),
            let api = blog.wordPressComRestApi,
            let dotComID = blog.dotComID {
@@ -30,7 +30,7 @@ import WordPressKit
     ///   - siteID: A valid siteID
     ///   - api: An instance of WordPressComRestAPI
     /// - Returns: An instance of CommentServiceRemoteREST
-    @objc func restRemote(siteID: NSNumber, api: WordPressComRestApi) -> CommentServiceRemoteREST {
+    @objc public func restRemote(siteID: NSNumber, api: WordPressComRestApi) -> CommentServiceRemoteREST {
         return CommentServiceRemoteREST(wordPressComRestApi: api, siteID: siteID)
     }
 

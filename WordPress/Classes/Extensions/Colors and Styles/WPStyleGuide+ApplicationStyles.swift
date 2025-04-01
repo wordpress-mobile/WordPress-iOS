@@ -140,13 +140,13 @@ extension WPStyleGuide {
     }
 
     @objc
-    class func configureTableViewActionCell(_ cell: UITableViewCell?) {
+    public class func configureTableViewActionCell(_ cell: UITableViewCell?) {
         configureTableViewCell(cell)
         cell?.textLabel?.textColor = UIAppColor.primary
     }
 
     @objc
-    class func configureTableViewDestructiveActionCell(_ cell: UITableViewCell) {
+    public class func configureTableViewDestructiveActionCell(_ cell: UITableViewCell) {
         configureTableViewCell(cell)
 
         cell.textLabel?.textAlignment = .center

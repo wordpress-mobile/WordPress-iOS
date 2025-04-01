@@ -18,18 +18,18 @@ import WordPressUI
 ///  - `animateMessage(_)` when you want to change the message displayed. Pass
 /// nil if you want to hide the error view.
 ///
-class MessageAnimator: Animator {
+public class MessageAnimator: Animator {
 
     // MARK: - Private Constants
-    fileprivate struct Defaults {
+    private struct Defaults {
         static let animationDuration = 0.3
         static let padding = UIOffset(horizontal: 15, vertical: 20)
         static let labelFont = WPStyleGuide.regularTextFont()
     }
 
     // MARK: - Private properties
-    fileprivate var previousHeight: CGFloat = 0
-    fileprivate var message: String? {
+    private var previousHeight: CGFloat = 0
+    private var message: String? {
         get {
             return noticeLabel.label.text
         }
@@ -39,8 +39,8 @@ class MessageAnimator: Animator {
     }
 
     // MARK: - Private Immutable Properties
-    fileprivate let targetView: UIView
-    fileprivate let noticeLabel: PaddedLabel = {
+    private let targetView: UIView
+    private let noticeLabel: PaddedLabel = {
         let label = PaddedLabel()
         label.backgroundColor = UIAppColor.primary(.shade40)
         label.clipsToBounds = true
@@ -52,28 +52,28 @@ class MessageAnimator: Animator {
     }()
 
     // MARK: - Private Computed Properties
-    fileprivate var shouldDisplayMessage: Bool {
+    private var shouldDisplayMessage: Bool {
         return message != nil
     }
-    fileprivate var targetTableView: UITableView? {
+    private var targetTableView: UITableView? {
         return targetView as? UITableView
     }
 
     // MARK: - Initializers
-    @objc init(target: UIView) {
+    @objc public init(target: UIView) {
         targetView = target
         super.init()
     }
 
     // MARK: - Public Methods
-    @objc func layout() {
+    @objc public func layout() {
         var targetFrame = noticeLabel.frame
         targetFrame.size.width = targetView.bounds.width
         targetFrame.size.height = heightForMessage(message)
         noticeLabel.frame = targetFrame
     }
 
-    @objc func animateMessage(_ message: String?) {
+    @objc public func animateMessage(_ message: String?) {
         let shouldAnimate = self.message != message
         self.message = message
 
@@ -83,7 +83,7 @@ class MessageAnimator: Animator {
     }
 
     // MARK: - Animation Methods
-    fileprivate func preamble() {
+    private func preamble() {
         UIView.performWithoutAnimation { [weak self] in
             self?.targetView.layoutIfNeeded()
         }
@@ -95,7 +95,7 @@ class MessageAnimator: Animator {
         }
     }
 
-    fileprivate func animations() {
+    private func animations() {
         let height = heightForMessage(message)
 
         if shouldDisplayMessage {
@@ -122,7 +122,7 @@ class MessageAnimator: Animator {
         previousHeight = height
     }
 
-    fileprivate func cleanup() {
+    private func cleanup() {
         if shouldDisplayMessage == false {
             noticeLabel.removeFromSuperview()
             previousHeight = CGSize.zero.height
@@ -130,7 +130,7 @@ class MessageAnimator: Animator {
     }
 
     // MARK: - Helpers
-    fileprivate func heightForMessage(_ message: String?) -> CGFloat {
+    private func heightForMessage(_ message: String?) -> CGFloat {
         guard let message else {
             return CGSize.zero.height
         }

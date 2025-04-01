@@ -5,11 +5,11 @@ import WordPressKit
 /// SharingService is responsible for wrangling publicize services, publicize
 /// connections, and keyring connections.
 ///
-@objc class SharingSyncService: NSObject {
+@objc public class SharingSyncService: NSObject {
 
     let coreDataStack: CoreDataStack
 
-    @objc init(coreDataStack: CoreDataStack) {
+    @objc public init(coreDataStack: CoreDataStack) {
         self.coreDataStack = coreDataStack
     }
 

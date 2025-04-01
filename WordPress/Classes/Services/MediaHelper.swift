@@ -1,10 +1,10 @@
 import UIKit
 import AsyncImageKit
 
-class MediaHelper: NSObject {
+public class MediaHelper: NSObject {
 
     @objc(updateMedia:withRemoteMedia:)
-    static func update(media: Media, with remoteMedia: RemoteMedia) {
+    public static func update(media: Media, with remoteMedia: RemoteMedia) {
         if media.mediaID != remoteMedia.mediaID {
             media.mediaID = remoteMedia.mediaID
         }

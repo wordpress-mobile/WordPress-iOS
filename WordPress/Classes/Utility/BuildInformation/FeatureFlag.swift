@@ -3,7 +3,7 @@ import BuildSettingsKit
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
 @objc
-enum FeatureFlag: Int, CaseIterable {
+public enum FeatureFlag: Int, CaseIterable {
     case signUp
     case customAppIcons
     case domainRegistration
@@ -90,16 +90,16 @@ enum FeatureFlag: Int, CaseIterable {
 /// Objective-C bridge for FeatureFlag.
 ///
 /// Since we can't expose properties on Swift enums we use a class instead
-class Feature: NSObject {
+public class Feature: NSObject {
     /// Returns a boolean indicating if the feature is enabled
-    @objc static func enabled(_ feature: FeatureFlag) -> Bool {
+    @objc public static func enabled(_ feature: FeatureFlag) -> Bool {
         return feature.enabled
     }
 }
 
 extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
-    var description: String {
+    public var description: String {
         return switch self {
         case .signUp: "Sign Up"
         case .customAppIcons: "Custom App Icons"

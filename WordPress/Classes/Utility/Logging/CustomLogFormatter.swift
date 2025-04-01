@@ -1,8 +1,7 @@
 import Foundation
 import CocoaLumberjack
 
-class CustomLogFormatter: NSObject, DDLogFormatter {
-
+public class CustomLogFormatter: NSObject, DDLogFormatter {
     let logTimeStampFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -11,10 +10,9 @@ class CustomLogFormatter: NSObject, DDLogFormatter {
         return formatter
     }()
 
-    func format(message logMessage: DDLogMessage) -> String? {
+    public func format(message logMessage: DDLogMessage) -> String? {
         let timestamp = logTimeStampFormatter.string(from: logMessage.timestamp)
         let message = logMessage.message
         return ("\(timestamp) \(message)")
     }
-
 }

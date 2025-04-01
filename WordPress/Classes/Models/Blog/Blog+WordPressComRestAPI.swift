@@ -1,7 +1,7 @@
 import WordPressData
 import WordPressKit
 
-public extension Blog {
+extension Blog {
 
     /// Returns a REST API client, if available
     ///
