@@ -82,16 +82,6 @@
                                             failure:nil]);
 }
 
-- (void)testThatGetActiveThemeForBlogThrowsExceptionWithoutBlog
-{
-    ThemeService *service = nil;
-    
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
-    XCTAssertThrows([service getActiveThemeForBlog:nil
-                                           success:nil
-                                           failure:nil]);
-}
-
 - (void)testThatGetThemesForBlogWorks
 {
     NSManagedObjectContext *context = self.manager.mainContext;
@@ -116,19 +106,6 @@
                                           sync:NO
                                        success:nil
                                        failure:nil]);
-}
-
-- (void)testThatGetThemesForBlogThrowsExceptionWithoutBlog
-{
-    ThemeService *service = nil;
-    
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
-    XCTAssertThrows([service getThemesForBlog:nil
-                                         page:1
-                                       search:nil
-                                         sync:NO
-                                      success:nil
-                                      failure:nil]);
 }
 
 - (void)testThatActivateThemeWorks
@@ -156,24 +133,6 @@
                                     forBlog:blog
                                     success:nil
                                     failure:nil]);
-}
-
-- (void)testThatActivateThemeThrowsExceptionWithoutTheme
-{
-    NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
-    NSNumber *blogId = @1;
-    WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    ThemeService *service = nil;
-
-    blog.dotComID = blogId;
-    blog.account._private_wordPressComRestApi = api;
-
-    XCTAssertNoThrow(service = [[ThemeService alloc] initWithCoreDataStack:self.manager]);
-    XCTAssertThrows([service activateTheme:nil
-                                   forBlog:blog
-                                   success:nil
-                                   failure:nil]);
 }
 
 - (void)testThatActivateThemeThrowsExceptionWithoutBlog

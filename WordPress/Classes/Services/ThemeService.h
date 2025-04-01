@@ -43,7 +43,7 @@ typedef void(^ThemeServiceFailureBlock)(NSError * _Nullable error);
  *  @returns    The progress object.
  */
 - (NSProgress *)getActiveThemeForBlog:(Blog *)blog
-                              success:(ThemeServiceThemeRequestSuccessBlock)success
+                              success:(nullable ThemeServiceThemeRequestSuccessBlock)success
                               failure:(nullable ThemeServiceFailureBlock)failure;
 
 /**
@@ -67,12 +67,12 @@ typedef void(^ThemeServiceFailureBlock)(NSError * _Nullable error);
                             page:(NSInteger)page
                           search:(NSString *)search
                             sync:(BOOL)sync
-                         success:(ThemeServiceThemesRequestSuccessBlock)success
+                         success:(nullable ThemeServiceThemesRequestSuccessBlock)success
                          failure:(nullable ThemeServiceFailureBlock)failure;
 
 - (NSProgress *)getCustomThemesForBlog:(Blog *)blog
                                   sync:(BOOL)sync
-                               success:(ThemeServiceThemesRequestSuccessBlock)success
+                               success:(nullable ThemeServiceThemesRequestSuccessBlock)success
                                failure:(nullable ThemeServiceFailureBlock)failure;
 
 #pragma mark - Remote queries: Activating themes
@@ -89,7 +89,7 @@ typedef void(^ThemeServiceFailureBlock)(NSError * _Nullable error);
  */
 - (NSProgress *)activateTheme:(Theme *)theme
                       forBlog:(Blog *)blog
-                      success:(ThemeServiceThemeRequestSuccessBlock)success
+                      success:(nullable ThemeServiceThemeRequestSuccessBlock)success
                       failure:(nullable ThemeServiceFailureBlock)failure;
 
 #pragma mark - Remote queries: Installing themes
@@ -106,7 +106,7 @@ typedef void(^ThemeServiceFailureBlock)(NSError * _Nullable error);
  */
 - (NSProgress *)installTheme:(Theme *)theme
                       forBlog:(Blog *)blog
-                      success:(ThemeServiceSuccessBlock)success
+                      success:(nullable ThemeServiceSuccessBlock)success
                       failure:(nullable ThemeServiceFailureBlock)failure;
 
 
