@@ -183,7 +183,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         editor.modalPresentationStyle = .fullScreen
         editor.entryPoint = .postsList
         present(editor, animated: false, completion: nil)
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "post"], with: blog)
+        WPAppAnalytics.track(.editorCreatedPost, properties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "post"], blog: blog)
     }
 
     private func editPost(_ post: AbstractPost) {

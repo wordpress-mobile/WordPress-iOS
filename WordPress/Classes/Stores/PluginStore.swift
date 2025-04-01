@@ -812,6 +812,6 @@ private extension PluginStore {
     func track(_ statName: WPAnalyticsStat, with site: JetpackSiteRef) {
         let siteID: NSNumber? = (site.isSelfHostedWithoutJetpack ? nil : site.siteID) as NSNumber?
 
-        WPAppAnalytics.track(statName, withBlogID: siteID)
+        WPAppAnalytics.track(statName, blogID: siteID)
     }
 }

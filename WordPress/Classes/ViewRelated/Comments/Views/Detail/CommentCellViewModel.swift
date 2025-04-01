@@ -95,9 +95,9 @@ final class CommentCellViewModel: NSObject {
             return wpAssertionFailure("context missing")
         }
         if comment.isLiked {
-            notification != nil ? WPAppAnalytics.track(.notificationsCommentUnliked, withBlogID: siteID) : CommentAnalytics.trackCommentUnLiked(comment: comment)
+            notification != nil ? WPAppAnalytics.track(.notificationsCommentUnliked, blogID: siteID) : CommentAnalytics.trackCommentUnLiked(comment: comment)
         } else {
-            notification != nil ? WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: siteID) : CommentAnalytics.trackCommentLiked(comment: comment)
+            notification != nil ? WPAppAnalytics.track(.notificationsCommentLiked, blogID: siteID) : CommentAnalytics.trackCommentLiked(comment: comment)
         }
 
         let service = CommentService(coreDataStack: coreDataStack)

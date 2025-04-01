@@ -3,7 +3,13 @@ import FormattableContentKit
 
 /// This service encapsulates all of the Actions that can be performed with a NotificationBlock
 ///
-class NotificationActionsService: CoreDataService {
+class NotificationActionsService {
+
+    let coreDataStack: CoreDataStackSwift
+
+    init(coreDataStack: CoreDataStackSwift) {
+        self.coreDataStack = coreDataStack
+    }
 
     /// Follows a Site referenced by a given NotificationBlock.
     ///

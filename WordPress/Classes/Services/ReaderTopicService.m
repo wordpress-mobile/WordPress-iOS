@@ -5,7 +5,11 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "WPAccount.h"
+#ifdef KEYSTONE
+#import "Keystone-Swift.h"
+#else
 #import "WordPress-Swift.h"
+#endif
 
 @import WordPressKit;
 @import WordPressShared;
@@ -14,6 +18,15 @@ NSString * const ReaderTopicFreshlyPressedPathCommponent = @"freshly-pressed";
 static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathKey";
 
 @implementation ReaderTopicService
+
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+{
+    self = [super init];
+    if (self) {
+        _coreDataStack = coreDataStack;
+    }
+    return self;
+}
 
 - (void)fetchReaderMenuWithSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {

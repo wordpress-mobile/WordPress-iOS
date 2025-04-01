@@ -1,5 +1,5 @@
-
 import XCTest
+import WordPressShared
 @testable import WordPress
 
 final class TitleSubtitleHeaderTests: XCTestCase {

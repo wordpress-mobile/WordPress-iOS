@@ -107,7 +107,7 @@ struct PostNoticePublishSuccessView: View {
               let url = URL(string: urlString) else {
             return
         }
-        WPAppAnalytics.track(.openedViewSite, withProperties: [WPAppAnalyticsKeyTapSource: "publish_success_view"], with: post.blog)
+        WPAppAnalytics.track(.openedViewSite, properties: [WPAppAnalyticsKeyTapSource: "publish_success_view"], blog: post.blog)
         UIApplication.shared.open(url)
     }
 

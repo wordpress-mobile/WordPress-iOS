@@ -1,0 +1,15 @@
+//
+// Prefix header for all source files of the 'WordPress' target in the 'WordPress' project
+//
+
+#ifdef __OBJC__
+	// 3rd Party    
+    @import CocoaLumberjack;
+
+// CocoaLumberjack Default Logging Level
+#ifndef COCOA_LUMBERJACK
+#define COCOA_LUMBERJACK
+extern DDLogLevel ddLogLevel;
+#endif
+
+#endif

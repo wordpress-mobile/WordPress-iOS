@@ -1,7 +1,7 @@
 import Foundation
 import WordPressShared
 
-struct UserSettings {
+public struct UserSettings {
     /// Stores all `UserSettings` keys.
     ///
     /// The additional level of indirection allows these keys to be retrieved from tests.
@@ -10,20 +10,20 @@ struct UserSettings {
     ///
     /// Any change to these keys is a breaking change without some kind of migration.
     /// It's probably best never to change them.
-    enum Keys: String, CaseIterable {
+    public enum Keys: String, CaseIterable {
         case crashLoggingOptOutKey = "crashlytics_opt_out"
         case forceCrashLoggingKey = "force-crash-logging"
         case defaultDotComUUIDKey = "AccountDefaultDotcomUUID"
     }
 
     @UserDefault(Keys.crashLoggingOptOutKey.rawValue, defaultValue: false)
-    static var userHasOptedOutOfCrashLogging: Bool
+    public static var userHasOptedOutOfCrashLogging: Bool
 
     @UserDefault(Keys.forceCrashLoggingKey.rawValue, defaultValue: false)
-    static var userHasForcedCrashLoggingEnabled: Bool
+    public static var userHasForcedCrashLoggingEnabled: Bool
 
     @NullableUserDefault(Keys.defaultDotComUUIDKey.rawValue)
-    static var defaultDotComUUID: String?
+    public static var defaultDotComUUID: String?
 
     /// Reset all UserSettings back to their defaults
     static func reset() {
@@ -33,22 +33,23 @@ struct UserSettings {
 
 /// Objective-C Wrapper for UserSettings
 @objc(UserSettings)
-class ObjcCUserSettings: NSObject {
+// FIXME: public access-level required only for the unit tests, which means that this is unused in prod. Let's migrate those tests soon!
+public class ObjcCUserSettings: NSObject {
     @objc
-    static var defaultDotComUUID: String? {
+    public static var defaultDotComUUID: String? {
         get { UserSettings.defaultDotComUUID }
         set { UserSettings.defaultDotComUUID = newValue }
     }
 
     @objc
-    static func reset() {
+    public static func reset() {
         UserSettings.reset()
     }
 }
 
 /// A property wrapper for UserDefaults access
 @propertyWrapper
-struct UserDefault<T> {
+public struct UserDefault<T> {
     let key: String
     let defaultValue: T
 
@@ -57,7 +58,7 @@ struct UserDefault<T> {
         self.defaultValue = defaultValue
     }
 
-    var wrappedValue: T {
+    public var wrappedValue: T {
         get {
             return UserPersistentStoreFactory.instance().object(forKey: key) as? T ?? defaultValue
         }
@@ -69,14 +70,14 @@ struct UserDefault<T> {
 
 /// A property wrapper for optional UserDefaults that return `nil` by default
 @propertyWrapper
-struct NullableUserDefault<T> {
+public struct NullableUserDefault<T> {
     let key: String
 
     init(_ key: String) {
         self.key = key
     }
 
-    var wrappedValue: T? {
+    public var wrappedValue: T? {
         get {
             return UserPersistentStoreFactory.instance().object(forKey: key) as? T
         }

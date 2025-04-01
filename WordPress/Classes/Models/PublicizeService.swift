@@ -3,10 +3,10 @@ import CoreData
 import WordPressShared
 
 open class PublicizeService: NSManagedObject {
-    @objc static let googlePlusServiceID = "google_plus"
-    @objc static let facebookServiceID = "facebook"
-    @objc static let defaultStatus = "ok"
-    @objc static let unsupportedStatus = "unsupported"
+    @objc public static let googlePlusServiceID = "google_plus"
+    @objc public static let facebookServiceID = "facebook"
+    @objc public static let defaultStatus = "ok"
+    @objc public static let unsupportedStatus = "unsupported"
 
     @NSManaged open var connectURL: String
     @NSManaged open var detail: String
@@ -28,7 +28,7 @@ open class PublicizeService: NSManagedObject {
 
 // MARK: - Convenience Methods
 
-extension PublicizeService {
+public extension PublicizeService {
 
     /// A convenient value-type representation for the destination sharing service.
     enum ServiceName: String {
@@ -47,7 +47,7 @@ extension PublicizeService {
         }
 
         /// A string describing the service in a human-readable format.
-        var description: String {
+        public var description: String {
             rawValue.split(separator: "-").joined(separator: " ").localizedCapitalized
         }
     }

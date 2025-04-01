@@ -7,7 +7,7 @@ import Nimble
 private class TestableEditorSettingsService: EditorSettingsService {
     let mockApi: WordPressComRestApi
 
-    init(coreDataStack: CoreDataStack, wpcomApi: WordPressComRestApi) {
+    init(coreDataStack: CoreDataStackSwift, wpcomApi: WordPressComRestApi) {
         mockApi = wpcomApi
         super.init(coreDataStack: coreDataStack)
     }

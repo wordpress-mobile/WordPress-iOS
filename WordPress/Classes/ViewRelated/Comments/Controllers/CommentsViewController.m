@@ -1,6 +1,10 @@
 #import "CommentsViewController.h"
 #import "Blog.h"
+#ifdef KEYSTONE
+#import "Keystone-Swift.h"
+#else
 #import "WordPress-Swift.h"
+#endif
 #import "WPTableViewHandler.h"
 
 @import WordPressShared;

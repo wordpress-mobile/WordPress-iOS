@@ -3,7 +3,7 @@ import CoreData
 
 // MARK: - Encapsulates all of the ManagedPerson Core Data properties.
 //
-extension ManagedPerson {
+public extension ManagedPerson {
     @NSManaged var avatarURL: String?
     @NSManaged var displayName: String
     @NSManaged var firstName: String?

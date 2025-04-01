@@ -113,7 +113,7 @@ extension PluginDirectoryViewController {
 
 extension PluginDirectoryViewController: UISearchControllerDelegate {
     func didPresentSearchController(_ searchController: UISearchController) {
-        WPAppAnalytics.track(.pluginSearchPerformed, withBlogID: viewModel.site.siteID as NSNumber)
+        WPAppAnalytics.track(.pluginSearchPerformed, blogID: viewModel.site.siteID as NSNumber)
     }
 }
 
@@ -181,7 +181,7 @@ extension PluginDirectoryViewController: PluginListPresenter {
             let properties = ["type": listType]
             let siteID: NSNumber? = (site.isSelfHostedWithoutJetpack ? nil : site.siteID) as NSNumber?
 
-            WPAppAnalytics.track(.openedPluginList, withProperties: properties, withBlogID: siteID)
+            WPAppAnalytics.track(.openedPluginList, properties: properties, blogID: siteID)
         }
 
         let listVC = PluginListViewController(site: site, query: query)

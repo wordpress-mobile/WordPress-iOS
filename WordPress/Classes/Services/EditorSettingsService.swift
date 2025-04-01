@@ -6,12 +6,19 @@ import WordPressKit
     case mobileEditorNotSet
 }
 
-@objc class EditorSettingsService: CoreDataService {
+@objc class EditorSettingsService: NSObject {
 
-    private lazy var coreDataStackSwift: CoreDataStackSwift = {
-        // The concrete type of coreDataStack is actually ContextManager, which also conforms to CoreDataStackSwift.
-        (coreDataStack as? CoreDataStackSwift) ?? ContextManager.shared
-    }()
+    let coreDataStack: CoreDataStackSwift
+
+    init(coreDataStack: CoreDataStackSwift) {
+        self.coreDataStack = coreDataStack
+    }
+
+    // For Objective-C compatibility, but we don't want Swift code to use it
+    @available(swift, obsoleted: 1.0)
+    @objc init(coreDataStack: CoreDataStack) {
+        self.coreDataStack = coreDataStack as! CoreDataStackSwift
+    }
 
     @objc(syncEditorSettingsForBlog:success:failure:)
     func syncEditorSettings(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
@@ -27,7 +34,7 @@ import WordPressKit
 
         let service = EditorServiceRemote(wordPressComRestApi: api)
         service.getEditorSettings(siteID, success: { (settings) in
-            self.coreDataStackSwift.performAndSave({ context in
+            self.coreDataStack.performAndSave({ context in
                 let blogInContext = try context.existingObject(with: blog.objectID) as! Blog
                 try self.update(blogInContext, remoteEditorSettings: settings)
             }, completion: { result in

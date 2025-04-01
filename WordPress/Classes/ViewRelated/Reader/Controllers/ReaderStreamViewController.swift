@@ -1445,12 +1445,6 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         if let topic = post.topic, ReaderHelpers.isTopicSearchTopic(topic) {
             WPAppAnalytics.track(.readerSearchResultTapped)
-
-            // We can use `if let` when `ReaderPost` adopts nullability.
-            let railcar = post.railcarDictionary()
-            if railcar != nil {
-                WPAppAnalytics.trackTrainTracksInteraction(.readerSearchResultTapped, withProperties: railcar)
-            }
         }
 
         let controller = ReaderDetailViewController.controllerWithPost(post)

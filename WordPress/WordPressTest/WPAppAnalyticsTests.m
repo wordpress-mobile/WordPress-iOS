@@ -103,37 +103,4 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     XCTAssertFalse([WPAppAnalytics userHasOptedOut]);
 }
 
-- (void)testOptOutMigrationWhenTrackingWasEnabled
-{
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:WPAppAnalyticsDefaultsUserOptedOut];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
-
-    WPAppAnalytics *analytics = nil;
-
-    XCTAssertNoThrow(analytics = [WPAppAnalytics new], @"Allocating or initializing this object shouldn't throw an exception");
-    XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
-
-    XCTAssertFalse([WPAppAnalytics userHasOptedOut]);
-}
-
-- (void)testOptOutMigrationWhenTrackingWasDisabled
-{
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:WPAppAnalyticsDefaultsUserOptedOut];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
-
-    WPAppAnalytics *analytics = nil;
-
-    XCTAssertNoThrow(analytics = [WPAppAnalytics new], @"Allocating or initializing this object shouldn't throw an exception");
-    XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
-
-    XCTAssertTrue([WPAppAnalytics userHasOptedOut]);
-}
-
-- (void)testSiteTypeForBlog
-{
-    NSString *siteType = [WPAppAnalytics siteTypeForBlogWithID: @99999999];
-    XCTAssertNotNil(siteType);
-    XCTAssertTrue([siteType isEqualToString:@"blog"]);
-}
-
 @end

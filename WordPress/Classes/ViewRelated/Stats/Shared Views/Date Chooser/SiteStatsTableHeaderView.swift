@@ -287,10 +287,10 @@ private extension SiteStatsTableHeaderView {
     // MARK: - Analytics support
 
     func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
-        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
+        let properties: [String: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
 
         if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
-            WPAppAnalytics.track(event, withProperties: properties, withBlogID: blogIdentifier)
+            WPAppAnalytics.track(event, properties: properties, blogID: blogIdentifier)
         } else {
             WPAppAnalytics.track(event, withProperties: properties)
         }

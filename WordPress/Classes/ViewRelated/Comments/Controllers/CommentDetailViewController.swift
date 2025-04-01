@@ -719,10 +719,11 @@ private extension CommentStatusType {
 
 private extension CommentDetailViewController {
     func unapproveComment() {
-        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentUnapproved,
-                                                     withProperties: Constants.notificationDetailSource,
-                                                     withBlogID: notification?.metaSiteID) :
-                                CommentAnalytics.trackCommentUnApproved(comment: comment)
+        if isNotificationComment {
+            WPAppAnalytics.track(.notificationsCommentUnapproved, properties: Constants.notificationDetailSource, blogID: notification?.metaSiteID)
+        } else {
+            CommentAnalytics.trackCommentUnApproved(comment: comment)
+        }
 
         commentService.unapproveComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.pendingSuccess)
@@ -734,10 +735,10 @@ private extension CommentDetailViewController {
     }
 
     func approveComment() {
-        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentApproved,
-                                                     withProperties: Constants.notificationDetailSource,
-                                                     withBlogID: notification?.metaSiteID) :
-                                CommentAnalytics.trackCommentApproved(comment: comment)
+        if isNotificationComment { WPAppAnalytics.track(.notificationsCommentApproved, properties: Constants.notificationDetailSource, blogID: notification?.metaSiteID)
+        } else {
+            CommentAnalytics.trackCommentApproved(comment: comment)
+        }
 
         commentService.approve(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.approveSuccess)
@@ -749,8 +750,10 @@ private extension CommentDetailViewController {
     }
 
     func spamComment() {
-        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentFlaggedAsSpam, withBlogID: notification?.metaSiteID) :
-                                CommentAnalytics.trackCommentSpammed(comment: comment)
+        if isNotificationComment { WPAppAnalytics.track(.notificationsCommentFlaggedAsSpam, blogID: notification?.metaSiteID)
+        } else {
+            CommentAnalytics.trackCommentSpammed(comment: comment)
+        }
 
         commentService.spamComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.spamSuccess)
@@ -762,8 +765,11 @@ private extension CommentDetailViewController {
     }
 
     func trashComment() {
-        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentTrashed, withBlogID: notification?.metaSiteID) :
-                                CommentAnalytics.trackCommentTrashed(comment: comment)
+        if isNotificationComment { WPAppAnalytics.track(.notificationsCommentTrashed, blogID: notification?.metaSiteID)
+        } else {
+            CommentAnalytics.trackCommentTrashed(comment: comment)
+        }
+
         trashButtonCell.isLoading = true
 
         commentService.trashComment(comment, success: { [weak self] in

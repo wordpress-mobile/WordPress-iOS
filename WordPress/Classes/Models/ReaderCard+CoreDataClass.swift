@@ -2,14 +2,14 @@ import Foundation
 import CoreData
 
 public class ReaderCard: NSManagedObject {
-    enum CardType {
+    public enum CardType {
         case post
         case topics
         case sites
         case unknown
     }
 
-    var type: CardType {
+   public var type: CardType {
         if post != nil {
             return .post
         }
@@ -25,7 +25,7 @@ public class ReaderCard: NSManagedObject {
         return .unknown
     }
 
-    var isRecommendationCard: Bool {
+    public var isRecommendationCard: Bool {
         switch type {
         case .topics, .sites:
             return true
@@ -34,15 +34,15 @@ public class ReaderCard: NSManagedObject {
         }
     }
 
-    var topicsArray: [ReaderTagTopic] {
+    public var topicsArray: [ReaderTagTopic] {
         topics?.array as? [ReaderTagTopic] ?? []
     }
 
-    var sitesArray: [ReaderSiteTopic] {
+    public var sitesArray: [ReaderSiteTopic] {
         sites?.array as? [ReaderSiteTopic] ?? []
     }
 
-    convenience init?(context: NSManagedObjectContext, from remoteCard: RemoteReaderCard) {
+    public convenience init?(context: NSManagedObjectContext, from remoteCard: RemoteReaderCard) {
         guard remoteCard.type != .unknown else {
             return nil
         }

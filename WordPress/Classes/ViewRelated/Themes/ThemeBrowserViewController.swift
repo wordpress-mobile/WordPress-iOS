@@ -452,11 +452,12 @@ public protocol ThemePresenter: AnyObject {
         }
     }
 
-    fileprivate func syncThemePage(_ page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    private func syncThemePage(_ page: NSInteger, search: String, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         assert(page > 0)
         themesSyncingPage = page
         _ = themeService.getThemesFor(blog,
             page: themesSyncingPage,
+            search: search,
             sync: page == 1,
             success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
                 if let success {
@@ -509,7 +510,7 @@ public protocol ThemePresenter: AnyObject {
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         if syncHelper == themesSyncHelper {
-            syncThemePage(1, success: success, failure: failure)
+            syncThemePage(1, search: searchName, success: success, failure: failure)
         } else if syncHelper == customThemesSyncHelper {
             syncCustomThemes(success: success, failure: failure)
         }
@@ -518,7 +519,7 @@ public protocol ThemePresenter: AnyObject {
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         if syncHelper == themesSyncHelper {
             let nextPage = themesSyncingPage + 1
-            syncThemePage(nextPage, success: success, failure: failure)
+            syncThemePage(nextPage, search: searchName, success: success, failure: failure)
         }
     }
 
@@ -657,11 +658,65 @@ public protocol ThemePresenter: AnyObject {
 
     // MARK: - Search support
 
+    private var searchDebounceTimer: Timer?
+    private let searchDebounceInterval: TimeInterval = 0.5
+
+    private func resetRemoteSearch() {
+        themesSyncingPage = 0
+
+        if blog.supports(BlogFeature.customThemes) {
+            themesSyncHelper.syncContent()
+        }
+    }
+
     fileprivate func beginSearchFor(_ pattern: String) {
         searchController.isActive = true
         searchController.searchBar.text = pattern
 
-        searchName = pattern
+        updateSearchName(pattern)
+    }
+
+    private func updateSearchName(_ searchText: String) {
+        // Cancel any existing timer
+        searchDebounceTimer?.invalidate()
+
+        // If search text is empty, update immediately and reset remote search
+        if searchText.isEmpty {
+            self.searchName = searchText
+            self.fetchThemes()
+            self.resetRemoteSearch()
+            self.reloadThemes()
+            return
+        }
+
+        // Check if we have a previously longer search that is now under 3 characters
+        let previouslyHadRemoteSearch = self.searchName.count >= 3
+
+        // Create a new timer for debounce
+        searchDebounceTimer = Timer.scheduledTimer(withTimeInterval: searchDebounceInterval, repeats: false) { [weak self] _ in
+            guard let self else { return }
+            self.searchName = searchText
+
+            // Apply local search immediately
+            self.fetchThemes()
+
+            // Remote search only applies to WordPress.com themes and only if customThemes are supported.
+            // The remote endpoint support search just for 3+ characters
+            if self.blog.supports(BlogFeature.customThemes) {
+                if searchText.count >= 3 {
+                    // Reset to first page when searching
+                    self.themesSyncingPage = 0
+                    self.themesSyncHelper.syncContent()
+                } else if previouslyHadRemoteSearch {
+                    // If we previously had 3+ characters but now have less,
+                    // we need to reset the remote search results
+                    self.resetRemoteSearch()
+                }
+            }
+
+            // Always reload with local results
+            self.reloadThemes()
+        }
     }
 
     // MARK: - UISearchControllerDelegate
@@ -675,13 +730,14 @@ public protocol ThemePresenter: AnyObject {
     }
 
     open func didPresentSearchController(_ searchController: UISearchController) {
-        WPAppAnalytics.track(.themesAccessedSearch, with: blog)
+        WPAppAnalytics.track(.themesAccessedSearch, blog: blog)
     }
 
     open func willDismissSearchController(_ searchController: UISearchController) {
         hideSectionHeaders = false
         searchName = ""
         searchController.searchBar.text = ""
+        resetRemoteSearch()
     }
 
     open func didDismissSearchController(_ searchController: UISearchController) {
@@ -709,31 +765,44 @@ public protocol ThemePresenter: AnyObject {
     // MARK: - UISearchResultsUpdating
 
     open func updateSearchResults(for searchController: UISearchController) {
-        searchName = searchController.searchBar.text ?? ""
+        updateSearchName(searchController.searchBar.text ?? "")
     }
 
     // MARK: - NSFetchedResultsController helpers
-
-    fileprivate func searchNamePredicate() -> NSPredicate? {
-        guard !searchName.isEmpty else {
-            return nil
-        }
-
-        return NSPredicate(format: "name contains[c] %@", searchName)
-    }
 
     fileprivate func browsePredicate() -> NSPredicate? {
         return browsePredicateThemesWithCustomValue(false)
     }
 
     fileprivate func customThemesBrowsePredicate() -> NSPredicate? {
-        return browsePredicateThemesWithCustomValue(true)
+        let browsePredicate = browsePredicateThemesWithCustomValue(true)
+
+        // Search predicate for custom themes (local search only)
+        if !searchName.isEmpty {
+            let searchPredicate = NSPredicate(format: "name CONTAINS[cd] %@", searchName)
+            if let existingPredicate = browsePredicate {
+                return NSCompoundPredicate(andPredicateWithSubpredicates: [existingPredicate, searchPredicate])
+            } else {
+                return searchPredicate
+            }
+        }
+
+        return browsePredicate
     }
 
     fileprivate func browsePredicateThemesWithCustomValue(_ custom: Bool) -> NSPredicate? {
         let blogPredicate = NSPredicate(format: "blog == %@ AND custom == %d", self.blog, custom ? 1 : 0)
 
-        let subpredicates = [blogPredicate, searchNamePredicate(), filterType.predicate].compactMap { $0 }
+        let subpredicates = [blogPredicate, filterType.predicate].compactMap { $0 }
+
+        // For regular themes, add local search predicate if:
+        // 1. Not using custom themes feature, or
+        // 2. Search term is less than 3 characters (we'll only search locally for short terms)
+        if !searchName.isEmpty && !custom && (!blog.supports(BlogFeature.customThemes) || searchName.count < 3) {
+            let searchPredicate = NSPredicate(format: "name CONTAINS[cd] %@", searchName)
+            return NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates + [searchPredicate])
+        }
+
         switch subpredicates.count {
         case 1:
             return subpredicates[0]
@@ -775,7 +844,7 @@ public protocol ThemePresenter: AnyObject {
         _ = themeService.activate(theme,
             for: blog,
             success: { [weak self] (theme: Theme?) in
-                WPAppAnalytics.track(.themesChangedTheme, withProperties: ["theme_id": theme?.themeId ?? ""], with: self?.blog)
+            WPAppAnalytics.track(.themesChangedTheme, properties: ["theme_id": theme?.themeId ?? ""], blog: self?.blog)
 
                 self?.collectionView?.reloadData()
 
@@ -822,12 +891,12 @@ public protocol ThemePresenter: AnyObject {
     }
 
     @objc open func presentCustomizeForTheme(_ theme: Theme?) {
-        WPAppAnalytics.track(.themesCustomizeAccessed, with: self.blog)
+        WPAppAnalytics.track(.themesCustomizeAccessed, blog: self.blog)
         presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false, modalStyle: .fullScreen)
     }
 
     @objc open func presentPreviewForTheme(_ theme: Theme?) {
-        WPAppAnalytics.track(.themesPreviewedSite, with: self.blog)
+        WPAppAnalytics.track(.themesPreviewedSite, blog: self.blog)
         // In order to Try & Customize a theme we first need to install it (Jetpack sites)
         if let theme, self.blog.supports(.customThemes) && !theme.custom {
             installThemeAndPresentCustomizer(theme)
@@ -837,17 +906,17 @@ public protocol ThemePresenter: AnyObject {
     }
 
     @objc open func presentDetailsForTheme(_ theme: Theme?) {
-        WPAppAnalytics.track(.themesDetailsAccessed, with: self.blog)
+        WPAppAnalytics.track(.themesDetailsAccessed, blog: self.blog)
         presentUrlForTheme(theme, url: theme?.detailsUrl())
     }
 
     @objc open func presentSupportForTheme(_ theme: Theme?) {
-        WPAppAnalytics.track(.themesSupportAccessed, with: self.blog)
+        WPAppAnalytics.track(.themesSupportAccessed, blog: self.blog)
         presentUrlForTheme(theme, url: theme?.supportUrl())
     }
 
     @objc open func presentViewForTheme(_ theme: Theme?) {
-        WPAppAnalytics.track(.themesDemoAccessed, with: self.blog)
+        WPAppAnalytics.track(.themesDemoAccessed, blog: self.blog)
         presentUrlForTheme(theme, url: theme?.viewUrl(), onClose: onWebkitViewControllerClose)
     }
 

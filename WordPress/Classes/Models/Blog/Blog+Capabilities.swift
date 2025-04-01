@@ -84,7 +84,7 @@ extension Blog {
     ///
     /// - Returns: Whether site management is permitted
     ///
-    @objc func supportsSiteManagementServices() -> Bool {
+    @objc public func supportsSiteManagementServices() -> Bool {
         return isHostedAtWPcom && isAdmin
     }
 }

@@ -1,4 +1,4 @@
-@import WordPressDataObjC;
+#import "CoreDataStack.h"
 
 @class Blog;
 @class Theme;
@@ -9,7 +9,13 @@ typedef void(^ThemeServiceThemeRequestSuccessBlock)(Theme *theme);
 typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray<Theme *> *themes, BOOL hasMore, NSInteger totalThemeCount);
 typedef void(^ThemeServiceFailureBlock)(NSError *error);
 
-@interface ThemeService : CoreDataService
+@interface ThemeService : NSObject
+
+@property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
+
+- (nonnull instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 #pragma mark - Themes availability
 
@@ -48,6 +54,7 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *
  *  @param      blogId      The blog to get the themes for.  Cannot be nil.
  *  @param      page        Results page to return.
+ *  @param      search      Search string to filter themes.
  *  @param      sync        Whether to remove unsynced results.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
@@ -56,6 +63,7 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  */
 - (NSProgress *)getThemesForBlog:(Blog *)blog
                             page:(NSInteger)page
+                          search:(NSString *)search
                             sync:(BOOL)sync
                          success:(ThemeServiceThemesRequestSuccessBlock)success
                          failure:(ThemeServiceFailureBlock)failure;

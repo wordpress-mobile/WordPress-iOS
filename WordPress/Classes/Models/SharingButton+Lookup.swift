@@ -1,4 +1,4 @@
-extension SharingButton {
+public extension SharingButton {
 
     /// Returns an array of all cached `SharingButtons` objects.
     ///

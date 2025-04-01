@@ -175,7 +175,7 @@ class JetpackLoginViewController: UIViewController {
         }
 
         if let blog {
-            WPAppAnalytics.track(stat, withProperties: properties, with: blog)
+            WPAppAnalytics.track(stat, properties: properties, blog: blog)
         } else {
             WPAnalytics.track(stat, withProperties: properties)
         }

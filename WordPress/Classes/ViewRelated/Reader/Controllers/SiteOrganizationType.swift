@@ -1,4 +1,4 @@
-@objc enum SiteOrganizationType: Int {
+@objc public enum SiteOrganizationType: Int {
     // site does not belong to an organization
     case none
     // site is an A8C P2

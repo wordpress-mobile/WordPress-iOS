@@ -59,8 +59,8 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
     func track(isNext: Bool) {
         WPAppAnalytics.track(
             isNext ? .statsDateTappedForward : .statsDateTappedBackward,
-            withProperties: [StatsPeriodUnit.analyticsPeriodKey: period.description as Any],
-            withBlogID: SiteStatsInformation.sharedInstance.siteID)
+            properties: [StatsPeriodUnit.analyticsPeriodKey: period.description as Any],
+            blogID: SiteStatsInformation.sharedInstance.siteID)
     }
 
     func updateDate(_ date: Date) {
@@ -100,6 +100,6 @@ private extension StatsPeriodUnit {
     }
 
     func track() {
-        WPAppAnalytics.track(event, withBlogID: SiteStatsInformation.sharedInstance.siteID)
+        WPAppAnalytics.track(event, blogID: SiteStatsInformation.sharedInstance.siteID)
     }
 }

@@ -1,7 +1,8 @@
 import Foundation
+import WordPressKit
 import WordPressShared
 
-extension AbstractPost {
+public extension AbstractPost {
     /// Returns the original post by navigating the entire list of revisions
     /// until it reaches the head.
     func original() -> AbstractPost {
@@ -106,7 +107,7 @@ extension AbstractPost {
 
         /// The keyPath to access the underlying property.
         ///
-        var keyPath: String {
+        public var keyPath: String {
             switch self {
             case .dateCreated:
                 return #keyPath(AbstractPost.date_created_gmt)
@@ -118,10 +119,6 @@ extension AbstractPost {
 
     @objc func containsGutenbergBlocks() -> Bool {
         return content?.contains("<!-- wp:") ?? false
-    }
-
-    @objc func containsStoriesBlocks() -> Bool {
-        return content?.contains("<!-- wp:jetpack/story") ?? false
     }
 
     var analyticsUserInfo: [String: Any] {
@@ -144,7 +141,7 @@ extension AbstractPost {
         }
     }
 
-    @objc override open func featuredImageURLForDisplay() -> URL? {
+    @objc override func featuredImageURLForDisplay() -> URL? {
         return featuredImageURL
     }
 

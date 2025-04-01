@@ -1,6 +1,6 @@
 import CoreData
 
-extension NSManagedObject {
+public extension NSManagedObject {
     func setRawValue<ValueType: RawRepresentable>(_ value: ValueType?, forKey key: String) {
         willChangeValue(forKey: key)
         setPrimitiveValue(value?.rawValue, forKey: key)

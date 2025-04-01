@@ -1,6 +1,7 @@
 import CoreData
 import Nimble
 import XCTest
+import WordPressShared
 
 @testable import WordPress
 

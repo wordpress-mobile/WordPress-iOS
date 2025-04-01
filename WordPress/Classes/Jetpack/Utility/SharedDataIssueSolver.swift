@@ -2,7 +2,7 @@ import WordPressShared
 import BuildSettingsKit
 
 @objcMembers
-final class SharedDataIssueSolver: NSObject {
+public final class SharedDataIssueSolver: NSObject {
 
     private let contextManager: CoreDataStack
     private let keychainUtils: KeychainUtils
@@ -10,7 +10,7 @@ final class SharedDataIssueSolver: NSObject {
     private let localFileStore: LocalFileStore
     private let appGroupName: String
 
-    init(contextManager: CoreDataStack = ContextManager.shared,
+    public init(contextManager: CoreDataStack = ContextManager.shared,
          keychainUtils: KeychainUtils = KeychainUtils(),
          sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
          localFileStore: LocalFileStore = FileManager.default,
@@ -39,7 +39,7 @@ final class SharedDataIssueSolver: NSObject {
     /// To be safe, the method only "migrates" the data when the user is logged in, and there's a good chance that
     /// both apps are logged in with the same account.
     ///
-    func migrateAuthKey(for username: String) {
+    public func migrateAuthKey(for username: String) {
         guard AppConfiguration.isJetpack,
               let token = try? keychainUtils.getPassword(for: username, serviceName: WPAccountConstants.authToken.rawValue) else {
             return
@@ -59,7 +59,7 @@ final class SharedDataIssueSolver: NSObject {
                                  updateExisting: true)
     }
 
-    func migrateExtensionsData() {
+    public func migrateExtensionsData() {
         copyTodayWidgetDataToJetpack()
         copyShareExtensionDataToJetpack()
     }

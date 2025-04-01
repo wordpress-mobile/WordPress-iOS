@@ -4,7 +4,11 @@
 #import "Theme.h"
 #import "WPAccount.h"
 @import WordPressDataObjC;
+#ifdef KEYSTONE
+#import "Keystone-Swift.h"
+#else
 #import "WordPress-Swift.h"
+#endif
 @import WordPressKit;
 
 /**
@@ -14,6 +18,15 @@ const NSInteger ThemeOrderUnspecified = 0;
 const NSInteger ThemeOrderTrailing = 9999;
 
 @implementation ThemeService
+
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+{
+    self = [super init];
+    if (self) {
+        _coreDataStack = coreDataStack;
+    }
+    return self;
+}
 
 #pragma mark - Themes availability
 
@@ -149,6 +162,7 @@ const NSInteger ThemeOrderTrailing = 9999;
 
 - (NSProgress *)getThemesForBlog:(Blog *)blog
                              page:(NSInteger)page
+                           search:(NSString *)search
                              sync:(BOOL)sync
                           success:(ThemeServiceThemesRequestSuccessBlock)success
                           failure:(ThemeServiceFailureBlock)failure
@@ -157,6 +171,10 @@ const NSInteger ThemeOrderTrailing = 9999;
     NSAssert([self blogSupportsThemeServices:blog],
              @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
     
+    if (search.length == 0) {
+        search = nil;
+    }
+
     if (blog.wordPressComRestApi == nil) {
         return nil;
     }
@@ -165,6 +183,7 @@ const NSInteger ThemeOrderTrailing = 9999;
 
     if ([blog supports:BlogFeatureCustomThemes]) {
         return [remote getWPThemesPage:page
+                                search:search
                               freeOnly:![blog supports:BlogFeaturePremiumThemes]
                                success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
                                    NSArray * __block themeObjectIDs = nil;

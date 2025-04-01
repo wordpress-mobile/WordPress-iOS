@@ -4,19 +4,19 @@ import CoreData
 @objc(Comment)
 public class Comment: NSManagedObject {
 
-    @objc static func descriptionFor(_ commentStatus: CommentStatusType) -> String {
+    @objc public static func descriptionFor(_ commentStatus: CommentStatusType) -> String {
         return commentStatus.description
     }
 
-    @objc func authorUrlForDisplay() -> String {
+    @objc public func authorUrlForDisplay() -> String {
         return authorURL()?.host ?? String()
     }
 
-    @objc func contentForEdit() -> String {
+    @objc public func contentForEdit() -> String {
         return availableContent()
     }
 
-    @objc func isApproved() -> Bool {
+    @objc public func isApproved() -> Bool {
         return status == CommentStatusType.approved.description
     }
 
@@ -31,7 +31,7 @@ public class Comment: NSManagedObject {
 
     // This can be removed when `unifiedCommentsAndNotificationsList` is permanently enabled
     // as it's replaced by Comment+Interface:relativeDateSectionIdentifier.
-    @objc func sectionIdentifier() -> String? {
+    @objc public func sectionIdentifier() -> String? {
         guard let dateCreated else {
             return nil
         }
@@ -42,7 +42,7 @@ public class Comment: NSManagedObject {
         return formatter.string(from: dateCreated)
     }
 
-    @objc func commentURL() -> URL? {
+    @objc public func commentURL() -> URL? {
         guard !link.isEmpty else {
             return nil
         }
@@ -50,22 +50,22 @@ public class Comment: NSManagedObject {
         return URL(string: link)
     }
 
-    @objc func deleteWillBePermanent() -> Bool {
+    @objc public func deleteWillBePermanent() -> Bool {
         return status == Comment.descriptionFor(.spam) || status == Comment.descriptionFor(.unapproved)
    }
 
-    func canEditAuthorData() -> Bool {
+    public func canEditAuthorData() -> Bool {
         // If the authorID is zero, the user is unregistered. Therefore, the data can be edited.
         return authorID == 0
     }
 
-    func hasParentComment() -> Bool {
+    public func hasParentComment() -> Bool {
         return parentID > 0
     }
 
     /// Convenience method to check if the current user can actually moderate.
     /// `canModerate` is only applicable when the site is dotcom-related (hosted or atomic). For self-hosted sites, default to true.
-    @objc func allowsModeration() -> Bool {
+    @objc public func allowsModeration() -> Bool {
         if let _ = post as? ReaderPost {
             return canModerate
         }
@@ -76,7 +76,7 @@ public class Comment: NSManagedObject {
         return canModerate
     }
 
-    func canReply() -> Bool {
+    public func canReply() -> Bool {
         if let post = post as? ReaderPost {
             return post.commentsOpen
         }
@@ -84,7 +84,7 @@ public class Comment: NSManagedObject {
     }
 
     // NOTE: Comment Likes could be disabled, but the API doesn't have that info yet. Let's update this once it's available.
-    func canLike() -> Bool {
+    public func canLike() -> Bool {
         if (post as? ReaderPost) != nil {
             return true
         }
@@ -95,11 +95,11 @@ public class Comment: NSManagedObject {
         return !isReadOnly() && blog.supports(.commentLikes)
     }
 
-    @objc func isTopLevelComment() -> Bool {
+    @objc public func isTopLevelComment() -> Bool {
         return depth == 0
     }
 
-    func isFromPostAuthor() -> Bool {
+    public func isFromPostAuthor() -> Bool {
         guard let postAuthorID = post?.authorID?.int32Value,
               postAuthorID > 0,
               authorID > 0 else {
@@ -181,7 +181,7 @@ extension Comment: PostContentProvider {
 }
 
 // When CommentViewController and CommentService are converted to Swift, this can be simplified to a String enum.
-@objc enum CommentStatusType: Int {
+@objc public enum CommentStatusType: Int {
     case pending
     case approved
     case unapproved
@@ -190,7 +190,7 @@ extension Comment: PostContentProvider {
     // We can use this status to restore comment replies that the user has written.
     case draft
 
-    var description: String {
+    public var description: String {
         switch self {
         case .pending:
             return "hold"
@@ -205,7 +205,7 @@ extension Comment: PostContentProvider {
         }
     }
 
-    static func typeForStatus(_ status: String?) -> CommentStatusType? {
+    public static func typeForStatus(_ status: String?) -> CommentStatusType? {
         switch status {
         case "hold":
             return .pending

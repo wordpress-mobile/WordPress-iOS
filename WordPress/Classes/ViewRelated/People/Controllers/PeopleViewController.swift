@@ -207,7 +207,7 @@ class PeopleViewController: UITableViewController {
             return
         }
 
-        WPAppAnalytics.track(.openedPeople, with: blog)
+        WPAppAnalytics.track(.openedPeople, blog: blog)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

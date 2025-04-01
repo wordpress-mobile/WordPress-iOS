@@ -92,7 +92,7 @@ import WordPressKit
                 let properties = [
                     "service": keyring.service
                 ]
-                WPAppAnalytics.track(.sharingPublicizeConnected, withProperties: properties, withBlogID: dotComID)
+                WPAppAnalytics.track(.sharingPublicizeConnected, properties: properties, blogID: dotComID)
 
                 self.coreDataStack.performAndSave({ context -> NSManagedObjectID in
                     try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
@@ -165,7 +165,7 @@ import WordPressKit
                             "service": value.service,
                             "is_site_wide": NSNumber(value: shared).stringValue
                         ]
-                        WPAppAnalytics.track(.sharingPublicizeConnectionAvailableToAllChanged, withProperties: properties, withBlogID: value.siteID)
+                        WPAppAnalytics.track(.sharingPublicizeConnectionAvailableToAllChanged, properties: properties, blogID: value.siteID)
 
                         self.coreDataStack.performAndSave({ context in
                             try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection, in: context)
@@ -265,7 +265,7 @@ import WordPressKit
                         let properties = [
                             "service": service
                         ]
-                        WPAppAnalytics.track(.sharingPublicizeDisconnected, withProperties: properties, withBlogID: siteID)
+                        WPAppAnalytics.track(.sharingPublicizeDisconnected, properties: properties, blogID: siteID)
                         success?()
                     },
                     failure: { (error: NSError?) in

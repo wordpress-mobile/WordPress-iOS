@@ -8,7 +8,11 @@
 #import "SourcePostAttribution.h"
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
+#ifdef KEYSTONE
+#import "Keystone-Swift.h"
+#else
 #import "WordPress-Swift.h"
+#endif
 
 @import WordPressKit;
 @import WordPressShared;
@@ -26,6 +30,15 @@ NSString * const ReaderPostServiceToggleSiteFollowingState = @"ReaderPostService
 static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 @implementation ReaderPostService
+
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+{
+    self = [super init];
+    if (self) {
+        _coreDataStack = coreDataStack;
+    }
+    return self;
+}
 
 #pragma mark - Fetch Methods
 

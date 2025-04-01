@@ -1,15 +1,15 @@
 import Foundation
 import CoreData
 
-class RevisionDiff: NSManagedObject {
-    @NSManaged var fromRevisionId: NSNumber
-    @NSManaged var toRevisionId: NSNumber
+public class RevisionDiff: NSManagedObject {
+    @NSManaged public var fromRevisionId: NSNumber
+    @NSManaged public var toRevisionId: NSNumber
 
-    @NSManaged var totalAdditions: NSNumber
-    @NSManaged var totalDeletions: NSNumber
+    @NSManaged public var totalAdditions: NSNumber
+    @NSManaged public var totalDeletions: NSNumber
 
-    @NSManaged var contentDiffs: NSSet?
-    @NSManaged var titleDiffs: NSSet?
+    @NSManaged public var contentDiffs: NSSet?
+    @NSManaged public var titleDiffs: NSSet?
 
-    @NSManaged var revision: Revision?
+    @NSManaged public var revision: Revision?
 }

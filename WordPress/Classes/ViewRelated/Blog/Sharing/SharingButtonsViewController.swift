@@ -213,7 +213,7 @@ import WordPressShared
                     let properties = [
                         "checked": NSNumber(value: newValue)
                     ]
-                    WPAppAnalytics.track(.sharingButtonShowReblogChanged, withProperties: properties, with: self.blog)
+                    WPAppAnalytics.track(.sharingButtonShowReblogChanged, properties: properties, blog: self.blog)
                 }
             }
         }
@@ -540,7 +540,7 @@ import WordPressShared
         service.updateSettings(
             for: self.blog,
             success: {
-                WPAppAnalytics.track(.sharingButtonSettingsChanged, withBlogID: dotComID)
+                WPAppAnalytics.track(.sharingButtonSettingsChanged, blogID: dotComID)
             },
             failure: { [weak self] (error: Error) in
                 let error = error as NSError
@@ -923,6 +923,6 @@ extension SharingButtonsViewController {
             sharingButton.order = NSNumber(value: index)
         }
         self.didMakeChanges = true
-        WPAppAnalytics.track(.sharingButtonOrderChanged, with: blog)
+        WPAppAnalytics.track(.sharingButtonOrderChanged, blog: blog)
     }
 }

@@ -3,7 +3,11 @@
 #import "Blog.h"
 #import "BlogService.h"
 
+#ifdef KEYSTONE
+#import "Keystone-Swift.h"
+#else
 #import "WordPress-Swift.h"
+#endif
 
 
 

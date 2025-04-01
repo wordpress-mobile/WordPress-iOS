@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-extension CodingUserInfoKey {
+public extension CodingUserInfoKey {
     static let managedObjectContext = CodingUserInfoKey(rawValue: "managedObjectContext")!
 }
 

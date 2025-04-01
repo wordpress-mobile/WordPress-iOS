@@ -1,6 +1,10 @@
 #import "PostHelper.h"
 #import "AbstractPost.h"
+#ifdef KEYSTONE
+#import "Keystone-Swift.h"
+#else
 #import "WordPress-Swift.h"
+#endif
 
 @import WordPressKit;
 @import NSObject_SafeExpectations;

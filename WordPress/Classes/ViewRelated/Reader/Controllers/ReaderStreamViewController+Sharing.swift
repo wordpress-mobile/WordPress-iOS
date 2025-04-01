@@ -44,7 +44,7 @@ extension ReaderStreamViewController {
             return
         }
 
-        WPAppAnalytics.track(.readerSiteShared, withBlogID: sitePendingPost.siteID)
+        WPAppAnalytics.track(.readerSiteShared, blogID: sitePendingPost.siteID)
 
         let activities = WPActivityDefaults.defaultActivities() as! [UIActivity]
         let activityViewController = UIActivityViewController(activityItems: [sitePendingPost], applicationActivities: activities)

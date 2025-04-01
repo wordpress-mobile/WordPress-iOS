@@ -4,7 +4,7 @@ import WordPressShared
 
 extension RemotePostCreateParameters {
     /// Initializes the parameters required to create the given post.
-    init(post: AbstractPost) {
+    public init(post: AbstractPost) {
         self.init(
             type: post is Post ? "post" : "page",
             status: (post.status ?? .draft).rawValue
@@ -53,7 +53,8 @@ private func makeTags(from tags: String) -> [String] {
         .filter { !$0.isEmpty }
 }
 
-extension RemotePostUpdateParameters {
+public extension RemotePostUpdateParameters {
+
     var isEmpty: Bool {
         self == RemotePostUpdateParameters()
     }

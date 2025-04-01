@@ -169,7 +169,7 @@ GEM
     fastlane-plugin-firebase_app_distribution (0.10.0)
       google-apis-firebaseappdistribution_v1 (~> 0.3.0)
       google-apis-firebaseappdistribution_v1alpha (~> 0.2.0)
-    fastlane-plugin-sentry (1.28.0)
+    fastlane-plugin-sentry (1.29.0)
       os (~> 1.1, >= 1.1.4)
     fastlane-plugin-wpmreleasetoolkit (13.0.0)
       activesupport (>= 6.1.7.1)

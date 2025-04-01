@@ -8,7 +8,11 @@
 #import "PostCategoryService.h"
 #import "CommentService.h"
 #import "PostService.h"
+#ifdef KEYSTONE
+#import "Keystone-Swift.h"
+#else
 #import "WordPress-Swift.h"
+#endif
 #import "PostType.h"
 @import WordPressKit;
 @import WordPressShared;
@@ -23,6 +27,15 @@ NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotification";
 
 @implementation BlogService
+
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+{
+    self = [super init];
+    if (self) {
+        _coreDataStack = coreDataStack;
+    }
+    return self;
+}
 
 - (void)syncBlogsForAccount:(WPAccount *)account
                     success:(void (^)(void))success
