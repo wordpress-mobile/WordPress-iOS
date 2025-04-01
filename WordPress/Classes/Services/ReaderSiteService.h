@@ -2,9 +2,6 @@
 #import "ReaderTopicService.h"
 #import "CoreDataStack.h"
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnullability-completeness"
-
 typedef NS_ENUM(NSUInteger, ReaderSiteServiceError) {
     ReaderSiteServiceErrorNotLoggedIn,
     ReaderSiteServiceErrorAlreadyFollowingSite
@@ -84,5 +81,3 @@ extern NSString * const ReaderSiteServiceErrorDomain;
 - (void)syncPostsForFollowedSites;
 
 @end
-
-#pragma clang diagnostic pop // -Wnullability-completeness
