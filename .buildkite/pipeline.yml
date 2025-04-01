@@ -52,15 +52,17 @@ steps:
   #################
   # Run Unit Tests
   #################
-  - label: "🔬 :wordpress: Unit Tests"
-    command: ".buildkite/commands/run-unit-tests.sh"
-    depends_on: "build_wordpress"
-    plugins: [$CI_TOOLKIT_PLUGIN]
-    artifact_paths:
-      - "build/results/*"
-    notify:
-      - github_commit_status:
-          context: "Unit Tests"
+  - group: "🔬 Unit Tests"
+    steps:
+      - label: "🔬 :wordpress: Unit Tests"
+        command: ".buildkite/commands/run-unit-tests.sh"
+        depends_on: "build_wordpress"
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "Unit Tests"
 
   #################
   # UI Tests
