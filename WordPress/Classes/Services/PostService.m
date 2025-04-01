@@ -29,7 +29,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context {
     return [self initWithManagedObjectContext:context
-                     postServiceRemoteFactory:[PostServiceRemoteFactory.alloc init]];
+                     postServiceRemoteFactory:[[PostServiceRemoteFactory alloc] init]];
 }
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
