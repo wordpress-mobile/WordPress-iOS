@@ -10,7 +10,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
     // MARK: - Convenience constructors
 
-    @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
+    class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
         let vc = PostListViewController()
         vc.blog = blog
         return vc

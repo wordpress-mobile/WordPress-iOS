@@ -188,14 +188,3 @@ extension PluginDirectoryViewController: PluginListPresenter {
         navigationController?.pushViewController(listVC, animated: true)
     }
 }
-
-extension BlogDetailsViewController {
-
-    @objc func makePluginDirectoryViewController(blog: Blog) -> PluginDirectoryViewController? {
-        guard let site = JetpackSiteRef(blog: blog) else {
-            return nil
-        }
-
-        return PluginDirectoryViewController(site: site)
-    }
-}
