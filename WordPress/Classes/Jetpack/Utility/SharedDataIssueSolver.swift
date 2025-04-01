@@ -41,7 +41,7 @@ public final class SharedDataIssueSolver: NSObject {
     /// both apps are logged in with the same account.
     ///
     public func migrateAuthKey(for username: String) {
-        guard AppConfiguration.isJetpack,
+        guard BuildSettings.current.brand == .jetpack,
               let token = try? keychainUtils.getPassword(for: username, serviceName: WPAccountConstants.authToken.rawValue) else {
             return
         }
