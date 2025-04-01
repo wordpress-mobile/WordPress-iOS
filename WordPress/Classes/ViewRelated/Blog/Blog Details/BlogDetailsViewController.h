@@ -49,18 +49,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionSiteMonitoring
 };
 
-typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
-    BlogDetailsNavigationSourceButton = 0,
-    BlogDetailsNavigationSourceRow = 1,
-    BlogDetailsNavigationSourceLink = 2,
-    BlogDetailsNavigationSourceWidget = 3,
-    BlogDetailsNavigationSourceOnboarding = 4,
-    BlogDetailsNavigationSourceNotification = 5,
-    BlogDetailsNavigationSourceShortcut = 6,
-    BlogDetailsNavigationSourceTodayStatsCard = 7,
-};
-
-
 @interface BlogDetailsSection : NSObject
 
 @property (nonatomic, strong, nullable, readonly) NSString *title;
@@ -123,7 +111,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)presentBlogDetailsViewController:(UIViewController * __nonnull)viewController;
 @end
 
-@interface BlogDetailsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIViewControllerTransitioningDelegate>
+@interface BlogDetailsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate>
 
 @property (nonatomic, strong, nonnull) Blog * blog;
 @property (nonatomic, strong, readonly) CreateButtonCoordinator * _Nullable createButtonCoordinator;
@@ -134,6 +122,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 
 /// A new display mode for the displaying it as part of the site menu.
 @property (nonatomic) BOOL isSidebarModeEnabled;
+
+@property (nonatomic, weak) UIViewController *presentedSiteSettingsViewController;
 
 - (id _Nonnull)init;
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
@@ -146,10 +136,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 
 - (void)switchToBlog:(nonnull Blog *)blog;
 - (void)showInitialDetailsForBlog;
-- (void)showPostListFromSource:(BlogDetailsNavigationSource)source;
-- (void)showPageListFromSource:(BlogDetailsNavigationSource)source;
-- (void)showMediaLibraryFromSource:(BlogDetailsNavigationSource)source;
-- (void)showStatsFromSource:(BlogDetailsNavigationSource)source;
 - (void)updateTableView:(nullable void(^)(void))completion;
 - (void)preloadMetadata;
 - (void)pulledToRefreshWith:(nonnull UIRefreshControl *)refreshControl onCompletion:(nullable void(^)(void))completion;

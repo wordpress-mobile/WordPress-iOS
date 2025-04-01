@@ -10,7 +10,7 @@ import WordPressKit
     /// - Returns: A CommentServiceRemote instance
     @objc func remote(blog: Blog) -> CommentServiceRemote? {
         if blog.supports(.wpComRESTAPI),
-           let api = blog.wordPressComRestApi(),
+           let api = blog.wordPressComRestApi,
            let dotComID = blog.dotComID {
             return CommentServiceRemoteREST(wordPressComRestApi: api, siteID: dotComID)
         }

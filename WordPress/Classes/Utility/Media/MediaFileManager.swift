@@ -53,7 +53,7 @@ public class MediaFileManager: NSObject {
     /// Helper method for getting a MediaFileManager for the .cache directory.
     ///
     @objc(cacheManager)
-    class var cache: MediaFileManager {
+    public class var cache: MediaFileManager {
         return MediaFileManager(directory: .cache)
     }
 
@@ -73,7 +73,7 @@ public class MediaFileManager: NSObject {
 
     /// Returns filesystem URL for the local Media directory.
     ///
-    @objc func directoryURL() throws -> URL {
+    @objc public func directoryURL() throws -> URL {
         let fileManager = FileManager.default
         let mediaDirectory = directory.url
         // Check whether or not the file path exists for the Media directory.
@@ -216,7 +216,7 @@ public class MediaFileManager: NSObject {
 
     /// Helper method for getting the default upload directory URL.
     ///
-    @objc class func uploadsDirectoryURL() throws -> URL {
+    @objc public class func uploadsDirectoryURL() throws -> URL {
         return try MediaFileManager.default.directoryURL()
     }
 

@@ -2,7 +2,7 @@ import Foundation
 import WordPressShared
 
 @objc
-extension RemotePost {
+public extension RemotePost {
     var foreignID: UUID? {
         guard let metadata else {
             return nil

@@ -39,17 +39,13 @@ public struct TaggedManagedObjectID<Model: NSManagedObject>: Hashable {
             do {
                 try context.obtainPermanentIDs(for: [object])
             } catch {
-                // It should be okay to let the app crash when `obtainPermanentIDs` fails. Because, we crash the app
-                // intentionally when `save()` fails (see the `ContextManager.internalSave` function). Also, if the
-                // `obtainPermanentIDs` call fails (which may mean SQLite failing to update the database file),
-                // then the save call followed (because we typically save newly added model objects) probably is going
-                // to fail too. Finally, there aren't many save crashes on Sentry and `obtainPermanentIDs` should be
-                // less likely to throw errors than `NSManagedObjectContext.save` function.
-                //
-                // However, just to be safe, we'll log and monitor this error (if it ever happens) for a few releases.
-                // We can decide later if we'd like to change the assertion to a fatal error.
-                WordPressAppDelegate.crashLogging?.logError(error)
-                assertionFailure("Failed to obtain permanent id for \(objectID). Error: \(error)")
+                wpAssertionFailure(
+                    "Failed to obtain permanent id from NSManagedObject.",
+                    userInfo: [
+                        "objectID": String(describing: objectID),
+                        "error": String(describing: error),
+                    ]
+                )
             }
             objectID = object.objectID
         }

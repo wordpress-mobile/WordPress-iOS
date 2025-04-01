@@ -273,36 +273,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (NSString *)logDescription;
 
 /**
- Returns formatted Blog information to send to Support when user creates a new ticket.
- */
-- (NSString *)supportDescription;
-
-/**
- Returns formatted Blog State information to send to Support when user creates a new ticket.
- */
-- (NSString *)stateDescription;
-
-/**
- Returns a REST API client if available
-
- If the blog is a WordPress.com one or it has Jetpack it will return a REST API
- client. Otherwise, the XML-RPC API should be used.
-
- @warning this method doesn't know if a Jetpack blog has the JSON API disabled
-
- @return a WordPressComRestApi object if available
- */
-- (nullable WordPressComRestApi *)wordPressComRestApi;
-
-/**
- Call this method to know if the blog is hosted at WPcom or accessed through Jetpack.
- 
- @return YES if the blog is hosted at WPcom or if it's connected through Jetpack.
-    NO otherwise.
- */
-- (BOOL)isAccessibleThroughWPCom;
-
-/**
  Check if there is already a basic auth credential stored for this blog/site.
 
  @return YES if there is a credential

@@ -53,7 +53,7 @@ final class PageListViewController: AbstractPostListViewController {
 
     // MARK: - Convenience constructors
 
-    @objc class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
+    class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
         let vc = PageListViewController()
         vc.blog = blog
         return vc

@@ -1,3 +1,4 @@
+import BuildSettingsKit
 import CoreData
 
 public extension WPAccount {
@@ -23,7 +24,7 @@ public extension WPAccount {
     }
 
     static func token(forUsername username: String) throws -> String {
-        try token(forUsername: username, isJetpack: AppConfiguration.isJetpack)
+        try token(forUsername: username, isJetpack: BuildSettings.current.brand == .jetpack)
     }
 
     /// Does this `WPAccount` object have any associated blogs?

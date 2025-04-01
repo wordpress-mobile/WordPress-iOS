@@ -111,6 +111,15 @@ class PeopleViewController: UITableViewController {
     @IBOutlet
     private var footerActivityIndicator: UIActivityIndicatorView!
 
+    class func controllerWithBlog(_ blog: Blog) -> PeopleViewController? {
+        let storyboard = UIStoryboard(name: "People", bundle: nil)
+        guard let viewController = storyboard.instantiateInitialViewController() as? PeopleViewController else {
+            return nil
+        }
+        viewController.blog = blog
+        return viewController
+    }
+
     // MARK: UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -540,24 +549,8 @@ private extension PeopleViewController {
         setupFilterBar()
         setupTableView()
     }
-}
 
-// MARK: - Objective-C support
-
-@objc
-extension PeopleViewController {
-    class func controllerWithBlog(_ blog: Blog) -> PeopleViewController? {
-        let storyboard = UIStoryboard(name: "People", bundle: nil)
-        guard let viewController = storyboard.instantiateInitialViewController() as? PeopleViewController else {
-            return nil
-        }
-
-        viewController.blog = blog
-
-        return viewController
-    }
-
-    func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+    @objc private func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         let selectedFilter = Filter.allCases[filterBar.selectedIndex]
         filter = selectedFilter
 

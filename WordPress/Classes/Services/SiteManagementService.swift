@@ -93,7 +93,7 @@ open class SiteManagementService: NSObject {
     /// - Returns: Remote service for site management
     ///
     @objc func siteManagementServiceRemoteForBlog(_ blog: Blog) -> SiteManagementServiceRemote? {
-        guard let api = blog.wordPressComRestApi() else {
+        guard let api = blog.wordPressComRestApi else {
             return nil
         }
 

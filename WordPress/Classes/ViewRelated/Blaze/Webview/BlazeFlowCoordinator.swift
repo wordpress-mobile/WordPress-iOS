@@ -52,11 +52,12 @@ import UIKit
     ///   - post: `AbstractPost` object representing the specific post to blaze. If `nil` is passed,
     ///    a general blaze overlay or web flow is displayed. If a valid value is passed, a blaze overlay with a post preview
     ///    or detailed web flow is displayed.
-    @objc(presentBlazeInViewController:source:blog:post:)
-    static func presentBlaze(in viewController: UIViewController,
-                             source: BlazeSource,
-                             blog: Blog,
-                             post: AbstractPost? = nil) {
+    static func presentBlaze(
+        in viewController: UIViewController,
+        source: BlazeSource,
+        blog: Blog,
+        post: AbstractPost? = nil
+    ) {
         let frequencyTracker = OverlayFrequencyTracker(source: source, type: .blaze)
         if frequencyTracker.shouldShow(forced: false) {
             presentBlazeOverlay(in: viewController, source: source, blog: blog, post: post)

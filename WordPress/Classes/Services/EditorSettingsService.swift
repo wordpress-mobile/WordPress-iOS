@@ -86,7 +86,7 @@ import WordPressKit
     }
 
     func api(for blog: Blog) -> WordPressComRestApi? {
-        return blog.wordPressComRestApi()
+        return blog.wordPressComRestApi
     }
 
     var apiForDefaultAccount: WordPressComRestApi? {

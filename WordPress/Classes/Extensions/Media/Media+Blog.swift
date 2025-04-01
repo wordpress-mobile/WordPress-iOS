@@ -1,6 +1,6 @@
 import Foundation
 
-extension Media {
+public extension Media {
 
     /// Inserts and returns a new managed Media object, in the context.
     ///

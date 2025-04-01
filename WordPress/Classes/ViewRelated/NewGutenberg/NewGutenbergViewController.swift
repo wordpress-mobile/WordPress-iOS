@@ -124,7 +124,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         let selfHostedApiUrl = post.blog.url(withPath: "wp-json/")
         let isSelfHosted = !post.blog.isHostedAtWPcom && !post.blog.isAtomic()
-        let siteApiRoot = post.blog.isAccessibleThroughWPCom() && !isSelfHosted ? post.blog.wordPressComRestApi()?.baseURL.absoluteString : selfHostedApiUrl
+        let siteApiRoot = post.blog.isAccessibleThroughWPCom() && !isSelfHosted ? post.blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
         let siteId = post.blog.dotComID?.stringValue
         let authToken = post.blog.authToken ?? ""
         var authHeader = "Bearer \(authToken)"

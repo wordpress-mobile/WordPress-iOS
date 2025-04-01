@@ -2,8 +2,7 @@
 #import "ReaderTopicService.h"
 #import "CoreDataStack.h"
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnullability-completeness"
+NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, ReaderSiteServiceError) {
     ReaderSiteServiceErrorNotLoggedIn,
@@ -16,7 +15,7 @@ extern NSString * const ReaderSiteServiceErrorDomain;
 
 @property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
 
-- (nonnull instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -77,12 +76,6 @@ extern NSString * const ReaderSiteServiceErrorDomain;
                   success:(void(^)(void))success
                   failure:(void(^)(NSError *error))failure;
 
-/**
- Sync posts for the 'sites I follow endpoint if it exists. Maybe called whenever
- a site/feed is followed or unfollowed.
- */
-- (void)syncPostsForFollowedSites;
-
 @end
 
-#pragma clang diagnostic pop // -Wnullability-completeness
+NS_ASSUME_NONNULL_END
