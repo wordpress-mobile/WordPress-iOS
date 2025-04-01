@@ -12,7 +12,7 @@ public class BloggingPromptSettings: NSManagedObject {
         if let id = blog.dotComID {
             siteID = id
         } else if let account = try WPAccount.lookupDefaultWordPressComAccount(in: context), let primaryBlogID = account.primaryBlogID {
-            return primaryBlogID
+            siteID = primaryBlogID
         } else {
             return nil
         }
