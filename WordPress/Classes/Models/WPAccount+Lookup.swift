@@ -1,3 +1,4 @@
+import BuildSettingsKit
 import CoreData
 
 public extension WPAccount {
@@ -19,7 +20,7 @@ public extension WPAccount {
     // Decoupling allows moving the type to WordPressData, see https://github.com/wordpress-mobile/WordPress-iOS/issues/24165.
     @objc
     static func tokenForUsername(_ username: String) -> String? {
-        token(forUsername: username, isJetpack: AppConfiguration.isJetpack)
+        token(forUsername: username, isJetpack: BuildSettings.current.brand == .jetpack)
     }
 
     /// Does this `WPAccount` object have any associated blogs?
