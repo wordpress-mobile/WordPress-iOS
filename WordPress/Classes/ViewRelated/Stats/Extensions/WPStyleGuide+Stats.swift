@@ -259,10 +259,6 @@ extension WPStyleGuide {
 
         static let mapBackground: UIColor = .systemGray4
 
-        static var mapLowColorSpectrum: UIColor {
-            UIAppColor.primary(.shade10)
-        }
-
         // MARK: - Posting Activity Collection View Styles
 
         // Value of PostingActivityMonth view width for five columns
