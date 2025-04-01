@@ -63,6 +63,14 @@ steps:
         notify:
           - github_commit_status:
               context: "Unit Tests"
+      - label: "🔬 Reader Unit Tests"
+        command: ".buildkite/commands/run-unit-tests-reader.sh"
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "Reader Unit Tests"
 
   #################
   # UI Tests
