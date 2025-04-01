@@ -30,7 +30,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:WordPressDataTests/WordPressDataTests.xctestplan"
+            reference = "container:../Tests/WordPressDataTests/WordPressDataTests.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
