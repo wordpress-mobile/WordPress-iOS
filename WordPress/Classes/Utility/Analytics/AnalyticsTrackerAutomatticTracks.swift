@@ -1,5 +1,6 @@
 import Foundation
 import AutomatticTracks
+import WordPressData
 import WordPressShared
 import BuildSettingsKit
 
