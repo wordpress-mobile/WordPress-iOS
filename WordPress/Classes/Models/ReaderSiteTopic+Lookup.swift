@@ -1,3 +1,4 @@
+import CocoaLumberjackSwift
 import Foundation
 
 public extension ReaderSiteTopic {
