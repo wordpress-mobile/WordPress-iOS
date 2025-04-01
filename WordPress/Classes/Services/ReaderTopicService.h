@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import "CoreDataStack.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
 @class ReaderAbstractTopic;
@@ -12,11 +14,11 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
 @property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
 
-- (nonnull instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (ReaderAbstractTopic *)currentTopicInContext:(NSManagedObjectContext *)context;
+- (nullable ReaderAbstractTopic *)currentTopicInContext:(NSManagedObjectContext *)context;
 
 - (void)setCurrentTopic:(ReaderAbstractTopic *)topic;
 
@@ -26,7 +28,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)fetchReaderMenuWithSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+- (void)fetchReaderMenuWithSuccess:(void (^)(void))success failure:(void (^)(NSError * _Nullable error))failure;
 
 /**
  Deletes all search topics from core data and saves the context.
@@ -61,7 +63,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param phrase: The search phrase.
  @param completion: A completion callback to receive the created ReaderSearchTopic instance.
  */
-- (void)createSearchTopicForSearchPhrase:(NSString *)phrase completion:(void (^)(NSManagedObjectID *))completion;
+- (void)createSearchTopicForSearchPhrase:(NSString *)phrase completion:(void (^)(NSManagedObjectID * _Nullable objectID))completion;
 
 /**
  Unfollows the specified topic
@@ -70,7 +72,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)unfollowTag:(ReaderTagTopic *)topic withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+- (void)unfollowTag:(ReaderTagTopic *)topic withSuccess:(void (^)(void))success failure:(void (^)(NSError * _Nullable error))failure;
 
 /**
  Follow the tag with the specified name
@@ -81,7 +83,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  */
 - (void)followTagNamed:(NSString *)tagName
            withSuccess:(void (^)(void))success
-               failure:(void (^)(NSError *error))failure
+               failure:(void (^)(NSError * _Nullable error))failure
                 source:(NSString *)source;
 
 /**
@@ -91,7 +93,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param success block called on a successful change.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)toggleFollowingForTag:(ReaderTagTopic *)topic success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+- (void)toggleFollowingForTag:(ReaderTagTopic *)topic success:(void (^)(void))success failure:(void (^)(NSError * _Nullable error))failure;
 
 /**
  Toggle the following status of the site for the specified site topic
@@ -102,7 +104,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  */
 - (void)toggleFollowingForSite:(ReaderSiteTopic *)topic
                        success:(void (^)(BOOL follow))success
-                       failure:(void (^)(BOOL follow, NSError *error))failure;
+                       failure:(void (^)(BOOL follow, NSError * _Nullable error))failure;
 
 /**
  Fetch a tag topic for a tag with the specified slug.
@@ -112,8 +114,8 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)tagTopicForTagWithSlug:(NSString *)slug
-                       success:(void(^)(NSManagedObjectID *objectID))success
-                       failure:(void (^)(NSError *error))failure;
+                       success:(void(^)(NSManagedObjectID * _Nullable objectID))success
+                       failure:(void (^)(NSError * _Nullable error))failure;
 
 /**
  Fetch a site topic for a site with the specified ID.
@@ -125,8 +127,8 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  */
 - (void)siteTopicForSiteWithID:(NSNumber *)siteID
                         isFeed:(BOOL)isFeed
-                       success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
-                       failure:(void (^)(NSError *error))failure;
+                       success:(void (^)(NSManagedObjectID * _Nullable objectID, BOOL isFollowing))success
+                       failure:(void (^)(NSError * _Nullable error))failure;
 
 @end
 
@@ -136,3 +138,5 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)mergeMenuTopics:(NSArray *)topics isLoggedIn:(BOOL)isLoggedIn withSuccess:(void (^)(void))success;
 - (NSString *)formatTitle:(NSString *)str;
 @end
+
+NS_ASSUME_NONNULL_END

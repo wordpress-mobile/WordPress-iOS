@@ -209,7 +209,9 @@ extension ReaderTagsTableViewModel {
     ///     - topic: The tag topic that is to be unfollowed.
     private func unfollow(_ topic: ReaderTagTopic) {
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.unfollowTag(topic, withSuccess: nil) { (error) in
+        service.unfollowTag(topic, withSuccess: {
+            // Do nothing
+        }, failure: { error in
             DDLogError("Could not unfollow topic \(topic), \(String(describing: error))")
 
             let title = NSLocalizedString("Could Not Remove Topic", comment: "Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader.")
@@ -217,7 +219,7 @@ extension ReaderTagsTableViewModel {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addCancelActionWithTitle(SharedStrings.Button.ok)
             alert.presentFromRootViewController()
-        }
+        })
     }
 
     /// Scrolls the tableView so the specified tag is in view and flashes that row
