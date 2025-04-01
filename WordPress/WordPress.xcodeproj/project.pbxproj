@@ -1266,6 +1266,7 @@
 				Services/PostService.m,
 				Services/PostServiceOptions.h,
 				Services/PostServiceOptions.m,
+				Services/PostServiceRemoteFactory.swift,
 				Utility/BlogQuery.swift,
 				Utility/CoreData/ContextManager.swift,
 				"Utility/CoreData/ContextManager+ErrorHandling.swift",
