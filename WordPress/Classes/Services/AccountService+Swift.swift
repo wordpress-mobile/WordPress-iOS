@@ -5,7 +5,7 @@ import ShareExtensionCore
 extension AccountService {
     func setupAppExtensions() {
         let context = coreDataStack.mainContext
-        context.performAndWait {
+        context.perform {
             guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
                 return
             }
