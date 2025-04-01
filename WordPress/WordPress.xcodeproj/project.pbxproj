@@ -1253,6 +1253,7 @@
 				Models/WPAccount.m,
 				"Models/WPAccount+Keychain.swift",
 				"Models/WPAccount+Lookup.swift",
+				"Networking/WordPressOrgRestApi+WordPress.swift",
 				"RemotePost+Metadata.swift",
 				Services/BloggingPrompts/BloggingPromptRemoteObject.swift,
 				Services/LocalCoreDataService.h,
