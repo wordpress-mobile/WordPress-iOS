@@ -908,7 +908,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 - (WordPressComRestApi *)wordPressComRestApi
 {
     if (self.account) {
-        return self.account.wordPressComRestApi;
+        return self.account._private_wordPressComRestApi;
     }
     return nil;
 }
