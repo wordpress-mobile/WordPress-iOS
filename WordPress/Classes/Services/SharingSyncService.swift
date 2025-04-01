@@ -18,7 +18,7 @@ import WordPressKit
     /// - Parameter blog: The blog to use for the rest api.
     ///
     private func remoteForBlog(_ blog: Blog) -> SharingServiceRemote? {
-        guard let api = blog.wordPressComRestApi() else {
+        guard let api = blog.wordPressComRestApi else {
             return nil
         }
 

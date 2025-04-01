@@ -25,7 +25,7 @@ struct PeopleService {
     ///     - context: CoreData context to be used.
     ///
     init?(blog: Blog, coreDataStack: CoreDataStackSwift) {
-        guard let api = blog.wordPressComRestApi(), let dotComID = blog.dotComID as? Int else {
+        guard let api = blog.wordPressComRestApi, let dotComID = blog.dotComID as? Int else {
             return nil
         }
 

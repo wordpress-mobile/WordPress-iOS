@@ -16,7 +16,7 @@ struct BlogJetpackSettingsService {
             success()
             return
         }
-        guard let remoteAPI = blog.wordPressComRestApi(),
+        guard let remoteAPI = blog.wordPressComRestApi,
             let blogDotComId = blog.dotComID as? Int
         else {
             failure(nil)
@@ -78,7 +78,7 @@ struct BlogJetpackSettingsService {
             success()
             return
         }
-        guard let remoteAPI = blog.wordPressComRestApi(),
+        guard let remoteAPI = blog.wordPressComRestApi,
             let blogDotComId = blog.dotComID as? Int
         else {
             failure(nil)
@@ -101,7 +101,7 @@ struct BlogJetpackSettingsService {
     }
 
     func updateJetpackSettingsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let remoteAPI = blog.wordPressComRestApi(),
+        guard let remoteAPI = blog.wordPressComRestApi,
             let blogDotComId = blog.dotComID as? Int,
             let blogSettings = blog.settings
         else {
@@ -122,7 +122,7 @@ struct BlogJetpackSettingsService {
     }
 
     func updateJetpackMonitorSettingsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let remoteAPI = blog.wordPressComRestApi(),
+        guard let remoteAPI = blog.wordPressComRestApi,
             let blogDotComId = blog.dotComID as? Int,
             let blogSettings = blog.settings
         else {
@@ -166,7 +166,7 @@ struct BlogJetpackSettingsService {
     }
 
     func updateJetpackModuleActiveSettingForBlog(_ blog: Blog, module: String, active: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let remoteAPI = blog.wordPressComRestApi(),
+        guard let remoteAPI = blog.wordPressComRestApi,
             let blogDotComId = blog.dotComID as? Int else {
             failure(nil)
             return
@@ -183,7 +183,7 @@ struct BlogJetpackSettingsService {
     }
 
     func disconnectJetpackFromBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let remoteAPI = blog.wordPressComRestApi(),
+        guard let remoteAPI = blog.wordPressComRestApi,
             let blogDotComId = blog.dotComID as? Int else {
                 failure(nil)
                 return

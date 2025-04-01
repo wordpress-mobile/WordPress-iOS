@@ -90,7 +90,7 @@ private extension MediaRepository {
 
     @objc(remoteForBlog:error:)
     func remote(for blog: Blog) throws -> MediaServiceRemote {
-        if blog.supports(.wpComRESTAPI), let dotComID = blog.dotComID, let api = blog.wordPressComRestApi() {
+        if blog.supports(.wpComRESTAPI), let dotComID = blog.dotComID, let api = blog.wordPressComRestApi {
             return MediaServiceRemoteREST(wordPressComRestApi: api, siteID: dotComID)
         }
 

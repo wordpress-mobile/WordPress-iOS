@@ -8,7 +8,7 @@ extension PostService {
                           failure: @escaping (Error?) -> Void) {
         guard let blogId = post.blog.dotComID,
             let postId = post.postID,
-            let api = post.blog.wordPressComRestApi() else {
+            let api = post.blog.wordPressComRestApi else {
                 failure(nil)
                 return
         }

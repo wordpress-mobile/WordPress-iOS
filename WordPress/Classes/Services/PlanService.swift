@@ -195,7 +195,7 @@ open class PlanService: NSObject {
 
 extension PlanService {
     @objc public func plansWithPricesForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-        guard let restAPI = blog.wordPressComRestApi(),
+        guard let restAPI = blog.wordPressComRestApi,
             let siteID = blog.dotComID?.intValue else {
                 let description = NSLocalizedString("Unable to update plan prices. There is a problem with the supplied blog.",
                                                     comment: "This is an error message that could be shown when updating Plans in the app.")

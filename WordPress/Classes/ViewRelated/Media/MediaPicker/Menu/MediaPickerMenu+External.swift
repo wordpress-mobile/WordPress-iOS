@@ -17,7 +17,7 @@ extension MediaPickerMenu {
 
     func showStockPhotosPicker(blog: Blog, delegate: ExternalMediaPickerViewDelegate) {
         guard let presentingViewController,
-              let api = blog.wordPressComRestApi() else {
+              let api = blog.wordPressComRestApi else {
             return
         }
 

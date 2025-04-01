@@ -759,7 +759,7 @@ private extension ZendeskUtils {
         }
 
         let url = blog.url ?? Constants.unknownValue
-        return "\(url) (\(blog.stateDescription()))"
+        return "\(url) (\(blog.stateDescription)"
     }
 
     static func getBlogInformation() -> String {
@@ -769,7 +769,7 @@ private extension ZendeskUtils {
         }
 
         let blogInfo: [String] = allBlogs.map {
-            var desc = $0.supportDescription()
+            var desc = $0.supportDescription
             if let blogID = $0.dotComID, let plan = ZendeskUtils.sharedInstance.sitePlansCache[blogID.intValue] {
                 desc = desc + "<Unlocalized Plan: \(plan.name) (\(plan.planID))>" // Do not localize this. :)
             }
