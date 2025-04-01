@@ -89,3 +89,11 @@ private extension PublicizeService.ServiceName {
 private enum Strings {
     static let numberOfAccounts = NSLocalizedString("socialSharing.connectionDetails.nAccount", value: "%d accounts", comment: "The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts.")
 }
+
+extension PublicizeService.ServiceName {
+
+    /// Returns the local image for the icon representing the social network.
+    var localIconImage: UIImage {
+        WPStyleGuide.socialIcon(for: rawValue as NSString)
+    }
+}

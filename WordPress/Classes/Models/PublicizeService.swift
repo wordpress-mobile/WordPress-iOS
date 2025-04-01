@@ -41,11 +41,6 @@ public extension PublicizeService {
         case threads
         case unknown
 
-        /// Returns the local image for the icon representing the social network.
-        var localIconImage: UIImage {
-            WPStyleGuide.socialIcon(for: rawValue as NSString)
-        }
-
         /// A string describing the service in a human-readable format.
         public var description: String {
             rawValue.split(separator: "-").joined(separator: " ").localizedCapitalized
