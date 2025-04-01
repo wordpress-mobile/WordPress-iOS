@@ -2,6 +2,9 @@
 #import "WPAccount.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
+#elif WPDATA
+#import "WordPressData-Swift.h"
+@import WordPressKit;
 #else
 #import "WordPress-Swift.h"
 #endif
