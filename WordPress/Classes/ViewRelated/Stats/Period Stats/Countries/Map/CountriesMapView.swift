@@ -68,11 +68,7 @@ private extension CountriesMapView {
     }
 
     func mapColors() -> [UIColor] {
-        if traitCollection.userInterfaceStyle == .dark {
-            return [WPStyleGuide.Stats.mapBackground, UIAppColor.primary]
-        } else {
-            return [WPStyleGuide.Stats.mapBackground, UIAppColor.primary]
-        }
+        return [WPStyleGuide.Stats.mapLowColorSpectrum, UIAppColor.primary]
     }
 
     func setGradientColors() {
