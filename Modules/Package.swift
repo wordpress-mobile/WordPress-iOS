@@ -195,6 +195,7 @@ enum XcodeSupport {
             .library(name: "XcodeTarget_App", targets: ["XcodeTarget_App"]),
             .library(name: "XcodeTarget_Keystone", targets: ["XcodeTarget_Keystone"]),
             .library(name: "XcodeTarget_WordPressTests", targets: ["XcodeTarget_WordPressTests"]),
+            .library(name: "XcodeTarget_WordPressData", targets: ["XcodeTarget_WordPressData"]),
             .library(name: "XcodeTarget_WordPressAuthentificator", targets: ["XcodeTarget_WordPressAuthentificator"]),
             .library(name: "XcodeTarget_WordPressAuthentificatorTests", targets: ["XcodeTarget_WordPressAuthentificatorTests"]),
             .library(name: "XcodeTarget_ShareExtension", targets: ["XcodeTarget_ShareExtension"]),
@@ -331,6 +332,21 @@ enum XcodeSupport {
                 "UITestsFoundation",
                 .product(name: "BuildkiteTestCollector", package: "test-collector-swift"),
             ]),
+            .xcodeTarget(
+                "XcodeTarget_WordPressData",
+                dependencies: [
+                    "BuildSettingsKit",
+                    "FormattableContentKit",
+                    "SFHFKeychainUtils",
+                    "WordPressShared",
+                    .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
+                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                    .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
+                    .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
+                    .product(name: "NSURL+IDN", package: "NSURL-IDN"),
+                    .product(name: "WordPressKit", package: "WordPressKit-iOS"),
+                ]
+            ),
         ]
     }
 }
