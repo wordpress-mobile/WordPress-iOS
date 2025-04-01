@@ -2,6 +2,8 @@
 #import "WPAccount.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
+#elif WPDATA
+#import "WordPressData-Swift.h"
 #else
 #import "WordPress-Swift.h"
 #endif
@@ -10,6 +12,7 @@
 @import WordPressShared;
 @import NSObject_SafeExpectations;
 @import NSURL_IDN;
+@import WordPressKit; // FIXME: Is it required?
 
 @class Comment;
 
