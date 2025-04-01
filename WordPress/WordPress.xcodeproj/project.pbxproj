@@ -1260,6 +1260,7 @@
 				Services/NullBlogPropertySanitizer.swift,
 				Services/PostHelper.h,
 				Services/PostHelper.m,
+				"Services/PostHelper+JetpackSocial.swift",
 				"Services/PostHelper+Metadata.swift",
 				"Services/PostRepository+Helpers.swift",
 				Services/PostService.h,
