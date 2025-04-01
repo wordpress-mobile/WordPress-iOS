@@ -706,24 +706,15 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     func setupWordPressExtensions() {
-        let accountService = AccountService(coreDataStack: ContextManager.shared)
-        accountService.setupAppExtensionsWithDefaultAccount()
+        AccountService(coreDataStack: ContextManager.shared).setupAppExtensions()
 
         let maxImagesize = MediaSettings().maxImageSizeSetting
-        ShareExtensionService().configureShareExtensionMaximumMediaDimension(maxImagesize)
+        ShareExtensionService().storeMaximumMediaDimension(maxImagesize)
 
         saveRecentSitesForExtensions()
     }
 
     // MARK: - Share Extension
-
-    func setupShareExtensionToken() {
-
-        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken {
-            ShareExtensionService().configureShareExtensionToken(authToken)
-            ShareExtensionService().configureShareExtensionUsername(account.username)
-        }
-    }
 
     func removeShareExtensionConfiguration() {
         ShareExtensionService().removeShareExtensionConfiguration()
@@ -731,7 +722,7 @@ extension WordPressAppDelegate {
 
     @objc func saveRecentSitesForExtensions() {
         let recentSites = RecentSitesService().recentSites
-        ShareExtensionService().configureShareExtensionRecentSites(recentSites)
+        ShareExtensionService().storeRecentSites(recentSites)
     }
 
     // MARK: - Notification Service Extension
@@ -740,9 +731,9 @@ extension WordPressAppDelegate {
 
         if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken, let userID = account.userID {
             let service = NotificationSupportService()
-            service.insertServiceExtensionToken(authToken)
-            service.insertServiceExtensionUsername(account.username)
-            service.insertServiceExtensionUserID(userID.stringValue)
+            service.storeToken(authToken)
+            service.storeUsername(account.username)
+            service.storeUserID(userID.stringValue)
         }
     }
 

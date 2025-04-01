@@ -278,7 +278,7 @@ private extension SiteCredentialsViewController {
         case let cell as TextLabelTableViewCell where row == .instructions:
             configureInstructionLabel(cell)
         case let cell as TextFieldTableViewCell where row == .username:
-            configureUsernameTextField(cell)
+            storeUsernameTextField(cell)
         case let cell as TextFieldTableViewCell where row == .password:
             configurePasswordTextField(cell)
         case let cell as TextLinkButtonTableViewCell:
@@ -300,7 +300,7 @@ private extension SiteCredentialsViewController {
 
     /// Configure the username textfield cell.
     ///
-    func configureUsernameTextField(_ cell: TextFieldTableViewCell) {
+    func storeUsernameTextField(_ cell: TextFieldTableViewCell) {
         cell.configure(withStyle: .username,
                        placeholder: WordPressAuthenticator.shared.displayStrings.usernamePlaceholder,
                        text: loginFields.username)

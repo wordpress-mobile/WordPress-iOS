@@ -118,12 +118,6 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (NSManagedObjectID *)createOrUpdateAccountWithUserDetails:(RemoteUser *)remoteUser authToken:(NSString *)authToken;
 
 /**
- Initializes the WordPress iOS Extensions with the WordPress.com Default Account.
- */
-- (void)setupAppExtensionsWithDefaultAccount;
-
-
-/**
  Removes an account if it's not the default account and there are no associated blogs
  */
 - (void)purgeAccountIfUnused:(WPAccount *)account;

@@ -1,12 +1,12 @@
 #import "AccountService.h"
 #import "WPAccount.h"
-@import WordPressDataObjC;
 #import "Blog.h"
 #import "BlogService.h"
 
+@import WordPressDataObjC;
 @import WordPressKit;
 @import WordPressShared;
-@import ShareExtensionCore;
+
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
 #else
@@ -393,52 +393,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
     // Update app extensions if needed.
     if ([account isDefaultWordPressComAccount]) {
-        [self setupAppExtensionsWithDefaultAccount:account inContext:context];
-    }
-}
-
-- (void)setupAppExtensionsWithDefaultAccount
-{
-    NSManagedObjectContext *context = self.coreDataStack.mainContext;
-    [context performBlockAndWait:^{
-        WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:context];
-        if (account == nil) {
-            return;
-        }
-        [self setupAppExtensionsWithDefaultAccount:account inContext:context];
-    }];
-}
-
-- (void)setupAppExtensionsWithDefaultAccount:(WPAccount *)defaultAccount inContext:(NSManagedObjectContext *)context
-{
-    NSParameterAssert(defaultAccount.managedObjectContext == context);
-
-    NSManagedObjectID *defaultAccountObjectID = defaultAccount.objectID;
-    Blog *defaultBlog = [defaultAccount defaultBlog];
-    NSNumber *siteId    = defaultBlog.dotComID;
-    NSString *blogName  = defaultBlog.settings.name;
-
-    ShareExtensionService *shareExtensionService = [ShareExtensionService new];
-    NotificationSupportService *notificationSupportService = [NotificationSupportService new];
-
-    if (defaultBlog == nil || defaultBlog.isDeleted) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [shareExtensionService removeShareExtensionConfiguration];
-
-            [notificationSupportService deleteServiceExtensionToken];
-        });
-    } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            WPAccount *defaultAccount = [self.coreDataStack.mainContext existingObjectWithID:defaultAccountObjectID error:nil];
-
-            [shareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
-            [shareExtensionService configureShareExtensionToken:defaultAccount.authToken];
-            [shareExtensionService configureShareExtensionUsername:defaultAccount.username];
-
-            [notificationSupportService insertServiceExtensionToken:defaultAccount.authToken];
-            [notificationSupportService insertServiceExtensionUsername:defaultAccount.username];
-            [notificationSupportService insertServiceExtensionUserID:defaultAccount.userID.stringValue];
-        });
+        [self setupAppExtensionsWithDefaultAccount:account];
     }
 }
 
