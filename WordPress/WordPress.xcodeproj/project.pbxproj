@@ -1250,7 +1250,6 @@
 				Models/WPAccount.m,
 				"Models/WPAccount+Keychain.swift",
 				"Models/WPAccount+Lookup.swift",
-				"Models/WPAccount+RestApi.swift",
 				Services/BloggingPrompts/BloggingPromptRemoteObject.swift,
 				Services/LocalCoreDataService.h,
 				Services/LocalCoreDataService.m,
