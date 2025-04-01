@@ -1,3 +1,4 @@
+import CocoaLumberjackSwift
 import CoreData
 
 // Imported from CoreData.CoreDataErrors
