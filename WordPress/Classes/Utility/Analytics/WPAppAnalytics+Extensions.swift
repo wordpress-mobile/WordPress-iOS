@@ -3,23 +3,23 @@ import WordPressShared
 
 extension WPAppAnalytics {
 
-    @objc class func track(_ stat: WPAnalyticsStat) {
+    @objc public class func track(_ stat: WPAnalyticsStat) {
         WPAnalytics.track(stat)
     }
 
-    @objc class func track(_ stat: WPAnalyticsStat, withProperties properties: [AnyHashable: Any]?) {
+    @objc public class func track(_ stat: WPAnalyticsStat, withProperties properties: [AnyHashable: Any]?) {
         WPAnalytics.track(stat, withProperties: properties)
     }
 
     // MARK: WPAppAnalytics (Blog)
 
     @objc(track:withBlog:)
-    class func track(_ stat: WPAnalyticsStat, blog: Blog?) {
+    public class func track(_ stat: WPAnalyticsStat, blog: Blog?) {
         track(stat, properties: nil, blog: blog)
     }
 
     @objc(track:withProperties:withBlog:)
-    class func track(_ stat: WPAnalyticsStat, properties: [String: Any]?, blog: Blog?) {
+    public class func track(_ stat: WPAnalyticsStat, properties: [String: Any]?, blog: Blog?) {
         var properties = properties ?? [:]
         if let blog {
             if let blogID = blog.dotComID {
@@ -31,12 +31,12 @@ extension WPAppAnalytics {
     }
 
     @objc(track:withBlogID:)
-    class func track(_ stat: WPAnalyticsStat, blogID: NSNumber?) {
+    public class func track(_ stat: WPAnalyticsStat, blogID: NSNumber?) {
         track(stat, properties: nil, blogID: blogID)
     }
 
     @objc(track:withProperties:withBlogID:)
-    class func track(_ stat: WPAnalyticsStat, properties: [String: Any]?, blogID: NSNumber?) {
+    public class func track(_ stat: WPAnalyticsStat, properties: [String: Any]?, blogID: NSNumber?) {
         if Thread.isMainThread {
             _track(stat, properties: properties, blogID: blogID)
         } else {
@@ -86,7 +86,7 @@ extension WPAppAnalytics {
     }
 
     @objc(track:error:withBlogID:)
-    class func track(_ stat: WPAnalyticsStat, error: Error, blogID: NSNumber?) {
+    public class func track(_ stat: WPAnalyticsStat, error: Error, blogID: NSNumber?) {
         let error = self.sanitizedError(fromError: error) as NSError
         track(stat, withProperties: [
             "error_code": String(error.code),

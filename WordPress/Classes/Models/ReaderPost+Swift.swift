@@ -27,7 +27,7 @@ extension ReaderPost {
     /// - Parameter id: The comment id
     /// - Returns: The `Comment` object associated with the given id, or `nil` if none is found.
     @objc
-    func comment(withID id: NSNumber) -> Comment? {
+    public func comment(withID id: NSNumber) -> Comment? {
         comment(withID: id.int32Value)
     }
 
@@ -57,7 +57,7 @@ extension ReaderPost {
     /// - Parameter siteID: ID of the site the post belongs to.
     /// - Returns: the matching `ReaderPost`, or `nil` if none is found.
     @objc(lookupWithID:forSiteWithID:inContext:)
-    static func objc_lookup(withID postID: NSNumber, forSiteWithID siteID: NSNumber, in context: NSManagedObjectContext) -> ReaderPost? {
+    public static func objc_lookup(withID postID: NSNumber, forSiteWithID siteID: NSNumber, in context: NSManagedObjectContext) -> ReaderPost? {
         try? lookup(withID: postID, forSiteWithID: siteID, in: context)
     }
 

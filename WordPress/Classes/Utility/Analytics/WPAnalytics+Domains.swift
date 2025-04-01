@@ -3,11 +3,11 @@ import BuildSettingsKit
 import WordPressShared
 
 extension WPAnalytics {
-    @objc class var eventNamePrefix: String {
+    @objc public class var eventNamePrefix: String {
         WPAnalyticsTesting.eventNamePrefix ?? BuildSettings.current.eventNamePrefix
     }
 
-    @objc class var explatPlatform: String {
+    @objc public class var explatPlatform: String {
         WPAnalyticsTesting.explatPlatform ?? BuildSettings.current.explatPlatform
     }
 

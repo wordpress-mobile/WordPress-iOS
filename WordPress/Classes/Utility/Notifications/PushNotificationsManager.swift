@@ -6,7 +6,7 @@ import UserNotifications
 /// The purpose of this helper is to encapsulate all the tasks related to Push Notifications Registration + Handling,
 /// including iOS "Actionable" Notifications.
 ///
-final public class PushNotificationsManager: NSObject {
+public final class PushNotificationsManager: NSObject {
 
     // MARK: Initializer
 
@@ -17,11 +17,11 @@ final public class PushNotificationsManager: NSObject {
 
     /// Returns the shared PushNotificationsManager instance.
     ///
-    @objc static let shared = PushNotificationsManager()
+    @objc public static let shared = PushNotificationsManager()
 
     /// Stores the Apple's Push Notifications Token
     ///
-    @objc var deviceToken: String? {
+    @objc public var deviceToken: String? {
         get {
             return UserPersistentStoreFactory.instance().string(forKey: Device.tokenKey) ?? String()
         }
@@ -32,7 +32,7 @@ final public class PushNotificationsManager: NSObject {
 
     /// Stores the WordPress.com Device identifier
     ///
-    @objc var deviceId: String? {
+    @objc public var deviceId: String? {
         get {
             return UserPersistentStoreFactory.instance().string(forKey: Device.idKey) ?? String()
         }
@@ -43,13 +43,13 @@ final public class PushNotificationsManager: NSObject {
 
     /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
     ///
-    @objc var sharedApplication: UIApplication {
+    @objc public var sharedApplication: UIApplication {
         return UIApplication.shared
     }
 
     /// Returns the Application Execution State. This is meant for Unit Testing purposes.
     ///
-    @objc var applicationState: UIApplication.State {
+    @objc public var applicationState: UIApplication.State {
         return sharedApplication.applicationState
     }
 
@@ -58,7 +58,7 @@ final public class PushNotificationsManager: NSObject {
     /// Enables or disables remote notifications based on current settings.
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
-    @objc func setupRemoteNotifications() {
+    @objc public func setupRemoteNotifications() {
         guard JetpackNotificationMigrationService.shared.shouldPresentNotifications() else {
             disableRemoteNotifications()
             return
@@ -80,7 +80,7 @@ final public class PushNotificationsManager: NSObject {
 
     /// Checks asynchronously if Notifications are enabled in the Device's Settings, or not.
     ///
-    @objc func loadAuthorizationStatus(completion: @escaping ((_ authorized: UNAuthorizationStatus) -> Void)) {
+    @objc public func loadAuthorizationStatus(completion: @escaping ((_ authorized: UNAuthorizationStatus) -> Void)) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
                 completion(settings.authorizationStatus)
@@ -94,7 +94,7 @@ final public class PushNotificationsManager: NSObject {
     ///
     /// - Note: Support will also be initialized. The token will be persisted across App Sessions.
     ///
-    @objc func registerDeviceToken(_ tokenData: Data) {
+    @objc public func registerDeviceToken(_ tokenData: Data) {
 
         // Don't bother registering for WordPress anything if the user isn't logged in
         guard AccountHelper.isDotcomAvailable() else {
@@ -130,14 +130,14 @@ final public class PushNotificationsManager: NSObject {
     ///
     /// - Parameter error: Details the reason of failure
     ///
-    @objc func registrationDidFail(_ error: NSError) {
+    @objc public func registrationDidFail(_ error: NSError) {
         DDLogError("Failed to register for push notifications: \(error)")
         unregisterDeviceToken()
     }
 
     /// Unregister the device from WordPress.com notifications
     ///
-    @objc func unregisterDeviceToken() {
+    @objc public func unregisterDeviceToken() {
         wpAssert(Thread.isMainThread)
 
         // It's possible for the unregister server call to fail, so always unregister the device locally
@@ -180,7 +180,7 @@ final public class PushNotificationsManager: NSObject {
     ///     - userInteraction: Indicates if the user interacted with the Push Notification
     ///     - completionHandler: A callback, to be executed on completion
     ///
-    @objc func handleNotification(_ userInfo: NSDictionary, userInteraction: Bool = false, completionHandler: ((UIBackgroundFetchResult) -> Void)?) {
+    @objc public func handleNotification(_ userInfo: NSDictionary, userInteraction: Bool = false, completionHandler: ((UIBackgroundFetchResult) -> Void)?) {
         DDLogVerbose("Received push notification:\nPayload: \(userInfo)\n")
         DDLogVerbose("Current Application state: \(applicationState.rawValue)")
 
@@ -263,7 +263,7 @@ extension PushNotificationsManager {
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    @objc func handleSupportNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+    @objc public func handleSupportNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
 
         guard let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
             type == ZendeskUtils.PushNotificationIdentifiers.type else {
@@ -295,7 +295,7 @@ extension PushNotificationsManager {
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    @objc func handleAuthenticationNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+    @objc public func handleAuthenticationNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
         // WordPress.com Push Authentication Notification
         // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
         // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
@@ -332,7 +332,7 @@ extension PushNotificationsManager {
     /// - Parameter userInfo: The Notification's Payload
     /// - Returns: True if successful. False otherwise.
     ///
-    @objc func handleAuthenticationApprovedAction(_ userInfo: NSDictionary) -> Bool {
+    @objc public func handleAuthenticationApprovedAction(_ userInfo: NSDictionary) -> Bool {
         let authenticationManager = PushAuthenticationManager()
         guard authenticationManager.isAuthenticationNotification(userInfo) else {
             return false
@@ -352,7 +352,7 @@ extension PushNotificationsManager {
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    @objc func handleInactiveNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+    @objc public func handleInactiveNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
         guard applicationState == .inactive else {
             return false
         }
@@ -378,7 +378,7 @@ extension PushNotificationsManager {
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    @objc func handleBackgroundNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+    @objc public func handleBackgroundNotification(_ userInfo: NSDictionary, userInteraction: Bool, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
         guard userInfo.number(forKey: Notification.identifierKey)?.stringValue != nil else {
             return false
         }

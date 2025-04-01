@@ -10,13 +10,13 @@ public extension Blog {
     ///
     /// - Warning: this method doesn't know if a Jetpack blog has the JSON API disabled.
     @objc
-    var wordPressComRestApi: WordPressComRestApi? {
+    public var wordPressComRestApi: WordPressComRestApi? {
         account?.wordPressComRestApi
     }
 
     /// Whether the blog is hosted on WordPress.com or connected through Jetpack.
     @objc
-    func isAccessibleThroughWPCom() -> Bool {
+    public func isAccessibleThroughWPCom() -> Bool {
         wordPressComRestApi != nil
     }
 }

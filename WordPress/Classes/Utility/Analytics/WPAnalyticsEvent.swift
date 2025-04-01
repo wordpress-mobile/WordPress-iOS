@@ -2,7 +2,7 @@ import Foundation
 import WordPressShared
 
 // WPiOS-only events
-@objc enum WPAnalyticsEvent: Int {
+@objc public enum WPAnalyticsEvent: Int {
 
     case createSheetShown
     case createSheetActionTapped
@@ -1721,7 +1721,7 @@ import WordPressShared
 
 extension WPAnalytics {
 
-    @objc static var subscriptionCount: Int = 0
+    @objc public static var subscriptionCount: Int = 0
 
     private static let WPAppAnalyticsKeySubscriptionCount: String = "subscription_count"
 
@@ -1788,7 +1788,7 @@ extension WPAnalytics {
     /// This will call each registered tracker and fire the given event
     /// - Parameter event: a `String` that represents the event name
     ///
-    @objc static func trackEvent(_ event: WPAnalyticsEvent) {
+    @objc public static func trackEvent(_ event: WPAnalyticsEvent) {
         WPAnalytics.trackString(event.value)
     }
 
@@ -1798,7 +1798,7 @@ extension WPAnalytics {
     /// - Parameter event: a `WPAnalyticsEvent` that represents the event name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
-    @objc static func trackEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
+    @objc public static func trackEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
         track(event, properties: properties)
     }
 
@@ -1809,7 +1809,7 @@ extension WPAnalytics {
     ///   - event: a `WPAnalyticsEvent` that represents the event name
     ///   - properties: a `Hash` that represents the properties
     ///   - blog: a `Blog` asssociated with the event
-    @objc static func trackEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
+    @objc public static func trackEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
         track(event, properties: properties, blog: blog)
     }
 
@@ -1819,7 +1819,7 @@ extension WPAnalytics {
     /// - Parameter event: a `String` that represents the Reader event name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
-    @objc static func trackReaderEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
+    @objc public static func trackReaderEvent(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
         var props = properties
         props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
         WPAnalytics.track(event, properties: props)
@@ -1831,7 +1831,7 @@ extension WPAnalytics {
     /// - Parameter stat: a `String` that represents the Reader stat name
     /// - Parameter properties: a `Hash` that represents the properties
     ///
-    @objc static func trackReaderStat(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any]) {
+    @objc public static func trackReaderStat(_ stat: WPAnalyticsStat, properties: [AnyHashable: Any]) {
         var props = properties
         props[WPAppAnalyticsKeySubscriptionCount] = subscriptionCount
         WPAnalytics.track(stat, withProperties: props)
@@ -1857,11 +1857,11 @@ extension WPAnalytics {
         }
     }
 
-    @objc static func trackSettingsChange(_ page: String, fieldName: String) {
+    @objc public static func trackSettingsChange(_ page: String, fieldName: String) {
         Self.trackSettingsChange(page, fieldName: fieldName, value: nil)
     }
 
-    @objc static func trackSettingsChange(_ page: String, fieldName: String, value: Any?) {
+    @objc public static func trackSettingsChange(_ page: String, fieldName: String, value: Any?) {
         var properties: [AnyHashable: Any] = ["page": page, "field_name": fieldName]
 
         if let value {

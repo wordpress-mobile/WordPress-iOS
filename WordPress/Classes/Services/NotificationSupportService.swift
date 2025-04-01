@@ -112,7 +112,7 @@ open class NotificationSupportService: NSObject {
     /// Attempts to delete the current WPCOM Username used by the Notification Service Extension.
     ///
     @objc
-    func deleteServiceExtensionUserID() {
+    public func deleteServiceExtensionUserID() {
         do {
             try SFHFKeychainUtils.deleteItem(
                 forUsername: configuration.keychainUserIDKey,

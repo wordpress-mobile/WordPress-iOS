@@ -47,8 +47,8 @@ final class StatsPediodCache {
     }
 }
 
-final class StatsCache: NSObject {
-    @objc class func clearCaches() {
+public final class StatsCache: NSObject {
+    @objc public class func clearCaches() {
         StatsPediodCache.shared.removeAll()
         StatsInsightsCache.shared.removeAll()
         StatsSubscribersCache.shared.removeAll()

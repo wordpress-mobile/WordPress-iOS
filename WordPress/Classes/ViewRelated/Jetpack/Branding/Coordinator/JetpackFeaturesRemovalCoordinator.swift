@@ -2,7 +2,7 @@ import Foundation
 import WordPressShared
 
 /// A class containing convenience methods for the the Jetpack features removal experience
-class JetpackFeaturesRemovalCoordinator: NSObject {
+public class JetpackFeaturesRemovalCoordinator: NSObject {
 
     /// Enum describing the current phase of the Jetpack features removal
     enum GeneralPhase: String {
@@ -157,7 +157,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     /// It is possible for JP features to be disabled, but still be displayed (`shouldShowJetpackFeatures`)
     /// This will happen in the "Static Screens" phase.
     @objc
-    static func jetpackFeaturesEnabled() -> Bool {
+    public static func jetpackFeaturesEnabled() -> Bool {
         return jetpackFeaturesEnabled(featureFlagStore: RemoteFeatureFlagStore())
     }
 
@@ -179,7 +179,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
     /// But if the current app UI type is not set, we determine if the Jetpack Features
     /// are to be displayed based on the removal phase regardless of the app UI state.
     @objc
-    static func shouldShowJetpackFeatures() -> Bool {
+    public static func shouldShowJetpackFeatures() -> Bool {
         return shouldShowJetpackFeatures(featureFlagStore: RemoteFeatureFlagStore())
     }
 
