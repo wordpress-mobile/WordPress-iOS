@@ -87,6 +87,18 @@ platform :ios do
     )
   end
 
+  # Downloads all the required certificates and profiles (using `match``) for the Reader App Store builds.
+  # Optionally, it can create any new necessary certificate or profile.
+  #
+  # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
+  #
+  lane :update_certs_and_profiles_app_store_reader do |readonly: true|
+    update_code_signing_app_store(
+      app_identifiers: ALL_READER_BUNDLE_IDENTIFIERS,
+      readonly: readonly
+    )
+  end
+
   # Downloads all the required certificates and profiles (using `match`) for both Jetpack and WordPress App Store variants.
   # Optionally, it can create any new necessary certificate or profile.
   #

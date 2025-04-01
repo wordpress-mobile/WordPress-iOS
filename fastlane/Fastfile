@@ -47,6 +47,10 @@ JETPACK_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
 ].map { |suffix| "#{JETPACK_BUNDLE_IDENTIFIER}.#{suffix}" }
 ALL_JETPACK_BUNDLE_IDENTIFIERS = [JETPACK_BUNDLE_IDENTIFIER, *JETPACK_EXTENSIONS_BUNDLE_IDENTIFIERS].freeze
 
+READER_BUNDLE_IDENTIFIER = 'com.automattic.reader'
+# Redundant but handy for consistency, especially in codesign.rb
+ALL_READER_BUNDLE_IDENTIFIERS = [READER_BUNDLE_IDENTIFIER].freeze
+
 # Environment Variables — used by lanes but also potentially actions
 Dotenv.load(USER_ENV_FILE_PATH)
 Dotenv.load(PROJECT_ENV_FILE_PATH)
