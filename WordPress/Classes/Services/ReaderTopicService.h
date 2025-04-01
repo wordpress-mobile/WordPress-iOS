@@ -20,7 +20,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
 - (nullable ReaderAbstractTopic *)currentTopicInContext:(NSManagedObjectContext *)context;
 
-- (void)setCurrentTopic:(ReaderAbstractTopic *)topic;
+- (void)setCurrentTopic:(ReaderAbstractTopic * _Nullable)topic;
 
 /**
  Fetches the topics for the reader's menu.
