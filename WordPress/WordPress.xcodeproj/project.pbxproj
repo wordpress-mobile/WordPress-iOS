@@ -1115,6 +1115,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extensions/Array+Page.swift",
+				"Extensions/Media/Media+Blog.swift",
 				Extensions/NSManagedObject.swift,
 				Jetpack/Utility/SharedDataIssueSolver.swift,
 				Models/AbstractPost.h,
