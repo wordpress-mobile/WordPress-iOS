@@ -1906,6 +1906,7 @@
 		0C5C46F42D98343300F2CD55 /* Exceptions for "Classes" folder in "Keystone" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				System/main.swift,
 				"System/WordPress-Bridging-Header.h",
 			);
 			publicHeaders = (
@@ -2011,17 +2012,17 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
+		0C5A1A042D9B080900C25301 /* WordPressAuthenticatorTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = WordPressAuthenticatorTests;
+			sourceTree = "<group>";
+		};
 		0C5A3FAB2D9B1EF400C25301 /* Reader */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				0C5A3FB42D9B214200C25301 /* Exceptions for "Reader" folder in "Reader" target */,
 			);
 			path = Reader;
-			sourceTree = "<group>";
-		};
-		0C5A1A042D9B080900C25301 /* WordPressAuthenticatorTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = WordPressAuthenticatorTests;
 			sourceTree = "<group>";
 		};
 		0C5C46FE2D98397A00F2CD55 /* Keystone */ = {
