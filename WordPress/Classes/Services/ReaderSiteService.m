@@ -160,21 +160,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     } failure:failure];
 }
 
-- (void)syncPostsForFollowedSites
-{
-    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        ReaderAbstractTopic *followedSites = [ReaderAbstractTopic lookupFollowedSitesTopicInContext:context];
-        if (!followedSites) {
-            return;
-        }
-
-        ReaderPostService *postService = [[ReaderPostService alloc] initWithCoreDataStack:self.coreDataStack];
-        [postService fetchPostsForTopic:followedSites earlierThan:[NSDate date] success:nil failure:nil];
-    }];
-}
-
 #pragma mark - Private Methods
-
 
 /**
  Fetch the topic after a site is followed
