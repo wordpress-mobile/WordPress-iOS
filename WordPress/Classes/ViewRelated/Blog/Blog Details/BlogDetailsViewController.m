@@ -234,7 +234,6 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) BlogService *blogService;
 @property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
-@property (nonatomic, strong) ImageCropViewController *imageCropViewController;
 
 /// Used to restore the tableview selection during state restoration, and
 /// also when switching between a collapsed and expanded split view controller presentation

@@ -6,7 +6,7 @@ import WordPressKit
     case mobileEditorNotSet
 }
 
-@objc class EditorSettingsService: NSObject {
+@objc public class EditorSettingsService: NSObject {
 
     let coreDataStack: CoreDataStackSwift
 
@@ -16,12 +16,12 @@ import WordPressKit
 
     // For Objective-C compatibility, but we don't want Swift code to use it
     @available(swift, obsoleted: 1.0)
-    @objc init(coreDataStack: CoreDataStack) {
+    @objc public init(coreDataStack: CoreDataStack) {
         self.coreDataStack = coreDataStack as! CoreDataStackSwift
     }
 
     @objc(syncEditorSettingsForBlog:success:failure:)
-    func syncEditorSettings(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
+    public func syncEditorSettings(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
         guard let api = api(for: blog) else {
             // SelfHosted non-jetpack sites won't sync with remote.
             return success()

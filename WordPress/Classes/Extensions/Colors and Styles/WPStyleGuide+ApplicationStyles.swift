@@ -117,7 +117,7 @@ extension WPStyleGuide {
     }
 
     @objc
-    class func configureTableViewCell(_ cell: UITableViewCell?) {
+    public class func configureTableViewCell(_ cell: UITableViewCell?) {
         guard let cell else {
             return
         }

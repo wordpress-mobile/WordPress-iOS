@@ -66,7 +66,7 @@ private extension TwitterDeprecationTableFooterView {
         contentView.pinSubviewToAllEdgeMargins(label)
     }
 
-    @objc func labelTapped(_ sender: UITapGestureRecognizer) {
+    @objc public func labelTapped(_ sender: UITapGestureRecognizer) {
         guard let presentingViewController,
               let source,
               let attributedText = label.attributedText else {

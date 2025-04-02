@@ -5,7 +5,7 @@ open class PlanService: NSObject {
 
     private let coreDataStack: CoreDataStack
 
-    @objc init(coreDataStack: CoreDataStack) {
+    @objc public init(coreDataStack: CoreDataStack) {
         self.coreDataStack = coreDataStack
     }
 

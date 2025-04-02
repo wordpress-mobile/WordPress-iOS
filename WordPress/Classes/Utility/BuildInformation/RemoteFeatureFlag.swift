@@ -2,7 +2,7 @@ import Foundation
 import BuildSettingsKit
 
 @objc
-enum RemoteFeatureFlag: Int, CaseIterable {
+public enum RemoteFeatureFlag: Int, CaseIterable {
     case jetpackFeaturesRemovalPhaseOne
     case jetpackFeaturesRemovalPhaseTwo
     case jetpackFeaturesRemovalPhaseThree
@@ -242,9 +242,9 @@ extension RemoteFeatureFlag: OverridableFlag {
 /// Objective-C bridge for RemoteFeatureFlag.
 ///
 /// Since we can't expose properties on Swift enums we use a class instead
-class RemoteFeature: NSObject {
+public class RemoteFeature: NSObject {
     /// Returns a boolean indicating if the feature is enabled
-    @objc static func enabled(_ feature: RemoteFeatureFlag) -> Bool {
-        return feature.enabled()
+    @objc public static func enabled(_ feature: RemoteFeatureFlag) -> Bool {
+        feature.enabled()
     }
 }

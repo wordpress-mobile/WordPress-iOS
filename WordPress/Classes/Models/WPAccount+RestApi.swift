@@ -9,7 +9,7 @@ extension WPAccount {
     ///
     /// This used to be defined in the Objective-C layer, but we moved it here in a Swift extension in an attempt to decouple the model code from it.
     /// This was done in the context of https://github.com/wordpress-mobile/WordPress-iOS/pull/24165 .
-    @objc var wordPressComRestApi: WordPressComRestApi? {
+    @objc public var wordPressComRestApi: WordPressComRestApi? {
         if let api = _private_wordPressComRestApi {
             return api
         }
