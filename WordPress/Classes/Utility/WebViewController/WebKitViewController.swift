@@ -593,6 +593,9 @@ extension WebKitViewController: WKUIDelegate {
             DDLogError("WebView \(webView) didFailProvisionalNavigation: \(error.localizedDescription)")
         }
     }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    }
 }
 
 extension WebKitViewController: UIPopoverPresentationControllerDelegate {

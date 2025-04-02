@@ -270,7 +270,7 @@ extension PreviewWebKitViewController {
         webView.evaluateJavaScript(selectedDevice.viewportScript, completionHandler: nil)
     }
 
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         UIView.animate(withDuration: 0.2) {
             self.webView.alpha = 1
         }

@@ -14,7 +14,7 @@ protocol SharingAuthorizationDelegate: NSObjectProtocol {
 }
 
 @objc
-class SharingAuthorizationWebViewController: WPWebViewController {
+class SharingAuthorizationWebViewController: WebKitViewController {
     private static let loginURL = "https://wordpress.com/wp-login.php"
 
     /// Verification loading -- dismiss on completion
@@ -34,11 +34,11 @@ class SharingAuthorizationWebViewController: WPWebViewController {
         self.delegate = delegate
         self.publicizer = publicizer
 
-        super.init(nibName: "WPWebViewController", bundle: nil)
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.authenticate(blog: blog)
+        configuration.secureInteraction = true
 
-        self.authenticator = RequestAuthenticator(blog: blog)
-        self.secureInteraction = true
-        self.url = url
+        super.init(configuration: configuration)
     }
 
     required init?(coder: NSCoder) {
@@ -98,10 +98,9 @@ class SharingAuthorizationWebViewController: WPWebViewController {
 
     // MARK: - Misc
 
-    @IBAction
-    override func dismiss() {
+    override func close() {
         guard let delegate else {
-            super.dismiss()
+            super.close()
             return
         }
 
@@ -119,19 +118,11 @@ class SharingAuthorizationWebViewController: WPWebViewController {
 // MARK: - WKNavigationDelegate
 
 extension SharingAuthorizationWebViewController {
-
-#if compiler(>=6)
-    override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping @MainActor @Sendable (WKNavigationActionPolicy) -> Void) {
+    override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         decidePolicy(webView: webView, navigationAction: navigationAction, decisionHandler: decisionHandler)
     }
-#else
-    override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        decidePolicy(webView: webView, navigationAction: navigationAction) { decisionHandler($0) }
-    }
-#endif
 
     private func decidePolicy(webView: WKWebView, navigationAction: WKNavigationAction, decisionHandler: @escaping @MainActor @Sendable (WKNavigationActionPolicy) -> Void) {
-
         // Prevent a second verify load by someone happy clicking.
         guard !loadingVerify,
             let url = navigationAction.request.url else {
@@ -155,12 +146,12 @@ extension SharingAuthorizationWebViewController {
             return
         case .deny:
             decisionHandler(.cancel)
-            dismiss()
+            close()
             return
         }
     }
 
-    override func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+    override func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         if loadingVerify && (error as NSError).code == NSURLErrorCancelled {
             // Authenticating to Facebook and Twitter can return an false
             // NSURLErrorCancelled (-999) error. However the connection still succeeds.
@@ -168,7 +159,7 @@ extension SharingAuthorizationWebViewController {
             return
         }
 
-        super.webView(webView, didFail: navigation, withError: error)
+        super.webView(webView, didFailProvisionalNavigation: navigation, withError: error)
     }
 
     override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
