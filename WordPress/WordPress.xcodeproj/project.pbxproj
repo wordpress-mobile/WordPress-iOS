@@ -1283,6 +1283,7 @@
 				Utility/Spotlight/Utils/SearchIdentifierGenerator.swift,
 				"ViewRelated/Blog/Blog Dashboard/Cards/Prompts/BloggingPromptsAttribution.swift",
 				ViewRelated/Reader/Controllers/SiteOrganizationType.swift,
+				WordPress.xcdatamodeld,
 			);
 			publicHeaders = (
 				Models/AbstractPost.h,
