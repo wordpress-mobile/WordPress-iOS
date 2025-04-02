@@ -229,6 +229,16 @@ enum XcodeSupport {
             "WordPressUI",
             "TextBundle",
             "TracksMini",
+            // Even though the extensions are all in Swift, we need to include the Objective-C
+            // version of CocoaLumberjack to avoid linking issues with other dependencies that
+            // use it.
+            //
+            // Example:
+            //
+            // Undefined symbols for architecture arm64:
+            //  "_OBJC_CLASS_$_DDLog", referenced from:
+            //       in AppExtensionsService.o
+            .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
             .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             .product(name: "Down", package: "Down"),
             .product(name: "Gridicons", package: "Gridicons-iOS"),
