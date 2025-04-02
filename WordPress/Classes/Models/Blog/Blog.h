@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
 
+/// - warning: These flags are app-agnostic and define whether the _blog_ supports
+/// the given feature. If the app needs to determine whether to show a feature or
+/// not, it has to implement additional logic on top of it.
 typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Can the blog be removed?
     BlogFeatureRemovable,

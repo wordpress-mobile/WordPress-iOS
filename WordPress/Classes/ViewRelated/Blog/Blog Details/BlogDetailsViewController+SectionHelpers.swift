@@ -215,3 +215,16 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
         }
     }
 }
+
+private extension Blog {
+    /// If the blog should show the "Jetpack" or the "General" section
+    var shouldShowJetpackSection: Bool {
+        if supports(.activity) && !isWPForTeams() {
+            return true
+        }
+        if supports(.jetpackSettings) && JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
+            return true
+        }
+        return false
+    }
+}
