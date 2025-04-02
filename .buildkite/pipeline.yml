@@ -71,6 +71,20 @@ steps:
         notify:
           - github_commit_status:
               context: "Reader Unit Tests"
+      - label: "🔬 WordPressData Unit Tests"
+        command: |
+          .buildkite/commands/shared-set-up.sh
+          xcodebuild \
+            -scheme WordPressData \
+            -destination 'platform=iOS Simulator,OS=18.3.1,name=iPhone 16' \
+            test \
+            | xcbeautify
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "Unit Tests WordPressData"
 
   #################
   # UI Tests
