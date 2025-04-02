@@ -1143,6 +1143,7 @@
 				"Models/Blog/Blog+Creation.swift",
 				"Models/Blog/Blog+HomepageSettings.swift",
 				"Models/Blog/Blog+Jetpack.swift",
+				"Models/Blog/Blog+Lookup.swift",
 				"Models/Blog/Blog+Plans.swift",
 				"Models/Blog/Blog+Post.swift",
 				"Models/Blog/Blog+Quota.swift",
