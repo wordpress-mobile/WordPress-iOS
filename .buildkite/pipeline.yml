@@ -71,6 +71,20 @@ steps:
         notify:
           - github_commit_status:
               context: "Reader Unit Tests"
+      - label: "🔬 Keystone Unit Tests"
+        command: |
+          .buildkite/commands/shared-set-up.sh
+          xcodebuild \
+            -scheme Keystone \
+            -destination 'platform=iOS Simulator,OS=18.3.1,name=iPhone 16' \
+            test \
+            | xcbeautify
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        artifact_paths:
+          - "build/results/*"
+        notify:
+          - github_commit_status:
+              context: "Unit Tests Keystone"
       - label: "🔬 WordPressData Unit Tests"
         command: |
           .buildkite/commands/shared-set-up.sh
