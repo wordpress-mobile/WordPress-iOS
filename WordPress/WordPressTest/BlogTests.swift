@@ -340,4 +340,13 @@ final class BlogTests: CoreDataTestCase {
             blog(withAccount: false).supportsStockPhotos(buildSettings: .fixture(brand: .wordpress))
         )
     }
+
+    func testSupportsTenor() {
+        func blog() -> Blog {
+            BlogBuilder(mainContext).build()
+        }
+
+        XCTAssertTrue(blog().supportsTenor(buildSettings: .fixture(brand: .jetpack)))
+        XCTAssertFalse(blog().supportsTenor(buildSettings: .fixture(brand: .wordpress)))
+    }
 }
