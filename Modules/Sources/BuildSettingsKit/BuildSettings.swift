@@ -31,6 +31,12 @@ public struct BuildSettings: Sendable {
         public var twitterHandle: String
         public var twitterURL: URL
         public var blogURL: URL
+
+        init(twitterHandle: String, twitterURL: URL, blogURL: URL) {
+            self.twitterHandle = twitterHandle
+            self.twitterURL = twitterURL
+            self.blogURL = blogURL
+        }
     }
 
     public static var current: BuildSettings {
@@ -43,6 +49,38 @@ public struct BuildSettings: Sendable {
             // TODO: update tests to ensure none of the rely on `BuildSettings` availability as it's incompatible with parallelized tests
             return .live
         }
+    }
+
+    init(
+        configuration: BuildConfiguration,
+        brand: AppBrand,
+        pushNotificationAppID: String,
+        appGroupName: String,
+        appKeychainAccessGroup: String,
+        eventNamePrefix: String,
+        explatPlatform: String,
+        itunesAppID: String,
+        appURLScheme: String,
+        jetpackAppURLScheme: String,
+        about: ProductAboutDetails,
+        zendeskSourcePlatform: String,
+        mobileAnnounceAppID: String,
+        authKeychainServiceName: String
+    ) {
+        self.configuration = configuration
+        self.brand = brand
+        self.pushNotificationAppID = pushNotificationAppID
+        self.appGroupName = appGroupName
+        self.appKeychainAccessGroup = appKeychainAccessGroup
+        self.eventNamePrefix = eventNamePrefix
+        self.explatPlatform = explatPlatform
+        self.itunesAppID = itunesAppID
+        self.appURLScheme = appURLScheme
+        self.jetpackAppURLScheme = jetpackAppURLScheme
+        self.about = about
+        self.zendeskSourcePlatform = zendeskSourcePlatform
+        self.mobileAnnounceAppID = mobileAnnounceAppID
+        self.authKeychainServiceName = authKeychainServiceName
     }
 }
 
