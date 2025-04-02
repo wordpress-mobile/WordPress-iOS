@@ -150,7 +150,7 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
         }
     }
 
-    var description: String {
+    public var description: String {
         switch self {
         case .jetpackMigrationPreventDuplicateNotifications:
             return "Jetpack Migration prevent duplicate WordPress app notifications when Jetpack is installed"
