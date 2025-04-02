@@ -17,10 +17,10 @@ final class AztecMediaPickingCoordinator {
                                                 message: nil,
                                                 preferredStyle: UIDevice.isPad() ? .alert : .actionSheet)
 
-        if blog.supports(.stockPhotos) {
+        if MediaPickerSource.freePhotos(blog: blog).isEnabled {
             alertController.addAction(freePhotoAction(origin: origin, blog: blog))
         }
-        if blog.supports(.tenor) {
+        if MediaPickerSource.freeGIFs(blog: blog).isEnabled {
             alertController.addAction(tenorAction(origin: origin, blog: blog))
         }
 

@@ -1120,9 +1120,9 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
         post.managedObjectContext?.performAndWait {
             [
-                MediaPickerMenu.isImagePlaygroundAvailable ? .imagePlayground : nil,
-                post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
-                post.blog.supports(.tenor) ? .tenor : nil,
+                MediaPickerSource.playground.isEnabled ? .imagePlayground : nil,
+                MediaPickerSource.freePhotos(blog: post.blog).isEnabled ? .stockPhotos : nil,
+                MediaPickerSource.freeGIFs(blog: post.blog).isEnabled ? .tenor : nil,
                 .otherApps,
                 .allFiles
             ].compactMap { $0 }

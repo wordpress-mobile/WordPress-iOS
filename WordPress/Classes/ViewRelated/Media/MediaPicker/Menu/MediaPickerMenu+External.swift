@@ -4,7 +4,7 @@ import UIKit
 
 extension MediaPickerMenu {
     func makeStockPhotos(blog: Blog, delegate: ExternalMediaPickerViewDelegate) -> UIAction? {
-        guard blog.supports(.stockPhotos) else {
+        guard MediaPickerSource.freePhotos(blog: blog).isEnabled else {
             return nil
         }
         return UIAction(
@@ -39,7 +39,7 @@ extension MediaPickerMenu {
 
 extension MediaPickerMenu {
     func makeFreeGIFAction(blog: Blog, delegate: ExternalMediaPickerViewDelegate) -> UIAction? {
-        guard blog.supports(.tenor) else {
+        guard MediaPickerSource.freePhotos(blog: blog).isEnabled else {
             return nil
         }
         return UIAction(

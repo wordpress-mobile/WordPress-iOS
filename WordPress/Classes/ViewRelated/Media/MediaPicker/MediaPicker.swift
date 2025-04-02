@@ -53,21 +53,20 @@ struct MediaPicker<Content: View>: View {
         controller.onSelection = onSelection
         viewModel.controller = controller // Needs to be retained
 
-        return configuration.sources.compactMap { source in
+        return configuration.sources.filter(\.isEnabled).compactMap { source in
             switch source {
             case .photos:
-                return menu.makePhotosAction(delegate: controller)
+                menu.makePhotosAction(delegate: controller)
             case .camera:
-                return menu.makeCameraAction(delegate: controller)
+                 menu.makeCameraAction(delegate: controller)
             case .siteMedia(let blog):
-                return menu.makeSiteMediaAction(blog: blog, delegate: controller)
+                menu.makeSiteMediaAction(blog: blog, delegate: controller)
             case .playground:
-                return menu.makeImagePlaygroundAction(delegate: controller)
+                menu.makeImagePlaygroundAction(delegate: controller)
             case .freePhotos(let blog):
-                return menu.makeStockPhotos(blog: blog, delegate: controller)
+                menu.makeStockPhotos(blog: blog, delegate: controller)
             case .freeGIFs(let blog):
-                return menu.makeFreeGIFAction(blog: blog, delegate: controller)
-
+                menu.makeFreeGIFAction(blog: blog, delegate: controller)
             }
         }
     }
@@ -90,6 +89,19 @@ enum MediaPickerSource {
     case playground // Image Playground
     case freePhotos(blog: Blog) // Pexels
     case freeGIFs(blog: Blog) // Tenor
+
+    var isEnabled: Bool {
+        switch self {
+        case .photos, .camera, .siteMedia:
+            true
+        case .playground:
+            MediaPickerMenu.isImagePlaygroundAvailable
+        case .freePhotos(let blog):
+            blog.supports(.stockPhotos) && JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+        case .freeGIFs:
+            JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+        }
+    }
 }
 
 struct MediaPickerSelection {

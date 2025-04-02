@@ -15,7 +15,7 @@ extension MediaPickerMenu {
     }
 
     func makeImagePlaygroundAction(delegate: ImagePlaygroundPickerDelegate) -> UIAction? {
-        guard MediaPickerMenu.isImagePlaygroundAvailable else {
+        guard MediaPickerSource.playground.isEnabled else {
             return nil
         }
         return UIAction(
