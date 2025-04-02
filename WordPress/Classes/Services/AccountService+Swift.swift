@@ -5,7 +5,7 @@ import ShareExtensionCore
 extension AccountService {
     func setupAppExtensions() {
         let context = coreDataStack.mainContext
-        context.perform {
+        context.performAndWait {
             guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context) else {
                 return
             }
@@ -58,10 +58,6 @@ extension AccountService {
                 wpAssertionFailure("failed to fetch the default account")
             }
         }
-    }
-
-    private func setupAppExtension(for blog: Blog) throws {
-
     }
 
     /// Loads the default WordPress account's cookies into shared cookie storage.
