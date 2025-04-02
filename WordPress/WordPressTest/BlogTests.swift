@@ -319,4 +319,25 @@ final class BlogTests: CoreDataTestCase {
         XCTAssertNotNil(blog.account)
         XCTAssertTrue(blog.supportsRestApi())
     }
+
+    func testSupportsStockPhotos() {
+        func blog(withAccount: Bool) -> Blog {
+            var builder = BlogBuilder(mainContext)
+            if withAccount { builder = builder.withAnAccount() }
+            return builder.build()
+        }
+
+        XCTAssertTrue(
+            blog(withAccount: true).supportsStockPhotos(buildSettings: .fixture(brand: .jetpack))
+        )
+        XCTAssertFalse(
+            blog(withAccount: true).supportsStockPhotos(buildSettings: .fixture(brand: .wordpress))
+        )
+        XCTAssertFalse(
+            blog(withAccount: false).supportsStockPhotos(buildSettings: .fixture(brand: .jetpack))
+        )
+        XCTAssertFalse(
+            blog(withAccount: false).supportsStockPhotos(buildSettings: .fixture(brand: .wordpress))
+        )
+    }
 }

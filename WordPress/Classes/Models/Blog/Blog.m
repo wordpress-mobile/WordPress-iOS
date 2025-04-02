@@ -569,7 +569,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         case BlogFeatureStats:
             return [self supportsRestApi] && [self isViewingStatsAllowed];
         case BlogFeatureStockPhotos:
-            return [self supportsRestApi] && [JetpackFeaturesRemovalCoordinator jetpackFeaturesEnabled];
+            return [self supportsStockPhotos];
         case BlogFeatureTenor:
             return [JetpackFeaturesRemovalCoordinator jetpackFeaturesEnabled];
         case BlogFeatureSharing:
