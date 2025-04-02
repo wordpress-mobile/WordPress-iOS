@@ -68,7 +68,7 @@ private extension CountriesMapView {
     }
 
     func mapColors() -> [UIColor] {
-        return [UIAppColor.primary(.shade10), UIAppColor.primary]
+        return [UIAppColor.primary(.shade5), UIAppColor.primary]
     }
 
     func setGradientColors() {
