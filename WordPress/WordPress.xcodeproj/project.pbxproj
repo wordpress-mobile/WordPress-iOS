@@ -1977,7 +1977,6 @@
 				Utility/Logging/WPLogger.h,
 				Utility/Sharing/WPActivityDefaults.h,
 				Utility/UIAlertControllerProxy.h,
-				Utility/WPAuthTokenIssueSolver.h,
 				Utility/WPError.h,
 				Utility/WPTableViewHandler.h,
 				"ViewRelated/Blog/Blog Details/BlogDetailsViewController.h",

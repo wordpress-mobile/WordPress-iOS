@@ -65,7 +65,6 @@
 #import "WPAccount.h"
 #import "WPActivityDefaults.h"
 #import "WPAppAnalytics.h"
-#import "WPAuthTokenIssueSolver.h"
 #import "WPUploadStatusButton.h"
 #import "WPError.h"
 #import "WPTableViewHandler.h"

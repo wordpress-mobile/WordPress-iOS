@@ -104,9 +104,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         customizeAppearance()
         configureAnalytics()
 
-        let solver = WPAuthTokenIssueSolver()
-        _ = solver.fixAuthTokenIssueAndDo { [weak self] in
-            self?.runStartupSequence(with: launchOptions ?? [:])
+        AuthTokenIssueSolver().fixAuthTokenIssueIfNeeded(in: window) {
+            self.runStartupSequence(with: launchOptions ?? [:])
         }
 
         return true
