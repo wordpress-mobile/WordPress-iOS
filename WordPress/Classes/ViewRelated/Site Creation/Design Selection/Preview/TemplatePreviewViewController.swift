@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import WebKit
 
 protocol TemplatePreviewViewDelegate: AnyObject {
     typealias PreviewDevice = PreviewDeviceSelectionViewController.PreviewDevice

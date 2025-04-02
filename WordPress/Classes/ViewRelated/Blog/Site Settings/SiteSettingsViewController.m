@@ -14,7 +14,6 @@
 #else
 #import "WordPress-Swift.h"
 #endif
-#import "WPWebViewController.h"
 #import "AccountService.h"
 
 @import WordPressKit;

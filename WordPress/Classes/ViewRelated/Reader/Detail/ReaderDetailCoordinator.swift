@@ -3,6 +3,7 @@ import WordPressReader
 import WordPressShared
 import WordPressUI
 import Combine
+import WebKit
 
 class ReaderDetailCoordinator {
 

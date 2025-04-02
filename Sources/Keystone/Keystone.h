@@ -77,7 +77,6 @@ FOUNDATION_EXPORT const unsigned char KeystoneVersionString[];
 #import <Keystone/WPUploadStatusButton.h>
 #import <Keystone/WPError.h>
 #import <Keystone/WPTableViewHandler.h>
-#import <Keystone/WPWebViewController.h>
 #import <Keystone/WPTabBarController.h>
 #import <Keystone/WPLogger.h>
 

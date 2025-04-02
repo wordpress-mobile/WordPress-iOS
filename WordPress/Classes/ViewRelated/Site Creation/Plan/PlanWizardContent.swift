@@ -1,4 +1,5 @@
 import UIKit
+import WebKit
 
 final class PlanWizardContent: WebKitViewController {
     typealias PlanId = Int

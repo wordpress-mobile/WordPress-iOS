@@ -14,6 +14,7 @@ import UIDeviceIdentifier
 import SVProgressHUD
 import WordPressUI
 import ZendeskCoreSDK
+import WebKit
 
 public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 

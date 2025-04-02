@@ -1,4 +1,5 @@
 import UIKit
+import WebKit
 
 class BlazeCampaignDetailsWebViewModel: BlazeWebViewModel {
 

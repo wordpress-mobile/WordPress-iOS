@@ -69,7 +69,6 @@
 #import "WPUploadStatusButton.h"
 #import "WPError.h"
 #import "WPTableViewHandler.h"
-#import "WPWebViewController.h"
 #import "WPTabBarController.h"
 #import "WPLogger.h"
 
