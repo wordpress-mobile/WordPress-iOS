@@ -305,4 +305,18 @@ final class BlogTests: CoreDataTestCase {
             try? XCTAssertNotNil(Blog.lookup(withID: 123, in: context))
         }
     }
+
+    func testWhenAccountNilDoesSupportRestApiFalse() {
+        let blog = BlogBuilder(mainContext).build()
+
+        XCTAssertNil(blog.account)
+        XCTAssertFalse(blog.supportsRestApi())
+    }
+
+    func testWhenAccountNotNilDoesSupportRestApiTrue() {
+        let blog = BlogBuilder(mainContext).withAnAccount().build()
+
+        XCTAssertNotNil(blog.account)
+        XCTAssertTrue(blog.supportsRestApi())
+    }
 }

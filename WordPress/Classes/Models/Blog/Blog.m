@@ -846,12 +846,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     return _selfHostedSiteRestApi;
 }
 
-- (BOOL)supportsRestApi {
-    // We don't want to check for `restApi` as it can be `nil` when the token
-    // is missing from the keychain.
-    return self.account != nil;
-}
-
 #pragma mark - Jetpack
 
 - (BOOL)jetpackActiveModule:(NSString *)moduleName
