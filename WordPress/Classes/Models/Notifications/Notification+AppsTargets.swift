@@ -1,6 +1,6 @@
 import FormattableContentKit
 
-extension Notification {
+extension WordPressData.Notification {
 
     func renderSubject() -> NSAttributedString? {
         guard let subjectContent = subjectContentGroup?.blocks.first else {
@@ -82,7 +82,7 @@ extension Notification {
 
 // MARK: - Notification Computed Properties
 //
-extension Notification {
+extension WordPressData.Notification {
 
     /// Verifies if the current notification is a Pingback.
     ///
@@ -277,7 +277,7 @@ extension Notification {
 
 // MARK: - Notification Subtypes
 
-extension Notification {
+extension WordPressData.Notification {
 
     /// Parses the meta data of the notification to extract key information like postID
     /// Parsing logic and wrapper used depends on the notification kind
@@ -301,13 +301,13 @@ extension Notification {
     enum ParsedNotification {
         case newPost(NewPostNotification)
         case comment(CommentNotification)
-        case other(Notification)
+        case other(WordPressData.Notification)
     }
 }
 
 // MARK: - Update Helpers
 //
-extension Notification {
+extension WordPressData.Notification {
     /// Updates the local fields with the new values stored in a given Remote Notification
     ///
     func update(with remote: RemoteNotification) {
@@ -329,7 +329,7 @@ extension Notification {
 
 // MARK: - Notification Types
 //
-extension Notification {
+extension WordPressData.Notification {
     /// Meta Parsing Keys
     ///
     fileprivate enum MetaKeys {
