@@ -1,7 +1,6 @@
 #import "ReaderSiteService.h"
 
 #import "AccountService.h"
-@import WordPressDataObjC;
 #import "ReaderPostService.h"
 #import "ReaderPost.h"
 #import "WPAccount.h"

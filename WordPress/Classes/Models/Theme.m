@@ -1,6 +1,5 @@
 #import "Theme.h"
 #import "Blog.h"
-@import WordPressDataObjC;
 #import "WPAccount.h"
 #import "AccountService.h"
 #ifdef KEYSTONE

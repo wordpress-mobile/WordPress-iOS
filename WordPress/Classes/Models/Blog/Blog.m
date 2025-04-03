@@ -1,7 +1,6 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "AccountService.h"
-@import WordPressDataObjC;
 @import WordPressShared;
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
@@ -155,7 +154,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (NSNumber *)organizationID {
     NSNumber *organizationID = [self primitiveValueForKey:@"organizationID"];
-    
+
     if (organizationID == nil) {
         return @0;
     } else {
@@ -188,7 +187,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
         DDLogInfo(@"Blog display URL is nil");
         return nil;
     }
-    
+
     NSError *error = nil;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:self.url options:0 range:NSMakeRange(0, [self.url length]) withTemplate:@""]];
@@ -306,7 +305,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 }
 
 - (NSArray *)sortedPostFormatNames
-{    
+{
     return [[self sortedPostFormats] wp_map:^id(NSString *key) {
         return self.postFormats[key];
     }];
@@ -794,7 +793,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     if (!allowedFileTypes || allowedFileTypes.count == 0) {
         return nil;
     }
-    
+
     return [NSSet setWithArray:allowedFileTypes];
 }
 

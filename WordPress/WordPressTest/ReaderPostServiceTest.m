@@ -1,4 +1,3 @@
-@import WordPressDataObjC;
 
 #import <XCTest/XCTest.h>
 

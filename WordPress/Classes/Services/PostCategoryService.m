@@ -1,7 +1,6 @@
 #import "PostCategoryService.h"
 #import "PostCategory.h"
 #import "Blog.h"
-@import WordPressDataObjC;
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
 #else

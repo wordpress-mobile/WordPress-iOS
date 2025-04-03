@@ -123,11 +123,9 @@ let package = Package(
             .product(name: "ScreenObject", package: "ScreenObject"),
             .product(name: "XCUITestHelpers", package: "ScreenObject"),
         ], swiftSettings: [.swiftLanguageMode(.v5)]),
-        .target(name: "WordPressDataObjC"),
         .target(
             name: "WordPressData",
             dependencies: [
-                .target(name: "WordPressDataObjC"),
                 .target(name: "WordPressSharedObjC")
             ]
         ),
@@ -255,7 +253,6 @@ enum XcodeSupport {
                 "SFHFKeychainUtils",
                 "ShareExtensionCore",
                 "WordPressFlux",
-                "WordPressDataObjC", // Currently empty, here for future proofing
                 "WordPressShared",
                 "WordPressReader",
                 "WordPressUI",
@@ -292,7 +289,6 @@ enum XcodeSupport {
             ]),
             .xcodeTarget("XcodeTarget_WordPressTests", dependencies: testDependencies + [
                 "SFHFKeychainUtils",
-                "WordPressDataObjC", // Currently empty, here for future proofing
                 "WordPressShared",
                 "WordPressUI",
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
