@@ -1,6 +1,4 @@
 #import "StatsViewController.h"
-#import "Blog.h"
-#import "WPAccount.h"
 #import "BlogService.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
@@ -9,6 +7,7 @@
 #endif
 #import "WPAppAnalytics.h"
 
+@import WordPressData;
 @import WordPressShared;
 @import Reachability;
 

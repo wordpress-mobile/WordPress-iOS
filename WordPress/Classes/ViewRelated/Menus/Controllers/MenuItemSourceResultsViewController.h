@@ -1,7 +1,11 @@
 #import <UIKit/UIKit.h>
 #import "MenuItemSourceTextBar.h"
 #import "MenuItemSourceCell.h"
+#ifdef KEYSTONE
 #import "MenuItem.h"
+#else
+@import WordPressData;
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 

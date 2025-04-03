@@ -1,5 +1,9 @@
 #import <UIKit/UIKit.h>
+#ifdef KEYSTONE
 #import "AbstractPost.h"
+#else
+@import WordPressData;
+#endif
 
 // TODO: It can be removed when the new editor is released. It only exists to support the "Featured" badge on featured images in Gutenberg mobile.
 @protocol FeaturedImageDelegate

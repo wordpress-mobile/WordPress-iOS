@@ -1,8 +1,6 @@
 #import "SiteSettingsViewController.h"
 
-#import "Blog.h"
 #import "BlogService.h"
-#import "PostCategory.h"
 #import "PostCategoryService.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
@@ -14,7 +12,7 @@
 #import "WordPress-Swift.h"
 #endif
 #import "AccountService.h"
-
+@import WordPressData;
 @import WordPressKit;
 @import WordPressShared;
 @import NSURL_IDN;
@@ -102,7 +100,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 - (instancetype)initWithBlog:(Blog *)blog
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    
+
     self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         _blog = blog;
@@ -134,7 +132,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
                                                object:nil];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
+
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshTriggered:) forControlEvents:UIControlEventValueChanged];
 
@@ -162,7 +160,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     }
 
     NSMutableArray *sections = [NSMutableArray arrayWithObjects:@(SiteSettingsSectionGeneral), nil];
-    
+
     if (self.bloggingSettingsRowCount > 0) {
         [sections addObject:@(SiteSettingsSectionBlogging)];
     }
@@ -193,7 +191,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
             [sections addObject:@(SiteSettingsSectionJetpackSettings)];
         }
     }
-    
+
     if ([self.blog supports:BlogFeatureSiteManagement]) {
         [sections addObject:@(SiteSettingsSectionAdvanced)];
     }
@@ -212,16 +210,16 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
                             @(SiteSettingsWritingDefaultCategory),
                             @(SiteSettingsWritingTags),
                             @(SiteSettingsWritingDefaultPostFormat), nil];
-    
+
     BOOL jetpackFeaturesEnabled = [JetpackFeaturesRemovalCoordinator jetpackFeaturesEnabled];
-    
+
     if (jetpackFeaturesEnabled) {
         [rows addObject:@(SiteSettingsWritingRelatedPosts)];
     }
-    
+
     [rows addObject:@(SiteSettingsWritingDateAndTimeFormat)];
     [rows addObject:@(SiteSettingsPostPerPage)];
-    
+
     if (jetpackFeaturesEnabled && [self.blog supports:BlogFeatureJetpackImageSettings]) {
         [rows addObject:@(SiteSettingsSpeedUpYourSite)];
     }
@@ -438,7 +436,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
     _mediaQuotaCell.title = NSLocalizedString(@"Space used", @"Label for showing the available disk space quota available for media");
     _mediaQuotaCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+
     return _mediaQuotaCell;
 }
 
@@ -448,7 +446,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     if (_discussionSettingsCell) {
         return _discussionSettingsCell;
     }
-    
+
     _discussionSettingsCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Discussion", @"Label for selecting the Blog Discussion Settings section")
                                                                  editable:YES
                                                           reuseIdentifier:nil];
@@ -536,7 +534,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         case (SiteSettingsWritingDefaultCategory):
             [self configureDefaultCategoryCell];
             return self.defaultCategoryCell;
-            
+
         case (SiteSettingsWritingTags):
             return self.tagsCell;
 
@@ -589,7 +587,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     if (_startOverCell) {
         return _startOverCell;
     }
-    
+
     _startOverCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Start Over", @"Label for selecting the Start Over Settings item")
                                                         editable:YES
                                                  reuseIdentifier:nil];
@@ -601,7 +599,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     if (_exportContentCell) {
         return _exportContentCell;
     }
-    
+
     _exportContentCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     [WPStyleGuide configureTableViewActionCell:_exportContentCell];
     _exportContentCell.textLabel.text = NSLocalizedString(@"Export Content", @"Label for selecting the Export Content Settings item");
@@ -614,7 +612,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     if (_deleteSiteCell) {
         return _deleteSiteCell;
     }
-    
+
     _deleteSiteCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     [WPStyleGuide configureTableViewActionCell:_deleteSiteCell];
     _deleteSiteCell.textLabel.text = NSLocalizedString(@"Delete Site", @"Label for selecting the Delete Site Settings item");
@@ -648,7 +646,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
         case SiteSettingsSectionBlogging:
             return [self tableView:tableView cellForBloggingSettingsInRow:indexPath.row];
-            
+
         case SiteSettingsSectionHomepage:
             return self.homepageSettingsCell;
 
@@ -706,7 +704,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         case SiteSettingsSectionGeneral:
             headingTitle = NSLocalizedString(@"General", @"Title for the general section in site settings screen");
             break;
-        
+
         case SiteSettingsSectionBlogging:
             headingTitle = NSLocalizedString(@"Blogging", @"Title for the blogging section in site settings screen");
             break;
@@ -765,16 +763,16 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 - (void)showLanguageSelectorForBlog:(Blog *)blog
 {
     NSParameterAssert(blog);
-    
+
     __weak __typeof__(self) weakSelf = self;
-    
+
     LanguageViewController *languageViewController = [[LanguageViewController alloc] initWithBlog:blog];
     languageViewController.onChange = ^(NSNumber *newLanguageID){
         weakSelf.blog.settings.languageID = newLanguageID;
         [weakSelf saveSettings];
         [WPAnalytics trackSettingsChange:@"site_settings" fieldName:@"language" value:newLanguageID];
     };
-    
+
     [self.navigationController pushViewController:languageViewController animated:YES];
 }
 
@@ -849,7 +847,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
             }
         }
     };
-    
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -860,7 +858,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         case SiteSettingsWritingDefaultCategory:
             [self showDefaultCategorySelector];
             break;
-            
+
         case SiteSettingsWritingTags:
             [self showTagList];
             break;
@@ -924,7 +922,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         case SiteSettingsSectionGeneral:
             [self tableView:tableView didSelectInGeneralSettingsAt:indexPath];
             break;
-            
+
         case SiteSettingsSectionBlogging:
             [self tableView:tableView didSelectInBloggingSettingsAt:indexPath];
             break;
@@ -950,7 +948,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
         case SiteSettingsSectionAdvanced:
             [self tableView:tableView didSelectInAdvancedSectionRow:indexPath.row];
-            
+
             // UIKit doesn't automatically manage cell selection when a modal presentation is triggered,
             // which is the case for Start Over when there's no paid plan, so we deselect the cell manually.
             if (indexPath.row == SiteSettingsAdvancedStartOver) {
@@ -979,7 +977,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     } failure:^(NSError * __unused error) {
         [weakSelf.refreshControl endRefreshing];
     }];
-    
+
 }
 
 #pragma mark - Authentication methods
@@ -987,21 +985,21 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 - (NSString *)getURLToValidate
 {
     NSString *urlToValidate = self.blog.url;
-    
+
     if (![urlToValidate hasPrefix:@"http"]) {
         urlToValidate = [NSString stringWithFormat:@"http://%@", urlToValidate];
     }
-    
+
     NSError *error = nil;
-    
+
     NSRegularExpression *wplogin = [NSRegularExpression regularExpressionWithPattern:@"/wp-login.php$" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *wpadmin = [NSRegularExpression regularExpressionWithPattern:@"/wp-admin/?$" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *trailingslash = [NSRegularExpression regularExpressionWithPattern:@"/?$" options:NSRegularExpressionCaseInsensitive error:&error];
-    
+
     urlToValidate = [wplogin stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
     urlToValidate = [wpadmin stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
     urlToValidate = [trailingslash stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
-    
+
     return urlToValidate;
 }
 
@@ -1036,7 +1034,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 - (void)loginValidationFailedWithError:(NSError *)error
 {
-    self.password = self.blog.password;    
+    self.password = self.blog.password;
     if (error) {
         NSString *message;
         if (error.code == 403) {
@@ -1051,11 +1049,11 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 - (NSString *)getTagsCountPresentableString:(NSInteger)tagCount
 {
     NSString *format = NSLocalizedString(@"%@ Tags", @"The number of tags in the writting settings. Plural. %@ is a placeholder for the number");
-    
+
     if (tagCount == 1) {
         format = NSLocalizedString(@"%@ Tag", @"The number of tags in the writting settings. Singular. %@ is a placeholder for the number");
     }
-    
+
     NSString *numberOfTags = [NSString stringWithFormat: format, @(tagCount)];
     return numberOfTags;
 }
@@ -1113,7 +1111,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 - (void)showDiscussionSettingsForBlog:(Blog *)blog
 {
     NSParameterAssert(blog);
-    
+
     DiscussionSettingsViewController *settings = [[DiscussionSettingsViewController alloc] initWithBlog:blog];
     [self.navigationController pushViewController:settings animated:YES];
 }

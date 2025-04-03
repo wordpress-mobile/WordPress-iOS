@@ -2,13 +2,14 @@
 
 #import "AccountService.h"
 #import "BlogService.h"
-#import "Blog.h"
 
 #import "BlogDetailsViewController.h"
 #import "WPAppAnalytics.h"
 #ifdef KEYSTONE
+#import "Blog.h"
 #import "Keystone-Swift.h"
 #else
+@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 

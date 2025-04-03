@@ -6,11 +6,12 @@
 #import "SiteSettingsViewController.h"
 #import "SharingViewController.h"
 #import "StatsViewController.h"
-#import "WPAccount.h"
 #import "WPAppAnalytics.h"
 #ifdef KEYSTONE
+#import "WPAccount.h"
 #import "Keystone-Swift.h"
 #else
+@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 #import "MenusViewController.h"

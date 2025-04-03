@@ -1,11 +1,12 @@
 #import "ThemeService.h"
 
+#ifdef KEYSTONE
 #import "Blog.h"
 #import "Theme.h"
 #import "WPAccount.h"
-#ifdef KEYSTONE
 #import "Keystone-Swift.h"
 #else
+@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 @import WordPressKit;

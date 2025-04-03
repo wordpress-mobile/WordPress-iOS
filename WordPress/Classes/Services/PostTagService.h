@@ -1,4 +1,8 @@
+#ifdef KEYSTONE
 #import "LocalCoreDataService.h"
+#else
+@import WordPressData;
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 

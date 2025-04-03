@@ -1,18 +1,19 @@
 #import "BlogService.h"
-#import "Blog.h"
-#import "WPAccount.h"
 #import "AccountService.h"
 #import "WPError.h"
-#import "Media.h"
 #import "PostCategoryService.h"
 #import "CommentService.h"
-#import "PostService.h"
 #ifdef KEYSTONE
+#import "Blog.h"
+#import "WPAccount.h"
+#import "Media.h"
+#import "PostType.h"
+#import "PostService.h"
 #import "Keystone-Swift.h"
 #else
 #import "WordPress-Swift.h"
+@import WordPressData;
 #endif
-#import "PostType.h"
 @import WordPressKit;
 @import WordPressShared;
 

@@ -1,9 +1,5 @@
 #import "MenusViewController.h"
-#import "Blog.h"
 #import "MenusService.h"
-#import "Menu.h"
-#import "MenuLocation.h"
-#import "MenuItem.h"
 #import "MenuHeaderViewController.h"
 #import "MenuDetailsViewController.h"
 #import "MenuItemsViewController.h"
@@ -11,8 +7,11 @@
 #import "Menu+ViewDesign.h"
 #import "WPAppAnalytics.h"
 #ifdef KEYSTONE
+#import "MenuItem.h"
+#import "MenuLocation.h"
 #import "Keystone-Swift.h"
 #else
+@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 

@@ -1,15 +1,13 @@
 #import "MenuItemSourceResultsViewController.h"
 #import "MenuItemSourceTextBar.h"
-#import "Menu.h"
 #import "MenuItemSourceFooterView.h"
-#import "Blog.h"
 #import "Menu+ViewDesign.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
 #else
 #import "WordPress-Swift.h"
 #endif
-
+@import WordPressData;
 @import WordPressShared;
 
 static NSTimeInterval const SearchBarFetchRequestUpdateDelay = 0.10;

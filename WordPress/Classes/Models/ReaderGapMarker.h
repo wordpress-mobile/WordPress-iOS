@@ -1,5 +1,9 @@
 #import <CoreData/CoreData.h>
+#ifdef KEYSTONE
 #import "ReaderPost.h"
+#else
+@import WordPressData;
+#endif
 
 /**
  The ReaderGapMarker is a subclass of ReaderrPost whose purpose is to act as a 

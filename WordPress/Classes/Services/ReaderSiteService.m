@@ -2,11 +2,12 @@
 
 #import "AccountService.h"
 #import "ReaderPostService.h"
+#ifdef KEYSTONE
 #import "ReaderPost.h"
 #import "WPAccount.h"
-#ifdef KEYSTONE
 #import "Keystone-Swift.h"
 #else
+@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 #import "WPAppAnalytics.h"

@@ -1,7 +1,11 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
+#ifdef KEYSTONE
 #import "Media.h"
+#else
+@import WordPressData;
+#endif
 
 @interface Media (Extensions)
 

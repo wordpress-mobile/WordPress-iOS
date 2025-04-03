@@ -1,5 +1,9 @@
 #import <Foundation/Foundation.h>
+#ifdef KEYSTONE
 #import "CoreDataStack.h"
+#else
+@import WordPressData;
+#endif
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wnullability-completeness"

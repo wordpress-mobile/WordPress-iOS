@@ -1,7 +1,10 @@
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
+#ifdef KEYSTONE
 #import "LocalCoreDataService.h"
-
+#else
+@import WordPressData;
+#endif
 
 @class Media;
 @class RemoteVideoPressVideo;

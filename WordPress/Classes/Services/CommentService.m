@@ -1,13 +1,14 @@
 #import "CommentService.h"
 #import "AccountService.h"
+#ifdef KEYSTONE
+#import "AbstractPost.h"
 #import "Blog.h"
 #import "ReaderPost.h"
 #import "WPAccount.h"
 #import "PostService.h"
-#import "AbstractPost.h"
-#ifdef KEYSTONE
 #import "Keystone-Swift.h"
 #else
+@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 

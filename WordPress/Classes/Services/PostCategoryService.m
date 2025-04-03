@@ -1,9 +1,10 @@
 #import "PostCategoryService.h"
-#import "PostCategory.h"
-#import "Blog.h"
 #ifdef KEYSTONE
+#import "Blog.h"
+#import "PostCategory.h"
 #import "Keystone-Swift.h"
 #else
+@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 @import WordPressKit;
