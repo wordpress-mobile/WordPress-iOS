@@ -8,7 +8,7 @@ import WordPressShared
 /// This is used in Comments and Notifications as part of the Comments
 /// Unification project.
 ///
-class ListTableViewCell: UITableViewCell, NibReusable {
+public class ListTableViewCell: UITableViewCell, NibReusable {
     // MARK: IBOutlets
 
     @IBOutlet private weak var indicatorView: UIView!
@@ -25,30 +25,30 @@ class ListTableViewCell: UITableViewCell, NibReusable {
 
     /// Added to provide objc support, since NibReusable protocol methods aren't accessible from objc.
     /// This should be removed when the caller is rewritten in Swift.
-    @objc static let reuseIdentifier = defaultReuseID
+    @objc public static let reuseIdentifier = defaultReuseID
 
-    @objc static let estimatedRowHeight = 68
+    @objc public static let estimatedRowHeight = 68
 
     /// The color of the indicator circle.
-    @objc var indicatorColor: UIColor = .clear {
+    @objc public var indicatorColor: UIColor = .clear {
         didSet {
             updateIndicatorColor()
         }
     }
 
     /// Toggle variable to determine whether the indicator circle should be shown.
-    @objc var showsIndicator: Bool = false {
+    @objc public var showsIndicator: Bool = false {
         didSet {
             updateIndicatorColor()
         }
     }
 
     /// The default placeholder image.
-    @objc var placeholderImage: UIImage = Style.placeholderImage
+    @objc public var placeholderImage: UIImage = Style.placeholderImage
 
     /// The attributed string to be displayed in titleLabel.
     /// To keep the styles uniform between List components, refer to regular and bold styles in `WPStyleGuide+List`.
-    @objc var attributedTitleText: NSAttributedString? {
+    @objc public var attributedTitleText: NSAttributedString? {
         get {
             titleLabel.attributedText
         }
@@ -59,7 +59,7 @@ class ListTableViewCell: UITableViewCell, NibReusable {
 
     /// The snippet text, displayed in snippetLabel.
     /// Note that new values are trimmed of whitespaces and newlines.
-    @objc var snippetText: String? {
+    @objc public var snippetText: String? {
         get {
             snippetLabel.text
         }
@@ -76,7 +76,7 @@ class ListTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Initialization
 
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
         configureSubviews()
     }

@@ -42,14 +42,14 @@ protocol ZendeskUtilsProtocol {
 /// This class provides the functionality to communicate with Zendesk for Help Center and support ticket interaction,
 /// as well as displaying views for the Help Center, new tickets, and ticket list.
 ///
-@objc class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
+class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
     // MARK: - Public Properties
 
     static var sharedInstance: ZendeskUtils = ZendeskUtils(contextManager: ContextManager.shared)
     static var zendeskEnabled = false
-    @objc static var unreadNotificationsCount = 0
+    static var unreadNotificationsCount = 0
 
-    @objc static var showSupportNotificationIndicator: Bool {
+    static var showSupportNotificationIndicator: Bool {
         return unreadNotificationsCount > 0
     }
 
@@ -100,7 +100,7 @@ protocol ZendeskUtilsProtocol {
         self.contextManager = contextManager
     }
 
-    @objc static func setup() {
+    static func setup() {
         guard getZendeskCredentials() else {
             return
         }

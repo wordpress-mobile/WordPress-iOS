@@ -508,7 +508,7 @@ public protocol ThemePresenter: AnyObject {
 
     // MARK: - WPContentSyncHelperDelegate
 
-    func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    public func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         if syncHelper == themesSyncHelper {
             syncThemePage(1, search: searchName, success: success, failure: failure)
         } else if syncHelper == customThemesSyncHelper {
@@ -516,14 +516,14 @@ public protocol ThemePresenter: AnyObject {
         }
     }
 
-    func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    public func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         if syncHelper == themesSyncHelper {
             let nextPage = themesSyncingPage + 1
             syncThemePage(nextPage, search: searchName, success: success, failure: failure)
         }
     }
 
-    func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
+    public func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
         updateResults()
         let lastVisibleTheme = collectionView?.indexPathsForVisibleItems.last ?? IndexPath(item: 0, section: 0)
         if syncHelper == themesSyncHelper {
@@ -531,7 +531,7 @@ public protocol ThemePresenter: AnyObject {
         }
     }
 
-    func hasNoMoreContent(_ syncHelper: WPContentSyncHelper) {
+    public func hasNoMoreContent(_ syncHelper: WPContentSyncHelper) {
         if syncHelper == themesSyncHelper {
             themesSyncingPage = 0
         }

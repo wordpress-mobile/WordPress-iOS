@@ -416,7 +416,7 @@ private extension StatsWidgetsStore {
 }
 
 extension StatsViewController {
-    @objc func initializeStatsWidgetsIfNeeded() {
+    @objc public func initializeStatsWidgetsIfNeeded() {
         StoreContainer.shared.statsWidgets.initializeStatsWidgetsIfNeeded()
     }
 }

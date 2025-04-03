@@ -25,10 +25,8 @@ enum SupportConfiguration {
     ) -> Bool {
         return isJetpack && migrationState == .completed
     }
-}
 
-@objc class SupportConfigurationObjC: NSObject {
-    @objc static var isStartOverSupportEnabled: Bool {
-        return SupportConfiguration.current() == .zendesk
+    static var isStartOverSupportEnabled: Bool {
+        SupportConfiguration.current() == .zendesk
     }
 }

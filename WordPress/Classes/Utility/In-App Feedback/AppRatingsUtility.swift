@@ -5,24 +5,24 @@ import BuildSettingsKit
 /// app review.  This class is loosely based on
 /// [Appirater](https://github.com/arashpayan/appirater)
 ///
-class AppRatingUtility: NSObject {
+class AppRatingUtility {
     /// Sets the number of system wide significant events are required when
     /// calling `shouldPromptForAppReview`. Ideally this number should be a
     /// number less than the total of all the significant event counts for each
     /// section so as to trigger the review prompt for a fairly active user who
     /// uses the app in a broad fashion.
     ///
-    @objc var systemWideSignificantEventCountRequiredForPrompt: Int = 1
+    var systemWideSignificantEventCountRequiredForPrompt: Int = 1
 
     /// The App Review URL that we send off to UIApplication to open up the app
     /// store review page.
     ///
-    @objc var appReviewUrl: URL { Constants.defaultAppReviewURL }
+    var appReviewUrl: URL { Constants.defaultAppReviewURL }
 
     /// Sets the number of days that have to pass between AppReview prompts
     /// Apple only allows 3 prompts per year. We're trying to be a bit more conservative and are doing
     /// up to 2 times a year (183 = round(365/2)).
-    @objc var numberOfDaysToWaitBetweenPrompts: Int = 183
+    var numberOfDaysToWaitBetweenPrompts: Int = 183
 
     /// A value to indicate whether this launch was an upgrade from a previous version
     var didUpgradeVersion: Bool = false
@@ -49,10 +49,10 @@ class AppRatingUtility: NSObject {
         return promptingDisabledRemote || promptingDisabledLocal
     }
 
-    @objc static let shared = AppRatingUtility(defaults: UserDefaults.standard)
+    static let shared = AppRatingUtility(defaults: UserDefaults.standard)
 
     init(defaults: UserDefaults,
-               featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) {
+         featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) {
         self.defaults = defaults
         self.featureFlagStore = featureFlagStore
     }
@@ -63,7 +63,7 @@ class AppRatingUtility: NSObject {
     /// - Parameters:
     ///     - version: version number of the app, e.g. CFBundleShortVersionString
     ///
-    @objc func setVersion(_ version: String) {
+    func setVersion(_ version: String) {
         let trackingVersion = defaults.string(forKey: Key.currentVersion) ?? version
         defaults.set(version, forKey: Key.currentVersion)
 
@@ -85,20 +85,18 @@ class AppRatingUtility: NSObject {
     ///     - section: Section name, e.g. "Notifications"
     ///     - significantEventCount: The number of significant events required to trigger an app rating prompt for this particular section.
     ///
-    @objc(registerSection:withSignificantEventCount:)
     func register(section: String, significantEventCount count: Int) {
         sections[section] = Section(significantEventCount: count)
     }
 
     /// Increments significant events app wide.
     ///
-    @objc func incrementSignificantEvent() {
+    func incrementSignificantEvent() {
         incrementStoredValue(key: Key.significantEventCount)
     }
 
     /// Increments significant events for just this particular section.
     ///
-    @objc(incrementSignificantEventForSection:)
     func incrementSignificantEvent(section: String) {
         guard sections[section] != nil else {
             assertionFailure("Invalid section \(section)")
@@ -111,26 +109,26 @@ class AppRatingUtility: NSObject {
     /// Indicates that the user didn't want to review the app or leave feedback
     /// for this version.
     ///
-    @objc func declinedToRateCurrentVersion() {
+    func declinedToRateCurrentVersion() {
         defaults.set(true, forKey: Key.declinedToRateCurrentVersion)
         defaults.set(2, forKey: Key.numberOfVersionsToSkipPrompting)
     }
 
     /// Indicates that the user decided to give feedback for this version.
     ///
-    @objc func gaveFeedbackForCurrentVersion() {
+    func gaveFeedbackForCurrentVersion() {
         defaults.set(true, forKey: Key.gaveFeedbackForCurrentVersion)
     }
 
     /// Indicates that the use rated the current version of the app.
     ///
-    @objc func ratedCurrentVersion() {
+    func ratedCurrentVersion() {
         defaults.set(true, forKey: Key.ratedCurrentVersion)
     }
 
     /// Indicates that the user didn't like the current version of the app.
     ///
-    @objc func dislikedCurrentVersion() {
+    func dislikedCurrentVersion() {
         incrementStoredValue(key: Key.userDislikeCount)
         defaults.set(true, forKey: Key.dislikedCurrentVersion)
         defaults.set(2, forKey: Key.numberOfVersionsToSkipPrompting)
@@ -138,7 +136,7 @@ class AppRatingUtility: NSObject {
 
     /// Indicates the user did like the current version of the app.
     ///
-    @objc func likedCurrentVersion() {
+    func likedCurrentVersion() {
         incrementStoredValue(key: Key.userLikeCount)
         defaults.set(true, forKey: Key.likedCurrentVersion)
         defaults.set(1, forKey: Key.numberOfVersionsToSkipPrompting)
@@ -146,7 +144,7 @@ class AppRatingUtility: NSObject {
 
     /// Indicates whether enough time has passed since we last prompted the user for their opinion.
     ///
-    @objc func enoughTimePassedSinceLastPrompt()-> Bool {
+    func enoughTimePassedSinceLastPrompt()-> Bool {
         if let lastPromptDate = defaults.value(forKeyPath: Key.lastPromptToRateDate),
             let date = lastPromptDate as? Date,
             let days = Calendar.current.dateComponents([.day], from: date, to: Date()).day {
@@ -162,7 +160,7 @@ class AppRatingUtility: NSObject {
     /// Note that this method will check to see if app review prompts on a
     /// global basis have been shut off.
     ///
-    @objc func shouldPromptForAppReview() -> Bool {
+    func shouldPromptForAppReview() -> Bool {
         if !enoughTimePassedSinceLastPrompt()
             || shouldSkipRatingForCurrentVersion()
             || promptingDisabled {
@@ -182,7 +180,6 @@ class AppRatingUtility: NSObject {
     /// Note that this method will check to see if prompts for this section have
     /// been shut off entirely.
     ///
-    @objc(shouldPromptForAppReviewForSection:)
     func shouldPromptForAppReview(section name: String) -> Bool {
         guard let section = sections[name] else {
             assertionFailure("Invalid section \(name)")
@@ -203,19 +200,19 @@ class AppRatingUtility: NSObject {
 
     /// Records a prompt for a review
     ///
-    @objc func userWasPromptedToReview() {
+    func userWasPromptedToReview() {
         defaults.set(Date(), forKey: Key.lastPromptToRateDate)
     }
 
     /// Checks if the user has ever indicated that they like the app.
     ///
-    @objc func hasUserEverLikedApp() -> Bool {
+    func hasUserEverLikedApp() -> Bool {
         return defaults.integer(forKey: Key.userLikeCount) > 0
     }
 
     /// Checks if the user has ever indicated they dislike the app.
     ///
-    @objc func hasUserEverDislikedApp() -> Bool {
+    func hasUserEverDislikedApp() -> Bool {
         return defaults.integer(forKey: Key.userDislikeCount) > 0
     }
 
@@ -283,7 +280,7 @@ class AppRatingUtility: NSObject {
 
     // MARK: - Debug
 
-    override var debugDescription: String {
+    var debugDescription: String {
         var state = [String: Any]()
         defaults.dictionaryRepresentation()
             .filter({ key, _ in key.hasPrefix("AppRating") })
@@ -301,13 +298,13 @@ class AppRatingUtility: NSObject {
 
     // Overrides promptingDisabledLocal. For testing purposes only.
     //
-    @objc func _overridePromptingDisabledLocal(_ disabled: Bool) {
+    func _overridePromptingDisabledLocal(_ disabled: Bool) {
         promptingDisabledLocal = disabled
     }
 
     // Overrides lastPromptToRateDate. For testing purposes only.
     //
-    @objc func _overrideLastPromptToRateDate(_ date: Date) {
+    func _overrideLastPromptToRateDate(_ date: Date) {
         defaults.set(date, forKey: Key.lastPromptToRateDate)
     }
 

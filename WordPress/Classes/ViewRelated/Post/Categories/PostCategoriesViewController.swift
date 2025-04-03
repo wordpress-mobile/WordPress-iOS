@@ -2,19 +2,19 @@ import UIKit
 import SwiftUI
 import WordPressShared
 
-@objc protocol PostCategoriesViewControllerDelegate {
+@objc public protocol PostCategoriesViewControllerDelegate {
     @objc optional func postCategoriesViewController(_ controller: PostCategoriesViewController, didSelectCategory category: PostCategory)
     @objc optional func postCategoriesViewController(_ controller: PostCategoriesViewController, didUpdateSelectedCategories categories: NSSet)
 }
 
-@objc enum CategoriesSelectionMode: Int {
+@objc public enum CategoriesSelectionMode: Int {
     case post
     case parent
     case blogDefault
 }
 
-@objc class PostCategoriesViewController: UITableViewController {
-   @objc weak var delegate: PostCategoriesViewControllerDelegate?
+@objc public class PostCategoriesViewController: UITableViewController {
+   @objc public weak var delegate: PostCategoriesViewControllerDelegate?
 
     var onCategoriesChanged: (() -> Void)?
 
@@ -28,24 +28,24 @@ import WordPressShared
 
     private var hasSyncedCategories = false
 
-    @objc init(blog: Blog, currentSelection: [PostCategory]?, selectionMode: CategoriesSelectionMode) {
+    @objc public init(blog: Blog, currentSelection: [PostCategory]?, selectionMode: CategoriesSelectionMode) {
         self.blog = blog
         self.selectionMode = selectionMode
         self.originalSelection = currentSelection
         super.init(style: .insetGrouped)
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
         configureView()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         reloadCategories()
         if !hasSyncedCategories {
@@ -53,7 +53,7 @@ import WordPressShared
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         onCategoriesChanged?()
     }
@@ -191,11 +191,11 @@ import WordPressShared
 
     //tableView
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    public override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var result = categories.count
         if selectionMode == .parent {
             result = result + 1
@@ -203,7 +203,7 @@ import WordPressShared
         return result
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.categoryCellIdentifier, for: indexPath) as? WPTableViewCell else {
             return UITableViewCell()
         }
@@ -226,7 +226,7 @@ import WordPressShared
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let currentSelectedIndexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: currentSelectedIndexPath, animated: true)
         }

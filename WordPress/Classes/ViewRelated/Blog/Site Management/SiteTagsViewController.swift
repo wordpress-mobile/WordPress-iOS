@@ -56,7 +56,7 @@ final class SiteTagsViewController: UITableViewController {
 
     private var isPerformingInitialSync = false
 
-    @objc public init(blog: Blog) {
+    init(blog: Blog) {
         self.blog = blog
         super.init(style: .plain)
     }

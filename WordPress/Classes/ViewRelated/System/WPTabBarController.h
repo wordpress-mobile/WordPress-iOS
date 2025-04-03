@@ -21,6 +21,7 @@ extern NSNotificationName const WPTabBarHeightChangedNotification;
 @interface WPTabBarController : UITabBarController <UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, strong, readonly, nullable) NotificationsViewController *notificationsViewController;
+@property (nonatomic, strong, readonly, nullable) UINavigationController *notificationsNavigationController;
 @property (nonatomic, strong, readonly, nullable) UINavigationController *readerNavigationController;
 @property (nonatomic, strong, readonly, nonnull) MeViewController *meViewController;
 @property (nonatomic, strong, readonly, nonnull) UINavigationController *meNavigationController;

@@ -358,7 +358,7 @@ open class JetpackSettingsViewController: UITableViewController {
 }
 
 extension JetpackSettingsViewController: JetpackConnectionDelegate {
-    func jetpackDisconnectedForBlog(_ blog: Blog) {
+    public func jetpackDisconnectedForBlog(_ blog: Blog) {
         if blog == self.blog {
             navigationController?.popToRootViewController(animated: true)
         }

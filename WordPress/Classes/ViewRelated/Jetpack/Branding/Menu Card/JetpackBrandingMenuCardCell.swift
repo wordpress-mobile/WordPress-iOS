@@ -2,7 +2,7 @@ import UIKit
 import Lottie
 import WordPressUI
 
-class JetpackBrandingMenuCardCell: UITableViewCell {
+public class JetpackBrandingMenuCardCell: UITableViewCell {
 
     // MARK: Private Variables
 
@@ -135,12 +135,12 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     // MARK: Initializers
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         super.init(coder: coder)
         commonInit()
     }
@@ -151,7 +151,7 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
 
     // MARK: Cell Lifecycle
 
-    override func prepareForReuse() {
+    public override func prepareForReuse() {
         super.prepareForReuse()
 
         containerStackView.removeAllSubviews()
@@ -414,7 +414,7 @@ private extension JetpackBrandingMenuCardCell {
 extension JetpackBrandingMenuCardCell {
 
     @objc(configureWithViewController:)
-    func configure(with viewController: BlogDetailsViewController) {
+    public func configure(with viewController: BlogDetailsViewController) {
         self.viewController = viewController
         presenter = JetpackBrandingMenuCardPresenter(blog: viewController.blog)
         config = presenter?.cardConfig()

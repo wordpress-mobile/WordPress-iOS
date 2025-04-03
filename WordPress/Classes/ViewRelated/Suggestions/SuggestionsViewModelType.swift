@@ -1,6 +1,6 @@
 import Foundation
 
-@objc protocol SuggestionsListViewModelType: AnyObject {
+@objc public protocol SuggestionsListViewModelType: AnyObject {
     var suggestionType: SuggestionType { get set }
     var prominentSuggestionsIds: [NSNumber]? { get set }
 

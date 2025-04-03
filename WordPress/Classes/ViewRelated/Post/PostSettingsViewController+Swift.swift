@@ -25,11 +25,11 @@ extension PostSettingsViewController {
         presentingViewController.present(navigation, animated: true)
     }
 
-    @objc var isDraftOrPending: Bool {
+    @objc public var isDraftOrPending: Bool {
         apost.original().isStatus(in: [.draft, .pending])
     }
 
-    @objc func onViewDidLoad() {
+    @objc public func onViewDidLoad() {
         if isStandalone {
             setupStandaloneEditor()
         }
@@ -146,7 +146,7 @@ extension PostSettingsViewController: UIAdaptivePresentationControllerDelegate {
 // MARK: - PostSettingsViewController (Visibility)
 
 extension PostSettingsViewController {
-    @objc func showPostVisibilitySelector() {
+    @objc public func showPostVisibilitySelector() {
         let view = PostVisibilityPicker(selection: .init(post: apost)) { [weak self] selection in
             guard let self else { return }
 
@@ -186,7 +186,7 @@ extension PostSettingsViewController {
 // MARK: - PostSettingsViewController (Publish Date)
 
 extension PostSettingsViewController {
-    @objc func showPublishDatePicker() {
+    @objc public func showPublishDatePicker() {
         var viewModel = PublishSettingsViewModel(post: self.apost)
         let viewController = PublishDatePickerViewController.make(viewModel: viewModel) { date in
             WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
@@ -199,7 +199,7 @@ extension PostSettingsViewController {
 // MARK: - PostSettingsViewController (Page Attributes)
 
 extension PostSettingsViewController {
-    @objc func showParentPageController() {
+    @objc public func showParentPageController() {
         guard let page = (self.apost as? Page) else {
             wpAssertionFailure("post has to be a page")
             return
@@ -234,7 +234,7 @@ extension PostSettingsViewController {
         }
     }
 
-    @objc func getParentPageTitle() -> String? {
+    @objc public func getParentPageTitle() -> String? {
         guard let page = (self.apost as? Page) else {
             wpAssertionFailure("post has to be a page")
             return nil
@@ -252,10 +252,10 @@ extension PostSettingsViewController {
     }
 }
 
-// MARK: - PostSettingsViewController (Featued Image)
+// MARK: - PostSettingsViewController (Misc)
 
 extension PostSettingsViewController {
-    @objc func configureFeaturedImageCell(cell: UITableViewCell, viewModel: PostSettingsFeaturedImageViewModel) {
+    @objc public func configureFeaturedImageCell(cell: UITableViewCell, viewModel: PostSettingsFeaturedImageViewModel) {
         var configuration = UIHostingConfiguration {
             PostSettingsFeaturedImageCell(post: apost, viewModel: viewModel) { [weak self] in
                 self?.showFeaturedImageSelector(cell: cell)
@@ -275,6 +275,29 @@ extension PostSettingsViewController {
         let lightboxVC = LightboxViewController(media: featuredImage)
         lightboxVC.configureZoomTransition(sourceView: cell.contentView)
         present(lightboxVC, animated: true)
+    }
+
+    @objc public func showPostAuthorSelector() {
+        let authorVC = PostAuthorSelectorViewController(post: apost)
+        authorVC.completion = { [weak authorVC] in
+            WPAnalytics.track(.editorPostAuthorChanged, properties: ["via": "settings"])
+            authorVC?.dismiss() // It pops VC
+            self.tableView.reloadData()
+        }
+        navigationController?.pushViewController(authorVC, animated: true)
+    }
+
+    @objc public func showTagsPicker() {
+        guard let post = apost as? Post else {
+            return wpAssertionFailure("expected post type")
+        }
+        let tagsPickerVC = PostTagPickerViewController(tags: post.tags ?? "", blog: post.blog)
+        tagsPickerVC.onValueChanged = { value in
+            WPAnalytics.track(.editorPostTagsChanged, properties: ["via": "settings"])
+            post.tags = value
+        }
+        WPAnalytics.track(.postSettingsAddTagsShown)
+        navigationController?.pushViewController(tagsPickerVC, animated: true)
     }
 }
 

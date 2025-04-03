@@ -101,7 +101,7 @@ private struct SotWConstants {
 
 // MARK: - UITableViewCell Wrapper
 
-class SotWTableViewCell: UITableViewCell {
+public class SotWTableViewCell: UITableViewCell {
 
     private lazy var cardView: SotWCardView = {
         let cardView = SotWCardView()
@@ -117,12 +117,12 @@ class SotWTableViewCell: UITableViewCell {
         return cardView
     }()
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupView()
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -132,7 +132,7 @@ class SotWTableViewCell: UITableViewCell {
         WPAnalytics.track(.sotw2023NudgePostEventCardShown)
     }
 
-    @objc func configure(onCardHidden: (() -> Void)?) {
+    @objc public func configure(onCardHidden: (() -> Void)?) {
         cardView.didHideCard = onCardHidden
     }
 }
@@ -141,7 +141,7 @@ class SotWTableViewCell: UITableViewCell {
 
 extension BlogDetailsViewController {
 
-    @objc func sotw2023SectionViewModel() -> BlogDetailsSection {
+    @objc public func sotw2023SectionViewModel() -> BlogDetailsSection {
         let row = BlogDetailsRow()
         row.callback = {}
         let section = BlogDetailsSection(title: nil,
@@ -151,7 +151,7 @@ extension BlogDetailsViewController {
         return section
     }
 
-    @objc func shouldShowSotW2023Card() -> Bool {
+    @objc public func shouldShowSotW2023Card() -> Bool {
         guard AppConfiguration.isWordPress && RemoteFeatureFlag.wordPressSotWCard.enabled() else {
             return false
         }

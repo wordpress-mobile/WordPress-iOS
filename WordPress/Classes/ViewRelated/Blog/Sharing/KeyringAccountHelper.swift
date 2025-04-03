@@ -11,15 +11,15 @@ struct KeyringAccount {
     var keyringConnection: KeyringConnection
 }
 
-@objc class KeyringAccountHelper: NSObject {
+@objc public class KeyringAccountHelper: NSObject {
 
-    @objc class ValidationError: NSObject {
-        @objc let header: String
-        @objc let body: String
-        @objc let continueTitle: String
-        @objc let cancelTitle: String
+    @objc public class ValidationError: NSObject {
+        @objc public let header: String
+        @objc public let body: String
+        @objc public let continueTitle: String
+        @objc public let cancelTitle: String
 
-        @objc let continueURL: URL?
+        @objc public let continueURL: URL?
 
         init(header: String, body: String, continueTitle: String, cancelTitle: String, continueURL: URL? = nil) {
             self.header = header
@@ -38,7 +38,7 @@ struct KeyringAccount {
     ///
     /// - Returns: An instance of `ValidationError` object, this is a plain object just with the information for an alert.
     ///
-    @objc func validateConnections(_  connections: [KeyringConnection], with publicizeService: PublicizeService) -> ValidationError? {
+    @objc public func validateConnections(_  connections: [KeyringConnection], with publicizeService: PublicizeService) -> ValidationError? {
         let accounts = accountsFromKeyringConnections(connections, with: publicizeService)
 
         if publicizeService.serviceID == PublicizeService.facebookServiceID, accounts.isEmpty {

@@ -1,7 +1,6 @@
 import Foundation
 
-@objcMembers final class BlazeHelper: NSObject {
-
+enum BlazeHelper {
     static func isBlazeFlagEnabled() -> Bool {
         guard AppConfiguration.isJetpack else {
             return false

@@ -6,7 +6,7 @@ import WordPressData
 import WordPressUI
 
 /// Manages top-level Reader navigation.
-final class ReaderPresenter: NSObject, SplitViewDisplayable {
+public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     private let sidebarViewModel = ReaderSidebarViewModel()
 
     // The view controllers used during split view presentation.
@@ -23,7 +23,7 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     private var selectionObserver: AnyCancellable?
 
-    override init() {
+    public override init() {
         secondary = UINavigationController()
         sidebar = ReaderSidebarViewController(viewModel: sidebarViewModel)
         sidebar.navigationItem.largeTitleDisplayMode = .automatic
@@ -36,7 +36,7 @@ final class ReaderPresenter: NSObject, SplitViewDisplayable {
     }
 
     // TODO: (reader) update to allow seamless transitions between split view and tabs
-    @objc func prepareForTabBarPresentation() -> UINavigationController {
+    @objc public func prepareForTabBarPresentation() -> UINavigationController {
         guard AccountHelper.isDotcomAvailable() else {
             return UINavigationController(rootViewController: ReaderLoggedOutViewController())
         }

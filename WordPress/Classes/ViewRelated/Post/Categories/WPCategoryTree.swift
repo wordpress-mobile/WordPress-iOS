@@ -1,14 +1,14 @@
 import Foundation
 
-class WPCategoryTree: NSObject {
+public class WPCategoryTree: NSObject {
     var parent: PostCategory?
     var children = [WPCategoryTree]()
 
-    @objc init(parent: PostCategory?) {
+    @objc public init(parent: PostCategory?) {
         self.parent = parent
     }
 
-    @objc func getChildrenFromObjects(_ collection: [Any]) {
+    @objc public func getChildrenFromObjects(_ collection: [Any]) {
         collection.forEach {
             guard let category = $0 as? PostCategory else {
                 return
@@ -22,7 +22,7 @@ class WPCategoryTree: NSObject {
         }
     }
 
-    @objc func getAllObjects() -> [PostCategory] {
+    @objc public func getAllObjects() -> [PostCategory] {
         var allObjects = [PostCategory]()
         if let parent {
             allObjects.append(parent)

@@ -1,17 +1,17 @@
 import UIKit
 
 @objc
-class MigrationSuccessCell: UITableViewCell {
+public class MigrationSuccessCell: UITableViewCell {
 
     var onTap: (() -> Void)?
     var cardView: MigrationSuccessCardView?
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -25,12 +25,12 @@ class MigrationSuccessCell: UITableViewCell {
         cardView = view
     }
 
-    @objc func configureForSidebarMode() {
+    @objc public func configureForSidebarMode() {
         cardView?.backgroundColor = .clear
     }
 
     @objc(configureWithViewController:)
-    func configure(with viewController: UIViewController) {
+    public func configure(with viewController: UIViewController) {
         self.onTap = { [weak viewController] in
             guard let viewController else {
                 return
@@ -38,19 +38,5 @@ class MigrationSuccessCell: UITableViewCell {
             let handler = MigrationSuccessActionHandler()
             handler.showDeleteWordPressOverlay(with: viewController)
         }
-    }
-}
-
-extension BlogDetailsViewController {
-
-    @objc func migrationSuccessSectionViewModel() -> BlogDetailsSection {
-        let row = BlogDetailsRow()
-        row.callback = {}
-
-        let section = BlogDetailsSection(title: nil,
-                                         rows: [row],
-                                         footerTitle: nil,
-                                         category: .migrationSuccess)
-        return section
     }
 }

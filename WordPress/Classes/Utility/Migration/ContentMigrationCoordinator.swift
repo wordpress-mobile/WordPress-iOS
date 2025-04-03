@@ -4,9 +4,9 @@ import BuildSettingsKit
 
 /// Encapsulates logic related to content migration from WordPress to Jetpack.
 ///
-@objc class ContentMigrationCoordinator: NSObject {
+class ContentMigrationCoordinator {
 
-    @objc static var shared: ContentMigrationCoordinator = {
+    static var shared: ContentMigrationCoordinator = {
         .init()
     }()
 
@@ -42,8 +42,6 @@ import BuildSettingsKit
         self.sharedPersistentRepository = sharedPersistentRepository
         self.eligibilityProvider = eligibilityProvider
         self.tracker = tracker
-
-        super.init()
 
         // register for account change notification.
         ensureBackupDataDeletedOnLogout()
@@ -106,7 +104,7 @@ import BuildSettingsKit
     /// Attempts to clean up the exported data by re-exporting user content if they're still eligible, or deleting them otherwise.
     /// Re-exporting user content ensures that the exported data will match the latest state of Account and Blogs.
     ///
-    @objc func cleanupExportedDataIfNeeded() {
+    func cleanupExportedDataIfNeeded() {
         // try to re-export the user content if they're still eligible.
         startAndDo { [weak self] result in
             switch result {

@@ -43,7 +43,7 @@ fileprivate extension StatsTabType {
     }
 }
 
-class SiteStatsDashboardViewController: UIViewController {
+public class SiteStatsDashboardViewController: UIViewController {
     static let lastSelectedStatsDateKey = "LastSelectedStatsDate"
 
     // MARK: - Properties
@@ -54,7 +54,7 @@ class SiteStatsDashboardViewController: UIViewController {
     private var pageViewController: UIPageViewController?
     private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
 
-    @objc lazy var manageInsightsButton: UIBarButtonItem = {
+    @objc public lazy var manageInsightsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
                 image: UIImage(systemName: "gearshape"),
                 style: .plain,
@@ -95,7 +95,7 @@ class SiteStatsDashboardViewController: UIViewController {
 
     // MARK: - View
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         // Important to make navigation bar match the filter bar
@@ -109,7 +109,7 @@ class SiteStatsDashboardViewController: UIViewController {
         view.accessibilityIdentifier = "stats-dashboard"
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addWillEnterForegroundObserver()
         JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .stats)
@@ -131,16 +131,16 @@ class SiteStatsDashboardViewController: UIViewController {
         }
     }
 
-    @objc func manageInsightsButtonTapped() {
+    @objc public func manageInsightsButtonTapped() {
         insightsTableViewController.showAddInsightView(source: "nav_bar")
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeWillEnterForegroundObserver()
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.destination {
         case let pageViewController as UIPageViewController:
             self.pageViewController = pageViewController
@@ -149,7 +149,7 @@ class SiteStatsDashboardViewController: UIViewController {
         }
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if traitCollection.verticalSizeClass == .regular, traitCollection.horizontalSizeClass == .compact {
             updatePeriodView(oldSelectedTab: currentSelectedTab)
         }

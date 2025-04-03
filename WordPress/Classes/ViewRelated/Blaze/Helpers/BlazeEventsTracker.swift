@@ -1,7 +1,7 @@
 import Foundation
 import WordPressShared
 
-@objcMembers class BlazeEventsTracker: NSObject {
+struct BlazeEventsTracker {
 
     private static let currentStepPropertyKey = "current_step"
     private static let errorPropertyKey = "error"

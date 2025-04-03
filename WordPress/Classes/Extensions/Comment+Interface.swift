@@ -11,7 +11,7 @@ extension Comment {
     /// readable, and you should use the *descriptionForSectionIdentifier* method
     /// as well!
     ///
-    @objc func relativeDateSectionIdentifier() -> String? {
+    @objc public func relativeDateSectionIdentifier() -> String? {
         guard let dateCreated else {
             return nil
         }
@@ -46,7 +46,7 @@ extension Comment {
 
     /// Translates a relative date section identifier into a human-readable string.
     ///
-    @objc static func descriptionForSectionIdentifier(_ identifier: String) -> String {
+    @objc public static func descriptionForSectionIdentifier(_ identifier: String) -> String {
         guard let section = Sections(rawValue: identifier) else {
             return String()
         }

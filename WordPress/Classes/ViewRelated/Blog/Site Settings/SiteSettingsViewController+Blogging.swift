@@ -2,18 +2,18 @@ import UIKit
 
 extension SiteSettingsViewController {
 
-    @objc var bloggingSettingsRowCount: Int {
+    @objc public var bloggingSettingsRowCount: Int {
         bloggingSettingsRows.count
     }
 
-    @objc func tableView(_ tableView: UITableView, cellForBloggingSettingsInRow row: Int) -> UITableViewCell {
+    @objc public func tableView(_ tableView: UITableView, cellForBloggingSettingsInRow row: Int) -> UITableViewCell {
         switch bloggingSettingsRows[row] {
         case .reminders:
             return remindersTableViewCell
         }
     }
 
-    @objc func tableView(_ tableView: UITableView, didSelectInBloggingSettingsAt indexPath: IndexPath) {
+    @objc public func tableView(_ tableView: UITableView, didSelectInBloggingSettingsAt indexPath: IndexPath) {
         switch bloggingSettingsRows[indexPath.row] {
         case .reminders:
             presentBloggingRemindersFlow(indexPath: indexPath)

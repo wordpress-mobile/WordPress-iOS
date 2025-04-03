@@ -8,7 +8,6 @@ import Gridicons
 
 // MARK: - WordPressAuthenticationManager
 //
-@objc
 class WordPressAuthenticationManager: NSObject {
     static let WPSigninDidFinishNotification = WordPressAuthenticator.WPSigninDidFinishNotification
 
@@ -196,8 +195,7 @@ extension WordPressAuthenticationManager {
     ///
     /// - Parameter onDismissed: Closure to be executed whenever the returned ViewController is dismissed.
     ///
-    @objc
-    class func signinForWPComFixingAuthToken(_ onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
+    static func signinForWPComFixingAuthToken(_ onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
         let context = ContextManager.shared.mainContext
         let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
 
@@ -207,8 +205,7 @@ extension WordPressAuthenticationManager {
     /// Presents the WordPress Authentication UI from the rootViewController (configured to allow only WordPress.com).
     /// This method pre-populates the Email + Username with the values returned by the default WordPress.com account (if any).
     ///
-    @objc
-    class func showSigninForWPComFixingAuthToken() {
+    static func showSigninForWPComFixingAuthToken() {
         guard let presenter = UIApplication.shared.mainWindow?.rootViewController else {
             assertionFailure()
             return

@@ -1,5 +1,6 @@
-#import "SharingAuthorizationHelper.h"
+@import WordPressShared;
 
+#import "SharingAuthorizationHelper.h"
 #import "Blog.h"
 #import "BlogService.h"
 
@@ -92,7 +93,7 @@
  */
 - (void)authorizeWithConnectionURL:(NSURL *)connectionURL
 {
-    SharingAuthorizationWebViewController *webViewController = [[SharingAuthorizationWebViewController alloc] initWith:self.publicizeService url:connectionURL for:self.blog delegate:self];
+    UIViewController *webViewController = [ObjCBridge makeSharingAuthorizationViewControllerWithPublicizer:self.publicizeService url:connectionURL blog:self.blog delegate:self];
 
     self.navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     self.navController.modalPresentationStyle = UIModalPresentationFormSheet;

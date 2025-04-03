@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 
 @objcMembers
-class JetpackRemoteInstallTableViewCell: UITableViewCell {
+public class JetpackRemoteInstallTableViewCell: UITableViewCell {
 
     // MARK: Properties
 
@@ -52,7 +52,7 @@ class JetpackRemoteInstallTableViewCell: UITableViewCell {
 
     // MARK: Functions
 
-    func configure(blog: Blog, viewController: BlogDetailsViewController?) {
+    public func configure(blog: Blog, viewController: BlogDetailsViewController?) {
         self.blog = blog
         self.presenterViewController = viewController
         cardView.updatePlugin(JetpackPlugin(from: blog.jetpackConnectionActivePlugins))
@@ -69,7 +69,7 @@ class JetpackRemoteInstallTableViewCell: UITableViewCell {
 
 extension BlogDetailsViewController: JetpackRemoteInstallDelegate {
 
-    @objc func jetpackInstallSectionViewModel() -> BlogDetailsSection {
+    @objc public func jetpackInstallSectionViewModel() -> BlogDetailsSection {
         let row = BlogDetailsRow()
         row.callback = {}
         let section = BlogDetailsSection(title: nil,

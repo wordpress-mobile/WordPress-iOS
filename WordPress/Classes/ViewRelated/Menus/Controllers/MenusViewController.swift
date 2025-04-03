@@ -5,7 +5,7 @@ extension MenusViewController {
     /// Fetch all pages from the site.
     ///
     /// - Returns: A block that can be used to cancel the fetching.
-    @objc func fetchAllPages(success: @escaping ([MenuItem]) -> Void, failure: @escaping (Error) -> Void) -> () -> Void {
+    @objc public func fetchAllPages(success: @escaping ([MenuItem]) -> Void, failure: @escaping (Error) -> Void) -> () -> Void {
         let coreDataStack = ContextManager.shared
         let repository = PostRepository(coreDataStack: coreDataStack)
         let fetchAllPagesTask = repository.fetchAllPages(statuses: [.publish], in: TaggedManagedObjectID(blog))

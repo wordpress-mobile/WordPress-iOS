@@ -36,11 +36,11 @@ extension BlogDetailsViewController {
 // MARK: - Objective-C Interface
 
 @objc(BlogDetailsViewControllerStrings)
-class objc_BlogDetailsViewController_Strings: NSObject {
+public class objc_BlogDetailsViewController_Strings: NSObject {
 
-    @objc class func contentSectionTitle() -> String { BlogDetailsViewController.Strings.contentSectionTitle }
-    @objc class func trafficSectionTitle() -> String { BlogDetailsViewController.Strings.trafficSectionTitle }
-    @objc class func maintenanceSectionTitle() -> String { BlogDetailsViewController.Strings.maintenanceSectionTitle }
-    @objc class func socialRowTitle() -> String { BlogDetailsViewController.Strings.socialRowTitle }
-    @objc class func siteMonitoringRowTitle() -> String { BlogDetailsViewController.Strings.siteMonitoringRowTitle }
+    @objc public class func contentSectionTitle() -> String { BlogDetailsViewController.Strings.contentSectionTitle }
+    @objc public class func trafficSectionTitle() -> String { BlogDetailsViewController.Strings.trafficSectionTitle }
+    @objc public class func maintenanceSectionTitle() -> String { BlogDetailsViewController.Strings.maintenanceSectionTitle }
+    @objc public class func socialRowTitle() -> String { BlogDetailsViewController.Strings.socialRowTitle }
+    @objc public class func siteMonitoringRowTitle() -> String { BlogDetailsViewController.Strings.siteMonitoringRowTitle }
 }

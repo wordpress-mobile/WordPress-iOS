@@ -80,13 +80,13 @@ extension SuggestionType {
 
     /// Returns the ideal height for the table view  that displays all sections and rows as long as this height doesn't exceed the given `maximumHeight`.
     ///
-    static func height(forTableView tableView: UITableView, maximumHeight height: CGFloat) -> CGFloat {
+    public static func height(forTableView tableView: UITableView, maximumHeight height: CGFloat) -> CGFloat {
         return min(height, tableView.contentSize.height)
     }
 
     /// Returns the ideal height for the table view to display the given number of rows.
     ///
-    static func maximumHeight(forTableView tableView: UITableView, maxNumberOfRowsToDisplay maxRows: NSNumber) -> CGFloat {
+    public static func maximumHeight(forTableView tableView: UITableView, maxNumberOfRowsToDisplay maxRows: NSNumber) -> CGFloat {
         guard let maxRowIndexPath = indexPath(forRowAtPosition: maxRows.intValue, in: tableView) else {
             return 0
         }

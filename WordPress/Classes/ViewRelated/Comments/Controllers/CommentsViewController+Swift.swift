@@ -44,7 +44,7 @@ extension CommentsViewController {
         }
     }
 
-    @objc func configureFilterTabBar(_ filterTabBar: FilterTabBar) {
+    @objc public func configureFilterTabBar(_ filterTabBar: FilterTabBar) {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
         filterTabBar.items = CommentFilter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
@@ -59,16 +59,16 @@ extension CommentsViewController {
         refresh(with: filter.statusFilter)
     }
 
-    @objc func getSelectedIndex(_ filterTabBar: FilterTabBar) -> Int {
+    @objc public func getSelectedIndex(_ filterTabBar: FilterTabBar) -> Int {
         return filterTabBar.selectedIndex
     }
 
-    @objc func setSeletedIndex(_ selectedIndex: Int, filterTabBar: FilterTabBar) {
+    @objc public func setSeletedIndex(_ selectedIndex: Int, filterTabBar: FilterTabBar) {
         filterTabBar.setSelectedIndex(selectedIndex, animated: false)
         selectedFilterDidChange(filterTabBar)
     }
 
-    @objc func isUnrepliedFilterSelected(_ filterTabBar: FilterTabBar) -> Bool {
+    @objc public func isUnrepliedFilterSelected(_ filterTabBar: FilterTabBar) -> Bool {
         guard let item = filterTabBar.currentlySelectedItem as? CommentFilter else {
             return false
         }

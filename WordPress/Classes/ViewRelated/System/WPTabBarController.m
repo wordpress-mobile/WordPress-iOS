@@ -270,14 +270,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
 }
 
-- (void)switchNotificationsTabToNotificationSettings
-{
-    [self showNotificationsTab];
-    [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
-
-    [self.notificationsViewController showNotificationSettings];
-}
-
 - (NSString *)currentlySelectedScreen
 {
     // Check which tab is currently selected
@@ -365,7 +357,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     // Discount Zendesk unread notifications when determining if we need to show the notificationsTabBarImageUnread.
-    NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - [ZendeskUtils unreadNotificationsCount];
+    NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - ObjCBridge.unreadNotificationsCount;
     if (count > 0 || ![self welcomeNotificationSeen]) {
         notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");

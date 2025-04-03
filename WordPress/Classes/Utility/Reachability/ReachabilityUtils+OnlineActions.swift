@@ -16,7 +16,7 @@ extension ReachabilityUtils {
     /// - warning: Do not use it as it can't reliably identify as the connection
     /// is reachable or not and can significantly lag behind the actual
     /// connectivity status.
-    @objc class func onAvailableInternetConnectionDo(_ action: () -> Void) {
+    @objc public class func onAvailableInternetConnectionDo(_ action: () -> Void) {
         guard ReachabilityUtils.isInternetReachable() else {
             WPError.showAlert(withTitle: DefaultNoConnectionMessage.title, message: DefaultNoConnectionMessage.message)
             return
@@ -32,7 +32,7 @@ extension ReachabilityUtils {
     /// calling NotificationCenter.removeObserver(_:)
     ///
     @discardableResult
-    @objc class func observeOnceInternetAvailable(action: @escaping () -> Void) -> NSObjectProtocol {
+    @objc public class func observeOnceInternetAvailable(action: @escaping () -> Void) -> NSObjectProtocol {
         return NotificationCenter.default.observeOnce(
             forName: .reachabilityUpdated,
             object: nil,
@@ -47,14 +47,14 @@ extension ReachabilityUtils {
     ///
     /// We use a Snackbar instead of a literal Alert because, for internet connection errors,
     /// Alerts can be disruptive.
-    @objc static func showNoInternetConnectionNotice(message: String = noConnectionMessage()) {
+    @objc public static func showNoInternetConnectionNotice(message: String = noConnectionMessage()) {
         // An empty title is intentional to only show a single regular font message.
         let notice = Notice(title: "", message: message, tag: DefaultNoConnectionMessage.tag)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     /// Dismiss the currently shown Notice if it was created using showNoInternetConnectionNotice()
-    @objc static func dismissNoInternetConnectionNotice() {
+    @objc public static func dismissNoInternetConnectionNotice() {
         ActionDispatcher.dispatch(NoticeAction.clearWithTag(DefaultNoConnectionMessage.tag))
     }
 }

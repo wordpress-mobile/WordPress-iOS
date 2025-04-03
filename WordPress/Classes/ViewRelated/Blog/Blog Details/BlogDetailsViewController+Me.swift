@@ -5,7 +5,7 @@ import Gravatar
 
 extension BlogDetailsViewController {
 
-    @objc func downloadGravatarImage(for row: BlogDetailsRow, forceRefresh: Bool = false) {
+    @objc public func downloadGravatarImage(for row: BlogDetailsRow, forceRefresh: Bool = false) {
         guard let email = blog.account?.email else {
             return
         }
@@ -21,7 +21,7 @@ extension BlogDetailsViewController {
         }
     }
 
-    @objc func observeGravatarImageUpdate() {
+    @objc public func observeGravatarImageUpdate() {
         NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar(_:)), name: .GravatarQEAvatarUpdateNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateGravatarImage(_:)), name: .GravatarImageUpdateNotification, object: nil)
     }

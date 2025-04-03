@@ -90,7 +90,7 @@ import Foundation
         deleteAccountData()
     }
 
-    @objc static func deleteAccountData() {
+    static func deleteAccountData() {
         // Delete saved dashboard states
         BlogDashboardState.resetAllStates()
 

@@ -9,7 +9,7 @@ extension WPTabBarController {
         try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
     }
 
-    @objc func observeGravatarImageUpdate() {
+    @objc public func observeGravatarImageUpdate() {
         NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar(_:)), name: .GravatarQEAvatarUpdateNotification, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(updateGravatarImage(_:)), name: .GravatarImageUpdateNotification, object: nil)
@@ -19,7 +19,7 @@ extension WPTabBarController {
         NotificationCenter.default.addObserver(self, selector: #selector(accountDidChange), name: .WPAccountEmailAndDefaultBlogUpdated, object: nil)
     }
 
-    @objc func configureMeTabImage(placeholderImage: UIImage?) {
+    @objc public func configureMeTabImage(placeholderImage: UIImage?) {
         meNavigationController.tabBarItem.image = placeholderImage
         downloadImage()
     }

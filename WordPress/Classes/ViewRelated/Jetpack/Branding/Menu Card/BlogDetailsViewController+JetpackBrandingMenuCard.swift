@@ -2,17 +2,17 @@ import Foundation
 
 extension BlogDetailsViewController {
 
-    @objc var shouldShowTopJetpackBrandingMenuCard: Bool {
+    @objc public var shouldShowTopJetpackBrandingMenuCard: Bool {
         let presenter = JetpackBrandingMenuCardPresenter(blog: self.blog)
         return presenter.shouldShowTopCard()
     }
 
-    @objc var shouldShowBottomJetpackBrandingMenuCard: Bool {
+    @objc public var shouldShowBottomJetpackBrandingMenuCard: Bool {
         let presenter = JetpackBrandingMenuCardPresenter(blog: self.blog)
         return presenter.shouldShowBottomCard()
     }
 
-    @objc func jetpackCardSectionViewModel() -> BlogDetailsSection {
+    @objc public func jetpackCardSectionViewModel() -> BlogDetailsSection {
         let row = BlogDetailsRow()
         row.callback = {
             let presenter = JetpackBrandingMenuCardPresenter(blog: self.blog)

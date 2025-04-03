@@ -14,7 +14,6 @@
 #import "WordPress-Swift.h"
 #endif
 #import "MenusViewController.h"
-#import "NSMutableArray+NullableObjects.h"
 
 @import Gridicons;
 @import Reachability;
@@ -42,6 +41,16 @@ CGFloat const BlogDetailReminderSectionHeaderHeight = 8.0;
 CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
 
 #pragma mark - Helper Classes for Blog Details view model.
+
+@implementation NSMutableArray (NullableObjects)
+
+- (void)addNullableObject:(nullable id)anObject {
+    if (anObject != nil) {
+        [self addObject:anObject];
+    }
+}
+
+@end
 
 @implementation BlogDetailsRow
 
@@ -232,7 +241,6 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) BlogService *blogService;
-@property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
 
 /// Used to restore the tableview selection during state restoration, and
 /// also when switching between a collapsed and expanded split view controller presentation
@@ -352,7 +360,7 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
     }
 
     if ([self shouldShowBlaze]) {
-        [BlazeEventsTracker trackEntryPointDisplayedFor:BlazeSourceMenuItem];
+        [ObjCBridge trackBlazeEntryPointDisplayedWithSource:BlazeSourceMenuItem];
     }
 }
 
@@ -635,14 +643,6 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
     _restorableSelectedIndexPath = nil;
 }
 
-- (SiteIconPickerPresenter *)siteIconPickerPresenter
-{
-    if (!_siteIconPickerPresenter) {
-        _siteIconPickerPresenter = [[SiteIconPickerPresenter alloc]initWithBlog:self.blog];
-    }
-    return _siteIconPickerPresenter;
-}
-
 #pragma mark - iOS 10 bottom padding
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)sectionNum {
@@ -764,7 +764,7 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
 {
     __weak __typeof(self) weakSelf = self;
 
-    NSString *title = [AppConfiguration isWordPress]
+    NSString *title = ObjCBridge.isWordPress
     ? NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
     : [BlogDetailsViewControllerStrings socialRowTitle];
 
@@ -999,7 +999,7 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
         [marr addNullableObject:[self homeSectionViewModel]];
     }
 
-    if ([AppConfiguration isWordPress]) {
+    if (ObjCBridge.isWordPress) {
         if ([self shouldAddJetpackSection]) {
             [marr addNullableObject:[self jetpackSectionViewModel]];
         }
@@ -1660,16 +1660,6 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
                                 failure:nil];
 }
 
-- (BOOL)shouldShowJetpackInstallCard
-{
-    return ![WPDeviceIdentification isiPad] && [JetpackInstallPluginHelper shouldShowCardFor:self.blog];
-}
-
-- (BOOL)shouldShowBlaze
-{
-    return [BlazeHelper isBlazeFlagEnabled] && [self.blog supports:BlogFeatureBlaze];
-}
-
 #pragma mark - Remove Site
 
 - (void)showRemoveSiteAlert
@@ -1690,24 +1680,6 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
     }];
 
     [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)confirmRemoveSite
-{
-    BlogService *blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
-    [blogService removeBlog:self.blog];
-    [[WordPressAppDelegate shared] trackLogoutIfNeeded];
-
-    if ([AppConfiguration isWordPress]) {
-        [ContentMigrationCoordinator.shared cleanupExportedDataIfNeeded];
-    }
-
-    // Delete local data after removing the last site
-    if (!AccountHelper.isLoggedIn) {
-        [AccountHelper deleteAccountData];
-    }
-
-    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark - Notification handlers

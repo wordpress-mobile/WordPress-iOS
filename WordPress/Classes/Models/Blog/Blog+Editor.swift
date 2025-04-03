@@ -42,7 +42,7 @@ extension Blog {
         return mobileEditor ?? GutenbergSettings().getDefaultEditor(for: self)
     }
 
-    @objc var isGutenbergEnabled: Bool {
+    @objc public var isGutenbergEnabled: Bool {
         return editor == .gutenberg
     }
 }

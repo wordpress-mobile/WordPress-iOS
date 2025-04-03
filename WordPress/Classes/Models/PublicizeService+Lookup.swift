@@ -12,7 +12,7 @@ extension PublicizeService {
     }
 
     @objc(lookupPublicizeServiceNamed:inContext:)
-    static func objc_lookupPublicizeServiceNamed(_ name: String, in context: NSManagedObjectContext) -> PublicizeService? {
+    public static func objc_lookupPublicizeServiceNamed(_ name: String, in context: NSManagedObjectContext) -> PublicizeService? {
         try? lookupPublicizeServiceNamed(name, in: context)
     }
 
@@ -21,7 +21,7 @@ extension PublicizeService {
     /// - Returns: An array of `PublicizeService`.  The array is empty if no objects are cached.
     ///
     @objc(allPublicizeServicesInContext:error:)
-    static func allPublicizeServices(in context: NSManagedObjectContext) throws -> [PublicizeService] {
+    public static func allPublicizeServices(in context: NSManagedObjectContext) throws -> [PublicizeService] {
         let request = NSFetchRequest<PublicizeService>(entityName: PublicizeService.classNameWithoutNamespaces())
         let sortDescriptor = NSSortDescriptor(key: "order", ascending: true)
         request.sortDescriptors = [sortDescriptor]

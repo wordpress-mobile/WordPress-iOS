@@ -19,7 +19,7 @@ import WordPressShared
 extension SiteSettingsViewController {
     // MARK: - General
 
-    @objc func showPrivacySelector() {
+    @objc public func showPrivacySelector() {
         struct SiteSettingsPrivacyPicker: View {
             let blog: Blog
             @State var selection: SiteVisibility
@@ -41,9 +41,32 @@ extension SiteSettingsViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
 
+    @objc(showStartOverForBlog:)
+    public func showStartOver(for blog: Blog) {
+       wpAssert(blog.supportsSiteManagementServices())
+
+       WPAppAnalytics.track(.siteSettingsStartOverAccessed, blog: blog)
+
+       if SupportConfiguration.isStartOverSupportEnabled && blog.hasPaidPlan {
+           let startOverVC = StartOverViewController(blog: blog)
+           navigationController?.pushViewController(startOverVC, animated: true)
+       } else {
+           guard let targetURL = Constants.emptySiteSupportURL else { return }
+
+           let webVC = WebViewControllerFactory.controller(url: targetURL, source: "site_settings_start_over")
+           let navigationVC = UINavigationController(rootViewController: webVC)
+           present(navigationVC, animated: true, completion: nil)
+       }
+    }
+
+    @objc public func showTagList() {
+        let tagsVC = SiteTagsViewController(blog: blog)
+        navigationController?.pushViewController(tagsVC, animated: true)
+    }
+
     // MARK: - Timezone
 
-    @objc func observeTimeZoneStore() {
+    @objc public func observeTimeZoneStore() {
         timeZoneObserver = TimeZoneObserver() { [weak self] (oldState, newState) in
             guard let controller = self else {
                 return
@@ -61,7 +84,7 @@ extension SiteSettingsViewController {
         }
     }
 
-    @objc func timezoneLabel() -> String? {
+    @objc public func timezoneLabel() -> String? {
         return timezoneLabel(state: StoreContainer.shared.timezone.state)
     }
 
@@ -88,7 +111,7 @@ extension SiteSettingsViewController {
 
     // MARK: - Homepage Settings
 
-    @objc var homepageSettingsCell: SettingTableViewCell? {
+    @objc public var homepageSettingsCell: SettingTableViewCell? {
         let cell = SettingTableViewCell(label: NSLocalizedString("Homepage Settings", comment: "Label for Homepage Settings site settings section"), editable: true, reuseIdentifier: nil)
         cell?.textValue = blog.homepageType?.title
         return cell
@@ -96,12 +119,13 @@ extension SiteSettingsViewController {
 
     // MARK: - Navigation
 
-    @objc(showHomepageSettingsForBlog:) func showHomepageSettings(for blog: Blog) {
+    @objc(showHomepageSettingsForBlog:)
+    public func showHomepageSettings(for blog: Blog) {
         let settingsViewController = HomepageSettingsViewController(blog: blog)
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
-    @objc func showTimezoneSelector() {
+    @objc public func showTimezoneSelector() {
         let controller = TimeZoneSelectorViewController(selectedValue: timezoneValue) { [weak self] (newValue) in
             self?.navigationController?.popViewController(animated: true)
             self?.blog.settings?.gmtOffset = newValue.gmtOffset as NSNumber?
@@ -113,12 +137,12 @@ extension SiteSettingsViewController {
         navigationController?.pushViewController(controller, animated: true)
     }
 
-    @objc func showDateAndTimeFormatSettings() {
+    @objc public func showDateAndTimeFormatSettings() {
         let dateAndTimeFormatViewController = DateAndTimeFormatSettingsViewController(blog: blog)
         navigationController?.pushViewController(dateAndTimeFormatViewController, animated: true)
     }
 
-    @objc func showPostPerPageSetting() {
+    @objc public func showPostPerPageSetting() {
         let pickerViewController = SettingsPickerViewController(style: .insetGrouped)
         pickerViewController.title = NSLocalizedString("Posts per Page", comment: "Posts per Page Title")
         pickerViewController.switchVisible = false
@@ -141,12 +165,12 @@ extension SiteSettingsViewController {
         navigationController?.pushViewController(pickerViewController, animated: true)
     }
 
-    @objc func showSpeedUpYourSiteSettings() {
+    @objc public func showSpeedUpYourSiteSettings() {
         let speedUpSiteSettingsViewController = JetpackSpeedUpSiteSettingsViewController(blog: blog)
         navigationController?.pushViewController(speedUpSiteSettingsViewController, animated: true)
     }
 
-    @objc func showRelatedPostsSettings() {
+    @objc public func showRelatedPostsSettings() {
         let view = RelatedPostsSettingsView(blog: blog)
         let host = UIHostingController(rootView: view)
         host.title = view.title // Make sure title is available before push
@@ -156,7 +180,7 @@ extension SiteSettingsViewController {
     // MARK: Footers
 
     @objc(getTrafficSettingsSectionFooterView)
-    func trafficSettingsSectionFooterView() -> UIView {
+    public func trafficSettingsSectionFooterView() -> UIView {
         let footer = makeFooterView()
         footer.textLabel?.text = NSLocalizedString("Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices.",
                                                    comment: "Footer for AMP Traffic Site Setting, should match Calypso.")
@@ -168,7 +192,7 @@ extension SiteSettingsViewController {
     }
 
     @objc(getEditorSettingsSectionFooterView)
-    func editorSettingsSectionFooterView() -> UIView {
+    public func editorSettingsSectionFooterView() -> UIView {
         let footer = makeFooterView()
         footer.textLabel?.text = NSLocalizedString("Edit new posts and pages with the block editor.", comment: "Explanation for the option to enable the block editor")
         return footer
@@ -235,12 +259,12 @@ extension SiteSettingsViewController {
     }
 
     @objc
-    var generalSettingsRowCount: Int {
+    public var generalSettingsRowCount: Int {
         generalSettingsRows.count
     }
 
     @objc
-    func tableView(_ tableView: UITableView, cellForGeneralSettingsInRow row: Int) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForGeneralSettingsInRow row: Int) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCellReuseIdentifier) as! SettingTableViewCell
 
         switch generalSettingsRows[row] {
@@ -262,7 +286,7 @@ extension SiteSettingsViewController {
     }
 
     @objc
-    func tableView(_ tableView: UITableView, didSelectInGeneralSettingsAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectInGeneralSettingsAt indexPath: IndexPath) {
         switch generalSettingsRows[indexPath.row] {
         case .title where blog.isAdmin:
             showEditSiteTitleController(indexPath: indexPath)
@@ -416,4 +440,8 @@ private extension SiteSettingsViewController {
     enum Strings {
         static let privacyTitle = NSLocalizedString("siteSettings.privacy.title", value: "Privacy", comment: "Title for screen to select the privacy options for a blog")
     }
+}
+
+private enum Constants {
+    static let emptySiteSupportURL = URL(string: "https://en.support.wordpress.com/empty-site")
 }

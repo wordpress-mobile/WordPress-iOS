@@ -9,11 +9,11 @@ extension NSNotification.Name {
 }
 let userInfoCommentIdKey = "commentID"
 
-@objc protocol CommentDetailsDelegate: AnyObject {
+@objc public protocol CommentDetailsDelegate: AnyObject {
     func nextCommentSelected()
 }
 
-class CommentDetailViewController: UIViewController, NoResultsViewHost {
+public class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     // MARK: Properties
 
@@ -23,7 +23,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     // Reply properties
     private var addCommentButton: CommentLargeButton?
 
-    @objc weak var commentDelegate: CommentDetailsDelegate?
+    @objc public weak var commentDelegate: CommentDetailsDelegate?
     private weak var notificationDelegate: CommentDetailsNotificationDelegate?
 
     private var comment: Comment
@@ -202,13 +202,15 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return button
     }()
 
-    @objc var isSidebarModeEnabled = false
+    @objc public var isSidebarModeEnabled = false
 
     // MARK: Initialization
 
-    @objc init(comment: Comment,
-               isLastInList: Bool,
-               managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
+    @objc public init(
+        comment: Comment,
+        isLastInList: Bool,
+        managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext
+    ) {
         self.comment = comment
         self.commentStatus = CommentStatusType.typeForStatus(comment.status)
         self.isLastInList = isLastInList
@@ -230,13 +232,13 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: View lifecycle
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         configureView()
@@ -247,7 +249,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         refreshCommentReplyIfNeeded()
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
         // when an orientation change is triggered, recalculate the content cell's height.
@@ -258,7 +260,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     }
 
     // Update the Comment being displayed.
-    @objc func displayComment(_ comment: Comment, isLastInList: Bool = true) {
+    @objc public func displayComment(_ comment: Comment, isLastInList: Bool = true) {
         self.comment = comment
         self.isLastInList = isLastInList
         addCommentButton?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
@@ -857,11 +859,11 @@ private extension CommentDetailViewController {
 
 extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSource {
 
-    func numberOfSections(in tableView: UITableView) -> Int {
+    public func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch sections[section] {
         case .content(let rows):
             return rows.count
@@ -870,11 +872,11 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         }
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell = {
             let rows: [RowType]
             switch sections[indexPath.section] {
@@ -913,7 +915,7 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         return cell
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch sections[section] {
         case .content:
             return nil
@@ -922,18 +924,18 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         }
     }
 
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = Style.tertiaryTextFont
         header.textLabel?.textColor = UIColor.secondaryLabel
     }
 
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // Hide cell separator if it's positioned before the delete button cell.
         cell.separatorInset = self.shouldHideCellSeparator(for: indexPath) ? self.insetsForHiddenCellSeparator : .zero
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
         switch sections[indexPath.section] {

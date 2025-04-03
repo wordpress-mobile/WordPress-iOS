@@ -1,11 +1,11 @@
 import Foundation
 
-@objc final class SuggestionViewModel: NSObject {
+@objc public final class SuggestionViewModel: NSObject {
 
-    @objc private(set) var title: String?
+    @objc public private(set) var title: String?
 
-    @objc let subtitle: String?
-    @objc let imageURL: URL?
+    @objc public let subtitle: String?
+    @objc public let imageURL: URL?
 
     init(suggestion: UserSuggestion) {
         if let username = suggestion.username {

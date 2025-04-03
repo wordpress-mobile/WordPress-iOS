@@ -1,12 +1,12 @@
 import Foundation
 import CoreData
 
-@objc final class SuggestionsListSection: NSObject {
-    @objc var title: String?
-    @objc var rows: [SuggestionViewModel] = []
+@objc public final class SuggestionsListSection: NSObject {
+    @objc public var title: String?
+    @objc public var rows: [SuggestionViewModel] = []
 }
 
-@objc final class SuggestionsListViewModel: NSObject, SuggestionsListViewModelType {
+@objc public final class SuggestionsListViewModel: NSObject, SuggestionsListViewModelType {
 
     // MARK: - Dependencies
 
@@ -16,13 +16,13 @@ import CoreData
 
     // MARK: - Configuration
 
-    @objc var suggestionType: SuggestionType = .mention {
+    @objc public var suggestionType: SuggestionType = .mention {
         didSet {
             self.searchSuggestions(withWord: searchText)
         }
     }
 
-    @objc var prominentSuggestionsIds: [NSNumber]? {
+    @objc public var prominentSuggestionsIds: [NSNumber]? {
         didSet {
             self.searchSuggestions(withWord: searchText)
         }
@@ -34,8 +34,8 @@ import CoreData
 
     // MARK: - State
 
-    @objc private(set) var isLoading = false
-    @objc private(set) var sections = [SuggestionsListSection]()
+    @objc public private(set) var isLoading = false
+    @objc public private(set) var sections = [SuggestionsListSection]()
 
     private(set) var suggestions = Suggestions.users([])
 
@@ -45,12 +45,12 @@ import CoreData
         return suggestionType.trigger
     }
 
-    @objc private(set) var searchText: String = ""
+    @objc public private(set) var searchText: String = ""
 
     // MARK: - Callback
 
     /// Called when the search result is updated.
-    @objc var searchResultUpdated: StateUpdatedHandler?
+    @objc public var searchResultUpdated: StateUpdatedHandler?
 
     // MARK: - Init
 
@@ -58,7 +58,7 @@ import CoreData
         self.blog = blog
     }
 
-    @objc convenience init(siteID: NSNumber, context: NSManagedObjectContext = ContextManager.shared.mainContext) {
+    @objc public convenience init(siteID: NSNumber, context: NSManagedObjectContext = ContextManager.shared.mainContext) {
         let blog = Blog.lookup(withID: siteID, in: context)
         self.init(blog: blog)
         self.context = context
@@ -84,7 +84,7 @@ import CoreData
 
     // MARK: - Load Data
 
-    @objc func reloadData() {
+    @objc public func reloadData() {
         guard let blog = self.blog else { return }
         self.isLoading = true
         switch suggestionType {
@@ -110,7 +110,7 @@ import CoreData
     /// Searches suggestions for the given word.
     /// - Parameter word: The suggestions that contain this word.
     /// - Returns: True when there is at least one suggestion.
-    @discardableResult @objc func searchSuggestions(withWord word: String) -> Bool {
+    @discardableResult @objc public func searchSuggestions(withWord word: String) -> Bool {
         if word.hasPrefix(suggestionTrigger) {
             let searchQuery = NSString(string: word).substring(from: suggestionTrigger.count)
             self.searchText = word
@@ -238,7 +238,7 @@ import CoreData
 
     // MARK: - Types
 
-    typealias StateUpdatedHandler = (SuggestionsListViewModelType) -> Void
+    public typealias StateUpdatedHandler = (SuggestionsListViewModelType) -> Void
 
 }
 

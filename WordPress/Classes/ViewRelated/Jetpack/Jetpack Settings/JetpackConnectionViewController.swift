@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 
 @objc
-protocol JetpackConnectionDelegate {
+public protocol JetpackConnectionDelegate {
     func jetpackDisconnectedForBlog(_ blog: Blog)
 }
 
@@ -30,7 +30,7 @@ open class JetpackConnectionViewController: UITableViewController {
 
     // MARK: - Public Properties
 
-    @objc weak var delegate: JetpackConnectionDelegate?
+    @objc public weak var delegate: JetpackConnectionDelegate?
 
     // MARK: - Initializer
 
