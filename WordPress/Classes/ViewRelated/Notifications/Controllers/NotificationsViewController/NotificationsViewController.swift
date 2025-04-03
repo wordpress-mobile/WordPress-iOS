@@ -428,7 +428,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         return configuration
     }
 
-    fileprivate func configureDetailsViewController(_ detailsViewController: NotificationDetailsViewController, withNote note: Notification) {
+    fileprivate func configureDetailsViewController(_ detailsViewController: NotificationDetailsViewController, withNote note: WordPressData.Notification) {
         detailsViewController.navigationItem.largeTitleDisplayMode = .never
         detailsViewController.hidesBottomBarWhenPushed = true
         detailsViewController.dataSource = self
@@ -729,7 +729,7 @@ extension NotificationsViewController {
 
     /// Pushes the details for a given Notification Instance.
     ///
-    private func showDetails(for note: Notification) {
+    private func showDetails(for note: WordPressData.Notification) {
         DDLogInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
         // Before trying to show the details of a notification, we need to make sure the view is loaded.
@@ -796,7 +796,7 @@ extension NotificationsViewController {
         presentDetails(for: note)
     }
 
-    private func presentDetails(for note: Notification) {
+    private func presentDetails(for note: WordPressData.Notification) {
         // This dispatch avoids a bug that was occurring occasionally where navigation (nav bar and tab bar)
         // would be missing entirely when launching the app from the background and presenting a notification.
         // The issue seems tied to performing a `pop` in `prepareToShowDetails` and presenting
@@ -823,7 +823,7 @@ extension NotificationsViewController {
         }
     }
 
-    private func getNotificationCommentDetailViewController(for note: Notification) -> NotificationCommentDetailViewController? {
+    private func getNotificationCommentDetailViewController(for note: WordPressData.Notification) -> NotificationCommentDetailViewController? {
         guard let commentDetailViewController = self.notificationCommentDetailCoordinator.createViewController(with: note) else {
             DDLogError("Notifications: failed creating Comment Detail view.")
             return nil
@@ -837,7 +837,7 @@ extension NotificationsViewController {
         return commentDetailViewController
     }
 
-    private func getNotificationDetailsViewController(for note: Notification) -> NotificationDetailsViewController? {
+    private func getNotificationDetailsViewController(for note: WordPressData.Notification) -> NotificationDetailsViewController? {
         let viewControllerID = NotificationDetailsViewController.classNameWithoutNamespaces()
         let detailsViewController = storyboard?.instantiateViewController(withIdentifier: viewControllerID)
         guard let detailsViewController = detailsViewController as? NotificationDetailsViewController else {
@@ -863,7 +863,7 @@ extension NotificationsViewController {
 
     /// Tracks: Details Event!
     ///
-    private func trackWillPushDetails(for note: Notification) {
+    private func trackWillPushDetails(for note: WordPressData.Notification) {
         // Ensure we don't track if the app has been launched by a push notification in the background
         if UIApplication.shared.applicationState != .background {
             let properties = [Stats.noteTypeKey: note.type ?? Stats.noteTypeUnknown]
@@ -883,7 +883,7 @@ extension NotificationsViewController {
 
     /// This method will make sure the Notification that's about to be displayed is not currently being filtered.
     ///
-    private func ensureNoteIsNotBeingFiltered(_ note: Notification) {
+    private func ensureNoteIsNotBeingFiltered(_ note: WordPressData.Notification) {
         guard filter != .none else {
             return
         }
@@ -1062,7 +1062,7 @@ private extension NotificationsViewController {
         markAsRead(note: note)
     }
 
-    func markAsRead(note: Notification) {
+    func markAsRead(note: WordPressData.Notification) {
         guard !note.read else {
             return
         }
@@ -1125,7 +1125,7 @@ private extension NotificationsViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    func markAsUnread(note: Notification) {
+    func markAsUnread(note: WordPressData.Notification) {
         guard note.read else {
             return
         }
@@ -1457,7 +1457,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         return 0
     }
 
-    private static func accessibilityHint(for note: Notification) -> String? {
+    private static func accessibilityHint(for note: WordPressData.Notification) -> String? {
         switch note.kind {
         case .comment:
             return NSLocalizedString("Shows details and moderation actions.",
@@ -1654,7 +1654,7 @@ private extension NotificationsViewController {
         mediator?.sync()
     }
 
-    func syncNotification(with noteId: String, timeout: TimeInterval, success: @escaping (_ note: Notification) -> Void) {
+    func syncNotification(with noteId: String, timeout: TimeInterval, success: @escaping (_ note: WordPressData.Notification) -> Void) {
         let mediator = NotificationSyncMediator()
         let startDate = Date()
 
@@ -1722,11 +1722,11 @@ private extension NotificationsViewController {
 // MARK: - Details Navigation Datasource
 //
 extension NotificationsViewController: NotificationsNavigationDataSource {
-    @objc func notification(succeeding note: Notification) -> Notification? {
+    @objc func notification(succeeding note: WordPressData.Notification) -> Notification? {
         return loadNotification(near: note, withIndexDelta: -1)
     }
 
-    @objc func notification(preceding note: Notification) -> Notification? {
+    @objc func notification(preceding note: WordPressData.Notification) -> Notification? {
         return loadNotification(near: note, withIndexDelta: +1)
     }
 }

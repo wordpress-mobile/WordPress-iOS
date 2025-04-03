@@ -4,7 +4,7 @@ import WordPressShared
 /// Encapsulates logic that configures `ListTableViewCell` with `Notification` models.
 ///
 extension ListTableViewCell {
-    func configureWithNotification(_ notification: Notification) {
+    func configureWithNotification(_ notification: WordPressData.Notification) {
         indicatorColor = Style.unreadIndicatorColor
         showsIndicator = !notification.read
         configureImage(with: notification.iconURL)

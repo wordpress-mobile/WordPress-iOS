@@ -9,8 +9,8 @@ import FormattableContentKit
 ///
 ///
 protocol NotificationsNavigationDataSource: AnyObject {
-    func notification(succeeding note: Notification) -> Notification?
-    func notification(preceding note: Notification) -> Notification?
+    func notification(succeeding note: WordPressData.Notification) -> Notification?
+    func notification(preceding note: WordPressData.Notification) -> Notification?
 }
 
 // MARK: - Renders a given Notification entity, onscreen
@@ -785,7 +785,7 @@ extension NotificationDetailsViewController {
         refreshView(with: next)
     }
 
-    private func refreshView(with note: Notification) {
+    private func refreshView(with note: WordPressData.Notification) {
         onSelectedNoteChange?(note)
         trackDetailsOpened(for: note)
 
@@ -799,7 +799,7 @@ extension NotificationDetailsViewController {
         showConfettiIfNeeded()
     }
 
-    private func showCommentDetails(with note: Notification) {
+    private func showCommentDetails(with note: WordPressData.Notification) {
         guard let commentDetailViewController = notificationCommentDetailCoordinator?.createViewController(with: note) else {
             DDLogError("Notification Details: failed creating Comment Detail view.")
             return
@@ -875,7 +875,7 @@ private extension NotificationDetailsViewController {
 // MARK: - Tracks
 extension NotificationDetailsViewController {
     /// Tracks notification details opened
-    private func trackDetailsOpened(for note: Notification) {
+    private func trackDetailsOpened(for note: WordPressData.Notification) {
         let properties = ["notification_type": note.type ?? "unknown"]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
     }

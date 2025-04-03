@@ -101,7 +101,7 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
         configureNavBarButtons()
     }
 
-    func refreshViewController(notification: Notification) {
+    func refreshViewController(notification: WordPressData.Notification) {
         self.notification = notification
         loadComment()
     }
