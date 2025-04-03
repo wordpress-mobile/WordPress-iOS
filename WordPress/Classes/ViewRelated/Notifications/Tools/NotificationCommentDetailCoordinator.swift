@@ -40,7 +40,7 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     // Keep track of Notifications that have moderated Comments so they can be updated
     // the next time the Notifications list is displayed.
-    var notificationsCommentModerated: [Notification] = []
+    var notificationsCommentModerated: [WordPressData.Notification] = []
 
     // MARK: - Init
 

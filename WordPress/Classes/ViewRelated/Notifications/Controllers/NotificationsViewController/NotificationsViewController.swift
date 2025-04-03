@@ -487,7 +487,7 @@ private extension NotificationsViewController {
     func makeMoreMenuElements() -> [UIAction] {
         // Mark All As Read
         let markAllAsRead: UIAction? = { () -> UIAction? in
-            guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
+            guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [WordPressData.Notification] else {
                 return nil
             }
             let isEnabled = notes.first { !$0.read } != nil
@@ -991,7 +991,7 @@ private extension NotificationsViewController {
     @objc func removeDeletedNotification(notification: NSNotification) {
         guard let userInfo = notification.userInfo,
               let deletedCommentID = userInfo[userInfoCommentIdKey] as? Int32,
-              let notifications = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
+              let notifications = tableViewHandler.resultsController?.fetchedObjects as? [WordPressData.Notification] else {
                   return
               }
 
@@ -1018,14 +1018,14 @@ private extension NotificationsViewController {
         })
     }
 
-    func selectNextAvailableNotification(ignoring: [Notification]) {
+    func selectNextAvailableNotification(ignoring: [WordPressData.Notification]) {
         // If the currently selected notification is about to be removed, find the next available and select it.
         // This is only necessary for split view to prevent the details from showing for removed notifications.
         if !splitViewControllerIsHorizontallyCompact,
            let selectedNotification,
            ignoring.contains(selectedNotification) {
 
-            guard let notifications = tableViewHandler.resultsController?.fetchedObjects as? [Notification],
+            guard let notifications = tableViewHandler.resultsController?.fetchedObjects as? [WordPressData.Notification],
                   let nextAvailable = notifications.first(where: { !ignoring.contains($0) }),
                   let indexPath = tableViewHandler.resultsController?.indexPath(forObject: nextAvailable) else {
                       self.selectedNotification = nil
@@ -1073,7 +1073,7 @@ private extension NotificationsViewController {
     /// Marks all messages as read under the selected filter.
     ///
     @objc func markAllAsRead() {
-        guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
+        guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [WordPressData.Notification] else {
             return
         }
 
@@ -1148,7 +1148,7 @@ private extension NotificationsViewController {
     /// Updates the cached list of unread notifications, and optionally reloads the results controller.
     ///
     func refreshUnreadNotifications(reloadingResultsController: Bool = true) {
-        guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
+        guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [WordPressData.Notification] else {
             return
         }
 
@@ -1445,7 +1445,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     private var newNotificationsForSecondAlert: Int {
 
         guard let previousTimestamp = timestampBeforeUpdatesForSecondAlert,
-              let notifications = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
+              let notifications = tableViewHandler.resultsController?.fetchedObjects as? [WordPressData.Notification] else {
 
             return 0
         }
@@ -1691,7 +1691,7 @@ private extension NotificationsViewController {
     }
 
     func loadNotification(near note: Notification, withIndexDelta delta: Int) -> WordPressData.Notification? {
-        guard let notifications = tableViewHandler?.resultsController?.fetchedObjects as? [Notification] else {
+        guard let notifications = tableViewHandler?.resultsController?.fetchedObjects as? [WordPressData.Notification] else {
             return nil
         }
 
