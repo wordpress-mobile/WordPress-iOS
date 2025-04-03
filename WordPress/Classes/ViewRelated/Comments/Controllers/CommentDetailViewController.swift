@@ -43,7 +43,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
             }
         }
     }
-    private var notification: Notification?
+    private var notification: WordPressData.Notification?
     private let helper = ReaderCommentsHelper()
 
     private var isNotificationComment: Bool {

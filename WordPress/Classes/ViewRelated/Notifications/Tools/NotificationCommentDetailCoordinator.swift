@@ -13,9 +13,9 @@ enum Notifications {
 
 /// Facilitates showing the `CommentDetailViewController` within the context of Notifications.
 protocol CommentDetailsNotificationDelegate: AnyObject {
-    func previousNotificationTapped(current: Notification?)
-    func nextNotificationTapped(current: Notification?)
-    func commentWasModerated(for notification: Notification?)
+    func previousNotificationTapped(current: WordPressData.Notification?)
+    func nextNotificationTapped(current: WordPressData.Notification?)
+    func commentWasModerated(for notification: WordPressData.Notification?)
 }
 
 class NotificationCommentDetailCoordinator: NSObject {
@@ -25,7 +25,7 @@ class NotificationCommentDetailCoordinator: NSObject {
     private var viewController: NotificationCommentDetailViewController?
     private let managedObjectContext = ContextManager.shared.mainContext
 
-    private var notification: Notification? {
+    private var notification: WordPressData.Notification? {
         didSet {
             markNotificationReadIfNeeded()
         }
@@ -139,7 +139,7 @@ private extension NotificationCommentDetailCoordinator {
 
 extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelegate {
 
-    func previousNotificationTapped(current: Notification?) {
+    func previousNotificationTapped(current: WordPressData.Notification?) {
         guard let current,
               let previousNotification = notificationsNavigationDataSource?.notification(preceding: current) else {
                   return
@@ -149,7 +149,7 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelega
         updateViewWith(notification: previousNotification)
     }
 
-    func nextNotificationTapped(current: Notification?) {
+    func nextNotificationTapped(current: WordPressData.Notification?) {
         guard let current,
               let nextNotification = notificationsNavigationDataSource?.notification(succeeding: current) else {
                   return
@@ -159,7 +159,7 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelega
         updateViewWith(notification: nextNotification)
     }
 
-    func commentWasModerated(for notification: Notification?) {
+    func commentWasModerated(for notification: WordPressData.Notification?) {
         guard let notification,
               !notificationsCommentModerated.contains(notification) else {
                   return

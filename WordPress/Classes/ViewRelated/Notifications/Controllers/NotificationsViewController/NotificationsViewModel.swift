@@ -85,7 +85,7 @@ final class NotificationsViewModel {
         near note: Notification,
         allNotifications: [Notification],
         withIndexDelta delta: Int
-    ) -> Notification? {
+    ) -> WordPressData.Notification? {
         guard let noteIndex = allNotifications.firstIndex(of: note) else {
             return nil
         }

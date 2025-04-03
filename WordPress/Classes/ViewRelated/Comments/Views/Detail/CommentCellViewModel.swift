@@ -5,14 +5,14 @@ import WordPressShared
 final class CommentCellViewModel: NSObject {
     @objc let comment: Comment
 
-    private let notification: Notification?
+    private let notification: WordPressData.Notification?
     private let coreDataStack = ContextManager.shared
 
     @Published private(set) var content: String?
     @Published private(set) var avatar: Avatar?
     @Published private(set) var state: State
 
-    init(comment: Comment, notification: Notification? = nil) {
+    init(comment: Comment, notification: WordPressData.Notification? = nil) {
         self.comment = comment
         self.notification = notification
 
