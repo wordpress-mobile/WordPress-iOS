@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressShared
 
 /// This class will display the Blog's "Speed you site" settings, and will allow the user to modify them.

@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import WordPressData
 import WordPressShared
 
 /// The purpose of this class is to retrieve the collection of NotificationSettings from WordPress.com

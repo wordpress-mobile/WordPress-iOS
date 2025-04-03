@@ -1,5 +1,6 @@
 import UIKit
 import BuildSettingsKit
+import WordPressData
 import WordPressShared
 import AutomatticAbout
 

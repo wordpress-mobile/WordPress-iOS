@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import CoreData
+import WordPressData
 import WordPressShared
 import FormattableContentKit
 import Gridicons

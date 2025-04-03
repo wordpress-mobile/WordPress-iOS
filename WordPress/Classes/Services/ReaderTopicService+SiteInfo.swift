@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressShared
 
 /// Protocol representing a service that retrieves the users followed interests/tags
