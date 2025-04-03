@@ -47,8 +47,16 @@ struct AuthTokenIssueSolver {
     }
 
     private func showCancelReAuthenticationAlert(in window: UIWindow, onDeletionConfirmed: @escaping () -> Void) {
-        let title = NSLocalizedString("Careful!", comment: "Title for the warning shown to the user when he refuses to re-login when the authToken is missing.")
-        let message = NSLocalizedString("Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s).", comment: "Message for the warning shown to the user when he refuses to re-login when the authToken is missing.")
+        let title = NSLocalizedString(
+            "auth_token_issue_solver.cancel_alert.title",
+            value: "Careful!",
+            comment: "Title for the warning shown to the user when he refuses to re-login when the authToken is missing."
+        )
+        let message = NSLocalizedString(
+            "auth_token_issue_solver.cancel_alert.message",
+            value: "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s).",
+            comment: "Message for the warning shown to the user when he refuses to re-login when the authToken is missing."
+        )
 
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
@@ -61,8 +69,16 @@ struct AuthTokenIssueSolver {
     }
 
     private func showExplanationAlertForReAuthentication(in presentingViewController: UIViewController) {
-        let title = NSLocalizedString("Oops!", comment: "Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.")
-        let message = NSLocalizedString("There was a problem connecting to WordPress.com. Please log in again.", comment: "Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one.")
+        let title = NSLocalizedString(
+            "auth_token_issue_solver.explanation_alert.title",
+            value: "Oops!",
+            comment: "Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one."
+        )
+        let message = NSLocalizedString(
+            "auth_token_issue_solver.explanation_alert.title",
+            value: "There was a problem connecting to WordPress.com. Please log in again.",
+            comment: "Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one."
+        )
 
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
