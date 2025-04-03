@@ -1,5 +1,4 @@
 #import "Media.h"
-@import WordPressDataObjC;
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
 #else

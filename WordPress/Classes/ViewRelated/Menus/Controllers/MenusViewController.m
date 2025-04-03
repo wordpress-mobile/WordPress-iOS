@@ -9,7 +9,6 @@
 #import "MenuItemsViewController.h"
 #import "MenuItemEditingViewController.h"
 #import "Menu+ViewDesign.h"
-@import WordPressDataObjC;
 #import "WPAppAnalytics.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"

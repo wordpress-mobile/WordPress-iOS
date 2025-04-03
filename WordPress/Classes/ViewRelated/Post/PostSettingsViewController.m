@@ -3,7 +3,6 @@
 #import "Media.h"
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
-@import WordPressDataObjC;
 #import "MediaService.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"

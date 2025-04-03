@@ -5,7 +5,6 @@
 #import "MenuItemView.h"
 #import "MenuItemInsertionView.h"
 #import "MenuItemsVisualOrderingView.h"
-@import WordPressDataObjC;
 #import "Menu+ViewDesign.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"

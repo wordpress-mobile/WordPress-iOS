@@ -3,7 +3,6 @@
 #import "Blog.h"
 #import "BlogService.h"
 
-@import WordPressDataObjC;
 @import WordPressKit;
 @import WordPressShared;
 

@@ -1,5 +1,4 @@
 import CoreData
-import WordPressDataObjC
 
 public protocol CoreDataStackSwift: CoreDataStack {
 
