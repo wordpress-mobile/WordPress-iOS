@@ -322,6 +322,18 @@ enum XcodeSupport {
                 "SFHFKeychainUtils",
                 "TracksMini",
                 "WordPressShared",
+                // Even though the extensions are all in Swift, we need to include the Objective-C
+                // version of CocoaLumberjack to avoid linking issues with other dependencies that
+                // use it.
+                //
+                // Example:
+                //
+                // EmitSwiftModule normal arm64 (in target 'WordPressNotificationServiceExtension' from project 'WordPress')
+                //    cd /path/to/repo/WordPress
+                //
+                // <unknown>:0: error: missing required modules: 'CocoaLumberjack', 'CocoaLumberjackSwiftSupport'
+                .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             ]),
             .xcodeTarget("XcodeTarget_StatsWidget", dependencies: [
                 "BuildSettingsKit",
