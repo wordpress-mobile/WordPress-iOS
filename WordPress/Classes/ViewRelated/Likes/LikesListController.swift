@@ -89,7 +89,7 @@ class LikesListController: NSObject {
 
     /// Init with Notification
     ///
-    init?(tableView: UITableView, notification: Notification, delegate: LikesListControllerDelegate? = nil) {
+    init?(tableView: UITableView, notification: WordPressData.Notification, delegate: LikesListControllerDelegate? = nil) {
 
         guard let siteID = notification.metaSiteID else {
             return nil
