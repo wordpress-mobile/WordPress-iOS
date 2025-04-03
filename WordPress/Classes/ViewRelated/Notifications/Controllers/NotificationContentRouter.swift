@@ -6,7 +6,7 @@ struct NotificationContentRouter {
     private let notification: WordPressData.Notification
     private let expirationFiveMinutes = TimeInterval(60 * 5)
 
-    init(activity: Notification, coordinator: ContentCoordinator) {
+    init(activity: WordPressData.Notification, coordinator: ContentCoordinator) {
         self.coordinator = coordinator
         self.notification = activity
     }

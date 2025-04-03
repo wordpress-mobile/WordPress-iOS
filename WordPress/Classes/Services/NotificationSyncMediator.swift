@@ -170,7 +170,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     ///     - notification: The notification that was just read.
     ///     - completion: Callback to be executed on completion.
     ///
-    func markAsRead(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
+    func markAsRead(_ notification: WordPressData.Notification, completion: ((Error?)-> Void)? = nil) {
         Task { @MainActor in
             mark([notification], asRead: true, completion: completion)
         }
@@ -198,7 +198,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     ///     - notification: The notification that should be marked unread.
     ///     - completion: Callback to be executed on completion.
     ///
-    func markAsUnread(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
+    func markAsUnread(_ notification: WordPressData.Notification, completion: ((Error?)-> Void)? = nil) {
         markAsUnread([notification], completion: completion)
     }
 

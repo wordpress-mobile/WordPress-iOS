@@ -9,12 +9,12 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
 
     // MARK: - API
 
-    func configure(with notification: Notification, deletionRequest: NotificationDeletionRequest, parent: NotificationsViewController, onDeletionRequestCanceled: @escaping () -> Void) {
+    func configure(with notification: WordPressData.Notification, deletionRequest: NotificationDeletionRequest, parent: NotificationsViewController, onDeletionRequestCanceled: @escaping () -> Void) {
         let style = NotificationsTableViewCellContent.Style.altered(.init(text: deletionRequest.kind.legendText, action: onDeletionRequestCanceled))
         self.host(.init(style: style), parent: parent)
     }
 
-    func configure(with viewModel: NotificationsViewModel, notification: Notification, parent: NotificationsViewController) {
+    func configure(with viewModel: NotificationsViewModel, notification: WordPressData.Notification, parent: NotificationsViewController) {
         let title: AttributedString? = {
             guard let attributedSubject = notification.renderSubject() else {
                 return nil
@@ -38,7 +38,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
 
     // MARK: - Private Methods
 
-    private func inlineAction(viewModel: NotificationsViewModel, notification: Notification, parent: NotificationsViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration? {
+    private func inlineAction(viewModel: NotificationsViewModel, notification: WordPressData.Notification, parent: NotificationsViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration? {
         let notification = notification.parsed()
         switch notification {
         case .comment(let notification):
@@ -53,7 +53,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
         }
     }
 
-    private func shareInlineAction(viewModel: NotificationsViewModel, notification: Notification, parent: UIViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration {
+    private func shareInlineAction(viewModel: NotificationsViewModel, notification: WordPressData.Notification, parent: UIViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration {
         let action: () -> Void = { [weak self] in
             guard let self, let content = viewModel.sharePostActionTapped(with: notification) else {
                 return
