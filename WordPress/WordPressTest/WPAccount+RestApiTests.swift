@@ -35,6 +35,6 @@ class WPAccountRestApiTests: CoreDataTestCase {
 
         _ = account.wordPressComRestApi
 
-        await fulfillment(of: [notificationExpectation])
+        await fulfillment(of: [notificationExpectation], timeout: 0.1)
     }
 }
