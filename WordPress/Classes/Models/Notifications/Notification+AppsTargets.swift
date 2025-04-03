@@ -362,7 +362,7 @@ extension WordPressData.Notification {
 
 // MARK: - Notifiable
 
-extension Notification: Notifiable {
+extension WordPressData.Notification: Notifiable {
     public var notificationIdentifier: String {
         return notificationId
     }
