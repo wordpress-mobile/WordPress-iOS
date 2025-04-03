@@ -3,7 +3,7 @@ import FormattableContentKit
 
 struct NotificationContentRouter {
     private let coordinator: ContentCoordinator
-    private let notification: Notification
+    private let notification: WordPressData.Notification
     private let expirationFiveMinutes = TimeInterval(60 * 5)
 
     init(activity: Notification, coordinator: ContentCoordinator) {

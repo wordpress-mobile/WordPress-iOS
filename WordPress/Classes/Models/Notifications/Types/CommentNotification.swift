@@ -4,7 +4,7 @@ struct CommentNotification: LikeableNotification {
 
     // MARK: - Properties
 
-    private let note: Notification
+    private let note: WordPressData.Notification
     private let commentID: UInt
     private let siteID: UInt
 
