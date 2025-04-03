@@ -1,5 +1,4 @@
 #import "ReaderTopicService.h"
-
 #import "AccountService.h"
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
@@ -9,7 +8,7 @@
 #else
 #import "WordPress-Swift.h"
 #endif
-
+@import WordPressData;
 @import WordPressKit;
 @import WordPressShared;
 

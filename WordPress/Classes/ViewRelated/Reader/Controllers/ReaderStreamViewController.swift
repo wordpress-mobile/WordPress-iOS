@@ -1,6 +1,7 @@
 import Foundation
 import BuildSettingsKit
 import SVProgressHUD
+import WordPressData
 import WordPressFlux
 import WordPressShared
 import UIKit

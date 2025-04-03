@@ -1,4 +1,4 @@
-import Foundation
+import WordPressData
 
 /// Blog extension for methods related to Jetpack Social.
 extension Blog {

@@ -1,6 +1,7 @@
 import Foundation
 import AutomatticTracks
 import BuildSettingsKit
+import WordPressData
 import WordPressShared
 
 protocol ContentDataMigrating {

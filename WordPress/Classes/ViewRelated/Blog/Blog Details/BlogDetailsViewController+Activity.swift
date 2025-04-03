@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 extension BlogDetailsViewController: SearchableActivityConvertable {
     public var activityType: String {

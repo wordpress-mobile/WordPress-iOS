@@ -3,6 +3,7 @@ import BuildSettingsKit
 import UIKit
 import SwiftUI
 import Gridicons
+import WordPressData
 import WordPressShared
 import ShareExtensionCore
 import SVProgressHUD

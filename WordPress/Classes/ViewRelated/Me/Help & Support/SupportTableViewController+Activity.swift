@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 extension SupportTableViewController: SearchableActivityConvertable {
     var activityType: String {
