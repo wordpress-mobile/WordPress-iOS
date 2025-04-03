@@ -1,17 +1,15 @@
 #import "MenuItemEditingViewController.h"
-#import "Menu.h"
-#import "MenuItem.h"
-#import "Blog.h"
 #import "MenuItemEditingHeaderView.h"
 #import "MenuItemEditingFooterView.h"
 #import "MenuItemSourceViewController.h"
 #import "MenuItemTypeViewController.h"
 #ifdef KEYSTONE
+#import "MenuItem.h"
 #import "Keystone-Swift.h"
 #else
+@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
-
 @import WordPressShared;
 
 NSString * const MenuItemEditingTypeSelectionChangedNotification = @"MenuItemEditingTypeSelectionChangedNotification";

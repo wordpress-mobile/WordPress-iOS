@@ -1,12 +1,13 @@
 #import "PostSettingsViewController.h"
 #import "PostSettingsViewController_Internal.h"
-#import "Media.h"
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
 #import "MediaService.h"
 #ifdef KEYSTONE
+#import "Media.h"
 #import "Keystone-Swift.h"
 #else
+@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 

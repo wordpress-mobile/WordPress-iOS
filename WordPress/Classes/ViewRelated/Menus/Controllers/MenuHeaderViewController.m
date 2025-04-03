@@ -1,15 +1,13 @@
 #import "MenuHeaderViewController.h"
 #import "MenusSelectionView.h"
-#import "Blog.h"
-#import "Menu.h"
 #import "Menu+ViewDesign.h"
-#import "MenuLocation.h"
 #ifdef KEYSTONE
+#import "MenuLocation.h"
 #import "Keystone-Swift.h"
 #else
+@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
-
 @import WordPressShared;
 
 static CGFloat ViewExpansionAnimationDelay = 0.15;

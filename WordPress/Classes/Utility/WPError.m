@@ -1,8 +1,9 @@
 #import "WPError.h"
-#import "WPAccount.h"
 #ifdef KEYSTONE
+#import "WPAccount.h"
 #import "Keystone-Swift.h"
 #else
+@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 

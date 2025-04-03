@@ -1,12 +1,13 @@
 #import "SharingConnectionsViewController.h"
 
-#import "Blog.h"
 #import "BlogService.h"
 #import "SharingDetailViewController.h"
 #import "SharingAuthorizationHelper.h"
 #ifdef KEYSTONE
+#import "Blog.h"
 #import "Keystone-Swift.h"
 #else
+@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 

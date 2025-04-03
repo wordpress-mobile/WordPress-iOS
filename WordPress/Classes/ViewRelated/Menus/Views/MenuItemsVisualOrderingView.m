@@ -1,6 +1,11 @@
 #import "MenuItemsVisualOrderingView.h"
 #import "MenuItemView.h"
+#ifdef KEYSTONE
 #import "MenuItem.h"
+#else
+@import WordPressData;
+#endif
+
 
 @interface MenuItemsVisualOrderingView ()
 

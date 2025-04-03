@@ -1,5 +1,4 @@
 #import "CommentsViewController.h"
-#import "Blog.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
 #else
@@ -7,6 +6,7 @@
 #endif
 #import "WPTableViewHandler.h"
 
+@import WordPressData;
 @import WordPressShared;
 
 @class Comment;
