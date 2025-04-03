@@ -37,11 +37,11 @@ extension SVProgressHUD {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.SVProgressHUDWillDisappear, object: nil)
     }
 
-    @objc static func handleHUDTappedNotification(_ notification: Notification) {
+    @objc static func handleHUDTappedNotification(_ notification: Foundation.Notification) {
         SVProgressHUD.dismiss()
     }
 
-    @objc static func handleHUDDisappearedNotification(_ notification: Notification) {
+    @objc static func handleHUDDisappearedNotification(_ notification: Foundation.Notification) {
         // Prevent unregistering if another HUD is still visible
         if !SVProgressHUD.isVisible() {
             unregisterFromHUDNotifications()

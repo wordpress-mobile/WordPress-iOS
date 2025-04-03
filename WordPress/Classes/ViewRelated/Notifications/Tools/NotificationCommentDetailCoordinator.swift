@@ -51,7 +51,7 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     // MARK: - Public Methods
 
-    func createViewController(with notification: Notification) -> NotificationCommentDetailViewController? {
+    func createViewController(with notification: WordPressData.Notification) -> NotificationCommentDetailViewController? {
         self.notification = notification
         viewController = NotificationCommentDetailViewController(notification: notification, notificationDelegate: self)
         updateNavigationButtonStates()
@@ -72,7 +72,7 @@ private extension NotificationCommentDetailCoordinator {
         NotificationSyncMediator()?.markAsRead(notification)
     }
 
-    func updateViewWith(notification: Notification) {
+    func updateViewWith(notification: WordPressData.Notification) {
         trackDetailsOpened(for: notification)
         onSelectedNoteChange?(notification)
 
@@ -84,7 +84,7 @@ private extension NotificationCommentDetailCoordinator {
         refreshViewControllerWith(notification)
     }
 
-    func showNotificationDetails(with notification: Notification) {
+    func showNotificationDetails(with notification: WordPressData.Notification) {
         guard let viewController,
               let notificationDetailsViewController = Notifications.storyboard
             .instantiateViewController(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces()) as? NotificationDetailsViewController else {
@@ -103,7 +103,7 @@ private extension NotificationCommentDetailCoordinator {
         navigationController?.pushViewController(notificationDetailsViewController, animated: false)
     }
 
-    func refreshViewControllerWith(_ notification: Notification) {
+    func refreshViewControllerWith(_ notification: WordPressData.Notification) {
         self.notification = notification
         viewController?.refreshViewController(notification: notification)
         updateNavigationButtonStates()
@@ -129,7 +129,7 @@ private extension NotificationCommentDetailCoordinator {
         return notificationsNavigationDataSource?.notification(succeeding: notification) != nil
     }
 
-    func trackDetailsOpened(for notification: Notification) {
+    func trackDetailsOpened(for notification: WordPressData.Notification) {
         let properties = ["notification_type": notification.type ?? "unknown"]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
     }

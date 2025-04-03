@@ -458,7 +458,7 @@ private extension NoticePresenter {
             fatalError("init(coder:) has not been implemented")
         }
 
-        @objc func updateFrame(notification: Notification) {
+        @objc func updateFrame(notification: Foundation.Notification) {
             setNeedsLayout()
         }
 

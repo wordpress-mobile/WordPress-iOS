@@ -1,7 +1,7 @@
 import FormattableContentKit
 
 class BodyContentGroup: FormattableContentGroup {
-    class func create(from body: [[String: AnyObject]], parent: Notification) -> [FormattableContentGroup] {
+    class func create(from body: [[String: AnyObject]], parent: WordPressData.Notification) -> [FormattableContentGroup] {
         let blocks = NotificationContentFactory.content(from: body, actionsParser: NotificationActionParser(), parent: parent)
 
         switch parent.kind {
@@ -12,7 +12,7 @@ class BodyContentGroup: FormattableContentGroup {
         }
     }
 
-    private class func groupsForNonCommentBodyBlocks(_ blocks: [FormattableContent], parent: Notification) -> [FormattableContentGroup] {
+    private class func groupsForNonCommentBodyBlocks(_ blocks: [FormattableContent], parent: WordPressData.Notification) -> [FormattableContentGroup] {
         let parentKindsWithFooters: [NotificationKind] = [.follow, .like, .commentLike]
         let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
 
@@ -26,7 +26,7 @@ class BodyContentGroup: FormattableContentGroup {
         }
     }
 
-    private class func groupsForCommentBodyBlocks(_ blocks: [FormattableContent], parent: Notification) -> [FormattableContentGroup] {
+    private class func groupsForCommentBodyBlocks(_ blocks: [FormattableContent], parent: WordPressData.Notification) -> [FormattableContentGroup] {
 
         guard let comment: FormattableCommentContent = blockOfKind(.comment, from: blocks), let user: FormattableUserContent = blockOfKind(.user, from: blocks) else {
             return []
