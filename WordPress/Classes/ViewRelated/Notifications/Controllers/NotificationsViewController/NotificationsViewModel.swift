@@ -82,7 +82,7 @@ final class NotificationsViewModel {
     }
 
     func loadNotification(
-        near note: Notification,
+        near note: WordPressData.Notification,
         allNotifications: [Notification],
         withIndexDelta delta: Int
     ) -> WordPressData.Notification? {
