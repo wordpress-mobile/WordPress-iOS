@@ -220,7 +220,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     }
 
     init(comment: Comment,
-         notification: Notification,
+         notification: WordPressData.Notification,
          notificationDelegate: CommentDetailsNotificationDelegate?,
          managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
         self.comment = comment

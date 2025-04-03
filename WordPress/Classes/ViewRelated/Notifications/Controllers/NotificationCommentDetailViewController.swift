@@ -75,7 +75,7 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
 
     // MARK: - Init
 
-    init(notification: Notification,
+    init(notification: WordPressData.Notification,
          notificationDelegate: CommentDetailsNotificationDelegate) {
         self.notification = notification
         self.notificationDelegate = notificationDelegate
