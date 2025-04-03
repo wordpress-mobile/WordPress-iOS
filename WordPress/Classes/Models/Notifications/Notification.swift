@@ -150,7 +150,7 @@ public class Notification: NSManagedObject {
 
 private class NotificationCachedAttributesObserver: NSObject {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard let keyPath, let notification = object as? Notification, Notification.cachedAttributes.contains(keyPath) else {
+        guard let keyPath, let notification = object as? Notification, WordPressData.Notification.cachedAttributes.contains(keyPath) else {
             return
         }
 
