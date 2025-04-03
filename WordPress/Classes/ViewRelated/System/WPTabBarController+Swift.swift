@@ -104,7 +104,8 @@ extension WPTabBarController {
     /// - The app has been placed in the foreground
     /// - The user selected a different tab
     /// - After logging in (and this VC is shown)
-    @objc @discardableResult func trackTabAccessForTabIndex(_ tabIndex: Int) -> Bool {
+    @objc @discardableResult
+    public func trackTabAccessForTabIndex(_ tabIndex: Int) -> Bool {
         // Since this ViewController is a singleton, it can be active **behind** the login view.
         // The `isViewonScreen()` prevents us from tracking this. It also helps us in avoiding
         // tracking events if a modal dialog is shown and the app is placed in the background
@@ -134,7 +135,7 @@ extension WPTabBarController {
         return selectedViewController.supportedInterfaceOrientations
     }
 
-    @objc func animateSelectedItem(_ item: UITabBarItem, for tabBar: UITabBar) {
+    @objc public func animateSelectedItem(_ item: UITabBarItem, for tabBar: UITabBar) {
 
         // Order of subviews may not be guaranteed, so filter and sort them
         let tabBarButtons = tabBar.subviews

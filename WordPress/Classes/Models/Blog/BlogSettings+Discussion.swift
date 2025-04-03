@@ -200,7 +200,7 @@ extension BlogSettings {
 
     /// Helper, to aid in setting SortOrder in ObjC code. True when Ascending, False otherwise.
     ///
-    @objc var commentsSortOrderAscending: Bool {
+    @objc public var commentsSortOrderAscending: Bool {
         get {
             return commentsSortOrder?.intValue == CommentsSorting.ascending.rawValue
         }

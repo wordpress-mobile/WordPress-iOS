@@ -11,7 +11,7 @@ import WordPressUI
     @objc var keyringConnections: [KeyringConnection]
     @objc var existingPublicizeConnections: [PublicizeConnection]?
     @objc var immutableHandler: ImmuTableViewHandler!
-    @objc weak var delegate: SharingAccountSelectionDelegate?
+    @objc public weak var delegate: SharingAccountSelectionDelegate?
     private let keyringAccountHelper = KeyringAccountHelper()
 
     fileprivate lazy var noResultsViewController: NoResultsViewController = {
@@ -25,7 +25,7 @@ import WordPressUI
 
     // MARK: - Lifecycle Methods
 
-    @objc init(service: PublicizeService, connections: [KeyringConnection], existingConnections: [PublicizeConnection]?) {
+    @objc public init(service: PublicizeService, connections: [KeyringConnection], existingConnections: [PublicizeConnection]?) {
         publicizeService = service
         keyringConnections = connections
         existingPublicizeConnections = existingConnections
@@ -241,7 +241,7 @@ import WordPressUI
 
 /// Delegate protocol.
 ///
-@objc protocol SharingAccountSelectionDelegate: NSObjectProtocol {
+@objc public protocol SharingAccountSelectionDelegate: NSObjectProtocol {
     func didDismissSharingAccountViewController(_ controller: SharingAccountViewController)
     func sharingAccountViewController(_ controller: SharingAccountViewController, selectedKeyringConnection keyringConnection: KeyringConnection, externalID: String?)
 }

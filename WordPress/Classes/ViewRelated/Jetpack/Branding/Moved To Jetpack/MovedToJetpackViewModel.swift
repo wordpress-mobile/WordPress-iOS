@@ -1,6 +1,6 @@
 import Foundation
 
-@objc enum MovedToJetpackSource: Int {
+@objc public enum MovedToJetpackSource: Int {
     case stats
     case reader
     case notifications

@@ -2,16 +2,16 @@ import UIKit
 import WordPressShared
 
 @objc
-class MySitesCoordinator: NSObject {
+public class MySitesCoordinator: NSObject {
     let becomeActiveTab: () -> Void
 
     @objc
-    var currentBlog: Blog? {
+    public var currentBlog: Blog? {
         mySiteViewController.blog
     }
 
     @objc
-    init(onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
+    public init(onBecomeActiveTab becomeActiveTab: @escaping () -> Void) {
         self.becomeActiveTab = becomeActiveTab
         super.init()
 
@@ -29,14 +29,14 @@ class MySitesCoordinator: NSObject {
     /// The view controller that should be presented by the tab bar controller.
     ///
     @objc
-    var rootViewController: UIViewController {
+    public var rootViewController: UIViewController {
         // `hidesBottomBarWhenPushed` doesn't work with `UISplitViewController`,
         // so it we have to use `UINavigationController` directly.
         return navigationController
     }
 
     @objc
-    lazy var navigationController: UINavigationController = {
+    public lazy var navigationController: UINavigationController = {
         let navigationController = UINavigationController(rootViewController: rootContentViewController)
 
         navigationController.navigationBar.prefersLargeTitles = true

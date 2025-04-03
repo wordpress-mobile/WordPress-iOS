@@ -4,7 +4,7 @@ import WordPressShared
 // MARK: - BlogDetailsViewController (Misc)
 
 extension BlogDetailsViewController {
-    @objc func isDashboardEnabled() -> Bool {
+    @objc public func isDashboardEnabled() -> Bool {
         return JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() && blog.isAccessibleThroughWPCom()
     }
 }
@@ -12,7 +12,7 @@ extension BlogDetailsViewController {
 // MARK: - BlogDetailsViewController (Navigation)
 
 extension BlogDetailsViewController {
-    @objc func showDashboard() {
+    @objc public func showDashboard() {
         if isSidebarModeEnabled {
             let controller = MySiteViewController.make(forBlog: blog, isSidebarModeEnabled: true)
             presentationDelegate?.presentBlogDetailsViewController(controller)
@@ -87,14 +87,14 @@ extension BlogDetailsViewController {
         return controller
     }
 
-    @objc func showPeople() {
+    @objc public func showPeople() {
         guard let controller = PeopleViewController.withJPBannerForBlog(blog) else {
             return wpAssertionFailure("failed to instantiate")
         }
         presentationDelegate?.presentBlogDetailsViewController(controller)
     }
 
-    @objc func showActivity() {
+    @objc public func showActivity() {
         guard let controller = JetpackActivityLogViewController(blog: blog) else {
             return wpAssertionFailure("failed to instantiate")
         }
@@ -104,7 +104,7 @@ extension BlogDetailsViewController {
         WPAnalytics.track(.activityLogViewed, withProperties: [WPAppAnalyticsKeyTapSource: "site_menu"])
     }
 
-    @objc func showBlaze() {
+    @objc public func showBlaze() {
         BlazeEventsTracker.trackEntryPointTapped(for: .menuItem)
 
         if RemoteFeature.enabled(.blazeManageCampaigns) {
@@ -115,19 +115,19 @@ extension BlogDetailsViewController {
         }
     }
 
-    @objc func showScan() {
+    @objc public func showScan() {
         let scanVC = JetpackScanViewController.withJPBannerForBlog(blog)
         presentationDelegate?.presentBlogDetailsViewController(scanVC)
     }
 
-    @objc func showBackup() {
+    @objc public func showBackup() {
         guard let backupListVC = BackupListViewController.withJPBannerForBlog(blog) else {
             return wpAssertionFailure("failed to instantiate")
         }
         presentationDelegate?.presentBlogDetailsViewController(backupListVC)
     }
 
-    @objc func showThemes() {
+    @objc public func showThemes() {
         WPAppAnalytics.track(.themesAccessedThemeBrowser, blog: blog)
         let themesVC = ThemeBrowserViewController.browserWithBlog(blog)
         themesVC.hidesBottomBarWhenPushed = true
@@ -135,7 +135,7 @@ extension BlogDetailsViewController {
         presentationDelegate?.presentBlogDetailsViewController(jpWrappedViewController)
     }
 
-    @objc func showMenus() {
+    @objc public func showMenus() {
         WPAppAnalytics.track(.menusAccessed, blog: blog)
         let menusVC = MenusViewController.withJPBannerForBlog(blog)
         presentationDelegate?.presentBlogDetailsViewController(menusVC)
@@ -171,7 +171,7 @@ extension BlogDetailsViewController {
         }
     }
 
-    @objc func showPlugins() {
+    @objc public func showPlugins() {
         WPAppAnalytics.track(.openedPluginDirectory, blog: blog)
 
         if Feature.enabled(.pluginManagementOverhaul) {
@@ -225,7 +225,7 @@ extension BlogDetailsViewController {
         DomainsDashboardCoordinator.presentDomainsDashboard(with: presentationDelegate, source: source.string, blog: blog)
     }
 
-    @objc func showJetpackSettings() {
+    @objc public func showJetpackSettings() {
         let controller = JetpackSettingsViewController(blog: blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         presentationDelegate?.presentBlogDetailsViewController(controller)
@@ -270,7 +270,7 @@ extension BlogDetailsViewController {
         present(navigationController, animated: true, completion: nil)
     }
 
-    @objc func showViewAdmin() {
+    @objc public func showViewAdmin() {
         WPAppAnalytics.track(.openedViewAdmin, blog: blog)
 
         let dashboardPath: String
@@ -288,7 +288,7 @@ extension BlogDetailsViewController {
 // MARK: - BlogDetailsViewController (Tracking)
 
 extension BlogDetailsViewController {
-    @objc func trackEvent(_ event: WPAnalyticsStat, from source: BlogDetailsNavigationSource) {
+    @objc public func trackEvent(_ event: WPAnalyticsStat, from source: BlogDetailsNavigationSource) {
         WPAppAnalytics.track(event, properties: [
             WPAppAnalyticsKeyTapSource: source.string,
             WPAppAnalyticsKeyTabSource: "site_menu"
@@ -296,7 +296,7 @@ extension BlogDetailsViewController {
     }
 }
 
-@objc enum BlogDetailsNavigationSource: Int {
+@objc public enum BlogDetailsNavigationSource: Int {
     case button = 0
     case row = 1
     case link = 2

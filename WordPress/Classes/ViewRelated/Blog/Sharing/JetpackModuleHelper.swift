@@ -6,7 +6,7 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
 
 /// Shows a NoResultsViewController on a given VC and handle enabling
 /// a Jetpack module
-@objc class JetpackModuleHelper: NSObject {
+@objc public class JetpackModuleHelper: NSObject {
     private weak var viewController: JetpackModuleHelperViewController?
 
     private let moduleName: String
@@ -21,7 +21,7 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
     ///   - viewController: a UIViewController that conforms to JetpackModuleHelperDelegate
     ///   - moduleName: a `String` representing the name of the module
     ///   - blog: a `Blog`
-    @objc init(viewController: JetpackModuleHelperViewController, moduleName: String, blog: Blog) {
+    @objc public init(viewController: JetpackModuleHelperViewController, moduleName: String, blog: Blog) {
         self.viewController = viewController
         self.moduleName = moduleName
         self.blog = blog
@@ -33,7 +33,7 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
     /// - Parameters:
     ///   - title: A `String` to display on the title of the NVC
     ///   - subtitle: A `String` to display as the subtitle of the NVC
-    @objc func show(title: String, subtitle: String) {
+    @objc public func show(title: String, subtitle: String) {
         noResultsViewController = NoResultsViewController.controller()
         noResultsViewController?.configure(
             title: title,
@@ -61,7 +61,7 @@ public typealias JetpackModuleHelperViewController = JetpackModuleHelperDelegate
 }
 
 extension JetpackModuleHelper: NoResultsViewControllerDelegate {
-    func actionButtonPressed() {
+    public func actionButtonPressed() {
         service.updateJetpackModuleActiveSettingForBlog(blog,
                                                         module: moduleName,
                                                         active: true,

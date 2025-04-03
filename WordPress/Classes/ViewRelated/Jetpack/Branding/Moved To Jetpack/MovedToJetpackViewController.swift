@@ -2,7 +2,7 @@ import UIKit
 import Lottie
 import WordPressUI
 
-final class MovedToJetpackViewController: UIViewController {
+public final class MovedToJetpackViewController: UIViewController {
 
     // MARK: - Subviews
 
@@ -146,40 +146,40 @@ final class MovedToJetpackViewController: UIViewController {
 
     // MARK: - Initializers
 
-    @objc init(source: MovedToJetpackSource) {
+    @objc public init(source: MovedToJetpackSource) {
         self.source = source
         self.viewModel = MovedToJetpackViewModel(source: source)
         self.tracker = MovedToJetpackEventsTracker(source: source)
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         // This VC is designed to be initialized programmatically.
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Lifecycle
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.delegate = self
         setupView()
         animationView.play()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tracker.trackScreenDisplayed()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
+    public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         animationView.currentProgress = 1.0
     }
 
     // MARK: - Navigation overrides
 
-    override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }
 
@@ -239,11 +239,11 @@ final class MovedToJetpackViewController: UIViewController {
 
 extension MovedToJetpackViewController: UINavigationControllerDelegate {
 
-    func navigationControllerSupportedInterfaceOrientations(_ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
+    public func navigationControllerSupportedInterfaceOrientations(_ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
         return supportedInterfaceOrientations
     }
 
-    func navigationControllerPreferredInterfaceOrientationForPresentation(_ navigationController: UINavigationController) -> UIInterfaceOrientation {
+    public func navigationControllerPreferredInterfaceOrientationForPresentation(_ navigationController: UINavigationController) -> UIInterfaceOrientation {
         return .portrait
     }
 }

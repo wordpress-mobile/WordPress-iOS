@@ -2,7 +2,7 @@ import WebKit
 import CoreMedia
 
 @objc
-protocol SharingAuthorizationDelegate: NSObjectProtocol {
+public protocol SharingAuthorizationDelegate: NSObjectProtocol {
     @objc
     func authorize(_ publicizer: PublicizeService, didFailWithError error: NSError)
 

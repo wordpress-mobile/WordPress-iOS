@@ -2,14 +2,14 @@ import UIKit
 import WordPressUI
 import AsyncImageKit
 
-final class PublicizeServiceCell: UITableViewCell {
+public final class PublicizeServiceCell: UITableViewCell {
     let iconView = AsyncImageView()
     let titleLabel = UILabel()
     let detailsLabel = UILabel()
 
-    @objc class var cellId: String { "PublicizeServiceCell" }
+    @objc public class var cellId: String { "PublicizeServiceCell" }
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         detailsLabel.font = .preferredFont(forTextStyle: .footnote)
@@ -33,18 +33,18 @@ final class PublicizeServiceCell: UITableViewCell {
         iconView.contentMode = .scaleAspectFit
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func prepareForReuse() {
+    public override func prepareForReuse() {
         super.prepareForReuse()
 
         accessoryView = .none
         iconView.prepareForReuse()
     }
 
-    @objc func configure(with service: PublicizeService, connections: [PublicizeConnection]) {
+    @objc public func configure(with service: PublicizeService, connections: [PublicizeConnection]) {
         let name = service.name
         if name != .unknown && !name.hasModernRemoteLogo {
             iconView.image = name.localIconImage
