@@ -9,8 +9,8 @@ import FormattableContentKit
 ///
 ///
 protocol NotificationsNavigationDataSource: AnyObject {
-    func notification(succeeding note: WordPressData.Notification) -> Notification?
-    func notification(preceding note: WordPressData.Notification) -> Notification?
+    func notification(succeeding note: WordPressData.Notification) -> WordPressData.Notification?
+    func notification(preceding note: WordPressData.Notification) -> WordPressData.Notification?
 }
 
 // MARK: - Renders a given Notification entity, onscreen

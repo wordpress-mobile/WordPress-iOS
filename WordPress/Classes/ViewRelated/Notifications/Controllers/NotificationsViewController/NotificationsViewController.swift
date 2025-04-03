@@ -80,7 +80,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     /// Used to keep track of the currently selected notification,
     /// to restore it between table view reloads and state restoration.
     ///
-    fileprivate var selectedNotification: Notification? = nil
+    fileprivate var selectedNotification: WordPressData.Notification? = nil
 
     /// JetpackLoginVC being presented.
     ///
@@ -1006,7 +1006,7 @@ private extension NotificationsViewController {
         syncDeletedNotification(notification)
     }
 
-    func syncDeletedNotification(_ notification: Notification?) {
+    func syncDeletedNotification(_ notification: WordPressData.Notification?) {
         guard let notification else {
             return
         }
@@ -1684,13 +1684,13 @@ private extension NotificationsViewController {
         viewModel.lastSeenChanged(timestamp: note.timestamp)
     }
 
-    func loadNotification(with noteId: String) -> Notification? {
+    func loadNotification(with noteId: String) -> WordPressData.Notification? {
         let predicate = NSPredicate(format: "(notificationId == %@)", noteId)
 
         return mainContext.firstObject(ofType: Notification.self, matching: predicate)
     }
 
-    func loadNotification(near note: Notification, withIndexDelta delta: Int) -> Notification? {
+    func loadNotification(near note: Notification, withIndexDelta delta: Int) -> WordPressData.Notification? {
         guard let notifications = tableViewHandler?.resultsController?.fetchedObjects as? [Notification] else {
             return nil
         }
@@ -1722,11 +1722,11 @@ private extension NotificationsViewController {
 // MARK: - Details Navigation Datasource
 //
 extension NotificationsViewController: NotificationsNavigationDataSource {
-    @objc func notification(succeeding note: WordPressData.Notification) -> Notification? {
+    @objc func notification(succeeding note: WordPressData.Notification) -> WordPressData.Notification? {
         return loadNotification(near: note, withIndexDelta: -1)
     }
 
-    @objc func notification(preceding note: WordPressData.Notification) -> Notification? {
+    @objc func notification(preceding note: WordPressData.Notification) -> WordPressData.Notification? {
         return loadNotification(near: note, withIndexDelta: +1)
     }
 }

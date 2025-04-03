@@ -27,7 +27,7 @@ class LikesListController: NSObject {
     private let formatter = FormattableContentFormatter()
     private let content: ContentIdentifier
     private let siteID: NSNumber
-    private var notification: Notification? = nil
+    private var notification: WordPressData.Notification? = nil
     private var readerPost: ReaderPost? = nil
     private let tableView: UITableView
     private var loadingIndicator = UIActivityIndicatorView()
