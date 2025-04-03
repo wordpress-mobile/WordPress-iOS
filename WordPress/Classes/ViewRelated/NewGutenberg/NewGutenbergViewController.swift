@@ -65,9 +65,15 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.shared)
     }()
 
+    // New service for fetching raw block editor settings
+    lazy var rawBlockEditorSettingsService: RawBlockEditorSettingsService? = {
+        return RawBlockEditorSettingsService(blog: post.blog)
+    }()
+
     // MARK: - GutenbergKit
 
-    private let editorViewController: GutenbergKit.EditorViewController
+    private var editorViewController: GutenbergKit.EditorViewController
+    private var activityIndicator: UIActivityIndicatorView?
 
     lazy var autosaver = Autosaver() {
         self.performAutoSave()
@@ -202,7 +208,11 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         configureNavigationBar()
         refreshInterface()
 
-        fetchBlockSettings()
+        // Show activity indicator while fetching settings
+        showActivityIndicator()
+
+        // Fetch block editor settings
+        fetchBlockEditorSettings()
 
         // TODO: reimplement
 //        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
@@ -314,6 +324,73 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     func logException(_ exception: GutenbergJSException, with callback: @escaping () -> Void) {
         DispatchQueue.main.async {
             WordPressAppDelegate.crashLogging?.logJavaScriptException(exception, callback: callback)
+        }
+    }
+
+    // MARK: - Activity Indicator
+
+    private func showActivityIndicator() {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.color = .gray
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(indicator)
+
+        NSLayoutConstraint.activate([
+            indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+
+        indicator.startAnimating()
+        self.activityIndicator = indicator
+    }
+
+    private func hideActivityIndicator() {
+        activityIndicator?.stopAnimating()
+        activityIndicator?.removeFromSuperview()
+        activityIndicator = nil
+    }
+
+    // MARK: - Block Editor Settings
+
+    private func fetchBlockEditorSettings() {
+        guard let service = rawBlockEditorSettingsService else {
+            hideActivityIndicator()
+            return
+        }
+
+        service.fetchSettings { [weak self] result in
+            guard let self = self else { return }
+
+            DispatchQueue.main.async {
+                self.hideActivityIndicator()
+
+                switch result {
+                case .success(let settings):
+                    // Update the editor configuration with the fetched settings
+                    var updatedConfig = self.editorViewController.configuration
+                    updatedConfig.blockEditorSettings = settings
+
+                    // Create a new editor view controller with the updated configuration
+                    let newEditorVC = GutenbergKit.EditorViewController(configuration: updatedConfig)
+                    newEditorVC.delegate = self
+
+                    // Replace the old editor view controller with the new one
+                    self.editorViewController.willMove(toParent: nil)
+                    self.editorViewController.view.removeFromSuperview()
+                    self.editorViewController.removeFromParent()
+
+                    self.addChild(newEditorVC)
+                    self.view.addSubview(newEditorVC.view)
+                    self.view.pinSubviewToAllEdges(newEditorVC.view)
+                    newEditorVC.didMove(toParent: self)
+
+                    // Update the reference to the editor view controller
+                    self.editorViewController = newEditorVC
+
+                case .failure(let error):
+                    DDLogError("Error fetching block editor settings: \(error)")
+                }
+            }
         }
     }
 }
