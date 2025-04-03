@@ -373,7 +373,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // skip when the notification is marked for deletion.
-        guard let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification,
+        guard let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? WordPressData.Notification,
               deletionRequestForNoteWithID(note.objectID) == nil else {
             return nil
         }
@@ -400,7 +400,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // skip when the notification is marked for deletion.
-        guard let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification,
+        guard let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? WordPressData.Notification,
             let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment),
             deletionRequestForNoteWithID(note.objectID) == nil else {
             return nil
@@ -1317,7 +1317,7 @@ extension NotificationsViewController {
         }
 
         // If we don't currently have a selected notification and there is a notification in the list, then select it.
-        if let firstNotification = tableViewHandler.resultsController?.fetchedObjects?.first as? Notification,
+        if let firstNotification = tableViewHandler.resultsController?.fetchedObjects?.first as? WordPressData.Notification,
            let indexPath = tableViewHandler.resultsController?.indexPath(forObject: firstNotification) {
             selectRow(for: firstNotification, animated: false, scrollPosition: .none)
             self.tableView(tableView, didSelectRowAt: indexPath)
@@ -1369,7 +1369,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-        guard let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification,
+        guard let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? WordPressData.Notification,
               let cell = cell as? ListTableViewCell else {
             return
         }
@@ -1401,7 +1401,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 
     func tableViewWillChangeContent(_ tableView: UITableView) {
         guard shouldCountNotificationsForSecondAlert,
-              let notification = tableViewHandler.resultsController?.fetchedObjects?.first as? Notification,
+              let notification = tableViewHandler.resultsController?.fetchedObjects?.first as? WordPressData.Notification,
             let timestamp = notification.timestamp else {
                 timestampBeforeUpdatesForSecondAlert = nil
                 return
