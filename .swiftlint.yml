@@ -1,13 +1,11 @@
 swiftlint_version: 0.58.2
 
-excluded:
-  - BuildTools/.build
-  - DerivedData
-  - Modules/.build
-  - Scripts
-  - WordPress/DerivedData
-  - fastlane
-  - vendor
+included:
+  - Sources
+  - Tests
+  - Modules/Sources
+  - Modules/Tests
+  - WordPress
 
 # Rules – Opt-in only, so we can progressively introduce new ones
 #
