@@ -6,13 +6,10 @@ class WPAccountRestApiTests: CoreDataTestCase {
     func testAccessingAPIWithNoTokenPostsNotification() async {
         let account = WPAccount.fixture(context: mainContext, authToken: "")
 
-        let testNotificationCenter = NotificationCenter()
-        account.notificationCenter = testNotificationCenter
-
         let notificationExpectation = XCTNSNotificationExpectation(
             name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken,
             object: account,
-            notificationCenter: testNotificationCenter
+            notificationCenter: .default
         )
 
         _ = account.wordPressComRestApi
@@ -23,13 +20,10 @@ class WPAccountRestApiTests: CoreDataTestCase {
     func testAccessingAPIWithTokenDoesNotPostsNotification() async {
         let account = WPAccount.fixture(context: mainContext, authToken: "a-token")
 
-        let testNotificationCenter = NotificationCenter()
-        account.notificationCenter = testNotificationCenter
-
         let notificationExpectation = XCTNSNotificationExpectation(
             name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken,
             object: account,
-            notificationCenter: testNotificationCenter
+            notificationCenter: .default
         )
         notificationExpectation.isInverted = true
 

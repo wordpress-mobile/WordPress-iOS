@@ -3,34 +3,8 @@ import WordPressShared
 
 extension WPAccount {
 
-    private enum AssociatedKeys {
-        static var notificationCenter = 0
-    }
-
-    // Defaults to `NotificationCenter.default`.
-    // Defined so that unit tests can override the notification center in use for increased reliability.
-    var notificationCenter: NotificationCenter {
-        get {
-            guard let notificationCenter = objc_getAssociatedObject(self, &AssociatedKeys.notificationCenter) as? NotificationCenter else {
-                let notificationCenter = NotificationCenter.default
-                objc_setAssociatedObject(
-                    self,
-                    &AssociatedKeys.notificationCenter,
-                    notificationCenter,
-                    .OBJC_ASSOCIATION_RETAIN_NONATOMIC
-                )
-                return notificationCenter
-            }
-            return notificationCenter
-        }
-        set {
-            objc_setAssociatedObject(
-                self,
-                &AssociatedKeys.notificationCenter,
-                newValue,
-                .OBJC_ASSOCIATION_RETAIN_NONATOMIC
-            )
-        }
+    private var notificationCenter: NotificationCenter {
+        NotificationCenter.default
     }
 
     /// A `WordPressRestComApi` object if the account is a WordPress.com account. Otherwise, `nil`.
