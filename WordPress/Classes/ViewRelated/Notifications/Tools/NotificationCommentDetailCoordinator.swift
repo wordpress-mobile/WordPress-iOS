@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressShared
 
 enum Notifications {
@@ -36,7 +37,7 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     // Closure to be executed whenever the notification that's being currently displayed, changes.
     // This happens due to Navigation Events (Next / Previous)
-    var onSelectedNoteChange: ((Notification) -> Void)?
+    var onSelectedNoteChange: ((WordPressData.Notification) -> Void)?
 
     // Keep track of Notifications that have moderated Comments so they can be updated
     // the next time the Notifications list is displayed.
