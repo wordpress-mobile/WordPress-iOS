@@ -789,7 +789,6 @@ extension NewGutenbergViewController {
             return // TODO: when can it happen?
         }
         service.fetchSettings({ [weak self] result in
-            guard let `self` = self else { return }
             switch result {
             case .success(let response):
                 if response.hasChanges {

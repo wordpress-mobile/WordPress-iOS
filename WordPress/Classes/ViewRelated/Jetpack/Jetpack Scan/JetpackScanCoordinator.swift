@@ -274,8 +274,6 @@ class JetpackScanCoordinator {
         with error: Error? = nil,
         connectionAvailable: Bool = ReachabilityUtils.connectionAvailable
     ) {
-        let appDelegate = WordPressAppDelegate.shared
-
         guard connectionAvailable else {
             view.showNoConnectionError()
             actionButtonState = .tryAgain
