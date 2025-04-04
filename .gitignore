@@ -56,6 +56,7 @@ WordPress/WordPress.xcodeproj/xcuserdata
 WordPress/Derived Sources/
 # coverage.py
 */CoverageData/*
+WordPress/Images.xcassets/AppIcon-Internal.appiconset
 
 # Dependencies
 vendor
@@ -80,6 +81,10 @@ Scripts/fastlane/
 
 # CI Artifacts Location
 Artifacts
+
+# Generated Internal Icons
+WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset
+WordPress/Resources/Icons-Internal
 
 # All encrypted secrets should be stored under .configure-files
 # Everything without a .enc extension is ignored
