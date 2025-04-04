@@ -1,5 +1,5 @@
 #import <CoreData/CoreData.h>
-#import "Blog.h"
+#import <WordPressData/Blog.h>
 
 extern NSString * const PostCategoryEntityName;
 extern NSString * const PostCategoryNameKey;

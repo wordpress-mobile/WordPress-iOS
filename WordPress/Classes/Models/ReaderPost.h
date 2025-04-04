@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "BasePost.h"
+#import <WordPressData/BasePost.h>
 
 typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
     SourceAttributionStyleNone,

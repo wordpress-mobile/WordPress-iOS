@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "PostService.h"
+#import <WordPressData/PostService.h>
 
 @class AbstractPost, RemotePost;
 
