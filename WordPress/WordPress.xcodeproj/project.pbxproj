@@ -2022,17 +2022,6 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		0C1C180E2D95DA5200494A8C /* Icons */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			name = Icons;
-			path = Resources/Icons;
-			sourceTree = "<group>";
-		};
-		0C1C18F32D95DA6D00494A8C /* Icons */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Icons;
-			sourceTree = "<group>";
-		};
 		0C1CB0CD2D95C63C00494A8C /* Sources */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Sources;
@@ -2637,7 +2626,6 @@
 			children = (
 				0CED35262D959427003015CF /* Misc */,
 				433840C622C2BA5B00CB13F8 /* AppImages.xcassets */,
-				0C1C180E2D95DA5200494A8C /* Icons */,
 				F5A34D0525DF2F7700C9654B /* Fonts */,
 				5D6651461637324000EBDA7D /* Sounds */,
 				B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */,
@@ -4146,7 +4134,6 @@
 		FABB28482603068B00C8785C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				0C1C18F32D95DA6D00494A8C /* Icons */,
 				FABB28462603067C00C8785C /* Launch Screen.storyboard */,
 			);
 			name = Resources;
@@ -4404,7 +4391,6 @@
 				3F0FD9FF2D9B92F700CD05D6 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				0C1C180E2D95DA5200494A8C /* Icons */,
 				0C3C98902DA04EF9009F3BFB /* WordPress */,
 				0CED35262D959427003015CF /* Misc */,
 				24CE57C42CD3375200C7B37D /* Classes */,
@@ -4740,7 +4726,6 @@
 				3F0FDA032D9B930100CD05D6 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				0C1C18F32D95DA6D00494A8C /* Icons */,
 				0C3C988F2DA04EEF009F3BFB /* Jetpack */,
 				0CED35262D959427003015CF /* Misc */,
 				24CE57C42CD3375200C7B37D /* Classes */,
