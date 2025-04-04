@@ -77,12 +77,12 @@ struct AuthTokenIssueSolver {
     private enum Strings {
         enum CancelAlert {
             static let title = NSLocalizedString(
-                "auth_token_issue_solver.cancel_alert.title",
+                "authTokenIssueSolver.cancelAlert.title",
                 value: "Careful!",
                 comment: "Title for the warning shown to the user when he refuses to re-login when the authToken is missing."
             )
             static let message = NSLocalizedString(
-                "auth_token_issue_solver.cancel_alert.message",
+                "authTokenIssueSolver.cancelAlert.message",
                 value: "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s).",
                 comment: "Message for the warning shown to the user when he refuses to re-login when the authToken is missing."
             )
@@ -90,12 +90,12 @@ struct AuthTokenIssueSolver {
 
         enum ExplanationAlert {
             static let title = NSLocalizedString(
-                "auth_token_issue_solver.explanation_alert.title",
+                "authTokenIssueSolver.explanationAlert.title",
                 value: "Oops!",
                 comment: "Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one."
             )
             static let message = NSLocalizedString(
-                "auth_token_issue_solver.explanation_alert.title",
+                "authTokenIssueSolver.explanationAlert.title",
                 value: "There was a problem connecting to WordPress.com. Please log in again.",
                 comment: "Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one."
             )
