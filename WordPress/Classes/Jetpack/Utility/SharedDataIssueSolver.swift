@@ -29,7 +29,7 @@ public final class SharedDataIssueSolver: NSObject {
         return SharedDataIssueSolver()
     }
 
-    func migrateAuthKey() {
+    public func migrateAuthKey() {
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext) else {
             return
         }
