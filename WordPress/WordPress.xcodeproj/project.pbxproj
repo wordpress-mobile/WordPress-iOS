@@ -372,7 +372,6 @@
 		8096217A28E55C9400940A5D /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
 		8096218E28E55F8600940A5D /* JetpackDraftActionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8096218528E55C9400940A5D /* JetpackDraftActionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8096219328E5613700940A5D /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
-		8096219428E561A800940A5D /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FABB286B2603086900C8785C /* AppImages.xcassets */; };
 		809A91032A7A4C710063D4FA /* NotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809A91022A7A4C710063D4FA /* NotificationTests.swift */; };
 		809A91042A7A4C710063D4FA /* NotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809A91022A7A4C710063D4FA /* NotificationTests.swift */; };
 		80B016CF27FEBDC900D15566 /* DashboardCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B016CE27FEBDC900D15566 /* DashboardCardTests.swift */; };
@@ -708,7 +707,6 @@
 		FABB263B2602FC2C00C8785C /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E53F1E9E5A180050D489 /* libsqlite3.tbd */; };
 		FABB263F2602FC2C00C8785C /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF4DEAD7244B56E200ACA032 /* CoreServices.framework */; };
 		FABB28472603067C00C8785C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FABB28462603067C00C8785C /* Launch Screen.storyboard */; };
-		FABB286C2603086900C8785C /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FABB286B2603086900C8785C /* AppImages.xcassets */; };
 		FAF0FAAC2AA094C0004C3228 /* NoSiteViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF0FAAB2AA094C0004C3228 /* NoSiteViewModelTests.swift */; };
 		FAF64B6F2637DEEC00E8A1DF /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
 		FAF64B722637DEEC00E8A1DF /* XCTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */; };
@@ -1863,7 +1861,6 @@
 		FABB26522602FC2C00C8785C /* Jetpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jetpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FABB26872602FCCA00C8785C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FABB28462603067C00C8785C /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		FABB286B2603086900C8785C /* AppImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppImages.xcassets; sourceTree = "<group>"; };
 		FAF0FAAB2AA094C0004C3228 /* NoSiteViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSiteViewModelTests.swift; sourceTree = "<group>"; };
 		FAF64BA22637DEEC00E8A1DF /* JetpackScreenshotGeneration.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JetpackScreenshotGeneration.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAF64BDC2637DF7500E8A1DF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1932,6 +1929,27 @@
 				WordPressAuthenticator.h,
 			);
 			target = 4AD953B32C21451700D0EEFA /* WordPressAuthenticator */;
+		};
+		0C3C98952DA04F26009F3BFB /* Exceptions for "Jetpack" folder in "Jetpack" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Assets.xcassets,
+			);
+			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
+		};
+		0C3C98962DA04F26009F3BFB /* Exceptions for "Jetpack" folder in "Keystone" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Assets.xcassets,
+			);
+			target = 0CED016F2D95B897003015CF /* Keystone */;
+		};
+		0C3C989A2DA04F4E009F3BFB /* Exceptions for "WordPress" folder in "WordPress" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Assets.xcassets,
+			);
+			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
 		};
 		0C5A3FB42D9B214200C25301 /* Exceptions for "Reader" folder in "Reader" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -2047,6 +2065,23 @@
 				0C2390242D9ADFAA00981631 /* Exceptions for "WordPressAuthenticator" folder in "WordPressAuthenticator" target */,
 			);
 			path = WordPressAuthenticator;
+			sourceTree = "<group>";
+		};
+		0C3C988F2DA04EEF009F3BFB /* Jetpack */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0C3C98952DA04F26009F3BFB /* Exceptions for "Jetpack" folder in "Jetpack" target */,
+				0C3C98962DA04F26009F3BFB /* Exceptions for "Jetpack" folder in "Keystone" target */,
+			);
+			path = Jetpack;
+			sourceTree = "<group>";
+		};
+		0C3C98902DA04EF9009F3BFB /* WordPress */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0C3C989A2DA04F4E009F3BFB /* Exceptions for "WordPress" folder in "WordPress" target */,
+			);
+			path = WordPress;
 			sourceTree = "<group>";
 		};
 		0C5083352D8DB82F007987AB /* Sources */ = {
@@ -2493,6 +2528,8 @@
 		0C5C46FB2D98395300F2CD55 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				0C3C98902DA04EF9009F3BFB /* WordPress */,
+				0C3C988F2DA04EEF009F3BFB /* Jetpack */,
 				0C5A3FAB2D9B1EF400C25301 /* Reader */,
 				0C5C46FE2D98397A00F2CD55 /* Keystone */,
 				0C238F782D9ADF0200981631 /* WordPressAuthenticator */,
@@ -4138,7 +4175,6 @@
 			isa = PBXGroup;
 			children = (
 				0C1C18F32D95DA6D00494A8C /* Icons */,
-				FABB286B2603086900C8785C /* AppImages.xcassets */,
 				FABB28462603067C00C8785C /* Launch Screen.storyboard */,
 			);
 			name = Resources;
@@ -4360,6 +4396,8 @@
 				0C128FED2D9ECE6200C69EBA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				0C3C988F2DA04EEF009F3BFB /* Jetpack */,
+				0C3C98902DA04EF9009F3BFB /* WordPress */,
 				0C5C46FE2D98397A00F2CD55 /* Keystone */,
 				24CE57C42CD3375200C7B37D /* Classes */,
 			);
@@ -5091,7 +5129,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8096219428E561A800940A5D /* AppImages.xcassets in Resources */,
 				8096217A28E55C9400940A5D /* WordPressShare.js in Resources */,
 				4A690C182BA794C800A8E0C5 /* PrivacyInfo.xcprivacy in Resources */,
 				0C4CE8492C2F418000B9EEAC /* AppImages.xcassets in Resources */,
@@ -5245,7 +5282,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FABB286C2603086900C8785C /* AppImages.xcassets in Resources */,
 				FABB1FD42602FC2C00C8785C /* Flags.xcassets in Resources */,
 				FABB1FEE2602FC2C00C8785C /* AppImages.xcassets in Resources */,
 				FABB1FF02602FC2C00C8785C /* InfoPlist.strings in Resources */,
