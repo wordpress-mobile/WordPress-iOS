@@ -4415,7 +4415,6 @@
 			buildPhases = (
 				09607CE7281C9CA6002D2E5A /* [Lint] Check AppLocalizedString usage */,
 				0C96F99E2D92E28E000779B8 /* Generate Credentials */,
-				825F0EBF1F7EBF7C00321528 /* App Icons: Add Version For Internal Releases */,
 				24E55D502CCC143F008D071D /* Build Acknowledgements Bundle */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -4749,7 +4748,6 @@
 			buildPhases = (
 				09607CE8281C9D0F002D2E5A /* [Lint] Check AppLocalizedString usage */,
 				3F32E4AE270EAF5100A33D51 /* Generate Credentials */,
-				FABB1FA92602FC2C00C8785C /* App Icons: Add Version For Internal Releases */,
 				245562402C5C3C5D00A15446 /* Build Acknowledgements Bundle */,
 				FABB1FAA2602FC2C00C8785C /* Resources */,
 				FABB20C22602FC2C00C8785C /* Sources */,
@@ -5473,20 +5471,6 @@
 			shellScript = "$SRCROOT/../Scripts/BuildPhases/ConfigureSimulatorForUITesting.sh\n";
 			showEnvVarsInLog = 0;
 		};
-		825F0EBF1F7EBF7C00321528 /* App Icons: Add Version For Internal Releases */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "App Icons: Add Version For Internal Releases";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# This script adds the version number to the icon of internal releases.\n\nexport PATH=/opt/local/bin/:/opt/local/sbin:$PATH:/usr/local/bin:\nif [ \"${CONFIGURATION}\" != \"Release-Internal\" ]; then\nexit 0;\nfi\n\nsh ../Scripts/BuildPhases/AddVersionToIcons.sh\n";
-		};
 		E1C5456F219F10E000896227 /* Copy Gutenberg JS */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5505,20 +5489,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.sh\"\n";
-		};
-		FABB1FA92602FC2C00C8785C /* App Icons: Add Version For Internal Releases */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "App Icons: Add Version For Internal Releases";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# This script adds the version number to the icon of internal releases.\n\nexport PATH=/opt/local/bin/:/opt/local/sbin:$PATH:/usr/local/bin:\nif [ \"${CONFIGURATION}\" != \"Release-Internal\" ]; then\nexit 0;\nfi\n\nsh ../Scripts/BuildPhases/AddVersionToIcons.sh\n";
 		};
 		FABB264C2602FC2C00C8785C /* Copy Gutenberg JS */ = {
 			isa = PBXShellScriptBuildPhase;
