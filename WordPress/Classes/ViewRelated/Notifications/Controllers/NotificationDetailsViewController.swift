@@ -76,7 +76,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
 
     /// Notification being displayed
     ///
-    var note: Notification! {
+    var note: WordPressData.Notification! {
         didSet {
             guard oldValue != note && isViewLoaded else {
                 return
