@@ -2,38 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>WPAppBrand</key>
-	<string>jetpack</string>
-	<key>WPAppGroupName</key>
-	<string>${WP_APP_GROUP_NAME}</string>
-	<key>WPAppKeychainAccessGroup</key>
-	<string>${WP_APP_KEYCHAIN_ACCESS_GROUP}</string>
-	<key>WPPushNotificationAppID</key>
-	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
-	<key>WPEventNamePrefix</key>
-	<string>jpios</string>
-	<key>WPExplatPlatform</key>
-	<string>wpios</string>
-	<key>WPItunesAppID</key>
-	<string>1565481562</string>
-	<key>WPBuildConfiguration</key>
-	<string>${WP_BUILD_CONFIGURATION}</string>
-	<key>WPAppURLScheme</key>
-	<string>${WP_APP_URL_SCHEME}</string>
-  <key>WPJetpackAppURLScheme</key>
-  <string>${WP_JETPACK_APP_URL_SCHEME}</string>
-	<key>WPProductTwitterHandle</key>
-	<string>@jetpack</string>
-	<key>WPProductTwitterURL</key>
-	<string>twitter.com/jetpack</string>
-	<key>WPProductBlogURL</key>
-	<string>jetpack.com/blog</string>
-	<key>WPZendeskSourcePlatform</key>
-	<string>mobile_-_jp_ios</string>
-	<key>WPMobileAnnounceAppID</key>
-	<string>6</string>
-	<key>WPAuthKeychainServiceName</key>
-	<string>jetpack.public-api.wordpress.com</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>
@@ -45,8 +13,6 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundleAlternateIcons</key>
@@ -62,34 +28,8 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Stroke Light</key>
-			<dict>
-				<key>WPRequiresBorder</key>
-				<true/>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>stroke-light-icon-app-60</string>
-					<string>stroke-light-icon-app-76</string>
-					<string>stroke-light-icon-app-83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-			<key>Stroke Dark</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>stroke-dark-icon-app-60</string>
-					<string>stroke-dark-icon-app-76</string>
-					<string>stroke-dark-icon-app-83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
 			<key>Black on White</key>
 			<dict>
-				<key>WPRequiresBorder</key>
-				<true/>
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>black-on-white-icon-app-60</string>
@@ -97,6 +37,8 @@
 					<string>black-on-white-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
 				<true/>
 			</dict>
 			<key>Blue on White</key>
@@ -114,8 +56,6 @@
 			</dict>
 			<key>Celadon on White</key>
 			<dict>
-				<key>WPRequiresBorder</key>
-				<true/>
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>celadon-on-white-icon-app-60</string>
@@ -124,27 +64,16 @@
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
-			</dict>
-			<key>Green on White</key>
-			<dict>
 				<key>WPRequiresBorder</key>
 				<true/>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>green-on-white-icon-app-60</string>
-					<string>green-on-white-icon-app-76</string>
-					<string>green-on-white-icon-app-83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
 			</dict>
-			<key>Jetpack Light</key>
+			<key>Dark Glow</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>jetpack-light-icon-app-60</string>
-					<string>jetpack-light-icon-app-76</string>
-					<string>jetpack-light-icon-app-83.5</string>
+					<string>dark-glow-icon-app-60</string>
+					<string>dark-glow-icon-app-76</string>
+					<string>dark-glow-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -160,13 +89,26 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Dark Glow</key>
+			<key>Green on White</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>dark-glow-icon-app-60</string>
-					<string>dark-glow-icon-app-76</string>
-					<string>dark-glow-icon-app-83.5</string>
+					<string>green-on-white-icon-app-60</string>
+					<string>green-on-white-icon-app-76</string>
+					<string>green-on-white-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Jetpack Light</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>jetpack-light-icon-app-60</string>
+					<string>jetpack-light-icon-app-76</string>
+					<string>jetpack-light-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -215,19 +157,6 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Spectrum on White</key>
-			<dict>
-				<key>WPRequiresBorder</key>
-				<true/>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>spectrum-on-white-icon-app-60</string>
-					<string>spectrum-on-white-icon-app-76</string>
-					<string>spectrum-on-white-icon-app-83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
 			<key>Spectrum on Black</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -237,6 +166,43 @@
 					<string>spectrum-on-black-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Spectrum on White</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-on-white-icon-app-60</string>
+					<string>spectrum-on-white-icon-app-76</string>
+					<string>spectrum-on-white-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Stroke Dark</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>stroke-dark-icon-app-60</string>
+					<string>stroke-dark-icon-app-76</string>
+					<string>stroke-dark-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Stroke Light</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>stroke-light-icon-app-60</string>
+					<string>stroke-light-icon-app-76</string>
+					<string>stroke-light-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
 				<true/>
 			</dict>
 			<key>White on Black</key>
@@ -272,17 +238,6 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>White on Pink</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>white-on-pink-icon-app-60</string>
-					<string>white-on-pink-icon-app-76</string>
-					<string>white-on-pink-icon-app-83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
 			<key>White on Green</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -290,6 +245,17 @@
 					<string>white-on-green-icon-app-60</string>
 					<string>white-on-green-icon-app-76</string>
 					<string>white-on-green-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>White on Pink</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>white-on-pink-icon-app-60</string>
+					<string>white-on-pink-icon-app-76</string>
+					<string>white-on-pink-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -320,34 +286,8 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Stroke Light</key>
-			<dict>
-				<key>WPRequiresBorder</key>
-				<true/>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>stroke-light-icon-app-60</string>
-					<string>stroke-light-icon-app-76</string>
-					<string>stroke-light-icon-app-83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
-			<key>Stroke Dark</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>stroke-dark-icon-app-60</string>
-					<string>stroke-dark-icon-app-76</string>
-					<string>stroke-dark-icon-app-83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
 			<key>Black on White</key>
 			<dict>
-				<key>WPRequiresBorder</key>
-				<true/>
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>black-on-white-icon-app-60</string>
@@ -355,6 +295,8 @@
 					<string>black-on-white-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
 				<true/>
 			</dict>
 			<key>Blue on White</key>
@@ -372,8 +314,6 @@
 			</dict>
 			<key>Celadon on White</key>
 			<dict>
-				<key>WPRequiresBorder</key>
-				<true/>
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>celadon-on-white-icon-app-60</string>
@@ -382,27 +322,16 @@
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
-			</dict>
-			<key>Green on White</key>
-			<dict>
 				<key>WPRequiresBorder</key>
 				<true/>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>green-on-white-icon-app-60</string>
-					<string>green-on-white-icon-app-76</string>
-					<string>green-on-white-icon-app-83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
 			</dict>
-			<key>Jetpack Light</key>
+			<key>Dark Glow</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>jetpack-light-icon-app-60</string>
-					<string>jetpack-light-icon-app-76</string>
-					<string>jetpack-light-icon-app-83.5</string>
+					<string>dark-glow-icon-app-60</string>
+					<string>dark-glow-icon-app-76</string>
+					<string>dark-glow-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -418,13 +347,26 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Dark Glow</key>
+			<key>Green on White</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>dark-glow-icon-app-60</string>
-					<string>dark-glow-icon-app-76</string>
-					<string>dark-glow-icon-app-83.5</string>
+					<string>green-on-white-icon-app-60</string>
+					<string>green-on-white-icon-app-76</string>
+					<string>green-on-white-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Jetpack Light</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>jetpack-light-icon-app-60</string>
+					<string>jetpack-light-icon-app-76</string>
+					<string>jetpack-light-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -473,19 +415,6 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Spectrum on White</key>
-			<dict>
-				<key>WPRequiresBorder</key>
-				<true/>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>spectrum-on-white-icon-app-60</string>
-					<string>spectrum-on-white-icon-app-76</string>
-					<string>spectrum-on-white-icon-app-83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
 			<key>Spectrum on Black</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -495,6 +424,43 @@
 					<string>spectrum-on-black-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Spectrum on White</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>spectrum-on-white-icon-app-60</string>
+					<string>spectrum-on-white-icon-app-76</string>
+					<string>spectrum-on-white-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
+				<true/>
+			</dict>
+			<key>Stroke Dark</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>stroke-dark-icon-app-60</string>
+					<string>stroke-dark-icon-app-76</string>
+					<string>stroke-dark-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>Stroke Light</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>stroke-light-icon-app-60</string>
+					<string>stroke-light-icon-app-76</string>
+					<string>stroke-light-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+				<key>WPRequiresBorder</key>
 				<true/>
 			</dict>
 			<key>White on Black</key>
@@ -530,17 +496,6 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>White on Pink</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>white-on-pink-icon-app-60</string>
-					<string>white-on-pink-icon-app-76</string>
-					<string>white-on-pink-icon-app-83.5</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<true/>
-			</dict>
 			<key>White on Green</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -548,6 +503,17 @@
 					<string>white-on-green-icon-app-60</string>
 					<string>white-on-green-icon-app-76</string>
 					<string>white-on-green-icon-app-83.5</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<true/>
+			</dict>
+			<key>White on Pink</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>white-on-pink-icon-app-60</string>
+					<string>white-on-pink-icon-app-76</string>
+					<string>white-on-pink-icon-app-83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -563,6 +529,8 @@
 			<true/>
 		</dict>
 	</dict>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -661,7 +629,7 @@
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>Launch Screen</string>
+	<string>LaunchScreen</string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIRequiresFullScreen</key>
@@ -679,5 +647,37 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>WPAppBrand</key>
+	<string>jetpack</string>
+	<key>WPAppGroupName</key>
+	<string>${WP_APP_GROUP_NAME}</string>
+	<key>WPAppKeychainAccessGroup</key>
+	<string>${WP_APP_KEYCHAIN_ACCESS_GROUP}</string>
+	<key>WPAppURLScheme</key>
+	<string>${WP_APP_URL_SCHEME}</string>
+	<key>WPAuthKeychainServiceName</key>
+	<string>jetpack.public-api.wordpress.com</string>
+	<key>WPBuildConfiguration</key>
+	<string>${WP_BUILD_CONFIGURATION}</string>
+	<key>WPEventNamePrefix</key>
+	<string>jpios</string>
+	<key>WPExplatPlatform</key>
+	<string>wpios</string>
+	<key>WPItunesAppID</key>
+	<string>1565481562</string>
+	<key>WPJetpackAppURLScheme</key>
+	<string>${WP_JETPACK_APP_URL_SCHEME}</string>
+	<key>WPMobileAnnounceAppID</key>
+	<string>6</string>
+	<key>WPProductBlogURL</key>
+	<string>jetpack.com/blog</string>
+	<key>WPProductTwitterHandle</key>
+	<string>@jetpack</string>
+	<key>WPProductTwitterURL</key>
+	<string>twitter.com/jetpack</string>
+	<key>WPPushNotificationAppID</key>
+	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
+	<key>WPZendeskSourcePlatform</key>
+	<string>mobile_-_jp_ios</string>
 </dict>
 </plist>

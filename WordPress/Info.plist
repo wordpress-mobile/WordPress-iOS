@@ -2,38 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>WPAppBrand</key>
-	<string>wordpress</string>
-	<key>WPAppGroupName</key>
-	<string>${WP_APP_GROUP_NAME}</string>
-	<key>WPAppKeychainAccessGroup</key>
-	<string>${WP_APP_KEYCHAIN_ACCESS_GROUP}</string>
-	<key>WPPushNotificationAppID</key>
-	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
-	<key>WPEventNamePrefix</key>
-	<string>wpios</string>
-	<key>WPExplatPlatform</key>
-	<string>wpios</string>
-	<key>WPItunesAppID</key>
-	<string>335703880</string>
-	<key>WPBuildConfiguration</key>
-	<string>${WP_BUILD_CONFIGURATION}</string>
-	<key>WPAppURLScheme</key>
-	<string>${WP_APP_URL_SCHEME}</string>
-	<key>WPJetpackAppURLScheme</key>
-	<string>${WP_JETPACK_APP_URL_SCHEME}</string>
-	<key>WPProductTwitterHandle</key>
-	<string>@WordPressiOS</string>
-	<key>WPProductTwitterURL</key>
-	<string>twitter.com/WordPressiOS</string>
-	<key>WPProductBlogURL</key>
-	<string>wordpress.org/news/</string>
-	<key>WPZendeskSourcePlatform</key>
-	<string>mobile_-_ios</string>
-	<key>WPMobileAnnounceAppID</key>
-	<string>2</string>
-	<key>WPAuthKeychainServiceName</key>
-	<string>public-api.wordpress.com</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>
@@ -223,13 +191,13 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Spectrum &apos;22</key>
+			<key>Spectrum '22</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>spectrum-&apos;22-icon-app-60x60</string>
-					<string>spectrum-&apos;22-icon-app-76x76</string>
-					<string>spectrum-&apos;22-icon-app-83.5x83.5</string>
+					<string>spectrum-'22-icon-app-60x60</string>
+					<string>spectrum-'22-icon-app-76x76</string>
+					<string>spectrum-'22-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -438,13 +406,13 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Spectrum &apos;22</key>
+			<key>Spectrum '22</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>spectrum-&apos;22-icon-app-60x60</string>
-					<string>spectrum-&apos;22-icon-app-76x76</string>
-					<string>spectrum-&apos;22-icon-app-83.5x83.5</string>
+					<string>spectrum-'22-icon-app-60x60</string>
+					<string>spectrum-'22-icon-app-76x76</string>
+					<string>spectrum-'22-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -586,7 +554,7 @@
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>Launch Screen</string>
+	<string>LaunchScreen</string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIRequiresFullScreen</key>
@@ -604,5 +572,37 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>WPAppBrand</key>
+	<string>wordpress</string>
+	<key>WPAppGroupName</key>
+	<string>${WP_APP_GROUP_NAME}</string>
+	<key>WPAppKeychainAccessGroup</key>
+	<string>${WP_APP_KEYCHAIN_ACCESS_GROUP}</string>
+	<key>WPAppURLScheme</key>
+	<string>${WP_APP_URL_SCHEME}</string>
+	<key>WPAuthKeychainServiceName</key>
+	<string>public-api.wordpress.com</string>
+	<key>WPBuildConfiguration</key>
+	<string>${WP_BUILD_CONFIGURATION}</string>
+	<key>WPEventNamePrefix</key>
+	<string>wpios</string>
+	<key>WPExplatPlatform</key>
+	<string>wpios</string>
+	<key>WPItunesAppID</key>
+	<string>335703880</string>
+	<key>WPJetpackAppURLScheme</key>
+	<string>${WP_JETPACK_APP_URL_SCHEME}</string>
+	<key>WPMobileAnnounceAppID</key>
+	<string>2</string>
+	<key>WPProductBlogURL</key>
+	<string>wordpress.org/news/</string>
+	<key>WPProductTwitterHandle</key>
+	<string>@WordPressiOS</string>
+	<key>WPProductTwitterURL</key>
+	<string>twitter.com/WordPressiOS</string>
+	<key>WPPushNotificationAppID</key>
+	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
+	<key>WPZendeskSourcePlatform</key>
+	<string>mobile_-_ios</string>
 </dict>
 </plist>
