@@ -366,11 +366,27 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
                 switch result {
                 case .success(let settings):
-                    // Update the editor settings using the bridge method
-                    let settingsJSON = try? JSONSerialization.data(withJSONObject: settings, options: [])
-                    if let jsonString = settingsJSON.flatMap({ String(data: $0, encoding: .utf8) }) {
-                        self.editorViewController.webView.evaluateJavaScript("window.editor.updateSettings(\(jsonString));")
-                    }
+                    // Update the editor configuration with the fetched settings
+                    var updatedConfig = self.editorViewController.configuration
+                    updatedConfig.blockEditorSettings = settings
+
+                    // Create a new editor view controller with the updated configuration
+                    let newEditorVC = GutenbergKit.EditorViewController(configuration: updatedConfig)
+                    newEditorVC.delegate = self
+
+                    // Replace the old editor view controller with the new one
+                    self.editorViewController.willMove(toParent: nil)
+                    self.editorViewController.view.removeFromSuperview()
+                    self.editorViewController.removeFromParent()
+
+                    self.addChild(newEditorVC)
+                    self.view.addSubview(newEditorVC.view)
+                    self.view.pinSubviewToAllEdges(newEditorVC.view)
+                    newEditorVC.didMove(toParent: self)
+
+                    // Update the reference to the editor view controller
+                    self.editorViewController = newEditorVC
+
                 case .failure(let error):
                     DDLogError("Error fetching block editor settings: \(error)")
                 }
