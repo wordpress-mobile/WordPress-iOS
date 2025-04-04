@@ -2,6 +2,7 @@ import Foundation
 import CoreData
 import Gridicons
 import SVProgressHUD
+import WordPressData
 import WordPressShared
 import WordPressUI
 import FormattableContentKit
@@ -110,7 +111,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     /// Closure to be executed whenever the notification that's being currently displayed, changes.
     /// This happens due to Navigation Events (Next / Previous)
     ///
-    var onSelectedNoteChange: ((Notification) -> Void)?
+    var onSelectedNoteChange: ((WordPressData.Notification) -> Void)?
 
     var likesListController: LikesListController?
 
