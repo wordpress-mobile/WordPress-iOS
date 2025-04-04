@@ -4129,16 +4129,8 @@
 				24B54FB02624F8690041B18E /* JetpackDebug.entitlements */,
 				24B54FAF2624F84C0041B18E /* JetpackRelease.entitlements */,
 				24B54FAE2624F8430041B18E /* JetpackRelease-Alpha.entitlements */,
-				FABB268A2602FCD400C8785C /* Supporting Files */,
 			);
 			path = Jetpack;
-			sourceTree = "<group>";
-		};
-		FABB268A2602FCD400C8785C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		FAF0FAAD2AA094CE004C3228 /* My Site */ = {
