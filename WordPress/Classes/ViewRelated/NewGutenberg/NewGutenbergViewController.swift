@@ -72,7 +72,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // MARK: - GutenbergKit
 
-    private var editorViewController: GutenbergKit.EditorViewController
+    private var editorViewController: GutenbergKit.EditorViewController?
+    private var configuration: EditorConfiguration
     private var activityIndicator: UIActivityIndicatorView?
 
     lazy var autosaver = Autosaver() {
@@ -121,7 +122,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         editorSession: PostEditorAnalyticsSession? = nil,
         navigationBarManager: PostEditorNavigationBarManager? = nil
     ) {
-
         self.post = post
 
         self.replaceEditor = replaceEditor
@@ -184,11 +184,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             }
         }
 
-        self.editorViewController = GutenbergKit.EditorViewController(configuration: conf)
+        self.configuration = conf
 
         super.init(nibName: nil, bundle: nil)
 
-        self.editorViewController.delegate = self
         self.navigationBarManager.delegate = self
     }
 
@@ -233,6 +232,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private func setupEditorView() {
         view.tintColor = UIAppColor.editorPrimary
 
+        guard let editorViewController = editorViewController else { return }
+
         addChild(editorViewController)
         view.addSubview(editorViewController.view)
         view.pinSubviewToAllEdges(editorViewController.view)
@@ -270,7 +271,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         let content = post.content ?? String()
 
         setTitle(post.postTitle ?? "")
-        editorViewController.setContent(content)
+        editorViewController?.setContent(content)
 
         // TODO: reimplement
 //        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) { [weak self] in
@@ -286,7 +287,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     func toggleEditingMode() {
-        editorViewController.isCodeEditorEnabled.toggle()
+        editorViewController?.isCodeEditorEnabled.toggle()
     }
 
     private func performAutoSave() {
@@ -297,7 +298,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     private func getLatestContent() async {
         let startTime = CFAbsoluteTimeGetCurrent()
-        let editorData = try? await editorViewController.getTitleAndContent()
+        let editorData = try? await editorViewController?.getTitleAndContent()
         let duration = CFAbsoluteTimeGetCurrent() - startTime
         print("gutenbergkit-measure_get-latest-content:", duration)
 
@@ -366,26 +367,17 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
                 switch result {
                 case .success(let settings):
-                    // Update the editor configuration with the fetched settings
-                    var updatedConfig = self.editorViewController.configuration
+                    // Update the configuration with the fetched settings
+                    var updatedConfig = self.configuration
                     updatedConfig.blockEditorSettings = settings
 
-                    // Create a new editor view controller with the updated configuration
-                    let newEditorVC = GutenbergKit.EditorViewController(configuration: updatedConfig)
-                    newEditorVC.delegate = self
+                    // Create the editor view controller with the updated configuration
+                    let editorVC = GutenbergKit.EditorViewController(configuration: updatedConfig)
+                    editorVC.delegate = self
+                    self.editorViewController = editorVC
 
-                    // Replace the old editor view controller with the new one
-                    self.editorViewController.willMove(toParent: nil)
-                    self.editorViewController.view.removeFromSuperview()
-                    self.editorViewController.removeFromParent()
-
-                    self.addChild(newEditorVC)
-                    self.view.addSubview(newEditorVC.view)
-                    self.view.pinSubviewToAllEdges(newEditorVC.view)
-                    newEditorVC.didMove(toParent: self)
-
-                    // Update the reference to the editor view controller
-                    self.editorViewController = newEditorVC
+                    // Setup the editor view
+                    self.setupEditorView()
 
                 case .failure(let error):
                     DDLogError("Error fetching block editor settings: \(error)")
@@ -449,7 +441,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 
         mediaPickerHelper.presentSiteMediaPicker(filter: flags, allowMultipleSelection: config.multiple, initialSelection: initialSelectionArray) { [weak self] assets in
             guard let self, let media = assets as? [Media] else {
-                self?.editorViewController.setMediaUploadAttachment("[]")
+                self?.editorViewController?.setMediaUploadAttachment("[]")
                 return
             }
             let mediaInfos = media.map { item in
@@ -462,7 +454,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
             if let jsonString = convertMediaInfoArrayToJSONString(mediaInfos) {
                 // Escape the string for JavaScript
                 let escapedJsonString = jsonString.replacingOccurrences(of: "'", with: "\\'")
-                editorViewController.setMediaUploadAttachment(escapedJsonString)
+                editorViewController?.setMediaUploadAttachment(escapedJsonString)
             }
         }
     }
@@ -671,11 +663,11 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
-        editorViewController.undo()
+        editorViewController?.undo()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
-        editorViewController.redo()
+        editorViewController?.redo()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
@@ -762,8 +754,8 @@ extension NewGutenbergViewController {
     private func makeMoreMenuActions() -> [UIAction] {
         var actions: [UIAction] = []
 
-        let toggleModeTitle = editorViewController.isCodeEditorEnabled ? Strings.visualEditor : Strings.codeEditor
-        let toggleModeIconName = editorViewController.isCodeEditorEnabled ? "doc.richtext" : "curlybraces"
+        let toggleModeTitle = editorViewController?.isCodeEditorEnabled ?? false ? Strings.visualEditor : Strings.codeEditor
+        let toggleModeIconName = editorViewController?.isCodeEditorEnabled ?? false ? "doc.richtext" : "curlybraces"
         actions.append(UIAction(title: toggleModeTitle, image: UIImage(systemName: toggleModeIconName)) { [weak self] _ in
             self?.toggleEditingMode()
         })
