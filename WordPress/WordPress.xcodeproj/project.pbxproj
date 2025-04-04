@@ -1557,7 +1557,6 @@
 		8BE9AB8727B6B5A300708E45 /* BlogDashboardPersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPersistenceTests.swift; sourceTree = "<group>"; };
 		8BEE845927B1DC9D0001A93C /* dashboard-200-with-drafts-and-scheduled.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dashboard-200-with-drafts-and-scheduled.json"; sourceTree = "<group>"; };
 		8BFE36FE230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+fixLocalMediaURLsTests.swift"; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91CFB9542CE21196005CD369 /* URLHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHelpersTests.swift; sourceTree = "<group>"; };
 		930FD0A519882742000CC81D /* BlogServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceTest.m; sourceTree = "<group>"; };
 		931215E0267DE1C0008C3B69 /* StatsTotalRowDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTotalRowDataTests.swift; sourceTree = "<group>"; };
@@ -1856,7 +1855,6 @@
 		FA6C32C62BF2588C00BBDDB4 /* app-store-lookup-response.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "app-store-lookup-response.json"; sourceTree = "<group>"; };
 		FAB4F32624EDE12A00F259BA /* FollowCommentsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsServiceTests.swift; sourceTree = "<group>"; };
 		FABB26522602FC2C00C8785C /* Jetpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jetpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FABB26872602FCCA00C8785C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAF0FAAB2AA094C0004C3228 /* NoSiteViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSiteViewModelTests.swift; sourceTree = "<group>"; };
 		FAF64BA22637DEEC00E8A1DF /* JetpackScreenshotGeneration.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JetpackScreenshotGeneration.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAF64BDC2637DF7500E8A1DF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1925,6 +1923,20 @@
 				WordPressAuthenticator.h,
 			);
 			target = 4AD953B32C21451700D0EEFA /* WordPressAuthenticator */;
+		};
+		0C3CC0152DA058E6009F3BFB /* Exceptions for "WordPress" folder in "WordPress" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
+		};
+		0C3CC0162DA058FA009F3BFB /* Exceptions for "Jetpack" folder in "Jetpack" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
 		};
 		0C5A3FB42D9B214200C25301 /* Exceptions for "Reader" folder in "Reader" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -2033,11 +2045,17 @@
 		};
 		0C3C988F2DA04EEF009F3BFB /* Jetpack */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0C3CC0162DA058FA009F3BFB /* Exceptions for "Jetpack" folder in "Jetpack" target */,
+			);
 			path = Jetpack;
 			sourceTree = "<group>";
 		};
 		0C3C98902DA04EF9009F3BFB /* WordPress */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0C3CC0152DA058E6009F3BFB /* Exceptions for "WordPress" folder in "WordPress" target */,
+			);
 			path = WordPress;
 			sourceTree = "<group>";
 		};
@@ -2627,7 +2645,6 @@
 				406A0EEF224D39C50016AD6A /* Flags.xcassets */,
 				6EDC0E8E105881A800F68A1D /* iTunesArtwork */,
 				85ED98AA17DFB17200090D0B /* iTunesArtwork@2x */,
-				8D1107310486CEB800E47090 /* Info.plist */,
 				931DF4D818D09A2F00540BDD /* InfoPlist.strings */,
 				E1D91454134A853D0089019C /* Localizable.strings */,
 				4A690C142BA790BC00A8E0C5 /* PrivacyInfo.xcprivacy */,
@@ -4120,7 +4137,6 @@
 		FABB268A2602FCD400C8785C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				FABB26872602FCCA00C8785C /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -6958,7 +6974,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = ../Sources/WordPress/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7015,7 +7031,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = ../Sources/WordPress/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -8487,7 +8503,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = ../Sources/WordPress/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -9052,7 +9068,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = Jetpack/Info.plist;
+				INFOPLIST_FILE = ../Sources/Jetpack/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -9109,7 +9125,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = Jetpack/Info.plist;
+				INFOPLIST_FILE = ../Sources/Jetpack/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -9160,7 +9176,7 @@
 					"$(inherited)",
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = Jetpack/Info.plist;
+				INFOPLIST_FILE = ../Sources/Jetpack/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
