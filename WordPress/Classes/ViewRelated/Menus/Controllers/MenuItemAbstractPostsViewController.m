@@ -1,5 +1,6 @@
 #import "MenuItemAbstractPostsViewController.h"
 #import "PostService.h"
+#import "PostServiceOptions.h"
 #import "AbstractPost.h"
 @import WordPressKit;
 
