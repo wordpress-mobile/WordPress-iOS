@@ -286,7 +286,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.reuseIdentifier) as? TableViewCell,
-              let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
+              let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? WordPressData.Notification else {
             return UITableViewCell()
         }
         cell.selectionStyle = splitViewControllerIsHorizontallyCompact ? .none : .default
@@ -349,7 +349,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Failsafe: Make sure that the Notification (still) exists
-        guard let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
+        guard let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? WordPressData.Notification else {
             tableView.deselectSelectedRowWithAnimation(true)
             return
         }
@@ -1677,7 +1677,7 @@ private extension NotificationsViewController {
     }
 
     func updateLastSeenTime() {
-        guard let note = tableViewHandler.resultsController?.fetchedObjects?.first as? Notification else {
+        guard let note = tableViewHandler.resultsController?.fetchedObjects?.first as? WordPressData.Notification else {
             return
         }
 
