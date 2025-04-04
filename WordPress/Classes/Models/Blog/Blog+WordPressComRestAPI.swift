@@ -1,4 +1,3 @@
-import WordPressData
 import WordPressKit
 
 extension Blog {

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "Blog.h"
-#import "PostContentProvider.h"
+#import <WordPressData/Blog.h>
+#import <WordPressData/PostContentProvider.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
