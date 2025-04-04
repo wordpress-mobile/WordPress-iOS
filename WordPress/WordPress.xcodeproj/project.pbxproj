@@ -1930,27 +1930,6 @@
 			);
 			target = 4AD953B32C21451700D0EEFA /* WordPressAuthenticator */;
 		};
-		0C3C98952DA04F26009F3BFB /* Exceptions for "Jetpack" folder in "Jetpack" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Resources/Assets.xcassets,
-			);
-			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
-		};
-		0C3C98962DA04F26009F3BFB /* Exceptions for "Jetpack" folder in "Keystone" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Resources/Assets.xcassets,
-			);
-			target = 0CED016F2D95B897003015CF /* Keystone */;
-		};
-		0C3C989A2DA04F4E009F3BFB /* Exceptions for "WordPress" folder in "WordPress" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Resources/Assets.xcassets,
-			);
-			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
-		};
 		0C5A3FB42D9B214200C25301 /* Exceptions for "Reader" folder in "Reader" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -2069,18 +2048,11 @@
 		};
 		0C3C988F2DA04EEF009F3BFB /* Jetpack */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				0C3C98952DA04F26009F3BFB /* Exceptions for "Jetpack" folder in "Jetpack" target */,
-				0C3C98962DA04F26009F3BFB /* Exceptions for "Jetpack" folder in "Keystone" target */,
-			);
 			path = Jetpack;
 			sourceTree = "<group>";
 		};
 		0C3C98902DA04EF9009F3BFB /* WordPress */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				0C3C989A2DA04F4E009F3BFB /* Exceptions for "WordPress" folder in "WordPress" target */,
-			);
 			path = WordPress;
 			sourceTree = "<group>";
 		};
@@ -4396,8 +4368,6 @@
 				0C128FED2D9ECE6200C69EBA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				0C3C988F2DA04EEF009F3BFB /* Jetpack */,
-				0C3C98902DA04EF9009F3BFB /* WordPress */,
 				0C5C46FE2D98397A00F2CD55 /* Keystone */,
 				24CE57C42CD3375200C7B37D /* Classes */,
 			);
@@ -4435,6 +4405,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				0C1C180E2D95DA5200494A8C /* Icons */,
+				0C3C98902DA04EF9009F3BFB /* WordPress */,
 				0CED35262D959427003015CF /* Misc */,
 				24CE57C42CD3375200C7B37D /* Classes */,
 			);
@@ -4770,6 +4741,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				0C1C18F32D95DA6D00494A8C /* Icons */,
+				0C3C988F2DA04EEF009F3BFB /* Jetpack */,
 				0CED35262D959427003015CF /* Misc */,
 				24CE57C42CD3375200C7B37D /* Classes */,
 			);
