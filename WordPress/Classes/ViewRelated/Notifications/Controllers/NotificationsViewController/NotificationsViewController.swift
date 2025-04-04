@@ -699,7 +699,7 @@ private extension NotificationsViewController {
 
     @objc func dynamicTypeDidChange() {
         tableViewHandler.resultsController?.fetchedObjects?.forEach {
-            ($0 as? Notification)?.resetCachedAttributes()
+            ($0 as? WordPressData.Notification)?.resetCachedAttributes()
         }
     }
 }
@@ -889,7 +889,7 @@ extension NotificationsViewController {
         }
 
         let noteIndexPath = tableView.indexPathsForVisibleRows?.first { indexPath in
-            return note == tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification
+            return note == tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? WordPressData.Notification
         }
 
         guard noteIndexPath == nil else {
