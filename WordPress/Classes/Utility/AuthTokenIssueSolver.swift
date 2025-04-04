@@ -47,18 +47,11 @@ struct AuthTokenIssueSolver {
     }
 
     private func showCancelReAuthenticationAlert(in window: UIWindow, onDeletionConfirmed: @escaping () -> Void) {
-        let title = NSLocalizedString(
-            "auth_token_issue_solver.cancel_alert.title",
-            value: "Careful!",
-            comment: "Title for the warning shown to the user when he refuses to re-login when the authToken is missing."
+        let alert = UIAlertController(
+            title: Strings.CancelAlert.title,
+            message: Strings.CancelAlert.message,
+            preferredStyle: .alert
         )
-        let message = NSLocalizedString(
-            "auth_token_issue_solver.cancel_alert.message",
-            value: "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s).",
-            comment: "Message for the warning shown to the user when he refuses to re-login when the authToken is missing."
-        )
-
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: SharedStrings.Button.cancel, style: .cancel) { _ in })
         alert.addAction(UIAlertAction(title: SharedStrings.Button.delete, style: .destructive) { _ in
@@ -69,22 +62,43 @@ struct AuthTokenIssueSolver {
     }
 
     private func showExplanationAlertForReAuthentication(in presentingViewController: UIViewController) {
-        let title = NSLocalizedString(
-            "auth_token_issue_solver.explanation_alert.title",
-            value: "Oops!",
-            comment: "Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one."
+        let alert = UIAlertController(
+            title: Strings.ExplanationAlert.title,
+            message: Strings.ExplanationAlert.message,
+            preferredStyle: .alert
         )
-        let message = NSLocalizedString(
-            "auth_token_issue_solver.explanation_alert.title",
-            value: "There was a problem connecting to WordPress.com. Please log in again.",
-            comment: "Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one."
-        )
-
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: SharedStrings.Button.ok, style: .default) { _ in })
         alert.modalPresentationStyle = .popover
 
         presentingViewController.present(alert, animated: true)
+    }
+
+    private enum Strings {
+        enum CancelAlert {
+            static let title = NSLocalizedString(
+                "auth_token_issue_solver.cancel_alert.title",
+                value: "Careful!",
+                comment: "Title for the warning shown to the user when he refuses to re-login when the authToken is missing."
+            )
+            static let message = NSLocalizedString(
+                "auth_token_issue_solver.cancel_alert.message",
+                value: "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s).",
+                comment: "Message for the warning shown to the user when he refuses to re-login when the authToken is missing."
+            )
+        }
+
+        enum ExplanationAlert {
+            static let title = NSLocalizedString(
+                "auth_token_issue_solver.explanation_alert.title",
+                value: "Oops!",
+                comment: "Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one."
+            )
+            static let message = NSLocalizedString(
+                "auth_token_issue_solver.explanation_alert.title",
+                value: "There was a problem connecting to WordPress.com. Please log in again.",
+                comment: "Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one."
+            )
+        }
     }
 }
