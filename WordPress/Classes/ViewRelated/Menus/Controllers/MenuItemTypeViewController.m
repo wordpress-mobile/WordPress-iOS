@@ -1,6 +1,7 @@
 #import "MenuItemTypeViewController.h"
 #import "MenuItemTypeSelectionView.h"
 #import "BlogService.h"
+#import "MenuItem.h"
 #ifdef KEYSTONE
 #import "Blog.h"
 #import "MenuItem.h"
