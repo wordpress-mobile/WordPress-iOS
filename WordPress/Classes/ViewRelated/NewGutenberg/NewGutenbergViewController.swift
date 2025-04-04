@@ -359,36 +359,21 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         }
 
         service.fetchSettings { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
 
             DispatchQueue.main.async {
-                self.hideActivityIndicator()
-
                 switch result {
                 case .success(let settings):
                     // Update the editor configuration with the fetched settings
                     var updatedConfig = self.editorViewController.configuration
-                    updatedConfig.blockEditorSettings = settings
-
-                    // Create a new editor view controller with the updated configuration
-                    let newEditorVC = GutenbergKit.EditorViewController(configuration: updatedConfig)
-                    newEditorVC.delegate = self
-
-                    // Replace the old editor view controller with the new one
-                    self.editorViewController.willMove(toParent: nil)
-                    self.editorViewController.view.removeFromSuperview()
-                    self.editorViewController.removeFromParent()
-
-                    self.addChild(newEditorVC)
-                    self.view.addSubview(newEditorVC.view)
-                    self.view.pinSubviewToAllEdges(newEditorVC.view)
-                    newEditorVC.didMove(toParent: self)
-
-                    // Update the reference to the editor view controller
-                    self.editorViewController = newEditorVC
+                    updatedConfig.updateEditorSettings(settings)
+                    self.editorViewController.updateConfiguration(updatedConfig)
+                    self.editorViewController.startEditorSetup()
 
                 case .failure(let error):
+                    // Start the editor with the default settings
                     DDLogError("Error fetching block editor settings: \(error)")
+                    self.editorViewController.startEditorSetup()
                 }
             }
         }
@@ -404,6 +389,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
             // is still reflecting the actual startup time of the editor
             editorSession.start()
         }
+        self.hideActivityIndicator()
     }
 
     func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
