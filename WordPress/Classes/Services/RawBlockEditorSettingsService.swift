@@ -20,7 +20,7 @@ class RawBlockEditorSettingsService {
     func fetchSettings(completion: @escaping CompletionHandler) {
         Task { @MainActor in
             do {
-                let result = await self.remoteAPI.get(path: "/wp-block-editor/v1/settings", parameters: ["context": "mobile"])
+                let result = await self.remoteAPI.get(path: "/wp-block-editor/v1/settings")
                 switch result {
                 case .success(let response):
                     guard let dictionary = response as? [String: Any] else {
