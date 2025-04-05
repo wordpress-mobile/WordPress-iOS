@@ -43,7 +43,7 @@ class RawBlockEditorSettingsService {
         }
 
         // Return cached settings if available, otherwise fetch fresh
-        if let cachedSettings = cachedSettings {
+        if let cachedSettings {
             return cachedSettings
         }
 
