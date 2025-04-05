@@ -2011,8 +2011,32 @@
 			);
 			target = 0CED016F2D95B897003015CF /* Keystone */;
 		};
+		3F1A48232DA3B23900786B92 /* Exceptions for "WordPressData" folder in "Keystone" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Theme+Swift.swift",
+			);
+			target = 0CED016F2D95B897003015CF /* Keystone */;
+		};
+		3F1A48252DA3C19100786B92 /* Exceptions for "WordPressData" folder in "WordPress" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Theme+Swift.swift",
+			);
+			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
+		};
+		3F1A48272DA3C19700786B92 /* Exceptions for "WordPressData" folder in "Jetpack" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Theme+Swift.swift",
+			);
+			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
+		};
 		3F7AE0D02D9B30A200AB4892 /* Exceptions for "WordPressData" folder in "WordPressData" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Theme+Swift.swift",
+			);
 			publicHeaders = (
 				WordPressData.h,
 			);
@@ -2087,6 +2111,9 @@
 		3F7AE0B62D9B30A100AB4892 /* WordPressData */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				3F1A48252DA3C19100786B92 /* Exceptions for "WordPressData" folder in "WordPress" target */,
+				3F1A48272DA3C19700786B92 /* Exceptions for "WordPressData" folder in "Jetpack" target */,
+				3F1A48232DA3B23900786B92 /* Exceptions for "WordPressData" folder in "Keystone" target */,
 				3F7AE0D02D9B30A200AB4892 /* Exceptions for "WordPressData" folder in "WordPressData" target */,
 			);
 			path = WordPressData;

@@ -38,13 +38,6 @@
 + (NSString *)entityName;
 
 /**
- *  @brief      Link to customization page for this theme
- *
- *  @returns    The URL to present
- */
-- (NSString *)customizeUrl;
-
-/**
  *  @brief      Link to details page for this theme
  *
  *  @returns    The URL to present
