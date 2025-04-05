@@ -358,23 +358,18 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             return
         }
 
-        service.fetchSettings { [weak self] result in
-            guard let self else { return }
-
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let settings):
-                    // Update the editor configuration with the fetched settings
-                    var updatedConfig = self.editorViewController.configuration
-                    updatedConfig.updateEditorSettings(settings)
-                    self.editorViewController.updateConfiguration(updatedConfig)
-                    self.editorViewController.startEditorSetup()
-
-                case .failure(let error):
-                    // Start the editor with the default settings
-                    DDLogError("Error fetching block editor settings: \(error)")
-                    self.editorViewController.startEditorSetup()
-                }
+        Task { @MainActor in
+            do {
+                let settings = try await service.fetchSettings()
+                // Update the editor configuration with the fetched settings
+                var updatedConfig = self.editorViewController.configuration
+                updatedConfig.updateEditorSettings(settings)
+                self.editorViewController.updateConfiguration(updatedConfig)
+                self.editorViewController.startEditorSetup()
+            } catch {
+                // Start the editor with the default settings
+                DDLogError("Error fetching block editor settings: \(error)")
+                self.editorViewController.startEditorSetup()
             }
         }
     }
