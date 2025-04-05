@@ -25,7 +25,6 @@ class RawBlockEditorSettingsService {
                 throw NSError(domain: "RawBlockEditorSettingsService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
             }
             blog.rawBlockEditorSettings = dictionary
-            blog.rawBlockEditorSettingsLastFetchTime = Date()
             return dictionary
         case .failure(let error):
             throw error
@@ -34,8 +33,8 @@ class RawBlockEditorSettingsService {
 
     @MainActor
     func fetchSettings() async throws -> [String: Any] {
-        // Start a background refresh if needed
-        if !isRefreshing && (blog.rawBlockEditorSettingsLastFetchTime == nil || Date().timeIntervalSince(blog.rawBlockEditorSettingsLastFetchTime!) >= 300) {
+        // Start a background refresh if not already refreshing
+        if !isRefreshing {
             isRefreshing = true
             Task {
                 do {
