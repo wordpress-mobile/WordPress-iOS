@@ -1,4 +1,6 @@
+#import "Blog.h"
 #import "PostService.h"
+#import "PostServiceOptions.h"
 #import "PostCategory.h"
 #import "Media.h"
 #ifdef KEYSTONE
