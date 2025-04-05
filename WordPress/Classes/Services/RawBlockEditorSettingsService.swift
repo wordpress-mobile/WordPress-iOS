@@ -17,33 +17,7 @@ class RawBlockEditorSettingsService {
     }
 
     @MainActor
-    func fetchSettings() async throws -> [String: Any] {
-        // Start a background refresh if needed
-        if !isRefreshing && (blog.rawBlockEditorSettingsLastFetchTime == nil || Date().timeIntervalSince(blog.rawBlockEditorSettingsLastFetchTime!) >= 0) {
-            isRefreshing = true
-            Task {
-                do {
-                    let result = await self.remoteAPI.get(path: "/wp-block-editor/v1/settings")
-                    switch result {
-                    case .success(let response):
-                        if let dictionary = response as? [String: Any] {
-                            blog.rawBlockEditorSettings = dictionary
-                            blog.rawBlockEditorSettingsLastFetchTime = Date()
-                        }
-                    case .failure(let error):
-                        DDLogError("Error refreshing block editor settings: \(error)")
-                    }
-                    isRefreshing = false
-                }
-            }
-        }
-
-        // Return cached settings if available, otherwise fetch fresh
-        if let cachedSettings = blog.rawBlockEditorSettings {
-            return cachedSettings
-        }
-
-        // If no cache, fetch synchronously
+    private func fetchSettingsFromAPI() async throws -> [String: Any] {
         let result = await self.remoteAPI.get(path: "/wp-block-editor/v1/settings")
         switch result {
         case .success(let response):
@@ -56,5 +30,43 @@ class RawBlockEditorSettingsService {
         case .failure(let error):
             throw error
         }
+    }
+
+    @MainActor
+    func fetchSettings() async throws -> [String: Any] {
+        // Start a background refresh if needed
+        if !isRefreshing && (blog.rawBlockEditorSettingsLastFetchTime == nil || Date().timeIntervalSince(blog.rawBlockEditorSettingsLastFetchTime!) >= 300) {
+            isRefreshing = true
+            Task {
+                do {
+                    _ = try await fetchSettingsFromAPI()
+                } catch {
+                    DDLogError("Error refreshing block editor settings: \(error)")
+                }
+                isRefreshing = false
+            }
+        }
+
+        // Return cached settings if available
+        if let cachedSettings = blog.rawBlockEditorSettings {
+            return cachedSettings
+        }
+
+        // If no cache and no background refresh in progress, fetch synchronously
+        if !isRefreshing {
+            return try await fetchSettingsFromAPI()
+        }
+
+        // If we're here, it means a background refresh is in progress
+        // Wait for it to complete and return the cached result
+        while isRefreshing {
+            try await Task.sleep(nanoseconds: 100_000_000) // 100ms
+            if let cachedSettings = blog.rawBlockEditorSettings {
+                return cachedSettings
+            }
+        }
+
+        // If we still don't have settings after the refresh completed, throw an error
+        throw NSError(domain: "RawBlockEditorSettingsService", code: 2, userInfo: [NSLocalizedDescriptionKey: "Failed to fetch block editor settings"])
     }
 }
