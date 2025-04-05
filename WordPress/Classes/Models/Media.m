@@ -192,19 +192,6 @@
     [super prepareForDeletion];
 }
 
-- (void)remove
-{
-    [self.managedObjectContext performBlockAndWait:^{
-        [self.managedObjectContext deleteObject:self];
-        [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
-    }];
-}
-
-- (void)save
-{
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
-
 - (BOOL)hasRemote {
     return self.mediaID.intValue != 0;
 }
