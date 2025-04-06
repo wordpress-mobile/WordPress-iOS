@@ -112,7 +112,7 @@ struct MeHeaderViewModel {
 
     init(account: WPAccount) {
         self.gravatarEmail = account.email
-        let username = account.username ?? ""
+        let username = account.username
         self.username = "\(username.contains("@") ? "" : "@")\(username)"
         self.displayName = account.displayName ?? ""
     }
