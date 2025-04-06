@@ -6,7 +6,9 @@
 #import "Blog.h"
 #import "Keystone-Swift.h"
 #else
-@import WordPresData;
+// For some reason, the modular import does not work.
+// @import WordPressData;
+#import <WordPressData/WordPressData.h>
 #import "WordPress-Swift.h"
 #endif
 
