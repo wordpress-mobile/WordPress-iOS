@@ -15,9 +15,6 @@ let package = Package(
         .library(name: "NotificationServiceExtensionCore", targets: ["NotificationServiceExtensionCore"]),
         .library(name: "ShareExtensionCore", targets: ["ShareExtensionCore"]),
         .library(name: "SFHFKeychainUtils", targets: ["SFHFKeychainUtils"]),
-        // Note: WordPressData the Swift package is currently unused.
-        // We are leaving it here to be ready for the future when we'll be able to write the current WordPressData framework as a Swift package.
-        .library(name: "WordPressData", targets: ["WordPressData"]),
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
         .library(name: "WordPressUI", targets: ["WordPressUI"]),
@@ -55,7 +52,7 @@ let package = Package(
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20250127"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "947c5315198eea96e3e8c32fcc6afa59ef242638"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "a03e0dae10a404c88c215bfcee3176df951302f5"),
         .package(url: "https://github.com/Automattic/color-studio", branch: "trunk"),
         .package(url: "https://github.com/wordpress-mobile/AztecEditor-iOS", from: "1.20.0"),
     ],
@@ -123,14 +120,6 @@ let package = Package(
             .product(name: "ScreenObject", package: "ScreenObject"),
             .product(name: "XCUITestHelpers", package: "ScreenObject"),
         ], swiftSettings: [.swiftLanguageMode(.v5)]),
-        .target(name: "WordPressDataObjC"),
-        .target(
-            name: "WordPressData",
-            dependencies: [
-                .target(name: "WordPressDataObjC"),
-                .target(name: "WordPressSharedObjC")
-            ]
-        ),
         .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressCore", dependencies: [.target(name: "WordPressShared"), .product(name: "WordPressAPI", package: "wordpress-rs")]),
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
@@ -255,7 +244,6 @@ enum XcodeSupport {
                 "SFHFKeychainUtils",
                 "ShareExtensionCore",
                 "WordPressFlux",
-                "WordPressDataObjC", // Currently empty, here for future proofing
                 "WordPressShared",
                 "WordPressReader",
                 "WordPressUI",
@@ -292,7 +280,6 @@ enum XcodeSupport {
             ]),
             .xcodeTarget("XcodeTarget_WordPressTests", dependencies: testDependencies + [
                 "SFHFKeychainUtils",
-                "WordPressDataObjC", // Currently empty, here for future proofing
                 "WordPressShared",
                 "WordPressUI",
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),

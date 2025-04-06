@@ -3,7 +3,6 @@
 #import "Blog.h"
 #import "Theme.h"
 #import "WPAccount.h"
-@import WordPressDataObjC;
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
 #else

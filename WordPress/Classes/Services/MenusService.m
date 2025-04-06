@@ -4,7 +4,6 @@
 #import "Menu.h"
 #import "MenuItem.h"
 #import "MenuLocation.h"
-@import WordPressDataObjC;
 #import "PostService.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"

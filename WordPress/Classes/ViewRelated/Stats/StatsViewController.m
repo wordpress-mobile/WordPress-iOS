@@ -9,7 +9,6 @@
 #endif
 #import "WPAppAnalytics.h"
 
-@import WordPressDataObjC;
 @import WordPressShared;
 @import Reachability;
 

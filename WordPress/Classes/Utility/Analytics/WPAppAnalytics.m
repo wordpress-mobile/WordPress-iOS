@@ -1,4 +1,3 @@
-@import WordPressDataObjC;
 @import NSObject_SafeExpectations;
 
 #import "WPAppAnalytics.h"

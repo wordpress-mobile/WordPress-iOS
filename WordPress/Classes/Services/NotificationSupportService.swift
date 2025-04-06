@@ -3,12 +3,11 @@ import BuildSettingsKit
 import SFHFKeychainUtils
 import NotificationServiceExtensionCore
 
-@objc
-open class NotificationSupportService: NSObject {
+final class NotificationSupportService {
     private let appKeychainAccessGroup: String
     private let configuration: NotificationServiceExtensionConfiguration
 
-    @objc convenience override init() {
+    convenience init() {
         let settings = BuildSettings.current
         self.init(
             appKeychainAccessGroup: settings.appKeychainAccessGroup,
@@ -24,14 +23,13 @@ open class NotificationSupportService: NSObject {
 
     /// Sets the OAuth Token that should be used by the Notification Service Extension to access WPCOM.
     ///
-    /// - Parameter oauth2Token: WordPress.com OAuth Token
+    /// - Parameter authToken: WordPress.com OAuth Token
     ///
-    @objc
-    func insertServiceExtensionToken(_ oauthToken: String) {
+    func storeToken(_ authToken: String) {
         do {
             try SFHFKeychainUtils.storeUsername(
                 configuration.keychainTokenKey,
-                andPassword: oauthToken,
+                andPassword: authToken,
                 forServiceName: configuration.keychainServiceName,
                 accessGroup: appKeychainAccessGroup,
                 updateExisting: true
@@ -45,8 +43,7 @@ open class NotificationSupportService: NSObject {
     ///
     /// - Parameter username: WordPress.com username
     ///
-    @objc
-    func insertServiceExtensionUsername(_ username: String) {
+    func storeUsername(_ username: String) {
         do {
             try SFHFKeychainUtils.storeUsername(
                 configuration.keychainUsernameKey,
@@ -64,8 +61,7 @@ open class NotificationSupportService: NSObject {
     ///
     /// - Parameter userID: WordPress.com userID
     ///
-    @objc
-    func insertServiceExtensionUserID(_ userID: String) {
+    func storeUserID(_ userID: String) {
         do {
             try SFHFKeychainUtils.storeUsername(
                 configuration.keychainUserIDKey,
@@ -81,7 +77,6 @@ open class NotificationSupportService: NSObject {
 
     /// Attempts to delete the current WPCOM OAuth Token used by the Notification Service Extension.
     ///
-    @objc
     func deleteServiceExtensionToken() {
         do {
             try SFHFKeychainUtils.deleteItem(
@@ -96,7 +91,6 @@ open class NotificationSupportService: NSObject {
 
     /// Attempts to delete the current WPCOM Username used by the Notification Service Extension.
     ///
-    @objc
     func deleteServiceExtensionUsername() {
         do {
             try SFHFKeychainUtils.deleteItem(
@@ -111,8 +105,7 @@ open class NotificationSupportService: NSObject {
 
     /// Attempts to delete the current WPCOM Username used by the Notification Service Extension.
     ///
-    @objc
-    public func deleteServiceExtensionUserID() {
+    func deleteServiceExtensionUserID() {
         do {
             try SFHFKeychainUtils.deleteItem(
                 forUsername: configuration.keychainUserIDKey,

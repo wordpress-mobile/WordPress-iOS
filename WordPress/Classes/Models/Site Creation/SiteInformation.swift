@@ -1,9 +1,9 @@
-struct SiteInformation {
-    let title: String
-    let tagLine: String?
+public struct SiteInformation {
+    public let title: String
+    public let tagLine: String?
 
     /// if title is nil, then the corresponding SiteInformation value is nil
-    init?(title: String?, tagLine: String?) {
+    public init?(title: String?, tagLine: String?) {
         guard let title else {
             return nil
         }
@@ -13,7 +13,7 @@ struct SiteInformation {
 }
 
 extension SiteInformation: Equatable {
-    static func ==(lhs: SiteInformation, rhs: SiteInformation) -> Bool {
+    public static func ==(lhs: SiteInformation, rhs: SiteInformation) -> Bool {
         return lhs.title == rhs.title &&
                 lhs.tagLine == rhs.tagLine
     }

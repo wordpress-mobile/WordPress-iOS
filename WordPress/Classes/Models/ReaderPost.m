@@ -1,5 +1,4 @@
 #import "ReaderPost.h"
-@import WordPressDataObjC;
 #import "SourcePostAttribution.h"
 #import "WPAccount.h"
 #ifdef KEYSTONE

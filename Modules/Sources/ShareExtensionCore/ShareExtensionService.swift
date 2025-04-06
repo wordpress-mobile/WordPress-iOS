@@ -2,13 +2,12 @@ import Foundation
 import BuildSettingsKit
 import SFHFKeychainUtils
 
-@objc
-open class ShareExtensionService: NSObject {
+public final class ShareExtensionService {
     private let appGroupName: String
     private let appKeychainAccessGroup: String
     private let configuration: ShareExtensionConfiguration
 
-    @objc public convenience override init() {
+    public convenience init() {
         let settings = BuildSettings.current
         self.init(
             appGroupName: settings.appGroupName,
@@ -31,7 +30,7 @@ open class ShareExtensionService: NSObject {
     ///
     /// - Parameter oauth2Token: WordPress.com OAuth Token
     ///
-    @objc public func configureShareExtensionToken(_ oauth2Token: String) {
+    public func storeToken(_ oauth2Token: String) {
         do {
             try SFHFKeychainUtils.storeUsername(
                 configuration.keychainTokenKey,
@@ -49,7 +48,7 @@ open class ShareExtensionService: NSObject {
     ///
     /// - Parameter oauth2Token: WordPress.com OAuth Token
     ///
-    @objc public func configureShareExtensionUsername(_ username: String) {
+    public func storeUsername(_ username: String) {
         do {
             try SFHFKeychainUtils.storeUsername(
                 configuration.keychainUsernameKey,
@@ -70,7 +69,7 @@ open class ShareExtensionService: NSObject {
     ///     - defaultSiteID: The ID of the Primary Site.
     ///     - defaultSiteName: The Primary Site's Name
     ///
-    @objc public func configureShareExtensionDefaultSiteID(_ defaultSiteID: Int, defaultSiteName: String) {
+    public func storeDefaultSiteID(_ defaultSiteID: Int, defaultSiteName: String) {
         guard let userDefaults = UserDefaults(suiteName: appGroupName) else {
             return
         }
@@ -85,7 +84,7 @@ open class ShareExtensionService: NSObject {
     ///     - lastUsedSiteID: The ID of the Last Used Site.
     ///     - lastUsedSiteName: The Last Used Site's Name
     ///
-    @objc public func configureShareExtensionLastUsedSiteID(_ lastUsedSiteID: Int, lastUsedSiteName: String) {
+    public func storeLastUsedSiteID(_ lastUsedSiteID: Int, lastUsedSiteName: String) {
         guard let userDefaults = UserDefaults(suiteName: appGroupName) else {
             return
         }
@@ -98,7 +97,7 @@ open class ShareExtensionService: NSObject {
     ///
     /// - Parameter maximumMediaSize: The maximum size a media attachment might occupy.
     ///
-    @objc public func configureShareExtensionMaximumMediaDimension(_ maximumMediaDimension: Int) {
+    public func storeMaximumMediaDimension(_ maximumMediaDimension: Int) {
         guard let userDefaults = UserDefaults(suiteName: appGroupName) else {
             return
         }
@@ -110,7 +109,7 @@ open class ShareExtensionService: NSObject {
     ///
     /// - Parameter recentSites: An array of URL's representing the recently used sites.
     ///
-    @objc public func configureShareExtensionRecentSites(_ recentSites: [String]) {
+    public func storeRecentSites(_ recentSites: [String]) {
         guard let userDefaults = UserDefaults(suiteName: appGroupName) else {
             return
         }
@@ -120,7 +119,7 @@ open class ShareExtensionService: NSObject {
 
     /// Nukes all of the Share Extension Configuration
     ///
-    @objc public func removeShareExtensionConfiguration() {
+    public func removeShareExtensionConfiguration() {
         do {
             try SFHFKeychainUtils.deleteItem(
                 forUsername: configuration.keychainTokenKey,
@@ -153,7 +152,7 @@ open class ShareExtensionService: NSObject {
 
     /// Retrieves the WordPress.com OAuth Token, meant for Extension usage.
     ///
-    @objc public func retrieveShareExtensionToken() -> String? {
+    public func retrieveShareExtensionToken() -> String? {
         guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(
             configuration.keychainTokenKey,
             andServiceName: configuration.keychainServiceName,
@@ -167,7 +166,7 @@ open class ShareExtensionService: NSObject {
 
     /// Retrieves the WordPress.com Username, meant for Extension usage.
     ///
-    @objc public func retrieveShareExtensionUsername() -> String? {
+    public func retrieveShareExtensionUsername() -> String? {
         guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(
             configuration.keychainUsernameKey,
             andServiceName: configuration.keychainServiceName,

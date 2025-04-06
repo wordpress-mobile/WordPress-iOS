@@ -341,7 +341,6 @@ import WordPressKit
         }
     }
 
-    // Helper used by WPAuthTokenIssueSolver
     @objc
     public class func signinForWPCom(dotcomEmailAddress: String?, dotcomUsername: String?, onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
         let loginFields = LoginFields()

@@ -14,7 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class UserSuggestion;
 @class SiteSuggestion;
 @class PageTemplateCategory;
-@class JetpackFeaturesRemovalCoordinator;
 @class PublicizeInfo;
 
 extern NSString * const BlogEntityName;

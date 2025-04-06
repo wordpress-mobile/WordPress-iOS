@@ -2,7 +2,6 @@
 #import "AccountService.h"
 #import "Media.h"
 #import "WPAccount.h"
-@import WordPressDataObjC;
 @import WordPressShared;
 #import "Blog.h"
 #import <MobileCoreServices/MobileCoreServices.h>

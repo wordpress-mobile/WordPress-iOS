@@ -3,7 +3,7 @@ import CryptoKit
 import WordPressAPI
 import WordPressShared
 
-extension Blog {
+public extension Blog {
 
     enum BlogCredentialsError: Error {
         case blogUrlMissing
@@ -64,7 +64,7 @@ extension Blog {
 
     @available(swift, obsoleted: 1.0)
     @objc(deleteApplicationToken)
-    public func objc_deleteApplicationToken() {
+    func objc_deleteApplicationToken() {
         _ = try? deleteApplicationToken()
     }
 
@@ -159,7 +159,7 @@ extension Blog {
     }
 }
 
-extension WpApiApplicationPasswordDetails {
+public extension WpApiApplicationPasswordDetails {
     var derivedXMLRPCRoot: URL {
         get throws {
             let url = try ParsedUrl.parse(input: siteUrl).asURL()
