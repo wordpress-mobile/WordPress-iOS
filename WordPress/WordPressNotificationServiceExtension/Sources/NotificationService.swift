@@ -6,7 +6,6 @@ import SFHFKeychainUtils
 import TracksMini
 import UserNotifications
 import WordPressKit
-import WordPressData
 import WordPressShared
 
 // MARK: - NotificationService
