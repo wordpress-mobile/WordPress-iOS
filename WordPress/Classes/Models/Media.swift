@@ -1,7 +1,7 @@
 import Foundation
 import UniformTypeIdentifiers
 
-extension Media {
+public extension Media {
     // MARK: - AutoUpload Failure Count
 
     static let maxAutoUploadFailureCount = 3
