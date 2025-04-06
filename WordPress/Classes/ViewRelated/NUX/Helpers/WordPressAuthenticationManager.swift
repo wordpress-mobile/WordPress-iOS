@@ -267,7 +267,9 @@ extension WordPressAuthenticationManager {
     }
 
     @objc func accontRequiresShowingWPComSigninReceived(_ notification: Foundation.Notification) {
-        WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
+        DispatchQueue.main.async {
+            WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
+        }
     }
 }
 
