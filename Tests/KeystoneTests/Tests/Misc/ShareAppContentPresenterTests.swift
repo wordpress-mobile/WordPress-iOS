@@ -4,6 +4,7 @@ import OHHTTPStubsSwift
 import WordPressKit
 
 @testable import WordPress
+@testable import WordPressData
 
 final class ShareAppContentPresenterTests: CoreDataTestCase {
 

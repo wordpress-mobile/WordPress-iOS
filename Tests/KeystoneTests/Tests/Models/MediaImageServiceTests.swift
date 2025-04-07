@@ -3,6 +3,7 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 import AsyncImageKit
 @testable import WordPress
+@testable import WordPressData
 
 class MediaImageServiceTests: CoreDataTestCase {
     var mediaFileManager: MediaFileManager!

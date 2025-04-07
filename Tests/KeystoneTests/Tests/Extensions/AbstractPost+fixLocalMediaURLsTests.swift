@@ -2,6 +2,7 @@ import XCTest
 import Nimble
 
 @testable import WordPress
+@testable import WordPressData
 
 class AbstractPostFixLocalMediaURLsTests: CoreDataTestCase {
     private let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first!

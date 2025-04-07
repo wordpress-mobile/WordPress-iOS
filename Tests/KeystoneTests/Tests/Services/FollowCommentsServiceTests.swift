@@ -2,6 +2,7 @@ import XCTest
 import WordPressKit
 
 @testable import WordPress
+@testable import WordPressData
 
 class FollowCommentsServiceTests: CoreDataTestCase {
 

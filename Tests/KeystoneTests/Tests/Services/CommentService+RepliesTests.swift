@@ -5,6 +5,7 @@ import OHHTTPStubsSwift
 import XCTest
 
 @testable import WordPress
+@testable import WordPressData
 
 final class CommentService_RepliesTests: CoreDataTestCase {
     private let commentID: Int = 1

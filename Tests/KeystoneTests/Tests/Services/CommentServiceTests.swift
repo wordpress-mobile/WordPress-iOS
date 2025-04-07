@@ -3,6 +3,7 @@ import Nimble
 import XCTest
 
 @testable import WordPress
+@testable import WordPressData
 
 final class CommentServiceTests: CoreDataTestCase {
 

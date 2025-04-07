@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 final class CompliancePopoverViewModelTests: CoreDataTestCase {
     let testDefaults = UserDefaults(suiteName: "compliance-popover-view-model-tests")

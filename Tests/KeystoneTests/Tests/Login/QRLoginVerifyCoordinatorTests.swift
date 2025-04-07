@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
     let testToken = QRLoginToken(token: "", data: "")

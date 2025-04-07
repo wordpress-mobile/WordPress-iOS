@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 class BlogDetailsSubsectionToSectionCategoryTests: CoreDataTestCase {
     var blog: Blog!

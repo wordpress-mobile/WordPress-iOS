@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 final class ReaderSubscribeCommentsActionTests: CoreDataTestCase {
     let sut = ReaderSubscribeCommentsAction()

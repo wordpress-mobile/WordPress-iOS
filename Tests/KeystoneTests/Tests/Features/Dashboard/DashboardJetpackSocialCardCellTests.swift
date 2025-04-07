@@ -1,6 +1,7 @@
 import WordPressShared
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 class DashboardJetpackSocialCardCellTests: CoreDataTestCase {
 

@@ -1,6 +1,7 @@
 import XCTest
 import WordPressAPI
 @testable import WordPress
+@testable import WordPressData
 
 final class Blog_RestAPITests: CoreDataTestCase {
     let loginDetails = WpApiApplicationPasswordDetails(

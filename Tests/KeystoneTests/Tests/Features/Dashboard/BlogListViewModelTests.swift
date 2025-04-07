@@ -1,6 +1,7 @@
 import WordPressShared
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 final class BlogListViewModelTests: CoreDataTestCase {
     private var viewModel: BlogListViewModel!

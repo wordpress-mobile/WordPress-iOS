@@ -4,6 +4,7 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 import Nimble
 @testable import WordPress
+@testable import WordPressData
 
 class AccountServiceTests: CoreDataTestCase {
     var accountService: AccountService!

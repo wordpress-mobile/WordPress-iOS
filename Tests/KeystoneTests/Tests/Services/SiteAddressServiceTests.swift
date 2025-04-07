@@ -1,6 +1,7 @@
 import XCTest
 import Nimble
 @testable import WordPress
+@testable import WordPressData
 
 class SiteAddressServiceTests: CoreDataTestCase {
 

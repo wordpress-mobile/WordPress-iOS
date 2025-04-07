@@ -3,6 +3,7 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 
 @testable import WordPress
+@testable import WordPressData
 
 final class BloggingPromptsServiceTests: CoreDataTestCase {
     private let siteID = 1

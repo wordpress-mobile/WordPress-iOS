@@ -3,6 +3,7 @@ import Nimble
 import OHHTTPStubs
 import OHHTTPStubsSwift
 @testable import WordPress
+@testable import WordPressData
 
 class BlockEditorSettingsServiceTests: CoreDataTestCase {
     let expectationTimeout = TimeInterval(1)

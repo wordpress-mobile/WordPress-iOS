@@ -1,6 +1,7 @@
 import WordPressShared
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 class ReaderSelectInterestsCoordinatorTests: CoreDataTestCase {
     func testisFollowingInterestsReturnsFalse() {

@@ -2,6 +2,7 @@ import XCTest
 import JetpackStatsWidgetsCore
 
 @testable import WordPress
+@testable import WordPressData
 
 class StatsWidgetsStoreTests: CoreDataTestCase {
     private var sut: StatsWidgetsStore!
