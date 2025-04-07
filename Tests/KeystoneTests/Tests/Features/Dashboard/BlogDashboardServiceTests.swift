@@ -2,6 +2,7 @@ import XCTest
 import Nimble
 
 @testable import WordPress
+@testable import WordPressData
 
 class BlogDashboardServiceTests: CoreDataTestCase {
     private var context: NSManagedObjectContext!

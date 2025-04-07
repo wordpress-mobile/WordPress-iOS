@@ -2,6 +2,7 @@ import XCTest
 import Nimble
 
 @testable import WordPress
+@testable import WordPressData
 
 final class BlogDashboardPersonalizationViewModelTests: CoreDataTestCase {
     private let repository = InMemoryUserDefaults()

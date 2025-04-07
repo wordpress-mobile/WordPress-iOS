@@ -4,6 +4,7 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 
 @testable import WordPress
+@testable import WordPressData
 
 class PeopleServiceTests: CoreDataTestCase {
 

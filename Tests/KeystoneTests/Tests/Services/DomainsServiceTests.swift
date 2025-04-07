@@ -4,6 +4,7 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 import WordPressKit
 @testable import WordPress
+@testable import WordPressData
 
 class DomainsServiceTests: CoreDataTestCase {
     let testSiteID = 12345

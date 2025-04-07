@@ -1,6 +1,7 @@
 import XCTest
 import WebKit
 @testable import WordPress
+@testable import WordPressData
 
 class SiteVisibilityTests: CoreDataTestCase {
     func testEligibleValuesForJetpackBlog() {

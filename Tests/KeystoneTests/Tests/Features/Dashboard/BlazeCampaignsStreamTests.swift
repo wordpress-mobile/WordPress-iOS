@@ -2,6 +2,7 @@ import XCTest
 import WordPressKit
 
 @testable import WordPress
+@testable import WordPressData
 
 final class BlazeCampaignsStreamTests: CoreDataTestCase {
     private var sut: BlazeCampaignsStream!

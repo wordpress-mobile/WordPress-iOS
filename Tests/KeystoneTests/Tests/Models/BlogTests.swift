@@ -1,6 +1,7 @@
 import CoreData
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 final class BlogTests: CoreDataTestCase {
 

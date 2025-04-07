@@ -2,6 +2,7 @@ import Foundation
 import XCTest
 
 @testable import WordPress
+@testable import WordPressData
 
 final class SuggestionTableViewTests: CoreDataTestCase {
 

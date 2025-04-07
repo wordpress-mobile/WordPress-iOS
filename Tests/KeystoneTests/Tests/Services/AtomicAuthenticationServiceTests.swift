@@ -3,6 +3,7 @@ import OHHTTPStubsSwift
 import UIKit
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 class AtomicAuthenticationServiceTests: CoreDataTestCase {
     var atomicService: AtomicAuthenticationService!

@@ -4,6 +4,7 @@ import WordPressKit
 import WordPressUI
 
 @testable import WordPress
+@testable import WordPressData
 
 class TimeZoneSelectorViewModelTests: CoreDataTestCase {
 

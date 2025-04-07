@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 final class NotificationsViewModelTests: CoreDataTestCase {
     let sutUserDefaults = UserDefaults(suiteName: "mock_notifications_view_model")!

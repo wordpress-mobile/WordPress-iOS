@@ -2,6 +2,7 @@ import XCTest
 import Foundation
 import Nimble
 @testable import WordPress
+@testable import WordPressData
 
 class MediaCoordinatorTests: CoreDataTestCase {
     private var coordinator: MediaCoordinator!

@@ -3,6 +3,7 @@ import CoreData
 import OHHTTPStubs
 import OHHTTPStubsSwift
 @testable import WordPress
+@testable import WordPressData
 
 class BlogJetpackTests: CoreDataTestCase {
 

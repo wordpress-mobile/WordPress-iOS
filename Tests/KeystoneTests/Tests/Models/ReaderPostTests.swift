@@ -2,6 +2,7 @@ import UIKit
 import XCTest
 
 @testable import WordPress
+@testable import WordPressData
 
 final class ReaderPostTests: CoreDataTestCase {
     func testSiteIconURL() throws {

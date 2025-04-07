@@ -1,6 +1,7 @@
 import UIKit
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 class ReaderStreamViewControllerTests: CoreDataTestCase {
     // Tests that a ReaderStreamViewController is returned
