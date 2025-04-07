@@ -3,14 +3,6 @@ import BuildSettingsKit
 import WordPressShared
 
 extension WPAnalytics {
-    @objc public class var eventNamePrefix: String {
-        WPAnalyticsTesting.eventNamePrefix ?? BuildSettings.current.eventNamePrefix
-    }
-
-    @objc public class var explatPlatform: String {
-        WPAnalyticsTesting.explatPlatform ?? BuildSettings.current.explatPlatform
-    }
-
     /// Checks if the Domain Purchasing Feature Flag is enabled.
     private static var domainPurchasingEnabled: Bool {
         RemoteFeatureFlag.plansInSiteCreation.enabled()

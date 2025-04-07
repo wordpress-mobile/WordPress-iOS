@@ -101,14 +101,8 @@ public extension Blog {
         return blogToReturn
     }
 
-    @objc(countInContext:)
     static func count(in context: NSManagedObjectContext) -> Int {
         BlogQuery().count(in: context)
-    }
-
-    @objc(wpComBlogCountInContext:)
-    static func wpComBlogCount(in context: NSManagedObjectContext) -> Int {
-        BlogQuery().hostedByWPCom(true).count(in: context)
     }
 
     static func hasAnyJetpackBlogs(in context: NSManagedObjectContext) throws -> Bool {
@@ -121,12 +115,6 @@ public extension Blog {
         return Blog.selfHosted(in: context)
             .filter { $0.jetpack?.isConnected == true }
             .count > 0
-    }
-
-    @available(swift, obsoleted: 1.0)
-    @objc(hasAnyJetpackBlogsInContext:)
-    static func objc_hasAnyJetpackBlogs(in context: NSManagedObjectContext) -> Bool {
-        (try? hasAnyJetpackBlogs(in: context)) == true
     }
 
     @objc(selfHostedInContext:)

@@ -236,9 +236,3 @@ private extension URL {
         return queryItems
     }
 }
-
-extension WordPressAppDelegate {
-    @objc class var appURLScheme: String {
-        BuildSettings.current.appURLScheme
-    }
-}
