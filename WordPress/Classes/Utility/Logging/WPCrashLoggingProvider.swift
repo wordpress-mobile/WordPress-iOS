@@ -45,7 +45,7 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
         self.contextManager = contextManager
     }
 
-    let sentryDSN: String = ApiCredentials.sentryDSN
+    let sentryDSN: String = Secrets.current.sentryDSN
 
     var userHasOptedOut: Bool {
         return UserSettings.userHasOptedOutOfCrashLogging

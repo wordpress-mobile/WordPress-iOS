@@ -69,15 +69,15 @@ extension WordPressAuthenticationManager {
         let enableSignInWithApple = BuildConfiguration.current != .alpha
 
         return WordPressAuthenticatorConfiguration(
-            wpcomClientId: ApiCredentials.client,
-            wpcomSecret: ApiCredentials.secret,
+            wpcomClientId: Secrets.current.client,
+            wpcomSecret: Secrets.current.secret,
             wpcomScheme: BuildSettings.current.appURLScheme,
             wpcomTermsOfServiceURL: URL(string: WPAutomatticTermsOfServiceURL)!,
             wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseURL,
             wpcomAPIBaseURL: AppEnvironment.current.wordPressComApiBase,
-            googleLoginClientId: ApiCredentials.googleLoginClientId,
-            googleLoginServerClientId: ApiCredentials.googleLoginServerClientId,
-            googleLoginScheme: ApiCredentials.googleLoginSchemeId,
+            googleLoginClientId: Secrets.current.googleLoginClientId,
+            googleLoginServerClientId: Secrets.current.googleLoginServerClientId,
+            googleLoginScheme: Secrets.current.googleLoginSchemeId,
             userAgent: WPUserAgent.wordPress(),
             showLoginOptions: true,
             enableSignUp: FeatureFlag.signUp.enabled,

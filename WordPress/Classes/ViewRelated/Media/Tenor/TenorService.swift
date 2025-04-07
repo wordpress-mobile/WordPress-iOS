@@ -13,7 +13,7 @@ struct TenorSearchParams {
 
 class TenorService {
     static let tenor: TenorClient = {
-        TenorClient.configure(apiKey: ApiCredentials.tenorApiKey)
+        TenorClient.configure(apiKey: Secrets.current.tenorApiKey)
         return TenorClient.shared
     }()
 

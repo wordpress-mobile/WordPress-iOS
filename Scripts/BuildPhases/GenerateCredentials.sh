@@ -57,7 +57,7 @@ EXAMPLE_SECRETS_FILE="${SRCROOT}/Credentials/Secrets-example.swift"
 ensure_is_in_input_files_list $EXAMPLE_SECRETS_FILE
 
 # The Secrets file destination
-SECRETS_DESTINATION_FILE="${BUILD_DIR}/Secrets/Secrets.swift"
+SECRETS_DESTINATION_FILE="${BUILD_DIR}/Secrets/Secrets-${TARGET_NAME}.swift"
 mkdir -p $(dirname "$SECRETS_DESTINATION_FILE")
 
 # If the WordPress Production Secrets are available for WordPress, use them

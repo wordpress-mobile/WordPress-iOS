@@ -193,8 +193,8 @@ struct WordPressDotComAuthenticator {
         accountEmail: String? = nil,
         recoverDenyAccess: Bool = true
     ) async throws(AuthenticationError) -> String {
-        let clientId = ApiCredentials.client
-        let clientSecret = ApiCredentials.secret
+        let clientId = Secrets.current.client
+        let clientSecret = Secrets.current.secret
         let redirectURI = Self.redirectURI(for: redirectURIScheme)
 
         var queries: [String: Any] = [

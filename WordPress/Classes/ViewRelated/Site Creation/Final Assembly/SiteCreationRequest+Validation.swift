@@ -42,8 +42,8 @@ extension SiteCreationRequest {
                   isPublic: true,
                   languageIdentifier: WordPressComLanguageDatabase().deviceLanguageIdNumber().stringValue,
                   shouldValidate: true,
-                  clientIdentifier: ApiCredentials.client,
-                  clientSecret: ApiCredentials.secret,
+                  clientIdentifier: Secrets.current.client,
+                  clientSecret: Secrets.current.secret,
                   timezoneIdentifier: TimeZone.autoupdatingCurrent.identifier,
                   siteCreationFlow: siteCreationFlow,
                   findAvailableURL: findAvailableURL
