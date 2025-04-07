@@ -19,9 +19,9 @@ struct FontGallery: View {
     }
 }
 
-private var textStyles: [(String, UIFont.TextStyle)] = [
+private var textStyles: [(String, Font.TextStyle)] = [
     ("LargeTitle", .largeTitle),
-    ("Title1", .title1),
+    ("Title", .title),
     ("Title2", .title2),
     ("Title3", .title3),
     ("Headline", .headline),
@@ -29,7 +29,7 @@ private var textStyles: [(String, UIFont.TextStyle)] = [
     ("Callout", .callout),
     ("Subheadline", .subheadline),
     ("Footnote", .footnote),
-    ("Caption1", .caption1),
+    ("Caption", .caption),
     ("Caption2", .caption2),
 ]
 

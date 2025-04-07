@@ -29,9 +29,9 @@ struct AppStyleGuide {
     )
 
     static let reader = AppStyleGuide(
-        navigationBarStandardFont: FontManager.makeFont(.recoleta, textStyle: .headline, weight: .semibold),
-        navigationBarLargeFont: FontManager.makeFont(.recoleta, textStyle: .largeTitle, weight: .semibold),
-        epilogueTitleFont: FontManager.makeFont(.recoleta, textStyle: .largeTitle, weight: .semibold)
+        navigationBarStandardFont: UIFont.make(.recoleta, textStyle: .headline, weight: .semibold),
+        navigationBarLargeFont: UIFont.make(.recoleta, textStyle: .largeTitle, weight: .semibold),
+        epilogueTitleFont: UIFont.make(.recoleta, textStyle: .largeTitle, weight: .semibold)
     )
 }
 
