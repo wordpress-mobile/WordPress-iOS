@@ -3,6 +3,7 @@ import XCTest
 import WordPressKit
 
 @testable import WordPress
+@testable import WordPressData
 
 class ActivityStoreTests: CoreDataTestCase {
     private var dispatcher: ActionDispatcher!

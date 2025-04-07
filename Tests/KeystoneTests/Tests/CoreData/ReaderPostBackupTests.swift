@@ -2,6 +2,7 @@ import XCTest
 import Nimble
 
 @testable import WordPress
+@testable import WordPressData
 
 final class ReaderPostBackupTests: XCTestCase {
     private let storeURL = URL.Helpers.temporaryFile(named: "ReaderPostBackup.sqlite")
