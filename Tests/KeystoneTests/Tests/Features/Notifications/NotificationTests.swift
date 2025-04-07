@@ -236,7 +236,7 @@ class NotificationTests: CoreDataTestCase {
         let _ = try utility.loadCommentNotification()
         contextManager.saveContextAndWait(mainContext)
 
-        let fetchRequest = NSFetchRequest<WordPress.Notification>(entityName: WordPress.Notification.entityName())
+        let fetchRequest = NSFetchRequest<WordPressData.Notification>(entityName: WordPressData.Notification.entityName())
         fetchRequest.predicate = NSPredicate(format: "notificationId == %@", commentNotificationId)
 
         let note = try XCTUnwrap(mainContext.fetch(fetchRequest).first)
@@ -265,23 +265,23 @@ class NotificationTests: CoreDataTestCase {
 
     // MARK: - Helpers
 
-    func loadBadgeNotification() throws -> WordPress.Notification {
+    func loadBadgeNotification() throws -> WordPressData.Notification {
         return try utility.loadBadgeNotification()
     }
 
-    func loadLikeNotification() throws -> WordPress.Notification {
+    func loadLikeNotification() throws -> WordPressData.Notification {
         return try utility.loadLikeNotification()
     }
 
-    func loadLikeMultipleAvatarNotification() throws -> WordPress.Notification {
+    func loadLikeMultipleAvatarNotification() throws -> WordPressData.Notification {
         return try utility.loadLikeMultipleAvatarNotification()
     }
 
-    func loadFollowerNotification() throws -> WordPress.Notification {
+    func loadFollowerNotification() throws -> WordPressData.Notification {
         return try utility.loadFollowerNotification()
     }
 
-    func loadCommentNotification() throws -> WordPress.Notification {
+    func loadCommentNotification() throws -> WordPressData.Notification {
         return try utility.loadCommentNotification()
     }
 }

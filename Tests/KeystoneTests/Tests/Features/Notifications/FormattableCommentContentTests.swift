@@ -135,7 +135,7 @@ final class FormattableCommentContentTests: CoreDataTestCase {
         return try JSONObject(fromFileNamed: "notifications-comment-content.json")
     }
 
-    private func loadLikeNotification() throws -> WordPress.Notification {
+    private func loadLikeNotification() throws -> WordPressData.Notification {
         return try utility.loadLikeNotification()
     }
 
