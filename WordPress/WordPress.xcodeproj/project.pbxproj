@@ -129,6 +129,7 @@
 		3F60D39B2D2C4BA4008ACD86 /* hermes.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3922D2C4BA3008ACD86 /* hermes.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F60D39C2D2C4BA4008ACD86 /* yoga.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3932D2C4BA4008ACD86 /* yoga.xcframework */; };
 		3F60D39D2D2C4BA4008ACD86 /* yoga.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3932D2C4BA4008ACD86 /* yoga.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3F7874622DA360840052F1BF /* WordPressData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; };
 		3F7AE0BD2D9B30A200AB4892 /* WordPressData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; };
 		406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 406A0EEF224D39C50016AD6A /* Flags.xcassets */; };
 		433840C722C2BA5B00CB13F8 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
@@ -1926,6 +1927,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F7874622DA360840052F1BF /* WordPressData.framework in Frameworks */,
 				0C235BD22C3862D400D0E163 /* XcodeTarget_WordPressTests in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
