@@ -310,6 +310,17 @@ enum XcodeSupport {
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
                 .product(name: "Nimble", package: "Nimble"),
                 .product(name: "BuildkiteTestCollector", package: "test-collector-swift"),
+                // Needed by WordPressData because of how linkage works...
+                //
+                "BuildSettingsKit",
+                "FormattableContentKit",
+                "SFHFKeychainUtils",
+                .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
+                .product(name: "NSURL+IDN", package: "NSURL-IDN"),
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
+                .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             ]),
             .xcodeTarget("XcodeTarget_WordPressAuthentificator", dependencies: wordPresAuthentificatorDependencies),
             .xcodeTarget("XcodeTarget_WordPressAuthentificatorTests", dependencies: wordPresAuthentificatorDependencies + testDependencies),
