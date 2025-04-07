@@ -114,7 +114,7 @@ import BuildSettingsKit
             return
         }
 
-        if currentUserID?.isEmpty == true {
+        if (currentUserID ?? "").isEmpty {
             // No previous username logged
             currentUserID = username
             removeAnonymousID()
