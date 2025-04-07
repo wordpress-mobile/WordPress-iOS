@@ -101,7 +101,7 @@ private struct VoiceToContentWelcomeView: View {
                 Button(action: { viewModel.buttonUpgradeTapped(withUpgradeURL: upgradeURL) }) {
                     HStack {
                         Text(Strings.upgrade)
-                        Image("icon-post-actionbar-view")
+                        Image(systemName: "link")
                     }
                 }
             }
