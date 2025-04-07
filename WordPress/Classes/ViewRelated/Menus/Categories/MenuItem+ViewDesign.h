@@ -1,8 +1,4 @@
-#ifdef KEYSTONE
-#import "MenuItem.h"
-#else
 @import WordPressData;
-#endif
 #import "Menu+ViewDesign.h"
 
 NS_ASSUME_NONNULL_BEGIN

@@ -1,11 +1,8 @@
 #import "MenuItemCategoriesViewController.h"
 #import "PostCategoryService.h"
 #ifdef KEYSTONE
-#import "MenuItem.h"
-#import "PostCategory.h"
 #import "Keystone-Swift.h"
 #else
-@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 @import WordPressData;

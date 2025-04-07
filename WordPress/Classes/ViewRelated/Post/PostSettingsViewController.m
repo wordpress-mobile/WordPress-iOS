@@ -4,12 +4,11 @@
 #import "SharingDetailViewController.h"
 #import "MediaService.h"
 #ifdef KEYSTONE
-#import "Media.h"
 #import "Keystone-Swift.h"
 #else
-@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
+@import WordPressData;
 
 @import Gridicons;
 @import WordPressShared;

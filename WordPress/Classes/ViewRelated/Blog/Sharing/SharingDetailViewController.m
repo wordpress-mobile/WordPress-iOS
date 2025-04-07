@@ -2,13 +2,12 @@
 #import "BlogService.h"
 #import "SharingAuthorizationHelper.h"
 #ifdef KEYSTONE
-#import "Blog.h"
 #import "Keystone-Swift.h"
 #else
-@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 
+@import WordPressData;
 @import WordPressShared;
 
 static NSString *const CellIdentifier = @"CellIdentifier";

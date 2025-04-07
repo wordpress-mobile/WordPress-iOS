@@ -1,14 +1,8 @@
 #import "ReaderPost.h"
 #import "SourcePostAttribution.h"
 #import "WPAccount.h"
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#elif WPDATA
 #import "WordPressData-Swift.h"
 @import WordPressKit; // FIXME: Is this needed?
-#else
-#import "WordPress-Swift.h"
-#endif
 
 @import WordPressShared;
 

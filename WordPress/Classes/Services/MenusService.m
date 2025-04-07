@@ -1,16 +1,10 @@
 #import "MenusService.h"
 #ifdef KEYSTONE
-#import "BasePost.h"
-#import "Blog.h"
-#import "Menu.h"
-#import "MenuItem.h"
-#import "MenuLocation.h"
-#import "PostService.h"
 #import "Keystone-Swift.h"
 #else
-@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
+@import WordPressData;
 @import WordPressKit;
 
 @implementation MenusService

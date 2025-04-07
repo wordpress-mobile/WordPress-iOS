@@ -4,16 +4,11 @@
 #import "PostCategoryService.h"
 #import "CommentService.h"
 #ifdef KEYSTONE
-#import "Blog.h"
-#import "WPAccount.h"
-#import "Media.h"
-#import "PostType.h"
-#import "PostService.h"
 #import "Keystone-Swift.h"
 #else
 #import "WordPress-Swift.h"
-@import WordPressData;
 #endif
+@import WordPressData;
 @import WordPressKit;
 @import WordPressShared;
 

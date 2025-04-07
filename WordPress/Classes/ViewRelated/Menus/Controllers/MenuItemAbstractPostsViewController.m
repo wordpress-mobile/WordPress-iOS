@@ -1,11 +1,5 @@
 #import "MenuItemAbstractPostsViewController.h"
-#ifdef KEYSTONE
-#import "AbstractPost.h"
-#import "PostService.h"
-#import "PostServiceSyncOptions.h"
-#else
 @import WordPressData;
-#endif
 @import WordPressKit;
 
 @interface MenuItemAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>

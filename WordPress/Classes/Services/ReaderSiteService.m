@@ -3,14 +3,12 @@
 #import "AccountService.h"
 #import "ReaderPostService.h"
 #ifdef KEYSTONE
-#import "ReaderPost.h"
-#import "WPAccount.h"
 #import "Keystone-Swift.h"
 #else
-@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 #import "WPAppAnalytics.h"
+@import WordPressData;
 @import WordPressKit;
 
 NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";

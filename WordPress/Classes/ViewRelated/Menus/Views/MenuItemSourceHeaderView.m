@@ -2,12 +2,11 @@
 #import "MenuItem+ViewDesign.h"
 #import "MenuItem.h"
 #ifdef KEYSTONE
-#import "MenuItem.h"
 #import "Keystone-Swift.h"
 #else
-@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
+@import WordPressData;
 
 @import WordPressShared;
 @import Gridicons;

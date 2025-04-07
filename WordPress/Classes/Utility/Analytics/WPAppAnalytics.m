@@ -8,6 +8,7 @@
 #else
 #import "WordPress-Swift.h"
 #endif
+@import WordPressData;
 
 NSString * const WPAppAnalyticsDefaultsUserOptedOut                 = @"tracks_opt_out";
 NSString * const WPAppAnalyticsKeyBlogID                            = @"blog_id";
