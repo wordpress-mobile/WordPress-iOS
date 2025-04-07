@@ -107,6 +107,7 @@
 		3F0FDA002D9B930100CD05D6 /* WordPressData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; };
 		3F0FDA012D9B930100CD05D6 /* WordPressData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F1A64F62DA7A4B300786B92 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* Secrets.swift */; };
+		3F1AFCC22DA3AAEA00786B92 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F1AFCC12DA3AAE900786B92 /* WebKit.framework */; };
 		3F2F856326FAF612000FCDA5 /* EditorGutenbergTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0CF228ACF710034F9AB /* EditorGutenbergTests.swift */; };
 		3F46AAFE25BF5D6300CE2E98 /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
 		3F608F7F2D2D1A9E008ACD86 /* Gutenberg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3902D2C4BA3008ACD86 /* Gutenberg.xcframework */; };
@@ -789,6 +790,7 @@
 		28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPress_Prefix.pch; sourceTree = "<group>"; };
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		374CB16115B93C0800DD0EBC /* AudioToolbox.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		3F1AFCC12DA3AAE900786B92 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/System/iOSSupport/System/Library/PrivateFrameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
 		3F46AB0125BF5D6300CE2E98 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/Sites.intentdefinition; sourceTree = "<group>"; };
 		3F526C4D2538CF2A0069706C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3F526C4F2538CF2A0069706C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -1033,8 +1035,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Services/PostRepository+Helpers.swift",
-				System/main.swift,
 				"System/ApiCredentials+BuildSecrets.swift",
+				System/main.swift,
 				"System/WordPress-Bridging-Header.h",
 			);
 			publicHeaders = (
@@ -1308,6 +1310,7 @@
 				0CED2AE12D95BB46003015CF /* WordPressAuthenticator.framework in Frameworks */,
 				0CED2AD92D95BB46003015CF /* Gutenberg.xcframework in Frameworks */,
 				0CED2AE52D95BB46003015CF /* yoga.xcframework in Frameworks */,
+				3F1AFCC22DA3AAEA00786B92 /* WebKit.framework in Frameworks */,
 				0CED2ADD2D95BB46003015CF /* React.xcframework in Frameworks */,
 				0C128FEA2D9ECE6200C69EBA /* WordPressData.framework in Frameworks */,
 				0CED2ADF2D95BB46003015CF /* RNTAztecView.xcframework in Frameworks */,
@@ -1663,6 +1666,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3F1AFCC12DA3AAE900786B92 /* WebKit.framework */,
 				3F60D3902D2C4BA3008ACD86 /* Gutenberg.xcframework */,
 				3F60D3922D2C4BA3008ACD86 /* hermes.xcframework */,
 				3F60D38F2D2C4BA3008ACD86 /* React.xcframework */,
