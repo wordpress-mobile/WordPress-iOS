@@ -4,6 +4,11 @@ import CoreText
 
 public enum FontManager {
     public static func registerCustomFonts() {
+        _ = register
+    }
+
+    // Makes sure it's performed only once.
+    private static let register = {
         let fontURLs = Bundle.module
             .urls(forResourcesWithExtension: "otf", subdirectory: nil)
         for fontURL in (fontURLs ?? []) {
@@ -11,7 +16,7 @@ public enum FontManager {
                 assertionFailure("failed to register font for: \(fontURL)")
             }
         }
-    }
+    }()
 
     public enum FontName {
         case recoleta
