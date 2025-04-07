@@ -657,7 +657,7 @@ extension WordPressAppDelegate {
 
         nc.addObserver(self,
                        selector: #selector(handleDefaultAccountChangedNotification(_:)),
-                       name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged,
+                       name: NSNotification.Name.wpAccountDefaultWordPressComAccountChanged,
                        object: nil)
 
         nc.addObserver(self,

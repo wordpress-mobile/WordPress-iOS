@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressShared
 import ShareExtensionCore
 import WebKit
@@ -21,7 +22,9 @@ extension AccountService {
         let notifyAccountChange = {
             let context = self.coreDataStack.mainContext
             let account = try? context.existingObject(with: objectID)
-            NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: account)
+            NotificationCenter
+                .default
+                .post(name: .wpAccountDefaultWordPressComAccountChanged, object: account)
 
             PushNotificationsManager.shared.setupRemoteNotifications()
         }
@@ -71,7 +74,9 @@ extension AccountService {
         UserPersistentStoreFactory.instance().removeObject(forKey: AccountService.defaultDotcomAccountUUIDDefaultsKey)
 
         WPAnalytics.refreshMetadata()
-        NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter
+            .default
+            .post(name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
 
         StatsCache.clearCaches()
     }

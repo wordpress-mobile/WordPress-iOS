@@ -1,3 +1,4 @@
+import WordPressData
 import WordPressShared
 
 // MARK: - Tab Access Tracking
@@ -65,7 +66,7 @@ extension WPTabBarController {
                        object: nil)
         nc.addObserver(self,
                        selector: #selector(resetViewDidAppearFlagOnWPComAccountChange),
-                       name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged,
+                       name: NSNotification.Name.wpAccountDefaultWordPressComAccountChanged,
                        object: nil)
     }
 

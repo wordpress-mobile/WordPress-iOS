@@ -14,7 +14,7 @@ extension WPTabBarController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(updateGravatarImage(_:)), name: .GravatarImageUpdateNotification, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(accountDidChange), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(accountDidChange), name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(accountDidChange), name: .WPAccountEmailAndDefaultBlogUpdated, object: nil)
     }

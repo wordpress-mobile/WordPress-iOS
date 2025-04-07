@@ -49,7 +49,7 @@ public class MeViewController: UITableViewController {
         handler = ImmuTableViewHandler(takeOver: self)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.accountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.accountDidChange), name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.refreshAccountDetailsAndSettings), name: UIApplication.didBecomeActiveNotification, object: nil)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)

@@ -88,7 +88,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(defaultAccountDidChange:)
-                                                     name:WPAccountDefaultWordPressComAccountChangedNotification
+                                                     name:NSNotification.wpAccountDefaultWordPressComAccountChangedNotificationName
                                                    object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self

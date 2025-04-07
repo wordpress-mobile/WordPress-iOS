@@ -11,7 +11,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class WPAccount;
 @class RemoteUser;
 
-extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
 extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 
 @interface AccountService : NSObject

@@ -166,7 +166,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
         // This a workaround for an issue where site lists reloads and triggers
         // `Blog.wordPressComRestApi` that subsequently shows the "enter password"
         // screen on user-initiated logout. The chain of events:
-        // - `removeDefaultWordPressComAccount` calls `WPAccountDefaultWordPressComAccountChangedNotification`
+        // - `removeDefaultWordPressComAccount` dispatches `wpAccountDefaultWordPressComAccountChanged`
         // - `NotificationsViewController` calls `resetNotifications` and deletes
         // all notifications (why this class?) and saves context
         // - `BlogListViewModel` reloads in the middle of the logout procedure

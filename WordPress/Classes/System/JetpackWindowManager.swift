@@ -127,7 +127,7 @@ private extension JetpackWindowManager {
             switch result {
             case .success:
                 self.migrationTracker.trackContentImportSucceeded()
-                NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: self)
+                NotificationCenter.default.post(name: .wpAccountDefaultWordPressComAccountChanged, object: self)
                 self.showMigrationUI(blog)
             case .failure(let error):
                 self.migrationTracker.trackContentImportFailed(reason: error.localizedDescription)
