@@ -128,7 +128,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
                                                object:self.blog.managedObjectContext];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleAccountChange:)
-                                                 name:WPAccountDefaultWordPressComAccountChangedNotification
+                                                 name:NSNotification.wpAccountDefaultWordPressComAccountChangedNotificationName
                                                object:nil];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];

@@ -1,4 +1,5 @@
 import XCTest
+import WordPressData
 @testable import WordPress
 
 final class NotificationsViewControllerTests: XCTestCase {
@@ -87,6 +88,6 @@ private extension NotificationsViewControllerTests {
     }
 
     func postAccountChangeNotification() {
-        NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter.default.post(name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
     }
 }

@@ -1,5 +1,6 @@
 import UIKit
 import Reachability
+import WordPressData
 
 // This is added as a top level function to avoid cluttering PingHubManager.init
 private func defaultAccountToken() -> String? {
@@ -96,7 +97,7 @@ class PingHubManager: NSObject {
         }
 
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(PingHubManager.accountChanged), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(PingHubManager.accountChanged), name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 

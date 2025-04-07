@@ -627,7 +627,7 @@ private extension NotificationsViewController {
 
     func startListeningToAccountNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(defaultAccountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+        nc.addObserver(self, selector: #selector(defaultAccountDidChange), name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
     func startListeningToTimeChangeNotifications() {

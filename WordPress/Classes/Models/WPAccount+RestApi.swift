@@ -53,7 +53,7 @@ extension WPAccount {
     /// Returns an instance of the WPCOM REST API suitable for v2 endpoints.
     /// If the user is not authenticated, this will be anonymous.
     ///
-    var wordPressComRestV2Api: WordPressComRestApi {
+    public var wordPressComRestV2Api: WordPressComRestApi {
         let token = authToken
         let userAgent = WPUserAgent.wordPress()
         let localeKey = WordPressComRestApi.LocaleKeyV2
@@ -63,7 +63,7 @@ extension WPAccount {
 
     /// A `WordPressRestComApi` object if a default account exists in the giveng `NSManagedObjectContext` and is a WordPress.com account.
     /// Otherwise, it returns `nil`
-    static func defaultWordPressComAccountRestAPI(in context: NSManagedObjectContext) throws -> WordPressComRestApi? {
+    public static func defaultWordPressComAccountRestAPI(in context: NSManagedObjectContext) throws -> WordPressComRestApi? {
         let account = try WPAccount.lookupDefaultWordPressComAccount(in: context)
         return account?.wordPressComRestApi
     }
@@ -85,16 +85,25 @@ extension WPAccount {
             // The code path in which we are is that of an invalid token, and that's neither a login nor a logout, it's more appropriate to consider it a logout.
             // That's because if the token is invalid the app will soon received errors from the API and it's therefore better to force the user to login again.
             NotificationCenter.default.post(
-                name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged,
+                name: .wpAccountDefaultWordPressComAccountChanged,
                 object: nil
             )
         }
     }
 }
 
-extension Foundation.Notification.Name {
+public extension Foundation.Notification.Name {
 
     /// This notification is posted when a `WPAccount` instance's `authToken` is found to be invalid.
     /// The object property of the posted notification is an `TaggedManagedObjectID<WPAccount>` instance.
     static let wpAccountRequiresShowingSigninForWPComFixingAuthToken = Foundation.Notification.Name("WPAccount.WPComAuthTokenNeedsFixing")
+
+    static let wpAccountDefaultWordPressComAccountChanged = Foundation.Notification.Name("WPAccount.DefaultWordPressComAccountChangedNotification")
+}
+
+// For Objective-C compatibility
+@objc public extension NSNotification {
+
+    @available(*, unavailable)
+    static let wpAccountDefaultWordPressComAccountChangedNotificationName = Foundation.Notification.Name.wpAccountDefaultWordPressComAccountChanged
 }

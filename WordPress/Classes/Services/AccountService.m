@@ -13,7 +13,6 @@
 #import "WordPress-Swift.h"
 #endif
 
-NSNotificationName const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
 NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEmailAndDefaultBlogUpdatedNotification";
 
 @implementation AccountService

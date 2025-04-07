@@ -3,6 +3,7 @@ import JetpackStatsWidgetsCore
 import BuildSettingsKit
 import SFHFKeychainUtils
 import WidgetKit
+import WordPressData
 
 class StatsWidgetsStore {
     private let coreDataStack: CoreDataStack
@@ -336,7 +337,7 @@ private extension StatsWidgetsStore {
     /// Observes WPAccountDefaultWordPressComAccountChanged notification and reloads widget data based on the state of account.
     /// The site data is not yet loaded after this notification and widget data cannot be cached for newly signed in account.
     func observeAccountChangesForWidgets() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleAccountChangedNotification), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAccountChangedNotification), name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
     @objc func handleAccountChangedNotification() {

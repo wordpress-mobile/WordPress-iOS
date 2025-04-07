@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressShared
 import BuildSettingsKit
 
@@ -146,7 +147,7 @@ private extension ContentMigrationCoordinator {
             return
         }
 
-        notificationCenter.addObserver(self, selector: #selector(handleAccountChangedNotification(_:)), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(handleAccountChangedNotification(_:)), name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
     @objc private func handleAccountChangedNotification(_ notification: Foundation.Notification) {

@@ -72,7 +72,7 @@ final class SidebarViewModel: ObservableObject {
             .store(in: &cancellables)
 
         NotificationCenter.default
-            .publisher(for: .WPAccountDefaultWordPressComAccountChanged)
+            .publisher(for: .wpAccountDefaultWordPressComAccountChanged)
             .sink { [weak self] _ in
                 guard let self else { return }
                 self.account = try? WPAccount.lookupDefaultWordPressComAccount(in: self.contextManager.mainContext)
