@@ -3,6 +3,10 @@ import WordPressShared
 
 extension WPAccount {
 
+    private var notificationCenter: NotificationCenter {
+        NotificationCenter.default
+    }
+
     /// A `WordPressRestComApi` object if the account is a WordPress.com account. Otherwise, `nil`.
     ///
     /// Warning: The getter has various side effects when there is no previous value set, including triggering the signup flow!
@@ -13,12 +17,15 @@ extension WPAccount {
         if let api = _private_wordPressComRestApi {
             return api
         }
+
         guard let authToken, !authToken.isEmpty else {
-            DispatchQueue.main.async {
-                WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
-            }
+            notificationCenter.post(
+                name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken,
+                object: self
+            )
             return nil
         }
+
         let api = makeWordPressComRestApi(authToken: authToken)
         self._private_wordPressComRestApi = api
         return api
@@ -35,7 +42,11 @@ extension WPAccount {
             guard let self else { return }
 
             self.authToken = nil
-            WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
+
+            notificationCenter.post(
+                name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken,
+                object: self
+            )
 
             if self.isDefaultWordPressComAccount {
                 // At the time of writing, there is an implicit assumption on what the object parameter value means.
@@ -72,4 +83,9 @@ extension WPAccount {
         return account?.wordPressComRestApi
     }
 
+}
+
+extension Foundation.Notification.Name {
+
+    static let wpAccountRequiresShowingSigninForWPComFixingAuthToken = Foundation.Notification.Name("WPAccount.WPComAuthTokenNeedsFixing")
 }

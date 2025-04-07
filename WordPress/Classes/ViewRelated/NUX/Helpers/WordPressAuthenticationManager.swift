@@ -45,7 +45,7 @@ class WordPressAuthenticationManager: NSObject {
 extension WordPressAuthenticationManager {
     /// Initializes WordPressAuthenticator with all of the parameters that will be needed during the login flow.
     ///
-    func initializeWordPressAuthenticator() {
+    func initializeWordPressAuthenticator(notificationCenter: NotificationCenter = .default) {
         let displayStrings = WordPressAuthenticatorDisplayStrings(
             continueWithWPButtonTitle: NSLocalizedString("Continue With WordPress.com", comment: "Button title. Takes the user to the login with WordPress.com flow.")
         )
@@ -54,6 +54,14 @@ extension WordPressAuthenticationManager {
                                           style: authenticatorStyle(),
                                           unifiedStyle: unifiedStyle(),
                                           displayStrings: displayStrings)
+
+        notificationCenter
+            .addObserver(
+                self,
+                selector: #selector(accontRequiresShowingWPComSigninReceived),
+                name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken,
+                object: nil
+            )
     }
 
     private func authenticatorConfiguation() -> WordPressAuthenticatorConfiguration {
@@ -258,6 +266,11 @@ extension WordPressAuthenticationManager {
         WordPressAuthenticator.shared.supportPushNotificationCleared()
     }
 
+    @objc func accontRequiresShowingWPComSigninReceived(_ notification: Foundation.Notification) {
+        DispatchQueue.main.async {
+            WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
+        }
+    }
 }
 
 // MARK: - WordPressAuthenticator Delegate
