@@ -29,9 +29,9 @@ struct AppStyleGuide {
     )
 
     static let reader = AppStyleGuide(
-        navigationBarStandardFont: FontManager.fontForTextStyle(.headline, fontWeight: .semibold),
-        navigationBarLargeFont: WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold),
-        epilogueTitleFont: WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold)
+        navigationBarStandardFont: FontManager.makeFont(.recoleta, textStyle: .headline, weight: .semibold),
+        navigationBarLargeFont: FontManager.makeFont(.recoleta, textStyle: .largeTitle, weight: .semibold),
+        epilogueTitleFont: FontManager.makeFont(.recoleta, textStyle: .largeTitle, weight: .semibold)
     )
 }
 

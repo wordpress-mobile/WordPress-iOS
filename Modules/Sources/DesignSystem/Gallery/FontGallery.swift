@@ -1,41 +1,38 @@
 import SwiftUI
 
 struct FontGallery: View {
+    init() {
+        FontManager.registerCustomFonts()
+    }
+
     var body: some View {
         List {
-            Section("Heading") {
-                Text("Heading1")
-                    .style(.heading1)
-                Text("Heading2")
-                    .style(.heading2)
-                Text("Heading3")
-                    .style(.heading3)
-                Text("Heading4")
-                    .style(.heading4)
-            }
-
-            Section("Body") {
-                Text("Body Small Regular")
-                    .style(.bodySmall(.regular))
-                Text("Body Medium Regular")
-                    .style(.bodyMedium(.regular))
-                Text("Body Large Regular")
-                    .style(.bodyLarge(.regular))
-                Text("Body Small Emphasized")
-                    .style(.bodySmall(.emphasized))
-                Text("Body Medium Emphasized")
-                    .style(.bodyMedium(.emphasized))
-                Text("Body Large Emphasized")
-                    .style(.bodyLarge(.emphasized))
-            }
-
-            Section("Miscellaneous") {
-                Text("Footnote")
-                    .style(.footnote)
-                Text("Caption")
-                    .style(.caption)
+            Section("Recoleta") {
+                ForEach(textStyles, id: \.self.1) { (name, textStyle) in
+                    Text(name)
+                        .font(Font.make(.recoleta, textStyle: textStyle))
+                }
             }
         }
+        .listStyle(.plain)
         .navigationTitle("Fonts")
     }
+}
+
+private var textStyles: [(String, UIFont.TextStyle)] = [
+    ("LargeTitle", .largeTitle),
+    ("Title1", .title1),
+    ("Title2", .title2),
+    ("Title3", .title3),
+    ("Headline", .headline),
+    ("Body", .body),
+    ("Callout", .callout),
+    ("Subheadline", .subheadline),
+    ("Footnote", .footnote),
+    ("Caption1", .caption1),
+    ("Caption2", .caption2),
+]
+
+#Preview {
+    FontGallery()
 }
