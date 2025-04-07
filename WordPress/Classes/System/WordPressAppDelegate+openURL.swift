@@ -237,7 +237,7 @@ private extension URL {
     }
 }
 
-extension WordPressAppDelegate {
+public extension WordPressAppDelegate {
     @objc class var appURLScheme: String {
         BuildSettings.current.appURLScheme
     }
