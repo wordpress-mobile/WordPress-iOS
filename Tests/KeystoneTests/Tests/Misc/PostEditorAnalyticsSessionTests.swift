@@ -2,6 +2,7 @@ import Foundation
 import XCTest
 import WordPressShared
 @testable import WordPress
+@testable import WordPressData
 
 class PostEditorAnalyticsSessionTests: CoreDataTestCase {
     enum PostContent {
