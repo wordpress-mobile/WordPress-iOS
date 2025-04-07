@@ -4,7 +4,7 @@ import WebKit
 /// Provides a common interface to look for a logged-in WordPress cookie in different
 /// cookie storage systems.
 ///
-@objc protocol CookieJar {
+@objc public protocol CookieJar {
     func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void)
     func getCookies(completion: @escaping ([HTTPCookie]) -> Void)
     func hasWordPressSelfHostedAuthCookie(for url: URL, username: String, completion: @escaping (Bool) -> Void)
@@ -54,32 +54,32 @@ extension CookieJarSharedImplementation {
 }
 
 extension HTTPCookieStorage: CookieJarSharedImplementation {
-    func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
+    public func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
         completion(cookies(for: url) ?? [])
     }
 
-    func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
+    public func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
         completion(cookies ?? [])
     }
 
-    func hasWordPressComAuthCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
+    public func hasWordPressComAuthCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
         _hasWordPressComAuthCookie(username: username, atomicSite: atomicSite, completion: completion)
     }
 
-    func hasWordPressSelfHostedAuthCookie(for url: URL, username: String, completion: @escaping (Bool) -> Void) {
+    public func hasWordPressSelfHostedAuthCookie(for url: URL, username: String, completion: @escaping (Bool) -> Void) {
         _hasWordPressAuthCookie(for: url, username: username, atomicSite: false, completion: completion)
     }
 
-    func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
+    public func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
         cookies.forEach(deleteCookie(_:))
         completion()
     }
 
-    func removeWordPressComCookies(completion: @escaping () -> Void) {
+    public func removeWordPressComCookies(completion: @escaping () -> Void) {
         _removeWordPressComCookies(completion: completion)
     }
 
-    func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
+    public func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
         for cookie in cookies {
             setCookie(cookie)
         }
@@ -89,7 +89,7 @@ extension HTTPCookieStorage: CookieJarSharedImplementation {
 }
 
 extension WKHTTPCookieStore: CookieJarSharedImplementation {
-    func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
+    public func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
 
         // This fixes an issue with `getAllCookies` not calling its completion block (related: https://stackoverflow.com/q/55565188)
         // - adds timeout so the above failure will eventually return
@@ -123,19 +123,19 @@ extension WKHTTPCookieStore: CookieJarSharedImplementation {
         }
     }
 
-    func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
+    public func getCookies(completion: @escaping ([HTTPCookie]) -> Void) {
         getAllCookies(completion)
     }
 
-    func hasWordPressComAuthCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
+    public func hasWordPressComAuthCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
         _hasWordPressComAuthCookie(username: username, atomicSite: atomicSite, completion: completion)
     }
 
-    func hasWordPressSelfHostedAuthCookie(for url: URL, username: String, completion: @escaping (Bool) -> Void) {
+    public func hasWordPressSelfHostedAuthCookie(for url: URL, username: String, completion: @escaping (Bool) -> Void) {
         _hasWordPressAuthCookie(for: url, username: username, atomicSite: false, completion: completion)
     }
 
-    func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
+    public func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
         let group = DispatchGroup()
         cookies
             .forEach({ [unowned self] (cookie) in
@@ -151,11 +151,11 @@ extension WKHTTPCookieStore: CookieJarSharedImplementation {
         completion()
     }
 
-    func removeWordPressComCookies(completion: @escaping () -> Void) {
+    public func removeWordPressComCookies(completion: @escaping () -> Void) {
         _removeWordPressComCookies(completion: completion)
     }
 
-    func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
+    public func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
         guard let cookie = cookies.last else {
             return completion()
         }
