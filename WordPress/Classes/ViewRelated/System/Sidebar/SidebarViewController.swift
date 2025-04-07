@@ -164,6 +164,9 @@ struct SidebarView: View {
                 Label(Strings.help, systemImage: "questionmark.circle")
             }
             .accessibilityIdentifier("sidebar_help")
+        case .reader:
+            // TODO: (reader) add iPad support
+            fatalError("unsupported")
         }
     }
 }

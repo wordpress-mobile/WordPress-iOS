@@ -565,6 +565,8 @@ extension MeViewController {
                 NSLocalizedString("About WordPress", comment: "Link to About screen for WordPress for iOS")
             case .jetpack:
                 NSLocalizedString("About Jetpack for iOS", comment: "Link to About screen for Jetpack for iOS")
+            case .reader:
+                NSLocalizedString("About Reader for iOS", comment: "Link to About screen for Jetpack for iOS")
             }
         }
     }
@@ -580,6 +582,8 @@ extension MeViewController {
                 NSLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
             case .jetpack:
                 NSLocalizedString("Log out of Jetpack?", comment: "LogOut confirmation text, whenever there are no local changes")
+            case .reader:
+                NSLocalizedString("Log out of Reader?", comment: "LogOut confirmation text, whenever there are no local changes")
             }
         }
 

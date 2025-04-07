@@ -178,6 +178,9 @@ extension BuildSettings {
         switch brand {
         case .wordpress: .wordpress
         case .jetpack: .jetpack
+        case .reader:
+            // TODO: (reader) add ShareAppName
+            fatalError("unsupported")
         }
     }
 }
@@ -190,7 +193,8 @@ private struct Strings {
     static var current: Strings {
         switch BuildSettings.current.brand {
         case .wordpress: .wordpress
-        case .jetpack: .jetpack
+        case .jetpack: .a8c
+        case .reader: .a8c
         }
     }
 
@@ -200,7 +204,7 @@ private struct Strings {
         workWithUsURL: "https://make.wordpress.org/mobile/handbook"
     )
 
-    static let jetpack = Strings(
+    static let a8c = Strings(
         blogName: NSLocalizedString("Blog", comment: "Title of a button that displays the WordPress.com blog"),
         workWithUs: NSLocalizedString("Work With Us", comment: "Title of button that displays the Automattic Work With Us web page"),
         workWithUsURL: "https://automattic.com/work-with-us"

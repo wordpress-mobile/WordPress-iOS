@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// - warning: soft-deprecated
 public extension Font {
     enum DS {
         public static let heading1 = Font.largeTitle.weight(.semibold)

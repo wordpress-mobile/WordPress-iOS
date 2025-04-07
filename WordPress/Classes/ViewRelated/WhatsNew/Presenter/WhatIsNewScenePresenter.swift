@@ -153,6 +153,8 @@ private extension WhatIsNewScenePresenter {
                 NSLocalizedString("What's New in WordPress", comment: "Opens the What's New / Feature Announcement modal")
             case .jetpack:
                 NSLocalizedString("What's New in Jetpack", comment: "Opens the What's New / Feature Announcement modal")
+            case .reader:
+                NSLocalizedString("What's New in Reader", comment: "Opens the What's New / Feature Announcement modal")
             }
         }
 

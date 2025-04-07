@@ -1,5 +1,6 @@
 import UIKit
 
+/// - warning: soft-deprecated
 public extension UIFont {
     enum DS {
         static let heading1 = DynamicFontHelper.fontForTextStyle(.largeTitle, fontWeight: .bold)

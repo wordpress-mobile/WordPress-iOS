@@ -97,5 +97,7 @@ private var ratingPrompt: String {
         NSLocalizedString("appRatings.wordpress.prompt", value: "What do you think about WordPress?", comment: "This is the string we display when prompting the user to review the WordPress app")
     case .jetpack:
         NSLocalizedString("appRatings.jetpack.prompt", value: "What do you think about Jetpack?", comment: "This is the string we display when prompting the user to review the Jetpack app")
+    case .reader:
+        NSLocalizedString("appRatings.reader.prompt", value: "What do you think about Reader?", comment: "This is the string we display when prompting the user to review the Reader app")
     }
 }

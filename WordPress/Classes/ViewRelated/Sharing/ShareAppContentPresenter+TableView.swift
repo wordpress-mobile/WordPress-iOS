@@ -11,6 +11,8 @@ extension ShareAppContentPresenter {
                 NSLocalizedString("Share WordPress with a friend", comment: "Title for a button that recommends the app to others")
             case .jetpack:
                 NSLocalizedString("Share Jetpack with a friend", comment: "Title for a button that recommends the app to others")
+            case .reader:
+                NSLocalizedString("Share Reader with a friend", comment: "Title for a button that recommends the app to others")
             }
         }
 

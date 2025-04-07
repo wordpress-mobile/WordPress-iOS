@@ -1128,6 +1128,8 @@ private extension ZendeskUtils {
                 NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
             case .jetpack:
                 NSLocalizedString("Jetpack for iOS Support", comment: "Subject of new Zendesk ticket.")
+            case .reader:
+                NSLocalizedString("support.zendesk.readerAppTicketSubject", value: "Reader for iOS Support", comment: "Subject of new Zendesk ticket.")
             }
         }
     }

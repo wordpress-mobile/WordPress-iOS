@@ -1,20 +1,21 @@
-import SFHFKeychainUtils
-import UIKit
-import BuildSettingsKit
-import CocoaLumberjackSwift
-import ShareExtensionCore
-import Reachability
-import AutomatticTracks
-import AutomatticEncryptedLogs
-import WordPressAuthenticator
-import WordPressShared
 import AsyncImageKit
 import AutomatticAbout
-import UIDeviceIdentifier
+import AutomatticEncryptedLogs
+import AutomatticTracks
+import BuildSettingsKit
+import CocoaLumberjackSwift
+import DesignSystem
+import Reachability
+import SFHFKeychainUtils
 import SVProgressHUD
+import ShareExtensionCore
+import UIDeviceIdentifier
+import UIKit
+import WebKit
+import WordPressAuthenticator
+import WordPressShared
 import WordPressUI
 import ZendeskCoreSDK
-import WebKit
 
 public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -76,6 +77,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
 
+        DesignSystem.FontManager.registerCustomFonts()
         AssertionLoggerDependencyContainer.logger = AssertionLogger()
         UITestConfigurator.prepareApplicationForUITests(in: application, window: window)
 
