@@ -95,7 +95,7 @@ final class NotificationTextContentTests: CoreDataTestCase {
         return try JSONObject(fromFileNamed: "notifications-button-text-content.json")
     }
 
-    private func loadLikeNotification() throws -> WordPress.Notification {
+    private func loadLikeNotification() throws -> WordPressData.Notification {
         return try .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
     }
 

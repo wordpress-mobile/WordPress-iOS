@@ -133,7 +133,7 @@ final class FormattableUserContentTests: CoreDataTestCase {
         return try JSONObject(fromFileNamed: "notifications-user-content.json")
     }
 
-    private func loadLikeNotification() throws -> WordPress.Notification {
+    private func loadLikeNotification() throws -> WordPressData.Notification {
         return try .fixture(fromFile: "notifications-like.json", insertInto: contextManager.mainContext)
     }
 

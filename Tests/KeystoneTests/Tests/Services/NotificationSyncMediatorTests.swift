@@ -131,7 +131,7 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
 
         // Inject Dummy Note
         let path = "notifications-like.json"
-        let note = try WordPress.Notification.fixture(fromFile: path, insertInto: mainContext)
+        let note = try WordPressData.Notification.fixture(fromFile: path, insertInto: mainContext)
 
         XCTAssertNotNil(note)
         XCTAssertFalse(note.read)
@@ -163,9 +163,9 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         let path1 = "notifications-like.json"
         let path2 = "notifications-new-follower.json"
         let path3 = "notifications-unapproved-comment.json"
-        let note1 = try WordPress.Notification.fixture(fromFile: path1, insertInto: mainContext)
-        let note2 = try WordPress.Notification.fixture(fromFile: path2, insertInto: mainContext)
-        let note3 = try WordPress.Notification.fixture(fromFile: path3, insertInto: mainContext)
+        let note1 = try WordPressData.Notification.fixture(fromFile: path1, insertInto: mainContext)
+        let note2 = try WordPressData.Notification.fixture(fromFile: path2, insertInto: mainContext)
+        let note3 = try WordPressData.Notification.fixture(fromFile: path3, insertInto: mainContext)
 
         XCTAssertFalse(note1.read)
         XCTAssertFalse(note3.read)
@@ -201,9 +201,9 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         let path1 = "notifications-like.json"
         let path2 = "notifications-new-follower.json"
         let path3 = "notifications-unapproved-comment.json"
-        let note1 = try WordPress.Notification.fixture(fromFile: path1, insertInto: mainContext)
-        let note2 = try WordPress.Notification.fixture(fromFile: path2, insertInto: mainContext)
-        let note3 = try WordPress.Notification.fixture(fromFile: path3, insertInto: mainContext)
+        let note1 = try WordPressData.Notification.fixture(fromFile: path1, insertInto: mainContext)
+        let note2 = try WordPressData.Notification.fixture(fromFile: path2, insertInto: mainContext)
+        let note3 = try WordPressData.Notification.fixture(fromFile: path3, insertInto: mainContext)
 
         XCTAssertFalse(note1.read)
         XCTAssertFalse(note3.read)
