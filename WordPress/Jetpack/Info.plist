@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>WPAppBrand</key>
-	<string>jetpack</string>
+	<string>reader</string>
 	<key>WPAppGroupName</key>
 	<string>${WP_APP_GROUP_NAME}</string>
 	<key>WPAppKeychainAccessGroup</key>
@@ -20,8 +20,8 @@
 	<string>${WP_BUILD_CONFIGURATION}</string>
 	<key>WPAppURLScheme</key>
 	<string>${WP_APP_URL_SCHEME}</string>
-  <key>WPJetpackAppURLScheme</key>
-  <string>${WP_JETPACK_APP_URL_SCHEME}</string>
+	<key>WPJetpackAppURLScheme</key>
+	<string>${WP_JETPACK_APP_URL_SCHEME}</string>
 	<key>WPProductTwitterHandle</key>
 	<string>@jetpack</string>
 	<key>WPProductTwitterURL</key>

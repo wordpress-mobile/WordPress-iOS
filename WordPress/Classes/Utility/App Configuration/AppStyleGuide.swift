@@ -1,5 +1,6 @@
 import Foundation
 import BuildSettingsKit
+import DesignSystem
 import WordPressShared
 
 struct AppStyleGuide {
@@ -28,7 +29,7 @@ struct AppStyleGuide {
     )
 
     static let reader = AppStyleGuide(
-        navigationBarStandardFont: WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold),
+        navigationBarStandardFont: FontManager.fontForTextStyle(.headline, fontWeight: .semibold),
         navigationBarLargeFont: WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold),
         epilogueTitleFont: WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold)
     )
