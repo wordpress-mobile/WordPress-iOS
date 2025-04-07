@@ -445,7 +445,7 @@ class ContextManagerTests: XCTestCase {
     }
 
     fileprivate func urlForModelName(_ name: String) -> URL? {
-        let bundle = Bundle.main
+        let bundle = Bundle(for: ContextManager.self)
         var url = bundle.url(forResource: name, withExtension: "mom")
 
         if url == nil {
