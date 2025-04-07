@@ -7,14 +7,12 @@
 #import "Menu+ViewDesign.h"
 #import "WPAppAnalytics.h"
 #ifdef KEYSTONE
-#import "MenuItem.h"
-#import "MenuLocation.h"
 #import "Keystone-Swift.h"
 #else
-@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 
+@import WordPressData;
 @import WordPressShared;
 
 static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;

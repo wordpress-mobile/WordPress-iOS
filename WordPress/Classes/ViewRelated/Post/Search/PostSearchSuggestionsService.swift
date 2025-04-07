@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressShared
 
 /// Suggests search token for the given input and context. Performs all of the

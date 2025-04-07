@@ -6,14 +6,13 @@
 #import "BlogDetailsViewController.h"
 #import "WPAppAnalytics.h"
 #ifdef KEYSTONE
-#import "Blog.h"
 #import "Keystone-Swift.h"
 #else
-@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 
 @import Gridicons;
+@import WordPressData;
 @import WordPressShared;
 @import WordPressUI;
 

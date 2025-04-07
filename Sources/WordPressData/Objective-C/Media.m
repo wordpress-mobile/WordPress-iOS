@@ -1,11 +1,5 @@
 #import "Media.h"
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#elif WPDATA
 #import "WordPressData-Swift.h"
-#else
-#import "WordPress-Swift.h"
-#endif
 
 @implementation Media
 

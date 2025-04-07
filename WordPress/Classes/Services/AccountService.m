@@ -1,15 +1,13 @@
 #import "AccountService.h"
 #import "BlogService.h"
 
+@import WordPressData;
 @import WordPressKit;
 @import WordPressShared;
 
 #ifdef KEYSTONE
-#import "WPAccount.h"
-#import "Blog.h"
 #import "Keystone-Swift.h"
 #else
-@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 

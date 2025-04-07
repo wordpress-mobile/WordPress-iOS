@@ -1,11 +1,6 @@
 #import "MenuItemTagsViewController.h"
 #import "PostTagService.h"
-#ifdef KEYSTONE
-#import "MenuItem.h"
-#import "PostTag.h"
-#else
 @import WordPressData;
-#endif
 
 static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 

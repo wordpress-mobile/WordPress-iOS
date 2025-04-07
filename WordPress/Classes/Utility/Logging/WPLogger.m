@@ -35,11 +35,11 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
 - (instancetype)init
 {
     self = [super init];
-    
+
     if (self) {
         [self configureLogging];
     }
-    
+
     return self;
 }
 
@@ -52,11 +52,11 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"wordpress.log"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    
+
     if ([fileManager fileExistsAtPath:filePath]) {
         [fileManager removeItemAtPath:filePath error:nil];
     }
-    
+
     // Sets up the CocoaLumberjack logging; debug output to console and file
 #ifdef DEBUG
     [DDLog addLogger:[DDOSLogger sharedInstance]];
@@ -78,7 +78,7 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
 
         _fileLogger = fileLogger;
     }
-    
+
     return _fileLogger;
 }
 
@@ -88,14 +88,14 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
 - (NSString *)getLogFilesContentWithMaxSize:(NSInteger)maxSize
 {
     NSMutableString *description = [NSMutableString string];
-    
+
     NSArray *sortedLogFileInfos = [[self.fileLogger logFileManager] sortedLogFileInfos];
     NSInteger count = [sortedLogFileInfos count];
-    
+
     // we start from the last one
     for (NSInteger index = 0; index < count; index++) {
         DDLogFileInfo *logFileInfo = [sortedLogFileInfos objectAtIndex:index];
-        
+
         NSData *logData = [[NSFileManager defaultManager] contentsAtPath:[logFileInfo filePath]];
         if ([logData length] > 0) {
             NSString *result = [[NSString alloc] initWithBytes:[logData bytes]
@@ -105,11 +105,11 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
             [description appendString:result];
         }
     }
-    
+
     if ([description length] > maxSize) {
         description = (NSMutableString *)[description substringWithRange:NSMakeRange(0, maxSize)];
     }
-    
+
     return description;
 }
 
@@ -121,7 +121,7 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
     for (DDLogFileInfo *logFileInfo in logFiles) {
         [[NSFileManager defaultManager] removeItemAtPath:logFileInfo.filePath error:nil];
     }
-    
+
     DDLogWarn(@"All log files erased.");
 }
 
@@ -133,7 +133,7 @@ void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue)
             [[NSFileManager defaultManager] removeItemAtPath:logFileInfo.filePath error:nil];
         }
     }
-    
+
     DDLogWarn(@"All archived log files erased.");
 }
 

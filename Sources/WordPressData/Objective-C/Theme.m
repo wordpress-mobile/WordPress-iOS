@@ -1,12 +1,6 @@
 #import "Theme.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#elif WPDATA
-#else
-#import "WordPress-Swift.h"
-#endif
 
 @import WordPressShared;
 

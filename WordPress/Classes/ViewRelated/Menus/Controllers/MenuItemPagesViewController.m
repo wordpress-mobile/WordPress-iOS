@@ -1,11 +1,10 @@
 #import "MenuItemPagesViewController.h"
 #ifdef KEYSTONE
-#import "PostService.h"
 #import "Keystone-Swift.h"
 #else
-@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
+@import WordPressData;
 
 @interface MenuItemAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>
 @end

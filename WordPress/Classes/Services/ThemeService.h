@@ -1,8 +1,4 @@
-#ifdef KEYSTONE
-#import "CoreDataStack.h"
-#else
 @import WordPressData;
-#endif
 
 NS_ASSUME_NONNULL_BEGIN
 

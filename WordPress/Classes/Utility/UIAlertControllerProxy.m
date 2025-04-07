@@ -6,7 +6,7 @@
 #else
 #import "WordPress-Swift.h"
 #endif
-
+@import WordPressShared;
 
 @implementation UIAlertControllerProxy
 

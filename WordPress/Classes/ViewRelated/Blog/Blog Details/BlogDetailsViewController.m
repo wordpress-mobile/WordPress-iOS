@@ -8,16 +8,15 @@
 #import "StatsViewController.h"
 #import "WPAppAnalytics.h"
 #ifdef KEYSTONE
-#import "WPAccount.h"
 #import "Keystone-Swift.h"
 #else
-@import WordPressData;
 #import "WordPress-Swift.h"
 #endif
 #import "MenusViewController.h"
 
 @import Gridicons;
 @import Reachability;
+@import WordPressData;
 @import WordPressShared;
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";

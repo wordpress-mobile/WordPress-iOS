@@ -1,10 +1,5 @@
 #import "MenusSelectionItem.h"
-#ifdef KEYSTONE
-#import "Menu.h"
-#import "MenuLocation.h"
-#else
 @import WordPressData;
-#endif
 
 NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSelectionViewItemChangedSelectedNotification";
 NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSelectionViewItemUpdatedItemObjectNotification";
