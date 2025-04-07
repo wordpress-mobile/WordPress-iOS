@@ -182,6 +182,8 @@ private extension UrlDiscoveryError {
 #Preview {
     LoginWithUrlView(
         client: .init(session: .shared),
-        anchor: ASPresentationAnchor()
+        anchor: mockAnchor
     ) { _ in }
 }
+
+private let mockAnchor = ASPresentationAnchor()

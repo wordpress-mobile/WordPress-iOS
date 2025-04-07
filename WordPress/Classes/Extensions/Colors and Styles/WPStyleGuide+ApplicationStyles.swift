@@ -64,7 +64,7 @@ extension WPStyleGuide {
         viewController.navigationItem.compactScrollEdgeAppearance = standardAppearance
     }
 
-    @objc class func configureTabBar(_ tabBar: UITabBar) {
+    @objc public class func configureTabBar(_ tabBar: UITabBar) {
         tabBar.tintColor = UIAppColor.tint
         tabBar.unselectedItemTintColor = UIColor(named: "TabUnselected")
     }

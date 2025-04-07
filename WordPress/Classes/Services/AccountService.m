@@ -12,10 +12,6 @@
 #import "WordPress-Swift.h"
 #endif
 
-static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
-static NSString * const DefaultDotcomAccountPasswordRemovedKey = @"DefaultDotcomAccountPasswordRemovedKey";
-
-static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrpc.php";
 NSNotificationName const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
 NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEmailAndDefaultBlogUpdatedNotification";
 
@@ -30,109 +26,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return self;
 }
 
-///------------------------------------
-/// @name Default WordPress.com account
-///------------------------------------
-
-/**
- Sets the default WordPress.com account
-
- @param account the account to set as default for WordPress.com
- @see defaultWordPressComAccount
- @see removeDefaultWordPressComAccount
- */
-- (void)setDefaultWordPressComAccount:(WPAccount *)account
-{
-    NSParameterAssert(account != nil);
-    NSAssert(account.authToken.length > 0, @"Account should have an authToken for WP.com");
-
-    if ([account isDefaultWordPressComAccount]) {
-        return;
-    }
-
-    [[UserPersistentStoreFactory userDefaultsInstance] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
-
-    NSManagedObjectID *accountID = account.objectID;
-    void (^notifyAccountChange)(void) = ^{
-        NSManagedObjectContext *mainContext = self.coreDataStack.mainContext;
-        NSManagedObject *accountInContext = [mainContext existingObjectWithID:accountID error:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
-
-        [[PushNotificationsManager shared] setupRemoteNotifications];
-    };
-    if ([NSThread isMainThread]) {
-        // This is meant to help with testing account observers.
-        // Short version: dispatch_async and XCTest asynchronous helpers don't play nice with each other
-        // Long version: see the comment in https://github.com/wordpress-mobile/WordPress-iOS/blob/2f9a2100ca69d8f455acec47a1bbd6cbc5084546/WordPress/WordPressTest/AccountServiceRxTests.swift#L7
-        notifyAccountChange();
-    } else {
-        dispatch_async(dispatch_get_main_queue(), notifyAccountChange);
-    }
-}
-
-/**
- Removes the default WordPress.com account
-
- @see defaultWordPressComAccount
- @see setDefaultWordPressComAccount:
- */
-- (void)removeDefaultWordPressComAccount
-{
-    NSAssert([NSThread isMainThread], @"This method should only be called from the main thread");
-
-    [[PushNotificationsManager shared] unregisterDeviceToken];
-
-    WPAccount *account = [WPAccount lookupDefaultWordPressComAccountInContext:self.coreDataStack.mainContext];
-    if (account == nil) {
-        return;
-    }
-
-    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        WPAccount *accountInContext = [context existingObjectWithID:account.objectID error:nil];
-        [context deleteObject:accountInContext];
-    }];
-
-    // Clear WordPress.com cookies
-    NSArray<id<CookieJar>> *cookieJars = @[
-        (id<CookieJar>)[NSHTTPCookieStorage sharedHTTPCookieStorage],
-        (id<CookieJar>)[[WKWebsiteDataStore defaultDataStore] httpCookieStore]
-    ];
-
-    for (id<CookieJar> cookieJar in cookieJars) {
-        [cookieJar removeWordPressComCookiesWithCompletion:^{}];
-    }
-
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
-
-    // Remove defaults
-    [[UserPersistentStoreFactory userDefaultsInstance] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
-
-    [WPAnalytics refreshMetadata];
-    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-
-    [StatsCache clearCaches];
-}
-
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
 {
     id<AccountServiceRemote> remote = [self remoteForAnonymous];
     [remote isEmailAvailable:email success:^(BOOL available) {
-        if (success) {
-            success(available);
-        }
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)isUsernameAvailable:(NSString *)username
-                    success:(void (^)(BOOL available))success
-                    failure:(void (^)(NSError *error))failure
-{
-    id<AccountServiceRemote> remote = [self remoteForAnonymous];
-    [remote isUsernameAvailable:username success:^(BOOL available) {
         if (success) {
             success(available);
         }
@@ -266,7 +163,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         // Assume we have a good candidate account and make it the default account in the app.
         // Note that this should be the account with the most blogs.
         // Updates user defaults here vs the setter method to avoid potential side-effects from dispatched notifications.
-        [[UserPersistentStoreFactory userDefaultsInstance] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
+        [[UserPersistentStoreFactory userDefaultsInstance] setObject:account.uuid forKey:AccountService.defaultDotcomAccountUUIDDefaultsKey];
     }
 }
 

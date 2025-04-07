@@ -110,7 +110,7 @@ struct PostSettingsFeaturedImageCell: View {
     }
 }
 
-final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
+public final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
     @Published private(set) var upload: Media?
 
     let post: AbstractPost
@@ -118,10 +118,10 @@ final class PostSettingsFeaturedImageViewModel: NSObject, ObservableObject {
     private var receipt: UUID?
     private let coordinator = MediaCoordinator.shared
 
-    @objc weak var tableView: UITableView?
-    @objc weak var delegate: FeaturedImageDelegate?
+    @objc public weak var tableView: UITableView?
+    @objc public weak var delegate: FeaturedImageDelegate?
 
-    @objc init(post: AbstractPost) {
+    @objc public init(post: AbstractPost) {
         self.post = post
     }
 

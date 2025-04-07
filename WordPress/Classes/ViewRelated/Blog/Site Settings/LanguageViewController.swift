@@ -7,7 +7,7 @@ import WordPressShared
 open class LanguageViewController: UITableViewController, LanguageSelectorDelegate {
     /// Callback to be executed whenever the Blog's selected language changes.
     ///
-    @objc var onChange: ((NSNumber) -> Void)?
+    @objc public var onChange: ((NSNumber) -> Void)?
 
     /// Designated Initializer
     ///

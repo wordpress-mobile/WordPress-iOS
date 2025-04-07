@@ -2,7 +2,7 @@ import Foundation
 import FormattableContentKit
 import WordPressShared
 
-@objc class CommentAnalytics: NSObject {
+@objc public class CommentAnalytics: NSObject {
 
     struct Constants {
         static let sites = "sites"
@@ -34,43 +34,43 @@ import WordPressShared
         ]
     }
 
-    @objc static func trackCommentViewed(comment: Comment) {
+    @objc public static func trackCommentViewed(comment: Comment) {
         trackCommentEvent(comment: comment, event: .commentViewed)
     }
 
-    @objc static func trackCommentEditorOpened(comment: Comment) {
+    @objc public static func trackCommentEditorOpened(comment: Comment) {
         trackCommentEvent(comment: comment, event: .commentEditorOpened)
     }
 
-    @objc static func trackCommentEdited(comment: Comment) {
+    @objc public static func trackCommentEdited(comment: Comment) {
         trackCommentEvent(comment: comment, event: .commentEdited)
     }
 
-    @objc static func trackCommentApproved(comment: Comment) {
+    @objc public static func trackCommentApproved(comment: Comment) {
         trackCommentEvent(comment: comment, event: .commentApproved)
     }
 
-    @objc static func trackCommentUnApproved(comment: Comment) {
+    @objc public static func trackCommentUnApproved(comment: Comment) {
         trackCommentEvent(comment: comment, event: .commentUnApproved)
     }
 
-    @objc static func trackCommentTrashed(comment: Comment) {
+    @objc public static func trackCommentTrashed(comment: Comment) {
         trackCommentEvent(comment: comment, event: .commentTrashed)
     }
 
-    @objc static func trackCommentSpammed(comment: Comment) {
+    @objc public static func trackCommentSpammed(comment: Comment) {
         trackCommentEvent(comment: comment, event: .commentSpammed)
     }
 
-    @objc static func trackCommentLiked(comment: Comment) {
+    @objc public static func trackCommentLiked(comment: Comment) {
         trackCommentEvent(comment: comment, event: .commentLiked)
     }
 
-    @objc static func trackCommentUnLiked(comment: Comment) {
+    @objc public static func trackCommentUnLiked(comment: Comment) {
         trackCommentEvent(comment: comment, event: .commentUnliked)
     }
 
-    @objc static func trackCommentRepliedTo(comment: Comment) {
+    @objc public static func trackCommentRepliedTo(comment: Comment) {
         trackCommentEvent(comment: comment, event: .commentRepliedTo)
     }
 

@@ -44,10 +44,6 @@ class SupportTableViewController: UITableViewController {
         self.dismissTapped = dismissTapped
     }
 
-    @objc public convenience init() {
-        self.init(configuration: .init(), style: .insetGrouped)
-    }
-
     // MARK: - View
 
     override func viewDidLoad() {
@@ -94,7 +90,7 @@ class SupportTableViewController: UITableViewController {
     }
 
     // TODO: Refactor this method to use the general `show(from:)` method
-    @objc func showFromTabBar() {
+    func showFromTabBar() {
         let navigationController = UINavigationController.init(rootViewController: self)
 
         if WPDeviceIdentification.isiPad() {

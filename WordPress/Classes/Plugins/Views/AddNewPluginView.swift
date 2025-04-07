@@ -95,7 +95,7 @@ struct AddNewPluginView: View {
             .foregroundColor(.secondary)
             .frame(maxWidth: .infinity, alignment: .center)
 
-        case .error(let errorMessage):
+        case .error:
             Text(Strings.loadError)
 
         case let .plugin(plugin, isInstalled):

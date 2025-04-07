@@ -1,8 +1,83 @@
 import Foundation
 import WordPressShared
 import ShareExtensionCore
+import WebKit
 
 extension AccountService {
+    // MARK: - Current Account
+
+    @objc public static let defaultDotcomAccountUUIDDefaultsKey = "AccountDefaultDotcomUUID"
+
+    @objc public func setDefaultWordPressComAccount(_ account: WPAccount) {
+        wpAssert(account.authToken?.isEmpty == false, "Account should have an authToken for WP.com")
+
+        guard !account.isDefaultWordPressComAccount else {
+            return
+        }
+
+        UserPersistentStoreFactory.instance().set(account.uuid, forKey: AccountService.defaultDotcomAccountUUIDDefaultsKey)
+
+        let objectID = TaggedManagedObjectID(account)
+        let notifyAccountChange = {
+            let context = self.coreDataStack.mainContext
+            let account = try? context.existingObject(with: objectID)
+            NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: account)
+
+            PushNotificationsManager.shared.setupRemoteNotifications()
+        }
+
+        if Thread.isMainThread {
+            // This is meant to help with testing account observers.
+            // Short version: dispatch_async and XCTest asynchronous helpers don't play nice with each other
+            // Long version: see the comment in https://github.com/wordpress-mobile/WordPress-iOS/blob/2f9a2100ca69d8f455acec47a1bbd6cbc5084546/WordPress/WordPressTest/AccountServiceRxTests.swift#L7
+            notifyAccountChange()
+        } else {
+            DispatchQueue.main.async(execute: notifyAccountChange)
+        }
+    }
+
+    func removeDefaultWordPressComAccount() {
+        wpAssert(Thread.isMainThread, "Must be called from main thread")
+
+        PushNotificationsManager.shared.unregisterDeviceToken()
+
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext) else {
+            return
+        }
+
+        let objectID = TaggedManagedObjectID(account)
+        coreDataStack.performAndSave { context in
+            do {
+                let account = try context.existingObject(with: objectID)
+                context.delete(account)
+            } catch {
+                wpAssertionFailure("account missing")
+            }
+        }
+
+        // Clear WordPress.com cookies
+        let cookieJars: [CookieJar] = [
+            HTTPCookieStorage.shared,
+            WKWebsiteDataStore.default().httpCookieStore
+        ]
+
+        for cookieJar in cookieJars {
+            cookieJar.removeWordPressComCookies(completion: {})
+        }
+
+        URLCache.shared.removeAllCachedResponses()
+
+        // Remove defaults
+        UserPersistentStoreFactory.instance().removeObject(forKey: AccountService.defaultDotcomAccountUUIDDefaultsKey)
+
+        WPAnalytics.refreshMetadata()
+        NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+
+        StatsCache.clearCaches()
+    }
+
+    // MARK: - App Extensions
+
     func setupAppExtensions() {
         let context = coreDataStack.mainContext
         context.performAndWait {
@@ -13,7 +88,7 @@ extension AccountService {
         }
     }
 
-    @objc func setupAppExtensions(defaultAccount: WPAccount) {
+    @objc public func setupAppExtensions(defaultAccount: WPAccount) {
         let shareExtensionService = ShareExtensionService()
         let notificationSupportService = NotificationSupportService()
 

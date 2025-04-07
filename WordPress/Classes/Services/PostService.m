@@ -1,8 +1,7 @@
+#import "Blog.h"
 #import "PostService.h"
+#import "PostServiceOptions.h"
 #import "PostCategory.h"
-#import "PostCategoryService.h"
-#import "CommentService.h"
-#import "MediaService.h"
 #import "Media.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"

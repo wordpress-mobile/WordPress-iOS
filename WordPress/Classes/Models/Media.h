@@ -84,11 +84,6 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 
 - (nullable NSString *)fileExtension;
 
-// CoreData helpers
-
-- (void)remove;
-- (void)save;
-
 @end
 
 @class AbstractPost;

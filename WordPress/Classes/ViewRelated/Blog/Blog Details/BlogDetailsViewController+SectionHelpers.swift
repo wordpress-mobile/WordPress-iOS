@@ -37,77 +37,77 @@ extension BlogDetailsSubsection {
 }
 
 extension BlogDetailsViewController {
-    @objc func findSectionIndex(sections: [BlogDetailsSection], category: BlogDetailsSectionCategory) -> Int {
+    @objc public func findSectionIndex(sections: [BlogDetailsSection], category: BlogDetailsSectionCategory) -> Int {
         return sections.findSectionIndex(of: category) ?? NSNotFound
     }
 
-    @objc func sectionCategory(subsection: BlogDetailsSubsection, blog: Blog) -> BlogDetailsSectionCategory {
+    @objc public func sectionCategory(subsection: BlogDetailsSubsection, blog: Blog) -> BlogDetailsSectionCategory {
         return subsection.sectionCategory(for: blog)
     }
 
-    @objc func defaultSubsection() -> BlogDetailsSubsection {
+    @objc public func defaultSubsection() -> BlogDetailsSubsection {
         if !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
             return .posts
         }
-        if shouldShowDashboard() {
+        if isDashboardEnabled() {
             return .home
         }
         return .stats
     }
 
-    @objc func shouldAddJetpackSection() -> Bool {
+    @objc public func shouldAddJetpackSection() -> Bool {
         guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return false
         }
         return blog.shouldShowJetpackSection
     }
 
-    @objc func shouldAddGeneralSection() -> Bool {
+    @objc public func shouldAddGeneralSection() -> Bool {
         guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return false
         }
         return blog.shouldShowJetpackSection == false
     }
 
-    @objc func shouldAddPersonalizeSection() -> Bool {
+    @objc public func shouldAddPersonalizeSection() -> Bool {
         guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return false
         }
         return blog.supports(.themeBrowsing) || blog.supports(.menus)
     }
 
-    @objc func shouldAddMeRow() -> Bool {
+    @objc public func shouldAddMeRow() -> Bool {
         JetpackFeaturesRemovalCoordinator.currentAppUIType == .simplified && !isSidebarModeEnabled
     }
 
-    @objc func shouldAddSharingRow() -> Bool {
+    @objc public func shouldAddSharingRow() -> Bool {
         guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return false
         }
         return blog.supports(.sharing)
     }
 
-    @objc func shouldAddPeopleRow() -> Bool {
+    @objc public func shouldAddPeopleRow() -> Bool {
         guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return false
         }
         return blog.supports(.people)
     }
 
-    @objc func shouldAddUsersRow() -> Bool {
+    @objc public func shouldAddUsersRow() -> Bool {
         // Only admin users can list users.
         FeatureFlag.selfHostedSiteUserManagement.enabled && blog.isSelfHosted && blog.isAdmin
     }
 
-    @objc func shouldAddPluginsRow() -> Bool {
+    @objc public func shouldAddPluginsRow() -> Bool {
         return blog.supports(.pluginManagement)
     }
 
-    @objc func shouldAddDomainRegistrationRow() -> Bool {
+    @objc public func shouldAddDomainRegistrationRow() -> Bool {
         return FeatureFlag.domainRegistration.enabled && blog.supports(.domains)
     }
 
-    @objc func showUsers() {
+    @objc public func showUsers() {
         guard let presentationDelegate, let userId = self.blog.userID?.intValue else {
             return
         }
@@ -121,7 +121,7 @@ extension BlogDetailsViewController {
         presentationDelegate.presentBlogDetailsViewController(UIHostingController(rootView: rootView))
     }
 
-    @objc func showManagePluginsScreen() {
+    @objc public func showManagePluginsScreen() {
         guard blog.supports(.pluginManagement),
               let site = JetpackSiteRef(blog: blog) else {
             return

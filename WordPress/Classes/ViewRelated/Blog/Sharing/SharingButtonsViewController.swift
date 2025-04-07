@@ -5,7 +5,7 @@ import WordPressShared
 /// Manages which sharing button are displayed, their order, and other settings
 /// related to sharing.
 ///
-@objc class SharingButtonsViewController: UITableViewController {
+class SharingButtonsViewController: UITableViewController {
     typealias SharingButtonsRowAction = () -> Void
     typealias SharingButtonsCellConfig = (UITableViewCell) -> Void
 
@@ -55,7 +55,7 @@ import WordPressShared
 
     // MARK: - LifeCycle Methods
 
-    @objc init(blog: Blog) {
+    init(blog: Blog) {
         self.blog = blog
 
         super.init(style: .insetGrouped)

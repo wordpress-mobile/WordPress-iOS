@@ -1,15 +1,15 @@
 import UIKit
 
-@objc class PostAuthorSelectorViewController: SettingsSelectionViewController {
+class PostAuthorSelectorViewController: SettingsSelectionViewController {
     /// A completion block that is called after the user selects an option.
-    @objc var completion: (() -> Void)?
+    var completion: (() -> Void)?
 
     /// Representation of an Author used by the view.
     private typealias Author = (displayName: String, userID: NSNumber, avatarURL: String?)
 
     // MARK: - Constructors
 
-    @objc init(_ post: AbstractPost) {
+    init(post: AbstractPost) {
         let authors = PostAuthorSelectorViewController.sortedActiveAuthors(for: post.blog)
 
         guard !authors.isEmpty, let currentAuthorID = post.authorID else {

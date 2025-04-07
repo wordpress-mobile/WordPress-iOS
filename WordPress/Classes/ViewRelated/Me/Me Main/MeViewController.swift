@@ -3,7 +3,7 @@ import BuildSettingsKit
 import WordPressShared
 import AutomatticAbout
 
-class MeViewController: UITableViewController {
+public class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!
     var isSidebarModeEnabled = false
 
@@ -11,24 +11,24 @@ class MeViewController: UITableViewController {
 
     // MARK: - Table View Controller
 
-    override init(style: UITableView.Style) {
+    public override init(style: UITableView.Style) {
         super.init(style: style)
         navigationItem.title = NSLocalizedString("Me", comment: "Me page title")
         clearsSelectionOnViewWillAppear = false
     }
 
-    required convenience init() {
+    public required convenience init() {
         self.init(style: .insetGrouped)
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationClearedNotification, object: nil)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         if isSidebarModeEnabled {
@@ -57,26 +57,26 @@ class MeViewController: UITableViewController {
         reloadViewModel()
     }
 
-    override func viewDidLayoutSubviews() {
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         tableView.layoutHeaderView()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         refreshAccountDetailsAndSettings()
         animateDeselectionInteractively()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         registerUserActivity()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         // Required to update the tableview cell disclosure indicators
@@ -238,7 +238,7 @@ class MeViewController: UITableViewController {
 
     // MARK: - UITableViewDelegate
 
-    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    public override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         let isNewSelection = (indexPath != tableView.indexPathForSelectedRow)
 
         if isNewSelection {
@@ -347,15 +347,9 @@ class MeViewController: UITableViewController {
         }
     }
 
-    /// Selects the My Profile row and pushes the Support view controller
-    ///
-    @objc public func navigateToMyProfile() {
-        navigateToTarget(for: RowTitles.myProfile)
-    }
-
     /// Selects the Account Settings row and pushes the Account Settings view controller
     ///
-    @objc public func navigateToAccountSettings() {
+    func navigateToAccountSettings() {
         navigateToTarget(for: RowTitles.accountSettings)
     }
 
@@ -367,7 +361,7 @@ class MeViewController: UITableViewController {
 
     /// Selects the App Settings row and pushes the App Settings view controller
     ///
-    @objc public func navigateToAppSettings(completion: ((AppSettingsViewController) -> Void)? = nil) {
+    func navigateToAppSettings(completion: ((AppSettingsViewController) -> Void)? = nil) {
         self.selectRowForTitle(appSettingsRow.title)
         WPAppAnalytics.track(.openedAppSettings)
         let destination = AppSettingsViewController()
@@ -378,7 +372,7 @@ class MeViewController: UITableViewController {
 
     /// Selects the Help & Support row and pushes the Support view controller
     ///
-    @objc public func navigateToHelpAndSupport() {
+    func navigateToHelpAndSupport() {
         navigateToTarget(for: RowTitles.support)
     }
 
@@ -533,15 +527,15 @@ class MeViewController: UITableViewController {
 // MARK: - SearchableActivity Conformance
 
 extension MeViewController: SearchableActivityConvertable {
-    var activityType: String {
+    public var activityType: String {
         return WPActivityType.me.rawValue
     }
 
-    var activityTitle: String {
+    public var activityTitle: String {
         return NSLocalizedString("Me", comment: "Title of the 'Me' tab - used for spotlight indexing on iOS.")
     }
 
-    var activityKeywords: Set<String>? {
+    public var activityKeywords: Set<String>? {
         let keyWordString = NSLocalizedString("wordpress, me, settings, account, notification log out, logout, log in, login, help, support",
                                               comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Me' tab.")
         let keywordArray = keyWordString.arrayOfTags()
@@ -618,7 +612,7 @@ extension MeViewController: ShareAppContentPresenterDelegate {
 // MARK: - Jetpack powered badge
 extension MeViewController {
 
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    public override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard section == handler.viewModel.sections.count - 1,
               JetpackBrandingVisibility.all.enabled else {
             return nil

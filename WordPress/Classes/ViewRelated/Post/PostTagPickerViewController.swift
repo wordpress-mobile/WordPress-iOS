@@ -3,12 +3,13 @@ import WordPressShared
 import WordPressUI
 
 class PostTagPickerViewController: UIViewController {
+    var onValueChanged: ((String) -> Void)?
+    let blog: Blog
+
     private let originalTags: [String]
-    @objc var onValueChanged: ((String) -> Void)?
-    @objc let blog: Blog
     private let keyboardObserver = TableViewKeyboardObserver()
 
-    @objc init(tags: String, blog: Blog) {
+    init(tags: String, blog: Blog) {
         originalTags = PostTagPickerViewController.extractTags(from: tags)
 
         self.blog = blog
@@ -26,6 +27,7 @@ class PostTagPickerViewController: UIViewController {
     private let textViewContainer = UIView()
     fileprivate let tableView = UITableView(frame: .zero, style: .grouped)
     private let descriptionLabel = UILabel()
+
     fileprivate var dataSource: PostTagPickerDataSource = LoadingDataSource() {
         didSet {
             tableView.dataSource = dataSource

@@ -5,12 +5,12 @@ extension SharingViewController {
     static let jetpackBadgePadding: CGFloat = 30
 
     @objc
-    static func jetpackBrandingVisibile() -> Bool {
+    public static func jetpackBrandingVisibile() -> Bool {
         return JetpackBrandingVisibility.all.enabled
     }
 
     @objc
-    func makeJetpackBadge() -> UIView {
+    public func makeJetpackBadge() -> UIView {
         let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.sharing)
         let badge = JetpackButton.makeBadgeView(title: textProvider.brandingText(),
                                                 topPadding: Self.jetpackBadgePadding,
@@ -21,7 +21,7 @@ extension SharingViewController {
     }
 
     @objc
-    func presentJetpackOverlay() {
+    public func presentJetpackOverlay() {
         JetpackBrandingCoordinator.presentOverlay(from: self)
         JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .sharing)
     }
@@ -29,7 +29,7 @@ extension SharingViewController {
     // MARK: Twitter Deprecation
 
     @objc
-    func makeTwitterDeprecationFooterView() -> TwitterDeprecationTableFooterView {
+    public func makeTwitterDeprecationFooterView() -> TwitterDeprecationTableFooterView {
         let footerView = TwitterDeprecationTableFooterView()
         footerView.presentingViewController = self
         footerView.source = "social_connection_list"

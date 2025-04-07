@@ -1,7 +1,7 @@
 import UIKit
 import WordPressUI
 
-class BlogDetailsSectionFooterView: UITableViewHeaderFooterView {
+public class BlogDetailsSectionFooterView: UITableViewHeaderFooterView {
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -12,12 +12,12 @@ class BlogDetailsSectionFooterView: UITableViewHeaderFooterView {
     }()
     private let spacerView = UIView(frame: .zero)
 
-    override public init(reuseIdentifier: String?) {
+    public override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupSubviews()
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupSubviews()
     }
@@ -39,7 +39,7 @@ class BlogDetailsSectionFooterView: UITableViewHeaderFooterView {
         updateUI(title: nil, shouldShowExtraSpacing: false)
     }
 
-    @objc func updateUI(title: String?, shouldShowExtraSpacing: Bool) {
+    @objc public func updateUI(title: String?, shouldShowExtraSpacing: Bool) {
         titleLabel.text = title
         spacerView.isHidden = !shouldShowExtraSpacing
     }

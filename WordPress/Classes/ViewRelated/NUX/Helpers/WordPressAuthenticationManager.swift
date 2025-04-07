@@ -8,7 +8,6 @@ import Gridicons
 
 // MARK: - WordPressAuthenticationManager
 //
-@objc
 class WordPressAuthenticationManager: NSObject {
     static let WPSigninDidFinishNotification = WordPressAuthenticator.WPSigninDidFinishNotification
 
@@ -45,7 +44,7 @@ class WordPressAuthenticationManager: NSObject {
 extension WordPressAuthenticationManager {
     /// Initializes WordPressAuthenticator with all of the parameters that will be needed during the login flow.
     ///
-    func initializeWordPressAuthenticator() {
+    func initializeWordPressAuthenticator(notificationCenter: NotificationCenter = .default) {
         let displayStrings = WordPressAuthenticatorDisplayStrings(
             continueWithWPButtonTitle: NSLocalizedString("Continue With WordPress.com", comment: "Button title. Takes the user to the login with WordPress.com flow.")
         )
@@ -54,6 +53,14 @@ extension WordPressAuthenticationManager {
                                           style: authenticatorStyle(),
                                           unifiedStyle: unifiedStyle(),
                                           displayStrings: displayStrings)
+
+        notificationCenter
+            .addObserver(
+                self,
+                selector: #selector(accontRequiresShowingWPComSigninReceived),
+                name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken,
+                object: nil
+            )
     }
 
     private func authenticatorConfiguation() -> WordPressAuthenticatorConfiguration {
@@ -196,8 +203,7 @@ extension WordPressAuthenticationManager {
     ///
     /// - Parameter onDismissed: Closure to be executed whenever the returned ViewController is dismissed.
     ///
-    @objc
-    class func signinForWPComFixingAuthToken(_ onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
+    static func signinForWPComFixingAuthToken(_ onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
         let context = ContextManager.shared.mainContext
         let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
 
@@ -207,8 +213,7 @@ extension WordPressAuthenticationManager {
     /// Presents the WordPress Authentication UI from the rootViewController (configured to allow only WordPress.com).
     /// This method pre-populates the Email + Username with the values returned by the default WordPress.com account (if any).
     ///
-    @objc
-    class func showSigninForWPComFixingAuthToken() {
+    static func showSigninForWPComFixingAuthToken() {
         guard let presenter = UIApplication.shared.mainWindow?.rootViewController else {
             assertionFailure()
             return
@@ -258,6 +263,11 @@ extension WordPressAuthenticationManager {
         WordPressAuthenticator.shared.supportPushNotificationCleared()
     }
 
+    @objc func accontRequiresShowingWPComSigninReceived(_ notification: Foundation.Notification) {
+        DispatchQueue.main.async {
+            WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
+        }
+    }
 }
 
 // MARK: - WordPressAuthenticator Delegate

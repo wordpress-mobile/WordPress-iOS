@@ -3,7 +3,7 @@ import UIKit
 
 extension StatsViewController {
 
-    @objc func activateStatsModule(success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
+    @objc public func activateStatsModule(success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         guard let blog else {
             return
         }

@@ -123,9 +123,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
         let selfHostedApiUrl = post.blog.url(withPath: "wp-json/")
-        let isSelfHosted = !post.blog.isHostedAtWPcom && !post.blog.isAtomic()
-        let siteApiRoot = post.blog.isAccessibleThroughWPCom() && !isSelfHosted ? post.blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
+        let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
+        let siteApiRoot = post.blog.isAccessibleThroughWPCom() && isWPComSite ? post.blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
         let siteId = post.blog.dotComID?.stringValue
+        let siteDomain = post.blog.primaryDomainAddress
         let authToken = post.blog.authToken ?? ""
         var authHeader = "Bearer \(authToken)"
 
@@ -139,7 +140,14 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             }
         }
 
-        let siteApiNamespace = post.blog.dotComID != nil && !isSelfHosted && applicationPassword == nil ? "sites/\(siteId ?? "")" : ""
+        // Must provide both namespace forms to detect usages of both forms in third-party code
+        var siteApiNamespace: [String] = []
+        if isWPComSite {
+            if let siteId {
+                siteApiNamespace.append("sites/\(siteId)")
+            }
+            siteApiNamespace.append("sites/\(siteDomain)")
+        }
 
         var conf = EditorConfiguration(
             title: post.postTitle ?? "",
@@ -151,10 +159,19 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         conf.siteURL = post.blog.url ?? ""
         conf.siteApiRoot = siteApiRoot ?? ""
         conf.siteApiNamespace = siteApiNamespace
+        conf.namespaceExcludedPaths = ["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"]
         conf.authHeader = authHeader
 
         conf.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
-        conf.plugins = FeatureFlag.newGutenbergPlugins.enabled && isSelfHosted
+        // Limited to Simple sites until application password auth is supported
+        conf.plugins = FeatureFlag.newGutenbergPlugins.enabled && post.blog.isHostedAtWPcom
+
+        if !post.blog.isSelfHosted {
+            let siteType: String = post.blog.isHostedAtWPcom ? "simple" : "atomic"
+            conf.webViewGlobals = [
+                WebViewGlobal(name: "_currentSiteType", value: .string(siteType))
+            ]
+        }
 
         self.editorViewController = GutenbergKit.EditorViewController(configuration: conf)
 
@@ -772,7 +789,6 @@ extension NewGutenbergViewController {
             return // TODO: when can it happen?
         }
         service.fetchSettings({ [weak self] result in
-            guard let `self` = self else { return }
             switch result {
             case .success(let response):
                 if response.hasChanges {

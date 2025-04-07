@@ -54,22 +54,24 @@ extension Tracks {
 
     // MARK: - Private Helpers
 
-    fileprivate func trackExtensionEvent(_ event: ExtensionEvents, properties: [String: AnyObject]? = nil) {
-        track(event.rawValue, properties: properties)
+    private func trackExtensionEvent(_ event: ExtensionEvents, properties: [String: AnyObject]? = nil) {
+        guard let namespace = Bundle.main.object(forInfoDictionaryKey: "WPAppExtensionType") as? String else {
+            return assertionFailure("WPAppExtensionType missing")
+        }
+        let eventName = "\(namespace)_extension_\(event.rawValue)"
+        track(eventName, properties: properties)
     }
+}
 
-    // MARK: - Private Enums
-
-    fileprivate enum ExtensionEvents: String {
-        case launched = "share_extension_launched"
-        case posted = "share_extension_posted"
-        case tagsOpened = "share_extension_tags_opened"
-        case tagsSelected = "share_extension_tags_selected"
-        case canceled = "share_extension_canceled"
-        case error = "share_extension_error"
-        case categoriesOpened = "share_extension_categories_opened"
-        case categoriesSelected = "share_extension_categories_selected"
-        case postTypeOpened = "share_extension_post_type_opened"
-        case postTypeSelected = "share_extension_post_type_selected"
-    }
+private enum ExtensionEvents: String {
+    case launched = "launched"
+    case posted = "posted"
+    case tagsOpened = "tags_opened"
+    case tagsSelected = "tags_selected"
+    case canceled = "canceled"
+    case error = "exror"
+    case categoriesOpened = "categories_opened"
+    case categoriesSelected = "categories_selected"
+    case postTypeOpened = "post_type_opened"
+    case postTypeSelected = "post_type_selected"
 }

@@ -23,23 +23,6 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 ///------------------------------------
 
 /**
- Sets the default WordPress.com account
- 
- @param account the account to set as default for WordPress.com
- @see defaultWordPressComAccount
- @see removeDefaultWordPressComAccount
- */
-- (void)setDefaultWordPressComAccount:(WPAccount *)account;
-
-/**
- Removes the default WordPress.com account. Should only be called from the Main Thread
- 
- @see defaultWordPressComAccount
- @see setDefaultWordPressComAccount:
- */
-- (void)removeDefaultWordPressComAccount;
-
-/**
  Query to check if an email address is paired to a wpcom account. Used in the 
  magic links signup flow.
 
@@ -48,17 +31,6 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
  @param failure
  */
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure;
-
-/**
- Query to check if a username is available. Used in the signup flow.
- 
- @param email
- @param success
- @param failure
- */
-- (void)isUsernameAvailable:(NSString *)username
-                    success:(void (^)(BOOL available))success
-                    failure:(void (^)(NSError *error))failure;
 
 /**
  Requests a verification email to be sent to the email address associated with the current account.

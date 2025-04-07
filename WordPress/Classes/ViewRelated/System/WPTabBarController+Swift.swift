@@ -23,7 +23,7 @@ import WordPressShared
 }
 
 extension WPTabBarController {
-    @objc class func readerLocalizedTitle() -> String {
+    @objc public class func readerLocalizedTitle() -> String {
         SharedStrings.Reader.title
     }
 
@@ -57,7 +57,7 @@ extension WPTabBarController {
         }
     }
 
-    @objc func startObserversForTabAccessTracking() {
+    @objc public func startObserversForTabAccessTracking() {
         let nc = NotificationCenter.default
         nc.addObserver(self,
                        selector: #selector(trackTabAccessOnAppDidBecomeActive),
@@ -69,14 +69,14 @@ extension WPTabBarController {
                        object: nil)
     }
 
-    @objc func trackTabAccessOnAppDidBecomeActive() {
+    @objc public func trackTabAccessOnAppDidBecomeActive() {
         trackTabAccessForTabIndex(selectedIndex)
     }
 
     /// Reset `shouldTrackTabAccessOnViewDidAppear` if the user has logged out.
     ///
     /// This allows us to track tab access on `-viewDidAppear` when the user logs back in again.
-    @objc func resetViewDidAppearFlagOnWPComAccountChange(_ notification: NSNotification) {
+    @objc public func resetViewDidAppearFlagOnWPComAccountChange(_ notification: NSNotification) {
         guard notification.object == nil else {
             return
         }
@@ -87,7 +87,7 @@ extension WPTabBarController {
     /// Track tab access on viewDidAppear but only once.
     ///
     /// This covers the scenario when the user has just logged in.
-    @objc func trackTabAccessOnViewDidAppear() {
+    @objc public func trackTabAccessOnViewDidAppear() {
         guard shouldTrackTabAccessOnViewDidAppear else {
             return
         }
@@ -162,6 +162,12 @@ extension WPTabBarController {
         bounceAnimation.duration = TimeInterval(0.2)
         bounceAnimation.calculationMode = CAAnimationCalculationMode.cubic
         imageView.layer.add(bounceAnimation, forKey: nil)
+    }
+
+    @objc public func switchNotificationsTabToNotificationSettings() {
+        showNotificationsTab()
+        notificationsNavigationController?.popToRootViewController(animated: false)
+        notificationsViewController?.showNotificationSettings()
     }
 }
 

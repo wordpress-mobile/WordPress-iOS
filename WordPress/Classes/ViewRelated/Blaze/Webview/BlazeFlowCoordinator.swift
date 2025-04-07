@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-@objc enum BlazeSource: Int, OverlaySource {
+@objc public enum BlazeSource: Int, OverlaySource {
     case dashboardCard
     case menuItem
     case postsList

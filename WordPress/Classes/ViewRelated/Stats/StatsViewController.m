@@ -74,8 +74,9 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    // Track as significant event for App Rating calculations
-    [[AppRatingUtility shared] incrementSignificantEvent];
+    [super viewDidAppear:animated];
+
+    [ObjCBridge incrementSignificantEvent];
 }
 
 - (void)setBlog:(Blog *)blog

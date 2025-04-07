@@ -1,3 +1,4 @@
+@import WordPressShared;
 @import NSObject_SafeExpectations;
 
 #import "WPAppAnalytics.h"

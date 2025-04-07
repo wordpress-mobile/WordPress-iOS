@@ -6,7 +6,7 @@ extension PostSettingsViewController {
 
     // MARK: - No connection view
 
-    @objc func showNoConnection() -> Bool {
+    @objc public func showNoConnection() -> Bool {
         let isJetpackSocialEnabled = RemoteFeatureFlag.jetpackSocialImprovements.enabled()
         let isNoConnectionViewHidden = UserPersistentStoreFactory.instance().bool(forKey: hideNoConnectionViewKey())
         let blogSupportsPublicize = apost.blog.supportsPublicize()
@@ -21,7 +21,7 @@ extension PostSettingsViewController {
         && !isPostPrivate
     }
 
-    @objc func createNoConnectionView() -> UIView {
+    @objc public func createNoConnectionView() -> UIView {
         WPAnalytics.track(.jetpackSocialNoConnectionCardDisplayed,
                           properties: ["source": Constants.trackingSource])
         let services = availableServices()
@@ -37,7 +37,7 @@ extension PostSettingsViewController {
 
     // MARK: - Remaining shares view
 
-    @objc func showRemainingShares() -> Bool {
+    @objc public func showRemainingShares() -> Bool {
         let isJetpackSocialEnabled = RemoteFeatureFlag.jetpackSocialImprovements.enabled()
         let blogSupportsPublicize = apost.blog.supportsPublicize()
         let blogHasConnections = publicizeConnections.count > 0
@@ -50,7 +50,7 @@ extension PostSettingsViewController {
         && !isPostPrivate
     }
 
-    @objc func createRemainingSharesView() -> UIView {
+    @objc public func createRemainingSharesView() -> UIView {
         guard let sharingLimit = apost.blog.sharingLimit else {
             // This scenario *shouldn't* happen since we check that the publicize info is not nil before
             // showing this view
@@ -74,7 +74,7 @@ extension PostSettingsViewController {
 
     // MARK: - Social share cells
 
-    @objc func userCanEditSharing() -> Bool {
+    @objc public func userCanEditSharing() -> Bool {
         guard let post = self.apost as? Post else {
             return false
         }
@@ -85,7 +85,7 @@ extension PostSettingsViewController {
         return post.canEditPublicizeSettings() && remainingSocialShares() > 0
     }
 
-    @objc func remainingSocialShares() -> Int {
+    @objc public func remainingSocialShares() -> Int {
         self.apost.blog.sharingLimit?.remaining ?? .max
     }
 

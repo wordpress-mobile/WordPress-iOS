@@ -1,6 +1,6 @@
 import UIKit
 
-@objc protocol WPContentSyncHelperDelegate: NSObjectProtocol {
+@objc public protocol WPContentSyncHelperDelegate: NSObjectProtocol {
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?)
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?)
     @objc optional func syncContentStart(_ syncHelper: WPContentSyncHelper)
@@ -9,18 +9,18 @@ import UIKit
     @objc optional func hasNoMoreContent(_ syncHelper: WPContentSyncHelper)
 }
 
-class WPContentSyncHelper: NSObject {
+public class WPContentSyncHelper: NSObject {
 
-    @objc weak var delegate: WPContentSyncHelperDelegate?
-    @objc var isSyncing: Bool = false {
+    @objc public weak var delegate: WPContentSyncHelperDelegate?
+    @objc public var isSyncing: Bool = false {
         didSet {
             if isSyncing {
                 delegate?.syncContentStart?(self)
             }
         }
     }
-    @objc var isLoadingMore: Bool = false
-    @objc var hasMoreContent: Bool = true {
+    @objc public var isLoadingMore: Bool = false
+    @objc public var hasMoreContent: Bool = true {
         didSet {
             if hasMoreContent == oldValue {
                 return
@@ -33,15 +33,18 @@ class WPContentSyncHelper: NSObject {
 
     // MARK: - Syncing
 
-    @objc @discardableResult func syncContent() -> Bool {
+    @objc @discardableResult
+    public func syncContent() -> Bool {
         return syncContentWithUserInteraction(false)
     }
 
-    @objc @discardableResult func syncContentWithUserInteraction() -> Bool {
+    @objc @discardableResult
+    public func syncContentWithUserInteraction() -> Bool {
         return syncContentWithUserInteraction(true)
     }
 
-    @objc @discardableResult func syncContentWithUserInteraction(_ userInteraction: Bool) -> Bool {
+    @objc @discardableResult
+    public func syncContentWithUserInteraction(_ userInteraction: Bool) -> Bool {
         guard !isSyncing else {
             return false
         }
@@ -60,7 +63,8 @@ class WPContentSyncHelper: NSObject {
         return true
     }
 
-    @objc @discardableResult func syncMoreContent() -> Bool {
+    @objc @discardableResult
+    public func syncMoreContent() -> Bool {
         guard !isSyncing else {
             return false
         }
@@ -81,7 +85,7 @@ class WPContentSyncHelper: NSObject {
         return true
     }
 
-    @objc func backgroundSync(success: (() -> Void)?, failure: ((_ error: NSError?) -> Void)?) {
+    @objc public func backgroundSync(success: (() -> Void)?, failure: ((_ error: NSError?) -> Void)?) {
         guard !isSyncing else {
             success?()
             return
@@ -101,7 +105,7 @@ class WPContentSyncHelper: NSObject {
         })
     }
 
-    @objc func syncContentEnded(error: Bool = false) {
+    @objc public func syncContentEnded(error: Bool = false) {
         isSyncing = false
         isLoadingMore = false
 

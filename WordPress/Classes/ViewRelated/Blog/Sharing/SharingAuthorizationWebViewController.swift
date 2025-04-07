@@ -13,7 +13,6 @@ public protocol SharingAuthorizationDelegate: NSObjectProtocol {
     func authorizeDidCancel(_ publicizer: PublicizeService)
 }
 
-@objc
 class SharingAuthorizationWebViewController: WebKitViewController {
     private static let loginURL = "https://wordpress.com/wp-login.php"
 
@@ -29,7 +28,6 @@ class SharingAuthorizationWebViewController: WebKitViewController {
 
     private weak var delegate: SharingAuthorizationDelegate?
 
-    @objc
     init(with publicizer: PublicizeService, url: URL, for blog: Blog, delegate: SharingAuthorizationDelegate) {
         self.delegate = delegate
         self.publicizer = publicizer

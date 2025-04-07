@@ -28,7 +28,7 @@ extension FilterTabBarItem where Self: RawRepresentable {
     }
 }
 
-class FilterTabBar: UIControl {
+public class FilterTabBar: UIControl {
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -107,7 +107,7 @@ class FilterTabBar: UIControl {
     /// If selectedTitleColor is not provided, tint color will also be applied to
     /// titles of selected tabs.
     ///
-    override var tintColor: UIColor! {
+    public override var tintColor: UIColor! {
         didSet {
             tabs.forEach({
                 $0.tintColor = tintColor
@@ -229,13 +229,13 @@ class FilterTabBar: UIControl {
     var tabSeparatorPadding: CGFloat = AppearanceMetrics.buttonPadding
 
     // MARK: - Initialization
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
         commonInit()
     }
 
-    init() {
+    public init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         commonInit()
@@ -284,7 +284,7 @@ class FilterTabBar: UIControl {
         activateTabSeparatorPlacementConstraints()
     }
 
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
 
         updateForCurrentEnvironment()
@@ -555,7 +555,7 @@ class FilterTabBar: UIControl {
         static let initialVelocity: CGFloat = -0.5
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if isAutomaticTabSizingStyleEnabled {

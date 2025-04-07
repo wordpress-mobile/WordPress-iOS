@@ -7,6 +7,32 @@ extension BlogDetailsViewController {
     @objc public func isDashboardEnabled() -> Bool {
         return JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() && blog.isAccessibleThroughWPCom()
     }
+
+    @objc public func confirmRemoveSite() {
+        let blogService = BlogService(coreDataStack: ContextManager.shared)
+        blogService.remove(blog)
+
+        WordPressAppDelegate.shared?.trackLogoutIfNeeded()
+
+        if AppConfiguration.isWordPress {
+            ContentMigrationCoordinator.shared.cleanupExportedDataIfNeeded()
+        }
+
+        // Delete local data after removing the last site
+        if !AccountHelper.isLoggedIn {
+            AccountHelper.deleteAccountData()
+        }
+
+        navigationController?.popToRootViewController(animated: true)
+    }
+
+    @objc public func shouldShowJetpackInstallCard() -> Bool {
+        !WPDeviceIdentification.isiPad() && JetpackInstallPluginHelper.shouldShowCard(for: blog)
+    }
+
+    @objc public func shouldShowBlaze() -> Bool {
+        BlazeHelper.isBlazeFlagEnabled() && self.blog.supports(.blaze)
+    }
 }
 
 // MARK: - BlogDetailsViewController (Navigation)
@@ -25,7 +51,7 @@ extension BlogDetailsViewController {
     }
 
     @objc(showPostListFromSource:)
-    func showPostList(from source: BlogDetailsNavigationSource) {
+    public func showPostList(from source: BlogDetailsNavigationSource) {
         trackEvent(.openedPosts, from: source)
         let controller = PostListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
@@ -33,7 +59,7 @@ extension BlogDetailsViewController {
     }
 
     @objc(showPageListFromSource:)
-    func showPageList(from source: BlogDetailsNavigationSource) {
+    public func showPageList(from source: BlogDetailsNavigationSource) {
         trackEvent(.openedPages, from: source)
         let controller = PageListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
@@ -41,19 +67,19 @@ extension BlogDetailsViewController {
     }
 
     @objc(showMediaLibraryFromSource:)
-    func showMediaLibrary(from source: BlogDetailsNavigationSource) {
+    public func showMediaLibrary(from source: BlogDetailsNavigationSource) {
         showMediaLibrary(from: source, showPicker: false)
     }
 
     @objc(showMediaLibraryFromSource:showPicker:)
-    func showMediaLibrary(from source: BlogDetailsNavigationSource, showPicker: Bool) {
+    public func showMediaLibrary(from source: BlogDetailsNavigationSource, showPicker: Bool) {
         trackEvent(.openedMediaLibrary, from: source)
         let controller = SiteMediaViewController(blog: blog, showPicker: showPicker)
         presentationDelegate?.presentBlogDetailsViewController(controller)
     }
 
     @objc(showSettingsFromSource:)
-    func showSettings(from source: BlogDetailsNavigationSource) {
+    public func showSettings(from source: BlogDetailsNavigationSource) {
         trackEvent(.openedSiteSettings, from: source)
 
         guard let settingsVC = SiteSettingsViewController(blog: blog) else {
@@ -80,8 +106,8 @@ extension BlogDetailsViewController {
         }
     }
 
-    @objc
-    @discardableResult func showMe() -> MeViewController {
+    @objc @discardableResult
+    public func showMe() -> MeViewController {
         let controller = MeViewController()
         presentationDelegate?.presentBlogDetailsViewController(controller)
         return controller
@@ -142,7 +168,7 @@ extension BlogDetailsViewController {
     }
 
     @objc(showCommentsFromSource:)
-    func showComments(from source: BlogDetailsNavigationSource) {
+    public func showComments(from source: BlogDetailsNavigationSource) {
         trackEvent(.openedComments, from: source)
 
         guard let commentsVC = CommentsViewController(blog: blog) else {
@@ -188,7 +214,7 @@ extension BlogDetailsViewController {
     }
 
     @objc(showStatsFromSource:)
-    func showStats(from source: BlogDetailsNavigationSource) {
+    public func showStats(from source: BlogDetailsNavigationSource) {
         trackEvent(.statsAccessed, from: source)
 
         let statsVC = makeStatsVC()
@@ -218,7 +244,7 @@ extension BlogDetailsViewController {
     }
 
     @objc(showDomainsFromSource:)
-    func showDomains(from source: BlogDetailsNavigationSource) {
+    public func showDomains(from source: BlogDetailsNavigationSource) {
         guard let presentationDelegate else {
             return wpAssertionFailure("presentationDelegate mising")
         }
@@ -232,7 +258,7 @@ extension BlogDetailsViewController {
     }
 
     @objc(showSharingFromSource:)
-    func showSharing(from source: BlogDetailsNavigationSource) {
+    public func showSharing(from source: BlogDetailsNavigationSource) {
         let sharingVC: UIViewController
 
         if !blog.supportsPublicize() {
@@ -248,7 +274,7 @@ extension BlogDetailsViewController {
     }
 
     @objc(showViewSiteFromSource:)
-    func showViewSite(from source: BlogDetailsNavigationSource) {
+    public func showViewSite(from source: BlogDetailsNavigationSource) {
         trackEvent(.openedViewSite, from: source)
 
         guard let string = blog.homeURL, let homeURL = URL(string: string as String) else {
@@ -282,6 +308,16 @@ extension BlogDetailsViewController {
 
         guard let url = URL(string: dashboardPath) else { return }
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
+
+    @objc public func showSiteMonitoring() {
+        showSiteMonitoring(selectedTab: nil)
+    }
+
+    @objc public func showSiteMonitoring(selectedTab: NSNumber?) {
+        let selectedTab = selectedTab.flatMap { SiteMonitoringTab(rawValue: $0.intValue) }
+        let controller = SiteMonitoringViewController(blog: blog, selectedTab: selectedTab)
+        presentationDelegate?.presentBlogDetailsViewController(controller)
     }
 }
 

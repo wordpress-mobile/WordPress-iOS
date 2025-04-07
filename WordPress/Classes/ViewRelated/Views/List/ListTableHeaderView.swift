@@ -7,7 +7,7 @@ import WordPressShared
 /// This is used in Comments and Notifications as part of the Comments
 /// Unification project.
 ///
-class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
+public class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
     // MARK: IBOutlets
 
     @IBOutlet private weak var separatorsView: SeparatorsView!
@@ -17,11 +17,11 @@ class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
 
     /// Added to provide objc support, since NibReusable protocol methods aren't accessible from objc.
     /// This should be removed when the caller is rewritten in Swift.
-    @objc static let reuseIdentifier = defaultReuseID
+    @objc public static let reuseIdentifier = defaultReuseID
 
-    @objc static let estimatedRowHeight = 26
+    @objc public static let estimatedRowHeight = 26
 
-    @objc var title: String? {
+    @objc public var title: String? {
         get {
             titleLabel.text
         }
@@ -33,7 +33,7 @@ class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
 
     // MARK: Initialization
 
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
 
         // Hide text label to prevent values being shown due to interaction with

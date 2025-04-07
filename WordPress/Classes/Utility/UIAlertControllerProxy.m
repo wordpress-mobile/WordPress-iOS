@@ -1,3 +1,5 @@
+@import WordPressShared;
+
 #import "UIAlertControllerProxy.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"

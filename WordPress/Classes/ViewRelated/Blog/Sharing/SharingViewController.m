@@ -314,7 +314,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         }
 
         case SharingSectionSharingButtons:
-            controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
+            controller = [ObjCBridge makeSharingButtonsViewControllerWithBlog:self.blog];
             [WPAppAnalytics track:WPAnalyticsStatSharingOpenedSharingButtonSettings withBlog:self.blog];
             break;
 

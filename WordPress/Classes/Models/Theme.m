@@ -1,7 +1,6 @@
 #import "Theme.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "AccountService.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
 #else

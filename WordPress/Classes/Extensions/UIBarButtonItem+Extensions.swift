@@ -2,7 +2,7 @@ import UIKit
 
 extension UIBarButtonItem {
     /// Returns a bar button item with a spinner activity indicator.
-    @objc class var activityIndicator: UIBarButtonItem {
+    @objc public class var activityIndicator: UIBarButtonItem {
         let activityIndicator = UIActivityIndicatorView(style: .medium)
         activityIndicator.sizeToFit()
         activityIndicator.startAnimating()

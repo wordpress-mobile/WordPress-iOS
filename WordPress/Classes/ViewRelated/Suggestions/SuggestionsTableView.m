@@ -235,11 +235,9 @@ CGFloat const STVSeparatorHeight = 1.f;
     [self.tableView setNeedsLayout];
     [self.tableView layoutIfNeeded];
     if (maxRows) {
-        self.heightConstraint.constant = [SuggestionsTableView maximumHeightForTableView:self.tableView
-                                                                maxNumberOfRowsToDisplay:maxRows];
+        self.heightConstraint.constant = [SuggestionsTableView maximumHeightForTableView:self.tableView maxNumberOfRowsToDisplay:maxRows];
     } else {
-        self.heightConstraint.constant = [SuggestionsTableView heightForTableView:self.tableView
-                                                                    maximumHeight:self.bounds.size.height - minimumHeaderHeight];
+        self.heightConstraint.constant = [SuggestionsTableView heightForTableView:self.tableView maximumHeight:self.bounds.size.height - minimumHeaderHeight];
     }
     [super updateConstraints];
 }

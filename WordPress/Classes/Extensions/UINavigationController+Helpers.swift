@@ -1,7 +1,7 @@
 import UIKit
 
 extension UINavigationController {
-    @objc func scrollContentToTopAnimated(_ animated: Bool) {
+    @objc public func scrollContentToTopAnimated(_ animated: Bool) {
         guard viewControllers.count == 1 else { return }
 
         if let topViewController = topViewController as? ScrollableViewController {

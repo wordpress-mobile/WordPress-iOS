@@ -59,8 +59,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     SiteSettingsJetpackCount,
 };
 
-static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/empty-site";
-
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, JetpackConnectionDelegate, PostCategoriesViewControllerDelegate>
 
 #pragma mark - Account Section
@@ -816,12 +814,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.navigationController pushViewController:postCategoriesViewController animated:YES];
 }
 
-- (void)showTagList
-{
-    SiteTagsViewController *tagsAdmin = [[SiteTagsViewController alloc] initWithBlog:self.blog];
-    [self.navigationController pushViewController:tagsAdmin animated:YES];
-}
-
 - (void)showPostFormatSelector
 {
     NSArray *titles = self.blog.sortedPostFormatNames;
@@ -905,23 +897,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsJetpackConnection:
             [self showJetpackConnectionForBlog:self.blog];
             break;
-    }
-}
-
-- (void)showStartOverForBlog:(Blog *)blog
-{
-    NSParameterAssert([blog supportsSiteManagementServices]);
-
-    [WPAppAnalytics track:WPAnalyticsStatSiteSettingsStartOverAccessed withBlog:self.blog];
-    if ([SupportConfigurationObjC isStartOverSupportEnabled] && self.blog.hasPaidPlan) {
-        StartOverViewController *viewController = [[StartOverViewController alloc] initWithBlog:blog];
-        [self.navigationController pushViewController:viewController animated:YES];
-    } else {
-        NSURL *targetURL = [NSURL URLWithString:EmptySiteSupportURL];
-
-        UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL source:@"site_settings_start_over"];
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-        [self presentViewController:navController animated:YES completion:nil];
     }
 }
 

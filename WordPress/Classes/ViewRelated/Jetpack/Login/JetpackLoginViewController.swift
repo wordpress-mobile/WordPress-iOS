@@ -6,7 +6,7 @@ import WordPressUI
 
 /// A view controller that presents a Jetpack login form.
 ///
-class JetpackLoginViewController: UIViewController {
+public class JetpackLoginViewController: UIViewController {
 
     // MARK: - Constants
 
@@ -25,7 +25,7 @@ class JetpackLoginViewController: UIViewController {
     // Defaulting to stats because since that one is written in ObcC we don't have access to the enum there.
     var promptType: JetpackLoginPromptType = .stats
 
-    typealias CompletionBlock = () -> Void
+    public typealias CompletionBlock = () -> Void
     /// This completion handler closure is executed when the authentication process handled
     /// by this VC is completed.
     ///
@@ -45,24 +45,24 @@ class JetpackLoginViewController: UIViewController {
     ///
     /// - Parameter blog: The current blog
     ///
-    @objc init(blog: Blog) {
+    @objc public init(blog: Blog) {
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         preconditionFailure("Jetpack Login View Controller must be initialized by code")
     }
 
     // MARK: - LifeCycle Methods
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         WPStyleGuide.configureColors(view: view, tableView: nil)
         setupControls()
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    public override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         toggleHidingImageView(for: newCollection)
     }

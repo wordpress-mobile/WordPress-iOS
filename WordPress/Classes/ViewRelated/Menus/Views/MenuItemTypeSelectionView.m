@@ -1,6 +1,7 @@
 #import "MenuItemTypeSelectionView.h"
 #import "Menu+ViewDesign.h"
 #import "MenuItem+ViewDesign.h"
+#import "MenuItem.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
 #else
