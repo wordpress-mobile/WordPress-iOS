@@ -56,8 +56,8 @@ enum DomainsAnalyticsWebViewOrigin: String {
 }
 
 // TODO: remove when WPAppAnalyticsTests get rewritten, preferably in Swift
-@objc final class WPAnalyticsTesting: NSObject {
+@objc public final class WPAnalyticsTesting: NSObject {
     @objc static var eventNamePrefix: String?
     @objc static var explatPlatform: String?
-    @objc static var appURLScheme: String?
+    @objc public static var appURLScheme: String?
 }
