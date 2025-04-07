@@ -22,13 +22,6 @@
 + (BOOL)isiPad;
 
 /**
- *  @brief      Call this method to know if the current device has a retina screen.
- *
- *  @returns    YES if the device has a retina screen.  NO otherwise.
- */
-+ (BOOL)isRetina;
-
-/**
  *  @brief      Call this method to know if the current device is a Plus sized
  *              phone (6+, 6s+, 7+) , at its native scale.
  *

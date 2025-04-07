@@ -10,10 +10,6 @@
     return [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad;
 }
 
-+ (BOOL)isRetina {
-    return ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] > 1);
-}
-
 + (BOOL)isUnzoomediPhonePlus
 {
     CGRect bounds = UIScreen.mainScreen.fixedCoordinateSpace.bounds;

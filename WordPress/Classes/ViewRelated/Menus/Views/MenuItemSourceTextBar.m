@@ -102,10 +102,6 @@
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
     contentView.layer.borderColor = [[UIColor murielNeutral10] CGColor];
     contentView.layer.borderWidth = MenusDesignStrokeWidth;
-    if (![WPDeviceIdentification isRetina]) {
-        // Increase the stroke width on non-retina screens.
-        contentView.layer.borderWidth = MenusDesignStrokeWidth * 2;
-    }
     contentView.backgroundColor = [UIColor murielBasicBackground];
 
     NSAssert(_stackView != nil, @"stackView is nil");

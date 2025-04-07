@@ -50,10 +50,6 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
     self.view.backgroundColor = [UIColor murielListForeground];
     self.view.layer.borderColor = [[UIColor murielNeutral10] CGColor];
     self.view.layer.borderWidth = MenusDesignStrokeWidth;
-    if (![WPDeviceIdentification isRetina]) {
-        // Increase the stroke width on non-retina screens.
-        self.view.layer.borderWidth = MenusDesignStrokeWidth * 2;
-    }
 
     _itemViews = [NSMutableSet set];
     _insertionViews = [NSMutableSet setWithCapacity:3];
