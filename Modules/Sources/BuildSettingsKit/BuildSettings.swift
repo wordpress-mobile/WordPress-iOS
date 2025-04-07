@@ -49,4 +49,5 @@ public struct BuildSettings: Sendable {
 public enum AppBrand: String, Sendable {
     case wordpress
     case jetpack
+    case reader
 }

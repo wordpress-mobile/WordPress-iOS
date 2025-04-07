@@ -32,6 +32,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return switch BuildSettings.current.brand {
         case .wordpress: WindowManager(window: window)
         case .jetpack: JetpackWindowManager(window: window)
+        // TODO: (reader) figure out if we need a migration flow or what kind
+        case .reader: WindowManager(window: window)
         }
     }()
 

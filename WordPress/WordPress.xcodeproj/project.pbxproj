@@ -2076,6 +2076,11 @@
 			path = Misc;
 			sourceTree = "<group>";
 		};
+		0CFC380E2DA408BB00DB3386 /* Recoleta */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Recoleta;
+			sourceTree = "<group>";
+		};
 		24CE57C42CD3375200C7B37D /* Classes */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -4064,6 +4069,7 @@
 		F5A34D0525DF2F7700C9654B /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				0CFC380E2DA408BB00DB3386 /* Recoleta */,
 				F5A34D0C25DF2F7700C9654B /* Noticons.ttf */,
 			);
 			path = Fonts;
@@ -4378,6 +4384,7 @@
 			fileSystemSynchronizedGroups = (
 				0C1C180E2D95DA5200494A8C /* Icons */,
 				0CED35262D959427003015CF /* Misc */,
+				0CFC380E2DA408BB00DB3386 /* Recoleta */,
 				24CE57C42CD3375200C7B37D /* Classes */,
 			);
 			name = WordPress;
@@ -4714,6 +4721,7 @@
 			fileSystemSynchronizedGroups = (
 				0C1C18F32D95DA6D00494A8C /* Icons */,
 				0CED35262D959427003015CF /* Misc */,
+				0CFC380E2DA408BB00DB3386 /* Recoleta */,
 				24CE57C42CD3375200C7B37D /* Classes */,
 			);
 			name = Jetpack;

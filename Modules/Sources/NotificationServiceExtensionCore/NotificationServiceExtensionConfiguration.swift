@@ -4,8 +4,9 @@ import BuildSettingsKit
 extension BuildSettings {
     public var notificationServiceExtensionConfiguration: NotificationServiceExtensionConfiguration {
         switch brand {
-        case .wordpress: return .wordpress
-        case .jetpack: return .jetpack
+        case .wordpress: .wordpress
+        case .jetpack: .jetpack
+        case .reader: .reader
         }
     }
 }
@@ -28,5 +29,12 @@ public struct NotificationServiceExtensionConfiguration: Sendable {
         keychainTokenKey: "JPOAuth2Token",
         keychainUsernameKey: "JPUsername",
         keychainUserIDKey: "JPUserID"
+    )
+
+    static let reader = NotificationServiceExtensionConfiguration(
+        keychainServiceName: "RRNotificationServiceExtension",
+        keychainTokenKey: "RROAuth2Token",
+        keychainUsernameKey: "RRUsername",
+        keychainUserIDKey: "RRUserID"
     )
 }

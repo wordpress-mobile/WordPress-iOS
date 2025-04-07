@@ -11,13 +11,18 @@ public enum UIAppColor {
         switch AppBrand.current {
         case .wordpress: primary
         case .jetpack: UIColor.label
+        case .reader: primary
         }
     }
 
     public static var primary: UIColor {
         switch AppBrand.current {
-        case .wordpress: UIColor(light: CSColor.Blue.base, dark: primary(.shade40))
-        case .jetpack: UIColor(light: CSColor.JetpackGreen.shade(.shade40), dark: CSColor.JetpackGreen.shade(.shade30))
+        case .wordpress:
+            UIColor(light: CSColor.Blue.base, dark: primary(.shade40))
+        case .jetpack:
+            UIColor(light: CSColor.JetpackGreen.shade(.shade40), dark: CSColor.JetpackGreen.shade(.shade30))
+        case .reader:
+            UIColor(light: CSColor.WordPressBlue.base, dark: primary(.shade40))
         }
     }
 
@@ -25,6 +30,7 @@ public enum UIAppColor {
         switch AppBrand.current {
         case .wordpress: CSColor.Blue.shade(shade)
         case .jetpack: CSColor.JetpackGreen.shade(shade)
+        case .reader: CSColor.WordPressBlue.shade(shade)
         }
     }
 }

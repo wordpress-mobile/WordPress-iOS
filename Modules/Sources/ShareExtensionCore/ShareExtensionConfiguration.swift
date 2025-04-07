@@ -4,8 +4,9 @@ import BuildSettingsKit
 extension BuildSettings {
     public var shareExtensionConfiguration: ShareExtensionConfiguration {
         switch brand {
-        case .wordpress: return .wordpress
-        case .jetpack: return .jetpack
+        case .wordpress: .wordpress
+        case .jetpack: .jetpack
+        case .reader: .reader
         }
     }
 }
@@ -43,5 +44,17 @@ public struct ShareExtensionConfiguration: Sendable {
         userDefaultsLastUsedSiteID: "JPShareUserDefaultsLastUsedSiteID",
         maximumMediaDimensionKey: "JPShareExtensionMaximumMediaDimensionKey",
         recentSitesKey: "JPShareExtensionRecentSitesKey"
+    )
+
+    static let reader = ShareExtensionConfiguration(
+        keychainUsernameKey: "RRUsername",
+        keychainTokenKey: "RROAuth2Token",
+        keychainServiceName: "RRShareExtension",
+        userDefaultsPrimarySiteName: "RRShareUserDefaultsPrimarySiteName",
+        userDefaultsPrimarySiteID: "RRShareUserDefaultsPrimarySiteID",
+        userDefaultsLastUsedSiteName: "RRShareUserDefaultsLastUsedSiteName",
+        userDefaultsLastUsedSiteID: "RRShareUserDefaultsLastUsedSiteID",
+        maximumMediaDimensionKey: "RRShareExtensionMaximumMediaDimensionKey",
+        recentSitesKey: "RRShareExtensionRecentSitesKey"
     )
 }
