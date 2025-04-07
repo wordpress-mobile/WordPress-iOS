@@ -20,7 +20,7 @@ public enum UIAppColor {
         case .wordpress:
             UIColor(light: CSColor.Blue.base, dark: primary(.shade40))
         case .jetpack:
-            UIColor(light: CSColor.JetpackGreen.shade(.shade40), dark: CSColor.JetpackGreen.shade(.shade30))
+             UIColor(light: CSColor.JetpackGreen.shade(.shade40), dark: CSColor.JetpackGreen.shade(.shade30))
         case .reader:
             UIColor(light: CSColor.WordPressBlue.base, dark: primary(.shade40))
         }

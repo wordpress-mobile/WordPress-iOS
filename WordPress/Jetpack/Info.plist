@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>WPAppBrand</key>
-	<string>reader</string>
+	<string>jetpack</string>
 	<key>WPAppGroupName</key>
 	<string>${WP_APP_GROUP_NAME}</string>
 	<key>WPAppKeychainAccessGroup</key>

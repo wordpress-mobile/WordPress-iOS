@@ -1,4 +1,5 @@
 import UIKit
+import DesignSystem
 import WordPressUI
 
 /// A Reader stream header with a large title and a description.
@@ -9,7 +10,7 @@ final class ReaderTitleView: UIView {
     init() {
         super.init(frame: .zero)
 
-        titleLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle).withWeight(.bold)
+        titleLabel.font = AppStyleGuide.current.navigationBarLargeFont
         titleLabel.adjustsFontForContentSizeCategory = true
 
         detailsTextView.font = UIFont.preferredFont(forTextStyle: .subheadline)
