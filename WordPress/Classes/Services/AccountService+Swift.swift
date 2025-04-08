@@ -117,8 +117,6 @@ extension AccountService {
                 if let authToken = defaultAccount.authToken {
                     shareExtensionService.storeToken(authToken)
                     notificationSupportService.storeToken(authToken)
-                } else {
-                    wpAssertionFailure("authToken missing")
                 }
 
                 shareExtensionService.storeUsername(defaultAccount.username)
