@@ -213,7 +213,7 @@ extension WordPressAuthenticationManager {
     /// Presents the WordPress Authentication UI from the rootViewController (configured to allow only WordPress.com).
     /// This method pre-populates the Email + Username with the values returned by the default WordPress.com account (if any).
     ///
-    static func showSigninForWPComFixingAuthToken() {
+    static func showSigninForWPComFixingAuthToken(showNotice: Bool = true) {
         guard let presenter = UIApplication.shared.mainWindow?.rootViewController else {
             assertionFailure()
             return
@@ -228,17 +228,30 @@ extension WordPressAuthenticationManager {
         if WordPressAuthenticator.dotComWebLoginEnabled {
             let signedInAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
             Task { @MainActor in
-                Notice(
-                    title: NSLocalizedString("wpcom.token.fix.signin", value: "Sign in to WordPress.com", comment: "Message title to be displayed when the user needs to re-authenticate their WordPress.com account."),
-                    message: NSLocalizedString("wpcom.token.fix.signin.message", value: "You need to sign in to WordPress.com to access your account.", comment: "Detailed message to be displayed when the user needs to re-authenticate their WordPress.com account.")
-                ).post()
+                let title = NSLocalizedString("wpcom.token.fix.signin", value: "Sign in to WordPress.com", comment: "Message title to be displayed when the user needs to re-authenticate their WordPress.com account.")
+                let message = NSLocalizedString("wpcom.token.fix.signin.message", value: "You need to sign in to WordPress.com to access your account.", comment: "Detailed message to be displayed when the user needs to re-authenticate their WordPress.com account.")
 
-                let _ = await WordPressDotComAuthenticator().signIn(
+                if showNotice {
+                    Notice(title: title, message: message).post()
+                }
+
+                let account = await WordPressDotComAuthenticator().signIn(
                     from: presenter,
                     context: signedInAccount?.email
                         .flatMap { .reauthentication(accountEmail: $0) }
                         ?? .default
                 )
+
+                if account == nil {
+                    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    alert.addActionWithTitle(NSLocalizedString("wpcom.token.alert.button.logout", value: "Log out", comment: "Button title to log out the current WordPress.com account"), style: .destructive) { _ in
+                        AccountHelper.logOutDefaultWordPressComAccount()
+                    }
+                    alert.addActionWithTitle(NSLocalizedString("wpcom.token.alert.button.signin", value: "Sign In", comment: "Button title to Sign In to WordPress.com"), style: .default) { _ in
+                        WordPressAuthenticationManager.showSigninForWPComFixingAuthToken(showNotice: false)
+                    }
+                    presenter.present(alert, animated: true)
+                }
 
                 isPresentingSignIn = false
             }
