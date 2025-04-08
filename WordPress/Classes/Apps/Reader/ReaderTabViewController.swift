@@ -9,13 +9,35 @@ final class ReaderTabViewController: UITabBarController {
     }
 
     private func setupViewControllers() {
-        let homeVC = UIViewController()
+        self.viewControllers = [
+            makeHomeViewController(),
+            makeFollowingViewController(),
+            makeDiscoverViewController(),
+            makeNotificationsViewController(),
+            makeMeViewController()
+        ]
+    }
+
+    // MARK: - Tabs
+
+    private func makeHomeViewController() -> UIViewController {
+        let homeVC: UIViewController = {
+            // TODO: (reader) refactor to not require `topic`
+            if let topic = ReaderSidebarViewModel().getTopic(for: .following) {
+                ReaderStreamViewController.controllerWithTopic(topic)
+            } else {
+                UIViewController()
+            }
+        }()
         homeVC.tabBarItem = UITabBarItem(
             title: Strings.home,
             image: UIImage(named: "reader-menu-home"),
             selectedImage: nil
         )
+        return UINavigationController(rootViewController: homeVC)
+    }
 
+    private func makeFollowingViewController() -> UIViewController {
         // TODO: (reader) figure out where we show tags and lists
         let followingVC = UIHostingController(rootView: ReaderSubscriptionsView()
             .environment(\.managedObjectContext, ContextManager.shared.mainContext))
@@ -24,8 +46,12 @@ final class ReaderTabViewController: UITabBarController {
             image: UIImage(named: "reader-menu-subscriptions"),
             selectedImage: nil
         )
-        followingVC.navigationItem.largeTitleDisplayMode = .always
+        let navigationVC = UINavigationController(rootViewController: followingVC)
+        followingVC.enableLargeTitles()
+        return navigationVC
+    }
 
+    private func makeDiscoverViewController() -> UIViewController {
         let discoverVC: UIViewController = {
             // TODO: (reader) refactor to not require `topic`
             if let topic = ReaderSidebarViewModel().getTopic(for: .discover) {
@@ -39,32 +65,42 @@ final class ReaderTabViewController: UITabBarController {
             image: UIImage(named: "reader-menu-explorer"),
             selectedImage: nil
         )
+        return UINavigationController(rootViewController: discoverVC)
+    }
 
+    private func makeNotificationsViewController() -> UIViewController {
+        let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil)
+            .instantiateInitialViewController() as! NotificationsViewController
         // TODO: (reader) bind notifications
-        let notificationsVC = UIViewController()
         notificationsVC.tabBarItem = UITabBarItem(
             title: Strings.notifications,
             image: UIImage(named: "tab-bar-notifications"),
             selectedImage: UIImage(named: "tab-bar-notifications")
         )
+        notificationsVC.isReaderModeEnabled = true
+        let navigationVC = UINavigationController(rootViewController: notificationsVC)
+        notificationsVC.enableLargeTitles()
+        return navigationVC
+    }
 
+    private func makeMeViewController() -> UIViewController {
+        // TODO: (reader) this requires a reader-speicifc profile, so it's just a placeholder
+        let meVC = MeViewController()
         // TODO: (reader) display your profile icons
-        let meVC = UIViewController()
         meVC.tabBarItem = UITabBarItem(
             title: Strings.me,
             image: UIImage(named: "tab-bar-me"),
             selectedImage: UIImage(named: "tab-bar-me")
         )
+        return UINavigationController(rootViewController: meVC)
+    }
+}
 
-        self.viewControllers = [
-            UINavigationController(rootViewController: homeVC),
-            UINavigationController(rootViewController: followingVC),
-            UINavigationController(rootViewController: discoverVC),
-            UINavigationController(rootViewController: notificationsVC),
-            UINavigationController(rootViewController: meVC)
-        ]
-
-        followingVC.navigationController?.navigationBar.prefersLargeTitles = true
+private extension UIViewController {
+    func enableLargeTitles() {
+        assert(navigationController != nil)
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 }
 

@@ -114,6 +114,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     }()
 
     var isSidebarModeEnabled = false
+    var isReaderModeEnabled = false
 
     // MARK: - View Lifecycle
 
@@ -450,8 +451,10 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 private extension NotificationsViewController {
 
     func setupNavigationBar() {
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationItem.largeTitleDisplayMode = .never
+        if !isReaderModeEnabled {
+            navigationController?.navigationBar.prefersLargeTitles = false
+            navigationItem.largeTitleDisplayMode = .never
+        }
 
         // Don't show 'Notifications' in the next-view back button
         // we are using a space character because we need a non-empty string to ensure a smooth
