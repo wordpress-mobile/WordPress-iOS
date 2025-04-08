@@ -125,6 +125,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 /// WordPress.com site ID stored as signed 32-bit integer.
 @property (nonatomic, strong, readwrite, nullable) NSNumber *dotComID;
 @property (nonatomic, strong, readwrite, nullable) NSString *xmlrpc;
+@property (nonatomic, strong, readwrite, nullable) NSString *restApiRootURL;
 @property (nonatomic, strong, readwrite, nullable) NSString *apiKey;
 @property (nonatomic, strong, readwrite, nonnull) NSNumber *organizationID;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPosts;

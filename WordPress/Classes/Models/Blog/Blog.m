@@ -46,6 +46,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic blogID;
 @dynamic url;
 @dynamic xmlrpc;
+@dynamic restApiRootURL;
 @dynamic apiKey;
 @dynamic organizationID;
 @dynamic hasOlderPosts;
