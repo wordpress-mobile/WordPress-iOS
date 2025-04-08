@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 import WordPressAuthenticator
 import WordPressShared
 
@@ -55,17 +56,21 @@ class RootViewCoordinator {
     private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
     private let wordPressAuthenticator: WordPressAuthenticatorProtocol.Type
+    private let app: AppBrand
+
     var isSiteCreationActive = false
     var isFullScreenOverlayBeingDisplayed = false
     // MARK: Initializer
 
     init(featureFlagStore: RemoteFeatureFlagStore,
          windowManager: WindowManager?,
-         wordPressAuthenticator: WordPressAuthenticatorProtocol.Type = WordPressAuthenticator.self) {
+         wordPressAuthenticator: WordPressAuthenticatorProtocol.Type = WordPressAuthenticator.self,
+         app: AppBrand = BuildSettings.current.brand) {
         self.featureFlagStore = featureFlagStore
         self.windowManager = windowManager
         self.currentAppUIType = Self.appUIType(featureFlagStore: featureFlagStore)
         self.wordPressAuthenticator = wordPressAuthenticator
+        self.app = app
         updateJetpackFeaturesRemovalCoordinatorState()
     }
 
@@ -92,6 +97,9 @@ class RootViewCoordinator {
     }
 
     private func createPresenter(_ appType: AppUIType) -> RootViewPresenter {
+        if app == .reader {
+            return ReaderRootViewPresenter()
+        }
         if UIDevice.isPad() {
             return SplitViewRootPresenter()
         }
