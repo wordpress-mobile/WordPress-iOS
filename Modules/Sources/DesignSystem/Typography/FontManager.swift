@@ -8,7 +8,7 @@ public enum FontManager {
     }
 
     // Makes sure it's performed only once.
-    private static let register = {
+    private static let register: Void = {
         let fontURLs = Bundle.module
             .urls(forResourcesWithExtension: "otf", subdirectory: nil)
         for fontURL in (fontURLs ?? []) {

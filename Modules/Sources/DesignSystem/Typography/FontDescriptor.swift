@@ -31,28 +31,32 @@ struct FontDescriptor: Decodable {
     let name: String
 
     static func make(font: FontManager.FontName, textStyle: Font.TextStyle, weight: Font.Weight?) -> FontDescriptor {
-        var desctiptor = FontTextStyleDescriptor.make(textStyle: textStyle)
+        var descriptor = FontTextStyleDescriptor.make(textStyle: textStyle)
         if let weight {
-            desctiptor.weight = weight // Override the standard weight
+            descriptor.weight = weight // Override the standard weight
         }
-        return FontDescriptor.make(font: font, size: desctiptor.size, weight: desctiptor.weight)
+        return FontDescriptor.make(font: font, size: descriptor.size, weight: descriptor.weight)
 
     }
 
     static func make(font: FontManager.FontName, size: CGFloat, weight: Font.Weight) -> FontDescriptor {
+        FontDescriptor(size: size, name: getName(for: font, weight: weight))
+    }
+
+    private static func getName(for font: FontManager.FontName, weight: Font.Weight) -> String {
         switch font {
         case .recoleta:
             switch weight {
-            case .black: return FontDescriptor(size: size, name: "Recoleta-Black")
-            case .bold: return FontDescriptor(size: size, name: "Recoleta-Bold")
-            case .light: return FontDescriptor(size: size, name: "Recoleta-Light")
-            case .medium: return FontDescriptor(size: size, name: "Recoleta-Medium")
-            case .regular: return FontDescriptor(size: size, name: "Recoleta-Regular")
-            case .semibold: return FontDescriptor(size: size, name: "Recoleta-Semibold")
-            case .thin: return FontDescriptor(size: size, name: "Recoleta-Thin")
+            case .black: return "Recoleta-Black"
+            case .bold: return "Recoleta-Bold"
+            case .light: return "Recoleta-Light"
+            case .medium: return "Recoleta-Medium"
+            case .regular: return "Recoleta-Regular"
+            case .semibold: return "Recoleta-Semibold"
+            case .thin: return "Recoleta-Thin"
             default:
-                assertionFailure("unsupported font: \(font), \(size), \(weight)")
-                return FontDescriptor(size: size, name: "RecoletaRegular")
+                assertionFailure("unsupported font: \(font), \(weight)")
+                return "Recoleta-Regular"
             }
         }
     }
