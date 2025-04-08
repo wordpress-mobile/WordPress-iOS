@@ -36,11 +36,15 @@ extension WPAccount {
 
         let accountID = TaggedManagedObjectID(self)
         let context = managedObjectContext
+        wpAssert(context != nil)
+
         api.setInvalidTokenHandler {
             // We use a static function here because it's not safe to access `self` in this closure.
             // The `WPAccount` instance can be bound to any context object. There is no guarantee that the thread
             // from which this closure is called is the same as the one in the context object.
-            WPAccount.handleInvalidToken(accountID: accountID, context: context)
+            context?.perform {
+                WPAccount.handleInvalidToken(accountID: accountID, context: context)
+            }
         }
 
         return api
