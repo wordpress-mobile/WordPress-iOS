@@ -1,12 +1,7 @@
-import Foundation
+import UIKit
 
 final class ReaderRootViewPresenter: RootViewPresenter {
-    // TODO: (reader) implement
-    let rootViewController: UIViewController = {
-        let vc = UIViewController()
-        vc.view.backgroundColor = .red
-        return vc
-    }()
+    let rootViewController: UIViewController = ReaderTabViewController()
 
     func currentlySelectedScreen() -> String {
         // TODO: (reader) implement
