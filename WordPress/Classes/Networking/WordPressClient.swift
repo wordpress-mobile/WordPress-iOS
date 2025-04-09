@@ -34,12 +34,16 @@ extension WordPressClient {
 
     init(site: WordPressSite) {
         // `site.barUrl` is a legal HTTP URL, which should be convertable to the `ParsedUrl` type.
+        // TODO: Read the "api root url" from storage.
         let parsedUrl: ParsedUrl
         do {
             parsedUrl = try ParsedUrl.parse(input: site.baseUrl.absoluteString)
         } catch {
             fatalError("Failed to cast URL (\(site.baseUrl.absoluteString)) to ParsedUrl: \(error)")
         }
+
+        let url = parsedUrl.asURL().appending(path: "wp-json")
+        let apiRootUrl = try! ParsedUrl.parse(input: url.absoluteString)
 
         // Currently, the app supports both account passwords and application passwords.
         // When a site is initially signed in with an account password, WordPress login cookies are stored
@@ -53,10 +57,10 @@ extension WordPressClient {
 
         switch site.type {
         case let .dotCom(authToken):
-            let api = WordPressAPI(urlSession: session, baseUrl: parsedUrl, authenticationStategy: .authorizationHeader(token: authToken))
+            let api = WordPressAPI(urlSession: session, apiRootUrl: apiRootUrl, authenticationStategy: .authorizationHeader(token: authToken))
             self.init(api: api, rootUrl: parsedUrl)
         case .selfHosted(let username, let authToken):
-            let api = WordPressAPI.init(urlSession: session, baseUrl: parsedUrl, authenticationStategy: .init(username: username, password: authToken))
+            let api = WordPressAPI.init(urlSession: session, apiRootUrl: apiRootUrl, authenticationStategy: .init(username: username, password: authToken))
             self.init(api: api, rootUrl: parsedUrl)
         }
     }

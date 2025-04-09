@@ -17,7 +17,7 @@ public actor PluginService: PluginServiceProtocol {
         self.client = client
         self.wordpressCoreVersion = wordpressCoreVersion
         self.urlSession = URLSession(configuration: .ephemeral)
-        wpOrgClient = WordPressOrgApiClient(requestExecutor: urlSession)
+        wpOrgClient = WordPressOrgApiClient(urlSession: urlSession)
     }
 
     public func fetchInstalledPlugins() async throws {
