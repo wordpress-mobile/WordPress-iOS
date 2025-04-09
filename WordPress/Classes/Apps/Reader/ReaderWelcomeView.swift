@@ -13,7 +13,7 @@ struct ReaderWelcomeView: View {
             VStack {
                 Text(Strings.title)
                     .font(.make(.recoleta, size: 60, relativeTo: .largeTitle))
-                    .padding(.top, 90)
+                    .padding(.top, 100)
                 Text(Strings.subtitle)
                     .font(.make(.recoleta, textStyle: .body))
                 Button(Strings.continueText) {
