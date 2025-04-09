@@ -31,7 +31,10 @@ extension SiteCreationRequest {
          siteURLString: String,
          isPublic: Bool,
          siteCreationFlow: String?,
-         findAvailableURL: Bool) {
+         findAvailableURL: Bool,
+         clientIdentifier: String = ApiCredentials.client,
+         clientSecret: String = ApiCredentials.secret
+    ) {
 
         self.init(segmentIdentifier: segmentIdentifier,
                   siteDesign: siteDesign,
@@ -42,8 +45,8 @@ extension SiteCreationRequest {
                   isPublic: true,
                   languageIdentifier: WordPressComLanguageDatabase().deviceLanguageIdNumber().stringValue,
                   shouldValidate: true,
-                  clientIdentifier: ApiCredentials.client,
-                  clientSecret: ApiCredentials.secret,
+                  clientIdentifier: clientIdentifier,
+                  clientSecret: clientSecret,
                   timezoneIdentifier: TimeZone.autoupdatingCurrent.identifier,
                   siteCreationFlow: siteCreationFlow,
                   findAvailableURL: findAvailableURL

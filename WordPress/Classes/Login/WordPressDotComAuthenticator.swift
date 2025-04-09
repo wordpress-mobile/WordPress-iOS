@@ -70,14 +70,21 @@ struct WordPressDotComAuthenticator {
     private let coreDataStack: CoreDataStackSwift
     private let authenticator: ((URL) throws(AuthenticationError) -> URL)?
 
+    private let clientId: String
+    private let clientSecret: String
+
     init(
         coreDataStack: CoreDataStackSwift = ContextManager.shared,
         authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil,
-        redirectURIScheme: String = BuildSettings.current.appURLScheme
+        redirectURIScheme: String = BuildSettings.current.appURLScheme,
+        clientId: String = ApiCredentials.client,
+        clientSecret: String = ApiCredentials.secret
     ) {
         self.coreDataStack = coreDataStack
         self.authenticator = authenticator
         self.redirectURIScheme = redirectURIScheme
+        self.clientId = clientId
+        self.clientSecret = clientSecret
     }
 
     /// Sign in WP.com account.
@@ -193,8 +200,6 @@ struct WordPressDotComAuthenticator {
         accountEmail: String? = nil,
         recoverDenyAccess: Bool = true
     ) async throws(AuthenticationError) -> String {
-        let clientId = ApiCredentials.client
-        let clientSecret = ApiCredentials.secret
         let redirectURI = Self.redirectURI(for: redirectURIScheme)
 
         var queries: [String: Any] = [

@@ -44,15 +44,24 @@ class WordPressAuthenticationManager: NSObject {
 extension WordPressAuthenticationManager {
     /// Initializes WordPressAuthenticator with all of the parameters that will be needed during the login flow.
     ///
-    func initializeWordPressAuthenticator(notificationCenter: NotificationCenter = .default) {
+    func initializeWordPressAuthenticator(
+        notificationCenter: NotificationCenter = .default,
+        wpcomClientId: String = ApiCredentials.client,
+        wpcomSecret: String = ApiCredentials.secret
+    ) {
         let displayStrings = WordPressAuthenticatorDisplayStrings(
             continueWithWPButtonTitle: NSLocalizedString("Continue With WordPress.com", comment: "Button title. Takes the user to the login with WordPress.com flow.")
         )
 
-        WordPressAuthenticator.initialize(configuration: authenticatorConfiguation(),
-                                          style: authenticatorStyle(),
-                                          unifiedStyle: unifiedStyle(),
-                                          displayStrings: displayStrings)
+        WordPressAuthenticator.initialize(
+            configuration: authenticatorConfiguation(
+                wpcomClientId: wpcomClientId,
+                wpcomSecret: wpcomSecret
+            ),
+            style: authenticatorStyle(),
+            unifiedStyle: unifiedStyle(),
+            displayStrings: displayStrings
+        )
 
         notificationCenter
             .addObserver(
@@ -63,14 +72,17 @@ extension WordPressAuthenticationManager {
             )
     }
 
-    private func authenticatorConfiguation() -> WordPressAuthenticatorConfiguration {
+    private func authenticatorConfiguation(
+        wpcomClientId: String,
+        wpcomSecret: String
+    ) -> WordPressAuthenticatorConfiguration {
         // SIWA can not be enabled for internal builds
         // Ref https://github.com/wordpress-mobile/WordPress-iOS/pull/12332#issuecomment-521994963
         let enableSignInWithApple = BuildConfiguration.current != .alpha
 
         return WordPressAuthenticatorConfiguration(
-            wpcomClientId: ApiCredentials.client,
-            wpcomSecret: ApiCredentials.secret,
+            wpcomClientId: wpcomClientId,
+            wpcomSecret: wpcomSecret,
             wpcomScheme: BuildSettings.current.appURLScheme,
             wpcomTermsOfServiceURL: URL(string: WPAutomatticTermsOfServiceURL)!,
             wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseURL,
