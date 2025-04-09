@@ -4,6 +4,8 @@ import SwiftUI
 import WordPressUI
 
 struct ReaderWelcomeView: View {
+    let onContinue: () -> Void
+
     var body: some View {
         VStack {
             Spacer()
@@ -15,7 +17,7 @@ struct ReaderWelcomeView: View {
                 Text(Strings.subtitle)
                     .font(.make(.recoleta, textStyle: .body))
                 Button(Strings.continueText) {
-                    // TODO:
+                    onContinue()
                 }.buttonStyle(.primary)
                     .padding(.top, 32)
             }
@@ -54,12 +56,12 @@ struct ReaderWelcomeView: View {
 }
 
 private enum Strings {
-    static let title = NSLocalizedString("reader.welcome.title", value: "Reader", coment: "Reader Welcome screen (brand name; may not need any translation!)")
-    static let subtitle = NSLocalizedString("reader.welcome.subtitle", value: "Join the largest blogging community", coment: "Reader Welcome screen")
-    static let continueText = NSLocalizedString("reader.welcome.continueText", value: "Continue with WordPress.com", coment: "Reader Welcome screen login button")
+    static let title = NSLocalizedString("reader.welcome.title", value: "Reader", comment: "Reader Welcome screen (brand name; may not need any translation!)")
+    static let subtitle = NSLocalizedString("reader.welcome.subtitle", value: "Join the largest blogging community", comment: "Reader Welcome screen")
+    static let continueText = NSLocalizedString("reader.welcome.continueText", value: "Continue with WordPress.com", comment: "Reader Welcome screen login button")
 }
 
 #Preview {
-    ReaderWelcomeView()
+    ReaderWelcomeView(onContinue: {})
         .tint(AppColor.primary)
 }
