@@ -16,7 +16,7 @@ class ReaderWindowManager: WindowManager {
         }
     }
 
-    private func showSignInUI() {
+    override func showSignInUI(completion: Completion? = nil) {
         let welcomeVC = UIHostingController(rootView: ReaderWelcomeView { [weak self] in
             self?.continueWithDotComTapped()
         })

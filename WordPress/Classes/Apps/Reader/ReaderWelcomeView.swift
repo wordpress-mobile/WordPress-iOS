@@ -13,7 +13,7 @@ struct ReaderWelcomeView: View {
             VStack {
                 Text(Strings.title)
                     .font(.make(.recoleta, size: 60, relativeTo: .largeTitle))
-                    .padding(.top, 100)
+                    .padding(.top, 64)
                 Text(Strings.subtitle)
                     .font(.make(.recoleta, textStyle: .body))
                 Button(Strings.continueText) {
@@ -23,12 +23,6 @@ struct ReaderWelcomeView: View {
             }
 
             Spacer()
-
-            Image("wp-logotype")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 20)
-                .padding(.bottom, 32)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
@@ -50,8 +44,13 @@ struct ReaderWelcomeView: View {
                     )
             }
         }
-        .edgesIgnoringSafeArea(.all)
-
+        .safeAreaInset(edge: .bottom) {
+            Image("wp-logotype")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 20)
+        }
+        .edgesIgnoringSafeArea(.top)
     }
 }
 
