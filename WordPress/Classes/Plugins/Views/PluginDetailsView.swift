@@ -48,10 +48,9 @@ struct PluginDetailsView: View {
     }
 
     init(plugin: PluginInformation, service: PluginServiceProtocol) {
-        let slug = PluginWpOrgDirectorySlug(slug: plugin.slug)
+        let slug = plugin.slug
         self.slug = slug
-        // TODO: Use `shortDescription`
-        self.pluginInfo = .init(name: plugin.name, author: plugin.author, shortDescription: plugin.author)
+        self.pluginInfo = .init(name: plugin.name, author: plugin.author, shortDescription: plugin.shortDescription ?? Strings.emptyDescription)
         self.service = service
         _viewModel = StateObject(wrappedValue: .init(service: service))
     }
@@ -771,6 +770,12 @@ private enum Strings {
         "pluginDetails.deactivating.message",
         value: "Please wait while the plugin is being deactivated...",
         comment: "Message shown while a plugin is being deactivated"
+    )
+
+    static let emptyDescription = NSLocalizedString(
+        "pluginDetails.noDescription",
+        value: "This plugin has not provided any description.",
+        comment: "Placeholder message shown when a plugin has no description"
     )
 }
 

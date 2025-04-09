@@ -21,7 +21,7 @@ struct PluginIconView: View {
     }
 
     init(plugin: PluginInformation, service: PluginServiceProtocol) {
-        self.slug = PluginWpOrgDirectorySlug(slug: plugin.slug)
+        self.slug = plugin.slug
         self.plugin = plugin
         self.service = service
     }

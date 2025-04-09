@@ -312,7 +312,7 @@ private class AddNewPluginViewModel: ObservableObject {
             if plugins.isEmpty {
                 sections = [.searchResult(rows: [.empty])]
             } else {
-                sections = [.searchResult(rows: plugins.map { .plugin($0, isInstalled: installedPlugins.contains(PluginWpOrgDirectorySlug(slug: $0.slug))) })]
+                sections = [.searchResult(rows: plugins.map { .plugin($0, isInstalled: installedPlugins.contains($0.slug)) })]
             }
             update(to: sections, ifStillIn: expectedMode)
         } catch {
@@ -338,7 +338,7 @@ private class AddNewPluginViewModel: ObservableObject {
         if plugins.plugins.isEmpty {
             return .plugins(category: category, rows: [.empty])
         } else {
-            return .plugins(category: category, rows: plugins.plugins.map { .plugin($0, isInstalled: installedPlugins.contains(PluginWpOrgDirectorySlug(slug: $0.slug))) })
+            return .plugins(category: category, rows: plugins.plugins.map { .plugin($0, isInstalled: installedPlugins.contains($0.slug)) })
         }
     }
 }

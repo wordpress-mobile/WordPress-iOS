@@ -9,13 +9,13 @@ public typealias InMemoryPluginDirectoryDataStore = InMemoryDataStore<PluginInfo
 
 extension PluginDirectoryDataStoreQuery {
     public static func slug(_ slug: PluginWpOrgDirectorySlug) -> PluginDirectoryDataStoreQuery {
-        .init(sortBy: KeyPathComparator(\.name)) { $0.slug == slug.slug }
+        .init(sortBy: KeyPathComparator(\.name)) { $0.slug == slug }
     }
 }
 
 extension PluginInformation: @retroactive Identifiable {
     public var id: PluginWpOrgDirectorySlug {
-        PluginWpOrgDirectorySlug(slug: slug)
+        slug
     }
 }
 
