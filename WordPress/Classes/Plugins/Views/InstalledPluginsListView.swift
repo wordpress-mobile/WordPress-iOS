@@ -222,7 +222,7 @@ private final class InstalledPluginsListViewModel: ObservableObject {
         do {
             try await self.service.fetchInstalledPlugins()
         } catch {
-            self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
+            self.error = error.localizedDescription
         }
     }
 
@@ -256,7 +256,7 @@ private final class InstalledPluginsListViewModel: ObservableObject {
                 .sorted(using: KeyPathComparator(\ListSection.filter.rawValue))
         case let .failure(error):
             self.showNoPluginsView = false
-            self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
+            self.error = error.localizedDescription
         }
     }
 

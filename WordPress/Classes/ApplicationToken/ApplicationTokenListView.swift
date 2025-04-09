@@ -84,10 +84,8 @@ class ApplicationTokenListViewModel: ObservableObject {
                     (lhs.lastUsed ?? .distantPast, lhs.createdAt) > (rhs.lastUsed ?? .distantPast, rhs.createdAt)
                 }
             self.applicationTokens = tokens
-        } catch let error as WpApiError {
-            self.errorMessage = error.errorMessage
         } catch {
-            self.errorMessage = SharedStrings.Error.generic
+            self.errorMessage = error.localizedDescription
         }
     }
 }

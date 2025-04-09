@@ -9,10 +9,29 @@ import WordPressShared
 
 final actor SelfHostedSiteAuthenticator {
 
-    enum SignInError: Error {
-        case authentication(WordPressLoginClientError)
+    private static let callbackURL = URL(string: "x-wordpress-app://login-callback")!
+
+    enum SignInError: Error, LocalizedError {
+        case authentication(Error)
         case loadingSiteInfoFailure
         case savingSiteFailure
+        case invalidApplicationPasswordCallback
+        case cancelled
+
+        var errorDescription: String? {
+            switch self {
+            case .authentication(let error):
+                return error.localizedDescription
+            case .loadingSiteInfoFailure:
+                return NSLocalizedString("addSite.selfHosted.loadingSiteInfoFailure", value: "Cannot load the WordPress site details", comment: "Error message shown when failing to load details from a self-hosted WordPress site")
+            case .savingSiteFailure:
+                return NSLocalizedString("addSite.selfHosted.savingSiteFailure", value: "Cannot save the WordPress site, please try again later.", comment: "Error message shown when failing to save a self-hosted site to user's device")
+            case .invalidApplicationPasswordCallback:
+                return NSLocalizedString("addSite.selfHosted.authenticationFailed", value: "Cannot login using Application Password authentication.", comment: "Error message shown when an receiving an invalid application-password authentication result from a self-hosted WordPress site")
+            case .cancelled:
+                return nil
+            }
+        }
     }
 
     private let internalClient: WordPressLoginClient

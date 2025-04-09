@@ -293,7 +293,7 @@ private extension View {
             },
             message: { error in
                 Text(Strings.deleteUserErrorAlertMessage)
-                Text((error as? WpApiError)?.errorMessage ?? error.localizedDescription)
+                Text(error.localizedDescription)
             })
     }
 }

@@ -432,7 +432,7 @@ private struct PluginOperationStatus {
 
     var errorMessage: String? {
         if case let .failure(error)? = result {
-            return (error as? WpApiError)?.errorMessage ?? error.localizedDescription
+            return error.localizedDescription
         }
         return nil
     }
@@ -473,7 +473,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
             try await service.fetchInstalledPlugins()
             self.installed = try await service.findInstalledPlugin(slug: slug)
         } catch {
-            self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
+            self.error = error.localizedDescription
         }
     }
 
@@ -483,7 +483,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
             case let .success(plugin):
                 self.plugin = plugin.first
             case let .failure(error):
-                self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
+                self.error = error.localizedDescription
             }
         }
     }

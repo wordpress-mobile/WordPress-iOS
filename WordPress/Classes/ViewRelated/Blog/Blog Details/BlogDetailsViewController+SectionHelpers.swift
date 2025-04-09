@@ -195,12 +195,8 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
 
             // Modify the `site` variable to display the intended feature.
             self.site = try .init(baseUrl: ParsedUrl.parse(input: success.siteUrl), type: .selfHosted(username: success.userLogin, authToken: success.password))
-        } catch let error as WordPressLoginClientError {
-            if let message = error.errorMessage {
-                Notice(title: message).post()
-            }
         } catch {
-            Notice(title: SharedStrings.Error.generic).post()
+            Notice(title: error.localizedDescription).post()
         }
     }
 
