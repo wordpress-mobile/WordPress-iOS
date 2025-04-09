@@ -1,0 +1,65 @@
+import ColorStudio
+import UIKit
+import SwiftUI
+import WordPressUI
+
+struct ReaderWelcomeView: View {
+    var body: some View {
+        VStack {
+            Spacer()
+
+            VStack {
+                Text(Strings.title)
+                    .font(.make(.recoleta, size: 60, relativeTo: .largeTitle))
+                    .padding(.top, 90)
+                Text(Strings.subtitle)
+                    .font(.make(.recoleta, textStyle: .body))
+                Button(Strings.continueText) {
+                    // TODO:
+                }.buttonStyle(.primary)
+                    .padding(.top, 32)
+            }
+
+            Spacer()
+
+            Image("wp-logotype")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 20)
+                .padding(.bottom, 32)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background {
+            ZStack {
+                Rectangle()
+                    .fill(Color(CSColor.WordPressBlue.base))
+                Rectangle()
+                    .fill(
+                        LinearGradient(
+                            gradient: Gradient(
+                                stops: [
+                                    .init(color: .white.opacity(0.0), location: 0.0),
+                                    .init(color: .white.opacity(1.0), location: 0.5)
+                                ]
+                            ),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+            }
+        }
+        .edgesIgnoringSafeArea(.all)
+
+    }
+}
+
+private enum Strings {
+    static let title = NSLocalizedString("reader.welcome.title", value: "Reader", coment: "Reader Welcome screen (brand name; may not need any translation!)")
+    static let subtitle = NSLocalizedString("reader.welcome.subtitle", value: "Join the largest blogging community", coment: "Reader Welcome screen")
+    static let continueText = NSLocalizedString("reader.welcome.continueText", value: "Continue with WordPress.com", coment: "Reader Welcome screen login button")
+}
+
+#Preview {
+    ReaderWelcomeView()
+        .tint(AppColor.primary)
+}
