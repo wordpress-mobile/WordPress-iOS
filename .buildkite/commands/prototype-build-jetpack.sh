@@ -1,14 +1,7 @@
 #!/bin/bash -eu
 
-
-echo "--- :beer: Installing Homebrew Dependencies"
-# Sentry CLI needs to be up-to-date
-brew upgrade sentry-cli
-
-brew tap FelixHerrmann/tap
-brew install swift-package-list
-
 "$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
+"$(dirname "${BASH_SOURCE[0]}")/shared-set-up-distribution.sh"
 
 echo "--- :closed_lock_with_key: Installing Secrets"
 bundle exec fastlane run configure_apply
