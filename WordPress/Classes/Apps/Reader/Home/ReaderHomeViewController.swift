@@ -4,8 +4,6 @@ import WordPressUI
 final class ReaderHomeViewController: ReaderStreamViewController {
     private let mainContext = ContextManager.shared.mainContext
 
-    override var isHomeModeEnabled: Bool { true }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 

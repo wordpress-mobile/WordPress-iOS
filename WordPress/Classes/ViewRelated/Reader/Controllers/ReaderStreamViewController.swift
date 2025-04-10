@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 import SVProgressHUD
 import WordPressFlux
 import WordPressShared
@@ -198,8 +199,7 @@ import AutomatticTracks
         }
     }
 
-    /// A mode for the Reader app.
-    var isHomeModeEnabled: Bool { false }
+    private let isStandaloneAppModeEnabled = BuildSettings.current.brand == .reader
 
     private var emptyStateView: UIView? {
         didSet {
@@ -481,7 +481,7 @@ import AutomatticTracks
     }
 
     private func setupButtonScrollToTop() {
-        guard !isHomeModeEnabled else { return }
+        guard !isStandaloneAppModeEnabled else { return }
 
         view.addSubview(buttonScrollToTop)
         buttonScrollToTop.pinEdges([.leading, .bottom], to: view.safeAreaLayoutGuide, insets: isCompact ? UIEdgeInsets(horizontal: 8, vertical: 16) : UIEdgeInsets(.all, 20))
