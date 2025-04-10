@@ -15,3 +15,9 @@ extension UIScrollView {
         }
     }
 }
+
+extension UICollectionView {
+    @objc override func scrollToTop(animated: Bool) {
+        self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: animated)
+    }
+}
