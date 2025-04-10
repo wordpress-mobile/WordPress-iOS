@@ -43,6 +43,8 @@ final class ReaderSearchViewController: UIViewController {
     private let contextManager = ContextManager.shared
     private var isFirstAppearance = true
 
+    var isStandaloneAppModeEnabled = false
+
     public override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -95,7 +97,9 @@ final class ReaderSearchViewController: UIViewController {
 
     private func setupNavigationBar() {
         navigationItem.title = Strings.title
-        navigationItem.largeTitleDisplayMode = .never
+        if !isStandaloneAppModeEnabled {
+            navigationItem.largeTitleDisplayMode = .never
+        }
 
         navigationItem.searchController = searchController
         searchController.hidesNavigationBarDuringPresentation = false

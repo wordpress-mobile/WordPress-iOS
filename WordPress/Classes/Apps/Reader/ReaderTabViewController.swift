@@ -80,7 +80,9 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
             image: UIImage(named: "reader-menu-explorer"),
             selectedImage: nil
         )
-        return UINavigationController(rootViewController: discoverVC)
+        let navigationVC = UINavigationController(rootViewController: discoverVC)
+        navigationVC.navigationBar.prefersLargeTitles = true
+        return navigationVC
     }
 
     private func makeNotificationsViewController() -> UIViewController {
