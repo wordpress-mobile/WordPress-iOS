@@ -52,6 +52,12 @@ ensure_is_in_input_files_list $WORDPRESS_SECRETS_FILE
 JETPACK_SECRETS_FILE="${SECRETS_ROOT}/Jetpack-Secrets.swift"
 ensure_is_in_input_files_list $JETPACK_SECRETS_FILE
 
+# TODO: We'll need a dedicated one for Reader...
+# READER_SECRETS_FILE="${SECRETS_ROOT}/Reader-Secrets.swift"
+# ...using WordPress-Secrets.swift for now.
+READER_SECRETS_FILE="${SECRETS_ROOT}/WordPress-Secrets.swift"
+ensure_is_in_input_files_list $READER_SECRETS_FILE
+
 LOCAL_SECRETS_FILE="${SRCROOT}/Credentials/Secrets.swift"
 EXAMPLE_SECRETS_FILE="${SRCROOT}/Credentials/Secrets-example.swift"
 ensure_is_in_input_files_list $EXAMPLE_SECRETS_FILE
@@ -67,10 +73,17 @@ if [ -f "$WORDPRESS_SECRETS_FILE" ] && [ "${TARGET_NAME}" == "WordPress" ]; then
     exit 0
 fi
 
-# If the Jetpack Secrets are available (and if we're building Jetpack) use them
+# If the Jetpack Secrets are available and if we're building Jetpack use them
 if [ -f "$JETPACK_SECRETS_FILE" ] && [ "${TARGET_NAME}" == "Jetpack" ]; then
     echo "Applying Jetpack Secrets"
     cp -v "$JETPACK_SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
+    exit 0
+fi
+
+# If the Reader Secrets are available and if we're building Reader use them
+if [ -f "$READER_SECRETS_FILE" ] && [ "${TARGET_NAME}" == "Reader" ]; then
+    echo "Applying Reader Secrets"
+    cp -v "$READER_SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
     exit 0
 fi
 
