@@ -1,9 +1,12 @@
+import Combine
 import UIKit
 import SwiftUI
 import WordPressUI
 
 final class ReaderTabViewController: UITabBarController, UITabBarControllerDelegate {
     private var menuStore = ReaderMenuStore()
+    private let notificationsButtonViewModel = NotificationsButtonViewModel()
+    private var cancellables: [AnyCancellable] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +91,6 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
     private func makeNotificationsViewController() -> UIViewController {
         let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil)
             .instantiateInitialViewController() as! NotificationsViewController
-        // TODO: (reader) bind notifications
         notificationsVC.tabBarItem = UITabBarItem(
             title: Strings.notifications,
             image: UIImage(named: "tab-bar-notifications"),
@@ -97,6 +99,13 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
         notificationsVC.isReaderModeEnabled = true
         let navigationVC = UINavigationController(rootViewController: notificationsVC)
         notificationsVC.enableLargeTitles()
+
+        notificationsButtonViewModel.$counter.sink { [weak notificationsVC] count in
+            let image = UIImage(named: count == 0 ? "tab-bar-notifications" : "tab-bar-notifications-unread")
+            notificationsVC?.tabBarItem.image = image
+            notificationsVC?.tabBarItem.selectedImage = image
+        }.store(in: &cancellables)
+
         return navigationVC
     }
 
