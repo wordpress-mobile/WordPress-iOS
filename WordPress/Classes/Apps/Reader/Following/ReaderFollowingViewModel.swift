@@ -33,8 +33,8 @@ final class ReaderFollowingViewModel: ObservableObject {
         error = nil
         isRefreshing = true
 
-        await withUnsafeContinuation { continuation in
-            store.onCompletion = { [weak self]
+        return await withUnsafeContinuation { continuation in
+            store.onCompletion = { [weak self] in
                 // TODO: (reader) add error handling
                 self?.refreshTask = nil
                 self?.store.onCompletion = nil

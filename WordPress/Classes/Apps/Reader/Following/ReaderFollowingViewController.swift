@@ -27,7 +27,6 @@ private struct ReaderFollowingView: View {
     @StateObject var viewModel = ReaderFollowingViewModel()
     @State var selectedTab: ReaderFollowingTab = .subscriptions
 
-    // TODO: (reader) add refreshable
     var body: some View {
         List {
             filters
@@ -36,6 +35,9 @@ private struct ReaderFollowingView: View {
         }
         .listStyle(.plain)
         .task { await viewModel.refresh() }
+        .refreshable {
+            await viewModel.refresh()
+        }
     }
 
     private var filters: some View {

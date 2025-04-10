@@ -11,7 +11,7 @@ final class ReaderSubscriptionsViewModel: ObservableObject {
 
     private var refreshTask: Task<Void, Never>? {
         didSet { isRefreshing = refreshTask != nil }
-    }a
+    }
 
     init(store: CoreDataStackSwift = ContextManager.shared) {
         self.store = store
