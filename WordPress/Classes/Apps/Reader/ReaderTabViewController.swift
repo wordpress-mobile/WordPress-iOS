@@ -110,8 +110,7 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
     }
 
     private func makeMeViewController() -> UIViewController {
-        // TODO: (reader) this requires a reader-speicifc profile, so it's just a placeholder
-        let meVC = MeViewController()
+        let meVC = ReaderProfileViewController()
         // TODO: (reader) display your profile icons
         meVC.tabBarItem = UITabBarItem(
             title: Strings.me,
