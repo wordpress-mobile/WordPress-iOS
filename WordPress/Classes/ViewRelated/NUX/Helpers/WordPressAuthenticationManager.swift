@@ -20,14 +20,26 @@ class WordPressAuthenticationManager: NSObject {
     private let recentSiteService: RecentSitesService
     private let remoteFeaturesStore: RemoteFeatureFlagStore
 
-    init(windowManager: WindowManager,
-         authenticationHandler: AuthenticationHandler? = nil,
-         recentSiteService: RecentSitesService = RecentSitesService(),
-         remoteFeaturesStore: RemoteFeatureFlagStore) {
+    private let googleLoginClientId: String
+    private let googleLoginScheme: String
+    private let googleLoginServerClientId: String
+
+    init(
+        windowManager: WindowManager,
+        authenticationHandler: AuthenticationHandler? = nil,
+        recentSiteService: RecentSitesService = RecentSitesService(),
+        remoteFeaturesStore: RemoteFeatureFlagStore,
+        googleLoginClientId: String = ApiCredentials.googleLoginClientId,
+        googleLoginScheme: String = ApiCredentials.googleLoginSchemeId,
+        googleLoginServerClientId: String = ApiCredentials.googleLoginServerClientId
+    ) {
         self.windowManager = windowManager
         self.authenticationHandler = authenticationHandler
         self.recentSiteService = recentSiteService
         self.remoteFeaturesStore = remoteFeaturesStore
+        self.googleLoginClientId = googleLoginClientId
+        self.googleLoginScheme = googleLoginScheme
+        self.googleLoginServerClientId = googleLoginServerClientId
     }
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
@@ -87,9 +99,9 @@ extension WordPressAuthenticationManager {
             wpcomTermsOfServiceURL: URL(string: WPAutomatticTermsOfServiceURL)!,
             wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseURL,
             wpcomAPIBaseURL: AppEnvironment.current.wordPressComApiBase,
-            googleLoginClientId: ApiCredentials.googleLoginClientId,
-            googleLoginServerClientId: ApiCredentials.googleLoginServerClientId,
-            googleLoginScheme: ApiCredentials.googleLoginSchemeId,
+            googleLoginClientId: googleLoginClientId,
+            googleLoginServerClientId: googleLoginServerClientId,
+            googleLoginScheme: googleLoginScheme,
             userAgent: WPUserAgent.wordPress(),
             showLoginOptions: true,
             enableSignUp: FeatureFlag.signUp.enabled,
