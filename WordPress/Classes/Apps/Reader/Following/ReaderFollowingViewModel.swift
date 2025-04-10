@@ -7,6 +7,8 @@ final class ReaderFollowingViewModel: ObservableObject {
     // TODO: extract to a service (store fetches both subscription and menus)
     private let store = ReaderMenuStore()
 
+    @Published var selectedTab: ReaderFollowingTab = .subscriptions
+
     @Published private(set) var error: Error?
     @Published private(set) var isRefreshing = false
 
@@ -57,4 +59,16 @@ final class ReaderFollowingViewModel: ObservableObject {
 
 enum ReaderFollowingNavigation {
     case topic(ReaderAbstractTopic)
+}
+
+enum ReaderFollowingTab: CaseIterable {
+    case subscriptions, lists, tags
+
+    var title: String {
+        switch self {
+        case .subscriptions: NSLocalizedString("reader.following.subscriptions", value: "Subscriptions", comment: "Tabs on Reader Following screen")
+        case .lists: NSLocalizedString("reader.following.lists", value: "Lists", comment: "Tabs on Reader Following screen")
+        case .tags: NSLocalizedString("reader.following.tags", value: "Tags", comment: "Tabs on Reader Following screen")
+        }
+    }
 }

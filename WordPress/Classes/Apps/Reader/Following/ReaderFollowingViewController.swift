@@ -2,7 +2,7 @@ import UIKit
 import SwiftUI
 import WordPressUI
 
-final class ReaderFollowingViewController: UIViewController {
+final class ReaderFollowingViewController: UIViewController, UIPopoverPresentationControllerDelegate {
     private let mainContext = ContextManager.shared.mainContext
 
     private lazy var viewModel = ReaderFollowingViewModel { [weak self] in
@@ -15,6 +15,7 @@ final class ReaderFollowingViewController: UIViewController {
         title = SharedStrings.Reader.following
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "reader-menu-plus"), style: .plain, target: self, action: #selector(buttonAddTapped))
 
         let followingView = ReaderFollowingView(viewModel: viewModel)
             .environment(\.managedObjectContext, mainContext)
@@ -33,17 +34,41 @@ final class ReaderFollowingViewController: UIViewController {
             navigationController?.pushViewController(streamVC, animated: true)
         }
     }
+
+    @objc private func buttonAddTapped(_ item: UIBarButtonItem) {
+        switch viewModel.selectedTab {
+        case .subscriptions:
+            let hostVC = UIHostingController(rootView: ReaderSubscriptionAddView())
+            hostVC.modalPresentationStyle = .popover
+            hostVC.popoverPresentationController?.delegate = self
+            hostVC.popoverPresentationController?.sourceItem = item
+            // TODO: (reader) remove hardcoded size
+            hostVC.preferredContentSize = CGSize(width: 320, height: 140)
+            present(hostVC, animated: true)
+        case .lists:
+            let alert = UIAlertController(title: "Unsupported (Protoype)", message: nil, preferredStyle: .alert)
+            alert.addCancelActionWithTitle(SharedStrings.Button.ok)
+            present(alert, animated: true)
+        case .tags:
+            return
+        }
+    }
+
+    // MARK: UIPopoverPresentationControllerDelegate
+
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
 }
 
 private struct ReaderFollowingView: View {
     @ObservedObject var viewModel: ReaderFollowingViewModel
-    @State var selectedTab: ReaderFollowingTab = .subscriptions
 
     var body: some View {
         List {
             filters
 
-            switch selectedTab {
+            switch viewModel.selectedTab {
             case .subscriptions:
                 ReaderFollowingSubscriptionsView(viewModel: viewModel)
             case .lists:
@@ -53,12 +78,8 @@ private struct ReaderFollowingView: View {
             }
         }
         .listStyle(.plain)
-        .task {
-            await viewModel.refresh()
-        }
-        .refreshable {
-            await viewModel.refresh()
-        }
+        .task { await viewModel.refresh() }
+        .refreshable { await viewModel.refresh() }
     }
 
     private var filters: some View {
@@ -66,9 +87,9 @@ private struct ReaderFollowingView: View {
             HStack(spacing: 0) {
                 ForEach(ReaderFollowingTab.allCases, id: \.self) { tab in
                     Button {
-                        selectedTab = tab
+                        viewModel.selectedTab = tab
                     } label: {
-                        MenuItem(tab.title, isSelected: tab == selectedTab)
+                        MenuItem(tab.title, isSelected: tab == viewModel.selectedTab)
                     }
                     .buttonStyle(.plain)
                 }
@@ -101,18 +122,6 @@ private struct MenuItem: View {
                 .frame(height: 2)
                 .foregroundStyle(isSelected ? Color.black : Color(uiColor: .separator))
                 .opacity(isSelected ? 1 : 0)
-        }
-    }
-}
-
-private enum ReaderFollowingTab: CaseIterable {
-    case subscriptions, lists, tags
-
-    var title: String {
-        switch self {
-        case .subscriptions: NSLocalizedString("reader.following.subscriptions", value: "Subscriptions", comment: "Tabs on Reader Following screen")
-        case .lists: NSLocalizedString("reader.following.lists", value: "Lists", comment: "Tabs on Reader Following screen")
-        case .tags: NSLocalizedString("reader.following.tags", value: "Tags", comment: "Tabs on Reader Following screen")
         }
     }
 }
