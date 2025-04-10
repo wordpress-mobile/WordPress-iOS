@@ -8,23 +8,27 @@ final class ReaderTabViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // TODO: (reader) remove the need to fetch the menu on first launch before showing anything
         if ReaderSidebarViewModel().getTopic(for: .following) != nil {
             setupViewControllers()
         } else {
-            let activityIndicator = UIActivityIndicatorView()
-            activityIndicator.startAnimating()
-            view.addSubview(activityIndicator)
-            activityIndicator.pinCenter()
-
-            let store = ReaderMenuStore()
-            store.onCompletion = { [weak self] in
-                activityIndicator.removeFromSuperview()
-                self?.setupViewControllers()
-            }
-            store.refreshMenu()
-            self.menuStore = store
+            loadMenuItems()
         }
+    }
+
+    // TODO: (reader) remove the need to fetch the menu on first launch before showing anything
+    private func loadMenuItems() {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.startAnimating()
+        view.addSubview(activityIndicator)
+        activityIndicator.pinCenter()
+
+        let store = ReaderMenuStore()
+        store.onCompletion = { [weak self] in
+            activityIndicator.removeFromSuperview()
+            self?.setupViewControllers()
+        }
+        store.refreshMenu()
+        self.menuStore = store
     }
 
     private func setupViewControllers() {
