@@ -57,17 +57,13 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
     }
 
     private func makeFollowingViewController() -> UIViewController {
-        // TODO: (reader) figure out where we show tags and lists
-        let followingVC = UIHostingController(rootView: ReaderSubscriptionsView()
-            .environment(\.managedObjectContext, ContextManager.shared.mainContext))
+        let followingVC = ReaderFollowingViewController()
         followingVC.tabBarItem = UITabBarItem(
-            title: Strings.following,
+            title: SharedStrings.Reader.following,
             image: UIImage(named: "reader-menu-subscriptions"),
             selectedImage: nil
         )
-        let navigationVC = UINavigationController(rootViewController: followingVC)
-        followingVC.enableLargeTitles()
-        return navigationVC
+        return UINavigationController(rootViewController: followingVC)
     }
 
     private func makeDiscoverViewController() -> UIViewController {
@@ -133,7 +129,6 @@ private extension UIViewController {
 }
 
 private enum Strings {
-    static let following = NSLocalizedString("readerApp.tabBar.following", value: "Following", comment: "Reader app primary navigation tab bar")
     static let discover = NSLocalizedString("readerApp.tabBar.discover", value: "Discover", comment: "Reader app primary navigation tab bar")
     static let notifications = NSLocalizedString("readerApp.tabBar.notifications", value: "Notifications", comment: "Reader app primary navigation tab bar")
     static let me = NSLocalizedString("readerApp.tabBar.me", value: "Me", comment: "Reader app primary navigation tab bar")
