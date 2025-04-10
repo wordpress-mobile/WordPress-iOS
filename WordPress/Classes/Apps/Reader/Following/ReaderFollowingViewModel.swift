@@ -3,18 +3,15 @@ import SwiftUI
 import WordPressData
 
 @MainActor
-final class ReaderSubscriptionsViewModel: ObservableObject {
-    private let store: CoreDataStackSwift
+final class ReaderFollowingViewModel: ObservableObject {
+    // TODO: extract to a service (store fetches both subscription and menus)
+    private let store = ReaderMenuStore()
 
     @Published private(set) var error: Error?
     @Published private(set) var isRefreshing = false
 
     private var refreshTask: Task<Void, Never>? {
         didSet { isRefreshing = refreshTask != nil }
-    }a
-
-    init(store: CoreDataStackSwift = ContextManager.shared) {
-        self.store = store
     }
 
     deinit {
@@ -37,15 +34,13 @@ final class ReaderSubscriptionsViewModel: ObservableObject {
         isRefreshing = true
 
         await withUnsafeContinuation { continuation in
-            let service = ReaderTopicService(coreDataStack: self.store)
-            service.fetchAllFollowedSites(success: { [weak self] in
+            store.onCompletion = { [weak self]
+                // TODO: (reader) add error handling
                 self?.refreshTask = nil
+                self?.store.onCompletion = nil
                 continuation.resume()
-            }, failure: { [weak self] error in
-                self?.error = error
-                self?.refreshTask = nil
-                continuation.resume()
-            })
+            }
+            store.refreshMenu()
         }
     }
 }

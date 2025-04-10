@@ -23,7 +23,11 @@ final class ReaderFollowingViewController: UIViewController {
     }
 }
 
-struct ReaderFollowingView: View {
+private struct ReaderFollowingView: View {
+    @StateObject var viewModel = ReaderFollowingViewModel()
+    @State var selectedTab: ReaderFollowingTab = .subscriptions
+
+    // TODO: (reader) add refreshable
     var body: some View {
         List {
             filters
@@ -31,14 +35,20 @@ struct ReaderFollowingView: View {
             Text("There")
         }
         .listStyle(.plain)
+        .task { await viewModel.refresh() }
     }
 
     private var filters: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
-                MenuItem("Subscriptions", isSelected: true)
-                MenuItem("Lists", isSelected: false)
-                MenuItem("Tags")
+                ForEach(ReaderFollowingTab.allCases, id: \.self) { tab in
+                    Button {
+                        selectedTab = tab
+                    } label: {
+                        MenuItem(tab.title, isSelected: tab == selectedTab)
+                    }
+                    .buttonStyle(.plain)
+                }
                 Spacer()
             }
             .font(.subheadline)
@@ -72,34 +82,14 @@ private struct MenuItem: View {
     }
 }
 
-private struct FilterTabBarHostingView: UIViewRepresentable {
-    func makeUIView(context: Context) -> FilterTabBar {
-        let view = FilterTabBar()
-        WPStyleGuide.configureFilterTabBar(view)
-        view.isAutomaticTabSizingStyleEnabled = true
-        view.items = ReaderFollowingTab.allCases
-        view.frame = CGRect(origin: .zero, size: CGSize(width: 320, height: 40))
-        return view
-    }
-
-    func updateUIView(_ uiView: FilterTabBar, context: Context) {
-        // Do nothing
-    }
-}
-
-private enum ReaderFollowingTab: FilterTabBarItem, CaseIterable {
+private enum ReaderFollowingTab: CaseIterable {
     case subscriptions, lists, tags
 
     var title: String {
         switch self {
-        case .subscriptions:
-            return "Subscriptions"
-        case .lists:
-            return "Lists"
-        case .tags:
-            return "Tags"
+        case .subscriptions: NSLocalizedString("reader.following.subscriptions", value: "Subscriptions", comment: "Tabs on Reader Following screen")
+        case .lists: NSLocalizedString("reader.following.lists", value: "Lists", comment: "Tabs on Reader Following screen")
+        case .tags: NSLocalizedString("reader.following.tags", value: "Tags", comment: "Tabs on Reader Following screen")
         }
     }
-
-    var accessibilityIdentifier: String { title }
 }
