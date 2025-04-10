@@ -3,13 +3,13 @@ import WordPressUI
 
 /// A "Subscriptions" tab content view for on Reader's "Following" screen.
 struct ReaderFollowingSubscriptionsView: View {
+    let viewModel: ReaderFollowingViewModel
+
     @FetchRequest(
         sortDescriptors: [SortDescriptor(\.title, order: .forward)],
         predicate: NSPredicate(format: "following = YES")
     )
     private var subscriptions: FetchedResults<ReaderSiteTopic>
-
-    var onSelection: (_ subscription: ReaderSiteTopic) -> Void = { _ in }
 
     var body: some View {
         ForEach(subscriptions, id: \.objectID, content: makeSubscriptionCell)
@@ -18,7 +18,7 @@ struct ReaderFollowingSubscriptionsView: View {
 
     private func makeSubscriptionCell(for site: ReaderSiteTopic) -> some View {
         Button {
-            onSelection(site)
+            // TODO: (reader) invoke selection using ViewModel
         } label: {
             ReaderSubscriptionCell(site: site, onDelete: delete)
         }

@@ -33,13 +33,11 @@ private struct ReaderFollowingView: View {
 
             switch selectedTab {
             case .subscriptions:
-                ReaderFollowingSubscriptionsView { _ in
-                    // TODO: (reader) push
-                }
+                ReaderFollowingSubscriptionsView(viewModel: viewModel)
             case .lists:
                 EmptyView()
             case .tags:
-                EmptyView()
+                ReaderFollowingTagsView(viewModel: viewModel)
             }
         }
         .listStyle(.plain)
