@@ -481,6 +481,8 @@ import AutomatticTracks
     }
 
     private func setupButtonScrollToTop() {
+        guard !isHomeModeEnabled else { return }
+
         view.addSubview(buttonScrollToTop)
         buttonScrollToTop.pinEdges([.leading, .bottom], to: view.safeAreaLayoutGuide, insets: isCompact ? UIEdgeInsets(horizontal: 8, vertical: 16) : UIEdgeInsets(.all, 20))
     }
