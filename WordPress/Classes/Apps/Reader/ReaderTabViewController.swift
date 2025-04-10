@@ -70,7 +70,7 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
         let discoverVC: UIViewController = {
             // TODO: (reader) refactor to not require `topic`
             if let topic = ReaderSidebarViewModel().getTopic(for: .discover) {
-                ReaderDiscoverViewController(topic: topic)
+                ReaderDiscoverTabViewController(topic: topic)
             } else {
                 UIViewController()
             }
