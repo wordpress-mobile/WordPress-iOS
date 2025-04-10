@@ -63,3 +63,38 @@ public struct BuildSecrets: Sendable {
         self.debuggingKey = debuggingKey
     }
 }
+
+extension BuildSecrets {
+
+    public static let dummy: BuildSecrets = BuildSecrets(
+        oauth: .init(client: "", secret: ""),
+        google: .init(clientId: "", schemeId: "", serverClientId: ""),
+        zendesk: .init(appId: "", url: "", clientId: ""),
+        tenorApiKey: "",
+        sentryDSN: "",
+        docsBotId: "",
+        encryptedLogsKey: "",
+        debuggingKey: ""
+    )
+}
+
+extension BuildSecrets {
+
+    nonisolated(unsafe) static var configuredSecrets: BuildSecrets?
+
+    static var current: BuildSecrets {
+        switch BuildSettingsEnvironment.current {
+        case .preview:
+            return .dummy
+        case .test:
+            // TODO: Should we crash if a secret is accessed from the tests to prevent under-the-hood access and favor injection?
+            return .dummy
+        case .live:
+            guard let secrets = configuredSecrets else {
+                fatalError("Attempted to access BuildSettings before configuring secrets.")
+            }
+
+            return secrets
+        }
+    }
+}

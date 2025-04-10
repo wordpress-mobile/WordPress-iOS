@@ -13,7 +13,14 @@ import Foundation
 /// they are incompatible with parallelized tests and are generally not recommended.
 public struct BuildSettings: Sendable {
     public var configuration: BuildConfiguration
-    public var secrets: BuildSecrets
+    // Secrets are configured at runtime for security necessity.
+    //
+    // To avoid unwrapping values that have to be present for the app to work, the value is an
+    // implicitly unwrapped optional.
+    //
+    // Call `BuildSettings.configure(secrets:)` as soon as possible in the consumer app life cycle
+    // to avoid crashes.
+    public internal(set) var secrets: BuildSecrets!
     public var brand: AppBrand
     public var pushNotificationAppID: String
     public var appGroupName: String

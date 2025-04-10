@@ -5,6 +5,7 @@ extension BuildSettings {
 
     init(bundle: Bundle) {
         configuration = BuildConfiguration(rawValue: bundle.infoValue(forKey: "WPBuildConfiguration"))!
+        secrets = BuildSecrets.current
         brand = AppBrand(rawValue: bundle.infoValue(forKey: "WPAppBrand"))!
         pushNotificationAppID = bundle.infoValue(forKey: "WPPushNotificationAppID")
         appGroupName = bundle.infoValue(forKey: "WPAppGroupName")
