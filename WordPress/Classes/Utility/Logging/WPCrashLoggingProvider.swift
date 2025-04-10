@@ -40,12 +40,15 @@ struct WPLoggingStack {
 
 struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
     private let contextManager: ContextManager
+    let sentryDSN: String
 
-    init(contextManager: ContextManager = .shared) {
+    init(
+        contextManager: ContextManager = .shared,
+        sentryDSN: String = ApiCredentials.sentryDSN
+    ) {
         self.contextManager = contextManager
+        self.sentryDSN = sentryDSN
     }
-
-    let sentryDSN: String = ApiCredentials.sentryDSN
 
     var userHasOptedOut: Bool {
         return UserSettings.userHasOptedOutOfCrashLogging
