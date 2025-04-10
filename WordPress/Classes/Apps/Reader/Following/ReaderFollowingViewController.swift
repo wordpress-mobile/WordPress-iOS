@@ -32,6 +32,8 @@ final class ReaderFollowingViewController: UIViewController, UIPopoverPresentati
         case .topic(let topic):
             let streamVC = ReaderStreamViewController.controllerWithTopic(topic)
             navigationController?.pushViewController(streamVC, animated: true)
+        case .discoverTags:
+            ReaderSelectInterestsViewController.show(from: self)
         }
     }
 
@@ -50,7 +52,7 @@ final class ReaderFollowingViewController: UIViewController, UIPopoverPresentati
             alert.addCancelActionWithTitle(SharedStrings.Button.ok)
             present(alert, animated: true)
         case .tags:
-            return
+            break
         }
     }
 

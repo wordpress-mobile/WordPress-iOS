@@ -449,3 +449,23 @@ extension ReaderSelectInterestsConfiguration {
         )
     }
 }
+
+extension ReaderSelectInterestsViewController {
+    static func show(
+        from presentingViewController: UIViewController,
+        viewContext: NSManagedObjectContext = ContextManager.shared.mainContext
+    ) {
+        let tags = viewContext.allObjects(
+            ofType: ReaderTagTopic.self,
+            matching: ReaderSidebarTagsSection.predicate,
+            sortedBy: [NSSortDescriptor(SortDescriptor<ReaderTagTopic>(\.title, order: .forward))]
+        )
+        let interestsVC = ReaderSelectInterestsViewController(topics: tags)
+        interestsVC.didSaveInterests = { [weak interestsVC] _ in
+            interestsVC?.presentingViewController?.dismiss(animated: true)
+        }
+        let navigationVC = UINavigationController(rootViewController: interestsVC)
+        navigationVC.modalPresentationStyle = .formSheet
+        presentingViewController.present(navigationVC, animated: true, completion: nil)
+    }
+}

@@ -43,8 +43,7 @@ struct ReaderFollowingTagsView: View {
         .onDelete(perform: delete)
 
         Button {
-            // TODO: (reader) implement navigation
-            //            viewModel.navigate(.discoverTags)
+            viewModel.navigate(to: .discoverTags)
         } label: {
             Label {
                 Text(Strings.discoverTags)

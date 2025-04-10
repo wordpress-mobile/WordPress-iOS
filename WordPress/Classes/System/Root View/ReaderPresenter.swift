@@ -152,18 +152,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
             addTagVC.preferredContentSize = CGSize(width: 420, height: preferredHeight)
             sidebar.present(addTagVC, animated: true, completion: nil)
         case .discoverTags:
-            let tags = viewContext.allObjects(
-                ofType: ReaderTagTopic.self,
-                matching: ReaderSidebarTagsSection.predicate,
-                sortedBy: [NSSortDescriptor(SortDescriptor<ReaderTagTopic>(\.title, order: .forward))]
-            )
-            let interestsVC = ReaderSelectInterestsViewController(topics: tags)
-            interestsVC.didSaveInterests = { [weak self] _ in
-                self?.sidebar.dismiss(animated: true)
-            }
-            let navigationVC = UINavigationController(rootViewController: interestsVC)
-            navigationVC.modalPresentationStyle = .formSheet
-            sidebar.present(navigationVC, animated: true, completion: nil)
+            ReaderSelectInterestsViewController.show(from: sidebar)
         }
     }
 

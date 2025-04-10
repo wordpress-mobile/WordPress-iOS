@@ -59,6 +59,7 @@ final class ReaderFollowingViewModel: ObservableObject {
 
 enum ReaderFollowingNavigation {
     case topic(ReaderAbstractTopic)
+    case discoverTags
 }
 
 enum ReaderFollowingTab: CaseIterable {
