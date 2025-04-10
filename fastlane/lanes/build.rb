@@ -266,6 +266,22 @@ platform :ios do
     )
   end
 
+  lane :build_for_app_store_connect_reader do
+    sentry_check_cli_installed
+
+    update_certs_and_profiles_app_store_reader
+
+    build_app(
+      scheme: 'Reader',
+      workspace: WORKSPACE_PATH,
+      clean: true,
+      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
+      output_directory: BUILD_PRODUCTS_PATH,
+      derived_data_path: DERIVED_DATA_PATH,
+      export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
+    )
+  end
+
   # Builds the WordPress app for a Prototype Build ("WordPress Alpha" scheme), and uploads it to Firebase App Distribution
   #
   # @called_by CI
