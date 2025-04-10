@@ -13,6 +13,7 @@ import Foundation
 /// they are incompatible with parallelized tests and are generally not recommended.
 public struct BuildSettings: Sendable {
     public var configuration: BuildConfiguration
+    public var secrets: BuildSecrets
     public var brand: AppBrand
     public var pushNotificationAppID: String
     public var appGroupName: String

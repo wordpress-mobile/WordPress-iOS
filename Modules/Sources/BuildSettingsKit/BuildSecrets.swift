@@ -1,6 +1,6 @@
-public struct BuildSecrets {
+public struct BuildSecrets: Sendable {
 
-    public struct OAuth {
+    public struct OAuth: Sendable {
         public let client: String
         public let secret: String
 
@@ -10,7 +10,7 @@ public struct BuildSecrets {
         }
     }
 
-    public struct Google {
+    public struct Google: Sendable {
         public let clientId: String
         public let schemeId: String
         public let serverClientId: String
@@ -22,7 +22,7 @@ public struct BuildSecrets {
         }
     }
 
-    public struct Zendesk {
+    public struct Zendesk: Sendable {
         public let appId: String
         public let url: String
         public let clientId: String
