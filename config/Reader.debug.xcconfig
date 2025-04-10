@@ -1,4 +1,4 @@
-#include "Common.alpha.xcconfig"
+#include "Common.debug.xcconfig"
 #include "Version.public.xcconfig"
 
 WP_PUSH_NOTIFICATION_APP_ID = TBD
