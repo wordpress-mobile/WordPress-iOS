@@ -44,16 +44,11 @@ final class ReaderTabViewController: UITabBarController {
     // MARK: - Tabs
 
     private func makeHomeViewController() -> UIViewController {
-        let homeVC: UIViewController = {
-            // TODO: (reader) refactor to not require `topic`
-            if let topic = ReaderSidebarViewModel().getTopic(for: .following) {
-                ReaderStreamViewController.controllerWithTopic(topic)
-            } else {
-                UIViewController()
-            }
-        }()
+        let homeVC = ReaderHomeViewController()
+        // TODO: (reader) refactor to not require `topic`
+        homeVC.readerTopic = ReaderSidebarViewModel().getTopic(for: .following)
         homeVC.tabBarItem = UITabBarItem(
-            title: Strings.home,
+            title: SharedStrings.Reader.home,
             image: UIImage(named: "reader-menu-home"),
             selectedImage: nil
         )
@@ -128,7 +123,6 @@ private extension UIViewController {
 }
 
 private enum Strings {
-    static let home = NSLocalizedString("readerApp.tabBar.home", value: "Home", comment: "Reader app primary navigation tab bar")
     static let following = NSLocalizedString("readerApp.tabBar.following", value: "Following", comment: "Reader app primary navigation tab bar")
     static let discover = NSLocalizedString("readerApp.tabBar.discover", value: "Discover", comment: "Reader app primary navigation tab bar")
     static let notifications = NSLocalizedString("readerApp.tabBar.notifications", value: "Notifications", comment: "Reader app primary navigation tab bar")

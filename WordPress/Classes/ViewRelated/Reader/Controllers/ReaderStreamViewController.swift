@@ -198,6 +198,9 @@ import AutomatticTracks
         }
     }
 
+    /// A mode for the Reader app.
+    var isHomeModeEnabled: Bool { false }
+
     private var emptyStateView: UIView? {
         didSet {
             oldValue?.removeFromSuperview()
