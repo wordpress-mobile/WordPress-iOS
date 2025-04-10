@@ -2,11 +2,22 @@ import UIKit
 import SwiftUI
 import WordPressUI
 
-final class ReaderFollowingViewController: UIViewController, UIPopoverPresentationControllerDelegate {
+final class ReaderFollowingViewController: UIHostingController<AnyView>, UIPopoverPresentationControllerDelegate {
     private let mainContext = ContextManager.shared.mainContext
+    private let viewModel = ReaderFollowingViewModel()
 
-    private lazy var viewModel = ReaderFollowingViewModel { [weak self] in
-        self?.navigate(to: $0)
+    init() {
+        let view = AnyView(ReaderFollowingView(viewModel: viewModel)
+            .environment(\.managedObjectContext, mainContext))
+        super.init(rootView: view)
+
+        viewModel._navigate = { [weak self] in
+            self?.navigate(to: $0)
+        }
+    }
+
+    required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -16,15 +27,6 @@ final class ReaderFollowingViewController: UIViewController, UIPopoverPresentati
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "reader-menu-plus"), style: .plain, target: self, action: #selector(buttonAddTapped))
-
-        let followingView = ReaderFollowingView(viewModel: viewModel)
-            .environment(\.managedObjectContext, mainContext)
-        let hostVC = UIHostingController(rootView: followingView)
-
-        addChild(hostVC)
-        view.addSubview(hostVC.view)
-        hostVC.view.pinEdges()
-        hostVC.didMove(toParent: self)
     }
 
     private func navigate(to route: ReaderFollowingNavigation) {
@@ -88,6 +90,8 @@ private struct ReaderFollowingView: View {
         .listStyle(.plain)
         .task { await viewModel.refresh() }
         .refreshable { await viewModel.refresh() }
+        // TODO: (reader) add searching
+//        .searchable(text: $viewModel.searchText)
     }
 
     private var filters: some View {

@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import WordPressData
+import WordPressShared
 
 @MainActor
 final class ReaderFollowingViewModel: ObservableObject {
@@ -12,18 +13,16 @@ final class ReaderFollowingViewModel: ObservableObject {
     @Published private(set) var error: Error?
     @Published private(set) var isRefreshing = false
 
+    @Published var searchText = ""
+
     private var refreshTask: Task<Void, Never>? {
         didSet { isRefreshing = refreshTask != nil }
     }
 
-    private let _navigate: (ReaderFollowingNavigation) -> Void
+    var _navigate: ((ReaderFollowingNavigation) -> Void)?
 
     deinit {
         refreshTask?.cancel()
-    }
-
-    init(navigate: @escaping (ReaderFollowingNavigation) -> Void) {
-        self._navigate = navigate
     }
 
     func refresh() async {
@@ -53,7 +52,8 @@ final class ReaderFollowingViewModel: ObservableObject {
     }
 
     func navigate(to route: ReaderFollowingNavigation) {
-        _navigate(route)
+        wpAssert(_navigate != nil)
+        _navigate?(route)
     }
 }
 
