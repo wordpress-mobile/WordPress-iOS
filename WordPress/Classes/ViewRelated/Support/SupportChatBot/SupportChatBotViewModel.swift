@@ -5,11 +5,15 @@ struct SupportChatBotViewModel {
     private let zendeskUtils: ZendeskUtilsProtocol
 
     let chatId = UUID()
-    let docsBotId = ApiCredentials.docsBotId
+    let docsBotId: String
     let url = Bundle.main.url(forResource: "support_chat_widget_page", withExtension: "html")
 
-    init(zendeskUtils: ZendeskUtilsProtocol = ZendeskUtils.sharedInstance) {
+    init(
+        zendeskUtils: ZendeskUtilsProtocol = ZendeskUtils.sharedInstance,
+        docsBotId: String = ApiCredentials.docsBotId
+    ) {
         self.zendeskUtils = zendeskUtils
+        self.docsBotId = docsBotId
     }
 
     func contactSupport(including history: SupportChatHistory, in viewController: UIViewController, completion: @escaping ZendeskUtils.ZendeskNewRequestCompletion) {
