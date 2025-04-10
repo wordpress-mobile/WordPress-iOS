@@ -7,6 +7,17 @@ env:
 # This is the default pipeline – it will build and test the app
 steps:
 
+  - label: ":eyeglasses: Reader ASC Demo Build"
+    key: build_reader
+    command: ".buildkite/commands/release-build-reader.sh"
+    plugins: [$CI_TOOLKIT_PLUGIN]
+    artifact_paths:
+      - "Artifacts/*.zip"
+      - "Artifacts/*.ipa"
+    notify:
+      - github_commit_status:
+          context: "Reader ASC Demo Build"
+
   #################
   # Create Prototype Builds for WP and JP
   #################
