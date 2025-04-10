@@ -2,11 +2,13 @@ import UIKit
 import SwiftUI
 import WordPressUI
 
-final class ReaderTabViewController: UITabBarController {
-    private var menuStore: AnyObject?
+final class ReaderTabViewController: UITabBarController, UITabBarControllerDelegate {
+    private var menuStore = ReaderMenuStore()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        delegate = self
 
         if ReaderSidebarViewModel().getTopic(for: .following) != nil {
             setupViewControllers()
@@ -22,13 +24,12 @@ final class ReaderTabViewController: UITabBarController {
         view.addSubview(activityIndicator)
         activityIndicator.pinCenter()
 
-        let store = ReaderMenuStore()
-        store.onCompletion = { [weak self] in
+        menuStore.onCompletion = { [weak self] in
             activityIndicator.removeFromSuperview()
             self?.setupViewControllers()
+            self?.menuStore.onCompletion = nil
         }
-        store.refreshMenu()
-        self.menuStore = store
+        menuStore.refreshMenu()
     }
 
     private func setupViewControllers() {
@@ -111,6 +112,15 @@ final class ReaderTabViewController: UITabBarController {
             selectedImage: UIImage(named: "tab-bar-me")
         )
         return UINavigationController(rootViewController: meVC)
+    }
+
+    // MAKR: - UITabBarControllerDelegate
+
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        if selectedIndex == viewControllers?.firstIndex(of: viewController) {
+            (viewController as? UINavigationController)?.scrollContentToTopAnimated(true)
+        }
+        return true
     }
 }
 
