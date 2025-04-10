@@ -47,7 +47,7 @@ private struct ReaderFollowingView: View {
             case .subscriptions:
                 ReaderFollowingSubscriptionsView(viewModel: viewModel)
             case .lists:
-                EmptyView()
+                ReaderFollowingListsView(viewModel: viewModel)
             case .tags:
                 ReaderFollowingTagsView(viewModel: viewModel)
             }
