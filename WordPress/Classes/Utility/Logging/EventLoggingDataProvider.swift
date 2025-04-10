@@ -10,8 +10,8 @@ struct EventLoggingDataProvider: EventLoggingDataSource {
     /// A block that returns all existing log files
     private let fetchLogFiles: LogFilesCallback?
 
-    /// The Authorization token for the upload endpoint
     let loggingAuthenticationToken: String
+    let loggingEncryptionKey: String
 
     /// Initialize the data provider using a block.
     ///
@@ -19,14 +19,13 @@ struct EventLoggingDataProvider: EventLoggingDataSource {
     /// For example: if a given session spans a day boundary the logging system may roll the log file transparently in the background.
     init(
         loggingAuthenticationToken: String = ApiCredentials.secret,
+        loggingEncryptionKey: String = ApiCredentials.encryptedLogKey,
         _ block: @escaping LogFilesCallback
     ) {
         self.loggingAuthenticationToken = loggingAuthenticationToken
+        self.loggingEncryptionKey = loggingEncryptionKey
         self.fetchLogFiles = block
     }
-
-    /// The key used to encrypt log files
-    let loggingEncryptionKey: String = ApiCredentials.encryptedLogKey
 
     /// The current session log will almost always be the correct one, because they're split by day
     func logFilePath(forErrorLevel: EventLoggingErrorType, at date: Date) -> URL? {
