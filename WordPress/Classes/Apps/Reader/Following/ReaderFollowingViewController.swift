@@ -48,11 +48,17 @@ final class ReaderFollowingViewController: UIViewController, UIPopoverPresentati
             hostVC.preferredContentSize = CGSize(width: 320, height: 140)
             present(hostVC, animated: true)
         case .lists:
-            let alert = UIAlertController(title: "Unsupported (Protoype)", message: nil, preferredStyle: .alert)
+            let alert = UIAlertController(title: "This feature is not supported in the prototype", message: nil, preferredStyle: .alert)
             alert.addCancelActionWithTitle(SharedStrings.Button.ok)
             present(alert, animated: true)
         case .tags:
-            break
+            let addTagVC = UIHostingController(rootView: ReaderTagsAddTagView())
+            addTagVC.modalPresentationStyle = .popover
+            addTagVC.popoverPresentationController?.delegate = self
+            addTagVC.popoverPresentationController?.sourceItem = item
+            // TODO: (reader) remove hardcoded size
+            addTagVC.preferredContentSize = CGSize(width: 320, height: 140)
+            present(addTagVC, animated: true, completion: nil)
         }
     }
 
