@@ -111,7 +111,6 @@
 		0C5A8A812D9B22F100C25301 /* WordPressAuthenticator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0C5A8A842D9B22F100C25301 /* yoga.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3932D2C4BA4008ACD86 /* yoga.xcframework */; };
 		0C5A8A852D9B22F100C25301 /* yoga.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3932D2C4BA4008ACD86 /* yoga.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0C5C46F62D9837CE00F2CD55 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* Secrets.swift */; };
 		0C63266F2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C63266E2A3D1305000B8C57 /* GutenbergFilesAppMediaSourceTests.swift */; };
 		0C6AC6122C364A2800BF7600 /* XcodeTarget_App in Frameworks */ = {isa = PBXBuildFile; productRef = 0C6AC6112C364A2800BF7600 /* XcodeTarget_App */; };
 		0C6AC6142C364A3100BF7600 /* XcodeTarget_ShareExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 0C6AC6132C364A3100BF7600 /* XcodeTarget_ShareExtension */; };
@@ -187,6 +186,7 @@
 		3F0FDA002D9B930100CD05D6 /* WordPressData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; };
 		3F0FDA012D9B930100CD05D6 /* WordPressData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F16F0C62D9CD9A9008BC606 /* WPAccount+RestApiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16F0C52D9CD9A9008BC606 /* WPAccount+RestApiTests.swift */; };
+		3F1A64F62DA7A4B300786B92 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* Secrets.swift */; };
 		3F1B66A323A2F54B0075F09E /* ReaderReblogActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */; };
 		3F28CEA52A4ABB8800B79686 /* PrivacySettingsAnalyticsTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F28CEA42A4ABB8800B79686 /* PrivacySettingsAnalyticsTrackerTests.swift */; };
 		3F28CEA92A4ACB1000B79686 /* AnalyticsEventTrackingSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F28CEA82A4ACB1000B79686 /* AnalyticsEventTrackingSpy.swift */; };
@@ -1944,6 +1944,7 @@
 		0C5C46F42D98343300F2CD55 /* Exceptions for "Classes" folder in "Keystone" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"System/ApiCredentials+BuildSecrets.swift",
 				System/main.swift,
 				"System/WordPress-Bridging-Header.h",
 			);
@@ -2037,6 +2038,13 @@
 			);
 			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
 		};
+		3F1A64F82DA7ABC300786B92 /* Exceptions for "Classes" folder in "Reader" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"System/ApiCredentials+BuildSecrets.swift",
+			);
+			target = 0C5A3F8B2D9B1E3700C25301 /* Reader */;
+		};
 		3F7AE0D02D9B30A200AB4892 /* Exceptions for "WordPressData" folder in "WordPressData" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -2118,6 +2126,7 @@
 		24CE57C42CD3375200C7B37D /* Classes */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				3F1A64F82DA7ABC300786B92 /* Exceptions for "Classes" folder in "Reader" target */,
 				0C5C46F42D98343300F2CD55 /* Exceptions for "Classes" folder in "Keystone" target */,
 			);
 			path = Classes;
@@ -4323,6 +4332,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0C5A3FA12D9B1E3A00C25301 /* Build configuration list for PBXNativeTarget "Reader" */;
 			buildPhases = (
+				3F1A64F52DA7A43900786B92 /* Generate Credentials */,
 				0C5A3F882D9B1E3700C25301 /* Sources */,
 				0C5A3F892D9B1E3700C25301 /* Frameworks */,
 				0C5A3F8A2D9B1E3700C25301 /* Resources */,
@@ -4348,7 +4358,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0CED017C2D95B897003015CF /* Build configuration list for PBXNativeTarget "Keystone" */;
 			buildPhases = (
-				0C5C46F72D9837FE00F2CD55 /* Generate Credentials */,
 				0CED016B2D95B897003015CF /* Headers */,
 				0CED016C2D95B897003015CF /* Sources */,
 				0CED016D2D95B897003015CF /* Frameworks */,
@@ -5312,26 +5321,6 @@
 			shellScript = "\"$SRCROOT/../Scripts/BuildPhases/LintAppLocalizedStringsUsage.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		0C5C46F72D9837FE00F2CD55 /* Generate Credentials */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"$(SRCROOT)/../Scripts/BuildPhases/GenerateCredentials.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "Generate Credentials";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
-		};
 		0C96F99E2D92E28E000779B8 /* Generate Credentials */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5393,6 +5382,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "#!/bin/bash\n\nbash ../Scripts/BuildPhases/GenerateAcknowledgementsBundle.sh\n";
+		};
+		3F1A64F52DA7A43900786B92 /* Generate Credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${SRCROOT}/../Scripts/BuildPhases/GenerateCredentials.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "Generate Credentials";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${BUILD_DIR}/Secrets/Secrets.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Scripts/BuildPhases/GenerateCredentials.sh\"\n";
 		};
 		3F32E4AE270EAF5100A33D51 /* Generate Credentials */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5514,6 +5523,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F1A64F62DA7A4B300786B92 /* Secrets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5521,7 +5531,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C5C46F62D9837CE00F2CD55 /* Secrets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
