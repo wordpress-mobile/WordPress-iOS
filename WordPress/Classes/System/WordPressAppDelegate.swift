@@ -33,8 +33,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return switch BuildSettings.current.brand {
         case .wordpress: WindowManager(window: window)
         case .jetpack: JetpackWindowManager(window: window)
-        // TODO: (reader) figure out if we need a migration flow or what kind
-        case .reader: WindowManager(window: window)
+        case .reader: ReaderWindowManager(window: window)
         }
     }()
 
@@ -108,7 +107,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         customizeAppearance()
         configureAnalytics()
 
-        self.runStartupSequence(with: launchOptions ?? [:])
+        runStartupSequence(with: launchOptions ?? [:])
 
         return true
     }

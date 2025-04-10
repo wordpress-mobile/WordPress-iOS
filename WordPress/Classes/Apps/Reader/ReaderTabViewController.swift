@@ -1,11 +1,30 @@
 import UIKit
 import SwiftUI
+import WordPressUI
 
 final class ReaderTabViewController: UITabBarController {
+    private var menuStore: AnyObject?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupViewControllers()
+        // TODO: (reader) remove the need to fetch the menu on first launch before showing anything
+        if ReaderSidebarViewModel().getTopic(for: .following) != nil {
+            setupViewControllers()
+        } else {
+            let activityIndicator = UIActivityIndicatorView()
+            activityIndicator.startAnimating()
+            view.addSubview(activityIndicator)
+            activityIndicator.pinCenter()
+
+            let store = ReaderMenuStore()
+            store.onCompletion = { [weak self] in
+                activityIndicator.removeFromSuperview()
+                self?.setupViewControllers()
+            }
+            store.refreshMenu()
+            self.menuStore = store
+        }
     }
 
     private func setupViewControllers() {
