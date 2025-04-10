@@ -14,8 +14,14 @@ final class ReaderFollowingViewModel: ObservableObject {
         didSet { isRefreshing = refreshTask != nil }
     }
 
+    private let _navigate: (ReaderFollowingNavigation) -> Void
+
     deinit {
         refreshTask?.cancel()
+    }
+
+    init(navigate: @escaping (ReaderFollowingNavigation) -> Void) {
+        self._navigate = navigate
     }
 
     func refresh() async {
@@ -43,4 +49,12 @@ final class ReaderFollowingViewModel: ObservableObject {
             store.refreshMenu()
         }
     }
+
+    func navigate(to route: ReaderFollowingNavigation) {
+        _navigate(route)
+    }
+}
+
+enum ReaderFollowingNavigation {
+    case topic(ReaderAbstractTopic)
 }

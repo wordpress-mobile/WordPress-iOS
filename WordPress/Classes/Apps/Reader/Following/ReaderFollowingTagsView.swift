@@ -16,12 +16,16 @@ struct ReaderFollowingTagsView: View {
 
     var body: some View {
         ForEach(tags, id: \.self) { tag in
-            Label {
-                Text(tag.title)
-                    .lineLimit(1)
-            } icon: {
-                ReaderSidebarImage(name: "reader-menu-tag")
-                    .foregroundStyle(.secondary)
+            Button {
+                viewModel.navigate(to: .topic(tag))
+            } label: {
+                Label {
+                    Text(tag.title)
+                        .lineLimit(1)
+                } icon: {
+                    ReaderSidebarImage(name: "reader-menu-tag")
+                        .foregroundStyle(.secondary)
+                }
             }
             .swipeActions(edge: .trailing) {
                 Button(SharedStrings.Reader.unfollow, role: .destructive) {

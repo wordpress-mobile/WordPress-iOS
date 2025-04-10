@@ -18,7 +18,7 @@ struct ReaderFollowingSubscriptionsView: View {
 
     private func makeSubscriptionCell(for site: ReaderSiteTopic) -> some View {
         Button {
-            // TODO: (reader) invoke selection using ViewModel
+            viewModel.navigate(to: .topic(site))
         } label: {
             ReaderSubscriptionCell(site: site, onDelete: delete)
         }

@@ -5,6 +5,10 @@ import WordPressUI
 final class ReaderFollowingViewController: UIViewController {
     private let mainContext = ContextManager.shared.mainContext
 
+    private lazy var viewModel = ReaderFollowingViewModel { [weak self] in
+        self?.navigate(to: $0)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -12,7 +16,7 @@ final class ReaderFollowingViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
 
-        let followingView = ReaderFollowingView()
+        let followingView = ReaderFollowingView(viewModel: viewModel)
             .environment(\.managedObjectContext, mainContext)
         let hostVC = UIHostingController(rootView: followingView)
 
@@ -21,10 +25,18 @@ final class ReaderFollowingViewController: UIViewController {
         hostVC.view.pinEdges()
         hostVC.didMove(toParent: self)
     }
+
+    private func navigate(to route: ReaderFollowingNavigation) {
+        switch route {
+        case .topic(let topic):
+            let streamVC = ReaderStreamViewController.controllerWithTopic(topic)
+            navigationController?.pushViewController(streamVC, animated: true)
+        }
+    }
 }
 
 private struct ReaderFollowingView: View {
-    @StateObject var viewModel = ReaderFollowingViewModel()
+    @ObservedObject var viewModel: ReaderFollowingViewModel
     @State var selectedTab: ReaderFollowingTab = .subscriptions
 
     var body: some View {
