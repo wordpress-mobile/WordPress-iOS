@@ -77,8 +77,8 @@ struct WordPressDotComAuthenticator {
         coreDataStack: CoreDataStackSwift = ContextManager.shared,
         authenticator: ((URL) throws(AuthenticationError) -> URL)? = nil,
         redirectURIScheme: String = BuildSettings.current.appURLScheme,
-        clientId: String = ApiCredentials.client,
-        clientSecret: String = ApiCredentials.secret
+        clientId: String = BuildSettings.current.secrets.oauth.client,
+        clientSecret: String = BuildSettings.current.secrets.oauth.secret
     ) {
         self.coreDataStack = coreDataStack
         self.authenticator = authenticator

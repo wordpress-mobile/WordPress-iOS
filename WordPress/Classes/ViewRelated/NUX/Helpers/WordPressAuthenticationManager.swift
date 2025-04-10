@@ -29,9 +29,9 @@ class WordPressAuthenticationManager: NSObject {
         authenticationHandler: AuthenticationHandler? = nil,
         recentSiteService: RecentSitesService = RecentSitesService(),
         remoteFeaturesStore: RemoteFeatureFlagStore,
-        googleLoginClientId: String = ApiCredentials.googleLoginClientId,
-        googleLoginScheme: String = ApiCredentials.googleLoginSchemeId,
-        googleLoginServerClientId: String = ApiCredentials.googleLoginServerClientId
+        googleLoginClientId: String = BuildSettings.current.secrets.google.clientId,
+        googleLoginScheme: String = BuildSettings.current.secrets.google.schemeId,
+        googleLoginServerClientId: String = BuildSettings.current.secrets.google.serverClientId
     ) {
         self.windowManager = windowManager
         self.authenticationHandler = authenticationHandler
@@ -58,8 +58,8 @@ extension WordPressAuthenticationManager {
     ///
     func initializeWordPressAuthenticator(
         notificationCenter: NotificationCenter = .default,
-        wpcomClientId: String = ApiCredentials.client,
-        wpcomSecret: String = ApiCredentials.secret
+        wpcomClientId: String = BuildSettings.current.secrets.oauth.client,
+        wpcomSecret: String = BuildSettings.current.secrets.oauth.secret
     ) {
         let displayStrings = WordPressAuthenticatorDisplayStrings(
             continueWithWPButtonTitle: NSLocalizedString("Continue With WordPress.com", comment: "Button title. Takes the user to the login with WordPress.com flow.")

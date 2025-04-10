@@ -1,3 +1,4 @@
+import BuildSettingsKit
 import Foundation
 import WordPressShared
 
@@ -10,7 +11,7 @@ struct SupportChatBotViewModel {
 
     init(
         zendeskUtils: ZendeskUtilsProtocol = ZendeskUtils.sharedInstance,
-        docsBotId: String = ApiCredentials.docsBotId
+        docsBotId: String = BuildSettings.current.secrets.docsBotId
     ) {
         self.zendeskUtils = zendeskUtils
         self.docsBotId = docsBotId

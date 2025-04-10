@@ -131,7 +131,7 @@ import WordPressShared
             return false
         }
 
-        if debugKey == ApiCredentials.debuggingKey, debugType == "force_crash" {
+        if debugKey == BuildSettings.current.secrets.debuggingKey, debugType == "force_crash" {
             WordPressAppDelegate.crashLogging?.crash()
         }
 

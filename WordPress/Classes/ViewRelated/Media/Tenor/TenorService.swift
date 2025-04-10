@@ -1,3 +1,5 @@
+import BuildSettingsKit
+
 /// Encapsulates search parameters (text, pagination, etc)
 struct TenorSearchParams {
     let text: String
@@ -15,7 +17,7 @@ class TenorService {
 
     private let tenor: TenorClient
 
-    init(apiKey: String = ApiCredentials.tenorApiKey) {
+    init(apiKey: String = BuildSettings.current.secrets.tenorApiKey) {
         TenorClient.configure(apiKey: apiKey)
         self.tenor = TenorClient.shared
     }

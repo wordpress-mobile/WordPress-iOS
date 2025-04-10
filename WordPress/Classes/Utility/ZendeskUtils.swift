@@ -450,9 +450,9 @@ private extension ZendeskUtils {
 
     static func getZendeskCredentials() -> Bool {
 
-        let zdAppID = ApiCredentials.zendeskAppId
-        let zdUrl = ApiCredentials.zendeskUrl
-        let zdClientId = ApiCredentials.zendeskClientId
+        let zdAppID = BuildSettings.current.secrets.zendesk.appId
+        let zdUrl = BuildSettings.current.secrets.zendesk.url
+        let zdClientId = BuildSettings.current.secrets.zendesk.clientId
 
         guard
             !zdAppID.isEmpty,

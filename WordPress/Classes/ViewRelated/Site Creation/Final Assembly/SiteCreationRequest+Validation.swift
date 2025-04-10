@@ -1,4 +1,4 @@
-
+import BuildSettingsKit
 import Foundation
 import WordPressKit
 import WordPressShared
@@ -32,8 +32,8 @@ extension SiteCreationRequest {
          isPublic: Bool,
          siteCreationFlow: String?,
          findAvailableURL: Bool,
-         clientIdentifier: String = ApiCredentials.client,
-         clientSecret: String = ApiCredentials.secret
+         clientIdentifier: String = BuildSettings.current.secrets.oauth.client,
+         clientSecret: String = BuildSettings.current.secrets.oauth.secret
     ) {
 
         self.init(segmentIdentifier: segmentIdentifier,
