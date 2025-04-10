@@ -1,10 +1,15 @@
 import Foundation
 import AutomatticTracks
 import AutomatticEncryptedLogs
+import BuildSettingsKit
 
 struct EventLoggingDelegate: AutomatticEncryptedLogs.EventLoggingDelegate {
 
     var shouldUploadLogFiles: Bool {
+        guard BuildSettingsEnvironment.current != .test else {
+            return false
+        }
+
         return
             !ProcessInfo.processInfo.isLowPowerModeEnabled
             && !UserSettings.userHasOptedOutOfCrashLogging
