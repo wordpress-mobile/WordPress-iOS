@@ -30,11 +30,22 @@ private struct ReaderFollowingView: View {
     var body: some View {
         List {
             filters
-            Text("Here")
-            Text("There")
+
+            switch selectedTab {
+            case .subscriptions:
+                ReaderFollowingSubscriptionsView { _ in
+                    // TODO: (reader) push
+                }
+            case .lists:
+                EmptyView()
+            case .tags:
+                EmptyView()
+            }
         }
         .listStyle(.plain)
-        .task { await viewModel.refresh() }
+        .task {
+            await viewModel.refresh()
+        }
         .refreshable {
             await viewModel.refresh()
         }
