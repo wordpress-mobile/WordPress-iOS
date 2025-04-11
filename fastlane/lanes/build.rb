@@ -288,6 +288,7 @@ platform :ios do
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: APP_STORE_CONNECT_BUILD_NAME_READER,
       derived_data_path: DERIVED_DATA_PATH,
+      xcargs: { VERSION_LONG: '0.0.0', VERSION_SHORT: '0.0' }.compact,
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
   end
