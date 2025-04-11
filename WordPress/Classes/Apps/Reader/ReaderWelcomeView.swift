@@ -28,7 +28,7 @@ struct ReaderWelcomeView: View {
         .background {
             ZStack {
                 Rectangle()
-                    .fill(Color(CSColor.WordPressBlue.base))
+                    .fill(Color(CSColor.WordPressBlue.base.withAlphaComponent(0.75)))
                 Rectangle()
                     .fill(
                         LinearGradient(
