@@ -27,6 +27,8 @@ enum SharedStrings {
     }
 
     enum Reader {
+        static let home = NSLocalizedString("reader.tab.home", value: "Home", comment: "Reader app primary navigation tab bar")
+        static let following = NSLocalizedString("reader.tab.following", value: "Following", comment: "Reader app primary navigation tab bar")
         /// - warning: This is the legacy value. It's not compliant with the new format but has the correct translation for different languages.
         static let title = NSLocalizedString("Reader", comment: "The accessibility value of the Reader tab.")
         static let unfollow = NSLocalizedString("reader.button.unfollow", value: "Unfollow", comment: "Reader sidebar button title")

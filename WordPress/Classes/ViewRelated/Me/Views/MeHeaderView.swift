@@ -103,6 +103,25 @@ final class MeHeaderView: UIView {
         infoStackView.alignment = .leading
         setIconSize(40)
     }
+
+    func configureReaderMode() {
+        infoStackView.alignment = .leading
+        setIconSize(40)
+
+        // TODO: (reader) refactor and remove hardcoded line height
+        assert(titleLabel.text != nil)
+        titleLabel.attributedText = NSAttributedString(string: titleLabel.text ?? "", attributes: [
+            .font: AppStyleGuide.current.navigationBarLargeFont,
+            .paragraphStyle: {
+                let style = NSMutableParagraphStyle()
+                style.lineHeightMultiple = 0.8
+                return style
+            }(),
+            .baselineOffset: 0
+        ])
+        infoStackView.spacing = 0
+        detailsLabel.isHidden = true
+    }
 }
 
 struct MeHeaderViewModel {

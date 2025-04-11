@@ -71,6 +71,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     private let overlaysCoordinator: MySiteOverlaysCoordinator
 
+    // TODO: (reader) factor if out of `MySiteVC` for a production version
+    var isReaderModeEnabled = false
+
     // MARK: - Initializers
 
     @objc class func make(forBlog blog: Blog, isSidebarModeEnabled: Bool = false) -> MySiteViewController {
@@ -204,7 +207,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
         trackNoSitesVisibleIfNeeded()
 
-        createFABIfNeeded()
+        if !isReaderModeEnabled {
+            createFABIfNeeded()
+        }
         fetchPrompt(for: blog)
 
         Task { @MainActor in
@@ -298,6 +303,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func configureNavBarAppearance(animated: Bool) {
+        guard !isReaderModeEnabled else {
+            return
+        }
         if scrollView.contentOffset.y >= 60 {
             if isNavigationBarHidden {
                 setNavigationBarHidden(false, animated: animated)
@@ -355,7 +363,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         showSitePicker(for: blog)
         updateNavigationTitle(for: blog)
 
-        let section = isSidebarModeEnabled ? .dashboard : viewModel.getSection(
+        let section = (isSidebarModeEnabled || isReaderModeEnabled) ? .dashboard : viewModel.getSection(
             for: blog,
             jetpackFeaturesEnabled: JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
             splitViewControllerIsHorizontallyCompact: splitViewControllerIsHorizontallyCompact
@@ -731,6 +739,22 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         embedChildInStackView(blogDashboardViewController)
         self.blogDashboardViewController = blogDashboardViewController
         stackView.sendSubviewToBack(blogDashboardViewController.view)
+
+        if isReaderModeEnabled, let account = blog.account {
+            let headerView = MeHeaderView()
+            headerView.update(with: .init(account: account))
+            headerView.configureReaderMode()
+            stackView.insertArrangedSubview(headerView, at: 0)
+
+            let spacerView = SpacerView(height: 8)
+            stackView.insertArrangedSubview(spacerView, at: 1)
+
+            let separator = SeparatorView.horizontal()
+            stackView.insertArrangedSubview(separator, at: 2)
+
+            headerViewController?.view.backgroundColor = .secondarySystemBackground
+            blogDashboardViewController.collectionView.backgroundColor = .secondarySystemBackground
+        }
     }
 
     // MARK: - Model Changes

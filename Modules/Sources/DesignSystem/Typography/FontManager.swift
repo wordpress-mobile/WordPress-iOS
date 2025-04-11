@@ -39,7 +39,9 @@ extension UIFont {
         return makeFont(with: descriptor)
     }
 
-    static func makeFont(with descriptor: FontDescriptor) -> UIFont {
+    private static func makeFont(with descriptor: FontDescriptor) -> UIFont {
+        FontManager.registerCustomFonts()
+
         guard let font = UIFont(name: descriptor.name, size: descriptor.size) else {
             assertionFailure("unsupported font: \(descriptor)")
             return UIFont.preferredFont(forTextStyle: .body)
@@ -50,7 +52,15 @@ extension UIFont {
 
 extension Font {
     public static func make(_ font: FontManager.FontName, textStyle: TextStyle, weight: Weight? = nil) -> Font {
-        let descriptor = FontDescriptor.make(font: font, textStyle: textStyle, weight: weight)
+        makeFont(with: FontDescriptor.make(font: font, textStyle: textStyle, weight: weight), relativeTo: textStyle)
+    }
+
+    public static func make(_ font: FontManager.FontName, size: CGFloat, weight: Weight = .regular, relativeTo textStyle: TextStyle = .body) -> Font {
+        makeFont(with: FontDescriptor.make(font: font, size: size, weight: weight), relativeTo: textStyle)
+    }
+
+    private static func makeFont(with descriptor: FontDescriptor, relativeTo textStyle: TextStyle) -> Font {
+        FontManager.registerCustomFonts()
         return Font.custom(descriptor.name, size: descriptor.size, relativeTo: textStyle)
     }
 }

@@ -38,7 +38,7 @@ struct ReaderSubscriptionAddButton: View {
     }
 }
 
-private struct ReaderSubscriptionAddView: View {
+struct ReaderSubscriptionAddView: View {
     @State private var siteURL = ""
     @State private var isSubmitting = false
     @State private var isShowingSuccessView = false

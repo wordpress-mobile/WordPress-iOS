@@ -113,7 +113,7 @@ extension BlogDetailsViewController {
         }
 
         let feature = NSLocalizedString("applicationPasswordRequired.feature.users", value: "User Management", comment: "Feature name for managing users in the app")
-        let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature) { client in
+        let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature, presentingViewController: self) { client in
             let service = UserService(client: client)
             let applicationPasswordService = ApplicationPasswordService(api: client, currentUserId: userId)
             return UserListView(currentUserId: Int32(userId), userService: service, applicationTokenListDataProvider: applicationPasswordService)
@@ -132,7 +132,7 @@ extension BlogDetailsViewController {
         let viewController: UIViewController
         if Feature.enabled(.pluginManagementOverhaul) {
             let feature = NSLocalizedString("applicationPasswordRequired.feature.plugins", value: "Plugin Management", comment: "Feature name for managing plugins in the app")
-            let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature) { client in
+            let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature, presentingViewController: self) { client in
                 let service = PluginService(client: client, wordpressCoreVersion: wordpressCoreVersion)
                 InstalledPluginsListView(service: service)
             }
@@ -152,12 +152,15 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
     @State private var site: WordPressSite?
     private let builder: (WordPressClient) -> Content
 
-    init(blog: Blog, localizedFeatureName: String, @ViewBuilder content: @escaping (WordPressClient) -> Content) {
+    weak var presentingViewController: UIViewController?
+
+    init(blog: Blog, localizedFeatureName: String, presentingViewController: UIViewController, @ViewBuilder content: @escaping (WordPressClient) -> Content) {
         wpAssert(blog.account == nil, "The Blog argument should be a self-hosted site")
 
         self.blog = blog
         self.localizedFeatureName = localizedFeatureName
         self.site = try? WordPressSite(blog: blog)
+        self.presentingViewController = presentingViewController
         self.builder = content
     }
 
@@ -182,8 +185,9 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
 
         do {
             // Get an application password for the given site.
+            let anchor = self.presentingViewController?.view.window ?? UIWindow()
             let authenticator = SelfHostedSiteAuthenticator(session: .shared)
-            let success = try await authenticator.authentication(site: url, from: nil)
+            let success = try await authenticator.authentication(site: url, from: anchor)
 
             // Ensure the application password belongs to the current signed in user
             if let username = blog.username, success.userLogin != username {
@@ -195,12 +199,8 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
 
             // Modify the `site` variable to display the intended feature.
             self.site = try .init(baseUrl: ParsedUrl.parse(input: success.siteUrl), type: .selfHosted(username: success.userLogin, authToken: success.password))
-        } catch let error as WordPressLoginClientError {
-            if let message = error.errorMessage {
-                Notice(title: message).post()
-            }
         } catch {
-            Notice(title: SharedStrings.Error.generic).post()
+            Notice(title: error.localizedDescription).post()
         }
     }
 

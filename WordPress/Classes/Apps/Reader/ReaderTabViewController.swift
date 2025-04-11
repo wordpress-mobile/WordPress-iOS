@@ -1,11 +1,38 @@
+import Combine
 import UIKit
 import SwiftUI
+import WordPressUI
 
-final class ReaderTabViewController: UITabBarController {
+final class ReaderTabViewController: UITabBarController, UITabBarControllerDelegate {
+    private var menuStore = ReaderMenuStore()
+    private let notificationsButtonViewModel = NotificationsButtonViewModel()
+    private var cancellables: [AnyCancellable] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupViewControllers()
+        delegate = self
+
+        if ReaderSidebarViewModel().getTopic(for: .following) != nil {
+            setupViewControllers()
+        } else {
+            loadMenuItems()
+        }
+    }
+
+    // TODO: (reader) remove the need to fetch the menu on first launch before showing anything
+    private func loadMenuItems() {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.startAnimating()
+        view.addSubview(activityIndicator)
+        activityIndicator.pinCenter()
+
+        menuStore.onCompletion = { [weak self] in
+            activityIndicator.removeFromSuperview()
+            self?.setupViewControllers()
+            self?.menuStore.onCompletion = nil
+        }
+        menuStore.refreshMenu()
     }
 
     private func setupViewControllers() {
@@ -21,16 +48,11 @@ final class ReaderTabViewController: UITabBarController {
     // MARK: - Tabs
 
     private func makeHomeViewController() -> UIViewController {
-        let homeVC: UIViewController = {
-            // TODO: (reader) refactor to not require `topic`
-            if let topic = ReaderSidebarViewModel().getTopic(for: .following) {
-                ReaderStreamViewController.controllerWithTopic(topic)
-            } else {
-                UIViewController()
-            }
-        }()
+        let homeVC = ReaderHomeViewController()
+        // TODO: (reader) refactor to not require `topic`
+        homeVC.readerTopic = ReaderSidebarViewModel().getTopic(for: .following)
         homeVC.tabBarItem = UITabBarItem(
-            title: Strings.home,
+            title: SharedStrings.Reader.home,
             image: UIImage(named: "reader-menu-home"),
             selectedImage: nil
         )
@@ -38,24 +60,20 @@ final class ReaderTabViewController: UITabBarController {
     }
 
     private func makeFollowingViewController() -> UIViewController {
-        // TODO: (reader) figure out where we show tags and lists
-        let followingVC = UIHostingController(rootView: ReaderSubscriptionsView()
-            .environment(\.managedObjectContext, ContextManager.shared.mainContext))
+        let followingVC = ReaderFollowingViewController()
         followingVC.tabBarItem = UITabBarItem(
-            title: Strings.following,
+            title: SharedStrings.Reader.following,
             image: UIImage(named: "reader-menu-subscriptions"),
             selectedImage: nil
         )
-        let navigationVC = UINavigationController(rootViewController: followingVC)
-        followingVC.enableLargeTitles()
-        return navigationVC
+        return UINavigationController(rootViewController: followingVC)
     }
 
     private func makeDiscoverViewController() -> UIViewController {
         let discoverVC: UIViewController = {
             // TODO: (reader) refactor to not require `topic`
             if let topic = ReaderSidebarViewModel().getTopic(for: .discover) {
-                ReaderDiscoverViewController(topic: topic)
+                ReaderDiscoverTabViewController(topic: topic)
             } else {
                 UIViewController()
             }
@@ -65,13 +83,14 @@ final class ReaderTabViewController: UITabBarController {
             image: UIImage(named: "reader-menu-explorer"),
             selectedImage: nil
         )
-        return UINavigationController(rootViewController: discoverVC)
+        let navigationVC = UINavigationController(rootViewController: discoverVC)
+        navigationVC.navigationBar.prefersLargeTitles = true
+        return navigationVC
     }
 
     private func makeNotificationsViewController() -> UIViewController {
         let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil)
             .instantiateInitialViewController() as! NotificationsViewController
-        // TODO: (reader) bind notifications
         notificationsVC.tabBarItem = UITabBarItem(
             title: Strings.notifications,
             image: UIImage(named: "tab-bar-notifications"),
@@ -80,19 +99,46 @@ final class ReaderTabViewController: UITabBarController {
         notificationsVC.isReaderModeEnabled = true
         let navigationVC = UINavigationController(rootViewController: notificationsVC)
         notificationsVC.enableLargeTitles()
+
+        notificationsButtonViewModel.$counter.sink { [weak notificationsVC] count in
+            let image = UIImage(named: count == 0 ? "tab-bar-notifications" : "tab-bar-notifications-unread")
+            notificationsVC?.tabBarItem.image = image
+            notificationsVC?.tabBarItem.selectedImage = image
+        }.store(in: &cancellables)
+
         return navigationVC
     }
 
     private func makeMeViewController() -> UIViewController {
-        // TODO: (reader) this requires a reader-speicifc profile, so it's just a placeholder
-        let meVC = MeViewController()
+        let meVC = ReaderProfileViewController()
         // TODO: (reader) display your profile icons
         meVC.tabBarItem = UITabBarItem(
             title: Strings.me,
             image: UIImage(named: "tab-bar-me"),
             selectedImage: UIImage(named: "tab-bar-me")
         )
+        // TODO: (reader) observe gravatar updates
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext),
+           let avatarURL = account.avatarURL.flatMap(URL.init) {
+            Task { @MainActor [weak meVC] in
+                do {
+                    let image = try await ImageDownloader.shared.image(from: avatarURL)
+                    meVC?.tabBarItem.configureGravatarImage(image)
+                } catch {
+                    // Do nothing
+                }
+            }
+        }
         return UINavigationController(rootViewController: meVC)
+    }
+
+    // MAKR: - UITabBarControllerDelegate
+
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        if selectedIndex == viewControllers?.firstIndex(of: viewController) {
+            (viewController as? UINavigationController)?.scrollContentToTopAnimated(true)
+        }
+        return true
     }
 }
 
@@ -105,8 +151,6 @@ private extension UIViewController {
 }
 
 private enum Strings {
-    static let home = NSLocalizedString("readerApp.tabBar.home", value: "Home", comment: "Reader app primary navigation tab bar")
-    static let following = NSLocalizedString("readerApp.tabBar.following", value: "Following", comment: "Reader app primary navigation tab bar")
     static let discover = NSLocalizedString("readerApp.tabBar.discover", value: "Discover", comment: "Reader app primary navigation tab bar")
     static let notifications = NSLocalizedString("readerApp.tabBar.notifications", value: "Notifications", comment: "Reader app primary navigation tab bar")
     static let me = NSLocalizedString("readerApp.tabBar.me", value: "Me", comment: "Reader app primary navigation tab bar")

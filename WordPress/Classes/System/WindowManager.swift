@@ -45,7 +45,6 @@ class WindowManager: NSObject {
 
     /// Shows the SignIn UI flow if the conditions to do so are met.
     ///
-    @objc
     func showFullscreenSignIn() {
         guard isShowingFullscreenSignIn == false && AccountHelper.isLoggedIn == false else {
             return
@@ -64,7 +63,7 @@ class WindowManager: NSObject {
 
     /// Shows the UI for authenticated users.
     ///
-    @objc func showAppUI(for blog: Blog? = nil, animated: Bool = true, completion: Completion? = nil) {
+    func showAppUI(for blog: Blog? = nil, animated: Bool = true, completion: Completion? = nil) {
         isShowingFullscreenSignIn = false
         RootViewCoordinator.shared.showAppUI(animated: animated, completion: completion)
 

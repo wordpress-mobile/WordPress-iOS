@@ -8,7 +8,7 @@ extension ReaderStreamViewController {
     // Convenience type for Reader's headers
     typealias ReaderHeader = UIView & ReaderStreamHeader
 
-    func headerForStream(_ topic: ReaderAbstractTopic?, container: UITableViewController) -> UIView? {
+    @objc func headerForStream(_ topic: ReaderAbstractTopic?, container: UITableViewController) -> UIView? {
         if let topic, ReaderHelpers.topicIsFollowing(topic) {
             return ReaderHeaderView.makeForFollowing()
         }

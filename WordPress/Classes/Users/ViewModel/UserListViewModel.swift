@@ -103,7 +103,7 @@ class UserListViewModel: ObservableObject {
             case let .success(users):
                 self.sortedUsers = self.sortUsers(users)
             case let .failure(error):
-                self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
+                self.error = error.localizedDescription
             }
         }
     }
@@ -117,7 +117,7 @@ class UserListViewModel: ObservableObject {
             do {
                 try await userService.fetchUsers()
             } catch {
-                self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
+                self.error = error.localizedDescription
             }
         }
 

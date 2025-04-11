@@ -48,10 +48,9 @@ struct PluginDetailsView: View {
     }
 
     init(plugin: PluginInformation, service: PluginServiceProtocol) {
-        let slug = PluginWpOrgDirectorySlug(slug: plugin.slug)
+        let slug = plugin.slug
         self.slug = slug
-        // TODO: Use `shortDescription`
-        self.pluginInfo = .init(name: plugin.name, author: plugin.author, shortDescription: plugin.author)
+        self.pluginInfo = .init(name: plugin.name, author: plugin.author, shortDescription: plugin.shortDescription ?? Strings.emptyDescription)
         self.service = service
         _viewModel = StateObject(wrappedValue: .init(service: service))
     }
@@ -433,7 +432,7 @@ private struct PluginOperationStatus {
 
     var errorMessage: String? {
         if case let .failure(error)? = result {
-            return (error as? WpApiError)?.errorMessage ?? error.localizedDescription
+            return error.localizedDescription
         }
         return nil
     }
@@ -474,7 +473,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
             try await service.fetchInstalledPlugins()
             self.installed = try await service.findInstalledPlugin(slug: slug)
         } catch {
-            self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
+            self.error = error.localizedDescription
         }
     }
 
@@ -484,7 +483,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
             case let .success(plugin):
                 self.plugin = plugin.first
             case let .failure(error):
-                self.error = (error as? WpApiError)?.errorMessage ?? error.localizedDescription
+                self.error = error.localizedDescription
             }
         }
     }
@@ -771,6 +770,12 @@ private enum Strings {
         "pluginDetails.deactivating.message",
         value: "Please wait while the plugin is being deactivated...",
         comment: "Message shown while a plugin is being deactivated"
+    )
+
+    static let emptyDescription = NSLocalizedString(
+        "pluginDetails.noDescription",
+        value: "This plugin has not provided any description.",
+        comment: "Placeholder message shown when a plugin has no description"
     )
 }
 
