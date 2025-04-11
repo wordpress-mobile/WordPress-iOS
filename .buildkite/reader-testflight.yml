@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
+steps:
+  - label: ":eyeglasses: :xcode: Reader App Store Connect Build"
+    command: .buildkite/commands/release-build-reader.sh
+    key: reader_asc_build
+    plugins: [$CI_TOOLKIT_PLUGIN]
+    agents:
+      queue: mac
+    env:
+      IMAGE_ID: $IMAGE_ID
+    artifact_paths:
+      - Artifacts/*.zip
+      - Artifacts/*.ipa
+    notify:
+      - slack: "#build-and-ship"
+
+  - label: ":eyeglasses: :testflight: Reader App Store Connect Upload"
+    depends_on: reader_asc_build
+    command: .buildkite/commands/release-upload-reader.sh
+    plugins: [$CI_TOOLKIT_PLUGIN]
+    agents:
+      queue: mac
+    env:
+      IMAGE_ID: $IMAGE_ID
+    notify:
+      - slack: "#build-and-ship"
