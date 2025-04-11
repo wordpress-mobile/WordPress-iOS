@@ -15,13 +15,27 @@ final class ReaderSidebarViewModel: ObservableObject {
 
     @Published var isCompact = false
 
+    let isStandaloneReaderMode: Bool
+
     var navigate: (ReaderSidebarNavigation) -> Void = { _ in }
 
+    var staticScreens: [ReaderStaticScreen] {
+        if isStandaloneReaderMode {
+            return [.saved, .likes]
+        } else {
+            return [.recent, .discover, .saved, .likes, .search]
+        }
+    }
+
     init(menuStore: ReaderMenuStoreProtocol = ReaderMenuStore(),
-         contextManager: CoreDataStackSwift = ContextManager.shared) {
+         contextManager: CoreDataStackSwift = ContextManager.shared,
+         isStandaloneReaderMode: Bool = false) {
         self.tabItemsStore = menuStore
         self.contextManager = contextManager
-        self.restoreSelection(defaultValue: .main(.recent))
+        self.isStandaloneReaderMode = isStandaloneReaderMode
+        if !isStandaloneReaderMode {
+            self.restoreSelection(defaultValue: .main(.recent))
+        }
         self.reloadMenuIfNeeded()
     }
 
