@@ -317,6 +317,8 @@ private class JetpackConnectionService {
         // - The site is authenticated with application password, and
         // - Jetpack is not installed, or the installed jetpack version is 14.2 or above.
 
+        guard FeatureFlag.nativeJetpackConnection.enabled else { return nil }
+
         guard blog.account == nil else { return nil }
 
         guard (try? blog.getApplicationToken()) != nil else { return nil }
