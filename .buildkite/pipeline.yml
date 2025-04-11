@@ -29,7 +29,7 @@ steps:
         depends_on: ~
 
       - label: ":eyeglasses: Reader one-off TestFlight Upload"
-        depends_on: testflight_triggered_reader
+        depends_on: [build_asc_reader, testflight_triggered_reader]
         command: .buildkite/commands/release-upload-reader.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
