@@ -15,8 +15,6 @@ final class ReaderProfileViewController: UIViewController {
         mySiteVC.willMove(toParent: self)
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(buttonSettingsTapped))
-
-        mySiteVC.view.backgroundColor = .systemBackground
     }
 
     @objc private func buttonSettingsTapped() {
