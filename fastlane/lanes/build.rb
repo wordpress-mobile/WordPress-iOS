@@ -275,7 +275,9 @@ platform :ios do
     )
   end
 
-  lane :build_for_app_store_connect_reader do
+  lane :build_for_app_store_connect_reader do |build_number: ENV.fetch('BUILDKITE_BUILD_NUMBER', nil)|
+    UI.user_error!('No build number provided and BUILDKITE_BUILD_NUMBER environment variable is not set') if build_number.nil?
+
     sentry_check_cli_installed
 
     update_certs_and_profiles_app_store_reader
@@ -288,7 +290,7 @@ platform :ios do
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: APP_STORE_CONNECT_BUILD_NAME_READER,
       derived_data_path: DERIVED_DATA_PATH,
-      xcargs: { VERSION_LONG: '0.0.0', VERSION_SHORT: '0.0' }.compact,
+      xcargs: { VERSION_LONG: build_number, VERSION_SHORT: '0.0' }.compact,
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
   end
