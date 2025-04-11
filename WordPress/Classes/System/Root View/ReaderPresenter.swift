@@ -172,6 +172,9 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     private func makeTagsViewController() -> UIViewController {
         let tagsVC = ReaderTagsTableViewController(style: .plain)
         tagsVC.title = SharedStrings.Reader.tags
+        if sidebarViewModel.isCompact {
+            tagsVC.navigationItem.largeTitleDisplayMode = .never
+        }
         return tagsVC
     }
 

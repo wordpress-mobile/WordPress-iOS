@@ -21,7 +21,6 @@ struct ReaderListsView: View {
                 items
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
     }
 
     private var items: some View {
