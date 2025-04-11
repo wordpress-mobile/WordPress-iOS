@@ -140,14 +140,16 @@ private struct ReaderSidebarView: View {
             }
         }
         makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
-            Label {
-                Text(Strings.subscriptions)
-            } icon: {
-                ReaderSidebarImage(name: "reader-menu-subscriptions")
-            }
+            if !viewModel.menu.contains(.subscrtipions) {
+                Label {
+                    Text(Strings.subscriptions)
+                } icon: {
+                    ReaderSidebarImage(name: "reader-menu-subscriptions")
+                }
                 .tag(ReaderSidebarItem.allSubscriptions)
                 .listItemTint(AppColor.primary)
                 .withDisabledSelection(isEditing)
+            }
 
             ReaderSidebarSubscriptionsSection(viewModel: viewModel)
                 .environment(\.siteIconBackgroundColor, Color(viewModel.isCompact ? .secondarySystemBackground : .systemBackground))

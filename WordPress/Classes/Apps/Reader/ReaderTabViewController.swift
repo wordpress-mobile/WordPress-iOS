@@ -5,6 +5,9 @@ import WordPressUI
 
 final class ReaderTabViewController: UITabBarController, UITabBarControllerDelegate {
     private var menuStore = ReaderMenuStore()
+    private let library = ReaderPresenter(
+        viewModel: ReaderSidebarViewModel(isReaderModeEnabled: true)
+    )
     private let notificationsButtonViewModel = NotificationsButtonViewModel()
     private var cancellables: [AnyCancellable] = []
 
@@ -38,7 +41,7 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
     private func setupViewControllers() {
         self.viewControllers = [
             makeHomeViewController(),
-            makeFollowingViewController(),
+            makeLibraryViewController(),
             makeDiscoverViewController(),
             makeNotificationsViewController(),
             makeMeViewController()
@@ -59,14 +62,14 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
         return UINavigationController(rootViewController: homeVC)
     }
 
-    private func makeFollowingViewController() -> UIViewController {
-        let followingVC = ReaderLibraryViewController()
-        followingVC.tabBarItem = UITabBarItem(
+    private func makeLibraryViewController() -> UIViewController {
+        let libraryVC = library.sidebar
+        libraryVC.tabBarItem = UITabBarItem(
             title: SharedStrings.Reader.library,
             image: UIImage(named: "reader-menu-subscriptions"),
             selectedImage: nil
         )
-        return UINavigationController(rootViewController: followingVC)
+        return library.prepareForLibraryPresentation()
     }
 
     private func makeDiscoverViewController() -> UIViewController {

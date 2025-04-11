@@ -28,7 +28,7 @@ final class ReaderSidebarViewModel: ObservableObject {
 
         self.isReaderModeEnabled = isReaderModeEnabled
         if isReaderModeEnabled {
-            menu = [.subscrtipions, .likes, .tags, .saved, .likes]
+            menu = [.subscrtipions, .lists, .tags, .saved, .likes]
         } else {
             menu = [.recent, .discover, .saved, .likes, .search]
             restoreSelection(defaultValue: .main(.recent))
