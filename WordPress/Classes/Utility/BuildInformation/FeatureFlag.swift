@@ -46,7 +46,7 @@ public enum FeatureFlag: Int, CaseIterable {
         case .domainRegistration:
             return app == .jetpack || app == .reader
         case .selfHostedSites:
-            return true
+            return app != .reader
         case .whatsNew:
             return true
         case .qrCodeLogin:
