@@ -6,7 +6,8 @@ STEP=build_asc_reader
 buildkite-agent artifact download "$ARTIFACTS_DIR/*.ipa" . --step $STEP
 buildkite-agent artifact download "$ARTIFACTS_DIR/*.zip" . --step $STEP
 
-"$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
+echo "--- :rubygems: Setting up Gems"
+install_gems
 
 echo "--- :closed_lock_with_key: Installing Secrets"
 bundle exec fastlane run configure_apply
