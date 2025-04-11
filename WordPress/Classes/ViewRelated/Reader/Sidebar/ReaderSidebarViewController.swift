@@ -3,7 +3,7 @@ import SwiftUI
 import Combine
 import WordPressUI
 
-class ReaderSidebarViewController: UIHostingController<AnyView> {
+final class ReaderSidebarViewController: UIHostingController<AnyView> {
     let viewModel: ReaderSidebarViewModel
 
     private var viewContext: NSManagedObjectContext { ContextManager.shared.mainContext }
@@ -118,8 +118,8 @@ private struct ReaderSidebarView: View {
     @ViewBuilder
     private var regularContent: some View {
         Section {
-            let screens = viewModel.staticScreens
-            ForEach(screens) {
+            let screens = ReaderStaticScreen.allCases
+            ForEach(ReaderStaticScreen.allCases) {
                 makePrimaryNavigationItem($0.localizedTitle, imageName: $0.imageName)
                     .tag(ReaderSidebarItem.main($0))
                     .listRowSeparator((viewModel.isCompact && $0 != screens.last) ? .visible : .hidden, edges: .bottom)

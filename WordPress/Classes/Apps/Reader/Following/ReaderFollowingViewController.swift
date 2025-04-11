@@ -3,33 +3,35 @@ import SwiftUI
 import WordPressUI
 
 // TODO: (reader) remove the unused code when we decide what we are going for
-final class ReaderFollowingViewController: ReaderSidebarViewController {
-    init() {
-        let viewModel = ReaderSidebarViewModel(isStandaloneReaderMode: true)
-        viewModel.isCompact = true
-        // TODO: (reader) implement navigation
-        super.init(viewModel: viewModel)
+//final class ReaderFollowingViewController: ReaderSidebarViewController {
+//    init() {
+//        let viewModel = ReaderSidebarViewModel(isStandaloneReaderMode: true)
+//        viewModel.isCompact = true
+//        // TODO: (reader) implement navigation
+//        super.init(viewModel: viewModel)
+//    }
+//
+//    required dynamic init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//
+//        title = SharedStrings.Reader.library
+//        navigationItem.largeTitleDisplayMode = .always
+//        navigationController?.navigationBar.prefersLargeTitles = true
+//
+//        // TODO: (reader) replace with "more"
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "reader-menu-plus"), style: .plain, target: self, action: #selector(buttonAddTapped))
+//    }
+//
+//    @objc private func buttonAddTapped(_ item: UIBarButtonItem) {
+//
+//    }
+//}
 
-
-    }
-
-    required dynamic init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        title = SharedStrings.Reader.following
-        navigationItem.largeTitleDisplayMode = .always
-        navigationController?.navigationBar.prefersLargeTitles = true
-
-        // TODO: (reader) replace with "more"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "reader-menu-plus"), style: .plain, target: self, action: #selector(buttonAddTapped))
-    }
-}
-
-final class ReaderFollowingViewController2: UIHostingController<AnyView>, UIPopoverPresentationControllerDelegate {
+final class ReaderFollowingViewController: UIHostingController<AnyView>, UIPopoverPresentationControllerDelegate {
     private let mainContext = ContextManager.shared.mainContext
     private let viewModel = ReaderFollowingViewModel()
 
@@ -50,7 +52,7 @@ final class ReaderFollowingViewController2: UIHostingController<AnyView>, UIPopo
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = SharedStrings.Reader.following
+        title = SharedStrings.Reader.library
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "reader-menu-plus"), style: .plain, target: self, action: #selector(buttonAddTapped))
