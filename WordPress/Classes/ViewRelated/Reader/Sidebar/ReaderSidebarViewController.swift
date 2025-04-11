@@ -80,7 +80,10 @@ private struct ReaderSidebarView: View {
 
     var body: some View {
         list
-            .searchable(text: $searchText)
+            .searchable(
+                text: $searchText,
+                placement: (viewModel.isReaderModeEnabled && viewModel.isCompact) ? .navigationBarDrawer(displayMode: .always) : .automatic
+            )
             .toolbar {
                 EditButton()
             }
