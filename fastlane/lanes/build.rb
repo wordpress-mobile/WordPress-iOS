@@ -176,6 +176,7 @@ platform :ios do
     )
 
     upload_build_to_testflight(
+      ipa_path: lane_context[SharedValues::IPA_OUTPUT_PATH],
       whats_new_path: WORDPRESS_RELEASE_NOTES_PATH,
       distribution_groups: ['Internal a8c Testers', 'Public Beta Testers'],
       beta_app_description_path: WORDPRESS_BETA_APP_DESCRIPTION_PATH
@@ -244,6 +245,7 @@ platform :ios do
     )
 
     upload_build_to_testflight(
+      ipa_path: lane_context[SharedValues::IPA_OUTPUT_PATH],
       whats_new_path: JETPACK_RELEASE_NOTES_PATH,
       distribution_groups: ['Beta Testers'],
       beta_app_description_path: JETPACK_BETA_APP_DESCRIPTION_PATH
@@ -288,6 +290,24 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH,
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
+  end
+
+  lane :upload_to_app_store_connect_reader do
+    # Eventually, this will be replaced with a real release notes file. Or maybe not.
+    temp_release_notes = File.join(Dir.tmpdir, "reader_release_notes.md")
+
+    begin
+      File.write(temp_release_notes, "Thank you for testing the new Reader app. Please get in touch with any feedback or suggestions.")
+
+      upload_build_to_testflight(
+        ipa_path: File.join(BUILD_PRODUCTS_PATH, "#{APP_STORE_CONNECT_BUILD_NAME_READER}.ipa"),
+        whats_new_path: temp_release_notes,
+        distribution_groups: ['Internal Automattic Testers Automatic Distribution'],
+        beta_app_description_path: BETA_APP_DESCRIPTION_PATH_READER
+      )
+    ensure
+      File.delete(temp_release_notes) if File.exist?(temp_release_notes)
+    end
   end
 
   # Builds the WordPress app for a Prototype Build ("WordPress Alpha" scheme), and uploads it to Firebase App Distribution
@@ -406,10 +426,11 @@ platform :ios do
     ENV.fetch('BUILDKITE', false)
   end
 
-  def upload_build_to_testflight(whats_new_path:, distribution_groups:, beta_app_description_path:)
+  def upload_build_to_testflight(ipa_path:, whats_new_path:, distribution_groups:, beta_app_description_path:)
     upload_to_testflight(
       team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
       api_key_path: APP_STORE_CONNECT_KEY_PATH,
+      ipa: ipa_path,
       beta_app_description: File.read(beta_app_description_path),
       changelog: File.read(whats_new_path),
       distribute_external: true,
