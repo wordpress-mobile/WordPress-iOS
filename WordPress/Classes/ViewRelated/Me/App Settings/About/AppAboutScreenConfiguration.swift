@@ -60,7 +60,7 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
                     context.showSubmenu(title: TextContent.legalAndMore, configuration: LegalAndMoreSubmenuConfiguration())
                 }),
             ],
-            AppConfiguration.isJetpack ?
+            [.jetpack, .reader].contains(BuildSettings.current.brand) ?
             [
                 AboutItem(title: TextContent.automatticFamily, accessoryType: .disclosureIndicator, hidesSeparator: true, action: { [weak self] context in
                     self?.tracker.buttonPressed(.automatticFamily)
@@ -104,7 +104,7 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
         static let twitter = NSLocalizedString("Twitter", comment: "Title of button that displays the app's Twitter profile")
         static let legalAndMore = NSLocalizedString("Legal and More", comment: "Title of button which shows a list of legal documentation such as privacy policy and acknowledgements")
         static let automatticFamily = NSLocalizedString("Automattic Family", comment: "Title of button that displays information about the other apps available from Automattic")
-        static var workWithUsSubtitle = AppConfiguration.isJetpack ? NSLocalizedString("Join From Anywhere", comment: "Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world") : nil
+        static var workWithUsSubtitle = AppConfiguration.isWordPress ? nil : NSLocalizedString("Join From Anywhere", comment: "Subtitle for button displaying the Automattic Work With Us web page, indicating that Automattic employees can work from anywhere in the world")
     }
 
     private enum Links {
