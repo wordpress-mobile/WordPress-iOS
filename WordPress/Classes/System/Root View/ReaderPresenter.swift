@@ -124,6 +124,12 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
             return ReaderStreamViewController.controllerForContentType(.saved)
         case .search:
             return ReaderSearchViewController()
+        case .subscrtipions:
+            return makeAllSubscriptionsViewController()
+        case .tags:
+            return ReaderSelectInterestsViewController(configuration: .discover)
+        case .lists:
+            return makeListsViewController()
         }
     }
 
@@ -133,7 +139,20 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
             self?.push(streamVC)
         }.environment(\.managedObjectContext, viewContext)
         let hostVC = UIHostingController(rootView: view)
-        hostVC.title = ReaderSubscriptionsView.navigationTitle
+        hostVC.title = SharedStrings.Reader.subscriptions
+        if sidebarViewModel.isCompact {
+            hostVC.navigationItem.largeTitleDisplayMode = .never
+        }
+        return hostVC
+    }
+
+    private func makeListsViewController() -> UIViewController {
+        let view = ReaderListsView() { [weak self] selection in
+            let streamVC = ReaderStreamViewController.controllerWithTopic(selection)
+            self?.push(streamVC)
+        }.environment(\.managedObjectContext, viewContext)
+        let hostVC = UIHostingController(rootView: view)
+        hostVC.title = SharedStrings.Reader.lists
         if sidebarViewModel.isCompact {
             hostVC.navigationItem.largeTitleDisplayMode = .never
         }

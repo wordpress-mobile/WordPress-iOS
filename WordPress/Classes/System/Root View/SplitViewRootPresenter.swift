@@ -330,6 +330,8 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
                     case .saved: tabBarVC.showReader()
                     case .likes: tabBarVC.showReader(path: .likes)
                     case .search: tabBarVC.showReader(path: .search)
+                    case .subscrtipions, .lists, .tags:
+                        wpAssertionFailure("not supported by Jetpack")
                     }
                 case .allSubscriptions:
                     tabBarVC.showReader(path: .subscriptions)

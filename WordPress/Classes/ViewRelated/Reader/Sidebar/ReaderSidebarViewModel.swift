@@ -14,15 +14,26 @@ final class ReaderSidebarViewModel: ObservableObject {
     private var isRestoringSelection = false
 
     @Published var isCompact = false
+    let isReaderModeEnabled: Bool
 
     var navigate: (ReaderSidebarNavigation) -> Void = { _ in }
 
+    let menu: [ReaderStaticScreen]
+
     init(menuStore: ReaderMenuStoreProtocol = ReaderMenuStore(),
          contextManager: CoreDataStackSwift = ContextManager.shared,
-         isStandaloneReaderMode: Bool = false) {
+         isReaderModeEnabled: Bool = false) {
         self.tabItemsStore = menuStore
         self.contextManager = contextManager
-        self.restoreSelection(defaultValue: .main(.recent))
+
+        self.isReaderModeEnabled = isReaderModeEnabled
+        if isReaderModeEnabled {
+            menu = [.subscrtipions, .likes, .tags, .saved, .likes]
+        } else {
+            menu = [.recent, .discover, .saved, .likes, .search]
+            restoreSelection(defaultValue: .main(.recent))
+        }
+
         self.reloadMenuIfNeeded()
     }
 
@@ -86,6 +97,9 @@ enum ReaderStaticScreen: String, Identifiable, Hashable, CaseIterable {
     case saved
     case likes
     case search
+    case subscrtipions
+    case lists
+    case tags
 
     var id: ReaderStaticScreen { self }
 
@@ -96,6 +110,9 @@ enum ReaderStaticScreen: String, Identifiable, Hashable, CaseIterable {
         case .saved: SharedStrings.Reader.saved
         case .likes: SharedStrings.Reader.likes
         case .search: SharedStrings.Reader.search
+        case .subscrtipions: SharedStrings.Reader.subscriptions
+        case .lists: SharedStrings.Reader.lists
+        case .tags: SharedStrings.Reader.tags
         }
     }
 
@@ -106,6 +123,9 @@ enum ReaderStaticScreen: String, Identifiable, Hashable, CaseIterable {
         case .saved: "reader-menu-bookmark"
         case .likes: "reader-menu-star"
         case .search: "reader-menu-search"
+        case .subscrtipions: "reader-menu-subscriptions"
+        case .lists: "reader-menu-list"
+        case .tags: "reader-menu-tag"
         }
     }
 
@@ -116,6 +136,7 @@ enum ReaderStaticScreen: String, Identifiable, Hashable, CaseIterable {
         case .saved: nil
         case .likes: .likes
         case .search: nil
+        case .subscrtipions, .tags, .lists: nil
         }
     }
 

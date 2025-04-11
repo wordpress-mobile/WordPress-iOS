@@ -43,7 +43,7 @@ struct ReaderSubscriptionsView: View {
                 EditButton()
             }
         }
-        .navigationTitle(Strings.title)
+        .navigationTitle(SharedStrings.Reader.subscriptions)
         .tint(Color(UIAppColor.primary))
     }
 
@@ -62,7 +62,7 @@ struct ReaderSubscriptionsView: View {
 
     private var emptyStateView: some View {
         EmptyStateView {
-            Label(Strings.title, systemImage: "doc.text.magnifyingglass")
+            Label(SharedStrings.Reader.subscriptions, systemImage: "doc.text.magnifyingglass")
         } description: {
             Text(Strings.emptyStateDetails)
         } actions: {
@@ -132,11 +132,8 @@ struct ReaderSubscriptionsView: View {
         let ranking = StringRankedSearch(searchTerm: searchText)
         searchResults = ranking.search(in: subscriptions) { "\($0.title) \($0.siteURL)" }
     }
-
-    static var navigationTitle: String { Strings.title }
 }
 
 private enum Strings {
-    static let title = NSLocalizedString("reader.subscriptions.title", value: "Subscriptions", comment: "Navigation bar title")
     static let emptyStateDetails = NSLocalizedString("reader.subscriptions.emptyStateDetails", value: "The sites you discover and subscribe to will appear here", comment: "Empty state details")
 }

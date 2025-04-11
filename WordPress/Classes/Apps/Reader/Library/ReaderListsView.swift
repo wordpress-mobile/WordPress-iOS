@@ -3,13 +3,13 @@ import SwiftUI
 import Combine
 import WordPressUI
 
-struct ReaderFollowingListsView: View {
-    let viewModel: ReaderLibraryViewModel
-
+struct ReaderListsView: View {
     @FetchRequest(
         sortDescriptors: [SortDescriptor(\.title, order: .forward)]
     )
     private var lists: FetchedResults<ReaderListTopic>
+
+    var onSelection: (ReaderListTopic) -> Void
 
     var body: some View {
         if lists.isEmpty {
@@ -24,7 +24,7 @@ struct ReaderFollowingListsView: View {
     private var items: some View {
         ForEach(lists, id: \.self) { list in
             Button {
-                viewModel.navigate(to: .topic(list))
+                onSelection(list)
             } label: {
                 Label {
                     Text(list.title)
