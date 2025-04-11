@@ -295,10 +295,10 @@ platform :ios do
 
   lane :upload_to_app_store_connect_reader do
     # Eventually, this will be replaced with a real release notes file. Or maybe not.
-    temp_release_notes = File.join(Dir.tmpdir, "reader_release_notes.md")
+    temp_release_notes = File.join(Dir.tmpdir, 'reader_release_notes.md')
 
     begin
-      File.write(temp_release_notes, "Thank you for testing the new Reader app. Please get in touch with any feedback or suggestions.")
+      File.write(temp_release_notes, 'Thank you for testing the new Reader app. Please get in touch with any feedback or suggestions.')
 
       upload_build_to_testflight(
         ipa_path: File.join(BUILD_PRODUCTS_PATH, "#{APP_STORE_CONNECT_BUILD_NAME_READER}.ipa"),
@@ -307,7 +307,7 @@ platform :ios do
         beta_app_description_path: BETA_APP_DESCRIPTION_PATH_READER
       )
     ensure
-      File.delete(temp_release_notes) if File.exist?(temp_release_notes)
+      FileUtils.rm_rf(temp_release_notes)
     end
   end
 
