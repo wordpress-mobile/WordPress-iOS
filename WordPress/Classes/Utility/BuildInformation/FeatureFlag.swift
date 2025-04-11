@@ -36,21 +36,23 @@ public enum FeatureFlag: Int, CaseIterable {
             return overriddenValue
         }
 
+        let app = BuildSettings.current.brand
+
         switch self {
         case .signUp:
             return true
         case .customAppIcons:
             return true
         case .domainRegistration:
-            return AppConfiguration.isJetpack
+            return app == .jetpack || app == .reader
         case .selfHostedSites:
             return true
         case .whatsNew:
             return true
         case .qrCodeLogin:
-            return AppConfiguration.isJetpack
+            return app == .jetpack
         case .bloggingPrompts:
-            return AppConfiguration.isJetpack
+            return app == .jetpack || app == .reader
         case .jetpackDisconnect:
             return BuildConfiguration.current == .debug
         case .siteIconCreator:
@@ -64,11 +66,11 @@ public enum FeatureFlag: Int, CaseIterable {
         case .googleDomainsCard:
             return false
         case .voiceToContent:
-            return AppConfiguration.isJetpack && BuildConfiguration.current.isInternal
+            return app == .jetpack && BuildConfiguration.current.isInternal
         case .authenticateUsingApplicationPassword:
             return false
         case .newGutenberg:
-            return false
+            return app == .reader
         case .newGutenbergThemeStyles:
             return false
         case .newGutenbergPlugins:
