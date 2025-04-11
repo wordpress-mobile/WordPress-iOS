@@ -4,7 +4,7 @@ import Combine
 import WordPressUI
 
 struct ReaderFollowingListsView: View {
-    let viewModel: ReaderFollowingViewModel
+    let viewModel: ReaderLibraryViewModel
 
     @FetchRequest(
         sortDescriptors: [SortDescriptor(\.title, order: .forward)]

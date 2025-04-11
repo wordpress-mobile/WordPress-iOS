@@ -3,7 +3,7 @@ import WordPressUI
 
 /// A "Subscriptions" tab content view for on Reader's "Following" screen.
 struct ReaderFollowingSubscriptionsView: View {
-    let viewModel: ReaderFollowingViewModel
+    let viewModel: ReaderLibraryViewModel
 
     @FetchRequest(
         sortDescriptors: [SortDescriptor(\.title, order: .forward)],

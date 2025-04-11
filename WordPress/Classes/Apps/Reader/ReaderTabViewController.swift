@@ -60,7 +60,7 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
     }
 
     private func makeFollowingViewController() -> UIViewController {
-        let followingVC = ReaderFollowingViewController()
+        let followingVC = ReaderLibraryViewController()
         followingVC.tabBarItem = UITabBarItem(
             title: SharedStrings.Reader.library,
             image: UIImage(named: "reader-menu-subscriptions"),

@@ -31,9 +31,9 @@ import WordPressUI
 //    }
 //}
 
-final class ReaderFollowingViewController: UIHostingController<AnyView>, UIPopoverPresentationControllerDelegate {
+final class ReaderLibraryViewController: UIHostingController<AnyView>, UIPopoverPresentationControllerDelegate {
     private let mainContext = ContextManager.shared.mainContext
-    private let viewModel = ReaderFollowingViewModel()
+    private let viewModel = ReaderLibraryViewModel()
 
     init() {
         let view = AnyView(ReaderFollowingView(viewModel: viewModel)
@@ -101,7 +101,7 @@ final class ReaderFollowingViewController: UIHostingController<AnyView>, UIPopov
 }
 
 private struct ReaderFollowingView: View {
-    @ObservedObject var viewModel: ReaderFollowingViewModel
+    @ObservedObject var viewModel: ReaderLibraryViewModel
 
     var body: some View {
         List {

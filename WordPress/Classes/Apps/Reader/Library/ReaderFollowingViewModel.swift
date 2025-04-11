@@ -4,7 +4,7 @@ import WordPressData
 import WordPressShared
 
 @MainActor
-final class ReaderFollowingViewModel: ObservableObject {
+final class ReaderLibraryViewModel: ObservableObject {
     // TODO: extract to a service (store fetches both subscription and menus)
     private let store = ReaderMenuStore()
 
