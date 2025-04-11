@@ -59,6 +59,12 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
             image: UIImage(named: "reader-menu-home"),
             selectedImage: nil
         )
+        // TODO: (reader) remove it; had to use due to how ghosts are implemented (separate table)
+        homeVC.tabBarItem.scrollEdgeAppearance = {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            return appearance
+        }()
         return UINavigationController(rootViewController: homeVC)
     }
 
@@ -86,6 +92,11 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
             image: UIImage(named: "reader-menu-explorer"),
             selectedImage: nil
         )
+        discoverVC.tabBarItem.scrollEdgeAppearance = {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            return appearance
+        }()
         let navigationVC = UINavigationController(rootViewController: discoverVC)
         navigationVC.navigationBar.prefersLargeTitles = true
         return navigationVC
