@@ -1,6 +1,7 @@
 #include "Common.xcconfig"
 
 DEVELOPMENT_TEAM = PZYM8XX95Q
+CODE_SIGN_IDENTITY=Apple Distribution: Automattic, Inc. (${DEVELOPMENT_TEAM})
 
 WP_APP_GROUP_NAME = group.org.wordpress
 WP_APP_KEYCHAIN_ACCESS_GROUP = 3TMU3BH3NK.org.wordpress
