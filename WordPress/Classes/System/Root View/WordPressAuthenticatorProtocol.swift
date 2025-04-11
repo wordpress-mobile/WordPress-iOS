@@ -47,23 +47,16 @@ extension WordPressAuthenticator: WordPressAuthenticatorProtocol {
 
     private static func selfHostedSiteLogin(_ viewController: UIViewController) -> Bool {
         guard FeatureFlag.authenticateUsingApplicationPassword.enabled else { return false }
-        guard let window = viewController.view.window, let navigationController = viewController.navigationController else { return false }
+        guard let navigationController = viewController.navigationController else { return false }
 
-        let client = SelfHostedSiteAuthenticator(session: URLSession(configuration: .ephemeral))
-        let view = LoginWithUrlView(client: client, anchor: window) { [weak viewController] credentials in
+        let view = LoginWithUrlView(presenter: viewController) { [weak viewController] blogID in
             viewController?.dismiss(animated: true)
 
-            SVProgressHUD.show()
-            WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wporg: credentials)) {
-                SVProgressHUD.dismiss()
-
-                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
-
-                WordPressAuthenticator.shared.delegate!.presentLoginEpilogue(
-                    in: navigationController,
-                    for: .init(wporg: credentials),
-                    source: .custom(source: "applicaton-password-login")) { /* Do nothing */ }
+            guard let blog = try? ContextManager.shared.mainContext.existingObject(with: blogID) else {
+                return wpAssertionFailure("Impossible to reach here since the app has just signed into the blog")
             }
+
+            WordPressAppDelegate.shared?.present(selfHostedSite: blog, from: navigationController)
         }.toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button(SharedStrings.Button.cancel) { [weak viewController] in

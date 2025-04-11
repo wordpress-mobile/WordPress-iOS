@@ -6,8 +6,16 @@ import AuthenticationServices
 import WordPressKit
 import WordPressAuthenticator
 import WordPressShared
+import SVProgressHUD
 
-final actor SelfHostedSiteAuthenticator {
+struct SelfHostedSiteAuthenticator {
+
+    enum SignInContext: Equatable {
+        // Sign in to a self-hosted site. Using this context results in automatically reloading the app to display the site dashboard.
+        case `default`
+        // Sign in to a site that's alredy added to the app. This is typically used when the app needs to get a new application password.
+        case reauthentication(username: String?)
+    }
 
     private static let callbackURL = URL(string: "x-wordpress-app://login-callback")!
 
@@ -15,7 +23,7 @@ final actor SelfHostedSiteAuthenticator {
         case authentication(Error)
         case loadingSiteInfoFailure
         case savingSiteFailure
-        case invalidApplicationPasswordCallback
+        case mismatchedUser(expectedUsername: String)
         case cancelled
 
         var errorDescription: String? {
@@ -26,17 +34,19 @@ final actor SelfHostedSiteAuthenticator {
                 return NSLocalizedString("addSite.selfHosted.loadingSiteInfoFailure", value: "Cannot load the WordPress site details", comment: "Error message shown when failing to load details from a self-hosted WordPress site")
             case .savingSiteFailure:
                 return NSLocalizedString("addSite.selfHosted.savingSiteFailure", value: "Cannot save the WordPress site, please try again later.", comment: "Error message shown when failing to save a self-hosted site to user's device")
-            case .invalidApplicationPasswordCallback:
-                return NSLocalizedString("addSite.selfHosted.authenticationFailed", value: "Cannot login using Application Password authentication.", comment: "Error message shown when an receiving an invalid application-password authentication result from a self-hosted WordPress site")
+            case let .mismatchedUser(username):
+                let format = NSLocalizedString("addSite.selfHosted.mismatchUser", value: "Please sign in with the logged in user. Username: %@", comment: "Error message when user signs in with an unexpected usern. The first argument is the expected username")
+                return String(format: format, username)
             case .cancelled:
-                return nil
+                return NSLocalizedString("addSite.selfHosted.cancelled", value: "Login has been cancelled", comment: "Error message when user cancels login")
             }
         }
     }
 
     private let internalClient: WordPressLoginClient
 
-    init(session: URLSession) {
+    init() {
+        let session = URLSession(configuration: .ephemeral)
         self.internalClient = WordPressLoginClient(urlSession: session)
     }
 
@@ -58,33 +68,31 @@ final actor SelfHostedSiteAuthenticator {
     }
 
     @MainActor
-    func signIn(site: String, from anchor: ASPresentationAnchor) async throws(SignInError) -> WordPressOrgCredentials {
+    func signIn(site: String, from viewController: UIViewController, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         do {
-            let result = try await _signIn(site: site, from: anchor)
-            await trackSuccess(url: site)
+            let result = try await _signIn(site: site, from: viewController, context: context)
+            trackSuccess(url: site)
             return result
         } catch {
-            await trackTypedError(error, url: site)
+            trackTypedError(error, url: site)
             throw error
         }
     }
 
     @MainActor
-    private func _signIn(site: String, from anchor: ASPresentationAnchor) async throws(SignInError) -> WordPressOrgCredentials {
-        let success: WpApiApplicationPasswordDetails
+    private func _signIn(site: String, from viewController: UIViewController, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         do {
-            success = try await authentication(site: site, from: anchor)
+            let (apiRootURL, credentials) = try await authenticate(site: site, from: viewController)
+            return try await handle(credentials: credentials, apiRootURL: apiRootURL, context: context)
         } catch let error as SignInError {
             throw error
         } catch {
             throw .authentication(error)
         }
-
-        return try await handleSuccess(success)
     }
 
     @MainActor
-    func authentication(site: String, from anchor: ASPresentationAnchor) async throws -> WpApiApplicationPasswordDetails {
+    private func authenticate(site: String, from viewController: UIViewController) async throws -> (apiRootURL: URL, credentials: WpApiApplicationPasswordDetails) {
         let appId: WpUuid
         let appName: String
 
@@ -100,14 +108,15 @@ final actor SelfHostedSiteAuthenticator {
         let timestamp = ISO8601DateFormatter.string(from: .now, timeZone: .current, formatOptions: .withInternetDateTime)
         let appNameValue = "\(appName) - \(deviceName) (\(timestamp))"
 
-        let loginURL = try await internalClient.loginURL(forSite: site, application: .init(id: appId, name: appNameValue, callbackUrl: SelfHostedSiteAuthenticator.callbackURL.absoluteString))
-        let callback = try await authenticate(url: loginURL, callbackURL: SelfHostedSiteAuthenticator.callbackURL, from: anchor)
-        return try internalClient.credentials(from: callback)
+        let details = try await internalClient.details(ofSite: site)
+        let loginURL = try details.loginURL(for: .init(id: appId, name: appNameValue, callbackUrl: SelfHostedSiteAuthenticator.callbackURL.absoluteString))
+        let callback = try await authorize(url: loginURL, callbackURL: SelfHostedSiteAuthenticator.callbackURL, from: viewController)
+        return (details.apiRootUrl.asURL(), try internalClient.credentials(from: callback))
     }
 
     @MainActor
-    func authenticate(url: URL, callbackURL: URL, from anchor: ASPresentationAnchor) async throws -> URL {
-        let provider = WebAuthenticationPresentationAnchorProvider(anchor: anchor)
+    private func authorize(url: URL, callbackURL: URL, from viewController: UIViewController, prefersEphemeralWebBrowserSession: Bool = false) async throws -> URL {
+        let provider = WebAuthenticationPresentationAnchorProvider(anchor: viewController.view.window ?? UIWindow())
         return try await withCheckedThrowingContinuation { continuation in
             let session = ASWebAuthenticationSession(
                 url: url,
@@ -115,51 +124,62 @@ final actor SelfHostedSiteAuthenticator {
             ) { url, error in
                 if let url {
                     continuation.resume(returning: url)
-                } else if let error = error as? ASWebAuthenticationSessionError {
-                    switch error.code {
-                    case .canceledLogin:
-                        assertionFailure("An unexpected error received: \(error)")
-                        continuation.resume(throwing: SignInError.cancelled)
-                    case .presentationContextInvalid, .presentationContextNotProvided:
-                        assertionFailure("An unexpected error received: \(error)")
-                        continuation.resume(throwing: SignInError.cancelled)
-                    @unknown default:
-                        assertionFailure("An unexpected error received: \(error)")
-                        continuation.resume(throwing: SignInError.cancelled)
-                    }
                 } else {
-                     continuation.resume(throwing: SignInError.invalidApplicationPasswordCallback)
+                    continuation.resume(throwing: SignInError.cancelled)
                 }
             }
             session.presentationContextProvider = provider
+            session.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession
             session.start()
         }
     }
 
-    private func handleSuccess(_ success: WpApiApplicationPasswordDetails) async throws(SignInError) -> WordPressOrgCredentials {
+    @MainActor
+    private func handle(credentials: WpApiApplicationPasswordDetails, apiRootURL: URL, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
+        if case let .reauthentication(username) = context, let username, username != credentials.userLogin {
+            throw .mismatchedUser(expectedUsername: username)
+        }
+
         let xmlrpc: String
         let blogOptions: [AnyHashable: Any]
         do {
-            xmlrpc = try success.derivedXMLRPCRoot.absoluteString
-            blogOptions = try await loadSiteOptions(details: success)
+            xmlrpc = try credentials.derivedXMLRPCRoot.absoluteString
+            blogOptions = try await loadSiteOptions(details: credentials)
         } catch {
             throw .loadingSiteInfoFailure
         }
 
         // Only store the new site after credentials are validated.
+        let blog: TaggedManagedObjectID<Blog>
         do {
-            let _ = try await Blog.createRestApiBlog(with: success, in: ContextManager.shared)
+            blog = try await Blog.createRestApiBlog(with: credentials, restApiRootURL: apiRootURL, in: ContextManager.shared)
         } catch {
             throw .savingSiteFailure
         }
 
         let wporg = WordPressOrgCredentials(
-            username: success.userLogin,
-            password: success.password,
+            username: credentials.userLogin,
+            password: credentials.password,
             xmlrpc: xmlrpc,
             options: blogOptions
         )
-        return wporg
+
+        SVProgressHUD.show()
+        defer {
+            SVProgressHUD.dismiss()
+        }
+
+        await withCheckedContinuation { continuation in
+            WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wporg: wporg)) {
+                continuation.resume()
+            }
+        }
+
+        if context == .default {
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
+        }
+
+        return blog
     }
 
     private func loadSiteOptions(details: WpApiApplicationPasswordDetails) async throws -> [AnyHashable: Any] {

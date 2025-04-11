@@ -415,6 +415,12 @@ extension WordPressAppDelegate {
         self.authManager?.presentDefaultAccountPrimarySite(from: navigationController)
     }
 
+    func present(selfHostedSite blog: Blog, from navigationController: UINavigationController) {
+        self.authManager?.presentLoginEpilogue(in: navigationController, forSelfHostedSite: blog, source: nil) {
+            // Do nothing.
+        }
+    }
+
     func handleWebActivity(_ activity: NSUserActivity) {
         // try to handle unauthenticated routes first.
         if activity.activityType == NSUserActivityTypeBrowsingWeb,

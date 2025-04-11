@@ -18,13 +18,15 @@ public extension Blog {
 
     static func createRestApiBlog(
         with details: WpApiApplicationPasswordDetails,
+        restApiRootURL: URL,
         in contextManager: ContextManager,
         using keychainImplementation: KeychainAccessible = KeychainUtils()
-    ) async throws -> String {
+    ) async throws -> TaggedManagedObjectID<Blog> {
         try await contextManager.performAndSave { context in
             let blog = Blog.createBlankBlog(in: context)
             blog.url = details.siteUrl
             blog.username = details.userLogin
+            blog.restApiRootURL = restApiRootURL.absoluteString
             try blog.setXMLRPCEndpoint(to: details.derivedXMLRPCRoot)
             blog.setSiteIdentifier(details.derivedSiteId)
 
@@ -33,7 +35,7 @@ public extension Blog {
             // Application token can also be used in XMLRPC.
             try blog.setPassword(to: details.password, using: keychainImplementation)
 
-            return details.derivedSiteId
+            return TaggedManagedObjectID(blog)
         }
     }
 

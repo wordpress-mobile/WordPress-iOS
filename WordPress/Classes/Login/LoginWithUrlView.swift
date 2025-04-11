@@ -3,32 +3,21 @@ import AuthenticationServices
 import WordPressAPI
 import WordPressAuthenticator
 import DesignSystem
+import WordPressShared
 
 struct LoginWithUrlView: View {
 
-    private let client: SelfHostedSiteAuthenticator
-    private let loginCompleted: (WordPressOrgCredentials) -> Void
-
-    // Since the anchor is a window that typically is the window this view is presented in,
-    // using a weak reference here to avoid retain cycle.
-    private weak var anchor: ASPresentationAnchor?
+    weak var presenter: UIViewController?
+    let loginCompleted: (TaggedManagedObjectID<Blog>) -> Void
 
     @State fileprivate var errorMessage: String?
     @State private var urlField: String = ""
     @State private var isLoading = false
 
+    @Environment(\.dismiss) var dismiss
+
     private var isContinueButtonDisabled: Bool {
         isLoading || urlField.trim().isEmpty
-    }
-
-    init(
-        client: SelfHostedSiteAuthenticator,
-        anchor: ASPresentationAnchor,
-        loginCompleted: @escaping (WordPressOrgCredentials) -> Void
-    ) {
-        self.client = client
-        self.anchor = anchor
-        self.loginCompleted = loginCompleted
     }
 
     var body: some View {
@@ -87,10 +76,17 @@ struct LoginWithUrlView: View {
         // The Swift compiler isn't happy about placing this do-catch function body inside a Task.
         // https://github.com/swiftlang/swift/issues/76807
         func login() async {
+            guard let presenter else {
+                wpAssertionFailure("No presenter assigned")
+                return
+            }
+
             do {
-                let anchor = self.anchor ?? UIWindow()
-                let credentials = try await client.signIn(site: urlField, from: anchor)
-                self.loginCompleted(credentials)
+                let blog = try await SelfHostedSiteAuthenticator()
+                    .signIn(site: urlField, from: presenter, context: .default)
+
+                dismiss()
+                self.loginCompleted(blog)
             } catch {
                 errorMessage = error.localizedDescription
             }
@@ -112,10 +108,7 @@ private extension LoginWithUrlView {
 // MARK: - SwiftUI Preview
 
 #Preview {
-    LoginWithUrlView(
-        client: .init(session: .shared),
-        anchor: mockAnchor
-    ) { _ in }
+    LoginWithUrlView(presenter: nil) { _ in }
 }
 
 private let mockAnchor = ASPresentationAnchor()

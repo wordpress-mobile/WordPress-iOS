@@ -384,10 +384,16 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, source: SignInSource?, onDismiss: @escaping () -> Void) {
         let mainContext = ContextManager.shared.mainContext
+        let blog = credentials.wporg.flatMap { wporg in
+            Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: mainContext)
+        }
 
+        presentLoginEpilogue(in: navigationController, forSelfHostedSite: blog, source: source, onDismiss: onDismiss)
+    }
+
+    func presentLoginEpilogue(in navigationController: UINavigationController, forSelfHostedSite blog: Blog?, source: SignInSource?, onDismiss: @escaping () -> Void) {
         // If adding a self-hosted site, skip the Epilogue
-        if let wporg = credentials.wporg,
-           let blog = Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: mainContext) {
+        if let blog {
             if self.windowManager.isShowingFullscreenSignIn {
                 self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
             } else {

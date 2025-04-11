@@ -178,6 +178,8 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
 
     @MainActor
     private func migrate() async {
+        guard let presenter = presentingViewController else { return }
+
         guard let url = try? blog.getUrlString() else {
             Notice(title: Strings.siteUrlNotFoundError).post()
             return
@@ -185,22 +187,14 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
 
         do {
             // Get an application password for the given site.
-            let anchor = self.presentingViewController?.view.window ?? UIWindow()
-            let authenticator = SelfHostedSiteAuthenticator(session: .shared)
-            let success = try await authenticator.authentication(site: url, from: anchor)
-
-            // Ensure the application password belongs to the current signed in user
-            if let username = blog.username, success.userLogin != username {
-                Notice(title: Strings.userNameMismatch(expected: username)).post()
-                return
-            }
-
-            try blog.setApplicationToken(success.password)
+            let authenticator = SelfHostedSiteAuthenticator()
+            let blogID = try await authenticator.signIn(site: url, from: presenter, context: .reauthentication(username: blog.username))
 
             // Modify the `site` variable to display the intended feature.
-            self.site = try .init(baseUrl: ParsedUrl.parse(input: success.siteUrl), type: .selfHosted(username: success.userLogin, authToken: success.password))
+            let blog = try ContextManager.shared.mainContext.existingObject(with: blogID)
+            self.site = try .init(blog: blog)
         } catch {
-            Notice(title: error.localizedDescription).post()
+            Notice(error: error).post()
         }
     }
 

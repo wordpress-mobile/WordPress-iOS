@@ -40,15 +40,10 @@ struct AddSiteController {
     }
 
     private func showApplicationPasswordAuthenticationForSelfHostedSite() {
-        guard let window = viewController.view.window else {
-            return wpAssertionFailure("window missing")
-        }
-        let client = SelfHostedSiteAuthenticator(session: URLSession(configuration: .ephemeral))
-        let view = LoginWithUrlView(client: client, anchor: window) { [weak viewController] credentials in
-            viewController?.dismiss(animated: true)
-            WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wporg: credentials)) {
-                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
-            }
+        let view = LoginWithUrlView(presenter: viewController) { [weak viewController] _ in
+            // The `LoginWithUrlView` view is dismissed when this closure is called.
+            // We also need to dismiss the `viewController` if it's presented as a modal.
+            viewController?.presentingViewController?.dismiss(animated: true)
         }.toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button(SharedStrings.Button.cancel) { [weak viewController] in
