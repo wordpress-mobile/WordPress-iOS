@@ -12,13 +12,16 @@ struct ReaderListsView: View {
     var onSelection: (ReaderListTopic) -> Void
 
     var body: some View {
-        if lists.isEmpty {
-            EmptyStateView(Strings.emptyTitle, systemImage: "list.clipboard", description: Strings.emptyDetails)
-                .frame(height: 420)
-                .listRowSeparator(.hidden)
-        } else {
-            items
+        List {
+            if lists.isEmpty {
+                EmptyStateView(Strings.emptyTitle, systemImage: "list.clipboard", description: Strings.emptyDetails)
+                    .frame(height: 420)
+                    .listRowSeparator(.hidden)
+            } else {
+                items
+            }
         }
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private var items: some View {
