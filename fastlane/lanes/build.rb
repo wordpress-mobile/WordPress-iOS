@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
-# Sentry
+# The names for WordPress and Jetpack are currently set but unused.
+# They will be once we'll the split build step from the upload step in CI.
+APP_STORE_CONNECT_BUILD_NAME_WORDPRESS = 'WordPress'
+APP_STORE_CONNECT_BUILD_NAME_JETPACK = 'Jetpack'
+APP_STORE_CONNECT_BUILD_NAME_READER = 'Reader'
+
 SENTRY_ORG_SLUG = 'a8c'
 SENTRY_PROJECT_SLUG_WORDPRESS = 'wordpress-ios'
 SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
@@ -164,6 +169,7 @@ platform :ios do
       workspace: WORKSPACE_PATH,
       clean: true,
       output_directory: BUILD_PRODUCTS_PATH,
+      output_name: APP_STORE_CONNECT_BUILD_NAME_WORDPRESS,
       derived_data_path: DERIVED_DATA_PATH,
       export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
@@ -232,6 +238,7 @@ platform :ios do
       clean: true,
       export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       output_directory: BUILD_PRODUCTS_PATH,
+      output_name: APP_STORE_CONNECT_BUILD_NAME_JETPACK,
       derived_data_path: DERIVED_DATA_PATH,
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
@@ -277,6 +284,7 @@ platform :ios do
       clean: true,
       export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
       output_directory: BUILD_PRODUCTS_PATH,
+      output_name: APP_STORE_CONNECT_BUILD_NAME_READER,
       derived_data_path: DERIVED_DATA_PATH,
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
