@@ -59,15 +59,15 @@ private enum JetpackConnectionStep: Int, CaseIterable {
     var title: String {
         switch self {
         case .login:
-            return Strings.stepLoginTitle
+            Strings.stepLoginTitle
         case .install:
-            return Strings.stepInstallTitle
+            Strings.stepInstallTitle
         case .siteConnection:
-            return Strings.stepSiteConnectionTitle
+            Strings.stepSiteConnectionTitle
         case .userConnection:
-            return Strings.stepUserConnectionTitle
+            Strings.stepUserConnectionTitle
         case .finalize:
-            return Strings.stepFinalizeTitle
+            Strings.stepFinalizeTitle
         }
     }
 }
@@ -324,6 +324,7 @@ private class JetpackConnectionService {
         guard (try? blog.getApplicationToken()) != nil else { return nil }
 
         if let jetpack = blog.jetpack, jetpack.isInstalled, let version = jetpack.version,
+           // The `version` value is not a strict semantic version number.
            version.compare("14.2", options: .numeric) == .orderedAscending {
             return nil
         }

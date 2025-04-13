@@ -1,6 +1,6 @@
 extension StatsViewController {
 
-    @objc func showJetpackConnectionView(completion: @escaping () -> Void) {
+    @objc public func showJetpackConnectionView(completion: @escaping () -> Void) {
         let controller = UIViewController.jetpackConnection(blog: self.blog!)
         controller.completionBlock = { [weak controller] in
             guard let controller else { return }
