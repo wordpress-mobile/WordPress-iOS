@@ -40,7 +40,7 @@ class RESTAPIJetpackLoginViewController: UIViewController, JetpackConnectionSupp
         addChild(hostingController)
         view.addSubview(hostingController.view)
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToAllEdges(hostingController.view)
+        hostingController.view.pinEdges()
         hostingController.didMove(toParent: self)
     }
 

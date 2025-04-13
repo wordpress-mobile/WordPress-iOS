@@ -12,7 +12,7 @@ extension StatsViewController {
         self.addChild(controller)
         self.view.addSubview(controller.view)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        self.view.pinSubviewToAllEdges(controller.view)
+        controller.view.pinEdges()
     }
 
 }
