@@ -94,6 +94,8 @@
 		0C2518AE2ABE1F2800381D31 /* iphone-photo.heic in Resources */ = {isa = PBXBuildFile; fileRef = 0C2518AD2ABE1EA000381D31 /* iphone-photo.heic */; };
 		0C28A01C2DAD7CFD00F81F20 /* XcodeTarget_App in Frameworks */ = {isa = PBXBuildFile; productRef = 0C28A01B2DAD7CFD00F81F20 /* XcodeTarget_App */; };
 		0C28A0222DAD7EF600F81F20 /* XcodeTarget_Keystone in Frameworks */ = {isa = PBXBuildFile; productRef = 0C28A0212DAD7EF600F81F20 /* XcodeTarget_Keystone */; };
+		0C28C6392DAD830F00F81F20 /* WordPressData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; };
+		0C28C63A2DAD830F00F81F20 /* WordPressData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0C35FFF429CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C35FFF329CBA6DA00D224EB /* BlogDashboardPersonalizationViewModelTests.swift */; };
 		0C3858202CA74DC7004880ED /* AppSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C38581F2CA74DC7004880ED /* AppSettingsTests.swift */; };
 		0C3858212CA74DC7004880ED /* AppSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C38581F2CA74DC7004880ED /* AppSettingsTests.swift */; };
@@ -775,6 +777,13 @@
 			remoteGlobalIDString = 3F7AE0B42D9B30A100AB4892;
 			remoteInfo = WordPressData;
 		};
+		0C28C63B2DAD830F00F81F20 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F7AE0B42D9B30A100AB4892;
+			remoteInfo = WordPressData;
+		};
 		0C5A8A7A2D9B22F100C25301 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -978,6 +987,7 @@
 				0C5A8A772D9B22F100C25301 /* hermes.xcframework in Embed Frameworks */,
 				0C5A8A852D9B22F100C25301 /* yoga.xcframework in Embed Frameworks */,
 				0C5A8A7D2D9B22F100C25301 /* React.xcframework in Embed Frameworks */,
+				0C28C63A2DAD830F00F81F20 /* WordPressData.framework in Embed Frameworks */,
 				0C5A8A7F2D9B22F100C25301 /* RNTAztecView.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -2189,6 +2199,7 @@
 				0C5A8A762D9B22F100C25301 /* hermes.xcframework in Frameworks */,
 				0C5A8A842D9B22F100C25301 /* yoga.xcframework in Frameworks */,
 				0C5A8A7C2D9B22F100C25301 /* React.xcframework in Frameworks */,
+				0C28C6392DAD830F00F81F20 /* WordPressData.framework in Frameworks */,
 				0C5A8A7E2D9B22F100C25301 /* RNTAztecView.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4353,6 +4364,7 @@
 			dependencies = (
 				0C5A8A7B2D9B22F100C25301 /* PBXTargetDependency */,
 				0C5A8A832D9B22F100C25301 /* PBXTargetDependency */,
+				0C28C63C2DAD830F00F81F20 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0C5A3FAB2D9B1EF400C25301 /* Reader */,
@@ -6119,6 +6131,11 @@
 			isa = PBXTargetDependency;
 			target = 3F7AE0B42D9B30A100AB4892 /* WordPressData */;
 			targetProxy = 0C128FEC2D9ECE6200C69EBA /* PBXContainerItemProxy */;
+		};
+		0C28C63C2DAD830F00F81F20 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3F7AE0B42D9B30A100AB4892 /* WordPressData */;
+			targetProxy = 0C28C63B2DAD830F00F81F20 /* PBXContainerItemProxy */;
 		};
 		0C5A8A7B2D9B22F100C25301 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
