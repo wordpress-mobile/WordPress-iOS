@@ -1,5 +1,6 @@
 import BuildSettingsKit
 import UIKit
+import WordPress
 
 // The secrets _must_ be configured before the app launches.
 //
@@ -14,5 +15,5 @@ UIApplicationMain(
     CommandLine.argc,
     CommandLine.unsafeArgv,
     nil,
-    "WordPressAppDelegate"
+    NSStringFromClass(WordPressAppDelegate.self)
 )
