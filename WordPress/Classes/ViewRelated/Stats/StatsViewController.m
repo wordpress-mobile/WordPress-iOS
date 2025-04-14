@@ -67,7 +67,7 @@
         self.title = self.blog.settings.name;
     }
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:ReachabilityUtils.internetReachability];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kTMReachabilityChangedNotification object:ReachabilityUtils.internetReachability];
 
     [self initStats];
 }

@@ -42,7 +42,7 @@ let package = Package(
         .package(url: "https://github.com/scinfu/SwiftSoup", exact: "2.7.5"),
         .package(url: "https://github.com/squarefrog/UIDeviceIdentifier", from: "2.3.0"),
         .package(url: "https://github.com/SVProgressHUD/SVProgressHUD", from: "2.3.1"),
-        .package(url: "https://github.com/tonymillion/Reachability", from: "3.7.5"),
+        .package(url: "https://github.com/Automattic/Reachability", branch: "framework-support-via-spm"),
         .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.19"),
         .package(url: "https://github.com/wordpress-mobile/FSInteractiveMap", from: "0.3.0"),
         .package(url: "https://github.com/wordpress-mobile/MediaEditor-iOS", branch: "task/spm-support"),

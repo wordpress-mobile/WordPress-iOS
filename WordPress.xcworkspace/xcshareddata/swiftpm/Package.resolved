@@ -1,5 +1,5 @@
 {
-  "originHash" : "7d23f6aa4973099f8e7915f9978778d596fc1bcd896fb3338f0709459c0f6687",
+  "originHash" : "33ddb0aa3726e1d733791a917985ff8cb4c0e0dd7def70443bf5515669f01701",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -245,10 +245,10 @@
     {
       "identity" : "reachability",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tonymillion/Reachability",
+      "location" : "https://github.com/Automattic/Reachability",
       "state" : {
-        "revision" : "3e16ffa862dda39ca9c49722d9bcb68cc2ae83d5",
-        "version" : "3.7.6"
+        "branch" : "framework-support-via-spm",
+        "revision" : "5552d6a2ceeb40ad6aa1a288ea7bbd544fb68d6f"
       }
     },
     {
