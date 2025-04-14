@@ -6706,14 +6706,6 @@
 				MARKETING_VERSION = "${VERSION_SHORT}";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"c++\"",
-					"-l\"iconv\"",
-					"-l\"sqlite3.0\"",
-					"-l\"z\"",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.reader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -6757,14 +6749,6 @@
 				MARKETING_VERSION = "${VERSION_SHORT}";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"c++\"",
-					"-l\"iconv\"",
-					"-l\"sqlite3.0\"",
-					"-l\"z\"",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.reader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -6807,14 +6791,6 @@
 				MARKETING_VERSION = "${VERSION_SHORT}";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"c++\"",
-					"-l\"iconv\"",
-					"-l\"sqlite3.0\"",
-					"-l\"z\"",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.reader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -6868,14 +6844,6 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"c++\"",
-					"-l\"iconv\"",
-					"-l\"sqlite3.0\"",
-					"-l\"z\"",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.Keystone;
 				PRODUCT_NAME = WordPress;
 				SKIP_INSTALL = YES;
@@ -6937,14 +6905,6 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"c++\"",
-					"-l\"iconv\"",
-					"-l\"sqlite3.0\"",
-					"-l\"z\"",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.Keystone;
 				PRODUCT_NAME = WordPress;
 				SKIP_INSTALL = YES;
@@ -7005,14 +6965,6 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"c++\"",
-					"-l\"iconv\"",
-					"-l\"sqlite3.0\"",
-					"-l\"z\"",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.Keystone;
 				PRODUCT_NAME = WordPress;
 				SKIP_INSTALL = YES;
