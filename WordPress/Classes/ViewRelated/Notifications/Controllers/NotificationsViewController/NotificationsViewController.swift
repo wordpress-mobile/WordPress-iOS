@@ -114,7 +114,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     }()
 
     var isSidebarModeEnabled = false
-    var isReaderModeEnabled = false
+    var isReaderAppModeEnabled = false
 
     // MARK: - View Lifecycle
 
@@ -451,7 +451,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 private extension NotificationsViewController {
 
     func setupNavigationBar() {
-        if !isReaderModeEnabled {
+        if !isReaderAppModeEnabled {
             navigationController?.navigationBar.prefersLargeTitles = false
             navigationItem.largeTitleDisplayMode = .never
         }

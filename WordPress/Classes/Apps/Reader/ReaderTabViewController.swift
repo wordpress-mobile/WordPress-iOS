@@ -6,7 +6,7 @@ import WordPressUI
 final class ReaderTabViewController: UITabBarController, UITabBarControllerDelegate {
     private var menuStore = ReaderMenuStore()
     private let library = ReaderPresenter(
-        viewModel: ReaderSidebarViewModel(isReaderModeEnabled: true)
+        viewModel: ReaderSidebarViewModel(isReaderAppModeEnabled: true)
     )
     private let notificationsButtonViewModel = NotificationsButtonViewModel()
     private var cancellables: [AnyCancellable] = []
@@ -110,7 +110,7 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
             image: UIImage(named: "tab-bar-notifications"),
             selectedImage: UIImage(named: "tab-bar-notifications")
         )
-        notificationsVC.isReaderModeEnabled = true
+        notificationsVC.isReaderAppModeEnabled = true
         let navigationVC = UINavigationController(rootViewController: notificationsVC)
         notificationsVC.enableLargeTitles()
 

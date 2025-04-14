@@ -14,7 +14,7 @@ final class ReaderSidebarViewModel: ObservableObject {
     private var isRestoringSelection = false
 
     @Published var isCompact = false
-    let isReaderModeEnabled: Bool
+    let isReaderAppModeEnabled: Bool
 
     var navigate: (ReaderSidebarNavigation) -> Void = { _ in }
 
@@ -22,12 +22,12 @@ final class ReaderSidebarViewModel: ObservableObject {
 
     init(menuStore: ReaderMenuStoreProtocol = ReaderMenuStore(),
          contextManager: CoreDataStackSwift = ContextManager.shared,
-         isReaderModeEnabled: Bool = false) {
+         isReaderAppModeEnabled: Bool = false) {
         self.tabItemsStore = menuStore
         self.contextManager = contextManager
 
-        self.isReaderModeEnabled = isReaderModeEnabled
-        if isReaderModeEnabled {
+        self.isReaderAppModeEnabled = isReaderAppModeEnabled
+        if isReaderAppModeEnabled {
             menu = [.subscrtipions, .lists, .tags, .saved, .likes]
         } else {
             menu = [.recent, .discover, .saved, .likes, .search]

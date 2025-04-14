@@ -72,7 +72,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private let overlaysCoordinator: MySiteOverlaysCoordinator
 
     // TODO: (reader) factor if out of `MySiteVC` for a production version
-    var isReaderModeEnabled = false
+    var isReaderAppModeEnabled = false
 
     // MARK: - Initializers
 
@@ -207,7 +207,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
         trackNoSitesVisibleIfNeeded()
 
-        if !isReaderModeEnabled {
+        if !isReaderAppModeEnabled {
             createFABIfNeeded()
         }
         fetchPrompt(for: blog)
@@ -303,7 +303,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func configureNavBarAppearance(animated: Bool) {
-        guard !isReaderModeEnabled else {
+        guard !isReaderAppModeEnabled else {
             return
         }
         if scrollView.contentOffset.y >= 60 {
@@ -363,7 +363,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         showSitePicker(for: blog)
         updateNavigationTitle(for: blog)
 
-        let section = (isSidebarModeEnabled || isReaderModeEnabled) ? .dashboard : viewModel.getSection(
+        let section = (isSidebarModeEnabled || isReaderAppModeEnabled) ? .dashboard : viewModel.getSection(
             for: blog,
             jetpackFeaturesEnabled: JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
             splitViewControllerIsHorizontallyCompact: splitViewControllerIsHorizontallyCompact
@@ -740,7 +740,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         self.blogDashboardViewController = blogDashboardViewController
         stackView.sendSubviewToBack(blogDashboardViewController.view)
 
-        if isReaderModeEnabled, let account = blog.account {
+        if isReaderAppModeEnabled, let account = blog.account {
             let headerView = MeHeaderView()
             headerView.update(with: .init(account: account))
             headerView.configureReaderMode()

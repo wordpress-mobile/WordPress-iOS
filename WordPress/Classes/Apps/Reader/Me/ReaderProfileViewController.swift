@@ -7,7 +7,7 @@ final class ReaderProfileViewController: UIViewController {
         super.viewDidLoad()
 
         let mySiteVC = MySiteViewController()
-        mySiteVC.isReaderModeEnabled = true
+        mySiteVC.isReaderAppModeEnabled = true
         mySiteVC.willMove(toParent: self)
         addChild(mySiteVC)
         view.addSubview(mySiteVC.view)
