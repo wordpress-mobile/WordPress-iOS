@@ -34,6 +34,7 @@
     post.content = remotePost.content;
     post.status = remotePost.status;
     post.password = remotePost.password;
+    post.order = remotePost.order;
 
     if (remotePost.postThumbnailID != nil) {
         post.featuredImage = [Media existingOrStubMediaWithMediaID: remotePost.postThumbnailID inBlog:post.blog];

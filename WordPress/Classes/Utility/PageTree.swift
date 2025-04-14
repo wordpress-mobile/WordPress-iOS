@@ -2,10 +2,6 @@ final class PageTree {
 
     // A node in a tree, which of course is also a tree itself.
     private class TreeNode {
-        struct PageData {
-            var postID: NSNumber?
-            var parentID: NSNumber?
-        }
         let page: Page
         var children = [TreeNode]()
         var parentNode: TreeNode?
@@ -16,7 +12,7 @@ final class PageTree {
 
         func dfsList() -> [Page] {
             var pages = [Page]()
-            _ = depthFirstSearch { level, node in
+            _ = depthFirstSearch(sortByPageOrder: true) { level, node in
                 let page = node.page
                 page.hierarchyIndex = level
                 page.hasVisibleParent = node.parentNode != nil
@@ -32,18 +28,19 @@ final class PageTree {
         ///     a boolean value indicate whether the search should be stopped.
         /// - Returns: `true` if search has been stopped by the closure.
         @discardableResult
-        func depthFirstSearch(using closure: (Int, TreeNode) -> Bool) -> Bool {
-            depthFirstSearch(level: 0, using: closure)
+        func depthFirstSearch(sortByPageOrder: Bool, using closure: (Int, TreeNode) -> Bool) -> Bool {
+            depthFirstSearch(level: 0, sortByPageOrder: sortByPageOrder, using: closure)
         }
 
-        private func depthFirstSearch(level: Int, using closure: (Int, TreeNode) -> Bool) -> Bool {
+        private func depthFirstSearch(level: Int, sortByPageOrder: Bool, using closure: (Int, TreeNode) -> Bool) -> Bool {
             let shouldStop = closure(level, self)
             if shouldStop {
                 return true
             }
 
-            for child in children {
-                let shouldStop = child.depthFirstSearch(level: level + 1, using: closure)
+            let pages = sortByPageOrder ? children.sorted(using: KeyPathComparator(\TreeNode.page.order)) : children
+            for child in pages {
+                let shouldStop = child.depthFirstSearch(level: level + 1, sortByPageOrder: sortByPageOrder, using: closure)
                 if shouldStop {
                     return true
                 }

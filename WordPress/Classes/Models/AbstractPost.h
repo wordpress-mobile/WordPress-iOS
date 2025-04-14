@@ -34,6 +34,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (weak, readonly) AbstractPost *revision;
 @property (nonatomic, strong) NSSet *comments;
 @property (nonatomic, strong, nullable) Media *featuredImage;
+@property (nonatomic, assign) NSInteger order;
 
 /// This array will contain a list of revision IDs.
 @property (nonatomic, strong, nullable) NSArray *revisions;

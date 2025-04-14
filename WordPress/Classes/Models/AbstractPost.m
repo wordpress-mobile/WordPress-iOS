@@ -26,6 +26,7 @@
 @dynamic autosaveModifiedDate;
 @dynamic autosaveIdentifier;
 @dynamic foreignID;
+@dynamic order;
 @synthesize voiceContent;
 
 #pragma mark - Life Cycle Methods

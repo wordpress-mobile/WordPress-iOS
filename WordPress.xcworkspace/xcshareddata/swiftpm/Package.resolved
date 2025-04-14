@@ -1,5 +1,5 @@
 {
-  "originHash" : "deb4f4363dd5a33662b5ec5a3a4f73206abbb0a3392b6d7ead912fb9dc81f6e0",
+  "originHash" : "e6a9163ae536e498cb3b486db128b446499c8e937abda18922b097bae4378a80",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -392,7 +392,7 @@
       "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
       "state" : {
         "branch" : "wpios-edition",
-        "revision" : "ed050d069df10d5f3aa35df25641f8c415b1e4a5"
+        "revision" : "94cbe7ed4ec184f104cc8e3c4c525c26e639c932"
       }
     },
     {
