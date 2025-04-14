@@ -305,7 +305,11 @@ platform :ios do
       upload_build_to_testflight(
         ipa_path: File.join(BUILD_PRODUCTS_PATH, "#{APP_STORE_CONNECT_BUILD_NAME_READER}.ipa"),
         whats_new_path: temp_release_notes,
-        distribution_groups: ['Internal Automattic Testers Automatic Distribution'],
+        # The action fails with "Cannot add internal group to a build," despite the build having been added to the internal group.
+        #
+        # Groups are required when distributing to external testers, but maybe they are not when it's only internal?
+        # distribution_groups: ['Internal Automattic Testers Automatic Distribution'],
+        distribution_groups: [],
         beta_app_description_path: BETA_APP_DESCRIPTION_PATH_READER
       )
     ensure
@@ -430,13 +434,17 @@ platform :ios do
   end
 
   def upload_build_to_testflight(ipa_path:, whats_new_path:, distribution_groups:, beta_app_description_path:)
+    # Explicitly disable distributing to external testers if there are no external groups.
+    distribute_external = distribution_groups.empty? == false
+
     upload_to_testflight(
       team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
       api_key_path: APP_STORE_CONNECT_KEY_PATH,
       ipa: ipa_path,
       beta_app_description: File.read(beta_app_description_path),
       changelog: File.read(whats_new_path),
-      distribute_external: true,
+      distribute_external: distribute_external,
+      notify_external_testers: distribute_external,
       groups: distribution_groups,
       # If there is a build waiting for beta review, we ~~want~~ would like to to reject that so the new build can be submitted instead.
       reject_build_waiting_for_review: true
