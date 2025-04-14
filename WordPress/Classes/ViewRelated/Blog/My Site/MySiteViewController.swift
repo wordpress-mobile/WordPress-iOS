@@ -745,7 +745,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             headerView.update(with: .init(account: account))
             headerView.configureReaderMode()
             stackView.insertArrangedSubview(headerView, at: 0)
-            
+
             let spacerView = SpacerView(height: 8)
             stackView.insertArrangedSubview(spacerView, at: 1)
             
