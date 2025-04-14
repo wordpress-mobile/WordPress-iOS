@@ -72,10 +72,10 @@ extension WPStyleGuide {
     private static func setupFancyAlertAppearance() {
         let appearance = FancyAlertView.appearance()
 
-        appearance.titleTextColor = UIAppColor.neutral(.shade70)
+        appearance.wpTitleTextColor = UIAppColor.neutral(.shade70)
         appearance.titleFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
 
-        appearance.bodyTextColor = UIAppColor.neutral(.shade70)
+        appearance.wpBodyTextColor = UIAppColor.neutral(.shade70)
         appearance.bodyFont = WPStyleGuide.fontForTextStyle(.body)
         appearance.bodyBackgroundColor = UIAppColor.neutral(.shade0)
 

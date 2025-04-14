@@ -62,7 +62,8 @@ open class FancyAlertView: UIView {
 
     /// TitleLabel: textColor
     ///
-    @objc public dynamic var titleTextColor: UIColor? {
+    /// Notice the "wp" prefix to avoid clashing with Apple's private API.
+    @objc public dynamic var wpTitleTextColor: UIColor? {
         get {
             return titleLabel.textColor
         }
@@ -73,7 +74,8 @@ open class FancyAlertView: UIView {
 
     /// BodyLabel: textColor
     ///
-    @objc public dynamic var bodyTextColor: UIColor? {
+    /// Notice the "wp" prefix to avoid clashing with Apple's private API.
+    @objc public dynamic var wpBodyTextColor: UIColor? {
         get {
             return bodyLabel.textColor
         }
