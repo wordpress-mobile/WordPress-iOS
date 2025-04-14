@@ -138,6 +138,13 @@
 		0CA15B4E2BB2128800518D6E /* PostCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA15B4D2BB2128800518D6E /* PostCoordinatorTests.swift */; };
 		0CB4056E29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4056D29C7BA63008EED0A /* BlogDashboardPersonalizationServiceTests.swift */; };
 		0CB424F42ADF3CBE0080B807 /* PostSearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB424F32ADF3CBE0080B807 /* PostSearchViewModelTests.swift */; };
+		0CCA99512DAD76AD0048F0A9 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
+		0CCA99592DAD76BA0048F0A9 /* Noticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5A34D0C25DF2F7700C9654B /* Noticons.ttf */; };
+		0CCA995A2DAD76C20048F0A9 /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
+		0CCA995B2DAD76C90048F0A9 /* Flags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 406A0EEF224D39C50016AD6A /* Flags.xcassets */; };
+		0CCA995C2DAD76D80048F0A9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C142BA790BC00A8E0C5 /* PrivacyInfo.xcprivacy */; };
+		0CCA995D2DAD76E00048F0A9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 931DF4D818D09A2F00540BDD /* InfoPlist.strings */; };
+		0CCA995E2DAD76E00048F0A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1D91454134A853D0089019C /* Localizable.strings */; };
 		0CD382862A4B6FCF00612173 /* DashboardBlazeCardCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */; };
 		0CD6299B2B9AAA9A00325EA4 /* Foundation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD6299A2B9AAA9A00325EA4 /* Foundation+Extensions.swift */; };
 		0CED2AD82D95BB46003015CF /* XcodeTarget_App in Frameworks */ = {isa = PBXBuildFile; productRef = 0CED2AD72D95BB46003015CF /* XcodeTarget_App */; };
@@ -4347,6 +4354,8 @@
 			);
 			fileSystemSynchronizedGroups = (
 				0C5A3FAB2D9B1EF400C25301 /* Reader */,
+				0CED35262D959427003015CF /* Misc */,
+				0CFC380E2DA408BB00DB3386 /* Recoleta */,
 			);
 			name = Reader;
 			packageProductDependencies = (
@@ -5014,6 +5023,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CCA995A2DAD76C20048F0A9 /* n.caf in Resources */,
+				0CCA995B2DAD76C90048F0A9 /* Flags.xcassets in Resources */,
+				0CCA995D2DAD76E00048F0A9 /* InfoPlist.strings in Resources */,
+				0CCA995E2DAD76E00048F0A9 /* Localizable.strings in Resources */,
+				0CCA995C2DAD76D80048F0A9 /* PrivacyInfo.xcprivacy in Resources */,
+				0CCA99512DAD76AD0048F0A9 /* AppImages.xcassets in Resources */,
+				0CCA99592DAD76BA0048F0A9 /* Noticons.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
