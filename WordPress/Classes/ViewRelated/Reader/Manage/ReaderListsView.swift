@@ -21,6 +21,7 @@ struct ReaderListsView: View {
                 items
             }
         }
+        .listStyle(.plain)
     }
 
     private var items: some View {

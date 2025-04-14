@@ -75,6 +75,11 @@ final class ReaderTabViewController: UITabBarController, UITabBarControllerDeleg
             image: UIImage(named: "reader-menu-subscriptions"),
             selectedImage: nil
         )
+        libraryVC.tabBarItem.scrollEdgeAppearance = {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            return appearance
+        }()
         return library.prepareForLibraryPresentation()
     }
 
