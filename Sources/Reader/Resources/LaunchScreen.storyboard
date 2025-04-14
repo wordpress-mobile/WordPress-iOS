@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,19 +17,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="wp-jp-circular-lockup" translatesAutoresizingMaskIntoConstraints="NO" id="JZ4-ST-36F">
-                                <rect key="frame" x="154.5" y="395.5" width="105" height="105"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wp-logotype-large" translatesAutoresizingMaskIntoConstraints="NO" id="aKD-rU-bDj">
+                                <rect key="frame" x="87" y="389.5" width="240" height="145"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="105" id="V6u-HF-Ery"/>
-                                    <constraint firstAttribute="width" secondItem="JZ4-ST-36F" secondAttribute="height" multiplier="1:1" id="fjK-Ng-KG1"/>
+                                    <constraint firstAttribute="width" constant="240" id="7pb-DV-3ha"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="JZ4-ST-36F" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="73N-fT-GZw"/>
-                            <constraint firstItem="JZ4-ST-36F" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="VeN-Rx-oO8"/>
+                            <constraint firstItem="aKD-rU-bDj" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" id="F0U-Pk-ghe"/>
+                            <constraint firstItem="aKD-rU-bDj" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="JhR-c7-FkE"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -39,7 +38,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="wp-jp-circular-lockup" width="133" height="80"/>
+        <image name="wp-logotype-large" width="708" height="145"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
