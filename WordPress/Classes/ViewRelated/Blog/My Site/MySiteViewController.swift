@@ -748,7 +748,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
             let spacerView = SpacerView(height: 8)
             stackView.insertArrangedSubview(spacerView, at: 1)
-            
+
             let separator = SeparatorView.horizontal()
             stackView.insertArrangedSubview(separator, at: 2)
         }
