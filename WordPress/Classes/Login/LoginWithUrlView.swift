@@ -110,5 +110,3 @@ private extension LoginWithUrlView {
 #Preview {
     LoginWithUrlView(presenter: nil) { _ in }
 }
-
-private let mockAnchor = ASPresentationAnchor()
