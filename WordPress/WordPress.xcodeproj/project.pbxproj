@@ -6715,6 +6715,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ../Sources/Reader/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "To take photos or videos to use in your posts.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Enable microphone access to record sound in your videos.";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -6762,6 +6763,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ../Sources/Reader/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "To take photos or videos to use in your posts.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Enable microphone access to record sound in your videos.";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -6808,6 +6810,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ../Sources/Reader/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "To take photos or videos to use in your posts.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Enable microphone access to record sound in your videos.";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
