@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0CED016F2D95B897003015CF"
-               BuildableName = "Keystone.framework"
+               BuildableName = "WordPress.framework"
                BlueprintName = "Keystone"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0CED016F2D95B897003015CF"
-            BuildableName = "Keystone.framework"
+            BuildableName = "WordPress.framework"
             BlueprintName = "Keystone"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>

@@ -101,8 +101,8 @@
 		0C5A8A752D9B22F100C25301 /* Gutenberg.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3902D2C4BA3008ACD86 /* Gutenberg.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0C5A8A762D9B22F100C25301 /* hermes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3922D2C4BA3008ACD86 /* hermes.xcframework */; };
 		0C5A8A772D9B22F100C25301 /* hermes.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3922D2C4BA3008ACD86 /* hermes.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0C5A8A782D9B22F100C25301 /* Keystone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CED01702D95B897003015CF /* Keystone.framework */; };
-		0C5A8A792D9B22F100C25301 /* Keystone.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CED01702D95B897003015CF /* Keystone.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0C5A8A782D9B22F100C25301 /* WordPress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CED01702D95B897003015CF /* WordPress.framework */; };
+		0C5A8A792D9B22F100C25301 /* WordPress.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CED01702D95B897003015CF /* WordPress.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0C5A8A7C2D9B22F100C25301 /* React.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D38F2D2C4BA3008ACD86 /* React.xcframework */; };
 		0C5A8A7D2D9B22F100C25301 /* React.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D38F2D2C4BA3008ACD86 /* React.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0C5A8A7E2D9B22F100C25301 /* RNTAztecView.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3912D2C4BA3008ACD86 /* RNTAztecView.xcframework */; };
@@ -965,7 +965,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				0C5A8A752D9B22F100C25301 /* Gutenberg.xcframework in Embed Frameworks */,
-				0C5A8A792D9B22F100C25301 /* Keystone.framework in Embed Frameworks */,
+				0C5A8A792D9B22F100C25301 /* WordPress.framework in Embed Frameworks */,
 				0C5A8A812D9B22F100C25301 /* WordPressAuthenticator.framework in Embed Frameworks */,
 				0C5A8A772D9B22F100C25301 /* hermes.xcframework in Embed Frameworks */,
 				0C5A8A852D9B22F100C25301 /* yoga.xcframework in Embed Frameworks */,
@@ -1251,7 +1251,7 @@
 		0CB424F32ADF3CBE0080B807 /* PostSearchViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSearchViewModelTests.swift; sourceTree = "<group>"; };
 		0CD382852A4B6FCE00612173 /* DashboardBlazeCardCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardBlazeCardCellViewModelTest.swift; sourceTree = "<group>"; };
 		0CD6299A2B9AAA9A00325EA4 /* Foundation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+Extensions.swift"; sourceTree = "<group>"; };
-		0CED01702D95B897003015CF /* Keystone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Keystone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0CED01702D95B897003015CF /* WordPress.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPress.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CF7D6C22ABB753A006D1E89 /* MediaImageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaImageServiceTests.swift; sourceTree = "<group>"; };
 		173D82E6238EE2A7008432DA /* FeatureFlagTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagTests.swift; sourceTree = "<group>"; };
 		174C116E2624603400346EC6 /* MBarRouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBarRouteTests.swift; sourceTree = "<group>"; };
@@ -1996,6 +1996,7 @@
 				ViewRelated/Comments/Controllers/CommentsViewController.h,
 				"ViewRelated/Me/Help & Support/Activity Logs/ActivityLogViewController.h",
 				ViewRelated/Menus/Controllers/MenuItemsViewController.h,
+				ViewRelated/Menus/Controllers/MenusViewController.h,
 				ViewRelated/Pages/PageSettingsViewController.h,
 				ViewRelated/Post/PostSettingsViewController.h,
 				ViewRelated/Post/Views/PostMetaButton.h,
@@ -2013,7 +2014,7 @@
 		0C5C47012D9839DE00F2CD55 /* Exceptions for "Keystone" folder in "Keystone" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			publicHeaders = (
-				Keystone.h,
+				WordPress.h,
 			);
 			target = 0CED016F2D95B897003015CF /* Keystone */;
 		};
@@ -2174,7 +2175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C5A8A742D9B22F100C25301 /* Gutenberg.xcframework in Frameworks */,
-				0C5A8A782D9B22F100C25301 /* Keystone.framework in Frameworks */,
+				0C5A8A782D9B22F100C25301 /* WordPress.framework in Frameworks */,
 				0C5A8A802D9B22F100C25301 /* WordPressAuthenticator.framework in Frameworks */,
 				0C5A8A762D9B22F100C25301 /* hermes.xcframework in Frameworks */,
 				0C5A8A842D9B22F100C25301 /* yoga.xcframework in Frameworks */,
@@ -2610,7 +2611,7 @@
 				EA14534229AD874C001F3143 /* JetpackUITests.xctest */,
 				4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */,
 				4AD953BB2C21451700D0EEFA /* WordPressAuthenticatorTests.xctest */,
-				0CED01702D95B897003015CF /* Keystone.framework */,
+				0CED01702D95B897003015CF /* WordPress.framework */,
 				0C5A3F8C2D9B1E3700C25301 /* Reader.app */,
 				3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */,
 				3F7AE0BC2D9B30A200AB4892 /* WordPressDataTests.xctest */,
@@ -4378,7 +4379,7 @@
 				0CED2AD72D95BB46003015CF /* XcodeTarget_App */,
 			);
 			productName = Keystone;
-			productReference = 0CED01702D95B897003015CF /* Keystone.framework */;
+			productReference = 0CED01702D95B897003015CF /* WordPress.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		1D6058900D05DD3D006BFB54 /* WordPress */ = {
@@ -6803,7 +6804,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
-					"KEYSTONE=1",
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -6823,7 +6823,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.Keystone;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = WordPress;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -6866,7 +6866,6 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_PREFIX_HEADER = ../Sources/Keystone/Keystone_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = "KEYSTONE=1";
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -6885,7 +6884,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.Keystone;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = WordPress;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -6927,7 +6926,6 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_PREFIX_HEADER = ../Sources/Keystone/Keystone_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = "KEYSTONE=1";
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -6946,7 +6944,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.Keystone;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = WordPress;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
