@@ -3,4 +3,3 @@
 //
 
 #import "WordPress-Bridging-Header.h"
-#import "TestingAppDelegate.h"

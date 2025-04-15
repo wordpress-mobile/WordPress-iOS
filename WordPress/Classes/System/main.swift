@@ -3,7 +3,7 @@ import Foundation
 import UIKit
 
 let isRunningTests = NSClassFromString("XCTestCase") != nil
-let appDelegateClass = isRunningTests ? "TestingAppDelegate" : NSStringFromClass(WordPressAppDelegate.self)
+let appDelegateClass = isRunningTests ? NSStringFromClass(TestingAppDelegate.self) : NSStringFromClass(WordPressAppDelegate.self)
 
 // The secrets _must_ be configured before the app launches.
 //
@@ -18,3 +18,11 @@ UIApplicationMain(
     nil,
     appDelegateClass
 )
+
+final class TestingAppDelegate: NSObject, UIApplicationDelegate {
+    func applicationDidFinishLaunching(_ application: UIApplication) {
+        window = UIWindow()
+        window?.rootViewController = UIViewController()
+        window?.makeKeyAndVisible()
+    }
+}
