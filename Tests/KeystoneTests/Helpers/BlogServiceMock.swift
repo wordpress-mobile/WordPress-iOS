@@ -1,5 +1,7 @@
 import Foundation
 
+@testable import WordPress
+
 class BlogServiceMock: BlogService {
 
     var syncAuthorsCalled = false

@@ -1,3 +1,5 @@
+import Foundation
+
 extension NSError {
 
     static func testInstance(

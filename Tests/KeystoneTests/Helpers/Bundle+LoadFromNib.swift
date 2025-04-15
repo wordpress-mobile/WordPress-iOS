@@ -1,3 +1,6 @@
+import Foundation
+@testable import WordPress
+
 // MARK: - Convenience extension to simplify testing code
 extension Bundle {
     /// Load a xib file and returns its first view.

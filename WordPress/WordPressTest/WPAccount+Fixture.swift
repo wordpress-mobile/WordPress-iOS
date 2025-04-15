@@ -1,3 +1,6 @@
+import CoreData
+@testable import WordPress
+
 /// Centralized utility to generate preconfigured WPAccount instances
 extension WPAccount {
 

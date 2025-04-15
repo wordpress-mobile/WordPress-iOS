@@ -20,6 +20,8 @@ UIApplicationMain(
 )
 
 final class TestingAppDelegate: NSObject, UIApplicationDelegate {
+    var window: UIWindow?
+
     func applicationDidFinishLaunching(_ application: UIApplication) {
         window = UIWindow()
         window?.rootViewController = UIViewController()

@@ -1,6 +1,8 @@
 import XCTest
 import Foundation
 
+@testable import WordPress
+
 class MenuItemTests: CoreDataTestCase {
 
     /// Tests detection of descendants.

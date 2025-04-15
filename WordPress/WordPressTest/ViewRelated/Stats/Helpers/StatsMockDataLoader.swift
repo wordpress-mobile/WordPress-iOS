@@ -1,6 +1,8 @@
 import Foundation
 import XCTest
 
+@testable import WordPress
+
 struct StatsMockDataLoader {
 
     static func createStatsSummaryTimeIntervalData(fileName: String) throws -> StatsSummaryTimeIntervalData? {

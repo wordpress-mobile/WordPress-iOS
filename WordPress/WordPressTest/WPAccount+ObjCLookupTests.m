@@ -1,5 +1,6 @@
 #import <XCTest/XCTest.h>
 #import "WordPressTest-Swift.h"
+#import <WordPress/WordPress.h>
 
 @interface WPAccount_ObjCLookupTests : XCTestCase
 

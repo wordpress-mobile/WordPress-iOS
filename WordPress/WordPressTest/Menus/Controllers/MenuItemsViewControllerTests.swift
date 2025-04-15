@@ -1,5 +1,7 @@
 import XCTest
 
+@testable import WordPress
+
 class MenuItemsViewControllerTests: CoreDataTestCase {
 
     /// Tests that no string is provided when there is nothing to announce.
