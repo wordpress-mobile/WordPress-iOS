@@ -95,6 +95,16 @@ let package = Package(
                 "BuildSettingsKit",
                 "SFHFKeychainUtils",
                 "WordPressShared",
+                // Even though the extension is all in Swift, we need to include the Objective-C
+                // version of CocoaLumberjack to avoid linking issues with other dependencies that
+                // use it.
+                //
+                // Example:
+                //
+                // Undefined symbols for architecture arm64:
+                //  "_OBJC_CLASS_$_DDLog", referenced from:
+                //       in SharedCoreDataStack.o
+                .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             ],
