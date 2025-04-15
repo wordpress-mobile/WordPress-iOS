@@ -95,6 +95,7 @@ let package = Package(
                 "BuildSettingsKit",
                 "SFHFKeychainUtils",
                 "WordPressShared",
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             ],
             resources: [.process("Resources/Extensions.xcdatamodeld")]

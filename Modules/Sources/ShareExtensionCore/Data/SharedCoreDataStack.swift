@@ -1,6 +1,6 @@
 import Foundation
 import CoreData
-// import CocoaLumberjackSwift
+import CocoaLumberjackSwift
 import BuildSettingsKit
 import WordPressKit
 
@@ -39,7 +39,7 @@ public final class SharedCoreDataStack {
         let container = SharedPersistentContainer(name: "SharedCoreDataStack", managedObjectModel: SharedCoreDataStack.model)
         container.loadPersistentStores { (storeDescription, error) in
             if let error = error as NSError? {
-                // DDLogError("Error loading persistent stores: \(error), \(error.userInfo)")
+                DDLogError("Error loading persistent stores: \(error), \(error.userInfo)")
             }
         }
         return container
@@ -71,7 +71,7 @@ public final class SharedCoreDataStack {
         do {
             try managedContext.save()
         } catch let error as NSError {
-            // DDLogError("Error saving context: \(error), \(error.userInfo)")
+            DDLogError("Error saving context: \(error), \(error.userInfo)")
         }
     }
 }
@@ -120,7 +120,7 @@ extension SharedCoreDataStack {
         do {
             postUploadOp = try managedContext.existingObject(with: postUploadOpObjectID) as? PostUploadOperation
         } catch {
-            // DDLogError("Error loading PostUploadOperation Object with ID: \(postUploadOpObjectID)")
+            DDLogError("Error loading PostUploadOperation Object with ID: \(postUploadOpObjectID)")
         }
         return postUploadOp
     }
@@ -151,7 +151,7 @@ extension SharedCoreDataStack {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MediaUploadOperation")
         request.predicate = NSPredicate(format: "(groupID == %@)", groupID)
         guard let results = (try? managedContext.fetch(request)) as? [MediaUploadOperation] else {
-            // DDLogError("Failed to fetch MediaUploadOperation for group ID: \(groupID)")
+            DDLogError("Failed to fetch MediaUploadOperation for group ID: \(groupID)")
             return nil
         }
         return results
@@ -195,7 +195,7 @@ extension SharedCoreDataStack {
         do {
             uploadOps = try managedContext.fetch(request) as! [MediaUploadOperation]
         } catch {
-            // DDLogError("Failed to fetch MediaUploadOperation: \(error)")
+            DDLogError("Failed to fetch MediaUploadOperation: \(error)")
         }
 
         return uploadOps
@@ -217,7 +217,7 @@ extension SharedCoreDataStack {
         do {
             uploadOp = try managedContext.existingObject(with: uploadOpObjectID) as? UploadOperation
         } catch {
-            // DDLogError("Error setting \(status.stringValue) status for UploadOperation Object with ID: \(uploadOpObjectID) — could not fetch object.")
+            DDLogError("Error setting \(status.stringValue) status for UploadOperation Object with ID: \(uploadOpObjectID) — could not fetch object.")
             return
         }
         uploadOp?.currentStatus = status
@@ -260,7 +260,7 @@ extension SharedCoreDataStack {
     ///
     public func updateMediaOperation(for fileName: String, with sessionID: String, remoteMediaID: Int64?, remoteURL: String?, width: Int32?, height: Int32?) {
         guard let mediaUploadOp = fetchMediaUploadOp(for: fileName, with: sessionID) else {
-            // DDLogError("Error loading UploadOperation Object with File Name: \(fileName)")
+            DDLogError("Error loading UploadOperation Object with File Name: \(fileName)")
             return
         }
 
@@ -305,7 +305,7 @@ extension SharedCoreDataStack {
     ///
     public func updatePostOperation(with status: UploadOperation.UploadStatus, remotePostID: Int64, forPostUploadOpWithObjectID postUploadOpObjectID: NSManagedObjectID) {
         guard let postUploadOp = (try? managedContext.existingObject(with: postUploadOpObjectID)) as? PostUploadOperation else {
-            // DDLogError("Error loading PostUploadOperation Object with ID: \(postUploadOpObjectID)")
+            DDLogError("Error loading PostUploadOperation Object with ID: \(postUploadOpObjectID)")
             return
         }
         postUploadOp.currentStatus = status
@@ -324,7 +324,7 @@ extension SharedCoreDataStack {
         do {
             uploadOp = try managedContext.existingObject(with: uploadOpObjectID) as? UploadOperation
         } catch {
-            // DDLogError("Error loading UploadOperation Object with ID: \(uploadOpObjectID)")
+            DDLogError("Error loading UploadOperation Object with ID: \(uploadOpObjectID)")
             return
         }
         uploadOp?.backgroundSessionTaskID = taskID.int32Value
