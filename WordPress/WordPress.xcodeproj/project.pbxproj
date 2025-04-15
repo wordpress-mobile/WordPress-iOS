@@ -1498,7 +1498,6 @@
 		CC52188B2278C622008998CE /* EditorFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorFlow.swift; sourceTree = "<group>"; };
 		CC7CB97222B1510900642EE9 /* SignupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupTests.swift; sourceTree = "<group>"; };
 		CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPUITestCredentials.swift; sourceTree = "<group>"; };
-		CCCF53BC237B13760035E9CA /* WordPressUnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = WordPressUnitTests.xctestplan; sourceTree = "<group>"; };
 		CCCF53BD237B13EA0035E9CA /* WordPressUITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = WordPressUITests.xctestplan; sourceTree = "<group>"; };
 		D81C2F5320F85DB1002AE1F1 /* ApproveCommentActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApproveCommentActionTests.swift; sourceTree = "<group>"; };
 		D81C2F5920F86E94002AE1F1 /* LikeCommentActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCommentActionTests.swift; sourceTree = "<group>"; };
@@ -1563,8 +1562,6 @@
 		E167745C1377F26400EE44DD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E167745D1377F26D00EE44DD /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E16AB92A14D978240047A2E5 /* WordPressTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordPressTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E16AB93114D978240047A2E5 /* WordPressTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WordPressTest-Info.plist"; sourceTree = "<group>"; };
-		E16AB93814D978240047A2E5 /* WordPressTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPressTest-Prefix.pch"; sourceTree = "<group>"; };
 		E17BE7A9134DEC12007285FD /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E180BD4B1FB462FF00D0D781 /* CookieJarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieJarTests.swift; sourceTree = "<group>"; };
 		E185474D1DED8D8800D875D7 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -1800,6 +1797,14 @@
 			);
 			target = 0CED016F2D95B897003015CF /* Keystone */;
 		};
+		0C73D1A22DAEFA9800CC0F3A /* Exceptions for "KeystoneTests" folder in "WordPressTest" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"WordPressTest-Info.plist",
+				WordPressUnitTests.xctestplan,
+			);
+			target = E16AB92914D978240047A2E5 /* WordPressTest */;
+		};
 		3F1A48232DA3B23900786B92 /* Exceptions for "WordPressData" folder in "Keystone" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -1898,6 +1903,9 @@
 		};
 		0C73A9BD2DAEDFDE00CC0F3A /* KeystoneTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0C73D1A22DAEFA9800CC0F3A /* Exceptions for "KeystoneTests" folder in "WordPressTest" target */,
+			);
 			path = KeystoneTests;
 			sourceTree = "<group>";
 		};
@@ -3532,20 +3540,9 @@
 		E16AB92F14D978240047A2E5 /* WordPressTest */ = {
 			isa = PBXGroup;
 			children = (
-				E16AB93014D978240047A2E5 /* Supporting Files */,
 				E1239B7B176A2E0F00D37220 /* Tests */,
-				CCCF53BC237B13760035E9CA /* WordPressUnitTests.xctestplan */,
 			);
 			path = WordPressTest;
-			sourceTree = "<group>";
-		};
-		E16AB93014D978240047A2E5 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				E16AB93114D978240047A2E5 /* WordPressTest-Info.plist */,
-				E16AB93814D978240047A2E5 /* WordPressTest-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		E1B34C091CCDFFCE00889709 /* Credentials */ = {
@@ -8041,7 +8038,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "WordPressTest/WordPressTest-Prefix.pch";
+				GCC_PREFIX_HEADER = "../Tests/KeystoneTests/WordPressTest-Prefix.pch";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				HEADER_SEARCH_PATHS = (
@@ -8053,7 +8050,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
-				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
+				INFOPLIST_FILE = "../Tests/KeystoneTests/WordPressTest-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -8355,7 +8352,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "WordPressTest/WordPressTest-Prefix.pch";
+				GCC_PREFIX_HEADER = "../Tests/KeystoneTests/WordPressTest-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -8372,7 +8369,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
-				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
+				INFOPLIST_FILE = "../Tests/KeystoneTests/WordPressTest-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -8390,7 +8387,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "WordPressTest/WordPressTest-Prefix.pch";
+				GCC_PREFIX_HEADER = "../Tests/KeystoneTests/WordPressTest-Prefix.pch";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				HEADER_SEARCH_PATHS = (
@@ -8402,7 +8399,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
-				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
+				INFOPLIST_FILE = "../Tests/KeystoneTests/WordPressTest-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
