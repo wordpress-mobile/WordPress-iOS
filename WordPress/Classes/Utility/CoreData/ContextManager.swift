@@ -155,7 +155,7 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
 
         DDLogWarn("Migration required for persistent store.")
 
-        guard let modelFileURL = Bundle.main.url(forResource: "WordPress", withExtension: "momd") else {
+        guard let modelFileURL = Bundle(for: ContextManager.self).url(forResource: "WordPress", withExtension: "momd") else {
             fatalError("Can't find WordPress.momd")
         }
 
