@@ -1898,11 +1898,6 @@
 			path = WordPressAuthenticator;
 			sourceTree = "<group>";
 		};
-		0C28EC972DAD8DDA00F81F20 /* Test Data */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Test Data";
-			sourceTree = "<group>";
-		};
 		0C3C988F2DA04EEF009F3BFB /* Jetpack */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -1943,6 +1938,11 @@
 				0C5C47012D9839DE00F2CD55 /* Exceptions for "Keystone" folder in "Keystone" target */,
 			);
 			path = Keystone;
+			sourceTree = "<group>";
+		};
+		0C73A9BD2DAEDFDE00CC0F3A /* KeystoneTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = KeystoneTests;
 			sourceTree = "<group>";
 		};
 		0CED35262D959427003015CF /* Misc */ = {
@@ -2364,6 +2364,7 @@
 		0C5A19CB2D9B07E700C25301 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				0C73A9BD2DAEDFDE00CC0F3A /* KeystoneTests */,
 				0C5A1A042D9B080900C25301 /* WordPressAuthenticatorTests */,
 				3F7AE0C22D9B30A200AB4892 /* WordPressDataTests */,
 			);
@@ -3613,7 +3614,6 @@
 			children = (
 				E16AB93014D978240047A2E5 /* Supporting Files */,
 				B532ACD41DC3AE1F00FFFA57 /* Extensions */,
-				0C28EC972DAD8DDA00F81F20 /* Test Data */,
 				E131CB5B16CAD638004B0314 /* Helpers */,
 				E1239B7B176A2E0F00D37220 /* Tests */,
 				CCCF53BC237B13760035E9CA /* WordPressUnitTests.xctestplan */,
@@ -4340,7 +4340,7 @@
 				E16AB93F14D978520047A2E5 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				0C28EC972DAD8DDA00F81F20 /* Test Data */,
+				0C73A9BD2DAEDFDE00CC0F3A /* KeystoneTests */,
 			);
 			name = WordPressTest;
 			packageProductDependencies = (
