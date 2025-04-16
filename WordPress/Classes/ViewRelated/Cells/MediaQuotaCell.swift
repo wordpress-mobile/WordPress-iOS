@@ -5,15 +5,14 @@ import WordPressUI
 
 // MARK: - View Model
 
-@objc public class MediaQuotaCell: WPTableViewCell {
+@objc public class MediaQuotaCell: UITableViewCell, NibLoadable {
 
     @objc public static let height: Float = 66.0
 
     @objc public static let defaultReuseIdentifier = "MediaQuotaCell"
 
     @objc public static let nib: UINib = {
-        let nib = UINib(nibName: "MediaQuotaCell", bundle: Bundle(for: MediaQuotaCell.self))
-        return nib
+        MediaQuotaCell.defaultNib
     }()
 
     // MARK: - Public interface

@@ -8,7 +8,7 @@ class RevisionOperation: NSObject {
     init(_ type: RevisionOperationView.OperationType) {
         super.init()
 
-        Bundle.main.loadNibNamed(RevisionOperation.classNameWithoutNamespaces(), owner: self, options: nil)
+        Bundle.keystone.loadNibNamed(RevisionOperation.classNameWithoutNamespaces(), owner: self, options: nil)
 
         assert(internalView != nil)
 

@@ -2,7 +2,7 @@ import Gridicons
 import WordPressUI
 import Gravatar
 
-class RevisionsTableViewCell: UITableViewCell {
+class RevisionsTableViewCell: UITableViewCell, NibLoadable {
     static let reuseIdentifier = "RevisionsTableViewCellIdentifier"
 
     @IBOutlet private var titleLabel: UILabel!

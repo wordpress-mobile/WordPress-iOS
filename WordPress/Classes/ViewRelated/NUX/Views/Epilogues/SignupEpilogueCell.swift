@@ -12,7 +12,7 @@ enum EpilogueCellType: Int {
     case password
 }
 
-class SignupEpilogueCell: UITableViewCell {
+class SignupEpilogueCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 

@@ -4,8 +4,7 @@ struct ActivityListRow: ImmuTableRow {
     typealias CellType = ActivityTableViewCell
 
     static let cell: ImmuTableCell = {
-        let nib = UINib(nibName: "ActivityTableViewCell", bundle: Bundle(for: CellType.self))
-        return ImmuTableCell.nib(nib, CellType.self)
+        return ImmuTableCell.nib(ActivityTableViewCell.defaultNib, CellType.self)
     }()
 
     var activity: Activity {

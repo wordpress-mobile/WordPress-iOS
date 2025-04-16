@@ -27,10 +27,9 @@ protocol CategorySection {
     var thumbnailSize: CGSize { get }
 }
 
-class CategorySectionTableViewCell: UITableViewCell {
+class CategorySectionTableViewCell: UITableViewCell, NibLoadable {
 
     static let cellReuseIdentifier = "\(CategorySectionTableViewCell.self)"
-    static let nib = UINib(nibName: "\(CategorySectionTableViewCell.self)", bundle: Bundle.main)
     static let defaultThumbnailSize = CGSize(width: 160, height: 240)
     static let cellVerticalPadding: CGFloat = 70
 

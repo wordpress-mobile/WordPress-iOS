@@ -71,7 +71,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     init(configuration: ReaderSelectInterestsConfiguration = .default, topics: [ReaderTagTopic] = []) {
         self.configuration = configuration
         self.topics = topics
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: "ReaderSelectInterestsViewController", bundle: .keystone)
     }
 
     required init?(coder: NSCoder) {

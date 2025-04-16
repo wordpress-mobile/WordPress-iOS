@@ -64,9 +64,8 @@ class GutenGhostView: UIView {
     }
 
     private func commonInit() {
-        let bundle = Bundle(for: GutenGhostView.self)
         guard
-            let nibViews = bundle.loadNibNamed("GutenGhostView", owner: self, options: nil),
+            let nibViews = Bundle.keystone.loadNibNamed("GutenGhostView", owner: self, options: nil),
             let contentView = nibViews.first as? UIView
         else {
             return

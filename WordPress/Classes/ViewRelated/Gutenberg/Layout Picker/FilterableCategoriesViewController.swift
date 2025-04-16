@@ -90,7 +90,7 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(CategorySectionTableViewCell.nib, forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier)
+        tableView.register(CategorySectionTableViewCell.defaultNib, forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier)
         filterBar.filterDelegate = self
         tableView.dataSource = self
         configureCloseButton()

@@ -2,7 +2,7 @@ import UIKit
 import Gridicons
 import WordPressUI
 
-class PluginDetailViewHeaderCell: UITableViewCell {
+class PluginDetailViewHeaderCell: UITableViewCell, NibLoadable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -58,8 +58,7 @@ struct PluginHeaderRow: ImmuTableRow {
     typealias CellType = PluginDetailViewHeaderCell
 
     static let cell: ImmuTableCell = {
-        let nib = UINib(nibName: "PluginDetailViewHeaderCell", bundle: Bundle(for: CellType.self))
-        return ImmuTableCell.nib(nib, CellType.self)
+        return ImmuTableCell.nib(PluginDetailViewHeaderCell.defaultNib, CellType.self)
     }()
 
     let directoryEntry: PluginDirectoryEntry

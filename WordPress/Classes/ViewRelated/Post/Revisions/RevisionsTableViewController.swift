@@ -66,9 +66,7 @@ private extension RevisionsTableViewController {
     private func setupUI() {
         navigationItem.title = Strings.title
 
-        let cellNib = UINib(nibName: RevisionsTableViewCell.classNameWithoutNamespaces(),
-                            bundle: Bundle(for: RevisionsTableViewCell.self))
-        tableView.register(cellNib, forCellReuseIdentifier: RevisionsTableViewCell.reuseIdentifier)
+        tableView.register(RevisionsTableViewCell.defaultNib, forCellReuseIdentifier: RevisionsTableViewCell.reuseIdentifier)
         tableView.cellLayoutMarginsFollowReadableWidth = true
 
         let refreshControl = UIRefreshControl()

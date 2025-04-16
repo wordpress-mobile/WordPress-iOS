@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 import WordPressUI
 
-class ThemeBrowserSectionHeaderView: UICollectionReusableView {
+class ThemeBrowserSectionHeaderView: UICollectionReusableView, NibLoadable {
     @IBOutlet var descriptionLabel: UILabel!
     @IBOutlet var countLabel: UILabel!
 

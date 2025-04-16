@@ -16,7 +16,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
 
     @objc convenience init(image: UIImage) {
         let nibName = ImageCropViewController.classNameWithoutNamespaces()
-        self.init(nibName: nibName, bundle: nil)
+        self.init(nibName: nibName, bundle: .keystone)
         rawImage = image
     }
 
