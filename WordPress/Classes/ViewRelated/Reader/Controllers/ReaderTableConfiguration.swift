@@ -4,9 +4,7 @@ import UIKit
 final class ReaderTableConfiguration {
     private let postCellReuseIdentifier = "ReaderPostCellReuseIdentifier"
     private let crossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
-    private let blockedCellNibName = "ReaderBlockedSiteCell"
     private let blockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
-    private let gapMarkerCellNibName = "ReaderGapMarkerCell"
     private let gapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
 
     private let rowHeight = CGFloat(415.0)
@@ -25,13 +23,11 @@ final class ReaderTableConfiguration {
     }
 
     private func setUpBlockerCell(_ tableView: UITableView) {
-        let nib = UINib(nibName: blockedCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: blockedCellReuseIdentifier)
+        tableView.register(ReaderBlockedSiteCell.defaultNib, forCellReuseIdentifier: blockedCellReuseIdentifier)
     }
 
     private func setUpGapMarkerCell(_ tableView: UITableView) {
-        let nib = UINib(nibName: gapMarkerCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: gapMarkerCellReuseIdentifier)
+        tableView.register(ReaderGapMarkerCell.defaultNib, forCellReuseIdentifier: gapMarkerCellReuseIdentifier)
     }
 
     func estimatedRowHeight() -> CGFloat {

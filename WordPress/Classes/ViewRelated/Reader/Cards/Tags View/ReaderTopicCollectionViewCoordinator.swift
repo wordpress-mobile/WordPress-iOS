@@ -85,7 +85,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
         collectionView.contentInset = .zero
 
-        let nib = UINib(nibName: String(describing: ReaderInterestsCollectionViewCell.self), bundle: nil)
+        let nib = ReaderInterestsCollectionViewCell.defaultNib
 
         // Register the main cell
         collectionView.register(nib, forCellWithReuseIdentifier: Constants.reuseIdentifier)

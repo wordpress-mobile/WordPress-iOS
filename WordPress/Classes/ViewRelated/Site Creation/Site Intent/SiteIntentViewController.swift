@@ -92,8 +92,7 @@ class SiteIntentViewController: CollapsableHeaderViewController {
 
     private func configureTable() {
         let cellName = IntentCell.cellReuseIdentifier()
-        let nib = UINib(nibName: cellName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: cellName)
+        tableView.register(IntentCell.defaultNib, forCellReuseIdentifier: cellName)
         tableView.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.backgroundColor = .systemBackground

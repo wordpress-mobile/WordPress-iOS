@@ -289,5 +289,3 @@ extension JetpackScanHistoryViewController: NoResultsViewControllerDelegate {
         static let tryAgainButtonText = NSLocalizedString("Try again", comment: "Button label for trying to retrieve the history again")
     }
 }
-
-extension ActivityListSectionHeaderView: NibLoadable { }

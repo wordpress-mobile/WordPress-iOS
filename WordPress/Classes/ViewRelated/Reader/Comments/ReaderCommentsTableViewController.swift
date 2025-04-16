@@ -53,8 +53,7 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         // we don't want to show cells with empty messages.
         tableView.alpha = 0.0
 
-        let nib = UINib(nibName: CommentContentTableViewCell.classNameWithoutNamespaces(), bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: commentCellReuseID)
+        tableView.register(CommentContentTableViewCell.defaultNib, forCellReuseIdentifier: commentCellReuseID)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 200
 

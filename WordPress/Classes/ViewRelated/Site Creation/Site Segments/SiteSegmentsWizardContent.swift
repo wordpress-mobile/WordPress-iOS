@@ -99,8 +99,7 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func registerCell() {
         let cellName = SiteSegmentsCell.cellReuseIdentifier()
-        let nib = UINib(nibName: cellName, bundle: nil)
-        table.register(nib, forCellReuseIdentifier: cellName)
+        table.register(SiteSegmentsCell.defaultNib, forCellReuseIdentifier: cellName)
     }
 
     private func setupCellHeight() {

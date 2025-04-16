@@ -1,7 +1,7 @@
 import Foundation
 import WordPressShared
 
-open class ReaderBlockedSiteCell: UITableViewCell {
+open class ReaderBlockedSiteCell: UITableViewCell, NibLoadable {
     @IBOutlet fileprivate weak var borderedContentView: UIView!
     @IBOutlet fileprivate weak var label: UILabel!
 

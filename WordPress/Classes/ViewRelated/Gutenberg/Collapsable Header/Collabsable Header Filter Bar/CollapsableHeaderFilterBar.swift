@@ -36,7 +36,7 @@ class CollapsableHeaderFilterBar: UICollectionView {
     }
 
     private func commonInit() {
-        register(CollabsableHeaderFilterCollectionViewCell.nib, forCellWithReuseIdentifier: CollabsableHeaderFilterCollectionViewCell.cellReuseIdentifier)
+        register(CollabsableHeaderFilterCollectionViewCell.defaultNib, forCellWithReuseIdentifier: CollabsableHeaderFilterCollectionViewCell.cellReuseIdentifier)
         self.delegate = self
         self.dataSource = self
         self.backgroundColor = .clear

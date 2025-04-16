@@ -146,8 +146,7 @@ class BaseActivityListViewController: UIViewController, TableViewContainer, Immu
 
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
 
-        let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
-        tableView.register(nib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
+        tableView.register(ActivityListSectionHeaderView.defaultNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
         ImmuTable.registerRows([ActivityListRow.self, RewindStatusRow.self], tableView: tableView)
 
         tableView.tableFooterView = spinner

@@ -3,10 +3,9 @@ import Gutenberg
 import Gridicons
 import WordPressUI
 
-class CollapsableHeaderCollectionViewCell: UICollectionViewCell {
+class CollapsableHeaderCollectionViewCell: UICollectionViewCell, NibLoadable {
 
     static let cellReuseIdentifier = "\(CollapsableHeaderCollectionViewCell.self)"
-    static let nib = UINib(nibName: "\(CollapsableHeaderCollectionViewCell.self)", bundle: Bundle.main)
     static let selectionAnimationSpeed: Double = 0.25
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var checkmarkContainerView: UIView!

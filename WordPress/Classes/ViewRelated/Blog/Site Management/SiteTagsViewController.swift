@@ -83,8 +83,7 @@ final class SiteTagsViewController: UITableViewController {
     private func setupTableView() {
         tableView.accessibilityIdentifier = TableConstants.accesibilityIdentifier
         tableView.tableFooterView = UIView(frame: .zero)
-        let nibName = UINib(nibName: TableConstants.cellIdentifier, bundle: nil)
-        tableView.register(nibName, forCellReuseIdentifier: TableConstants.cellIdentifier)
+        tableView.register(TitleBadgeDisclosureCell.defaultNib, forCellReuseIdentifier: TableConstants.cellIdentifier)
         setupRefreshControl()
     }
 

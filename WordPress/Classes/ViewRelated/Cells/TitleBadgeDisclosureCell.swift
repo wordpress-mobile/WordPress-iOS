@@ -1,7 +1,7 @@
 import UIKit
 import WordPressUI
 
-final class TitleBadgeDisclosureCell: WPTableViewCell {
+final class TitleBadgeDisclosureCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var cellTitle: UILabel!
     @IBOutlet weak var cellBadge: BadgeLabel!
 
@@ -35,11 +35,11 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
     }
 
     private func customizeTagName() {
-        cellTitle.font = WPStyleGuide.tableviewTextFont()
+        cellTitle.font = .preferredFont(forTextStyle: .callout)
     }
 
     private func customizeTagCount() {
-        cellBadge.font = WPStyleGuide.tableviewTextFont()
+        cellBadge.font = .preferredFont(forTextStyle: .callout)
         cellBadge.textColor = UIAppColor.primary
         cellBadge.textAlignment = .center
         cellBadge.text = ""

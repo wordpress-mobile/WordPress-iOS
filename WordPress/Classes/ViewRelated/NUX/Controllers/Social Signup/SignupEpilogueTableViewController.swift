@@ -152,13 +152,15 @@ class SignupEpilogueTableViewController: UITableViewController {
 private extension SignupEpilogueTableViewController {
 
     func configureTable() {
-        let headerFooterNib = UINib(nibName: CellNibNames.sectionHeaderFooter, bundle: nil)
+        let bundle = Bundle(for: SignupEpilogueTableViewController.self)
+
+        let headerFooterNib = UINib(nibName: CellNibNames.sectionHeaderFooter, bundle: bundle)
         tableView.register(headerFooterNib, forHeaderFooterViewReuseIdentifier: CellIdentifiers.sectionHeaderFooter)
 
-        let cellNib = UINib(nibName: CellNibNames.signupEpilogueCell, bundle: nil)
+        let cellNib = UINib(nibName: CellNibNames.signupEpilogueCell, bundle: bundle)
         tableView.register(cellNib, forCellReuseIdentifier: CellIdentifiers.signupEpilogueCell)
 
-        let userInfoNib = UINib(nibName: CellNibNames.epilogueUserInfoCell, bundle: nil)
+        let userInfoNib = UINib(nibName: CellNibNames.epilogueUserInfoCell, bundle: bundle)
         tableView.register(userInfoNib, forCellReuseIdentifier: CellIdentifiers.epilogueUserInfoCell)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
