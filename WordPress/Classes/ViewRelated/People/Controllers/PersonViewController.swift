@@ -70,7 +70,7 @@ final class PersonViewController: UITableViewController {
     }
 
     class func controllerWithBlog(_ blog: Blog, context: NSManagedObjectContext, person: Person, screenMode: ScreenMode) -> PersonViewController? {
-        let storyboard = UIStoryboard(name: "People", bundle: nil)
+        let storyboard = UIStoryboard(name: "People", bundle: .keystone)
         return storyboard.instantiateViewController(identifier: "PersonViewController") { coder in
             PersonViewController(coder: coder, blog: blog, context: context, person: person, screenMode: screenMode)
         }

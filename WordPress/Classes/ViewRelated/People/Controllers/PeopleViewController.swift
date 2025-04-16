@@ -112,7 +112,7 @@ class PeopleViewController: UITableViewController {
     private var footerActivityIndicator: UIActivityIndicatorView!
 
     class func controllerWithBlog(_ blog: Blog) -> PeopleViewController? {
-        let storyboard = UIStoryboard(name: "People", bundle: nil)
+        let storyboard = UIStoryboard(name: "People", bundle: .keystone)
         guard let viewController = storyboard.instantiateInitialViewController() as? PeopleViewController else {
             return nil
         }
@@ -563,7 +563,7 @@ private extension PeopleViewController {
 
 extension PeopleViewController {
     class func controllerWithBlog(_ blog: Blog, selectedFilter: Filter) -> PeopleViewController? {
-        let storyboard = UIStoryboard(name: "People", bundle: nil)
+        let storyboard = UIStoryboard(name: "People", bundle: .keystone)
         guard let viewController = storyboard.instantiateInitialViewController() as? PeopleViewController else {
             return nil
         }

@@ -441,7 +441,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, socialUser: SocialUser?) {
 
-        let storyboard = UIStoryboard(name: "SignupEpilogue", bundle: .main)
+        let storyboard = UIStoryboard(name: "SignupEpilogue", bundle: .keystone)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? SignupEpilogueViewController else {
             fatalError()
         }

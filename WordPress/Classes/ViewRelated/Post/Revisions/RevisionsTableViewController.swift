@@ -225,7 +225,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
 
         let state = getRevisionState(at: indexPath)
 
-        let revisionsStoryboard = UIStoryboard(name: "Revisions", bundle: nil)
+        let revisionsStoryboard = UIStoryboard(name: "Revisions", bundle: .keystone)
         guard let revisionsNC = revisionsStoryboard.instantiateInitialViewController() as? RevisionsNavigationController else {
             return
         }

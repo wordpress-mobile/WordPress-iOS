@@ -50,7 +50,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 + (CommentsViewController *)controllerWithBlog:(Blog *)blog
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CommentsList" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CommentsList" bundle:NSBundle.keystone];
     CommentsViewController *controller = [storyboard instantiateInitialViewController];
     controller.blog = blog;
     return controller;

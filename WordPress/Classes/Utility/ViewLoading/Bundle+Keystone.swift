@@ -1,7 +1,7 @@
 import Foundation
 
 extension Bundle {
-    static var keystone: Bundle {
+    @objc public class var keystone: Bundle {
         Bundle(for: BundleToken.self)
     }
 }

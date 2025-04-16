@@ -52,7 +52,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 + (MenusViewController *)controllerWithBlog:(Blog *)blog
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Menus" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Menus" bundle:NSBundle.keystone];
     MenusViewController *controller = [storyboard instantiateInitialViewController];
     [controller setupWithBlog:blog];
     return controller;
