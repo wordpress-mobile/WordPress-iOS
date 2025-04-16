@@ -285,7 +285,7 @@ public protocol ThemePresenter: AnyObject {
      *  @returns    ThemeBrowserViewController instance
      */
     @objc open class func browserWithBlog(_ blog: Blog) -> ThemeBrowserViewController {
-        let storyboard = UIStoryboard(name: "ThemeBrowser", bundle: nil)
+        let storyboard = UIStoryboard(name: "ThemeBrowser", bundle: .keystone)
         let viewController = storyboard.instantiateInitialViewController() as! ThemeBrowserViewController
         viewController.blog = blog
 

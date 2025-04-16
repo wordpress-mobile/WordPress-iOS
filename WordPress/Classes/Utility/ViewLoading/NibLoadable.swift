@@ -20,7 +20,7 @@ public extension NibLoadable {
     }
 
     static var defaultBundle: Bundle {
-        return Bundle(for: Self.self)
+        return Bundle.keystone
     }
 
     static var defaultNib: UINib {
