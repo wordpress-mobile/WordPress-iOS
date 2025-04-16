@@ -1,8 +1,16 @@
 import Foundation
 import WordPressShared
 
-// This facilitates showing the CommentDetailViewController within the context of Notifications.
+enum Notifications {
+    static let storyboardName = "Notifications"
 
+    static let storyboard = UIStoryboard(
+        name: Notifications.storyboardName,
+        bundle: Bundle(for: NotificationsViewController.self)
+    )
+}
+
+/// Facilitates showing the `CommentDetailViewController` within the context of Notifications.
 protocol CommentDetailsNotificationDelegate: AnyObject {
     func previousNotificationTapped(current: Notification?)
     func nextNotificationTapped(current: Notification?)
@@ -76,10 +84,9 @@ private extension NotificationCommentDetailCoordinator {
     }
 
     func showNotificationDetails(with notification: Notification) {
-        let storyboard = UIStoryboard(name: Notifications.storyboardName, bundle: nil)
-
         guard let viewController,
-              let notificationDetailsViewController = storyboard.instantiateViewController(withIdentifier: Notifications.viewControllerName) as? NotificationDetailsViewController else {
+              let notificationDetailsViewController = Notifications.storyboard
+            .instantiateViewController(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces()) as? NotificationDetailsViewController else {
                   DDLogError("NotificationCommentDetailCoordinator: missing view controller.")
                   return
               }
@@ -125,12 +132,6 @@ private extension NotificationCommentDetailCoordinator {
         let properties = ["notification_type": notification.type ?? "unknown"]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
     }
-
-    enum Notifications {
-        static let storyboardName = "Notifications"
-        static let viewControllerName = NotificationDetailsViewController.classNameWithoutNamespaces()
-    }
-
 }
 
 // MARK: - CommentDetailsNotificationDelegate

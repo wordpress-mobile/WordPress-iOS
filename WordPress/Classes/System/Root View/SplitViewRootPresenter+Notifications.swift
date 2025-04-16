@@ -7,7 +7,7 @@ class NotificationsSplitViewContent: SplitViewDisplayable {
     var secondary: UINavigationController
 
     init() {
-        notificationsViewController = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController() as! NotificationsViewController
+        notificationsViewController = Notifications.storyboard.instantiateInitialViewController() as! NotificationsViewController
         supplementary = UINavigationController(rootViewController: notificationsViewController)
         secondary = UINavigationController()
 

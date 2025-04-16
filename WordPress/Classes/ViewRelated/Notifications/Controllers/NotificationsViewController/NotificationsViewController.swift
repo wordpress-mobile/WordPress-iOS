@@ -119,7 +119,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     // MARK: - View Lifecycle
 
     static func showInPopover(from presentingVC: UIViewController, sourceItem: UIPopoverPresentationControllerSourceItem) {
-        let notificationsVC = UIStoryboard(name: "Notifications", bundle: nil).instantiateInitialViewController() as! NotificationsViewController
+        let notificationsVC = Notifications.storyboard.instantiateInitialViewController() as! NotificationsViewController
         notificationsVC.isSidebarModeEnabled = true
 
         let navigationVC = UINavigationController(rootViewController: notificationsVC)
