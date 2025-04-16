@@ -1,7 +1,7 @@
 import UIKit
 
 /// A protocol for views that can be loaded from nibs.
-public protocol NibLoadable {
+public protocol NibLoadable: AnyObject {
 
     /// Default nib name.
     static var defaultNibName: String { get }
@@ -20,7 +20,7 @@ public extension NibLoadable {
     }
 
     static var defaultBundle: Bundle {
-        return Bundle.main
+        return Bundle(for: Self.self)
     }
 
     static var defaultNib: UINib {
