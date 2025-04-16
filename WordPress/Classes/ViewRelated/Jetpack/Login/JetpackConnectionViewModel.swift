@@ -31,7 +31,7 @@ class JetpackConnectionViewModel: ObservableObject {
     }
 
     func connect() {
-        guard isConnecting == false else { return }
+        guard !isConnecting else { return }
 
         isConnecting = true
         Task {
@@ -84,7 +84,7 @@ class JetpackConnectionViewModel: ObservableObject {
             throw JetpackConnectionError.unexpectedContext
         }
 
-        try await connectionService.performInstall(account: account)
+        try await connectionService.performInstall()
         stepContext = .installed(account: account)
     }
 
@@ -93,7 +93,7 @@ class JetpackConnectionViewModel: ObservableObject {
             throw JetpackConnectionError.unexpectedContext
         }
 
-        try await connectionService.performSiteConnection(account: account)
+        try await connectionService.performSiteConnection()
         stepContext = .siteConnected(account: account)
     }
 
@@ -203,7 +203,7 @@ class JetpackConnectionService {
         return try await authenticator.attemptSignIn(from: presentingViewController, context: .jetpackSite(accountEmail: email))
     }
 
-    func performInstall(account: TaggedManagedObjectID<WPAccount>) async throws {
+    func performInstall() async throws {
         let plugins = try await client.api.plugins.listWithEditContext(params: .init())
         let jetpack = plugins.data.first { $0.plugin == .jetpack }
 
@@ -219,7 +219,7 @@ class JetpackConnectionService {
         }
     }
 
-    func performSiteConnection(account: TaggedManagedObjectID<WPAccount>) async throws {
+    func performSiteConnection() async throws {
         let _ = try await jetpackConnectionClient.connectSite(from: "jetpack-app")
     }
 
