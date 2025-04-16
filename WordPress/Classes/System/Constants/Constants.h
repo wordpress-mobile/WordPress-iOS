@@ -2,7 +2,6 @@
 
 /// WordPress URL's
 ///
-extern NSString *const WPMobileReaderURL;
 extern NSString *const WPAutomatticTermsOfServiceURL;
 extern NSString *const WPAutomatticPrivacyURL;
 extern NSString *const WPAutomatticCCPAPrivacyNoticeURL;
