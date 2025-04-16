@@ -30,6 +30,7 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     case inAppUpdates
     case gravatarQuickEditor
     case dotComWebLogin
+    case newGutenberg
     case newGutenbergPlugins
 
     var defaultValue: Bool {
@@ -87,6 +88,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
         case .gravatarQuickEditor:
             return BuildConfiguration.current.isInternal
         case .dotComWebLogin:
+            return false
+        case .newGutenberg:
             return false
         case .newGutenbergPlugins:
             return false
@@ -150,6 +153,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "gravatar_quick_editor"
         case .dotComWebLogin:
             return "jp_wpcom_web_login"
+        case .newGutenberg:
+            return "gutenberg_kit"
         case .newGutenbergPlugins:
             return "gutenberg_kit_plugins"
         }
@@ -211,6 +216,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "Gravatar Quick Editor"
         case .dotComWebLogin:
             return "Log in to WordPress.com from web browser"
+        case .newGutenberg:
+            return "Experimental Block Editor"
         case .newGutenbergPlugins:
             return "Experimental Block Editor Plugins"
         }
