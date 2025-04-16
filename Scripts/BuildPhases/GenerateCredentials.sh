@@ -52,10 +52,7 @@ ensure_is_in_input_files_list $WORDPRESS_SECRETS_FILE
 JETPACK_SECRETS_FILE="${SECRETS_ROOT}/Jetpack-Secrets.swift"
 ensure_is_in_input_files_list $JETPACK_SECRETS_FILE
 
-# TODO: We'll need a dedicated one for Reader...
-# READER_SECRETS_FILE="${SECRETS_ROOT}/Reader-Secrets.swift"
-# ...using WordPress-Secrets.swift for now.
-READER_SECRETS_FILE="${SECRETS_ROOT}/WordPress-Secrets.swift"
+READER_SECRETS_FILE="${SECRETS_ROOT}/Reader-Secrets.swift"
 ensure_is_in_input_files_list $READER_SECRETS_FILE
 
 LOCAL_SECRETS_FILE="${SRCROOT}/Credentials/Secrets.swift"
