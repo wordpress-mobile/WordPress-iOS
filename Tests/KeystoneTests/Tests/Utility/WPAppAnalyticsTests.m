@@ -2,7 +2,6 @@
 
 #import "AccountService.h"
 #import "WPAppAnalytics.h"
-#import "WPAnalyticsTrackerWPCom.h"
 
 @import OCMock;
 
@@ -42,7 +41,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
         __unsafe_unretained id<WPAnalyticsTracker> tracker = nil;
         [invocation getArgument:&tracker atIndex:2];
         
-        NSAssert([tracker isKindOfClass:[WPAnalyticsTrackerWPCom class]],
+        NSAssert([tracker isKindOfClass:[AnalyticsTrackerWPCom class]],
                  @"Expected to have a WPCom tracker.");
     };
     
