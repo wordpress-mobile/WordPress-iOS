@@ -52,7 +52,7 @@ class TemplatePreviewViewController: UIViewController, NoResultsViewHost, UIPopo
         self.demoURL = demoURL
         self.selectedPreviewDevice = selectedPreviewDevice ?? PreviewDevice.default
         self.onDismissWithDeviceSelected = onDismissWithDeviceSelected
-        super.init(nibName: "\(TemplatePreviewViewController.self)", bundle: .main)
+        super.init(nibName: "\(TemplatePreviewViewController.self)", bundle: .keystone)
     }
 
     required init?(coder: NSCoder) {
