@@ -2,12 +2,16 @@ import Foundation
 import WordPressShared
 
 enum Notifications {
-    static let storyboardName = "Notifications"
+    private static let storyboardName = "Notifications"
 
     static let storyboard = UIStoryboard(
         name: Notifications.storyboardName,
         bundle: Bundle(for: NotificationsViewController.self)
     )
+
+    static func instantiateInitialViewController() -> NotificationsViewController {
+        storyboard.instantiateInitialViewController() as! NotificationsViewController
+    }
 }
 
 /// Facilitates showing the `CommentDetailViewController` within the context of Notifications.
