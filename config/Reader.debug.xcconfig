@@ -2,7 +2,7 @@
 #include "Version.public.xcconfig"
 
 WP_PUSH_NOTIFICATION_APP_ID = TBD
-WP_BUILD_CONFIGURATION = alpha
+WP_BUILD_CONFIGURATION = debug
 WP_APP_URL_SCHEME = wpreader
 
 PROVISIONING_PROFILE_SPECIFIER = Reader Development
