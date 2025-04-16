@@ -1,8 +1,7 @@
 import UIKit
 import WordPressShared
 
-class StatsGhostB
-aseCell: StatsBaseCell {
+class StatsGhostBaseCell: StatsBaseCell {
     private typealias Style = WPStyleGuide.Stats
     private(set) var topBorder: UIView?
     private(set) var bottomBorder: UIView?
