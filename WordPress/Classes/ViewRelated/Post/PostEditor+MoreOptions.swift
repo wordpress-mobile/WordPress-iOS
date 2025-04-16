@@ -20,7 +20,7 @@ extension PostEditor {
     }
 
     private func savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {
-        guard !post.changes.isEmpty else {
+        guard !post.changes.isEmpty || post.original().isNewDraft else {
             completion(nil, nil)
             return
         }
