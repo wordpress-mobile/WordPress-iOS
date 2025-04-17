@@ -35,7 +35,6 @@
 		0107E0D728F97D5000DE87DB /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; };
 		0107E0DE28F97D5000DE87DB /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F526C4F2538CF2A0069706C /* SwiftUI.framework */; };
 		0107E0DF28F97D5000DE87DB /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F526C4D2538CF2A0069706C /* WidgetKit.framework */; };
-		0107E0E228F97D5000DE87DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F526C552538CF2B0069706C /* Assets.xcassets */; };
 		0107E0EE28F97E6900DE87DB /* JetpackStatsWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0107E0EA28F97D5000DE87DB /* JetpackStatsWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0107E13B28FE9DB200DE87DB /* Sites.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 3F46AB0225BF5D6300CE2E98 /* Sites.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
 		0107E13E28FE9DB200DE87DB /* SitesDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1482CDF2575BDA4007E4DD6 /* SitesDataProvider.swift */; };
@@ -145,7 +144,6 @@
 		4A690C1F2BA796CD00A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C1D2BA796C500A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4A690C212BA7975500A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4A690C222BA7975800A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */; };
-		4A690C242BA797F600A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C232BA797CE00A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4AD953C72C21451700D0EEFA /* WordPressAuthenticator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */; };
 		4AD953C82C21451700D0EEFA /* WordPressAuthenticator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4AD9555A2C21716A00D0EEFA /* WordPressAuthenticator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */; };
@@ -689,12 +687,9 @@
 		0107E0EA28F97D5000DE87DB /* JetpackStatsWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JetpackStatsWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0107E15428FE9DB200DE87DB /* JetpackIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JetpackIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0107E1812900043200DE87DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0107E1832900043200DE87DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01281E9B2A051EEA00464F8F /* MySiteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySiteTests.swift; sourceTree = "<group>"; };
 		0167F4AD2AAA0250005B9E42 /* JetpackIntents.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = JetpackIntents.entitlements; sourceTree = "<group>"; };
 		0167F4AE2AAA0250005B9E42 /* JetpackIntentsRelease-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "JetpackIntentsRelease-Alpha.entitlements"; sourceTree = "<group>"; };
-		0167F4B22AAA02BD005B9E42 /* JetpackStatsWidgets.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = JetpackStatsWidgets.entitlements; sourceTree = "<group>"; };
-		0167F4B42AAA02BD005B9E42 /* JetpackStatsWidgetsRelease-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "JetpackStatsWidgetsRelease-Alpha.entitlements"; sourceTree = "<group>"; };
 		099D768227D14B8E00F77EDE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		099D768427D14BAE00F77EDE /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		099D768527D14BB300F77EDE /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -795,7 +790,6 @@
 		3F46AB0125BF5D6300CE2E98 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/Sites.intentdefinition; sourceTree = "<group>"; };
 		3F526C4D2538CF2A0069706C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3F526C4F2538CF2A0069706C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		3F526C552538CF2B0069706C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F60D38F2D2C4BA3008ACD86 /* React.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = React.xcframework; path = Frameworks/React.xcframework; sourceTree = "<group>"; };
 		3F60D3902D2C4BA3008ACD86 /* Gutenberg.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Gutenberg.xcframework; path = Frameworks/Gutenberg.xcframework; sourceTree = "<group>"; };
 		3F60D3912D2C4BA3008ACD86 /* RNTAztecView.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RNTAztecView.xcframework; path = Frameworks/RNTAztecView.xcframework; sourceTree = "<group>"; };
@@ -813,7 +807,6 @@
 		4A690C1A2BA7958F00A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4A690C1D2BA796C500A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		4A690C232BA797CE00A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressAuthenticator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AD953BB2C21451700D0EEFA /* WordPressAuthenticatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordPressAuthenticatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D69DBC3165428CA00A2D1F7 /* n.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = n.caf; path = Resources/Sounds/n.caf; sourceTree = "<group>"; };
@@ -1014,7 +1007,14 @@
 			);
 			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
 		};
-		0C3CC0162DA058FA009F3BFB /* Exceptions for "Jetpack" folder in "Jetpack" target */ = {
+		0C3E79F82DB164FF000C7072 /* Exceptions for "JetpackStatsWidgets" folder in "JetpackStatsWidgets" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 0107E0B128F97D5000DE87DB /* JetpackStatsWidgets */;
+		};
+		0C3E79F92DB16747000C7072 /* Exceptions for "Jetpack" folder in "Jetpack" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -1170,7 +1170,7 @@
 		0C3C988F2DA04EEF009F3BFB /* Jetpack */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				0C3CC0162DA058FA009F3BFB /* Exceptions for "Jetpack" folder in "Jetpack" target */,
+				0C3E79F92DB16747000C7072 /* Exceptions for "Jetpack" folder in "Jetpack" target */,
 			);
 			path = Jetpack;
 			sourceTree = "<group>";
@@ -1183,9 +1183,12 @@
 			path = WordPress;
 			sourceTree = "<group>";
 		};
-		0C5083352D8DB82F007987AB /* Sources */ = {
+		0C3E79892DB164B3000C7072 /* JetpackStatsWidgets */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Sources;
+			exceptions = (
+				0C3E79F82DB164FF000C7072 /* Exceptions for "JetpackStatsWidgets" folder in "JetpackStatsWidgets" target */,
+			);
+			path = JetpackStatsWidgets;
 			sourceTree = "<group>";
 		};
 		0C5A1A042D9B080900C25301 /* WordPressAuthenticatorTests */ = {
@@ -1514,33 +1517,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0107E1822900043200DE87DB /* JetpackStatsWidgets */ = {
-			isa = PBXGroup;
-			children = (
-				0C5083352D8DB82F007987AB /* Sources */,
-				3F526C552538CF2B0069706C /* Assets.xcassets */,
-				0107E1832900043200DE87DB /* Info.plist */,
-				0167F4B12AAA02BD005B9E42 /* Supporting Files */,
-			);
-			path = JetpackStatsWidgets;
-			sourceTree = "<group>";
-		};
 		0167F4AC2AAA0250005B9E42 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
 				0167F4AD2AAA0250005B9E42 /* JetpackIntents.entitlements */,
 				0167F4AE2AAA0250005B9E42 /* JetpackIntentsRelease-Alpha.entitlements */,
 				4A690C1A2BA7958F00A8E0C5 /* PrivacyInfo.xcprivacy */,
-			);
-			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		0167F4B12AAA02BD005B9E42 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				0167F4B22AAA02BD005B9E42 /* JetpackStatsWidgets.entitlements */,
-				0167F4B42AAA02BD005B9E42 /* JetpackStatsWidgetsRelease-Alpha.entitlements */,
-				4A690C232BA797CE00A8E0C5 /* PrivacyInfo.xcprivacy */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -1565,6 +1547,7 @@
 				0C5C46FE2D98397A00F2CD55 /* Keystone */,
 				0C238F782D9ADF0200981631 /* WordPressAuthenticator */,
 				3F7AE0B62D9B30A100AB4892 /* WordPressData */,
+				0C3E79892DB164B3000C7072 /* JetpackStatsWidgets */,
 			);
 			name = Sources;
 			path = ../Sources;
@@ -1621,7 +1604,6 @@
 				8096218728E55CB800940A5D /* JetpackDraftActionExtension */,
 				F1F163BF25658B4D003DC13B /* JetpackIntents */,
 				80F6D05628EE869900953C1A /* JetpackNotificationServiceExtension */,
-				0107E1822900043200DE87DB /* JetpackStatsWidgets */,
 				8096212828E5535E00940A5D /* JetpackShareExtension */,
 				74576673202B558C00F42E40 /* WordPressDraftActionExtension */,
 				7358E6B9210BD318002323EB /* WordPressNotificationServiceExtension */,
@@ -2042,7 +2024,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				0C5083352D8DB82F007987AB /* Sources */,
+				0C3E79892DB164B3000C7072 /* JetpackStatsWidgets */,
 			);
 			name = JetpackStatsWidgets;
 			packageProductDependencies = (
@@ -2747,8 +2729,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A690C242BA797F600A8E0C5 /* PrivacyInfo.xcprivacy in Resources */,
-				0107E0E228F97D5000DE87DB /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3718,7 +3698,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "JetpackStatsWidgets/Supporting Files/JetpackStatsWidgets.entitlements";
+				CODE_SIGN_ENTITLEMENTS = ../Sources/JetpackStatsWidgets/JetpackStatsWidgets.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -3729,7 +3709,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = JetpackStatsWidgets/Info.plist;
+				INFOPLIST_FILE = ../Sources/JetpackStatsWidgets/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3763,7 +3743,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "JetpackStatsWidgets/Supporting Files/JetpackStatsWidgets.entitlements";
+				CODE_SIGN_ENTITLEMENTS = ../Sources/JetpackStatsWidgets/JetpackStatsWidgets.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -3771,7 +3751,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = JetpackStatsWidgets/Info.plist;
+				INFOPLIST_FILE = ../Sources/JetpackStatsWidgets/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3804,7 +3784,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "JetpackStatsWidgets/Supporting Files/JetpackStatsWidgetsRelease-Alpha.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "../Sources/JetpackStatsWidgets/JetpackStatsWidgetsRelease-Alpha.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -3812,7 +3792,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = JetpackStatsWidgets/Info.plist;
+				INFOPLIST_FILE = ../Sources/JetpackStatsWidgets/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
