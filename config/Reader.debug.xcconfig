@@ -6,3 +6,4 @@ WP_BUILD_CONFIGURATION = debug
 WP_APP_URL_SCHEME = wpreader
 
 PROVISIONING_PROFILE_SPECIFIER = Reader Development
+CODE_SIGN_ENTITLEMENTS = ../Sources/Reader/Reader.entitlements

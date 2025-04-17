@@ -4,3 +4,5 @@
 WP_PUSH_NOTIFICATION_APP_ID = TBD
 WP_BUILD_CONFIGURATION = alpha
 WP_APP_URL_SCHEME = wpreader
+
+CODE_SIGN_ENTITLEMENTS = ../Sources/Reader/Reader.entitlements
