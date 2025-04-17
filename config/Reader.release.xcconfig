@@ -1,7 +1,7 @@
 #include "Common.release.xcconfig"
 #include "Version.public.xcconfig"
 
-PRODUCT_BUNDLE_IDENTIFIER = com.automattic.reader
+PRODUCT_BUNDLE_IDENTIFIER = com.automattic.readerapp
 
 WP_PUSH_NOTIFICATION_APP_ID = TBD
 WP_BUILD_CONFIGURATION = release
