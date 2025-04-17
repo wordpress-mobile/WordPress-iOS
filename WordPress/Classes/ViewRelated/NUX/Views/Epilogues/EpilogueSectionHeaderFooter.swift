@@ -1,6 +1,6 @@
 import UIKit
 
-class EpilogueSectionHeaderFooter: UITableViewHeaderFooterView {
+class EpilogueSectionHeaderFooter: UITableViewHeaderFooterView, NibLoadable {
     static let identifier = "EpilogueSectionHeaderFooter"
 
     @IBOutlet weak var topConstraint: NSLayoutConstraint!

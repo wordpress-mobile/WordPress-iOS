@@ -50,7 +50,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 + (CommentsViewController *)controllerWithBlog:(Blog *)blog
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CommentsList" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CommentsList" bundle:NSBundle.keystone];
     CommentsViewController *controller = [storyboard instantiateInitialViewController];
     controller.blog = blog;
     return controller;
@@ -134,10 +134,10 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     self.tableView.accessibilityIdentifier  = @"Comments Table";
 
     // Register the cells
-    UINib *listCellNibInstance = [UINib nibWithNibName:[ListTableViewCell classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
+    UINib *listCellNibInstance = [UINib nibWithNibName:[ListTableViewCell classNameWithoutNamespaces] bundle:NSBundle.keystone];
     [self.tableView registerNib:listCellNibInstance forCellReuseIdentifier:ListTableViewCell.reuseIdentifier];
 
-    UINib *listHeaderNibInstance = [UINib nibWithNibName:[ListTableHeaderView classNameWithoutNamespaces] bundle:[NSBundle mainBundle]];
+    UINib *listHeaderNibInstance = [UINib nibWithNibName:[ListTableHeaderView classNameWithoutNamespaces] bundle:NSBundle.keystone];
     [self.tableView registerNib:listHeaderNibInstance forHeaderFooterViewReuseIdentifier:ListTableHeaderView.reuseIdentifier];
 }
 

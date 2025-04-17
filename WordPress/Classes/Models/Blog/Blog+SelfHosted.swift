@@ -19,6 +19,7 @@ public extension Blog {
     static func createRestApiBlog(
         with details: WpApiApplicationPasswordDetails,
         restApiRootURL: URL,
+        xmlrpcEndpointURL: URL,
         in contextManager: ContextManager,
         using keychainImplementation: KeychainAccessible = KeychainUtils()
     ) async throws -> TaggedManagedObjectID<Blog> {
@@ -27,7 +28,7 @@ public extension Blog {
             blog.url = details.siteUrl
             blog.username = details.userLogin
             blog.restApiRootURL = restApiRootURL.absoluteString
-            try blog.setXMLRPCEndpoint(to: details.derivedXMLRPCRoot)
+            blog.setXMLRPCEndpoint(to: xmlrpcEndpointURL)
             blog.setSiteIdentifier(details.derivedSiteId)
 
             // `url` and `xmlrpc` need to be set before setting passwords.
@@ -162,13 +163,6 @@ public extension Blog {
 }
 
 public extension WpApiApplicationPasswordDetails {
-    var derivedXMLRPCRoot: URL {
-        get throws {
-            let url = try ParsedUrl.parse(input: siteUrl).asURL()
-            return url.appending(path: "xmlrpc.php")
-        }
-    }
-
     var derivedSiteId: String {
         SHA256.hash(data: Data(siteUrl.localizedLowercase.utf8))
             .compactMap { String(format: "%02x", $0) }

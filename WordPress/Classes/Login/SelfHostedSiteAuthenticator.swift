@@ -21,6 +21,7 @@ struct SelfHostedSiteAuthenticator {
 
     enum SignInError: Error, LocalizedError {
         case authentication(Error)
+        case xmlrpcDisabled(Error)
         case loadingSiteInfoFailure
         case savingSiteFailure
         case mismatchedUser(expectedUsername: String)
@@ -39,6 +40,12 @@ struct SelfHostedSiteAuthenticator {
                 return String(format: format, username)
             case .cancelled:
                 return NSLocalizedString("addSite.selfHosted.cancelled", value: "Login has been cancelled", comment: "Error message when user cancels login")
+            case let .xmlrpcDisabled(underlying):
+                if let reason = underlying as? WordPressOrgXMLRPCValidatorError {
+                    return reason.localizedDescription
+                } else {
+                    return NSLocalizedString("addSite.selfHosted.xmlrpcDisabled", value: "Couldn't connect to the WordPress site. XML-RPC may have been disabled on the server. Please contact your hosting provider to solve this problem.", comment: "Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message")
+                }
             }
         }
     }
@@ -63,7 +70,7 @@ struct SelfHostedSiteAuthenticator {
         WPAnalytics.track(.applicationPasswordLogin, properties: [
             "url": url,
             "success": false,
-            "error": error.localizedDescription
+            "error": "\(error)"
         ])
     }
 
@@ -136,15 +143,19 @@ struct SelfHostedSiteAuthenticator {
 
     @MainActor
     private func handle(credentials: WpApiApplicationPasswordDetails, apiRootURL: URL, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
+        SVProgressHUD.show()
+        defer {
+            SVProgressHUD.dismiss()
+        }
+
         if case let .reauthentication(username) = context, let username, username != credentials.userLogin {
             throw .mismatchedUser(expectedUsername: username)
         }
 
-        let xmlrpc: String
+        let xmlrpc: URL = try await discoverXMLRPCEndpoint(site: credentials.siteUrl)
         let blogOptions: [AnyHashable: Any]
         do {
-            xmlrpc = try credentials.derivedXMLRPCRoot.absoluteString
-            blogOptions = try await loadSiteOptions(details: credentials)
+            blogOptions = try await loadSiteOptions(xmlrpc: xmlrpc, details: credentials)
         } catch {
             throw .loadingSiteInfoFailure
         }
@@ -152,7 +163,7 @@ struct SelfHostedSiteAuthenticator {
         // Only store the new site after credentials are validated.
         let blog: TaggedManagedObjectID<Blog>
         do {
-            blog = try await Blog.createRestApiBlog(with: credentials, restApiRootURL: apiRootURL, in: ContextManager.shared)
+            blog = try await Blog.createRestApiBlog(with: credentials, restApiRootURL: apiRootURL, xmlrpcEndpointURL: xmlrpc, in: ContextManager.shared)
         } catch {
             throw .savingSiteFailure
         }
@@ -160,14 +171,9 @@ struct SelfHostedSiteAuthenticator {
         let wporg = WordPressOrgCredentials(
             username: credentials.userLogin,
             password: credentials.password,
-            xmlrpc: xmlrpc,
+            xmlrpc: xmlrpc.absoluteString,
             options: blogOptions
         )
-
-        SVProgressHUD.show()
-        defer {
-            SVProgressHUD.dismiss()
-        }
 
         await withCheckedContinuation { continuation in
             WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wporg: wporg)) {
@@ -182,8 +188,23 @@ struct SelfHostedSiteAuthenticator {
         return blog
     }
 
-    private func loadSiteOptions(details: WpApiApplicationPasswordDetails) async throws -> [AnyHashable: Any] {
-        let xmlrpc = try details.derivedXMLRPCRoot
+    private func discoverXMLRPCEndpoint(site: String) async throws(SignInError) -> URL {
+        do {
+            let validator = WordPressOrgXMLRPCValidator()
+            return try await withUnsafeThrowingContinuation { continuation in
+                validator.guessXMLRPCURLForSite(
+                    site,
+                    userAgent: WPUserAgent.defaultUserAgent(),
+                    success: { continuation.resume(returning: $0) },
+                    failure: { continuation.resume(throwing: $0) }
+                )
+            }
+        } catch {
+            throw .xmlrpcDisabled(error)
+        }
+    }
+
+    private func loadSiteOptions(xmlrpc: URL, details: WpApiApplicationPasswordDetails) async throws -> [AnyHashable: Any] {
         return try await withCheckedThrowingContinuation { continuation in
             let api = WordPressXMLRPCAPIFacade()
             api.getBlogOptions(withEndpoint: xmlrpc, username: details.userLogin, password: details.password) { options in

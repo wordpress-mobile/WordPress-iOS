@@ -96,7 +96,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
             return nil
         }
 
-        guard let cell = Bundle.main.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
+        guard let cell = Bundle.keystone.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
             return nil
         }
 

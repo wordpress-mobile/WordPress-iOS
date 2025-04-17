@@ -168,7 +168,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(CategorySectionTableViewCell.nib, forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier)
+        tableView.register(CategorySectionTableViewCell.defaultNib, forCellReuseIdentifier: CategorySectionTableViewCell.cellReuseIdentifier)
         tableView.dataSource = self
         navigationItem.backButtonTitle = TextContent.backButtonTitle
         configureHeaderStyling()

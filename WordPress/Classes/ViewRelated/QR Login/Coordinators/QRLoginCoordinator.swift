@@ -34,7 +34,7 @@ struct QRLoginCoordinator: QRLoginParentCoordinator {
     }
 
     func showVerifyAuthorization(token: QRLoginToken, from source: UIViewController? = nil) {
-        let controller = QRLoginVerifyAuthorizationViewController()
+        let controller = QRLoginVerifyAuthorizationViewController(nibName: "QRLoginVerifyAuthorizationViewController", bundle: .keystone)
         controller.coordinator = QRLoginVerifyCoordinator(token: token, view: controller, parentCoordinator: self)
         pushOrPresent(controller, from: source)
     }
@@ -91,7 +91,7 @@ private extension QRLoginCoordinator {
     }
 
     private func scanningViewController() -> QRLoginScanningViewController {
-        let controller = QRLoginScanningViewController()
+        let controller = QRLoginScanningViewController(nibName: "QRLoginScanningViewController", bundle: .keystone)
         controller.coordinator = QRLoginScanningCoordinator(view: controller, parentCoordinator: self)
 
         return controller

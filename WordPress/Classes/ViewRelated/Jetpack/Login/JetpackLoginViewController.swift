@@ -76,7 +76,7 @@ public class JetpackLoginViewController: UIViewController {
     ///
     @objc public required init(blog: Blog) {
         self.blog = blog
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: "JetpackLoginViewController", bundle: .keystone)
     }
 
     public required init?(coder aDecoder: NSCoder) {

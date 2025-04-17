@@ -13,7 +13,7 @@ open class DeleteSiteViewController: UITableViewController {
     /// - Parameter blog: A Blog instance.
     ///
     @objc class func controller(_ blog: Blog) -> DeleteSiteViewController {
-        let storyboard = UIStoryboard(name: "DeleteSite", bundle: Bundle.main)
+        let storyboard = UIStoryboard(name: "DeleteSite", bundle: Bundle.keystone)
         let controller = storyboard.instantiateViewController(withIdentifier: "DeleteSiteViewController") as! DeleteSiteViewController
         controller.blog = blog
         return controller

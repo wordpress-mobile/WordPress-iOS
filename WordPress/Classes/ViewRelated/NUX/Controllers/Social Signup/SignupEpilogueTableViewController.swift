@@ -152,14 +152,9 @@ class SignupEpilogueTableViewController: UITableViewController {
 private extension SignupEpilogueTableViewController {
 
     func configureTable() {
-        let headerFooterNib = UINib(nibName: CellNibNames.sectionHeaderFooter, bundle: nil)
-        tableView.register(headerFooterNib, forHeaderFooterViewReuseIdentifier: CellIdentifiers.sectionHeaderFooter)
-
-        let cellNib = UINib(nibName: CellNibNames.signupEpilogueCell, bundle: nil)
-        tableView.register(cellNib, forCellReuseIdentifier: CellIdentifiers.signupEpilogueCell)
-
-        let userInfoNib = UINib(nibName: CellNibNames.epilogueUserInfoCell, bundle: nil)
-        tableView.register(userInfoNib, forCellReuseIdentifier: CellIdentifiers.epilogueUserInfoCell)
+        tableView.register(EpilogueSectionHeaderFooter.defaultNib, forHeaderFooterViewReuseIdentifier: CellIdentifiers.sectionHeaderFooter)
+        tableView.register(SignupEpilogueCell.defaultNib, forCellReuseIdentifier: CellIdentifiers.signupEpilogueCell)
+        tableView.register(EpilogueUserInfoCell.defaultNib, forCellReuseIdentifier: CellIdentifiers.epilogueUserInfoCell)
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.backgroundColor = .systemBackground
@@ -231,12 +226,6 @@ private extension SignupEpilogueTableViewController {
         static let sectionHeaderFooter = "SectionHeaderFooter"
         static let signupEpilogueCell = "SignupEpilogueCell"
         static let epilogueUserInfoCell = "userInfo"
-    }
-
-    struct CellNibNames {
-        static let sectionHeaderFooter = "EpilogueSectionHeaderFooter"
-        static let signupEpilogueCell = "SignupEpilogueCell"
-        static let epilogueUserInfoCell = "EpilogueUserInfoCell"
     }
 }
 

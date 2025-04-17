@@ -13,7 +13,7 @@ final class TimeZoneSearchHeaderView: UIView {
     }
 
     class func makeFromNib(timezone: String) -> TimeZoneSearchHeaderView? {
-        guard let view = Bundle.main.loadNibNamed(Constants.nibIdentifier, owner: self, options: nil)?.first as? TimeZoneSearchHeaderView else {
+        guard let view = Bundle.keystone.loadNibNamed(Constants.nibIdentifier, owner: self, options: nil)?.first as? TimeZoneSearchHeaderView else {
             wpAssertionFailure("Failed to load nil")
             return nil
         }

@@ -6,18 +6,18 @@ import WordPressUI
 // MARK: - View Model
 
 protocol MediaSizeModel {
-    var value: Int {get set}
-    var minValue: Int {get set}
-    var maxValue: Int {get set}
-    var step: Int {get set}
-    var valueText: String {get}
-    var accessibleText: String {get}
-    var sliderValue: Float {get}
-    var sliderMinimumValue: Float {get}
-    var sliderMaximumValue: Float {get}
+    var value: Int { get set }
+    var minValue: Int { get set }
+    var maxValue: Int { get set }
+    var step: Int { get set }
+    var valueText: String { get }
+    var accessibleText: String { get }
+    var sliderValue: Float { get }
+    var sliderMinimumValue: Float { get }
+    var sliderMaximumValue: Float { get }
 }
 
-class MediaSizeSliderCell: WPTableViewCell {
+class MediaSizeSliderCell: UITableViewCell, NibLoadable {
 
     // MARK: - Public interface
     @objc var value: Int {

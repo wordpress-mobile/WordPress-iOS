@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-final class IntentCell: UITableViewCell, ModelSettableCell {
+final class IntentCell: UITableViewCell, ModelSettableCell, NibLoadable {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var emojiContainer: UIView!
     @IBOutlet weak var emoji: UILabel!

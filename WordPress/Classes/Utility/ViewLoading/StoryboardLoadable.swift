@@ -20,7 +20,7 @@ public extension StoryboardLoadable where Self: UIViewController {
     }
 
     static var defaultBundle: Bundle {
-        return Bundle.main
+        return Bundle.keystone
     }
 
     /// Loads view from storyboard and allows initializer injection.

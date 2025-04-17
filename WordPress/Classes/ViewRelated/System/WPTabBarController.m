@@ -157,7 +157,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (self.shouldUseStaticScreens) {
         rootViewController = [[MovedToJetpackViewController alloc] initWithSource:MovedToJetpackSourceNotifications];
     } else {
-        UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:nil];
+        UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:NSBundle.keystone];
         self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
         rootViewController = self.notificationsViewController;
     }

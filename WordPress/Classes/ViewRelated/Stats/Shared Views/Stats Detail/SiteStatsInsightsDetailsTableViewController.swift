@@ -81,7 +81,7 @@ extension SiteStatsInsightsDetailsTableViewController: StatsForegroundObservable
 
 private extension SiteStatsInsightsDetailsTableViewController {
     private func updateHeader() {
-        guard let siteStatsTableHeaderView = Bundle.main.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
+        guard let siteStatsTableHeaderView = Bundle.keystone.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
             return
         }
 

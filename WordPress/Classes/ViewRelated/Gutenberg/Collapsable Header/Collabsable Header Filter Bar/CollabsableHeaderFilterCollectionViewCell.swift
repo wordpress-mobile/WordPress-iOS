@@ -1,10 +1,9 @@
 import UIKit
 import WordPressUI
 
-class CollabsableHeaderFilterCollectionViewCell: UICollectionViewCell {
+class CollabsableHeaderFilterCollectionViewCell: UICollectionViewCell, NibLoadable {
 
     static let cellReuseIdentifier = "\(CollabsableHeaderFilterCollectionViewCell.self)"
-    static let nib = UINib(nibName: "\(CollabsableHeaderFilterCollectionViewCell.self)", bundle: Bundle.main)
 
     static var font: UIFont {
         return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)

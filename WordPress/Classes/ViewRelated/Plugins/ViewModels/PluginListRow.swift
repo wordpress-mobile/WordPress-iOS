@@ -3,8 +3,7 @@ import Gridicons
 
 struct PluginListRow: ImmuTableRow {
     static let cell: ImmuTableCell = {
-        let nib = UINib(nibName: "PluginListCell", bundle: Bundle(for: PluginListCell.self))
-        return ImmuTableCell.nib(nib, PluginListCell.self)
+        return ImmuTableCell.nib(PluginListCell.defaultNib, PluginListCell.self)
     }()
 
     let name: String

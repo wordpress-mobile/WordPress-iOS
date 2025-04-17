@@ -85,11 +85,11 @@ class RegisterDomainDetailsViewController: UITableViewController {
         configureTableFooterView()
 
         tableView.register(
-            UINib(nibName: RegisterDomainSectionHeaderView.identifier, bundle: nil),
+            RegisterDomainSectionHeaderView.defaultNib,
             forHeaderFooterViewReuseIdentifier: RegisterDomainSectionHeaderView.identifier
         )
         tableView.register(
-            UINib(nibName: EpilogueSectionHeaderFooter.identifier, bundle: nil),
+            EpilogueSectionHeaderFooter.defaultNib,
             forHeaderFooterViewReuseIdentifier: EpilogueSectionHeaderFooter.identifier
         )
         tableView.register(

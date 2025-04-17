@@ -60,7 +60,7 @@ class JetpackScanThreatDetailsViewController: UIViewController {
         self.blog = blog
         self.threat = threat
         self.hasValidCredentials = hasValidCredentials
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: "JetpackScanThreatDetailsViewController", bundle: .keystone)
     }
 
     required init?(coder: NSCoder) {

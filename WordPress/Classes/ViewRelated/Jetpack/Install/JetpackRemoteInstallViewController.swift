@@ -10,7 +10,7 @@ protocol JetpackRemoteInstallDelegate: AnyObject {
 class JetpackRemoteInstallViewController: UIViewController {
     private weak var delegate: JetpackRemoteInstallDelegate?
     private var blog: Blog
-    private let jetpackView = JetpackRemoteInstallStateView()
+    private let jetpackView = JetpackRemoteInstallStateView(nibName: "JetpackRemoteInstallStateView", bundle: .keystone)
     private let viewModel: JetpackRemoteInstallViewModel
 
     init(blog: Blog,

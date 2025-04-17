@@ -4,10 +4,7 @@ import WordPressShared
 enum Notifications {
     private static let storyboardName = "Notifications"
 
-    static let storyboard = UIStoryboard(
-        name: Notifications.storyboardName,
-        bundle: Bundle(for: NotificationsViewController.self)
-    )
+    static let storyboard = UIStoryboard(name: Notifications.storyboardName, bundle: .keystone)
 
     static func instantiateInitialViewController() -> NotificationsViewController {
         storyboard.instantiateInitialViewController() as! NotificationsViewController

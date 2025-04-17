@@ -4,7 +4,7 @@ import Gridicons
 import CoreGraphics
 import WordPressUI
 
-class ExpandableCell: WPReusableTableViewCell {
+class ExpandableCell: WPReusableTableViewCell, NibLoadable {
 
     // MARK: - Initializers
 

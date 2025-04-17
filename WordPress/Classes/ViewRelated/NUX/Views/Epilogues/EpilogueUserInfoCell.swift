@@ -4,7 +4,7 @@ import WordPressUI
 
 // MARK: - EpilogueUserInfoCell
 //
-class EpilogueUserInfoCell: UITableViewCell {
+class EpilogueUserInfoCell: UITableViewCell, NibLoadable {
 
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var gravatarActivityIndicator: UIActivityIndicatorView!

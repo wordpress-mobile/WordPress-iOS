@@ -62,7 +62,7 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSParameterAssert([item isKindOfClass:[MenuItem class]]);
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MenuItemEditing" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MenuItemEditing" bundle:NSBundle.keystone];
     MenuItemEditingViewController *controller = [storyboard instantiateInitialViewController];
     [controller setupWithItem:item blog:blog];
     return controller;

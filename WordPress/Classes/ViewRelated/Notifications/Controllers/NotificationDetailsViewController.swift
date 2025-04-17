@@ -360,7 +360,7 @@ extension NotificationDetailsViewController {
 
         for cellClass in cellClassNames {
             let classname = cellClass.classNameWithoutNamespaces()
-            let nib = UINib(nibName: classname, bundle: Bundle.main)
+            let nib = UINib(nibName: classname, bundle: .keystone)
 
             tableView.register(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
         }

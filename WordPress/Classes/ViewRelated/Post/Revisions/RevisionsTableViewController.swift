@@ -66,9 +66,7 @@ private extension RevisionsTableViewController {
     private func setupUI() {
         navigationItem.title = Strings.title
 
-        let cellNib = UINib(nibName: RevisionsTableViewCell.classNameWithoutNamespaces(),
-                            bundle: Bundle(for: RevisionsTableViewCell.self))
-        tableView.register(cellNib, forCellReuseIdentifier: RevisionsTableViewCell.reuseIdentifier)
+        tableView.register(RevisionsTableViewCell.defaultNib, forCellReuseIdentifier: RevisionsTableViewCell.reuseIdentifier)
         tableView.cellLayoutMarginsFollowReadableWidth = true
 
         let refreshControl = UIRefreshControl()
@@ -225,7 +223,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
 
         let state = getRevisionState(at: indexPath)
 
-        let revisionsStoryboard = UIStoryboard(name: "Revisions", bundle: nil)
+        let revisionsStoryboard = UIStoryboard(name: "Revisions", bundle: .keystone)
         guard let revisionsNC = revisionsStoryboard.instantiateInitialViewController() as? RevisionsNavigationController else {
             return
         }

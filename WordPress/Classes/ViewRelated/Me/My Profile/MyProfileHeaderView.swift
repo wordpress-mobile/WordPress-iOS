@@ -1,7 +1,7 @@
 import Foundation
 import WordPressUI
 
-class MyProfileHeaderView: UITableViewHeaderFooterView {
+class MyProfileHeaderView: UITableViewHeaderFooterView, NibLoadable {
     // MARK: - Public Properties and Outlets
     @IBOutlet var gravatarImageView: CircularImageView!
     @IBOutlet var gravatarButton: UIButton!
@@ -32,10 +32,6 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
-
-    class func makeFromNib() -> MyProfileHeaderView {
-        return Bundle.main.loadNibNamed("MyProfileHeaderView", owner: self, options: nil)?.first as! MyProfileHeaderView
     }
 
     // MARK: - Convenience Initializers

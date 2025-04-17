@@ -3,7 +3,7 @@ import Gridicons
 import WordPressShared
 import WordPressUI
 
-open class ActivityTableViewCell: WPTableViewCell, NibReusable {
+open class ActivityTableViewCell: UITableViewCell, NibReusable {
 
     var actionButtonHandler: ((UIButton) -> Void)?
 

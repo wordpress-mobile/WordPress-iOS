@@ -37,7 +37,7 @@ private var associateObjectKey: UInt8 = 0
 
 private func makeHeaderView(account: WPAccount) -> MyProfileHeaderView {
     let defaultImage = UIImage.gravatarPlaceholderImage
-    let headerView = MyProfileHeaderView.makeFromNib()
+    let headerView = MyProfileHeaderView.loadFromNib()
     if let email = account.email {
         headerView.gravatarEmail = email
     } else {

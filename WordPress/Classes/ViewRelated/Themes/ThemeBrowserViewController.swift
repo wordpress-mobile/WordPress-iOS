@@ -285,7 +285,7 @@ public protocol ThemePresenter: AnyObject {
      *  @returns    ThemeBrowserViewController instance
      */
     @objc open class func browserWithBlog(_ blog: Blog) -> ThemeBrowserViewController {
-        let storyboard = UIStoryboard(name: "ThemeBrowser", bundle: nil)
+        let storyboard = UIStoryboard(name: "ThemeBrowser", bundle: .keystone)
         let viewController = storyboard.instantiateInitialViewController() as! ThemeBrowserViewController
         viewController.blog = blog
 
@@ -326,9 +326,9 @@ public protocol ThemePresenter: AnyObject {
         searchController.delegate = self
         searchController.searchResultsUpdater = self
 
-        collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForThemesHeader)
+        collectionView.register(ThemeBrowserSectionHeaderView.defaultNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForThemesHeader)
 
-        collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader)
+        collectionView.register(ThemeBrowserSectionHeaderView.defaultNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader)
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

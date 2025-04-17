@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-class RegisterDomainSectionHeaderView: UITableViewHeaderFooterView {
+class RegisterDomainSectionHeaderView: UITableViewHeaderFooterView, NibLoadable {
 
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!

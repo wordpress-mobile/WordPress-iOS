@@ -14,7 +14,13 @@ final class Blog_RestAPITests: CoreDataTestCase {
     private var blog: Blog!
 
     override func setUp() async throws {
-        _ = try await Blog.createRestApiBlog(with: loginDetails, restApiRootURL: URL(string: "https://example.com/wp-json")!, in: contextManager, using: testKeychain)
+        _ = try await Blog.createRestApiBlog(
+            with: loginDetails,
+            restApiRootURL: URL(string: "https://example.com/wp-json")!,
+            xmlrpcEndpointURL: URL(string: "https://example.com/dir/xmlrpc.php")!,
+            in: contextManager,
+            using: testKeychain
+        )
         self.blog = try XCTUnwrap(contextManager.mainContext.fetch(NSFetchRequest<Blog>(entityName: "Blog")).first)
     }
 
@@ -35,7 +41,7 @@ final class Blog_RestAPITests: CoreDataTestCase {
     }
 
     func testThatCreateRestApiBlogStoresDerivedXMLRPCEndpoint() throws {
-        try XCTAssertEqual(blog.getXMLRPCEndpoint(), loginDetails.derivedXMLRPCRoot)
+        try XCTAssertEqual(blog.getXMLRPCEndpoint().absoluteString, "https://example.com/dir/xmlrpc.php")
     }
 
     func testThatExistingBlogWithInvalidUrlThrowsErrorOnAccess() throws {
