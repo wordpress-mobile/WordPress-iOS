@@ -1,5 +1,4 @@
 #import "SuggestionsTableView.h"
-#import "WPStyleGuide+Suggestions.h"
 #import "SuggestionsTableViewCell.h"
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
@@ -81,8 +80,8 @@ CGFloat const STVSeparatorHeight = 1.f;
         [self.headerView setBackgroundColor: [UIColor clearColor]];
         [self.separatorView setBackgroundColor: [UIColor clearColor]];
     } else {
-        [self.headerView setBackgroundColor: [WPStyleGuide suggestionsHeaderSmoke]];
-        [self.separatorView setBackgroundColor: [WPStyleGuide suggestionsHeaderSmoke]];
+        [self.headerView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.33]];
+        [self.separatorView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.33]];
     }
 }
 
@@ -107,7 +106,7 @@ CGFloat const STVSeparatorHeight = 1.f;
     
     _separatorView = [[UIView alloc] init];
     [_separatorView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [_separatorView setBackgroundColor: [WPStyleGuide suggestionsSeparatorSmoke]];
+    [_separatorView setBackgroundColor:[UIColor separatorColor]];
     [self addSubview:_separatorView];
 
     [self updateHeaderStyles];
