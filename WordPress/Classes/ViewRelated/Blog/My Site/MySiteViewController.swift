@@ -740,7 +740,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         self.blogDashboardViewController = blogDashboardViewController
         stackView.sendSubviewToBack(blogDashboardViewController.view)
 
-        if isReaderAppModeEnabled, let account = blog.account {
+        if isReaderAppModeEnabled, let account = blog.account,
+           !stackView.subviews.contains(where: { $0 is MeHeaderView }) {
             let headerView = MeHeaderView()
             headerView.update(with: .init(account: account))
             headerView.configureReaderMode()
