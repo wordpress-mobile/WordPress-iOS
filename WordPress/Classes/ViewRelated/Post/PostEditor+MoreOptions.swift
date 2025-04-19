@@ -20,11 +20,6 @@ extension PostEditor {
     }
 
     private func savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {
-        guard !post.changes.isEmpty else {
-            completion(nil, nil)
-            return
-        }
-
         Task { @MainActor in
             let coordinator = PostCoordinator.shared
             do {
