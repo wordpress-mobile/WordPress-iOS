@@ -14,7 +14,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     private let webView = WKWebView(frame: .zero, configuration: {
         let configuration = WKWebViewConfiguration()
         configuration.allowsInlineMediaPlayback = true
-        configuration.defaultWebpagePreferences.allowsContentJavaScript = false
+        configuration.defaultWebpagePreferences.allowsContentJavaScript = true
         return configuration
     }())
 
