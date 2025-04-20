@@ -36,7 +36,7 @@ public class WPUserAgent: NSObject {
     // https://github.com/wordpress-mobile/WordPress-iOS/blob/a6eaa7aa8acb50828449df2d3fccaa50d7def821/WordPress/Classes/Utility/WPUserAgent.m#L31-L41
     @objc
     public static func wordPressUserAgent(userDefaults: UserDefaults, bundle: Bundle = .main) -> String {
-        let appVersion = bundle.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+        let appVersion = bundle.shortVersionString() ?? "Unknown"
         return "\(defaultUserAgent(userDefaults: userDefaults)) wp-iphone/\(appVersion)"
     }
 

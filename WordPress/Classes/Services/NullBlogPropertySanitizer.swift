@@ -75,6 +75,6 @@ import WordPressShared
     }
 
     private func currentBuildVersion() -> String? {
-        return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        return Bundle.main.shortVersionString()!
     }
 }

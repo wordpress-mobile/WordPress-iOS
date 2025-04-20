@@ -61,7 +61,8 @@ class AppRatingUtility: NSObject {
     /// internal tracking.
     ///
     /// - Parameters:
-    ///     - version: version number of the app, e.g. CFBundleShortVersionString
+    ///     - version: version number of the app, e.g. Bundle.main.shortVersionString()  for consistency.
+    ///              Maps to CFBundleShortVersionStringin Info.plist)
     ///
     @objc func setVersion(_ version: String) {
         let trackingVersion = defaults.string(forKey: Key.currentVersion) ?? version

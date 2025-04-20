@@ -374,7 +374,7 @@ extension WordPressAppDelegate {
     }
 
     func configureAppRatingUtility() {
-        guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+        guard let version = Bundle.main.shortVersionString() else {
             DDLogError("No CFBundleShortVersionString found in Info.plist")
             return
         }
@@ -546,7 +546,7 @@ extension WordPressAppDelegate {
     }
 
     private func checkForAppUpdates() {
-        guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+            guard let version = Bundle.main.shortVersionString() else {
             return wpAssertionFailure("No CFBundleShortVersionString found in Info.plist")
         }
         let coordinator = AppUpdateCoordinator(currentVersion: version)

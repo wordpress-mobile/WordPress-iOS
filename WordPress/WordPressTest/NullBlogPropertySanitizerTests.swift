@@ -9,7 +9,7 @@ class NullBlogPropertySanitizerTests: CoreDataTestCase {
     private var nullBlogPropertySanitizer: NullBlogPropertySanitizer!
 
     private var currentBuildVersion: String {
-        return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        return Bundle.main.shortVersionString() ?? ""
     }
 
     override func setUp() {
