@@ -430,7 +430,10 @@ private extension CommentDetailViewController {
         let viewModel = CommentCellViewModel(comment: comment, notification: notification)
 
         cell.configure(viewModel: viewModel, helper: helper) { [weak self] _ in
-            self?.tableView.performBatchUpdates({})
+            guard let self else { return }
+            UIView.setAnimationsEnabled(false)
+            self.tableView.performBatchUpdates({})
+            UIView.setAnimationsEnabled(true)
         }
 
         cell.configureForCommentDetails()
