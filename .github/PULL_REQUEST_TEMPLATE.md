@@ -1,16 +1,12 @@
-## What?
-<!-- Describe the proposed changes -->
-
-## Why?
-<!-- Describe the rationale for the changes -->
-
-## How?
-<!-- Describe any noteworthy implementation details -->
+## Description
+<!-- Describe the changes, why they are needed, and how they address the issue -->
 
 ## Testing instructions
 <!-- Consider listing specific testing steps for helping reviewers evaluate the efficacy of the changes -->
 
-<!-- Consider testing the following *yourself* before requesting a review:
+<!--
+
+Consider testing the following *yourself* before requesting a review:
 
 - Compatibility with WordPress.com sites and self-hosted Jetpack sites
 - Both portrait and landscape orientations
