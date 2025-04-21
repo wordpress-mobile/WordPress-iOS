@@ -168,9 +168,14 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         if !post.blog.isSelfHosted {
             let siteType: String = post.blog.isHostedAtWPcom ? "simple" : "atomic"
-            conf.webViewGlobals = [
-                WebViewGlobal(name: "_currentSiteType", value: .string(siteType))
-            ]
+            do {
+                conf.webViewGlobals = [
+                    try WebViewGlobal(name: "_currentSiteType", value: .string(siteType))
+                ]
+            } catch {
+                DDLogError("Failed to create WebViewGlobal: \(error)")
+                conf.webViewGlobals = []
+            }
         }
 
         self.editorViewController = GutenbergKit.EditorViewController(configuration: conf)
