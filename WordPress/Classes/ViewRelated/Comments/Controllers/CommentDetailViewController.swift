@@ -17,8 +17,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     // MARK: Properties
 
-    private let containerStackView = UIStackView()
-    private let tableView = UITableView(frame: .zero, style: .plain)
+    let tableView = UITableView(frame: .zero, style: .plain)
 
     // Reply properties
     private var addCommentButton: CommentLargeButton?
@@ -241,7 +240,6 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureView()
         configureReplyView()
         configureNavigationBar()
         configureTable()
@@ -325,14 +323,6 @@ private extension CommentDetailViewController {
         return .init(top: 0, left: -tableView.separatorInset.left, bottom: 0, right: tableView.frame.size.width)
     }
 
-    func configureView() {
-        containerStackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(containerStackView)
-        containerStackView.axis = .vertical
-        containerStackView.addArrangedSubview(tableView)
-        view.pinSubviewToAllEdges(containerStackView)
-    }
-
     func configureNavigationBar() {
         configureNavBarButton()
     }
@@ -355,12 +345,17 @@ private extension CommentDetailViewController {
         tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: Constants.tableBottomMargin))
 
         // assign 20pt leading inset to the table view, as per the design.
-        tableView.directionalLayoutMargins = .init(top: tableView.directionalLayoutMargins.top,
-                                                   leading: Constants.tableHorizontalInset,
-                                                   bottom: tableView.directionalLayoutMargins.bottom,
-                                                   trailing: Constants.tableHorizontalInset)
+        tableView.directionalLayoutMargins = .init(
+            top: tableView.directionalLayoutMargins.top,
+            leading: Constants.tableHorizontalInset,
+            bottom: tableView.directionalLayoutMargins.bottom,
+            trailing: Constants.tableHorizontalInset
+        )
 
         tableView.register(CommentContentTableViewCell.defaultNib, forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
+
+        view.addSubview(tableView)
+        tableView.pinEdges()
     }
 
     func configureContentRows() -> [RowType] {
@@ -989,7 +984,7 @@ private extension CommentDetailViewController {
             self?.buttonAddCommentTapped()
         }
         button.isHidden = true
-        containerStackView.addArrangedSubview(button)
+//        containerStackView.addArrangedSubview(button)
         addCommentButton = button
     }
 

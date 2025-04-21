@@ -92,7 +92,6 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
         super.viewDidLoad()
 
         configureNavBar()
-        WPStyleGuide.disableScrollEdgeAppearance(for: self)
         view.backgroundColor = .systemBackground
         loadComment()
     }
@@ -106,7 +105,6 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
         self.notification = notification
         loadComment()
     }
-
 }
 
 private extension NotificationCommentDetailViewController {
@@ -166,9 +164,11 @@ private extension NotificationCommentDetailViewController {
                 managedObjectContext: managedObjectContext
             )
             detailsVC.willMove(toParent: self)
+            addChild(detailsVC)
             view.addSubview(detailsVC.view)
-            detailsVC.view.pinEdges(to: view.safeAreaLayoutGuide)
+            detailsVC.view.pinEdges()
             detailsVC.didMove(toParent: self)
+            setContentScrollView(detailsVC.tableView)
             self.detailsVC = detailsVC
         }
 
