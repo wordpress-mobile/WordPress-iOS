@@ -446,10 +446,12 @@ private extension CommentDetailViewController {
             self?.openWebView(for: url)
         }
 
-        cell.accessoryButtonType = .info
-        cell.isAccessoryButtonEnabled = true
-        cell.accessoryButtonAction = { [weak self] senderView in
-            self?.presentUserInfoSheet(senderView)
+        if comment.allowsModeration() {
+            cell.accessoryButtonType = .info
+            cell.isAccessoryButtonEnabled = true
+            cell.accessoryButtonAction = { [weak self] senderView in
+                self?.presentUserInfoSheet(senderView)
+            }
         }
 
         cell.replyButtonAction = { [weak self] in
