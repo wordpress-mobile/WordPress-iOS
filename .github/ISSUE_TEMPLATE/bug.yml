@@ -1,0 +1,55 @@
+name: Bug report
+description: Report a bug with the WordPress app for iOS
+type: Bug
+labels: ["[Type] Bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! If this is a security issue, please follow the security policy instead: https://github.com/wordpress-mobile/WordPress-iOS/security/policy
+  - type: textarea
+    attributes:
+      label: Description
+      description: Please write a brief description of the bug, including what you expect to happen and what is currently happening.
+      placeholder: |
+        Feature '...' is not working properly. I expect '...' to happen, but '...' happens instead
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Step-by-step reproduction instructions
+      description: Please write the steps needed to reproduce the bug.
+      placeholder: |
+        1. Go to '...'
+        2. Tap on '...'
+        3. Scroll down to '...'
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Screenshots, screen recording, code snippet
+      description: |
+        If possible, please upload a screenshot or screen recording which demonstrates the bug.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Environment info
+      description: |
+        Please list helpful details about your device and site.
+      placeholder: |
+        App version, device, iOS version, WordPress version, etc.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: existing
+    attributes:
+      label: Please confirm that you have searched existing issues in the repo.
+      description: You can do this by searching https://github.com/wordpress-mobile/WordPress-iOS/issues and making sure the bug is not related to another plugin.
+      options:
+        - label: "Yes"
+          required: true
