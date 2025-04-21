@@ -195,7 +195,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
             : UIImage(systemName: "square.and.arrow.up"),
             style: .plain,
             target: self,
-            action: #selector(shareCommentURL)
+            action: #selector(buttonShareCommentTapped)
         )
         button.accessibilityLabel = NSLocalizedString("Share comment", comment: "Accessibility label for button to share a comment from a notification")
         return button
@@ -452,6 +452,10 @@ private extension CommentDetailViewController {
             cell.accessoryButtonAction = { [weak self] senderView in
                 self?.presentUserInfoSheet(senderView)
             }
+        } else {
+            cell.accessoryButtonAction = { [weak self] senderView in
+                self?.shareComment(sourceItem: senderView)
+            }
         }
 
         cell.replyButtonAction = { [weak self] in
@@ -657,7 +661,11 @@ private extension CommentDetailViewController {
                                      })
     }
 
-    @objc func shareCommentURL(_ barButtonItem: UIBarButtonItem) {
+    @objc private func buttonShareCommentTapped(_ button: UIBarButtonItem) {
+        shareComment(sourceItem: button)
+    }
+
+    private func shareComment(sourceItem: (any UIPopoverPresentationControllerSourceItem)) {
         guard let commentURL = comment.commentURL() else {
             return
         }
@@ -666,7 +674,7 @@ private extension CommentDetailViewController {
         WPAnalytics.track(.siteCommentsCommentShared)
 
         let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
-        activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
+        activityViewController.popoverPresentationController?.sourceItem = sourceItem
         present(activityViewController, animated: true, completion: nil)
     }
 
