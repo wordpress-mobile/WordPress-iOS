@@ -341,7 +341,8 @@ private extension CommentDetailViewController {
         tableView.dataSource = self
         tableView.separatorInsetReference = .fromAutomaticInsets
 
-        // get rid of the separator line for the last cell.
+        // get rid of the separator lines
+        tableView.tableHeaderView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
         tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: Constants.tableBottomMargin))
 
         // assign 20pt leading inset to the table view, as per the design.
@@ -356,6 +357,8 @@ private extension CommentDetailViewController {
 
         view.addSubview(tableView)
         tableView.pinEdges()
+
+        headerCell.contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 54).isActive = true
     }
 
     func configureContentRows() -> [RowType] {
@@ -423,7 +426,6 @@ private extension CommentDetailViewController {
 
         // otherwise, if this is a comment to a post, show the post title instead.
         headerCell.configure(for: .post, subtitle: comment.titleForDisplay())
-        headerCell.contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 54).isActive = true
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
