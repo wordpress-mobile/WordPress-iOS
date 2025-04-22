@@ -6,7 +6,6 @@
 	<array>
 		<string>webcredentials:wordpress.com</string>
 		<string>webcredentials:*.wordpress.com</string>
-		<string>applinks:links.wp.a8cmail.com</string>
 	</array>
 	<key>aps-environment</key>
 	<string>development</string>
