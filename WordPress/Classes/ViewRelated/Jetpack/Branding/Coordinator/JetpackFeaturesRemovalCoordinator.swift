@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 import WordPressShared
 
 /// A class containing convenience methods for the the Jetpack features removal experience
@@ -92,9 +93,9 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
     static var currentAppUIType: RootViewCoordinator.AppUIType?
 
     static func generalPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
-                             isJetpack: Bool = AppConfiguration.isJetpack) -> GeneralPhase {
-        if isJetpack {
-            return .normal // Always return normal for Jetpack
+                             app: AppBrand = BuildSettings.current.brand) -> GeneralPhase {
+        guard app == .wordpress else {
+            return .normal // Show migration only for the WordPress app
         }
 
         if AccountHelper.noWordPressDotComAccount {
@@ -124,8 +125,8 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
     }
 
     static func siteCreationPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> SiteCreationPhase {
-        if AppConfiguration.isJetpack {
-            return .normal // Always return normal for Jetpack
+        guard BuildSettings.current.brand == .wordpress else {
+            return .normal // Show migration only for the WordPress app
         }
 
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.enabled(using: featureFlagStore)

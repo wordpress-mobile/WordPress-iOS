@@ -357,7 +357,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
 
         // When
         // assume that we're requesting from the WordPress app.
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store, isJetpack: false)
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store, app: .wordpress)
 
         // Then
         XCTAssertEqual(phase, .staticScreens)
@@ -372,7 +372,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
 
         // When
         // assume that we're requesting from the Jetpack app.
-        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store, isJetpack: true)
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store, app: .jetpack)
 
         // Then
         XCTAssertEqual(phase, .normal)
