@@ -22,8 +22,13 @@ extension WPTabBarController: RootViewPresenter {
     }
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
-        self.selectedIndex = WPTab.notifications.rawValue
-        completion?(self.notificationsViewController!)
+        // UITabBarController.selectedIndex must be used from main thread only.
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+
+            self.selectedIndex = WPTab.notifications.rawValue
+            completion?(self.notificationsViewController!)
+        }
     }
 
     // MARK: Me
