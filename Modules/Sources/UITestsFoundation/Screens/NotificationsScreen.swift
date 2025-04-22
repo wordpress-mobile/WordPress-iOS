@@ -39,7 +39,7 @@ public class NotificationsScreen: ScreenObject {
 
         // If on iPhone, tap back to return to notifications list
         if XCTestCase.isPhone {
-            navigateBack()
+            navBackButton.firstMatch.tap()
         }
 
         return self
