@@ -25,11 +25,6 @@ import WordPressUI
     }
 
     @available(swift, obsoleted: 1.0)
-    public static func murielNeutral0() -> UIColor {
-        return UIAppColor.neutral(.shade0)
-    }
-
-    @available(swift, obsoleted: 1.0)
     public static func murielNeutral5() -> UIColor {
         return UIAppColor.neutral(.shade5)
     }
@@ -37,11 +32,6 @@ import WordPressUI
     @available(swift, obsoleted: 1.0)
     public static func murielNeutral10() -> UIColor {
         return UIAppColor.neutral(.shade10)
-    }
-
-    @available(swift, obsoleted: 1.0)
-    public static func murielNeutral20() -> UIColor {
-        return UIAppColor.neutral(.shade20)
     }
 
     @available(swift, obsoleted: 1.0)
@@ -65,11 +55,6 @@ import WordPressUI
     }
 
     @available(swift, obsoleted: 1.0)
-    public static func murielSuccess() -> UIColor {
-        return UIAppColor.success
-    }
-
-    @available(swift, obsoleted: 1.0)
     public static func murielText() -> UIColor {
         return .label
     }
@@ -90,23 +75,8 @@ import WordPressUI
     }
 
     @available(swift, obsoleted: 1.0)
-    public static func murielBasicBackground() -> UIColor {
-        return .systemBackground
-    }
-
-    @available(swift, obsoleted: 1.0)
-    public static func murielTextPlaceholder() -> UIColor {
-        return .tertiaryLabel
-    }
-
-    @available(swift, obsoleted: 1.0)
     public static func murielListForeground() -> UIColor {
         return .secondarySystemGroupedBackground
-    }
-
-    @available(swift, obsoleted: 1.0)
-    public static func murielListBackground() -> UIColor {
-        return .systemGroupedBackground
     }
 
     @available(swift, obsoleted: 1.0)
@@ -117,10 +87,5 @@ import WordPressUI
     @available(swift, obsoleted: 1.0)
     public static func murielAppBarText() -> UIColor {
         return UIAppColor.appBarText
-    }
-
-    @available(swift, obsoleted: 1.0)
-    public static func murielAppBarBackground() -> UIColor {
-        return UIAppColor.appBarTint
     }
 }

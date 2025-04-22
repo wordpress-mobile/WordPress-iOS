@@ -63,7 +63,7 @@
 
         UIFont *font = [WPFontManager systemRegularFontOfSize:16.0];
         NSString *placeholder = NSLocalizedString(@"Search...", @"Menus search bar placeholder text.");
-        NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor murielTextPlaceholder]};
+        NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor tertiaryLabelColor]};
         _textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:attributes];
     }
 
@@ -102,7 +102,7 @@
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
     contentView.layer.borderColor = [[UIColor murielNeutral10] CGColor];
     contentView.layer.borderWidth = MenusDesignStrokeWidth;
-    contentView.backgroundColor = [UIColor murielBasicBackground];
+    contentView.backgroundColor = [UIColor systemBackgroundColor];
 
     NSAssert(_stackView != nil, @"stackView is nil");
 

@@ -25,7 +25,7 @@
     self = [super initWithFrame:frame];
     if (self) {
 
-        self.backgroundColor = [UIColor murielBasicBackground];
+        self.backgroundColor = [UIColor systemBackgroundColor];
 
         [self setupSourceCell];
     }
