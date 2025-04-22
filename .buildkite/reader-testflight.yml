@@ -4,7 +4,7 @@
 steps:
   - label: ":eyeglasses: :xcode: Reader App Store Connect Build"
     command: .buildkite/commands/release-build-reader.sh
-    key: reader_asc_build
+    key: build_asc_reader
     plugins: [$CI_TOOLKIT_PLUGIN]
     agents:
       queue: mac
@@ -17,7 +17,7 @@ steps:
       - slack: "#build-and-ship"
 
   - label: ":eyeglasses: :testflight: Reader App Store Connect Upload"
-    depends_on: reader_asc_build
+    depends_on: build_asc_reader
     command: .buildkite/commands/release-upload-reader.sh
     plugins: [$CI_TOOLKIT_PLUGIN]
     agents:
