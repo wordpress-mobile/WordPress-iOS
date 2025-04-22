@@ -9,9 +9,9 @@ protocol ReaderDetailToolbarDelegate: AnyObject {
 class ReaderDetailToolbar: UIView, NibLoadable {
     @IBOutlet weak var dividerView: UIView!
     @IBOutlet weak var saveForLaterButton: UIButton!
-    @IBOutlet weak var reblogButton: PostMetaButton!
-    @IBOutlet weak var commentButton: PostMetaButton!
-    @IBOutlet weak var likeButton: PostMetaButton!
+    @IBOutlet weak var reblogButton: UIButton!
+    @IBOutlet weak var commentButton: UIButton!
+    @IBOutlet weak var likeButton: UIButton!
 
     /// The reader post that the toolbar interacts with
     private var post: ReaderPost?
@@ -196,10 +196,12 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         let standardDisabledColor = UIColor(light: UIAppColor.gray(.shade10), dark: .quaternaryLabel)
         let disabledColor = displaySetting == .standard ? standardDisabledColor : displaySetting.color.border
 
-        WPStyleGuide.applyReaderActionButtonStyle(button,
-                                                  titleColor: displaySetting == .standard ? .secondaryLabel : displaySetting.color.secondaryForeground,
-                                                  imageColor: displaySetting == .standard ? .secondaryLabel : displaySetting.color.secondaryForeground,
-                                                  disabledColor: disabledColor)
+        WPStyleGuide.applyReaderActionButtonStyle(
+            button,
+            titleColor: displaySetting == .standard ? .secondaryLabel : displaySetting.color.secondaryForeground,
+            imageColor: displaySetting == .standard ? .secondaryLabel : displaySetting.color.secondaryForeground,
+            disabledColor: disabledColor
+        )
 
         var configuration = UIButton.Configuration.plain()
 
