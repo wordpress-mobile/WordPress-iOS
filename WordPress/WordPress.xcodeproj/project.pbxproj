@@ -1086,7 +1086,6 @@
 				ViewRelated/Menus/Controllers/MenusViewController.h,
 				ViewRelated/Pages/PageSettingsViewController.h,
 				ViewRelated/Post/PostSettingsViewController.h,
-				ViewRelated/Post/Views/PostMetaButton.h,
 				ViewRelated/Stats/StatsViewController.h,
 				ViewRelated/Suggestions/SuggestionsTableView.h,
 				ViewRelated/Suggestions/SuggestionsTableViewCell.h,

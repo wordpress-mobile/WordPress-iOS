@@ -38,7 +38,6 @@ FOUNDATION_EXPORT const unsigned char WordPressVersionString[];
 #import <WordPress/PostCategoryService.h>
 #import <WordPress/PostContentProvider.h>
 #import <WordPress/PostHelper.h>
-#import <WordPress/PostMetaButton.h>
 #import <WordPress/PostService.h>
 #import <WordPress/PostServiceOptions.h>
 #import <WordPress/PostSettingsViewController.h>
