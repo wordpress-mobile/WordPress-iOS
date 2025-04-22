@@ -173,7 +173,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
                     try WebViewGlobal(name: "_currentSiteType", value: .string(siteType))
                 ]
             } catch {
-                DDLogError("Failed to create WebViewGlobal: \(error)")
+                wpAssertionFailure("Failed to create WebViewGlobal", userInfo: ["error": "\(error)"])
                 conf.webViewGlobals = []
             }
         }
