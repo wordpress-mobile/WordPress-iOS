@@ -45,7 +45,9 @@ class EditPageViewController: UIViewController {
         if let page = self.page {
             return page
         } else {
-            let newPage = blog.createDraftPage()
+            // Leave the original Page object as an empty draft. Set the page content to the newly created revision.
+            // With this setup, the content will be treated as unsaved content.
+            let newPage = blog.createDraftPage().createRevision() as! Page
             newPage.content = self.content
             newPage.postTitle = self.postTitle
             self.page = newPage
