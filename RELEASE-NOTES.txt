@@ -1,6 +1,14 @@
 25.9
 -----
 
+* [*] Fix YouTube video embedded in comments [#24482]
+* [*] Show Comment Details screen when viewing a comment from Notifications (as opposed to opening the thread that often fails to scroll to the selected comment) [#24476]
+* [*] Minor improvementes to the Comment Details screen [#24484]
+* [*] Fix an issue with unedited draft pages created from templates failing to generate a preview [#24470]
+* [*] Fix and issue Stats showing stale unique visitors count when views are updated [#24356]
+* [*] Fix a crash on iPad after deleting the last site [#24241]
+* [*] Fix an issue with an app not syncing blogs on launch which would sometimes lead to it incorrectly showing an empty state view or deleted sites [#24243]
+* [*] Add a banner on Me tab to ask user to validate their email [#24172]
 * [*] Updated site display logic in sidebar to prioritize showing the currently selected site on iPad. [#24277]
 
 25.8
