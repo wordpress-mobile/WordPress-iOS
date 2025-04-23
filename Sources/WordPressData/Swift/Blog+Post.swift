@@ -55,7 +55,7 @@ extension Blog {
             fatalError("The `Blog` instance is not associated with an `NSManagedObjectContext`")
         }
 
-        let post = NSEntityDescription.insertNewObject(forEntityName: NSStringFromClass(Post.self), into: context) as! Post
+        let post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
         post.blog = self
         post.remoteStatus = .sync
         post.foreignID = UUID()
@@ -94,7 +94,7 @@ extension Blog {
             fatalError("The `Blog` instance is not associated with a `NSManagedObjectContext`")
         }
 
-        let page = NSEntityDescription.insertNewObject(forEntityName: NSStringFromClass(Page.self), into: context) as! Page
+        let page = NSEntityDescription.insertNewObject(forEntityName: Page.entityName(), into: context) as! Page
         page.blog = self
         page.date_created_gmt = Date()
         page.remoteStatus = .sync
