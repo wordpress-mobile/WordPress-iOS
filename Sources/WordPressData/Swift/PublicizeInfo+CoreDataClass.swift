@@ -19,7 +19,7 @@ import WordPressKit
     }
 
     @nonobjc public class func newObject(in context: NSManagedObjectContext) -> PublicizeInfo? {
-        return NSEntityDescription.insertNewObject(forEntityName: Self.classNameWithoutNamespaces(), into: context) as? PublicizeInfo
+        return NSEntityDescription.insertNewObject(forEntityName: Self.entityName(), into: context) as? PublicizeInfo
     }
 
     public func configure(with remote: RemotePublicizeInfo) {
