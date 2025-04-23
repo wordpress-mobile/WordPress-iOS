@@ -8,7 +8,8 @@ import WordPressKit
 /// Furthermore, sites eligible for unlimited sharing will still return a `PublicizeInfo` along with its sharing
 /// limitations, but the numbers should be ignored (at least for now).
 ///
-@objc public class PublicizeInfo: NSManagedObject {
+@objc(PublicizeInfo)
+public class PublicizeInfo: NSManagedObject {
 
     public var sharingLimit: SharingLimit {
         SharingLimit(remaining: Int(sharesRemaining), limit: Int(shareLimit))

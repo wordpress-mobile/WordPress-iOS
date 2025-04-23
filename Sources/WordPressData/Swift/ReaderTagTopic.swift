@@ -1,6 +1,7 @@
 import Foundation
 
-@objc open class ReaderTagTopic: ReaderAbstractTopic {
+@objc(ReaderTagTopic)
+open class ReaderTagTopic: ReaderAbstractTopic {
     @NSManaged open var isRecommended: Bool
     @NSManaged open var slug: String
     @NSManaged open var tagID: NSNumber

@@ -1,7 +1,8 @@
 import Foundation
 import CoreData
 
-@objc open class ReaderAbstractTopic: NSManagedObject {
+@objc(ReaderAbstractTopic)
+open class ReaderAbstractTopic: NSManagedObject {
     // Relations
     @NSManaged open var posts: [ReaderPost]
 

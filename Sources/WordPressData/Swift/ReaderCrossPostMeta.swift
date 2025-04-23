@@ -1,7 +1,8 @@
 import Foundation
 import CoreData
 
-@objc open class ReaderCrossPostMeta: NSManagedObject {
+@objc(ReaderCrossPostMeta)
+open class ReaderCrossPostMeta: NSManagedObject {
     // Relations
     @NSManaged open var post: ReaderPost
 

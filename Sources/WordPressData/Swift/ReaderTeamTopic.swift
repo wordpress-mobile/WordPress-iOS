@@ -1,6 +1,7 @@
 import Foundation
 
-@objc open class ReaderTeamTopic: ReaderAbstractTopic {
+@objc(ReaderTeamTopic)
+open class ReaderTeamTopic: ReaderAbstractTopic {
     @NSManaged open var slug: String
     @NSManaged open var organizationID: Int
 
