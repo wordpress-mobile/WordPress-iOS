@@ -6,7 +6,7 @@ import XCTest
 
 final class ReaderPostTests: CoreDataTestCase {
     func testSiteIconURL() throws {
-        let post = NSEntityDescription.insertNewObject(forEntityName: "ReaderPost", into: mainContext) as! ReaderPost
+        let post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.entityName(), into: mainContext) as! ReaderPost
         XCTAssertNil(post.getSiteIconURL(size: 50))
 
         post.siteIconURL = "http://example.com/icon.png"

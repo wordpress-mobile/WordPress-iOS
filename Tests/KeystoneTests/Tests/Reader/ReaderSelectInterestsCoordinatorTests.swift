@@ -128,7 +128,7 @@ class MockFollowedInterestsService: ReaderFollowedInterestsService {
         var topics: [ReaderTagTopic] = []
 
         interests.forEach { remoteInterest in
-            let topic = NSEntityDescription.insertNewObject(forEntityName: "ReaderTagTopic", into: context) as! ReaderTagTopic
+            let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.entityName(), into: context) as! ReaderTagTopic
             topic.tagID = isLoggedIn ? 1 : ReaderTagTopic.loggedOutTagID
             topic.type = ReaderTagTopic.TopicType
             topic.path = "/tag/interest"
@@ -150,7 +150,7 @@ class MockFollowedInterestsService: ReaderFollowedInterestsService {
 
     // MARK: - Private: Helpers
     private func createInterest() -> ReaderTagTopic {
-        let interest = NSEntityDescription.insertNewObject(forEntityName: "ReaderTagTopic", into: context) as! ReaderTagTopic
+        let interest = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.entityName(), into: context) as! ReaderTagTopic
         interest.path = "/tags/interest"
         interest.title = "interest"
         interest.type = ReaderTagTopic.TopicType

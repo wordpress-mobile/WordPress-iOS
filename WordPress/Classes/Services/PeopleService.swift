@@ -581,7 +581,7 @@ private extension PeopleService {
     /// Inserts a new Person instance into Core Data, with the specified payload.
     ///
     func createManagedPerson<T: Person>(_ person: T, in context: NSManagedObjectContext) {
-        let managedPerson = NSEntityDescription.insertNewObject(forEntityName: "Person", into: context) as! ManagedPerson
+        let managedPerson = NSEntityDescription.insertNewObject(forEntityName: ManagedPerson.entityName(), into: context) as! ManagedPerson
         managedPerson.updateWith(person)
         managedPerson.creationDate = Date()
         DDLogDebug("Created person \(managedPerson)")

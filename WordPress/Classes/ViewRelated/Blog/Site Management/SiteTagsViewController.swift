@@ -266,7 +266,7 @@ extension SiteTagsViewController {
             displayAlertForExistingTag(existingTag)
             return
         }
-        guard let newTag = NSEntityDescription.insertNewObject(forEntityName: "PostTag", into: ContextManager.shared.mainContext) as? PostTag else {
+        guard let newTag = NSEntityDescription.insertNewObject(forEntityName: PostTag.entityName(), into: ContextManager.shared.mainContext) as? PostTag else {
             return
         }
 

@@ -7,7 +7,7 @@ class ReaderStreamViewControllerTests: CoreDataTestCase {
     // Tests that a ReaderStreamViewController is returned
     func testControllerWithTopic() {
         let context = mainContext
-        let topic = NSEntityDescription.insertNewObject(forEntityName: "ReaderTagTopic", into: context) as! ReaderTagTopic
+        let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.entityName(), into: context) as! ReaderTagTopic
         topic.path = "foo"
 
         let controller = ReaderStreamViewController.controllerWithTopic(topic)
