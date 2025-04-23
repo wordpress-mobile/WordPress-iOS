@@ -169,12 +169,12 @@ private extension ReminderScheduleCoordinatorTests {
 
     @discardableResult
     func makePromptSettings(enabled: Bool = true, schedule: BloggingRemindersScheduler.Schedule = .none, hour: Int, minute: Int) -> BloggingPromptSettings {
-        let settings = NSEntityDescription.insertNewObject(forEntityName: "BloggingPromptSettings",
+        let settings = NSEntityDescription.insertNewObject(forEntityName: BloggingPromptSettings.entityName(),
                                                            into: mainContext) as! WordPress.BloggingPromptSettings
         settings.promptRemindersEnabled = enabled
         settings.siteID = blog.dotComID!.int32Value
 
-        let reminderDays = NSEntityDescription.insertNewObject(forEntityName: "BloggingPromptSettingsReminderDays",
+        let reminderDays = NSEntityDescription.insertNewObject(forEntityName: BloggingPromptSettingsReminderDays.entityName(),
                                                                into: mainContext) as! WordPress.BloggingPromptSettingsReminderDays
         if case .weekdays(let weekdays) = schedule {
             reminderDays.sunday = weekdays.contains(.sunday)

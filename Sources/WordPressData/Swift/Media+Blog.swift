@@ -5,7 +5,7 @@ public extension Media {
     /// Inserts and returns a new managed Media object, in the context.
     ///
     @objc class func makeMedia(in context: NSManagedObjectContext) -> Media {
-        let media = NSEntityDescription.insertNewObject(forEntityName: "Media", into: context) as! Media
+        let media = NSEntityDescription.insertNewObject(forEntityName: Media.entityName(), into: context) as! Media
         media.creationDate = Date()
         media.mediaID = 0
         media.remoteStatus = .local

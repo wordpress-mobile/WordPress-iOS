@@ -13,7 +13,7 @@ public class UserSuggestion: NSManagedObject {
             return nil
         }
 
-        guard let entityDescription = NSEntityDescription.entity(forEntityName: "UserSuggestion", in: context) else {
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: UserSuggestion.entityName(), in: context) else {
             return nil
         }
         self.init(entity: entityDescription, insertInto: context)

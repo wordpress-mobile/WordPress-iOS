@@ -108,7 +108,7 @@ open class PlanService: NSObject {
         for remotePlan in remotePlans {
             var plan = findPlanByShortname(remotePlan.shortname, in: context)
             if plan == nil {
-                plan = NSEntityDescription.insertNewObject(forEntityName: "Plan", into: context) as? Plan
+                plan = NSEntityDescription.insertNewObject(forEntityName: Plan.entityName(), into: context) as? Plan
             }
             plan?.order = Int16(plansToKeep.count)
             plan?.groups = remotePlan.groups
@@ -144,7 +144,7 @@ open class PlanService: NSObject {
         for remoteGroup in remoteGroups {
             var group = findPlanGroupBySlug(remoteGroup.slug, in: context)
             if group == nil {
-                group = NSEntityDescription.insertNewObject(forEntityName: "PlanGroup", into: context) as? PlanGroup
+                group = NSEntityDescription.insertNewObject(forEntityName: PlanGroup.entityName(), into: context) as? PlanGroup
             }
 
             group?.order = Int16(groupsToKeep.count)
@@ -172,7 +172,7 @@ open class PlanService: NSObject {
         for remoteFeature in remoteFeatures {
             var feature = findPlanFeatureBySlug(remoteFeature.slug, in: context)
             if feature == nil {
-                feature = NSEntityDescription.insertNewObject(forEntityName: "PlanFeature", into: context) as? PlanFeature
+                feature = NSEntityDescription.insertNewObject(forEntityName: PlanFeature.entityName(), into: context) as? PlanFeature
             }
 
             feature?.slug = remoteFeature.slug

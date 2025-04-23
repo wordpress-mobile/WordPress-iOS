@@ -25,7 +25,7 @@ class ContextManagerTests: XCTestCase {
             // Add an object to the DB from a model that looks different between the intial and the
             // latest scheme version, so that we fully exercise the migration.
             let originalObject = NSEntityDescription.insertNewObject(
-                forEntityName: "Comment",
+                forEntityName: Comment.entityName(),
                 into: context
             )
             try context.obtainPermanentIDs(for: [originalObject])
@@ -65,7 +65,7 @@ class ContextManagerTests: XCTestCase {
 
         try prepareForMigration(withModelName: "WordPress 19") { context in
             // Insert a Theme Entity
-            let objectOriginal = NSEntityDescription.insertNewObject(forEntityName: "Theme", into: context)
+            let objectOriginal = NSEntityDescription.insertNewObject(forEntityName: Theme.entityName(), into: context)
             try context.obtainPermanentIDs(for: [objectOriginal])
             try context.save()
 
@@ -97,11 +97,11 @@ class ContextManagerTests: XCTestCase {
             let account = newAccountInContext(context: context)
             let blog = newBlogInAccount(account: account)
 
-            let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: context) as! Post
+            let post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
             post.blog = blog
             post.authorAvatarURL = authorAvatarURL
 
-            let readerPost = NSEntityDescription.insertNewObject(forEntityName: "ReaderPost", into: context) as! ReaderPost
+            let readerPost = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.entityName(), into: context) as! ReaderPost
             readerPost.authorAvatarURL = authorAvatarURL
 
             try context.save()
@@ -399,7 +399,7 @@ class ContextManagerTests: XCTestCase {
     }
 
     private func newAccountInContext(context: NSManagedObjectContext) -> WPAccount {
-        let account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: context) as! WPAccount
+        let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
         account.username = "username"
         account.setValue(true, forKey: "isWpcom")
         account.authToken = "authtoken"
@@ -408,7 +408,7 @@ class ContextManagerTests: XCTestCase {
     }
 
     private func newBlogInAccount(account: WPAccount) -> Blog {
-        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: account.managedObjectContext!) as! Blog
+        let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: account.managedObjectContext!) as! Blog
         blog.xmlrpc = "http://test.blog/xmlrpc.php"
         blog.url = "http://test.blog/"
         blog.account = account
