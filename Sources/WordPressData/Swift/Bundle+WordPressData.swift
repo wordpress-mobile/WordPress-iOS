@@ -1,7 +1,7 @@
 import Foundation
 
 extension Bundle {
-    public static var wordPressData: Bundle {
+    @objc public class var wordPressData: Bundle {
         Bundle(for: BundleToken.self)
     }
 }
