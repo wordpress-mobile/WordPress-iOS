@@ -1,3 +1,4 @@
+import Foundation
 import WordPressShared
 
 /// Takes care of storing and accessing Gutenberg settings.
