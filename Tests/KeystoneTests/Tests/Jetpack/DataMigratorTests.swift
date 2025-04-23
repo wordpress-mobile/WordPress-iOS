@@ -259,7 +259,7 @@ private extension DataMigratorTests {
         static let defaultsWrapperKey = "defaults_staging_dictionary"
     }
 
-    func createContext(for model: NSManagedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])!,
+    func createContext(for model: NSManagedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.wordPressData])!,
                        type: String = NSInMemoryStoreType,
                        at location: URL? = nil) throws -> NSManagedObjectContext {
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
@@ -288,7 +288,7 @@ private extension DataMigratorTests {
     }
 
     func getModelNames() -> [String] {
-        guard let modelFileURL = Bundle.main.url(forResource: "WordPress", withExtension: "momd"),
+        guard let modelFileURL = Bundle.wordPressData.url(forResource: "WordPress", withExtension: "momd"),
               let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist")),
               let modelNames = (versionInfo["NSManagedObjectModel_VersionHashes"] as? [String: AnyObject])?.keys else {
             return []
@@ -305,13 +305,13 @@ private extension DataMigratorTests {
     }
 
     func urlForModel(name: String) -> URL? {
-        if let url = Bundle.main.url(forResource: name, withExtension: "mom") {
+        if let url = Bundle.wordPressData.url(forResource: name, withExtension: "mom") {
             return url
         }
 
-        let momdPaths = Bundle.main.paths(forResourcesOfType: "momd", inDirectory: nil)
+        let momdPaths = Bundle.wordPressData.paths(forResourcesOfType: "momd", inDirectory: nil)
         for path in momdPaths {
-            if let url = Bundle.main.url(forResource: name, withExtension: "mom", subdirectory: URL(fileURLWithPath: path).lastPathComponent) {
+            if let url = Bundle.wordPressData.url(forResource: name, withExtension: "mom", subdirectory: URL(fileURLWithPath: path).lastPathComponent) {
                 return url
             }
         }
