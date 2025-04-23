@@ -9,7 +9,7 @@ public class BloggingPrompt: NSManagedObject {
     }
 
     @nonobjc public class func newObject(in context: NSManagedObjectContext) -> BloggingPrompt? {
-        return NSEntityDescription.insertNewObject(forEntityName: Self.classNameWithoutNamespaces(), into: context) as? BloggingPrompt
+        return NSEntityDescription.insertNewObject(forEntityName: Self.entityName(), into: context) as? BloggingPrompt
     }
 
     public override func awakeFromInsert() {
