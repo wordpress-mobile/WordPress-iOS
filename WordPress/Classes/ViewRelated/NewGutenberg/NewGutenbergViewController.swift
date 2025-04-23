@@ -355,7 +355,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     private func fetchBlockEditorSettings() {
         guard let service = rawBlockEditorSettingsService else {
-            self.editorViewController.startEditorSetup()
+            startEditor()
             return
         }
 
@@ -363,38 +363,33 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             // Start the editor with default settings after 3 seconds
             let timeoutTask = Task {
                 try await Task.sleep(nanoseconds: 3_000_000_000) // 3 seconds
-                if !Task.isCancelled && !self.hasEditorStarted {
-                    self.hasEditorStarted = true
-                    self.editorViewController.startEditorSetup()
+                if !Task.isCancelled {
+                    startEditor()
                 }
             }
 
             do {
                 let settings = try await service.fetchSettings()
-                // Cancel the timeout task since we got settings in time
                 timeoutTask.cancel()
-
-                // Only start the editor if it hasn't been started yet
-                if !self.hasEditorStarted {
-                    self.hasEditorStarted = true
-                    // Update the editor configuration with the fetched settings
-                    var updatedConfig = self.editorViewController.configuration
-                    updatedConfig.updateEditorSettings(settings)
-                    self.editorViewController.updateConfiguration(updatedConfig)
-                    self.editorViewController.startEditorSetup()
-                }
+                startEditor(with: settings)
             } catch {
-                // Cancel the timeout task since we got an error
                 timeoutTask.cancel()
-
-                // Only start the editor if it hasn't been started yet
-                if !self.hasEditorStarted {
-                    self.hasEditorStarted = true
-                    // Start the editor with the default settings
-                    self.editorViewController.startEditorSetup()
-                }
+                DDLogError("Error fetching block editor settings: \(error)")
+                startEditor()
             }
         }
+    }
+
+    private func startEditor(with settings: [String: Any]? = nil) {
+        guard !hasEditorStarted else { return }
+        hasEditorStarted = true
+
+        if let settings {
+            var updatedConfig = self.editorViewController.configuration
+            updatedConfig.updateEditorSettings(settings)
+            self.editorViewController.updateConfiguration(updatedConfig)
+        }
+        self.editorViewController.startEditorSetup()
     }
 }
 
