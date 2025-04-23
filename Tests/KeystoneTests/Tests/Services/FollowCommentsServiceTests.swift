@@ -153,7 +153,7 @@ class FollowCommentsServiceTests: CoreDataTestCase {
     // MARK: - Helpers
 
        func seedReaderListTopic() -> ReaderListTopic {
-           let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: mainContext) as! ReaderListTopic
+           let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.entityName(), into: mainContext) as! ReaderListTopic
            topic.path = "/list/topic1"
            topic.title = "topic1"
            topic.type = ReaderListTopic.TopicType
@@ -168,7 +168,7 @@ class FollowCommentsServiceTests: CoreDataTestCase {
        }
 
        func seedReaderTeamTopic() -> ReaderTeamTopic {
-           let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderTeamTopic.classNameWithoutNamespaces(), into: mainContext) as! ReaderTeamTopic
+           let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderTeamTopic.entityName(), into: mainContext) as! ReaderTeamTopic
             topic.path = "/a8c/topic2"
             topic.title = "topic2"
             topic.type = ReaderTeamTopic.TopicType
@@ -183,7 +183,7 @@ class FollowCommentsServiceTests: CoreDataTestCase {
        }
 
        func seedReaderPostForTopic(_ topic: ReaderAbstractTopic) -> ReaderPost {
-           let post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: mainContext) as! ReaderPost
+           let post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.entityName(), into: mainContext) as! ReaderPost
            post.siteID = siteID
            post.postID = postID
            post.topic = topic
@@ -198,7 +198,7 @@ class FollowCommentsServiceTests: CoreDataTestCase {
        }
 
        func seedBlog(isWPForTeams: Bool) {
-           let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.classNameWithoutNamespaces(), into: mainContext) as! Blog
+           let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: mainContext) as! Blog
            blog.dotComID = siteID
            blog.xmlrpc = "http://test.blog/xmlrpc.php"
            blog.url = "http://test.blog/"

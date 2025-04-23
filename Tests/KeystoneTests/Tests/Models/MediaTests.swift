@@ -5,7 +5,7 @@ import XCTest
 class MediaTests: CoreDataTestCase {
 
     fileprivate func newTestMedia() -> Media {
-        return NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: mainContext) as! Media
+        return NSEntityDescription.insertNewObject(forEntityName: Media.entityName(), into: mainContext) as! Media
     }
 
     func testThatAbsoluteURLsWork() {

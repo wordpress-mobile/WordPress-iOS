@@ -323,7 +323,7 @@ import WordPressKit
     private func createOrReplaceFromRemotePublicizeService(_ remoteService: RemotePublicizeService, in context: NSManagedObjectContext) -> PublicizeService {
         var pubService = try? PublicizeService.lookupPublicizeServiceNamed(remoteService.serviceID, in: context)
         if pubService == nil {
-            pubService = NSEntityDescription.insertNewObject(forEntityName: PublicizeService.classNameWithoutNamespaces(),
+            pubService = NSEntityDescription.insertNewObject(forEntityName: PublicizeService.entityName(),
                 into: context) as? PublicizeService
         }
         pubService?.connectURL = remoteService.connectURL
@@ -451,7 +451,7 @@ import WordPressKit
     private func createOrReplaceFromRemoteSharingButton(_ remoteButton: RemoteSharingButton, blog: Blog, in context: NSManagedObjectContext) -> SharingButton {
         var shareButton = try? SharingButton.lookupSharingButton(byID: remoteButton.buttonID, for: blog, in: context)
         if shareButton == nil {
-            shareButton = NSEntityDescription.insertNewObject(forEntityName: SharingButton.classNameWithoutNamespaces(),
+            shareButton = NSEntityDescription.insertNewObject(forEntityName: SharingButton.entityName(),
                 into: context) as? SharingButton
         }
 

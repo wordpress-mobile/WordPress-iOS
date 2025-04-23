@@ -30,12 +30,12 @@ extension ReaderTopicService {
         }
 
         if siteTopic.postSubscription == nil {
-            siteTopic.postSubscription = NSEntityDescription.insertNewObject(forEntityName: ReaderSiteInfoSubscriptionPost.classNameWithoutNamespaces(),
+            siteTopic.postSubscription = NSEntityDescription.insertNewObject(forEntityName: ReaderSiteInfoSubscriptionPost.entityName(),
                                                                              into: context) as? ReaderSiteInfoSubscriptionPost
         }
 
         if siteTopic.emailSubscription == nil {
-            siteTopic.emailSubscription = NSEntityDescription.insertNewObject(forEntityName: ReaderSiteInfoSubscriptionEmail.classNameWithoutNamespaces(),
+            siteTopic.emailSubscription = NSEntityDescription.insertNewObject(forEntityName: ReaderSiteInfoSubscriptionEmail.entityName(),
                                                                               into: context) as? ReaderSiteInfoSubscriptionEmail
         }
 

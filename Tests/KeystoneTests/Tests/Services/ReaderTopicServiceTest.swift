@@ -21,17 +21,17 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
     // MARK: - Config / Helpers
 
     func seedTopics() {
-        let topic1 = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: mainContext) as! ReaderListTopic
+        let topic1 = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.entityName(), into: mainContext) as! ReaderListTopic
         topic1.path = "/list/topic1"
         topic1.title = "topic1"
         topic1.type = ReaderListTopic.TopicType
 
-        let topic2 = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.classNameWithoutNamespaces(), into: mainContext) as! ReaderTagTopic
+        let topic2 = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.entityName(), into: mainContext) as! ReaderTagTopic
         topic2.path = "/tags/topic2"
         topic2.title = "topic2"
         topic2.type = ReaderTagTopic.TopicType
 
-        let topic3 = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.classNameWithoutNamespaces(), into: mainContext) as! ReaderTagTopic
+        let topic3 = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.entityName(), into: mainContext) as! ReaderTagTopic
         topic3.path = "/list/topic3"
         topic3.title = "topic3"
         topic3.type = ReaderTagTopic.TopicType
@@ -49,19 +49,19 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
     }
 
     func seedPostsForTopic(_ topic: ReaderAbstractTopic) {
-        let post1 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: mainContext) as! ReaderPost
+        let post1 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.entityName(), into: mainContext) as! ReaderPost
         post1.postID = NSNumber(value: 1)
         post1.postTitle = "post1"
         post1.content = "post1"
         post1.topic = topic
 
-        let post2 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: mainContext) as! ReaderPost
+        let post2 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.entityName(), into: mainContext) as! ReaderPost
         post2.postID = NSNumber(value: 2)
         post2.postTitle = "post2"
         post2.content = "post2"
         post2.topic = topic
 
-        let post3 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: mainContext) as! ReaderPost
+        let post3 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.entityName(), into: mainContext) as! ReaderPost
         post3.postID = NSNumber(value: 3)
         post3.postTitle = "post3"
         post3.content = "post3"
@@ -356,7 +356,7 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
     */
     func testPostsDeletedWhenTopicDeleted() {
         // setup
-        let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: mainContext) as! ReaderListTopic
+        let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.entityName(), into: mainContext) as! ReaderListTopic
         topic.path = "/list/topic"
         topic.title = "topic"
         topic.type = ReaderListTopic.TopicType

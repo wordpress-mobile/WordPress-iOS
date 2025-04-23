@@ -11,7 +11,7 @@ extension PublicizeConnection {
     ///
     static func createOrReplace(from remoteConnection: RemotePublicizeConnection, in context: NSManagedObjectContext) -> PublicizeConnection {
         let pubConnection = findPublicizeConnection(byID: remoteConnection.connectionID, in: context)
-            ?? NSEntityDescription.insertNewObject(forEntityName: PublicizeConnection.classNameWithoutNamespaces(),
+            ?? NSEntityDescription.insertNewObject(forEntityName: PublicizeConnection.entityName(),
                 into: context) as! PublicizeConnection
 
         pubConnection.connectionID = remoteConnection.connectionID
