@@ -102,10 +102,11 @@ steps:
               context: "Reader Unit Tests"
       - label: "🔬 Keystone Unit Tests"
         command: |
+          set -o pipefail
           .buildkite/commands/shared-set-up.sh
           xcodebuild \
             -scheme Keystone \
-            -destination 'platform=iOS Simulator,OS=18.2,name=iPhone 16' \
+            -destination 'platform=iOS Simulator,OS=18.4,name=iPhone 16' \
             test \
             | xcbeautify
         plugins: [$CI_TOOLKIT_PLUGIN]
@@ -116,10 +117,11 @@ steps:
               context: "Unit Tests Keystone"
       - label: "🔬 WordPressData Unit Tests"
         command: |
+          set -o pipefail
           .buildkite/commands/shared-set-up.sh
           xcodebuild \
             -scheme WordPressData \
-            -destination 'platform=iOS Simulator,OS=18.2,name=iPhone 16' \
+            -destination 'platform=iOS Simulator,OS=18.4,name=iPhone 16' \
             test \
             | xcbeautify
         plugins: [$CI_TOOLKIT_PLUGIN]
