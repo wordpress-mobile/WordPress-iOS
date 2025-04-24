@@ -443,15 +443,16 @@ private extension CommentDetailViewController {
 
         if comment.allowsModeration() {
             cell.accessoryButtonType = .info
-            cell.isAccessoryButtonEnabled = true
             cell.accessoryButtonAction = { [weak self] senderView in
                 self?.presentUserInfoSheet(senderView)
             }
         } else {
+            cell.accessoryButtonType = .ellipsis
             cell.accessoryButtonAction = { [weak self] senderView in
                 self?.shareComment(sourceItem: senderView)
             }
         }
+        cell.isAccessoryButtonEnabled = true
 
         cell.replyButtonAction = { [weak self] in
             self?.buttonAddCommentTapped()
