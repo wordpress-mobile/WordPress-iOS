@@ -14,17 +14,21 @@ extension BlogDetailsViewController {
 
     @objc public func jetpackCardSectionViewModel() -> BlogDetailsSection {
         let row = BlogDetailsRow()
-        row.callback = {
-            let presenter = JetpackBrandingMenuCardPresenter(blog: self.blog)
-            JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .card, blog: self.blog)
-            presenter.trackCardTapped()
+        row.callback = { [weak self] in
+            self?.showJetpackOverlay()
         }
+        return BlogDetailsSection(
+            title: nil,
+            rows: [row],
+            footerTitle: nil,
+            category: .jetpackBrandingCard
+        )
+    }
 
-        let section = BlogDetailsSection(title: nil,
-                                         rows: [row],
-                                         footerTitle: nil,
-                                         category: .jetpackBrandingCard)
-        return section
+    private func showJetpackOverlay() {
+        let presenter = JetpackBrandingMenuCardPresenter(blog: blog)
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .card, blog: blog)
+        presenter.trackCardTapped()
     }
 
     func reloadTableView() {
