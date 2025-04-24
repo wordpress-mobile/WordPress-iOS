@@ -1,5 +1,5 @@
 {
-  "originHash" : "3e4dc68b43ea48afc0ea0cc78b65ead27a1c670f1eaac891c609860328aa0abf",
+  "originHash" : "c7fc894bd07cdfaf1241217c60af90ce11e6474d9488e6d63dd1e81668a87272",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -150,7 +150,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/GutenbergKit",
       "state" : {
-        "revision" : "a1c456afd2e873700ad742535cefd1a5f95c9306"
+        "revision" : "fa72e630203e7472d55f4abedfd5c462d2333584"
       }
     },
     {
