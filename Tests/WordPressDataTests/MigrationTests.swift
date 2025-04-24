@@ -16,6 +16,14 @@ struct MigrationTests {
         let context154 = contextManager154.newDerivedContext()
         let blog = BlogBuilder(context154)
             .build()
+
+        // BlogAuthor is one of the Swift-first models that needed module reference updates in
+        // https://github.com/wordpress-mobile/WordPress-iOS/pull/24494
+        let author = NSEntityDescription.insertNewObject(
+            forEntityName: BlogAuthor.entityName(),
+            into: context154
+        ) as! BlogAuthor
+
         contextManager154.saveContextAndWait(context154)
 
         // Create a context manager for the 155 model, it will run the migration automatically
@@ -31,5 +39,11 @@ struct MigrationTests {
         let results = try context155.fetch(request)
         #expect(results.count == 1)
         #expect((results.first as? Blog)?.url == blog.url)
+
+        let authorRequest = BlogAuthor.fetchRequest()
+        authorRequest.predicate = NSPredicate(format: "userID == %@", author.userID)
+        let authorResults = try context155.fetch(authorRequest)
+        #expect(authorResults.count == 1)
+        #expect((authorResults.first as? BlogAuthor)?.userID == author.userID)
     }
 }
