@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressUI
 
 /// Wraps WPTableViewHandler so that we can start abstracting coredata out of some view controllers
 final class ReaderTableContent {

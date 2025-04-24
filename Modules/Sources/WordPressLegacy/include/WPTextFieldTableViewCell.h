@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "WPTableViewCell.h"
 
+@class WPTableViewCell;
 @class WPTextFieldTableViewCell;
 
 @protocol WPTextFieldTableViewCellDelegate <NSObject>

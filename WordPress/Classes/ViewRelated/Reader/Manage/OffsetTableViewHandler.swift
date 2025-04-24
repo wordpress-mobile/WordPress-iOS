@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 // A table view handler offset by 1 (for Add a Topic in Reader Tags)
 class OffsetTableViewHandler: WPTableViewHandler {

@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressUI
 
 /// This class will display the Blog's Language setting, and will allow the user to pick a new value.
 /// Upon selection, WordPress.com backend will get hit, and the new value will be persisted.

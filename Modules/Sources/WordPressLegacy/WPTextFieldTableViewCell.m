@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import "WPTableViewCell.h"
 #import "WPTextFieldTableViewCell.h"
 
 CGFloat const TextFieldPadding = 15.0f;

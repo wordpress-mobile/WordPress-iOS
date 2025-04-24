@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressUI
 
 /// Renders a table with the following structure:
 ///     Section | Row   ContentView

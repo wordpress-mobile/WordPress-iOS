@@ -74,7 +74,6 @@ FOUNDATION_EXPORT const unsigned char WordPressVersionString[];
 #import <WordPress/WPAppAnalytics.h>
 #import <WordPress/WPUploadStatusButton.h>
 #import <WordPress/WPError.h>
-#import <WordPress/WPTableViewHandler.h>
 #import <WordPress/WPTabBarController.h>
 #import <WordPress/WPLogger.h>
 

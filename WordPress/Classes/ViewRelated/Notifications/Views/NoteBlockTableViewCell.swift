@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import WordPressLegacy
 import WordPressShared
 
 class NoteBlockTableViewCell: WPTableViewCell {

@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import WordPressShared
+import WordPressUI
 
 /// The purpose of this class is to render the Discussion Settings associated to a site, and
 /// allow the user to tune those settings, as required.

@@ -1,5 +1,6 @@
-import Foundation
+import UIKit
 import WordPressShared
+import WordPressUI
 
 class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
     // MARK: - Public Properties

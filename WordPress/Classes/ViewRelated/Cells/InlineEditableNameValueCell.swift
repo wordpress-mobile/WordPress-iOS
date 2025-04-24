@@ -1,6 +1,7 @@
 import UIKit
 import WordPressAuthenticator
 import WordPressShared
+import WordPressUI
 
 @objc protocol InlineEditableNameValueCellDelegate: AnyObject {
     @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,

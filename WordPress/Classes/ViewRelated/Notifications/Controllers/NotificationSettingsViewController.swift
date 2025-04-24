@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import WordPressShared
+import WordPressUI
 
 /// The purpose of this class is to retrieve the collection of NotificationSettings from WordPress.com
 /// Backend, and render the "Top Level" list.

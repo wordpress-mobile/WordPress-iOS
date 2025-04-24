@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressUI
 
 /// The purpose of this class is to display a UIPickerView instance inside a UITableView,
 /// and wrap up all of the Picker Delegate / DataSource methods

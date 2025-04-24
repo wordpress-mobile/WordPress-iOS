@@ -5,8 +5,8 @@
 #else
 #import "WordPress-Swift.h"
 #endif
-#import "WPTableViewHandler.h"
 
+@import WordPressLegacy;
 @import WordPressShared;
 
 @class Comment;

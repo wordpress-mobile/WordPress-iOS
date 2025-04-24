@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressUI
 
 /// The purpose of this class is to simply display a regular TableViewCell, with a Switch on the right hand side.
 ///
