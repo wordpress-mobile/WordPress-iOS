@@ -355,7 +355,7 @@
         </relationship>
         <userInfo/>
     </entity>
-    <entity name="ReaderAbstractTopic" representedClassName="WordPress.ReaderAbstractTopic" isAbstract="YES" syncable="YES">
+    <entity name="ReaderAbstractTopic" representedClassName="ReaderAbstractTopic" isAbstract="YES" syncable="YES">
         <attribute name="following" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastSynced" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="path" attributeType="String" indexed="YES" syncable="YES"/>
@@ -364,7 +364,7 @@
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderPost" inverseName="topic" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
-    <entity name="ReaderCrossPostMeta" representedClassName="WordPress.ReaderCrossPostMeta" syncable="YES">
+    <entity name="ReaderCrossPostMeta" representedClassName="ReaderCrossPostMeta" syncable="YES">
         <attribute name="commentURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="postURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -372,9 +372,9 @@
         <attribute name="siteURL" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="crossPostMeta" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
-    <entity name="ReaderDefaultTopic" representedClassName="WordPress.ReaderDefaultTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
+    <entity name="ReaderDefaultTopic" representedClassName="ReaderDefaultTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
     <entity name="ReaderGapMarker" representedClassName="ReaderGapMarker" parentEntity="ReaderPost" syncable="YES"/>
-    <entity name="ReaderListTopic" representedClassName="WordPress.ReaderListTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
+    <entity name="ReaderListTopic" representedClassName="ReaderListTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="isOwner" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isPublic" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="listDescription" optional="YES" attributeType="String" syncable="YES"/>
@@ -429,7 +429,7 @@
         <attribute name="siteID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerSites" inverseEntity="Account" syncable="YES"/>
     </entity>
-    <entity name="ReaderSiteTopic" representedClassName="WordPress.ReaderSiteTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
+    <entity name="ReaderSiteTopic" representedClassName="ReaderSiteTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="feedID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="isJetpack" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isPrivate" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -441,7 +441,7 @@
         <attribute name="siteURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subscriberCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
-    <entity name="ReaderTagTopic" representedClassName="WordPress.ReaderTagTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
+    <entity name="ReaderTagTopic" representedClassName="ReaderTagTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="isRecommended" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tagID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>

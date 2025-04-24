@@ -443,7 +443,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="postTypes" inverseEntity="Blog" syncable="YES"/>
     </entity>
-    <entity name="PublicizeConnection" representedClassName="WordPress.PublicizeConnection" syncable="YES">
+    <entity name="PublicizeConnection" representedClassName=".PublicizeConnection" syncable="YES">
         <attribute name="connectionID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateExpires" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateIssued" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -464,7 +464,7 @@
         <attribute name="userID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="connections" inverseEntity="Blog" syncable="YES"/>
     </entity>
-    <entity name="PublicizeService" representedClassName="WordPress.PublicizeService" syncable="YES">
+    <entity name="PublicizeService" representedClassName=".PublicizeService" syncable="YES">
         <attribute name="connectURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
@@ -476,7 +476,7 @@
         <attribute name="serviceID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="ReaderAbstractTopic" representedClassName="WordPress.ReaderAbstractTopic" isAbstract="YES" syncable="YES">
+    <entity name="ReaderAbstractTopic" representedClassName="ReaderAbstractTopic" isAbstract="YES" syncable="YES">
         <attribute name="algorithm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="following" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="inUse" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
@@ -487,7 +487,7 @@
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderPost" inverseName="topic" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
-    <entity name="ReaderCrossPostMeta" representedClassName="WordPress.ReaderCrossPostMeta" syncable="YES">
+    <entity name="ReaderCrossPostMeta" representedClassName="ReaderCrossPostMeta" syncable="YES">
         <attribute name="commentURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="postURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -495,9 +495,9 @@
         <attribute name="siteURL" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="crossPostMeta" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
-    <entity name="ReaderDefaultTopic" representedClassName="WordPress.ReaderDefaultTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
+    <entity name="ReaderDefaultTopic" representedClassName="ReaderDefaultTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
     <entity name="ReaderGapMarker" representedClassName="ReaderGapMarker" parentEntity="ReaderPost" syncable="YES"/>
-    <entity name="ReaderListTopic" representedClassName="WordPress.ReaderListTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
+    <entity name="ReaderListTopic" representedClassName="ReaderListTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="isOwner" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isPublic" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="listDescription" optional="YES" attributeType="String" syncable="YES"/>
@@ -548,12 +548,12 @@
         <relationship name="sourceAttribution" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SourcePostAttribution" inverseName="post" inverseEntity="SourcePostAttribution" syncable="YES"/>
         <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderAbstractTopic" inverseName="posts" inverseEntity="ReaderAbstractTopic" syncable="YES"/>
     </entity>
-    <entity name="ReaderSearchSuggestion" representedClassName="WordPress.ReaderSearchSuggestion" syncable="YES">
+    <entity name="ReaderSearchSuggestion" representedClassName="ReaderSearchSuggestion" syncable="YES">
         <attribute name="date" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="searchPhrase" attributeType="String" indexed="YES" syncable="YES"/>
     </entity>
-    <entity name="ReaderSearchTopic" representedClassName="WordPress.ReaderSearchTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
-    <entity name="ReaderSiteTopic" representedClassName="WordPress.ReaderSiteTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
+    <entity name="ReaderSearchTopic" representedClassName="ReaderSearchTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
+    <entity name="ReaderSiteTopic" representedClassName="ReaderSiteTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="feedID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="feedURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isJetpack" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -566,15 +566,15 @@
         <attribute name="siteURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subscriberCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
     </entity>
-    <entity name="ReaderTagTopic" representedClassName="WordPress.ReaderTagTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
+    <entity name="ReaderTagTopic" representedClassName="ReaderTagTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="isRecommended" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tagID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
     </entity>
-    <entity name="ReaderTeamTopic" representedClassName="WordPress.ReaderTeamTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
+    <entity name="ReaderTeamTopic" representedClassName="ReaderTeamTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="SharingButton" representedClassName="WordPress.SharingButton" syncable="YES">
+    <entity name="SharingButton" representedClassName="SharingButton" syncable="YES">
         <attribute name="buttonID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="custom" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="enabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
