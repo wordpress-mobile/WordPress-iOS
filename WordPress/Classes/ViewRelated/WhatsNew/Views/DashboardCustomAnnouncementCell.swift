@@ -1,5 +1,6 @@
 import UIKit
 import AsyncImageKit
+import WordPressKit
 
 class DashboardCustomAnnouncementCell: AnnouncementTableViewCell {
 

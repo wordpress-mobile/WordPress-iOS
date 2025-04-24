@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 /// A convenience API for creating actions for picking media from different
 /// source supported by the app: Photos library, Camera, Media library.

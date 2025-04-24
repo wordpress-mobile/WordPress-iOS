@@ -1,5 +1,6 @@
 import Foundation
 import FormattableContentKit
+import WordPressData
 import WordPressShared
 
 @objc public class CommentAnalytics: NSObject {

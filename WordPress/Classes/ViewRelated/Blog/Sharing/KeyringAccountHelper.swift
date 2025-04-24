@@ -1,4 +1,6 @@
 import Foundation
+import WordPressData
+import WordPressKit
 import WordPressShared
 
 /// KeyringAccount is used to normalize the list of avaiable accounts while

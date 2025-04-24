@@ -1,5 +1,6 @@
 import Foundation
 import WordPressAPI
+import WordPressData
 import AutomatticTracks
 import SwiftUI
 import AuthenticationServices
