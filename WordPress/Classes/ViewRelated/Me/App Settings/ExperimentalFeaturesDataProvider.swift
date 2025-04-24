@@ -6,7 +6,7 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
 
     let flags: [OverridableFlag] = [
         FeatureFlag.authenticateUsingApplicationPassword,
-        FeatureFlag.newGutenberg,
+        RemoteFeatureFlag.newGutenberg,
         FeatureFlag.newGutenbergThemeStyles,
     ]
 
