@@ -19,9 +19,6 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     let tableView = UITableView(frame: .zero, style: .plain)
 
-    // Reply properties
-    private var addCommentButton: CommentLargeButton?
-
     @objc public weak var commentDelegate: CommentDetailsDelegate?
     private weak var notificationDelegate: CommentDetailsNotificationDelegate?
 
@@ -240,7 +237,6 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureReplyView()
         configureNavigationBar()
         configureTable()
         configureSections()
@@ -261,7 +257,6 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
     @objc public func displayComment(_ comment: Comment, isLastInList: Bool = true) {
         self.comment = comment
         self.isLastInList = isLastInList
-        addCommentButton?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
         refreshData()
         refreshCommentReplyIfNeeded()
     }
@@ -703,10 +698,7 @@ private extension String {
     static let trashButtonAccessibilityId = "trash-comment-button"
     static let deleteButtonAccessibilityId = "delete-comment-button"
 
-    // MARK: Localization
-    static let replyPlaceholderFormat = NSLocalizedString("Reply to %1$@", comment: "Placeholder text for the reply text field."
-                                                          + "%1$@ is a placeholder for the comment author."
-                                                          + "Example: Reply to Pamela Nguyen")
+    // MARK: Localizatio
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
     static let deleteButtonText = NSLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
     static let trashButtonText = NSLocalizedString("Move to Trash", comment: "Title for button on the comment details page that moves the comment to trash when tapped.")
@@ -989,19 +981,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
 // MARK: - Reply Handling
 
 private extension CommentDetailViewController {
-
-    func configureReplyView() {
-        let button = CommentLargeButton()
-
-        button.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
-        button.accessibilityHint = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
-        button.onTap = { [weak self] in
-            self?.buttonAddCommentTapped()
-        }
-        button.isHidden = true
-//        containerStackView.addArrangedSubview(button)
-        addCommentButton = button
-    }
 
     @objc func buttonAddCommentTapped() {
         let viewModel = CommentCreateViewModel(replyingTo: comment) { [weak self] in
