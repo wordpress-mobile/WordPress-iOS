@@ -6,6 +6,7 @@ public class ExperimentalFeaturesViewModel: ObservableObject {
         func loadItems() async throws -> [Feature]
         func value(for: Feature) -> Bool
         func didChangeValue(for feature: Feature, to newValue: Bool)
+        var notes: [String] { get }
     }
 
     package class DefaultDataProvider: DataProvider {
@@ -13,9 +14,11 @@ public class ExperimentalFeaturesViewModel: ObservableObject {
         let items: [Feature]
 
         var values = [String: Bool]()
+        package let notes: [String]
 
-        init(items: [Feature]) {
+        init(items: [Feature], notes: [String] = []) {
             self.items = items
+            self.notes = notes
         }
 
         package func loadItems() throws -> [Feature] {
@@ -45,10 +48,13 @@ public class ExperimentalFeaturesViewModel: ObservableObject {
     @Published
     public private(set) var error: Error? = nil
 
+    public private(set) var notes: [String]
+
     private var dataProvider: DataProvider
 
     public init(dataProvider: DataProvider) {
         self.dataProvider = dataProvider
+        self.notes = dataProvider.notes
     }
 
     func loadItems() async {

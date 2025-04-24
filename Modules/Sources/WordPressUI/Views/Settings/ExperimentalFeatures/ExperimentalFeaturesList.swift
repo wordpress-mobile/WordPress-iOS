@@ -10,9 +10,24 @@ public struct ExperimentalFeaturesList: View {
     }
 
     public var body: some View {
-        List(viewModel.items) { item in
-            Toggle(item.name, isOn: viewModel.binding(for: item))
+        List {
+            Section {
+                ForEach(viewModel.items) { item in
+                    Toggle(item.name, isOn: viewModel.binding(for: item))
+                }
+            } footer: {
+                if !viewModel.notes.isEmpty {
+                    VStack(alignment: .leading, spacing: 4) {
+                        ForEach(viewModel.notes, id: \.self) { note in
+                            Text(note)
+                                .font(.footnote)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
+            }
         }
+        .listStyle(.insetGrouped)
         .navigationTitle(Strings.pageTitle)
         .task {
             await viewModel.loadItems()
