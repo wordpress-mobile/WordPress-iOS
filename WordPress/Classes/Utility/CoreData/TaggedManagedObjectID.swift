@@ -27,7 +27,7 @@ import WordPressShared
 /// we can't perform the validation described in `init(objectID:)`.
 ///
 /// - SeeAlso: swift-tagged: https://github.com/pointfreeco/swift-tagged
-public struct TaggedManagedObjectID<Model: NSManagedObject>: Hashable {
+public struct TaggedManagedObjectID<Model: NSManagedObject>: Hashable, Sendable {
     public let objectID: NSManagedObjectID
 
     /// Create an `TaggedManagedObjectID` instance of the given object.

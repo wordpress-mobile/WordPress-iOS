@@ -36,7 +36,7 @@ struct ReaderSubscriptionHelper {
             }, failure: { error in
                 DDLogError("Could not follow site: \(String(describing: error))")
                 generator.notificationOccurred(.error)
-                continuation.resume(throwing: error ?? URLError(.unknown))
+                continuation.resume(throwing: error)
             })
         }
     }
