@@ -217,13 +217,13 @@
 - (NSURL *)urlForModelName:(NSString*)modelName
                inDirectory:(NSString*)directory
 {
-    NSBundle *bundle = [NSBundle mainBundle];
+    NSBundle *bundle = [NSBundle wordPressData];
     NSURL *url = [bundle URLForResource:modelName
                           withExtension:@"mom"
                            subdirectory:directory];
     if (nil == url) {
         // Get mom file paths from momd directories.
-        NSArray *momdPaths = [[NSBundle mainBundle] pathsForResourcesOfType:@"momd"
+        NSArray *momdPaths = [[NSBundle wordPressData] pathsForResourcesOfType:@"momd"
                                                                 inDirectory:directory];
         for (NSString *momdPath in momdPaths) {
             url = [bundle URLForResource:modelName

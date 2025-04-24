@@ -2,6 +2,7 @@ import UIKit
 import BuildSettingsKit
 import SFHFKeychainUtils
 import WordPressAuthenticator
+import WordPressData
 import WordPressShared
 import WordPressUI
 import Gridicons

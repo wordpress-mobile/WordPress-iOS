@@ -178,7 +178,7 @@ struct ReaderNotificationKeys {
             stat = .readerTagLoaded
 
         } else if let teamTopic = topic as? ReaderTeamTopic {
-            WPAnalytics.trackReader(teamTopic.shownTrackEvent, properties: properties)
+            WPAnalytics.trackReader(teamTopic.slug == ReaderTeamTopic.a8cSlug ? .readerA8CShown : .readerP2Shown, properties: properties)
         }
 
         if stat != nil {

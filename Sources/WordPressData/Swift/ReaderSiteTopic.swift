@@ -1,6 +1,7 @@
 import Foundation
 
-@objc open class ReaderSiteTopic: ReaderAbstractTopic {
+@objc(ReaderSiteTopic)
+open class ReaderSiteTopic: ReaderAbstractTopic {
     // Relations
     @NSManaged open var postSubscription: ReaderSiteInfoSubscriptionPost?
     @NSManaged open var emailSubscription: ReaderSiteInfoSubscriptionEmail?

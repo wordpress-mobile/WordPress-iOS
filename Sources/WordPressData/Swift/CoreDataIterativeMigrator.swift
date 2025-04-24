@@ -263,7 +263,7 @@ private extension CoreDataIterativeMigrator {
     }
 
     static func model(for metadata: [String: Any]) throws -> NSManagedObjectModel? {
-        let bundle = Bundle(for: ContextManager.self)
+        let bundle = Bundle.wordPressData
         guard let sourceModel = NSManagedObjectModel.mergedModel(from: [bundle], forStoreMetadata: metadata) else {
             let description = "Failed to find source model for metadata: \(metadata)"
             throw error(with: .noSourceModelForMetadata, description: description)
@@ -287,7 +287,7 @@ private extension CoreDataIterativeMigrator {
     }
 
     static func urlForModel(name: String, in directory: String?) -> URL? {
-        let bundle = Bundle(for: ContextManager.self)
+        let bundle = Bundle.wordPressData
         var url = bundle.url(forResource: name, withExtension: "mom", subdirectory: directory)
 
         if url != nil {

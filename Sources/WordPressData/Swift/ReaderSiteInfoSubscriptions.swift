@@ -1,7 +1,8 @@
 import Foundation
 import CoreData
 
-@objc public class ReaderSiteInfoSubscriptionPost: NSManagedObject {
+@objc(ReaderSiteInfoSubscriptionPost)
+public class ReaderSiteInfoSubscriptionPost: NSManagedObject {
     @NSManaged open var siteTopic: ReaderSiteTopic
     @NSManaged open var sendPosts: Bool
 
@@ -22,7 +23,8 @@ import CoreData
     }
 }
 
-@objc public class ReaderSiteInfoSubscriptionEmail: NSManagedObject {
+@objc(ReaderSiteInfoSubscriptionEmail)
+public class ReaderSiteInfoSubscriptionEmail: NSManagedObject {
     @NSManaged open var siteTopic: ReaderSiteTopic
     @NSManaged open var sendPosts: Bool
     @NSManaged open var sendComments: Bool

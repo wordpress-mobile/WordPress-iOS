@@ -1,21 +1,20 @@
 import Foundation
 import WordPressKit
 
-/// A collection of global variables and singletons that the app wants access to.
-///
-struct AppEnvironment {
+/// - warning: Soft-deprecated.
+public struct AppEnvironment {
 
     // MARK: - Globals
 
     /// A type to create derived context, save context, etc...
-    let contextManager: CoreDataStackSwift
+    public let contextManager: CoreDataStackSwift
 
     /// The base url to use for WP.com api requests
-    let wordPressComApiBase: URL
+    public let wordPressComApiBase: URL
 
     /// The mainContext that has concurrency type NSMainQueueConcurrencyType and should be used
     /// for UI elements and fetched results controllers.
-    var mainContext: NSManagedObjectContext {
+    public var mainContext: NSManagedObjectContext {
         return contextManager.mainContext
     }
 
@@ -23,7 +22,7 @@ struct AppEnvironment {
 
     /// The current environment. Use this to access the app globals.
     ///
-    static private(set) var current = AppEnvironment()
+    public static private(set) var current = AppEnvironment()
 
     // MARK: - Initialization
 
@@ -40,7 +39,7 @@ extension AppEnvironment {
     /// Creates a new Environment, changing just a subset of the current global dependencies.
     ///
     @discardableResult
-    static func replaceEnvironment(
+    public static func replaceEnvironment(
         contextManager: CoreDataStackSwift = AppEnvironment.current.contextManager,
         wordPressComApiBase: URL = AppEnvironment.current.wordPressComApiBase) -> AppEnvironment {
 

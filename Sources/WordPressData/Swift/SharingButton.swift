@@ -1,7 +1,8 @@
 import Foundation
 import CoreData
 
-@objc open class SharingButton: NSManagedObject {
+@objc(SharingButton)
+open class SharingButton: NSManagedObject {
     @objc public static let visible = "visible"
     @objc public static let hidden = "hidden"
 
