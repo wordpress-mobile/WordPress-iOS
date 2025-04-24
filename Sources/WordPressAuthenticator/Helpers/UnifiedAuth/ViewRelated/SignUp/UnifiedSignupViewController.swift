@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// UnifiedSignupViewController: sign up to .com with an email address.
 ///
@@ -143,7 +144,7 @@ private extension UnifiedSignupViewController {
         case let cell as TextLabelTableViewCell where row == .errorMessage:
             configureErrorLabel(cell)
         default:
-            WPAuthenticatorLogError("Error: Unidentified tableViewCell type found.")
+            WPLogError("Error: Unidentified tableViewCell type found.")
         }
     }
 
@@ -225,7 +226,7 @@ extension UnifiedSignupViewController {
                                     self?.configureSubmitButton(animating: false)
 
             }, failure: { [weak self] (error: Error) in
-                WPAuthenticatorLogError("Request for signup link email failed.")
+                WPLogError("Request for signup link email failed.")
 
                 guard let self else {
                     return
@@ -239,7 +240,7 @@ extension UnifiedSignupViewController {
 
     func didRequestSignupLink() {
         guard let vc = SignupMagicLinkViewController.instantiate(from: .unifiedSignup) else {
-            WPAuthenticatorLogError("Failed to navigate from UnifiedSignupViewController to SignupMagicLinkViewController")
+            WPLogError("Failed to navigate from UnifiedSignupViewController to SignupMagicLinkViewController")
             return
         }
 

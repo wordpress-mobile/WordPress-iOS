@@ -1,5 +1,4 @@
 #import "WPStyleGuide.h"
-#import "WPTextFieldTableViewCell.h"
 #import "WPFontManager.h"
 #import "WPDeviceIdentification.h"
 

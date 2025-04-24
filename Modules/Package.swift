@@ -131,7 +131,12 @@ let package = Package(
             .product(name: "XCUITestHelpers", package: "ScreenObject"),
         ], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
-        .target(name: "WordPressCore", dependencies: [.target(name: "WordPressShared"), .product(name: "WordPressAPI", package: "wordpress-rs")]),
+        .target(name: "WordPressCore", dependencies: [
+                "WordPressShared",
+                .product(name: "WordPressAPI", package: "wordpress-rs")
+            ]
+        ),
+        .target(name: "WordPressLegacy", dependencies: ["DesignSystem", "WordPressShared"]),
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(
             name: "WordPressShared",
@@ -150,6 +155,7 @@ let package = Package(
                 "AsyncImageKit",
                 "DesignSystem",
                 "WordPressShared",
+                "WordPressLegacy",
                 .product(name: "Reachability", package: "Reachability"),
             ],
             resources: [.process("Resources")],
@@ -255,6 +261,7 @@ enum XcodeSupport {
             "ShareExtensionCore",
             "WordPressFlux",
             "WordPressShared",
+            "WordPressLegacy",
             "WordPressReader",
             "WordPressUI",
             "WordPressCore",

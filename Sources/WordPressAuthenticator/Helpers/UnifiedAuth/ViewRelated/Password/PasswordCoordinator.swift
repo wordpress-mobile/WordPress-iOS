@@ -1,3 +1,6 @@
+import UIKit
+import WordPressShared
+
 /// Coordinates the navigation after entering WP.com username.
 /// Based on the configuration, it could automatically send a magic link and proceed the magic link requested screen on success and fall back to password.
 @MainActor
@@ -56,7 +59,7 @@ private extension PasswordCoordinator {
     /// Navigates the user to enter WP.com password.
     func showPassword() {
         guard let vc = PasswordViewController.instantiate(from: .password) else {
-            return WPAuthenticatorLogError("Failed to navigate to PasswordViewController from GetStartedViewController")
+            return WPLogError("Failed to navigate to PasswordViewController from GetStartedViewController")
         }
 
         vc.source = source

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// Navigates to the WPCOM password flow.
 ///
@@ -18,7 +19,7 @@ public struct NavigateToEnterWPCOMPassword: NavigationCommand {
 private extension NavigateToEnterWPCOMPassword {
     func presentPasswordView(navigationController: UINavigationController?, loginFields: LoginFields) {
         guard let controller = PasswordViewController.instantiate(from: .password) else {
-            WPAuthenticatorLogError("Failed to navigate to PasswordViewController from GetStartedViewController")
+            WPLogError("Failed to navigate to PasswordViewController from GetStartedViewController")
             return
         }
 

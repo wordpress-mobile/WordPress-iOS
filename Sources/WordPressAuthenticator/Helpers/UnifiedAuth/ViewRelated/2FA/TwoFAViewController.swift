@@ -1,5 +1,6 @@
 import UIKit
 import WordPressKit
+import WordPressShared
 import SVProgressHUD
 import AuthenticationServices
 
@@ -326,7 +327,7 @@ extension TwoFAViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
     }
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        WPAuthenticatorLogError("Error signing challenge: \(error.localizedDescription)")
+        WPLogError("Error signing challenge: \(error.localizedDescription)")
         displaySecurityKeyErrorMessageAndExitFlow()
     }
 
@@ -508,7 +509,7 @@ private extension TwoFAViewController {
                 configureSpacerCell(cell, spacing: spacing)
             }
         default:
-            WPAuthenticatorLogError("Error: Unidentified tableViewCell type found.")
+            WPLogError("Error: Unidentified tableViewCell type found.")
         }
     }
 

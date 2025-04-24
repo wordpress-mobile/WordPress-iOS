@@ -148,7 +148,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
                 }
                 // If the user has already signed up redirect to the Login flow
                 guard let vc = LoginEmailViewController.instantiate(from: .login) else {
-                    WPAuthenticatorLogError("Failed to navigate to LoginEmailViewController from SignupEmailViewController")
+                    WPLogError("Failed to navigate to LoginEmailViewController from SignupEmailViewController")
                     return
                 }
 
@@ -169,7 +169,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
                 return
             }
 
-            WPAuthenticatorLogError("Error checking email availability: \(error.localizedDescription)")
+            WPLogError("Error checking email availability: \(error.localizedDescription)")
 
             switch error {
             case AccountServiceRemoteError.emailAddressInvalid:
@@ -197,7 +197,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
                                     self?.configureSubmitButton(animating: false)
 
             }, failure: { [weak self] (_: Error) in
-                WPAuthenticatorLogError("Request for signup link email failed.")
+                WPLogError("Request for signup link email failed.")
                 WordPressAuthenticator.track(.signupMagicLinkFailed)
                 self?.displayError(message: ErrorMessage.magicLinkRequestFail.description())
                 self?.configureSubmitButton(animating: false)
@@ -208,7 +208,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
         WordPressAuthenticator.track(.signupMagicLinkRequested)
 
         guard let vc = NUXLinkMailViewController.instantiate(from: .emailMagicLink) else {
-            WPAuthenticatorLogError("Failed to navigate to NUXLinkMailViewController")
+            WPLogError("Failed to navigate to NUXLinkMailViewController")
             return
         }
 

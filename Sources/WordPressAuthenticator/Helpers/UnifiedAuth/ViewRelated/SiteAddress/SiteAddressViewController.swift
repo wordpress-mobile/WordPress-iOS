@@ -317,7 +317,7 @@ private extension SiteAddressViewController {
         case let cell as TextLabelTableViewCell where row == .errorMessage:
             configureErrorLabel(cell)
         default:
-            WPAuthenticatorLogError("Error: Unidentified tableViewCell type found.")
+            WPLogError("Error: Unidentified tableViewCell type found.")
         }
     }
 
@@ -620,7 +620,7 @@ private extension SiteAddressViewController {
     func showSelfHostedUsernamePassword() {
         configureViewLoading(false)
         guard let vc = SiteCredentialsViewController.instantiate(from: .siteAddress) else {
-            WPAuthenticatorLogError("Failed to navigate from SiteAddressViewController to SiteCredentialsViewController")
+            WPLogError("Failed to navigate from SiteAddressViewController to SiteCredentialsViewController")
             return
         }
 
@@ -638,7 +638,7 @@ private extension SiteAddressViewController {
         configureViewLoading(false)
 
         guard let vc = LoginUsernamePasswordViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from SiteAddressViewController to LoginUsernamePasswordViewController")
+            WPLogError("Failed to navigate from SiteAddressViewController to LoginUsernamePasswordViewController")
             return
         }
 
@@ -653,7 +653,7 @@ private extension SiteAddressViewController {
     ///
     func showGetStarted() {
         guard let vc = GetStartedViewController.instantiate(from: .getStarted) else {
-            WPAuthenticatorLogError("Failed to navigate from SiteAddressViewController to GetStartedViewController")
+            WPLogError("Failed to navigate from SiteAddressViewController to GetStartedViewController")
             return
         }
         vc.source = .wpComSiteAddress

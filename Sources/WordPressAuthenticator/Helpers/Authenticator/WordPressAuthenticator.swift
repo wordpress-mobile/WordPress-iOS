@@ -210,7 +210,7 @@ import WordPressKit
         loginFields.siteAddress = siteURL
 
         guard let vc = VerifyEmailViewController.instantiate(from: .verifyEmail) else {
-            WPAuthenticatorLogError("Failed to navigate to VerifyEmailViewController")
+            WPLogError("Failed to navigate to VerifyEmailViewController")
             return
         }
 
@@ -232,7 +232,7 @@ import WordPressKit
             SiteCredentialsViewController(coder: coder, isDismissible: true, onCompletion: onCompletion)
         }
         guard let controller else {
-            WPAuthenticatorLogError("Failed to navigate from GetStartedViewController to SiteCredentialsViewController")
+            WPLogError("Failed to navigate from GetStartedViewController to SiteCredentialsViewController")
             return
         }
 
@@ -266,7 +266,7 @@ import WordPressKit
     ///
     private class func showGetStarted(from presenter: UIViewController, jetpackLogin: Bool, connectedEmail: String? = nil, siteURL: String? = nil) {
         guard let controller = GetStartedViewController.instantiate(from: .getStarted) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginPrologueViewController to GetStartedViewController")
+            WPLogError("Failed to navigate from LoginPrologueViewController to GetStartedViewController")
             return
         }
 
@@ -314,7 +314,7 @@ import WordPressKit
         AuthenticatorAnalyticsTracker.shared.set(source: .selfHosted)
 
         guard let controller = signinForWPOrg() else {
-            WPAuthenticatorLogError("WordPressAuthenticator: Failed to instantiate Site Address view controller.")
+            WPLogError("WordPressAuthenticator: Failed to instantiate Site Address view controller.")
             return
         }
 
@@ -349,7 +349,7 @@ import WordPressKit
 
         guard WordPressAuthenticator.shared.configuration.enableUnifiedAuth else {
             guard let controller = LoginWPComViewController.instantiate(from: .login) else {
-                WPAuthenticatorLogError("WordPressAuthenticator: Failed to instantiate LoginWPComViewController")
+                WPLogError("WordPressAuthenticator: Failed to instantiate LoginWPComViewController")
                 return UIViewController()
             }
 
@@ -363,7 +363,7 @@ import WordPressKit
         AuthenticatorAnalyticsTracker.shared.set(flow: .loginWithPassword)
 
         guard let controller = PasswordViewController.instantiate(from: .password) else {
-            WPAuthenticatorLogError("WordPressAuthenticator: Failed to instantiate PasswordViewController")
+            WPLogError("WordPressAuthenticator: Failed to instantiate PasswordViewController")
             return UIViewController()
         }
 
@@ -404,17 +404,17 @@ import WordPressKit
         automatedTesting: Bool = false) -> Bool {
 
         guard let queryDictionary = url.query?.dictionaryFromQueryString() else {
-            WPAuthenticatorLogError("Magic link error: we couldn't retrieve the query dictionary from the sign-in URL.")
+            WPLogError("Magic link error: we couldn't retrieve the query dictionary from the sign-in URL.")
             return false
         }
 
         guard let authToken = queryDictionary["token"] as? String else {
-            WPAuthenticatorLogError("Magic link error: we couldn't retrieve the authentication token from the sign-in URL.")
+            WPLogError("Magic link error: we couldn't retrieve the authentication token from the sign-in URL.")
             return false
         }
 
         guard let flowRawValue = queryDictionary["flow"] as? String else {
-            WPAuthenticatorLogError("Magic link error: we couldn't retrieve the flow from the sign-in URL.")
+            WPLogError("Magic link error: we couldn't retrieve the flow from the sign-in URL.")
             return false
         }
 
@@ -438,14 +438,14 @@ import WordPressKit
             loginFields.meta.emailMagicLinkSource = .login
             Self.track(.loginMagicLinkOpened)
         default:
-            WPAuthenticatorLogError("Magic link error: the flow should be either `signup` or `login`. We can't handle an unsupported flow.")
+            WPLogError("Magic link error: the flow should be either `signup` or `login`. We can't handle an unsupported flow.")
             return false
         }
 
         if !automatedTesting {
             let storyboard = Storyboard.emailMagicLink.instance
             guard let loginVC = storyboard.instantiateViewController(withIdentifier: "LinkAuthView") as? NUXLinkAuthViewController else {
-                WPAuthenticatorLogInfo("App opened with authentication link but couldn't create login screen.")
+                WPLogInfo("App opened with authentication link but couldn't create login screen.")
                 return false
             }
             loginVC.loginFields = loginFields

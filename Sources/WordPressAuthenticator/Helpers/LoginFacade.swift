@@ -1,5 +1,6 @@
 import Foundation
 import WordPressKit
+import WordPressShared
 
 /// Extension for handling 2FA authentication.
 ///
@@ -21,7 +22,7 @@ public extension LoginFacade {
                     WordPressAuthenticator.track(.twoFactorSentSMS)
                 }
         }) { _ in
-            WPAuthenticatorLogError("Failed to request one time code")
+            WPLogError("Failed to request one time code")
         }
     }
 
@@ -47,7 +48,7 @@ public extension LoginFacade {
             if let newNonce {
                 loginFields.nonceInfo?.nonceSMS = newNonce
             }
-            WPAuthenticatorLogError("Failed to request one time code")
+            WPLogError("Failed to request one time code")
         }
     }
 
@@ -63,7 +64,7 @@ public extension LoginFacade {
             }, failure: { [weak self] error in
                 guard let self else { return }
 
-                WPAuthenticatorLogError("Failed to request webauthn challenge \(error)")
+                WPLogError("Failed to request webauthn challenge \(error)")
                 WordPressAuthenticator.track(.loginFailed, error: error)
                 continuation.resume(returning: nil)
 
@@ -97,7 +98,7 @@ public extension LoginFacade {
             self?.delegate?.finishedLogin?(withNonceAuthToken: accessToken)
             self?.trackSuccess()
         }, failure: { [weak self] error in
-            WPAuthenticatorLogError("Failed to verify webauthn signature \(error)")
+            WPLogError("Failed to verify webauthn signature \(error)")
             WordPressAuthenticator.track(.loginFailed, error: error)
             self?.delegate?.displayRemoteError?(error)
         })

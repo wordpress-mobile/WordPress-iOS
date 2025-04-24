@@ -1,12 +1,9 @@
+#import "WPTableViewCell.h"
 #import "WPTableViewHandler.h"
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#else
-#import "WordPress-Swift.h"
-#endif
 
+@import UIKit;
 @import CoreData;
-@import NSObject_SafeExpectations;
+@import DesignSystem;
 @import WordPressShared;
 @import WordPressSharedObjC;
 
@@ -59,12 +56,10 @@ static CGFloat const DefaultCellHeight = 44.0;
     return self;
 }
 
-
 - (BOOL)listensForContentChanges
 {
     return self.resultsController.delegate != nil;
 }
-
 
 - (void)setListensForContentChanges:(BOOL)listens
 {
@@ -74,7 +69,6 @@ static CGFloat const DefaultCellHeight = 44.0;
         self.resultsController.delegate = nil;
     }
 }
-
 
 #pragma mark - Public Methods
 
@@ -92,7 +86,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         NSError *error;
         [self.resultsController performFetch:&error];
         if (error) {
-            DDLogError(@"TableViewHandler: Error performing fetch while refreshing table view. %@", error);
+            WPLogError(@"TableViewHandler: Error performing fetch while refreshing table view. %@", error);
         }
     }
     [self.tableView reloadData];
@@ -160,7 +154,7 @@ static CGFloat const DefaultCellHeight = 44.0;
             NSError *error;
             obj = [self.resultsController.managedObjectContext existingObjectWithID:obj.objectID error:&error];
             if (error) {
-                DDLogError(@"%@, Error %@", NSStringFromSelector(_cmd), error);
+                WPLogError(@"%@, Error %@", NSStringFromSelector(_cmd), error);
             }
         }
         newIndexPath = [self.resultsController indexPathForObject:obj];
@@ -228,7 +222,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (CGFloat)cachedRowHeightForIndexPath:(NSIndexPath *)indexPath
 {
-    return [[self.cachedRowHeights numberForKey:indexPath] floatValue];
+    return [[self.cachedRowHeights objectForKey:indexPath] floatValue];
 }
 
 - (void)refreshCachedRowHeightsForWidth:(CGFloat)width
@@ -531,7 +525,13 @@ static CGFloat const DefaultCellHeight = 44.0;
     if ([self.delegate respondsToSelector:@selector(tableView:willDisplayFooterView:forSection:)]) {
         [self.delegate tableView:tableView willDisplayFooterView:view forSection:section];
     } else {
-        [WPStyleGuide configureTableViewSectionFooter:view];
+        if ([view isKindOfClass:[UITableViewHeaderFooterView class]]) {
+            UITableViewHeaderFooterView *footerView = (UITableViewHeaderFooterView *)view;
+            UILabel *textLabel = footerView.textLabel;
+            if (textLabel.isUserInteractionEnabled) {
+                textLabel.textColor = ObjCBridge_UIAppColor.primary;
+            }
+        }
     }
 }
 
@@ -633,7 +633,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
-        DDLogError(@"%@ couldn't fetch %@: %@", self, [[self fetchRequest] entityName], [error localizedDescription]);
+        WPLogError(@"%@ couldn't fetch %@: %@", self, [[self fetchRequest] entityName], [error localizedDescription]);
         _resultsController = nil;
     }
 
@@ -666,7 +666,7 @@ static CGFloat const DefaultCellHeight = 44.0;
     } error:&error];
     
     if (error) {
-        DDLogError(@"TableViewHandler: Error ending updates %@", error);
+        WPLogError(@"TableViewHandler: Error ending updates %@", error);
         [self refreshTableView];
         return;
     }

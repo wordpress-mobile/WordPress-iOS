@@ -112,7 +112,7 @@ class LoginLinkRequestViewController: LoginViewController {
         guard email.isValidEmail() else {
             // This is a bit of paranoia as in practice it should never happen.
             // However, let's make sure we give the user some useful feedback just in case.
-            WPAuthenticatorLogError("Attempted to request authentication link, but the email address did not appear valid.")
+            WPLogError("Attempted to request authentication link, but the email address did not appear valid.")
             let alert = UIAlertController(title: NSLocalizedString("Can Not Request Link", comment: "Title of an alert letting the user know"), message: NSLocalizedString("A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address.", comment: "An error message."), preferredStyle: .alert)
             alert.addActionWithTitle(NSLocalizedString("Need help?", comment: "Takes the user to get help"), style: .cancel, handler: { _ in WordPressAuthenticator.shared.delegate?.presentSupportRequest(from: self, sourceTag: .loginEmail) })
             alert.addActionWithTitle(NSLocalizedString("OK", comment: "Dismisses the alert"), style: .default, handler: nil)
@@ -148,7 +148,7 @@ class LoginLinkRequestViewController: LoginViewController {
 
     @IBAction func handleUsePasswordTapped(_ sender: UIButton) {
         guard let vc = LoginWPComViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginLinkRequestViewController to LoginWPComViewController")
+            WPLogError("Failed to navigate from LoginLinkRequestViewController to LoginWPComViewController")
             return
         }
 
@@ -168,7 +168,7 @@ class LoginLinkRequestViewController: LoginViewController {
         WordPressAuthenticator.track(.loginMagicLinkRequested)
 
         guard let vc = NUXLinkMailViewController.instantiate(from: .emailMagicLink) else {
-            WPAuthenticatorLogError("Failed to navigate to NUXLinkMailViewController")
+            WPLogError("Failed to navigate to NUXLinkMailViewController")
             return
         }
 

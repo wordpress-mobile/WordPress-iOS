@@ -93,7 +93,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///
     override func loginToSelfHostedSite() {
         guard let vc = LoginSiteAddressViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginEmailViewController to LoginSiteAddressViewController")
+            WPLogError("Failed to navigate from LoginEmailViewController to LoginSiteAddressViewController")
             return
         }
 
@@ -189,7 +189,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         // will present the 3 button view for signing up.
         button.on(.touchUpInside) { [weak self] (_) in
             guard let vc = LoginPrologueSignupMethodViewController.instantiate(from: .login) else {
-                WPAuthenticatorLogError("Failed to navigate to LoginPrologueSignupMethodViewController")
+                WPLogError("Failed to navigate to LoginPrologueSignupMethodViewController")
                 return
             }
 
@@ -203,7 +203,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             // Don't forget to handle the button taps!
             vc.emailTapped = { [weak self] in
                 guard let toVC = SignupEmailViewController.instantiate(from: .signup) else {
-                    WPAuthenticatorLogError("Failed to navigate from LoginEmailViewController to SignupEmailViewController")
+                    WPLogError("Failed to navigate from LoginEmailViewController to SignupEmailViewController")
                     return
                 }
 
@@ -333,7 +333,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             validateFormAndLogin()
         } else {
             guard let vc = LoginWPComViewController.instantiate(from: .login) else {
-                WPAuthenticatorLogError("Failed to navigate from LoginEmailViewController to LoginWPComViewController")
+                WPLogError("Failed to navigate from LoginEmailViewController to LoginWPComViewController")
                 return
             }
 
@@ -350,7 +350,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///
     func requestLink() {
         guard let vc = LoginLinkRequestViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginEmailViewController to LoginLinkRequestViewController")
+            WPLogError("Failed to navigate from LoginEmailViewController to LoginLinkRequestViewController")
             return
         }
 
@@ -384,7 +384,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             },
                                       failure: { [weak self] error in
                                         WordPressAuthenticator.track(.loginFailed, error: error)
-                                        WPAuthenticatorLogError(error.localizedDescription)
+                                        WPLogError(error.localizedDescription)
                                         guard let strongSelf = self else {
                                             return
                                         }
@@ -426,7 +426,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         errorToPresent = error
 
         guard let vc = LoginSelfHostedViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginEmailViewController to LoginSelfHostedViewController")
+            WPLogError("Failed to navigate from LoginEmailViewController to LoginSelfHostedViewController")
             return
         }
 
@@ -479,7 +479,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     // Shows the VC that handles both Google login & signup.
     private func presentUnifiedGoogleView() {
         guard let toVC = GoogleAuthViewController.instantiate(from: .googleAuth) else {
-            WPAuthenticatorLogError("Failed to navigate to GoogleAuthViewController from LoginPrologueVC")
+            WPLogError("Failed to navigate to GoogleAuthViewController from LoginPrologueVC")
             return
         }
 
@@ -489,7 +489,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     // Shows the VC that handles only Google signup.
     private func presentGoogleSignupView() {
         guard let toVC = SignupGoogleViewController.instantiate(from: .signup) else {
-            WPAuthenticatorLogError("Failed to navigate to SignupGoogleViewController from LoginEmailVC")
+            WPLogError("Failed to navigate to SignupGoogleViewController from LoginEmailVC")
             return
         }
 
@@ -556,7 +556,7 @@ extension LoginEmailViewController: AppleAuthenticatorDelegate {
         self.loginFields = loginFields
 
         guard let vc = LoginWPComViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginEmailViewController to LoginWPComViewController")
+            WPLogError("Failed to navigate from LoginEmailViewController to LoginWPComViewController")
             return
         }
 
@@ -592,7 +592,7 @@ extension LoginEmailViewController: GoogleAuthenticatorLoginDelegate {
         configureViewLoading(false)
 
         guard let vc = Login2FAViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginViewController to Login2FAViewController")
+            WPLogError("Failed to navigate from LoginViewController to Login2FAViewController")
             return
         }
 
@@ -608,7 +608,7 @@ extension LoginEmailViewController: GoogleAuthenticatorLoginDelegate {
         configureViewLoading(false)
 
         guard let vc = LoginWPComViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from Google Login to LoginWPComViewController (password VC)")
+            WPLogError("Failed to navigate from Google Login to LoginWPComViewController (password VC)")
             return
         }
 

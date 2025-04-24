@@ -1,5 +1,6 @@
 import UIKit
 import WordPressKit
+import WordPressShared
 
 /// PasswordViewController: view to enter WP account password.
 ///
@@ -296,7 +297,7 @@ private extension PasswordViewController {
         case .failure(let error):
             switch error {
             case MagicLinkRequester.MagicLinkRequestError.invalidEmail:
-                WPAuthenticatorLogError("Attempted to request authentication link, but the email address did not appear valid.")
+                WPLogError("Attempted to request authentication link, but the email address did not appear valid.")
                 let alert = buildInvalidEmailAlert()
                 present(alert, animated: true, completion: nil)
             default:
@@ -386,7 +387,7 @@ private extension PasswordViewController {
         case let cell as TextLabelTableViewCell where row == .errorMessage:
             configureErrorLabel(cell)
         default:
-            WPAuthenticatorLogError("Error: Unidentified tableViewCell type found.")
+            WPLogError("Error: Unidentified tableViewCell type found.")
         }
     }
 
@@ -539,7 +540,7 @@ private extension PasswordViewController {
     ///
     func didRequestAuthenticationLink() {
         guard let vc = LoginMagicLinkViewController.instantiate(from: .unifiedLoginMagicLink) else {
-            WPAuthenticatorLogError("Failed to navigate to LoginMagicLinkViewController")
+            WPLogError("Failed to navigate to LoginMagicLinkViewController")
             return
         }
 

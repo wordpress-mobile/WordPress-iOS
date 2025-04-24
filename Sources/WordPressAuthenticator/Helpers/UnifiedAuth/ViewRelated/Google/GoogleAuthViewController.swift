@@ -1,5 +1,6 @@
 import UIKit
 import SVProgressHUD
+import WordPressShared
 
 /// View controller that handles the google authentication flow
 ///
@@ -87,7 +88,7 @@ private extension GoogleAuthViewController {
 
     func showSignupConfirmationView() {
         guard let vc = GoogleSignupConfirmationViewController.instantiate(from: .googleSignupConfirmation) else {
-            WPAuthenticatorLogError("Failed to navigate from GoogleAuthViewController to GoogleSignupConfirmationViewController")
+            WPLogError("Failed to navigate from GoogleAuthViewController to GoogleSignupConfirmationViewController")
             return
         }
 
@@ -115,7 +116,7 @@ extension GoogleAuthViewController: GoogleAuthenticatorDelegate {
         self.loginFields = loginFields
 
         guard let vc = TwoFAViewController.instantiate(from: .twoFA) else {
-            WPAuthenticatorLogError("Failed to navigate from GoogleAuthViewController to TwoFAViewController")
+            WPLogError("Failed to navigate from GoogleAuthViewController to TwoFAViewController")
             return
         }
 
@@ -127,7 +128,7 @@ extension GoogleAuthViewController: GoogleAuthenticatorDelegate {
         self.loginFields = loginFields
 
         guard let vc = PasswordViewController.instantiate(from: .password) else {
-            WPAuthenticatorLogError("Failed to navigate from GoogleAuthViewController to PasswordViewController")
+            WPLogError("Failed to navigate from GoogleAuthViewController to PasswordViewController")
             return
         }
 

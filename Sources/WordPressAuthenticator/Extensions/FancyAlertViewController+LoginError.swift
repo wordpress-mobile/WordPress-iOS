@@ -78,7 +78,7 @@ extension FancyAlertViewController {
         let error = originalError as NSError
         var message = error.localizedDescription
 
-        WPAuthenticatorLogError(message)
+        WPLogError(message)
 
         if sourceTag == .jetpackLogin && error.domain == WordPressAuthenticator.errorDomain && error.code == NSURLErrorBadURL {
             if WordPressAuthenticator.shared.delegate?.supportEnabled == true {
@@ -153,7 +153,7 @@ extension FancyAlertViewController {
         var moreHelpButton: ButtonConfig?
 
         if WordPressAuthenticator.shared.delegate?.supportEnabled == false {
-            WPAuthenticatorLogInfo("Error Alert: Support not enabled. Hiding Help button.")
+            WPLogInfo("Error Alert: Support not enabled. Hiding Help button.")
         } else {
             moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
                 controller.dismiss(animated: true) {

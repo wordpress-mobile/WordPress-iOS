@@ -50,29 +50,29 @@
 - (void)setUp
 {
     self.logger = [CaptureLogs new];
-    WPAuthenticatorSetLoggingDelegate(self.logger);
+    WPSetLoggingDelegate(self.logger);
 }
 
 - (void)testLogging
 {
-    WPAuthenticatorLogInfo(@"This is an info log");
-    WPAuthenticatorLogInfo(@"This is an info log %@", @"with an argument");
+    WPLogInfo(@"This is an info log");
+    WPLogInfo(@"This is an info log %@", @"with an argument");
     XCTAssertEqualObjects(self.logger.infoLogs, (@[@"This is an info log", @"This is an info log with an argument"]));
 
-    WPAuthenticatorLogError(@"This is an error log");
-    WPAuthenticatorLogError(@"This is an error log %@", @"with an argument");
+    WPLogError(@"This is an error log");
+    WPLogError(@"This is an error log %@", @"with an argument");
     XCTAssertEqualObjects(self.logger.errorLogs, (@[@"This is an error log", @"This is an error log with an argument"]));
 }
 
 - (void)testUnimplementedLoggingMethod
 {
-    XCTAssertNoThrow(WPAuthenticatorLogVerbose(@"verbose logging is not implemented"));
+    XCTAssertNoThrow(WPLogVerbose(@"verbose logging is not implemented"));
 }
 
 - (void)testNoLogging
 {
-    WPAuthenticatorSetLoggingDelegate(nil);
-    XCTAssertNoThrow(WPAuthenticatorLogInfo(@"this log should not be printed"));
+    WPSetLoggingDelegate(nil);
+    XCTAssertNoThrow(WPLogInfo(@"this log should not be printed"));
     XCTAssertEqual(self.logger.infoLogs.count, 0);
 }
 

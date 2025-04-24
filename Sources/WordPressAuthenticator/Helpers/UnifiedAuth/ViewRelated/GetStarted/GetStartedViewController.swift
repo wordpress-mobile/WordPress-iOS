@@ -401,7 +401,7 @@ private extension GetStartedViewController {
         case let cell as TextLabelTableViewCell where row == .errorMessage:
             configureErrorLabel(cell)
         default:
-            WPAuthenticatorLogError("Error: Unidentified tableViewCell type found.")
+            WPLogError("Error: Unidentified tableViewCell type found.")
         }
     }
 
@@ -543,7 +543,7 @@ private extension GetStartedViewController {
             },
                                       failure: { [weak self] error in
                                         WordPressAuthenticator.track(.loginFailed, error: error)
-                                        WPAuthenticatorLogError(error.localizedDescription)
+                                        WPLogError(error.localizedDescription)
                                         guard let self else {
                                             return
                                         }
@@ -557,7 +557,7 @@ private extension GetStartedViewController {
     ///
     func showPasswordView() {
         guard let vc = PasswordViewController.instantiate(from: .password) else {
-            WPAuthenticatorLogError("Failed to navigate to PasswordViewController from GetStartedViewController")
+            WPLogError("Failed to navigate to PasswordViewController from GetStartedViewController")
             return
         }
 
@@ -639,7 +639,7 @@ private extension GetStartedViewController {
                                     self?.configureSubmitButton(animating: false)
 
             }, failure: { [weak self] (error: Error) in
-                WPAuthenticatorLogError("Request for signup link email failed.")
+                WPLogError("Request for signup link email failed.")
 
                 guard let self else {
                     return
@@ -653,7 +653,7 @@ private extension GetStartedViewController {
 
     private func didRequestSignupLink() {
         guard let vc = SignupMagicLinkViewController.instantiate(from: .unifiedSignup) else {
-            WPAuthenticatorLogError("Failed to navigate from UnifiedSignupViewController to SignupMagicLinkViewController")
+            WPLogError("Failed to navigate from UnifiedSignupViewController to SignupMagicLinkViewController")
             return
         }
 
@@ -698,7 +698,7 @@ private extension GetStartedViewController {
     ///
     func didRequestAuthenticationLink() {
         guard let vc = LoginMagicLinkViewController.instantiate(from: .unifiedLoginMagicLink) else {
-            WPAuthenticatorLogError("Failed to navigate to LoginMagicLinkViewController from GetStartedViewController")
+            WPLogError("Failed to navigate to LoginMagicLinkViewController from GetStartedViewController")
             return
         }
 
@@ -771,7 +771,7 @@ private extension GetStartedViewController {
         tracker.track(failure: error.localizedDescription)
 
         guard let vc = SiteCredentialsViewController.instantiate(from: .siteAddress) else {
-            WPAuthenticatorLogError("Failed to navigate to SiteCredentialsViewController from GetStartedViewController")
+            WPLogError("Failed to navigate to SiteCredentialsViewController from GetStartedViewController")
             return
         }
 
@@ -786,7 +786,7 @@ private extension GetStartedViewController {
     ///
     func goToSiteCredentialsScreen() {
         guard let vc = SiteCredentialsViewController.instantiate(from: .siteAddress) else {
-            WPAuthenticatorLogError("Failed to navigate from GetStartedViewController to SiteCredentialsViewController")
+            WPLogError("Failed to navigate from GetStartedViewController to SiteCredentialsViewController")
             return
         }
 
@@ -889,7 +889,7 @@ private extension GetStartedViewController {
         tracker.track(click: .loginWithGoogle)
 
         guard let toVC = GoogleAuthViewController.instantiate(from: .googleAuth) else {
-            WPAuthenticatorLogError("Failed to navigate to GoogleAuthViewController from GetStartedViewController")
+            WPLogError("Failed to navigate to GoogleAuthViewController from GetStartedViewController")
             return
         }
 

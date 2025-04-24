@@ -40,7 +40,7 @@ NSString *const XMLRPCOriginalErrorKey = @"XMLRPCOriginalErrorKey";
 
 - (NSError *)errorForGuessXMLRPCApiFailure:(NSError *)error
 {
-    WPAuthenticatorLogError(@"Error on trying to guess XMLRPC site: %@", error);
+    WPLogError(@"Error on trying to guess XMLRPC site: %@", error);
     NSArray *errorCodes = @[
                             @(NSURLErrorUserCancelledAuthentication),
                             @(NSURLErrorNotConnectedToInternet),

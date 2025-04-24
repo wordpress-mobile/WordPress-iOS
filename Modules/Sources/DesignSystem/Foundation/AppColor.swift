@@ -161,3 +161,9 @@ private extension UIColor {
         }
     }
 }
+
+@objc public final class ObjCBridge_UIAppColor: NSObject {
+    @objc public class var primary: UIColor {
+        UIAppColor.primary
+    }
+}

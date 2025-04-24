@@ -2,6 +2,7 @@ import Foundation
 import AuthenticationServices
 import SVProgressHUD
 import WordPressKit
+import WordPressShared
 
 /// The authorization flow handled by this class starts by showing Apple's `ASAuthorizationController`
 /// through our class `StoredCredentialsPicker`.  This controller lets the user pick the credentials they
@@ -68,7 +69,7 @@ class StoredCredentialsAuthenticator: NSObject {
         self.navigationController = navigationController
 
         guard let window = navigationController.view.window else {
-            WPAuthenticatorLogError("Can't obtain window for navigation controller")
+            WPLogError("Can't obtain window for navigation controller")
             return
         }
 
@@ -133,7 +134,7 @@ class StoredCredentialsAuthenticator: NSObject {
             break
         default:
             tracker.track(failure: authError.localizedDescription)
-            WPAuthenticatorLogError("ASAuthorizationError: \(authError.localizedDescription)")
+            WPLogError("ASAuthorizationError: \(authError.localizedDescription)")
         }
     }
 }
@@ -183,7 +184,7 @@ extension StoredCredentialsAuthenticator: LoginFacadeDelegate {
 extension StoredCredentialsAuthenticator {
     private func presentLoginEpilogue(credentials: AuthenticatorCredentials) {
         guard let navigationController = self.navigationController else {
-            WPAuthenticatorLogError("No navigation controller to present the login epilogue from")
+            WPLogError("No navigation controller to present the login epilogue from")
             return
         }
 
@@ -199,7 +200,7 @@ extension StoredCredentialsAuthenticator {
     ///
     private func presentLoginEmailView(error: Error) {
         guard let toVC = LoginEmailViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate to LoginEmailVC from LoginPrologueVC")
+            WPLogError("Failed to navigate to LoginEmailVC from LoginPrologueVC")
             return
         }
 
@@ -217,7 +218,7 @@ extension StoredCredentialsAuthenticator {
     ///
     private func presentGetStartedView(error: Error) {
         guard let toVC = GetStartedViewController.instantiate(from: .getStarted) else {
-            WPAuthenticatorLogError("Failed to navigate to GetStartedViewController")
+            WPLogError("Failed to navigate to GetStartedViewController")
             return
         }
 
@@ -235,7 +236,7 @@ extension StoredCredentialsAuthenticator {
         }
 
         guard let vc = TwoFAViewController.instantiate(from: .twoFA) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginViewController to TwoFAViewController")
+            WPLogError("Failed to navigate from LoginViewController to TwoFAViewController")
             return
         }
 

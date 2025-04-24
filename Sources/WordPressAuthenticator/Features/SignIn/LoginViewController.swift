@@ -333,7 +333,7 @@ extension LoginViewController {
                                 WordPressAuthenticator.track(.loginSocialSuccess)
                             }
         }, failure: { error in
-            WPAuthenticatorLogError("Social Link Error: \(error)")
+            WPLogError("Social Link Error: \(error)")
             WordPressAuthenticator.track(.loginSocialConnectFailure, error: error)
             // We're opting to let this call fail silently.
             // Our user has already successfully authenticated and can use the app --
@@ -445,7 +445,7 @@ extension LoginViewController {
         }
 
         guard let vc = Login2FAViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginViewController to Login2FAViewController")
+            WPLogError("Failed to navigate from LoginViewController to Login2FAViewController")
             return
         }
 
@@ -459,7 +459,7 @@ extension LoginViewController {
     private func presentUnified2FA() {
 
         guard let vc = TwoFAViewController.instantiate(from: .twoFA) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginViewController to TwoFAViewController")
+            WPLogError("Failed to navigate from LoginViewController to TwoFAViewController")
             return
         }
 
@@ -518,7 +518,7 @@ extension LoginViewController: LoginSocialErrorViewControllerDelegate {
     ///
     func presentUnifiedSiteAddressView() {
         guard let vc = SiteAddressViewController.instantiate(from: .siteAddress) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginViewController to SiteAddressViewController")
+            WPLogError("Failed to navigate from LoginViewController to SiteAddressViewController")
             return
         }
 
@@ -529,7 +529,7 @@ extension LoginViewController: LoginSocialErrorViewControllerDelegate {
     ///
     func presentSelfHostedView() {
         guard let vc = LoginSiteAddressViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginViewController to LoginSiteAddressViewController")
+            WPLogError("Failed to navigate from LoginViewController to LoginSiteAddressViewController")
             return
         }
 

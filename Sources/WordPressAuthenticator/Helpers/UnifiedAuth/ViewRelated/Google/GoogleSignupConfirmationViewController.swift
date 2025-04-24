@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 class GoogleSignupConfirmationViewController: LoginViewController {
 
@@ -154,7 +155,7 @@ private extension GoogleSignupConfirmationViewController {
         case let cell as TextLabelTableViewCell where row == .errorMessage:
             configureErrorLabel(cell)
         default:
-            WPAuthenticatorLogError("Error: Unidentified tableViewCell type found.")
+            WPLogError("Error: Unidentified tableViewCell type found.")
         }
     }
 

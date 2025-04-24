@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// Navigates to the unified "Continue with WordPress.com" flow.
 ///
@@ -19,7 +20,7 @@ public struct NavigateToEnterAccount: NavigationCommand {
 private extension NavigateToEnterAccount {
     private func continueWithDotCom(email: String? = nil, navigationController: UINavigationController?) {
         guard let vc = GetStartedViewController.instantiate(from: .getStarted) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginPrologueViewController to GetStartedViewController")
+            WPLogError("Failed to navigate from LoginPrologueViewController to GetStartedViewController")
             return
         }
         vc.source = signInSource

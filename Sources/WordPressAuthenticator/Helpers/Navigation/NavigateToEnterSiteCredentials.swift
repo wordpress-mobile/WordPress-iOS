@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// Navigates to the wp-admin site credentials flow.
 ///
@@ -18,7 +19,7 @@ public struct NavigateToEnterSiteCredentials: NavigationCommand {
 private extension NavigateToEnterSiteCredentials {
     func presentSiteCredentialsView(navigationController: UINavigationController?, loginFields: LoginFields) {
         guard let controller = SiteCredentialsViewController.instantiate(from: .siteAddress) else {
-            WPAuthenticatorLogError("Failed to navigate to SiteCredentialsViewController")
+            WPLogError("Failed to navigate to SiteCredentialsViewController")
             return
         }
 

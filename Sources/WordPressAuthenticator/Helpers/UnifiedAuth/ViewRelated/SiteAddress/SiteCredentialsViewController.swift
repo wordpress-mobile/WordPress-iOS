@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// Part two of the self-hosted sign in flow: username + password. Used by WPiOS and NiOS.
 /// A valid site address should be acquired before presenting this view controller.
@@ -286,7 +287,7 @@ private extension SiteCredentialsViewController {
         case let cell as TextLabelTableViewCell where row == .errorMessage:
             configureErrorLabel(cell)
         default:
-            WPAuthenticatorLogError("Error: Unidentified tableViewCell type found.")
+            WPLogError("Error: Unidentified tableViewCell type found.")
         }
     }
 
@@ -386,7 +387,7 @@ private extension SiteCredentialsViewController {
     ///
     func presentVerifyEmail(loginFields: LoginFields) {
         guard let vc = VerifyEmailViewController.instantiate(from: .verifyEmail) else {
-            WPAuthenticatorLogError("Failed to navigate from SiteCredentialsViewController to VerifyEmailViewController")
+            WPLogError("Failed to navigate from SiteCredentialsViewController to VerifyEmailViewController")
             return
         }
 
@@ -404,21 +405,21 @@ private extension SiteCredentialsViewController {
     ///
     func makeLoginFieldsUsing(xmlrpc: String, options: [AnyHashable: Any]) -> LoginFields? {
         guard let xmlrpcURL = URL(string: xmlrpc) else {
-            WPAuthenticatorLogError("Failed to initiate XML-RPC URL from \(xmlrpc)")
+            WPLogError("Failed to initiate XML-RPC URL from \(xmlrpc)")
             return nil
         }
 
         // `jetpack_user_email` to be used for WPCOM login
         guard let email = options["jetpack_user_email"] as? [String: Any],
               let userName = email["value"] as? String else {
-            WPAuthenticatorLogError("Failed to find jetpack_user_email value.")
+            WPLogError("Failed to find jetpack_user_email value.")
             return nil
         }
 
         // Site address
         guard let home_url = options["home_url"] as? [String: Any],
               let siteAddress = home_url["value"] as? String else {
-            WPAuthenticatorLogError("Failed to find home_url value.")
+            WPLogError("Failed to find home_url value.")
             return nil
         }
 
@@ -500,7 +501,7 @@ private extension SiteCredentialsViewController {
         //
         guard let loginFields = makeLoginFieldsUsing(xmlrpc: wporgCredentials.xmlrpc,
                                                      options: wporgCredentials.options) else {
-            WPAuthenticatorLogError("Unexpected response from .org site credentials sign in using XMLRPC.")
+            WPLogError("Unexpected response from .org site credentials sign in using XMLRPC.")
             let credentials = AuthenticatorCredentials(wporg: wporgCredentials)
             showLoginEpilogue(for: credentials)
             return

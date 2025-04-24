@@ -155,7 +155,7 @@ class GoogleAuthenticator: NSObject {
         self.loginFields = loginFields
 
         guard let token = loginFields.meta.socialServiceIDToken else {
-            WPAuthenticatorLogError("GoogleAuthenticator - createGoogleAccount: Failed to get Google account information.")
+            WPLogError("GoogleAuthenticator - createGoogleAccount: Failed to get Google account information.")
             return
         }
 

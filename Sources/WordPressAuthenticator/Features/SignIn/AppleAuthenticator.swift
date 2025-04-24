@@ -78,7 +78,7 @@ private extension AppleAuthenticator {
     func createWordPressComUser(appleCredentials: ASAuthorizationAppleIDCredential) {
         guard let identityToken = appleCredentials.identityToken,
             let token = String(data: identityToken, encoding: .utf8) else {
-                WPAuthenticatorLogError("Apple Authenticator: invalid Apple credentials.")
+                WPLogError("Apple Authenticator: invalid Apple credentials.")
                 return
         }
 
@@ -125,7 +125,7 @@ private extension AppleAuthenticator {
     }
 
     func signupFailed(with error: Error) {
-        WPAuthenticatorLogError("Apple Authenticator: Signup failed. error: \(error.localizedDescription)")
+        WPLogError("Apple Authenticator: Signup failed. error: \(error.localizedDescription)")
 
         let errorMessage = error.localizedDescription
 
@@ -196,7 +196,7 @@ extension AppleAuthenticator: ASAuthorizationControllerDelegate {
             return
         }
 
-        WPAuthenticatorLogError("Apple Authenticator: didCompleteWithError: \(error.localizedDescription)")
+        WPLogError("Apple Authenticator: didCompleteWithError: \(error.localizedDescription)")
         let message = NSLocalizedString("Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication.", comment: "Message shown when Apple authentication fails.")
         delegate?.authFailedWithError(message: message)
     }

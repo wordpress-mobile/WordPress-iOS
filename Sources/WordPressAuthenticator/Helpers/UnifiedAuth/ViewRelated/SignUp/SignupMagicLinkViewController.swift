@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// SignupMagicLinkViewController: step two in the signup flow.
 /// This VC prompts the user to open their email app to look for the magic link we sent.
@@ -62,7 +63,7 @@ final class SignupMagicLinkViewController: LoginViewController {
     func validationCheck() {
         let email = loginFields.username
         if !email.isValidEmail() {
-            WPAuthenticatorLogError("The value of loginFields.username was not a valid email address.")
+            WPLogError("The value of loginFields.username was not a valid email address.")
         }
     }
 
@@ -145,7 +146,7 @@ private extension SignupMagicLinkViewController {
         case let cell as TextLabelTableViewCell where row == .oops:
             configureoopsLabel(cell)
         default:
-            WPAuthenticatorLogError("Error: Unidentified tableViewCell type found.")
+            WPLogError("Error: Unidentified tableViewCell type found.")
         }
     }
 

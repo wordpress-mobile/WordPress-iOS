@@ -401,7 +401,7 @@ class LoginPrologueViewController: LoginViewController {
         tracker.set(source: .default)
 
         guard let vc = LoginPrologueLoginMethodViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate to LoginPrologueLoginMethodViewController from LoginPrologueViewController")
+            WPLogError("Failed to navigate to LoginPrologueLoginMethodViewController from LoginPrologueViewController")
             return
         }
 
@@ -445,7 +445,7 @@ class LoginPrologueViewController: LoginViewController {
         WordPressAuthenticator.track(.signupButtonTapped)
 
         guard let vc = LoginPrologueSignupMethodViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate to LoginPrologueSignupMethodViewController")
+            WPLogError("Failed to navigate to LoginPrologueSignupMethodViewController")
             return
         }
 
@@ -510,7 +510,7 @@ class LoginPrologueViewController: LoginViewController {
         }
 
         guard let vc = GetStartedViewController.instantiate(from: .getStarted) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginPrologueViewController to GetStartedViewController")
+            WPLogError("Failed to navigate from LoginPrologueViewController to GetStartedViewController")
             return
         }
         vc.source = .wpCom
@@ -532,7 +532,7 @@ class LoginPrologueViewController: LoginViewController {
 
     private func presentSignUpEmailView() {
         guard let toVC = SignupEmailViewController.instantiate(from: .signup) else {
-            WPAuthenticatorLogError("Failed to navigate to SignupEmailViewController")
+            WPLogError("Failed to navigate to SignupEmailViewController")
             return
         }
 
@@ -541,7 +541,7 @@ class LoginPrologueViewController: LoginViewController {
 
     private func presentUnifiedSignupView() {
         guard let toVC = UnifiedSignupViewController.instantiate(from: .unifiedSignup) else {
-            WPAuthenticatorLogError("Failed to navigate to UnifiedSignupViewController")
+            WPLogError("Failed to navigate to UnifiedSignupViewController")
             return
         }
 
@@ -550,7 +550,7 @@ class LoginPrologueViewController: LoginViewController {
 
     private func presentLoginEmailView() {
         guard let toVC = LoginEmailViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate to LoginEmailVC from LoginPrologueVC")
+            WPLogError("Failed to navigate to LoginEmailVC from LoginPrologueVC")
             return
         }
 
@@ -560,7 +560,7 @@ class LoginPrologueViewController: LoginViewController {
     // Shows the VC that handles both Google login & signup.
     private func presentUnifiedGoogleView() {
         guard let toVC = GoogleAuthViewController.instantiate(from: .googleAuth) else {
-            WPAuthenticatorLogError("Failed to navigate to GoogleAuthViewController from LoginPrologueVC")
+            WPLogError("Failed to navigate to GoogleAuthViewController from LoginPrologueVC")
             return
         }
 
@@ -570,7 +570,7 @@ class LoginPrologueViewController: LoginViewController {
     // Shows the VC that handles only Google signup.
     private func presentGoogleSignupView() {
         guard let toVC = SignupGoogleViewController.instantiate(from: .signup) else {
-            WPAuthenticatorLogError("Failed to navigate to SignupGoogleViewController from LoginPrologueVC")
+            WPLogError("Failed to navigate to SignupGoogleViewController from LoginPrologueVC")
             return
         }
 
@@ -579,7 +579,7 @@ class LoginPrologueViewController: LoginViewController {
 
     private func presentWPLogin() {
         guard let vc = LoginWPComViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginPrologueViewController to LoginWPComViewController")
+            WPLogError("Failed to navigate from LoginPrologueViewController to LoginWPComViewController")
             return
         }
 
@@ -592,7 +592,7 @@ class LoginPrologueViewController: LoginViewController {
 
     private func presentUnifiedPassword() {
         guard let vc = PasswordViewController.instantiate(from: .password) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginPrologueViewController to PasswordViewController")
+            WPLogError("Failed to navigate from LoginPrologueViewController to PasswordViewController")
             return
         }
 
@@ -666,7 +666,7 @@ extension LoginPrologueViewController: GoogleAuthenticatorLoginDelegate {
         self.loginFields = loginFields
 
         guard let vc = Login2FAViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginViewController to Login2FAViewController")
+            WPLogError("Failed to navigate from LoginViewController to Login2FAViewController")
             return
         }
 
@@ -681,7 +681,7 @@ extension LoginPrologueViewController: GoogleAuthenticatorLoginDelegate {
         self.loginFields = loginFields
 
         guard let vc = LoginWPComViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from Google Login to LoginWPComViewController (password VC)")
+            WPLogError("Failed to navigate from Google Login to LoginWPComViewController (password VC)")
             return
         }
 

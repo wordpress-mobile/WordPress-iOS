@@ -1,5 +1,6 @@
 import Foundation
 import WordPressKit
+import WordPressShared
 
 struct SiteAddressViewModel {
     private let isSiteDiscovery: Bool
@@ -50,8 +51,8 @@ struct SiteAddressViewModel {
             }
             // Intentionally log the attempted address on failures.
             // It's not guaranteed to be included in the error object depending on the error.
-            WPAuthenticatorLogInfo("Error attempting to connect to site address: \(self.loginFields.siteAddress)")
-            WPAuthenticatorLogError(error.localizedDescription)
+            WPLogInfo("Error attempting to connect to site address: \(self.loginFields.siteAddress)")
+            WPLogError(error.localizedDescription)
 
             self.tracker.track(failure: .loginFailedToGuessXMLRPC)
 

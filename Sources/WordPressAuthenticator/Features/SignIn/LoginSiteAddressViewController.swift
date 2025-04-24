@@ -166,7 +166,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
             guard let error, let self else {
                 return
             }
-            WPAuthenticatorLogError(error.localizedDescription)
+            WPLogError(error.localizedDescription)
             WordPressAuthenticator.track(.loginFailedToGuessXMLRPC, error: error)
             WordPressAuthenticator.track(.loginFailed, error: error)
             self.configureViewLoading(false)
@@ -247,7 +247,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     @objc func showSelfHostedUsernamePassword() {
         configureViewLoading(false)
         guard let vc = LoginSelfHostedViewController.instantiate(from: .login) else {
-           WPAuthenticatorLogError("Failed to navigate from LoginEmailViewController to LoginSelfHostedViewController")
+           WPLogError("Failed to navigate from LoginEmailViewController to LoginSelfHostedViewController")
                return
            }
 
@@ -265,7 +265,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
         configureViewLoading(false)
 
         guard let vc = LoginUsernamePasswordViewController.instantiate(from: .login) else {
-            WPAuthenticatorLogError("Failed to navigate from LoginSiteAddressViewController to LoginUsernamePasswordViewController")
+            WPLogError("Failed to navigate from LoginSiteAddressViewController to LoginUsernamePasswordViewController")
                 return
         }
 

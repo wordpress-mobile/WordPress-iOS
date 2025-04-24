@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// Unified LoginMagicLinkViewController: login to .com with a magic link
 ///
@@ -137,7 +138,7 @@ private extension LoginMagicLinkViewController {
         case let cell as TextLabelTableViewCell where row == .checkSpam:
             configureCheckSpamLabel(cell)
         default:
-            WPAuthenticatorLogError("Error: Unidentified tableViewCell type found.")
+            WPLogError("Error: Unidentified tableViewCell type found.")
         }
     }
 
