@@ -7,7 +7,15 @@ struct MigrationTests {
     // See https://github.com/wordpress-mobile/WordPress-iOS/pull/24494#discussion_r2057152526
     @Test("Verify migration from version 154 (latest version before extraction to framework) to 155 (first version in framework with module modifications) works.")
     func migrate154to155() throws {
-        let storeURL = FileManager.default.temporaryDirectory.appendingPathComponent("Migration154to155.sqlite")
+        // Even though we use a temporary directory, the store seems to be reused across test
+        // runs—the number of entities increase instead of starting from zero every time.
+        // The timestamp suffix avoids the issue.
+        //
+        // Also, we cannot use the in-memory store, otherwise it gets overridden between
+        // ContextManager inits and we cannot check the migration behavior.
+        let storeURL = FileManager.default
+            .temporaryDirectory
+            .appendingPathComponent("Migration154to155-\(Date().timeIntervalSince1970).sqlite")
 
         let contextManager154 = ContextManager(
             modelName: "WordPress 154",
