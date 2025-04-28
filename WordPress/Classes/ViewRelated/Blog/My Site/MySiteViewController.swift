@@ -71,7 +71,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     private let overlaysCoordinator: MySiteOverlaysCoordinator
     private lazy var editorSettingsService: RawBlockEditorSettingsService? = {
-        guard let blog, FeatureFlag.newGutenberg.enabled || RemoteFeatureFlag.newGutenberg.enabled() else { return nil }
+        guard let blog, RemoteFeatureFlag.newGutenberg.enabled() else { return nil }
         return RawBlockEditorSettingsService(blog: blog)
     }()
 
@@ -172,7 +172,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         subscribeToPostPublished()
         subscribeToWillEnterForeground()
 
-        if FeatureFlag.newGutenberg.enabled || RemoteFeatureFlag.newGutenberg.enabled() {
+        if RemoteFeatureFlag.newGutenberg.enabled() {
             GutenbergKit.EditorViewController.warmup()
         }
     }
@@ -386,7 +386,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             showDashboard(for: blog)
         }
 
-        if FeatureFlag.newGutenberg.enabled || RemoteFeatureFlag.newGutenberg.enabled() {
+        if RemoteFeatureFlag.newGutenberg.enabled() {
             // Update editor settings service with new blog and fetch settings
             editorSettingsService = RawBlockEditorSettingsService(blog: blog)
             fetchEditorSettings()

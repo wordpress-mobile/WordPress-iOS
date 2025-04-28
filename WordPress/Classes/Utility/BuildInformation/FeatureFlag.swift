@@ -19,7 +19,6 @@ public enum FeatureFlag: Int, CaseIterable {
     case googleDomainsCard
     case voiceToContent
     case authenticateUsingApplicationPassword
-    case newGutenberg
     case newGutenbergThemeStyles
     case selfHostedSiteUserManagement
     case readerGutenbergCommentComposer
@@ -69,8 +68,6 @@ public enum FeatureFlag: Int, CaseIterable {
             return app == .jetpack && BuildConfiguration.current.isInternal
         case .authenticateUsingApplicationPassword:
             return false
-        case .newGutenberg:
-            return app == .reader
         case .newGutenbergThemeStyles:
             return false
         case .selfHostedSiteUserManagement:
@@ -118,7 +115,6 @@ extension FeatureFlag {
         case .googleDomainsCard: "Google Domains Promotional Card"
         case .voiceToContent: "Voice to Content"
         case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
-        case .newGutenberg: "Experimental Block Editor"
         case .newGutenbergThemeStyles: "Experimental Block Editor Styles"
         case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
         case .pluginManagementOverhaul: "Plugin Management Overhaul"
