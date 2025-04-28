@@ -2,6 +2,7 @@ import WordPressAuthenticator
 import UIKit
 import SwiftUI
 import WordPressUI
+import WordPressKit
 import GutenbergKit
 import Combine
 
