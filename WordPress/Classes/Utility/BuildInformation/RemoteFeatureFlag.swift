@@ -34,6 +34,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     case newGutenbergPlugins
 
     var defaultValue: Bool {
+        let app = BuildSettings.current.brand
+
         switch self {
         case .jetpackMigrationPreventDuplicateNotifications:
             return true
@@ -90,7 +92,7 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
         case .dotComWebLogin:
             return false
         case .newGutenberg:
-            return false
+            return app == .reader
         case .newGutenbergPlugins:
             return false
         }
