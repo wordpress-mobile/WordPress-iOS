@@ -331,7 +331,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     // MARK: - Activity Indicator
 
     private func showActivityIndicator() {
-        let indicator = UIActivityIndicatorView(style: .large)
+        let indicator = UIActivityIndicatorView()
         indicator.color = .gray
         indicator.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(indicator)
