@@ -4,22 +4,32 @@ import WordPressShared
 
 class RawBlockEditorSettingsService {
     private let blog: Blog
-    private let remoteAPI: WordPressOrgRestApi
     private var isRefreshing: Bool = false
     private var refreshTask: Task<[String: Any], Error>?
 
-    init?(blog: Blog) {
-        guard let remoteAPI = WordPressOrgRestApi(blog: blog) else {
-            return nil
-        }
-
+    init(blog: Blog) {
         self.blog = blog
-        self.remoteAPI = remoteAPI
+    }
+
+    private static var services: [TaggedManagedObjectID<Blog>: RawBlockEditorSettingsService] = [:]
+
+    @MainActor
+    static func getService(forBlog blog: Blog) -> RawBlockEditorSettingsService {
+        let objectID = TaggedManagedObjectID(blog)
+        if let service = services[objectID] {
+            return service
+        }
+        let service = RawBlockEditorSettingsService(blog: blog)
+        services[objectID] = service
+        return service
     }
 
     @MainActor
     private func fetchSettingsFromAPI() async throws -> [String: Any] {
-        let result = await self.remoteAPI.get(path: "/wp-block-editor/v1/settings")
+        guard let remoteAPI = WordPressOrgRestApi(blog: blog) else {
+            throw URLError(.unknown) // Should not happen
+        }
+        let result = await remoteAPI.get(path: "/wp-block-editor/v1/settings")
         switch result {
         case .success(let response):
             guard let dictionary = response as? [String: Any] else {
