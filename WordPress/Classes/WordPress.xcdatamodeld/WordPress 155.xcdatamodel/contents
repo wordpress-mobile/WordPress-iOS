@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788" systemVersion="24E248" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788" systemVersion="24D70" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="autosaveContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autosaveExcerpt" optional="YES" attributeType="String" syncable="YES"/>
@@ -95,6 +95,9 @@
         </fetchIndex>
         <userInfo/>
     </entity>
+    <entity name="BlobEntity" representedClassName="BlobEntity" syncable="YES">
+        <attribute name="data" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+    </entity>
     <entity name="BlockedAuthor" representedClassName="BlockedAuthor" syncable="YES">
         <attribute name="accountID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="authorID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -182,6 +185,7 @@
         <relationship name="postTypes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PostType" inverseName="blog" inverseEntity="PostType" syncable="YES"/>
         <relationship name="publicizeInfo" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PublicizeInfo" inverseName="blog" inverseEntity="PublicizeInfo"/>
         <relationship name="quickStartTours" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="QuickStartTourState" inverseName="blog" inverseEntity="QuickStartTourState" syncable="YES"/>
+        <relationship name="rawBlockEditorSettings" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="BlobEntity" syncable="YES"/>
         <relationship name="roles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Role" inverseName="blog" inverseEntity="Role" syncable="YES"/>
         <relationship name="settings" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="BlogSettings" inverseName="blog" inverseEntity="BlogSettings" syncable="YES"/>
         <relationship name="sharingButtons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SharingButton" inverseName="blog" inverseEntity="SharingButton" syncable="YES"/>

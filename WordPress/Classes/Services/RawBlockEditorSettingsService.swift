@@ -24,7 +24,11 @@ class RawBlockEditorSettingsService {
             guard let dictionary = response as? [String: Any] else {
                 throw NSError(domain: "RawBlockEditorSettingsService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
             }
-            blog.rawBlockEditorSettings = dictionary
+            let objectID = TaggedManagedObjectID(blog)
+            try? await ContextManager.shared.performAndSave { context in
+                let blog = try context.existingObject(with: objectID)
+                blog.setBlockEditorSettings(dictionary)
+            }
             return dictionary
         case .failure(let error):
             throw error
@@ -47,7 +51,7 @@ class RawBlockEditorSettingsService {
         }
 
         // Return cached settings if available
-        if let cachedSettings = blog.rawBlockEditorSettings {
+        if let cachedSettings = blog.getBlockEditorSettings() {
             return cachedSettings
         }
 
@@ -60,7 +64,7 @@ class RawBlockEditorSettingsService {
         // Wait for it to complete and return the cached result
         while isRefreshing {
             try await Task.sleep(nanoseconds: 100_000_000) // 100ms
-            if let cachedSettings = blog.rawBlockEditorSettings {
+            if let cachedSettings = blog.getBlockEditorSettings() {
                 return cachedSettings
             }
         }

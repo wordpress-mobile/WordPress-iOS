@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class SiteSuggestion;
 @class PageTemplateCategory;
 @class PublicizeInfo;
+@class BlobEntity;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -173,6 +174,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceAllowed;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceUsed;
 @property (nullable, nonatomic, retain) NSSet<PageTemplateCategory *> *pageTemplateCategories;
+@property (nonatomic, strong, readwrite, nullable) BlobEntity *rawBlockEditorSettings;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 
