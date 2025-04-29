@@ -2,9 +2,8 @@ import Foundation
 import WordPressKit
 import WordPressShared
 
-class RawBlockEditorSettingsService {
+final class RawBlockEditorSettingsService {
     private let blog: Blog
-    private var isRefreshing: Bool = false
     private var refreshTask: Task<[String: Any], Error>?
 
     init(blog: Blog) {
