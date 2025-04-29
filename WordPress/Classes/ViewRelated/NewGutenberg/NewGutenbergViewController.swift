@@ -359,6 +359,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             return
         }
 
+        service.refreshSettings()
+
         Task { @MainActor in
             // Start the editor with default settings after 3 seconds
             let timeoutTask = Task {
@@ -369,7 +371,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             }
 
             do {
-                let settings = try await service.fetchSettings()
+                let settings = try await service.getSettings()
                 timeoutTask.cancel()
                 startEditor(with: settings)
             } catch {

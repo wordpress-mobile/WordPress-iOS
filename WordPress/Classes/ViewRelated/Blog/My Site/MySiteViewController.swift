@@ -389,19 +389,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         if RemoteFeatureFlag.newGutenberg.enabled() {
             // Update editor settings service with new blog and fetch settings
             editorSettingsService = RawBlockEditorSettingsService(blog: blog)
-            fetchEditorSettings()
-        }
-    }
-
-    private func fetchEditorSettings() {
-        guard let service = editorSettingsService else { return }
-
-        Task { @MainActor in
-            do {
-                _ = try await service.fetchSettings()
-            } catch {
-                DDLogError("Error fetching editor settings: \(error)")
-            }
+            editorSettingsService?.refreshSettings()
         }
     }
 
