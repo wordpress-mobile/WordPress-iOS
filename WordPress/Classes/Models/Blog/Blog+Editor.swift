@@ -54,7 +54,7 @@ extension Blog {
         }
         do {
             let object = try JSONSerialization.jsonObject(with: data, options: [])
-            guard let settings = object as? [String: Any]? else {
+            guard let settings = object as? [String: Any] else {
                 wpAssertionFailure("invalid block editor settings object")
                 return nil
             }
