@@ -2687,7 +2687,7 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
-				0C0C6BC22D8A14DD0056E696 /* XCLocalSwiftPackageReference "../Modules" */,
+				0C8095952DC2A4B9008DFC2F /* XCLocalSwiftPackageReference "../Modules" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
@@ -7050,7 +7050,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		0C0C6BC22D8A14DD0056E696 /* XCLocalSwiftPackageReference "../Modules" */ = {
+		0C8095952DC2A4B9008DFC2F /* XCLocalSwiftPackageReference "../Modules" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Modules;
 		};
