@@ -47,7 +47,7 @@ class MockWordPressComRestApi: WordPressComRestApi {
     override func perform<T: Decodable>(
         _ method: HTTPRequestBuilder.Method,
         URLString: String,
-        parameters: [String: AnyObject]? = nil,
+        parameters: [String: Any]? = nil,
         fulfilling progress: Progress? = nil,
         jsonDecoder: JSONDecoder? = nil,
         type: T.Type = T.self
@@ -70,7 +70,7 @@ class MockWordPressComRestApi: WordPressComRestApi {
     override func perform(
         _ method: HTTPRequestBuilder.Method,
         URLString: String,
-        parameters: [String: AnyObject]? = nil,
+        parameters: [String: Any]? = nil,
         fulfilling progress: Progress? = nil
     ) async -> WordPressComRestApi.APIResult<AnyObject> {
         switch method {
