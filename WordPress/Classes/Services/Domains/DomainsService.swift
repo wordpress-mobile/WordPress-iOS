@@ -146,9 +146,7 @@ struct DomainsService {
 
         // Let's try to only update objects that have changed
         let remoteChanges = remoteDomains.filter { domain in
-            // FIXME: This was `return !localDomains.contains($0)` but it no longer compiles since the WordPressData migration. This is fishy and it might hint at some import issue.
-//            return !localDomains.contains($0)
-            return !localDomains.contains(where: { $0 == domain })
+            return !localDomains.contains(domain)
         }
 
         for remoteDomain in remoteChanges {

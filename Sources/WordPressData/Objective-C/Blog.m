@@ -7,7 +7,6 @@
 @import WordPressShared;
 @import NSObject_SafeExpectations;
 @import NSURL_IDN;
-@import WordPressKit; // FIXME: Is it required?
 
 @class Comment;
 

@@ -2,8 +2,8 @@
 #import "SourcePostAttribution.h"
 #import "WPAccount.h"
 #import "WordPressData-Swift.h"
-@import WordPressKit; // FIXME: Is this needed?
 
+@import WordPressKit;
 @import WordPressShared;
 
 // These keys are used in the getStoredComment method

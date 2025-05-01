@@ -1,9 +1,9 @@
 #import "PostHelper.h"
 #import "AbstractPost.h"
 #import "WordPressData-Swift.h"
-@import WordPressShared; // FIXME: Is this needed?
 
 @import WordPressKit;
+@import WordPressShared;
 @import NSObject_SafeExpectations;
 
 @implementation PostHelper
