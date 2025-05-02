@@ -24,17 +24,18 @@ public extension Blog {
         using keychainImplementation: KeychainAccessible = KeychainUtils()
     ) async throws -> TaggedManagedObjectID<Blog> {
         try await contextManager.performAndSave { context in
-            let blog = Blog.createBlankBlog(in: context)
+            let blog = Blog.lookup(username: details.userLogin, xmlrpc: xmlrpcEndpointURL.absoluteString, in: context)
+                ?? Blog.createBlankBlog(in: context)
             blog.url = details.siteUrl
             blog.username = details.userLogin
             blog.restApiRootURL = restApiRootURL.absoluteString
             blog.setXMLRPCEndpoint(to: xmlrpcEndpointURL)
             blog.setSiteIdentifier(details.derivedSiteId)
 
-            // `url` and `xmlrpc` need to be set before setting passwords.
+            // `url` and `xmlrpc` need to be set before setting the application password.
             try blog.setApplicationToken(details.password, using: keychainImplementation)
-            // Application token can also be used in XMLRPC.
-            try blog.setPassword(to: details.password, using: keychainImplementation)
+            // We don't overwrite the `Blog.password` with the application password (`details.password`), because we want
+            // the application continues to function when the application password is revoked.
 
             return TaggedManagedObjectID(blog)
         }
