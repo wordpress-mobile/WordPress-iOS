@@ -312,7 +312,6 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_App", dependencies: keystoneDependencies),
             .xcodeTarget("XcodeTarget_Keystone", dependencies: keystoneDependencies),
             .xcodeTarget("XcodeTarget_WordPressTests", dependencies: testDependencies + [
-                "SFHFKeychainUtils",
                 "WordPressShared",
                 "WordPressUI",
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
