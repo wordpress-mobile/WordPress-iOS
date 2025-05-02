@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressShared
 
 /// `MySitesCoordinator` is used as the root presenter when Jetpack features are disabled

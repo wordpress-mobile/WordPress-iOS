@@ -2,6 +2,7 @@ import UIKit
 import MobileCoreServices
 import UniformTypeIdentifiers
 import AVFoundation
+import WordPressData
 
 /// Media export handling of Videos from AVAssets.
 ///

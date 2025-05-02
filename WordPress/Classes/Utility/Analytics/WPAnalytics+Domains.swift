@@ -1,5 +1,6 @@
 import Foundation
 import BuildSettingsKit
+import WordPressData
 import WordPressShared
 
 extension WPAnalytics {

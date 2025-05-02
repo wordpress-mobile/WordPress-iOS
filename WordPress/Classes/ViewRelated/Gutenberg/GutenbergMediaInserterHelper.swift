@@ -2,6 +2,7 @@ import Foundation
 import CoreServices
 import Gutenberg
 import MediaEditor
+import WordPressData
 import WordPressShared
 
 class GutenbergMediaInserterHelper: NSObject {

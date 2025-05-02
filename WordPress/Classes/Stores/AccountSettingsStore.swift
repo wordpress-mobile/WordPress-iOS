@@ -1,3 +1,4 @@
+import Foundation
 import WordPressFlux
 
 enum AccountSettingsState: Equatable {

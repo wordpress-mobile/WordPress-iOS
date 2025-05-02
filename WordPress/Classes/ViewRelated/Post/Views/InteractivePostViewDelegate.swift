@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 protocol InteractivePostViewDelegate: AnyObject {
     func edit(_ post: AbstractPost)

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressUI
 
 final class PostSyncStateViewModel {

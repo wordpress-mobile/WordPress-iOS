@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressKit
 
 extension SuggestionType {
     var trigger: String {

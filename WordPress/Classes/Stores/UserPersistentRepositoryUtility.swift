@@ -1,4 +1,5 @@
 import WordPressShared
+import WordPressKit
 
 extension UserPersistentRepositoryUtility {
     var notificationsTabAccessCount: Int {

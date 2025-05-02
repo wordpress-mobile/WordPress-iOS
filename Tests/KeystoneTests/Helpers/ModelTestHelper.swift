@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressData
 @testable import WordPress
 
 public class ModelTestHelper: NSObject {

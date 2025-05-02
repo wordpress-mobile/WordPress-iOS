@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressFlux
 
 /// Encapsulates saving a post for later

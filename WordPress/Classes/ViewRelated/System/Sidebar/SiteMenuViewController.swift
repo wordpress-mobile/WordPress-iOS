@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 protocol SiteMenuViewControllerDelegate: AnyObject {
     func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController)

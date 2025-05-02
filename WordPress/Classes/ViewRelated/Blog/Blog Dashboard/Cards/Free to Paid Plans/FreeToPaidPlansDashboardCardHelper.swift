@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 @objc public final class FreeToPaidPlansDashboardCardHelper: NSObject {
 

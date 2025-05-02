@@ -1,5 +1,6 @@
 import XCTest
 import AutomatticTracks
+import WordPressData
 
 @testable import WordPress
 

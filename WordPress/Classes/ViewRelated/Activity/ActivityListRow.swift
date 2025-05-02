@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 struct ActivityListRow: ImmuTableRow {
     typealias CellType = ActivityTableViewCell

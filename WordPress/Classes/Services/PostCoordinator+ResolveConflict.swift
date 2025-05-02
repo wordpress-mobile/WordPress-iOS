@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 extension PostCoordinator {
     enum NotificationKey {

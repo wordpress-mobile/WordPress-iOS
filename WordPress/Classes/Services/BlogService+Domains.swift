@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 /// This extension is necessary because DomainsService is unavailable in ObjC.
 ///

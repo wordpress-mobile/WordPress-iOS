@@ -1,6 +1,7 @@
 import UIKit
 import CoreData
 import Combine
+import WordPressData
 import WordPressKit
 import WordPressShared
 import SwiftUI

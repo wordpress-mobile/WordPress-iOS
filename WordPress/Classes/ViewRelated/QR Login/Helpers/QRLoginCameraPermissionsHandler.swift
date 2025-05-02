@@ -1,3 +1,4 @@
+import AVFoundation
 import Foundation
 import WordPressShared
 

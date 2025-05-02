@@ -1,4 +1,5 @@
 import Gridicons
+import WordPressData
 import WordPressFlux
 import WordPressShared
 import WordPressUI

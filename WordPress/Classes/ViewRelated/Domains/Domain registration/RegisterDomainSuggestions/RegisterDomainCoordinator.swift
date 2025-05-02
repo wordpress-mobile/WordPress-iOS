@@ -2,6 +2,7 @@ import UIKit
 import AutomatticTracks
 import SwiftUI
 import SVProgressHUD
+import WordPressData
 import WordPressKit
 import WordPressShared
 

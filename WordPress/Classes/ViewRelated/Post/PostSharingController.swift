@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import SVProgressHUD
+import WordPressData
 
 @objc class PostSharingController: NSObject {
 

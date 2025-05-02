@@ -1,3 +1,4 @@
+import WordPressData
 import WordPressShared
 
 /// dependency container for the What's New / Feature Announcements scene

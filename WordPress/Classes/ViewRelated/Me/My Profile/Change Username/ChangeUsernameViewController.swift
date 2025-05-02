@@ -1,6 +1,7 @@
 import UIKit
 import Combine
 import SVProgressHUD
+import WordPressKit
 import WordPressUI
 
 class ChangeUsernameViewController: SignupUsernameTableViewController {

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressShared
 
 /// Encapsulates a command to subscribe or unsubscribe to a posts comments.

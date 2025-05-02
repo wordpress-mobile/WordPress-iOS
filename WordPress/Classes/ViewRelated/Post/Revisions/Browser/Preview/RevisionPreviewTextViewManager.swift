@@ -2,6 +2,7 @@ import UIKit
 import Aztec
 import Gridicons
 import AsyncImageKit
+import WordPressData
 
 class RevisionPreviewTextViewManager: NSObject {
     var post: AbstractPost?

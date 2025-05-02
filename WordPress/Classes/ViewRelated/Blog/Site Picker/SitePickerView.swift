@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import WordPressData
 
 struct SitePickerView: View {
     @StateObject var viewModel: BlogListViewModel

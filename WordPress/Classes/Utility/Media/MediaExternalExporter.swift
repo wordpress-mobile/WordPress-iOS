@@ -1,5 +1,6 @@
 import UIKit
 import AsyncImageKit
+import WordPressData
 
 /// Media export handling assets from external sources i.e.: Stock Photos
 ///

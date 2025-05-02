@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 public class WPCategoryTree: NSObject {
     var parent: PostCategory?

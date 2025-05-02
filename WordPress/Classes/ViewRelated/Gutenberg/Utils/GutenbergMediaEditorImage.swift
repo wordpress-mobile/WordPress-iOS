@@ -1,6 +1,7 @@
 import UIKit
 import MediaEditor
 import AsyncImageKit
+import WordPressData
 
 /**
  This is a struct to be given to MediaEditor that represent the image.

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 class BlogDashboardState {
     private static var states: [NSNumber: BlogDashboardState] = [:]

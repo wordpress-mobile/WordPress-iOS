@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import Combine
+import WordPressData
 import WordPressUI
 
 class ReaderSidebarViewController: UIHostingController<AnyView> {

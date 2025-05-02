@@ -1,3 +1,4 @@
+import WordPressData
 import WordPressShared
 
 /// This structs helps encapsulate logic related to Gutenberg rollout phases.

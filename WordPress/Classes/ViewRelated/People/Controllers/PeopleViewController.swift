@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import WordPressData
 import WordPressShared
 import WordPressUI
 

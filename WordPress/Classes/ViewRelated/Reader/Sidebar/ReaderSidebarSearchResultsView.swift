@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressData
 
 struct ReaderSidebarSearchResultsView: View {
     let searchText: String

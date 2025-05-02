@@ -1,6 +1,7 @@
 import UIKit
 import Gutenberg
 import MobileCoreServices
+import UniformTypeIdentifiers
 
 class GutenbergFilesAppMediaSource: NSObject {
     private var mediaPickerCallback: MediaPickerDidPickMediaCallback?

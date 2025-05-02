@@ -2,6 +2,7 @@ import UIKit
 import Gifu
 import SwiftUI
 import AsyncImageKit
+import WordPressData
 import WordPressUI
 
 struct SiteMediaImage: UIViewRepresentable {

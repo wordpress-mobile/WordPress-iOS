@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 enum JetpackNativeConnectionURLError: Error {
     case jetpackSiteNotRegistered

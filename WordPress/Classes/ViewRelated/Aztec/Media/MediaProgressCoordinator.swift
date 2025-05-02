@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 /// Media Progress Coordinator Delegate comunicates changes on media progress.
 ///

@@ -1,5 +1,6 @@
 import Foundation
 import BuildSettingsKit
+import WordPressData
 
 enum BlazeHelper {
     static func isBlazeFlagEnabled() -> Bool {

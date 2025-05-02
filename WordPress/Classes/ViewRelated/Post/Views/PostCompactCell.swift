@@ -1,5 +1,6 @@
 import AutomatticTracks
 import UIKit
+import WordPressData
 import WordPressShared
 import WordPressUI
 import AsyncImageKit

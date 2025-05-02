@@ -1,5 +1,6 @@
 import UIKit
 import WebKit
+import WordPressData
 import WordPressShared
 import WordPressUI
 

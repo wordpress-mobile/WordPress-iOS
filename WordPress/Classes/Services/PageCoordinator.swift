@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 class PageCoordinator {
     typealias TemplateSelectionCompletion = (_ layout: PageTemplateLayout?) -> Void

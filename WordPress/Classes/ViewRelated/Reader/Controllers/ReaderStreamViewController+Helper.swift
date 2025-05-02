@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import WordPressData
 import WordPressUI
 
 // MARK: - ReaderHeader

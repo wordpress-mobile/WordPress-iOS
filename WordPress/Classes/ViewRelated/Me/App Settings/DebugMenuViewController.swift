@@ -2,6 +2,7 @@ import UIKit
 import AutomatticTracks
 import BuildSettingsKit
 import SwiftUI
+import WordPressData
 import WordPressFlux
 import TipKit
 

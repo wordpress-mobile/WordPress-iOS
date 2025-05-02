@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 class RevisionOperationViewController: UIViewController {
     var revision: Revision? {

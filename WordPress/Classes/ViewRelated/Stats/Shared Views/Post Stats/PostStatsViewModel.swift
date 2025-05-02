@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressKit
 
 /// The view model used by PostStatsTableViewController to show
 /// stats for a selected post.

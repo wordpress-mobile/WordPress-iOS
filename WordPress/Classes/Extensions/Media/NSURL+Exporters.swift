@@ -1,5 +1,8 @@
 import Foundation
 import UniformTypeIdentifiers
+import WordPressAPI
+import WordPressData
+import WordPressKit
 
 extension NSURL: ExportableAsset {
     public var assetMediaType: MediaType {

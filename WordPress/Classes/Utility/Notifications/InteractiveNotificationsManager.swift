@@ -1,6 +1,7 @@
 import Foundation
 import UserNotifications
 import ShareExtensionCore
+import WordPressData
 import WordPressFlux
 import WordPressShared
 

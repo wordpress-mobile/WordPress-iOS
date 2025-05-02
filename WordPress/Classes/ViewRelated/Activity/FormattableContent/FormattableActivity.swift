@@ -1,4 +1,5 @@
 import FormattableContentKit
+import WordPressData
 
 class FormattableActivity {
     let activity: Activity

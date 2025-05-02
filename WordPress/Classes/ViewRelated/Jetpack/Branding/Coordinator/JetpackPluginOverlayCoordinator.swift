@@ -1,4 +1,5 @@
 import WordPressAuthenticator
+import WordPressData
 
 final class JetpackPluginOverlayCoordinator: JetpackOverlayCoordinator {
 

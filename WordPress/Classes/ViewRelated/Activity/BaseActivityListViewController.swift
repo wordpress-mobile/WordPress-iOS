@@ -1,5 +1,6 @@
 import Foundation
 import SVProgressHUD
+import WordPressData
 import WordPressShared
 import WordPressFlux
 import WordPressUI

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressShared
 
 class MediaCacheSettingsViewController: UITableViewController {

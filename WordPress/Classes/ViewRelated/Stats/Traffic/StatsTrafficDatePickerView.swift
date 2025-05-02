@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import WordPressKit
 
 struct StatsTrafficDatePickerView: View {
     @ObservedObject var viewModel: StatsTrafficDatePickerViewModel

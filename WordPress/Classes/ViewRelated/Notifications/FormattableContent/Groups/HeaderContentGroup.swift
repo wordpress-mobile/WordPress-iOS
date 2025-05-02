@@ -1,4 +1,5 @@
 import FormattableContentKit
+import WordPressData
 
 extension HeaderContentGroup {
     class func createGroup(from header: [[String: AnyObject]], parent: WordPressData.Notification) -> FormattableContentGroup {

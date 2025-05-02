@@ -1,3 +1,4 @@
+import WordPressData
 
 extension PostEditor {
 

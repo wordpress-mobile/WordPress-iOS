@@ -1,4 +1,5 @@
 import UIKit
+import WordPressKit
 
 protocol AnnouncementsDataSource: UITableViewDataSource {
     func registerCells(for tableView: UITableView)

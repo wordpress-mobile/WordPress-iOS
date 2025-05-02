@@ -1,6 +1,7 @@
 import UIKit
 import Gridicons
 import DGCharts
+import WordPressKit
 import WordPressUI
 
 // MARK: - Shared Rows

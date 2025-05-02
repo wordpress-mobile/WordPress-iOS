@@ -2,6 +2,7 @@ import UIKit
 import AsyncImageKit
 import Gutenberg
 import Aztec
+import WordPressData
 import WordPressFlux
 import WordPressShared
 import WordPressUI

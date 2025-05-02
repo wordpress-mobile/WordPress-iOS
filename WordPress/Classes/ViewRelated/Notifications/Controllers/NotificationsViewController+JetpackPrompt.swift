@@ -1,3 +1,5 @@
+import WordPressData
+
 extension NotificationsViewController {
 
     var blogForJetpackPrompt: Blog? {

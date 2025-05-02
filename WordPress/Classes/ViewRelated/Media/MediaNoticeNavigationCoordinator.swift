@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 /// This class simply exists to coordinate the display of various sections of
 /// the app in response to actions taken by the user from Media notifications.

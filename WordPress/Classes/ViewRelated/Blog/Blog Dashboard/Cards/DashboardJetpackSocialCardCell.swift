@@ -1,5 +1,6 @@
 import SwiftUI
 import AutomatticTracks
+import WordPressData
 import WordPressShared
 
 class DashboardJetpackSocialCardCell: DashboardCollectionViewCell {

@@ -1,6 +1,7 @@
 import UIKit
 import PhotosUI
 import SVProgressHUD
+import WordPressData
 import WordPressShared
 
 /// The main Site Media screen.

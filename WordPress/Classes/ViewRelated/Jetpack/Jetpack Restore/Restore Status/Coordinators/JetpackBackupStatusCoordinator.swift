@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 protocol JetpackBackupStatusView {
     func render(_ backup: JetpackBackup)

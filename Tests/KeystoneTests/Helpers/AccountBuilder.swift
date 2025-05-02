@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 @testable import WordPress
 

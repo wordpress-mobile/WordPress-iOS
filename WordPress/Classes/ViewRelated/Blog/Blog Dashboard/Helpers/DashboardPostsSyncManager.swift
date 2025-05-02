@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 protocol DashboardPostsSyncManagerListener: AnyObject {
     func postsSynced(success: Bool,

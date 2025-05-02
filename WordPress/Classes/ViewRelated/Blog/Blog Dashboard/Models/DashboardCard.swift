@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 /// Describes all the available cards.
 ///

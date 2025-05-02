@@ -1,6 +1,8 @@
 import UIKit
 import SwiftUI
 import SVProgressHUD
+import WordPressData
+import WordPressKit
 import WordPressShared
 
 enum DomainSelectionType: Int, Identifiable {

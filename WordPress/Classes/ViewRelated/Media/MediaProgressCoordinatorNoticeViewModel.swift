@@ -1,3 +1,6 @@
+import Foundation
+import WordPressData
+
 enum MediaNoticeUserInfoKey {
     static let blogID = "blog_id"
     static let failedMediaIDs = "failed_media_ids"

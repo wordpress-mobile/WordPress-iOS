@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import WordPressData
 
 final class DashboardQuickActionsViewModel {
     var onViewWillAppear: (() -> Void)?

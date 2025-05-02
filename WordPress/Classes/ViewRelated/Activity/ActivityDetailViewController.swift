@@ -1,5 +1,7 @@
 import UIKit
 import Gridicons
+import WordPressData
+import WordPressKit
 import WordPressUI
 
 class ActivityDetailViewController: UIViewController, StoryboardLoadable {

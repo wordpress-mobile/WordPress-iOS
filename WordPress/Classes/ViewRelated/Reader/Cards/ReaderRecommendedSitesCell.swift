@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import WordPressData
 import WordPressUI
 import Combine
 

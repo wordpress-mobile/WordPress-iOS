@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressShared
 
 /// Encapsulates a command to report a post

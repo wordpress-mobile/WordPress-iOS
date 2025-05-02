@@ -2,6 +2,7 @@ import UIKit
 import Gifu
 import AVKit
 import SwiftUI
+import WordPressData
 
 struct SiteMediaPreviewView: UIViewControllerRepresentable {
     let media: Media

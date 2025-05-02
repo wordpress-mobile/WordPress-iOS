@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 @objc class PostListFilter: NSObject, FilterTabBarItem {
 

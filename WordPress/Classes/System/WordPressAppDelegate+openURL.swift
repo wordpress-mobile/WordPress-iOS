@@ -1,6 +1,7 @@
 import AutomatticTracks
 import BuildSettingsKit
 import WordPressAuthenticator
+import WordPressData
 import WordPressShared
 
 @objc extension WordPressAppDelegate {

@@ -1,5 +1,7 @@
 import Foundation
 import CoreData
+import WordPressData
+import WordPressKit
 
 /// Helper class for creating LikeUser objects.
 /// Used by PostService and CommentService when fetching likes for posts/comments.

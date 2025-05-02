@@ -1,5 +1,6 @@
 import Foundation
 import Gridicons
+import WordPressKit
 import WordPressUI
 import WordPressShared
 

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 /// Encapsulates a command to navigate to a post's comments
 final class ReaderCommentAction {

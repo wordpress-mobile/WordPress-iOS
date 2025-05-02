@@ -1,4 +1,5 @@
 import XCTest
+import WordPressKit
 @testable import WordPress
 
 class PluginDirectoryEntryStateTests: XCTestCase {

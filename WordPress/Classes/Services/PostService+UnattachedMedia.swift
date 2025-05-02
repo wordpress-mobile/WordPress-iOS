@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 extension PostService {
     @objc func updateMediaFor(post: AbstractPost,

@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import WordPressData
 import WordPressCore
 import WordPressShared
 import WordPressAPIInternal

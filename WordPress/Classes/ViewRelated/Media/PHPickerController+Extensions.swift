@@ -1,6 +1,7 @@
 import UIKit
 import PhotosUI
 import UniformTypeIdentifiers
+import WordPressData
 
 extension PHPickerFilter {
     init?(_ type: WPMediaType) {

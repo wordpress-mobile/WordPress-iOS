@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 class PostAuthorSelectorViewController: SettingsSelectionViewController {
     /// A completion block that is called after the user selects an option.

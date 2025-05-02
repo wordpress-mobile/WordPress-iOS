@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 class EditPageViewController: UIViewController {
     var entryPoint: PostEditorEntryPoint = .unknown

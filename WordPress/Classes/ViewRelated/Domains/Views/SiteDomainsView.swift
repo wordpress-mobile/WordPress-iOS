@@ -1,5 +1,6 @@
 import SwiftUI
 import BuildSettingsKit
+import WordPressData
 import WordPressKit
 import WordPressShared
 import DesignSystem

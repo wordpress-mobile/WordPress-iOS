@@ -2,6 +2,7 @@ import UIKit
 import Gridicons
 import DesignSystem
 import AsyncImageKit
+import WordPressData
 import WordPressShared
 
 protocol LatestPostSummaryConfigurable {

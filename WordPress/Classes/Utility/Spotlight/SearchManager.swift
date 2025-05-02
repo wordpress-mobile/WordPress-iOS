@@ -1,6 +1,7 @@
 import UIKit
 import CoreSpotlight
 import MobileCoreServices
+import WordPressData
 
 /// Encapsulates CoreSpotlight operations for WPiOS
 ///

@@ -1,6 +1,7 @@
 import UIKit
 import AutomatticTracks
 import Sentry
+import WordPressData
 import WordPressShared
 import WebKit
 

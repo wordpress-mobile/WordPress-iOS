@@ -1,4 +1,5 @@
 import WordPressFlux
+import WordPressKit
 
 enum JetpackInstallAction: Action {
     case install(url: String, username: String, password: String)

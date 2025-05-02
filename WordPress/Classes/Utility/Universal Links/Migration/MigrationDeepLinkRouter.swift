@@ -1,3 +1,5 @@
+import Foundation
+
 /// A router that specifically handles deeplinks.
 /// Note that the capability of this router is very limited; it can only handle up to one path component (e.g.: `wordpress://intent`).
 ///

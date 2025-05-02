@@ -1,6 +1,7 @@
 import UIKit
 import MobileCoreServices
 import UniformTypeIdentifiers
+import WordPressData
 
 /// Media export handling of thumbnail images from videos or images.
 ///

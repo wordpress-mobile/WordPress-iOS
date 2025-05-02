@@ -1,4 +1,5 @@
 import CoreData
+import WordPressData
 import WordPressShared
 
 /// Encapsulates a command to flag a site

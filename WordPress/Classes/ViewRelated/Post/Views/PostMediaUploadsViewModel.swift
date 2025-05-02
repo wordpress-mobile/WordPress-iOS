@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import WordPressData
 
 /// Manages media upload for the given revision of the post.
 final class PostMediaUploadsViewModel: ObservableObject {

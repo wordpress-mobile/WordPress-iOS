@@ -1,4 +1,6 @@
 import Foundation
+import WordPressData
+import WordPressKit
 import WordPressShared
 
 fileprivate extension DispatchQueue {

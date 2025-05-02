@@ -1,6 +1,7 @@
 import Foundation
 import Gutenberg
 import React
+import WordPressData
 
 class GutenbergImageLoader: NSObject, RCTImageURLLoader {
 

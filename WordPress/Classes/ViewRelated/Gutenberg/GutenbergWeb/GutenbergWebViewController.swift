@@ -2,6 +2,7 @@ import UIKit
 import WebKit
 import Gutenberg
 import Combine
+import WordPressData
 import WordPressUI
 
 class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitAuthenticatable, NoResultsViewHost {

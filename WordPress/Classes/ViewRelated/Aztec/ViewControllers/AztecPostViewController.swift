@@ -3,6 +3,7 @@ import PDFKit
 import Aztec
 import AztecExtensions
 import Gridicons
+import WordPressData
 import WordPressShared
 import MobileCoreServices
 import WordPressEditor

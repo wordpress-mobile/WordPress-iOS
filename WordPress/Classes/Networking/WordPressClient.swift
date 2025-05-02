@@ -3,6 +3,7 @@ import Combine
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressCore
+import WordPressData
 import WordPressShared
 
 extension WordPressClient {

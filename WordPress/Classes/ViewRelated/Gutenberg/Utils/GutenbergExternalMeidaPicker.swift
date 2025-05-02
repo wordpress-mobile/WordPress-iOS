@@ -1,6 +1,7 @@
 import UIKit
 import Gutenberg
 import ImagePlayground
+import WordPressData
 
 class GutenbergExternalMediaPicker: NSObject {
     private var mediaPickerCallback: MediaPickerDidPickMediaCallback?

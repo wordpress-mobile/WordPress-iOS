@@ -1,5 +1,6 @@
 import UIKit
 import FormattableContentKit
+import WordPressData
 
 struct NotificationContentRouter {
     private let coordinator: ContentCoordinator

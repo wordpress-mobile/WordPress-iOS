@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 protocol TrackableErrorProtocol {
     func getTrackingUserInfo() -> [String: String]?

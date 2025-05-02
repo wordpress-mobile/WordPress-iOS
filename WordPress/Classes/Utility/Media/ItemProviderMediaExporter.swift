@@ -1,5 +1,6 @@
 import Foundation
 import PhotosUI
+import WordPressData
 
 /// Manages export of media assets: images and video.
 final class ItemProviderMediaExporter: MediaExporter {

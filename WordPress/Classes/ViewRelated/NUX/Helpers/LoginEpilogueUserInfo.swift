@@ -1,5 +1,6 @@
 import Foundation
 import WordPressAuthenticator
+import WordPressData
 import Gravatar
 
 /// A simple container for the user info shown on the login epilogue screen.

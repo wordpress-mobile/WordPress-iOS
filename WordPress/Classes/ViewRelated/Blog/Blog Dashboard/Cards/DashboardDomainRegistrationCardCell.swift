@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressFlux
 import WordPressShared
 

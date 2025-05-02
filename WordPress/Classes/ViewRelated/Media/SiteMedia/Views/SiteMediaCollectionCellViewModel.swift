@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 final class SiteMediaCollectionCellViewModel {
     let mediaID: TaggedManagedObjectID<Media>

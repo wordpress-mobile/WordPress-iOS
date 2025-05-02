@@ -1,5 +1,6 @@
 import UIKit
 import PhotosUI
+import WordPressData
 import WordPressUI
 
 protocol SiteMediaCollectionViewControllerDelegate: AnyObject {

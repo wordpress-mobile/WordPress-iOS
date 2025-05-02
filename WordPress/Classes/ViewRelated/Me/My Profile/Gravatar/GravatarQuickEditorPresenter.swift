@@ -1,5 +1,6 @@
 import Foundation
 import GravatarUI
+import WordPressData
 import WordPressShared
 import WordPressAuthenticator
 import AsyncImageKit

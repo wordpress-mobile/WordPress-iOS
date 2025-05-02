@@ -1,5 +1,7 @@
+import AVFoundation
 import UIKit
 import QuartzCore
+import WordPressKit
 
 /// Encapsulates the interactions between the child and parent coordinators
 protocol QRLoginParentCoordinator {

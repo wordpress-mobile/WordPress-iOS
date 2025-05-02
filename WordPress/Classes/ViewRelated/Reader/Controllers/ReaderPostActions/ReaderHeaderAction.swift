@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 final class ReaderHeaderAction {
     func execute(post: ReaderPost, origin: UIViewController, source: ReaderStreamViewController.StatSource? = nil) {

@@ -1,5 +1,6 @@
 import MobileCoreServices
 import UniformTypeIdentifiers
+import WordPressData
 
 struct TenorImageCollection {
     let largeURL: URL

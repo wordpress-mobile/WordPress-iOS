@@ -1,3 +1,4 @@
+import Foundation
 
 /// This protocol is intended to be used as an extraction of a class that takes an internal URL (reader post, plugins, etc...)
 /// and presents it with the corresponding native element.

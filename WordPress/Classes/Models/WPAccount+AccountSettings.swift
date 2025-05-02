@@ -1,5 +1,6 @@
 import Foundation
 import BuildSettingsKit
+import WordPressData
 
 extension WPAccount {
     enum VerificationStatus: String {

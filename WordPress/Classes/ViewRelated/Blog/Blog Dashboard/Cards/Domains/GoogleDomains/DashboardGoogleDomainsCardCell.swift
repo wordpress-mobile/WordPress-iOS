@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import WordPressData
 
 protocol DashboardGoogleDomainsCardCellProtocol: AnyObject {
     func presentGoogleDomainsWebView(with url: URL)

@@ -1,5 +1,6 @@
 import CoreMedia
 import AVFoundation
+import WordPressData
 
 extension Blog {
     /// Maximum allowed duration for video uploads on free sites, in seconds (5 mins).

@@ -1,3 +1,4 @@
+import Foundation
 @testable import WordPress
 
 final class MockStockPhotosService: StockPhotosService {

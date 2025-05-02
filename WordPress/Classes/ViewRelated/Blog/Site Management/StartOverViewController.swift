@@ -1,5 +1,6 @@
 import UIKit
 import MessageUI
+import WordPressData
 import WordPressShared
 import WordPressUI
 

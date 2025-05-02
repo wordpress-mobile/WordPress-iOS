@@ -1,4 +1,5 @@
 import WordPressAuthenticator
+import WordPressData
 
 /// Represents the core logic behind the Jetpack Remote Install.
 ///

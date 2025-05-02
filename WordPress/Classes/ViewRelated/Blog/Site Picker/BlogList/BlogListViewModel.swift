@@ -1,5 +1,6 @@
 import CoreData
 import SwiftUI
+import WordPressData
 import WordPressShared
 
 final class BlogListViewModel: NSObject, ObservableObject {

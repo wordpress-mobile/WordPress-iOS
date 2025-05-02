@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressShared
 
 /// `WPTabBarController` is used as the root presenter when Jetpack features are enabled

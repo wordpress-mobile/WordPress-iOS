@@ -1,3 +1,5 @@
+import WordPressData
+
 class MySiteViewModel {
 
     let coreDataStack: CoreDataStack

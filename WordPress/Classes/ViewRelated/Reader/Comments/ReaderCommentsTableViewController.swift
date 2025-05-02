@@ -1,5 +1,6 @@
 import UIKit
 import CoreData
+import WordPressData
 import WordPressUI
 
 final class ReaderCommentsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {

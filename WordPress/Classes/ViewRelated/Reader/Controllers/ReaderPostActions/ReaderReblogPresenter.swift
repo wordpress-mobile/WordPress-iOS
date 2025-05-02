@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressUI
 
 /// Presents the appropriate reblog scene, depending on the number of available sites

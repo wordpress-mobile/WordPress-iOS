@@ -1,6 +1,7 @@
 import AutomatticTracks
 import Aztec
 import Gridicons
+import WordPressData
 import WordPressShared
 import AsyncImageKit
 

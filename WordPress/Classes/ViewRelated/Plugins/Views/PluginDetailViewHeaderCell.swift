@@ -1,5 +1,6 @@
 import UIKit
 import Gridicons
+import WordPressKit
 import WordPressUI
 
 class PluginDetailViewHeaderCell: UITableViewCell, NibLoadable {

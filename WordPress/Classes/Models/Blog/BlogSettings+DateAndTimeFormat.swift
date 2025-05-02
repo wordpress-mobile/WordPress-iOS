@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 /// In this extension, we implement several nested Enums (and helper setters / getters) aimed at simplifying
 /// the BlogSettings interface for handling writing date and time format properties.

@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressKit
 import WordPressShared
 
 /// StatsRevampStore is created to support use cases in Stats that can combine

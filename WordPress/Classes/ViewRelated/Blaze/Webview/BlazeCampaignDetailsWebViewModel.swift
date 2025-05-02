@@ -1,5 +1,6 @@
 import UIKit
 import WebKit
+import WordPressData
 
 class BlazeCampaignDetailsWebViewModel: BlazeWebViewModel {
 

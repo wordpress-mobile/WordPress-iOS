@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 protocol JetpackNotificationMigrationServiceProtocol {
     func shouldPresentNotifications() -> Bool

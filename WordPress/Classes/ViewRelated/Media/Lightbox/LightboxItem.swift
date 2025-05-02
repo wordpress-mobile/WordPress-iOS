@@ -1,5 +1,6 @@
 import UIKit
 import AsyncImageKit
+import WordPressData
 
 enum LightboxItem {
     case image(UIImage)

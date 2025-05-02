@@ -1,5 +1,6 @@
 import Foundation
 import BuildSettingsKit
+import WordPressData
 import WordPressShared
 
 /// A class containing convenience methods for the the Jetpack features removal experience

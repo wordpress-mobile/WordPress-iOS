@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressData
 
 struct SiteMonitoringEntryDetailsView: View {
     let text: NSAttributedString

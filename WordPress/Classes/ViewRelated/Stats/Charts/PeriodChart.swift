@@ -1,5 +1,6 @@
 import UIKit
 import DGCharts
+import WordPressKit
 import WordPressUI
 
 // MARK: - StatsPeriodFilterDimension

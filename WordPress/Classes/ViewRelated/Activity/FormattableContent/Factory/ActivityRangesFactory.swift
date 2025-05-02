@@ -1,4 +1,5 @@
 import FormattableContentKit
+import Foundation
 
 struct ActivityRangesFactory: FormattableRangesFactory {
     static func contentRange(from dictionary: [String: AnyObject]) -> FormattableContentRange? {

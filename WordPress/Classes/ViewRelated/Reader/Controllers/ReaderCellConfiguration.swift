@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 /// Configuration and population of cells in Reader
 final class ReaderCellConfiguration {

@@ -1,3 +1,5 @@
+import Foundation
+
 protocol JetpackOverlayCoordinator {
     func navigateToPrimaryRoute()
     func navigateToSecondaryRoute()

@@ -1,3 +1,5 @@
+import WordPressData
+import WordPressKit
 import WordPressShared
 
 /// Encapsulates the logic required to fetch, prepare, and present the contents for sharing the app to others.

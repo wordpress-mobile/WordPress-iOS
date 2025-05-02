@@ -1,4 +1,5 @@
 import UIKit
+import WordPressKit
 
 class SiteDesignPreviewViewController: TemplatePreviewViewController {
     private let createsSite: Bool

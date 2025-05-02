@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import WordPressData
 
 class JetpackActivityLogViewController: BaseActivityListViewController {
     private let jetpackBannerView = JetpackBannerView()

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 /// Allows comment objects to be sectioned by relative date.
 ///

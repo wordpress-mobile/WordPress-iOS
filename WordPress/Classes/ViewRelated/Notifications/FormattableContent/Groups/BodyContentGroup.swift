@@ -1,4 +1,5 @@
 import FormattableContentKit
+import WordPressData
 
 class BodyContentGroup: FormattableContentGroup {
     class func create(from body: [[String: AnyObject]], parent: WordPressData.Notification) -> [FormattableContentGroup] {

@@ -1,5 +1,6 @@
 
 import Foundation
+import WordPressData
 
 // MARK: - SiteAssembly
 

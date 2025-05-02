@@ -2,6 +2,7 @@ import UIKit
 import BuildSettingsKit
 import SwiftUI
 import Combine
+import WordPressData
 import WordPressKit
 import WordPressUI
 

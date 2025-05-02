@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import UIKit
+import WordPressData
 import WordPressUI
 
 protocol PostsCardView: AnyObject {

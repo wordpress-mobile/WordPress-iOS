@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 struct UITestConfigurator {
     static func isUITesting() -> Bool {

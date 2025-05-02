@@ -1,3 +1,5 @@
+import WordPressKit
+
 extension JetpackInstallError {
 
     /// If the error is blocking,

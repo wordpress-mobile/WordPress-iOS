@@ -1,5 +1,7 @@
 import Foundation
 import CoreData
+import WordPressData
+import WordPressKit
 
 @objc public final class SuggestionsListSection: NSObject {
     @objc public var title: String?

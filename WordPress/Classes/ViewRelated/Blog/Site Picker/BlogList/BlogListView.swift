@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import WordPressData
 import WordPressUI
 
 struct BlogListView: View {
