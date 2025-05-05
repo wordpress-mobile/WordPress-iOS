@@ -294,6 +294,7 @@ enum XcodeSupport {
             .product(name: "Lottie", package: "lottie-ios"),
             .product(name: "MediaEditor", package: "MediaEditor-iOS"),
             .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
+            .product(name: "NSURL+IDN", package: "NSURL-IDN"),
             .product(name: "Reachability", package: "Reachability"),
             .product(name: "Starscream", package: "Starscream"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
