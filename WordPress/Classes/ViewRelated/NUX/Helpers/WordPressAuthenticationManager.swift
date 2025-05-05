@@ -1,10 +1,14 @@
+import Combine
 import UIKit
+import SwiftUI
 import BuildSettingsKit
 import SFHFKeychainUtils
 import WordPressAuthenticator
 import WordPressData
 import WordPressShared
 import WordPressUI
+import WordPressCore
+import WordPressAPI
 import Gridicons
 
 // MARK: - WordPressAuthenticationManager
@@ -24,6 +28,8 @@ class WordPressAuthenticationManager: NSObject {
     private let googleLoginClientId: String
     private let googleLoginScheme: String
     private let googleLoginServerClientId: String
+
+    private var cancellables = Set<AnyCancellable>()
 
     init(
         windowManager: WindowManager,
@@ -83,6 +89,13 @@ extension WordPressAuthenticationManager {
                 name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken,
                 object: nil
             )
+
+        notificationCenter.publisher(for: WordPressClient.requestedWithInvalidAuthenticationNotification)
+            .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
+            .sink { _ in
+                WordPressAuthenticationManager.showSigninForSelfHostedSiteFixingApplicationPassword()
+            }
+            .store(in: &cancellables)
     }
 
     private func authenticatorConfiguation(
@@ -286,6 +299,26 @@ extension WordPressAuthenticationManager {
             })
             presenter.present(controller, animated: true)
         }
+    }
+
+    static func showSigninForSelfHostedSiteFixingApplicationPassword(showNotice: Bool = true) {
+        guard let presenter = UIViewController.topViewController,
+              !presenter.isApplicationReauthentication else {
+            assertionFailure()
+            return
+        }
+
+        guard let currentBlog = RootViewCoordinator.sharedPresenter.currentlyVisibleBlog() else {
+            return
+        }
+
+        try? currentBlog.deleteApplicationToken()
+
+        let rootView = ApplicationPasswordReAuthenticationView(blog: currentBlog, presenter: presenter)
+        let viewController = UIHostingController(rootView: rootView)
+        viewController.isModalInPresentation = true
+        viewController.isApplicationReauthentication = true
+        presenter.present(viewController, animated: true)
     }
 }
 
@@ -677,5 +710,19 @@ private extension WordPressAuthenticationManager {
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
         sourceViewController.present(navController, animated: true)
+    }
+}
+
+private var isApplicationReauthenticationKey = 0
+
+private extension UIViewController {
+
+    var isApplicationReauthentication: Bool {
+        set {
+            objc_setAssociatedObject(self, &isApplicationReauthenticationKey, NSNumber(value: newValue), objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+        }
+        get {
+            (objc_getAssociatedObject(self, &isApplicationReauthenticationKey) as? NSNumber)?.boolValue ?? false
+        }
     }
 }

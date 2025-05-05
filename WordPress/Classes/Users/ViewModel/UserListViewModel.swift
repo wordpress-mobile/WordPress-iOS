@@ -113,6 +113,7 @@ class UserListViewModel: ObservableObject {
         refreshItemsTask?.cancel()
         refreshItemsTask = Task {
             isRefreshing = true
+            self.error = nil
             defer { isRefreshing = false }
             do {
                 try await userService.fetchUsers()
