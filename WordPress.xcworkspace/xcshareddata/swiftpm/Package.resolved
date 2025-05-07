@@ -1,5 +1,5 @@
 {
-  "originHash" : "0ed52b944e605856a7ca56314dcbfee8c4c681a2a599fd3ef8d32d3c7ba95616",
+  "originHash" : "4d299ae36ff454e0e3ec59a9c04557210efa32d8b96b189963ad0f3ffebb3e70",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -222,8 +222,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/NSURL-IDN",
       "state" : {
-        "branch" : "trunk",
-        "revision" : "50a0ffd324bb27ef76a5ca685b990307528dd9ea"
+        "branch" : "cmm-322-remove-plus-from-name",
+        "revision" : "b34794c9a3f32312e1593d4a3d120572afa0d010"
       }
     },
     {
