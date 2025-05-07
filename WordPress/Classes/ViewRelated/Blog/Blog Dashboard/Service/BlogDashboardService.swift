@@ -70,7 +70,8 @@ final class BlogDashboardService {
                 failure?([])
             }
 
-        }, failure: { [weak self] _ in
+        }, failure: { [weak self] error in
+            DDLogError("Failed to fetch Dashboard Cards: \(error.localizedDescription)")
             blog.dashboardState.failedToLoad = true
             let items = self?.fetchLocal(blog: blog)
             failure?(items ?? [])
