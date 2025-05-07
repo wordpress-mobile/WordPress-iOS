@@ -23,6 +23,7 @@ final class Blog_RestAPITests: CoreDataTestCase {
             using: testKeychain
         )
         self.blog = try XCTUnwrap(contextManager.mainContext.fetch(NSFetchRequest<Blog>(entityName: "Blog")).first)
+        try blog.setPassword(to: "account-password", using: testKeychain)
     }
 
     func testThatCreateRestApiBlogStoresUrl() throws {
@@ -33,8 +34,8 @@ final class Blog_RestAPITests: CoreDataTestCase {
         XCTAssertEqual(try blog.getUsername(), loginDetails.userLogin)
     }
 
-    func testThatCreateRestApiBlogStoresPassword() throws {
-        XCTAssertEqual(try blog.getPassword(using: testKeychain), loginDetails.password)
+    func testThatCreateRestApiBlogDoesNotStorePassword() throws {
+        XCTAssertNotEqual(try blog.getPassword(using: testKeychain), loginDetails.password)
     }
 
     func testThatCreateRestApiBlogStoresSiteIdentifier() throws {
