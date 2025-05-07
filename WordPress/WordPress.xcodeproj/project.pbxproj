@@ -5256,11 +5256,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
-					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
-					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
 				INFOPLIST_FILE = JetpackShareExtension/Info.plist;
@@ -5313,11 +5308,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
-					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
-					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
 				INFOPLIST_FILE = JetpackShareExtension/Info.plist;
@@ -5369,11 +5359,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
-					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
-					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
 				INFOPLIST_FILE = JetpackShareExtension/Info.plist;
@@ -5888,10 +5873,6 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
-					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
-					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
@@ -5941,11 +5922,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
-					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
-					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
 				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
@@ -5998,11 +5974,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
-					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
-					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
 				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
@@ -6054,11 +6025,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
-					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
-					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"\"$(SDKROOT)/usr/include/libxml2/\"",
 				);
 				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
@@ -6207,10 +6173,6 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
-					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
-					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
@@ -6237,10 +6199,6 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
-					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
-					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
