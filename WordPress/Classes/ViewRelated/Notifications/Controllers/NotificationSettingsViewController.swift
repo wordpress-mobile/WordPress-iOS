@@ -211,7 +211,10 @@ class NotificationSettingsViewController: UIViewController {
     // MARK: - Error Handling
 
     fileprivate func handleLoadError(error: NSError?) {
-        let title = NSLocalizedString("Failed to load settings", comment: "An informal exclaimation meaning `something went wrong`.")
+        let title = NSLocalizedString(
+            "Failed to load settings",
+            comment: "A message indicating that we couldn't load the user's settings."
+        )
         let cancelText = NSLocalizedString("Cancel", comment: "Cancel. Action.")
         let retryText = NSLocalizedString("Try Again", comment: "Try Again. Action")
 
