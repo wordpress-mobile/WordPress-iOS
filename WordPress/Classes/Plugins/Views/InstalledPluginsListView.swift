@@ -286,18 +286,10 @@ private final class InstalledPluginsListViewModel: ObservableObject {
     }
 }
 
-private struct ApplicationPasswordUpdatedViewModifier: ViewModifier {
-    var action: () -> Void
-
-    func body(content: Content) -> some View {
-        content.onReceive(NotificationCenter.default.publisher(for: SelfHostedSiteAuthenticator.applicationPasswordUpdated)) { _ in
-            action()
-        }
-    }
-}
-
 extension View {
     func onApplicationPasswordUpdate(action: @escaping () -> Void) -> some View {
-        modifier(ApplicationPasswordUpdatedViewModifier(action: action))
+        onReceive(NotificationCenter.default.publisher(for: SelfHostedSiteAuthenticator.applicationPasswordUpdated)) { _ in
+            action()
+        }
     }
 }
