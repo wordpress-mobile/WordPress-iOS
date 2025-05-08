@@ -33,6 +33,10 @@ public enum UIAppColor {
         case .reader: CSColor.WordPressBlue.shade(shade)
         }
     }
+
+    public static var secondary: UIColor {
+        UIColor(light: CSColor.Gray.shade(.shade60), dark: CSColor.Gray.shade(.shade20))
+    }
 }
 
 extension UIAppColor {
@@ -148,6 +152,7 @@ extension UIAppColor {
 public enum AppColor {
     public static var tint: Color { Color(UIAppColor.tint) }
     public static var primary: Color { Color(UIAppColor.primary) }
+    public static var secondary: Color { Color(UIAppColor.secondary) }
 }
 
 private extension UIColor {
