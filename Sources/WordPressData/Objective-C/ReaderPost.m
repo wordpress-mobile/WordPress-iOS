@@ -347,9 +347,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     if (count == 0) {
         title = likeStr;
     } else if (count == 1) {
-        title = [NSString stringWithFormat:@"%d %@", count, likeStr];
+        title = [NSString stringWithFormat:@"%ld %@", (long)count, likeStr];
     } else {
-        title = [NSString stringWithFormat:@"%d %@", count, likesStr];
+        title = [NSString stringWithFormat:@"%ld %@", (long)count, likesStr];
     }
 
     return title;

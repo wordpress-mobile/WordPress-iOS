@@ -9,14 +9,14 @@ public extension Media {
     /// Increments the AutoUpload failure count for this Media object.
     ///
     @objc
-    public func incrementAutoUploadFailureCount() {
+    func incrementAutoUploadFailureCount() {
         autoUploadFailureCount = NSNumber(value: autoUploadFailureCount.intValue + 1)
     }
 
     /// Resets the AutoUpload failure count for this Media object.
     ///
     @objc
-    public func resetAutoUploadFailureCount() {
+    func resetAutoUploadFailureCount() {
         autoUploadFailureCount = 0
     }
     /// Returns true if a new attempt to upload the media will be done later.
@@ -44,7 +44,7 @@ public extension Media {
     // MARK: - Media Type
 
     /// Returns the MIME type, e.g. "image/png".
-    @objc public var mimeType: String? {
+    @objc var mimeType: String? {
         guard let fileExtension = self.fileExtension(),
               let type = UTType(filenameExtension: fileExtension),
               let mimeType = type.preferredMIMEType else {

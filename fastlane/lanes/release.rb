@@ -135,7 +135,7 @@ platform :ios do
       Next steps:
 
       - Checkout `#{release_branch_name}` branch locally
-      - Update pods and release notes
+      - Update release notes
       - Finalize the code freeze
     MESSAGE
     buildkite_annotate(context: 'code-freeze-success', style: 'success', message: message) if is_ci
