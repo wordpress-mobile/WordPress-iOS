@@ -52,45 +52,29 @@ struct SubscriberDetailsView: View {
         if let info = details ?? viewModel.subscriber {
             makeHeader(with: info)
         }
-
         if let detailsError {
             SubscriberDetailsCardView {
                 EmptyStateView.failure(error: detailsError) {
                     Task { await refresh() }
                 }
             }
-        } else {
-            if let details {
-                if let stats {
-                    SubscriberStatsView(stats: stats)
-                } else if statsError == nil {
-                    SubscriberStatsView(stats: mockStats)
-                        .redacted(reason: .placeholder)
-                }
-                makeNewsletterSubscriptionSection(for: details)
-                makeSubscriberDetailsSections(for: details)
-            } else {
+        } else if let details {
+            if let stats {
+                SubscriberStatsView(stats: stats)
+            } else if statsError == nil {
                 SubscriberStatsView(stats: mockStats)
                     .redacted(reason: .placeholder)
-                makeNewsletterSubscriptionSection(for: mockFreeEmailSubscriber)
-                    .redacted(reason: .placeholder)
-                makeSubscriberDetailsSections(for: mockFreeEmailSubscriber)
-                    .redacted(reason: .placeholder)
             }
-        }
-
-        // TODO: figure out how to handle paid users
-        if details != nil {
-            Button(role: .destructive) {
-                isShowingDeleteConfirmation = true
-            } label: {
-                if isDeleting {
-                    ProgressView()
-                } else {
-                    Image(systemName: "trash")
-                    Text(Strings.delete)
-                }
-            }
+            makeNewsletterSubscriptionSection(for: details)
+            makeSubscriberDetailsSections(for: details)
+            makeActions(for: details)
+        } else {
+            SubscriberStatsView(stats: mockStats)
+                .redacted(reason: .placeholder)
+            makeNewsletterSubscriptionSection(for: mockFreeEmailSubscriber)
+                .redacted(reason: .placeholder)
+            makeSubscriberDetailsSections(for: mockFreeEmailSubscriber)
+                .redacted(reason: .placeholder)
         }
     }
 
@@ -264,6 +248,24 @@ struct SubscriberDetailsView: View {
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private var makeActions(for details: SubscribersServiceRemote.GetSubscriberDetailsResponse) -> some View {
+        if (details.plans ?? []).isEmpty {
+            Button(role: .destructive) {
+                isShowingDeleteConfirmation = true
+            } label: {
+                if isDeleting {
+                    ProgressView()
+                } else {
+                    Image(systemName: "trash")
+                    Text(Strings.delete)
+                }
+            }
+        } else {
+            // TODO: figure out how to manage supporters
         }
     }
 
