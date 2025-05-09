@@ -115,12 +115,18 @@ private struct SubscribersPaginatedForEach: View {
 
     var body: some View {
         ForEach(response.items) { item in
-            NavigationLink {
-                SubscriberDetailsView(viewModel: item.makeDetailsViewModel())
-            } label: {
-                SubscriberRowView(viewModel: item)
-                    .onAppear { response.onRowAppear(item) }
-            }
+            SubscriberRowView(viewModel: item)
+                .onAppear { response.onRowAppear(item) }
+                .background {
+                    NavigationLink {
+                        SubscriberDetailsView(viewModel: item.makeDetailsViewModel())
+                            .onDeleted { [weak response] in
+                                response?.deleteSubscriber(withID: $0)
+                            }
+                    } label: {
+                        EmptyView()
+                    }.opacity(0)
+                }
         }
         if response.isLoading {
             ListFooterView(.loading)

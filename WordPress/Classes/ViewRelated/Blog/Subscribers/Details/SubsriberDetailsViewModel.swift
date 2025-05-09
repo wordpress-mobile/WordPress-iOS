@@ -8,8 +8,6 @@ struct SubsriberDetailsViewModel {
 
     private let blog: SubscribersBlog
 
-    static var deletedSubsciberID: Int?
-
     init(blog: SubscribersBlog, subscriber: SubscribersServiceRemote.SubsciberBasicInfoResponse) {
         self.blog = blog
         self.subscriberID = subscriber.subscriberID
@@ -37,7 +35,6 @@ struct SubsriberDetailsViewModel {
     func delete(_ subscriber: SubscribersServiceRemote.SubsciberBasicInfoResponse) async throws {
         try await PeopleServiceRemote(wordPressComRestApi: getRestAPI())
             .deleteSubscriber(subscriber, siteID: blog.dotComSiteID)
-        SubsriberDetailsViewModel.deletedSubsciberID = subscriber.subscriberID
     }
 
     private func getService() throws -> SubscribersServiceRemote {

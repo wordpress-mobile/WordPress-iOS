@@ -16,6 +16,12 @@ struct SubscriberDetailsView: View {
 
     @Environment(\.dismiss) var dismiss
 
+    private var onDeleted: ((Int) -> Void)?
+
+    init(viewModel: SubsriberDetailsViewModel) {
+        self.viewModel = viewModel
+    }
+
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
@@ -123,6 +129,7 @@ struct SubscriberDetailsView: View {
             do {
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                 try await viewModel.delete(details)
+                onDeleted?(details.subscriberID)
                 dismiss()
             } catch {
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
@@ -130,6 +137,12 @@ struct SubscriberDetailsView: View {
                 isDeleting = false
             }
         }
+    }
+
+    func onDeleted(_ closure: @escaping (Int) -> Void) -> SubscriberDetailsView {
+        var copy = self
+        copy.onDeleted = closure
+        return copy
     }
 
     // MARK: Views
