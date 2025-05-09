@@ -6,7 +6,7 @@ import WordPressKit
 final class SubscribersViewController: UIHostingController<AnyView> {
     private let viewModel: SubscribersViewModel
 
-    init(blog: Blog) {
+    init(blog: SubscribersBlog) {
         self.viewModel = SubscribersViewModel(blog: blog)
         super.init(rootView: AnyView(SubscribersView(viewModel: viewModel)))
         self.title = Strings.title
@@ -112,8 +112,12 @@ private struct SubscribersPaginatedForEach: View {
 
     var body: some View {
         ForEach(response.items) { item in
-            SubscriberRowView(viewModel: item)
-                .onAppear { response.onRowAppear(item) }
+            NavigationLink {
+                SubscriberDetailsView(viewModel: item.makeDetailsViewModel())
+            } label: {
+                SubscriberRowView(viewModel: item)
+                    .onAppear { response.onRowAppear(item) }
+            }
         }
         if response.isLoading {
             ListFooterView(.loading)

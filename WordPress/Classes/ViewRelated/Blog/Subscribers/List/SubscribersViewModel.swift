@@ -3,7 +3,7 @@ import WordPressKit
 
 @MainActor
 final class SubscribersViewModel: ObservableObject {
-    private let blog: Blog
+    let blog: SubscribersBlog
 
     @Published var parameters = SubscribersServiceRemote.GetSubscribersParameters()
     @Published var searchText = ""
@@ -12,7 +12,7 @@ final class SubscribersViewModel: ObservableObject {
     @Published private(set) var response: SubscribersPaginatedResponse?
     @Published private(set) var error: Error?
 
-    init(blog: Blog) {
+    init(blog: SubscribersBlog) {
         self.blog = blog
     }
 

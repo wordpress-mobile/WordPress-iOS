@@ -12,7 +12,10 @@ extension BlogDetailsViewController {
     @objc public func makeSubscribersRow() -> BlogDetailsRow {
         BlogDetailsRow(title: Strings.subscribers, image: UIImage(named: "wpl-mail") ?? UIImage()) { [weak self] in
             guard let self else { return }
-            let vc = SubscribersViewController(blog: self.blog)
+            guard let blog = SubscribersBlog(blog: self.blog) else {
+                return wpAssertionFailure("incompatible blog")
+            }
+            let vc = SubscribersViewController(blog: blog)
             self.presentationDelegate?.presentBlogDetailsViewController(vc)
         }
     }

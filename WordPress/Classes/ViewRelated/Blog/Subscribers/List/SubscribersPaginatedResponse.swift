@@ -13,11 +13,11 @@ final class SubscribersPaginatedResponse: ObservableObject {
     var isEmpty: Bool { items.isEmpty }
 
     private var currentPage = 1
-    private let blog: Blog
+    private let blog: SubscribersBlog
     private let parameters: SubscribersServiceRemote.GetSubscribersParameters
     private let search: String?
 
-    init(blog: Blog, parameters: SubscribersServiceRemote.GetSubscribersParameters = .init(), search: String? = nil) async throws {
+    init(blog: SubscribersBlog, parameters: SubscribersServiceRemote.GetSubscribersParameters = .init(), search: String? = nil) async throws {
         self.blog = blog
         self.parameters = parameters
         self.search = search
@@ -51,7 +51,7 @@ final class SubscribersPaginatedResponse: ObservableObject {
         let newItems = response.subscribers.filter {
             !existingIDs.contains($0.subscriberID)
         }
-        items += newItems.map(SubscriberRowViewModel.init)
+        items += newItems.map { SubscriberRowViewModel(blog: blog, subscriber: $0) }
     }
 
     func onRowAppear(_ row: SubscriberRowViewModel) {
@@ -64,13 +64,12 @@ final class SubscribersPaginatedResponse: ObservableObject {
     }
 
     private func next() async throws -> SubscribersServiceRemote.GetSubscribersResponse {
-        guard let api = blog.wordPressComRestApi,
-                let siteID = blog.dotComID?.intValue else {
+        guard let api = blog.getRestAPI() else {
             throw URLError(.unknown)
         }
         let service = SubscribersServiceRemote(wordPressComRestApi: api)
         return try await service.getSubscribers(
-            siteID: siteID,
+            siteID: blog.dotComSiteID,
             page: currentPage,
             perPage: 50,
             parameters: parameters,

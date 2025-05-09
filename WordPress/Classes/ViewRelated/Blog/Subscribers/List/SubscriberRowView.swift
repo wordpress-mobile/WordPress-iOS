@@ -2,6 +2,7 @@ import SwiftUI
 import WordPressUI
 import WordPressKit
 
+@MainActor
 struct SubscriberRowView: View {
     let viewModel: SubscriberRowViewModel
 
@@ -27,7 +28,8 @@ struct SubscriberRowView: View {
 
 @MainActor
 final class SubscriberRowViewModel: Identifiable {
-    let subscriberID: Int
+    var identifier: Int { subscriberID }
+    var subscriberID: Int { subscriber.subscriberID }
 
     let title: String
     let avatar: Avatar
@@ -38,8 +40,13 @@ final class SubscriberRowViewModel: Identifiable {
         case email
     }
 
-    init(_ subscriber: SubscribersServiceRemote.GetSubscribersResponse.Subscriber) {
-        self.subscriberID = subscriber.subscriberID
+    private let blog: SubscribersBlog
+    private let subscriber: SubscribersServiceRemote.GetSubscribersResponse.Subscriber
+
+    init(blog: SubscribersBlog, subscriber: SubscribersServiceRemote.GetSubscribersResponse.Subscriber) {
+        self.blog = blog
+        self.subscriber = subscriber
+
         if subscriber.dotComUserID == 0 {
             self.avatar = .email
             self.title = subscriber.emailAddress ?? "–"
@@ -49,5 +56,9 @@ final class SubscriberRowViewModel: Identifiable {
             self.title = subscriber.displayName ?? "–"
             self.details = subscriber.emailAddress.map { " (\($0))" } ?? ""
         }
+    }
+
+    func makeDetailsViewModel() -> SubsriberDetailsViewModel {
+        SubsriberDetailsViewModel(blog: blog, subscriber: subscriber)
     }
 }
