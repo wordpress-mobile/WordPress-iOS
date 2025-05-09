@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import WordPressShared
 import WordPressKit
 
@@ -61,6 +62,10 @@ final class SubscribersPaginatedResponse: ObservableObject {
         if error == nil {
             loadMore()
         }
+    }
+
+    func deleteSubscriber(withID subscriberID: Int) {
+        items.removeAll { $0.subscriberID == subscriberID }
     }
 
     private func next() async throws -> SubscribersServiceRemote.GetSubscribersResponse {

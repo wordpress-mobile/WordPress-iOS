@@ -24,6 +24,10 @@ final class SubscribersViewModel: ObservableObject {
             didAppear = true
             onRefreshNeeded()
         }
+        if let subscriberID = SubsriberDetailsViewModel.deletedSubsciberID {
+            SubsriberDetailsViewModel.deletedSubsciberID = nil
+            response?.deleteSubscriber(withID: subscriberID)
+        }
     }
 
     func onRefreshNeeded() {
