@@ -23,10 +23,10 @@ struct SubscriberDetailsView: View {
             .disabled(isDeleting)
         }
         .task {
-            // TODO: implement
+            await refresh()
         }
         .refreshable {
-            // TODO: add refreshable
+            await refresh()
         }
         .confirmationDialog(Strings.confirmDeleteTitle, isPresented: $isShowingDeleteConfirmation, actions: {
             Button(role: .destructive) {
@@ -47,17 +47,8 @@ struct SubscriberDetailsView: View {
 
         if let detailsError {
             SubscriberDetailsCardView {
-                // TODO: replace with the actual view
-                EmptyStateView {
-                    Label("Something went wrong", systemImage: "exclamationmark.circle")
-                } description: {
-                    Text(detailsError.localizedDescription)
-                } actions: {
-                    Button("Retry") {
-                        // TODO: retry
-                    }
-                }
-                .frame(height: 420)
+                EmptyStateView.failure(error: error) {
+                    Task { await refresh() }
             }
         } else {
             if let details {
@@ -66,7 +57,8 @@ struct SubscriberDetailsView: View {
                 } else if statsError == nil {
                     SubscriberStatsView(stats: mockStats)
                         .redacted(reason: .placeholder)
-                }B800 EDFF F00E 907B 3D4F 24BE DF13 A1FA 8FB3 7022                makeNewsletterSubscriptionSection(for: details)
+                }
+                makeNewsletterSubscriptionSection(for: details)
                 makeSubscriberDetailsSections(for: details)
             } else {
                 SubscriberStatsView(stats: mockStats)
@@ -95,29 +87,34 @@ struct SubscriberDetailsView: View {
     }
 
     private func refresh() async {
-        do {
-            try await Task.sleep(for: .milliseconds(500))
-            // TODO: implement
-        } catch {
+        async let details: Void = refreshDetails()
+        async let stats: Void = refreshStats()
+        _ = await (details, stats)
+    }
 
+    private func refreshDetails() async {
+        detailsError = nil
+        do {
+            details = try await viewModel.getDetails()
+        } catch {
+            detailsError = error
+        }
+    }
+
+    private func refreshStats() async {
+        statsError = nil
+        do {
+            stats = try await viewModel.getStats()
+        } catch {
+            statsError = error
         }
     }
 
     private func makeHeader(with subscriber: SubscribersServiceRemote.SubsciberBasicInfoResponse) -> some View {
         HStack(spacing: 12) {
             if subscriber.isDotComUser {
-                // TODO: use AvatarView
-                CachedAsyncImage(url: subscriber.avatarURL) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 40, height: 40)
-                        .cornerRadius(40)
-                } placeholder: {
-                    Color(uiColor: .secondarySystemBackground)
-                        .frame(width: 40, height: 40)
-                        .cornerRadius(40)
-                }
+                AvatarView(style: .single(subscriber.avatarURL), diameter: 40)
+                    .frame(width: 40, height: 40)
 
                 VStack(alignment: .leading) {
                     HStack(alignment: .firstTextBaseline, spacing: 8) {
