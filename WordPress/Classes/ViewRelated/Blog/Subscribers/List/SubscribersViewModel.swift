@@ -12,8 +12,25 @@ final class SubscribersViewModel: ObservableObject {
     @Published private(set) var response: SubscribersPaginatedResponse?
     @Published private(set) var error: Error?
 
+    private var didAppear = false
+    private var refreshTask: Task<Void, Never>?
+
     init(blog: SubscribersBlog) {
         self.blog = blog
+    }
+
+    func onAppear() {
+        if !didAppear {
+            didAppear = true
+            onRefreshNeeded()
+        }
+    }
+
+    func onRefreshNeeded() {
+        refreshTask?.cancel()
+        refreshTask = Task {
+            await refresh()
+        }
     }
 
     func refresh() async {

@@ -55,8 +55,11 @@ private struct SubscribersListView: View {
                 }
             }
         }
-        .task(id: viewModel.parameters) {
-            await viewModel.refresh()
+        .onAppear {
+            viewModel.onAppear()
+        }
+        .onChange(of: viewModel.parameters) { _ in
+            viewModel.onRefreshNeeded()
         }
         .refreshable {
             await viewModel.refresh()

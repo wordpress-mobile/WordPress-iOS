@@ -32,10 +32,39 @@ struct SubsriberDetailsViewModel {
         try await getService().getSubsciberStats(siteID: blog.dotComSiteID, subscriberID: subscriberID)
     }
 
+    func delete(_ subscriber: SubscribersServiceRemote.SubsciberBasicInfoResponse) async throws {
+        try await PeopleServiceRemote(wordPressComRestApi: getRestAPI())
+            .deleteSubscriber(subscriber, siteID: blog.dotComSiteID)
+    }
+
     private func getService() throws -> SubscribersServiceRemote {
+        SubscribersServiceRemote(wordPressComRestApi: try getRestAPI())
+    }
+
+    private func getRestAPI() throws -> WordPressComRestApi {
         guard let api = blog.getRestAPI() else {
             throw URLError(.unknown, userInfo: [NSLocalizedDescriptionKey: SharedStrings.Error.generic])
         }
-        return SubscribersServiceRemote(wordPressComRestApi: api)
+        return api
+    }
+}
+
+extension PeopleServiceRemote {
+    func deleteSubscriber(_ subscriber: SubscribersServiceRemote.SubsciberBasicInfoResponse, siteID: Int) async throws {
+        try await withUnsafeThrowingContinuation { continuation in
+            if subscriber.isDotComUser {
+                deleteFollower(siteID, userID: subscriber.dotComUserID, success: {
+                    continuation.resume()
+                }, failure: {
+                    continuation.resume(throwing: $0)
+                })
+            } else {
+                deleteEmailFollower(siteID, userID: subscriber.subscriberID, success: {
+                    continuation.resume()
+                }, failure: {
+                    continuation.resume(throwing: $0)
+                })
+            }
+        }
     }
 }

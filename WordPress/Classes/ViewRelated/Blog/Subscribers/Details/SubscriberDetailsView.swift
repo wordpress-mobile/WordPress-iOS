@@ -14,6 +14,8 @@ struct SubscriberDetailsView: View {
     @State private var isShowingDeleteConfirmation = false
     @State private var isDeleting = false
 
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
@@ -30,7 +32,7 @@ struct SubscriberDetailsView: View {
         }
         .confirmationDialog(Strings.confirmDeleteTitle, isPresented: $isShowingDeleteConfirmation, actions: {
             Button(role: .destructive) {
-                isDeleting = true
+                deleteSubscriber()
             } label: {
                 Text(Strings.delete)
             }
@@ -47,8 +49,9 @@ struct SubscriberDetailsView: View {
 
         if let detailsError {
             SubscriberDetailsCardView {
-                EmptyStateView.failure(error: error) {
+                EmptyStateView.failure(error: detailsError) {
                     Task { await refresh() }
+                }
             }
         } else {
             if let details {
@@ -82,9 +85,10 @@ struct SubscriberDetailsView: View {
                     Text(Strings.delete)
                 }
             }
-            .padding(.top, 8)
         }
     }
+
+    // MARK: Actions
 
     private func refresh() async {
         async let details: Void = refreshDetails()
@@ -109,6 +113,26 @@ struct SubscriberDetailsView: View {
             statsError = error
         }
     }
+
+    private func deleteSubscriber() {
+        guard let details else {
+            return wpAssertionFailure("action should not be available until details are loaded")
+        }
+        isDeleting = true
+        Task {
+            do {
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                try await viewModel.delete(details)
+                dismiss()
+            } catch {
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+                Notice(error: error).post()
+                isDeleting = false
+            }
+        }
+    }
+
+    // MARK: Views
 
     private func makeHeader(with subscriber: SubscribersServiceRemote.SubsciberBasicInfoResponse) -> some View {
         HStack(spacing: 12) {
@@ -268,12 +292,11 @@ private struct SubscriberStatsView: View {
                 )
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .padding(.top, 3).padding(.bottom, -3) // Adjust for the large font size
+            .padding(.top, 2).padding(.bottom, -5) // Adjust for the large font size
         }
     }
 }
 
-// TODO: enable selection for values
 private struct SubscriberInfoRow<Content: View>: View {
     let title: String
     @ViewBuilder let content: () -> Content
@@ -291,6 +314,7 @@ private struct SubscriberInfoRow<Content: View>: View {
             content()
                 .font(.subheadline.weight(.regular))
                 .lineLimit(1)
+                .textSelection(.enabled)
         }
     }
 }
@@ -310,7 +334,7 @@ private struct SubsciberStatsRow: View {
     let value: String
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 6) {
             Image(systemName: systemImage)
                 .font(.footnote)
                 .foregroundStyle(.secondary)
@@ -360,11 +384,13 @@ private extension SubscribersServiceRemote.GetSubscriberStatsResponse {
     }
 
     var openRate: Int {
+        guard emailsSent > 0 else { return 0 }
         let percentage = (Double(uniqueOpens) / Double(emailsSent)) * 100
         return max(0, min(Int(percentage.rounded()), 100))
     }
 
     var clickRate: Int {
+        guard emailsSent > 0 else { return 0 }
         let percentage = (Double(uniqueClicks) / Double(emailsSent)) * 100
         return max(0, min(Int(percentage.rounded()), 100))
     }
