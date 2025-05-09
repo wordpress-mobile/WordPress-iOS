@@ -150,7 +150,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/GutenbergKit",
       "state" : {
-        "revision" : "1b3e577680ac3086094fa60d5f6b9359e16e3136"
+        "revision" : "48fd3e7c78ae01aff03403df804d65a7fcaaf581"
       }
     },
     {
@@ -221,7 +221,6 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/NSURL-IDN",
       "state" : {
-        "branch" : "cmm-322-remove-plus-from-name",
         "revision" : "b34794c9a3f32312e1593d4a3d120572afa0d010"
       }
     },
