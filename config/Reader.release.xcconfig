@@ -9,3 +9,5 @@ WP_APP_URL_SCHEME = wpreader
 
 PROVISIONING_PROFILE_SPECIFIER = match AppStore ${PRODUCT_BUNDLE_IDENTIFIER}
 CODE_SIGN_ENTITLEMENTS = ../Sources/Reader/Reader.entitlements
+
+INFOPLIST_FILE = Sources/$PRODUCT_NAME/Info.plist

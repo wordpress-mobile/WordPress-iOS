@@ -12,11 +12,7 @@ source use-bot-for-git
 
 .buildkite/commands/checkout-release-branch.sh "$RELEASE_NUMBER"
 
-echo '--- :ruby: Setup Ruby tools'
-install_gems
-
-echo "--- :swift: Set up Swift Packages"
-install_swiftpm_dependencies
+"$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
 
 echo '--- :closed_lock_with_key: Access secrets'
 bundle exec fastlane run configure_apply

@@ -48,12 +48,18 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/MediaEditor-iOS", branch: "task/spm-support"),
         .package(url: "https://github.com/wordpress-mobile/NSObject-SafeExpectations", from: "0.0.6"),
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"),
-        .package(url: "https://github.com/wordpress-mobile/WordPressKit-iOS", branch: "wpios-edition"),
+        .package(
+            url: "https://github.com/wordpress-mobile/WordPressKit-iOS",
+            revision: "5bc08764d2025e21685816065f611e884c8672d1" // see wpios-edition branch
+        ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20250505"),
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.2.0"),
-        .package(url: "https://github.com/Automattic/color-studio", branch: "trunk"),
+        .package(
+            url: "https://github.com/Automattic/color-studio",
+            revision: "bf141adc75e2769eb469a3e095bdc93dc30be8de"
+        ),
         .package(url: "https://github.com/wordpress-mobile/AztecEditor-iOS", from: "1.20.0"),
     ],
     targets: XcodeSupport.targets + [
@@ -168,7 +174,12 @@ let package = Package(
         ),
         .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")], swiftSettings: [.swiftLanguageMode(.v5)]),
-        .testTarget(name: "WordPressFluxTests", dependencies: ["WordPressFlux"], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(
+            name: "WordPressFluxTests",
+            dependencies: ["WordPressFlux"],
+            exclude: ["WordPressFluxTests.xctestplan"],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
         .testTarget(name: "AsyncImageKitTests", dependencies: [
             .target(name: "AsyncImageKit"),
             .target(name: "WordPressTesting"),

@@ -32,7 +32,6 @@
   },
   "testTargets" : [
     {
-      "enabled" : false,
       "target" : {
         "containerPath" : "container:..\/Modules",
         "identifier" : "AsyncImageKitTests",
@@ -40,7 +39,6 @@
       }
     },
     {
-      "enabled" : false,
       "target" : {
         "containerPath" : "container:WordPress.xcodeproj",
         "identifier" : "4AD953BA2C21451700D0EEFA",
@@ -62,7 +60,6 @@
       }
     },
     {
-      "enabled" : false,
       "target" : {
         "containerPath" : "container:..\/Modules",
         "identifier" : "WordPressUIUnitTests",
@@ -70,7 +67,6 @@
       }
     },
     {
-      "enabled" : false,
       "target" : {
         "containerPath" : "container:..\/Modules",
         "identifier" : "WordPressSharedTests",
@@ -78,7 +74,6 @@
       }
     },
     {
-      "enabled" : false,
       "target" : {
         "containerPath" : "container:..\/Modules",
         "identifier" : "JetpackStatsWidgetsCoreTests",
@@ -86,7 +81,6 @@
       }
     },
     {
-      "enabled" : false,
       "target" : {
         "containerPath" : "container:..\/Modules",
         "identifier" : "WordPressFluxTests",
@@ -94,7 +88,6 @@
       }
     },
     {
-      "enabled" : false,
       "target" : {
         "containerPath" : "container:..\/Modules",
         "identifier" : "WordPressSharedObjCTests",

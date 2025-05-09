@@ -8,3 +8,5 @@ WP_BUILD_CONFIGURATION = alpha
 WP_APP_URL_SCHEME = wpreader
 
 CODE_SIGN_ENTITLEMENTS = ../Sources/Reader/Reader.entitlements
+
+INFOPLIST_FILE = Sources/$PRODUCT_NAME/Info.plist

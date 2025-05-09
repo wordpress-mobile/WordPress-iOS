@@ -4,3 +4,5 @@
 WP_PUSH_NOTIFICATION_APP_ID = org.wordpress.alpha
 WP_BUILD_CONFIGURATION = alpha
 WP_APP_URL_SCHEME = wpalpha
+
+INFOPLIST_FILE = Sources/$PRODUCT_NAME/Info.plist
