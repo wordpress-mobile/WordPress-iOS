@@ -6,16 +6,17 @@ import WordPressKit
 /// Loads paginated subscribers for the given parameters.
 @MainActor
 final class SubscribersPaginatedResponse: ObservableObject {
+    @Published private(set) var total = 0
     @Published private(set) var items: [SubscriberRowViewModel] = []
     @Published private(set) var hasMore = true
     @Published private(set) var isLoading = false
     @Published private(set) var error: Error?
 
+    let parameters: SubscribersServiceRemote.GetSubscribersParameters
     var isEmpty: Bool { items.isEmpty }
 
     private var currentPage = 1
     private let blog: SubscribersBlog
-    private let parameters: SubscribersServiceRemote.GetSubscribersParameters
     private let search: String?
 
     init(blog: SubscribersBlog, parameters: SubscribersServiceRemote.GetSubscribersParameters = .init(), search: String? = nil) async throws {
@@ -45,6 +46,7 @@ final class SubscribersPaginatedResponse: ObservableObject {
     }
 
     private func didLoad(_ response: SubscribersServiceRemote.GetSubscribersResponse) {
+        total = response.total
         currentPage += 1
         hasMore = response.page < response.pages
 

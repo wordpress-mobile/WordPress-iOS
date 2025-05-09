@@ -5,9 +5,14 @@ struct SubscribersMenu: View {
 
     var body: some View {
         Menu {
-            sorting
-            filterByEmailSubscriptionType
-            filterByPaymenetType
+            Section {
+                sorting
+                filterByEmailSubscriptionType
+                filterByPaymenetType
+            }
+            if let response = viewModel.response {
+                Text("\(Strings.subscribers) \(viewModel.makeFormattedSubscribersCount(for: response))")
+            }
         } label: {
             Image(systemName: "ellipsis.circle")
         }
@@ -102,4 +107,5 @@ private enum Strings {
     static let filterByEmailSubscription = NSLocalizedString("subscribers.filter.emailSubscription", value: "Email Subscription", comment: "Empty state view title")
     static let filterByPaymentType = NSLocalizedString("subscribers.filter.paymentType", value: "Payment", comment: "Empty state view title")
     static let showAll = SharedStrings.Misc.default(value: SharedStrings.Misc.showAll)
+    static let subscribers = NSLocalizedString("subscribers.menu.subscribers", value: "Subscribers:", comment: "Part of the label in the menu showing how many subscribers are displayed")
 }
