@@ -9,9 +9,13 @@ struct SubscriberRowView: View {
     var body: some View {
         HStack(alignment: .center) {
             avatar.frame(width: 24, height: 24)
-            (Text(viewModel.title) + Text(viewModel.details).foregroundColor(.secondary))
-                .lineLimit(1)
+            Text(viewModel.title)
+            Spacer()
+            Text(viewModel.details)
+                .font(.footnote)
+                .foregroundColor(.secondary)
         }
+        .lineLimit(1)
     }
 
     @ViewBuilder
@@ -49,16 +53,21 @@ final class SubscriberRowViewModel: Identifiable {
 
         if subscriber.dotComUserID == 0 {
             self.avatar = .email
-            self.title = subscriber.emailAddress ?? "–"
-            self.details = ""
         } else {
             self.avatar = .remote(subscriber.avatar.flatMap(URL.init))
-            self.title = subscriber.displayName ?? "–"
-            self.details = subscriber.emailAddress.map { " (\($0))" } ?? ""
         }
+        self.title = subscriber.displayName ?? subscriber.emailAddress ?? ""
+        self.details = dateFormatter.localizedString(for: subscriber.dateSubscribed, relativeTo: .now)
     }
 
     func makeDetailsViewModel() -> SubsriberDetailsViewModel {
         SubsriberDetailsViewModel(blog: blog, subscriber: subscriber)
     }
 }
+
+private let dateFormatter: RelativeDateTimeFormatter = {
+    let formatter = RelativeDateTimeFormatter()
+    formatter.dateTimeStyle = .named
+    formatter.unitsStyle = .abbreviated
+    return formatter
+}()
