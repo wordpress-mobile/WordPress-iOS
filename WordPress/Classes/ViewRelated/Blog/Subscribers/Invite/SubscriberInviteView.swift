@@ -25,6 +25,7 @@ struct SubscriberInviteView: View {
 
             PasteButton(payloadType: String.self, onPaste: paste)
                 .buttonBorderShape(.capsule)
+                .tint(AppColor.tint)
 
             Text(String(format: Strings.disclosure, SharedStrings.Button.send))
                 .font(.subheadline)
@@ -51,6 +52,7 @@ struct SubscriberInviteView: View {
                         dismiss()
                     }
                 }
+                .tint(AppColor.tint)
             }
             ToolbarItem(placement: .topBarTrailing) {
                 if isSending {
@@ -60,6 +62,7 @@ struct SubscriberInviteView: View {
                         .buttonStyle(.borderedProminent)
                         .buttonBorderShape(.capsule)
                         .disabled(!isSendEnabled)
+                        .tint(AppColor.tint)
                 }
             }
         }
