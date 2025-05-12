@@ -1,13 +1,13 @@
 {
-  "originHash" : "342d0e14e55cc7dfe0801efb666f1c35634e854e9eb7ab9090537f0f5f9625bc",
+  "originHash" : "fe094f15c8e18dab512a2ddf88e08b4c895c60964ac1158c031ee731381eda34",
   "pins" : [
     {
       "identity" : "alamofire",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Alamofire/Alamofire",
       "state" : {
-        "revision" : "f455c2975872ccd2d9c81594c658af65716e9b9a",
-        "version" : "5.9.1"
+        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
+        "version" : "5.10.2"
       }
     },
     {
@@ -60,8 +60,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/color-studio",
       "state" : {
-        "branch" : "trunk",
-        "revision" : "bdcf795bc2c191bd45bd6c24734030257becd050"
+        "revision" : "bf141adc75e2769eb469a3e095bdc93dc30be8de"
       }
     },
     {
@@ -69,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zendesk/commonui_sdk_ios",
       "state" : {
-        "revision" : "8729e7f4e316b46f6d33f046e663b6eedfe9955a",
-        "version" : "9.0.1"
+        "revision" : "8c1ab48a4a04637c42afc46d6b45b57c26ac05aa",
+        "version" : "9.0.2"
       }
     },
     {
@@ -78,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zendesk/core_sdk_ios",
       "state" : {
-        "revision" : "8163d4d67f3aa8954467aa8191ee13cb4f1a2b9e",
-        "version" : "5.0.3"
+        "revision" : "4d676f214e48017d102cd499d5f453c5cf6d9ef2",
+        "version" : "5.0.4"
       }
     },
     {
@@ -87,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattgallagher/CwlCatchException.git",
       "state" : {
-        "revision" : "35f9e770f54ce62dd8526470f14c6e137cef3eea",
-        "version" : "2.1.1"
+        "revision" : "07b2ba21d361c223e25e3c1e924288742923f08c",
+        "version" : "2.2.1"
       }
     },
     {
@@ -96,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattgallagher/CwlPreconditionTesting.git",
       "state" : {
-        "revision" : "c21f7bab5ca8eee0a9998bbd17ca1d0eb45d4688",
-        "version" : "2.1.0"
+        "revision" : "0139c665ebb45e6a9fbdb68aabfd7c39f3fe0071",
+        "version" : "2.2.2"
       }
     },
     {
@@ -167,8 +166,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/airbnb/lottie-ios",
       "state" : {
-        "revision" : "f522990668c2f9132323a2e68d924c7dcb9130b4",
-        "version" : "4.4.0"
+        "revision" : "047aa81b77adcbf583a966dfef620d17650cc656",
+        "version" : "4.5.1"
       }
     },
     {
@@ -177,7 +176,7 @@
       "location" : "https://github.com/wordpress-mobile/MediaEditor-iOS",
       "state" : {
         "branch" : "task/spm-support",
-        "revision" : "4f3fe298a95d1de81099f8c9e5612e0c59c9bf53"
+        "revision" : "e9f74b21276d5cd1cb94ee1c09cc060b23187832"
       }
     },
     {
@@ -185,8 +184,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zendesk/messaging_sdk_ios",
       "state" : {
-        "revision" : "4dbb16d26b90452c1d41cba8e8dc81a1bcea7f1e",
-        "version" : "6.0.1"
+        "revision" : "0f81007fe9c9467bc583040f3343b205311cebfd",
+        "version" : "6.0.2"
       }
     },
     {
@@ -194,8 +193,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zendesk/messagingapi_sdk_ios",
       "state" : {
-        "revision" : "2f21e014a1f284edf484faf39b2b6fe377ec8c64",
-        "version" : "6.0.0"
+        "revision" : "f86020a681e28a7bfae9e2445eb027d37dc5d5f5",
+        "version" : "6.0.1"
       }
     },
     {
@@ -291,8 +290,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zendesk/support_providers_sdk_ios",
       "state" : {
-        "revision" : "16da780d8a0aa905b3935eee7836b9a0ee276597",
-        "version" : "8.0.3"
+        "revision" : "b8194243297eaab61a92138a1dc5872bce358346",
+        "version" : "8.0.4"
       }
     },
     {
@@ -300,8 +299,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zendesk/support_sdk_ios",
       "state" : {
-        "revision" : "44cf26111bf0bc608a2474578b3d506793eef483",
-        "version" : "8.0.3"
+        "revision" : "6b5f6d2ffc92c10d38cb9c716ae37b2832230c89",
+        "version" : "8.0.4"
       }
     },
     {
@@ -327,8 +326,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log",
       "state" : {
-        "revision" : "e97a6fcb1ab07462881ac165fdbb37f067e205d5",
-        "version" : "1.5.4"
+        "revision" : "96a2f8a0fa41e9e09af4585e2724c4e825410b91",
+        "version" : "1.6.2"
       }
     },
     {
@@ -354,8 +353,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/buildkite/test-collector-swift",
       "state" : {
-        "revision" : "77c7f492f5c1c9ca159f73d18f56bbd1186390b0",
-        "version" : "0.3.0"
+        "revision" : "631a2400dbe876141a3ef8c7400885907fec7f89",
+        "version" : "0.4.1"
       }
     },
     {
@@ -390,7 +389,6 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
       "state" : {
-        "branch" : "wpios-edition",
         "revision" : "5bc08764d2025e21685816065f611e884c8672d1"
       }
     },

@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "92A65F35-8051-4F5F-B68A-1802B2E06105",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "WordPressFluxTests",
+        "name" : "WordPressFluxTests"
+      }
+    }
+  ],
+  "version" : 1
+}
