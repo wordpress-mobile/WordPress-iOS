@@ -1,5 +1,12 @@
 #!/bin/bash -eu
 
+if .buildkite/commands/should-skip-job.sh --validation; then
+  message="Skipping UI Tests - no relevant files changed"
+  echo "$message" | buildkite-agent annotate --style "info" --context "skip-ui-tests"
+  echo "$message"
+  exit 0
+fi
+
 DEVICE=$1
 
 echo "Running UI tests on $DEVICE. The iOS version will be the latest available in the CI host."

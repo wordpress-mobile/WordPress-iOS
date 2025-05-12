@@ -1,5 +1,12 @@
 #!/bin/bash -eu
 
+if .buildkite/commands/should-skip-job.sh --validation; then
+  message="Skipping Reader Unit Tests - no relevant files changed"
+  echo "$message" | buildkite-agent annotate --style "info" --context "skip-reader-unit-tests"
+  echo "$message"
+  exit 0
+fi
+
 # Run this at the start to fail early if value not available
 # TODO: We'll need to create a token for Reader
 # echo '--- :test-analytics: Configuring Test Analytics'

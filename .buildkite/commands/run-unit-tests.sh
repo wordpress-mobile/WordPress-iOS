@@ -1,5 +1,12 @@
 #!/bin/bash -eu
 
+if .buildkite/commands/should-skip-job.sh --validation; then
+  message="Skipping Unit Tests - no relevant files changed"
+  echo "$message" | buildkite-agent annotate --style "info" --context "skip-unit-tests"
+  echo "$message"
+  exit 0
+fi
+
 # Run this at the start to fail early if value not available
 echo '--- :test-analytics: Configuring Test Analytics'
 export BUILDKITE_ANALYTICS_TOKEN=$BUILDKITE_ANALYTICS_TOKEN_UNIT_TESTS
