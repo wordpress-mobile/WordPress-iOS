@@ -393,7 +393,7 @@
       "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
       "state" : {
         "branch" : "task/add-search-subscribers",
-        "revision" : "c0ccd265900cea2467bce86aac92acf682dc7123"
+        "revision" : "cc7fd8a7ea609fc139e7b9d9f53b12c51002ddf4"
       }
     },
     {

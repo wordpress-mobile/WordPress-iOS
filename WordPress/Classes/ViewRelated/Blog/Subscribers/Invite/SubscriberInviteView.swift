@@ -1,7 +1,10 @@
 import SwiftUI
 import WordPressUI
+import WordPressKit
 
 struct SubscriberInviteView: View {
+    let blog: SubscribersBlog
+
     @State private var emails: [SubscriberEmail] = [SubscriberEmail()]
     @State private var isSending = false
     @State private var isShowingDismissConfirmation = false
@@ -32,7 +35,7 @@ struct SubscriberInviteView: View {
                 .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
         }
         .listStyle(.plain)
-        .onChange(of: emails) { _, emails in
+        .onChange(of: emails) { emails in
             if !emails.contains(where: \.isEmpty) {
                 withAnimation {
                     self.emails.append(SubscriberEmail())
@@ -42,7 +45,7 @@ struct SubscriberInviteView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(SharedStrings.Button.cancel) {
-                    if isSendEnabled {
+                    if emails.contains(where: { !$0.value.isEmpty }) {
                         isShowingDismissConfirmation = true
                     } else {
                         dismiss()
@@ -91,17 +94,26 @@ struct SubscriberInviteView: View {
     }
 
     private func buttonSendTapped() {
+        let emails = emails
+            .filter { $0.isValid && !$0.isEmpty }
+            .map(\.value)
+
         isSending = true
         Task {
             do {
-                // TODO: add action
-                try await Task.sleep(for: .seconds(2))
+                guard let api = blog.getRestAPI() else {
+                    throw URLError(.unknown, userInfo: [NSLocalizedDescriptionKey: SharedStrings.Error.generic])
+                }
+                let service = SubscribersServiceRemote(wordPressComRestApi: api)
+                try await service.importSubscribers(siteID: blog.dotComSiteID, emails: emails)
+
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                 dismiss()
+                Notice(title: Strings.successTitle, message: Strings.successMessage).post()
             } catch {
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
                 isSending = false
-                // TODO: show notice
+                Notice(error: error).post()
             }
         }
     }
@@ -178,10 +190,12 @@ private enum Strings {
     static let discardChanges = NSLocalizedString("inviteSubscribers.discardChanges", value: "Discard Changes", comment: "Cancel dialog confirmation button")
     static let email = NSLocalizedString("inviteSubscribers.fieldTitleEmail", value: "Email", comment: "Field title (not shown, accessibility)")
     static let disclosure = NSLocalizedString("inviteSubscribers.disclosure", value: "By clicking \"%@,\" you represent that you've obtained the appropriate consent to email each person. Spam complaints or high bounce rate from your subscribers may lead to action against your account.", comment: "A footer view (small text). The button title is inserted by the app via a parameter.")
+    static let successTitle = NSLocalizedString("inviteSubscribers.importSuccessTitle", value: "Import Started", comment: "Import success snackbar title")
+    static let successMessage = NSLocalizedString("inviteSubscribers.importSuccessMessage", value: "It make take a few minutes before the import completes", comment: "Import success snackbar title")
 }
 
 #Preview {
     NavigationView {
-        SubscriberInviteView()
+        SubscriberInviteView(blog: .mock())
     }.tint(AppColor.tint)
 }

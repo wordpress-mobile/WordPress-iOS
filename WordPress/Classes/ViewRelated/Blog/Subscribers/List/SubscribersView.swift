@@ -67,18 +67,18 @@ private struct SubscribersListView: View {
             await viewModel.refresh()
         }
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
                 Button {
                     isShowingInviteView = true
                 } label: {
-                    Image(systemName: "plus.circle")
+                    Image(systemName: "plus")
                 }
                 SubscribersMenu(viewModel: viewModel)
             }
         }
         .sheet(isPresented: $isShowingInviteView) {
             NavigationView {
-                SubscriberInviteView()
+                SubscriberInviteView(blog: viewModel.blog)
             }
         }
     }
