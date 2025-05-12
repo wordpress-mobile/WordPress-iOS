@@ -252,7 +252,7 @@ struct SubscriberDetailsView: View {
     }
 
     @ViewBuilder
-    private var makeActions(for details: SubscribersServiceRemote.GetSubscriberDetailsResponse) -> some View {
+    private func makeActions(for details: SubscribersServiceRemote.GetSubscriberDetailsResponse) -> some View {
         if (details.plans ?? []).isEmpty {
             Button(role: .destructive) {
                 isShowingDeleteConfirmation = true
@@ -265,6 +265,7 @@ struct SubscriberDetailsView: View {
                 }
             }
         } else {
+            EmptyView()
             // TODO: figure out how to manage supporters
         }
     }

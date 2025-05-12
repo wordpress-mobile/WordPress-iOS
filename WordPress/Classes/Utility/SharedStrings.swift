@@ -16,6 +16,7 @@ enum SharedStrings {
         static let view = NSLocalizedString("shared.button.view", value: "View", comment: "A shared button title used in different contexts")
         static let share = NSLocalizedString("shared.button.share", value: "Share", comment: "A shared button title used in different contexts")
         static let copy = NSLocalizedString("shared.button.copy", value: "Copy", comment: "A shared button title used in different contexts")
+        static let send = NSLocalizedString("shared.button.send", value: "Send", comment: "A shared button title used in different contexts (send email, send message, sent invites)")
         static let copyLink = NSLocalizedString("shared.button.copyLink", value: "Copy Link", comment: "A shared button title used in different contexts")
         static let `continue` = NSLocalizedString("shared.button.continue", value: "Continue", comment: "A shared button title used in different contexts")
         static let undo = NSLocalizedString("shared.button.undo", value: "Undo", comment: "A shared button title used in different contexts")

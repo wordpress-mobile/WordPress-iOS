@@ -35,6 +35,8 @@ private struct SubscribersView: View {
 private struct SubscribersListView: View {
     @ObservedObject var viewModel: SubscribersViewModel
 
+    @State private var isShowingInviteView = false
+
     var body: some View {
         List {
             if let response = viewModel.response {
@@ -66,7 +68,17 @@ private struct SubscribersListView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isShowingInviteView = true
+                } label: {
+                    Image(systemName: "plus.circle")
+                }
                 SubscribersMenu(viewModel: viewModel)
+            }
+        }
+        .sheet(isPresented: $isShowingInviteView) {
+            NavigationView {
+                SubscriberInviteView()
             }
         }
     }
