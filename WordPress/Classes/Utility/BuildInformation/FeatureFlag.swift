@@ -80,7 +80,7 @@ public enum FeatureFlag: Int, CaseIterable {
         case .nativeJetpackConnection:
             return BuildConfiguration.current == .debug
         case .newsletterSubscribers:
-            return BuildConfiguration.current == .debug
+            return true
         }
     }
 
