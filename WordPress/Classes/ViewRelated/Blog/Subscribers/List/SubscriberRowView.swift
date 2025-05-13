@@ -27,6 +27,11 @@ struct SubscriberRowView: View {
                 isShowingDeleteConfirmation = true
             }
         }
+        .swipeActions(edge: .trailing) {
+            Button(Strings.delete, role: .destructive) {
+                isShowingDeleteConfirmation = true
+            }
+        }
         .confirmationDialog(Strings.confirmDeleteTitle, isPresented: $isShowingDeleteConfirmation, actions: {
             Button(role: .destructive) {
                 viewModel.delete()
