@@ -161,6 +161,13 @@ public extension Blog {
     @objc var isSelfHosted: Bool {
         self.account == nil
     }
+
+    @objc var supportsCoreRestApi: Bool {
+        if case .selfHosted = try? WordPressSite(blog: self) {
+            return true
+        }
+        return false
+    }
 }
 
 public extension WpApiApplicationPasswordDetails {
