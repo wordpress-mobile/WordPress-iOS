@@ -57,17 +57,10 @@ final class SubscriberRowViewModel: Identifiable {
             self.avatar = .remote(subscriber.avatar.flatMap(URL.init))
         }
         self.title = subscriber.displayName ?? subscriber.emailAddress ?? ""
-        self.details = dateFormatter.localizedString(for: subscriber.dateSubscribed, relativeTo: .now)
+        self.details = subscriber.dateSubscribed.toShortString()
     }
 
     func makeDetailsViewModel() -> SubsriberDetailsViewModel {
         SubsriberDetailsViewModel(blog: blog, subscriber: subscriber)
     }
 }
-
-private let dateFormatter: RelativeDateTimeFormatter = {
-    let formatter = RelativeDateTimeFormatter()
-    formatter.dateTimeStyle = .named
-    formatter.unitsStyle = .abbreviated
-    return formatter
-}()
