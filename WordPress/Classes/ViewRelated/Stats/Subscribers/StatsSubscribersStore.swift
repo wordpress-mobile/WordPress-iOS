@@ -139,7 +139,10 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
                 completion(.failure(error))
             } else {
                 // Combine both wpcom and email subscribers into a single list
-                let combinedSubscribers = Array((wpComFollowers?.topDotComFollowers ?? []) + (emailFollowers?.topEmailFollowers ?? [])
+                let topDotComFollowers = wpComFollowers?.topDotComFollowers ?? []
+                let topEmailFollowers = emailFollowers?.topEmailFollowers ?? []
+
+                let combinedSubscribers = Array((topDotComFollowers + topEmailFollowers)
                     .sorted(by: { $0.subscribedDate > $1.subscribedDate })
                     .prefix(quantity))
                 let combinedTotalsCount = (wpComFollowers?.dotComFollowersCount ?? 0) + (emailFollowers?.emailFollowersCount ?? 0)
