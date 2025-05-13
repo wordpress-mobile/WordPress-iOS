@@ -20,12 +20,14 @@ extension BlogDetailsViewController {
     }
 
     @objc public func makePeopleRow() -> BlogDetailsRow {
-        BlogDetailsRow(
+        let row = BlogDetailsRow(
             title: shouldShowSubscribersRow ? Strings.users : NSLocalizedString("People", comment: "Noun. Title. Links to the people management feature."),
             image: UIImage(named: "site-menu-people") ?? UIImage()
         ) { [weak self] in
             self?.showPeople()
         }
+        row.accessibilityIdentifier = "Users Row"
+        return row
     }
 
     @objc public func isDashboardEnabled() -> Bool {
