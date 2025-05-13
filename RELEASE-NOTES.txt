@@ -1,6 +1,7 @@
 26.0
 -----
-
+* [**] Add new “Subscribers” screen that shows both your email and Reader subscribers [#24513]
+* [*] Fix an issue with “Stats / Subscribers” sometimes not showing the latest email subscribers [#24513]
 
 25.9
 -----
