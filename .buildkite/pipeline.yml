@@ -116,6 +116,8 @@ steps:
             exit 0
           fi
 
+          set -o pipefail
+
           .buildkite/commands/shared-set-up.sh
           xcodebuild \
             -scheme Keystone \
@@ -133,6 +135,8 @@ steps:
           if .buildkite/commands/should-skip-job.sh --job-type validation; then
             exit 0
           fi
+
+          set -o pipefail
 
           .buildkite/commands/shared-set-up.sh
           xcodebuild \
