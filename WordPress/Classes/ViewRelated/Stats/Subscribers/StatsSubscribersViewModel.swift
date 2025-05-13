@@ -130,7 +130,7 @@ private extension StatsSubscribersViewModel {
     func emailsSummaryDataRows(_ emailsSummary: StatsEmailsSummaryData) -> [StatsTotalRowData] {
         return emailsSummary.posts.map {
             StatsTotalRowData(
-                name: $0.title,
+                name: $0.title.stringByDecodingXMLCharacters(),
                 data: $0.opens.abbreviatedString(),
                 secondData: $0.clicks.abbreviatedString(),
                 multiline: false,
