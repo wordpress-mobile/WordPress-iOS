@@ -47,14 +47,19 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/FSInteractiveMap", from: "0.3.0"),
         .package(url: "https://github.com/wordpress-mobile/MediaEditor-iOS", branch: "task/spm-support"),
         .package(url: "https://github.com/wordpress-mobile/NSObject-SafeExpectations", from: "0.0.6"),
-        .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", branch: "trunk"),
-        .package(url: "https://github.com/wordpress-mobile/WordPressKit-iOS", branch: "task/add-search-subscribers"),
+        .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"),
+        .package(
+            url: "https://github.com/wordpress-mobile/WordPressKit-iOS",
+            revision: "cc7fd8a7ea609fc139e7b9d9f53b12c51002ddf4" // see wpios-edition branch
+        ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
-        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20250411"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from:
-        "0.2.0"),
-        .package(url: "https://github.com/Automattic/color-studio", branch: "trunk"),
+        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20250505"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "fdfe788530bbff864ce7147b5a68608d7025e078"),
+        .package(
+            url: "https://github.com/Automattic/color-studio",
+            revision: "bf141adc75e2769eb469a3e095bdc93dc30be8de"
+        ),
         .package(url: "https://github.com/wordpress-mobile/AztecEditor-iOS", from: "1.20.0"),
     ],
     targets: XcodeSupport.targets + [
@@ -169,7 +174,12 @@ let package = Package(
         ),
         .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")], swiftSettings: [.swiftLanguageMode(.v5)]),
-        .testTarget(name: "WordPressFluxTests", dependencies: ["WordPressFlux"], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(
+            name: "WordPressFluxTests",
+            dependencies: ["WordPressFlux"],
+            exclude: ["WordPressFluxTests.xctestplan"],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
         .testTarget(name: "AsyncImageKitTests", dependencies: [
             .target(name: "AsyncImageKit"),
             .target(name: "WordPressTesting"),
@@ -220,7 +230,7 @@ enum XcodeSupport {
             "WordPressShared",
             "WordPressUI",
             .product(name: "Gridicons", package: "Gridicons-iOS"),
-            .product(name: "NSURL+IDN", package: "NSURL-IDN"),
+            .product(name: "NSURL-IDN", package: "NSURL-IDN"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
@@ -294,6 +304,7 @@ enum XcodeSupport {
             .product(name: "Lottie", package: "lottie-ios"),
             .product(name: "MediaEditor", package: "MediaEditor-iOS"),
             .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
+            .product(name: "NSURL-IDN", package: "NSURL-IDN"),
             .product(name: "Reachability", package: "Reachability"),
             .product(name: "Starscream", package: "Starscream"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
@@ -312,7 +323,6 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_App", dependencies: keystoneDependencies),
             .xcodeTarget("XcodeTarget_Keystone", dependencies: keystoneDependencies),
             .xcodeTarget("XcodeTarget_WordPressTests", dependencies: testDependencies + [
-                "SFHFKeychainUtils",
                 "WordPressShared",
                 "WordPressUI",
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
@@ -326,7 +336,7 @@ enum XcodeSupport {
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
-                .product(name: "NSURL+IDN", package: "NSURL-IDN"),
+                .product(name: "NSURL-IDN", package: "NSURL-IDN"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
                 .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             ]),
@@ -404,7 +414,7 @@ enum XcodeSupport {
                     .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                     .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
                     .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
-                    .product(name: "NSURL+IDN", package: "NSURL-IDN"),
+                    .product(name: "NSURL-IDN", package: "NSURL-IDN"),
                     .product(name: "WordPressAPI", package: "wordpress-rs"),
                     .product(name: "WordPressKit", package: "WordPressKit-iOS"),
                 ]

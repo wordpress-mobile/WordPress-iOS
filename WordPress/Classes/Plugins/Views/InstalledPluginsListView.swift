@@ -54,6 +54,9 @@ struct InstalledPluginsListView: View {
                 AddNewPluginView(service: viewModel.service)
             }
         }
+        .onApplicationPasswordUpdate {
+            Task { await viewModel.refreshItems() }
+        }
         .task {
             await viewModel.onAppear()
         }
@@ -217,6 +220,7 @@ private final class InstalledPluginsListViewModel: ObservableObject {
         isRefreshing = true
         defer { isRefreshing = false }
 
+        self.error = nil
         self.showNoPluginsView = false
 
         do {
@@ -279,5 +283,13 @@ private final class InstalledPluginsListViewModel: ObservableObject {
             DDLogError("Failed to uninstall plugin: \(error)")
         }
 
+    }
+}
+
+extension View {
+    func onApplicationPasswordUpdate(action: @escaping () -> Void) -> some View {
+        onReceive(NotificationCenter.default.publisher(for: SelfHostedSiteAuthenticator.applicationPasswordUpdated)) { _ in
+            action()
+        }
     }
 }

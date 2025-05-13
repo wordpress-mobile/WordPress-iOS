@@ -132,7 +132,7 @@ class NotificationSettingsViewController: UIViewController {
             dispatchGroup.leave()
         }, failure: { [weak self] (error: NSError?) in
             dispatchGroup.leave()
-            self?.handleLoadError()
+            self?.handleLoadError(error: error)
         })
 
         dispatchGroup.enter()
@@ -210,12 +210,22 @@ class NotificationSettingsViewController: UIViewController {
 
     // MARK: - Error Handling
 
-    fileprivate func handleLoadError() {
-        let title = NSLocalizedString("Oops!", comment: "An informal exclaimation meaning `something went wrong`.")
-        let message = NSLocalizedString("There has been a problem while loading your Notification Settings",
-                                            comment: "Displayed after Notification Settings failed to load")
+    fileprivate func handleLoadError(error: NSError?) {
+        let title = NSLocalizedString(
+            "Failed to load settings",
+            comment: "A message indicating that we couldn't load the user's settings."
+        )
         let cancelText = NSLocalizedString("Cancel", comment: "Cancel. Action.")
         let retryText = NSLocalizedString("Try Again", comment: "Try Again. Action")
+
+        var message = NSLocalizedString(
+            "There has been a problem while loading your Notification Settings",
+            comment: "Displayed after Notification Settings failed to load"
+        )
+
+        if let error {
+            message = error.localizedDescription
+        }
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 

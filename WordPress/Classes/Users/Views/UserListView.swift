@@ -59,6 +59,9 @@ public struct UserListView: View {
                 }
             }
         }
+        .onApplicationPasswordUpdate {
+            Task { await viewModel.refreshItems() }
+        }
         .task(id: viewModel.mode) {
             await viewModel.performQuery()
         }

@@ -167,6 +167,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         conf.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
         // Limited to Simple sites until application password auth is supported
         conf.plugins = RemoteFeatureFlag.newGutenbergPlugins.enabled() && post.blog.isHostedAtWPcom
+        conf.locale = WordPressComLanguageDatabase().deviceLanguage.slug
 
         if !post.blog.isSelfHosted {
             let siteType: String = post.blog.isHostedAtWPcom ? "simple" : "atomic"

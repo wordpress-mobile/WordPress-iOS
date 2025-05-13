@@ -10,6 +10,8 @@ import SVProgressHUD
 
 struct SelfHostedSiteAuthenticator {
 
+    static let applicationPasswordUpdated = Foundation.Notification.Name(rawValue: "SelfHostedSiteAuthenticator.applicationPasswordUpdated")
+
     enum SignInContext: Equatable {
         // Sign in to a self-hosted site. Using this context results in automatically reloading the app to display the site dashboard.
         case `default`
@@ -168,9 +170,15 @@ struct SelfHostedSiteAuthenticator {
             throw .savingSiteFailure
         }
 
+        let accountPassword = try? await ContextManager.shared.performQuery {
+            try $0.existingObject(with: blog).password
+        }
         let wporg = WordPressOrgCredentials(
             username: credentials.userLogin,
-            password: credentials.password,
+            // The `sync` call below updates `Blog.password` with the password value here.
+            // In order to separate `Blog.password` and `Blog.applicationPassword`, we pass the account password here
+            // if it exists.
+            password: accountPassword ?? credentials.password,
             xmlrpc: xmlrpc.absoluteString,
             options: blogOptions
         )
@@ -181,8 +189,11 @@ struct SelfHostedSiteAuthenticator {
             }
         }
 
-        if context == .default {
+        switch context {
+        case .default:
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
+        case .reauthentication:
+            NotificationCenter.default.post(name: Self.applicationPasswordUpdated, object: nil)
         }
 
         return blog
