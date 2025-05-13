@@ -1,5 +1,5 @@
 {
-  "originHash" : "fe094f15c8e18dab512a2ddf88e08b4c895c60964ac1158c031ee731381eda34",
+  "originHash" : "202b7f16a53d3be86120a57e70060dc74ae4a74a65678186b337db383a8a816d",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -380,8 +380,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/wordpress-rs",
       "state" : {
-        "branch" : "alpha-20250505",
-        "revision" : "645c8a22303e93267d4f1e645f8e01d228fd7e7c"
+        "branch" : "alpha-20250513",
+        "revision" : "0aff0035734bb311d1a710e123d95b9b50fba400"
       }
     },
     {
