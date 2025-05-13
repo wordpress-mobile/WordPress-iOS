@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-if .buildkite/commands/should-skip-job.sh --validation; then
+if .buildkite/commands/should-skip-job.sh --job-type validation; then
   message="Skipping Reader Unit Tests - no relevant files changed"
   echo "$message" | buildkite-agent annotate --style "info" --context "skip-reader-unit-tests"
   echo "$message"

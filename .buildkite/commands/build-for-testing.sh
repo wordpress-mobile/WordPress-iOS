@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-if .buildkite/commands/should-skip-job.sh --build; then
+if .buildkite/commands/should-skip-job.sh --job-type build; then
   message="Skipping Build - no relevant files changed"
   echo "$message" | buildkite-agent annotate --style "info" --context "skip-build"
   echo "$message"
