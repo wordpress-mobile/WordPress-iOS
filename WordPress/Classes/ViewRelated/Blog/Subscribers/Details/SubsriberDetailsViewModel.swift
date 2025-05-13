@@ -32,27 +32,18 @@ struct SubsriberDetailsViewModel {
     }
 
     func getDetails() async throws -> SubscribersServiceRemote.GetSubscriberDetailsResponse {
-        try await getService().getSubsciberDetails(siteID: blog.dotComSiteID, subscriberID: subscriberID)
+        try await blog.getSubscribersService()
+            .getSubsciberDetails(siteID: blog.dotComSiteID, subscriberID: subscriberID)
     }
 
     func getStats() async throws -> SubscribersServiceRemote.GetSubscriberStatsResponse {
-        try await getService().getSubsciberStats(siteID: blog.dotComSiteID, subscriberID: subscriberID)
+        try await blog.getSubscribersService()
+            .getSubsciberStats(siteID: blog.dotComSiteID, subscriberID: subscriberID)
     }
 
     func delete(_ subscriber: SubscribersServiceRemote.SubsciberBasicInfoResponse) async throws {
-        try await PeopleServiceRemote(wordPressComRestApi: getRestAPI())
+        try await blog.getSubscribersService()
             .deleteSubscriber(subscriber, siteID: blog.dotComSiteID)
-    }
-
-    private func getService() throws -> SubscribersServiceRemote {
-        SubscribersServiceRemote(wordPressComRestApi: try getRestAPI())
-    }
-
-    private func getRestAPI() throws -> WordPressComRestApi {
-        guard let api = blog.getRestAPI() else {
-            throw URLError(.unknown, userInfo: [NSLocalizedDescriptionKey: SharedStrings.Error.generic])
-        }
-        return api
     }
 
     func formattedDateSubscribed(_ date: Date) -> String {
@@ -62,17 +53,18 @@ struct SubsriberDetailsViewModel {
     }
 }
 
-extension PeopleServiceRemote {
+extension SubscribersServiceRemote {
     func deleteSubscriber(_ subscriber: SubscribersServiceRemote.SubsciberBasicInfoResponse, siteID: Int) async throws {
+        let service = PeopleServiceRemote(wordPressComRestApi: wordPressComRestApi)
         try await withUnsafeThrowingContinuation { continuation in
             if subscriber.isDotComUser {
-                deleteFollower(siteID, userID: subscriber.dotComUserID, success: {
+                service.deleteFollower(siteID, userID: subscriber.dotComUserID, success: {
                     continuation.resume()
                 }, failure: {
                     continuation.resume(throwing: $0)
                 })
             } else {
-                deleteEmailFollower(siteID, userID: subscriber.subscriberID, success: {
+                service.deleteEmailFollower(siteID, userID: subscriber.subscriberID, success: {
                     continuation.resume()
                 }, failure: {
                     continuation.resume(throwing: $0)

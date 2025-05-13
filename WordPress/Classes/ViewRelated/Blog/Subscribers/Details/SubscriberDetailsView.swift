@@ -111,8 +111,8 @@ struct SubscriberDetailsView: View {
         isDeleting = true
         Task {
             do {
-                UINotificationFeedbackGenerator().notificationOccurred(.success)
                 try await viewModel.delete(details)
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
                 onDeleted?(details.subscriberID)
                 dismiss()
             } catch {

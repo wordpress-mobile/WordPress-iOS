@@ -54,7 +54,11 @@ final class SubscribersPaginatedResponse: ObservableObject {
         let newItems = response.subscribers.filter {
             !existingIDs.contains($0.subscriberID)
         }
-        items += newItems.map { SubscriberRowViewModel(blog: blog, subscriber: $0) }
+        items += newItems.map {
+            let viewModel = SubscriberRowViewModel(blog: blog, subscriber: $0)
+            viewModel.response = self
+            return viewModel
+        }
     }
 
     func onRowAppear(_ row: SubscriberRowViewModel) {

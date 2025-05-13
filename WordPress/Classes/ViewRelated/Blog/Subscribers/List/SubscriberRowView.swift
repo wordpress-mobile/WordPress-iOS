@@ -6,16 +6,37 @@ import WordPressKit
 struct SubscriberRowView: View {
     let viewModel: SubscriberRowViewModel
 
+    @State private var isShowingDeleteConfirmation = false
+
     var body: some View {
         HStack(alignment: .center) {
             avatar.frame(width: 24, height: 24)
             Text(viewModel.title)
             Spacer()
-            Text(viewModel.details)
-                .font(.footnote)
-                .foregroundColor(.secondary)
+            if viewModel.isDeleting {
+                ProgressView()
+            } else {
+                Text(viewModel.details)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+            }
         }
         .lineLimit(1)
+        .contextMenu {
+            Button(Strings.delete, role: .destructive) {
+                isShowingDeleteConfirmation = true
+            }
+        }
+        .confirmationDialog(Strings.confirmDeleteTitle, isPresented: $isShowingDeleteConfirmation, actions: {
+            Button(role: .destructive) {
+                viewModel.delete()
+            } label: {
+                Text(Strings.delete)
+            }
+        }, message: {
+            Text(String(format: Strings.confirmDeleteMessage, viewModel.title))
+        })
+        .opacity(viewModel.isDeleting ? 0.5 : 1)
     }
 
     @ViewBuilder
@@ -44,8 +65,12 @@ final class SubscriberRowViewModel: Identifiable {
         case email
     }
 
+    @Published private(set) var isDeleting = false
+
     private let blog: SubscribersBlog
     private let subscriber: SubscribersServiceRemote.GetSubscribersResponse.Subscriber
+
+    weak var response: SubscribersPaginatedResponse?
 
     init(blog: SubscribersBlog, subscriber: SubscribersServiceRemote.GetSubscribersResponse.Subscriber) {
         self.blog = blog
@@ -63,4 +88,26 @@ final class SubscriberRowViewModel: Identifiable {
     func makeDetailsViewModel() -> SubsriberDetailsViewModel {
         SubsriberDetailsViewModel(blog: blog, subscriber: subscriber)
     }
+
+    func delete() {
+        isDeleting = true
+        Task {
+            do {
+                try await blog.getSubscribersService()
+                    .deleteSubscriber(subscriber, siteID: blog.dotComSiteID)
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                response?.deleteSubscriber(withID: subscriberID)
+            } catch {
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+                Notice(error: error).post()
+                isDeleting = false
+            }
+        }
+    }
+}
+
+private enum Strings {
+    static let delete = NSLocalizedString("subscribers.buttonDeleteSubscriber", value: "Delete Subscriber", comment: "Button title")
+    static let confirmDeleteTitle = NSLocalizedString("subscribers.deleteSubscriberConfirmationDialog.title", value: "Delete the subscriber", comment: "Remove subscriber confirmation dialog title")
+    static let confirmDeleteMessage = NSLocalizedString("subscribers.deleteSubscriberConfirmationDialog.message", value: "Are you sure you want to remove %@? They will no longer receive new notifications from your site.", comment: "Remove subscriber confirmation dialog message; subscriber name as input.")
 }

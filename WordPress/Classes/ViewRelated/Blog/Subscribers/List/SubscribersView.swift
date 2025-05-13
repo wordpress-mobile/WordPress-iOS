@@ -126,19 +126,8 @@ private struct SubscribersPaginatedForEach: View {
     @ObservedObject var response: SubscribersPaginatedResponse
 
     var body: some View {
-        ForEach(response.items) { item in
-            SubscriberRowView(viewModel: item)
-                .onAppear { response.onRowAppear(item) }
-                .background {
-                    NavigationLink {
-                        SubscriberDetailsView(viewModel: item.makeDetailsViewModel())
-                            .onDeleted { [weak response] in
-                                response?.deleteSubscriber(withID: $0)
-                            }
-                    } label: {
-                        EmptyView()
-                    }.opacity(0)
-                }
+        ForEach(response.items) {
+            makeRow(with: $0)
         }
         if response.isLoading {
             ListFooterView(.loading)
@@ -147,6 +136,21 @@ private struct SubscribersPaginatedForEach: View {
                 response.loadMore()
             }
         }
+    }
+
+    private func makeRow(with item: SubscriberRowViewModel) -> some View {
+        SubscriberRowView(viewModel: item)
+            .onAppear { response.onRowAppear(item) }
+            .background {
+                NavigationLink {
+                    SubscriberDetailsView(viewModel: item.makeDetailsViewModel())
+                        .onDeleted { [weak response] in
+                            response?.deleteSubscriber(withID: $0)
+                        }
+                } label: {
+                    EmptyView()
+                }.opacity(0)
+            }
     }
 }
 
