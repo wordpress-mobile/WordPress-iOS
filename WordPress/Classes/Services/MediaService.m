@@ -476,16 +476,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
 - (id<MediaServiceRemote>)remoteForBlog:(Blog *)blog
 {
-    id <MediaServiceRemote> remote;
-    if ([blog supports:BlogFeatureWPComRESTAPI]) {
-        if (blog.wordPressComRestApi) {
-            remote = [[MediaServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi
-                                                                          siteID:blog.dotComID];
-        }
-    } else if (blog.xmlrpcApi) {
-        remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
-    }
-    return remote;
+    return [[[MediaServiceRemoteFactory alloc] init] remoteForBlog:blog error:nil];
 }
 
 - (void)mergeMedia:(NSArray *)media
