@@ -169,7 +169,7 @@ struct SubscriberDetailsView: View {
 
     private func makeNewsletterSubscriptionSection(for details: SubscribersServiceRemote.GetSubscriberDetailsResponse) -> some View {
         SubscriberDetailsCardView(Strings.sectionNewsletterSubscription) {
-            SubscriberInfoRow(Strings.fieldSubscriptionDate, value: details.dateSubscribed.formatted(date: .abbreviated, time: .shortened))
+            SubscriberInfoRow(Strings.fieldSubscriptionDate, value: viewModel.formattedDateSubscribed(details.dateSubscribed))
             let plans = details.plans ?? []
             if let plan = plans.first {
                 NavigationLink {

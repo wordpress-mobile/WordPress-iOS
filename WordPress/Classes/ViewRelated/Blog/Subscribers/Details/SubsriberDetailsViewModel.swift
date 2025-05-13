@@ -8,6 +8,13 @@ struct SubsriberDetailsViewModel {
 
     private let blog: SubscribersBlog
 
+    private let relativeFormatter: RelativeDateTimeFormatter = {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.dateTimeStyle = .numeric
+        formatter.unitsStyle = .full
+        return formatter
+    }()
+
     init(blog: SubscribersBlog, subscriber: SubscribersServiceRemote.SubsciberBasicInfoResponse) {
         self.blog = blog
         self.subscriberID = subscriber.subscriberID
@@ -46,6 +53,12 @@ struct SubsriberDetailsViewModel {
             throw URLError(.unknown, userInfo: [NSLocalizedDescriptionKey: SharedStrings.Error.generic])
         }
         return api
+    }
+
+    func formattedDateSubscribed(_ date: Date) -> String {
+        let absolute = date.formatted(date: .abbreviated, time: .shortened)
+        let relative = relativeFormatter.localizedString(for: date, relativeTo: .now)
+        return absolute + " (\(relative))"
     }
 }
 
