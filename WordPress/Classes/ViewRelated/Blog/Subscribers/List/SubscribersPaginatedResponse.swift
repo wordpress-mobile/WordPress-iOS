@@ -62,7 +62,7 @@ final class SubscribersPaginatedResponse: ObservableObject {
     }
 
     func onRowAppear(_ row: SubscriberRowViewModel) {
-        guard items.suffix(5).contains(where: { $0.id == row.id }) else {
+        guard items.suffix(10).contains(where: { $0.id == row.id }) else {
             return
         }
         if error == nil {
