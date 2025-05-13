@@ -26,11 +26,9 @@ struct SubscriberRowView: View {
             Button(Strings.delete, role: .destructive) {
                 isShowingDeleteConfirmation = true
             }
-        }
-        .swipeActions(edge: .trailing) {
-            Button(Strings.delete, role: .destructive) {
-                isShowingDeleteConfirmation = true
-            }
+        } preview: {
+            SubscriberDetailsHeaderView(subscriber: viewModel.subscriber)
+                .padding(.vertical)
         }
         .confirmationDialog(Strings.confirmDeleteTitle, isPresented: $isShowingDeleteConfirmation, actions: {
             Button(role: .destructive) {
@@ -58,6 +56,7 @@ struct SubscriberRowView: View {
 
 @MainActor
 final class SubscriberRowViewModel: Identifiable {
+    let subscriber: SubscribersServiceRemote.GetSubscribersResponse.Subscriber
     var identifier: Int { subscriberID }
     var subscriberID: Int { subscriber.subscriberID }
 
@@ -73,7 +72,6 @@ final class SubscriberRowViewModel: Identifiable {
     @Published private(set) var isDeleting = false
 
     private let blog: SubscribersBlog
-    private let subscriber: SubscribersServiceRemote.GetSubscribersResponse.Subscriber
 
     weak var response: SubscribersPaginatedResponse?
 
