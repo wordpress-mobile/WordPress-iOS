@@ -86,10 +86,21 @@ extension StatsSubscribersViewController: SiteStatsPeriodDelegate {
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
         switch statSection {
         case .subscribersList:
-            guard let blog = RootViewCoordinator.sharedPresenter.currentlyVisibleBlog(),
-                  let peopleViewController = PeopleViewController.controllerWithBlog(blog, selectedFilter: .followers) else { return }
-            navigationController?.pushViewController(peopleViewController, animated: true)
             WPAnalytics.track(.statsSubscribersViewMoreTapped)
+            if FeatureFlag.newsletterSubscribers.enabled {
+                guard let blog = RootViewCoordinator.sharedPresenter.currentlyVisibleBlog() else {
+                    return wpAssertionFailure("blog missing")
+                }
+                guard let subscribersBlog = SubscribersBlog(blog: blog) else {
+                    return wpAssertionFailure("unsupported blog")
+                }
+                let subscribersVC = SubscribersViewController(blog: subscribersBlog)
+                navigationController?.pushViewController(subscribersVC, animated: true)
+            } else {
+                guard let blog = RootViewCoordinator.sharedPresenter.currentlyVisibleBlog(),
+                      let peopleViewController = PeopleViewController.controllerWithBlog(blog, selectedFilter: .followers) else { return }
+                navigationController?.pushViewController(peopleViewController, animated: true)
+            }
         case .subscribersEmailsSummary:
             let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
             detailTableViewController.configure(statSection: statSection)
