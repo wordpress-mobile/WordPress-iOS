@@ -1,9 +1,6 @@
 #!/bin/bash -eu
 
 if .buildkite/commands/should-skip-job.sh --job-type build; then
-  message="Skipping WordPress Prototype Build - no relevant files changed"
-  echo "$message" | buildkite-agent annotate --style "info" --context "skip-prototype-build-wordpress"
-  echo "$message"
   exit 0
 fi
 
