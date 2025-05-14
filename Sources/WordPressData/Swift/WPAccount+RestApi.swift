@@ -84,10 +84,13 @@ extension WPAccount {
             //
             // The code path in which we are is that of an invalid token, and that's neither a login nor a logout, it's more appropriate to consider it a logout.
             // That's because if the token is invalid the app will soon received errors from the API and it's therefore better to force the user to login again.
-            NotificationCenter.default.post(
-                name: .wpAccountDefaultWordPressComAccountChanged,
-                object: nil
-            )
+
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(
+                    name: .wpAccountDefaultWordPressComAccountChanged,
+                    object: nil
+                )
+            }
         }
     }
 }
