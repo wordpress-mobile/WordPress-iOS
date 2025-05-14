@@ -31,7 +31,11 @@ class MediaServiceRemoteCoreREST: NSObject, MediaServiceRemote {
         success: ((RemoteMedia?) -> Void)?,
         failure: (((any Error)?) -> Void)?
     ) {
-        wpAssert(media.localURL != nil)
+        guard let localURL = media.localURL else {
+            wpAssertionFailure("local url missing in the media")
+            failure?(URLError(.fileDoesNotExist))
+            return
+        }
 
         // Set up a `Progress` instance that are updated from the main thread, which is a behaviour that other parts of the app rely on.
         let totalUnit: Int64 = 100
@@ -48,7 +52,7 @@ class MediaServiceRemoteCoreREST: NSObject, MediaServiceRemote {
                     .assign(to: \.completedUnitCount, on: mainThreadProgress)
                 defer { cancellable.cancel() }
 
-                let media = try await client.api.uploadMedia(params: .init(media: media), fromLocalFileURL: media.localURL!, fulfilling: progress).data
+                let media = try await client.api.uploadMedia(params: .init(media: media), fromLocalFileURL: localURL, fulfilling: progress).data
                 success?(.init(media: media))
             } catch {
                 failure?(error)
@@ -57,11 +61,15 @@ class MediaServiceRemoteCoreREST: NSObject, MediaServiceRemote {
     }
 
     func update(_ media: RemoteMedia, success: ((RemoteMedia?) -> Void)?, failure: (((any Error)?) -> Void)?) {
-        wpAssert(media.mediaID != nil)
+        guard let mediaID = media.mediaID else {
+            wpAssertionFailure("id missing in the media")
+            failure?(URLError(.unknown))
+            return
+        }
 
         Task { @MainActor in
             do {
-                let media = try await client.api.media.update(mediaId: media.mediaID!.int64Value, params: .init(media: media)).data
+                let media = try await client.api.media.update(mediaId: mediaID.int64Value, params: .init(media: media)).data
                 success?(.init(media: media))
             } catch {
                 failure?(error)
@@ -70,11 +78,15 @@ class MediaServiceRemoteCoreREST: NSObject, MediaServiceRemote {
     }
 
     func delete(_ media: RemoteMedia, success: (() -> Void)?, failure: (((any Error)?) -> Void)?) {
-        wpAssert(media.mediaID != nil)
+        guard let mediaID = media.mediaID else {
+            wpAssertionFailure("id missing in the media")
+            failure?(URLError(.unknown))
+            return
+        }
 
         Task { @MainActor in
             do {
-                let _ = try await client.api.media.delete(mediaId: media.mediaID!.int64Value)
+                let _ = try await client.api.media.delete(mediaId: mediaID.int64Value)
                 success?()
             } catch {
                 failure?(error)
