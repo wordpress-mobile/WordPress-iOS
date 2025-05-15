@@ -7908,7 +7908,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blazeCampaign.status.inmoderation" = "In Moderation";
 
 /* Short status description */
-"blazeCampaign.status.processing" = "In Bearbeitung";
+"blazeCampaign.status.processing" = "In Bearbeitung UPDATE";
 
 /* Short status description */
 "blazeCampaign.status.rejected" = "Abgelehnt";
