@@ -86,19 +86,11 @@ private extension DisplayUser {
             firstName: user.firstName,
             lastName: user.lastName,
             displayName: user.name,
-            profilePhotoUrl: Self.profilePhotoUrl(for: user),
+            profilePhotoUrl: user.avatarUrls?.avatarURL(),
             role: role,
             emailAddress: user.email,
             websiteUrl: user.link,
             biography: user.description
         )
-    }
-
-    static func profilePhotoUrl(for user: UserWithEditContext) -> URL? {
-        guard let url = user.avatarUrls?[.size96] ?? user.avatarUrls?[.size48] ?? user.avatarUrls?[.size24], let url else {
-            return nil
-        }
-
-        return URL(string: url)
     }
 }
