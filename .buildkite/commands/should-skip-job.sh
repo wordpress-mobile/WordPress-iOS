@@ -18,7 +18,7 @@ COMMON_PATTERNS=(
   "*.pot"
   "*.txt"
   ".gitignore"
-  "config/Version.Public.xcconfig"
+  "config/Version.public.xcconfig"
   "docs/**"
   "fastlane/**"
   "Gemfile"
