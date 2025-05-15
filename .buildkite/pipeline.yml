@@ -10,7 +10,12 @@ steps:
     steps:
       - label: ":eyeglasses: Reader ASC Demo Build"
         key: build_asc_reader
-        command: .buildkite/commands/release-build-reader.sh
+        command: |
+          if .buildkite/commands/should-skip-job.sh --job-type build; then
+            exit 0
+          fi
+
+          .buildkite/commands/release-build-reader.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
         artifact_paths:
           - Artifacts/*.zip
@@ -30,7 +35,12 @@ steps:
 
       - label: ":eyeglasses: Reader one-off TestFlight Upload"
         depends_on: [build_asc_reader, testflight_triggered_reader]
-        command: .buildkite/commands/release-upload-reader.sh
+        command: |
+          if .buildkite/commands/should-skip-job.sh --job-type build; then
+            exit 0
+          fi
+
+          .buildkite/commands/release-upload-reader.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:
