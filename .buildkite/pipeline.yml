@@ -102,6 +102,10 @@ steps:
               context: "Reader Unit Tests"
       - label: "🔬 Keystone Unit Tests"
         command: |
+          if .buildkite/commands/should-skip-job.sh --job-type validation; then
+            exit 0
+          fi
+
           .buildkite/commands/shared-set-up.sh
           xcodebuild \
             -scheme Keystone \
@@ -116,6 +120,10 @@ steps:
               context: "Unit Tests Keystone"
       - label: "🔬 WordPressData Unit Tests"
         command: |
+          if .buildkite/commands/should-skip-job.sh --job-type validation; then
+            exit 0
+          fi
+
           .buildkite/commands/shared-set-up.sh
           xcodebuild \
             -scheme WordPressData \
