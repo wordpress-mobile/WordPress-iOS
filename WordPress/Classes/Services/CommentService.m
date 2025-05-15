@@ -429,7 +429,19 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     } else {
         [remote createComment:remoteComment
                       success:successBlock
-                      failure:failure];
+                      failure:^(NSError *error) {
+            // When the site fails to create a comment, we need to delete the comment in the local database.
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                            Comment *commentInContext = [context existingObjectWithID:commentObjectID error:nil];
+                            if (commentInContext) {
+                                [context deleteObject:commentInContext];
+                            }
+                        } completion:^{
+                            if (failure != nil) {
+                                failure(error);
+                            }
+                        } onQueue:dispatch_get_main_queue()];
+        }];
     }
 }
 
