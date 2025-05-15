@@ -2,3 +2,4 @@ What’s New for this month?
 - Better Comments: Updated design, depth indicators for threads, improved rich content support, and a fullscreen composer with draft saving.
 - Featured Images: Fix an issue where Reader wasn't showing featured images for some posts.
 - Bug Fixes & Stability & Performance Improvements.
+UPDATE
