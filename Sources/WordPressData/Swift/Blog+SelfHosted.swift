@@ -183,9 +183,9 @@ public enum WordPressSite {
     case selfHosted(blogId: TaggedManagedObjectID<Blog>, apiRootURL: ParsedUrl, username: String, authToken: String)
 
     public init(blog: Blog) throws {
-        if let account = blog.account {
-            let authToken = try account.authToken ?? WPAccount.token(forUsername: account.username)
-            self = .dotCom(siteId: blog.dotComID?.intValue ?? 0, authToken: authToken)
+        if let _ = blog.account {
+            // WP.com support is not ready yet.
+            throw NSError(domain: "WordPressAPI", code: 0)
         } else {
             let url = try blog.restApiRootURL ?? blog.getUrl().appending(path: "wp-json").absoluteString
             let apiRootURL = try ParsedUrl.parse(input: url)
