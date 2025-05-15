@@ -1,3 +1,10 @@
-Vad är nytt den här månaden?
-- Bättre kommentarer: Uppdaterad design, djupindikatorer för trådar, förbättrat stöd för formaterat innehåll och en helskärmskomponerare med utkastssparande.
-- Buggkorrigeringar samt stabilitets- och prestandaförbättringar.
+Vi har gjort några små visuella ändringar på skärmen Kommentarsinformation. Du kommer nu att se den här skärmen när du visar en kommentar från dina notiser.
+Vi har lagt till en banner på fliken Mig, som ber nya användare att verifiera sin e-postadress. När du har gjort det har du full tillgång till allt i appen. Möjligheterna är oändliga.
+Du kommer att märka att den för närvarande valda webbplatsen alltid är synlig i sidopanelen, oavsett vad. Inget mer kurragömma.
+Vi har även åtgärdat flertalet buggar.
+- Inbäddade YouTube-videor visas nu korrekt i kommentarer.
+- Du kan nu se en förhandsgranskning av oredigerade utkastsidor som skapats från mallar.
+- Du kommer inte längre att se borttagna webbplatser i din app. Adjö och farväl.
+- Appen synkroniserar bloggar korrekt när de har lanserats.
+- Skärmen Statistik visar korrekta siffror för antalet besökare och visningar.
+- Om du använder en iPad kommer appen inte att krascha när du tar bort den sista webbplatsen kopplad till ditt konto. (Den kommer dock fortfarande att se ganska tom ut. Kanske ska du överväga att skapa en ny webbplats?)

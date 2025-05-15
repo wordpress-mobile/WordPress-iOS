@@ -1,3 +1,10 @@
-Bu ay için Yenilikler Neler?
-- Daha İyi Yorumlar: Güncellenmiş tasarım, Threads için derinlik göstergeleri, iyileştirilmiş zengin içerik desteği ve taslak kaydetmeyle tam ekran düzenleyici.
-- Hata Düzeltmeleri ve Stabilite ve Performans İyileştirmeleri.
+Yorum Ayrıntıları ekranında bazı görsel değişiklikler yaptık. Bildirimlerinizdeki bir yorumu görüntülediğinizde bu ekranı görürsünüz.
+Ben sekmesine yeni kullanıcıların e-postalarını doğrulamasını isteyen bir reklam bandı ekledik. Bunu yaptıktan sonra uygulamadaki her şeye tam erişime sahip olacaksınız. Olasılıklar sonsuzdur.
+Şu anda seçili olan sitenin ne olursa olsun her zaman kenar çubuğunda görünür olduğunu göreceksiniz. Saklambaç sona erdi.
+Ayrıca, ortam seçicideki çeşitli sorunları giderdik.
+- Gömülü YouTube videoları artık yorumlarda düzgün şekilde gösterilir.
+- Artık şablonlardan oluşturulan düzenlenmemiş taslak sayfalarının önizlemesini görebilirsiniz.
+- Silinen siteleri artık uygulamanızda görmeyeceksiniz. Hem de kalıcı olarak.
+- Uygulama, blogları yayınladıktan sonra düzgün bir şekilde senkronize eder.
+- İstatistikler ekranı ziyaretçiler ve görüntülemeler için doğru numaraları gösterir.
+- Bir iPad kullanıyorsanız hesabınıza eklenen son siteyi sildikten sonra uygulama çökmez. (Yine de oldukça boş görünecektir. Belki yeni bir site oluşturmayı düşünebilirsiniz).
