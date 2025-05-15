@@ -40,7 +40,6 @@ final class CommentCreateViewModel {
     /// Create a reply to the given comment.
     init(replyingTo comment: Comment, save: @escaping (String) async throws -> Void) {
         let siteID = comment.associatedSiteID ?? 0
-        wpAssert(siteID != 0, "missing required parameter siteID")
 
         self.siteID = siteID
         self.replyToComment = comment
