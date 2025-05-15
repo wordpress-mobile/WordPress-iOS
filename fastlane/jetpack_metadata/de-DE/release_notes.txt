@@ -1,4 +1,10 @@
-Was gibt es Neues in diesem Monat?
-- Bessere Kommentare: Aktualisiertes Design, Tiefenindikatoren für Threads, verbesserte Unterstützung für umfangreiche Inhalte und ein Vollbild-Composer mit der Möglichkeit zur Entwurfsspeicherung.
-- Beitragsbilder: Das Problem, dass der Reader für einige Beiträge keine Beitragsbilder anzeigte, wurde behoben.
-- Fehlerbehebungen sowie Optimierungen von Verfügbarkeit und Performance.
+Wir haben auf dem Bildschirm „Kommentardetails“ einige kleine visuelle Änderungen vorgenommen. Dieser Bildschirm wird jetzt angezeigt, wenn du dir einen Kommentar aus deinen Benachrichtigungen ansiehst.
+Wir haben dem Tab „Ich“ ein Banner hinzugefügt, in dem neue Benutzer aufgefordert werden, ihre E-Mail-Adresse zu bestätigen. Anschließend hast du vollen Zugriff auf alle Funktionen der App. Die Möglichkeiten sind grenzenlos.
+Du wirst feststellen, dass die aktuell ausgewählte Website immer in der Seitenleiste sichtbar ist und nicht mehr ausgeblendet wird.
+Außerdem haben wir mehrere Fehler behoben.
+- YouTube-Video-Einbettungen werden in den Kommentaren jetzt richtig angezeigt.
+- Du kannst jetzt eine Vorschau von unbearbeiteten Entwurfsseiten anzeigen, die aus Templates erstellt wurden.
+- Gelöschte Websites werden in deiner App nicht mehr angezeigt. Ade, leb' wohl.
+- Blogs werden nach der Veröffentlichung richtig in der App synchronisiert.
+- Der Statistikbildschirm zeigt genaue Zahlen für Besucher und Aufrufe.
+- Wenn du ein iPad verwendest, stürzt die App nicht ab, nachdem du die letzte mit deinem Konto verbundene Website löschst. (Es sieht dann aber ziemlich leer aus. Möchtest du vielleicht eine neue Website erstellen?)
