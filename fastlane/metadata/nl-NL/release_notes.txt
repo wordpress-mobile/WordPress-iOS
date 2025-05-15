@@ -1,3 +1,9 @@
-Wat is er deze maand nieuw?
-- Betere reacties: geüpdatet ontwerp, diepte indicatoren voor threads, verbeterde ondersteuning voor rich inhoud en een volledig scherm composer met concept opslaan.
-- Bugfixes & stabiliteit & performance verbeteringen.
+We hebben enkele kleine visuele wijzigingen aangebracht op het reactie details scherm. Je ziet dit scherm nu wanneer je een reactie bekijkt vanuit je meldingen. 
+We hebben een banner toegevoegd aan de Me tab, die nieuwe gebruikers vraagt hun e-mail te verifiëren. Zodra je dat doet, heb je volledige toegang tot alles in de app. De mogelijkheden zijn eindeloos. 
+Je zult merken dat de momenteel geselecteerde site altijd zichtbaar is in de zijbalk, wat er ook gebeurt. Verstoppertje is voorbij. 
+We hebben ook verschillende bugs opgelost. 
+- YouTube video insluitingen worden nu correct weergegeven in reacties. 
+- Je kunt nu een voorbeeld zien van onbewerkte concept pagina's die zijn gemaakt van templates. - Je ziet geen verwijderde sites meer in je app. Vaarwel. 
+- De app synchroniseert blogs correct nadat ze zijn gelanceerd. 
+- Het statistieken scherm toont nauwkeurige cijfers voor bezoekers en weergaven. 
+- Als je een iPad gebruikt, crasht de app niet meer nadat je de laatste site die aan je account is gekoppeld hebt verwijderd. (Het zal er nog steeds behoorlijk leeg uitzien. Misschien overweeg je een nieuwe site te maken?)

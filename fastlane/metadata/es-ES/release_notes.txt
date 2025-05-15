@@ -1,3 +1,10 @@
-¿Qué novedades hay este mes?
-- Mejores comentarios. Diseño actualizado, indicadores de profundidad en hilos, compatibilidad mejorada con contenido enriquecido, y un editor a pantalla completa con guardado de borradores.
-- Correcciones de fallos y mejoras de estabilidad y rendimiento.
+Hemos realizado algunos pequeños cambios visuales en la pantalla de detalles del comentario. Ahora verás esta pantalla cuando veas un comentario desde tus notificaciones.
+Hemos añadido un banner a la pestaña «Yo», que pide a los nuevos usuarios que verifiquen su correo electrónico. Una vez que lo hagas, tendrás acceso completo a todo lo que hay en la aplicación. Las posibilidades son infinitas.
+Verás que el sitio seleccionado actualmente siempre está visible en la barra lateral, pase lo que pase. Se acabó jugar al escondite.
+También hemos eliminado varios errores.
+- Los vídeos incrustados de YouTube ahora se muestran correctamente en los comentarios.
+- Ahora puedes ver una vista previa de los borradores de páginas sin editar creados a partir de plantillas.
+- Ya no verás sitios eliminados en tu aplicación. Adiós y gracias.
+- La app sincroniza correctamente los blogs después de haberlos lanzado.
+- La pantalla «Estadísticas» muestra cifras precisas de visitas y visualizaciones.
+- Si utilizas un iPad, la aplicación no se bloqueará después de eliminar el último sitio vinculado a tu cuenta. (Aunque seguirá pareciendo bastante vacío. ¿Quizás deberías plantearte crear un nuevo sitio?)
