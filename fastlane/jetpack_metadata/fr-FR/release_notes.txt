@@ -1,4 +1,10 @@
-Quoi de neuf ce mois-ci ?
-- Des commentaires revus et améliorés : design mis à jour, indicateurs de profondeur pour les fils de discussion, meilleure prise en charge du contenu enrichi et compositeur plein écran avec enregistrement du brouillon.
-- Images mises en avant : correction d’un problème qui faisait que le Lecteur n’affichait pas les images mises en avant pour certains articles.
-- Correction de bugs et amélioration de la stabilité et des performances
+Nous avons apporté quelques petites modifications visuelles sur l’écran Détails des commentaires. Vous verrez désormais cet écran lorsque vous visualiserez un commentaire depuis vos Notifications.
+Nous avons ajouté une bannière à l’onglet Moi, qui demande aux nouveaux utilisateurs de confirmer leur adresse e-mail. Une fois confirmée, vous aurez un accès complet à l’intégralité de l’application. Les possibilités sont infinies.
+Vous constaterez que le site actuellement sélectionné est toujours visible dans la colonne latérale, quoi qu’il arrive. Fini de jouer à cache-cache.
+Nous avons également résolu différents bugs.
+- Les intégrations vidéo YouTube s’affichent désormais correctement dans les commentaires.
+- Vous pouvez maintenant voir un aperçu des brouillons de pages non modifiés créés à partir de modèles.
+- Vous ne verrez plus de sites supprimés dans votre application. Bye bye !
+- L’application synchronise correctement les blogs après leur lancement.
+- L’écran Statistiques affiche des chiffres précis concernant les visiteurs et les vues.
+- Si vous utilisez un iPad, l’application ne plantera pas après la suppression du dernier site associé à votre compte. (Elle aura quand même l’air assez vide. Peut-être pourriez-vous créer un nouveau site ?)

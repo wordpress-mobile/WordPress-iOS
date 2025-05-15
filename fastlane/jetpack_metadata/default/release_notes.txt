@@ -1,4 +1,10 @@
-What’s New for this month?
-- Better Comments: Updated design, depth indicators for threads, improved rich content support, and a fullscreen composer with draft saving.
-- Featured Images: Fix an issue where Reader wasn't showing featured images for some posts.
-- Bug Fixes & Stability & Performance Improvements.
+We made some small visual changes on the Comment Details screen. You’ll now see this screen when you view a comment from your Notifications.
+We added a banner to the Me tab, which asks new users to verify their email. Once you do, you’ll have full access to everything in the app. The possibilities are endless.
+You’ll find that the currently selected site is always visible in the sidebar, no matter what. Hide-and-seek is over.
+We also squashed several bugs.
+- YouTube video embeds now show up properly in comments.
+- You can now see a preview of unedited draft pages created from templates.
+- You won’t see deleted sites in your app anymore. So long, farewell.
+- The app syncs blogs properly after they’ve launched.
+- The Stats screen shows accurate numbers for visitors and views.
+- If you’re using an iPad, the app won’t crash after you delete the last site attached to your account. (It’ll still look pretty empty, though. Maybe consider making a new site?)
