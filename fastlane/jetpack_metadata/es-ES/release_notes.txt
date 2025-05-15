@@ -1,4 +1,10 @@
-¿Qué novedades traemos este mes?
-- Mejores comentarios: diseño actualizado, indicadores de profundidad para los hilos, soporte mejorado de contenido enriquecido y un editor en pantalla completa con posibilidad de guardar borradores.
-- Imágenes destacadas: hemos corregido un problema que hacía que el Lector no mostrara imágenes destacadas en algunas entradas.
-- Corrección de errores y mejoras de rendimiento.
+Hemos hecho unos pequeños cambios visuales en la pantalla de detalles de los comentarios. Ahora te aparecerá esta pantalla cuando veas un comentario desde tus notificaciones.
+Hemos añadido un banner a la pestaña Yo, que pide a los nuevos usuarios que verifiquen su correo electrónico. Cuando lo hagas, tendrás acceso completo a todo lo que hay en la aplicación. Las posibilidades son infinitas.
+Verás que el sitio elegido siempre está visible en la barra lateral, pase lo que pase. Ya no tendrás el problema de que se oculte y tengas que buscarlo.
+También hemos solucionado varios errores.
+- Los vídeos incrustados de YouTube ahora se muestran correctamente en los comentarios.
+- Ahora puedes ver una vista previa de las páginas en borrador sin editar creadas a partir de plantillas.
+- Ya no verás los sitios eliminados en tu aplicación. Se fueron, adiós.
+- La aplicación sincroniza los blogs correctamente después de que se hayan publicado.
+- La pantalla Estadísticas muestra los números correctos de visitantes y vistas.
+- Si usas un iPad, la aplicación no fallará cuando elimines el último sitio vinculado a tu cuenta. (Eso sí, seguirá viéndose bastante vacío. ¿No te planteas crear otro sitio?)

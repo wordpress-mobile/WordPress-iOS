@@ -1,4 +1,10 @@
-O que há de novo neste mês?
-- Comentários melhores: design atualizado, indicadores de quantidade de respostas, compatibilidade aprimorada com rich media e um compositor em tela cheia com salvamento de rascunhos.
-- Imagens destacadas: corrigimos um problema em que o Leitor não exibia imagens destacadas de alguns posts.
-- Correções de bugs e melhorias de desempenho.
+Fizemos algumas pequenas alterações visuais na tela de detalhes do comentário. Agora você verá esta tela ao visualizar um comentário pelas suas notificações.
+Adicionamos um banner à guia Meu perfil que pede aos novos usuários para verificarem seus e-mails. Após a verificação, você terá acesso completo a tudo no aplicativo. As possibilidades são infinitas!
+Você verá que quando um site é selecionado, ele fica sempre visível na barra lateral, não importa o que aconteça. Chega de pique-esconde.
+Além disso, eliminamos vários bugs.
+- Os vídeos incorporados no YouTube agora aparecem corretamente nos comentários.
+- Agora você pode visualizar páginas de rascunho não editadas criadas a partir de modelos.
+- Você não verá mais sites excluídos em seu aplicativo. Isso é tudo, até mais.
+- O aplicativo sincroniza os blogs corretamente depois que eles são lançados.
+- A tela de estatísticas mostra números precisos de visitantes e visualizações.
+- Se você estiver usando um iPad, o aplicativo não travará depois que você excluir o último site anexado à sua conta. (Mas continuará bem vazio. Que tal criar um novo site?)
