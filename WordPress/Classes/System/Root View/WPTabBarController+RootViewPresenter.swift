@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// `WPTabBarController` is used as the root presenter when Jetpack features are enabled
 /// and the app's UI is normal.
@@ -23,12 +24,10 @@ extension WPTabBarController: RootViewPresenter {
 
     func showNotificationsTab(completion: ((NotificationsViewController) -> Void)?) {
         // UITabBarController.selectedIndex must be used from main thread only.
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
+        wpAssert(Thread.isMainThread)
 
-            self.selectedIndex = WPTab.notifications.rawValue
-            completion?(self.notificationsViewController!)
-        }
+        selectedIndex = WPTab.notifications.rawValue
+        completion?(notificationsViewController!)
     }
 
     // MARK: Me

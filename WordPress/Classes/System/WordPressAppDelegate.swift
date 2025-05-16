@@ -457,7 +457,9 @@ extension WordPressAppDelegate {
         }
 
         trackDeepLink(for: url) { url in
-            UniversalLinkRouter.shared.handle(url: url)
+            DispatchQueue.main.async {
+                UniversalLinkRouter.shared.handle(url: url)
+            }
         }
     }
 
