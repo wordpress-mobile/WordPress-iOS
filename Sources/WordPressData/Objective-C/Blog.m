@@ -614,7 +614,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             // alt is not supported via XML-RPC API
             // https://core.trac.wordpress.org/ticket/58582
             // https://github.com/wordpress-mobile/WordPress-Android/issues/18514#issuecomment-1589752274
-            return [self supportsRestApi];
+            return [self supportsRestApi] || [self supportsCoreRestApi];
         case BlogFeatureMediaDeletion:
             return [self isAdmin];
         case BlogFeatureHomepageSettings:

@@ -161,6 +161,13 @@ public extension Blog {
     @objc var isSelfHosted: Bool {
         self.account == nil
     }
+
+    @objc var supportsCoreRestApi: Bool {
+        if case .selfHosted = try? WordPressSite(blog: self) {
+            return true
+        }
+        return false
+    }
 }
 
 public extension WpApiApplicationPasswordDetails {
@@ -168,5 +175,21 @@ public extension WpApiApplicationPasswordDetails {
         SHA256.hash(data: Data(siteUrl.localizedLowercase.utf8))
             .compactMap { String(format: "%02x", $0) }
             .joined()
+    }
+}
+
+public enum WordPressSite {
+    case dotCom(siteId: Int, authToken: String)
+    case selfHosted(blogId: TaggedManagedObjectID<Blog>, apiRootURL: ParsedUrl, username: String, authToken: String)
+
+    public init(blog: Blog) throws {
+        if let account = blog.account {
+            let authToken = try account.authToken ?? WPAccount.token(forUsername: account.username)
+            self = .dotCom(siteId: blog.dotComID?.intValue ?? 0, authToken: authToken)
+        } else {
+            let url = try blog.restApiRootURL ?? blog.getUrl().appending(path: "wp-json").absoluteString
+            let apiRootURL = try ParsedUrl.parse(input: url)
+            self = .selfHosted(blogId: TaggedManagedObjectID(blog), apiRootURL: apiRootURL, username: try blog.getUsername(), authToken: try blog.getApplicationToken())
+        }
     }
 }

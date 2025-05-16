@@ -94,6 +94,10 @@ private extension MediaRepository {
             return MediaServiceRemoteREST(wordPressComRestApi: api, siteID: dotComID)
         }
 
+        if let site = try? WordPressSite(blog: blog) {
+            return MediaServiceRemoteCoreREST(client: .init(site: site))
+        }
+
         if let username = blog.username, let password = blog.password, let api = blog.xmlrpcApi {
             return MediaServiceRemoteXMLRPC(api: api, username: username, password: password)
         }

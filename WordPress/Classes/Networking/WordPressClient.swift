@@ -5,22 +5,6 @@ import WordPressAPIInternal
 import WordPressCore
 import WordPressShared
 
-enum WordPressSite {
-    case dotCom(authToken: String)
-    case selfHosted(blogId: TaggedManagedObjectID<Blog>, apiRootURL: ParsedUrl, username: String, authToken: String)
-
-    init(blog: Blog) throws {
-        if let account = blog.account {
-            let authToken = try account.authToken ?? WPAccount.token(forUsername: account.username)
-            self = .dotCom(authToken: authToken)
-        } else {
-            let url = try blog.restApiRootURL ?? blog.getUrl().appending(path: "wp-json").absoluteString
-            let apiRootURL = try ParsedUrl.parse(input: url)
-            self = .selfHosted(blogId: TaggedManagedObjectID(blog), apiRootURL: apiRootURL, username: try blog.getUsername(), authToken: try blog.getApplicationToken())
-        }
-    }
-}
-
 extension WordPressClient {
     static var requestedWithInvalidAuthenticationNotification: Foundation.Notification.Name {
         .init("WordPressClient.requestedWithInvalidAuthenticationNotification")
@@ -38,8 +22,8 @@ extension WordPressClient {
         let session = URLSession(configuration: .ephemeral)
 
         switch site {
-        case let .dotCom(authToken):
-            let apiRootURL = try! ParsedUrl.parse(input: "https://public-api.wordpress.com")
+        case let .dotCom(siteId, authToken):
+            let apiRootURL = try! ParsedUrl.parse(input: "https://public-api.wordpress.com/wpcom/v2/site/\(siteId)")
             let api = WordPressAPI(urlSession: session, apiRootUrl: apiRootURL, authentication: .bearer(token: authToken))
             self.init(api: api, rootUrl: apiRootURL)
         case let .selfHosted(blogId, apiRootURL, username, authToken):
