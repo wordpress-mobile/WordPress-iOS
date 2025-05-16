@@ -31,9 +31,14 @@ LOCALIZATION_PATTERNS=(
   "**/*.stringsdict"
 )
 
+# Define constants for job types
+VALIDATION="validation"
+BUILD="build"
+LOCALIZATION="localization"
+
 # Check if arguments are valid
 if [ -z "${1:-}" ] || [ "$1" != "--job-type" ] || [ -z "${2:-}" ]; then
-  echo "Error: Must specify --job-type [validation|build|localization]"
+  echo "Error: Must specify --job-type [$VALIDATION|$BUILD|$LOCALIZATION]"
   buildkite-agent step cancel
   exit 15
 fi
@@ -41,7 +46,7 @@ fi
 # Function to display skip message and create annotation
 show_skip_message() {
   local job_type=$1
-  local message="Skipping ${BUILDKITE_LABEL:-Job} - no relevant files changed"
+  local message="Skipped ${BUILDKITE_LABEL:-Job} - no relevant files changed"
   local context="skip-$(echo "${BUILDKITE_LABEL:-$job_type}" | sed -E -e 's/[^[:alnum:]]+/-/g' | tr A-Z a-z)"
   
   echo "$message" | buildkite-agent annotate --style "info" --context "$context"
@@ -50,7 +55,7 @@ show_skip_message() {
 
 job_type="$2"
 case "$job_type" in
-  "validation")
+  $VALIDATION)
     # We should skip if changes are limited to documentation, tooling, non-code files, and localization files
     PATTERNS=("${COMMON_PATTERNS[@]}" "${LOCALIZATION_PATTERNS[@]}")
     if pr_changed_files --all-match "${PATTERNS[@]}"; then
@@ -59,7 +64,7 @@ case "$job_type" in
     fi
     exit 1
     ;;
-  "localization")
+  $LOCALIZATION)
     # Check if any localization files have changed
     # Return true (skip) if NO localization files have changed
     if ! pr_changed_files --any-match "${LOCALIZATION_PATTERNS[@]}"; then
@@ -68,7 +73,7 @@ case "$job_type" in
     fi
     exit 1
     ;;
-  "build")
+  $BUILD)
     # We should skip if changes are limited to documentation, tooling, and non-code files
     # We'll let the job run (won't skip) if PR includes changes in localization files though
     PATTERNS=("${COMMON_PATTERNS[@]}")
@@ -79,7 +84,7 @@ case "$job_type" in
     exit 1
     ;;
   *)
-    echo "Error: Job type must be either 'validation', 'build', or 'localization'"
+    echo "Error: Job type must be either '$VALIDATION', '$BUILD', or '$LOCALIZATION'"
     buildkite-agent step cancel
     exit 15
     ;;

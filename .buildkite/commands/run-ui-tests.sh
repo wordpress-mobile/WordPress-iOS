@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-if .buildkite/commands/should-skip-job.sh --job-type validation; then
+if "$(dirname "${BASH_SOURCE[0]}")/should-skip-job.sh" --job-type validation; then
   exit 0
 fi
 
