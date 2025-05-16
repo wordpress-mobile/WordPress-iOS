@@ -477,6 +477,10 @@ extension WordPressAppDelegate {
     private func trackDeepLink(for url: URL, completion: @escaping ((URL) -> Void)) {
         let task = URLSession.shared.dataTask(with: url) { _, response, error in
             guard let url = response?.url else {
+                wpAssertionFailure(
+                    "Received a deep link response without URL attached.",
+                    userInfo: ["response": response ?? "no response"]
+                )
                 return
             }
 
