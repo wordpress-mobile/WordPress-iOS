@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-# Usage: should-skip-job.sh --job-type [validation|build|localization]
+# Usage: should-skip-job.sh --job-type [validation|localization|build]
 # --job-type validation: For jobs like unit/instrumented tests, manifest validation…
 #     Skip when changes are limited to documentation, tooling, non-code files, and localization files
 # --job-type localization: For jobs doing linting, especially ones that might include linting of localization files
