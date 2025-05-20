@@ -69,8 +69,17 @@ import CoreData
         service: SuggestionService = SuggestionService.shared,
         context: NSManagedObjectContext = ContextManager.shared.mainContext
     ) -> SuggestionsListViewModel? {
-        guard let blog = Blog.lookup(withID: siteID, in: context),
-              service.shouldShowSuggestions(for: blog) else {
+        guard siteID.intValue != 0, let blog = Blog.lookup(withID: siteID, in: context) else {
+            return nil
+        }
+        return make(blog: blog, service: service)
+    }
+
+    static func make(
+        blog: Blog,
+        service: SuggestionService = SuggestionService.shared
+    ) -> SuggestionsListViewModel? {
+        guard service.shouldShowSuggestions(for: blog) else {
             return nil
         }
         return SuggestionsListViewModel(blog: blog)

@@ -45,7 +45,7 @@ final class CommentCreateViewModel {
         self.replyToComment = comment
         self._save = save
 
-        self.suggestionsViewModel = SuggestionsListViewModel.make(siteID: siteID)
+        self.suggestionsViewModel = comment.blog.flatMap { SuggestionsListViewModel.make(blog: $0) }
         self.suggestionsViewModel?.enableProminentSuggestions(
             postAuthorID: comment.post?.authorID,
             commentAuthorID: comment.commentID as NSNumber
