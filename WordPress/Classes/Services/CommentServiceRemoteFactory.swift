@@ -15,6 +15,10 @@ import WordPressKit
             return CommentServiceRemoteREST(wordPressComRestApi: api, siteID: dotComID)
         }
 
+        if let site = try? WordPressSite(blog: blog) {
+            return CommentServiceRemoteCoreRESTAPI(client: .init(site: site))
+        }
+
         if let api = blog.xmlrpcApi,
            let username = blog.username,
            let password = blog.password {

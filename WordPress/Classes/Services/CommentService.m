@@ -175,6 +175,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                 fetchedComments = [self filterUnrepliedComments:comments forAuthor:author];
             }
             [self mergeComments:fetchedComments forBlog:blog purgeExisting:YES];
+            [self fetchPostsIfNeededForComments:fetchedComments inBlog:blog];
+
             blog.lastCommentsSync = [NSDate date];
         } completion:^{
             [[self class] stopSyncingCommentsForBlog:blogID];

@@ -1,3 +1,6 @@
+import Foundation
+import WordPressData
+
 /// Encapsulates actions related to fetching reply comments.
 ///
 extension CommentService {
@@ -72,6 +75,32 @@ extension CommentService {
             }
 
             self.coreDataStack.save(context, completion: completion, on: .main)
+        }
+    }
+
+    // The app may display `RemoteComment.postTitle` on comments list. However, the comments endpoint in the .org
+    // REST API does not return post title. This function prefetchs the associated posts and saves them locally if
+    // they don't already exist.
+    @objc(fetchPostsIfNeededForComments:inBlog:)
+    func fetchPostsIfNeeded(for comments: [RemoteComment], in blog: Blog) {
+        // Find posts that do not exists locally.
+        let postIds = comments
+            .reduce(into: Set<NSNumber>()) { result, comment in
+                if let postId = comment.postID, comment.postTitle == nil {
+                    result.insert(postId)
+                }
+            }
+            .filter { postId in
+                blog.lookupPost(withID: postId, in: blog.managedObjectContext!) == nil
+            }
+
+        let blogId = TaggedManagedObjectID(blog)
+        DDLogInfo("Pre-fetching \(postIds.count) posts...")
+        Task {
+            let repository = PostRepository()
+            for postId in postIds {
+                _ = try? await repository.getPost(withID: postId, from: blogId)
+            }
         }
     }
 }
