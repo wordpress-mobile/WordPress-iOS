@@ -19,6 +19,9 @@
 /* Empty Post Title */
 "(No Title)" = "(Ingen titel)";
 
+/* Lets a user know that a local draft does not have a title. */
+"(no title)" = "(ingen titel)";
+
 /* Account Settings Title
    Link to Account Settings section */
 "Account Settings" = "Kontoindstillinger";
@@ -45,6 +48,9 @@
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alternativ tekst";
+
+/* the comment has an anonymous author. */
+"Anonymous" = "Anonym";
 
 /* Approve action. Verb
    Approve comment (verb)
@@ -91,6 +97,7 @@
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
+   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -100,6 +107,7 @@
    Cancel action title
    Cancel button
    Cancel button label
+   Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
@@ -118,6 +126,7 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -159,6 +168,7 @@
 
 /* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
+   Dismiss the current view
    Dismisses the current screen */
 "Close" = "Luk";
 
@@ -175,6 +185,7 @@
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
+   Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Kommentarer";
 
@@ -186,6 +197,9 @@
 
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Bekræft";
+
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "Forbinder til WordPress.com";
 
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Forbinder...";
@@ -209,6 +223,9 @@
 /* Label for list of countries.
    Register Domain - Domain contact information field Country */
 "Country" = "Land";
+
+/* The button title text for creating a new account. */
+"Create Account" = "Opret konto";
 
 /* Button for selecting the current page template.
    Title for button to make a page with the contents of the selected layout */
@@ -242,6 +259,7 @@
 "Default Post Format" = "Standard indlægsformat";
 
 /* Delete
+   Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
    Title of the trash confirmation alert. */
 "Delete" = "Slet";
@@ -285,7 +303,9 @@
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Afbryd forbindelse til WordPress.com";
 
-/* No comment provided by engineer. */
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
+   Dismiss a view. Verb */
 "Dismiss" = "Afvis";
 
 /* A done button
@@ -300,6 +320,9 @@
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Færdig";
+
+/* Name for the status of a draft post. */
+"Draft" = "Kladde";
 
 /* Editing GIF alert default action button.
    Edits a Comment
@@ -335,7 +358,10 @@
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "E-mail-adresse";
 
-/* Describes the email address section in the comment detail screen. */
+/* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "E-mailadresse";
 
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
@@ -360,6 +386,9 @@
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Uddrag";
 
+/* Status for Media object that is failed upload or export. */
+"Failed" = "Mislykkedes";
+
 /* Label for the Featured Image area in post settings. */
 "Featured Image" = "Fremhævet billede";
 
@@ -378,6 +407,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Filtype";
 
+/* Button title. Follow the comments on a post. */
+"Follow" = "Følg";
+
 /* User role badge */
 "Follower" = "Følger";
 
@@ -390,6 +422,12 @@
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Fuld størrelse";
 
+/* View title for initial auth views. */
+"Get Started" = "Kom i gang!";
+
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "Henter kontooplysninger";
+
 /* Accessibility label for HTML button on formatting toolbar. */
 "HTML" = "HTML";
 
@@ -401,6 +439,9 @@
    Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Hjælp & support";
+
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "Skjult";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Skjul tastatur";
@@ -485,7 +526,8 @@
 /* Setting: indicates if Replies to your comments will be notified */
 "Likes on my posts" = "Likes på mine indlæg";
 
-/* Label for link title in Clicks stat. */
+/* Label for link title in Clicks stat.
+   Menu item label for linking a custom source URL. */
 "Link" = "Link";
 
 /* Link name field placeholder */
@@ -493,6 +535,9 @@
 
 /* Image link option title. */
 "Link To" = "Link til";
+
+/* Text displayed while loading plans details */
+"Loading Plans..." = "Henter planer...";
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Indlæser scan...";
@@ -504,16 +549,33 @@
    Text displayed while loading time zones */
 "Loading..." = "Henter...";
 
-/* Label for logging in to WordPress.com account
+/* Status for Media object that is only exists locally. */
+"Local" = "Lokal";
+
+/* Title for alert when a generic error happened when trying to find the location of the device */
+"Location" = "Placering";
+
+/* Used when geo-tagging posts, if the geo-tagging failed. */
+"Location unknown" = "Placering ukendt";
+
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Log ind";
 
 /* Title of a button for signing in. */
 "Log in" = "Log ind";
 
+/* A generic error message for a failed log in. */
+"Log in failed. Please try again." = "Log ind fejlede. Prøv venligst igen.";
+
 /* No comment provided by engineer. */
 "Logs" = "Logfiler";
+
+/* Title of a button. */
+"Lost your password?" = "Mistet din adgangskode?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Hovednavigation";
@@ -576,7 +638,9 @@
 "Newest" = "Nyeste";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "Næste";
 
 /* Label for a cancel button */
@@ -632,7 +696,12 @@
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifikationer";
 
-/* Menus: button title for finishing editing of a menu item.
+/* Alert dismissal title
+   Button title. An acknowledgement of the message displayed in a prompt.
+   Dismisses the alert
+   Menus: button title for finishing editing of a menu item.
+   Ok button for dismissing alert helping users understand their site address
+   OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Title of a button that dismisses a prompt */
 "OK" = "OK";
@@ -661,7 +730,8 @@
    Title for the view when there's an error loading time zones */
 "Oops" = "Ups";
 
-/* Title of a button that opens the apps settings in the system Settings.app */
+/* Go to the settings app
+   Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Åbn Indstillinger";
 
 /* No comment provided by engineer. */
@@ -691,14 +761,21 @@
 /* Title for selecting parent category of a category */
 "Parent Category" = "Forælderkategori";
 
-/* Label for entering password in password field
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
    Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Kodeord";
 
 /* Button title for Pending comment state.
+   Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "Afventer godkendelse";
+
+/* Name for the status of a post pending review. */
+"Pending review" = "Afventer godkendelse";
 
 /* Label for date periods. */
 "Period" = "Periode";
@@ -709,11 +786,14 @@
 /* No comment provided by engineer. */
 "Please enter a username." = "Indtast venligst et brugernavn.";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Indtast venligst en gyldig e-mail-adresse.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Indtast venligst dine legitimationsoplysninger";
+
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "Udfyld venligts alle felter";
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Prøv at taste dine login oplysninger igen.";
@@ -725,7 +805,8 @@
 /* Section title for Popular Languages */
 "Popular languages" = "Populære sprog";
 
-/* Noun. Type of content being selected is a blog post
+/* Menu item label for linking a post.
+   Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Indlæg";
 
@@ -757,12 +838,19 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Privatlivspolitik";
 
+/* Name for the status of a post that is marked private. */
+"Private" = "Privat";
+
 /* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Udgiv";
 
-/* Period Stats 'Published' header
+/* A short phrase indicating a post is due to be immedately published. */
+"Publish Immediately" = "Udgiv med det samme";
+
+/* Name for the status of a published post.
+   Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Udgivet";
 
@@ -837,11 +925,18 @@
    User action to retry media upload. */
 "Retry" = "Prøv igen";
 
+/* No comment provided by engineer. */
+"Retry?" = "Prøv igen?";
+
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Højre";
 
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "SMS sendt";
+
 /* Menus save button title
    Save Action
+   Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
    Title for the button that will save the site icon
@@ -851,7 +946,8 @@
 /* Menus save button title while it is saving a Menu. */
 "Saving..." = "Gemmer...";
 
-/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Name for the status of a scheduled post
+   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Planlagt";
 
 /* Title of Stats section that shows search engine referrer traffic. */
@@ -868,6 +964,15 @@
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Indstillinger";
+
+/* Spoken accessibility label */
+"Share" = "Del";
+
+/* When social login fails, this button offers to let them signup for a new WordPress.com account */
+"Sign up" = "Tilmeld dig";
+
+/* Button title. Tapping begins the process of creating a WordPress.com account. */
+"Sign up for WordPress.com" = "Registrer dig på WordPress.com";
 
 /* Title for the Language Picker View */
 "Site Language" = "Webstedets sprog";
@@ -902,7 +1007,7 @@
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "Beklager, webstedsadresser skal også have bogstaver!";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the entered email is not available. */
 "Sorry, that email address is already being used!" = "Beklager, den e-mail-adresse er allerede i brug!";
 
 /* No comment provided by engineer. */
@@ -990,6 +1095,9 @@
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "Verdens bedste fans";
 
+/* Message of error prompt shown when a user tries to perform an action without an internet connection. */
+"The internet connection appears to be offline." = "Internetforbindelsen ser ud til at være nede.";
+
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "Adressen på webstedet skal være kortere end 64 tegn.";
 
@@ -1003,6 +1111,9 @@
 
 /* Displayed after a failed Notification Settings call */
 "There has been an unexpected error while updating your Notification Settings" = "Der er sket en uventet fejl under opdateringen af notifikationsindstillingerne";
+
+/* Text displayed when there is a failure loading the plan details */
+"There was an error loading the plan" = "Der opstod en fejl under indlæsningen af planen.";
 
 /* Thumbnail image size. Should be the same as in core WP. */
 "Thumbnail" = "Miniaturebillede";
@@ -1031,6 +1142,7 @@
 "Trust" = "Tillid";
 
 /* Retries an Action
+   Retry
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Prøv igen";
@@ -1071,21 +1183,26 @@
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Upload fejlede";
 
-/* Label for the date a media asset (image / video) was uploaded */
+/* Label for the date a media asset (image / video) was uploaded
+   Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "Uploadet";
 
-/* \"Uploading\" Status text */
+/* \"Uploading\" Status text
+   Status for Media object that is being uploaded. */
 "Uploading" = "Uploader";
 
 /* No comment provided by engineer. */
 "Uploading…" = "Overfører...";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "Brugernavn";
 
 /* No comment provided by engineer. */
@@ -1131,6 +1248,9 @@
    Today's Stats 'Visitors' label */
 "Visitors" = "Besøgende";
 
+/* Post Signup Interstitial Title Text for WordPress iOS */
+"Welcome to WordPress" = "Velkommen til WordPress";
+
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Vi vil altid sende vigtige e-mails vedrørende din konto, men kan også modtage nyttig ekstramateriale.";
 
@@ -1159,7 +1279,8 @@
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Du kan ikke bruge den e-mail-adresse ved tilmelding. Vi har problemer med, at de blokerer nogle af vores e-mails. Benyt venligst en anden e-mail-udbyder.";
 
-/* Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
+/* Show when clicking cancel on a comment text box and you didn't save your changes.
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Du har ikke gemt dine ændringer";
 
 /* Title for a view milestone push notification */
@@ -1191,4 +1312,22 @@
 
 /* Later today */
 "later today" = "senere i dag";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Indlæg";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Kommentarer";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Likes";
+
+/* Title of today widget */
+"widget.today.title" = "I dag";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Visninger";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Besøgende";
 

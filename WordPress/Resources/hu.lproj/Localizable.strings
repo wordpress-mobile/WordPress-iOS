@@ -6,11 +6,17 @@
 /* Empty Post Title */
 "(No Title)" = "(Nincs cím)";
 
+/* Lets a user know that a local draft does not have a title. */
+"(no title)" = "(nincs cím)";
+
 /* No comment provided by engineer. */
 "Activity Logs" = "Tevékenységi napló";
 
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Haladó";
+
+/* the comment has an anonymous author. */
+"Anonymous" = "Névtelen";
 
 /* Approve action. Verb
    Approve comment (verb)
@@ -36,6 +42,7 @@
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
+   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -45,6 +52,7 @@
    Cancel action title
    Cancel button
    Cancel button label
+   Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Cancel button.
    Cancel button. Site creation modal popover.
    Cancel copying link to comment button title
@@ -63,6 +71,7 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -85,6 +94,7 @@
 
 /* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
+   Dismiss the current view
    Dismisses the current screen */
 "Close" = "Bezár";
 
@@ -101,6 +111,7 @@
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
+   Title of the reader's comments screen
    Today's Stats 'Comments' label */
 "Comments" = "Hozzászólások";
 
@@ -110,9 +121,15 @@
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Megerősítés";
 
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "Kapcsolódás a WordPress.com-hoz";
+
 /* Label for list of countries.
    Register Domain - Domain contact information field Country */
 "Country" = "Ország";
+
+/* The button title text for creating a new account. */
+"Create Account" = "Fiók létrehozása";
 
 /* No comment provided by engineer. */
 "Current" = "Jelenlegi";
@@ -121,6 +138,7 @@
 "Dashboard" = "Vezérlőpult";
 
 /* Delete
+   Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.
    Title for button that permanently deletes a media item (photo / video)
    Title of the trash confirmation alert. */
 "Delete" = "Törlés";
@@ -135,7 +153,9 @@
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Elvet";
 
-/* No comment provided by engineer. */
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog.
+   Dismiss a view. Verb */
 "Dismiss" = "Elutasítás";
 
 /* A done button
@@ -150,6 +170,9 @@
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Kész";
+
+/* Name for the status of a draft post. */
+"Draft" = "Vázlat";
 
 /* Editing GIF alert default action button.
    Edits a Comment
@@ -176,7 +199,10 @@
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "E-mail cím";
 
-/* Describes the email address section in the comment detail screen. */
+/* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "E-mail cím";
 
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
@@ -192,15 +218,27 @@
    Generic popup title for any type of error. */
 "Error" = "Hiba";
 
+/* Status for Media object that is failed upload or export. */
+"Failed" = "Sikertelen";
+
 /* Label for the Featured Image area in post settings. */
 "Featured Image" = "Kiemelt kép";
+
+/* Button title. Follow the comments on a post. */
+"Follow" = "Követés";
 
 /* Label for number of followers. */
 "Followers" = "Követők";
 
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "Fiók információk beszerzése";
+
 /* Help button
    Open editor help options */
 "Help" = "Segítség";
+
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "Rejtett";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Billentyűzet elrejtése";
@@ -259,12 +297,20 @@
    Text displayed while loading time zones */
 "Loading..." = "Betöltés...";
 
+/* Status for Media object that is only exists locally. */
+"Local" = "Helyi";
+
+/* Used when geo-tagging posts, if the geo-tagging failed. */
+"Location unknown" = "Ismeretlen helyzet";
+
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Naplófájlok létrehozás szerint";
 
-/* Label for logging in to WordPress.com account
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Bejelentkezés";
 
 /* Title of a button for signing in. */
@@ -272,6 +318,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "Naplózás";
+
+/* Title of a button. */
+"Lost your password?" = "Elfelejtett jelszó";
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
@@ -309,7 +358,9 @@
 "New Post" = "Új bejegyzés";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "Következő";
 
 /* Label for a cancel button */
@@ -344,7 +395,12 @@
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Értesítések";
 
-/* Menus: button title for finishing editing of a menu item.
+/* Alert dismissal title
+   Button title. An acknowledgement of the message displayed in a prompt.
+   Dismisses the alert
+   Menus: button title for finishing editing of a menu item.
+   Ok button for dismissing alert helping users understand their site address
+   OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Title of a button that dismisses a prompt */
 "OK" = "OK";
@@ -370,14 +426,21 @@
 /* Title for selecting parent category of a category */
 "Parent Category" = "Szülő kategória";
 
-/* Label for entering password in password field
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
    Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Jelszó";
 
 /* Button title for Pending comment state.
+   Status for Media object that is being processed locally.
    Title of pending Comments filter. */
 "Pending" = "Függőben Lévő";
+
+/* Name for the status of a post pending review. */
+"Pending review" = "Ellenőrzésre vár";
 
 /* No comment provided by engineer. */
 "Please enter a site address." = "Adjuk meg honlap címét!";
@@ -385,11 +448,14 @@
 /* No comment provided by engineer. */
 "Please enter a username." = "Adjuk meg a felhasználónevet!";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Adjunk meg valós e-mail címet!";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Kérlek, add meg a bejelentkezési adataid";
+
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "Töltsünk ki minden mezőt";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Próbáljuk meg később.";
@@ -418,12 +484,19 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Adatvédelmi irányelvek";
 
+/* Name for the status of a post that is marked private. */
+"Private" = "Magánjellegű";
+
 /* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Közzététel";
 
-/* Period Stats 'Published' header
+/* A short phrase indicating a post is due to be immedately published. */
+"Publish Immediately" = "Azonnali közzététel";
+
+/* Name for the status of a published post.
+   Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Közzétéve";
 
@@ -463,8 +536,12 @@
    User action to retry media upload. */
 "Retry" = "Újra";
 
+/* No comment provided by engineer. */
+"Retry?" = "Újra?";
+
 /* Menus save button title
    Save Action
+   Save button label (saving content, ex: Post, Page, Comment).
    Save draft post action on share extension site picker screen.
    Settings Text save button title
    Title for the button that will save the site icon
@@ -474,7 +551,8 @@
 /* Menus save button title while it is saving a Menu. */
 "Saving..." = "Mentés...";
 
-/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Name for the status of a scheduled post
+   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Ütemezve";
 
 /* Title of Stats section that shows search engine referrer traffic. */
@@ -485,6 +563,9 @@
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Beállítások";
+
+/* Spoken accessibility label */
+"Share" = "Megosztás";
 
 /* Title for the Language Picker View */
 "Site Language" = "Honlap nyelve";
@@ -516,7 +597,7 @@
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "Sajnos, a honlap címben betűknek is lennie kell!";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the entered email is not available. */
 "Sorry, that email address is already being used!" = "Sajnos, ez az e-mail cím már használatban van!";
 
 /* No comment provided by engineer. */
@@ -585,6 +666,9 @@
 /* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Úgy tűnik, hogy nincs internetkapcsolat.";
 
+/* Message of error prompt shown when a user tries to perform an action without an internet connection. */
+"The internet connection appears to be offline." = "Az internet kapcsolat megszakadt.";
+
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "A címnek 64 karakternél rövidebbnek kell lennie.";
 
@@ -604,6 +688,7 @@
 "Today" = "Ma";
 
 /* Retries an Action
+   Retry
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Próbáljuk újra";
@@ -633,18 +718,23 @@
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Sikertelen feltöltés";
 
-/* Label for the date a media asset (image / video) was uploaded */
+/* Label for the date a media asset (image / video) was uploaded
+   Status for Media object that is uploaded and sync with server. */
 "Uploaded" = "Feltöltve";
 
-/* \"Uploading\" Status text */
+/* \"Uploading\" Status text
+   Status for Media object that is being uploaded. */
 "Uploading" = "Feltöltés";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "Felhasználónév";
 
 /* No comment provided by engineer. */
@@ -681,6 +771,9 @@
    Today's Stats 'Visitors' label */
 "Visitors" = "Látogatók";
 
+/* Post Signup Interstitial Title Text for WordPress iOS */
+"Welcome to WordPress" = "Üdvözöl a WordPress";
+
 /* No comment provided by engineer. */
 "WordPress version too old" = "A WordPress verziója túl régi";
 
@@ -698,7 +791,8 @@
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Ez az e-mail cím nem használható. Ugyanis, ennél a szolgáltatónál fennakadnak az általunk külödött levelek. Válasszunk másik e-mail szolgáltatót.";
 
-/* Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
+/* Show when clicking cancel on a comment text box and you didn't save your changes.
+   Title of message with options that shown when there are unsaved changes and the author cancelled editing a Comment. */
 "You have unsaved changes." = "Nem mentett változtatások vannak.";
 
 /* (placeholder) Help the user enter a URL into the field */
@@ -709,4 +803,22 @@
 
 /* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
 "ios-widget.tVvJ9c" = "Select Site Intent";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Bejegyzések";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Hozzászólások";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Likes";
+
+/* Title of today widget */
+"widget.today.title" = "Ma";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Megtekintések";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Látogatók";
 
