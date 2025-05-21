@@ -191,7 +191,7 @@ platform :ios do
       paths: [
         'WordPress/',
         'Modules/Sources/',
-        'WordPressAuthenticator/Sources/',
+        'Sources/WordPressAuthenticator',
         gutenberg_path,
         *REMOTE_SWIFT_PACKAGES_TO_LOCALIZE.map { |name| File.join(derived_data_path, 'SourcePackages', 'checkouts', name, 'Sources') }
       ],
