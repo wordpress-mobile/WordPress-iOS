@@ -1,10 +1,10 @@
-Kami membuat beberapa perubahan visual kecil pada layar Detail Komentar. Sekarang Anda akan melihat layar ini ketika melihat komentar dari Pemberitahuan.
-Kami menambahkan banner ke Me tab, yang meminta pengguna baru untuk memverifikasi email mereka. Setelah selesai, Anda akan memiliki akses penuh ke semua yang ada dalam aplikasi. Kemungkinannya tidak terbatas.
-Anda akan menemukan bahwa situs yang dipilih saat ini selalu terlihat di bilah sisi, apa pun masalahnya. Hide-and-seek sudah berakhir.
+Kami membuat beberapa perubahan visual kecil pada layar Detail Komentar. Sekarang Anda akan melihat layar ini ketika menampilkan komentar dari Pemberitahuan.
+Kami menambahkan banner ke tab Saya, yang meminta pengguna baru untuk memverifikasi email. Setelah email diverifikasi, Anda dapat mengakses semua yang ada dalam aplikasi. Sebebas-bebasnya.
+Kini apa pun yang terjadi, situs yang saat ini dipilih akan selalu terlihat di bilah sisi. Tak ada lagi sembunyi-sembunyian.
 Kami juga membasmi beberapa bug.
 - Sematan video YouTube sekarang ditampilkan dengan benar dalam komentar.
 - Kini Anda dapat melihat pratinjau halaman konsep yang belum diedit dan dibuat dari templat.
-- Anda tidak akan melihat situs yang dihapus dalam aplikasi Anda lagi. Selamat tinggal.
-- Aplikasi menyinkronkan blog-blog dengan benar setelah diluncurkan.
-- Layar Statistik menampilkan angka yang akurat untuk pengunjung dan penayangan.
-- Jika Anda menggunakan iPad, aplikasi tidak akan berhenti setelah Anda menghapus situs terakhir yang terpasang di akun Anda. (Akan tetap terlihat kosong. Ingin membuat situs baru?)
+- Situs yang telah dihapus tak akan terlihat lagi dalam aplikasi. Selamat tinggal.
+- Aplikasi menyinkronkan blog dengan benar setelah blog diluncurkan.
+- Layar Statistik menampilkan jumlah pengunjung dan penayangan yang akurat.
+- Pada iPad, aplikasi tidak akan crash setelah situs terakhir yang terpasang di akun Anda dihapus. (Tapi, jadi terlihat kosong. Buat situs baru?)
