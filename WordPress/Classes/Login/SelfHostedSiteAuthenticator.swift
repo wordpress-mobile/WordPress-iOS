@@ -16,7 +16,16 @@ struct SelfHostedSiteAuthenticator {
         // Sign in to a self-hosted site. Using this context results in automatically reloading the app to display the site dashboard.
         case `default`
         // Sign in to a site that's alredy added to the app. This is typically used when the app needs to get a new application password.
-        case reauthentication(username: String?)
+        case reauthentication(TaggedManagedObjectID<Blog>, username: String?)
+
+        var blogID: TaggedManagedObjectID<Blog>? {
+            switch self {
+            case .default:
+                return nil
+            case let .reauthentication(blogID, _):
+                return blogID
+            }
+        }
     }
 
     private static let callbackURL = URL(string: "x-wordpress-app://login-callback")!
@@ -150,7 +159,7 @@ struct SelfHostedSiteAuthenticator {
             SVProgressHUD.dismiss()
         }
 
-        if case let .reauthentication(username) = context, let username, username != credentials.userLogin {
+        if case let .reauthentication(_, username) = context, let username, username != credentials.userLogin {
             throw .mismatchedUser(expectedUsername: username)
         }
 
@@ -165,7 +174,13 @@ struct SelfHostedSiteAuthenticator {
         // Only store the new site after credentials are validated.
         let blog: TaggedManagedObjectID<Blog>
         do {
-            blog = try await Blog.createRestApiBlog(with: credentials, restApiRootURL: apiRootURL, xmlrpcEndpointURL: xmlrpc, in: ContextManager.shared)
+            blog = try await Blog.createRestApiBlog(
+                with: credentials,
+                restApiRootURL: apiRootURL,
+                xmlrpcEndpointURL: xmlrpc,
+                blogID: context.blogID,
+                in: ContextManager.shared
+            )
         } catch {
             throw .savingSiteFailure
         }

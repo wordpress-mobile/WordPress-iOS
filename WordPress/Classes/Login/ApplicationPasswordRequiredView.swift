@@ -45,7 +45,7 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
         do {
             // Get an application password for the given site.
             let authenticator = SelfHostedSiteAuthenticator()
-            let blogID = try await authenticator.signIn(site: url, from: presenter, context: .reauthentication(username: blog.username))
+            let blogID = try await authenticator.signIn(site: url, from: presenter, context: .reauthentication(TaggedManagedObjectID(blog), username: blog.username))
 
             // Modify the `site` variable to display the intended feature.
             let blog = try ContextManager.shared.mainContext.existingObject(with: blogID)

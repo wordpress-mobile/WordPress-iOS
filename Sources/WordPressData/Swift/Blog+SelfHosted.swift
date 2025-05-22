@@ -20,12 +20,18 @@ public extension Blog {
         with details: WpApiApplicationPasswordDetails,
         restApiRootURL: URL,
         xmlrpcEndpointURL: URL,
+        blogID: TaggedManagedObjectID<Blog>?,
         in contextManager: ContextManager,
         using keychainImplementation: KeychainAccessible = KeychainUtils()
     ) async throws -> TaggedManagedObjectID<Blog> {
         try await contextManager.performAndSave { context in
-            let blog = Blog.lookup(username: details.userLogin, xmlrpc: xmlrpcEndpointURL.absoluteString, in: context)
-                ?? Blog.createBlankBlog(in: context)
+            let blog = if let blogID {
+                try context.existingObject(with: blogID)
+            } else {
+                Blog.lookup(username: details.userLogin, xmlrpc: xmlrpcEndpointURL.absoluteString, in: context)
+                    ?? Blog.createBlankBlog(in: context)
+            }
+
             blog.url = details.siteUrl
             blog.username = details.userLogin
             blog.restApiRootURL = restApiRootURL.absoluteString

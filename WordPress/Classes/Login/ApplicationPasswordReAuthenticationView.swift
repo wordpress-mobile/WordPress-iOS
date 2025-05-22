@@ -37,7 +37,7 @@ struct ApplicationPasswordReAuthenticationView: View {
                                 .signIn(
                                     site: blog.getUrl().absoluteString,
                                     from: presenter,
-                                    context: .reauthentication(username: blog.getUsername())
+                                    context: .reauthentication(TaggedManagedObjectID(blog), username: blog.getUsername())
                                 )
 
                             // Automatically dismiss this view upon a successful re-authentication.
