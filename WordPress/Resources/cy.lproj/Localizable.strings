@@ -68,6 +68,9 @@
 /* Placeholder text for the title of a site */
 "A title for the site" = "Teitl y wefan";
 
+/* An error message. */
+"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "Mae angen cyfeiriad e-bost dilys er mwyn anfon dolen dilysu. Ewch nôl i'r sgrin flaenorol a darparu cyfeiriad e-bost dilys.";
+
 /* Label for active Theme browser cell */
 "ACTIVE" = "GWEITHREDOL";
 
@@ -262,9 +265,13 @@
 /* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Camera";
 
+/* Title of an alert letting the user know */
+"Can Not Request Link" = "Methu gwneud Cais am Ddnolen";
+
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
+   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -292,6 +299,7 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -440,6 +448,9 @@
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Bydd cysylltu â %1$@ yn disodli'r cysylltiad presennol â %2$@.";
 
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "Cysylltu â WordPress.com";
+
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Cysylltu...";
 
@@ -492,6 +503,9 @@
 /* Label for list of countries.
    Register Domain - Domain contact information field Country */
 "Country" = "Gwlad";
+
+/* The button title text for creating a new account. */
+"Create Account" = "Creu Cyfrif";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
@@ -591,7 +605,8 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Trafodaeth";
 
-/* No comment provided by engineer. */
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
 "Dismiss" = "Cau";
 
 /* Display Name label text.
@@ -743,6 +758,9 @@
 /* Title for the general section in site settings screen */
 "General" = "Cyffredinol";
 
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "Estyn manylion cyfrif";
+
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Ewch i osodiadau iOS";
@@ -761,6 +779,9 @@
    Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Cymorth a Chefnogaeth";
+
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "Cudd";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Cuddio bysellfwrdd";
@@ -792,6 +813,9 @@
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Wedi ei Gynnwys gyda'r Wefan";
+
+/* An error message shown when a user signed in with incorrect credentials. */
+"Incorrect username or password. Please try entering your login details again." = "Enw defnyddiwr neu gyfrinair anghywir. Ceisiwch fewngofnodi eto.";
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Gwybodaeth am gyrsiau a digwyddiadau WordPress.com (ar-lein a byw).";
@@ -934,16 +958,24 @@
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Ffeiliau Cofnod yn ôl Dyddiad Creu";
 
-/* Label for logging in to WordPress.com account
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Mewngofnodi";
+
+/* A generic error message for a failed log in. */
+"Log in failed. Please try again." = "Mewngofnodi wedi methu. Ceisiwch eto.";
 
 /* Login Request Expired */
 "Login Request Expired" = "Daeth y Cais Mewngofnodi i Ben";
 
 /* No comment provided by engineer. */
 "Logs" = "Cofnodion";
+
+/* Title of a button. */
+"Lost your password?" = "Wedi colli eich cyfrinair?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Llywio";
@@ -1029,7 +1061,9 @@
 "Newest first" = "Diweddaraf yn gyntaf";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "Nesaf";
 
 /* Label for a cancel button */
@@ -1126,7 +1160,11 @@
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Rhestr wedi'i Rhifo";
 
-/* Menus: button title for finishing editing of a menu item.
+/* Alert dismissal title
+   Button title. An acknowledgement of the message displayed in a prompt.
+   Dismisses the alert
+   Menus: button title for finishing editing of a menu item.
+   Ok button for dismissing alert helping users understand their site address
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Title of a button that dismisses a prompt */
 "OK" = "Iawn";
@@ -1164,6 +1202,10 @@
 
 /* An informal exclaimation meaning `something went wrong`. */
 "Oops!" = "Wps!";
+
+/* The button title text for opening the user's preferred email app.
+   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
+"Open Mail" = "Agor E-bost";
 
 /* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Agor y Gosodiadau";
@@ -1219,8 +1261,11 @@
 /* Title for selecting parent category of a category */
 "Parent Category" = "Categori Rhiant";
 
-/* Label for entering password in password field
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
    Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Cyfrinair";
 
@@ -1248,11 +1293,14 @@
 /* No comment provided by engineer. */
 "Please enter a username." = "Rhowch enw defnyddiwr.";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Rhowch gyfeiriad e-bost dilys.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Rhowch eich manylion";
+
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "Llenwch pob maes";
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Ceisiwch fewngofnodi eto.";
@@ -1448,6 +1496,9 @@
    User's Role */
 "Role" = "Rôl";
 
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "SMS wedi ei anfon";
+
 /* Menus save button title
    Save Action
    Save draft post action on share extension site picker screen.
@@ -1479,6 +1530,9 @@
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Bydd dewis dewislen gwahanol yn gwaredu'r newidiadau rydych wedi eu gwneud i'r ddewislen ar hyn o bryd. A ydych yn siŵr eich bod am barhau?";
+
+/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
+"Send Link" = "Anfon Dolen";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Anfon Hysbysiadau Cyfeirio";
@@ -1578,7 +1632,7 @@
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "Ymddiheuriadau, rhaid i enw gwefan gynnwys llythrennau hefyd!";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the entered email is not available. */
 "Sorry, that email address is already being used!" = "Mae'r cyfeiriad e-bost yna eisoes yn cael ei ddefnyddio!";
 
 /* No comment provided by engineer. */
@@ -1933,11 +1987,14 @@
 "Use" = "Defnydd";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "Enw defnyddiwr";
 
 /* Setting: indicates if Mentions will be notified */
@@ -1949,6 +2006,9 @@
 /* Blog Users
    Noun. Title. Links to the user management feature. */
 "Users" = "Defnyddwyr";
+
+/* two factor code placeholder */
+"Verification code" = "Cod dilysu";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Dilysu Mewngofnodi";
@@ -2041,6 +2101,9 @@
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "Mae'r fersiwn yma o WordPress yn rhy hen";
+
+/* No comment provided by engineer. */
+"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Mae eich fersiwn o WordPress yn rhy hen. Mae'r wefan %1$@ yn defnyddio WordPress %2$@. Rydym yn argymell ei diweddaru i'r fersiwn diweddaraf, neu o leiaf %3$@";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";

@@ -80,6 +80,9 @@
 /* Placeholder text for the title of a site */
 "A title for the site" = "Заглавие на сайта";
 
+/* An error message. */
+"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "Изисква се валиден имейл адрес, за да изпратим връзка за автентикация. Върнете се на предишния екран и задайте валиден имейл адрес.";
+
 /* Label for active Theme browser cell */
 "ACTIVE" = "АКТИВНИ";
 
@@ -295,9 +298,13 @@
 /* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Камера";
 
+/* Title of an alert letting the user know */
+"Can Not Request Link" = "Неуспешно изискване на връзка";
+
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
+   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -325,6 +332,7 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -476,6 +484,9 @@
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Свързването на %1$@ ще замести сегашната връзка с %2$@.";
 
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "Свързване с WordPress.com";
+
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Свързване...";
 
@@ -500,6 +511,7 @@
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
+   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
@@ -536,6 +548,9 @@
 /* Label for list of countries.
    Register Domain - Domain contact information field Country */
 "Country" = "Страна";
+
+/* The button title text for creating a new account. */
+"Create Account" = "Създаване на профил";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
@@ -653,7 +668,8 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Дискусия";
 
-/* No comment provided by engineer. */
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
 "Dismiss" = "Премахване";
 
 /* Display Name label text.
@@ -826,6 +842,9 @@
 /* Title for the general section in site settings screen */
 "General" = "Основни";
 
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "Генериране на информацията за профила";
+
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Към настройки на iOS";
@@ -884,6 +903,9 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Помощ";
 
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "Скрит";
+
 /* Title of a button used to collapse a group */
 "Hide" = "Скриване";
 
@@ -932,6 +954,9 @@
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Включен по подразбиране";
+
+/* An error message shown when a user signed in with incorrect credentials. */
+"Incorrect username or password. Please try entering your login details again." = "Невалидно потребителско име или парола. Опитайте отново.";
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Информация за WordPress.com курсове и събития (онлайн и лично).";
@@ -1095,20 +1120,28 @@
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Логове по дата на създаване";
 
-/* Label for logging in to WordPress.com account
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Вход";
 
 /* Button for confirming logging out from WordPress.com account
    Label for logging out from WordPress.com account */
 "Log Out" = "Изход";
 
+/* A generic error message for a failed log in. */
+"Log in failed. Please try again." = "Неуспешно влизане - опитайте отново.";
+
 /* Login Request Expired */
 "Login Request Expired" = "Заявката за влизане е изтекла";
 
 /* No comment provided by engineer. */
 "Logs" = "Логове";
+
+/* Title of a button. */
+"Lost your password?" = "Изгубена парола?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Основна навигация";
@@ -1197,6 +1230,9 @@
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Помощ?";
 
+/* Title of the more help button on alert helping users understand their site address */
+"Need more help?" = "Имате нужда от допълнителна помощ?";
+
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "Нов IP адрес или обхват от IP адреси";
 
@@ -1213,7 +1249,9 @@
 "Newest first" = "Първо най-новите";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "Следваща";
 
 /* Accessibility label for the next notification button */
@@ -1313,7 +1351,11 @@
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Номериран списък";
 
-/* Menus: button title for finishing editing of a menu item.
+/* Alert dismissal title
+   Button title. An acknowledgement of the message displayed in a prompt.
+   Dismisses the alert
+   Menus: button title for finishing editing of a menu item.
+   Ok button for dismissing alert helping users understand their site address
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Title of a button that dismisses a prompt */
 "OK" = "ОК";
@@ -1351,6 +1393,10 @@
 
 /* An informal exclaimation meaning `something went wrong`. */
 "Oops!" = "Упс!";
+
+/* The button title text for opening the user's preferred email app.
+   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
+"Open Mail" = "Към електронна поща";
 
 /* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Отваряне на настройките";
@@ -1410,8 +1456,11 @@
 /* Title for selecting parent category of a category */
 "Parent Category" = "Категория родител";
 
-/* Label for entering password in password field
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
    Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Парола";
 
@@ -1442,11 +1491,14 @@
 /* No comment provided by engineer. */
 "Please enter a username." = "Моля, въведете потребителско име.";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Моля, въвете валиден имейл адрес.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Въведете вашите потребителски данни";
+
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "Моля, попълнете всички полета";
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Опитайте да въведете данните си за вход отново.";
@@ -1655,6 +1707,9 @@
    User's Role */
 "Role" = "Роля";
 
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "SMS изпратен";
+
 /* Menus save button title
    Save Action
    Save draft post action on share extension site picker screen.
@@ -1689,6 +1744,9 @@
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Избирането на друго меню ще отхвърли промените, които сте направили към текущото. Сигурни ли сте, че искате да продължите?";
+
+/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
+"Send Link" = "Изпращане на връзка";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Изпращане на pingbacks";
@@ -1785,7 +1843,7 @@
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "Адресът на сайта трябва да има и букви.";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the entered email is not available. */
 "Sorry, that email address is already being used!" = "Този имейл адрес вече се използва!";
 
 /* No comment provided by engineer. */
@@ -1912,6 +1970,9 @@
 
 /* Title of a button style */
 "Text Only" = "Само текст";
+
+/* Button title */
+"Text me a code instead" = "Изпращане на код чрез SMS";
 
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Благодарим ви, че избрахте %1$@ от %2$@";
@@ -2164,11 +2225,14 @@
 "Use" = "Използване";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "Потребителско име";
 
 /* Setting: indicates if Mentions will be notified */
@@ -2180,6 +2244,9 @@
 /* Blog Users
    Noun. Title. Links to the user management feature. */
 "Users" = "Потребители";
+
+/* two factor code placeholder */
+"Verification code" = "Код за потвърждение";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Потвърждение на влизането";
@@ -2255,6 +2322,9 @@
 /* Title displayed in the Notification Settings for WordPress.com */
 "We’ll always send important emails regarding your account, but you can get some helpful extras, too." = "Ще ви изпращаме важни имейли относно профила ви, също можете да получите и някои полезни екстри.";
 
+/* Title of alert helping users understand their site address */
+"What's my site address?" = "Какъв е адресът на моя сайт?";
+
 /* Text rendered at the bottom of the Discussion Moderation Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "Когато коментар съдържа някоя от тези думи в съдържанието, името, адреса, имейла или IP адреса, този коментар ще бъде задържан за модерация. Можете да добавяте частични думи - например \"press\" ще хване и \"WordPress\".";
 
@@ -2275,6 +2345,9 @@
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "Версията на WordPress е прекалено стара";
+
+/* No comment provided by engineer. */
+"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Версията на WordPress e много стара. Сайтът на %1$@ използва WordPress %2$@. Ние препоръчваме да преминете към последната версия или най-малко на %3$@";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";

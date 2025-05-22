@@ -221,6 +221,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Placeholder text for the title of a site */
 "A title for the site" = "En tittel for siden";
 
+/* An error message. */
+"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "En gyldig epostadresse er påkrevd for å sende en autentiseringlenke. Vennligst gå tilbake til den forrige skjermen og skriv inn en gyldig epost.";
+
+/* Shown when a user types a non-number into the two factor field. */
+"A verification code will only contain numbers." = "En bekreftelseskode inneholder bare tall.";
+
 /* Label for active Theme browser cell */
 "ACTIVE" = "AKTIV";
 
@@ -360,6 +366,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Avansert";
 
+/* Option to select the Airmail app when logging in with magic links */
+"Airmail" = "Airmail";
+
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
 "Alignment" = "Justering";
@@ -411,9 +420,15 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Jetpack Settings: Allowlisted IP addresses */
 "Allowlisted IP addresses" = "Alltid tillatte IP-adresser";
 
+/* Instructions for users with two-factor authentication enabled. */
+"Almost there! Please enter the verification code from your authenticator app." = "Nesten fremme! Skriv inn verifiseringskoden fra autentiseringsappen din.";
+
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "Alt-tekst";
+
+/* String displayed before offering alternative login methods */
+"Alternatively:" = "Alternativt:";
 
 /* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
 "Always Send Crash Logs" = "Alltid send krasjlogger";
@@ -706,6 +721,9 @@ translators: %s: Block name e.g. \"Image block\" */
 . Also there is a placeholder %@ which is: Terms and Conditions */
 "By setting up Jetpack you agree to our\n%@" = "Ved å sette opp Jetpack godtar du våre\n%@";
 
+/* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
+"By signing up, you agree to our _Terms of Service_." = "Ved å registrere deg, godtar du våre _Tjenestevilkår_.";
+
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "TILPASS";
 
@@ -714,6 +732,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Kamera";
+
+/* Title of an alert letting the user know */
+"Can Not Request Link" = "Kan ikke forespørre lenke";
 
 /* Alert message that is shown when trying to publish empty page */
 "Can't publish an empty page" = "Kan ikke publisere en tom side";
@@ -724,6 +745,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
+   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -751,6 +773,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -825,6 +848,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "Sjekk feil under kjøp";
+
+/* Alert title for check your email during logIn/signUp. */
+"Check your email!" = "Sjekk din e-post!";
 
 /* Default subtitle for no-results when there is no connection
    Default subtitle for no-results when there is no connection. */
@@ -1001,12 +1027,18 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Title for the list of accounts for third party sharing services. */
 "Connected Accounts" = "Tilkoblede kontoer";
 
+/* Title shown when a user logs in with Google but no matching WordPress.com account is found */
+"Connected But…" = "Koblet til, men …";
+
 /* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
    Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
 "Connecting %@" = "Kobler til %@";
 
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Å koble til %1$@ vil erstatte den eksisterende tilkoblingen til %2$@.";
+
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "Kobler til WordPress.com";
 
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Kobler til...";
@@ -1039,6 +1071,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
+   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
@@ -1053,6 +1086,15 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "Fortsett å lese";
+
+/* Button title. Tapping begins log in using Apple. */
+"Continue with Apple" = "Fortsett med Apple";
+
+/* Button title. Tapping begins log in using Google. */
+"Continue with Google" = "Fortsett med Google";
+
+/* Shown while logging in with Apple and the app waits for the site creation process to complete. */
+"Continuing with Apple" = "Fortsetter med Apple";
 
 /* An example tag used in the login prologue screens. */
 "Cooking" = "Matlaging";
@@ -1114,6 +1156,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for create floating action button */
 "Create" = "Opprett";
+
+/* The button title text for creating a new account. */
+"Create Account" = "Lag konto";
 
 /* Create New header text */
 "Create New" = "Opprett ny";
@@ -1310,7 +1355,8 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskusjon";
 
-/* No comment provided by engineer. */
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
 "Dismiss" = "Ignorer";
 
 /* Display Name label text.
@@ -1326,6 +1372,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domener";
+
+/* Label for button to log in using your site address. The underscores _..._ denote underline */
+"Don't have an account? _Sign up_" = "Har du ikke en konto? _Registrer deg_";
 
 /* A done button
    Button text on site creation epilogue page to proceed to My Sites.
@@ -1455,7 +1504,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "E-postadresse";
 
-/* Describes the email address section in the comment detail screen. */
+/* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "E-postadresse";
 
 /* Notification Settings Channel */
@@ -1512,8 +1564,22 @@ translators: %s: Block name e.g. \"Image block\" */
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "Skriv inn passord";
 
+/* Instruction text on the login's site addresss screen.
+   Label for button to log in using your site address. */
+"Enter the address of the WordPress site you'd like to connect." = "Oppgi adressen til WordPress-nettstedet du ønsker på koble til";
+
+/* Instructional text shown when requesting the user's password for login. */
+"Enter the password for your WordPress.com account." = "Skriv inn passordet til WordPress.com-kontoen din.";
+
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Skriv inn brukernavn";
+
+/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
+"Enter your account information for %@." = "Oppgi din kontoinformasjon for %@.";
+
+/* Title of a button on the magic link screen.
+   Title of a button. */
+"Enter your password instead." = "Skriv inn passordet i stedet.";
 
 /* Generic error alert title
    Generic popup title for any type of error. */
@@ -1631,6 +1697,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Kunne ikke serialisere forespørselen til REST API-et.";
 
+/* Option to select the Fastmail app when logging in with magic links */
+"Fastmail" = "Fastmail";
+
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Anbefalte";
 
@@ -1672,6 +1741,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Finn ut mer";
+
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "Finn nettstedsadressen";
 
 /* My Profile first name label
    Register Domain - Domain contact information field First name
@@ -1720,11 +1792,20 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the general section in site settings screen */
 "General" = "Generelt";
 
+/* View title for initial auth views. */
+"Get Started" = "Komme i gang";
+
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "Bli aktiv! Kommenter på innlegg fra blogger du følger.";
 
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Bli varslet: kommenter på innlegg du har lest.";
+
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "Få mer informasjon";
+
+/* Option to select the Gmail app when logging in with magic links */
+"Gmail" = "Gmail";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Gå til Leser";
@@ -1732,6 +1813,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Gå til iOS-innstillinger";
+
+/* Message shown on screen after the Google sign up process failed. */
+"Google sign up failed." = "Registrering med Google feilet.";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Henter nettstedets URL";
@@ -1792,6 +1876,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Help icon" = "Hjelp-ikon";
+
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "Skjult";
 
 /* Title of a button used to collapse a group */
 "Hide" = "Skjul";
@@ -1874,6 +1961,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Inkludert med side";
+
+/* An error message shown when a user signed in with incorrect credentials. */
+"Incorrect username or password. Please try entering your login details again." = "Feil brukernavn eller passord. Prøv å skrive inn på nytt.";
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Informasjon om WordPress.com-kurs og -hendelser (på nett og i person).";
@@ -1968,6 +2058,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the Invite Link section of the Invite Person screen. */
 "Invite Link" = "Invitasjonslenke";
+
+/* An error message shown during log in when the username or password is incorrect. */
+"It looks like this username\/password isn't associated with this site." = "Det ser ut som dette brukernavnet\/passordet ikke er knyttet til denne siden.";
+
+/* An error message shown when a wpcom user provides the wrong password. */
+"It seems like you've entered an incorrect password. Want to give it another try?" = "Det ser ut som du har skrevet inn feil passord. Vil du gi det et forsøk til?";
 
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
@@ -2160,9 +2256,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Loggfiler etter startdato";
 
-/* Label for logging in to WordPress.com account
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Logg inn";
 
 /* Button for confirming logging out from WordPress.com account
@@ -2171,6 +2269,15 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button for signing in. */
 "Log in" = "Logg inn";
+
+/* A generic error message for a failed log in. */
+"Log in failed. Please try again." = "Innlogging mislyktes. Vennligst prøv igjen.";
+
+/* Instruction text on the login's email address screen. */
+"Log in to the WordPress.com account you used to connect Jetpack." = "Logg inn med WordPress.com-kontoen du brukte for å koble til Jetpack.";
+
+/* Instruction text on the login's email address screen. */
+"Log in to your WordPress.com account with your email address." = "Logg inn på din WordPress.com-konto med din e-postadresse.";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of Jetpack?" = "Logge ut av Jetpack?";
@@ -2189,6 +2296,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Det ser ut til at du har Jetpack satt opp på ditt nettsted. Gratulerer!\nLogg inn med din WordPress.com-innlogging nedenfor for å aktivere statistikk og varslinger.";
+
+/* Title of a button. */
+"Lost your password?" = "Mistet ditt passord?";
+
+/* Option to select the Apple Mail app when logging in with magic links */
+"Mail (Default)" = "E-post (standard)";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Hovednavigasjon";
@@ -2299,6 +2412,9 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for the share message field on the post settings. */
 "Message" = "Melding";
 
+/* Option to select the Microsft Outlook app when logging in with magic links */
+"Microsoft Outlook" = "Microsoft Outlook";
+
 /* Title for the mobile web preview */
 "Mobile" = "Mobil";
 
@@ -2387,8 +2503,15 @@ translators: %s: Block name e.g. \"Image block\" */
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Hjelp?";
 
-/* The secondary button title in the migration welcome screen */
+/* A button title. */
+"Need help finding your site address?" = "Trenger du hjelp med å finne sideadressen?";
+
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "Trenger du hjelp?";
+
+/* Title of the more help button on alert helping users understand their site address */
+"Need more help?" = "Trenger du mer hjelp?";
 
 /* Describes a status of a plugin */
 "Needs Update" = "Trenger oppdatering";
@@ -2421,7 +2544,9 @@ translators: %s: Block name e.g. \"Image block\" */
 "Newest first" = "Nyeste først";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "Neste";
 
 /* Accessibility label for the next notification button */
@@ -2626,7 +2751,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Nummerert liste";
 
-/* Menus: button title for finishing editing of a menu item.
+/* Alert dismissal title
+   Button title. An acknowledgement of the message displayed in a prompt.
+   Dismisses the alert
+   Menus: button title for finishing editing of a menu item.
+   Ok button for dismissing alert helping users understand their site address
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Title of a button that dismisses a prompt */
 "OK" = "OK";
@@ -2677,6 +2806,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Åpne enhetsinnstillinger";
 
+/* The button title text for opening the user's preferred email app.
+   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
+"Open Mail" = "Åpne Mail";
+
 /* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Åpne innstillinger";
 
@@ -2700,6 +2833,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* WordPress.com Research Footer Text */
 "Opportunities to participate in WordPress.com research & surveys." = "Muligheter for å være med i WordPress.coms forskning og undersøkelser.";
+
+/* Divider on initial auth view separating auth options. */
+"Or" = "Eller";
+
+/* Label for button to log in using site address. Underscores _..._ denote underline. */
+"Or log in by _entering your site address_." = "Eller logg inn ved å _oppgi adressen til nettstedet_.";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Nummerert liste";
@@ -2766,8 +2905,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for selecting parent category of a category */
 "Parent Category" = "Foreldrekategori";
 
-/* Label for entering password in password field
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
    Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Passord";
 
@@ -2816,6 +2958,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message displayed on an error alert to prompt the user to contact support */
 "Please contact support for assistance." = "Vennligst kontakt kundestøtten for assistanse.";
 
+/* Error message shown when a URL is invalid. */
+"Please enter a complete website address, like example.com." = "Vennligst oppgi en komplett nettstedsadresse, som example.com.";
+
 /* No comment provided by engineer. */
 "Please enter a site address." = "Vennligst skriv inn en nettstedsadresse.";
 
@@ -2846,11 +2991,14 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Vennligst skriv inn en gyldig adresse";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Vennligst skriv inn en gyldig e-postadresse.";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Vennligst oppgi et gyldig telefonnummer";
+
+/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
+"Please enter the password for your WordPress.com account to log in with your Apple ID." = "Vennligst oppgi passordet til WordPress.com-konto for å logge inn med din Apple-ID.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Vennligst skriv inn dine opplysninger";
@@ -2858,8 +3006,14 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructions for alert asking for email. */
 "Please enter your email address." = "Vennligst oppgi din e-postadresse.";
 
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "Vennligst fyll ut alle feltene";
+
 /* Share extension dialog text  - displayed when user is missing a login token. */
 "Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again." = "Vennligst åpne WordPress-appen, logg in på WordPress.com, og sjekk at du har minst en side før du prøver igjen.";
+
+/* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
+"Please log out before connecting to a different wordpress.com site" = "Vennligst logg ut for du kobler til et annet wordpress.com-nettsted";
 
 /* Used on an error alert to prompt the user to try again */
 "Please try again later" = "Vennligst prøv igjen senere";
@@ -3230,6 +3384,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Send på nytt";
 
+/* The button title for a secondary call-to-action button. When the user can't remember their password. */
+"Reset your password" = "Tilbakestill passordet ditt";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Endre størrelse og beskjær";
 
@@ -3286,6 +3443,9 @@ translators: %s: Block name e.g. \"Image block\" */
    User Roles Title
    User's Role */
 "Role" = "Rolle";
+
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "SMS sendt";
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
@@ -3413,6 +3573,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen reader hint (non-imperative) about what does the menu item selection button do */
 "Selects this item" = "Velg dette elementet";
 
+/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
+"Send Link" = "Send lenke";
+
+/* The button title text for sending a magic link. */
+"Send Link by Email" = "Send lenke med e-post";
+
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "Send loggmelding";
 
@@ -3495,6 +3661,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Vis Gjenblogg-knapp";
 
+/* Accessibility label for the 'Show password' button in the login page's password field.
+   Accessibility label for the “Show password“ button in the login page's password field. */
+"Show password" = "Vis passord";
+
 /* No comment provided by engineer. */
 "Show post content" = "Vis innhold av innlegg";
 
@@ -3506,6 +3676,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label on Post Stats view indicating which post the stats are for. */
 "Showing stats for:" = "Viser statistikk for:";
+
+/* Accessibility value if login page's password field is displaying the password. */
+"Shown" = "Vist";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Vises offentlig når du kommenterer på blogger.";
@@ -3521,6 +3694,18 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Viser innlegget";
+
+/* View title during the sign up process. */
+"Sign Up" = "Registrer deg";
+
+/* When social login fails, this button offers to let them signup for a new WordPress.com account */
+"Sign up" = "Meld deg inn";
+
+/* Button title. Tapping begins the process of creating a WordPress.com account. */
+"Sign up for WordPress.com" = "Registrer deg på WordPress.com";
+
+/* Button title. Tapping begins our normal sign up process. */
+"Sign up with Email" = "Registrer deg med epost";
 
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Siden du har et gratisabonnement, vil hendelsene du ser i aktivitetsloggen være begrenset.";
@@ -3553,6 +3738,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Sideprestasjoner";
+
+/* Accessibility label of the site address field shown when adding a self-hosted site. */
+"Site address" = "Nettstedsadresse";
 
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "Nettstedsadressen må være minst 4 tegn.";
@@ -3616,7 +3804,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "Beklager, nettstedsadresser må ha bokstaver også!";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the entered email is not available. */
 "Sorry, that email address is already being used!" = "Beklager, den e-postadressen er allerede i bruk!";
 
 /* No comment provided by engineer. */
@@ -3675,6 +3863,9 @@ translators: %s: Block name e.g. \"Image block\" */
    Marks comment as spam.
    Title of spam Comments filter. */
 "Spam" = "Søppel";
+
+/* Option to select the Spark email app when logging in with magic links */
+"Spark" = "Spark";
 
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
@@ -3872,8 +4063,14 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button style */
 "Text Only" = "Kun tekst";
 
+/* Button title */
+"Text me a code instead" = "Send koden på tekstmelding i stedet";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Takk for at du valgte %1$@ av %2$@";
+
+/* Shown when a user pastes a code into the two factor field that contains letters or is the wrong length */
+"That doesn't appear to be a valid verification code." = "Det der ser ikke ut som en gyldig bekreftelseskode.";
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a WordPress site. */
 "That doesn't look like a WordPress site." = "Den siden ser ikke ut som en WordPress-side.";
@@ -3895,6 +4092,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Facebook-tilkoblingen kan ikke finne noen sider. Publisering kan ikke koble til Facebook-profiler, kun publiserte sider.";
+
+/* Description shown when a user logs in with Google but no matching WordPress.com account is found */
+"The Google account \"%@\" doesn't match any account on WordPress.com" = "Google-kontoen \"%@\" matcher ikke en WordPress.com-konto";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Internettilkoblingen ser ikke ut til å virke.";
@@ -3940,6 +4140,10 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Nettstedet på %1$@ bruker WordPress %2$@. Vi anbefaler å oppdatere til siste versjon, eller i det minste %3$@";
+
+/* Error message shown a URL does not point to an existing site.
+   Error message shown when a URL does not point to an existing site. */
+"The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "Nettstedet på den adressen er ikke et WordPress-nettsted. For at vi skal kunne koble til må nettstedet være WordPress.";
 
 /* Message shown when site deletion API failed */
 "The site could not be deleted." = "Siden kunne ikke slettes.";
@@ -4048,6 +4252,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Denne appen trenger tilgang til kameraet for å ta bilder og video, vennligst endre personverninnstillingene hvis du ønsker dette.";
 
+/* An error message informing the user the email address they entered did not match a WordPress.com account. */
+"This email address is not registered on WordPress.com." = "Denne epostadressen er ikke registrert på WordPress.com.";
+
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "Denne filen er for stor til å lastes opp til siden din, eller så støttes ikke dette medieformatet.";
 
@@ -4101,11 +4308,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "For å fortsette, vennligst skriv inn epost-adresse og navn.";
 
+/* Text instructing the user to enter their email address. */
+"To create your new WordPress.com account, please enter your email address." = "For å opprette en ny WordPress.com-konto, vennligst skriv inn epostadressen din.";
+
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "For å få hjelpsomme varslinger fra WordPress-siden din på mobilen, må du installere Jetpack-utvidelsen.";
 
 /* Install Plugin dialog text. */
 "To install plugins, you need to have a custom domain associated with your site." = "For å installere utvidelser, må du ha et tilpasset domene knyttet til nettsiden din.";
+
+/* Instructional text shown when requesting the user's password for Google login. */
+"To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "For å fortsette med denne Google-kontoen, vennligst logg inn med WordPress.com-passordet ditt først. Du vil kun bli spurt om dette én gang.";
 
 /* Message asking the user if they want to set up Jetpack from stats */
 "To use stats on your site, you'll need to install the Jetpack plugin." = "For å bruke statistikk på siden din, må du installere Jetpack-utvidelsen.";
@@ -4193,6 +4406,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Prøv nå";
 
+/* When social login fails, this button offers to let the user try again with a differen email address */
+"Try with another email" = "Prøv med en annen E-post";
+
+/* When social login fails, this button offers to let them try tp login using a URL */
+"Try with the site address" = "Prøv med nettstedsadressen";
+
 /* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
@@ -4210,6 +4429,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "BRUKER";
+
+/* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
+"Unable To Connect" = "Klarte ikke å koble til";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Kunne ikke laste inn innlegg";
@@ -4261,6 +4483,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert displayed to the user when a single post and 1 file has failed to upload. */
 "Unable to upload 1 post, 1 file" = "Kunne ikke laste opp 1 innlegg, 1 fil";
+
+/* Error message displayed when an error occurred checking for email availability. */
+"Unable to verify the email address. Please try again later." = "Kunne ikke verifisere epostadressen. Prøv igjen senere.";
 
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Kunne ikke lagre bilde til fil";
@@ -4403,11 +4628,14 @@ translators: %s: Block name e.g. \"Image block\" */
 "Use block editor" = "Bruk blokkredigering";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "Brukernavn";
 
 /* Message displayed in a Notice when the username has changed successfully. The placeholder is the new username. */
@@ -4422,6 +4650,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Blog Users
    Noun. Title. Links to the user management feature. */
 "Users" = "Brukere";
+
+/* two factor code placeholder */
+"Verification code" = "Bekreftelseskode";
 
 /* Message shown when a verification email was re-sent succesfully */
 "Verification email sent, check your inbox." = "Verifiserings-E-posten ble sendt, sjekk innboksen din";
@@ -4512,6 +4743,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
 "WP Admin" = "WP Admin";
 
+/* Message shown on screen while waiting for Google to finish its signup process. */
+"Waiting for Google to complete…" = "Venter på at Google skal fullføre...";
+
+/* View title during the Google auth process. */
+"Waiting..." = "Venter...";
+
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
    Title for Jetpack Restore Warning screen */
@@ -4529,14 +4766,26 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Vi bruker andre sporingsverktøy, inkludert noen fra tredjeparter. Les mer om disse og hvordan du kontrollerer dem.";
 
+/* Error message displayed when an error occurred sending the magic link email. */
+"We were unable to send you an email at this time. Please try again later." = "Vi kunne ikke sende deg en epost på det gjeldende tidspunkt. Vennligst prøv igjen senere.";
+
+/* Instructional text for the magic link login flow. */
+"We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Vi sender deg en magisk lenke som vil logge deg inn øyeblikkelig, uten behov for passord. Ikke mer bokstav-for-bokstav-skriving!";
+
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Vi vil varsle deg når du får følgere, kommentarer og likes.";
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Vi vil varsle deg når du får følgere, kommentarer og likes. Vil du tillate push-varslinger?";
 
+/* Text confirming email address to be used for new account. */
+"We'll use this email address to create your new WordPress.com account." = "Vi bruker denne epostadressen for å opprette din nye WordPress.com-konto.";
+
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "Vi holder på den det avsluttende oppsettet—snart ferdig...";
+
+/* Error message shown when having trouble connecting to a Jetpack site. */
+"We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Vi kunne ikke koble til Jetpack-siden på den URL-en. Kontakt oss for hjelp.";
 
 /* Account Settings Web Address label
    Header for a comment author's web address, shown when editing a comment. */
@@ -4566,6 +4815,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of section that contains plugins' change log */
 "What's New" = "Hva er nytt";
 
+/* Title of alert helping users understand their site address */
+"What's my site address?" = "Hva er sideadressen min?";
+
 /* Text rendered at the bottom of the Discussion Moderation Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "Når en kommentar inneholder noen av disse ordene i innholdet, navnet, URLen, eposten eller IPen vil det bli hold i modereringskøen. Du kan skrive inn deler av ord, så \"press\" vil matche \"WordPress\".";
 
@@ -4574,6 +4826,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Når du gjør endringer på nettsiden din, vil du kunne se aktivitetshistorikken din her.";
+
+/* An error message shown when a wpcom user provides the wrong password. */
+"Whoops, something went wrong and we couldn't log you in. Please try again!" = "Oisann, noe gikk galt og vi klarte ikke å logge det deg på. Vennligst prøv igjen!";
+
+/* Error message shown when an incorrect two factor code is provided. */
+"Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Oida, det var ikke en gyldig 2-trinnsautentiseringskode. Dobbeltsjekk koden din, og prøv igjen!";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Vil ikke vises offentlig.";
@@ -4592,6 +4850,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "WordPress-versjonen er for gammel";
+
+/* No comment provided by engineer. */
+"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "WordPress-versjonen er for gammel. Siden med adresse %1$@ kjører WordPress %2$@. Vi anbefaler at du oppdaterer til den nyeste versjonen, eller i det minste %3$@";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
@@ -4626,6 +4887,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the writing section in site settings screen */
 "Writing" = "Skriver";
+
+/* Option to select the Yahoo Mail app when logging in with magic links */
+"Yahoo Mail" = "Yahoo Mail";
 
 /* 'This Year' label for the the year. */
 "Year" = "År";
@@ -4745,6 +5009,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed when a site restore takes too long. */
 "Your restore is taking longer than usual, please check again in a few minutes." = "Din gjenoppretting tar lenger tid enn vanlig, vennligst sjekk igjen om noen få minutter.";
 
+/* Body text of alert helping users understand their site address */
+"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Sideadressen din vises i adresselinja øverst på skjermen når du besøker siden i Safari.";
+
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Dit nettsted er opprettet!";
 
@@ -4790,6 +5057,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Address information field Country Code placeholder */
 "eg. 44" = "f.eks. 47";
 
+/* Placeholder for the site url textfield.
+   Site Address placeholder */
+"example.com" = "example.com";
+
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/min-nettsteds-adresse (URL)";
 
@@ -4801,6 +5072,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Later today */
 "later today" = "senere i dag";
+
+/* No comment provided by engineer. */
+"password" = "passord";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefonnummer";
@@ -4834,6 +5108,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sider, side, blogger, blogg";
+
+/* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
+"{G} Log in with Google." = "{G} Logg inn med Google.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Domener";

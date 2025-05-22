@@ -91,6 +91,7 @@
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
+   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -118,6 +119,7 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -187,6 +189,9 @@
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Bekræft";
 
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "Forbinder til WordPress.com";
+
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Forbinder...";
 
@@ -209,6 +214,9 @@
 /* Label for list of countries.
    Register Domain - Domain contact information field Country */
 "Country" = "Land";
+
+/* The button title text for creating a new account. */
+"Create Account" = "Opret konto";
 
 /* Button for selecting the current page template.
    Title for button to make a page with the contents of the selected layout */
@@ -285,7 +293,8 @@
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Afbryd forbindelse til WordPress.com";
 
-/* No comment provided by engineer. */
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
 "Dismiss" = "Afvis";
 
 /* A done button
@@ -335,7 +344,10 @@
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "E-mail-adresse";
 
-/* Describes the email address section in the comment detail screen. */
+/* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "E-mailadresse";
 
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
@@ -390,6 +402,12 @@
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Fuld størrelse";
 
+/* View title for initial auth views. */
+"Get Started" = "Kom i gang!";
+
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "Henter kontooplysninger";
+
 /* Accessibility label for HTML button on formatting toolbar. */
 "HTML" = "HTML";
 
@@ -401,6 +419,9 @@
    Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Hjælp & support";
+
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "Skjult";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Skjul tastatur";
@@ -504,16 +525,24 @@
    Text displayed while loading time zones */
 "Loading..." = "Henter...";
 
-/* Label for logging in to WordPress.com account
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Log ind";
 
 /* Title of a button for signing in. */
 "Log in" = "Log ind";
 
+/* A generic error message for a failed log in. */
+"Log in failed. Please try again." = "Log ind fejlede. Prøv venligst igen.";
+
 /* No comment provided by engineer. */
 "Logs" = "Logfiler";
+
+/* Title of a button. */
+"Lost your password?" = "Mistet din adgangskode?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Hovednavigation";
@@ -576,7 +605,9 @@
 "Newest" = "Nyeste";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "Næste";
 
 /* Label for a cancel button */
@@ -632,7 +663,11 @@
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Notifikationer";
 
-/* Menus: button title for finishing editing of a menu item.
+/* Alert dismissal title
+   Button title. An acknowledgement of the message displayed in a prompt.
+   Dismisses the alert
+   Menus: button title for finishing editing of a menu item.
+   Ok button for dismissing alert helping users understand their site address
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Title of a button that dismisses a prompt */
 "OK" = "OK";
@@ -691,8 +726,11 @@
 /* Title for selecting parent category of a category */
 "Parent Category" = "Forælderkategori";
 
-/* Label for entering password in password field
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
    Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Kodeord";
 
@@ -709,11 +747,14 @@
 /* No comment provided by engineer. */
 "Please enter a username." = "Indtast venligst et brugernavn.";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Indtast venligst en gyldig e-mail-adresse.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Indtast venligst dine legitimationsoplysninger";
+
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "Udfyld venligts alle felter";
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Prøv at taste dine login oplysninger igen.";
@@ -840,6 +881,9 @@
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "Højre";
 
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "SMS sendt";
+
 /* Menus save button title
    Save Action
    Save draft post action on share extension site picker screen.
@@ -868,6 +912,12 @@
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Indstillinger";
+
+/* When social login fails, this button offers to let them signup for a new WordPress.com account */
+"Sign up" = "Tilmeld dig";
+
+/* Button title. Tapping begins the process of creating a WordPress.com account. */
+"Sign up for WordPress.com" = "Registrer dig på WordPress.com";
 
 /* Title for the Language Picker View */
 "Site Language" = "Webstedets sprog";
@@ -902,7 +952,7 @@
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "Beklager, webstedsadresser skal også have bogstaver!";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the entered email is not available. */
 "Sorry, that email address is already being used!" = "Beklager, den e-mail-adresse er allerede i brug!";
 
 /* No comment provided by engineer. */
@@ -1081,11 +1131,14 @@
 "Uploading…" = "Overfører...";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "Brugernavn";
 
 /* No comment provided by engineer. */
