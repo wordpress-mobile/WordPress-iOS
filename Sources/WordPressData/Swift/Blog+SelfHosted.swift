@@ -198,4 +198,23 @@ public enum WordPressSite {
             self = .selfHosted(blogId: TaggedManagedObjectID(blog), apiRootURL: apiRootURL, username: try blog.getUsername(), authToken: try blog.getApplicationToken())
         }
     }
+
+    public static func throughDotCom(blog: Blog) -> Self? {
+        guard
+            let account = blog.account,
+            let siteId = blog.dotComID?.intValue,
+            let authToken = try? account.authToken ?? WPAccount.token(forUsername: account.username)
+        else { return nil }
+
+        return .dotCom(siteId: siteId, authToken: authToken)
+    }
+
+    public func blog(in context: NSManagedObjectContext) throws -> Blog? {
+        switch self {
+        case let .dotCom(siteId, _):
+            return try Blog.lookup(withID: siteId, in: context)
+        case let .selfHosted(blogId, _, _ , _):
+            return try context.existingObject(with: blogId)
+        }
+    }
 }

@@ -1,5 +1,7 @@
 import Foundation
 import WordPressShared
+import WordPressAPI
+import WordPressCore
 
 // MARK: - BlogDetailsViewController (Misc)
 
@@ -345,6 +347,74 @@ extension BlogDetailsViewController {
         let controller = SiteMonitoringViewController(blog: blog, selectedTab: selectedTab)
         presentationDelegate?.presentBlogDetailsViewController(controller)
     }
+
+    @objc public func checkApplicationPasswordEligibility() {
+        guard FeatureFlag.authenticateUsingApplicationPassword.enabled else { return }
+
+        // We have already got an application token for this site, no need to ask for another one.
+        guard (try? blog.getApplicationToken()) == nil, let url = blog.url else { return }
+
+        Task { @MainActor in
+            // If the auto disocvery process is successful, we consider the site supports application password.
+            let siteDetails = try await WordPressLoginClient(urlSession: URLSession(configuration: .ephemeral)).details(ofSite: url)
+
+            // Since the site is already added to the app, we need to find the current user/account in the site itself,
+            // not the one in WP.com.
+            //
+            // The "site username" could be
+            // - When the site is added via the signed in WP.com account, the username of the self-hosted user that
+            //   connected the site to the signed in WP.com account. Or,
+            // - When the site is added as a self-hosted site, the username of the logged in site: `blog.username`.
+            let siteUsername: String
+            if let site = WordPressSite.throughDotCom(blog: blog) {
+                // For sites that are added to the app via a WP.com account, we can find out the user using the core
+                // REST API via WP.com: https://public-api.wordpress.com/wp/v2/sites/$site_id/users/me
+                let client = WordPressClient(site: site)
+                siteUsername = try await client.api.users.retrieveMeWithEditContext().data.username
+            } else if let username = blog.username {
+                // For sites that are added as self-hosted sites, the `username` is what we need.
+                siteUsername = username
+            } else {
+                return
+            }
+
+            self.applicationPasswordAuthenticationInfo = .init(siteAddress: url, siteDetails: siteDetails, siteUsername: siteUsername)
+        }
+    }
+
+    @objc public func applicationPasswordAuthenticationSectionViewModel() -> BlogDetailsSection {
+        let row = BlogDetailsRow()
+        row.callback = { [weak self] in
+            Task {
+                await self?.startApplicationPasswordAuthenticationFlow()
+            }
+        }
+        return BlogDetailsSection(
+            title: nil,
+            rows: [row],
+            footerTitle: nil,
+            category: .applicationPasswordAuthentication
+        )
+    }
+
+    @MainActor
+    private func startApplicationPasswordAuthenticationFlow() async {
+        guard let info = self.applicationPasswordAuthenticationInfo else {
+            return
+        }
+
+        let authenticator = SelfHostedSiteAuthenticator()
+        do {
+            let _ = try await authenticator.signIn(
+                details: info.siteDetails,
+                from: self,
+                context: .reauthentication(TaggedManagedObjectID(blog), username: info.siteUsername)
+            )
+            self.applicationPasswordAuthenticationInfo = nil
+        } catch {
+            DDLogError("Application password authentication failed: \(error)")
+        }
+    }
 }
 
 // MARK: - BlogDetailsViewController (Tracking)
@@ -390,4 +460,17 @@ private enum Constants {
 private enum Strings {
     static let users = NSLocalizedString("mySite.menu.users", value: "Users", comment: "Title for the menu item")
     static let subscribers = NSLocalizedString("mySite.menu.subscribers", value: "Subscribers", comment: "Title for the menu item")
+}
+
+// Necessary data that's required to get an application application from a given site.
+@objc public class ApplicationPasswordAuthenticationInfo: NSObject {
+    public let siteAddress: String
+    public let siteDetails: AutoDiscoveryAttemptSuccess
+    public let siteUsername: String
+
+    public init(siteAddress: String, siteDetails: AutoDiscoveryAttemptSuccess, siteUsername: String) {
+        self.siteAddress = siteAddress
+        self.siteDetails = siteDetails
+        self.siteUsername = siteUsername
+    }
 }

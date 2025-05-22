@@ -5,6 +5,7 @@
 @class CreateButtonCoordinator;
 @class IntrinsicTableView;
 @class MeViewController;
+@class ApplicationPasswordAuthenticationInfo;
 @protocol BlogDetailHeader;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
@@ -23,7 +24,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
     BlogDetailsSectionCategorySotW2023Card,
     BlogDetailsSectionCategoryContent,
     BlogDetailsSectionCategoryTraffic,
-    BlogDetailsSectionCategoryMaintenance
+    BlogDetailsSectionCategoryMaintenance,
+    BlogDetailsSectionCategoryApplicationPasswordAuthentication
 };
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
@@ -126,6 +128,10 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
 
 /// A new display mode for the displaying it as part of the site menu.
 @property (nonatomic) BOOL isSidebarModeEnabled;
+
+/// When this property value is not nil, the view controller shows an "Application Passwords" to allow users to
+/// grant the app an application password.
+@property (nonatomic) ApplicationPasswordAuthenticationInfo *applicationPasswordAuthenticationInfo;
 
 @property (nonatomic, weak) UIViewController *presentedSiteSettingsViewController;
 
