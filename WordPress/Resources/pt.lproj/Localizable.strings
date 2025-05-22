@@ -80,6 +80,12 @@
 /* Placeholder text for the title of a site */
 "A title for the site" = "Um título para o site";
 
+/* An error message. */
+"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "É necessário um endereço de email válido para onde enviar uma ligação de autenticação. Por favor volte ao ecrã anterior e insira um endereço de email válido.";
+
+/* Shown when a user types a non-number into the two factor field. */
+"A verification code will only contain numbers." = "O código de verificação só deverá conter números.";
+
 /* Label for active Theme browser cell */
 "ACTIVE" = "ACTIVO";
 
@@ -315,6 +321,9 @@
 /* Title for a list of different button styles. */
 "Button Style" = "Estilo de botão";
 
+/* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
+"By signing up, you agree to our _Terms of Service_." = "Ao registar-se, concorda com os nossos _Termos de Serviço_.";
+
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "A calcular...";
 
@@ -324,6 +333,7 @@
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
+   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -351,6 +361,7 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -507,9 +518,15 @@
 /* Noun. Title. Title for the list of accounts for third party sharing services. */
 "Connected Accounts" = "Contas ligadas";
 
+/* Title shown when a user logs in with Google but no matching WordPress.com account is found */
+"Connected But…" = "Ligado, mas...";
+
 /* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
    Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
 "Connecting %@" = "A ligar %@";
+
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "A ligar ao WordPress.com";
 
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "A ligar...";
@@ -538,6 +555,7 @@
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
+   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
@@ -577,6 +595,9 @@
 
 /* Register Domain - Address information field Country Code */
 "Country Code" = "Código do país";
+
+/* The button title text for creating a new account. */
+"Create Account" = "Criar uma conta";
 
 /* Button for selecting the current page template.
    Title for button to make a page with the contents of the selected layout */
@@ -699,7 +720,8 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Discussão";
 
-/* No comment provided by engineer. */
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
 "Dismiss" = "Ignorar";
 
 /* Display Name label text.
@@ -769,7 +791,10 @@
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Endereço de email";
 
-/* Describes the email address section in the comment detail screen. */
+/* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "Endereço de email";
 
 /* Notification Settings Channel */
@@ -786,6 +811,9 @@
 
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "Insira a senha";
+
+/* Instructional text shown when requesting the user's password for login. */
+"Enter the password for your WordPress.com account." = "Insira a senha da sua conta WordPress.com.";
 
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Insira o nome de utilizador";
@@ -887,6 +915,9 @@
 /* Title for the general section in site settings screen */
 "General" = "Geral";
 
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "A obter informações da conta";
+
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Abrir definições do iOS";
@@ -942,6 +973,9 @@
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Ajuda e suporte";
 
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "Invisível";
+
 /* No comment provided by engineer. */
 "Hide keyboard" = "Esconder teclado";
 
@@ -994,6 +1028,9 @@
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Incluído no site";
+
+/* An error message shown when a user signed in with incorrect credentials. */
+"Incorrect username or password. Please try entering your login details again." = "Nome de utilizador ou senha incorrectos. Por favor insira os seus dados de novo.";
 
 /* Default button title used in media picker to insert media (photos / videos) into a post.
    Label action for inserting a link on the editor */
@@ -1169,9 +1206,11 @@
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "Ficheiros de relatório por data de criação.";
 
-/* Label for logging in to WordPress.com account
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "Iniciar sessão";
 
 /* Button for confirming logging out from WordPress.com account
@@ -1181,6 +1220,9 @@
 /* Title of a button for signing in. */
 "Log in" = "Iniciar sessão";
 
+/* A generic error message for a failed log in. */
+"Log in failed. Please try again." = "Falhou ao iniciar sessão. Por favor tente de novo.";
+
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Terminar sessão do WordPress?";
 
@@ -1189,6 +1231,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "Relatórios";
+
+/* Title of a button. */
+"Lost your password?" = "Esqueceu-se da senha?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Navegação principal";
@@ -1294,6 +1339,9 @@
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Necessita de ajuda?";
 
+/* Title of the more help button on alert helping users understand their site address */
+"Need more help?" = "Precisa de mais ajuda?";
+
 /* New Post 3D Touch Shortcut */
 "New Post" = "Novo artigo";
 
@@ -1304,7 +1352,9 @@
 "Newest first" = "Mais recentes primeiro";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "Seguinte";
 
 /* Accessibility label for the next notification button */
@@ -1407,7 +1457,11 @@
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Lista numerada";
 
-/* Menus: button title for finishing editing of a menu item.
+/* Alert dismissal title
+   Button title. An acknowledgement of the message displayed in a prompt.
+   Dismisses the alert
+   Menus: button title for finishing editing of a menu item.
+   Ok button for dismissing alert helping users understand their site address
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Title of a button that dismisses a prompt */
 "OK" = "OK";
@@ -1448,6 +1502,10 @@
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Abrir definições do dispositivo";
+
+/* The button title text for opening the user's preferred email app.
+   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
+"Open Mail" = "Abrir Mail";
 
 /* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Abrir definições";
@@ -1516,8 +1574,11 @@
 /* Title for selecting parent category of a category */
 "Parent Category" = "Categoria superior";
 
-/* Label for entering password in password field
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
    Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Senha";
 
@@ -1554,7 +1615,7 @@
 /* No comment provided by engineer. */
 "Please enter a username." = "Por favor insira um nome de utilizador.";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "Por favor insira um endereço de email válido.";
 
 /* Popup message to ask for user credentials (fields shown below). */
@@ -1562,6 +1623,9 @@
 
 /* Instructions for alert asking for email. */
 "Please enter your email address." = "Por favor insira um endereço de email.";
+
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "Por favor preencha todos os campos";
 
 /* Share extension dialog text  - displayed when user is missing a login token. */
 "Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again." = "Por favor inicie a aplicação WordPress, inicie sessão em WordPress.com, verifique se tem pelo menos um site e tente de novo.";
@@ -1805,6 +1869,9 @@
    User's Role */
 "Role" = "Papel";
 
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "SMS enviado";
+
 /* Menus save button title
    Save Action
    Save draft post action on share extension site picker screen.
@@ -1836,6 +1903,9 @@
 
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Seleccione o estilo do parágrafo";
+
+/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
+"Send Link" = "Enviar ligação";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Enviar pingbacks";
@@ -1876,6 +1946,15 @@
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Mostrado publicamente quando comenta em sites.";
+
+/* When social login fails, this button offers to let them signup for a new WordPress.com account */
+"Sign up" = "Registar";
+
+/* Button title. Tapping begins the process of creating a WordPress.com account. */
+"Sign up for WordPress.com" = "Registar em WordPress.com";
+
+/* Button title. Tapping begins our normal sign up process. */
+"Sign up with Email" = "Registar com email";
 
 /* Title for the Language Picker View */
 "Site Language" = "Idioma do site";
@@ -1926,7 +2005,7 @@
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "Desculpe mas o endereço do site também tem de incluir letras!";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the entered email is not available. */
 "Sorry, that email address is already being used!" = "Desculpe mas esse endereço de email já está a ser utilizado!";
 
 /* No comment provided by engineer. */
@@ -2048,6 +2127,9 @@
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Obrigado por escolher o %1$@ de %2$@";
 
+/* Shown when a user pastes a code into the two factor field that contains letters or is the wrong length */
+"That doesn't appear to be a valid verification code." = "Este não parece ser um código de verificação válido.";
+
 /* Message to show to user when he tries to add a self-hosted site that isn't a WordPress site. */
 "That doesn't look like a WordPress site." = "Não parece ser um site WordPress.";
 
@@ -2134,6 +2216,9 @@
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "WordPress precisa de autorização para aceder à câmara do seu dispositivo para poder adicionar fotos e vídeos aos seus artigos. Por favor, actualize as suas definições de privacidade.";
 
+/* An error message informing the user the email address they entered did not match a WordPress.com account. */
+"This email address is not registered on WordPress.com." = "Este endereço de email não está registado em WordPress.com.";
+
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Este item multimédia foi eliminado.";
 
@@ -2163,6 +2248,9 @@
 
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Para continuar por favor insira um endereço de email e um nome.";
+
+/* Text instructing the user to enter their email address. */
+"To create your new WordPress.com account, please enter your email address." = "Para criar uma nova conta em WordPress.com, por favor insira um endereço de email.";
 
 /* Comments Today Section Header
    Insights 'Today' header
@@ -2208,6 +2296,12 @@
    Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Tentar de novo";
 
+/* When social login fails, this button offers to let the user try again with a differen email address */
+"Try with another email" = "Tente com outro email";
+
+/* When social login fails, this button offers to let them try tp login using a URL */
+"Try with the site address" = "Tente com o endereço do site";
+
 /* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
@@ -2223,6 +2317,9 @@
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "UTILIZA";
 
+/* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
+"Unable To Connect" = "Não é possível ligar";
+
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Não foi possível carregar os conteúdos";
 
@@ -2237,6 +2334,9 @@
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Não é possível guardar o item multimédia.";
+
+/* Error message displayed when an error occurred checking for email availability. */
+"Unable to verify the email address. Please try again later." = "Não foi possível verificar o endereço de email. Por favor tente mais tarde.";
 
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Não foi possível guardar o ficheiro de imagem";
@@ -2324,11 +2424,14 @@
 "Use" = "Usar";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "Nome de utilizador";
 
 /* Setting: indicates if Mentions will be notified */
@@ -2340,6 +2443,9 @@
 /* Blog Users
    Noun. Title. Links to the user management feature. */
 "Users" = "Utilizadores";
+
+/* two factor code placeholder */
+"Verification code" = "Código de verificação";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Verificar sessão";
@@ -2415,6 +2521,9 @@
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Ocorreram problemas ao carregar dados";
 
+/* Instructional text for the magic link login flow. */
+"We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Será enviada uma ligação para inicio de sessão automático, sem precisar de senha.";
+
 /* Account Settings Web Address label
    Header for a comment author's web address, shown when editing a comment. */
 "Web Address" = "Endereço web";
@@ -2424,6 +2533,9 @@
 
 /* A message title */
 "Welcome to the Reader" = "Bem-vindo ao Leitor";
+
+/* Title of alert helping users understand their site address */
+"What's my site address?" = "Qual é o endereço do meu site?";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Não será mostrado ao público.";
@@ -2436,6 +2548,9 @@
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "Versão do WordPress demasiado antiga";
+
+/* No comment provided by engineer. */
+"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "A versão do WordPress é muito antiga. O site em %1$@ usa WordPress %2$@. Recomendamos que seja actualizado para a versão mais recente, ou pelo menos para a versão %3$@";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
@@ -2540,6 +2655,9 @@
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "irá estar indisponível de futuro.";
+
+/* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
+"{G} Log in with Google." = "{G} Iniciar sessão com o Google.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Domínios";

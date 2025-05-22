@@ -308,6 +308,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "一個「更多」按鈕包含顯示分享按鈕的下拉式選單";
 
+/* Instruction text to explain magic link login step. */
+"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "WordPress.com 帳號已連結至你的商店憑證。 若要繼續操作，我們會傳送驗證連結到上方電子郵件地址。";
+
 /* Title for a threat */
 "A file contains a malicious code pattern" = "檔案包含惡意程式碼模式";
 
@@ -316,6 +319,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "網站標題";
+
+/* An error message. */
+"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "需要有效的電子郵件地址才能傳送驗證連結。請返回上一個畫面，並提供有效的電子郵件地址。";
+
+/* Shown when a user types a non-number into the two factor field. */
+"A verification code will only contain numbers." = "驗證碼僅包含數字。";
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "使用中";
@@ -525,6 +534,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
 "After %@" = "%@之後";
 
+/* Option to select the Airmail app when logging in with magic links */
+"Airmail" = "Airmail";
+
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
 "Alignment" = "對齊";
@@ -588,6 +600,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Jetpack Settings: Allowlisted IP addresses */
 "Allowlisted IP addresses" = "在允許清單中的 IP 位址";
 
+/* Instructions for users with two-factor authentication enabled. */
+"Almost there! Please enter the verification code from your authenticator app." = "快完成了！請輸入驗證器應用程式上的驗證碼。";
+
 /* Image alt attribute option title.
    Label for the alt for a media asset (image) */
 "Alt Text" = "替代文字";
@@ -600,6 +615,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* translators: Alternative option included in a warning related to having blocks deeply nested. */
 "Alternatively, you can flatten the content by ungrouping the block." = "或者，你可以取消區塊群組來簡化內容。";
+
+/* Instruction text to explain to help users type their password instead of using magic link login option. */
+"Alternatively, you may enter the password for this account." = "或者你也可以輸入此帳號的密碼。";
+
+/* String displayed before offering alternative login methods */
+"Alternatively:" = "替代作法：";
 
 /* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
 "Always Send Crash Logs" = "一律傳送故障記錄";
@@ -693,6 +714,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The title of the app appearance settings screen */
 "Appearance" = "外觀";
 
+/* Message shown when Apple authentication fails. */
+"Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple 驗證失敗。\n請確認你已透過 Apple ID 使用兩步驟驗證登入 iCloud。";
+
 /* No comment provided by engineer. */
 "Applies the setting" = "套用此設定";
 
@@ -778,6 +802,10 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the error view when the authentication failed for any reason */
 "Authentication Failed" = "驗證失敗";
+
+/* Accessibility label for the 2FA text field.
+   Placeholder for the 2FA code textfield. */
+"Authentication code" = "驗證碼";
 
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "主機需要的驗證：%@";
@@ -1024,12 +1052,18 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Button to copy post text" = "複製文章文字的按鈕";
 
+/* Legal disclaimer for logging in. The underscores _..._ denote underline. */
+"By continuing, you agree to our _Terms of Service_." = "繼續操作即代表你同意我們的_服務條款_。";
+
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "註冊此網域，即表示你同意我們的<a>條款與條件<\/a>。";
 
 /* Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break 
 . Also there is a placeholder %@ which is: Terms and Conditions */
 "By setting up Jetpack you agree to our\n%@" = "設定 Jetpack 即代表你同意我們的\n%@";
+
+/* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
+"By signing up, you agree to our _Terms of Service_." = "註冊即代表你同意我們的「服務條款」。";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "自訂";
@@ -1043,6 +1077,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
 "Camera access needed to scan login codes" = "需要相機存取權限才能掃描登入碼";
 
+/* Title of an alert letting the user know */
+"Can Not Request Link" = "無法要求連結";
+
 /* Alert message that is shown when trying to publish empty page */
 "Can't publish an empty page" = "無法發表空白的頁面";
 
@@ -1052,6 +1089,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
+   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -1079,6 +1117,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -1105,6 +1144,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "正在取消…";
+
+/* Error message shown when the input URL does not point to an existing site. */
+"Cannot access the site at this address. Please double-check and try again." = "無法使用此地址存取網站。 請重新檢查，然後再試一次。";
 
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "下不了決定嗎？ 你可以隨時變更佈景主題。";
@@ -1171,6 +1213,18 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "查看我們的頂尖秘訣，瞭解如何增加瀏覽次數和流量";
+
+/* The title text on the magic link requested screen. */
+"Check your email on this device!" = "在此裝置查看你的電子郵件！";
+
+/* Instruction text after a login Magic Link was requested. */
+"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "請使用此裝置查看電子郵件，並點選 WordPress.com 所傳送電子郵件中的連結。";
+
+/* Instructional text on how to open the email containing a magic link. */
+"Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "請使用此裝置查看電子郵件，並點選 WordPress.com 所傳送電子郵件中的連結。\n\n沒看到電子郵件嗎？ 請檢查你的「垃圾郵件」資料夾。";
+
+/* Alert title for check your email during logIn/signUp. */
+"Check your email!" = "請檢查你的電子郵件！";
 
 /* Subtitle shown on the dashboard when it fails to load */
 "Check your internet connection and pull to refresh." = "請檢查你的網際網路連線，並拖動以重新整理。";
@@ -1453,12 +1507,18 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Title for the list of accounts for third party sharing services. */
 "Connected Accounts" = "已連結的帳號";
 
+/* Title shown when a user logs in with Google but no matching WordPress.com account is found */
+"Connected But…" = "已連線，但是…";
+
 /* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
    Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
 "Connecting %@" = "現正連結至 %@";
 
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "連結 %1$@ 後，將會取代 %2$@ 的現有連結。";
+
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "正在連線至 WordPress.com";
 
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "正在連結...";
@@ -1491,6 +1551,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
+   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
@@ -1505,6 +1566,15 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "繼續閱讀";
+
+/* Button title. Tapping begins log in using Apple. */
+"Continue with Apple" = "繼續使用 Apple";
+
+/* Button title. Tapping begins log in using Google. */
+"Continue with Google" = "繼續使用 Google";
+
+/* Shown while logging in with Apple and the app waits for the site creation process to complete. */
+"Continuing with Apple" = "繼續使用 Apple";
 
 /* Title of button that displays the WordPress.org contributor page */
 "Contribute" = "參與";
@@ -1633,6 +1703,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for create floating action button */
 "Create" = "建立";
 
+/* The button title text for creating a new account. */
+"Create Account" = "建立帳號";
+
 /* Title for button to make a blank page */
 "Create Blank Page" = "建立空白頁面";
 
@@ -1653,6 +1726,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "建立文章";
+
+/* Navigates to a new flow for site creation. */
+"Create a Site" = "建立網站";
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "建立標籤";
@@ -1853,6 +1929,9 @@ translators: %s: Block name e.g. \"Image block\" */
    Theme Details action title */
 "Details" = "詳細資料";
 
+/* Instructions after a Magic Link was sent, but email is incorrect. */
+"Didn't mean to create a new account? Go back to re-enter your email address." = "並不是想要建立新帳號嗎？ 返回並重新輸入電子郵件地址。";
+
 /* Label for the dimensions in pixels for a media asset (image / video) */
 "Dimensions" = "尺寸";
 
@@ -1900,7 +1979,8 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for the Discussion Settings Screen */
 "Discussion" = "討論";
 
-/* No comment provided by engineer. */
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
 "Dismiss" = "關閉";
 
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
@@ -1922,6 +2002,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "網域";
+
+/* Label for button to log in using your site address. The underscores _..._ denote underline */
+"Don't have an account? _Sign up_" = "還沒有帳號？_註冊_";
 
 /* A done button
    Button text on site creation epilogue page to proceed to My Sites.
@@ -2157,7 +2240,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "電子郵件地址";
 
-/* Describes the email address section in the comment detail screen. */
+/* Accessibility label for the email address text field.
+   Describes the email address section in the comment detail screen.
+   Placeholder for a textfield. The user may enter their email address.
+   Placeholder for the email address textfield. */
 "Email address" = "電子郵件地址";
 
 /* Notification Settings Channel */
@@ -2241,8 +2327,28 @@ translators: %s: Block name e.g. \"Image block\" */
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "輸入密碼";
 
+/* Instruction text on the login's site addresss screen.
+   Label for button to log in using your site address. */
+"Enter the address of the WordPress site you'd like to connect." = "請輸入要連結的 WordPress 網站位址。";
+
+/* Instructional text shown when requesting the user's password for login. */
+"Enter the password for your WordPress.com account." = "請輸入 WordPress.com 帳號的密碼。";
+
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "輸入使用者名稱";
+
+/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
+"Enter your account information for %@." = "請輸入你的 %@ 帳號資訊。";
+
+/* Instruction text on the initial email address entry screen. */
+"Enter your email address to log in or create a WordPress.com account." = "請輸入你的電子郵件地址以登入或建立 WordPress.com 帳號。";
+
+/* Button title. Takes the user to the login by site address flow. */
+"Enter your existing site address" = "輸入你現有的網址";
+
+/* Title of a button on the magic link screen.
+   Title of a button. */
+"Enter your password instead." = "請改為輸入你的密碼。";
 
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "輸入伺服器憑證";
@@ -2435,6 +2541,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Fashion site intent topic */
 "Fashion" = "時尚";
 
+/* Option to select the Fastmail app when logging in with magic links */
+"Fastmail" = "Fastmail";
+
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "精選";
 
@@ -2491,6 +2600,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "瞭解更多";
+
+/* The hint button's title text to help users find their site address. */
+"Find your site address" = "尋找你的網站位址";
 
 /* My Profile first name label
    Register Domain - Domain contact information field First name
@@ -2608,6 +2720,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "產生新連結";
 
+/* View title for initial auth views. */
+"Get Started" = "開始使用";
+
+/* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
+"Get a login link by email" = "透過電子郵件取得登入連結";
+
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "動起來吧！在關注的網誌文章上留言。";
 
@@ -2629,8 +2747,14 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post title used in the login prologue screens. */
 "Getting Inspired" = "激發靈感";
 
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "取得帳號資訊";
+
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "馬上嘗試為你的文章或頁面新增幾個區塊！";
+
+/* Option to select the Gmail app when logging in with magic links */
+"Gmail" = "Gmail";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "前往讀取器";
@@ -2641,6 +2765,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "前往 iOS 設定";
+
+/* Message shown on screen after the Google sign up process failed. */
+"Google sign up failed." = "Google 註冊失敗。";
 
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
@@ -2715,6 +2842,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Help icon" = "說明圖示";
 
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "隱藏";
+
 /* Title of a button used to collapse a group */
 "Hide" = "隱藏";
 
@@ -2783,6 +2913,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show when site icon update failed */
 "Icon update failed" = "圖示更新失敗";
+
+/* The instructions text about not being able to find the magic link email. */
+"If you can’t find the email, please check your junk or spam email folder" = "若找不到此封電子郵件，請檢查你的垃圾郵件資料夾";
+
+/* Legal disclaimer for signing up. The underscores _..._ denote underline. */
+"If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "如果你繼續使用 Apple 或 Google 操作且尚未擁有 WordPress.com 帳號，即表示你正在建立帳號，並同意我們的_服務條款_。";
 
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "若移除 %1$@，該使用者將無法再存取此網站，但 %2$@ 建立的所有內容仍會保留在網站上。";
@@ -2858,6 +2994,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: general section footer text */
 "Includes wp-config.php and any non WordPress files" = "包括 wp-config.php 以及任何非 WordPress 檔案";
+
+/* An error message shown when a user signed in with incorrect credentials. */
+"Incorrect username or password. Please try entering your login details again." = "錯誤的使用者名稱或密碼。請再次嘗試輸入你的登入詳細資料。";
 
 /* Title for a threat */
 "Infected core file" = "受感染的核心檔案";
@@ -2959,6 +3098,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title displayed on the feature introduction view. */
 "Introducing Blogging Prompts" = "網誌提示簡介";
 
+/* Title of an alert letting the user know the email address that they've entered isn't valid */
+"Invalid Email Address" = "無效的電子郵件地址";
+
 /* No comment provided by engineer. */
 "Invalid Site Address" = "無效的網站位址";
 
@@ -2976,6 +3118,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "無效網址。 找不到音訊檔案。";
+
+/* Error message shown when the input URL is invalid. */
+"Invalid URL. Please double-check and try again." = "URL 無效。 請重新檢查，然後再試一次。";
 
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "無效網址。 請輸入正確的網址。";
@@ -2997,6 +3142,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Invite People Title */
 "Invite People" = "邀請他人";
+
+/* An error message shown during log in when the username or password is incorrect. */
+"It looks like this username\/password isn't associated with this site." = "使用者名稱\/密碼似乎不適用於這個網站。";
+
+/* An error message shown when a wpcom user provides the wrong password. */
+"It seems like you've entered an incorrect password. Want to give it another try?" = "輸入的密碼似乎有誤。是否要再試一次？";
 
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "該在 %@ 新增網誌內容了！";
@@ -3333,9 +3484,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "依建立日期排列記錄檔案";
 
-/* Label for logging in to WordPress.com account
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "登入";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3344,6 +3497,22 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button for signing in. */
 "Log in" = "登入";
+
+/* A generic error message for a failed log in. */
+"Log in failed. Please try again." = "登入失敗，請再試一次。";
+
+/* Button title. Takes the user to the login by email flow.
+   Button title. Tapping begins our normal log in process. */
+"Log in or sign up with WordPress.com" = "登入或註冊 WordPress.com";
+
+/* Instruction text on the login's email address screen. */
+"Log in to the WordPress.com account you used to connect Jetpack." = "請登入你用來連結 Jetpack 的 WordPress.com 帳號。";
+
+/* Instruction text on the login's email address screen. */
+"Log in to your WordPress.com account with your email address." = "使用電子郵件地址登入 WordPress.com 帳號。";
+
+/* Instructions on the WordPress.com username / password log in form. */
+"Log in with your WordPress.com username and password." = "請使用你的 WordPress.com 使用者名稱和密碼登入。";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of Jetpack?" = "是否登出 Jetpack？";
@@ -3357,6 +3526,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Login Request Expired */
 "Login Request Expired" = "登入要求已到期";
 
+/* Button title. Takes the user to the Enter account password screen. */
+"Login with account password" = "使用帳號密碼登入";
+
 /* No comment provided by engineer. */
 "Logs" = "記錄";
 
@@ -3365,6 +3537,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "你似乎已在網站上設定 Jetpack。恭喜！使用 WordPress.com 憑證登入，以啟用「統計與通知」。";
+
+/* Title of a button. */
+"Lost your password?" = "忘記密碼？";
+
+/* Option to select the Apple Mail app when logging in with magic links */
+"Mail (Default)" = "郵件 (預設)";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "主導覽";
@@ -3512,6 +3690,9 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for the share message field on the post settings. */
 "Message" = "訊息";
 
+/* Option to select the Microsft Outlook app when logging in with magic links */
+"Microsoft Outlook" = "Microsoft Outlook";
+
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "其他安全漏洞";
 
@@ -3646,8 +3827,15 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "需要協助？";
 
-/* The secondary button title in the migration welcome screen */
+/* A button title. */
+"Need help finding your site address?" = "需要幫你找網站位址嗎？";
+
+/* Takes the user to get help
+   The secondary button title in the migration welcome screen */
 "Need help?" = "需要協助？";
+
+/* Title of the more help button on alert helping users understand their site address */
+"Need more help?" = "需要更多協助嗎？";
 
 /* Describes a status of a plugin */
 "Needs Update" = "需要更新";
@@ -3693,7 +3881,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "News" = "新聞";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "下一篇";
 
 /* Accessibility label for the next notification button */
@@ -3910,6 +4100,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Not now button title shown in alert preparing users to grant permission for us to send them push notifications. */
 "Not now" = "現在不要";
 
+/* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
+"Not seeing the email? Check your Spam or Junk Mail folder." = "沒看到電子郵件？ 請檢查你的「垃圾郵件」資料夾。";
+
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "注意：";
 
@@ -3973,7 +4166,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "編號清單";
 
-/* Menus: button title for finishing editing of a menu item.
+/* Alert dismissal title
+   Button title. An acknowledgement of the message displayed in a prompt.
+   Dismisses the alert
+   Menus: button title for finishing editing of a menu item.
+   Ok button for dismissing alert helping users understand their site address
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Title of a button that dismisses a prompt */
 "OK" = "OK";
@@ -4045,6 +4242,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Open Jetpack Security settings" = "開啟 Jetpack Security 設定";
 
+/* The button title text for opening the user's preferred email app.
+   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
+"Open Mail" = "開啟郵件";
+
 /* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "開啟設定";
 
@@ -4077,6 +4278,18 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
 "Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "選填：輸入自訂訊息 (上限 %1$d 個字元)，連同你的邀請一併傳送。";
+
+/* Divider on initial auth view separating auth options. */
+"Or" = "或者";
+
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "或選擇其他驗證方式。";
+
+/* Label for button to log in using site address. Underscores _..._ denote underline. */
+"Or log in by _entering your site address_." = "或輸入網站位址登入。";
+
+/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
+"Or log in with magic link" = "或使用神奇連結登入";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "已排序清單";
@@ -4158,8 +4371,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Parenting site intent topic */
 "Parenting" = "育兒";
 
-/* Label for entering password in password field
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
    Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "密碼";
 
@@ -4238,6 +4454,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
 "Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "請確認你的網站已啟用區塊編輯器。 若未啟用將不會載入區塊編輯器。";
 
+/* Error message shown when a URL is invalid. */
+"Please enter a complete website address, like example.com." = "請輸入完整的網站位址，例如 example.com。";
+
 /* No comment provided by engineer. */
 "Please enter a site address." = "請輸入網站位址。";
 
@@ -4271,11 +4490,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "請輸入有效的地址";
 
-/* No comment provided by engineer. */
+/* An error message. */
+"Please enter a valid email address for a WordPress.com account." = "請輸入可用於 WordPress.com 帳號的有效電子郵件地址";
+
+/* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "請輸入有效的電子郵件位址";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "請輸入有效的電話號碼";
+
+/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
+"Please enter the password for your WordPress.com account to log in with your Apple ID." = "請輸入 WordPress.com 帳戶的密碼，以便使用 Apple ID 登入。";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "請輸入你的密碼";
@@ -4283,8 +4508,14 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructions for alert asking for email. */
 "Please enter your email address." = "請輸入你的電子郵件地址。";
 
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "請填寫所有欄位";
+
 /* Share extension dialog text  - displayed when user is missing a login token. */
 "Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again." = "請啟動 WordPress 應用程式，登入 WordPress.com，並確定你至少有一個網站，然後重試一次。";
+
+/* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
+"Please log out before connecting to a different wordpress.com site" = "請先登出再連結至另一個 WordPress.com 網站";
 
 /* Used on an error alert to prompt the user to try again */
 "Please try again later" = "請稍後再試一次";
@@ -4739,6 +4970,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "重設日期範圍篩選器";
 
+/* The button title for a secondary call-to-action button. When the user can't remember their password. */
+"Reset your password" = "重設密碼";
+
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "重新調整大小與裁切";
 
@@ -4823,6 +5057,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
    User Roles Title
    User's Role */
 "Role" = "角色";
+
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "簡訊已傳送";
 
 /* Section title for the moderation section of the comment details screen. */
 "STATUS" = "狀態";
@@ -5041,6 +5278,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "選取此主題作為你的網站用途。";
 
+/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
+"Send Link" = "傳送連結";
+
+/* The button title text for sending a magic link. */
+"Send Link by Email" = "以電子郵件傳送連結";
+
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "傳送記錄訊息";
 
@@ -5049,6 +5292,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "傳送故障測試";
+
+/* Button title. Sends a email verification link (Magin link) for signing in. */
+"Send email verification link" = "傳送電子郵件驗證連結";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "以電子郵件傳送通知";
@@ -5150,6 +5396,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "顯示轉發按鈕";
 
+/* Accessibility label for the 'Show password' button in the login page's password field.
+   Accessibility label for the “Show password“ button in the login page's password field. */
+"Show password" = "顯示密碼";
+
 /* No comment provided by engineer. */
 "Show post content" = "顯示文章內容";
 
@@ -5161,6 +5411,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label on Post Stats view indicating which post the stats are for. */
 "Showing stats for:" = "顯示以下統計資料：";
+
+/* Accessibility value if login page's password field is displaying the password. */
+"Shown" = "顯示";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "當你在網誌中留言時會公開顯示。";
@@ -5176,6 +5429,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "顯示文章";
+
+/* View title during the sign up process. */
+"Sign Up" = "註冊";
+
+/* Button title. Takes the user the Enter site credentials screen. */
+"Sign in with site credentials" = "使用網站憑證登入";
+
+/* When social login fails, this button offers to let them signup for a new WordPress.com account */
+"Sign up" = "註冊";
+
+/* Button title. Tapping begins the process of creating a WordPress.com account. */
+"Sign up for WordPress.com" = "註冊 WordPress.com";
+
+/* Button title. Tapping begins our normal sign up process. */
+"Sign up with Email" = "透過電子郵件註冊";
 
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "由於你使用免費方案，你將無法在活動記錄中查看所有活動。";
@@ -5214,6 +5482,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "網站成就";
+
+/* Accessibility label of the site address field shown when adding a self-hosted site. */
+"Site address" = "網站位址";
 
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "網站位址至少必須為 4 個字元。";
@@ -5298,7 +5569,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "很抱歉，網站位址也必須包含字母！";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the entered email is not available. */
 "Sorry, that email address is already being used!" = "很抱歉，已有人使用該電子郵件地址！";
 
 /* No comment provided by engineer. */
@@ -5357,6 +5628,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Marks comment as spam.
    Title of spam Comments filter. */
 "Spam" = "垃圾迴響";
+
+/* Option to select the Spark email app when logging in with magic links */
+"Spark" = "Spark";
 
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
@@ -5647,8 +5921,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "編輯文字區塊時，文字格式控制項就在鍵盤上方的工具列中";
 
+/* Button title */
+"Text me a code instead" = "請改用簡訊傳送驗證碼給我";
+
+/* The button's title text to send a 2FA code via SMS text message. */
+"Text me a code via SMS" = "透過簡訊向我傳送驗證碼";
+
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "感謝你選擇 %2$@ 設計的 %1$@";
+
+/* Shown when a user pastes a code into the two factor field that contains letters or is the wrong length */
+"That doesn't appear to be a valid verification code." = "該驗證碼似乎無效。";
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a WordPress site. */
 "That doesn't look like a WordPress site." = "這似乎不是 WordPress 網站。";
@@ -5670,6 +5953,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Facebook 連結找不到任何頁面。Publicize 無法連結至 Facebook 個人檔案，只能連結至已發表的頁面。";
+
+/* Description shown when a user logs in with Google but no matching WordPress.com account is found */
+"The Google account \"%@\" doesn't match any account on WordPress.com" = "沒有任何與 Google 帳號「%@」匹配的 WordPress.com 帳號";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "看來網際網路連線狀態為離線。";
@@ -5751,6 +6037,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "網誌 %1$@ 使用 WordPress 版本 %2$@。我們建議升級至最新版本，至少使用 %3$@ 以上的版本。";
+
+/* Error message shown a URL does not point to an existing site.
+   Error message shown when a URL does not point to an existing site. */
+"The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "此地址的網站不是 WordPress 網站。該網站必須使用 WordPress，我們才能與其連結。";
 
 /* Message shown when site deletion API failed */
 "The site could not be deleted." = "網站無法刪除。";
@@ -5898,6 +6188,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notifies the user that the a domain matching the search term wasn't returned in the results */
 "This domain is unavailable" = "此網域不可使用";
 
+/* An error message informing the user the email address they entered did not match a WordPress.com account. */
+"This email address is not registered on WordPress.com." = "這個電子郵件地址沒有在 WordPress.com 上註冊。";
+
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "由於檔案太大，或你的網站不支援此媒體格式，因此無法上傳此檔案至網站。";
 
@@ -5977,6 +6270,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for the time zone selector */
 "Time Zone" = "時區";
 
+/* Error when the uses takes more than 1 minute to submit a security key. */
+"Time's up, but don't worry, your security is our priority. Please try again!" = "優惠已到期，但別擔心，你的安全是我們的第一要務。 請再試一次！";
+
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "讓 WordPress.com 發揮最大功效的秘訣。";
 
@@ -5990,6 +6286,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "若要繼續，請輸入你的電子郵件地址和姓名。";
 
+/* Text instructing the user to enter their email address. */
+"To create your new WordPress.com account, please enter your email address." = "若要建立新的 WordPress.com 帳號，請輸入你的電子郵件地址。";
+
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "若要在手機上獲得來自你 WordPress 網站的實用通知，必須安裝 Jetpack 外掛程式。";
 
@@ -5998,6 +6297,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Install Plugin dialog text. */
 "To install plugins, you need to have a custom domain associated with your site." = "若要安裝外掛程式，你的自訂網域必須與你的網站建立關聯。";
+
+/* Instructional text shown when requesting the user's password for Apple login. */
+"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "若要繼續使用這個 Apple ID，請先使用你的 WordPress.com 密碼登入。 系統只會要求你進行此操作一次。";
+
+/* Instructional text shown when requesting the user's password for Google login. */
+"To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "若要繼續使用這個 Google 帳號，請先使用你的 WordPress.com 密碼登入。系統只會向你要求一次。";
 
 /* No comment provided by engineer. */
 "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "若要移除區塊，請選取區塊，並按一下區塊右下角的三個點以檢視設定。 在設定中選擇移除區塊的選項。";
@@ -6112,6 +6417,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "試用全新的區塊編輯器";
 
+/* When social login fails, this button offers to let the user try again with a differen email address */
+"Try with another email" = "請嘗試使用其他電子郵件登入";
+
+/* When social login fails, this button offers to let them try tp login using a URL */
+"Try with the site address" = "請嘗試使用網站位址登入";
+
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "關閉提示";
 
@@ -6153,6 +6464,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "USES";
+
+/* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
+"Unable To Connect" = "無法連線";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "無法載入文章";
@@ -6202,6 +6516,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "無法播放影片";
 
+/* No comment provided by engineer. */
+"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "無法透過該 URL 讀取 WordPress 網站。 點選「需要更多說明？」即可檢視常見問題。";
+
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "無法還原網站";
 
@@ -6228,6 +6545,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Alert displayed to the user when a single post and 1 file has failed to upload. */
 "Unable to upload 1 post, 1 file" = "無法上傳 1 篇文章、1 個檔案";
+
+/* Error message displayed when an error occurred checking for email availability. */
+"Unable to verify the email address. Please try again later." = "無法驗證電子郵件地址。請稍後再試一次。";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
 "Unable to visit Jetpack settings for site" = "無法前往網站的 Jetpack 設定";
@@ -6405,18 +6725,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "使用";
 
+/* The button's title text to use a security key. */
+"Use a security key" = "使用安全性金鑰";
+
 /* Option to enable the block editor for new posts */
 "Use block editor" = "使用區塊編輯器";
 
 /* No comment provided by engineer. */
 "Use icon button" = "使用圖示按鈕";
 
+/* The button title text for logging in with WP.com password instead of magic link. */
+"Use password to sign in" = "使用密碼登入";
+
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "使用者名稱";
 
 /* Message displayed in a Notice when the username has changed successfully. The placeholder is the new username. */
@@ -6431,6 +6760,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Blog Users
    Noun. Title. Links to the user management feature. */
 "Users" = "使用者";
+
+/* two factor code placeholder */
+"Verification code" = "驗證碼";
 
 /* Message shown when a verification email was re-sent succesfully */
 "Verification email sent, check your inbox." = "驗證電子郵件已傳送，請查看收件匣";
@@ -6563,8 +6895,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Downloadable/Restorable items: WP-content directory */
 "WP-content directory" = "WP 內容目錄";
 
+/* Message shown on screen while waiting for Google to finish its signup process. */
+"Waiting for Google to complete…" = "正在等待 Google 完成…";
+
 /* No comment provided by engineer. */
 "Waiting for connection" = "正在等待連線";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "正在等候安全性金鑰";
+
+/* View title during the Google auth process. */
+"Waiting..." = "等待中…";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -6601,6 +6943,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "載入資料時遇到問題";
 
+/* message to ask a user to check their email for a WordPress.com email */
+"We just emailed a link to %@. Please check your mail app and tap the link to log in." = "我們剛將連結以電子郵件傳送至 %@。請檢查你的電子郵件應用程式，並點選連結以登入。";
+
+/* The subtitle text on the magic link requested screen followed by the email address. */
+"We just sent a magic link to" = "我們剛將神奇連結傳送至：";
+
 /* Message displayed when a backup has finished */
 "We successfully created a backup of your site as of %@" = "我們已成功建立截至 %@ 為止的網站備份";
 
@@ -6610,14 +6958,26 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "我們會使用其他的追蹤工具，包括由第三方所提供的追蹤工具。瞭解相關資訊及其控制方式。";
 
+/* Error message displayed when an error occurred sending the magic link email. */
+"We were unable to send you an email at this time. Please try again later." = "我們目前無法寄送電子郵件給你。請稍後再試一次。";
+
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "如果發現安全性威脅，我們會傳送電子郵件給你。 這段時間你可以照常使用網站，也可以隨時回來檢視掃瞄進度。";
+
+/* Instructional text for the magic link login flow. */
+"We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "我們會寄給你一個神奇的連結，讓你馬上就能登入，無須輸入密碼。不用再敲著兩隻手指打字了！";
+
+/* Instruction text on the Sign Up screen. */
+"We'll email you a signup link to create your new WordPress.com account." = "我們會透過電子郵件傳送註冊連結給你，使用此連結即可建立新的 WordPress.com 帳號。";
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "我們會在你收到關注、留言和按讚時通知你。";
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "我們會在你收到關注、留言和按讚時通知你。 是否要允許推播通知？";
+
+/* Text confirming email address to be used for new account. */
+"We'll use this email address to create your new WordPress.com account." = "我們會使用這個電子郵件地址，為你建立全新的 WordPress.com 帳號。";
 
 /* Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date. */
 "We're creating a downloadable backup of your site from %1$@." = "我們正透過 %1$@ 建立你的網站的可下載備份。";
@@ -6628,6 +6988,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Detail text display informing the user that we're fixing threats */
 "We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "我們正努力在背景修正此威脅。 這段時間你可以照常使用網站，也可以隨時回來檢視掃瞄進度。";
 
+/* Error message shown when having trouble connecting to a Jetpack site. */
+"We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "我們無法用此 URL 連上 Jetpack 網站。如需協助，請與我們聯絡。";
+
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "我們正在將你的網站還原至 %1$@。";
 
@@ -6636,6 +6999,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "我們也已將檔案連結透過電子郵件傳送給你。";
+
+/* Instruction text after a signup Magic Link was requested. */
+"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "我們已透過電子郵件傳送註冊連結給你，使用此連結即可建立新的 WordPress.com 帳號。 請使用此裝置查看電子郵件，並點選 WordPress.com 所傳送電子郵件中的連結。";
 
 /* Account Settings Web Address label
    Header for a comment author's web address, shown when editing a comment. */
@@ -6706,6 +7072,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is a link that takes the user to the external Gravatar website */
 "What is Gravatar?" = "什麼是 Gravatar？";
 
+/* Navigates to page with details about What is WordPress.com. */
+"What is WordPress.com?" = "什麼是 WordPress.com？";
+
 /* No comment provided by engineer. */
 "What is a block?" = "什麼是區塊？";
 
@@ -6727,6 +7096,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "WordPress 新功能";
 
+/* Title of alert helping users understand their site address */
+"What's my site address?" = "我的網站位址是？";
+
 /* Select the site's intent. Title */
 "What's your website about?" = "你的網站主題為何？";
 
@@ -6738,6 +7110,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "當你變更自己的網站內容時，即可在此查看你的活動記錄。";
+
+/* An error message shown when a wpcom user provides the wrong password. */
+"Whoops, something went wrong and we couldn't log you in. Please try again!" = "糟糕，發生了點錯誤，我們無法將你登入。請再試一次！";
+
+/* Generic error on the 2FA screen */
+"Whoops, something went wrong. Please try again!" = "糟糕，出狀況了。 請再試一次！";
+
+/* Error when the uses chooses an invalid security key on the 2FA screen. */
+"Whoops, that security key does not seem valid. Please try again with another one" = "糟糕，安全性金鑰似乎不是有效的。 請使用另一組金鑰再試一次";
+
+/* Error message shown when an incorrect two factor code is provided. */
+"Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "糟糕，此雙重驗證碼無效。請再次檢查你的驗證碼，然後再試一次！";
 
 /* No comment provided by engineer. */
 "Width Settings" = "寬度設定";
@@ -6777,6 +7161,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "WordPress 版本過舊";
+
+/* No comment provided by engineer. */
+"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "WordPress 版本過舊。網址為 %1$@ 的網站使用 WordPress %2$@。建議更新至最新版本，或至少更新至 %3$@";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
@@ -6826,6 +7213,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Y-Axis Position" = "Y 軸位置";
+
+/* Option to select the Yahoo Mail app when logging in with magic links */
+"Yahoo Mail" = "Yahoo奇摩電子信箱";
 
 /* 'This Year' label for the the year. */
 "Year" = "年";
@@ -7023,6 +7413,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is shown to the user when their domain search query contains invalid characters. */
 "Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "你的搜尋包含 WordPress.com 網域不支援的字元。 允許使用以下字元：A–Z、a–z、0–9。";
+
+/* Body text of alert helping users understand their site address */
+"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "當你使用 Safari 造訪自己的網站時，網站位址會顯示在畫面上方的網址列中。";
 
 /* Description for label when the user has a site with VaultPress. */
 "Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "你的網站已受 VaultPress 保護 按下方連結即可前往你的 VaultPress 儀表板。";
@@ -7825,6 +8218,10 @@ Example: Reply to Pamela Nguyen */
 /* Shared empty state view */
 "emptyStateView.noSearchResult.title" = "沒有結果";
 
+/* Placeholder for the site url textfield.
+   Site Address placeholder */
+"example.com" = "example.com";
+
 /* Accept button title for the alert asking for feedback */
 "experimentalFeatures.editorFeedbackAccept" = "傳送意見";
 
@@ -8326,6 +8723,9 @@ Example: Reply to Pamela Nguyen */
 /* Title shown when the application password is invalid */
 "login.appPasswordReAuth.title" = "無效的應用程式密碼";
 
+/* Instruction label in the two-factor authorization screen WordPress.com login authentication. Note: it has to mention that it's for a WordPress.com account. */
+"login.twoFactorInstructions.details" = "請輸入驗證器應用程式的 WordPress.com 帳號驗證碼。";
+
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "已標示為垃圾訊息";
 
@@ -8790,6 +9190,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "上層頁面";
+
+/* No comment provided by engineer. */
+"password" = "密碼";
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "資訊卡可根據網站活動顯示不同內容。 我們正在開發更多資訊卡和控制功能。";
@@ -10912,6 +11315,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "日後將無法使用。";
 
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "是否建立新網站？";
+
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, 說明, 支援, 常見問題集, 問題, 除錯, 記錄, 說明中心, 聯絡";
 
@@ -11010,6 +11416,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Managing Zendesk attachments */
 "zendeskAttachmentsSection.unsupportedAttachmentErrorMessage" = "不支援的附件";
+
+/* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
+"{G} Log in with Google." = "{G} 透過 Google 登入。";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "•網域";

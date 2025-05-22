@@ -164,6 +164,7 @@
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
+   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -191,6 +192,7 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
+   Option to cancel the email app selection when logging in with magic links
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
@@ -281,6 +283,9 @@
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "ยืนยัน";
 
+/* No comment provided by engineer. */
+"Connecting to WordPress.com" = "กำลังเชื่อมต่อไปยัง  WordPress.com";
+
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "อ่านเพิ่มเติม";
 
@@ -302,6 +307,9 @@
 /* Label for list of countries.
    Register Domain - Domain contact information field Country */
 "Country" = "ประเทศ";
+
+/* The button title text for creating a new account. */
+"Create Account" = "สร้างบัญชี";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
@@ -374,7 +382,8 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "การสนทนา";
 
-/* No comment provided by engineer. */
+/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
+   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
 "Dismiss" = "ยกเลิก";
 
 /* Display Name label text.
@@ -489,6 +498,9 @@
 /* Title for the general section in site settings screen */
 "General" = "ทั่วไป";
 
+/* Alerts the user that wpcom account information is being retrieved. */
+"Getting account information" = "ได้รับข้อมูลบัญชี";
+
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "ไปที่การตั้งค่า iOS";
@@ -504,6 +516,9 @@
    Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "ช่วยเหลือและสนับสนุน";
+
+/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
+"Hidden" = "ซ่อน";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "ซ่อนคีย์บอร์ด";
@@ -630,9 +645,11 @@
 /* No comment provided by engineer. */
 "Log Files By Created Date" = "ไฟล์ log โดยวันที่สร้างขึ้น";
 
-/* Label for logging in to WordPress.com account
+/* Button title.  Tapping takes the user to the login form.
+   Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label. */
+   Log In button label.
+   View title during the log in process. */
 "Log In" = "เข้าสู่ระบบ";
 
 /* Login Request Expired */
@@ -640,6 +657,9 @@
 
 /* No comment provided by engineer. */
 "Logs" = "log";
+
+/* Title of a button. */
+"Lost your password?" = "จำรหัสผ่านไม่ได้?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "เมนูนำทางหลัก";
@@ -715,7 +735,9 @@
 "Newest first" = "เรียงตามใหม่สุดก่อน";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen. */
+   Next action on share extension editor screen.
+   Title of a button.
+   Title of a button. The text should be capitalized. */
 "Next" = "ต่อไป";
 
 /* Label for a cancel button */
@@ -778,7 +800,11 @@
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "คำเตือนที่ยังไม่ได้อ่าน";
 
-/* Menus: button title for finishing editing of a menu item.
+/* Alert dismissal title
+   Button title. An acknowledgement of the message displayed in a prompt.
+   Dismisses the alert
+   Menus: button title for finishing editing of a menu item.
+   Ok button for dismissing alert helping users understand their site address
    OK Button title shown in alert informing users about the Reader Save for Later feature.
    Title of a button that dismisses a prompt */
 "OK" = "ตกลง";
@@ -851,8 +877,11 @@
 /* Title for selecting parent category of a category */
 "Parent Category" = "หมวดหมู่หลัก";
 
-/* Label for entering password in password field
+/* Accessibility label for the password text field in the self-hosted login page.
+   Label for entering password in password field
    Login dialog password placeholder
+   Password placeholder
+   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "รหัสผ่าน";
 
@@ -880,11 +909,14 @@
 /* No comment provided by engineer. */
 "Please enter a username." = "กรุณาใส่ชื่อผู้ใช้";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the user attempts use an invalid email address. */
 "Please enter a valid email address." = "โปรดใส่ที่อยู่อีเมล์ที่ใช้งานได้";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "โปรดใส่การรับรองของคุณ";
+
+/* A short prompt asking the user to properly fill out all login fields. */
+"Please fill out all the fields" = "กรุณากรอกข้อมูลในช่องทั้งหมด";
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "กรุณาลองใส่ข้อมูลเข้าสู่ระบบของคุณอีกครั้ง";
@@ -1028,6 +1060,9 @@
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "ขวา";
 
+/* One Time Code has been sent via SMS */
+"SMS Sent" = "ส่ง SMS";
+
 /* Menus save button title
    Save Action
    Save draft post action on share extension site picker screen.
@@ -1112,7 +1147,7 @@
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "ขอโทษครับ  ที่อยู่เว็บต้องมีตัวอักษรด้วย";
 
-/* No comment provided by engineer. */
+/* Error message displayed when the entered email is not available. */
 "Sorry, that email address is already being used!" = "ขอโทษครับ  แต่ที่อยู่อีเมล์นี้ถูกใช้ไปแล้ว";
 
 /* No comment provided by engineer. */
@@ -1390,11 +1425,14 @@
 "Uploading media" = "การอัปโหลดไฟล์สื่อ";
 
 /* A placeholder for the twitter username
+   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
+   Placeholder for the username textfield.
    The header and main title
-   Username label text. */
+   Username label text.
+   Username placeholder */
 "Username" = "ชื่อผู้ใช้";
 
 /* Setting: indicates if Mentions will be notified */
