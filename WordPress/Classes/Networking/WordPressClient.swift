@@ -21,22 +21,28 @@ extension WordPressClient {
         // rather than using the shared one on disk).
         let session = URLSession(configuration: .ephemeral)
 
+        let notifier = AppNotifier()
+        let provider = WpAuthenticationProvider.dynamic(
+            dynamicAuthenticationProvider: AutoUpdateAuthenticationProvider(site: site, coreDataStack: ContextManager.shared)
+        )
+        let apiRootURL: ParsedUrl
+        let resolver: ApiUrlResolver
         switch site {
-        case let .dotCom(siteId, authToken):
-            let apiRootURL = try! ParsedUrl.parse(input: "https://public-api.wordpress.com/wpcom/v2/site/\(siteId)")
-            let api = WordPressAPI(urlSession: session, apiRootUrl: apiRootURL, authentication: .bearer(token: authToken))
-            self.init(api: api, rootUrl: apiRootURL)
-        case let .selfHosted(blogId, apiRootURL, username, authToken):
-            let provider = AutoUpdateAuthenticationProvider(
-                authentication: .init(username: username, password: authToken),
-                blogId: blogId,
-                coreDataStack: ContextManager.shared
-            )
-            let notifier = AppNotifier()
-            let api = WordPressAPI(urlSession: session, apiRootUrl: apiRootURL, authenticationProvider: .dynamic(dynamicAuthenticationProvider: provider), appNotifier: notifier)
-            notifier.api = api
-            self.init(api: api, rootUrl: apiRootURL)
+        case let .dotCom(siteId, _):
+            apiRootURL = try! ParsedUrl.parse(input: "https://public-api.wordpress.com/wp/v2/site/\(siteId)")
+            resolver = WpComDotOrgApiUrlResolver(siteUrl: "\(siteId)")
+        case let .selfHosted(_, url, _, _):
+            apiRootURL = url
+            resolver = WpOrgSiteApiUrlResolver(apiRootUrl: url)
         }
+        let api = WordPressAPI(
+            urlSession: session,
+            apiUrlResolver: resolver,
+            authenticationProvider: provider,
+            appNotifier: notifier
+        )
+        notifier.api = api
+        self.init(api: api, rootUrl: apiRootURL)
     }
 
     func installJetpack() async throws -> PluginWithEditContext {
@@ -57,23 +63,44 @@ extension PluginWpOrgDirectorySlug: @retroactive ExpressibleByStringLiteral {
 
 private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDynamicAuthenticationProvider {
     private let lock = NSLock()
+    private let site: WordPressSite
+    private let coreDataStack: CoreDataStack
     private var authentication: WpAuthentication
     private var cancellable: AnyCancellable?
 
-    init(authentication: WpAuthentication, blogId: TaggedManagedObjectID<Blog>, coreDataStack: CoreDataStack) {
-        self.authentication = authentication
+    init(site: WordPressSite, coreDataStack: CoreDataStack) {
+        self.site = site
+        self.coreDataStack = coreDataStack
+        self.authentication = switch site {
+        case let .dotCom(_, authToken):
+            .bearer(token: authToken)
+        case let .selfHosted(_, _, username, authToken):
+            .init(username: username, password: authToken)
+        }
+
         self.cancellable = NotificationCenter.default.publisher(for: SelfHostedSiteAuthenticator.applicationPasswordUpdated).sink { [weak self] _ in
-            guard let self else { return }
+            self?.update()
+        }
+    }
 
-            self.lock.lock()
-            defer {
-                self.lock.unlock()
-            }
+    func update() {
+        self.lock.lock()
+        defer {
+            self.lock.unlock()
+        }
 
-            self.authentication = coreDataStack.performQuery { context in
+        self.authentication = coreDataStack.performQuery { [site] context in
+            switch site {
+            case let .dotCom(siteId, _):
+                guard let blog = try? Blog.lookup(withID: siteId, in: context),
+                      let token = blog.authToken else {
+                    return WpAuthentication.none
+                }
+                return WpAuthentication.bearer(token: token)
+            case let .selfHosted(blogId, _, _, _):
                 guard let blog = try? context.existingObject(with: blogId),
-                   let username = try? blog.getUsername(),
-                   let password = try? blog.getApplicationToken()
+                      let username = try? blog.getUsername(),
+                      let password = try? blog.getApplicationToken()
                 else {
                     return WpAuthentication.none
                 }
