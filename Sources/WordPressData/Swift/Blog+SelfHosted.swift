@@ -189,10 +189,19 @@ public enum WordPressSite {
     case selfHosted(blogId: TaggedManagedObjectID<Blog>, apiRootURL: ParsedUrl, username: String, authToken: String)
 
     public init(blog: Blog) throws {
-        if let account = blog.account, let siteId = blog.dotComID?.intValue {
+        // Directly access the site content when available.
+        if let restApiRootURL = blog.restApiRootURL,
+           let restApiRootURL = try? ParsedUrl.parse(input: restApiRootURL),
+           let username = blog.username,
+           let authToken = try? blog.getApplicationToken() {
+            self = .selfHosted(blogId: TaggedManagedObjectID(blog), apiRootURL: restApiRootURL, username: username, authToken: authToken)
+        } else if let account = blog.account, let siteId = blog.dotComID?.intValue {
+            // When the site is added via a WP.com account, access the site via WP.com
             let authToken = try account.authToken ?? WPAccount.token(forUsername: account.username)
             self = .dotCom(siteId: siteId, authToken: authToken)
         } else {
+            // In theory, this branch should never run, because the two if statements above should have covered all paths.
+            // But we'll keep it here as the fallback.
             let url = try blog.restApiRootURL ?? blog.getUrl().appending(path: "wp-json").absoluteString
             let apiRootURL = try ParsedUrl.parse(input: url)
             self = .selfHosted(blogId: TaggedManagedObjectID(blog), apiRootURL: apiRootURL, username: try blog.getUsername(), authToken: try blog.getApplicationToken())
