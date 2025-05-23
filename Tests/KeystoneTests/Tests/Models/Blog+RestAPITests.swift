@@ -19,6 +19,7 @@ final class Blog_RestAPITests: CoreDataTestCase {
             with: loginDetails,
             restApiRootURL: URL(string: "https://example.com/wp-json")!,
             xmlrpcEndpointURL: URL(string: "https://example.com/dir/xmlrpc.php")!,
+            blogID: nil,
             in: contextManager,
             using: testKeychain
         )
