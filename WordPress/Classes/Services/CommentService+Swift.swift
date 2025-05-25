@@ -82,7 +82,7 @@ extension CommentService {
     // REST API does not return post title. This function prefetchs the associated posts and saves them locally if
     // they don't already exist.
     @objc(fetchPostsIfNeededForComments:inBlog:)
-    func fetchPostsIfNeeded(for comments: [RemoteComment], in blog: Blog) {
+    public func fetchPostsIfNeeded(for comments: [RemoteComment], in blog: Blog) {
         // Find posts that do not exists locally.
         let postIds = comments
             .reduce(into: Set<NSNumber>()) { result, comment in
