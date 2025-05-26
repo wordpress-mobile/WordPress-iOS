@@ -222,7 +222,7 @@ public enum WordPressSite {
         switch self {
         case let .dotCom(siteId, _):
             return try Blog.lookup(withID: siteId, in: context)
-        case let .selfHosted(blogId, _, _ , _):
+        case let .selfHosted(blogId, _, _, _):
             return try context.existingObject(with: blogId)
         }
     }
