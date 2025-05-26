@@ -148,6 +148,8 @@
 		4A690C212BA7975500A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4A690C222BA7975800A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4ABC59742DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABC59732DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift */; };
+		4ABCAB2A2DE52E80005A6B84 /* Secrets-JetpackDraftActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */; };
+		4ABCAB2B2DE52E86005A6B84 /* Secrets-JetpackShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB282DE52E6B005A6B84 /* Secrets-JetpackShareExtension.swift */; };
 		4AC9545A2DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC954592DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift */; };
 		4AC9F8182DE528E40095EA51 /* Secrets-WordPressShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC9F8172DE528E40095EA51 /* Secrets-WordPressShareExtension.swift */; };
 		4AD953C72C21451700D0EEFA /* WordPressAuthenticator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */; };
@@ -815,6 +817,8 @@
 		4A690C1D2BA796C500A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4ABC59732DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-WordPressDraftActionExtension.swift"; path = "../Secrets/Secrets-WordPressDraftActionExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackDraftActionExtension.swift"; path = "../Secrets/Secrets-JetpackDraftActionExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4ABCAB282DE52E6B005A6B84 /* Secrets-JetpackShareExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackShareExtension.swift"; path = "../Secrets/Secrets-JetpackShareExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AC954592DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackStatsWidgets.swift"; path = "../Secrets/Secrets-JetpackStatsWidgets.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AC9F8172DE528E40095EA51 /* Secrets-WordPressShareExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-WordPressShareExtension.swift"; path = "../Secrets/Secrets-WordPressShareExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressAuthenticator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1174,6 +1178,20 @@
 			);
 			target = 74576671202B558C00F42E40 /* WordPressDraftActionExtension */;
 		};
+		4ABC59802DE52D23005A6B84 /* Exceptions for "Classes" folder in "JetpackDraftActionExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"System/ApiCredentials+BuildSecrets.swift",
+			);
+			target = 8096213028E55C9400940A5D /* JetpackDraftActionExtension */;
+		};
+		4ABC59822DE52D2A005A6B84 /* Exceptions for "Classes" folder in "JetpackShareExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"System/ApiCredentials+BuildSecrets.swift",
+			);
+			target = 809620CF28E540D700940A5D /* JetpackShareExtension */;
+		};
 		4AC9CF442DE5228C0095EA51 /* Exceptions for "Classes" folder in "JetpackStatsWidgets" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -1274,6 +1292,8 @@
 				4AC9F8152DE528180095EA51 /* Exceptions for "Classes" folder in "WordPressShareExtension" target */,
 				4ABC59762DE52AA2005A6B84 /* Exceptions for "Classes" folder in "WordPressDraftActionExtension" target */,
 				3F164FD02D9E49A8008BC606 /* Exceptions for "Classes" folder in "Jetpack" target */,
+				4ABC59822DE52D2A005A6B84 /* Exceptions for "Classes" folder in "JetpackShareExtension" target */,
+				4ABC59802DE52D23005A6B84 /* Exceptions for "Classes" folder in "JetpackDraftActionExtension" target */,
 				4AC9CF442DE5228C0095EA51 /* Exceptions for "Classes" folder in "JetpackStatsWidgets" target */,
 				3F1A64F82DA7ABC300786B92 /* Exceptions for "Classes" folder in "Reader" target */,
 				0C5C46F42D98343300F2CD55 /* Exceptions for "Classes" folder in "Keystone" target */,
@@ -1629,6 +1649,8 @@
 			children = (
 				24351253264DCA08009BB2B6 /* Secrets.swift */,
 				4AC954592DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift */,
+				4ABCAB282DE52E6B005A6B84 /* Secrets-JetpackShareExtension.swift */,
+				4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */,
 				4AC9F8172DE528E40095EA51 /* Secrets-WordPressShareExtension.swift */,
 				4ABC59732DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift */,
 			);
@@ -2345,6 +2367,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8096211E28E540D700940A5D /* Build configuration list for PBXNativeTarget "JetpackShareExtension" */;
 			buildPhases = (
+				4ABC59772DE52C03005A6B84 /* Generate Credentials */,
 				809620D128E540D700940A5D /* Sources */,
 				8096211428E540D700940A5D /* Frameworks */,
 				8096211628E540D700940A5D /* Resources */,
@@ -2369,6 +2392,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8096218028E55C9400940A5D /* Build configuration list for PBXNativeTarget "JetpackDraftActionExtension" */;
 			buildPhases = (
+				4ABC59782DE52C4E005A6B84 /* Generate Credentials */,
 				8096213228E55C9400940A5D /* Sources */,
 				8096217528E55C9400940A5D /* Frameworks */,
 				8096217728E55C9400940A5D /* Resources */,
@@ -3171,6 +3195,46 @@
 			shellPath = /bin/sh;
 			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
 		};
+		4ABC59772DE52C03005A6B84 /* Generate Credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/../Scripts/BuildPhases/GenerateCredentials.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "Generate Credentials";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILD_DIR)/Secrets/Secrets-JetpackShareExtension.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
+		};
+		4ABC59782DE52C4E005A6B84 /* Generate Credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/../Scripts/BuildPhases/GenerateCredentials.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "Generate Credentials";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILD_DIR)/Secrets/Secrets-JetpackDraftActionExtension.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
+		};
 		4AC9F8162DE528260095EA51 /* Generate Credentials */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3346,6 +3410,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4ABCAB2B2DE52E86005A6B84 /* Secrets-JetpackShareExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3353,6 +3418,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4ABCAB2A2DE52E80005A6B84 /* Secrets-JetpackDraftActionExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
