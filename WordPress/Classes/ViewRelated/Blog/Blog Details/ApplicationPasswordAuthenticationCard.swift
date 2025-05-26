@@ -40,7 +40,6 @@ struct ApplicationPasswordAuthenticationCard: View {
     }
 }
 
-
 private enum Strings {
     static let newTitle = NSLocalizedString("application.password.new.title", value: "New: Application Passwords", comment: "Title for the new application passwords feature")
     static let description = NSLocalizedString("application.password.description", value: "You can now grant the app permission to use application passwords for quick and secure access to your site content.", comment: "Description for the application passwords feature")
