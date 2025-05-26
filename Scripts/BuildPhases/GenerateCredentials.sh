@@ -63,8 +63,9 @@ ensure_is_in_input_files_list $EXAMPLE_SECRETS_FILE
 SECRETS_DESTINATION_FILE="${SCRIPT_OUTPUT_FILE_0}"
 mkdir -p "$(dirname "$SECRETS_DESTINATION_FILE")"
 
+WORDPRESS_TARGETS=("WordPress" "WordPressShareExtension" "WordPressDraftActionExtension")
 # If the WordPress Production Secrets are available for WordPress, use them
-if [ -f "$WORDPRESS_SECRETS_FILE" ] && [ "${TARGET_NAME}" == "WordPress" ]; then
+if [ -f "$WORDPRESS_SECRETS_FILE" ] && [[ " ${WORDPRESS_TARGETS[*]} " == *" $TARGET_NAME "* ]]; then
     echo "Applying Production Secrets"
     cp -v "$WORDPRESS_SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
     exit 0
