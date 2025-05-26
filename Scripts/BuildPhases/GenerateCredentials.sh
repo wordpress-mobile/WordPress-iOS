@@ -63,7 +63,7 @@ ensure_is_in_input_files_list $EXAMPLE_SECRETS_FILE
 SECRETS_DESTINATION_FILE="${SCRIPT_OUTPUT_FILE_0}"
 mkdir -p "$(dirname "$SECRETS_DESTINATION_FILE")"
 
-WORDPRESS_TARGETS=("WordPress" "WordPressShareExtension" "WordPressDraftActionExtension")
+WORDPRESS_TARGETS=("WordPress" "WordPressShareExtension" "WordPressDraftActionExtension" "WordPressNotificationServiceExtension")
 # If the WordPress Production Secrets are available for WordPress, use them
 if [ -f "$WORDPRESS_SECRETS_FILE" ] && [[ " ${WORDPRESS_TARGETS[*]} " == *" $TARGET_NAME "* ]]; then
     echo "Applying Production Secrets"
@@ -71,7 +71,7 @@ if [ -f "$WORDPRESS_SECRETS_FILE" ] && [[ " ${WORDPRESS_TARGETS[*]} " == *" $TAR
     exit 0
 fi
 
-JETPACK_TARGETS=("Jetpack" "JetpackStatsWidgets" "JetpackShareExtension" "JetpackDraftActionExtension")
+JETPACK_TARGETS=("Jetpack" "JetpackStatsWidgets" "JetpackShareExtension" "JetpackDraftActionExtension" "JetpackNotificationServiceExtension")
 # If the Jetpack Secrets are available and if we're building Jetpack use them
 if [ -f "$JETPACK_SECRETS_FILE" ] && [[ " ${JETPACK_TARGETS[*]} " == *" $TARGET_NAME "* ]]; then
     echo "Applying Jetpack Secrets"

@@ -31,6 +31,12 @@ class NotificationService: UNNotificationServiceExtension {
 
     private let appKeychainAccessGroup = BuildSettings.current.appKeychainAccessGroup
 
+    override init() {
+        super.init()
+
+        BuildSettings.configure(secrets: ApiCredentials.toSecrets())
+    }
+
     // MARK: UNNotificationServiceExtension
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
