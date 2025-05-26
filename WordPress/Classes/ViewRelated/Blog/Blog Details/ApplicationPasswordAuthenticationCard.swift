@@ -2,7 +2,7 @@ import Foundation
 import WordPressUI
 import SwiftUI
 
-class ApplicationPasswordAuthenticationCardCell: UITableViewCell {
+public class ApplicationPasswordAuthenticationCardCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
