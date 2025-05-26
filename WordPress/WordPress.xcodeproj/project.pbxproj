@@ -1163,6 +1163,13 @@
 			);
 			target = 3F7AE0B42D9B30A100AB4892 /* WordPressData */;
 		};
+		4AC9CF442DE5228C0095EA51 /* Exceptions for "Classes" folder in "JetpackStatsWidgets" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"System/ApiCredentials+BuildSecrets.swift",
+			);
+			target = 0107E0B128F97D5000DE87DB /* JetpackStatsWidgets */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -1247,6 +1254,7 @@
 			exceptions = (
 				3F164FCF2D9E49A8008BC606 /* Exceptions for "Classes" folder in "WordPress" target */,
 				3F164FD02D9E49A8008BC606 /* Exceptions for "Classes" folder in "Jetpack" target */,
+				4AC9CF442DE5228C0095EA51 /* Exceptions for "Classes" folder in "JetpackStatsWidgets" target */,
 				3F1A64F82DA7ABC300786B92 /* Exceptions for "Classes" folder in "Reader" target */,
 				0C5C46F42D98343300F2CD55 /* Exceptions for "Classes" folder in "Keystone" target */,
 				3F0F25872D9BD88C00CD05D6 /* Exceptions for "Classes" folder in "WordPressData" target */,
