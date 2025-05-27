@@ -64,6 +64,7 @@ class MainShareViewController: UIViewController {
 
     override open func viewDidLoad() {
         super.viewDidLoad()
+        BuildSettings.configure(secrets: ApiCredentials.toSecrets())
         trackExtensionLaunch()
         loadAndPresentNavigationVC()
     }
