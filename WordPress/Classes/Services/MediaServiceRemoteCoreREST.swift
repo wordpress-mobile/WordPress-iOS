@@ -161,6 +161,9 @@ private extension RemoteMedia {
             if case let .int(height) = mediaDetails["height"] {
                 self.height = NSNumber(value: height)
             }
+            if case let .int(length) = mediaDetails["length"] {
+                self.length = NSNumber(value: length)
+            }
             if case let .string(file) = mediaDetails["file"] {
                 self.file = file
             }
@@ -183,7 +186,6 @@ private extension RemoteMedia {
 
         self.localURL = nil
         self.videopressGUID = nil
-        self.length = nil
         self.shortcode = nil
     }
 }
