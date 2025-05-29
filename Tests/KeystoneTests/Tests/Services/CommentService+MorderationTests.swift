@@ -37,33 +37,14 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         let commentService = CommentService(coreDataStack: contextManager)
 
         // Add a successful HTTP API call stub
-        stub(condition: isMethodPOST() && isPath("/wp/v2/sites/1/comments/3")) { _ in
+        stub(condition: isMethodPOST() && isPath("/rest/v1.1/sites/1/comments/3")) { _ in
             HTTPStubsResponse(
                 jsonObject: [
                     "id": 3,
                     "post": 2,
-                    "parent": 0,
-                    "author": 0,
-                    "author_name": "A WordPress Commenter",
-                    "author_email": "hello@example.com",
-                    "author_url": "https://wordpress.org/",
-                    "author_ip": "",
-                    "author_user_agent": "",
-                    "date": "2025-05-20T23:38:46",
-                    "date_gmt": "2025-05-20T23:38:46",
-                    "content": [
-                        "rendered": "<p>test comment</p>\n",
-                        "raw": "test comment"
-                    ],
-                    "link": "https://example.com/2025/05/20/hello-world/#comment-1",
                     "status": "approved",
                     "type": "comment",
-                    "author_avatar_urls": [
-                        "24": "https://secure.gravatar.com/avatar/123?s=24&d=mm&r=g",
-                        "48": "https://secure.gravatar.com/avatar/123?s=48&d=mm&r=g",
-                        "96": "https://secure.gravatar.com/avatar/123?s=96&d=mm&r=g"
-                    ],
-                    "meta": []
+                    "content": "<p>test comment</p>\n",
                 ] as [String: Any],
                 statusCode: 200,
                 headers: nil
@@ -88,38 +69,20 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         let commentService = CommentService(coreDataStack: contextManager)
 
         // Add a successful HTTP API call stub
-        stub(condition: isMethodPOST() && isPath("/wp/v2/sites/1/comments/3")) { _ in
+        stub(condition: isMethodPOST() && isPath("/rest/v1.1/sites/1/comments/3")) { _ in
             HTTPStubsResponse(
                 jsonObject: [
                     "id": 3,
                     "post": 2,
-                    "parent": 0,
-                    "author": 0,
-                    "author_name": "A WordPress Commenter",
-                    "author_email": "hello@example.com",
-                    "author_url": "https://wordpress.org/",
-                    "author_ip": "",
-                    "author_user_agent": "",
-                    "date": "2025-05-20T23:38:46",
-                    "date_gmt": "2025-05-20T23:38:46",
-                    "content": [
-                        "rendered": "<p>test comment</p>\n",
-                        "raw": "test comment"
-                    ],
-                    "link": "https://example.com/2025/05/20/hello-world/#comment-1",
-                    "status": "hold",
+                    "status": "pending",
                     "type": "comment",
-                    "author_avatar_urls": [
-                        "24": "https://secure.gravatar.com/avatar/123?s=24&d=mm&r=g",
-                        "48": "https://secure.gravatar.com/avatar/123?s=48&d=mm&r=g",
-                        "96": "https://secure.gravatar.com/avatar/123?s=96&d=mm&r=g"
-                    ],
-                    "meta": []
+                    "content": "<p>test comment</p>\n",
                 ] as [String: Any],
                 statusCode: 200,
                 headers: nil
             )
         }
+
         // Call the moderation function and wait for it to complete
         waitUntil { done in
             commentService.unapproveComment(self.comment) {
@@ -138,38 +101,20 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         let commentService = CommentService(coreDataStack: contextManager)
 
         // Add a successful HTTP API call stub
-        stub(condition: isMethodPOST() && isPath("/wp/v2/sites/1/comments/3")) { _ in
+        stub(condition: isMethodPOST() && isPath("/rest/v1.1/sites/1/comments/3")) { _ in
             HTTPStubsResponse(
                 jsonObject: [
                     "id": 3,
                     "post": 2,
-                    "parent": 0,
-                    "author": 0,
-                    "author_name": "A WordPress Commenter",
-                    "author_email": "hello@example.com",
-                    "author_url": "https://wordpress.org/",
-                    "author_ip": "",
-                    "author_user_agent": "",
-                    "date": "2025-05-20T23:38:46",
-                    "date_gmt": "2025-05-20T23:38:46",
-                    "content": [
-                        "rendered": "<p>test comment</p>\n",
-                        "raw": "test comment"
-                    ],
-                    "link": "https://example.com/2025/05/20/hello-world/#comment-1",
                     "status": "spam",
                     "type": "comment",
-                    "author_avatar_urls": [
-                        "24": "https://secure.gravatar.com/avatar/123?s=24&d=mm&r=g",
-                        "48": "https://secure.gravatar.com/avatar/123?s=48&d=mm&r=g",
-                        "96": "https://secure.gravatar.com/avatar/123?s=96&d=mm&r=g"
-                    ],
-                    "meta": []
+                    "content": "<p>test comment</p>\n",
                 ] as [String: Any],
                 statusCode: 200,
                 headers: nil
             )
         }
+
         // Call the moderation function and wait for it to complete
         waitUntil { done in
             commentService.spamComment(self.comment) {
@@ -188,38 +133,20 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         let commentService = CommentService(coreDataStack: contextManager)
 
         // Add a successful HTTP API call stub
-        stub(condition: isMethodPOST() && isPath("/wp/v2/sites/1/comments/3")) { _ in
+        stub(condition: isMethodPOST() && isPath("/rest/v1.1/sites/1/comments/3")) { _ in
             HTTPStubsResponse(
                 jsonObject: [
                     "id": 3,
                     "post": 2,
-                    "parent": 0,
-                    "author": 0,
-                    "author_name": "A WordPress Commenter",
-                    "author_email": "hello@example.com",
-                    "author_url": "https://wordpress.org/",
-                    "author_ip": "",
-                    "author_user_agent": "",
-                    "date": "2025-05-20T23:38:46",
-                    "date_gmt": "2025-05-20T23:38:46",
-                    "content": [
-                        "rendered": "<p>test comment</p>\n",
-                        "raw": "test comment"
-                    ],
-                    "link": "https://example.com/2025/05/20/hello-world/#comment-1",
                     "status": "trash",
                     "type": "comment",
-                    "author_avatar_urls": [
-                        "24": "https://secure.gravatar.com/avatar/123?s=24&d=mm&r=g",
-                        "48": "https://secure.gravatar.com/avatar/123?s=48&d=mm&r=g",
-                        "96": "https://secure.gravatar.com/avatar/123?s=96&d=mm&r=g"
-                    ],
-                    "meta": []
+                    "content": "<p>test comment</p>\n",
                 ] as [String: Any],
                 statusCode: 200,
                 headers: nil
             )
         }
+
         // Call the moderation function and wait for it to complete
         waitUntil { done in
             commentService.trashComment(self.comment) {
@@ -238,37 +165,9 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         let commentService = CommentService(coreDataStack: contextManager)
 
         // Add a successful HTTP API call stub
-        stub(condition: isMethodDELETE() && isPath("/wp/v2/sites/1/comments/3")) { _ in
+        stub(condition: isMethodPOST() && isPath("/rest/v1.1/sites/1/comments/3/delete")) { _ in
             HTTPStubsResponse(
-                jsonObject: [
-                    "deleted": true,
-                    "previous": [
-                        "id": 3,
-                        "post": 2,
-                        "parent": 0,
-                        "author": 0,
-                        "author_name": "A WordPress Commenter",
-                        "author_email": "hello@example.com",
-                        "author_url": "https://wordpress.org/",
-                        "author_ip": "",
-                        "author_user_agent": "",
-                        "date": "2025-05-20T23:38:46",
-                        "date_gmt": "2025-05-20T23:38:46",
-                        "content": [
-                            "rendered": "<p>test comment</p>\n",
-                            "raw": "test comment"
-                        ],
-                        "link": "https://example.com/2025/05/20/hello-world/#comment-1",
-                        "status": "approved",
-                        "type": "comment",
-                        "author_avatar_urls": [
-                            "24": "https://secure.gravatar.com/avatar/123?s=24&d=mm&r=g",
-                            "48": "https://secure.gravatar.com/avatar/123?s=48&d=mm&r=g",
-                            "96": "https://secure.gravatar.com/avatar/123?s=96&d=mm&r=g"
-                        ],
-                        "meta": []
-                    ]
-                ] as [String: Any],
+                jsonObject: [String: Any](),
                 statusCode: 200,
                 headers: nil
             )
