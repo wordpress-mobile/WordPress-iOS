@@ -35,7 +35,10 @@ final class ItemProviderMediaExporter: MediaExporter {
         }
 
         // `MediaImageExporter` doesn't support GIF, so it requires special handling.
-        func processGIF(at url: URL) throws {
+        func processGIF(at original: URL) throws {
+            let url = try self.mediaFileManager.makeLocalMediaURL(withFilename: original.lastPathComponent, fileExtension: original.pathExtension)
+            try FileManager.default.copyItem(at: original, to: url)
+
             let pixelSize = url.pixelSize
             let media = MediaExport(url: url, fileSize: url.fileSize, width: pixelSize.width, height: pixelSize.height, duration: nil)
             let exportProgress = Progress(totalUnitCount: 1)
@@ -67,15 +70,18 @@ final class ItemProviderMediaExporter: MediaExporter {
 
             // Retaining `self` on purpose.
             do {
-                let copyURL = try self.mediaFileManager.makeLocalMediaURL(withFilename: url.lastPathComponent, fileExtension: url.pathExtension)
-                try FileManager.default.copyItem(at: url, to: copyURL)
-
+                // Pre-copying the file at `url` using `mediaFileManager` caused the issue
+                // https://github.com/wordpress-mobile/WordPress-iOS/issues/23025.
+                //
+                // The image and video process functions create new files based on the file at `url`, which means they
+                // don't need to copy the file at `url`, they just need to read it.
+                // We'll let the individual process to decide whether to copy the file at `url` or not.
                 if self.hasConformingType(.gif) {
-                    try processGIF(at: copyURL)
+                    try processGIF(at: url)
                 } else if self.hasConformingType(.image) {
-                    try processImage(at: copyURL)
+                    try processImage(at: url)
                 } else if self.hasConformingType(.movie) || self.hasConformingType(.video) {
-                    try processVideo(at: copyURL)
+                    try processVideo(at: url)
                 } else {
                     onError(ExportError.unsupportedContentType)
                 }
