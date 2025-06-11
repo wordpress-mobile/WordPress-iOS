@@ -104,9 +104,10 @@ class MyProfileHeaderView: UITableViewHeaderFooterView, NibLoadable {
     }
 
     @objc private func gravatarButtonTapped() {
-        guard let email = gravatarEmail,
-              let presenter = GravatarQuickEditorPresenter(email: email),
-              let presentingViewController else { return }
-        presenter.presentQuickEditor(on: presentingViewController)
+        guard
+            let presenter = GravatarQuickEditorPresenter(),
+            let presentingViewController
+        else { return }
+        presenter.presentQuickEditor(on: presentingViewController, scope: .avatarPicker())
     }
 }

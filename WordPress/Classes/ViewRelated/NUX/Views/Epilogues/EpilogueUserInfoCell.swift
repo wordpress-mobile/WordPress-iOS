@@ -87,10 +87,11 @@ class EpilogueUserInfoCell: UITableViewCell, NibLoadable {
     }
 
     @objc private func gravatarButtonTapped() {
-        guard let email,
-              let presenter = GravatarQuickEditorPresenter(email: email),
-              let viewController else { return }
-        presenter.presentQuickEditor(on: viewController)
+        guard
+            let presenter = GravatarQuickEditorPresenter(),
+            let viewController
+        else { return }
+        presenter.presentQuickEditor(on: viewController, scope: .avatarPicker())
     }
 
     private func downloadGravatar(forceRefresh: Bool = false) {
