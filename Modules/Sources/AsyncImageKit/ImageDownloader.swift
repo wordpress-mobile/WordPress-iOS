@@ -165,7 +165,7 @@ private final class ImageDataTask {
         self.task = task
     }
 
-    func getData(subscriptionID: UUID) async throws -> Data {
+    nonisolated func getData(subscriptionID: UUID) async throws -> Data {
         try await withTaskCancellationHandler {
             try await task.value
         } onCancel: { [weak downloader, key] in
