@@ -217,6 +217,30 @@ class PostRepositoryTests: CoreDataTestCase {
         }
     }
 
+    func testFetchPostsWithTheSameForeignID() async throws {
+        let posts = try (1...10).map {
+            let post = try XCTUnwrap(RemotePost(siteID: 1, status: "publish", title: "Post: Test", content: "This is a test post"))
+            post.postID = NSNumber(value: $0)
+            post.type = "post"
+
+            // Assign the same foreign id to a few posts
+            if $0 <= 3 {
+                post.metadata = [[
+                    "id": 1234,
+                    "key": PostHelper.foreignIDKey,
+                    "value": "892D484C-9972-47DE-8103-03A7FDE4EFCC"
+                ]]
+            }
+
+            return post
+        }
+
+        remoteMock.remotePostsToReturnOnSyncPostsOfType = [posts]
+
+        let _ = try await repository.paginate(type: Post.self, statuses: [.publish], offset: 0, number: 100, in: blogID)
+        let numberOfPosts = try await contextManager.performQuery { $0.countObjects(ofType: Post.self) }
+        XCTAssertEqual(numberOfPosts, 10)
+    }
 }
 
 // These mock classes are copied from PostServiceWPComTests. We can't simply remove the `private` in the original class
