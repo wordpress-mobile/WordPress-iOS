@@ -139,8 +139,10 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             self?.trackArticleDetailsLikedOrUnliked()
         }, failure: { [weak self] (error: Error?) in
             self?.trackArticleDetailsLikedOrUnliked()
-            if let anError = error {
-                DDLogError("Error (un)liking post: \(anError.localizedDescription)")
+            if let error {
+                DDLogError("Error (un)liking post: \(error.localizedDescription)")
+                Notice(error: error).post()
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
             }
         })
     }
