@@ -233,9 +233,9 @@ private class StarscreamWebSocket: Socket {
     var onText: ((String) -> Void)?
     var onData: ((Data) -> Void)?
 
-    let socket: WebSocket
+    let socket: Starscream.WebSocket
 
-    init(socket: WebSocket) {
+    init(socket: Starscream.WebSocket) {
         self.socket = socket
 
         socket.onEvent = { [weak self] event in
