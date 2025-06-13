@@ -255,14 +255,17 @@ public class MeViewController: UITableViewController {
 
     fileprivate func presentGravatarAboutEditorAction() -> ImmuTableAction {
         return { [unowned self] row in
-            presentGravatarQuickEditor(scope: .aboutEditor(.init(
-                presentationStyle: .large(),
-                fields: [.displayName, .aboutMe, .firstName, .lastName]
-            )))
+            presentGravatarQuickEditor(initialPage: .aboutEditor)
         }
     }
 
-    fileprivate func presentGravatarQuickEditor(scope: QuickEditorScopeOption) {
+    fileprivate func presentGravatarQuickEditor(initialPage: AvatarPickerAndAboutEditorConfiguration.Page) {
+        let scope = QuickEditorScopeOption.avatarPickerAndAboutInfoEditor(.init(
+            contentLayout: .horizontal(),
+            fields: [.displayName, .aboutMe, .firstName, .lastName],
+            initialPage: initialPage
+        ))
+
         let presenter = GravatarQuickEditorPresenter() { [weak self] in
             self?.refreshAccountDetailsAndSettings()
         }
@@ -640,7 +643,7 @@ extension MeViewController {
 
 extension MeViewController: MeHeaderViewDelegate {
     func meHeaderViewDidTapOnIconView(_ view: MeHeaderView) {
-        presentGravatarQuickEditor(scope: .avatarPicker())
+        presentGravatarQuickEditor(initialPage: .avatarPicker)
     }
 }
 
