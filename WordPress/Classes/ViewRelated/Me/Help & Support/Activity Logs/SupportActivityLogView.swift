@@ -12,10 +12,11 @@ struct SupportActivityLogView: View {
                     footer: Text(Strings.sectionFooter)) {
                 ForEach(viewModel.logFiles.indices, id: \.self) { index in
                     let logFile = viewModel.logFiles[index]
-                    NavigationLink(destination: ActivityLogDetailView(logText: viewModel.getLogText(for: logFile),
-                                                                      dateString: viewModel.getFormattedDate(for: logFile))) {
-                        Text(index == 0 ? Strings.currentLog : viewModel.getFormattedDate(for: logFile))
-                    }
+                    NavigationLink(destination: ActivityLogDetailView(
+                        logText: viewModel.getLogText(for: logFile),
+                        dateString: viewModel.getFormattedDate(for: logFile))) {
+                            Text(index == 0 ? Strings.currentLog : viewModel.getFormattedDate(for: logFile))
+                        }
                 }
             }
 
@@ -49,7 +50,7 @@ class ActivityLogViewModel: ObservableObject {
     private let dateFormatter: DateFormatter
 
     init() {
-        self.fileLogger = WPLogger.shared.fileLogger
+        self.fileLogger = WPLogger.shared().fileLogger
         self.dateFormatter = DateFormatter()
         self.dateFormatter.dateStyle = .medium
         self.dateFormatter.doesRelativeDateFormatting = true
@@ -63,7 +64,7 @@ class ActivityLogViewModel: ObservableObject {
     }
 
     func getFormattedDate(for logFile: DDLogFileInfo) -> String {
-        return dateFormatter.string(from: logFile.creationDate)
+        logFile.creationDate.map(dateFormatter.string) ?? ""
     }
 
     func getLogText(for logFile: DDLogFileInfo) -> String {
@@ -75,7 +76,7 @@ class ActivityLogViewModel: ObservableObject {
     }
 
     func deleteOldLogs() {
-        WPLogger.shared.deleteArchivedLogs()
+        WPLogger.shared().deleteArchivedLogs()
         loadLogFiles()
     }
 }
@@ -95,69 +96,14 @@ struct ActivityLogDetailView: View {
 }
 
 private enum Strings {
-    static let title = NSLocalizedString(
-        "support.activityLog.navigation.title",
-        value: "Activity Logs",
-        comment: "Title shown in the navigation bar of the Activity Logs screen."
-    )
-
-    static let backButton = NSLocalizedString(
-        "support.activityLog.navigation.backButton",
-        value: "Logs",
-        comment: "Title shown in the back button of the Activity Logs screen."
-    )
-
-    static let currentLog = NSLocalizedString(
-        "support.activityLog.list.currentLog",
-        value: "Current",
-        comment: "Label for the current activity log file in the list."
-    )
-
-    static let sectionHeader = NSLocalizedString(
-        "support.activityLog.list.sectionHeader",
-        value: "Log Files By Created Date",
-        comment: "Header text for the section containing log files in the Activity Logs screen."
-    )
-
-    static let sectionFooter = NSLocalizedString(
-        "support.activityLog.list.sectionFooter",
-        value: "Up to seven days worth of logs are saved.",
-        comment: "Footer text explaining the log retention policy in the Activity Logs screen."
-    )
-
-    static let clearLogsButton = NSLocalizedString(
-        "support.activityLog.list.clearLogsButton",
-        value: "Clear Old Activity Logs",
-        comment: "Button title to clear old activity logs."
-    )
-
-    static let deleteTitle = NSLocalizedString(
-        "support.activityLog.alert.deleteTitle",
-        value: "Delete",
-        comment: "Title of the alert shown when attempting to clear old activity logs."
-    )
-
-    static let deleteMessage = NSLocalizedString(
-        "support.activityLog.alert.deleteMessage",
-        value: "Clear all old activity logs?",
-        comment: "Message shown in the alert when attempting to clear old activity logs."
-    )
-
-    static let confirmButton = NSLocalizedString(
-        "support.activityLog.alert.confirmButton",
-        value: "Yes",
-        comment: "Button title to confirm clearing old activity logs."
-    )
-
-    static let cancelButton = NSLocalizedString(
-        "support.activityLog.alert.cancelButton",
-        value: "No",
-        comment: "Button title to cancel clearing old activity logs."
-    )
-}
-
-#Preview {
-    NavigationView {
-        ActivityLogView()
-    }
+    static let title = NSLocalizedString("support.activityLog.navigation.title", value: "Activity Logs", comment: "Title shown in the navigation bar of the Activity Logs screen.")
+    static let backButton = NSLocalizedString("support.activityLog.navigation.backButton", value: "Logs", comment: "Title shown in the back button of the Activity Logs screen.")
+    static let currentLog = NSLocalizedString("support.activityLog.list.currentLog", value: "Current", comment: "Label for the current activity log file in the list.")
+    static let sectionHeader = NSLocalizedString("support.activityLog.list.sectionHeader", value: "Log Files By Created Date", comment: "Header text for the section containing log files in the Activity Logs screen.")
+    static let sectionFooter = NSLocalizedString("support.activityLog.list.sectionFooter", value: "Up to seven days worth of logs are saved.", comment: "Footer text explaining the log retention policy in the Activity Logs screen.")
+    static let clearLogsButton = NSLocalizedString("support.activityLog.list.clearLogsButton", value: "Clear Old Activity Logs", comment: "Button title to clear old activity logs.")
+    static let deleteTitle = NSLocalizedString("support.activityLog.alert.deleteTitle", value: "Delete", comment: "Title of the alert shown when attempting to clear old activity logs.")
+    static let deleteMessage = NSLocalizedString("support.activityLog.alert.deleteMessage", value: "Clear all old activity logs?", comment: "Message shown in the alert when attempting to clear old activity logs.")
+    static let confirmButton = NSLocalizedString("support.activityLog.alert.confirmButton", value: "Yes", comment: "Button title to confirm clearing old activity logs.")
+    static let cancelButton = NSLocalizedString("support.activityLog.alert.cancelButton", value: "No", comment: "Button title to cancel clearing old activity logs.")
 }
