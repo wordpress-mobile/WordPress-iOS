@@ -1,11 +1,13 @@
 import SwiftUI
+import ShareExtensionCore
+import CocoaLumberjack
 
 struct SupportActivityDetailsView: View {
     @StateObject private var viewModel: SupportActivityDetailsViewModel
     @Environment(\.dismiss) private var dismiss
 
-    init(logText: String, logDate: String) {
-        _viewModel = StateObject(wrappedValue: SupportActivityDetailsViewModel(logText: logText, logDate: logDate))
+    init(logFile: DDLogFileInfo) {
+        _viewModel = StateObject(wrappedValue: SupportActivityDetailsViewModel(logFile: logFile))
     }
 
     var body: some View {
@@ -20,7 +22,7 @@ struct SupportActivityDetailsView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    viewModel.shareLog()
+                    viewModel.buttonShareTapped()
                 } label: {
                     Image(systemName: "square.and.arrow.up")
                 }
@@ -33,12 +35,23 @@ private final class SupportActivityDetailsViewModel: ObservableObject {
     let logText: String
     let logDate: String
 
-    init(logText: String, logDate: String) {
+    init(logFile: DDLogFileInfo) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.doesRelativeDateFormatting = true
+        dateFormatter.timeStyle = .short
+
+        self.logDate = logFile.creationDate.map(dateFormatter.string) ?? ""
+
+        guard let logData = try? Data(contentsOf: URL(fileURLWithPath: logFile.filePath)),
+              let logText = String(data: logData, encoding: .utf8) else {
+            self.logText = ""
+            return
+        }
         self.logText = logText
-        self.logDate = logDate
     }
 
-    func shareLog() {
+    func buttonShareTapped() {
         let activityVC = UIActivityViewController(
             activityItems: [logText],
             applicationActivities: nil
@@ -59,7 +72,8 @@ private final class SupportActivityDetailsViewModel: ObservableObject {
             .postToTencentWeibo,
             .airDrop,
             .openInIBooks,
-            .markupAsPDF
+            .markupAsPDF,
+            SharePost.activityType
         ]
 
         activityVC.excludedActivityTypes = excludedTypes
