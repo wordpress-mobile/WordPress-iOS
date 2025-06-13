@@ -27,7 +27,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
         .package(url: "https://github.com/Automattic/Automattic-Tracks-iOS", from: "3.5.2"),
         .package(url: "https://github.com/Automattic/AutomatticAbout-swift", from: "1.1.5"),
-        .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", revision: "41e2fd52a0e5ea2693a9b953381cef09e3091ab3"),
+        .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", revision: "ce04275c6237131576f424a215197bfaeaefc416"),
         .package(url: "https://github.com/Automattic/Gridicons-iOS", branch: "develop"),
         .package(url: "https://github.com/Automattic/ScreenObject", from: "0.3.0"),
         .package(url: "https://github.com/buildkite/test-collector-swift", from: "0.3.0"),
