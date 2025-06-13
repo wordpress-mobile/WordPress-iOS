@@ -228,7 +228,7 @@ private protocol ExtensionContentExtractor {
     func copyToSharedContainer(url: URL) -> URL?
 }
 
-private protocol TypeBasedExtensionContentExtractor: ExtensionContentExtractor {
+private protocol TypeBasedExtensionContentExtractor: ExtensionContentExtractor, Sendable {
     associatedtype Payload
     var acceptedType: String { get }
     func convert(payload: Payload) -> ExtractedItem?
