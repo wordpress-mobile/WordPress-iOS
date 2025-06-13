@@ -12,11 +12,9 @@ struct SupportActivityLogView: View {
                     footer: Text(Strings.sectionFooter)) {
                 ForEach(viewModel.logFiles.indices, id: \.self) { index in
                     let logFile = viewModel.logFiles[index]
-                    NavigationLink(destination: ActivityLogDetailView(
-                        logText: viewModel.getLogText(for: logFile),
-                        dateString: viewModel.getFormattedDate(for: logFile))) {
-                            Text(index == 0 ? Strings.currentLog : viewModel.getFormattedDate(for: logFile))
-                        }
+                    NavigationLink(destination: SupportActivityDetailsView(logText: viewModel.getLogText(for: logFile), logDate: viewModel.getFormattedDate(for: logFile))) {
+                        Text(index == 0 ? Strings.currentLog : viewModel.getFormattedDate(for: logFile))
+                    })
                 }
             }
 
@@ -31,8 +29,8 @@ struct SupportActivityLogView: View {
             }
         }
         .navigationTitle(Strings.title)
-        .alert(Strings.deleteTitle, isPresented: $viewModel.showDeleteConfirmation) {
-            Button(Strings.cancelButton, role: .cancel) { }
+        .alert(SharedStrings.Button.delete, isPresented: $viewModel.showDeleteConfirmation) {
+            Button(SharedStrings.Button.cancel, role: .cancel) { }
             Button(Strings.confirmButton, role: .destructive) {
                 viewModel.deleteOldLogs()
             }
@@ -42,7 +40,7 @@ struct SupportActivityLogView: View {
     }
 }
 
-class ActivityLogViewModel: ObservableObject {
+private class ActivityLogViewModel: ObservableObject {
     @Published var logFiles: [DDLogFileInfo] = []
     @Published var showDeleteConfirmation = false
 
@@ -81,20 +79,6 @@ class ActivityLogViewModel: ObservableObject {
     }
 }
 
-struct ActivityLogDetailView: View {
-    let logText: String
-    let dateString: String
-
-    var body: some View {
-        ScrollView {
-            Text(logText)
-                .font(.system(.body, design: .monospaced))
-                .padding()
-        }
-        .navigationTitle(dateString)
-    }
-}
-
 private enum Strings {
     static let title = NSLocalizedString("support.activityLog.navigation.title", value: "Activity Logs", comment: "Title shown in the navigation bar of the Activity Logs screen.")
     static let backButton = NSLocalizedString("support.activityLog.navigation.backButton", value: "Logs", comment: "Title shown in the back button of the Activity Logs screen.")
@@ -102,8 +86,6 @@ private enum Strings {
     static let sectionHeader = NSLocalizedString("support.activityLog.list.sectionHeader", value: "Log Files By Created Date", comment: "Header text for the section containing log files in the Activity Logs screen.")
     static let sectionFooter = NSLocalizedString("support.activityLog.list.sectionFooter", value: "Up to seven days worth of logs are saved.", comment: "Footer text explaining the log retention policy in the Activity Logs screen.")
     static let clearLogsButton = NSLocalizedString("support.activityLog.list.clearLogsButton", value: "Clear Old Activity Logs", comment: "Button title to clear old activity logs.")
-    static let deleteTitle = NSLocalizedString("support.activityLog.alert.deleteTitle", value: "Delete", comment: "Title of the alert shown when attempting to clear old activity logs.")
     static let deleteMessage = NSLocalizedString("support.activityLog.alert.deleteMessage", value: "Clear all old activity logs?", comment: "Message shown in the alert when attempting to clear old activity logs.")
     static let confirmButton = NSLocalizedString("support.activityLog.alert.confirmButton", value: "Yes", comment: "Button title to confirm clearing old activity logs.")
-    static let cancelButton = NSLocalizedString("support.activityLog.alert.cancelButton", value: "No", comment: "Button title to cancel clearing old activity logs.")
 }
