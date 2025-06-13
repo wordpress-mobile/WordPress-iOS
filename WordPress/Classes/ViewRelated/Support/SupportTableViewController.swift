@@ -353,8 +353,9 @@ private extension SupportTableViewController {
 
     func activityLogsSelected() -> ImmuTableAction {
         return { [unowned self] row in
-            let activityLogViewController = ActivityLogViewController()
-            self.navigationController?.pushViewController(activityLogViewController, animated: true)
+            let activityLogView = SupportActivityLogView()
+            let hostingController = UIHostingController(rootView: activityLogView)
+            self.navigationController?.pushViewController(hostingController, animated: true)
         }
     }
 
