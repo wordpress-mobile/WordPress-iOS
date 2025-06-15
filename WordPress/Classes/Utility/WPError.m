@@ -9,7 +9,6 @@
 @import WordPressShared;
 @import WordPressKit;
 
-NSInteger const SupportButtonIndex = 0;
 
 @interface WPError ()
 
@@ -48,26 +47,6 @@ NSInteger const SupportButtonIndex = 0;
               okPressedBlock:nil];
 }
 
-+ (void)showXMLRPCErrorAlert:(NSError *)error
-{
-    NSString *cleanedErrorMsg = [error localizedDescription];
-
-    if ([error.domain isEqualToString:WordPressOrgXMLRPCApi.errorDomain] && error.code == 401) {
-        cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this site.", @"");
-    }
-
-    // ignore HTTP auth canceled errors
-    if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
-        [WPError internalInstance].alertShowing = NO;
-        return;
-    }
-
-    if ([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound) {
-        cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your site.", @"");
-    }
-
-    [self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
-}
 
 + (NSDictionary<NSString *,NSString *> *)titleAndMessageFromNetworkingError:(NSError *)error
                                                                desiredTitle:(NSString *)desiredTitle
