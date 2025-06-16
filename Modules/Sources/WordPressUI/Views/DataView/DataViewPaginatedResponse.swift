@@ -84,6 +84,10 @@ public final class DataViewPaginatedResponse<Element: Identifiable>: ObservableO
     ///
     /// - Parameter id: The ID of the item to remove.
     public func deleteItem(withID id: Element.ID) {
-        items.removeAll { $0.id == id }
+        guard let index = items.firstIndex(where: { $0.id == id }) else {
+            return
+        }
+        items.remove(at: index)
+        total -= 1
     }
 }

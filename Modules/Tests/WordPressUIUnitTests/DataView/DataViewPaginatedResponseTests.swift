@@ -337,7 +337,7 @@ import WordPressUI
         // THEN
         #expect(response.items.count == 2)
         #expect(response.items.map(\.id) == [1, 3])
-        #expect(response.total == 3) // Total remains unchanged
+        #expect(response.total == 2) // Total is updated
     }
     
     @Test func deleteNonExistentItem() async throws {
@@ -359,5 +359,6 @@ import WordPressUI
         // THEN nothing changes
         #expect(response.items.count == 2)
         #expect(response.items.map(\.id) == [1, 2])
+        #expect(response.total == 2) // Total remains unchanged
     }
 }
