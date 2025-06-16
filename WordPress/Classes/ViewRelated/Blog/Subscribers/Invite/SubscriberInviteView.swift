@@ -104,10 +104,7 @@ struct SubscriberInviteView: View {
         isSending = true
         Task {
             do {
-                guard let api = blog.getRestAPI() else {
-                    throw URLError(.unknown, userInfo: [NSLocalizedDescriptionKey: SharedStrings.Error.generic])
-                }
-                let service = SubscribersServiceRemote(wordPressComRestApi: api)
+                let service = try blog.maketSubscribersService()
                 try await service.importSubscribers(siteID: blog.dotComSiteID, emails: emails)
 
                 UINotificationFeedbackGenerator().notificationOccurred(.success)

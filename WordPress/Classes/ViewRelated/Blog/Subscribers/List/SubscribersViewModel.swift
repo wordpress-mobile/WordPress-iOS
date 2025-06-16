@@ -75,14 +75,10 @@ final class SubscribersViewModel: ObservableObject {
         search: String? = nil
     ) async throws -> SubscribersPaginatedResponse {
         return try await SubscribersPaginatedResponse { [blog] page in
-            guard let api = blog.getRestAPI() else {
-                throw URLError(.unknown)
-            }
-            let service = SubscribersServiceRemote(wordPressComRestApi: api)
-            let currentPage = page ?? 1
+            let service = try blog.maketSubscribersService()
             let response = try await service.getSubscribers(
                 siteID: blog.dotComSiteID,
-                page: currentPage,
+                page: page ?? 1,
                 perPage: 50,
                 parameters: parameters,
                 search: search

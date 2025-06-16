@@ -94,7 +94,7 @@ final class SubscriberRowViewModel: @preconcurrency Identifiable {
         isDeleting = true
         Task {
             do {
-                try await blog.getSubscribersService()
+                try await blog.maketSubscribersService()
                     .deleteSubscriber(subscriber, siteID: blog.dotComSiteID)
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
             } catch {
