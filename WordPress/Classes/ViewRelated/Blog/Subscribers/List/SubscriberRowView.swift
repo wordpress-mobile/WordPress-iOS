@@ -86,8 +86,8 @@ final class SubscriberRowViewModel: @preconcurrency Identifiable {
         self.details = subscriber.dateSubscribed.toShortString()
     }
 
-    func makeDetailsViewModel() -> SubsriberDetailsViewModel {
-        SubsriberDetailsViewModel(blog: blog, subscriber: subscriber)
+    func makeDetailsViewModel() -> SubscriberDetailsViewModel {
+        SubscriberDetailsViewModel(blog: blog, subscriber: subscriber)
     }
 
     func delete() {

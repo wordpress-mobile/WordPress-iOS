@@ -3,7 +3,7 @@ import WordPressKit
 import WordPressUI
 
 struct SubscriberDetailsView: View {
-    let viewModel: SubsriberDetailsViewModel
+    let viewModel: SubscriberDetailsViewModel
 
     @State private var details: SubscribersServiceRemote.GetSubscriberDetailsResponse?
     @State private var stats: SubscribersServiceRemote.GetSubscriberStatsResponse?
@@ -16,7 +16,7 @@ struct SubscriberDetailsView: View {
 
     @Environment(\.dismiss) var dismiss
 
-    init(viewModel: SubsriberDetailsViewModel) {
+    init(viewModel: SubscriberDetailsViewModel) {
         self.viewModel = viewModel
     }
 

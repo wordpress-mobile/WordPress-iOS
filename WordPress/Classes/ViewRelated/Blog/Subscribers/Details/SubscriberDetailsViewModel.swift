@@ -2,7 +2,7 @@ import Foundation
 import WordPressKit
 
 @MainActor
-struct SubsriberDetailsViewModel {
+struct SubscriberDetailsViewModel {
     let subscriberID: Int
     let subscriber: SubscribersServiceRemote.SubsciberBasicInfoResponse?
 
@@ -27,8 +27,8 @@ struct SubsriberDetailsViewModel {
         self.subscriber = nil
     }
 
-    static func mock() -> SubsriberDetailsViewModel {
-        SubsriberDetailsViewModel(blog: .mock(), subscriberID: 1)
+    static func mock() -> SubscriberDetailsViewModel {
+        SubscriberDetailsViewModel(blog: .mock(), subscriberID: 1)
     }
 
     func getDetails() async throws -> SubscribersServiceRemote.GetSubscriberDetailsResponse {
