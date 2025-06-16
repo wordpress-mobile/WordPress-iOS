@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct LoadMoreFooterView: View {
+public struct DataViewPagingFooterView: View {
     public enum State {
         case loading
         case failure
@@ -13,7 +13,7 @@ public struct LoadMoreFooterView: View {
         self.state = state
     }
 
-    public func onRetry(_ closure: (() -> Void)?) -> LoadMoreFooterView {
+    public func onRetry(_ closure: (() -> Void)?) -> DataViewPagingFooterView {
         var copy = self
         copy.onRetry = closure
         return copy

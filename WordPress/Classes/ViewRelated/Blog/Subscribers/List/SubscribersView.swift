@@ -95,7 +95,7 @@ private struct SubscribersSearchView: View {
             if let response {
                 SubscribersPaginatedForEach(response: response)
             } else if error == nil {
-                LoadMoreFooterView(.loading)
+                DataViewPagingFooterView(.loading)
             }
         }
         .listStyle(.plain)
@@ -130,9 +130,9 @@ private struct SubscribersPaginatedForEach: View {
             makeRow(with: $0)
         }
         if response.isLoading {
-            LoadMoreFooterView(.loading)
+            DataViewPagingFooterView(.loading)
         } else if response.error != nil {
-            LoadMoreFooterView(.failure).onRetry {
+            DataViewPagingFooterView(.failure).onRetry {
                 response.loadMore()
             }
         }
