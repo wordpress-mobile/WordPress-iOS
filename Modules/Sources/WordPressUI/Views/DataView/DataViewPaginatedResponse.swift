@@ -2,26 +2,9 @@ import Foundation
 import SwiftUI
 
 /// A generic paginated response handler that manages loading items in pages.
-///
-/// `PaginatedResponse` handles the common pagination logic including:
-/// - Loading initial and subsequent pages
-/// - Managing loading states and errors
-/// - Filtering duplicate items
-/// - Triggering automatic loading when scrolling near the end of the list
-///
-/// Example usage:
-/// ```swift
-/// let response = try await PaginatedResponse<MyItem> { page in
-///     let data = try await api.fetchItems(page: page)
-///     return (
-///         items: data.items,
-///         total: data.totalCount,
-///         hasMore: page < data.totalPages
-///     )
-/// }
-/// ```
+/// This class is designed to be used in the UI in conjunction with `PaginatedForEach`.
 @MainActor
-public final class PaginatedResponse<Element: Identifiable>: ObservableObject {
+public final class DataViewPaginatedResponse<Element: Identifiable>: ObservableObject {
     @Published public private(set) var total = 0
     @Published public private(set) var items: [Element] = []
     @Published public private(set) var hasMore = true
@@ -51,19 +34,21 @@ public final class PaginatedResponse<Element: Identifiable>: ObservableObject {
     /// This method will do nothing if:
     /// - There are no more pages to load
     /// - A page is currently being loaded
-    public func loadMore() {
+    @discardableResult
+    public func loadMore() -> Task<Void, Error>? {
         guard hasMore && !isLoading else {
-            return
+            return nil
         }
         error = nil
         isLoading = true
-        Task {
+        return Task {
             defer { isLoading = false }
             do {
                 let response = try await _loadMore(currentPage)
                 didLoad(response)
             } catch {
                 self.error = error
+                throw error
             }
         }
     }
