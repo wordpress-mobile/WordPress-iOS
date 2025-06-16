@@ -1,0 +1,104 @@
+import Foundation
+import SwiftUI
+
+/// A generic paginated response handler that manages loading items in pages.
+///
+/// `PaginatedResponse` handles the common pagination logic including:
+/// - Loading initial and subsequent pages
+/// - Managing loading states and errors
+/// - Filtering duplicate items
+/// - Triggering automatic loading when scrolling near the end of the list
+///
+/// Example usage:
+/// ```swift
+/// let response = try await PaginatedResponse<MyItem> { page in
+///     let data = try await api.fetchItems(page: page)
+///     return (
+///         items: data.items,
+///         total: data.totalCount,
+///         hasMore: page < data.totalPages
+///     )
+/// }
+/// ```
+@MainActor
+public final class PaginatedResponse<Element: Identifiable>: ObservableObject {
+    @Published public private(set) var total = 0
+    @Published public private(set) var items: [Element] = []
+    @Published public private(set) var hasMore = true
+    @Published public private(set) var isLoading = false
+    @Published public private(set) var error: Error?
+
+    public var isEmpty: Bool { items.isEmpty }
+
+    private var currentPage = 1
+    private let _loadMore: (Int) async throws -> (items: [Element], total: Int, hasMore: Bool)
+
+    /// Creates a new paginated response handler.
+    ///
+    /// - Parameter loadMore: A closure that loads a specific page of items.
+    ///   - Parameter page: The page number to load (1-based).
+    ///   - Returns: A tuple containing the items for the page, the total count, and whether more pages exist.
+    /// - Throws: Any error from the initial page load.
+    public init(loadMore: @escaping (Int) async throws -> (items: [Element], total: Int, hasMore: Bool)) async throws {
+        self._loadMore = loadMore
+
+        let response = try await loadMore(currentPage)
+        didLoad(response)
+    }
+
+    /// Loads the next page of items.
+    ///
+    /// This method will do nothing if:
+    /// - There are no more pages to load
+    /// - A page is currently being loaded
+    public func loadMore() {
+        guard hasMore && !isLoading else {
+            return
+        }
+        error = nil
+        isLoading = true
+        Task {
+            defer { isLoading = false }
+            do {
+                let response = try await _loadMore(currentPage)
+                didLoad(response)
+            } catch {
+                self.error = error
+            }
+        }
+    }
+
+    private func didLoad(_ response: (items: [Element], total: Int, hasMore: Bool)) {
+        total = response.total
+        currentPage += 1
+        hasMore = response.hasMore
+
+        let existingIDs = Set(items.map(\.id))
+        let newItems = response.items.filter {
+            !existingIDs.contains($0.id)
+        }
+        items += newItems
+    }
+
+    /// Triggers loading more items when a row appears.
+    ///
+    /// Call this method when a row becomes visible. If the row is within the last 10 items
+    /// and there's no current error, it will trigger loading the next page.
+    ///
+    /// - Parameter row: The row that appeared.
+    public func onRowAppear(_ row: Element) {
+        guard items.suffix(16).contains(where: { $0.id == row.id }) else {
+            return
+        }
+        if error == nil {
+            loadMore()
+        }
+    }
+
+    /// Removes an item with the specified ID from the loaded items.
+    ///
+    /// - Parameter id: The ID of the item to remove.
+    public func deleteItem(withID id: Element.ID) {
+        items.removeAll { $0.id == id }
+    }
+}
