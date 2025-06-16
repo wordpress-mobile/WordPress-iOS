@@ -1,5 +1,8 @@
 import SwiftUI
 import WordPressKit
+import WordPressUI
+
+typealias SubscribersPaginatedResponse = DataViewPaginatedResponse<SubscriberRowViewModel, Int>
 
 @MainActor
 final class SubscribersViewModel: ObservableObject {
@@ -39,11 +42,11 @@ final class SubscribersViewModel: ObservableObject {
         error = nil
         isLoading = true
         do {
-            let response = try await SubscribersPaginatedResponse(blog: blog, parameters: parameters)
+            let response = try await makeResponse(parameters: parameters)
             guard !Task.isCancelled else { return }
             self.isLoading = false
             self.response = response
-            if response.parameters.filters.isEmpty {
+            if parameters.filters.isEmpty {
                 totalCount = response.total
             }
         } catch {
@@ -57,17 +60,43 @@ final class SubscribersViewModel: ObservableObject {
     }
 
     func search() async throws -> SubscribersPaginatedResponse {
-        try await SubscribersPaginatedResponse(blog: blog, parameters: parameters, search: searchText)
+        try await makeResponse(parameters: parameters, search: searchText)
     }
 
     func makeFormattedSubscribersCount(for response: SubscribersPaginatedResponse) -> String {
-        if response.parameters.filters.isEmpty {
-            return "\(response.total)"
-        }
-        guard let totalCount else {
+        guard !parameters.filters.isEmpty, let totalCount else {
             return "\(response.total)"
         }
         return String(format: Strings.nOutOf, response.total.description, totalCount.description)
+    }
+
+    private func makeResponse(
+        parameters: SubscribersServiceRemote.GetSubscribersParameters,
+        search: String? = nil
+    ) async throws -> SubscribersPaginatedResponse {
+        return try await SubscribersPaginatedResponse { [blog] page in
+            guard let api = blog.getRestAPI() else {
+                throw URLError(.unknown)
+            }
+            let service = SubscribersServiceRemote(wordPressComRestApi: api)
+            let currentPage = page ?? 1
+            let response = try await service.getSubscribers(
+                siteID: blog.dotComSiteID,
+                page: currentPage,
+                perPage: 50,
+                parameters: parameters,
+                search: search
+            )
+            let items = response.subscribers.map { subscriber in
+                SubscriberRowViewModel(blog: blog, subscriber: subscriber)
+            }
+            return SubscribersPaginatedResponse.Page(
+                items: items,
+                total: response.total,
+                hasMore: response.page < response.pages,
+                nextPage: response.page + 1
+            )
+        }
     }
 }
 

@@ -17,7 +17,7 @@ public struct DataViewPaginatedForEach<Response: DataViewPaginatedResponseProtoc
         self.response = response
         self.content = content
     }
-    
+
     public var body: some View {
         ForEach(response.items) { item in
             content(item)

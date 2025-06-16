@@ -54,6 +54,9 @@ struct SubsriberDetailsViewModel {
 }
 
 extension SubscribersServiceRemote {
+    static let subscriberIDKey = "subscriberIDKey"
+
+    @MainActor
     func deleteSubscriber(_ subscriber: SubscribersServiceRemote.SubsciberBasicInfoResponse, siteID: Int) async throws {
         let service = PeopleServiceRemote(wordPressComRestApi: wordPressComRestApi)
         try await withUnsafeThrowingContinuation { continuation in
@@ -71,5 +74,10 @@ extension SubscribersServiceRemote {
                 })
             }
         }
+        NotificationCenter.default.post(
+            name: .subscriberDeleted,
+            object: nil,
+            userInfo: [SubscribersServiceRemote.subscriberIDKey: subscriber.subscriberID]
+        )
     }
 }

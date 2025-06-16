@@ -126,31 +126,28 @@ private struct SubscribersPaginatedForEach: View {
     @ObservedObject var response: SubscribersPaginatedResponse
 
     var body: some View {
-        ForEach(response.items) {
-            makeRow(with: $0)
-        }
-        if response.isLoading {
-            DataViewPagingFooterView(.loading)
-        } else if response.error != nil {
-            DataViewPagingFooterView(.failure).onRetry {
-                response.loadMore()
+        DataViewPaginatedForEach(response: response, content: makeRow)
+            .onReceive(NotificationCenter.default.publisher(for: .subscriberDeleted)) { notification in
+                subscriberDeleted(userInfo: notification.userInfo)
             }
-        }
     }
 
     private func makeRow(with item: SubscriberRowViewModel) -> some View {
         SubscriberRowView(viewModel: item)
-            .onAppear { response.onRowAppear(item) }
+            .onAppear { response.onRowAppeared(item) }
             .background {
                 NavigationLink {
                     SubscriberDetailsView(viewModel: item.makeDetailsViewModel())
-                        .onDeleted { [weak response] in
-                            response?.deleteSubscriber(withID: $0)
-                        }
                 } label: {
                     EmptyView()
                 }.opacity(0)
             }
+    }
+
+    private func subscriberDeleted(userInfo: [AnyHashable: Any]?) {
+        if let subscriberID = userInfo?[SubscribersServiceRemote.subscriberIDKey] as? Int {
+            response.deleteItem(withID: subscriberID)
+        }
     }
 }
 
