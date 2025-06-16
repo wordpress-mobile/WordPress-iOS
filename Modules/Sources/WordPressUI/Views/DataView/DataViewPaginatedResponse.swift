@@ -1,31 +1,58 @@
 import Foundation
 import SwiftUI
 
-/// A generic paginated response handler that manages loading items in pages.
+@MainActor
+public protocol DataViewPaginatedResponseProtocol: ObservableObject {
+    associatedtype Element: Identifiable
+
+    var items: [Element] { get }
+    var isLoading: Bool { get }
+    var error: Error? { get }
+
+    func onRowAppeared(_ item: Element)
+    @discardableResult func loadMore() -> Task<Void, Error>?
+}
+
+/// A generic paginated response handler that manages loading items with flexible pagination.
 /// This class is designed to be used in the UI in conjunction with `PaginatedForEach`.
 @MainActor
-public final class DataViewPaginatedResponse<Element: Identifiable>: ObservableObject {
+public final class DataViewPaginatedResponse<Element: Identifiable, PageIndex>: DataViewPaginatedResponseProtocol {
     @Published public private(set) var total = 0
     @Published public private(set) var items: [Element] = []
     @Published public private(set) var hasMore = true
     @Published public private(set) var isLoading = false
     @Published public private(set) var error: Error?
 
+    /// Result of a paginated load operation.
+    public struct Page {
+        public let items: [Element]
+        public let total: Int
+        public let hasMore: Bool
+        public let nextPage: PageIndex?
+
+        public init(items: [Element], total: Int, hasMore: Bool, nextPage: PageIndex?) {
+            self.items = items
+            self.total = total
+            self.hasMore = hasMore
+            self.nextPage = nextPage
+        }
+    }
+
     public var isEmpty: Bool { items.isEmpty }
 
-    private var currentPage = 1
-    private let _loadMore: (Int) async throws -> (items: [Element], total: Int, hasMore: Bool)
+    private var nextPage: PageIndex?
+    private let loadPage: (PageIndex?) async throws -> Page
 
     /// Creates a new paginated response handler.
     ///
-    /// - Parameter loadMore: A closure that loads a specific page of items.
-    ///   - Parameter page: The page number to load (1-based).
-    ///   - Returns: A tuple containing the items for the page, the total count, and whether more pages exist.
+    /// - Parameter loadPage: A closure that loads items using pagination.
+    ///   - Parameter pageIndex: The page index to load (nil for initial load).
+    ///   - Returns: A PaginatedResult containing the items, total count, whether more pages exist, and next page index.
     /// - Throws: Any error from the initial page load.
-    public init(loadMore: @escaping (Int) async throws -> (items: [Element], total: Int, hasMore: Bool)) async throws {
-        self._loadMore = loadMore
+    public init(loadPage: @escaping (PageIndex?) async throws -> Page) async throws {
+        self.loadPage = loadPage
 
-        let response = try await loadMore(currentPage)
+        let response = try await loadPage(nil)
         didLoad(response)
     }
 
@@ -44,7 +71,7 @@ public final class DataViewPaginatedResponse<Element: Identifiable>: ObservableO
         return Task {
             defer { isLoading = false }
             do {
-                let response = try await _loadMore(currentPage)
+                let response = try await loadPage(nextPage)
                 didLoad(response)
             } catch {
                 self.error = error
@@ -53,9 +80,9 @@ public final class DataViewPaginatedResponse<Element: Identifiable>: ObservableO
         }
     }
 
-    private func didLoad(_ response: (items: [Element], total: Int, hasMore: Bool)) {
+    private func didLoad(_ response: Page) {
         total = response.total
-        currentPage += 1
+        nextPage = response.nextPage
         hasMore = response.hasMore
 
         let existingIDs = Set(items.map(\.id))
@@ -71,7 +98,7 @@ public final class DataViewPaginatedResponse<Element: Identifiable>: ObservableO
     /// and there's no current error, it will trigger loading the next page.
     ///
     /// - Parameter row: The row that appeared.
-    public func onRowAppear(_ row: Element) {
+    public func onRowAppeared(_ row: Element) {
         guard items.suffix(16).contains(where: { $0.id == row.id }) else {
             return
         }

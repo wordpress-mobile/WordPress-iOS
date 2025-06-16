@@ -17,12 +17,13 @@ import WordPressUI
         ]
         
         // WHEN
-        let response = try await DataViewPaginatedResponse<TestItem> { page in
-            #expect(page == 1)
-            return (
+        let response = try await DataViewPaginatedResponse<TestItem, Int> { pageIndex in
+            #expect(pageIndex == nil) // Initial load
+            return DataViewPaginatedResponse<TestItem, Int>.Page(
                 items: expectedItems,
                 total: 10,
-                hasMore: true
+                hasMore: true,
+                nextPage: 2
             )
         }
 
@@ -41,7 +42,7 @@ import WordPressUI
         
         // WHEN/THEN
         await #expect(throws: TestError.self) {
-            _ = try await DataViewPaginatedResponse<TestItem> { _ in
+            _ = try await DataViewPaginatedResponse<TestItem, Int> { _ in
                 throw TestError()
             }
         }
@@ -49,35 +50,38 @@ import WordPressUI
     
     @Test func loadMoreSuccessfully() async throws {
         // GIVEN
-        var pageRequests: [Int] = []
-        let response = try await DataViewPaginatedResponse<TestItem> { page in
-            pageRequests.append(page)
+        var pageRequests: [Int?] = []
+        let response = try await DataViewPaginatedResponse<TestItem, Int> { pageIndex in
+            pageRequests.append(pageIndex)
             
-            switch page {
-            case 1:
-                return (
+            switch pageIndex {
+            case nil:
+                return DataViewPaginatedResponse<TestItem, Int>.Page(
                     items: [TestItem(id: 1, name: "Item 1")],
                     total: 3,
-                    hasMore: true
+                    hasMore: true,
+                    nextPage: 2
                 )
             case 2:
-                return (
+                return DataViewPaginatedResponse<TestItem, Int>.Page(
                     items: [TestItem(id: 2, name: "Item 2")],
                     total: 3,
-                    hasMore: true
+                    hasMore: true,
+                    nextPage: 3
                 )
             case 3:
-                return (
+                return DataViewPaginatedResponse<TestItem, Int>.Page(
                     items: [TestItem(id: 3, name: "Item 3")],
                     total: 3,
-                    hasMore: false
+                    hasMore: false,
+                    nextPage: nil
                 )
             default:
-                fatalError("Unexpected page: \(page)")
+                fatalError("Unexpected page: \(String(describing: pageIndex))")
             }
         }
         
-        #expect(pageRequests == [1])
+        #expect(pageRequests == [nil])
         
         // WHEN loading page 2
         do {
@@ -90,7 +94,7 @@ import WordPressUI
         #expect(response.items.count == 2)
         #expect(response.items.map(\.id) == [1, 2])
         #expect(response.hasMore == true)
-        #expect(pageRequests == [1, 2])
+        #expect(pageRequests == [nil, 2])
         
         // WHEN loading page 3
         do {
@@ -103,7 +107,7 @@ import WordPressUI
         #expect(response.items.count == 3)
         #expect(response.items.map(\.id) == [1, 2, 3])
         #expect(response.hasMore == false)
-        #expect(pageRequests == [1, 2, 3])
+        #expect(pageRequests == [nil, 2, 3])
         
         // WHEN trying to load more when hasMore is false
         do {
@@ -113,7 +117,7 @@ import WordPressUI
         }
 
         // THEN no additional requests are made
-        #expect(pageRequests == [1, 2, 3])
+        #expect(pageRequests == [nil, 2, 3])
     }
     
     @Test func loadMoreHandlesError() async throws {
@@ -121,14 +125,16 @@ import WordPressUI
         struct TestError: Error {}
         var shouldThrow = false
         
-        let response = try await DataViewPaginatedResponse<TestItem> { page in
+        let response = try await DataViewPaginatedResponse<TestItem, Int> { pageIndex in
             if shouldThrow {
                 throw TestError()
             }
-            return (
-                items: [TestItem(id: page, name: "Item \(page)")],
+            let id = pageIndex ?? 1
+            return DataViewPaginatedResponse<TestItem, Int>.Page(
+                items: [TestItem(id: id, name: "Item \(id)")],
                 total: 10,
-                hasMore: true
+                hasMore: true,
+                nextPage: (pageIndex ?? 1) + 1
             )
         }
         
@@ -174,26 +180,28 @@ import WordPressUI
     
     @Test func filtersDuplicateItems() async throws {
         // GIVEN
-        let response = try await DataViewPaginatedResponse<TestItem> { page in
-            if page == 1 {
-                return (
+        let response = try await DataViewPaginatedResponse<TestItem, Int> { pageIndex in
+            if pageIndex == nil {
+                return DataViewPaginatedResponse<TestItem, Int>.Page(
                     items: [
                         TestItem(id: 1, name: "Item 1"),
                         TestItem(id: 2, name: "Item 2")
                     ],
                     total: 4,
-                    hasMore: true
+                    hasMore: true,
+                    nextPage: 2
                 )
             } else {
                 // Page 2 includes a duplicate item
-                return (
+                return DataViewPaginatedResponse<TestItem, Int>.Page(
                     items: [
                         TestItem(id: 2, name: "Item 2 Duplicate"),
                         TestItem(id: 3, name: "Item 3"),
                         TestItem(id: 4, name: "Item 4")
                     ],
                     total: 4,
-                    hasMore: false
+                    hasMore: false,
+                    nextPage: nil
                 )
             }
         }
@@ -214,12 +222,14 @@ import WordPressUI
     @Test func preventsConcurrentLoads() async throws {
         // GIVEN
         var loadCount = 0
-        let response = try await DataViewPaginatedResponse<TestItem> { page in
+        let response = try await DataViewPaginatedResponse<TestItem, Int> { pageIndex in
             loadCount += 1
-            return (
-                items: [TestItem(id: page, name: "Item \(page)")],
+            let id = pageIndex ?? 1
+            return DataViewPaginatedResponse<TestItem, Int>.Page(
+                items: [TestItem(id: id, name: "Item \(id)")],
                 total: 10,
-                hasMore: true
+                hasMore: true,
+                nextPage: (pageIndex ?? 1) + 1
             )
         }
         
@@ -235,61 +245,65 @@ import WordPressUI
         #expect(response.items.count == 2)
     }
     
-    @Test func onRowAppearTriggersLoad() async throws {
+    @Test func onRowAppearedTriggersLoad() async throws {
         // GIVEN
         var items: [TestItem] = []
         for i in 1...20 {
             items.append(TestItem(id: i, name: "Item \(i)"))
         }
 
-        let response = try await DataViewPaginatedResponse<TestItem> { page in
-            if page == 1 {
-                return (
+        let response = try await DataViewPaginatedResponse<TestItem, Int> { pageIndex in
+            if pageIndex == nil {
+                return DataViewPaginatedResponse<TestItem, Int>.Page(
                     items: Array(items.prefix(20)),
                     total: 30,
-                    hasMore: true
+                    hasMore: true,
+                    nextPage: 2
                 )
             } else {
-                return (
+                return DataViewPaginatedResponse<TestItem, Int>.Page(
                     items: Array(items.suffix(10)),
                     total: 30,
-                    hasMore: false
+                    hasMore: false,
+                    nextPage: nil
                 )
             }
         }
         
         // WHEN row in the middle appears
-        response.onRowAppear(response.items[0])
+        response.onRowAppeared(response.items[0])
         
         // THEN no load is triggered
         #expect(response.isLoading == false)
 
         // WHEN row in the last 16 items appears
-        response.onRowAppear(response.items[15])
+        response.onRowAppeared(response.items[15])
         #expect(response.isLoading)
     }
     
-    @Test func onRowAppearDoesNotLoadWhenError() async throws {
+    @Test func onRowAppearedDoesNotLoadWhenError() async throws {
         // GIVEN
         struct TestError: Error {}
         var shouldThrow = false
         var loadAttempts = 0
         
-        let response = try await DataViewPaginatedResponse<TestItem> { page in
+        let response = try await DataViewPaginatedResponse<TestItem, Int> { pageIndex in
             loadAttempts += 1
             if shouldThrow {
                 throw TestError()
             }
             
+            let page = pageIndex ?? 1
             var items: [TestItem] = []
             for i in 1...20 {
                 items.append(TestItem(id: i + (page - 1) * 20, name: "Item \(i)"))
             }
             
-            return (
+            return DataViewPaginatedResponse<TestItem, Int>.Page(
                 items: items,
                 total: 40,
-                hasMore: page < 2
+                hasMore: page < 2,
+                nextPage: page < 2 ? page + 1 : nil
             )
         }
         
@@ -309,7 +323,7 @@ import WordPressUI
         #expect(response.error != nil)
         
         // WHEN row appears after error
-        response.onRowAppear(response.items[15])
+        response.onRowAppeared(response.items[15])
         #expect(response.isLoading == false)
 
         // THEN no additional load attempts are made
@@ -317,15 +331,16 @@ import WordPressUI
     
     @Test func deleteItem() async throws {
         // GIVEN
-        let response = try await DataViewPaginatedResponse<TestItem> { _ in
-            return (
+        let response = try await DataViewPaginatedResponse<TestItem, Int> { _ in
+            return DataViewPaginatedResponse<TestItem, Int>.Page(
                 items: [
                     TestItem(id: 1, name: "Item 1"),
                     TestItem(id: 2, name: "Item 2"),
                     TestItem(id: 3, name: "Item 3")
                 ],
                 total: 3,
-                hasMore: false
+                hasMore: false,
+                nextPage: nil
             )
         }
         
@@ -342,14 +357,15 @@ import WordPressUI
     
     @Test func deleteNonExistentItem() async throws {
         // GIVEN
-        let response = try await DataViewPaginatedResponse<TestItem> { _ in
-            return (
+        let response = try await DataViewPaginatedResponse<TestItem, Int> { _ in
+            return DataViewPaginatedResponse<TestItem, Int>.Page(
                 items: [
                     TestItem(id: 1, name: "Item 1"),
                     TestItem(id: 2, name: "Item 2")
                 ],
                 total: 2,
-                hasMore: false
+                hasMore: false,
+                nextPage: nil
             )
         }
         
