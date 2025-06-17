@@ -104,7 +104,7 @@ struct SubscriberInviteView: View {
         isSending = true
         Task {
             do {
-                let service = try blog.maketSubscribersService()
+                let service = try blog.makeSubscribersService()
                 try await service.importSubscribers(siteID: blog.dotComSiteID, emails: emails)
 
                 UINotificationFeedbackGenerator().notificationOccurred(.success)

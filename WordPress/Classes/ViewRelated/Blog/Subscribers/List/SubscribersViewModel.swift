@@ -75,7 +75,7 @@ final class SubscribersViewModel: ObservableObject {
         search: String? = nil
     ) async throws -> SubscribersPaginatedResponse {
         return try await SubscribersPaginatedResponse { [blog] page in
-            let service = try blog.maketSubscribersService()
+            let service = try blog.makeSubscribersService()
             let response = try await service.getSubscribers(
                 siteID: blog.dotComSiteID,
                 page: page ?? 1,

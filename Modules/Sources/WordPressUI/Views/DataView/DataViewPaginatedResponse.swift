@@ -99,7 +99,7 @@ public final class DataViewPaginatedResponse<Element: Identifiable, PageIndex>: 
     ///
     /// - Parameter row: The row that appeared.
     public func onRowAppeared(_ row: Element) {
-        guard items.suffix(16).contains(where: { $0.id == row.id }) else {
+        guard items.suffix(10).contains(where: { $0.id == row.id }) else {
             return
         }
         if error == nil {

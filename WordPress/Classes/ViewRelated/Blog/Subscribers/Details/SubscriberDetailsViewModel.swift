@@ -32,17 +32,17 @@ struct SubscriberDetailsViewModel {
     }
 
     func getDetails() async throws -> SubscribersServiceRemote.GetSubscriberDetailsResponse {
-        try await blog.maketSubscribersService()
+        try await blog.makeSubscribersService()
             .getSubsciberDetails(siteID: blog.dotComSiteID, subscriberID: subscriberID)
     }
 
     func getStats() async throws -> SubscribersServiceRemote.GetSubscriberStatsResponse {
-        try await blog.maketSubscribersService()
+        try await blog.makeSubscribersService()
             .getSubsciberStats(siteID: blog.dotComSiteID, subscriberID: subscriberID)
     }
 
     func delete(_ subscriber: SubscribersServiceRemote.SubsciberBasicInfoResponse) async throws {
-        try await blog.maketSubscribersService()
+        try await blog.makeSubscribersService()
             .deleteSubscriber(subscriber, siteID: blog.dotComSiteID)
     }
 
