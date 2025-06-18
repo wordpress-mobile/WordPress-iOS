@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressShared
 
 public struct EmptyStateView<Label: View, Description: View, Actions: View>: View {
     @ViewBuilder let label: () -> Label
@@ -69,6 +70,30 @@ private struct EmptyStateViewLabelStyle: LabelStyle {
                 .font(.system(size: iconSize).weight(.medium))
                 .foregroundColor(.secondary)
             configuration.title
+        }
+    }
+}
+
+extension EmptyStateView where Label == SwiftUI.Label<Text, Image>, Description == Text?, Actions == EmptyView {
+    public static func search() -> Self {
+        EmptyStateView(
+            AppLocalizedString("emptyStateView.noSearchResult.title", value: "No Results", comment: "Shared empty state view"),
+            systemImage: "magnifyingglass",
+            description: AppLocalizedString("emptyStateView.noSearchResult.description", value: "Try a new search", comment: "Shared empty state view")
+        )
+    }
+}
+
+extension EmptyStateView where Label == SwiftUI.Label<Text, Image>, Description == Text?, Actions == Button<Text>? {
+    public static func failure(error: Error, onRetry: (() -> Void)? = nil) -> Self {
+        EmptyStateView {
+            Label(AppLocalizedString("shared.error.generic", value: "Something went wrong", comment: "A generic error message"), systemImage: "exclamationmark.circle")
+        } description: {
+            Text(error.localizedDescription)
+        } actions: {
+            if let onRetry {
+                Button(AppLocalizedString("shared.button.retry", value: "Retry", comment: "A shared button title used in different contexts"), action: onRetry)
+            }
         }
     }
 }

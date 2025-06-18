@@ -17,7 +17,7 @@ public protocol DataViewPaginatedResponseProtocol: ObservableObject {
 /// This class is designed to be used in the UI in conjunction with `PaginatedForEach`.
 @MainActor
 public final class DataViewPaginatedResponse<Element: Identifiable, PageIndex>: DataViewPaginatedResponseProtocol {
-    @Published public private(set) var total = 0
+    @Published public private(set) var total: Int?
     @Published public private(set) var items: [Element] = []
     @Published public private(set) var hasMore = true
     @Published public private(set) var isLoading = false
@@ -26,11 +26,11 @@ public final class DataViewPaginatedResponse<Element: Identifiable, PageIndex>: 
     /// Result of a paginated load operation.
     public struct Page {
         public let items: [Element]
-        public let total: Int
+        public let total: Int?
         public let hasMore: Bool
         public let nextPage: PageIndex?
 
-        public init(items: [Element], total: Int, hasMore: Bool, nextPage: PageIndex?) {
+        public init(items: [Element], total: Int? = nil, hasMore: Bool, nextPage: PageIndex?) {
             self.items = items
             self.total = total
             self.hasMore = hasMore
@@ -115,6 +115,8 @@ public final class DataViewPaginatedResponse<Element: Identifiable, PageIndex>: 
             return
         }
         items.remove(at: index)
-        total -= 1
+        if let total {
+            self.total = total - 1
+        }
     }
 }

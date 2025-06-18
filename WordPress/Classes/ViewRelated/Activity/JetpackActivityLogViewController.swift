@@ -38,7 +38,6 @@ class JetpackActivityLogViewController: BaseActivityListViewController {
         guard let siteRef = JetpackSiteRef(blog: blog) else {
             return nil
         }
-
         let isFreeWPCom = blog.isHostedAtWPcom && !blog.hasPaidPlan
         self.init(site: siteRef, store: StoreContainer.shared.activity, isFreeWPCom: isFreeWPCom)
     }
