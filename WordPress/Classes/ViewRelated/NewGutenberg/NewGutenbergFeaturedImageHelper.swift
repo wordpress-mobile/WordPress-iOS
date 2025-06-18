@@ -10,7 +10,7 @@ struct NewGutenbergFeaturedImageHelper {
     }
 
     func setFeaturedImage(mediaID: Int) {
-        let media = Media.existingMediaWith(mediaID: NSNumber(value: mediaID), inBlog: post.blog)
+        let media = Media.existingOrStubMediaWith(mediaID: NSNumber(value: mediaID), inBlog: post.blog)
         post.featuredImage = media
         WPAnalytics.track(event, properties: [
             "via": "gutenberg_kit",
