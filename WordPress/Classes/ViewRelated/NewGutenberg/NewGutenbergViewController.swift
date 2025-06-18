@@ -27,9 +27,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         return GutenbergMediaPickerHelper(context: self, post: post)
     }()
 
-    lazy var featuredImageHelper: NewGutenbergFeaturedImageHelper = {
-        return NewGutenbergFeaturedImageHelper(post: post)
-    }()
+    lazy var featuredImageHelper = NewGutenbergFeaturedImageHelper(post: post)
 
     // MARK: - PostEditor
 
@@ -422,9 +420,9 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateFeaturedImage mediaID: Int) {
-        let featuredImageID = post.featuredImage?.mediaID
+        let featuredImageID = post.featuredImage?.mediaID?.intValue
 
-        guard featuredImageID as? Int != mediaID else {
+        guard featuredImageID != mediaID else {
             // If the featured image ID is the same, no need to update
             return
         }

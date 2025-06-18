@@ -1,14 +1,12 @@
 import Foundation
 import WordPressShared
 
-class NewGutenbergFeaturedImageHelper: NSObject {
-    fileprivate let post: AbstractPost
-
+struct NewGutenbergFeaturedImageHelper {
+    private let post: AbstractPost
     let event: WPAnalyticsEvent = .editorPostFeaturedImageChanged
 
     init(post: AbstractPost) {
         self.post = post
-        super.init()
     }
 
     func setFeaturedImage(mediaID: Int) {
