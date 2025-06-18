@@ -13,8 +13,29 @@ final class ItemProviderMediaExporter: MediaExporter {
         self.provider = provider
     }
 
-    func export(onCompletion: @escaping (MediaExport) -> Void, onError: @escaping (MediaExportError) -> Void) -> Progress {
+    func export(onCompletion originalOnCompletion: @escaping (MediaExport) -> Void, onError originalOnError: @escaping (MediaExportError) -> Void) -> Progress {
         let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
+        let onCompletion: (MediaExport) -> Void
+        let onError: (MediaExportError) -> Void
+
+        // Create a temporary directory to hold the exported file from the `NSItemProvider` instance.
+        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        do {
+            try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+
+            // Delete the temporary directory after we are done with the exported file.
+            onCompletion = {
+                try? FileManager.default.removeItem(at: tempDir)
+                originalOnCompletion($0)
+            }
+            onError = {
+                try? FileManager.default.removeItem(at: tempDir)
+                originalOnError($0)
+            }
+        } catch {
+            originalOnError(MediaExportSystemError.failedWith(systemError: error))
+            return progress
+        }
 
         // It's important to use the `MediaImageExporter` because it strips the
         // GPS data and performs other image manipulations before the upload.
@@ -67,7 +88,7 @@ final class ItemProviderMediaExporter: MediaExporter {
 
             // Retaining `self` on purpose.
             do {
-                let copyURL = try self.mediaFileManager.makeLocalMediaURL(withFilename: url.lastPathComponent, fileExtension: url.pathExtension)
+                let copyURL = tempDir.appendingPathComponent(url.lastPathComponent)
                 try FileManager.default.copyItem(at: url, to: copyURL)
 
                 if self.hasConformingType(.gif) {
