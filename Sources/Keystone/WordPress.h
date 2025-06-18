@@ -8,7 +8,6 @@ FOUNDATION_EXPORT const unsigned char WordPressVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <WordPress/PublicHeader.h>
 
-#import <WordPress/ActivityLogViewController.h>
 #import <WordPress/AccountService.h>
 
 #import <WordPress/BlogService.h>

@@ -24,13 +24,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (void)showNetworkingAlertWithError:(NSError *)error title:(nullable NSString *)title;
 
-/**
- Show an alert that resulted from a network call,
- that is specifically related to an XML-RPC call
- 
- @param error
- */
-+ (void)showXMLRPCErrorAlert:(nullable NSError *)error;
 
 /**
  * Create a suggested title and message based on the given `error`

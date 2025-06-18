@@ -1085,7 +1085,6 @@
 				"ViewRelated/Blog/Site Settings/SettingTableViewCell.h",
 				"ViewRelated/Blog/Site Settings/SiteSettingsViewController.h",
 				ViewRelated/Comments/Controllers/CommentsViewController.h,
-				"ViewRelated/Me/Help & Support/Activity Logs/ActivityLogViewController.h",
 				ViewRelated/Menus/Controllers/MenuItemsViewController.h,
 				ViewRelated/Menus/Controllers/MenusViewController.h,
 				ViewRelated/Pages/PageSettingsViewController.h,
