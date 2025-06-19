@@ -1,5 +1,7 @@
 import SwiftUI
 import WordPressKit
+import WordPressUI
+import Gridicons
 
 struct ActivityLogDetailsView: View {
     let activity: Activity
@@ -35,24 +37,24 @@ struct ActivityLogDetailsView: View {
                 
                 if let rewindStatus = rewindStatus, rewindStatus.state == .awaitingCredentials {
                     WarningCard(
-                        message: "Rewind is not available for multisite installations. Visit Jetpack.com for more information.",
-                        actionTitle: "Learn More",
+                        message: Strings.multisiteWarning,
+                        actionTitle: Strings.learnMore,
                         action: openSupportURL
                     )
                 }
             }
             .padding()
         }
-        .navigationTitle("Event")
+        .navigationTitle(Strings.eventTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .confirmationDialog("Restore Site", isPresented: $isShowingRestoreConfirmation, actions: {
+        .confirmationDialog(Strings.restoreConfirmationTitle, isPresented: $isShowingRestoreConfirmation, actions: {
             Button(role: .destructive) {
                 performRestore()
             } label: {
-                Text("Restore to this point")
+                Text(Strings.restoreToThisPoint)
             }
         }, message: {
-            Text("This will restore your site to \(activity.published.formatted(date: .abbreviated, time: .shortened)). Any changes made after this point will be lost.")
+            Text(String(format: Strings.restoreConfirmationMessage, activity.published.formatted(date: .abbreviated, time: .shortened)))
         })
     }
     
@@ -151,41 +153,40 @@ private struct ActivityHeaderView: View {
 private struct ActivityIconView: View {
     let activity: Activity
     
-    var iconName: String {
-        // Map gridicon names to SF Symbols
-        switch activity.gridicon {
-        case "cloud": return "cloud.fill"
-        case "checkmark": return "checkmark.circle.fill"
-        case "history": return "clock.arrow.circlepath"
-        case "user": return "person.circle.fill"
-        case "lock": return "lock.fill"
-        case "plugins": return "puzzlepiece.fill"
-        case "themes": return "paintbrush.fill"
-        case "posts": return "doc.text.fill"
-        case "pages": return "doc.fill"
-        case "trash": return "trash.fill"
-        case "notice": return "exclamationmark.triangle.fill"
-        default: return "circle.fill"
-        }
-    }
-    
-    var backgroundColor: Color {
-        switch activity.status {
-        case "success": return .green
-        case "error": return .red
-        case "warning": return .orange
-        default: return .gray
-        }
-    }
-    
     var body: some View {
-        ZStack {
-            Circle()
-                .fill(backgroundColor.opacity(0.2))
-            
-            Image(systemName: iconName)
-                .font(.title2)
-                .foregroundColor(backgroundColor)
+        if let icon = WPStyleGuide.ActivityStyleGuide.getIconForActivity(activity) {
+            ZStack {
+                Circle()
+                    .fill(Color(WPStyleGuide.ActivityStyleGuide.getColorByActivityStatus(activity)))
+                
+                Image(uiImage: icon)
+                    .renderingMode(.template)
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundColor(.white)
+                    .padding(12)
+            }
+        } else if let avatarURL = activity.actor?.avatarURL, !avatarURL.isEmpty, let url = URL(string: avatarURL) {
+            // User avatar
+            AsyncImage(url: url) { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+            } placeholder: {
+                Image(uiImage: .gridicon(.user, size: CGSize(width: 24, height: 24)))
+                    .foregroundColor(Color(.secondaryLabel))
+            }
+            .clipShape(Circle())
+            .background(Circle().fill(Color(.systemGray5)))
+        } else {
+            // Fallback
+            ZStack {
+                Circle()
+                    .fill(Color(.systemGray5))
+                
+                Image(uiImage: .gridicon(.pages, size: CGSize(width: 24, height: 24)))
+                    .foregroundColor(Color(.secondaryLabel))
+            }
         }
     }
 }
@@ -207,8 +208,8 @@ private struct ActivityStatsCard: View {
         ActivityCard {
             HStack {
                 StatItem(
-                    icon: "puzzlepiece.fill",
-                    title: "Plugins",
+                    icon: .gridicon(.plugins, size: CGSize(width: 20, height: 20)),
+                    title: Strings.plugins,
                     value: "\(stats.plugins)"
                 )
                 
@@ -216,8 +217,8 @@ private struct ActivityStatsCard: View {
                     .frame(height: 40)
                 
                 StatItem(
-                    icon: "paintbrush.fill",
-                    title: "Themes",
+                    icon: .gridicon(.themes, size: CGSize(width: 20, height: 20)),
+                    title: Strings.themes,
                     value: "\(stats.themes)"
                 )
                 
@@ -225,16 +226,16 @@ private struct ActivityStatsCard: View {
                     .frame(height: 40)
                 
                 StatItem(
-                    icon: "photo.fill",
-                    title: "Uploads",
+                    icon: .gridicon(.image, size: CGSize(width: 20, height: 20)),
+                    title: Strings.uploads,
                     value: "\(stats.uploads)"
                 )
             }
             
             HStack {
                 StatItem(
-                    icon: "doc.text.fill",
-                    title: "Posts",
+                    icon: .gridicon(.posts, size: CGSize(width: 20, height: 20)),
+                    title: Strings.posts,
                     value: "\(stats.posts)"
                 )
                 
@@ -242,8 +243,8 @@ private struct ActivityStatsCard: View {
                     .frame(height: 40)
                 
                 StatItem(
-                    icon: "doc.fill",
-                    title: "Pages",
+                    icon: .gridicon(.pages, size: CGSize(width: 20, height: 20)),
+                    title: Strings.pages,
                     value: "\(stats.pages)"
                 )
                 
@@ -254,14 +255,14 @@ private struct ActivityStatsCard: View {
 }
 
 private struct StatItem: View {
-    let icon: String
+    let icon: UIImage
     let title: String
     let value: String
     
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Image(systemName: icon)
-                .font(.footnote)
+            Image(uiImage: icon)
+                .renderingMode(.template)
                 .foregroundStyle(.secondary)
             
             Text(title)
@@ -281,15 +282,15 @@ private struct ActivityDetailsCard: View {
     let activity: Activity
     
     var body: some View {
-        ActivityCard("Activity Details") {
+        ActivityCard(Strings.activityDetails) {
             VStack(alignment: .leading, spacing: 16) {
-                InfoRow("Type", value: formatActivityType(activity.type))
-                InfoRow("Name", value: formatActivityName(activity.name))
-                InfoRow("Status", value: activity.status.capitalized)
+                InfoRow(Strings.type, value: formatActivityType(activity.type))
+                InfoRow(Strings.name, value: formatActivityName(activity.name))
+                InfoRow(Strings.status, value: activity.status.localizedCapitalized)
                 
                 if !activity.summary.isEmpty {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Summary")
+                        Text(Strings.summary)
                             .font(.subheadline.weight(.medium))
                         Text(activity.summary)
                             .font(.subheadline)
@@ -299,7 +300,7 @@ private struct ActivityDetailsCard: View {
                 
                 if !activity.text.isEmpty && activity.text != activity.summary {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Details")
+                        Text(Strings.details)
                             .font(.subheadline.weight(.medium))
                         Text(activity.text)
                             .font(.subheadline)
@@ -308,7 +309,7 @@ private struct ActivityDetailsCard: View {
                 }
                 
                 if let rewindID = activity.rewindID {
-                    InfoRow("Backup ID", value: String(rewindID.prefix(8)) + "...")
+                    InfoRow(Strings.backupID, value: String(rewindID.prefix(8)) + "...")
                         .font(.caption)
                 }
             }
@@ -342,18 +343,18 @@ private struct ActivityActionsCard: View {
     }
     
     var body: some View {
-        ActivityCard("Actions") {
+        ActivityCard(Strings.actions) {
             VStack(spacing: 12) {
                 Button(action: onRestore) {
                     Label {
-                        Text("Restore to this point")
+                        Text(Strings.restore)
                     } icon: {
                         if isRestoring {
                             ProgressView()
                                 .progressViewStyle(CircularProgressViewStyle())
                                 .scaleEffect(0.8)
                         } else {
-                            Image(systemName: "clock.arrow.circlepath")
+                            Image(uiImage: .gridicon(.history, size: CGSize(width: 20, height: 20)))
                         }
                     }
                     .frame(maxWidth: .infinity)
@@ -363,14 +364,14 @@ private struct ActivityActionsCard: View {
                 
                 Button(action: onDownloadBackup) {
                     Label {
-                        Text("Download backup")
+                        Text(Strings.downloadBackup)
                     } icon: {
                         if isDownloadingBackup {
                             ProgressView()
                                 .progressViewStyle(CircularProgressViewStyle())
                                 .scaleEffect(0.8)
                         } else {
-                            Image(systemName: "arrow.down.circle")
+                            Image(uiImage: .gridicon(.cloudDownload, size: CGSize(width: 20, height: 20)))
                         }
                     }
                     .frame(maxWidth: .infinity)
@@ -379,7 +380,7 @@ private struct ActivityActionsCard: View {
                 .disabled(isDownloadingBackup)
                 
                 if !canRestore {
-                    Text("Restore is not available for this site")
+                    Text(Strings.restoreNotAvailable)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -575,4 +576,141 @@ private let mockPluginActivity: Activity = {
 private let mockActiveRewindStatus = RewindStatus(state: .active)
 
 private let mockInactiveRewindStatus = RewindStatus(state: .inactive)
+
+// MARK: - Localized Strings
+
+private enum Strings {
+    static let eventTitle = NSLocalizedString(
+        "activityDetail.title",
+        value: "Event",
+        comment: "Title for the activity detail view"
+    )
+    
+    static let restore = NSLocalizedString(
+        "activityDetail.restore",
+        value: "Restore",
+        comment: "Title for button allowing user to restore their Jetpack site"
+    )
+    
+    static let downloadBackup = NSLocalizedString(
+        "activityDetail.downloadBackup",
+        value: "Download backup",
+        comment: "Title for button allowing user to backup their Jetpack site"
+    )
+    
+    static let restoreToThisPoint = NSLocalizedString(
+        "activityDetail.restoreToThisPoint",
+        value: "Restore to this point",
+        comment: "Confirmation button text for restoring site"
+    )
+    
+    static let restoreConfirmationTitle = NSLocalizedString(
+        "activityDetail.restoreConfirmationTitle",
+        value: "Restore Site",
+        comment: "Title for restore confirmation dialog"
+    )
+    
+    static let restoreConfirmationMessage = NSLocalizedString(
+        "activityDetail.restoreConfirmationMessage",
+        value: "This will restore your site to %@. Any changes made after this point will be lost.",
+        comment: "Message for restore confirmation dialog. %@ is the date/time."
+    )
+    
+    static let restoreNotAvailable = NSLocalizedString(
+        "activityDetail.restoreNotAvailable",
+        value: "Restore is not available for this site",
+        comment: "Message shown when restore is not available"
+    )
+    
+    static let multisiteWarning = NSLocalizedString(
+        "activityDetail.multisiteWarning",
+        value: "Rewind is not available for multisite installations. Visit Jetpack.com for more information.",
+        comment: "Warning message for multisite installations"
+    )
+    
+    static let learnMore = NSLocalizedString(
+        "activityDetail.learnMore",
+        value: "Learn More",
+        comment: "Button text to learn more about limitations"
+    )
+    
+    static let activityDetails = NSLocalizedString(
+        "activityDetail.section.details",
+        value: "Activity Details",
+        comment: "Section title for activity details"
+    )
+    
+    static let actions = NSLocalizedString(
+        "activityDetail.section.actions",
+        value: "Actions",
+        comment: "Section title for available actions"
+    )
+    
+    static let type = NSLocalizedString(
+        "activityDetail.field.type",
+        value: "Type",
+        comment: "Activity type field label"
+    )
+    
+    static let name = NSLocalizedString(
+        "activityDetail.field.name",
+        value: "Name",
+        comment: "Activity name field label"
+    )
+    
+    static let status = NSLocalizedString(
+        "activityDetail.field.status",
+        value: "Status",
+        comment: "Activity status field label"
+    )
+    
+    static let summary = NSLocalizedString(
+        "activityDetail.field.summary",
+        value: "Summary",
+        comment: "Activity summary field label"
+    )
+    
+    static let details = NSLocalizedString(
+        "activityDetail.field.details",
+        value: "Details",
+        comment: "Activity details field label"
+    )
+    
+    static let backupID = NSLocalizedString(
+        "activityDetail.field.backupID",
+        value: "Backup ID",
+        comment: "Backup ID field label"
+    )
+    
+    // Stats
+    static let plugins = NSLocalizedString(
+        "activityDetail.stats.plugins",
+        value: "Plugins",
+        comment: "Label for number of plugins in backup"
+    )
+    
+    static let themes = NSLocalizedString(
+        "activityDetail.stats.themes",
+        value: "Themes",
+        comment: "Label for number of themes in backup"
+    )
+    
+    static let uploads = NSLocalizedString(
+        "activityDetail.stats.uploads",
+        value: "Uploads",
+        comment: "Label for number of uploads in backup"
+    )
+    
+    static let posts = NSLocalizedString(
+        "activityDetail.stats.posts",
+        value: "Posts",
+        comment: "Label for number of posts in backup"
+    )
+    
+    static let pages = NSLocalizedString(
+        "activityDetail.stats.pages",
+        value: "Pages",
+        comment: "Label for number of pages in backup"
+    )
+}
 

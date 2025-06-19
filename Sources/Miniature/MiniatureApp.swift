@@ -1,10 +1,14 @@
 import SwiftUI
+import WordPressUI
 
 @main
 struct MiniatureApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationView {
+                ContentView()
+            }
+            .tint(AppColor.primary)
         }
     }
 }
