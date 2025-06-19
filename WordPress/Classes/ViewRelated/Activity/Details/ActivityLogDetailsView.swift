@@ -13,11 +13,15 @@ struct ActivityLogDetailsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                VStack(spacing: 16) {
-                    ActivityHeaderView(activity: activity)
-                    if activity.isRewindable {
-                        backupActionButtons
-                    }
+                ActivityHeaderView(activity: activity)
+                if activity.isRewindable {
+                    RestoreSiteCard(activity: activity, onRestoreTapped: {
+                        trackRestoreTapped()
+                        ActivityLogDetailsCoordinator.presentRestore(activity: activity, blog: blog)
+                    }, onBackupTapped: {
+                        trackBackupTapped()
+                        ActivityLogDetailsCoordinator.presentBackup(activity: activity, blog: blog)
+                    })
                 }
                 if let actor = activity.actor {
                     ActorCard(actor: actor)
@@ -31,34 +35,6 @@ struct ActivityLogDetailsView: View {
             trackDetailViewed()
         }
     }
-
-    @ViewBuilder
-    private var backupActionButtons: some View {
-        HStack(spacing: 12) {
-            Button(action: {
-                trackRestoreTapped()
-                ActivityLogDetailsCoordinator.presentRestore(activity: activity, blog: blog)
-            }) {
-                Label(Strings.restore, systemImage: "arrow.counterclockwise")
-                    .fontWeight(.medium)
-            }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.regular)
-
-            Button(action: {
-                trackBackupTapped()
-                ActivityLogDetailsCoordinator.presentBackup(activity: activity, blog: blog)
-            }) {
-                Label(Strings.download, systemImage: "arrow.down.circle")
-                    .fontWeight(.medium)
-            }
-            .buttonStyle(.bordered)
-            .controlSize(.regular)
-            .tint(.accentColor)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
 }
 
 // MARK: - Header View
@@ -148,6 +124,51 @@ private struct ActorCard: View {
     }
 }
 
+// MARK: - Restore Site Card
+
+private struct RestoreSiteCard: View {
+    let activity: Activity
+    let onRestoreTapped: () -> Void
+    let onBackupTapped: () -> Void
+
+    var body: some View {
+        ActivityCard(Strings.restoreSite) {
+
+            VStack(spacing: 16) {
+                // Checkpoint date info row
+                HStack {
+                    Text(Strings.checkpointDate)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text(activity.published.formatted(date: .abbreviated, time: .standard))
+                        .font(.subheadline)
+                        .foregroundStyle(.primary)
+                }
+
+                // Action buttons
+                HStack(spacing: 12) {
+                    Button(action: onRestoreTapped) {
+                        Label(Strings.restore, systemImage: "arrow.counterclockwise")
+                            .fontWeight(.medium)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.regular)
+
+                    Button(action: onBackupTapped) {
+                        Label(Strings.download, systemImage: "arrow.down.circle")
+                            .fontWeight(.medium)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.regular)
+                    .tint(.accentColor)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+    }
+}
+
 // MARK: - Shared Components
 
 private struct ActivityCard<Content: View>: View {
@@ -222,6 +243,18 @@ private enum Strings {
         "activityDetail.section.user",
         value: "User",
         comment: "Section title for user information"
+    )
+
+    static let restoreSite = NSLocalizedString(
+        "activityDetail.section.restoreSite",
+        value: "Restore Site",
+        comment: "Section title for restore site actions"
+    )
+
+    static let checkpointDate = NSLocalizedString(
+        "activityDetail.checkpointDate",
+        value: "Checkpoint Date",
+        comment: "Label for the backup checkpoint date"
     )
 
     static let restore = NSLocalizedString(
