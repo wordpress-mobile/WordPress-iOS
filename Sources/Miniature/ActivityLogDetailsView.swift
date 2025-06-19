@@ -16,13 +16,11 @@ struct ActivityLogDetailsView: View {
         ScrollView {
             VStack(spacing: 24) {
                 ActivityHeaderView(activity: activity)
-                
-                if let stats = makeActivityStats() {
-                    ActivityStatsCard(stats: stats)
+                if let actor = activity.actor {
+                    ActorCard(actor: actor)
                 }
-                
                 ActivityDetailsCard(activity: activity)
-                
+
                 if activity.isRewindable {
                     ActivityActionsCard(
                         activity: activity,
@@ -76,30 +74,6 @@ struct ActivityLogDetailsView: View {
         }
     }
     
-    private func makeActivityStats() -> ActivityStats? {
-        // Extract stats from activity content if available
-        guard activity.name == "rewind__backup_complete_full" else { return nil }
-        
-        // Parse the text to extract backup stats
-        let components = activity.text.components(separatedBy: ", ")
-        var stats = ActivityStats()
-        
-        for component in components {
-            if component.contains("plugin") {
-                stats.plugins = Int(component.components(separatedBy: " ").first ?? "0") ?? 0
-            } else if component.contains("theme") {
-                stats.themes = Int(component.components(separatedBy: " ").first ?? "0") ?? 0
-            } else if component.contains("upload") {
-                stats.uploads = Int(component.components(separatedBy: " ").first ?? "0") ?? 0
-            } else if component.contains("post") {
-                stats.posts = Int(component.components(separatedBy: " ").first ?? "0") ?? 0
-            } else if component.contains("page") {
-                stats.pages = Int(component.components(separatedBy: " ").first ?? "0") ?? 0
-            }
-        }
-        
-        return stats
-    }
 }
 
 // MARK: - Header View
@@ -108,135 +82,73 @@ private struct ActivityHeaderView: View {
     let activity: Activity
     
     var body: some View {
-        HStack(spacing: 12) {
-            ActivityIconView(activity: activity)
-                .frame(width: 48, height: 48)
-            
+        VStack(alignment: .leading, spacing: 16) {
+            // Activity icon with colored background
+            ZStack {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(activity.statusColor).opacity(0.15))
+                    .frame(width: 60, height: 60)
+
+                if let icon = activity.icon {
+                    Image(uiImage: icon)
+                        .renderingMode(.template)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 36, height: 36)
+                        .foregroundColor(Color(activity.statusColor))
+                }
+            }
+
             VStack(alignment: .leading, spacing: 4) {
-                Text(activity.actor?.displayName ?? "WordPress")
-                    .font(.headline)
+                // Activity title/summary
+                Text(activity.summary.localizedCapitalized)
+                    .font(.title3.weight(.medium))
+                    .lineLimit(2)
+
+                // Activity details if different from summary
+                if !activity.text.isEmpty && activity.text != activity.summary {
+                    Text(activity.text)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(3)
+                }
+
+                // Date and time
+                HStack(spacing: 8) {
+                    Image(systemName: "calendar")
+                        .foregroundStyle(.tertiary)
+                    Text(activity.published.formatted(date: .abbreviated, time: .standard))
+                        .foregroundStyle(.secondary)
+                }
+                .font(.footnote)
+                .padding(.top, 4)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+// MARK: - Actor Card
+
+private struct ActorCard: View {
+    let actor: ActivityActor
+    
+    var body: some View {
+        ActivityCard(Strings.user) {
+            HStack(spacing: 12) {
+                // Actor avatar
+                ActorAvatarView(actor: actor)
+                    .frame(width: 40, height: 40)
                 
-                if let role = activity.actor?.role {
-                    Text(role.capitalized)
+                // Actor info
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(actor.displayName)
+                        .font(.headline)
+                    
+                    Text(actor.role.isEmpty ? actor.type.localizedCapitalized : actor.role.localizedCapitalized)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
-            }
-            
-            Spacer()
-            
-            VStack(alignment: .trailing, spacing: 2) {
-                Text(activity.published.formatted(date: .abbreviated, time: .omitted))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                
-                Text(activity.published.formatted(date: .omitted, time: .shortened))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-        }
-    }
-}
-
-// MARK: - Icon View
-
-private struct ActivityIconView: View {
-    let activity: Activity
-    
-    var body: some View {
-        if let icon = activity.icon {
-            ZStack {
-                Circle()
-                    .fill(Color(activity.statusColor))
-                
-                Image(uiImage: icon)
-                    .renderingMode(.template)
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundColor(.white)
-                    .padding(12)
-            }
-        } else if let avatarURL = activity.actor?.avatarURL, !avatarURL.isEmpty, let url = URL(string: avatarURL) {
-            // User avatar
-            AsyncImage(url: url) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-            } placeholder: {
-                Image(uiImage: .gridicon(.user, size: CGSize(width: 24, height: 24)))
-                    .foregroundColor(Color(.secondaryLabel))
-            }
-            .clipShape(Circle())
-            .background(Circle().fill(Color(.systemGray5)))
-        } else {
-            // Fallback
-            ZStack {
-                Circle()
-                    .fill(Color(.systemGray5))
-                
-                Image(uiImage: .gridicon(.pages, size: CGSize(width: 24, height: 24)))
-                    .foregroundColor(Color(.secondaryLabel))
-            }
-        }
-    }
-}
-
-// MARK: - Stats Card
-
-private struct ActivityStats {
-    var plugins: Int = 0
-    var themes: Int = 0
-    var uploads: Int = 0
-    var posts: Int = 0
-    var pages: Int = 0
-}
-
-private struct ActivityStatsCard: View {
-    let stats: ActivityStats
-    
-    var body: some View {
-        ActivityCard {
-            HStack {
-                StatItem(
-                    icon: .gridicon(.plugins, size: CGSize(width: 20, height: 20)),
-                    title: Strings.plugins,
-                    value: "\(stats.plugins)"
-                )
-                
-                Divider()
-                    .frame(height: 40)
-                
-                StatItem(
-                    icon: .gridicon(.themes, size: CGSize(width: 20, height: 20)),
-                    title: Strings.themes,
-                    value: "\(stats.themes)"
-                )
-                
-                Divider()
-                    .frame(height: 40)
-                
-                StatItem(
-                    icon: .gridicon(.image, size: CGSize(width: 20, height: 20)),
-                    title: Strings.uploads,
-                    value: "\(stats.uploads)"
-                )
-            }
-            
-            HStack {
-                StatItem(
-                    icon: .gridicon(.posts, size: CGSize(width: 20, height: 20)),
-                    title: Strings.posts,
-                    value: "\(stats.posts)"
-                )
-                
-                Divider()
-                    .frame(height: 40)
-                
-                StatItem(
-                    icon: .gridicon(.pages, size: CGSize(width: 20, height: 20)),
-                    title: Strings.pages,
-                    value: "\(stats.pages)"
-                )
                 
                 Spacer()
             }
@@ -244,25 +156,41 @@ private struct ActivityStatsCard: View {
     }
 }
 
-private struct StatItem: View {
-    let icon: UIImage
-    let title: String
-    let value: String
+// MARK: - Actor Avatar View
+
+private struct ActorAvatarView: View {
+    let actor: ActivityActor
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Image(uiImage: icon)
-                .renderingMode(.template)
-                .foregroundStyle(.secondary)
-            
-            Text(title)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            
-            Text(value)
-                .font(.title2.bold())
+        if let url = URL(string: actor.avatarURL) {
+            AsyncImage(url: url) { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+            } placeholder: {
+                placeholder
+            }
+            .clipShape(Circle())
+        } else if actor.displayName.lowercased() == "jetpack" {
+            ZStack {
+                Circle()
+                    .fill(Color(.systemGreen))
+                Image(uiImage: .gridicon(.plugins, size: CGSize(width: 18, height: 18)))
+                    .foregroundColor(.white)
+            }
+        } else {
+            placeholder
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    private var placeholder: some View {
+        Circle()
+            .fill(Color(.secondarySystemFill))
+            .overlay(
+                Text(actor.displayName.prefix(1).uppercased())
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundStyle(.secondary)
+            )
     }
 }
 
@@ -274,29 +202,9 @@ private struct ActivityDetailsCard: View {
     var body: some View {
         ActivityCard(Strings.activityDetails) {
             VStack(alignment: .leading, spacing: 16) {
-                InfoRow(Strings.type, value: formatActivityType(activity.type))
-                InfoRow(Strings.name, value: formatActivityName(activity.name))
                 InfoRow(Strings.status, value: activity.status.localizedCapitalized)
                 
-                if !activity.summary.isEmpty {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(Strings.summary)
-                            .font(.subheadline.weight(.medium))
-                        Text(activity.summary)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                
-                if !activity.text.isEmpty && activity.text != activity.summary {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(Strings.details)
-                            .font(.subheadline.weight(.medium))
-                        Text(activity.text)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                }
+                InfoRow(Strings.name, value: formatActivityName(activity.name))
                 
                 if let rewindID = activity.rewindID {
                     InfoRow(Strings.backupID, value: String(rewindID.prefix(8)) + "...")
@@ -304,10 +212,6 @@ private struct ActivityDetailsCard: View {
                 }
             }
         }
-    }
-    
-    private func formatActivityType(_ type: String) -> String {
-        type.replacingOccurrences(of: "_", with: " ").capitalized
     }
     
     private func formatActivityName(_ name: String) -> String {
@@ -455,96 +359,21 @@ private struct InfoRow: View {
 
 #Preview("Backup Activity") {
     NavigationView {
-        ActivityLogDetailsView(activity: mockBackupActivity)
+        ActivityLogDetailsView(activity: ActivityLogDetailsView.Mocks.mockBackupActivity)
     }
 }
 
 #Preview("Plugin Update") {
     NavigationView {
-        ActivityLogDetailsView(activity: mockPluginActivity)
+        ActivityLogDetailsView(activity: ActivityLogDetailsView.Mocks.mockPluginActivity)
     }
 }
 
-// MARK: - Mock Data
-
-private let mockBackupActivity: Activity = {
-    let json = """
-    {
-        "activity_id": "123456",
-        "summary": "Backup and scan complete",
-        "content": {
-            "text": "9 plugins, 2 themes, 45 uploads, 27 posts, 1 page"
-        },
-        "name": "rewind__backup_complete_full",
-        "type": "backup",
-        "gridicon": "cloud",
-        "status": "success",
-        "is_rewindable": true,
-        "rewind_id": "abc123def456",
-        "published": "2025-06-18T17:35:00+00:00",
-        "actor": {
-            "name": "Jetpack",
-            "type": "Application",
-            "wp_com_user_id": "",
-            "icon": {
-                "url": ""
-            },
-            "role": ""
-        }
+#Preview("Login Succeeded") {
+    NavigationView {
+        ActivityLogDetailsView(activity: ActivityLogDetailsView.Mocks.mockLoginActivity)
     }
-    """
-    
-    let decoder = JSONDecoder()
-    decoder.dateDecodingStrategy = .custom { decoder in
-        let container = try decoder.singleValueContainer()
-        let dateString = try container.decode(String.self)
-        if let date = Date.dateWithISO8601WithMillisecondsString(dateString) {
-            return date
-        }
-        throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid date format")
-    }
-    
-    return try! decoder.decode(Activity.self, from: json.data(using: .utf8)!)
-}()
-
-private let mockPluginActivity: Activity = {
-    let json = """
-    {
-        "activity_id": "789012",
-        "summary": "Plugin updated",
-        "content": {
-            "text": "Updated Akismet Anti-spam from version 5.2 to 5.3"
-        },
-        "name": "plugin__updated",
-        "type": "plugin",
-        "gridicon": "plugins",
-        "status": "success",
-        "is_rewindable": false,
-        "published": "2025-06-18T16:35:00+00:00",
-        "actor": {
-            "name": "John Doe",
-            "type": "Person",
-            "wp_com_user_id": "12345",
-            "icon": {
-                "url": "https://gravatar.com/avatar/12345"
-            },
-            "role": "administrator"
-        }
-    }
-    """
-    
-    let decoder = JSONDecoder()
-    decoder.dateDecodingStrategy = .custom { decoder in
-        let container = try decoder.singleValueContainer()
-        let dateString = try container.decode(String.self)
-        if let date = Date.dateWithISO8601WithMillisecondsString(dateString) {
-            return date
-        }
-        throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid date format")
-    }
-    
-    return try! decoder.decode(Activity.self, from: json.data(using: .utf8)!)
-}()
+}
 
 // MARK: - Localized Strings
 
@@ -651,35 +480,10 @@ private enum Strings {
         comment: "Backup ID field label"
     )
     
-    // Stats
-    static let plugins = NSLocalizedString(
-        "activityDetail.stats.plugins",
-        value: "Plugins",
-        comment: "Label for number of plugins in backup"
-    )
-    
-    static let themes = NSLocalizedString(
-        "activityDetail.stats.themes",
-        value: "Themes",
-        comment: "Label for number of themes in backup"
-    )
-    
-    static let uploads = NSLocalizedString(
-        "activityDetail.stats.uploads",
-        value: "Uploads",
-        comment: "Label for number of uploads in backup"
-    )
-    
-    static let posts = NSLocalizedString(
-        "activityDetail.stats.posts",
-        value: "Posts",
-        comment: "Label for number of posts in backup"
-    )
-    
-    static let pages = NSLocalizedString(
-        "activityDetail.stats.pages",
-        value: "Pages",
-        comment: "Label for number of pages in backup"
+    static let user = NSLocalizedString(
+        "activityDetail.section.user",
+        value: "User",
+        comment: "Section title for user information"
     )
 }
 

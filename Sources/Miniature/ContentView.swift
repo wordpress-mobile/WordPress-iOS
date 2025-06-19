@@ -39,7 +39,7 @@ private func createMockBackupActivity() -> Activity {
         "status": "success",
         "is_rewindable": true,
         "rewind_id": "abc123def456",
-        "published": "2025-06-18T17:35:00+00:00",
+        "published": "2025-06-18T17:35:00.000+00:00",
         "actor": {
             "name": "Jetpack",
             "type": "Application",
@@ -53,15 +53,6 @@ private func createMockBackupActivity() -> Activity {
     """
     
     let decoder = JSONDecoder()
-    decoder.dateDecodingStrategy = .custom { decoder in
-        let container = try decoder.singleValueContainer()
-        let dateString = try container.decode(String.self)
-        if let date = Date.dateWithISO8601WithMillisecondsString(dateString) {
-            return date
-        }
-        throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid date format")
-    }
-    
     return try! decoder.decode(Activity.self, from: json.data(using: .utf8)!)
 }
 
@@ -78,7 +69,7 @@ private func createMockPluginActivity() -> Activity {
         "gridicon": "plugins",
         "status": "success",
         "is_rewindable": false,
-        "published": "2025-06-18T16:35:00+00:00",
+        "published": "2025-06-18T16:35:00.000+00:00",
         "actor": {
             "name": "John Doe",
             "type": "Person",
@@ -92,14 +83,5 @@ private func createMockPluginActivity() -> Activity {
     """
     
     let decoder = JSONDecoder()
-    decoder.dateDecodingStrategy = .custom { decoder in
-        let container = try decoder.singleValueContainer()
-        let dateString = try container.decode(String.self)
-        if let date = Date.dateWithISO8601WithMillisecondsString(dateString) {
-            return date
-        }
-        throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid date format")
-    }
-    
     return try! decoder.decode(Activity.self, from: json.data(using: .utf8)!)
 }
