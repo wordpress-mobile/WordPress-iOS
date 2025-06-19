@@ -7,9 +7,7 @@ import FormattableContentKit
 
 struct ActivityLogRowViewModel: Identifiable {
     let id: String
-    let actorAvatarURL: URL?
-    var actor: String?
-    var actorRole: String?
+    var actorSubtitle: String?
     let title: String
     let subtitle: String
     let date: Date
@@ -21,11 +19,11 @@ struct ActivityLogRowViewModel: Identifiable {
     init(activity: Activity) {
         self.activity = activity
         self.id = activity.activityID
-        self.actorAvatarURL = activity.actor.flatMap { URL(string: $0.avatarURL) }
         if let actor = activity.actor {
-            self.actor = actor.displayName
-            if !actor.role.isEmpty {
-                self.actorRole = actor.role.localizedCapitalized
+            if actor.role.isEmpty {
+                actorSubtitle = actor.role
+            } else if !actor.type.isEmpty {
+                actorSubtitle = actor.type
             }
         }
         self.date = activity.published

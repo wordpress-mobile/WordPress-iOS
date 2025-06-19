@@ -92,8 +92,7 @@ private struct ActorCard: View {
         ActivityCard(Strings.user) {
             HStack(spacing: 12) {
                 // Actor avatar
-                ActorAvatarView(actor: actor)
-                    .frame(width: 40, height: 40)
+                ActivitySimpleAvatarView(avatarURL: actor.avatarURL, displayName: actor.displayName, diameter: 40)
 
                 // Actor info
                 VStack(alignment: .leading, spacing: 2) {
@@ -108,44 +107,6 @@ private struct ActorCard: View {
                 Spacer()
             }
         }
-    }
-}
-
-// MARK: - Actor Avatar View
-
-private struct ActorAvatarView: View {
-    let actor: ActivityActor
-
-    var body: some View {
-        if let url = URL(string: actor.avatarURL) {
-            AsyncImage(url: url) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-            } placeholder: {
-                placeholder
-            }
-            .clipShape(Circle())
-        } else if actor.displayName.lowercased() == "jetpack" {
-            ZStack {
-                Circle()
-                    .fill(AppColor.primary)
-                Image(uiImage: .gridicon(.plugins, size: CGSize(width: 18, height: 18)))
-                    .foregroundColor(.white)
-            }
-        } else {
-            placeholder
-        }
-    }
-
-    private var placeholder: some View {
-        Circle()
-            .fill(Color(.secondarySystemFill))
-            .overlay(
-                Text(actor.displayName.prefix(1).uppercased())
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(.secondary)
-            )
     }
 }
 
