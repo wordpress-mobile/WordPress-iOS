@@ -1,6 +1,7 @@
 import SwiftUI
 import WordPressKit
 import WordPressUI
+import WordPressShared
 import Gridicons
 
 struct ActivityLogDetailsView: View {
@@ -20,44 +21,42 @@ struct ActivityLogDetailsView: View {
                 }
                 .padding()
             }
-            
+
             if shouldShowBackupActions {
                 actionButtons
             }
         }
         .navigationTitle(Strings.eventTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .background(
-            ActivityLogDetailsCoordinator(
-                activity: activity,
-                blog: blog
-            )
-        )
+        .onAppear {
+            trackDetailViewed()
+        }
     }
-    
+
     private var shouldShowBackupActions: Bool {
         // Show buttons for rewindable activities that are backup-related
         guard activity.isRewindable else { return false }
-        
+
         // Check if this is a backup activity based on the activity name
         let backupActivityNames = [
             "rewind__backup_complete_full",
             "rewind__backup_complete",
             "rewind__backup_error"
         ]
-        
+
         return backupActivityNames.contains(activity.name)
     }
-    
+
     @ViewBuilder
     private var actionButtons: some View {
         VStack(spacing: 12) {
             Divider()
-            
+
             HStack(spacing: 12) {
                 // Restore Backup - Primary Button
                 Button(action: {
-                    ActivityLogDetailsCoordinator.shared?.presentRestore()
+                    trackRestoreTapped()
+                    ActivityLogDetailsCoordinator.presentRestore(activity: activity, blog: blog)
                 }) {
                     HStack {
                         Image(systemName: "arrow.counterclockwise")
@@ -71,10 +70,11 @@ struct ActivityLogDetailsView: View {
                     .foregroundColor(.white)
                     .cornerRadius(8)
                 }
-                
+
                 // Download Backup - Secondary Button
                 Button(action: {
-                    ActivityLogDetailsCoordinator.shared?.presentBackup()
+                    trackBackupTapped()
+                    ActivityLogDetailsCoordinator.presentBackup(activity: activity, blog: blog)
                 }) {
                     HStack {
                         Image(systemName: "arrow.down.circle")
@@ -261,18 +261,40 @@ private enum Strings {
         value: "User",
         comment: "Section title for user information"
     )
-    
+
     static let restoreBackup = NSLocalizedString(
         "activityDetail.restoreBackup.button",
         value: "Restore Backup",
         comment: "Button title for restoring a backup"
     )
-    
+
     static let downloadBackup = NSLocalizedString(
         "activityDetail.downloadBackup.button",
         value: "Download Backup",
         comment: "Button title for downloading a backup"
     )
+}
+
+// MARK: - Analytics
+
+private extension ActivityLogDetailsView {
+    func trackDetailViewed() {
+        WPAnalytics.track(.activityLogDetailViewed, withProperties: ["source": presentedFrom()])
+    }
+
+    func trackRestoreTapped() {
+        WPAnalytics.track(.restoreOpened, properties: ["source": "activity_detail"])
+    }
+
+    func trackBackupTapped() {
+        WPAnalytics.track(.backupDownloadOpened, properties: ["source": "activity_detail"])
+    }
+
+    func presentedFrom() -> String {
+        // Since we're in SwiftUI, we'll default to "activity_log"
+        // In the future, this could be passed as a parameter
+        return "activity_log"
+    }
 }
 
 // MARK: - Preview Helpers
