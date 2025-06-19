@@ -92,7 +92,7 @@ private struct ActorCard: View {
         ActivityCard(Strings.user) {
             HStack(spacing: 12) {
                 // Actor avatar
-                ActivitySimpleAvatarView(avatarURL: actor.avatarURL, displayName: actor.displayName, diameter: 40)
+                ActivityActorAvatarView(actor: actor, diameter: 40)
 
                 // Actor info
                 VStack(alignment: .leading, spacing: 2) {
@@ -142,27 +142,6 @@ private struct ActivityCard<Content: View>: View {
     }
 }
 
-private struct InfoRow: View {
-    let title: String
-    let value: String
-
-    init(_ title: String, value: String) {
-        self.title = title
-        self.value = value
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.subheadline.weight(.medium))
-            Text(value)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .textSelection(.enabled)
-        }
-    }
-}
-
 // MARK: - Preview
 
 #Preview("Backup Activity") {
@@ -192,47 +171,6 @@ private enum Strings {
         comment: "Title for the activity detail view"
     )
 
-    static let activityDetails = NSLocalizedString(
-        "activityDetail.section.details",
-        value: "Activity Details",
-        comment: "Section title for activity details"
-    )
-
-    static let type = NSLocalizedString(
-        "activityDetail.field.type",
-        value: "Type",
-        comment: "Activity type field label"
-    )
-
-    static let name = NSLocalizedString(
-        "activityDetail.field.name",
-        value: "Name",
-        comment: "Activity name field label"
-    )
-
-    static let status = NSLocalizedString(
-        "activityDetail.field.status",
-        value: "Status",
-        comment: "Activity status field label"
-    )
-
-    static let summary = NSLocalizedString(
-        "activityDetail.field.summary",
-        value: "Summary",
-        comment: "Activity summary field label"
-    )
-
-    static let details = NSLocalizedString(
-        "activityDetail.field.details",
-        value: "Details",
-        comment: "Activity details field label"
-    )
-
-    static let backupID = NSLocalizedString(
-        "activityDetail.field.backupID",
-        value: "Backup ID",
-        comment: "Backup ID field label"
-    )
 
     static let user = NSLocalizedString(
         "activityDetail.section.user",

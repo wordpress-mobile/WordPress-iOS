@@ -115,7 +115,7 @@ private struct ActivityLogsPaginatedForEach: View {
             .onAppear { response.onRowAppeared(item) }
             .background {
                 NavigationLink {
-                    // TODO: Update to show ActivityDetailViewController
+                    ActivityLogDetailsView(activity: item.activity)
                 } label: {
                     EmptyView()
                 }.opacity(0)

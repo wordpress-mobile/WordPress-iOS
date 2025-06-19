@@ -21,9 +21,9 @@ struct ActivityLogRowViewModel: Identifiable {
         self.id = activity.activityID
         if let actor = activity.actor {
             if actor.role.isEmpty {
-                actorSubtitle = actor.role
+                actorSubtitle = actor.role.localizedCapitalized
             } else if !actor.type.isEmpty {
-                actorSubtitle = actor.type
+                actorSubtitle = actor.type.localizedCapitalized
             }
         }
         self.date = activity.published
