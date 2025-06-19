@@ -3,7 +3,7 @@ import WordPressKit
 import WordPressUI
 
 struct SubscriberDetailsView: View {
-    let viewModel: SubsriberDetailsViewModel
+    let viewModel: SubscriberDetailsViewModel
 
     @State private var details: SubscribersServiceRemote.GetSubscriberDetailsResponse?
     @State private var stats: SubscribersServiceRemote.GetSubscriberStatsResponse?
@@ -16,9 +16,7 @@ struct SubscriberDetailsView: View {
 
     @Environment(\.dismiss) var dismiss
 
-    private var onDeleted: ((Int) -> Void)?
-
-    init(viewModel: SubsriberDetailsViewModel) {
+    init(viewModel: SubscriberDetailsViewModel) {
         self.viewModel = viewModel
     }
 
@@ -113,7 +111,6 @@ struct SubscriberDetailsView: View {
             do {
                 try await viewModel.delete(details)
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
-                onDeleted?(details.subscriberID)
                 dismiss()
             } catch {
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
@@ -121,12 +118,6 @@ struct SubscriberDetailsView: View {
                 isDeleting = false
             }
         }
-    }
-
-    func onDeleted(_ closure: @escaping (Int) -> Void) -> SubscriberDetailsView {
-        var copy = self
-        copy.onDeleted = closure
-        return copy
     }
 
     // MARK: Views

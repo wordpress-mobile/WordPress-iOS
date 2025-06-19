@@ -151,8 +151,8 @@
 		4ABCAB2A2DE52E80005A6B84 /* Secrets-JetpackDraftActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */; };
 		4ABCAB2B2DE52E86005A6B84 /* Secrets-JetpackShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB282DE52E6B005A6B84 /* Secrets-JetpackShareExtension.swift */; };
 		4ABCAB2E2DE53092005A6B84 /* Secrets-JetpackNotificationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB2D2DE53092005A6B84 /* Secrets-JetpackNotificationServiceExtension.swift */; };
-		4ABCAB332DE53168005A6B84 /* Secrets-JetpackIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB322DE53168005A6B84 /* Secrets-JetpackIntents.swift */; };
 		4ABCAB3A2DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB392DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift */; };
+		4ABCAB332DE53168005A6B84 /* Secrets-JetpackIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB322DE53168005A6B84 /* Secrets-JetpackIntents.swift */; };
 		4AC9545A2DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC954592DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift */; };
 		4AC9F8182DE528E40095EA51 /* Secrets-WordPressShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC9F8172DE528E40095EA51 /* Secrets-WordPressShareExtension.swift */; };
 		4AD953C72C21451700D0EEFA /* WordPressAuthenticator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */; };
@@ -824,8 +824,8 @@
 		4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackDraftActionExtension.swift"; path = "../Secrets/Secrets-JetpackDraftActionExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ABCAB282DE52E6B005A6B84 /* Secrets-JetpackShareExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackShareExtension.swift"; path = "../Secrets/Secrets-JetpackShareExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ABCAB2D2DE53092005A6B84 /* Secrets-JetpackNotificationServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackNotificationServiceExtension.swift"; path = "../Secrets/Secrets-JetpackNotificationServiceExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4ABCAB322DE53168005A6B84 /* Secrets-JetpackIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackIntents.swift"; path = "../Secrets/Secrets-JetpackIntents.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ABCAB392DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-WordPressNotificationServiceExtension.swift"; path = "../Secrets/Secrets-WordPressNotificationServiceExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4ABCAB322DE53168005A6B84 /* Secrets-JetpackIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackIntents.swift"; path = "../Secrets/Secrets-JetpackIntents.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AC954592DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackStatsWidgets.swift"; path = "../Secrets/Secrets-JetpackStatsWidgets.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AC9F8172DE528E40095EA51 /* Secrets-WordPressShareExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-WordPressShareExtension.swift"; path = "../Secrets/Secrets-WordPressShareExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressAuthenticator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1205,19 +1205,19 @@
 			);
 			target = 80F6D01F28EE866A00953C1A /* JetpackNotificationServiceExtension */;
 		};
-		4ABCAB352DE531B6005A6B84 /* Exceptions for "Classes" folder in "JetpackIntents" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"System/ApiCredentials+BuildSecrets.swift",
-			);
-			target = 0107E13828FE9DB200DE87DB /* JetpackIntents */;
-		};
 		4ABCAB382DE5333C005A6B84 /* Exceptions for "Classes" folder in "WordPressNotificationServiceExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"System/ApiCredentials+BuildSecrets.swift",
 			);
 			target = 7358E6B7210BD318002323EB /* WordPressNotificationServiceExtension */;
+		};
+		4ABCAB352DE531B6005A6B84 /* Exceptions for "Classes" folder in "JetpackIntents" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"System/ApiCredentials+BuildSecrets.swift",
+			);
+			target = 0107E13828FE9DB200DE87DB /* JetpackIntents */;
 		};
 		4AC9CF442DE5228C0095EA51 /* Exceptions for "Classes" folder in "JetpackStatsWidgets" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -3291,26 +3291,6 @@
 			shellPath = /bin/sh;
 			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
 		};
-		4ABCAB312DE530F1005A6B84 /* Generate Credentials */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"$(SRCROOT)/../Scripts/BuildPhases/GenerateCredentials.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "Generate Credentials";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets-JetpackIntents.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
-		};
 		4ABCAB362DE532E7005A6B84 /* Generate Credentials */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3326,6 +3306,26 @@
 			);
 			outputPaths = (
 				"$(BUILD_DIR)/Secrets/Secrets-WordPressNotificationServiceExtension.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
+		};
+		4ABCAB312DE530F1005A6B84 /* Generate Credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/../Scripts/BuildPhases/GenerateCredentials.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "Generate Credentials";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILD_DIR)/Secrets/Secrets-JetpackIntents.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
