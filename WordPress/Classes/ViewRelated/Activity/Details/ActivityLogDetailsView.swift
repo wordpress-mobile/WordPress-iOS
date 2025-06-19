@@ -5,21 +5,85 @@ import Gridicons
 
 struct ActivityLogDetailsView: View {
     let activity: Activity
+    let site: JetpackSiteRef
 
     @Environment(\.dismiss) var dismiss
+    @State private var showingRestoreSheet = false
+    @State private var showingDownloadSheet = false
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                ActivityHeaderView(activity: activity)
-                if let actor = activity.actor {
-                    ActorCard(actor: actor)
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(spacing: 24) {
+                    ActivityHeaderView(activity: activity)
+                    if let actor = activity.actor {
+                        ActorCard(actor: actor)
+                    }
                 }
+                .padding()
             }
-            .padding()
+            
+            if activity.isRewindable {
+                actionButtons
+            }
         }
         .navigationTitle(Strings.eventTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showingRestoreSheet) {
+            RestoreBackupSheet(activity: activity, site: site)
+        }
+        .sheet(isPresented: $showingDownloadSheet) {
+            DownloadBackupSheet(activity: activity, site: site)
+        }
+    }
+    
+    @ViewBuilder
+    private var actionButtons: some View {
+        VStack(spacing: 12) {
+            Divider()
+            
+            HStack(spacing: 12) {
+                // Restore Backup - Primary Button
+                Button(action: {
+                    showingRestoreSheet = true
+                }) {
+                    HStack {
+                        Image(systemName: "arrow.counterclockwise")
+                            .font(.system(size: 16, weight: .medium))
+                        Text(Strings.restoreBackup)
+                            .font(.system(size: 16, weight: .medium))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(Color.accentColor)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                }
+                
+                // Download Backup - Secondary Button
+                Button(action: {
+                    showingDownloadSheet = true
+                }) {
+                    HStack {
+                        Image(systemName: "arrow.down.circle")
+                            .font(.system(size: 16, weight: .regular))
+                        Text(Strings.downloadBackup)
+                            .font(.system(size: 16, weight: .regular))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(Color.clear)
+                    .foregroundColor(.accentColor)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.accentColor, lineWidth: 1)
+                    )
+                }
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 12)
+        }
+        .background(Color(.systemBackground))
     }
 }
 
@@ -146,19 +210,28 @@ private struct ActivityCard<Content: View>: View {
 
 #Preview("Backup Activity") {
     NavigationView {
-        ActivityLogDetailsView(activity: ActivityLogDetailsView.Mocks.mockBackupActivity)
+        ActivityLogDetailsView(
+            activity: ActivityLogDetailsView.Mocks.mockBackupActivity,
+            site: JetpackSiteRef.mock
+        )
     }
 }
 
 #Preview("Plugin Update") {
     NavigationView {
-        ActivityLogDetailsView(activity: ActivityLogDetailsView.Mocks.mockPluginActivity)
+        ActivityLogDetailsView(
+            activity: ActivityLogDetailsView.Mocks.mockPluginActivity,
+            site: JetpackSiteRef.mock
+        )
     }
 }
 
 #Preview("Login Succeeded") {
     NavigationView {
-        ActivityLogDetailsView(activity: ActivityLogDetailsView.Mocks.mockLoginActivity)
+        ActivityLogDetailsView(
+            activity: ActivityLogDetailsView.Mocks.mockLoginActivity,
+            site: JetpackSiteRef.mock
+        )
     }
 }
 
@@ -176,4 +249,34 @@ private enum Strings {
         value: "User",
         comment: "Section title for user information"
     )
+    
+    static let restoreBackup = NSLocalizedString(
+        "activityDetail.restoreBackup.button",
+        value: "Restore Backup",
+        comment: "Button title for restoring a backup"
+    )
+    
+    static let downloadBackup = NSLocalizedString(
+        "activityDetail.downloadBackup.button",
+        value: "Download Backup",
+        comment: "Button title for downloading a backup"
+    )
 }
+
+// MARK: - Preview Helpers
+
+#if DEBUG
+extension JetpackSiteRef {
+    static var mock: JetpackSiteRef {
+        var ref = JetpackSiteRef(
+            siteID: 123456789,
+            username: "test",
+            homeURL: "https://example.wordpress.com",
+            isSelfHostedWithoutJetpack: false,
+            xmlRPC: nil
+        )
+        // Use reflection to set private properties for preview
+        return ref
+    }
+}
+#endif
