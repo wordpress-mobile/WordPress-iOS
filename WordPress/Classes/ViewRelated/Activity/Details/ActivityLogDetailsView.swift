@@ -11,20 +11,19 @@ struct ActivityLogDetailsView: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        VStack(spacing: 0) {
-            ScrollView {
-                VStack(spacing: 24) {
+        ScrollView {
+            VStack(spacing: 24) {
+                VStack(spacing: 16) {
                     ActivityHeaderView(activity: activity)
-                    if let actor = activity.actor {
-                        ActorCard(actor: actor)
+                    if shouldShowBackupActions {
+                        backupActionButtons
                     }
                 }
-                .padding()
+                if let actor = activity.actor {
+                    ActorCard(actor: actor)
+                }
             }
-
-            if shouldShowBackupActions {
-                actionButtons
-            }
+            .padding()
         }
         .navigationTitle(Strings.eventTitle)
         .navigationBarTitleDisplayMode(.inline)
@@ -47,51 +46,32 @@ struct ActivityLogDetailsView: View {
     }
 
     @ViewBuilder
-    private var actionButtons: some View {
-        VStack(spacing: 12) {
-            Divider()
-
-            HStack(spacing: 12) {
-                // Restore Backup - Primary Button
-                Button(action: {
-                    trackRestoreTapped()
-                    ActivityLogDetailsCoordinator.presentRestore(activity: activity, blog: blog)
-                }) {
-                    HStack {
-                        Image(systemName: "arrow.counterclockwise")
-                        Text(Strings.restoreBackup)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(Color.accentColor)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                }
-
-                // Download Backup - Secondary Button
-                Button(action: {
-                    trackBackupTapped()
-                    ActivityLogDetailsCoordinator.presentBackup(activity: activity, blog: blog)
-                }) {
-                    HStack {
-                        Image(systemName: "arrow.down.circle")
-                        Text(Strings.downloadBackup)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(Color.clear)
-                    .foregroundColor(.accentColor)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.accentColor, lineWidth: 1)
-                    )
-                }
+    private var backupActionButtons: some View {
+        HStack(spacing: 12) {
+            Button(action: {
+                trackRestoreTapped()
+                ActivityLogDetailsCoordinator.presentRestore(activity: activity, blog: blog)
+            }) {
+                Label(Strings.restore, systemImage: "arrow.counterclockwise")
+                    .fontWeight(.medium)
             }
-            .padding(.horizontal)
-            .padding(.bottom, 12)
+            .buttonStyle(.borderedProminent)
+            .controlSize(.regular)
+            
+            Button(action: {
+                trackBackupTapped()
+                ActivityLogDetailsCoordinator.presentBackup(activity: activity, blog: blog)
+            }) {
+                Label(Strings.download, systemImage: "arrow.down.circle")
+                    .fontWeight(.medium)
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.regular)
+            .tint(.accentColor)
         }
-        .background(Color(.systemBackground))
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
+
 }
 
 // MARK: - Header View
@@ -257,15 +237,15 @@ private enum Strings {
         comment: "Section title for user information"
     )
 
-    static let restoreBackup = NSLocalizedString(
-        "activityDetail.restoreBackup.button",
-        value: "Restore Backup",
+    static let restore = NSLocalizedString(
+        "activityDetail.restore.button",
+        value: "Restore",
         comment: "Button title for restoring a backup"
     )
 
-    static let downloadBackup = NSLocalizedString(
-        "activityDetail.downloadBackup.button",
-        value: "Download Backup",
+    static let download = NSLocalizedString(
+        "activityDetail.download.button",
+        value: "Download",
         comment: "Button title for downloading a backup"
     )
 }

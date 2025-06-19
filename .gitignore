@@ -25,6 +25,9 @@ DerivedData
 *.hmap
 *.xcscmblueprint
 
+# Claude
+.claude/settings.local.json
+
 # Windows
 Thumbs.db
 ehthumbs.db
