@@ -32,21 +32,6 @@ extension WPStyleGuide {
         public static func backgroundColor() -> UIColor {
             return .secondarySystemGroupedBackground
         }
-        
-        @available(*, deprecated, message: "Use activity.gridiconType instead")
-        public static func getGridiconTypeForActivity(_ activity: Activity) -> GridiconType? {
-            return activity.gridiconType
-        }
-
-        @available(*, deprecated, message: "Use activity.icon instead")
-        public static func getIconForActivity(_ activity: Activity) -> UIImage? {
-            return activity.icon
-        }
-
-        @available(*, deprecated, message: "Use activity.statusColor instead")
-        public static func getColorByActivityStatus(_ activity: Activity) -> UIColor {
-            return activity.statusColor
-        }
 
         // MARK: - Private Properties
 

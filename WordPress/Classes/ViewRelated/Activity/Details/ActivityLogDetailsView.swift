@@ -5,9 +5,9 @@ import Gridicons
 
 struct ActivityLogDetailsView: View {
     let activity: Activity
-    
+
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
@@ -27,7 +27,7 @@ struct ActivityLogDetailsView: View {
 
 private struct ActivityHeaderView: View {
     let activity: Activity
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             // Activity icon with colored background
@@ -87,24 +87,24 @@ private struct ActivityHeaderView: View {
 
 private struct ActorCard: View {
     let actor: ActivityActor
-    
+
     var body: some View {
         ActivityCard(Strings.user) {
             HStack(spacing: 12) {
                 // Actor avatar
                 ActorAvatarView(actor: actor)
                     .frame(width: 40, height: 40)
-                
+
                 // Actor info
                 VStack(alignment: .leading, spacing: 2) {
                     Text(actor.displayName)
                         .font(.headline)
-                    
+
                     Text(actor.role.isEmpty ? actor.type.localizedCapitalized : actor.role.localizedCapitalized)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
-                
+
                 Spacer()
             }
         }
@@ -115,7 +115,7 @@ private struct ActorCard: View {
 
 private struct ActorAvatarView: View {
     let actor: ActivityActor
-    
+
     var body: some View {
         if let url = URL(string: actor.avatarURL) {
             AsyncImage(url: url) { image in
@@ -137,7 +137,7 @@ private struct ActorAvatarView: View {
             placeholder
         }
     }
-    
+
     private var placeholder: some View {
         Circle()
             .fill(Color(.secondarySystemFill))
@@ -154,20 +154,20 @@ private struct ActorAvatarView: View {
 private struct ActivityCard<Content: View>: View {
     let title: String?
     @ViewBuilder let content: () -> Content
-    
+
     init(_ title: String? = nil, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
         self.content = content
     }
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            if let title = title {
+            if let title {
                 Text(title.uppercased())
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            
+
             content()
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -184,12 +184,12 @@ private struct ActivityCard<Content: View>: View {
 private struct InfoRow: View {
     let title: String
     let value: String
-    
+
     init(_ title: String, value: String) {
         self.title = title
         self.value = value
     }
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
@@ -230,53 +230,52 @@ private enum Strings {
         value: "Event",
         comment: "Title for the activity detail view"
     )
-    
+
     static let activityDetails = NSLocalizedString(
         "activityDetail.section.details",
         value: "Activity Details",
         comment: "Section title for activity details"
     )
-    
+
     static let type = NSLocalizedString(
         "activityDetail.field.type",
         value: "Type",
         comment: "Activity type field label"
     )
-    
+
     static let name = NSLocalizedString(
         "activityDetail.field.name",
         value: "Name",
         comment: "Activity name field label"
     )
-    
+
     static let status = NSLocalizedString(
         "activityDetail.field.status",
         value: "Status",
         comment: "Activity status field label"
     )
-    
+
     static let summary = NSLocalizedString(
         "activityDetail.field.summary",
         value: "Summary",
         comment: "Activity summary field label"
     )
-    
+
     static let details = NSLocalizedString(
         "activityDetail.field.details",
         value: "Details",
         comment: "Activity details field label"
     )
-    
+
     static let backupID = NSLocalizedString(
         "activityDetail.field.backupID",
         value: "Backup ID",
         comment: "Backup ID field label"
     )
-    
+
     static let user = NSLocalizedString(
         "activityDetail.section.user",
         value: "User",
         comment: "Section title for user information"
     )
 }
-

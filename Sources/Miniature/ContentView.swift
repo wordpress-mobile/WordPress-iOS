@@ -6,8 +6,7 @@ import WordPressKit
 
 struct ContentView: View {
     var body: some View {
-//        Text("Hello, world!")
-            ActivityLogDetailsView(activity: ActivityLogDetailsView.Mocks.mockLoginActivity)
+        Text("Hello, world!")
     }
 }
 

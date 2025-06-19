@@ -6,14 +6,14 @@ import WordPressKit
 extension Activity {
     /// Returns an AttributedString with clickable links based on content ranges
     var formattedContent: AttributedString? {
-        guard let content = content,
+        guard let content,
               let text = content["text"] as? String,
               !text.isEmpty else {
             return nil
         }
-        
+
         var attributedString = AttributedString(text)
-        
+
         // Apply links from ranges if available
         if let ranges = content["ranges"] as? [[String: Any]] {
             for range in ranges {
@@ -23,7 +23,7 @@ extension Activity {
                       let url = URL(string: urlString) else {
                     continue
                 }
-                
+
                 let startIndex = indices[0].intValue
                 let endIndex = indices[1].intValue
 
@@ -33,22 +33,22 @@ extension Activity {
                       startIndex < endIndex else {
                     continue
                 }
-                
+
                 // Convert character indices to AttributedString.Index
                 let stringStartIndex = text.index(text.startIndex, offsetBy: startIndex)
                 let stringEndIndex = text.index(text.startIndex, offsetBy: endIndex)
-                
+
                 // Find corresponding indices in AttributedString
                 guard let attrStartIndex = AttributedString.Index(stringStartIndex, within: attributedString),
                       let attrEndIndex = AttributedString.Index(stringEndIndex, within: attributedString) else {
                     continue
                 }
-                
+
                 // Apply the link attribute to the exact range
                 attributedString[attrStartIndex..<attrEndIndex].link = url
             }
         }
-        
+
         return attributedString
     }
 

@@ -61,7 +61,7 @@ extension ActivityLogDetailsView {
             """
             return try! JSONDecoder().decode(Activity.self, from: json.data(using: .utf8)!)
         }
-        
+
         static var mockLoginActivity: Activity {
             let json = """
             {
