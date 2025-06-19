@@ -65,10 +65,8 @@ private struct ActivityLogsListView: View {
             await viewModel.refresh()
         }
         .toolbar {
-            if !viewModel.isBackupMode {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    ActivityLogsMenu(viewModel: viewModel)
-                }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                ActivityLogsMenu(viewModel: viewModel)
             }
         }
     }
