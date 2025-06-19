@@ -8,8 +8,6 @@ struct ActivityLogDetailsView: View {
     let blog: Blog
 
     @Environment(\.dismiss) var dismiss
-    @State private var showingRestoreSheet = false
-    @State private var showingDownloadSheet = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -23,18 +21,32 @@ struct ActivityLogDetailsView: View {
                 .padding()
             }
             
-            if activity.isRewindable {
+            if shouldShowBackupActions {
                 actionButtons
             }
         }
         .navigationTitle(Strings.eventTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showingRestoreSheet) {
-            RestoreBackupSheet(activity: activity, blog: blog)
-        }
-        .sheet(isPresented: $showingDownloadSheet) {
-            DownloadBackupSheet(activity: activity, blog: blog)
-        }
+        .background(
+            ActivityLogDetailsCoordinator(
+                activity: activity,
+                blog: blog
+            )
+        )
+    }
+    
+    private var shouldShowBackupActions: Bool {
+        // Show buttons for rewindable activities that are backup-related
+        guard activity.isRewindable else { return false }
+        
+        // Check if this is a backup activity based on the activity name
+        let backupActivityNames = [
+            "rewind__backup_complete_full",
+            "rewind__backup_complete",
+            "rewind__backup_error"
+        ]
+        
+        return backupActivityNames.contains(activity.name)
     }
     
     @ViewBuilder
@@ -45,7 +57,7 @@ struct ActivityLogDetailsView: View {
             HStack(spacing: 12) {
                 // Restore Backup - Primary Button
                 Button(action: {
-                    showingRestoreSheet = true
+                    ActivityLogDetailsCoordinator.shared?.presentRestore()
                 }) {
                     HStack {
                         Image(systemName: "arrow.counterclockwise")
@@ -62,7 +74,7 @@ struct ActivityLogDetailsView: View {
                 
                 // Download Backup - Secondary Button
                 Button(action: {
-                    showingDownloadSheet = true
+                    ActivityLogDetailsCoordinator.shared?.presentBackup()
                 }) {
                     HStack {
                         Image(systemName: "arrow.down.circle")
@@ -268,11 +280,9 @@ private enum Strings {
 #if DEBUG
 extension Blog {
     static var mock: Blog {
-        let blog = Blog()
-        blog.dotComID = NSNumber(value: 123456789)
-        blog.url = "https://example.wordpress.com"
-        blog.xmlrpc = "https://example.wordpress.com/xmlrpc.php"
-        return blog
+        // For previews, we'll return a dummy blog object
+        // In real previews, this should be provided by the parent view
+        return Blog()
     }
 }
 #endif

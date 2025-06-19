@@ -54,6 +54,7 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 - Follow Swift API Design Guidelines
 - Use strict access control modifiers where possible
 - Use four spaces (not tabs)
+- Use semantics text sizes like `.headline`
 
 ## Development Workflow
 - Branch from `trunk` (main branch)
