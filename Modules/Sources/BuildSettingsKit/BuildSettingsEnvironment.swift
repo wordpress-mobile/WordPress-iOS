@@ -21,7 +21,7 @@ public enum BuildSettingsEnvironment: Sendable {
 
 private extension ProcessInfo {
     var isXcodePreview: Bool {
-        environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+        environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" || environment["WP_USE_PREVIEW_ENVIRONMENT"] == "1"
     }
 
     var isTesting: Bool {

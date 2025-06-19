@@ -24,18 +24,18 @@ struct ActivityLogRowView: View {
                     .font(.subheadline)
                     .lineLimit(2)
 
-                if let actor = viewModel.actor {
+                if let actor = viewModel.activity.actor {
                     HStack(spacing: 6) {
-                        avatar
+                        ActivityActorAvatarView(actor: actor, diameter: 16)
                         HStack(spacing: 4) {
-                            Text(actor)
+                            Text(actor.displayName)
                                 .font(.footnote)
                                 .foregroundColor(.secondary)
-                            if let role = viewModel.actorRole {
+                            if let subtitle = viewModel.actorSubtitle {
                                 Text("·")
                                     .font(.footnote)
                                     .foregroundColor(.secondary)
-                                Text(role)
+                                Text(subtitle)
                                     .font(.footnote)
                                     .foregroundColor(.secondary)
                             }
@@ -45,26 +45,6 @@ struct ActivityLogRowView: View {
                 }
             }
         }
-    }
-
-    private var avatar: some View {
-        Group {
-            if let avatarURL = viewModel.actorAvatarURL {
-                AvatarView(style: .single(avatarURL), diameter: 16)
-            } else if viewModel.actor?.lowercased() == "jetpack" {
-                Image("icon-jetpack")
-                    .resizable()
-            } else {
-                Circle()
-                    .fill(Color(.secondarySystemBackground))
-                    .overlay(
-                        Text((viewModel.actor ?? "").prefix(1).uppercased())
-                            .font(.system(size: 9, weight: .medium))
-                            .foregroundColor(.secondary)
-                    )
-            }
-        }
-        .frame(width: 16, height: 16)
     }
 
     private var icon: some View {

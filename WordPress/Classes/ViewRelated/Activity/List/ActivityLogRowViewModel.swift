@@ -7,9 +7,7 @@ import FormattableContentKit
 
 struct ActivityLogRowViewModel: Identifiable {
     let id: String
-    let actorAvatarURL: URL?
-    var actor: String?
-    var actorRole: String?
+    var actorSubtitle: String?
     let title: String
     let subtitle: String
     let date: Date
@@ -21,11 +19,11 @@ struct ActivityLogRowViewModel: Identifiable {
     init(activity: Activity) {
         self.activity = activity
         self.id = activity.activityID
-        self.actorAvatarURL = activity.actor.flatMap { URL(string: $0.avatarURL) }
         if let actor = activity.actor {
-            self.actor = actor.displayName
-            if !actor.role.isEmpty {
-                self.actorRole = actor.role.localizedCapitalized
+            if actor.role.isEmpty {
+                actorSubtitle = actor.role.localizedCapitalized
+            } else if !actor.type.isEmpty {
+                actorSubtitle = actor.type.localizedCapitalized
             }
         }
         self.date = activity.published
@@ -33,7 +31,7 @@ struct ActivityLogRowViewModel: Identifiable {
         self.title = activity.text
         self.subtitle = activity.summary.localizedCapitalized
 
-        self.icon = WPStyleGuide.ActivityStyleGuide.getIconForActivity(activity)
-        self.tintColor = Color(WPStyleGuide.ActivityStyleGuide.getColorByActivityStatus(activity))
+        self.icon = activity.icon
+        self.tintColor = Color(activity.statusColor)
     }
 }

@@ -40,8 +40,8 @@ open class ActivityTableViewCell: UITableViewCell, NibReusable {
         bulletLabel.textColor = .secondaryLabel
         contentLabel.textColor = .label
 
-        iconBackgroundImageView.backgroundColor = Style.getColorByActivityStatus(activity)
-        if let iconImage = Style.getIconForActivity(activity) {
+        iconBackgroundImageView.backgroundColor = activity.statusColor
+        if let iconImage = activity.icon {
             iconImageView.image = iconImage.imageFlippedForRightToLeftLayoutDirection()
             iconImageView.isHidden = false
         } else {

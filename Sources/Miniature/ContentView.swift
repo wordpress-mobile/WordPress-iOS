@@ -11,7 +11,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    NavigationView {
-        ContentView()
-    }
+    ContentView()
 }
