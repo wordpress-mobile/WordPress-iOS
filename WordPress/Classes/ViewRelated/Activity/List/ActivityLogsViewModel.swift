@@ -1,6 +1,7 @@
 import Foundation
 import WordPressKit
 import WordPressUI
+import WordPressShared
 
 typealias ActivityLogsPaginatedResponse = DataViewPaginatedResponse<ActivityLogRowViewModel, Int>
 
@@ -11,6 +12,7 @@ final class ActivityLogsViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var parameters = GetActivityLogsParameters() {
         didSet {
+            trackParameterChanges(oldValue: oldValue, newValue: parameters)
             response = nil
             onRefreshNeeded()
         }
@@ -101,6 +103,26 @@ final class ActivityLogsViewModel: ObservableObject {
                 hasMore: hasMore,
                 nextPage: hasMore ? offset + activities.count : nil
             )
+        }
+    }
+
+    // MARK: - Analytics
+
+    private func trackParameterChanges(oldValue: GetActivityLogsParameters, newValue: GetActivityLogsParameters) {
+        // Track date range changes
+        if oldValue.startDate != newValue.startDate || oldValue.endDate != newValue.endDate {
+            if newValue.startDate != nil || newValue.endDate != nil {
+                WPAnalytics.track(.activitylogFilterbarSelectRange)
+            }
+        }
+
+        // Track activity type changes
+        if oldValue.activityTypes != newValue.activityTypes {
+            if newValue.activityTypes.isEmpty {
+                WPAnalytics.track(.activitylogFilterbarResetType)
+            } else {
+                WPAnalytics.track(.activitylogFilterbarSelectType, properties: ["count": newValue.activityTypes.count])
+            }
         }
     }
 }

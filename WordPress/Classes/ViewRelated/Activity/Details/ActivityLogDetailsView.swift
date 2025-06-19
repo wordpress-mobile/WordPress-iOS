@@ -1,10 +1,12 @@
 import SwiftUI
 import WordPressKit
 import WordPressUI
+import WordPressShared
 import Gridicons
 
 struct ActivityLogDetailsView: View {
     let activity: Activity
+    let blog: Blog
 
     @Environment(\.dismiss) var dismiss
 
@@ -13,13 +15,71 @@ struct ActivityLogDetailsView: View {
             VStack(spacing: 24) {
                 ActivityHeaderView(activity: activity)
                 if let actor = activity.actor {
-                    ActorCard(actor: actor)
+                    makeActorCard(for: actor)
+                }
+                if activity.isRewindable {
+                    restoreSiteCard
                 }
             }
             .padding()
         }
         .navigationTitle(Strings.eventTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            trackDetailViewed()
+        }
+    }
+
+    private func makeActorCard(for actor: ActivityActor) -> some View {
+        CardView(Strings.user) {
+            HStack(spacing: 12) {
+                // Actor avatar
+                ActivityActorAvatarView(actor: actor, diameter: 40)
+
+                // Actor info
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(actor.displayName)
+                        .font(.headline)
+
+                    Text(actor.role.isEmpty ? actor.type.localizedCapitalized : actor.role.localizedCapitalized)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+            }
+        }
+    }
+
+    private var restoreSiteCard: some View {
+        CardView(Strings.restoreSite) {
+            // Checkpoint date info row
+            InfoRow(Strings.checkpointDate) {
+                Text(activity.published.formatted(date: .abbreviated, time: .standard))
+            }
+
+            // Action buttons
+            HStack(spacing: 12) {
+                Button(action: {
+                    trackRestoreTapped()
+                    ActivityLogDetailsCoordinator.presentRestore(activity: activity, blog: blog)
+                }) {
+                    Label(Strings.restore, systemImage: "arrow.counterclockwise")
+                        .fontWeight(.medium)
+                }
+                .buttonStyle(.borderedProminent)
+
+                Button(action: {
+                    trackBackupTapped()
+                    ActivityLogDetailsCoordinator.presentBackup(activity: activity, blog: blog)
+                }) {
+                    Label(Strings.download, systemImage: "arrow.down.circle")
+                        .fontWeight(.medium)
+                }
+                .buttonStyle(.bordered)
+                .tint(.accentColor)
+            }
+        }
     }
 }
 
@@ -89,56 +149,7 @@ private struct ActorCard: View {
     let actor: ActivityActor
 
     var body: some View {
-        ActivityCard(Strings.user) {
-            HStack(spacing: 12) {
-                // Actor avatar
-                ActivityActorAvatarView(actor: actor, diameter: 40)
 
-                // Actor info
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(actor.displayName)
-                        .font(.headline)
-
-                    Text(actor.role.isEmpty ? actor.type.localizedCapitalized : actor.role.localizedCapitalized)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
-
-                Spacer()
-            }
-        }
-    }
-}
-
-// MARK: - Shared Components
-
-private struct ActivityCard<Content: View>: View {
-    let title: String?
-    @ViewBuilder let content: () -> Content
-
-    init(_ title: String? = nil, @ViewBuilder content: @escaping () -> Content) {
-        self.title = title
-        self.content = content
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            if let title {
-                Text(title.uppercased())
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            content()
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding()
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color(.separator), lineWidth: 0.5)
-        )
     }
 }
 
@@ -146,19 +157,28 @@ private struct ActivityCard<Content: View>: View {
 
 #Preview("Backup Activity") {
     NavigationView {
-        ActivityLogDetailsView(activity: ActivityLogDetailsView.Mocks.mockBackupActivity)
+        ActivityLogDetailsView(
+            activity: ActivityLogDetailsView.Mocks.mockBackupActivity,
+            blog: Blog.mock
+        )
     }
 }
 
 #Preview("Plugin Update") {
     NavigationView {
-        ActivityLogDetailsView(activity: ActivityLogDetailsView.Mocks.mockPluginActivity)
+        ActivityLogDetailsView(
+            activity: ActivityLogDetailsView.Mocks.mockPluginActivity,
+            blog: Blog.mock
+        )
     }
 }
 
 #Preview("Login Succeeded") {
     NavigationView {
-        ActivityLogDetailsView(activity: ActivityLogDetailsView.Mocks.mockLoginActivity)
+        ActivityLogDetailsView(
+            activity: ActivityLogDetailsView.Mocks.mockLoginActivity,
+            blog: Blog.mock
+        )
     }
 }
 
@@ -176,4 +196,62 @@ private enum Strings {
         value: "User",
         comment: "Section title for user information"
     )
+
+    static let restoreSite = NSLocalizedString(
+        "activityDetail.section.restoreSite",
+        value: "Restore Site",
+        comment: "Section title for restore site actions"
+    )
+
+    static let checkpointDate = NSLocalizedString(
+        "activityDetail.checkpointDate",
+        value: "Checkpoint Date",
+        comment: "Label for the backup checkpoint date"
+    )
+
+    static let restore = NSLocalizedString(
+        "activityDetail.restore.button",
+        value: "Restore",
+        comment: "Button title for restoring a backup"
+    )
+
+    static let download = NSLocalizedString(
+        "activityDetail.download.button",
+        value: "Download",
+        comment: "Button title for downloading a backup"
+    )
 }
+
+// MARK: - Analytics
+
+private extension ActivityLogDetailsView {
+    func trackDetailViewed() {
+        WPAnalytics.track(.activityLogDetailViewed, withProperties: ["source": presentedFrom()])
+    }
+
+    func trackRestoreTapped() {
+        WPAnalytics.track(.restoreOpened, properties: ["source": "activity_detail"])
+    }
+
+    func trackBackupTapped() {
+        WPAnalytics.track(.backupDownloadOpened, properties: ["source": "activity_detail"])
+    }
+
+    func presentedFrom() -> String {
+        // Since we're in SwiftUI, we'll default to "activity_log"
+        // In the future, this could be passed as a parameter
+        return "activity_log"
+    }
+}
+
+// MARK: - Preview Helpers
+
+#if DEBUG
+extension Blog {
+    static var mock: Blog {
+        // For previews, we'll return a dummy blog object
+        // In real previews, this should be provided by the parent view
+        return Blog()
+    }
+}
+#endif

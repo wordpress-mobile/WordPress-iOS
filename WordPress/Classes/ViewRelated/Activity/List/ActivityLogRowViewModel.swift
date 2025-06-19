@@ -20,7 +20,7 @@ struct ActivityLogRowViewModel: Identifiable {
         self.activity = activity
         self.id = activity.activityID
         if let actor = activity.actor {
-            if actor.role.isEmpty {
+            if !actor.role.isEmpty {
                 actorSubtitle = actor.role.localizedCapitalized
             } else if !actor.type.isEmpty {
                 actorSubtitle = actor.type.localizedCapitalized

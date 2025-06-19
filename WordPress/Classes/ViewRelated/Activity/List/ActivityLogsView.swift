@@ -23,7 +23,7 @@ private struct ActivityLogsListView: View {
     var body: some View {
         List {
             if let response = viewModel.response {
-                ActivityLogsPaginatedForEach(response: response)
+                ActivityLogsPaginatedForEach(response: response, blog: viewModel.blog)
 
                 if viewModel.isFreePlan {
                     Text(Strings.freePlanNotice)
@@ -70,13 +70,14 @@ private struct ActivityLogsSearchView: View {
             searchText: viewModel.searchText,
             search: viewModel.search
         ) { response in
-            ActivityLogsPaginatedForEach(response: response)
+            ActivityLogsPaginatedForEach(response: response, blog: viewModel.blog)
         }
     }
 }
 
 private struct ActivityLogsPaginatedForEach: View {
     @ObservedObject var response: ActivityLogsPaginatedResponse
+    let blog: Blog
 
     struct ActivityGroup: Identifiable {
         var id: Date { date }
@@ -115,7 +116,7 @@ private struct ActivityLogsPaginatedForEach: View {
             .onAppear { response.onRowAppeared(item) }
             .background {
                 NavigationLink {
-                    ActivityLogDetailsView(activity: item.activity)
+                    ActivityLogDetailsView(activity: item.activity, blog: blog)
                 } label: {
                     EmptyView()
                 }.opacity(0)

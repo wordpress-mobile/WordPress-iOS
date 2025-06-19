@@ -51,7 +51,7 @@ struct SubscriberDetailsView: View {
             SubscriberDetailsHeaderView(subscriber: info)
         }
         if let detailsError {
-            SubscriberDetailsCardView {
+            CardView {
                 EmptyStateView.failure(error: detailsError) {
                     Task { await refresh() }
                 }
@@ -123,8 +123,8 @@ struct SubscriberDetailsView: View {
     // MARK: Views
 
     private func makeNewsletterSubscriptionSection(for details: SubscribersServiceRemote.GetSubscriberDetailsResponse) -> some View {
-        SubscriberDetailsCardView(Strings.sectionNewsletterSubscription) {
-            SubscriberInfoRow(Strings.fieldSubscriptionDate, value: viewModel.formattedDateSubscribed(details.dateSubscribed))
+        CardView(Strings.sectionNewsletterSubscription) {
+            InfoRow(Strings.fieldSubscriptionDate, value: viewModel.formattedDateSubscribed(details.dateSubscribed))
             let plans = details.plans ?? []
             if let plan = plans.first {
                 NavigationLink {
@@ -137,7 +137,7 @@ struct SubscriberDetailsView: View {
                     .navigationTitle(Strings.fieldPlan)
                     .navigationBarTitleDisplayMode(.inline)
                 } label: {
-                    SubscriberInfoRow(Strings.fieldPlan) {
+                    InfoRow(Strings.fieldPlan) {
                         HStack(spacing: 4) {
                             Text(plan.title)
                             Image(systemName: "chevron.forward")
@@ -148,13 +148,13 @@ struct SubscriberDetailsView: View {
                 }
                 .buttonStyle(.plain)
             } else {
-                SubscriberInfoRow(Strings.fieldPlan, value: Strings.free)
+                InfoRow(Strings.fieldPlan, value: Strings.free)
             }
         }
     }
 
     private func makePlanView(for plan: SubscribersServiceRemote.GetSubscriberDetailsResponse.Plan) -> some View {
-        SubscriberDetailsCardView {
+        CardView {
             HStack {
                 Text(plan.title)
                     .font(.headline)
@@ -166,25 +166,25 @@ struct SubscriberDetailsView: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            SubscriberInfoRow(Strings.fieldPlanStatus, value: plan.status)
+            InfoRow(Strings.fieldPlanStatus, value: plan.status)
             if plan.renewInterval != "one-time" {
-                SubscriberInfoRow(Strings.fieldRenewalInterval, value: plan.renewInterval)
-                SubscriberInfoRow(Strings.fieldRenewalPrice, value: {
+                InfoRow(Strings.fieldRenewalInterval, value: plan.renewInterval)
+                InfoRow(Strings.fieldRenewalPrice, value: {
                     let formatter = NumberFormatter()
                     formatter.numberStyle = .currency
                     formatter.currencyCode = plan.currency
                     return formatter.string(from: plan.renewalPrice as NSNumber)
                 }())
             }
-            SubscriberInfoRow(Strings.fieldPlanStartDate, value: plan.startDate.formatted(date: .abbreviated, time: .shortened))
-            SubscriberInfoRow(Strings.fieldPlanEndDate, value: plan.endDate.formatted(date: .abbreviated, time: .shortened))
+            InfoRow(Strings.fieldPlanStartDate, value: plan.startDate.formatted(date: .abbreviated, time: .shortened))
+            InfoRow(Strings.fieldPlanEndDate, value: plan.endDate.formatted(date: .abbreviated, time: .shortened))
         }
     }
 
     @ViewBuilder
     private func makeSubscriberDetailsSections(for details: SubscribersServiceRemote.GetSubscriberDetailsResponse) -> some View {
-        SubscriberDetailsCardView(Strings.sectionSubscriberDetails) {
-            SubscriberInfoRow(Strings.fieldEmail) {
+        CardView(Strings.sectionSubscriberDetails) {
+            InfoRow(Strings.fieldEmail) {
                 if let email = details.emailAddress, let url = URL(string: "mailto://\(email)") {
                     Link(email, destination: url)
                 } else {
@@ -192,9 +192,9 @@ struct SubscriberDetailsView: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            SubscriberInfoRow(Strings.fieldCountry, value: details.country?.name)
+            InfoRow(Strings.fieldCountry, value: details.country?.name)
             if let site = details.siteURL {
-                SubscriberInfoRow(Strings.fieldSite) {
+                InfoRow(Strings.fieldSite) {
                     if let siteURL = URL(string: site) {
                         Link(site, destination: siteURL)
                     } else {
@@ -235,7 +235,7 @@ private struct SubscriberStatsView: View {
     let stats: SubscribersServiceRemote.GetSubscriberStatsResponse
 
     var body: some View {
-        SubscriberDetailsCardView {
+        CardView {
             HStack {
                 SubsciberStatsRow(
                     systemImage: "envelope",
@@ -263,37 +263,6 @@ private struct SubscriberStatsView: View {
     }
 }
 
-private struct SubscriberInfoRow<Content: View>: View {
-    let title: String
-    @ViewBuilder let content: () -> Content
-
-    init(_ title: String, @ViewBuilder content: @escaping () -> Content) {
-        self.title = title
-        self.content = content
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.subheadline.weight(.medium))
-                .lineLimit(1)
-            content()
-                .font(.subheadline.weight(.regular))
-                .lineLimit(1)
-                .textSelection(.enabled)
-        }
-    }
-}
-
-extension SubscriberInfoRow where Content == Text {
-    init(_ title: String, value: String?) {
-        self.init(title) {
-            Text(value ?? "–")
-                .foregroundColor(AppColor.secondary)
-        }
-    }
-}
-
 private struct SubsciberStatsRow: View {
     let systemImage: String
     let title: String
@@ -311,36 +280,6 @@ private struct SubsciberStatsRow: View {
                 .font(Font.make(.recoleta, textStyle: .title))
         }
         .lineLimit(1)
-    }
-}
-
-private struct SubscriberDetailsCardView<Content: View>: View {
-    let title: String?
-    @ViewBuilder let content: () -> Content
-
-    init(_ title: String? = nil, @ViewBuilder content: @escaping () -> Content) {
-        self.title = title
-        self.content = content
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Group {
-                if let title {
-                    Text(title.uppercased())
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                content()
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding()
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color(.separator), lineWidth: 0.5)
-        )
     }
 }
 
