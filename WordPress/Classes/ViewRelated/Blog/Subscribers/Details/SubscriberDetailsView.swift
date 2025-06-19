@@ -263,7 +263,6 @@ private struct SubscriberStatsView: View {
     }
 }
 
-
 private struct SubsciberStatsRow: View {
     let systemImage: String
     let title: String
@@ -283,7 +282,6 @@ private struct SubsciberStatsRow: View {
         .lineLimit(1)
     }
 }
-
 
 private extension SubscribersServiceRemote.GetSubscriberStatsResponse {
     var formattedEmailsCount: String {

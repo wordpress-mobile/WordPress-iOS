@@ -1,16 +1,17 @@
 import SwiftUI
+import DesignSystem
 
 /// A reusable info row component that displays a title and customizable content.
 /// Commonly used within cards or forms to display labeled information.
 public struct InfoRow<Content: View>: View {
     let title: String
     @ViewBuilder let content: () -> Content
-    
+
     public init(_ title: String, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
         self.content = content
     }
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
@@ -32,7 +33,7 @@ extension InfoRow where Content == Text {
     public init(_ title: String, value: String?) {
         self.init(title) {
             Text(value ?? "–")
-                .foregroundStyle(.secondary)
+                .foregroundColor(AppColor.secondary)
         }
     }
 }
@@ -59,11 +60,11 @@ extension InfoRow where Content == Text {
                     .foregroundStyle(.green)
             }
         }
-        
+
         InfoRow("Website") {
             Link("example.com", destination: URL(string: "https://example.com")!)
         }
-        
+
         InfoRow("Tags") {
             HStack(spacing: 4) {
                 Text("Swift")

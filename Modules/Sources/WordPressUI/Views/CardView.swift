@@ -5,12 +5,12 @@ import SwiftUI
 public struct CardView<Content: View>: View {
     let title: String?
     @ViewBuilder let content: () -> Content
-    
+
     public init(_ title: String? = nil, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
         self.content = content
     }
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Group {

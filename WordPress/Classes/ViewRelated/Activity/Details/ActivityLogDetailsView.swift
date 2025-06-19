@@ -14,17 +14,11 @@ struct ActivityLogDetailsView: View {
         ScrollView {
             VStack(spacing: 24) {
                 ActivityHeaderView(activity: activity)
-                if activity.isRewindable {
-                    RestoreSiteCard(activity: activity, onRestoreTapped: {
-                        trackRestoreTapped()
-                        ActivityLogDetailsCoordinator.presentRestore(activity: activity, blog: blog)
-                    }, onBackupTapped: {
-                        trackBackupTapped()
-                        ActivityLogDetailsCoordinator.presentBackup(activity: activity, blog: blog)
-                    })
-                }
                 if let actor = activity.actor {
-                    ActorCard(actor: actor)
+                    makeActorCard(for: actor)
+                }
+                if activity.isRewindable {
+                    restoreSiteCard
                 }
             }
             .padding()
@@ -33,6 +27,58 @@ struct ActivityLogDetailsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             trackDetailViewed()
+        }
+    }
+
+    private func makeActorCard(for actor: ActivityActor) -> some View {
+        CardView(Strings.user) {
+            HStack(spacing: 12) {
+                // Actor avatar
+                ActivityActorAvatarView(actor: actor, diameter: 40)
+
+                // Actor info
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(actor.displayName)
+                        .font(.headline)
+
+                    Text(actor.role.isEmpty ? actor.type.localizedCapitalized : actor.role.localizedCapitalized)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+            }
+        }
+    }
+
+    private var restoreSiteCard: some View {
+        CardView(Strings.restoreSite) {
+            // Checkpoint date info row
+            InfoRow(Strings.checkpointDate) {
+                Text(activity.published.formatted(date: .abbreviated, time: .standard))
+            }
+
+            // Action buttons
+            HStack(spacing: 12) {
+                Button(action: {
+                    trackRestoreTapped()
+                    ActivityLogDetailsCoordinator.presentRestore(activity: activity, blog: blog)
+                }) {
+                    Label(Strings.restore, systemImage: "arrow.counterclockwise")
+                        .fontWeight(.medium)
+                }
+                .buttonStyle(.borderedProminent)
+
+                Button(action: {
+                    trackBackupTapped()
+                    ActivityLogDetailsCoordinator.presentBackup(activity: activity, blog: blog)
+                }) {
+                    Label(Strings.download, systemImage: "arrow.down.circle")
+                        .fontWeight(.medium)
+                }
+                .buttonStyle(.bordered)
+                .tint(.accentColor)
+            }
         }
     }
 }
@@ -103,65 +149,9 @@ private struct ActorCard: View {
     let actor: ActivityActor
 
     var body: some View {
-        CardView(Strings.user) {
-            HStack(spacing: 12) {
-                // Actor avatar
-                ActivityActorAvatarView(actor: actor, diameter: 40)
 
-                // Actor info
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(actor.displayName)
-                        .font(.headline)
-
-                    Text(actor.role.isEmpty ? actor.type.localizedCapitalized : actor.role.localizedCapitalized)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
-
-                Spacer()
-            }
-        }
     }
 }
-
-// MARK: - Restore Site Card
-
-private struct RestoreSiteCard: View {
-    let activity: Activity
-    let onRestoreTapped: () -> Void
-    let onBackupTapped: () -> Void
-
-    var body: some View {
-        CardView(Strings.restoreSite) {
-            VStack(spacing: 16) {
-                // Checkpoint date info row
-                InfoRow(Strings.checkpointDate) {
-                    Text(activity.published.formatted(date: .abbreviated, time: .standard))
-                }
-
-                // Action buttons
-                HStack(spacing: 12) {
-                    Button(action: onRestoreTapped) {
-                        Label(Strings.restore, systemImage: "arrow.counterclockwise")
-                            .fontWeight(.medium)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.regular)
-
-                    Button(action: onBackupTapped) {
-                        Label(Strings.download, systemImage: "arrow.down.circle")
-                            .fontWeight(.medium)
-                    }
-                    .buttonStyle(.bordered)
-                    .controlSize(.regular)
-                    .tint(.accentColor)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-        }
-    }
-}
-
 
 // MARK: - Preview
 
