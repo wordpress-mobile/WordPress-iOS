@@ -149,9 +149,16 @@ extension BlogDetailsViewController {
     }
 
     @objc public func showActivity() {
-        guard let controller = JetpackActivityLogViewController(blog: blog) else {
+        let controller: UIViewController
+
+        if FeatureFlag.dataViews.enabled {
+            controller = ActivityLogsViewController(blog: blog)
+        } else if let jetpackController = JetpackActivityLogViewController(blog: blog) {
+            controller = jetpackController
+        } else {
             return wpAssertionFailure("failed to instantiate")
         }
+
         controller.navigationItem.largeTitleDisplayMode = .never
         presentationDelegate?.presentBlogDetailsViewController(controller)
 

@@ -55,7 +55,7 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 - Use strict access control modifiers where possible
 - Use four spaces (not tabs)
 
-### Development Workflow
+## Development Workflow
 - Branch from `trunk` (main branch)
 - PR target should be `trunk`
 - When writing commit messages, never include references to Claude

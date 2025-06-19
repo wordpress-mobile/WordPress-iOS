@@ -50,7 +50,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"),
         .package(
             url: "https://github.com/wordpress-mobile/WordPressKit-iOS",
-            revision: "cc7fd8a7ea609fc139e7b9d9f53b12c51002ddf4" // see wpios-edition branch
+            revision: "30dadcab01a980eb16976340c1e9e8a9527ddc05" // see wpios-edition branch
         ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.

@@ -10,8 +10,8 @@ struct SubscribersMenu: View {
                 filterByEmailSubscriptionType
                 filterByPaymenetType
             }
-            if let response = viewModel.response {
-                Text("\(Strings.subscribers) \(viewModel.makeFormattedSubscribersCount(for: response))")
+            if let response = viewModel.response, let count = viewModel.makeFormattedSubscribersCount(for: response) {
+                Text("\(Strings.subscribers) \(count)")
             }
         } label: {
             Image(systemName: "ellipsis.circle")

@@ -29,9 +29,7 @@ public struct DataViewPaginatedForEach<Response: DataViewPaginatedResponseProtoc
             DataViewPagingFooterView(.loading)
         } else if response.error != nil {
             DataViewPagingFooterView(.failure)
-                .onRetry {
-                    response.loadMore()
-                }
+                .onRetry { response.loadMore() }
         }
     }
 }

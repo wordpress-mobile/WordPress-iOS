@@ -63,11 +63,14 @@ final class SubscribersViewModel: ObservableObject {
         try await makeResponse(parameters: parameters, search: searchText)
     }
 
-    func makeFormattedSubscribersCount(for response: SubscribersPaginatedResponse) -> String {
-        guard !parameters.filters.isEmpty, let totalCount else {
-            return "\(response.total)"
+    func makeFormattedSubscribersCount(for response: SubscribersPaginatedResponse) -> String? {
+        guard let count = response.total else {
+            return nil
         }
-        return String(format: Strings.nOutOf, response.total.description, totalCount.description)
+        guard !parameters.filters.isEmpty, let totalCount else {
+            return "\(count)"
+        }
+        return String(format: Strings.nOutOf, count.description, totalCount.description)
     }
 
     private func makeResponse(
