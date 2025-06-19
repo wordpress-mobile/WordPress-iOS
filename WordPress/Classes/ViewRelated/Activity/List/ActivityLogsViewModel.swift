@@ -8,6 +8,7 @@ typealias ActivityLogsPaginatedResponse = DataViewPaginatedResponse<ActivityLogR
 @MainActor
 final class ActivityLogsViewModel: ObservableObject {
     let blog: Blog
+    let isBackupMode: Bool
 
     @Published var searchText = ""
     @Published var parameters = GetActivityLogsParameters() {
@@ -27,8 +28,9 @@ final class ActivityLogsViewModel: ObservableObject {
         blog.isHostedAtWPcom && !blog.hasPaidPlan
     }
 
-    init(blog: Blog) {
+    init(blog: Blog, isBackupMode: Bool = false) {
         self.blog = blog
+        self.isBackupMode = isBackupMode
     }
 
     func onAppear() {
@@ -83,19 +85,22 @@ final class ActivityLogsViewModel: ObservableObject {
     }
 
     private func makeResponse(searchText: String?, parameters: GetActivityLogsParameters) async throws -> ActivityLogsPaginatedResponse {
-        try await ActivityLogsPaginatedResponse { [blog] offset in
+        try await ActivityLogsPaginatedResponse { [blog, isBackupMode] offset in
             guard let siteID = blog.dotComID?.intValue,
                   let api = blog.wordPressComRestApi else {
                 throw NSError(domain: "ActivityLogs", code: 0, userInfo: [NSLocalizedDescriptionKey: SharedStrings.Error.generic])
             }
             let service = ActivityServiceRemote(wordPressComRestApi: api)
             let offset = offset ?? 0
+            let pageSize = 32
+
             let (activities, hasMore) = try await service.getActivities(
                 siteID: siteID,
                 offset: offset,
-                pageSize: 32,
+                pageSize: pageSize,
                 searchText: searchText,
-                parameters: parameters
+                parameters: parameters,
+                rewindable: isBackupMode ? true : nil
             )
             let viewModels = await makeViewModels(for: activities)
             return ActivityLogsPaginatedResponse.Page(
@@ -142,7 +147,7 @@ struct GetActivityLogsParameters: Hashable {
 }
 
 private extension ActivityServiceRemote {
-    func getActivities(siteID: Int, offset: Int, pageSize: Int, searchText: String? = nil, parameters: GetActivityLogsParameters = .init()) async throws -> ([Activity], hasMore: Bool) {
+    func getActivities(siteID: Int, offset: Int, pageSize: Int, searchText: String? = nil, parameters: GetActivityLogsParameters = .init(), rewindable: Bool? = nil) async throws -> ([Activity], hasMore: Bool) {
         return try await withCheckedThrowingContinuation { continuation in
             getActivityForSite(
                 siteID,
@@ -151,6 +156,7 @@ private extension ActivityServiceRemote {
                 after: parameters.startDate,
                 before: parameters.endDate,
                 group: Array(parameters.activityTypes),
+                rewindable: rewindable,
                 searchText: searchText
             ) { activities, hasMore in
                 continuation.resume(returning: (activities, hasMore))

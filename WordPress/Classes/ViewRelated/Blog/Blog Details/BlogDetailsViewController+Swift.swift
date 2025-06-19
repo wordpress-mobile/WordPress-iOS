@@ -182,10 +182,21 @@ extension BlogDetailsViewController {
     }
 
     @objc public func showBackup() {
-        guard let backupListVC = BackupListViewController.withJPBannerForBlog(blog) else {
-            return wpAssertionFailure("failed to instantiate")
+        let controller: UIViewController
+
+        if FeatureFlag.dataViews.enabled {
+            controller = ActivityLogsViewController(blog: blog, isBackupMode: true)
+            controller.navigationItem.largeTitleDisplayMode = .never
+        } else {
+            guard let backupListVC = BackupListViewController.withJPBannerForBlog(blog) else {
+                return wpAssertionFailure("failed to instantiate")
+            }
+            controller = backupListVC
         }
-        presentationDelegate?.presentBlogDetailsViewController(backupListVC)
+
+        presentationDelegate?.presentBlogDetailsViewController(controller)
+
+        WPAnalytics.track(.backupListOpened)
     }
 
     @objc public func showThemes() {

@@ -6,14 +6,20 @@ struct ActivityLogsView: View {
     @ObservedObject var viewModel: ActivityLogsViewModel
 
     var body: some View {
-        Group {
+        let content = Group {
             if !viewModel.searchText.isEmpty {
                 ActivityLogsSearchView(viewModel: viewModel)
             } else {
                 ActivityLogsListView(viewModel: viewModel)
             }
         }
-        .searchable(text: $viewModel.searchText)
+        .navigationTitle(viewModel.isBackupMode ? Strings.backupsTitle : Strings.activityTitle)
+
+        if viewModel.isBackupMode {
+            content
+        } else {
+            content.searchable(text: $viewModel.searchText)
+        }
     }
 }
 
@@ -38,7 +44,11 @@ private struct ActivityLogsListView: View {
         .overlay {
             if let response = viewModel.response {
                 if response.isEmpty {
-                    EmptyStateView(Strings.empty, systemImage: "archivebox")
+                    EmptyStateView(
+                        viewModel.isBackupMode ? Strings.emptyBackups : Strings.empty,
+                        systemImage: "archivebox",
+                        description: viewModel.isBackupMode ? Strings.emptyBackupsSubtitle : nil
+                    )
                 }
             } else if viewModel.isLoading {
                 ProgressView()
@@ -55,8 +65,10 @@ private struct ActivityLogsListView: View {
             await viewModel.refresh()
         }
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                ActivityLogsMenu(viewModel: viewModel)
+            if !viewModel.isBackupMode {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    ActivityLogsMenu(viewModel: viewModel)
+                }
             }
         }
     }
@@ -127,4 +139,8 @@ private struct ActivityLogsPaginatedForEach: View {
 private enum Strings {
     static let empty = NSLocalizedString("activityLogs.empty", value: "No Activity", comment: "Empty state message for activity logs")
     static let freePlanNotice = NSLocalizedString("activityLogs.freePlan.notice", value: "Since you're on a free plan, you'll see limited events in your Activity Log.", comment: "Notice shown to free plan users about limited activity log events")
+    static let activityTitle = NSLocalizedString("activityLogs.title", value: "Activity", comment: "Title for activity logs screen")
+    static let backupsTitle = NSLocalizedString("backups.title", value: "Backups", comment: "Title for backups screen")
+    static let emptyBackups = NSLocalizedString("backups.empty.title", value: "Your first backup will be ready soon", comment: "Title for the view when there aren't any Backups to display")
+    static let emptyBackupsSubtitle = NSLocalizedString("backups.empty.subtitle", value: "Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed", comment: "Text displayed in the view when there aren't any Backups to display")
 }
