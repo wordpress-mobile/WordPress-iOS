@@ -8,6 +8,8 @@ struct RestoreBackupSheet: View {
     
     @StateObject private var viewModel: RestoreBackupViewModel
     @Environment(\.dismiss) private var dismiss
+    @State private var isMultisite: Bool = false
+    @State private var isCheckingRewindStatus: Bool = true
     
     init(activity: Activity, blog: Blog) {
         self.activity = activity
@@ -18,7 +20,12 @@ struct RestoreBackupSheet: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                if viewModel.state == .loading || viewModel.state == .success || viewModel.state == .failure {
+                if isCheckingRewindStatus {
+                    ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else if isMultisite {
+                    multisiteWarningView
+                } else if viewModel.state == .loading || viewModel.state == .success || viewModel.state == .failure {
                     progressView
                 } else {
                     confirmationView
@@ -27,9 +34,9 @@ struct RestoreBackupSheet: View {
             .navigationTitle(Strings.restoreTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                if viewModel.state == .idle {
+                if viewModel.state == .idle || isMultisite {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        Button(Strings.cancel) {
+                        Button(isMultisite ? Strings.done : Strings.cancel) {
                             dismiss()
                         }
                     }
@@ -39,6 +46,7 @@ struct RestoreBackupSheet: View {
         }
         .onAppear {
             WPAnalytics.track(.restoreOpened, properties: ["source": "activity_detail"])
+            checkRewindStatus()
         }
     }
     
@@ -230,9 +238,101 @@ struct RestoreBackupSheet: View {
         formatter.timeStyle = .short
         return formatter.string(from: activity.published)
     }
+    
+    private func checkRewindStatus() {
+        guard let siteRef = JetpackSiteRef(blog: blog) else {
+            isCheckingRewindStatus = false
+            return
+        }
+        
+        let restoreService = JetpackRestoreService(coreDataStack: ContextManager.shared.contextManager)
+        restoreService.getRewindStatus(
+            for: siteRef,
+            success: { [weak self] rewindStatus in
+                DispatchQueue.main.async {
+                    self?.isMultisite = rewindStatus.isMultisite()
+                    self?.isCheckingRewindStatus = false
+                }
+            },
+            failure: { [weak self] _ in
+                DispatchQueue.main.async {
+                    // On error, assume it's not multisite and proceed
+                    self?.isCheckingRewindStatus = false
+                }
+            }
+        )
+    }
+    
+    @ViewBuilder
+    private var multisiteWarningView: some View {
+        VStack(spacing: 32) {
+            Spacer()
+            
+            VStack(spacing: 24) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.system(size: 60))
+                    .foregroundColor(.orange)
+                
+                VStack(spacing: 16) {
+                    Text(Strings.multisiteTitle)
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                    
+                    // Create attributed string for the multisite message
+                    Text(multisiteMessage)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                        .tint(.accentColor)
+                }
+            }
+            
+            Spacer()
+            
+            VStack(spacing: 16) {
+                Link(destination: URL(string: Constants.multisiteDocumentationURL)!) {
+                    Text(Strings.learnMore)
+                        .font(.system(size: 17, weight: .medium))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(Color.accentColor)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                
+                Text(Strings.multisiteDownloadHint)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 24)
+        }
+    }
+    
+    private var multisiteMessage: AttributedString {
+        // Use the localized string from RewindStatus.Strings
+        let fullString = RewindStatus.Strings.multisiteNotAvailable
+        let linkSubstring = RewindStatus.Strings.multisiteNotAvailableSubstring
+        
+        var attributedString = AttributedString(fullString)
+        
+        // Find and style the link portion
+        if let range = attributedString.range(of: linkSubstring) {
+            attributedString[range].foregroundColor = .accentColor
+            attributedString[range].underlineStyle = .single
+        }
+        
+        return attributedString
+    }
 }
 
 // MARK: - Localized Strings
+
+private enum Constants {
+    static let multisiteDocumentationURL = "https://jetpack.com/support/backup/restoring-your-site-from-backup/#multisite-restores"
+}
 
 private enum Strings {
     static let restoreTitle = NSLocalizedString(
@@ -317,5 +417,23 @@ private enum Strings {
         "restore.sheet.done.button",
         value: "Done",
         comment: "Done button to dismiss the sheet"
+    )
+    
+    static let multisiteTitle = NSLocalizedString(
+        "restore.sheet.multisite.title",
+        value: "Restore Not Available",
+        comment: "Title for multisite restore limitation"
+    )
+    
+    static let multisiteDownloadHint = NSLocalizedString(
+        "restore.sheet.multisite.downloadHint",
+        value: "You can still download a backup of your site",
+        comment: "Hint that download is still available for multisite"
+    )
+    
+    static let learnMore = NSLocalizedString(
+        "restore.sheet.multisite.learnMore",
+        value: "Learn More",
+        comment: "Button to open documentation about multisite limitations"
     )
 }
