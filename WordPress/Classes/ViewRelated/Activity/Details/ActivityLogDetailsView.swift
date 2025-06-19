@@ -103,7 +103,7 @@ private struct ActorCard: View {
     let actor: ActivityActor
 
     var body: some View {
-        ActivityCard(Strings.user) {
+        CardView(Strings.user) {
             HStack(spacing: 12) {
                 // Actor avatar
                 ActivityActorAvatarView(actor: actor, diameter: 40)
@@ -132,18 +132,11 @@ private struct RestoreSiteCard: View {
     let onBackupTapped: () -> Void
 
     var body: some View {
-        ActivityCard(Strings.restoreSite) {
-
+        CardView(Strings.restoreSite) {
             VStack(spacing: 16) {
                 // Checkpoint date info row
-                HStack {
-                    Text(Strings.checkpointDate)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                    Spacer()
+                InfoRow(Strings.checkpointDate) {
                     Text(activity.published.formatted(date: .abbreviated, time: .standard))
-                        .font(.subheadline)
-                        .foregroundStyle(.primary)
                 }
 
                 // Action buttons
@@ -169,37 +162,6 @@ private struct RestoreSiteCard: View {
     }
 }
 
-// MARK: - Shared Components
-
-private struct ActivityCard<Content: View>: View {
-    let title: String?
-    @ViewBuilder let content: () -> Content
-
-    init(_ title: String? = nil, @ViewBuilder content: @escaping () -> Content) {
-        self.title = title
-        self.content = content
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            if let title {
-                Text(title.uppercased())
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            content()
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding()
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color(.separator), lineWidth: 0.5)
-        )
-    }
-}
 
 // MARK: - Preview
 
