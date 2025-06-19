@@ -33,7 +33,7 @@ struct ActivityLogRowViewModel: Identifiable {
         self.title = activity.text
         self.subtitle = activity.summary.localizedCapitalized
 
-        self.icon = WPStyleGuide.ActivityStyleGuide.getIconForActivity(activity)
-        self.tintColor = Color(WPStyleGuide.ActivityStyleGuide.getColorByActivityStatus(activity))
+        self.icon = activity.icon
+        self.tintColor = Color(activity.statusColor)
     }
 }

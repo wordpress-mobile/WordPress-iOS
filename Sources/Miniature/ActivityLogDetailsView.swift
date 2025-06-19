@@ -154,10 +154,10 @@ private struct ActivityIconView: View {
     let activity: Activity
     
     var body: some View {
-        if let icon = WPStyleGuide.ActivityStyleGuide.getIconForActivity(activity) {
+        if let icon = activity.icon {
             ZStack {
                 Circle()
-                    .fill(Color(WPStyleGuide.ActivityStyleGuide.getColorByActivityStatus(activity)))
+                    .fill(Color(activity.statusColor))
                 
                 Image(uiImage: icon)
                     .renderingMode(.template)

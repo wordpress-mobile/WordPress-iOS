@@ -134,9 +134,9 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
         if let avatar = activity.actor?.avatarURL, let avatarURL = URL(string: avatar) {
             imageView.backgroundColor = UIAppColor.neutral(.shade20)
             imageView.downloadImage(from: avatarURL, placeholderImage: .gridicon(.user, size: Constants.gridiconSize))
-        } else if let iconType = WPStyleGuide.ActivityStyleGuide.getGridiconTypeForActivity(activity) {
+        } else if let iconType = activity.gridiconType {
             imageView.contentMode = .center
-            imageView.backgroundColor = WPStyleGuide.ActivityStyleGuide.getColorByActivityStatus(activity)
+            imageView.backgroundColor = activity.statusColor
             imageView.image = .gridicon(iconType, size: Constants.gridiconSize)
         } else {
             imageView.isHidden = true
