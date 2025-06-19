@@ -13,7 +13,9 @@ struct ActivityLogsMenu: View {
         Menu {
             Section {
                 dateFilters
-                activityTypeFilter
+                if !viewModel.isBackupMode {
+                    activityTypeFilter
+                }
                 if !viewModel.parameters.isEmpty {
                     resetFiltersButton
                 }
