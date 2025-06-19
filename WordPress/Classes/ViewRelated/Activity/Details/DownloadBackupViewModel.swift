@@ -26,13 +26,18 @@ final class DownloadBackupViewModel: ObservableObject {
     }
     
     private let activity: Activity
+    private let blog: Blog
     private let site: JetpackSiteRef
     private let backupService: JetpackBackupService
     private var downloadID: Int?
     
-    init(activity: Activity, site: JetpackSiteRef) {
+    init(activity: Activity, blog: Blog) {
         self.activity = activity
-        self.site = site
+        self.blog = blog
+        guard let siteRef = JetpackSiteRef(blog: blog) else {
+            fatalError("Invalid blog for backup download")
+        }
+        self.site = siteRef
         self.backupService = JetpackBackupService(coreDataStack: ContextManager.shared.contextManager.mainContext)
     }
     

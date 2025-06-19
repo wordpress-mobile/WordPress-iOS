@@ -15,13 +15,18 @@ final class RestoreBackupViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let activity: Activity
+    private let blog: Blog
     private let site: JetpackSiteRef
     private let restoreService: JetpackRestoreService
     private let activityStore: ActivityStore
     
-    init(activity: Activity, site: JetpackSiteRef) {
+    init(activity: Activity, blog: Blog) {
         self.activity = activity
-        self.site = site
+        self.blog = blog
+        guard let siteRef = JetpackSiteRef(blog: blog) else {
+            fatalError("Invalid blog for restore")
+        }
+        self.site = siteRef
         self.restoreService = JetpackRestoreService(coreDataStack: ContextManager.shared.contextManager)
         self.activityStore = StoreContainer.shared.activity
     }

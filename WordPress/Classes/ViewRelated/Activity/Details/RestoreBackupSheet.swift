@@ -4,15 +4,15 @@ import WordPressShared
 
 struct RestoreBackupSheet: View {
     let activity: Activity
-    let site: JetpackSiteRef
+    let blog: Blog
     
     @StateObject private var viewModel: RestoreBackupViewModel
     @Environment(\.dismiss) private var dismiss
     
-    init(activity: Activity, site: JetpackSiteRef) {
+    init(activity: Activity, blog: Blog) {
         self.activity = activity
-        self.site = site
-        self._viewModel = StateObject(wrappedValue: RestoreBackupViewModel(activity: activity, site: site))
+        self.blog = blog
+        self._viewModel = StateObject(wrappedValue: RestoreBackupViewModel(activity: activity, blog: blog))
     }
     
     var body: some View {

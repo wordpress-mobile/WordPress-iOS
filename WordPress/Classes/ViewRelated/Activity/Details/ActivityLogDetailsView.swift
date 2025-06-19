@@ -5,7 +5,7 @@ import Gridicons
 
 struct ActivityLogDetailsView: View {
     let activity: Activity
-    let site: JetpackSiteRef
+    let blog: Blog
 
     @Environment(\.dismiss) var dismiss
     @State private var showingRestoreSheet = false
@@ -30,10 +30,10 @@ struct ActivityLogDetailsView: View {
         .navigationTitle(Strings.eventTitle)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingRestoreSheet) {
-            RestoreBackupSheet(activity: activity, site: site)
+            RestoreBackupSheet(activity: activity, blog: blog)
         }
         .sheet(isPresented: $showingDownloadSheet) {
-            DownloadBackupSheet(activity: activity, site: site)
+            DownloadBackupSheet(activity: activity, blog: blog)
         }
     }
     
@@ -212,7 +212,7 @@ private struct ActivityCard<Content: View>: View {
     NavigationView {
         ActivityLogDetailsView(
             activity: ActivityLogDetailsView.Mocks.mockBackupActivity,
-            site: JetpackSiteRef.mock
+            blog: Blog.mock
         )
     }
 }
@@ -221,7 +221,7 @@ private struct ActivityCard<Content: View>: View {
     NavigationView {
         ActivityLogDetailsView(
             activity: ActivityLogDetailsView.Mocks.mockPluginActivity,
-            site: JetpackSiteRef.mock
+            blog: Blog.mock
         )
     }
 }
@@ -230,7 +230,7 @@ private struct ActivityCard<Content: View>: View {
     NavigationView {
         ActivityLogDetailsView(
             activity: ActivityLogDetailsView.Mocks.mockLoginActivity,
-            site: JetpackSiteRef.mock
+            blog: Blog.mock
         )
     }
 }
@@ -266,17 +266,13 @@ private enum Strings {
 // MARK: - Preview Helpers
 
 #if DEBUG
-extension JetpackSiteRef {
-    static var mock: JetpackSiteRef {
-        var ref = JetpackSiteRef(
-            siteID: 123456789,
-            username: "test",
-            homeURL: "https://example.wordpress.com",
-            isSelfHostedWithoutJetpack: false,
-            xmlRPC: nil
-        )
-        // Use reflection to set private properties for preview
-        return ref
+extension Blog {
+    static var mock: Blog {
+        let blog = Blog()
+        blog.dotComID = NSNumber(value: 123456789)
+        blog.url = "https://example.wordpress.com"
+        blog.xmlrpc = "https://example.wordpress.com/xmlrpc.php"
+        return blog
     }
 }
 #endif
