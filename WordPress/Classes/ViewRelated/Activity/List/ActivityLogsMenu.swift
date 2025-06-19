@@ -1,5 +1,6 @@
 import SwiftUI
 import WordPressKit
+import WordPressShared
 
 struct ActivityLogsMenu: View {
     @ObservedObject var viewModel: ActivityLogsViewModel
@@ -29,14 +30,16 @@ struct ActivityLogsMenu: View {
             DatePickerSheet(
                 title: Strings.startDate,
                 selection: $viewModel.parameters.startDate,
-                isPresented: $isShowingStartDatePicker
+                isPresented: $isShowingStartDatePicker,
+                viewModel: viewModel
             )
         }
         .sheet(isPresented: $isShowingEndDatePicker) {
             DatePickerSheet(
                 title: Strings.endDate,
                 selection: $viewModel.parameters.endDate,
-                isPresented: $isShowingEndDatePicker
+                isPresented: $isShowingEndDatePicker,
+                viewModel: viewModel
             )
         }
     }
@@ -45,6 +48,8 @@ struct ActivityLogsMenu: View {
         Group {
             // Start Date
             Button {
+                // Track analytics for date filter tap
+                WPAnalytics.track(.activitylogFilterbarRangeButtonTapped)
                 isShowingStartDatePicker = true
             } label: {
                 Text(Strings.startDate)
@@ -56,6 +61,8 @@ struct ActivityLogsMenu: View {
 
             // End Date
             Button {
+                // Track analytics for date filter tap
+                WPAnalytics.track(.activitylogFilterbarRangeButtonTapped)
                 isShowingEndDatePicker = true
             } label: {
                 Text(Strings.endDate)
@@ -69,6 +76,7 @@ struct ActivityLogsMenu: View {
 
     private var activityTypeFilter: some View {
         Button {
+            WPAnalytics.track(.activitylogFilterbarTypeButtonTapped)
             isShowingActivityTypePicker = true
         } label: {
             Text(Strings.activityTypes)
@@ -81,6 +89,8 @@ struct ActivityLogsMenu: View {
 
     private var resetFiltersButton: some View {
         Button(role: .destructive) {
+            WPAnalytics.track(.activitylogFilterbarResetRange)
+            WPAnalytics.track(.activitylogFilterbarResetType)
             viewModel.parameters = GetActivityLogsParameters()
         } label: {
             Label(Strings.resetFilters, systemImage: "arrow.counterclockwise")
@@ -92,6 +102,7 @@ private struct DatePickerSheet: View {
     let title: String
     @Binding var selection: Date?
     @Binding var isPresented: Bool
+    var viewModel: ActivityLogsViewModel?
 
     @State private var date = Date()
 

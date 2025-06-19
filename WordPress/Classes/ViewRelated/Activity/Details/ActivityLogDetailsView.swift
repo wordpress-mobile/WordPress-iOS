@@ -41,7 +41,6 @@ struct ActivityLogDetailsView: View {
         let backupActivityNames = [
             "rewind__backup_complete_full",
             "rewind__backup_complete",
-            "rewind__backup_error"
         ]
 
         return backupActivityNames.contains(activity.name)
@@ -60,9 +59,7 @@ struct ActivityLogDetailsView: View {
                 }) {
                     HStack {
                         Image(systemName: "arrow.counterclockwise")
-                            .font(.system(size: 16, weight: .medium))
                         Text(Strings.restoreBackup)
-                            .font(.system(size: 16, weight: .medium))
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
@@ -78,9 +75,7 @@ struct ActivityLogDetailsView: View {
                 }) {
                     HStack {
                         Image(systemName: "arrow.down.circle")
-                            .font(.system(size: 16, weight: .regular))
                         Text(Strings.downloadBackup)
-                            .font(.system(size: 16, weight: .regular))
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
