@@ -151,8 +151,8 @@
 		4ABCAB2A2DE52E80005A6B84 /* Secrets-JetpackDraftActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */; };
 		4ABCAB2B2DE52E86005A6B84 /* Secrets-JetpackShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB282DE52E6B005A6B84 /* Secrets-JetpackShareExtension.swift */; };
 		4ABCAB2E2DE53092005A6B84 /* Secrets-JetpackNotificationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB2D2DE53092005A6B84 /* Secrets-JetpackNotificationServiceExtension.swift */; };
-		4ABCAB3A2DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB392DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift */; };
 		4ABCAB332DE53168005A6B84 /* Secrets-JetpackIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB322DE53168005A6B84 /* Secrets-JetpackIntents.swift */; };
+		4ABCAB3A2DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB392DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift */; };
 		4AC9545A2DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC954592DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift */; };
 		4AC9F8182DE528E40095EA51 /* Secrets-WordPressShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC9F8172DE528E40095EA51 /* Secrets-WordPressShareExtension.swift */; };
 		4AD953C72C21451700D0EEFA /* WordPressAuthenticator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */; };
@@ -329,6 +329,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 3F7AE0B42D9B30A100AB4892;
 			remoteInfo = WordPressData;
+		};
+		0C3313C42E0439A9000C3760 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0C3313B62E0439A8000C3760;
+			remoteInfo = Miniature;
 		};
 		0C5A8A7A2D9B22F100C25301 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -742,6 +749,8 @@
 		09C8BB8227DFF9C900974175 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		09C8BB8327DFF9CB00974175 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		09C8BB8427DFF9CC00974175 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0C3313B72E0439A8000C3760 /* Miniature.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Miniature.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0C3313C32E0439A9000C3760 /* MiniatureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiniatureTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C38581F2CA74DC7004880ED /* AppSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTests.swift; sourceTree = "<group>"; };
 		0C43FF802C3601770084B698 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/iOSSupport/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		0C5A3F8C2D9B1E3700C25301 /* Reader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reader.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -824,8 +833,8 @@
 		4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackDraftActionExtension.swift"; path = "../Secrets/Secrets-JetpackDraftActionExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ABCAB282DE52E6B005A6B84 /* Secrets-JetpackShareExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackShareExtension.swift"; path = "../Secrets/Secrets-JetpackShareExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ABCAB2D2DE53092005A6B84 /* Secrets-JetpackNotificationServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackNotificationServiceExtension.swift"; path = "../Secrets/Secrets-JetpackNotificationServiceExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4ABCAB392DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-WordPressNotificationServiceExtension.swift"; path = "../Secrets/Secrets-WordPressNotificationServiceExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ABCAB322DE53168005A6B84 /* Secrets-JetpackIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackIntents.swift"; path = "../Secrets/Secrets-JetpackIntents.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4ABCAB392DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-WordPressNotificationServiceExtension.swift"; path = "../Secrets/Secrets-WordPressNotificationServiceExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AC954592DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackStatsWidgets.swift"; path = "../Secrets/Secrets-JetpackStatsWidgets.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AC9F8172DE528E40095EA51 /* Secrets-WordPressShareExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-WordPressShareExtension.swift"; path = "../Secrets/Secrets-WordPressShareExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressAuthenticator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1205,19 +1214,19 @@
 			);
 			target = 80F6D01F28EE866A00953C1A /* JetpackNotificationServiceExtension */;
 		};
-		4ABCAB382DE5333C005A6B84 /* Exceptions for "Classes" folder in "WordPressNotificationServiceExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"System/ApiCredentials+BuildSecrets.swift",
-			);
-			target = 7358E6B7210BD318002323EB /* WordPressNotificationServiceExtension */;
-		};
 		4ABCAB352DE531B6005A6B84 /* Exceptions for "Classes" folder in "JetpackIntents" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"System/ApiCredentials+BuildSecrets.swift",
 			);
 			target = 0107E13828FE9DB200DE87DB /* JetpackIntents */;
+		};
+		4ABCAB382DE5333C005A6B84 /* Exceptions for "Classes" folder in "WordPressNotificationServiceExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"System/ApiCredentials+BuildSecrets.swift",
+			);
+			target = 7358E6B7210BD318002323EB /* WordPressNotificationServiceExtension */;
 		};
 		4AC9CF442DE5228C0095EA51 /* Exceptions for "Classes" folder in "JetpackStatsWidgets" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -1247,6 +1256,16 @@
 				0C2390242D9ADFAA00981631 /* Exceptions for "WordPressAuthenticator" folder in "WordPressAuthenticator" target */,
 			);
 			path = WordPressAuthenticator;
+			sourceTree = "<group>";
+		};
+		0C3313B82E0439A8000C3760 /* Miniature */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Miniature;
+			sourceTree = "<group>";
+		};
+		0C3313C62E0439A9000C3760 /* MiniatureTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MiniatureTests;
 			sourceTree = "<group>";
 		};
 		0C3C988F2DA04EEF009F3BFB /* Jetpack */ = {
@@ -1363,6 +1382,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C6AC6262C364A8500BF7600 /* XcodeTarget_Intents in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0C3313B42E0439A8000C3760 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0C3313C02E0439A9000C3760 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1624,6 +1657,7 @@
 			isa = PBXGroup;
 			children = (
 				0C73A9BD2DAEDFDE00CC0F3A /* KeystoneTests */,
+				0C3313C62E0439A9000C3760 /* MiniatureTests */,
 				0C5A1A042D9B080900C25301 /* WordPressAuthenticatorTests */,
 				3F7AE0C22D9B30A200AB4892 /* WordPressDataTests */,
 			);
@@ -1638,6 +1672,7 @@
 				0C3C988F2DA04EEF009F3BFB /* Jetpack */,
 				0C5A3FAB2D9B1EF400C25301 /* Reader */,
 				0C5C46FE2D98397A00F2CD55 /* Keystone */,
+				0C3313B82E0439A8000C3760 /* Miniature */,
 				0C238F782D9ADF0200981631 /* WordPressAuthenticator */,
 				3F7AE0B62D9B30A100AB4892 /* WordPressData */,
 				0C3E79892DB164B3000C7072 /* JetpackStatsWidgets */,
@@ -1670,6 +1705,8 @@
 				0C5A3F8C2D9B1E3700C25301 /* Reader.app */,
 				3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */,
 				3F7AE0BC2D9B30A200AB4892 /* WordPressDataTests.xctest */,
+				0C3313B72E0439A8000C3760 /* Miniature.app */,
+				0C3313C32E0439A9000C3760 /* MiniatureTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2160,6 +2197,51 @@
 			productReference = 0107E15428FE9DB200DE87DB /* JetpackIntents.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		0C3313B62E0439A8000C3760 /* Miniature */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0C3313DE2E0439AA000C3760 /* Build configuration list for PBXNativeTarget "Miniature" */;
+			buildPhases = (
+				0C3313B32E0439A8000C3760 /* Sources */,
+				0C3313B42E0439A8000C3760 /* Frameworks */,
+				0C3313B52E0439A8000C3760 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				0C3313B82E0439A8000C3760 /* Miniature */,
+			);
+			name = Miniature;
+			packageProductDependencies = (
+			);
+			productName = Miniature;
+			productReference = 0C3313B72E0439A8000C3760 /* Miniature.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0C3313C22E0439A9000C3760 /* MiniatureTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0C3313DF2E0439AA000C3760 /* Build configuration list for PBXNativeTarget "MiniatureTests" */;
+			buildPhases = (
+				0C3313BF2E0439A9000C3760 /* Sources */,
+				0C3313C02E0439A9000C3760 /* Frameworks */,
+				0C3313C12E0439A9000C3760 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0C3313C52E0439A9000C3760 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				0C3313C62E0439A9000C3760 /* MiniatureTests */,
+			);
+			name = MiniatureTests;
+			packageProductDependencies = (
+			);
+			productName = MiniatureTests;
+			productReference = 0C3313C32E0439A9000C3760 /* MiniatureTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		0C5A3F8B2D9B1E3700C25301 /* Reader */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0C5A3FA12D9B1E3A00C25301 /* Build configuration list for PBXNativeTarget "Reader" */;
@@ -2647,10 +2729,17 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1540;
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
+					0C3313B62E0439A8000C3760 = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					0C3313C22E0439A9000C3760 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 0C3313B62E0439A8000C3760;
+					};
 					0C5A3F8B2D9B1E3700C25301 = {
 						CreatedOnToolsVersion = 16.1;
 					};
@@ -2831,6 +2920,8 @@
 				0CED016F2D95B897003015CF /* Keystone */,
 				3F7AE0B42D9B30A100AB4892 /* WordPressData */,
 				3F7AE0BB2D9B30A200AB4892 /* WordPressDataTests */,
+				0C3313B62E0439A8000C3760 /* Miniature */,
+				0C3313C22E0439A9000C3760 /* MiniatureTests */,
 			);
 		};
 /* End PBXProject section */
@@ -2849,6 +2940,20 @@
 			files = (
 				4A690C1B2BA7964100A8E0C5 /* PrivacyInfo.xcprivacy in Resources */,
 				0107E14D28FE9DB200DE87DB /* AppImages.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0C3313B52E0439A8000C3760 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0C3313C12E0439A9000C3760 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3291,26 +3396,6 @@
 			shellPath = /bin/sh;
 			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
 		};
-		4ABCAB362DE532E7005A6B84 /* Generate Credentials */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"$(SRCROOT)/../Scripts/BuildPhases/GenerateCredentials.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "Generate Credentials";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets-WordPressNotificationServiceExtension.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
-		};
 		4ABCAB312DE530F1005A6B84 /* Generate Credentials */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3326,6 +3411,26 @@
 			);
 			outputPaths = (
 				"$(BUILD_DIR)/Secrets/Secrets-JetpackIntents.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$SRCROOT/../Scripts/BuildPhases/GenerateCredentials.sh\n";
+		};
+		4ABCAB362DE532E7005A6B84 /* Generate Credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/../Scripts/BuildPhases/GenerateCredentials.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "Generate Credentials";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILD_DIR)/Secrets/Secrets-WordPressNotificationServiceExtension.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3426,6 +3531,20 @@
 				0107E13B28FE9DB200DE87DB /* Sites.intentdefinition in Sources */,
 				0107E13E28FE9DB200DE87DB /* SitesDataProvider.swift in Sources */,
 				0107E14928FE9DB200DE87DB /* IntentHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0C3313B32E0439A8000C3760 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0C3313BF2E0439A9000C3760 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3659,6 +3778,11 @@
 			isa = PBXTargetDependency;
 			target = 3F7AE0B42D9B30A100AB4892 /* WordPressData */;
 			targetProxy = 0C28C63B2DAD830F00F81F20 /* PBXContainerItemProxy */;
+		};
+		0C3313C52E0439A9000C3760 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0C3313B62E0439A8000C3760 /* Miniature */;
+			targetProxy = 0C3313C42E0439A9000C3760 /* PBXContainerItemProxy */;
 		};
 		0C5A8A7B2D9B22F100C25301 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4206,6 +4330,284 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Release-Alpha";
+		};
+		0C3313D52E0439AA000C3760 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.Miniature;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0C3313D62E0439AA000C3760 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.Miniature;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0C3313D72E0439AA000C3760 /* Release-Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.Miniature;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Release-Alpha";
+		};
+		0C3313D82E0439AA000C3760 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.MiniatureTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Miniature.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Miniature";
+			};
+			name = Debug;
+		};
+		0C3313D92E0439AA000C3760 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.MiniatureTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Miniature.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Miniature";
+			};
+			name = Release;
+		};
+		0C3313DA2E0439AA000C3760 /* Release-Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.MiniatureTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Miniature.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Miniature";
 			};
 			name = "Release-Alpha";
 		};
@@ -7078,6 +7480,26 @@
 				0107E15028FE9DB200DE87DB /* Debug */,
 				0107E15128FE9DB200DE87DB /* Release */,
 				0107E15328FE9DB200DE87DB /* Release-Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0C3313DE2E0439AA000C3760 /* Build configuration list for PBXNativeTarget "Miniature" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0C3313D52E0439AA000C3760 /* Debug */,
+				0C3313D62E0439AA000C3760 /* Release */,
+				0C3313D72E0439AA000C3760 /* Release-Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0C3313DF2E0439AA000C3760 /* Build configuration list for PBXNativeTarget "MiniatureTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0C3313D82E0439AA000C3760 /* Debug */,
+				0C3313D92E0439AA000C3760 /* Release */,
+				0C3313DA2E0439AA000C3760 /* Release-Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
