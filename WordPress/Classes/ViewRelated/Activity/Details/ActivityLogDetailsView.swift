@@ -14,11 +14,11 @@ struct ActivityLogDetailsView: View {
         ScrollView {
             VStack(spacing: 24) {
                 ActivityHeaderView(activity: activity)
-                if let actor = activity.actor {
-                    makeActorCard(for: actor)
-                }
                 if activity.isRewindable {
                     restoreSiteCard
+                }
+                if let actor = activity.actor {
+                    makeActorCard(for: actor)
                 }
             }
             .padding()
