@@ -4385,6 +4385,7 @@
 		};
 		0C3313D52E0439AA000C3760 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0C5A651A2D9B21CE00C25301 /* Reader.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -4439,6 +4440,7 @@
 		};
 		0C3313D62E0439AA000C3760 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0C5A651B2D9B21CE00C25301 /* Reader.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -4489,6 +4491,7 @@
 		};
 		0C3313D72E0439AA000C3760 /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0C5A651B2D9B21CE00C25301 /* Reader.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
