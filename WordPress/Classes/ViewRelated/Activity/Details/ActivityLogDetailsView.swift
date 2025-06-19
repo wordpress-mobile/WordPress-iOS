@@ -171,7 +171,6 @@ private enum Strings {
         comment: "Title for the activity detail view"
     )
 
-
     static let user = NSLocalizedString(
         "activityDetail.section.user",
         value: "User",
