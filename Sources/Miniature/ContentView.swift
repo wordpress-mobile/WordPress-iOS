@@ -8,17 +8,11 @@ struct ContentView: View {
     var body: some View {
         List {
             NavigationLink("Activity Log Details (Backup)") {
-                ActivityLogDetailsView(
-                    activity: createMockBackupActivity(),
-                    rewindStatus: createMockActiveRewindStatus()
-                )
+                ActivityLogDetailsView(activity: createMockBackupActivity())
             }
             
             NavigationLink("Activity Log Details (Plugin Update)") {
-                ActivityLogDetailsView(
-                    activity: createMockPluginActivity(),
-                    rewindStatus: createMockInactiveRewindStatus()
-                )
+                ActivityLogDetailsView(activity: createMockPluginActivity())
             }
         }
         .navigationTitle("Miniature")
@@ -108,14 +102,4 @@ private func createMockPluginActivity() -> Activity {
     }
     
     return try! decoder.decode(Activity.self, from: json.data(using: .utf8)!)
-}
-
-private func createMockActiveRewindStatus() -> RewindStatus {
-    // Using the internal initializer for mocking
-    RewindStatus(state: .active)
-}
-
-private func createMockInactiveRewindStatus() -> RewindStatus {
-    // Using the internal initializer for mocking
-    RewindStatus(state: .inactive)
 }

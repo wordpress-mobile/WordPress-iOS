@@ -5,7 +5,6 @@ import Gridicons
 
 struct ActivityLogDetailsView: View {
     let activity: Activity
-    let rewindStatus: RewindStatus?
     
     @State private var isShowingRestoreConfirmation = false
     @State private var isRestoring = false
@@ -27,19 +26,10 @@ struct ActivityLogDetailsView: View {
                 if activity.isRewindable {
                     ActivityActionsCard(
                         activity: activity,
-                        rewindStatus: rewindStatus,
                         isRestoring: $isRestoring,
                         isDownloadingBackup: $isDownloadingBackup,
                         onRestore: handleRestore,
                         onDownloadBackup: handleDownloadBackup
-                    )
-                }
-                
-                if let rewindStatus = rewindStatus, rewindStatus.state == .awaitingCredentials {
-                    WarningCard(
-                        message: Strings.multisiteWarning,
-                        actionTitle: Strings.learnMore,
-                        action: openSupportURL
                     )
                 }
             }
@@ -332,15 +322,10 @@ private struct ActivityDetailsCard: View {
 
 private struct ActivityActionsCard: View {
     let activity: Activity
-    let rewindStatus: RewindStatus?
     @Binding var isRestoring: Bool
     @Binding var isDownloadingBackup: Bool
     let onRestore: () -> Void
     let onDownloadBackup: () -> Void
-    
-    var canRestore: Bool {
-        rewindStatus?.state == .active
-    }
     
     var body: some View {
         ActivityCard(Strings.actions) {
@@ -360,7 +345,7 @@ private struct ActivityActionsCard: View {
                     .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(!canRestore || isRestoring)
+                .disabled(isRestoring)
                 
                 Button(action: onDownloadBackup) {
                     Label {
@@ -378,12 +363,6 @@ private struct ActivityActionsCard: View {
                 }
                 .buttonStyle(.bordered)
                 .disabled(isDownloadingBackup)
-                
-                if !canRestore {
-                    Text(Strings.restoreNotAvailable)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
             }
         }
     }
@@ -476,19 +455,13 @@ private struct InfoRow: View {
 
 #Preview("Backup Activity") {
     NavigationView {
-        ActivityLogDetailsView(
-            activity: mockBackupActivity,
-            rewindStatus: mockActiveRewindStatus
-        )
+        ActivityLogDetailsView(activity: mockBackupActivity)
     }
 }
 
 #Preview("Plugin Update") {
     NavigationView {
-        ActivityLogDetailsView(
-            activity: mockPluginActivity,
-            rewindStatus: mockInactiveRewindStatus
-        )
+        ActivityLogDetailsView(activity: mockPluginActivity)
     }
 }
 
@@ -572,10 +545,6 @@ private let mockPluginActivity: Activity = {
     
     return try! decoder.decode(Activity.self, from: json.data(using: .utf8)!)
 }()
-
-private let mockActiveRewindStatus = RewindStatus(state: .active)
-
-private let mockInactiveRewindStatus = RewindStatus(state: .inactive)
 
 // MARK: - Localized Strings
 
