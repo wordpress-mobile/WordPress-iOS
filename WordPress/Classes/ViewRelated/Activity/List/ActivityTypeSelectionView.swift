@@ -20,7 +20,7 @@ struct ActivityTypeSelectionView: View {
             if isLoading && availableActivityGroups.isEmpty {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if let error = error, availableActivityGroups.isEmpty {
+            } else if let error, availableActivityGroups.isEmpty {
                 EmptyStateView.failure(error: error) {
                     Task { await fetchActivityGroups() }
                 }
