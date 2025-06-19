@@ -105,9 +105,9 @@ final class ActivityLogsViewModel: ObservableObject {
             )
         }
     }
-    
+
     // MARK: - Analytics
-    
+
     private func trackParameterChanges(oldValue: GetActivityLogsParameters, newValue: GetActivityLogsParameters) {
         // Track date range changes
         if oldValue.startDate != newValue.startDate || oldValue.endDate != newValue.endDate {
@@ -115,7 +115,7 @@ final class ActivityLogsViewModel: ObservableObject {
                 WPAnalytics.track(.activitylogFilterbarSelectRange)
             }
         }
-        
+
         // Track activity type changes
         if oldValue.activityTypes != newValue.activityTypes {
             if newValue.activityTypes.isEmpty {

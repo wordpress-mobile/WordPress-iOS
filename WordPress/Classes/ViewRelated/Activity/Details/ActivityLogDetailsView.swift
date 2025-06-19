@@ -15,7 +15,7 @@ struct ActivityLogDetailsView: View {
             VStack(spacing: 24) {
                 VStack(spacing: 16) {
                     ActivityHeaderView(activity: activity)
-                    if shouldShowBackupActions {
+                    if activity.isRewindable {
                         backupActionButtons
                     }
                 }
@@ -32,19 +32,6 @@ struct ActivityLogDetailsView: View {
         }
     }
 
-    private var shouldShowBackupActions: Bool {
-        // Show buttons for rewindable activities that are backup-related
-        guard activity.isRewindable else { return false }
-
-        // Check if this is a backup activity based on the activity name
-        let backupActivityNames = [
-            "rewind__backup_complete_full",
-            "rewind__backup_complete",
-        ]
-
-        return backupActivityNames.contains(activity.name)
-    }
-
     @ViewBuilder
     private var backupActionButtons: some View {
         HStack(spacing: 12) {
@@ -57,7 +44,7 @@ struct ActivityLogDetailsView: View {
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.regular)
-            
+
             Button(action: {
                 trackBackupTapped()
                 ActivityLogDetailsCoordinator.presentBackup(activity: activity, blog: blog)
