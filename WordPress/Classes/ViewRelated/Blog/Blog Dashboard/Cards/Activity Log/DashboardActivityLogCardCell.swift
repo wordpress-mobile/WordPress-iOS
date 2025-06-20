@@ -156,12 +156,8 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
 
         presentingViewController?.navigationController?.pushViewController(activityLogController, animated: true)
 
-        WPAnalytics.track(.activityLogViewed,
-                          withProperties: [
-                            WPAppAnalyticsKeyTapSource: tapSource
-                          ])
+        WPAnalytics.track(.activityLogViewed, withProperties: [WPAppAnalyticsKeyTapSource: tapSource])
     }
-
 }
 
 // MARK: - Helpers
