@@ -1,6 +1,7 @@
 import SwiftUI
 import WordPressUI
 import WordPressKit
+import WordPressShared
 
 struct ActivityLogsView: View {
     @ObservedObject var viewModel: ActivityLogsViewModel
@@ -28,6 +29,10 @@ private struct ActivityLogsListView: View {
 
     var body: some View {
         List {
+            if let backupTracker = viewModel.backupTracker {
+                DownloadableBackupSection(backupTracker: backupTracker)
+            }
+
             if let response = viewModel.response {
                 ActivityLogsPaginatedForEach(response: response, blog: viewModel.blog)
 
@@ -60,6 +65,9 @@ private struct ActivityLogsListView: View {
         }
         .onAppear {
             viewModel.onAppear()
+        }
+        .onDisappear {
+            viewModel.onDisappear()
         }
         .refreshable {
             await viewModel.refresh()

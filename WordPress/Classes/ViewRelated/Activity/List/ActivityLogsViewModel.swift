@@ -9,6 +9,7 @@ typealias ActivityLogsPaginatedResponse = DataViewPaginatedResponse<ActivityLogR
 final class ActivityLogsViewModel: ObservableObject {
     let blog: Blog
     let isBackupMode: Bool
+    let backupTracker: DownloadableBackupTracker?
 
     @Published var searchText = ""
     @Published var parameters = GetActivityLogsParameters() {
@@ -31,9 +32,12 @@ final class ActivityLogsViewModel: ObservableObject {
     init(blog: Blog, isBackupMode: Bool = false) {
         self.blog = blog
         self.isBackupMode = isBackupMode
+        self.backupTracker = isBackupMode ? DownloadableBackupTracker(blog: blog) : nil
     }
 
     func onAppear() {
+        backupTracker?.startTracking()
+
         guard response == nil else { return }
         onRefreshNeeded()
     }
@@ -48,6 +52,9 @@ final class ActivityLogsViewModel: ObservableObject {
     func refresh() async {
         isLoading = true
         error = nil
+
+        backupTracker?.refreshBackupStatus()
+
         Task {
             do {
                 let response = try await makeResponse(searchText: searchText, parameters: parameters)
@@ -67,6 +74,10 @@ final class ActivityLogsViewModel: ObservableObject {
 
     func search() async throws -> ActivityLogsPaginatedResponse {
         try await makeResponse(searchText: searchText, parameters: parameters)
+    }
+
+    func onDisappear() {
+        backupTracker?.stopTracking()
     }
 
     func fetchActivityGroups(after: Date? = nil, before: Date? = nil) async throws -> [WordPressKit.ActivityGroup] {

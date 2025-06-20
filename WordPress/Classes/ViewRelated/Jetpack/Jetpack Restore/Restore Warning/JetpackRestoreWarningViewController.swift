@@ -79,7 +79,7 @@ class JetpackRestoreWarningViewController: UIViewController {
             self?.dismiss(animated: true)
         }
 
-        warningView.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .systemBackground
         view.addSubview(warningView)
         warningView.pinEdges(to: view.safeAreaLayoutGuide)
     }
