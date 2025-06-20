@@ -70,13 +70,7 @@ extension SiteSettingsViewController {
             }
             return timezoneString
         }
-
-        // Fall back to GMT offset
-        if let gmtOffset = settings.gmtOffset {
-            return gmtOffset
-        }
-
-        return nil
+        return timezoneValue
     }
 
     var timezoneValue: String? {
