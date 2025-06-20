@@ -2,6 +2,13 @@ import UIKit
 import Gridicons
 import WordPressUI
 
+protocol ActivityPresenter: AnyObject {
+    func presentDetailsFor(activity: FormattableActivity)
+    func presentBackupOrRestoreFor(activity: Activity, from sender: UIButton)
+    func presentRestoreFor(activity: Activity, from: String?)
+    func presentBackupFor(activity: Activity, from: String?)
+}
+
 class ActivityDetailViewController: UIViewController, StoryboardLoadable {
 
     // MARK: - StoryboardLoadable Protocol
