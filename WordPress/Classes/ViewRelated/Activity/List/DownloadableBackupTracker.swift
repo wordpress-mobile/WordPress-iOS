@@ -5,7 +5,7 @@ import WordPressShared
 /// Tracks backup download status for a WordPress site.
 /// Automatically polls for updates while a backup is in progress or until a download becomes available.
 @MainActor
-final class BackupDownloadTracker: ObservableObject {
+final class DownloadableBackupTracker: ObservableObject {
     @Published var backupStatus: JetpackBackup?
 
     private let blog: Blog
@@ -52,7 +52,7 @@ final class BackupDownloadTracker: ObservableObject {
         refreshTask = nil
     }
 
-    /// Refreshes backup status and starts polling if a backup is in progress or no download is available.
+    /// Refreshes backup status and starts continuous polling with adaptive delays.
     func refreshBackupStatus() {
         guard let siteRef = JetpackSiteRef(blog: blog), siteRef.isBackupFeatureAvailable else {
             return
@@ -60,20 +60,34 @@ final class BackupDownloadTracker: ObservableObject {
 
         refreshTask?.cancel()
         refreshTask = Task {
+            var pollCount = 0
+
             // Fetch status immediately
             await fetchBackupStatus(siteRef: siteRef)
 
-            // Continue polling if needed (backup in progress)
-            while !Task.isCancelled && isBackupInProgress {
-                try? await Task.sleep(nanoseconds: 5_000_000_000) // 5 seconds
+            // Continue polling while on the screen
+            while !Task.isCancelled {
+                let delay: UInt64
+
+                if isBackupInProgress {
+                    // Poll frequently (every 5 seconds) when backup is in progress
+                    delay = 5_000_000_000
+                } else {
+                    // Progressive delay: 10s * (attemptCount + 1), max 60s
+                    let seconds = min(10 * (pollCount + 1), 60)
+                    delay = UInt64(seconds) * 1_000_000_000
+                    pollCount += 1
+                }
+
+                try? await Task.sleep(nanoseconds: delay)
 
                 guard !Task.isCancelled else { break }
 
                 await fetchBackupStatus(siteRef: siteRef)
 
-                // Stop polling if download is now available and no backup in progress
-                if isDownloadAvailable && !isBackupInProgress {
-                    break
+                // Reset poll count if backup starts
+                if isBackupInProgress {
+                    pollCount = 0
                 }
             }
         }
@@ -86,12 +100,9 @@ final class BackupDownloadTracker: ObservableObject {
 
             guard !Task.isCancelled else { return }
 
-            // Get the first valid backup status
-            self.backupStatus = statuses.first { status in
-                if let validUntil = status.validUntil {
-                    return Date() < validUntil
-                }
-                return false
+            // Get the most recently started backup
+            self.backupStatus = statuses.max { lhs, rhs in
+                (lhs.startedAt ?? .distantPast) < (rhs.startedAt ?? .distantPast)
             }
         } catch {
             guard !Task.isCancelled else { return }

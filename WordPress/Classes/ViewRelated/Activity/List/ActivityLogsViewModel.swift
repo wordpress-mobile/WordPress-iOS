@@ -9,7 +9,7 @@ typealias ActivityLogsPaginatedResponse = DataViewPaginatedResponse<ActivityLogR
 final class ActivityLogsViewModel: ObservableObject {
     let blog: Blog
     let isBackupMode: Bool
-    let backupTracker: BackupDownloadTracker?
+    let backupTracker: DownloadableBackupTracker?
 
     @Published var searchText = ""
     @Published var parameters = GetActivityLogsParameters() {
@@ -32,7 +32,7 @@ final class ActivityLogsViewModel: ObservableObject {
     init(blog: Blog, isBackupMode: Bool = false) {
         self.blog = blog
         self.isBackupMode = isBackupMode
-        self.backupTracker = isBackupMode ? BackupDownloadTracker(blog: blog) : nil
+        self.backupTracker = isBackupMode ? DownloadableBackupTracker(blog: blog) : nil
     }
 
     func onAppear() {

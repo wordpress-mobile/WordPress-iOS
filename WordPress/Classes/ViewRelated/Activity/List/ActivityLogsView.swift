@@ -30,7 +30,7 @@ private struct ActivityLogsListView: View {
     var body: some View {
         List {
             if let backupTracker = viewModel.backupTracker {
-                BackupDownloadSection(backupTracker: backupTracker)
+                DownloadableBackupSection(backupTracker: backupTracker)
             }
 
             if let response = viewModel.response {
@@ -139,37 +139,6 @@ private struct ActivityLogsPaginatedForEach: View {
                     EmptyView()
                 }.opacity(0)
             }
-    }
-}
-
-private struct BackupDownloadSection: View {
-    @ObservedObject var backupTracker: BackupDownloadTracker
-
-    var body: some View {
-        if let backupStatus = backupTracker.backupStatus {
-            Group {
-                if backupTracker.isBackupInProgress,
-                   let progress = backupStatus.progress {
-                    BackupInProgressView(progress: progress)
-                } else if let url = backupTracker.downloadURL {
-                    BackupDownloadHeaderView(
-                        backupStatus: backupStatus,
-                        onDownload: {
-                            WPAnalytics.track(.backupFileDownloadTapped)
-                            UIApplication.shared.open(url)
-                        },
-                        onDismiss: {
-                            withAnimation {
-                                backupTracker.dismissBackupNotice()
-                            }
-                        }
-                    )
-                }
-            }
-            .listRowInsets(EdgeInsets())
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
-        }
     }
 }
 
