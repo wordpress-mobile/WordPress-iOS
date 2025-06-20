@@ -14,6 +14,8 @@ struct ActivityFormattableContentView: UIViewRepresentable {
         textView.backgroundColor = .clear
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
+        textView.textContainer.lineBreakMode = .byWordWrapping
+        textView.textContainer.maximumNumberOfLines = 0
         textView.linkTextAttributes = [
             .foregroundColor: UIAppColor.primary
         ]

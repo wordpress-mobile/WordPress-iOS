@@ -153,16 +153,6 @@ private struct ActivityHeaderView: View {
     }
 }
 
-// MARK: - Actor Card
-
-private struct ActorCard: View {
-    let actor: ActivityActor
-
-    var body: some View {
-
-    }
-}
-
 // MARK: - Preview
 
 #Preview("Backup Activity") {
