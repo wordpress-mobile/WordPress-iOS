@@ -47,22 +47,15 @@ struct TimeZoneSelectorView: View {
 
     @ViewBuilder
     private var suggestionSection: some View {
-        if let timezone = viewModel.suggestedTimezone {
-            Section {
-                Button(action: {
-                    handleSelection(timezone)
-                }) {
-                    HStack {
-                        Text(Strings.suggestion)
-                            .foregroundColor(.secondary)
-                        Text(timezone.label)
-                            .foregroundColor(.accentColor)
-                        Spacer()
-                    }
+        if let rowViewModel = viewModel.suggestedTimezoneRowViewModel {
+            Section(Strings.suggested) {
+                TimeZoneRowView(
+                    viewModel: rowViewModel,
+                    isSelected: rowViewModel.timezone.value == viewModel.selectedValue,
+                    isSuggestion: true
+                ) {
+                    handleSelection(rowViewModel.timezone)
                 }
-                .buttonStyle(.plain)
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
             }
         }
     }
@@ -93,13 +86,14 @@ struct TimeZoneSelectorView: View {
 private struct TimeZoneRowView: View {
     let viewModel: TimeZoneRowViewModel
     let isSelected: Bool
+    var isSuggestion = false
     let onTap: () -> Void
 
     var body: some View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(viewModel.timezone.label)
-                    .foregroundColor(.primary)
+                    .foregroundColor(isSuggestion ? .accentColor : .primary)
                     .fontWeight(isSelected ? .bold : .regular)
 
                 HStack {
@@ -127,9 +121,9 @@ private enum Strings {
         comment: "Title for the time zone selector"
     )
 
-    static let suggestion = NSLocalizedString(
-        "timeZoneSelector.suggestion",
-        value: "Suggestion:",
-        comment: "Label displayed to the user left of the time zone suggestion"
+    static let suggested = NSLocalizedString(
+        "timeZoneSelector.suggested",
+        value: "Suggested",
+        comment: "Section title for suggested timezones"
     )
 }

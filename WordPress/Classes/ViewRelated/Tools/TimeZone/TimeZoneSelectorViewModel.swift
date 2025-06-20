@@ -8,6 +8,7 @@ final class TimeZoneSelectorViewModel: ObservableObject {
     @Published private(set) var isLoading = false
     @Published private(set) var error: Error?
     @Published var selectedValue: String?
+    @Published private(set) var suggestedTimezoneRowViewModel: TimeZoneRowViewModel?
 
     private let timeZoneFormatter = TimeZoneFormatter(currentDate: Date())
 
@@ -35,6 +36,9 @@ final class TimeZoneSelectorViewModel: ObservableObject {
                 }
                 return TimeZoneSectionViewModel(name: group.name, timezones: rowViewModels)
             }
+
+            // Find and cache the suggested timezone
+            updateSuggestions()
         } catch {
             self.error = error
             DDLogError("Error loading timezones: \(error)")
@@ -43,18 +47,16 @@ final class TimeZoneSelectorViewModel: ObservableObject {
         isLoading = false
     }
 
-    var suggestedTimezone: WPTimeZone? {
+    private func updateSuggestions() {
         let deviceIdentifier = TimeZone.current.identifier
-
         for section in sections {
             if let rowViewModel = section.timezones.first(where: {
                 $0.timezone.value.caseInsensitiveCompare(deviceIdentifier) == .orderedSame
             }) {
-                return rowViewModel.timezone
+                suggestedTimezoneRowViewModel = rowViewModel
+                return
             }
         }
-
-        return nil
     }
 
     func filteredSections(searchText: String) -> [TimeZoneSectionViewModel] {
