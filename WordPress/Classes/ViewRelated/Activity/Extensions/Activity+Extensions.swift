@@ -4,53 +4,6 @@ import DesignSystem
 import WordPressKit
 
 extension Activity {
-    /// Returns an AttributedString with clickable links based on content ranges
-    var formattedContent: AttributedString? {
-        guard let content,
-              let text = content["text"] as? String,
-              !text.isEmpty else {
-            return nil
-        }
-
-        var attributedString = AttributedString(text)
-
-        // Apply links from ranges if available
-        if let ranges = content["ranges"] as? [[String: Any]] {
-            for range in ranges {
-                guard let indices = range["indices"] as? [NSNumber],
-                      indices.count == 2,
-                      let urlString = range["url"] as? String,
-                      let url = URL(string: urlString) else {
-                    continue
-                }
-
-                let startIndex = indices[0].intValue
-                let endIndex = indices[1].intValue
-
-                // Convert string indices to AttributedString indices
-                guard startIndex >= 0,
-                      endIndex <= text.count,
-                      startIndex < endIndex else {
-                    continue
-                }
-
-                // Convert character indices to AttributedString.Index
-                let stringStartIndex = text.index(text.startIndex, offsetBy: startIndex)
-                let stringEndIndex = text.index(text.startIndex, offsetBy: endIndex)
-
-                // Find corresponding indices in AttributedString
-                guard let attrStartIndex = AttributedString.Index(stringStartIndex, within: attributedString),
-                      let attrEndIndex = AttributedString.Index(stringEndIndex, within: attributedString) else {
-                    continue
-                }
-
-                // Apply the link attribute to the exact range
-                attributedString[attrStartIndex..<attrEndIndex].link = url
-            }
-        }
-
-        return attributedString
-    }
 
     /// Returns the appropriate GridiconType for this activity, if available
     var gridiconType: GridiconType? {
