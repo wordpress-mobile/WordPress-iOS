@@ -47,7 +47,7 @@ struct ActivityLogDetailsView: View {
 
                 // Actor info
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(actor.displayName)
+                    Text(actor.displayName.isEmpty ? Activity.Strings.unknownUser : actor.displayName)
                         .font(.headline)
 
                     Text(actor.role.isEmpty ? actor.type.localizedCapitalized : actor.role.localizedCapitalized)

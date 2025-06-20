@@ -74,3 +74,15 @@ extension Activity {
         "audio": .audio
     ]
 }
+
+// MARK: - Shared Strings
+
+extension Activity {
+    enum Strings {
+        static let unknownUser = NSLocalizedString(
+            "activity.unknownUser",
+            value: "Unknown User",
+            comment: "Placeholder text shown when the activity actor's display name is empty"
+        )
+    }
+}

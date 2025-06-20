@@ -1,5 +1,6 @@
 import SwiftUI
 import WordPressUI
+import WordPressKit
 
 struct ActivityLogRowView: View {
     let viewModel: ActivityLogRowViewModel
@@ -29,7 +30,7 @@ struct ActivityLogRowView: View {
                     HStack(spacing: 6) {
                         ActivityActorAvatarView(actor: actor, diameter: 16)
                         HStack(spacing: 4) {
-                            Text(actor.displayName)
+                            Text(actor.displayName.isEmpty ? Activity.Strings.unknownUser : actor.displayName)
                                 .font(.footnote)
                                 .foregroundColor(.secondary)
                             if let subtitle = viewModel.actorSubtitle {
