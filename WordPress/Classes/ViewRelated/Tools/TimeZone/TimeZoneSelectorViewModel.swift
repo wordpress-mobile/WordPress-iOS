@@ -2,6 +2,36 @@ import Foundation
 import WordPressKit
 import WordPressShared
 
+/// Protocol for fetching timezone data
+protocol TimeZoneServiceProtocol {
+    func timezones() async throws -> [TimeZoneGroup]
+}
+
+/// Default implementation using WordPress.com API
+struct DefaultTimeZoneService: TimeZoneServiceProtocol {
+    func timezones() async throws -> [TimeZoneGroup] {
+        let api = WordPressComRestApi.anonymousApi(
+            userAgent: WPUserAgent.wordPress(),
+            localeKey: WordPressComRestApi.LocaleKeyV2
+        )
+        let remote = TimeZoneServiceRemote(wordPressComRestApi: api)
+        return try await remote.timezones()
+    }
+}
+
+// MARK: - TimeZoneServiceRemote Extension
+private extension TimeZoneServiceRemote {
+    func timezones() async throws -> [TimeZoneGroup] {
+        try await withCheckedThrowingContinuation { continuation in
+            getTimezones(success: { groups in
+                continuation.resume(returning: groups)
+            }, failure: { error in
+                continuation.resume(throwing: error)
+            })
+        }
+    }
+}
+
 @MainActor
 final class TimeZoneSelectorViewModel: ObservableObject {
     @Published private(set) var sections: [TimeZoneSectionViewModel] = []
@@ -11,9 +41,11 @@ final class TimeZoneSelectorViewModel: ObservableObject {
     @Published private(set) var suggestedTimezoneRowViewModel: TimeZoneRowViewModel?
 
     private let timeZoneFormatter = TimeZoneFormatter(currentDate: Date())
+    private let service: TimeZoneServiceProtocol
 
-    init(selectedValue: String?) {
+    init(selectedValue: String?, service: TimeZoneServiceProtocol = DefaultTimeZoneService()) {
         self.selectedValue = selectedValue
+        self.service = service
     }
 
     func loadTimezones() async {
@@ -23,12 +55,7 @@ final class TimeZoneSelectorViewModel: ObservableObject {
         error = nil
 
         do {
-            let api = WordPressComRestApi.anonymousApi(
-                userAgent: WPUserAgent.wordPress(),
-                localeKey: WordPressComRestApi.LocaleKeyV2
-            )
-            let remote = TimeZoneServiceRemote(wordPressComRestApi: api)
-            let groups = try await remote.timezones()
+            let groups = try await service.timezones()
 
             sections = groups.map { group in
                 let rowViewModels = group.timezones.map {
@@ -78,7 +105,7 @@ final class TimeZoneSelectorViewModel: ObservableObject {
     }
 }
 
-struct TimeZoneRowViewModel: Identifiable {
+struct TimeZoneRowViewModel: Identifiable, Equatable {
     let timezone: WPTimeZone
     let offset: String
     let currentTime: String
@@ -94,23 +121,16 @@ struct TimeZoneRowViewModel: Identifiable {
     var searchableText: String {
         "\(timezone.label) \(timezone.value) \(offset) \(currentTime)"
     }
+
+    static func == (lhs: TimeZoneRowViewModel, rhs: TimeZoneRowViewModel) -> Bool {
+        lhs.timezone.value == rhs.timezone.value &&
+        lhs.timezone.label == rhs.timezone.label
+    }
 }
 
-struct TimeZoneSectionViewModel: Identifiable {
+struct TimeZoneSectionViewModel: Identifiable, Equatable {
     let name: String
     let timezones: [TimeZoneRowViewModel]
 
     var id: String { name }
-}
-
-private extension TimeZoneServiceRemote {
-    func timezones() async throws -> [TimeZoneGroup] {
-        try await withCheckedThrowingContinuation { continuation in
-            getTimezones(success: { groups in
-                continuation.resume(returning: groups)
-            }, failure: { error in
-                continuation.resume(throwing: error)
-            })
-        }
-    }
 }
