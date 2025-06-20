@@ -1,41 +1,16 @@
 import Foundation
 import WordPressKit
 import WordPressShared
+import CocoaLumberjack
 
 /// Tracks backup download status for a WordPress site.
 /// Automatically polls for updates while a backup is in progress or until a download becomes available.
 @MainActor
 final class DownloadableBackupTracker: ObservableObject {
-    @Published var backupStatus: JetpackBackup?
+    @Published var backup: JetpackBackup?
 
     private let blog: Blog
     private var refreshTask: Task<Void, Never>?
-
-    /// Returns the download URL if a valid backup is available.
-    var downloadURL: URL? {
-        guard let backupStatus,
-              let validUntil = backupStatus.validUntil,
-              Date() < validUntil,
-              let url = backupStatus.url.flatMap(URL.init) else {
-            return nil
-        }
-        return url
-    }
-
-    /// Indicates whether a backup is currently being created.
-    var isBackupInProgress: Bool {
-        guard let backupStatus,
-              let progress = backupStatus.progress,
-              progress > 0 && progress < 100 else {
-            return false
-        }
-        return true
-    }
-
-    /// Convenience property to check if a download is available.
-    var isDownloadAvailable: Bool {
-        downloadURL != nil
-    }
 
     init(blog: Blog) {
         self.blog = blog
@@ -43,11 +18,13 @@ final class DownloadableBackupTracker: ObservableObject {
 
     /// Starts tracking backup status. Refreshes immediately and polls as needed.
     func startTracking() {
+        DDLogInfo("[DownloadableBackup] Starting backup tracking for site")
         refreshBackupStatus()
     }
 
     /// Stops tracking and cancels any pending refresh operations.
     func stopTracking() {
+        DDLogInfo("[DownloadableBackup] Stopping backup tracking")
         refreshTask?.cancel()
         refreshTask = nil
     }
@@ -69,9 +46,14 @@ final class DownloadableBackupTracker: ObservableObject {
             while !Task.isCancelled {
                 let delay: UInt64
 
-                if isBackupInProgress {
-                    // Poll frequently (every 5 seconds) when backup is in progress
-                    delay = 5_000_000_000
+                // Check if backup is in progress or processing
+                let isActive = backup?.progress.map { $0 > 0 && $0 < 100 } ?? false ||
+                              (backup?.progress == 100 && backup?.url == nil)
+
+                if isActive {
+                    // Poll frequently (every 5 seconds) when backup is active
+                    delay = 2_000_000_000
+                    pollCount = 0
                 } else {
                     // Progressive delay: 10s * (attemptCount + 1), max 60s
                     let seconds = min(10 * (pollCount + 1), 60)
@@ -84,11 +66,6 @@ final class DownloadableBackupTracker: ObservableObject {
                 guard !Task.isCancelled else { break }
 
                 await fetchBackupStatus(siteRef: siteRef)
-
-                // Reset poll count if backup starts
-                if isBackupInProgress {
-                    pollCount = 0
-                }
             }
         }
     }
@@ -101,24 +78,33 @@ final class DownloadableBackupTracker: ObservableObject {
             guard !Task.isCancelled else { return }
 
             // Get the most recently started backup
-            self.backupStatus = statuses.max { lhs, rhs in
-                (lhs.startedAt ?? .distantPast) < (rhs.startedAt ?? .distantPast)
+            self.backup = statuses.max { lhs, rhs in
+                lhs.startedAt < rhs.startedAt
+            }
+
+            if let backup {
+                let statusInfo = "progress: \(backup.progress ?? 0)%, downloadID: \(backup.downloadID), url: \(String(describing: backup.url))"
+                DDLogInfo("[DownloadableBackup] Status updated: \(statusInfo)")
+            } else {
+                DDLogInfo("[DownloadableBackup] No active downloadable backups found")
             }
         } catch {
             guard !Task.isCancelled else { return }
-            // Silently fail - backup status remains unchanged
+            DDLogError("[DownloadableBackup] Failed to fetch backup status: \(error)")
         }
     }
 
     /// Dismisses the current backup notice, clearing it from the UI and notifying the server.
     func dismissBackupNotice() {
-        guard let siteRef = JetpackSiteRef(blog: blog),
-              let downloadID = backupStatus?.downloadID else {
+        guard let siteRef = JetpackSiteRef(blog: blog), let backup else {
             return
         }
 
+        let downloadID = backup.downloadID
+
         // Clear local state immediately for better UX
-        backupStatus = nil
+        self.backup = nil
+        DDLogInfo("[DownloadableBackup] Dismissing backup notice for download ID: \(downloadID)")
 
         // Dismiss on the server (fire and forget)
         Task {
