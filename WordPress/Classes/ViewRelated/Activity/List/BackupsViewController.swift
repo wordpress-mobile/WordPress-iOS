@@ -3,7 +3,7 @@ import SwiftUI
 import WordPressUI
 import WordPressKit
 
-final class BackupsViewController: UIHostingController<BackupsView> {
+final class BackupsViewController: UIHostingController<ActivityLogsView> {
     private let viewModel: ActivityLogsViewModel
 
     init(blog: Blog) {
