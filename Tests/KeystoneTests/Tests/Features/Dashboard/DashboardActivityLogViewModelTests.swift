@@ -51,3 +51,18 @@ final class DashboardActivityLogViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.activitiesToDisplay[2].activityID, "3")
     }
 }
+
+extension Activity {
+    static func mock(id: String = "1", isRewindable: Bool = false) throws -> Activity {
+        let dictionary = [
+            "activity_id": id,
+            "summary": "",
+            "is_rewindable": isRewindable,
+            "rewind_id": "1",
+            "content": ["text": ""],
+            "published": "2020-11-09T13:16:43.701+00:00"
+        ] as [String: AnyObject]
+        let data = try JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
+        return try JSONDecoder().decode(Activity.self, from: data)
+    }
+}
