@@ -9,8 +9,6 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
     private var viewModel: DashboardActivityLogViewModel?
     private var hostingController: UIHostingController<DashboardActivityLogListView>?
 
-    let store = StoreContainer.shared.activity
-
     // MARK: - Views
 
     private lazy var cardFrameView: BlogDashboardCardFrameView = {
