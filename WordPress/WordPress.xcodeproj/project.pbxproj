@@ -1092,7 +1092,6 @@
 		0C5C46F42D98343300F2CD55 /* Exceptions for "Classes" folder in "Keystone" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Services/PostRepository+Helpers.swift",
 				"System/ApiCredentials+BuildSecrets.swift",
 				System/main.swift,
 				"System/WordPress-Bridging-Header.h",
@@ -1160,7 +1159,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Networking/WordPressOrgRestApi+WordPress.swift",
-				"Services/PostRepository+Helpers.swift",
 			);
 			target = 3F7AE0B42D9B30A100AB4892 /* WordPressData */;
 		};
@@ -1168,7 +1166,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Networking/WordPressOrgRestApi+WordPress.swift",
-				"Services/PostRepository+Helpers.swift",
 			);
 			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
 		};
@@ -1176,7 +1173,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Networking/WordPressOrgRestApi+WordPress.swift",
-				"Services/PostRepository+Helpers.swift",
 			);
 			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
 		};
