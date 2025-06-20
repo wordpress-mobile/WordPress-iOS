@@ -46,6 +46,7 @@ private struct ActivityLogsListView: View {
             }
         }
         .listStyle(.plain)
+        .accessibilityIdentifier("activity_logs_list")
         .overlay {
             if let response = viewModel.response {
                 if response.isEmpty {
