@@ -116,7 +116,7 @@ private struct TimeZoneRowView: View {
             }
         }
         .buttonStyle(.plain)
-        .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20))
+        .listRowInsets(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
     }
 }
 
