@@ -204,14 +204,7 @@ class ActivityServiceRemoteMock: ActivityServiceRemote {
 
     var groupsToReturn: [ActivityGroup]?
 
-    override func getActivityForSite(_ siteID: Int,
-                                     offset: Int = 0,
-                                     count: Int,
-                                     after: Date? = nil,
-                                     before: Date? = nil,
-                                     group: [String] = [],
-                                     success: @escaping (_ activities: [Activity], _ hasMore: Bool) -> Void,
-                                     failure: @escaping (Error) -> Void) {
+    override func getActivityForSite(_ siteID: Int, offset: Int = 0, count: Int, after: Date? = nil, before: Date? = nil, group: [String] = [], rewindable: Bool? = nil, searchText: String? = nil, success: @escaping (_ activities: [WordPressKit.Activity], _ hasMore: Bool) -> Void, failure: @escaping (any Error) -> Void) {
         getActivityForSiteCalledWithSiteID = siteID
         getActivityForSiteCalledWithCount = count
         getActivityForSiteCalledWithOffset = offset
