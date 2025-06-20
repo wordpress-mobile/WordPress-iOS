@@ -173,7 +173,7 @@ extension BlogDetailsViewController {
     }
 
     @objc public func showBackup() {
-        let controller = ActivityLogsViewController(blog: blog, isBackupMode: true)
+        let controller = BackupsViewController(blog: blog)
         controller.navigationItem.largeTitleDisplayMode = .never
 
         presentationDelegate?.presentBlogDetailsViewController(controller)

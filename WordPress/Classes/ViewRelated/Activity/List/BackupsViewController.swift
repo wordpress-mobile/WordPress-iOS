@@ -3,11 +3,11 @@ import SwiftUI
 import WordPressUI
 import WordPressKit
 
-final class ActivityLogsViewController: UIHostingController<ActivityLogsView> {
+final class BackupsViewController: UIHostingController<BackupsView> {
     private let viewModel: ActivityLogsViewModel
 
     init(blog: Blog) {
-        self.viewModel = ActivityLogsViewModel(blog: blog)
+        self.viewModel = ActivityLogsViewModel(blog: blog, isBackupMode: true)
         super.init(rootView: ActivityLogsView(viewModel: viewModel))
         self.title = Strings.title
     }
@@ -18,5 +18,5 @@ final class ActivityLogsViewController: UIHostingController<ActivityLogsView> {
 }
 
 private enum Strings {
-    static let title = NSLocalizedString("activityLogs.title", value: "Activity", comment: "Title for the activity logs screen")
+    static let title = NSLocalizedString("backups.title", value: "Backups", comment: "Title for the backups screen")
 }

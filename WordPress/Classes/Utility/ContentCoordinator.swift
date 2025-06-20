@@ -90,7 +90,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
             throw DisplayError.missingParameter
         }
 
-        let backupViewController = ActivityLogsViewController(blog: blog, isBackupMode: true)
+        let backupViewController = BackupsViewController(blog: blog)
         backupViewController.navigationItem.largeTitleDisplayMode = .never
         controller?.navigationController?.pushViewController(backupViewController, animated: true)
 
