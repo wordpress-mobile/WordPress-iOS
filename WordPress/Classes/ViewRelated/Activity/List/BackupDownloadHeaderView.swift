@@ -41,7 +41,7 @@ struct BackupDownloadHeaderView: View {
 
                 HStack(spacing: 12) {
                     Button(action: onDownload) {
-                        Label(Strings.download, systemImage: "arrow.down.circle")
+                        Text(Strings.download)
                             .fontWeight(.medium)
                     }
                     .buttonStyle(.borderedProminent)

@@ -103,6 +103,7 @@ class BaseRestoreCompleteViewController: UIViewController {
             self?.secondaryButtonTapped(from: sender)
         }
 
+        view.backgroundColor = .systemBackground
         view.addSubview(completeView)
         completeView.pinEdges(to: view.safeAreaLayoutGuide)
     }

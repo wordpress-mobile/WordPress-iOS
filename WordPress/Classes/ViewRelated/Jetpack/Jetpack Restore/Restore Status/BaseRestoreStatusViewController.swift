@@ -92,6 +92,7 @@ class BaseRestoreStatusViewController: UIViewController {
 
         statusView.update(progress: 0, progressTitle: configuration.placeholderProgressTitle, progressDescription: nil)
 
+        view.backgroundColor = .systemBackground
         view.addSubview(statusView)
         statusView.pinEdges(to: view.safeAreaLayoutGuide)
     }

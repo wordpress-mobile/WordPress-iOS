@@ -16,7 +16,7 @@ struct JetpackSiteRef: Hashable, Codable {
     /// The homeURL string  for a site.
     let homeURL: String
 
-    private(set) var hasBackup = false
+    private(set) var isBackupFeatureAvailable = false
     private var hasPaidPlan = false
 
     // Self Hosted Non Jetpack Support
@@ -61,7 +61,7 @@ struct JetpackSiteRef: Hashable, Codable {
             self.siteID = siteID
             self.username = username
             self.homeURL = homeURL
-            self.hasBackup = blog.isBackupsAllowed()
+            self.isBackupFeatureAvailable = blog.isBackupsAllowed()
             self.hasPaidPlan = blog.hasPaidPlan
         }
     }
@@ -74,12 +74,12 @@ struct JetpackSiteRef: Hashable, Codable {
         return lhs.siteID == rhs.siteID
             && lhs.username == rhs.username
             && lhs.homeURL == rhs.homeURL
-            && lhs.hasBackup == rhs.hasBackup
+            && lhs.isBackupFeatureAvailable == rhs.isBackupFeatureAvailable
             && lhs.hasPaidPlan == rhs.hasPaidPlan
     }
 
     func shouldShowActivityLogFilter() -> Bool {
-        hasBackup || hasPaidPlan
+        isBackupFeatureAvailable || hasPaidPlan
     }
 
     struct Constants {

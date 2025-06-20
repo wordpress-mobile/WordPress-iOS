@@ -151,7 +151,7 @@ private struct BackupDownloadSection: View {
                 if backupTracker.isBackupInProgress,
                    let progress = backupStatus.progress {
                     BackupInProgressView(progress: progress)
-                } else if let url = backupTracker.downloadURL() {
+                } else if let url = backupTracker.downloadURL {
                     BackupDownloadHeaderView(
                         backupStatus: backupStatus,
                         onDownload: {
@@ -159,8 +159,8 @@ private struct BackupDownloadSection: View {
                             UIApplication.shared.open(url)
                         },
                         onDismiss: {
-                            Task {
-                                await backupTracker.dismissBackupNotice()
+                            withAnimation {
+                                backupTracker.dismissBackupNotice()
                             }
                         }
                     )
