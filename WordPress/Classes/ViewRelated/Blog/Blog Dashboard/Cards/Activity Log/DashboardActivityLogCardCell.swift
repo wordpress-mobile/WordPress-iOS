@@ -144,16 +144,7 @@ final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
     // MARK: - Navigation
 
     private func showActivityLog(for blog: Blog, tapSource: String) {
-        let activityLogController: UIViewController
-
-        if FeatureFlag.dataViews.enabled {
-            activityLogController = ActivityLogsViewController(blog: blog)
-        } else if let jetpackController = JetpackActivityLogViewController(blog: blog) {
-            activityLogController = jetpackController
-        } else {
-            return
-        }
-
+        let activityLogController = ActivityLogsViewController(blog: blog)
         presentingViewController?.navigationController?.pushViewController(activityLogController, animated: true)
 
         WPAnalytics.track(.activityLogViewed, withProperties: [WPAppAnalyticsKeyTapSource: tapSource])
