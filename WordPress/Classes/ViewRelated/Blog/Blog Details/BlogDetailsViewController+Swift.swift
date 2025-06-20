@@ -149,16 +149,7 @@ extension BlogDetailsViewController {
     }
 
     @objc public func showActivity() {
-        let controller: UIViewController
-
-        if FeatureFlag.dataViews.enabled {
-            controller = ActivityLogsViewController(blog: blog)
-        } else if let jetpackController = JetpackActivityLogViewController(blog: blog) {
-            controller = jetpackController
-        } else {
-            return wpAssertionFailure("failed to instantiate")
-        }
-
+        let controller = ActivityLogsViewController(blog: blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         presentationDelegate?.presentBlogDetailsViewController(controller)
 
@@ -182,17 +173,8 @@ extension BlogDetailsViewController {
     }
 
     @objc public func showBackup() {
-        let controller: UIViewController
-
-        if FeatureFlag.dataViews.enabled {
-            controller = ActivityLogsViewController(blog: blog, isBackupMode: true)
-            controller.navigationItem.largeTitleDisplayMode = .never
-        } else {
-            guard let backupListVC = BackupListViewController.withJPBannerForBlog(blog) else {
-                return wpAssertionFailure("failed to instantiate")
-            }
-            controller = backupListVC
-        }
+        let controller = BackupsViewController(blog: blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
 
         presentationDelegate?.presentBlogDetailsViewController(controller)
 
