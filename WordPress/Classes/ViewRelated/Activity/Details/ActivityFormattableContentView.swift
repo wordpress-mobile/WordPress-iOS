@@ -27,6 +27,19 @@ struct ActivityFormattableContentView: UIViewRepresentable {
         let styles = ActivityContentStyles()
         let formattedContent = formattableActivity.formattedContent(using: styles)
         textView.attributedText = formattedContent
+
+        // Force layout to update intrinsic content size
+        textView.invalidateIntrinsicContentSize()
+    }
+
+    func sizeThatFits(_ proposal: ProposedViewSize, uiView: UITextView, context: Context) -> CGSize? {
+        guard let width = proposal.width else { return nil }
+
+        // Calculate the size that fits within the proposed width
+        let targetSize = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
+        let size = uiView.sizeThatFits(targetSize)
+
+        return CGSize(width: width, height: size.height)
     }
 
     func makeCoordinator() -> Coordinator {

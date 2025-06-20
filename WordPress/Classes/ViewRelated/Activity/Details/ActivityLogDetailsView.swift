@@ -136,6 +136,7 @@ private struct ActivityHeaderView: View {
                         formattableActivity: formattableActivity,
                         blog: blog
                     )
+                    .fixedSize(horizontal: false, vertical: true)
                 }
 
                 // Date and time
