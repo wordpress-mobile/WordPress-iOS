@@ -20,9 +20,10 @@ struct ActivityLogRowView: View {
                         .foregroundColor(.secondary)
                 }
 
-                Text(viewModel.title)
+                Text(viewModel.title.isEmpty ? "—" : viewModel.title)
                     .font(.subheadline)
                     .lineLimit(2)
+                    .foregroundColor(viewModel.title.isEmpty ? .secondary : .primary)
 
                 if let actor = viewModel.activity.actor {
                     HStack(spacing: 6) {

@@ -137,6 +137,10 @@ private struct ActivityHeaderView: View {
                         blog: blog
                     )
                     .fixedSize(horizontal: false, vertical: true)
+                } else {
+                    Text("—")
+                        .font(.body)
+                        .foregroundColor(.secondary)
                 }
 
                 // Date and time
