@@ -49,13 +49,7 @@ struct TimeZoneSelectorView: View {
     private var suggestionSection: some View {
         if let rowViewModel = viewModel.suggestedTimezoneRowViewModel {
             Section(Strings.suggested) {
-                TimeZoneRowView(
-                    viewModel: rowViewModel,
-                    isSelected: rowViewModel.timezone.value == viewModel.selectedValue,
-                    isSuggestion: true
-                ) {
-                    handleSelection(rowViewModel.timezone)
-                }
+                timeZoneRow(for: rowViewModel)
             }
         }
     }
@@ -65,14 +59,19 @@ struct TimeZoneSelectorView: View {
         ForEach(sections) { section in
             Section(section.name) {
                 ForEach(section.timezones) { rowViewModel in
-                    TimeZoneRowView(
-                        viewModel: rowViewModel,
-                        isSelected: rowViewModel.timezone.value == viewModel.selectedValue
-                    ) {
-                        handleSelection(rowViewModel.timezone)
-                    }
+                    timeZoneRow(for: rowViewModel)
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private func timeZoneRow(for rowViewModel: TimeZoneRowViewModel) -> some View {
+        TimeZoneRowView(
+            viewModel: rowViewModel,
+            isSelected: rowViewModel.timezone.value == viewModel.selectedValue
+        ) {
+            handleSelection(rowViewModel.timezone)
         }
     }
 
@@ -86,14 +85,12 @@ struct TimeZoneSelectorView: View {
 private struct TimeZoneRowView: View {
     let viewModel: TimeZoneRowViewModel
     let isSelected: Bool
-    var isSuggestion = false
     let onTap: () -> Void
 
     var body: some View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(viewModel.timezone.label)
-                    .foregroundColor(isSuggestion ? .accentColor : .primary)
                     .fontWeight(isSelected ? .bold : .regular)
 
                 HStack {
