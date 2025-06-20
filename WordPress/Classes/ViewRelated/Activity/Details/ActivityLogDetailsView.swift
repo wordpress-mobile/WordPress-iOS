@@ -9,6 +9,7 @@ struct ActivityLogDetailsView: View {
     let blog: Blog
 
     @Environment(\.dismiss) var dismiss
+    @State private var isLoadingRewindStatus = false
 
     var body: some View {
         ScrollView {
@@ -61,13 +62,20 @@ struct ActivityLogDetailsView: View {
             // Action buttons
             HStack(spacing: 12) {
                 Button(action: {
-                    trackRestoreTapped()
-                    ActivityLogDetailsCoordinator.presentRestore(activity: activity, blog: blog)
+                    handleRestoreTapped()
                 }) {
-                    Label(Strings.restore, systemImage: "arrow.counterclockwise")
-                        .fontWeight(.medium)
+                    ZStack {
+                        Label(Strings.restore, systemImage: "arrow.counterclockwise")
+                            .fontWeight(.medium)
+                            .opacity(isLoadingRewindStatus ? 0 : 1)
+ 
+                        if isLoadingRewindStatus {
+                            ProgressView()
+                        }
+                    }
                 }
                 .buttonStyle(.borderedProminent)
+                .disabled(isLoadingRewindStatus)
 
                 Button(action: {
                     trackBackupTapped()
@@ -220,6 +228,33 @@ private enum Strings {
         value: "Download",
         comment: "Button title for downloading a backup"
     )
+}
+
+// MARK: - Actions
+
+private extension ActivityLogDetailsView {
+    func handleRestoreTapped() {
+        trackRestoreTapped()
+
+        guard let siteRef = JetpackSiteRef(blog: blog) else {
+            return
+        }
+
+        isLoadingRewindStatus = true
+
+        let service = JetpackRestoreService(coreDataStack: ContextManager.shared)
+        service.getRewindStatus(for: siteRef) { rewindStatus in
+            DispatchQueue.main.async {
+                self.isLoadingRewindStatus = false
+                ActivityLogDetailsCoordinator.presentRestore(activity: self.activity, blog: self.blog, rewindStatus: rewindStatus)
+            }
+        } failure: { error in
+            DispatchQueue.main.async {
+                self.isLoadingRewindStatus = false
+                DDLogError("Failed to fetch rewind status: \(error.localizedDescription)")
+            }
+        }
+    }
 }
 
 // MARK: - Analytics

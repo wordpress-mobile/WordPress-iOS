@@ -5,7 +5,7 @@ import WordPressKit
 /// Coordinator to handle navigation from SwiftUI ActivityLogDetailsView to UIKit view controllers
 enum ActivityLogDetailsCoordinator {
 
-    static func presentRestore(activity: Activity, blog: Blog) {
+    static func presentRestore(activity: Activity, blog: Blog, rewindStatus: RewindStatus) {
         guard let viewController = UIViewController.topViewController,
               let siteRef = JetpackSiteRef(blog: blog),
               activity.isRewindable,
@@ -13,9 +13,7 @@ enum ActivityLogDetailsCoordinator {
             return
         }
 
-        // Check if the store has the credentials status cached
-        let store = StoreContainer.shared.activity
-        let isAwaitingCredentials = store.isAwaitingCredentials(site: siteRef)
+        let isAwaitingCredentials = rewindStatus.state == .awaitingCredentials
 
         let restoreViewController = JetpackRestoreOptionsViewController(
             site: siteRef,
