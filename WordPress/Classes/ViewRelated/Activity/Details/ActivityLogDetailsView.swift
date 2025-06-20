@@ -3,18 +3,26 @@ import WordPressKit
 import WordPressUI
 import WordPressShared
 import Gridicons
+import UIKit
 
 struct ActivityLogDetailsView: View {
     let activity: Activity
     let blog: Blog
 
-    @Environment(\.dismiss) var dismiss
     @State private var isLoadingRewindStatus = false
+
+    private let formattableActivity: FormattableActivity
+
+    init(activity: Activity, blog: Blog) {
+        self.activity = activity
+        self.blog = blog
+        self.formattableActivity = FormattableActivity(with: activity)
+    }
 
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                ActivityHeaderView(activity: activity)
+                ActivityHeaderView(activity: activity, blog: blog, formattableActivity: formattableActivity)
                 if activity.isRewindable {
                     restoreSiteCard
                 }
@@ -68,7 +76,7 @@ struct ActivityLogDetailsView: View {
                         Label(Strings.restore, systemImage: "arrow.counterclockwise")
                             .fontWeight(.medium)
                             .opacity(isLoadingRewindStatus ? 0 : 1)
- 
+
                         if isLoadingRewindStatus {
                             ProgressView()
                         }
@@ -95,6 +103,8 @@ struct ActivityLogDetailsView: View {
 
 private struct ActivityHeaderView: View {
     let activity: Activity
+    let blog: Blog
+    let formattableActivity: FormattableActivity
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -122,18 +132,10 @@ private struct ActivityHeaderView: View {
 
                 // Activity details
                 if !activity.text.isEmpty {
-                    if let formattedContent = activity.formattedContent {
-                        Text(formattedContent)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .lineLimit(3)
-                            .tint(Color.accentColor)
-                    } else {
-                        Text(activity.text)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .lineLimit(3)
-                    }
+                    ActivityFormattableContentView(
+                        formattableActivity: formattableActivity,
+                        blog: blog
+                    )
                 }
 
                 // Date and time
