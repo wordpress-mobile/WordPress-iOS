@@ -74,7 +74,7 @@ private struct ActivityLogsListView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                ActivityLogsMenu(viewModel: viewModel)
+                ActivityLogsFiltersMenu(viewModel: viewModel)
             }
         }
     }
