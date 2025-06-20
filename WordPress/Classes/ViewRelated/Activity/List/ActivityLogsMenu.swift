@@ -2,7 +2,7 @@ import SwiftUI
 import WordPressKit
 import WordPressShared
 
-struct ActivityLogsMenu: View {
+struct ActivityLogsFiltersMenu: View {
     @ObservedObject var viewModel: ActivityLogsViewModel
 
     @State private var isShowingActivityTypePicker = false
@@ -21,7 +21,7 @@ struct ActivityLogsMenu: View {
                 }
             }
         } label: {
-            Image(systemName: "ellipsis")
+            Image(systemName: "line.3.horizontal.decrease.circle")
         }
         .sheet(isPresented: $isShowingActivityTypePicker) {
             NavigationView {

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SubscribersMenu: View {
+struct SubscribersFiltersMenu: View {
     @ObservedObject var viewModel: SubscribersViewModel
 
     var body: some View {
@@ -14,7 +14,7 @@ struct SubscribersMenu: View {
                 Text("\(Strings.subscribers) \(count)")
             }
         } label: {
-            Image(systemName: "ellipsis.circle")
+            Image(systemName: "line.3.horizontal.decrease.circle")
         }
     }
 

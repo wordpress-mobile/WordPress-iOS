@@ -73,7 +73,7 @@ private struct SubscribersListView: View {
                 } label: {
                     Image(systemName: "plus")
                 }
-                SubscribersMenu(viewModel: viewModel)
+                SubscribersFiltersMenu(viewModel: viewModel)
             }
         }
         .sheet(isPresented: $isShowingInviteView) {
