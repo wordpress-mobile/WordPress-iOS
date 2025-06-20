@@ -1,6 +1,7 @@
 import SwiftUI
 import WordPressUI
 import WordPressKit
+import WordPressShared
 
 struct ActivityLogsView: View {
     @ObservedObject var viewModel: ActivityLogsViewModel
@@ -28,6 +29,10 @@ private struct ActivityLogsListView: View {
 
     var body: some View {
         List {
+            if let backupTracker = viewModel.backupTracker {
+                BackupDownloadSection(backupTracker: backupTracker)
+            }
+
             if let response = viewModel.response {
                 ActivityLogsPaginatedForEach(response: response, blog: viewModel.blog)
 
@@ -60,6 +65,9 @@ private struct ActivityLogsListView: View {
         }
         .onAppear {
             viewModel.onAppear()
+        }
+        .onDisappear {
+            viewModel.onDisappear()
         }
         .refreshable {
             await viewModel.refresh()
@@ -131,6 +139,37 @@ private struct ActivityLogsPaginatedForEach: View {
                     EmptyView()
                 }.opacity(0)
             }
+    }
+}
+
+private struct BackupDownloadSection: View {
+    @ObservedObject var backupTracker: BackupDownloadTracker
+
+    var body: some View {
+        if let backupStatus = backupTracker.backupStatus {
+            Group {
+                if backupTracker.isBackupInProgress,
+                   let progress = backupStatus.progress {
+                    BackupInProgressView(progress: progress)
+                } else if let url = backupTracker.downloadURL() {
+                    BackupDownloadHeaderView(
+                        backupStatus: backupStatus,
+                        onDownload: {
+                            WPAnalytics.track(.backupFileDownloadTapped)
+                            UIApplication.shared.open(url)
+                        },
+                        onDismiss: {
+                            Task {
+                                await backupTracker.dismissBackupNotice()
+                            }
+                        }
+                    )
+                }
+            }
+            .listRowInsets(EdgeInsets())
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+        }
     }
 }
 
