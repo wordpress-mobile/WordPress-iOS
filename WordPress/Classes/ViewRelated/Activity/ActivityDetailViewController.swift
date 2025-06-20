@@ -286,8 +286,6 @@ class ActivityDetailViewController: UIViewController, StoryboardLoadable {
     private func presentedFrom() -> String {
         if presenter is JetpackActivityLogViewController {
             return "activity_log"
-        } else if presenter is BackupListViewController {
-            return "backup"
         } else if presenter is DashboardActivityLogCardCell {
             return "dashboard"
         } else {

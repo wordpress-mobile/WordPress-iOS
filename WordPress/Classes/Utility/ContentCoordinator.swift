@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 protocol ContentCoordinator {
     func displayReaderWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws
@@ -84,13 +85,16 @@ struct DefaultContentCoordinator: ContentCoordinator {
 
     func displayBackupWithSiteID(_ siteID: NSNumber?) throws {
         guard let siteID,
-              let blog = Blog.lookup(withID: siteID, in: mainContext),
-              let backupListViewController = BackupListViewController.withJPBannerForBlog(blog)
+              let blog = Blog.lookup(withID: siteID, in: mainContext)
         else {
             throw DisplayError.missingParameter
         }
 
-        controller?.navigationController?.pushViewController(backupListViewController, animated: true)
+        let backupViewController = ActivityLogsViewController(blog: blog, isBackupMode: true)
+        backupViewController.navigationItem.largeTitleDisplayMode = .never
+        controller?.navigationController?.pushViewController(backupViewController, animated: true)
+
+        WPAnalytics.track(.backupListOpened)
     }
 
     func displayScanWithSiteID(_ siteID: NSNumber?) throws {
