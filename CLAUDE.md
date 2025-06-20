@@ -8,18 +8,6 @@ WordPress for iOS is the official mobile app for WordPress that lets users creat
 
 Minimum requires iOS version is iOS 16.
 
-## Common Development Commands
-
-### Build & Dependencies
-- `rake build` - Build the app
-- `xcodebuild -scheme <target> -destination 'platform=iOS Simulator,name=iPhone 16' | bundle exec xcpretty` build targets from `Modules/`.
-
-### Testing
-- `rake test` - Run all tests
-
-### Code Quality
-- `rake lint` - Check for SwiftLint errors
-
 ## High-Level Architecture
 
 ### Project Structure
