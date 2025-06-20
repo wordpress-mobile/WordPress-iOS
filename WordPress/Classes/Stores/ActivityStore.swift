@@ -299,7 +299,7 @@ extension ActivityStore {
     }
 
     func fetchBackupStatus(site: JetpackSiteRef) {
-        guard site.isBackupFeatureAvailable else {
+        guard site.hasBackup else {
             return
         }
 

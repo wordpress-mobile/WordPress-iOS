@@ -31,7 +31,7 @@ final class DownloadableBackupTracker: ObservableObject {
 
     /// Refreshes backup status and starts continuous polling with adaptive delays.
     func refreshBackupStatus() {
-        guard let siteRef = JetpackSiteRef(blog: blog), siteRef.isBackupFeatureAvailable else {
+        guard let siteRef = JetpackSiteRef(blog: blog), siteRef.hasBackup else {
             return
         }
 

@@ -24,7 +24,7 @@ extension JetpackSiteRef {
             "siteID": \(siteID),
             "username": "\(username)",
             "homeURL": "url",
-            "isBackupFeatureAvailable": true,
+            "hasBackup": true,
             "hasPaidPlan": true,
             "isSelfHostedWithoutJetpack": false,
             "xmlRPC": null,
