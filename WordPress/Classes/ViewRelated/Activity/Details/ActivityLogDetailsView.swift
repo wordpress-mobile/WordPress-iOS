@@ -278,7 +278,6 @@ private extension ActivityLogDetailsView {
 
 // MARK: - Preview Helpers
 
-#if DEBUG
 extension Blog {
     static var mock: Blog {
         // For previews, we'll return a dummy blog object
@@ -286,4 +285,3 @@ extension Blog {
         return Blog()
     }
 }
-#endif
