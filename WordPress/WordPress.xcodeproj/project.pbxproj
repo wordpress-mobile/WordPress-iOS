@@ -1119,7 +1119,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Networking/WordPressOrgRestApi+WordPress.swift",
-				"RemotePost+Metadata.swift",
 				"Services/PostRepository+Helpers.swift",
 			);
 			target = 3F7AE0B42D9B30A100AB4892 /* WordPressData */;
@@ -1128,7 +1127,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Networking/WordPressOrgRestApi+WordPress.swift",
-				"RemotePost+Metadata.swift",
 				"Services/PostRepository+Helpers.swift",
 			);
 			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
@@ -1137,7 +1135,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Networking/WordPressOrgRestApi+WordPress.swift",
-				"RemotePost+Metadata.swift",
 				"Services/PostRepository+Helpers.swift",
 			);
 			target = FABB1F8F2602FC2C00C8785C /* Jetpack */;
