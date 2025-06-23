@@ -27,6 +27,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         return GutenbergMediaPickerHelper(context: self, post: post)
     }()
 
+    lazy var featuredImageHelper = NewGutenbergFeaturedImageHelper(post: post)
+
     // MARK: - PostEditor
 
     private(set) lazy var postEditorStateContext: PostEditorStateContext = {
@@ -415,6 +417,17 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
     func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: GutenbergKit.EditorState) {
         gutenbergDidRequestToggleRedoButton(!state.hasRedo)
         gutenbergDidRequestToggleUndoButton(!state.hasUndo)
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateFeaturedImage mediaID: Int) {
+        let featuredImageID = post.featuredImage?.mediaID?.intValue
+
+        guard featuredImageID != mediaID else {
+            // If the featured image ID is the same, no need to update
+            return
+        }
+
+        self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didLogException error: GutenbergKit.GutenbergJSException) {

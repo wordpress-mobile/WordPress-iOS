@@ -182,7 +182,7 @@
         if (post == nil) {
             NSUUID *foreignID = remotePost.foreignID;
             if (foreignID != nil) {
-                post = [blog lookupPostWithForeignID:foreignID inContext:context];
+                post = [blog lookupLocalPostWithForeignID:foreignID inContext:context];
             }
         }
         if (!post) {
