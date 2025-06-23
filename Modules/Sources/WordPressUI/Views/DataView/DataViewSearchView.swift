@@ -13,19 +13,19 @@ public struct DataViewSearchView<Response: DataViewPaginatedResponseProtocol, Co
     let content: (Response) -> Content
 
     /// Delay in milliseconds before executing search (default: 500ms)
-    let debounceDelay: UInt64
+    let delay: Duration
 
     @State private var response: Response?
     @State private var error: Error?
 
     public init(
         searchText: String,
-        debounceDelay: UInt64 = 500,
+        delay: Duration = .milliseconds(500),
         search: @escaping () async throws -> Response,
         @ViewBuilder content: @escaping (Response) -> Content
     ) {
         self.searchText = searchText
-        self.debounceDelay = debounceDelay
+        self.delay = delay
         self.search = search
         self.content = content
     }
@@ -49,7 +49,7 @@ public struct DataViewSearchView<Response: DataViewPaginatedResponseProtocol, Co
         .task(id: searchText) {
             error = nil
             do {
-                try await Task.sleep(for: .milliseconds(debounceDelay))
+                try await Task.sleep(for: delay)
                 let response = try await search()
                 guard !Task.isCancelled else { return }
                 self.response = response
