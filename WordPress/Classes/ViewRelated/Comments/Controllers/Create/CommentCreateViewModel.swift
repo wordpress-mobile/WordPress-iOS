@@ -40,13 +40,12 @@ final class CommentCreateViewModel {
     /// Create a reply to the given comment.
     init(replyingTo comment: Comment, save: @escaping (String) async throws -> Void) {
         let siteID = comment.associatedSiteID ?? 0
-        wpAssert(siteID != 0, "missing required parameter siteID")
 
         self.siteID = siteID
         self.replyToComment = comment
         self._save = save
 
-        self.suggestionsViewModel = SuggestionsListViewModel.make(siteID: siteID)
+        self.suggestionsViewModel = comment.blog.flatMap { SuggestionsListViewModel.make(blog: $0) }
         self.suggestionsViewModel?.enableProminentSuggestions(
             postAuthorID: comment.post?.authorID,
             commentAuthorID: comment.commentID as NSNumber
