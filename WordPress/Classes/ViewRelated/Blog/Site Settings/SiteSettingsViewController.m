@@ -141,7 +141,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     }
 
     [self refreshData];
-    [self observeTimeZoneStore];
 
     self.tableView.accessibilityIdentifier = @"siteSettingsTable";
 }

@@ -2,7 +2,6 @@
 
 @class Blog;
 @class SettingTableViewCell;
-@class TimeZoneObserver;
 
 typedef NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionGeneral = 0,
@@ -21,7 +20,6 @@ typedef NS_ENUM(NSInteger, SiteSettingsSection) {
 @interface SiteSettingsViewController : UITableViewController
 
 @property (nonatomic, strong,  readonly) Blog *blog;
-@property (nonatomic, strong) TimeZoneObserver *timeZoneObserver;
 
 - (instancetype)initWithBlog:(Blog *)blog;
 

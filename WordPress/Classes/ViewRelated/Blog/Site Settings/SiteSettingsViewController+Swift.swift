@@ -1,20 +1,6 @@
 import Foundation
 import SwiftUI
-import WordPressFlux
 import WordPressShared
-
-// This is just a wrapper for the receipts, since Receipt isn't exposed to Obj-C
-@objc class TimeZoneObserver: NSObject {
-    let storeReceipt: Receipt
-    let queryReceipt: Receipt
-
-    init(onStateChange callback: @escaping (TimeZoneStoreState, TimeZoneStoreState) -> Void) {
-        let store = StoreContainer.shared.timezone
-        storeReceipt = store.onStateChange(callback)
-        queryReceipt = store.query(TimeZoneQuery())
-        super.init()
-    }
-}
 
 extension SiteSettingsViewController {
     // MARK: - General
@@ -66,37 +52,25 @@ extension SiteSettingsViewController {
 
     // MARK: - Timezone
 
-    @objc public func observeTimeZoneStore() {
-        timeZoneObserver = TimeZoneObserver() { [weak self] (oldState, newState) in
-            guard let controller = self else {
-                return
-            }
-            let oldLabel = controller.timezoneLabel(state: oldState)
-            let newLabel = controller.timezoneLabel(state: newState)
-            guard newLabel != oldLabel else {
-                return
-            }
-
-            // If this were ImmuTable-based, I'd reload the specific row
-            // But it could silently break if we change the order of rows in the future
-            // @koke 2018-01-17
-            controller.tableView.reloadData()
-        }
-    }
-
-    @objc public func timezoneLabel() -> String? {
-        return timezoneLabel(state: StoreContainer.shared.timezone.state)
-    }
-
-    func timezoneLabel(state: TimeZoneStoreState) -> String? {
+    func formattedTimezoneValue() -> String? {
         guard let settings = blog.settings else {
             return nil
         }
-        if let timezone = state.findTimezone(gmtOffset: settings.gmtOffset?.floatValue, timezoneString: settings.timezoneString) {
-            return timezone.label
-        } else {
-            return timezoneValue
+        if let timezoneString = settings.timezoneString?.nonEmptyString() {
+            // Try to get a localized name from the system
+            if let timeZone = TimeZone(identifier: timezoneString),
+               let name = timeZone.localizedName(for: .generic, locale: .current) {
+
+                let formatter = DateFormatter()
+                formatter.timeZone = timeZone
+                formatter.dateFormat = "ZZZZ"  // "GMT-05:00"
+                let offsetString = formatter.string(from: Date())
+
+                return "\(name) (\(offsetString))"
+            }
+            return timezoneString
         }
+        return timezoneValue
     }
 
     var timezoneValue: String? {
@@ -360,7 +334,7 @@ extension SiteSettingsViewController {
     private func configureCellForTimezone(_ cell: SettingTableViewCell) {
         cell.editable = blog.isAdmin
         cell.textLabel?.text = NSLocalizedString("Time Zone", comment: "Label for the timezone setting")
-        cell.textValue = timezoneLabel()
+        cell.textValue = formattedTimezoneValue()
     }
 
     // MARK: - Handling General Setting Cell Taps
