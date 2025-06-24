@@ -13,16 +13,14 @@ public struct CardView<Content: View>: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Group {
-                if let title {
-                    Text(title.uppercased())
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                content()
+            if let title {
+                Text(title.uppercased())
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            content()
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .overlay(
