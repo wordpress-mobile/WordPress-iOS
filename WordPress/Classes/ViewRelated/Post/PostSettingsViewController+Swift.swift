@@ -302,6 +302,28 @@ extension PostSettingsViewController {
     }
 }
 
+// MARK: - PostSettingsViewController (Post Format)
+
+extension PostSettingsViewController {
+    @objc public func showPostFormatSelector() {
+        guard let post = apost as? Post else {
+            return wpAssertionFailure("expected post type")
+        }
+        let pickerView = PostFormatPicker(post: post) { [weak self] format in
+            guard let self else { return }
+            if post.postFormatText() != format {
+                WPAnalytics.track(.editorPostFormatChanged, properties: ["via": "settings"])
+                post.setPostFormatText(format)
+            }
+            self.navigationController?.popViewController(animated: true)
+            self.tableView.reloadData()
+        }
+        let pickerVC = UIHostingController(rootView: pickerView)
+        pickerVC.title = PostFormatPicker.title
+        navigationController?.pushViewController(pickerVC, animated: true)
+    }
+}
+
 private enum Strings {
     static let warningPostWillBePublishedAlertMessage = NSLocalizedString("postSettings.warningPostWillBePublishedAlertMessage", value: "By changing the visibility to 'Private', the post will be published immediately", comment: "An alert message explaning that by changing the visibility to private, the post will be published immediately to your site")
 }
