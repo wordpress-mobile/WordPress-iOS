@@ -134,6 +134,7 @@ private struct ActivityLogsPaginatedForEach: View {
         ActivityLogRowView(viewModel: item)
             .onAppear { response.onRowAppeared(item) }
             .background {
+                // TODO: Switch to NavigationStack and Button on iOS 17
                 NavigationLink {
                     ActivityLogDetailsView(activity: item.activity, blog: blog)
                 } label: {
