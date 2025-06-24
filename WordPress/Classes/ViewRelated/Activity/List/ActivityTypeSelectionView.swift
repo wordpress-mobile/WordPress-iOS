@@ -5,14 +5,13 @@ import WordPressUI
 struct ActivityTypeSelectionView: View {
     @ObservedObject var viewModel: ActivityLogsViewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var selectedTypes: Set<String>
+    @State private var selectedTypes: Set<String> = []
     @State private var availableActivityGroups: [WordPressKit.ActivityGroup] = []
     @State private var isLoading = false
     @State private var error: Error?
 
     init(viewModel: ActivityLogsViewModel) {
         self.viewModel = viewModel
-        self._selectedTypes = State(initialValue: viewModel.parameters.activityTypes)
     }
 
     var body: some View {
@@ -41,7 +40,10 @@ struct ActivityTypeSelectionView: View {
             }
         }
         .onAppear {
-            Task { await fetchActivityGroups() }
+            selectedTypes = viewModel.parameters.activityTypes
+        }
+        .task {
+            await fetchActivityGroups()
         }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
