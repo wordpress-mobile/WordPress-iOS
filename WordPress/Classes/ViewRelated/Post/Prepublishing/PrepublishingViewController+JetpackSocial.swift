@@ -198,10 +198,10 @@ private extension PrepublishingViewController {
     func makeAutoSharingModel() -> PrepublishingAutoSharingModel {
         return coreDataStack.performQuery { [postObjectID = post.objectID] context in
             guard let post = (try? context.existingObject(with: postObjectID)) as? Post,
-                  let connections = post.blog.sortedConnections as? [PublicizeConnection],
                   let supportedServices = try? PublicizeService.allSupportedServices(in: context) else {
                 return .init(services: [], message: String(), sharingLimit: nil)
             }
+            let connections = post.blog.sortedConnections
 
             // first, build a dictionary to categorize the connections.
             var connectionsMap = [PublicizeService.ServiceName: [PublicizeConnection]]()
