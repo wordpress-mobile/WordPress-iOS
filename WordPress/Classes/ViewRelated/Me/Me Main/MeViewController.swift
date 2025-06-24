@@ -3,6 +3,7 @@ import BuildSettingsKit
 import WordPressData
 import WordPressShared
 import AutomatticAbout
+import GravatarUI
 
 public class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!
@@ -37,6 +38,7 @@ public class MeViewController: UITableViewController {
             /// considered to be ` .compact` size class, so it has to be invoked manually.
             headerView.configureHorizontalMode()
         }
+        headerView.delegate = self
 
         ImmuTable.registerRows([
             VerifyEmailRow.self,
@@ -130,7 +132,7 @@ public class MeViewController: UITableViewController {
             icon: UIImage(named: "site-menu-people")?.withRenderingMode(.alwaysTemplate),
             tintColor: .label,
             accessoryType: accessoryType,
-            action: pushMyProfile(),
+            action: presentGravatarAboutEditorAction(),
             accessibilityIdentifier: "myProfile")
 
         let qrLogin = NavigationItemRow(
@@ -251,24 +253,27 @@ public class MeViewController: UITableViewController {
 
     // MARK: - Actions
 
-    fileprivate var myProfileViewController: UIViewController? {
-        guard let account = self.defaultAccount() else {
-            let error = "Tried to push My Profile without a default account. This shouldn't happen"
-            assertionFailure(error)
-            DDLogError("\(error)")
-            return nil
+    fileprivate func presentGravatarAboutEditorAction() -> ImmuTableAction {
+        return { [unowned self] row in
+            presentGravatarQuickEditor(initialPage: .aboutEditor)
         }
-
-        return MyProfileViewController(account: account)
     }
 
-    fileprivate func pushMyProfile() -> ImmuTableAction {
-        return { [unowned self] row in
-            if let myProfileViewController = self.myProfileViewController {
-                WPAppAnalytics.track(.openedMyProfile)
-                self.showOrPushController(myProfileViewController)
-            }
+    fileprivate func presentGravatarQuickEditor(initialPage: AvatarPickerAndAboutEditorConfiguration.Page) {
+        let scope = QuickEditorScopeOption.avatarPickerAndAboutInfoEditor(.init(
+            contentLayout: .horizontal(),
+            fields: [.displayName, .aboutMe, .firstName, .lastName],
+            initialPage: initialPage
+        ))
+
+        let presenter = GravatarQuickEditorPresenter() { [weak self] in
+            self?.refreshAccountDetailsAndSettings()
         }
+
+        presenter?.presentQuickEditor(
+            on: self,
+            scope: scope
+        )
     }
 
     fileprivate func pushAccountSettings() -> ImmuTableAction {
@@ -631,6 +636,14 @@ extension MeViewController {
     @objc private func jetpackButtonTapped() {
         JetpackBrandingCoordinator.presentOverlay(from: self)
         JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .me)
+    }
+}
+
+// MARK: - Header avatar tap handler (MeHeaderViewDelegate)
+
+extension MeViewController: MeHeaderViewDelegate {
+    func meHeaderViewDidTapOnIconView(_ view: MeHeaderView) {
+        presentGravatarQuickEditor(initialPage: .avatarPicker)
     }
 }
 

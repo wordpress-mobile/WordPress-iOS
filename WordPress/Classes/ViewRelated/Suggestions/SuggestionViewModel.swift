@@ -1,4 +1,6 @@
 import Foundation
+import WordPressData
+import WordPressKit
 
 @objc public final class SuggestionViewModel: NSObject {
 

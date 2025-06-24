@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressData
 import WordPressShared
 
 /// Presents the BloggingPromptsFeatureIntroduction with actionable buttons

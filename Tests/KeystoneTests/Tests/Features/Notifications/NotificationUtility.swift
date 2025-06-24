@@ -1,6 +1,7 @@
 import CoreData
 import Foundation
 import XCTest
+import WordPressData
 @testable import WordPress
 @testable import FormattableContentKit
 

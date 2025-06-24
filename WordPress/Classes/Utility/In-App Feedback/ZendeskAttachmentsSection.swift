@@ -6,6 +6,7 @@ import UniformTypeIdentifiers
 import QuickLook
 import QuickLookThumbnailing
 import AVFoundation
+import WordPressData
 import WordPressUI
 
 struct ZendeskAttachmentsSection: View {

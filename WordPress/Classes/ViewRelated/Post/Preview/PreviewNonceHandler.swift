@@ -1,3 +1,6 @@
+import Foundation
+import WordPressData
+
 struct PreviewNonceHandler {
     static func nonceURL(post: AbstractPost, previewURL: URL?) -> URL? {
         let permalink = post.permaLink.flatMap(URL.init(string:))

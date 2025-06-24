@@ -1,5 +1,6 @@
 import WebKit
 import CoreMedia
+import WordPressData
 
 @objc
 public protocol SharingAuthorizationDelegate: NSObjectProtocol {

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 protocol BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, model: DashboardCardModel)

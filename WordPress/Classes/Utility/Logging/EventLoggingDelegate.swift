@@ -2,6 +2,7 @@ import Foundation
 import AutomatticTracks
 import AutomatticEncryptedLogs
 import BuildSettingsKit
+import WordPressData
 
 struct EventLoggingDelegate: AutomatticEncryptedLogs.EventLoggingDelegate {
 

@@ -1,4 +1,5 @@
 import XCTest
+import WordPressKit
 @testable import WordPress
 
 private struct Constants {

@@ -1,5 +1,6 @@
 import AutomatticTracks
 import Foundation
+import WordPressData
 import WordPressKit
 
 class AtomicAuthenticationService {

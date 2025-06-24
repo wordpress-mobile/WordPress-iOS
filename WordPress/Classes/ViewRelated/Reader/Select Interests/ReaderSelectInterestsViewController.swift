@@ -1,5 +1,6 @@
 import UIKit
 import AutomatticTracks
+import WordPressData
 import WordPressUI
 
 protocol ReaderDiscoverFlowDelegate: AnyObject {

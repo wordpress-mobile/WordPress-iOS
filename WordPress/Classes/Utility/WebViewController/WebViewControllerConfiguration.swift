@@ -1,5 +1,6 @@
 import UIKit
 import WebKit
+import WordPressData
 
 class WebViewControllerConfiguration: NSObject {
     @objc var url: URL?

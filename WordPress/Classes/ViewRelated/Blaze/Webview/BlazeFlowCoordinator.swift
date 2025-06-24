@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressData
 
 @objc public enum BlazeSource: Int, OverlaySource {
     case dashboardCard

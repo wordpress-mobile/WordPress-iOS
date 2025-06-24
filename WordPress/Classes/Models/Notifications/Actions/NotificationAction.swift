@@ -1,5 +1,6 @@
 import UIKit
 import CoreData
+import WordPressData
 import WordPressUI
 import FormattableContentKit
 

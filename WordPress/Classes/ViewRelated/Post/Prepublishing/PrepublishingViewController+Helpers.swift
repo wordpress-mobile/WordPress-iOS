@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 extension PrepublishingViewController {
     static func show(for revision: AbstractPost, isStandalone: Bool = false, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {

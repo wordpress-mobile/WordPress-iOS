@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import Combine
 import AsyncImageKit
+import WordPressData
 
 final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResultCell, Reusable {
 

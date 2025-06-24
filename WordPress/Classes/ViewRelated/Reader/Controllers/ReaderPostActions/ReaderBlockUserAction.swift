@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressData
 import WordPressShared
 
 /// Encapsulates a command to block a user

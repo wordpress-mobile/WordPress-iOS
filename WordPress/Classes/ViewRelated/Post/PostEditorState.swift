@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressShared
 
 /// The various states of the editor interface and all associated UI values

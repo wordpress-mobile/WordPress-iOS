@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import CoreData
+import WordPressData
 import WordPressKit
 import WordPressCore
 

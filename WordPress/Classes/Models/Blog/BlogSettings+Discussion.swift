@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 /// In this extension, we implement several nested Enums (and helper setters / getters)  aimed at simplifying
 /// the BlogSettings interface. This may be considered as an Adapter class, *Swift* style!

@@ -1,3 +1,7 @@
+import Foundation
+import WordPressData
+import WordPressKit
+
 extension CommentService {
 
     /**

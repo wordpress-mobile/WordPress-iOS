@@ -3,6 +3,7 @@ import CoreGraphics
 import UIKit
 import MobileCoreServices
 import UniformTypeIdentifiers
+import WordPressData
 
 /// Media export handling of UIImages.
 ///

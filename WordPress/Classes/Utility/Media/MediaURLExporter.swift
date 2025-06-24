@@ -1,6 +1,7 @@
 import Foundation
 import MobileCoreServices
 import UniformTypeIdentifiers
+import WordPressData
 
 /// Media export handling of URLs.
 ///

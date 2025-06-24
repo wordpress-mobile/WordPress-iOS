@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 extension RemoteSiteDesign: Thumbnail {
     var urlDesktop: String? { screenshot }

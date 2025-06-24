@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressData
 
 class DashboardGhostCardCell: UICollectionViewCell, Reusable, BlogDashboardCardConfigurable {
     private lazy var contentStackView: UIStackView = {

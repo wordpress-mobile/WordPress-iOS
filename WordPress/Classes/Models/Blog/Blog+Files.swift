@@ -1,5 +1,6 @@
 import MobileCoreServices
 import UniformTypeIdentifiers
+import WordPressData
 
 // MARK: - Support for Files-based functionality
 

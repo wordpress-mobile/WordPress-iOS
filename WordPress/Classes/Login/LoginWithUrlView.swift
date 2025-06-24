@@ -2,6 +2,7 @@ import SwiftUI
 import AuthenticationServices
 import WordPressAPI
 import WordPressAuthenticator
+import WordPressData
 import DesignSystem
 import WordPressShared
 

@@ -3,6 +3,7 @@ import CoreServices
 import UIKit
 import Photos
 import PhotosUI
+import WordPressData
 import WordPressShared
 import Gutenberg
 import UniformTypeIdentifiers

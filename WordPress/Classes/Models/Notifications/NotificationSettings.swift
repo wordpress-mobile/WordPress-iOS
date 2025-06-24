@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 /// The goal of this class is to encapsulate all of the User's Notification Settings in a generic way.
 /// Settings are grouped into different Channels. A Channel is considered anything that might produce

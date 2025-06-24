@@ -1,5 +1,7 @@
 import UIKit
 import AsyncImageKit
+import WordPressData
+import WordPressKit
 
 public class MediaHelper: NSObject {
 

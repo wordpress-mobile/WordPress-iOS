@@ -1,3 +1,5 @@
+import WordPressData
+
 /// Plugin management service through the Jetpack Proxy.
 ///
 class PluginJetpackProxyService {

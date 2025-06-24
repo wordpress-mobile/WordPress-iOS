@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressData
 
 final class BlogDashboardPersonalizationViewModel: ObservableObject {
     let quickActions: [DashboardPersonalizationQuickActionViewModel]

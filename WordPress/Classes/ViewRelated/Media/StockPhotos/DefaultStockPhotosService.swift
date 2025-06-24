@@ -1,3 +1,5 @@
+import WordPressKit
+
 /// Default implementation of the Stock Photos Service, attacking a blog's restful api
 final class DefaultStockPhotosService: StockPhotosService {
     private let endPoint = "/rest/v1/meta/external-media/pexels"

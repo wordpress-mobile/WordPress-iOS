@@ -1,5 +1,6 @@
 import Foundation
 import AsyncImageKit
+import WordPressData
 
 final class ReaderPostCellViewModel {
     // Header

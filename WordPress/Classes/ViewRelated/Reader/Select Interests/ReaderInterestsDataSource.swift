@@ -1,4 +1,6 @@
 import Foundation
+import WordPressData
+import WordPressKit
 
 // MARK: - ReaderInterestViewModel
 class ReaderInterestViewModel {

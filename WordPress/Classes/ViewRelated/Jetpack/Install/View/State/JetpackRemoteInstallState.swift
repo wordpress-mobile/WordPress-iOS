@@ -1,4 +1,5 @@
 import UIKit
+import WordPressKit
 
 enum JetpackRemoteInstallState: Equatable {
     case install

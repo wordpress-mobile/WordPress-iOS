@@ -1,5 +1,6 @@
 import UIKit
 import SafariServices
+import WordPressData
 
 // […]
 final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate, UIPopoverPresentationControllerDelegate {

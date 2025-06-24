@@ -1,5 +1,6 @@
 import UIKit
 import AsyncImageKit
+import WordPressData
 
 /// A convenience class for managing image downloads for individual views.
 @MainActor

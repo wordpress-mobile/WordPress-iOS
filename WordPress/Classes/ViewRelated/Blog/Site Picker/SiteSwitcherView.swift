@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import WordPressData
 import WordPressUI
 
 final class SiteSwitcherViewController: UIHostingController<SiteSwitcherView>, UIPopoverPresentationControllerDelegate {

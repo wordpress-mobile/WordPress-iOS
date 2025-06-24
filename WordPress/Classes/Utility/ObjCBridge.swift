@@ -1,4 +1,6 @@
 import Foundation
+import UIKit
+import WordPressData
 
 /// This class is a temporary bridge between Swift-only APIs in Keystone
 /// and the remaining Objective-C classes that weren't replaced yet.

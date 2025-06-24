@@ -1,4 +1,5 @@
 import FormattableContentKit
+import WordPressData
 
 extension SubjectContentGroup {
 

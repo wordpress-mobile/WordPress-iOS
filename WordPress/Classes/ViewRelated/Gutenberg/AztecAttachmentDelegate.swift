@@ -1,6 +1,7 @@
 import UIKit
 import Aztec
 import AsyncImageKit
+import WordPressData
 
 class AztecAttachmentDelegate: TextViewAttachmentDelegate {
     private let post: AbstractPost

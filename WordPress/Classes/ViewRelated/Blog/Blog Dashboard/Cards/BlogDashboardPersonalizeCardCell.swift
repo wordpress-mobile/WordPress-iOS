@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import WordPressData
 import WordPressShared
 
 final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {

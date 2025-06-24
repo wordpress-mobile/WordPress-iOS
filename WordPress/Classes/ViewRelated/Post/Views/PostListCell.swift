@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import AsyncImageKit
+import WordPressData
 import WordPressUI
 
 protocol AbstractPostListCell {

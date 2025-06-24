@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 /// A collection view cell with a "Jetpack powered" badge
 class DashboardBadgeCell: UICollectionViewCell, Reusable {

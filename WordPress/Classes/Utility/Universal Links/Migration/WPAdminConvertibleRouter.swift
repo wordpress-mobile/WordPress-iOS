@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 /// A router that handles routes that can be converted to /wp-admin links.
 ///

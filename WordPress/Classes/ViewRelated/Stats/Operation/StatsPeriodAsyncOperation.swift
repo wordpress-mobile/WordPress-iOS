@@ -1,3 +1,4 @@
+import WordPressKit
 import WordPressShared
 
 final class StatsPeriodAsyncOperation<TimeStatsType: StatsTimeIntervalData>: AsyncOperation, @unchecked Sendable {

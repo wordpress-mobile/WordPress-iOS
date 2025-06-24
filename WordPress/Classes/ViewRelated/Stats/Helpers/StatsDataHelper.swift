@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 import WordPressShared
 
 /// Helper class for getting/modifying Stats data for display purposes.

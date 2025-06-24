@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 // MARK: - MediaPickerMenu (Stock Photo)
 

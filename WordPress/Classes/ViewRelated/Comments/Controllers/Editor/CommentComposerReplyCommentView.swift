@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressUI
 
 final class CommentComposerReplyCommentView: UIView, UITableViewDataSource {

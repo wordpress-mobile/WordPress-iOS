@@ -1,3 +1,4 @@
+import WordPressData
 import WordPressShared
 
 extension ReaderTopicService {

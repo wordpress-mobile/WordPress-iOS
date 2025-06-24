@@ -2,6 +2,7 @@ import UIKit
 import BuildSettingsKit
 import CoreData
 import Gutenberg
+import WordPressData
 import WordPressKit
 import WordPressShared
 

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 extension WordPressAppDelegate: PostCoordinatorDelegate {
     func postCoordinator(_ postCoordinator: PostCoordinator, promptForPasswordForBlog blog: Blog) {

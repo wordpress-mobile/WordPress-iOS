@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import WordPressData
 import WordPressShared
 
 struct SiteMonitoringView: View {

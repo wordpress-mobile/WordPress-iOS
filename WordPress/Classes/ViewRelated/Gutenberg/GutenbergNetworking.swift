@@ -1,4 +1,5 @@
 import Alamofire
+import WordPressData
 import WordPressKit
 
 struct GutenbergNetworkRequest {

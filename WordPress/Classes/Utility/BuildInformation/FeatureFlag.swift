@@ -1,4 +1,5 @@
 import BuildSettingsKit
+import Foundation
 
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.

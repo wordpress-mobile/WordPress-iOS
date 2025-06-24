@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import WordPressData
 
 final class BlogDashboardDynamicCardCell: DashboardCollectionViewCell {
 

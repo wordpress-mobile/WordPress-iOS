@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 protocol SiteMediaPickerViewControllerDelegate: AnyObject {
     /// If the user cancels the flow, the selection is empty.

@@ -1,3 +1,7 @@
+import CoreData
+import WordPressData
+import WordPressKit
+
 extension PublicizeService {
     /// Finds a cached `PublicizeService` matching the specified service name.
     ///

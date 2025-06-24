@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressKit
 
 /// Service providing access to user roles

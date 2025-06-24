@@ -1,5 +1,6 @@
 import Foundation
 import ShareExtensionCore
+import WordPressData
 
 struct ShareNoticeViewModel {
     private let postInContext: Post?

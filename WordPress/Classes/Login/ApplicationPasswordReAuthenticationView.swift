@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import SwiftUI
 import DesignSystem
+import WordPressData
 
 struct ApplicationPasswordReAuthenticationView: View {
     let blog: Blog

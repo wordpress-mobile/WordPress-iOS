@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressKit
 import WordPressShared
 import WidgetKit
 import JetpackStatsWidgetsCore

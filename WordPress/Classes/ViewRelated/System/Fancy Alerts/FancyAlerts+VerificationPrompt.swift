@@ -1,5 +1,6 @@
 import UIKit
 import WordPressAuthenticator
+import WordPressData
 import WordPressUI
 
 extension FancyAlertViewController {

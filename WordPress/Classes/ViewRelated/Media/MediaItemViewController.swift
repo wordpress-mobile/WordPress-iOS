@@ -3,6 +3,7 @@ import Combine
 import UIKit
 import Gridicons
 import SVProgressHUD
+import WordPressData
 import WordPressShared
 
 /// Displays an image preview and metadata for a single Media asset.

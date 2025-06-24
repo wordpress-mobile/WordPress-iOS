@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressShared
 
 /// Dynamic implementation of `JetpackFullscreenOverlayViewModel` based on the general phase

@@ -1,3 +1,4 @@
+import WordPressData
 import WordPressShared
 
 /// Encapsulates logic that configures `ListTableViewCell` with `Comment` models.

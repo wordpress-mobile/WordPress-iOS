@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressData
 
 class SiteSplitViewContent: SiteMenuViewControllerDelegate, SplitViewDisplayable {
     let siteMenuVC: SiteMenuViewController

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 class BlogDashboardPersistence {
     func persist(cards: NSDictionary, for wpComID: Int) {

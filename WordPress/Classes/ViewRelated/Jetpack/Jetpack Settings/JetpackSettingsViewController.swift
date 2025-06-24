@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressShared
 
 /// The purpose of this class is to render and modify the Jetpack Settings associated to a site.

@@ -1,5 +1,6 @@
 import SwiftUI
 import AsyncImageKit
+import WordPressData
 import WordPressUI
 
 struct JetpackSocialNoConnectionView: View {

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 /// This class takes care of managing the App window and its `rootViewController`.
 /// This is mostly intended to handle the UI transitions between authenticated and unauthenticated user sessions.

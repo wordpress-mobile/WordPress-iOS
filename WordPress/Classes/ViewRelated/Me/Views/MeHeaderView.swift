@@ -1,11 +1,18 @@
 import UIKit
+import WordPressData
 import WordPressUI
+
+protocol MeHeaderViewDelegate: NSObjectProtocol {
+    func meHeaderViewDidTapOnIconView(_ view: MeHeaderView)
+}
 
 final class MeHeaderView: UIView {
     private let iconView = UIImageView()
     private let titleLabel = UILabel()
     private let detailsLabel = UILabel()
     private var viewModel: MeHeaderViewModel?
+
+    weak var delegate: MeHeaderViewDelegate?
 
     private lazy var stackView = UIStackView(
         axis: .vertical,
@@ -44,6 +51,15 @@ final class MeHeaderView: UIView {
             $0.priority = UILayoutPriority(999)
         }
         NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar), name: .GravatarQEAvatarUpdateNotification, object: nil)
+
+        iconView.isUserInteractionEnabled = true
+        iconView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(onIconViewTap))
+        )
+    }
+
+    @objc func onIconViewTap() {
+        delegate?.meHeaderViewDidTapOnIconView(self)
     }
 
     required init?(coder: NSCoder) {

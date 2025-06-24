@@ -1,5 +1,6 @@
 import Reachability
 import WordPressFlux
+import WordPressKit
 import WordPressShared
 
 class ChangeUsernameViewModel {

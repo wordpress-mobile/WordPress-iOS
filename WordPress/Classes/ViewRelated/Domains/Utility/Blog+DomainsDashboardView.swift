@@ -1,3 +1,5 @@
+import WordPressData
+
 /// Collection of convenience properties used in the Domains Dashboard
 extension Blog {
     struct DomainRepresentation: Identifiable {

@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressData
 
 protocol ContentCoordinator {
     func displayReaderWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws

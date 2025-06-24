@@ -1,3 +1,5 @@
+import Foundation
+
 extension FloatingActionButton {
 
     private enum Constants {

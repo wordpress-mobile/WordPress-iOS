@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 /// `StaticScreensTabBarWrapper` is used as the root presenter when Jetpack features are disabled
 ///  but not fully removed. The class wraps around `WPTabBarController`

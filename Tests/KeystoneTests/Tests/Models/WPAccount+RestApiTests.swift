@@ -1,3 +1,4 @@
+import CoreData
 import XCTest // Wanted to use Testing, but don't yet have CoreData utils there
 @testable import WordPress
 

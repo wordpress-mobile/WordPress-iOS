@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 class DashboardMigrationSuccessCell: UICollectionViewCell, Reusable {
 

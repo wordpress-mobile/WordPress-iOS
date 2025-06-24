@@ -1,5 +1,6 @@
 import UIKit
 import WebKit
+import WordPressData
 
 enum WebViewControllerFactory {
     static func controller(configuration: WebViewControllerConfiguration, source: String) -> WebKitViewController {

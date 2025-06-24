@@ -1,3 +1,5 @@
+import WordPressKit
+
 /// Local service for Jetpack
 ///
 class JetpackService {

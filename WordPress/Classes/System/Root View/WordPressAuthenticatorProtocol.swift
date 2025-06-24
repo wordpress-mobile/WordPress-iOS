@@ -2,6 +2,7 @@ import SwiftUI
 import UIKit
 import SVProgressHUD
 import WordPressAuthenticator
+import WordPressData
 import WordPressShared
 
 protocol WordPressAuthenticatorProtocol {

@@ -1,5 +1,6 @@
 import UIKit
 import WebKit
+import WordPressData
 
 /// A WKWebView used to save post content to be available when offline
 /// The mechanism is quite simple: open the post in a hidden webview so the images are cached

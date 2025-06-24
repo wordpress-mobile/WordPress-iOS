@@ -1,5 +1,6 @@
 import UIKit
 import WordPressAuthenticator
+import WordPressData
 import WordPressShared
 
 protocol SignupEpilogueTableViewControllerDelegate: AnyObject {

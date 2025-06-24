@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 /// Models a Stock Photo
 ///

@@ -13,6 +13,7 @@ import UIDeviceIdentifier
 import UIKit
 import WebKit
 import WordPressAuthenticator
+import WordPressData
 import WordPressShared
 import WordPressUI
 import ZendeskCoreSDK

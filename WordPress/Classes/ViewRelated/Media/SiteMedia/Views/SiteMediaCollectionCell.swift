@@ -2,6 +2,7 @@ import UIKit
 import Combine
 import Gifu
 import AsyncImageKit
+import WordPressData
 import WordPressUI
 
 final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {

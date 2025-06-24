@@ -1,3 +1,5 @@
+import WordPressData
+
 /// A reference to a site that uses the Jetpack API.
 ///
 /// This type contains the site ID and account username as the minimum way to

@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import WordPressData
 import WordPressShared
 
 final class CommentCellViewModel: NSObject {

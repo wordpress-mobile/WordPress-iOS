@@ -2,6 +2,7 @@ import Gridicons
 import UIKit
 import DesignSystem
 import SwiftUI
+import WordPressData
 import WordPressUI
 
 @objc protocol BlogDetailHeaderViewDelegate {

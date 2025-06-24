@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressData
 
 typealias EditorPresenterViewController = UIViewController & EditorAnalyticsProperties
 

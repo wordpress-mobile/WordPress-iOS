@@ -1,5 +1,6 @@
 import Foundation
 import Gutenberg
+import WordPressData
 import WordPressShared
 
 class GutenbergFeaturedImageHelper: NSObject {

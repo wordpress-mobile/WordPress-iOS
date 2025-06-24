@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import WordPressData
 
 @objc final class FreeToPaidPlansCoordinator: NSObject {
 

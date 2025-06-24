@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 struct PostEditorAnalyticsSession {
     private let sessionId = UUID().uuidString

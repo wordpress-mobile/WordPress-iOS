@@ -1030,6 +1030,9 @@
 /* An error message displayed when attempting to update an avatar while the user's email address is not verified. */
 "avatar.update.email.verification.required" = "To update your avatar, you need to verify your email address first.";
 
+/* An error message displayed when attempting to update their profile while the user's email address is not verified. */
+"profile.update.email.verification.required" = "To update your profile, you need to verify your email address first.";
+
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "Unable to load the image. Please choose a different one or try again later.";
 

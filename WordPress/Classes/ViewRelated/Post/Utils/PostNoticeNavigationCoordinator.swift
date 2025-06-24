@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import WordPressData
 import WordPressShared
 
 /// This class simply exists to coordinate the display of various sections of

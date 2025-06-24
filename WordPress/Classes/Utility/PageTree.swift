@@ -1,3 +1,5 @@
+import WordPressData
+
 final class PageTree {
 
     // A node in a tree, which of course is also a tree itself.

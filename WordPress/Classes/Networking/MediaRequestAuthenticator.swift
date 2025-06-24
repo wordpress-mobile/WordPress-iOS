@@ -1,5 +1,6 @@
 import Foundation
 import AsyncImageKit
+import WordPressData
 
 fileprivate let photonHost = "i0.wp.com"
 fileprivate let secureHttpScheme = "https"

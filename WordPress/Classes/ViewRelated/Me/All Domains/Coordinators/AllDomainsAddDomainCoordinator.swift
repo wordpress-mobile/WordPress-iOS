@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 @objc final class AllDomainsAddDomainCoordinator: NSObject {
     static func presentAddDomainFlow(in allDomainsViewController: AllDomainsListViewController) {

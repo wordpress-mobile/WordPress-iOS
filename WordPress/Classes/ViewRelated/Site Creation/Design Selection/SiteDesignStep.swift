@@ -1,4 +1,5 @@
 import UIKit
+import WordPressKit
 
 /// Site Creation: Allows selection of the home page which translates to the initial theme as well.
 final class SiteDesignStep: WizardStep {

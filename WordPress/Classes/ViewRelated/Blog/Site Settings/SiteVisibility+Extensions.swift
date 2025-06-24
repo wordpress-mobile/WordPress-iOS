@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 extension SiteVisibility {
     static func eligiblePickerValues(for blog: Blog) -> [SettingsPickerValue<SiteVisibility>] {

@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import WordPressData
 import WordPressShared
 
 final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 import WordPressShared
 
 typealias SiteCurrentDateGetter = () -> Date

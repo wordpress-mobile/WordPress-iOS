@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressShared
 
 typealias DashboardCollectionViewCell = UICollectionViewCell & Reusable & BlogDashboardCardConfigurable

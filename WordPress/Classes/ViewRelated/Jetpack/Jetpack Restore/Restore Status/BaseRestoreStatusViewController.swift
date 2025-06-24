@@ -1,5 +1,6 @@
 import Foundation
 import WordPressUI
+import WordPressData
 import WordPressShared
 
 struct JetpackRestoreStatusConfiguration {

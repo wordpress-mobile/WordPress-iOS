@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressKit
 
 /// Provides service remote instances for CommentService

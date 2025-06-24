@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 extension WPAccount {
     /// Removes any duplicate blogs in the given account

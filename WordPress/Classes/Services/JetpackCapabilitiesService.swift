@@ -1,3 +1,4 @@
+import WordPressData
 import WordPressKit
 
 @objc public class JetpackCapabilitiesService: NSObject {

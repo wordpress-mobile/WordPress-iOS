@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 @objc public protocol ReaderStreamHeaderDelegate {
     func handleFollowActionForHeader(_ header: ReaderStreamHeader, completion: @escaping () -> Void)

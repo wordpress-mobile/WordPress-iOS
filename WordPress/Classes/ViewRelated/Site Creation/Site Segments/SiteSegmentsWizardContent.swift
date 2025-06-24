@@ -1,4 +1,5 @@
 import UIKit
+import WordPressKit
 import WordPressShared
 
 /// Contains the UI corresponsing to the list of segments

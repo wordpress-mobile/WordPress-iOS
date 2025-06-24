@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 class LayoutPreviewViewController: TemplatePreviewViewController {
     let completion: PageCoordinator.TemplateSelectionCompletion

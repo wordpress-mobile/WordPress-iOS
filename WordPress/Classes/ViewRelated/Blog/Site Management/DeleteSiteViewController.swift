@@ -1,5 +1,6 @@
 import UIKit
 import SVProgressHUD
+import WordPressData
 import WordPressShared
 import Gridicons
 import WordPressUI

@@ -4,6 +4,7 @@ import AsyncImageKit
 import AutomatticTracks
 import GutenbergKit
 import SafariServices
+import WordPressData
 import WordPressShared
 
 class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {

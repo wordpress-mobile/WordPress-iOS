@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressData
 
 class BlogDashboardPostsParser {
     private let managedObjectContext: NSManagedObjectContext

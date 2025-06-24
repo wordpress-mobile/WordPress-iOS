@@ -1,3 +1,4 @@
+import WordPressData
 @testable import WordPress
 
 /// Builds a `ReaderPost`

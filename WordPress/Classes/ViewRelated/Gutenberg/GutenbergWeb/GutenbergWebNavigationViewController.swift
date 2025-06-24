@@ -1,5 +1,6 @@
 import UIKit
 import Gutenberg
+import WordPressData
 import WordPressShared
 
 class GutenbergWebNavigationController: UINavigationController {

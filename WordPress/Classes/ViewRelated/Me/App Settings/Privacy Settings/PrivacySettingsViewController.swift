@@ -1,6 +1,7 @@
 import Gridicons
 import UIKit
 import AutomatticTracks
+import WordPressData
 import WordPressUI
 
 class PrivacySettingsViewController: UITableViewController {

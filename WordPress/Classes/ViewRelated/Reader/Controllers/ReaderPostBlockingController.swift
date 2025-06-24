@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 protocol ReaderSiteBlockingControllerDelegate: AnyObject {
     func readerSiteBlockingController(_ controller: ReaderPostBlockingController, willBeginBlockingSiteOfPost post: ReaderPost)

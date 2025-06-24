@@ -1,3 +1,5 @@
+import WordPressData
+
 // Controller in charge to retrieve the current browser state,
 // used by the RevisionDiffsBrowserViewController
 //

@@ -1,3 +1,4 @@
+import WordPressKit
 import WordPressShared
 
 extension CommentsViewController {

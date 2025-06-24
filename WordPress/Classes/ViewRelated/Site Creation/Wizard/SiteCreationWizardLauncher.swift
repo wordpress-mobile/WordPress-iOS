@@ -1,4 +1,5 @@
 import AutomatticTracks
+import WordPressData
 
 /// Puts together the Site creation wizard, assembling steps.
 final class SiteCreationWizardLauncher {

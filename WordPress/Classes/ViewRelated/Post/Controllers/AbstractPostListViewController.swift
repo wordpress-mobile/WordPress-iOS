@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import Gridicons
+import WordPressData
 import WordPressShared
 import WordPressFlux
 import WordPressUI

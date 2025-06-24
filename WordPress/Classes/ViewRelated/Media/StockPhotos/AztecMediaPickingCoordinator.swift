@@ -1,5 +1,7 @@
 import UIKit
 import MobileCoreServices
+import UniformTypeIdentifiers
+import WordPressData
 
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMediaPickingCoordinator {

@@ -3,6 +3,7 @@ import WordPressAPI
 import AutomatticTracks
 import SwiftUI
 import AuthenticationServices
+import WordPressData
 import WordPressKit
 import WordPressAuthenticator
 import WordPressShared

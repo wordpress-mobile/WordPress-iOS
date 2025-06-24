@@ -1,5 +1,6 @@
 import AutomatticTracks
 import Foundation
+import WordPressData
 
 /// Authenticator for requests to self-hosted sites, wp.com sites, including private
 /// sites and atomic sites.

@@ -1,3 +1,5 @@
+import WordPressData
+
 protocol RevisionsView: AnyObject {
     func stopLoading(success: Bool, error: Error?)
 }

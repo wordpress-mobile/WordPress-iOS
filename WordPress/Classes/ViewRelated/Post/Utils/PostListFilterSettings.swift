@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressShared
 
 /// `PostListFilterSettings` manages settings for filtering posts (by author or status)

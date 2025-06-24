@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 final class DashboardPagesListCardCell: DashboardCollectionViewCell, PagesCardView {
 

@@ -1,6 +1,7 @@
 import UIKit
 import Gridicons
 import Gutenberg
+import WordPressData
 import WordPressUI
 
 extension PageTemplateLayout: Thumbnail {

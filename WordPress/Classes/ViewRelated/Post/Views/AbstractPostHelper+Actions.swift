@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 extension AbstractPostHelper {
     // MARK: - Swipe Actions

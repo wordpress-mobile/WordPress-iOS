@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 enum MediaExportProgressUnits {
     static let done: Int64 = 100

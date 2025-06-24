@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 protocol AbstractPostMenuViewModel {
     var buttonSections: [AbstractPostButtonSection] { get }

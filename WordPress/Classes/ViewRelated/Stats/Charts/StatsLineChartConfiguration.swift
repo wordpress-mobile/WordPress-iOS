@@ -1,3 +1,5 @@
+import Foundation
+
 struct StatsLineChartConfiguration {
     enum StatType {
         case viewsAndVisitors(StatsInsightsFilterDimension)

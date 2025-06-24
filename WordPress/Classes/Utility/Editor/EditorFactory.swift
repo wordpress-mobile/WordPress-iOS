@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 /// This class takes care of instantiating the correct editor based on the App settings, feature flags,
 /// etc.

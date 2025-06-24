@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 class StatsPeriodHelper {
     private lazy var calendar: Calendar = {

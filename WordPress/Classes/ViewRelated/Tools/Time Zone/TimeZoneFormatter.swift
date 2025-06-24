@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 struct TimeZoneFormatter {
 

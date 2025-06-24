@@ -1,5 +1,6 @@
 import Foundation
 import AutomatticTracks
+import WordPressData
 import WordPressUI
 
 final class ReaderCrossPostCell: ReaderStreamBaseCell {

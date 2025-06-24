@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressData
 
 struct PostCategoryCreateView: View {
     let blog: Blog

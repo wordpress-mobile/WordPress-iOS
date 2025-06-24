@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 extension MediaPickerMenu {
     /// Returns an action for selecting media from the media uploaded by the user
