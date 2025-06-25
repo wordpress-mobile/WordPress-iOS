@@ -14,7 +14,7 @@ final class NewPostSettingsViewController: UIHostingController<PostSettingsView>
         let postSettingsView = PostSettingsView(viewModel: viewModel)
         super.init(rootView: postSettingsView)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -90,13 +90,13 @@ private enum Strings {
         value: "More Options",
         comment: "Section header for More Options in Post Settings"
     )
-    
+
     static let slugLabel = NSLocalizedString(
         "postSettings.slug.label",
         value: "Slug",
         comment: "Label for the slug field. Should be the same as WP core."
     )
-    
+
     static let slugPlaceholder = NSLocalizedString(
         "postSettings.slug.placeholder",
         value: "Enter slug",

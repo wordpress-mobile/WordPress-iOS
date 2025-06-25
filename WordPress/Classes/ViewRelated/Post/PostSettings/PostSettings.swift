@@ -5,24 +5,17 @@ import WordPressKit
 /// A plain data structure representing the subset of post/page settings that can be edited in PostSettingsView.
 /// Used for change tracking and to separate UI state from Core Data objects.
 struct PostSettings: Hashable {
-    // MARK: - More Options
     var excerpt: String
     var slug: String
-
-    // MARK: - Publishing
-    var status: String
+    var status: BasePost.Status
     var publishDate: Date?
     var password: String?
-
-    // MARK: - Author
     var authorID: Int?
-
-    // MARK: - Taxonomies
     var categoryIDs: Set<Int>
     var tags: String
-
-    // MARK: - Media
     var featuredImageID: Int?
+    var publicizeMessage: String?
+    var disabledPublicizeConnectionIDs: Set<NSNumber>
 
     // MARK: - Post-specific
     var postFormat: String?
@@ -31,10 +24,6 @@ struct PostSettings: Hashable {
     // MARK: - Page-specific
     var parentPageID: Int?
 
-    // MARK: - Social
-    var publicizeMessage: String?
-    var disabledPublicizeConnectionIDs: Set<NSNumber>
-
     // MARK: - Initialization
 
     /// Creates PostSettings from an AbstractPost instance.
@@ -42,7 +31,7 @@ struct PostSettings: Hashable {
         self.excerpt = post.mt_excerpt ?? ""
         self.slug = post.wp_slug ?? ""
 
-        self.status = post.status ?? PostStatusDraft
+        self.status = post.status ?? .draft
         self.publishDate = post.dateCreated
         self.password = post.password
 
@@ -94,7 +83,7 @@ struct PostSettings: Hashable {
 
         // Publishing
         if post.status != status {
-            post.status = status
+            post.status = status.rawValue
         }
         if post.dateCreated != publishDate {
             post.dateCreated = publishDate
@@ -182,7 +171,7 @@ struct PostSettings: Hashable {
 
         // Publishing
         if status != original.status {
-            parameters.status = status
+            parameters.status = status.rawValue
         }
         if publishDate != original.publishDate {
             parameters.date = publishDate
