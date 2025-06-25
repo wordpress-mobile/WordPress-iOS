@@ -2,6 +2,7 @@ import UIKit
 import MobileCoreServices
 import UniformTypeIdentifiers
 import ShareExtensionCore
+import WordPressData
 
 // MARK: - Functionality related to sharing a blog via the reader.
 

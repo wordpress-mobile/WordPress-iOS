@@ -1,4 +1,5 @@
 import UIKit
+import WordPressKit
 import WordPressShared
 
 protocol PostingActivityDayDelegate: AnyObject {

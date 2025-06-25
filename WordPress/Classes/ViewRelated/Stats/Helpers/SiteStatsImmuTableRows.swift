@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 /// Helper class to encapsulate ImmuTableRows creation
 /// Stats Revamp results in the same ImmuTableRows created in different screens

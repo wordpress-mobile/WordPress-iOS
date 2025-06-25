@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import SafariServices
+import WordPressData
 import WordPressShared
 
 struct ReaderPostMenu {

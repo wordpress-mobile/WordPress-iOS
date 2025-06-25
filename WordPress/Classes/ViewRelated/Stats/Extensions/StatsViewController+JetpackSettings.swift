@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressData
 
 extension StatsViewController {
 

@@ -1,6 +1,7 @@
 import Combine
 import UIKit
 import SwiftUI
+import WordPressData
 import WordPressUI
 
 final class ReaderTabViewController: UITabBarController, UITabBarControllerDelegate {

@@ -5,6 +5,9 @@
 #else
 #import "WordPress-Swift.h"
 #endif
+// For some reason, the modular import does not work.
+// @import WordPressData;
+#import <WordPressData/WordPressData.h>
 
 CGFloat const STVDefaultMinHeaderHeight = 0.f;
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";

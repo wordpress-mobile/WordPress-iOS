@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import SVProgressHUD
+import WordPressData
 import WordPressShared
 import WordPressFlux
 import WordPressUI
