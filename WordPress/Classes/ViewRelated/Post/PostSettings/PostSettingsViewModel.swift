@@ -15,7 +15,7 @@ final class PostSettingsViewModel: ObservableObject {
 
     @Published private (set) var isSaving = false
     @Published private (set) var hasChanges = false
-    @Published var showingDeletedAlert = false
+    @Published var isShowingDeletedAlert = false
 
     var navigationTitle: String {
         post is Page ? Strings.pageSettingsTitle : Strings.postSettingsTitle
@@ -52,7 +52,7 @@ final class PostSettingsViewModel: ObservableObject {
         guard let context = post.managedObjectContext,
               let _ = try? context.existingObject(with: post.objectID) else {
             isSaving = false
-            showingDeletedAlert = true
+            isShowingDeletedAlert = true
             return
         }
 
@@ -110,13 +110,7 @@ private enum Strings {
         value: "This page has been deleted and can no longer be saved.",
         comment: "Message when trying to save a deleted page"
     )
-    
-    static let okButton = NSLocalizedString(
-        "postSettings.okButton",
-        value: "OK",
-        comment: "OK button in post settings alerts"
-    )
-    
+
     static let postSettingsTitle = NSLocalizedString(
         "postSettings.title.post",
         value: "Post Settings",
