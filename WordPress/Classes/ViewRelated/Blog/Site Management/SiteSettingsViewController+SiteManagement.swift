@@ -1,5 +1,6 @@
 import UIKit
 import SVProgressHUD
+import WordPressData
 import WordPressShared
 
 /// Implements site management services triggered from SiteSettingsViewController

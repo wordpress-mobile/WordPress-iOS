@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 import WordPressShared
 import NSObject_SafeExpectations
 import UserNotifications

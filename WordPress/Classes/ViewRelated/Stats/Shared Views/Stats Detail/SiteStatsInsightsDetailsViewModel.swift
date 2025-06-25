@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import WordPressFlux
+import WordPressKit
 import WordPressShared
 
 /// The view model used by SiteStatsDetailTableViewController to show

@@ -1,4 +1,6 @@
 import Foundation
+import UIKit
+import WordPressData
 import WordPressShared
 import WordPressAPI
 import WordPressCore

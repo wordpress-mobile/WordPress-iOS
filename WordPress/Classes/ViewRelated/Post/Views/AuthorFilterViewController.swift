@@ -1,5 +1,6 @@
 import UIKit
 import Gridicons
+import WordPressData
 import WordPressUI
 
 /// Displays a simple table view picker list to choose between author filters
