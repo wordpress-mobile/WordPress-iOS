@@ -4,6 +4,7 @@ import Combine
 import WordPressData
 import WordPressKit
 import WordPressShared
+import WordPressUI
 import SwiftUI
 
 final class NewPostSettingsViewController: UIHostingController<PostSettingsView> {
@@ -19,6 +20,10 @@ final class NewPostSettingsViewController: UIHostingController<PostSettingsView>
         super.viewDidLoad()
 
         title = viewModel.navigationTitle
+
+        viewModel.onDismiss = { [weak self] in
+            self?.presentingViewController?.dismiss(animated: true)
+        }
     }
 
     @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
@@ -28,58 +33,70 @@ final class NewPostSettingsViewController: UIHostingController<PostSettingsView>
 
 struct PostSettingsView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
-    @Environment(\.dismiss) private var dismiss
+    @State private var isShowingDiscardChangesAlert = false
 
     var body: some View {
-        ZStack {
-            Form {
-                Section(header: Text(Strings.moreOptionsHeader)) {
-                    HStack {
-                        Text(Strings.slugLabel)
-                        Spacer()
-                        TextField(Strings.slugPlaceholder, text: $viewModel.settings.slug)
-                            .textFieldStyle(.plain)
-                            .multilineTextAlignment(.trailing)
-                            .textInputAutocapitalization(.never)
-                            .disableAutocorrection(true)
-                    }
-                }
-            }
-            .opacity(viewModel.isSaving ? 0.6 : 1.0)
-            .disabled(viewModel.isSaving)
+        Form {
+            form
         }
+        .opacity(viewModel.isSaving ? 0.6 : 1.0)
+        .disabled(viewModel.isSaving)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(SharedStrings.Button.cancel) {
-                    viewModel.cancel()
+                    if viewModel.hasChanges {
+                        isShowingDiscardChangesAlert = true
+                    } else {
+                        viewModel.buttonCancelTapped()
+                    }
                 }
+                .tint(AppColor.tint)
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 if viewModel.isSaving {
                     ProgressView()
                 } else {
                     Button(SharedStrings.Button.save) {
-                        Task {
-                            await viewModel.save()
-                        }
+                        viewModel.buttonSaveTapped()
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(!viewModel.hasChanges)
+                    .tint(AppColor.tint)
                 }
             }
         }
         .interactiveDismissDisabled(viewModel.isSaving || viewModel.hasChanges)
-        .onAppear {
-            viewModel.onDismiss = {
-                dismiss()
-            }
-        }
         .alert(viewModel.deletedAlertTitle, isPresented: $viewModel.isShowingDeletedAlert) {
             Button(SharedStrings.Button.ok) {
-                dismiss()
+                viewModel.onDismiss?()
             }
         } message: {
             Text(viewModel.deletedAlertMessage)
+        }
+        .confirmationDialog(Strings.discardChangesTitle, isPresented: $isShowingDiscardChangesAlert) {
+            Button(Strings.discardChangesButton, role: .destructive) {
+                viewModel.buttonCancelTapped()
+            }
+            Button(SharedStrings.Button.cancel, role: .cancel) {
+                // Do nothing - continue editing
+            }
+        } message: {
+            Text(Strings.discardChangesMessage)
+        }
+    }
+
+    @ViewBuilder
+    private var form: some View {
+        Section(header: Text(Strings.moreOptionsHeader)) {
+            HStack {
+                Text(Strings.slugLabel)
+                Spacer()
+                TextField(Strings.slugPlaceholder, text: $viewModel.settings.slug)
+                    .textFieldStyle(.plain)
+                    .multilineTextAlignment(.trailing)
+                    .textInputAutocapitalization(.never)
+                    .disableAutocorrection(true)
+            }
         }
     }
 }
@@ -101,5 +118,23 @@ private enum Strings {
         "postSettings.slug.placeholder",
         value: "Enter slug",
         comment: "Placeholder text for the slug field"
+    )
+
+    static let discardChangesTitle = NSLocalizedString(
+        "postSettings.discardChanges.title",
+        value: "Discard Changes?",
+        comment: "Title for the discard changes confirmation dialog"
+    )
+
+    static let discardChangesMessage = NSLocalizedString(
+        "postSettings.discardChanges.message",
+        value: "You have unsaved changes. Are you sure you want to discard them?",
+        comment: "Message for the discard changes confirmation dialog"
+    )
+
+    static let discardChangesButton = NSLocalizedString(
+        "postSettings.discardChanges.button",
+        value: "Discard Changes",
+        comment: "Button to confirm discarding changes"
     )
 }
