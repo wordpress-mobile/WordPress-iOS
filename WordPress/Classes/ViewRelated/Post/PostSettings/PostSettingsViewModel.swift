@@ -13,8 +13,8 @@ final class PostSettingsViewModel: ObservableObject {
         }
     }
 
-    @Published private (set) var isSaving = false
-    @Published private (set) var hasChanges = false
+    @Published private(set) var isSaving = false
+    @Published private(set) var hasChanges = false
     @Published var isShowingDeletedAlert = false
 
     var navigationTitle: String {
@@ -32,6 +32,7 @@ final class PostSettingsViewModel: ObservableObject {
     private let originalSettings: PostSettings
 
     var onDismiss: (() -> Void)?
+    var onEditorPostSaved: (() -> Void)?
 
     init(post: AbstractPost, isStandalone: Bool = false) {
         self.post = post
@@ -60,6 +61,7 @@ final class PostSettingsViewModel: ObservableObject {
             // Apply settings and return to the editor
             settings.apply(to: post)
             onDismiss?()
+            onEditorPostSaved?()
             return
         }
 
