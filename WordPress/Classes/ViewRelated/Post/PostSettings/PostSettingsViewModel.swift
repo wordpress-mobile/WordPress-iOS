@@ -6,7 +6,7 @@ import WordPressShared
 @MainActor
 final class PostSettingsViewModel: ObservableObject {
     private let post: AbstractPost
-    private let isStandalone: Bool
+    let isStandalone: Bool
 
     @Published var settings: PostSettings {
         didSet {
