@@ -37,7 +37,7 @@ private struct PostSettingsView: View {
     @State private var isShowingDiscardChangesAlert = false
 
     var body: some View {
-        Form {
+        StandardForm {
             form
         }
         .opacity(viewModel.isSaving ? 0.6 : 1.0)
@@ -98,13 +98,9 @@ private struct PostSettingsView: View {
 
     @ViewBuilder
     private var form: some View {
-        Section(header: Text(Strings.moreOptionsHeader)) {
-            HStack {
-                Text(Strings.slugLabel)
-                Spacer()
+        StandardFormSection(Strings.moreOptionsHeader) {
+            StandardFormRow(Strings.slugLabel) {
                 TextField(Strings.slugPlaceholder, text: $viewModel.settings.slug)
-                    .textFieldStyle(.plain)
-                    .multilineTextAlignment(.trailing)
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
             }

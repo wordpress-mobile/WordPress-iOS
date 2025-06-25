@@ -147,12 +147,18 @@ extension UIAppColor {
     public static let prologueBackground = UIColor(light: blue(.shade0), dark: .systemBackground)
 
     public static let switchStyle: SwitchToggleStyle = SwitchToggleStyle(tint: Color(UIAppColor.primary))
+
+    public static let secondaryBackground = UIColor(
+        light: CSColor.Gray.shade(.shade0),
+        dark: CSColor.Gray.shade(.shade100)
+    )
 }
 
 public enum AppColor {
     public static var tint: Color { Color(UIAppColor.tint) }
     public static var primary: Color { Color(UIAppColor.primary) }
     public static var secondary: Color { Color(UIAppColor.secondary) }
+    public static var secondaryBackground: Color { Color(UIAppColor.secondaryBackground) }
 }
 
 private extension UIColor {
