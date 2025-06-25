@@ -12,7 +12,7 @@ extension PostEditor {
         }
         // Use the new SwiftUI-based Post Settings
         let viewModel = PostSettingsViewModel(post: post)
-        viewModel.onSaveTapped = { [weak self] in
+        viewModel.onEditorPostSaved = { [weak self] in
             self?.editorContentWasUpdated()
             self?.navigationController?.dismiss(animated: true)
         }
