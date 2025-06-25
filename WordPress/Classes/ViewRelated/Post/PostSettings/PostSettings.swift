@@ -14,8 +14,6 @@ struct PostSettings: Hashable {
     var categoryIDs: Set<Int>
     var tags: String
     var featuredImageID: Int?
-    var publicizeMessage: String?
-    var disabledPublicizeConnectionIDs: Set<NSNumber>
 
     // MARK: - Post-specific
     var postFormat: String?
@@ -57,15 +55,6 @@ struct PostSettings: Hashable {
         } else {
             self.parentPageID = nil
         }
-
-        // Social settings
-        if let post = post as? Post {
-            self.publicizeMessage = post.publicizeMessage
-            self.disabledPublicizeConnectionIDs = post.disabledPublicizeConnectionIDs()
-        } else {
-            self.publicizeMessage = nil
-            self.disabledPublicizeConnectionIDs = []
-        }
     }
 
     // MARK: - Applying Changes
@@ -83,7 +72,7 @@ struct PostSettings: Hashable {
 
         // Publishing
         if post.status != status {
-            post.status = status.rawValue
+            post.status = status
         }
         if post.dateCreated != publishDate {
             post.dateCreated = publishDate
@@ -126,24 +115,6 @@ struct PostSettings: Hashable {
 
             if post.isStickyPost != isStickyPost {
                 post.isStickyPost = isStickyPost
-            }
-
-            // Social settings
-            if post.publicizeMessage != publicizeMessage {
-                post.publicizeMessage = publicizeMessage
-            }
-
-            // Update disabled connections
-            let currentDisabledIDs = post.disabledPublicizeConnectionIDs()
-            if currentDisabledIDs != disabledPublicizeConnectionIDs {
-                // Remove all current disabled connections
-                for connectionID in currentDisabledIDs {
-                    post.enablePublicizeConnection(with: connectionID)
-                }
-                // Add new disabled connections
-                for connectionID in disabledPublicizeConnectionIDs {
-                    post.disablePublicizeConnection(with: connectionID)
-                }
             }
         }
 
@@ -209,9 +180,6 @@ struct PostSettings: Hashable {
             parameters.parentPageID = parentPageID
         }
 
-        // Note: Social settings (publicize) are typically handled via metadata,
-        // which would require additional implementation
-
         return parameters
     }
 }
@@ -224,25 +192,4 @@ private func makeTags(from tags: String) -> [String] {
         .components(separatedBy: ",")
         .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
         .filter { !$0.isEmpty }
-}
-
-// MARK: - Post Extensions
-
-private extension Post {
-    /// Returns the set of disabled publicize connection IDs.
-    func disabledPublicizeConnectionIDs() -> Set<NSNumber> {
-        var disabledIDs = Set<NSNumber>()
-
-        // Get all available connections
-        if let connections = blog.connections as? Set<PublicizeConnection> {
-            for connection in connections {
-                if let keyringID = connection.keyringConnectionID,
-                   publicizeConnectionDisabledForKeyringID(keyringID) {
-                    disabledIDs.insert(keyringID)
-                }
-            }
-        }
-
-        return disabledIDs
-    }
 }
