@@ -42,7 +42,7 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 - Follow Swift API Design Guidelines
 - Use strict access control modifiers where possible
 - Use four spaces (not tabs)
-- When you add an empty line, don't any spaces to it 
+- Lines should not have trailing whitespace 
 - Follow the standard formatting practices enforced by SwiftLint
 - Don't create `body` for `View` that are too long
 - Use semantics text sizes like `.headline`
