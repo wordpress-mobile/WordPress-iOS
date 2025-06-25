@@ -50,7 +50,7 @@ struct PostSettingsView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button(Strings.cancelButton) {
+                Button(SharedStrings.Button.cancel) {
                     viewModel.cancel()
                 }
             }
