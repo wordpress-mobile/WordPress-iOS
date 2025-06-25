@@ -26,7 +26,7 @@ extension RemotePostCreateParameters {
         case let post as Post:
             format = post.postFormat
             isSticky = post.isStickyPost
-            tags = makeTags(from: post.tags ?? "")
+            tags = AbstractPost.makeTags(from: post.tags ?? "")
             categoryIDs = (post.categories ?? []).compactMap {
                 $0.categoryID?.intValue
             }
@@ -43,12 +43,4 @@ extension RemotePostCreateParameters {
             break
         }
     }
-}
-
-private func makeTags(from tags: String) -> [String] {
-    tags
-        .trimmingCharacters(in: .whitespacesAndNewlines)
-        .components(separatedBy: ",")
-        .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-        .filter { !$0.isEmpty }
 }
