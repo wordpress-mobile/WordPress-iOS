@@ -3,12 +3,12 @@ import BuildSettingsKit
 
 class IntentHandler: INExtension, SelectSiteIntentHandling {
 
-    let sitesDataProvider = SitesDataProvider()
+    let sitesDataProvider: SitesDataProvider
 
     override init() {
-        super.init()
-
         BuildSettings.configure(secrets: ApiCredentials.toSecrets())
+        sitesDataProvider = SitesDataProvider()
+        super.init()
     }
 
     // MARK: - INIntentHandlerProviding
