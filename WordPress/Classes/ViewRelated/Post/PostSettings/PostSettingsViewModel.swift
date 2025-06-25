@@ -53,7 +53,6 @@ final class PostSettingsViewModel: ObservableObject {
         // Check if the post still exists
         guard let context = post.managedObjectContext,
               let _ = try? context.existingObject(with: post.objectID) else {
-            isSaving = false
             isShowingDeletedAlert = true
             return
         }
