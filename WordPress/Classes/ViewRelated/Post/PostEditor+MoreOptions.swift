@@ -6,13 +6,14 @@ import SwiftUI
 
 extension PostEditor {
 
+    @MainActor
     func displayPostSettings() {
         guard FeatureFlag.postSettingsV2.enabled else {
             return showDeprecatedPostSettings()
         }
         // Use the new SwiftUI-based Post Settings
         let viewModel = PostSettingsViewModel(post: post)
-        viewModel.onSaveTapped = { [weak self] in
+        viewModel.onEditorPostSaved = { [weak self] in
             self?.editorContentWasUpdated()
             self?.navigationController?.dismiss(animated: true)
         }
