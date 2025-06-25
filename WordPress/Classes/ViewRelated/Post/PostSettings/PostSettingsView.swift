@@ -58,7 +58,7 @@ struct PostSettingsView: View {
                 if viewModel.isSaving {
                     ProgressView()
                 } else {
-                    Button(Strings.saveButton) {
+                    Button(SharedStrings.Button.save) {
                         Task {
                             await viewModel.save()
                         }
