@@ -19,11 +19,15 @@ extension PostSettingsViewController {
     }
 
     static func showStandaloneEditor(for post: AbstractPost, from presentingViewController: UIViewController) {
-        let revision = post.createRevision()
-        let viewController = PostSettingsViewController.make(for: revision)
-        viewController.isStandalone = true
-        let navigation = UINavigationController(rootViewController: viewController)
-        presentingViewController.present(navigation, animated: true)
+        if FeatureFlag.postSettingsV2.enabled {
+            NewPostSettingsViewController.showStandaloneEditor(for: post, from: presentingViewController)
+        } else {
+            let revision = post.createRevision()
+            let viewController = PostSettingsViewController.make(for: revision)
+            viewController.isStandalone = true
+            let navigation = UINavigationController(rootViewController: viewController)
+            presentingViewController.present(navigation, animated: true)
+        }
     }
 
     @objc public var isDraftOrPending: Bool {

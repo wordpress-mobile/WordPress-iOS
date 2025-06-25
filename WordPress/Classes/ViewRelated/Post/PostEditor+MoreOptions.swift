@@ -2,10 +2,26 @@ import Foundation
 import SVProgressHUD
 import WordPressFlux
 import WordPressUI
+import SwiftUI
 
 extension PostEditor {
 
     func displayPostSettings() {
+        guard FeatureFlag.postSettingsV2.enabled else {
+            return showDeprecatedPostSettings()
+        }
+        // Use the new SwiftUI-based Post Settings
+        let viewModel = PostSettingsViewModel(post: post)
+        viewModel.onSaveTapped = { [weak self] in
+            self?.editorContentWasUpdated()
+            self?.navigationController?.dismiss(animated: true)
+        }
+        let postSettingsVC = NewPostSettingsViewController(viewModel: viewModel)
+        let navigation = UINavigationController(rootViewController: postSettingsVC)
+        self.navigationController?.present(navigation, animated: true)
+    }
+
+    private func showDeprecatedPostSettings() {
         let viewController = PostSettingsViewController.make(for: post)
         viewController.featuredImageDelegate = self as? FeaturedImageDelegate
         let doneButton = UIBarButtonItem(systemItem: .done, primaryAction: .init(handler: { [weak self] _ in
