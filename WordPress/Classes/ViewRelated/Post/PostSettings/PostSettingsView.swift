@@ -74,8 +74,8 @@ struct PostSettingsView: View {
                 dismiss()
             }
         }
-        .alert(viewModel.deletedAlertTitle, isPresented: $viewModel.showingDeletedAlert) {
-            Button(Strings.okButton) {
+        .alert(viewModel.deletedAlertTitle, isPresented: $viewModel.isShowingDeletedAlert) {
+            Button(SharedStrings.Button.ok) {
                 dismiss()
             }
         } message: {
@@ -101,23 +101,5 @@ private enum Strings {
         "postSettings.slug.placeholder",
         value: "Enter slug",
         comment: "Placeholder text for the slug field"
-    )
-    
-    static let cancelButton = NSLocalizedString(
-        "postSettings.button.cancel",
-        value: "Cancel",
-        comment: "Cancel button in the Post Settings screen"
-    )
-    
-    static let saveButton = NSLocalizedString(
-        "postSettings.button.save",
-        value: "Save",
-        comment: "Save button in the Post Settings screen"
-    )
-    
-    static let okButton = NSLocalizedString(
-        "postSettings.button.ok",
-        value: "OK",
-        comment: "OK button in post settings alerts"
     )
 }
