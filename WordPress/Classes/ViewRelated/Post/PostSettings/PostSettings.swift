@@ -1,6 +1,7 @@
 import Foundation
 import WordPressData
 import WordPressKit
+import WordPressShared
 
 /// A plain data structure representing the subset of post/page settings that can be edited in PostSettingsView.
 /// Used for change tracking and to separate UI state from Core Data objects.
@@ -11,13 +12,13 @@ struct PostSettings: Hashable {
     var publishDate: Date?
     var password: String?
     var authorID: Int?
-    var categoryIDs: Set<Int>
-    var tags: String
+    var categoryIDs: Set<Int> = []
+    var tags: [String] = []
     var featuredImageID: Int?
 
     // MARK: - Post-specific
     var postFormat: String?
-    var isStickyPost: Bool
+    var isStickyPost = false
 
     // MARK: - Page-specific
     var parentPageID: Int?
@@ -26,34 +27,26 @@ struct PostSettings: Hashable {
 
     /// Creates PostSettings from an AbstractPost instance.
     init(from post: AbstractPost) {
-        self.excerpt = post.mt_excerpt ?? ""
-        self.slug = post.wp_slug ?? ""
+        excerpt = post.mt_excerpt ?? ""
+        slug = post.wp_slug ?? ""
+        status = post.status ?? .draft
+        publishDate = post.dateCreated
+        password = post.password
+        authorID = post.authorID?.intValue
+        featuredImageID = post.featuredImage?.mediaID?.intValue
 
-        self.status = post.status ?? .draft
-        self.publishDate = post.dateCreated
-        self.password = post.password
-
-        self.authorID = post.authorID?.intValue
-
-        // Extract category IDs
-        if let post = post as? Post {
-            self.categoryIDs = Set((post.categories ?? []).compactMap { $0.categoryID?.intValue })
-            self.tags = post.tags ?? ""
-            self.postFormat = post.postFormat
-            self.isStickyPost = post.isStickyPost
-        } else {
-            self.categoryIDs = []
-            self.tags = ""
-            self.postFormat = nil
-            self.isStickyPost = false
-        }
-
-        self.featuredImageID = post.featuredImage?.mediaID?.intValue
-
-        if let page = post as? Page {
-            self.parentPageID = page.parentID?.intValue
-        } else {
-            self.parentPageID = nil
+        switch post {
+        case let post as Post:
+            postFormat = post.postFormat
+            isStickyPost = post.isStickyPost
+            tags = AbstractPost.makeTags(from: post.tags ?? "")
+            categoryIDs = Set((post.categories ?? []).compactMap {
+                $0.categoryID?.intValue
+            })
+        case let page as Page:
+            parentPageID = page.parentID?.intValue
+        default:
+            wpAssertionFailure("unsupported post type", userInfo: ["post_type": String(describing: type(of: post))])
         }
     }
 
@@ -62,68 +55,10 @@ struct PostSettings: Hashable {
     /// Applies the settings to an AbstractPost instance.
     /// Only updates properties that have actually changed.
     func apply(to post: AbstractPost) {
-        // More Options
-        if post.mt_excerpt != excerpt {
-            post.mt_excerpt = excerpt
-        }
         if post.wp_slug != slug {
             post.wp_slug = slug
         }
-
-        // Publishing
-        if post.status != status {
-            post.status = status
-        }
-        if post.dateCreated != publishDate {
-            post.dateCreated = publishDate
-        }
-        if post.password != password {
-            post.password = password
-        }
-
-        // Author
-        if let authorID, post.authorID?.intValue != authorID {
-            post.authorID = NSNumber(value: authorID)
-        }
-
-        // Featured Image
-        if let featuredImageID {
-            if post.featuredImage?.mediaID?.intValue != featuredImageID {
-                // Note: Setting featured image requires fetching the Media object
-                // This would typically be handled by the view model
-            }
-        } else if post.featuredImage != nil {
-            post.featuredImage = nil
-        }
-
-        // Post-specific properties
-        if let post = post as? Post {
-            // Categories - only update if changed
-            let currentCategoryIDs = Set((post.categories ?? []).compactMap { $0.categoryID?.intValue })
-            if currentCategoryIDs != categoryIDs {
-                // Note: Updating categories requires fetching PostCategory objects
-                // This would typically be handled by the view model
-            }
-
-            if post.tags != tags {
-                post.tags = tags
-            }
-
-            if let postFormat, post.postFormat != postFormat {
-                post.postFormat = postFormat
-            }
-
-            if post.isStickyPost != isStickyPost {
-                post.isStickyPost = isStickyPost
-            }
-        }
-
-        // Page-specific properties
-        if let page = post as? Page {
-            if page.parentID?.intValue != parentPageID {
-                page.parentID = parentPageID.map { NSNumber(value: $0) }
-            }
-        }
+        // TODO: implement it for the remaining fields
     }
 
     // MARK: - Diff Generation
@@ -131,65 +66,10 @@ struct PostSettings: Hashable {
     /// Creates RemotePostUpdateParameters representing the changes from the original settings.
     func makeUpdateParameters(from original: PostSettings) -> RemotePostUpdateParameters {
         var parameters = RemotePostUpdateParameters()
-
-        // More Options
-        if excerpt != original.excerpt {
-            parameters.excerpt = excerpt
-        }
         if slug != original.slug {
             parameters.slug = slug
         }
-
-        // Publishing
-        if status != original.status {
-            parameters.status = status.rawValue
-        }
-        if publishDate != original.publishDate {
-            parameters.date = publishDate
-        }
-        if password != original.password {
-            parameters.password = password
-        }
-
-        // Author
-        if authorID != original.authorID {
-            parameters.authorID = authorID
-        }
-
-        // Featured Image
-        if featuredImageID != original.featuredImageID {
-            parameters.featuredImageID = featuredImageID
-        }
-
-        // Post-specific
-        if postFormat != original.postFormat {
-            parameters.format = postFormat
-        }
-        if isStickyPost != original.isStickyPost {
-            parameters.isSticky = isStickyPost
-        }
-        if tags != original.tags {
-            parameters.tags = makeTags(from: tags)
-        }
-        if categoryIDs != original.categoryIDs {
-            parameters.categoryIDs = Array(categoryIDs)
-        }
-
-        // Page-specific
-        if parentPageID != original.parentPageID {
-            parameters.parentPageID = parentPageID
-        }
-
+        // TODO: implement it for the remaining field
         return parameters
     }
-}
-
-// MARK: - Private Helpers
-
-private func makeTags(from tags: String) -> [String] {
-    tags
-        .trimmingCharacters(in: .whitespacesAndNewlines)
-        .components(separatedBy: ",")
-        .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-        .filter { !$0.isEmpty }
 }
