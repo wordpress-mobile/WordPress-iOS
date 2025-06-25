@@ -44,11 +44,11 @@ final class PostSettingsViewModel: ObservableObject {
         self.originalSettings = initialSettings
     }
 
-    func cancel() {
+    func buttonCancelTapped() {
         onDismiss?()
     }
 
-    func save() async {
+    func buttonSaveTapped() {
         // Check if the post still exists
         guard let context = post.managedObjectContext,
               let _ = try? context.existingObject(with: post.objectID) else {
@@ -66,6 +66,12 @@ final class PostSettingsViewModel: ObservableObject {
         }
 
         isSaving = true
+        Task {
+            await actuallySave()
+        }
+    }
+
+    private func actuallySave() async {
         do {
             let coordinator = PostCoordinator.shared
             if coordinator.isSyncAllowed(for: post) {
@@ -83,7 +89,6 @@ final class PostSettingsViewModel: ObservableObject {
             // `PostCoordinator` handles errors by showing an alert when needed
         }
     }
-
 }
 
 // MARK: - Localized Strings

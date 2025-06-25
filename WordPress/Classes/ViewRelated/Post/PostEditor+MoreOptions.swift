@@ -6,6 +6,7 @@ import SwiftUI
 
 extension PostEditor {
 
+    @MainActor
     func displayPostSettings() {
         guard FeatureFlag.postSettingsV2.enabled else {
             return showDeprecatedPostSettings()
