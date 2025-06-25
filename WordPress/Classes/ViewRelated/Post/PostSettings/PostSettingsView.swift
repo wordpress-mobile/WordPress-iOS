@@ -32,7 +32,7 @@ final class NewPostSettingsViewController: UIHostingController<PostSettingsView>
 }
 
 @MainActor
-struct PostSettingsView: View {
+private struct PostSettingsView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
     @State private var isShowingDiscardChangesAlert = false
 
