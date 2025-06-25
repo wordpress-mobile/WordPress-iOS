@@ -1,6 +1,7 @@
 import Foundation
 import WordPressData
 import WordPressKit
+import WordPressShared
 
 @MainActor
 final class PostSettingsViewModel: ObservableObject {
@@ -57,10 +58,10 @@ final class PostSettingsViewModel: ObservableObject {
             return
         }
 
-        guard !isStandalone else {
+        guard isStandalone else {
             // Apply settings and return to the editor
             settings.apply(to: post)
-            onDismiss?()
+            wpAssert(onEditorPostSaved != nil, "configuration missing")
             onEditorPostSaved?()
             return
         }
@@ -94,6 +95,18 @@ final class PostSettingsViewModel: ObservableObject {
 // MARK: - Localized Strings
 
 private enum Strings {
+    static let postSettingsTitle = NSLocalizedString(
+        "postSettings.navigationTitle.post",
+        value: "Post Settings",
+        comment: "The title of the Post Settings screen."
+    )
+
+    static let pageSettingsTitle = NSLocalizedString(
+        "postSettings.navigationTitle.page",
+        value: "Page Settings",
+        comment: "The title of the Page Settings screen."
+    )
+
     static let postDeletedTitle = NSLocalizedString(
         "postSettings.postDeleted.title",
         value: "Post Deleted",
@@ -116,17 +129,5 @@ private enum Strings {
         "postSettings.pageDeleted.message",
         value: "This page has been deleted and can no longer be saved.",
         comment: "Message when trying to save a deleted page"
-    )
-
-    static let postSettingsTitle = NSLocalizedString(
-        "postSettings.title.post",
-        value: "Post Settings",
-        comment: "The title of the Post Settings screen."
-    )
-
-    static let pageSettingsTitle = NSLocalizedString(
-        "postSettings.title.page",
-        value: "Page Settings",
-        comment: "The title of the Page Settings screen."
     )
 }

@@ -60,6 +60,7 @@ struct PostSettingsView: View {
                         viewModel.buttonSaveTapped()
                     }
                     .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.capsule)
                     .disabled(!viewModel.hasChanges)
                     .tint(AppColor.tint)
                 }
