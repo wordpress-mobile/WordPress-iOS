@@ -3,15 +3,16 @@ import WordPressUI
 import WordPressKit
 
 struct TimeZoneSelectorView: View {
-    @StateObject private var viewModel: TimeZoneSelectorViewModel
+    @StateObject private var viewModel = TimeZoneSelectorViewModel()
     @State private var searchText = ""
+    private var selectedValue: String?
     @Environment(\.dismiss) private var dismiss
 
     let onSelection: (WPTimeZone) -> Void
 
     init(selectedValue: String?, onSelection: @escaping (WPTimeZone) -> Void) {
         self.onSelection = onSelection
-        self._viewModel = StateObject(wrappedValue: TimeZoneSelectorViewModel(selectedValue: selectedValue))
+        self.selectedValue = selectedValue
     }
 
     var body: some View {
@@ -66,17 +67,16 @@ struct TimeZoneSelectorView: View {
     }
 
     @ViewBuilder
-    private func timeZoneRow(for rowViewModel: TimeZoneRowViewModel) -> some View {
+    private func timeZoneRow(for viewModel: TimeZoneRowViewModel) -> some View {
         TimeZoneRowView(
-            viewModel: rowViewModel,
-            isSelected: rowViewModel.timezone.value == viewModel.selectedValue
+            viewModel: viewModel,
+            isSelected: viewModel.timezone.value == selectedValue
         ) {
-            handleSelection(rowViewModel.timezone)
+            handleSelection(viewModel.timezone)
         }
     }
 
     private func handleSelection(_ timezone: WPTimeZone) {
-        viewModel.selectedValue = timezone.value
         onSelection(timezone)
         dismiss()
     }

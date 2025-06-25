@@ -37,14 +37,12 @@ final class TimeZoneSelectorViewModel: ObservableObject {
     @Published private(set) var sections: [TimeZoneSectionViewModel] = []
     @Published private(set) var isLoading = false
     @Published private(set) var error: Error?
-    @Published var selectedValue: String?
     @Published private(set) var suggestedTimezoneRowViewModel: TimeZoneRowViewModel?
 
     private let timeZoneFormatter = TimeZoneFormatter(currentDate: Date())
     private let service: TimeZoneServiceProtocol
 
-    init(selectedValue: String?, service: TimeZoneServiceProtocol = DefaultTimeZoneService()) {
-        self.selectedValue = selectedValue
+    init(service: TimeZoneServiceProtocol = DefaultTimeZoneService()) {
         self.service = service
     }
 
