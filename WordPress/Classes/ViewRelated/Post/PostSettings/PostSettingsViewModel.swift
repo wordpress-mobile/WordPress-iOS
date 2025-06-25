@@ -20,15 +20,15 @@ final class PostSettingsViewModel: ObservableObject {
     var navigationTitle: String {
         post is Page ? Strings.pageSettingsTitle : Strings.postSettingsTitle
     }
-    
+
     var deletedAlertTitle: String {
         post is Page ? Strings.pageDeletedTitle : Strings.postDeletedTitle
     }
-    
+
     var deletedAlertMessage: String {
         post is Page ? Strings.pageDeletedMessage : Strings.postDeletedMessage
     }
-    
+
     private let originalSettings: PostSettings
 
     var onDismiss: (() -> Void)?
@@ -46,7 +46,7 @@ final class PostSettingsViewModel: ObservableObject {
     func cancel() {
         onDismiss?()
     }
-    
+
     func save() async {
         // Check if the post still exists
         guard let context = post.managedObjectContext,
@@ -92,19 +92,19 @@ private enum Strings {
         value: "Post Deleted",
         comment: "Title of alert when trying to save a deleted post"
     )
-    
+
     static let pageDeletedTitle = NSLocalizedString(
         "postSettings.pageDeleted.title",
         value: "Page Deleted",
         comment: "Title of alert when trying to save a deleted page"
     )
-    
+
     static let postDeletedMessage = NSLocalizedString(
         "postSettings.postDeleted.message",
         value: "This post has been deleted and can no longer be saved.",
         comment: "Message when trying to save a deleted post"
     )
-    
+
     static let pageDeletedMessage = NSLocalizedString(
         "postSettings.pageDeleted.message",
         value: "This page has been deleted and can no longer be saved.",
@@ -116,7 +116,7 @@ private enum Strings {
         value: "Post Settings",
         comment: "The title of the Post Settings screen."
     )
-    
+
     static let pageSettingsTitle = NSLocalizedString(
         "postSettings.title.page",
         value: "Page Settings",
