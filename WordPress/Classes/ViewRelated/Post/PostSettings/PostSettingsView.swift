@@ -31,6 +31,7 @@ final class NewPostSettingsViewController: UIHostingController<PostSettingsView>
     }
 }
 
+@MainActor
 struct PostSettingsView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
     @State private var isShowingDiscardChangesAlert = false
@@ -56,11 +57,20 @@ struct PostSettingsView: View {
                 if viewModel.isSaving {
                     ProgressView()
                 } else {
-                    Button(SharedStrings.Button.save) {
-                        viewModel.buttonSaveTapped()
+                    Group {
+                        if viewModel.isStandalone {
+                            Button(SharedStrings.Button.save) {
+                                viewModel.buttonSaveTapped()
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .buttonBorderShape(.capsule)
+                        } else {
+                            Button(SharedStrings.Button.done) {
+                                viewModel.buttonSaveTapped()
+                            }
+                            .fontWeight(.medium)
+                        }
                     }
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.capsule)
                     .disabled(!viewModel.hasChanges)
                     .tint(AppColor.tint)
                 }
