@@ -1,6 +1,7 @@
 import Foundation
 import WordPressKit
 import WordPressShared
+import WordPressUI
 
 struct JetpackRestoreCompleteConfiguration {
     let title: String
@@ -103,8 +104,9 @@ class BaseRestoreCompleteViewController: UIViewController {
             self?.secondaryButtonTapped(from: sender)
         }
 
+        view.backgroundColor = .systemBackground
         view.addSubview(completeView)
-        view.pinSubviewToAllEdges(completeView)
+        completeView.pinEdges(to: view.safeAreaLayoutGuide)
     }
 
     @objc private func doneTapped() {

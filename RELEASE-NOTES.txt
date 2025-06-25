@@ -3,6 +3,9 @@
 * [**] Add new “Subscribers” screen that shows both your email and Reader subscribers [#24513]
 * [*] Fix an issue with “Stats / Subscribers” sometimes not showing the latest email subscribers [#24513]
 * [*] Fix an issue with "Stats" / "Subscribers" / "Emails" showing html encoded characters [#24513]
+* [*] Add search to “Jetpack Activity List” and display actors and dates [#24597]
+* [*] Fix an issue with content in "Restore" and "Download Backup" flows covering the navigation bar [#24597]
+* [*] Show when the downloadable backup expires in Backup List [#24597]
 
 25.9
 -----

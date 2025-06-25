@@ -1,49 +1,50 @@
-import XCTest
+import Testing
 import WordPressUI
 
-final class UIImage_ScaleTests: XCTestCase {
+struct UIImageScaleTests {
 
     let originalImage = UIImage(color: .blue, size: CGSize(width: 1024, height: 768))
 
-    func testAspectFitIntoSquare() {
+    @Test func aspectFitIntoSquare() {
         let targetSize = CGSize(width: 1000, height: 1000)
         let size = originalImage.dimensions(forSuggestedSize: targetSize, format: .scaleAspectFit)
-        XCTAssertEqual(size, CGSize(width: 1000, height: 750))
+        #expect(size == CGSize(width: 1000, height: 750))
     }
 
-    func testAspectFitIntoSmallerSize() {
+    @Test func aspectFitIntoSmallerSize() {
         let targetSize = CGSize(width: 101, height: 76)
         let size = originalImage.dimensions(forSuggestedSize: targetSize, format: .scaleAspectFit)
-        XCTAssertEqual(size, targetSize)
+        #expect(size == targetSize)
     }
 
-    func testAspectFitIntoLargerSize() {
+    @Test func aspectFitIntoLargerSize() {
         let targetSize = CGSize(width: 2000, height: 1000)
         let size = originalImage.dimensions(forSuggestedSize: targetSize, format: .scaleAspectFit)
-        XCTAssertEqual(size, CGSize(width: 1333, height: 1000))
+        #expect(size == CGSize(width: 1333, height: 1000))
     }
 
-    func testAspectFillIntoSquare() {
+    @Test func aspectFillIntoSquare() {
         let targetSize = CGSize(width: 100, height: 100)
         let size = originalImage.dimensions(forSuggestedSize: targetSize, format: .scaleAspectFill)
-        XCTAssertEqual(size, CGSize(width: 133, height: 100))
+        #expect(size == CGSize(width: 133, height: 100))
     }
 
-    func testAspectFillIntoSmallerSize() {
+    @Test func aspectFillIntoSmallerSize() {
         let targetSize = CGSize(width: 103, height: 77)
         let size = originalImage.dimensions(forSuggestedSize: targetSize, format: .scaleAspectFill)
-        XCTAssertEqual(size, targetSize)
+        #expect(size == targetSize)
     }
 
-    func testAspectFillIntoLargerSize() {
+    @Test func aspectFillIntoLargerSize() {
         let targetSize = CGSize(width: 2000, height: 1000)
         let size = originalImage.dimensions(forSuggestedSize: targetSize, format: .scaleAspectFill)
-        XCTAssertEqual(size, CGSize(width: 2000, height: 1500))
+        #expect(size == CGSize(width: 2000, height: 1500))
     }
 
-    func testFoo() {
+    @Test func zeroTargetSize() {
         let targetSize = CGSize(width: 0, height: 0)
         let originalImage = UIImage(color: .blue, size: CGSize(width: 1024, height: 680))
         let size = originalImage.dimensions(forSuggestedSize: targetSize, format: .scaleAspectFill)
+        #expect(size == CGSize(width: 0, height: 0))
     }
 }

@@ -1,5 +1,8 @@
 import SwiftUI
 import WordPressKit
+import WordPressUI
+
+typealias SubscribersPaginatedResponse = DataViewPaginatedResponse<SubscriberRowViewModel, Int>
 
 @MainActor
 final class SubscribersViewModel: ObservableObject {
@@ -39,11 +42,11 @@ final class SubscribersViewModel: ObservableObject {
         error = nil
         isLoading = true
         do {
-            let response = try await SubscribersPaginatedResponse(blog: blog, parameters: parameters)
+            let response = try await makeResponse(parameters: parameters)
             guard !Task.isCancelled else { return }
             self.isLoading = false
             self.response = response
-            if response.parameters.filters.isEmpty {
+            if parameters.filters.isEmpty {
                 totalCount = response.total
             }
         } catch {
@@ -57,17 +60,42 @@ final class SubscribersViewModel: ObservableObject {
     }
 
     func search() async throws -> SubscribersPaginatedResponse {
-        try await SubscribersPaginatedResponse(blog: blog, parameters: parameters, search: searchText)
+        try await makeResponse(parameters: parameters, search: searchText)
     }
 
-    func makeFormattedSubscribersCount(for response: SubscribersPaginatedResponse) -> String {
-        if response.parameters.filters.isEmpty {
-            return "\(response.total)"
+    func makeFormattedSubscribersCount(for response: SubscribersPaginatedResponse) -> String? {
+        guard let count = response.total else {
+            return nil
         }
-        guard let totalCount else {
-            return "\(response.total)"
+        guard !parameters.filters.isEmpty, let totalCount else {
+            return "\(count)"
         }
-        return String(format: Strings.nOutOf, response.total.description, totalCount.description)
+        return String(format: Strings.nOutOf, count.description, totalCount.description)
+    }
+
+    private func makeResponse(
+        parameters: SubscribersServiceRemote.GetSubscribersParameters,
+        search: String? = nil
+    ) async throws -> SubscribersPaginatedResponse {
+        return try await SubscribersPaginatedResponse { [blog] page in
+            let service = try blog.makeSubscribersService()
+            let response = try await service.getSubscribers(
+                siteID: blog.dotComSiteID,
+                page: page ?? 1,
+                perPage: 50,
+                parameters: parameters,
+                search: search
+            )
+            let items = response.subscribers.map { subscriber in
+                SubscriberRowViewModel(blog: blog, subscriber: subscriber)
+            }
+            return SubscribersPaginatedResponse.Page(
+                items: items,
+                total: response.total,
+                hasMore: response.page < response.pages,
+                nextPage: response.page + 1
+            )
+        }
     }
 }
 

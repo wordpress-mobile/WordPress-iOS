@@ -2,6 +2,7 @@ import UIKit
 import WordPressFlux
 import WordPressKit
 import WordPressShared
+import WordPressUI
 
 class JetpackRestoreWarningViewController: UIViewController {
 
@@ -79,9 +80,9 @@ class JetpackRestoreWarningViewController: UIViewController {
             self?.dismiss(animated: true)
         }
 
-        warningView.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .systemBackground
         view.addSubview(warningView)
-        view.pinSubviewToAllEdges(warningView)
+        warningView.pinEdges(to: view.safeAreaLayoutGuide)
     }
 
 }

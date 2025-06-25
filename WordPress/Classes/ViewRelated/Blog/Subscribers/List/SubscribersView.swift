@@ -73,7 +73,7 @@ private struct SubscribersListView: View {
                 } label: {
                     Image(systemName: "plus")
                 }
-                SubscribersMenu(viewModel: viewModel)
+                SubscribersFiltersMenu(viewModel: viewModel)
             }
         }
         .sheet(isPresented: $isShowingInviteView) {
@@ -87,37 +87,12 @@ private struct SubscribersListView: View {
 private struct SubscribersSearchView: View {
     @ObservedObject var viewModel: SubscribersViewModel
 
-    @State private var response: SubscribersPaginatedResponse?
-    @State private var error: Error?
-
     var body: some View {
-        List {
-            if let response {
-                SubscribersPaginatedForEach(response: response)
-            } else if error == nil {
-                LoadMoreFooterView(.loading)
-            }
-        }
-        .listStyle(.plain)
-        .overlay {
-            if let response, response.isEmpty {
-                EmptyStateView.search()
-            } else if let error {
-                EmptyStateView.failure(error: error)
-            }
-        }
-        .task(id: viewModel.searchText) {
-            error = nil
-            do {
-                try await Task.sleep(for: .milliseconds(500))
-                let response = try await viewModel.search()
-                guard !Task.isCancelled else { return }
-                self.response = response
-            } catch {
-                guard !Task.isCancelled else { return }
-                self.response = nil
-                self.error = error
-            }
+        DataViewSearchView(
+            searchText: viewModel.searchText,
+            search: viewModel.search
+        ) { response in
+            SubscribersPaginatedForEach(response: response)
         }
     }
 }
@@ -126,31 +101,28 @@ private struct SubscribersPaginatedForEach: View {
     @ObservedObject var response: SubscribersPaginatedResponse
 
     var body: some View {
-        ForEach(response.items) {
-            makeRow(with: $0)
-        }
-        if response.isLoading {
-            LoadMoreFooterView(.loading)
-        } else if response.error != nil {
-            LoadMoreFooterView(.failure).onRetry {
-                response.loadMore()
+        DataViewPaginatedForEach(response: response, content: makeRow)
+            .onReceive(NotificationCenter.default.publisher(for: .subscriberDeleted)) { notification in
+                subscriberDeleted(userInfo: notification.userInfo)
             }
-        }
     }
 
     private func makeRow(with item: SubscriberRowViewModel) -> some View {
         SubscriberRowView(viewModel: item)
-            .onAppear { response.onRowAppear(item) }
+            .onAppear { response.onRowAppeared(item) }
             .background {
                 NavigationLink {
                     SubscriberDetailsView(viewModel: item.makeDetailsViewModel())
-                        .onDeleted { [weak response] in
-                            response?.deleteSubscriber(withID: $0)
-                        }
                 } label: {
                     EmptyView()
                 }.opacity(0)
             }
+    }
+
+    private func subscriberDeleted(userInfo: [AnyHashable: Any]?) {
+        if let subscriberID = userInfo?[SubscribersServiceRemote.subscriberIDKey] as? Int {
+            response.deleteItem(withID: subscriberID)
+        }
     }
 }
 
