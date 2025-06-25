@@ -7,13 +7,13 @@ import WordPressShared
 import WordPressUI
 import SwiftUI
 
-final class NewPostSettingsViewController: UIHostingController<PostSettingsView> {
+final class NewPostSettingsViewController: UIHostingController<AnyView> {
     private let viewModel: PostSettingsViewModel
 
     init(viewModel: PostSettingsViewModel) {
         self.viewModel = viewModel
         let postSettingsView = PostSettingsView(viewModel: viewModel)
-        super.init(rootView: postSettingsView)
+        super.init(rootView: AnyView(postSettingsView))
     }
 
     override func viewDidLoad() {
