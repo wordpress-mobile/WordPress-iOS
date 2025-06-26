@@ -2,14 +2,11 @@ import UIKit
 import SwiftUI
 import WordPressData
 import WordPressUI
+import WordPressShared
 import Photos
 import PhotosUI
 
-/// A media picker menu.
-///
-/// - note: Use `.environment(\.presentingViewController, <#vc#>)` to pass the
-/// presenting view controller. If not provided, the current top view controller
-/// is used.
+/// A media picker menu
 struct MediaPicker<Content: View>: View {
     var configuration = MediaPickerConfiguration()
     var onSelection: ((MediaPickerSelection) -> Void)?
@@ -17,8 +14,6 @@ struct MediaPicker<Content: View>: View {
     @ViewBuilder var content: () -> Content
 
     @StateObject private var viewModel = MediaPickerViewModel()
-
-    @Environment(\.presentingViewController) var presentingViewController
 
     var body: some View {
         Menu {
@@ -45,7 +40,6 @@ struct MediaPicker<Content: View>: View {
 
     private func makeActions() -> [UIAction] {
         let menu = MediaPickerMenu(
-            viewController: presentingViewController ?? UIViewController(),
             filter: configuration.filter,
             isMultipleSelectionEnabled: configuration.isMultipleSelectionEnabled
         )

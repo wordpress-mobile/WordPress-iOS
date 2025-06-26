@@ -86,6 +86,15 @@ struct PostSettings: Hashable {
             post.author = author.displayName
             post.authorAvatarURL = author.avatarURL?.absoluteString
         }
+        // Apply featured image changes
+        if let featuredImageID {
+            // Only update if changed
+            if post.featuredImage?.mediaID?.intValue != featuredImageID {
+                post.featuredImage = Media.existingOrStubMediaWith(mediaID: NSNumber(value: featuredImageID), inBlog: post.blog)
+            }
+        } else {
+            post.featuredImage = nil
+        }
     }
 
     // MARK: - Diff Generation
