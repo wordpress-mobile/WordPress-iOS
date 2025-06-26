@@ -7,6 +7,7 @@ struct PostVisibilityPicker: View {
     @State private var previousSelection: Selection
     @State private var isDismissing = false
     @FocusState private var isPasswordFieldFocused: Bool
+    @Environment(\.dismiss) private var dismiss
 
     struct Selection {
         var type: PostVisibility
@@ -19,12 +20,14 @@ struct PostVisibilityPicker: View {
     }
 
     private let onSubmit: (Selection) -> Void
+    private let dismissOnSelection: Bool
 
     static var title: String { Strings.title }
 
-    init(selection: Selection, onSubmit: @escaping (Selection) -> Void) {
+    init(selection: Selection, dismissOnSelection: Bool = false, onSubmit: @escaping (Selection) -> Void) {
         self._selection = State(initialValue: selection)
         self._previousSelection = State(initialValue: selection)
+        self.dismissOnSelection = dismissOnSelection
         self.onSubmit = onSubmit
     }
 
@@ -89,6 +92,9 @@ struct PostVisibilityPicker: View {
                 isPasswordFieldFocused = true
             } else {
                 onSubmit(selection)
+                if dismissOnSelection {
+                    dismiss()
+                }
             }
         }
     }
@@ -110,6 +116,9 @@ struct PostVisibilityPicker: View {
                 // Let the keyboard dismiss first to avoid janky animation
                 DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(550)) {
                     onSubmit(selection)
+                    if dismissOnSelection {
+                        dismiss()
+                    }
                 }
             } else {
                 selection = previousSelection
