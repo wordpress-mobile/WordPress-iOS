@@ -110,19 +110,7 @@ private struct PostSettingsView: View {
             if viewModel.isDraftOrPending {
                 pendingReviewRow
             } else {
-                // Publish date picker
-                NavigationLink {
-                    PublishDatePickerView(configuration: PublishDatePickerConfiguration(
-                        date: viewModel.settings.publishDate,
-                        isRequired: false,
-                        timeZone: viewModel.timeZone,
-                        updated: { date in
-                            viewModel.settings.publishDate = date
-                        }
-                    ))
-                } label: {
-                    SettingsRow(title: Strings.publishDateLabel, value: viewModel.publishDateText)
-                }
+                publishDateRow
 
                 // Visibility picker
                 NavigationLink {
@@ -155,6 +143,21 @@ private struct PostSettingsView: View {
     private var pendingReviewRow: some View {
         Toggle(isOn: $viewModel.settings.isPendingReview) {
             Text(Strings.pendingReviewLabel)
+        }
+    }
+
+    private var publishDateRow: some View {
+        NavigationLink {
+            PublishDatePickerView(configuration: PublishDatePickerConfiguration(
+                date: viewModel.settings.publishDate,
+                isRequired: true,
+                timeZone: viewModel.timeZone,
+                updated: { date in
+                    viewModel.settings.publishDate = date
+                }
+            ))
+        } label: {
+            SettingsRow(title: Strings.publishDateLabel, value: viewModel.publishDateText ?? "–")
         }
     }
 }
