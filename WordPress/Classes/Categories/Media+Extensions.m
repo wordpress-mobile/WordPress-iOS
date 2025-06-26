@@ -1,10 +1,6 @@
 #import "Media+Extensions.h"
 #import "MediaService.h"
-// For some reason, and only in some files, the modular import does not work.
-// Just to be on the safe side, _all_ imports use the angle brackets style.
-// We shall try to go back to the modular style on Keystone successfully builds for testing.
-// @import WordPressData;
-#import <WordPressData/WordPressData.h>
+@import WordPressData;
 @import WordPressShared;
 #ifdef KEYSTONE
 #import "Keystone-Swift.h"
