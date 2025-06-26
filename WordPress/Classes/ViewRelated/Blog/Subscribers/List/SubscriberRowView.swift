@@ -55,9 +55,9 @@ struct SubscriberRowView: View {
 }
 
 @MainActor
-final class SubscriberRowViewModel: Identifiable {
+final class SubscriberRowViewModel: @preconcurrency Identifiable {
     let subscriber: SubscribersServiceRemote.GetSubscribersResponse.Subscriber
-    var identifier: Int { subscriberID }
+    var id: Int { subscriberID }
     var subscriberID: Int { subscriber.subscriberID }
 
     let title: String
@@ -73,8 +73,6 @@ final class SubscriberRowViewModel: Identifiable {
 
     private let blog: SubscribersBlog
 
-    weak var response: SubscribersPaginatedResponse?
-
     init(blog: SubscribersBlog, subscriber: SubscribersServiceRemote.GetSubscribersResponse.Subscriber) {
         self.blog = blog
         self.subscriber = subscriber
@@ -88,18 +86,17 @@ final class SubscriberRowViewModel: Identifiable {
         self.details = subscriber.dateSubscribed.toShortString()
     }
 
-    func makeDetailsViewModel() -> SubsriberDetailsViewModel {
-        SubsriberDetailsViewModel(blog: blog, subscriber: subscriber)
+    func makeDetailsViewModel() -> SubscriberDetailsViewModel {
+        SubscriberDetailsViewModel(blog: blog, subscriber: subscriber)
     }
 
     func delete() {
         isDeleting = true
         Task {
             do {
-                try await blog.getSubscribersService()
+                try await blog.makeSubscribersService()
                     .deleteSubscriber(subscriber, siteID: blog.dotComSiteID)
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
-                response?.deleteSubscriber(withID: subscriberID)
             } catch {
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
                 Notice(error: error).post()
@@ -107,6 +104,11 @@ final class SubscriberRowViewModel: Identifiable {
             }
         }
     }
+}
+
+extension Foundation.Notification.Name {
+    @MainActor
+    static let subscriberDeleted = Foundation.Notification.Name("subscriberDeleted")
 }
 
 private enum Strings {

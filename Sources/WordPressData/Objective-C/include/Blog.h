@@ -202,10 +202,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
 
 // Readonly Properties
-@property (nonatomic, weak, readonly, nullable) NSArray *sortedPostFormatNames;
-@property (nonatomic, weak, readonly, nullable) NSArray *sortedPostFormats;
-@property (nonatomic, weak, readonly, nullable) NSArray *sortedConnections;
-@property (nonatomic, readonly, nullable) NSArray<Role *> *sortedRoles;
 @property (nonatomic, strong, readonly, nullable) WordPressOrgXMLRPCApi *xmlrpcApi;
 @property (nonatomic, strong, readonly, nullable) WordPressOrgRestApi *selfHostedSiteRestApi;
 @property (nonatomic, weak, readonly, nullable) NSString *version;

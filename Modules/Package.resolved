@@ -1,5 +1,5 @@
 {
-  "originHash" : "29e01dfb9ab627b32c39ba2dee8ef4ff18afa7f8ac3ba52560cf900d6d11368c",
+  "originHash" : "8c8d98aed7eab1f454a6d3f34ad7f1d90ae38d5b0ca1d5e9ce24c7675adf295c",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -151,15 +151,6 @@
       "state" : {
         "revision" : "a211f6cd0391a8d15ae4570d28c66b12ef020134",
         "version" : "0.3.0"
-      }
-    },
-    {
-      "identity" : "jtapplecalendar",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/patchthecode/JTAppleCalendar",
-      "state" : {
-        "revision" : "718f0ab68ba0fcd2bc134f6e9d30edc1b9b038e1",
-        "version" : "8.0.5"
       }
     },
     {
@@ -390,7 +381,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
       "state" : {
-        "revision" : "cc7fd8a7ea609fc139e7b9d9f53b12c51002ddf4"
+        "revision" : "ae3961ce89ac0c43a90e88d4963a04aa92008443"
       }
     },
     {

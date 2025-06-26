@@ -149,9 +149,7 @@ extension BlogDetailsViewController {
     }
 
     @objc public func showActivity() {
-        guard let controller = JetpackActivityLogViewController(blog: blog) else {
-            return wpAssertionFailure("failed to instantiate")
-        }
+        let controller = ActivityLogsViewController(blog: blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         presentationDelegate?.presentBlogDetailsViewController(controller)
 
@@ -175,10 +173,12 @@ extension BlogDetailsViewController {
     }
 
     @objc public func showBackup() {
-        guard let backupListVC = BackupListViewController.withJPBannerForBlog(blog) else {
-            return wpAssertionFailure("failed to instantiate")
-        }
-        presentationDelegate?.presentBlogDetailsViewController(backupListVC)
+        let controller = BackupsViewController(blog: blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+
+        presentationDelegate?.presentBlogDetailsViewController(controller)
+
+        WPAnalytics.track(.backupListOpened)
     }
 
     @objc public func showThemes() {

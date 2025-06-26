@@ -37,7 +37,6 @@ let package = Package(
         .package(url: "https://github.com/erikdoe/ocmock", revision: "2c0bfd373289f4a7716db5d6db471640f91a6507"),
         .package(url: "https://github.com/johnxnguyen/Down", branch: "master"),
         .package(url: "https://github.com/kaishin/Gifu", from: "3.4.1"),
-        .package(url: "https://github.com/patchthecode/JTAppleCalendar", from: "8.0.5"),
         .package(url: "https://github.com/Quick/Nimble", from: "10.0.0"),
         .package(url: "https://github.com/scinfu/SwiftSoup", exact: "2.7.5"),
         .package(url: "https://github.com/squarefrog/UIDeviceIdentifier", from: "2.3.0"),
@@ -50,7 +49,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"),
         .package(
             url: "https://github.com/wordpress-mobile/WordPressKit-iOS",
-            revision: "cc7fd8a7ea609fc139e7b9d9f53b12c51002ddf4" // see wpios-edition branch
+            revision: "ae3961ce89ac0c43a90e88d4963a04aa92008443" // see wpios-edition branch
         ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
@@ -300,7 +299,6 @@ enum XcodeSupport {
             .product(name: "GravatarUI", package: "Gravatar-SDK-iOS"),
             .product(name: "Gridicons", package: "Gridicons-iOS"),
             .product(name: "GutenbergKit", package: "GutenbergKit"),
-            .product(name: "JTAppleCalendar", package: "JTAppleCalendar"),
             .product(name: "Lottie", package: "lottie-ios"),
             .product(name: "MediaEditor", package: "MediaEditor-iOS"),
             .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),

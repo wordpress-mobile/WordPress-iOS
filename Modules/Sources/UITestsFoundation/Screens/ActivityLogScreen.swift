@@ -2,35 +2,16 @@ import ScreenObject
 import XCTest
 
 public class ActivityLogScreen: ScreenObject {
-    private let dateRangeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Date Range"].firstMatch
-    }
-
-    private let activityTypeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Activity Type"].firstMatch
-    }
-
-    var activityTypeButton: XCUIElement { activityTypeButtonGetter(app) }
-    var dateRangeButton: XCUIElement { dateRangeButtonGetter(app) }
-
-    // Timeout duration to overwrite value defined in XCUITestHelpers
-    var duration: TimeInterval = 10.0
-
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(
-            expectedElementGetters: [ dateRangeButtonGetter, activityTypeButtonGetter ],
-            app: app
-        )
-    }
-
-    public static func isLoaded() -> Bool {
-        (try? ActivityLogScreen().isLoaded) ?? false
+        try super.init {
+            $0.collectionViews["activity_logs_list"].firstMatch
+        }
     }
 
     @discardableResult
     public func verifyActivityLogScreen(hasActivityPartial activityTitle: String) -> Self {
         XCTAssertTrue(
-            app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", activityTitle)).firstMatch.waitForIsHittable(timeout: duration),
+            app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", activityTitle)).firstMatch.waitForIsHittable(timeout: 10),
             "Activity Log Screen: \"\(activityTitle)\" activity not displayed.")
         return self
     }

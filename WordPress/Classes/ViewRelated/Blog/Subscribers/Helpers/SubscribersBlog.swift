@@ -26,7 +26,7 @@ struct SubscribersBlog {
         SubscribersBlog(dotComSiteID: 1, getRestAPI: { nil })
     }
 
-    func getSubscribersService() throws -> SubscribersServiceRemote {
+    func makeSubscribersService() throws -> SubscribersServiceRemote {
         guard let api = getRestAPI() else {
             throw URLError(.unknown, userInfo: [NSLocalizedDescriptionKey: SharedStrings.Error.generic])
         }

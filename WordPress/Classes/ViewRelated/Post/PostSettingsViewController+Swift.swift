@@ -18,12 +18,19 @@ extension PostSettingsViewController {
         }
     }
 
-    static func showStandaloneEditor(for post: AbstractPost, from presentingViewController: UIViewController) {
-        let revision = post.createRevision()
-        let viewController = PostSettingsViewController.make(for: revision)
-        viewController.isStandalone = true
-        let navigation = UINavigationController(rootViewController: viewController)
-        presentingViewController.present(navigation, animated: true)
+    static func showStandaloneEditor(for post: AbstractPost, from presentingVC: UIViewController) {
+        if FeatureFlag.postSettingsV2.enabled {
+            let viewModel = PostSettingsViewModel(post: post, isStandalone: true)
+            let postSettingsVC = NewPostSettingsViewController(viewModel: viewModel)
+            let navigation = UINavigationController(rootViewController: postSettingsVC)
+            presentingVC.present(navigation, animated: true)
+        } else {
+            let revision = post.createRevision()
+            let viewController = PostSettingsViewController.make(for: revision)
+            viewController.isStandalone = true
+            let navigation = UINavigationController(rootViewController: viewController)
+            presentingVC.present(navigation, animated: true)
+        }
     }
 
     @objc public var isDraftOrPending: Bool {
@@ -298,6 +305,28 @@ extension PostSettingsViewController {
         }
         WPAnalytics.track(.postSettingsAddTagsShown)
         navigationController?.pushViewController(tagsPickerVC, animated: true)
+    }
+}
+
+// MARK: - PostSettingsViewController (Post Format)
+
+extension PostSettingsViewController {
+    @objc public func showPostFormatSelector() {
+        guard let post = apost as? Post else {
+            return wpAssertionFailure("expected post type")
+        }
+        let pickerView = PostFormatPicker(post: post) { [weak self] format in
+            guard let self else { return }
+            if post.postFormatText() != format {
+                WPAnalytics.track(.editorPostFormatChanged, properties: ["via": "settings"])
+                post.setPostFormatText(format)
+            }
+            self.navigationController?.popViewController(animated: true)
+            self.tableView.reloadData()
+        }
+        let pickerVC = UIHostingController(rootView: pickerView)
+        pickerVC.title = PostFormatPicker.title
+        navigationController?.pushViewController(pickerVC, animated: true)
     }
 }
 

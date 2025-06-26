@@ -1,4 +1,5 @@
 import Foundation
+import WordPressUI
 import WordPressData
 import WordPressShared
 
@@ -92,8 +93,9 @@ class BaseRestoreStatusViewController: UIViewController {
 
         statusView.update(progress: 0, progressTitle: configuration.placeholderProgressTitle, progressDescription: nil)
 
+        view.backgroundColor = .systemBackground
         view.addSubview(statusView)
-        view.pinSubviewToAllEdges(statusView)
+        statusView.pinEdges(to: view.safeAreaLayoutGuide)
     }
 
     @objc private func doneTapped() {

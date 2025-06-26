@@ -1,4 +1,34 @@
+import Foundation
 import WordPressKit
+
+extension SubscribersServiceRemote {
+    static let subscriberIDKey = "subscriberIDKey"
+
+    @MainActor
+    func deleteSubscriber(_ subscriber: SubscribersServiceRemote.SubsciberBasicInfoResponse, siteID: Int) async throws {
+        let service = PeopleServiceRemote(wordPressComRestApi: wordPressComRestApi)
+        try await withUnsafeThrowingContinuation { continuation in
+            if subscriber.isDotComUser {
+                service.deleteFollower(siteID, userID: subscriber.dotComUserID, success: {
+                    continuation.resume()
+                }, failure: {
+                    continuation.resume(throwing: $0)
+                })
+            } else {
+                service.deleteEmailFollower(siteID, userID: subscriber.subscriberID, success: {
+                    continuation.resume()
+                }, failure: {
+                    continuation.resume(throwing: $0)
+                })
+            }
+        }
+        NotificationCenter.default.post(
+            name: .subscriberDeleted,
+            object: nil,
+            userInfo: [SubscribersServiceRemote.subscriberIDKey: subscriber.subscriberID]
+        )
+    }
+}
 
 extension SubscribersServiceRemote.GetSubscribersParameters.FilterSubscriptionType {
     var localizedTitle: String {
