@@ -13,7 +13,6 @@ class StoreContainer {
 
     let plugin = PluginStore()
     let notice = NoticeStore()
-    let timezone = TimeZoneStore()
     let jetpackInstall = JetpackInstallStore()
     let statsWidgets = StatsWidgetsStore()
 }
