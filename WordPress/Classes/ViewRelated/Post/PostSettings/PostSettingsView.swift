@@ -34,7 +34,9 @@ final class NewPostSettingsViewController: UIHostingController<AnyView> {
 @MainActor
 private struct PostSettingsView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
+
     @State private var isShowingDiscardChangesAlert = false
+    @State private var isShowingVisibilityPicker = false
 
     var body: some View {
         Form {
@@ -44,36 +46,10 @@ private struct PostSettingsView: View {
         .disabled(viewModel.isSaving)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button(SharedStrings.Button.cancel) {
-                    if viewModel.hasChanges {
-                        isShowingDiscardChangesAlert = true
-                    } else {
-                        viewModel.buttonCancelTapped()
-                    }
-                }
-                .tint(AppColor.tint)
+                buttonCancel
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                if viewModel.isSaving {
-                    ProgressView()
-                } else {
-                    Group {
-                        if viewModel.isStandalone {
-                            Button(SharedStrings.Button.save) {
-                                viewModel.buttonSaveTapped()
-                            }
-                            .buttonStyle(.borderedProminent)
-                            .buttonBorderShape(.capsule)
-                        } else {
-                            Button(SharedStrings.Button.done) {
-                                viewModel.buttonSaveTapped()
-                            }
-                            .fontWeight(.medium)
-                        }
-                    }
-                    .disabled(!viewModel.hasChanges)
-                    .tint(AppColor.tint)
-                }
+                buttonSave
             }
         }
         .interactiveDismissDisabled(viewModel.isSaving || viewModel.hasChanges)
@@ -96,6 +72,42 @@ private struct PostSettingsView: View {
         }
     }
 
+    private var buttonCancel: some View {
+        Button(SharedStrings.Button.cancel) {
+            if viewModel.hasChanges {
+                isShowingDiscardChangesAlert = true
+            } else {
+                viewModel.buttonCancelTapped()
+            }
+        }
+        .tint(AppColor.tint)
+    }
+
+    private var buttonSave: some View {
+        if viewModel.isSaving {
+            ProgressView()
+        } else {
+            Group {
+                if viewModel.isStandalone {
+                    Button(SharedStrings.Button.save) {
+                        viewModel.buttonSaveTapped()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.capsule)
+                } else {
+                    Button(SharedStrings.Button.done) {
+                        viewModel.buttonSaveTapped()
+                    }
+                    .fontWeight(.medium)
+                }
+            }
+            .disabled(!viewModel.hasChanges)
+            .tint(AppColor.tint)
+        }
+    }
+
+    // MARK: - Form
+
     @ViewBuilder
     private var form: some View {
         generalSection
@@ -111,18 +123,7 @@ private struct PostSettingsView: View {
                 pendingReviewRow
             } else {
                 publishDateRow
-
-                // Visibility picker
-                NavigationLink {
-                    PostVisibilityPicker(
-                        selection: PostVisibilityPicker.Selection(post: viewModel.post),
-                        onSubmit: { selection in
-                            viewModel.updateVisibility(selection)
-                        }
-                    )
-                } label: {
-                    SettingsRow(title: Strings.visibilityLabel, value: viewModel.visibilityText)
-                }
+                visibilityRow
             }
         }
     }
@@ -160,6 +161,20 @@ private struct PostSettingsView: View {
             SettingsRow(title: Strings.publishDateLabel, value: viewModel.publishDateText ?? "–")
         }
     }
+
+    private var visibilityRow: some View {
+        NavigationLink(isActive: $isShowingVisibilityPicker) {
+            PostVisibilityPicker(
+                selection: PostVisibilityPicker.Selection(post: viewModel.post),
+                onSubmit: { selection in
+                    viewModel.updateVisibility(selection)
+                    isShowingVisibilityPicker = false
+                }
+            )
+        } label: {
+            SettingsRow(title: Strings.visibilityLabel, value: viewModel.visibilityText)
+        }
+    }
 }
 
 @MainActor
@@ -171,7 +186,9 @@ private struct PostSettingsAuthorRow: View {
             Text(Strings.authorLabel)
             Spacer()
             if let author {
-                AvatarView(style: .single(author.avatarURL), diameter: 22)
+                if let avatarURL = author.avatarURL {
+                    AvatarView(style: .single(avatarURL), diameter: 22)
+                }
                 Text(author.displayName)
                     .foregroundColor(.secondary)
             } else {

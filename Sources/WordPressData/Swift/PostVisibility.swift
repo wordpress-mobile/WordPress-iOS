@@ -9,7 +9,7 @@ public enum PostVisibility: Identifiable, CaseIterable {
         self.init(status: post.status ?? .draft, password: post.password)
     }
 
-    init(status: AbstractPost.Status, password: String?) {
+    public init(status: AbstractPost.Status, password: String?) {
         if let password, !password.isEmpty {
             self = .protected
         } else if status == .publishPrivate {
