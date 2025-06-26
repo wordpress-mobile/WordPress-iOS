@@ -62,20 +62,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
             table.reloadData()
         }
     }
-    private var _hasExactMatch: Bool = false
-    var hasExactMatch: Bool {
-        get {
-            guard (lastSearchQuery ?? "").count > 0 else {
-                // Forces the no match cell to hide when the results are empty.
-                return true
-            }
-            // Return true if there is no data to supress the no match cell
-            return data.count > 0 ? _hasExactMatch : true
-        }
-        set {
-            _hasExactMatch = newValue
-        }
-    }
 
     /// The throttle meters requests to the remote service
     private let throttle = Scheduler(seconds: 0.5)
@@ -259,7 +245,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         guard !isShowingError else { return CGSize(width: view.frame.width, height: 44) }
         guard data.count > 0 else { return .zero }
         let estimatedSectionHeaderHeight: CGFloat = 85
-        let cellCount = hasExactMatch ? data.count : data.count + 1
+        let cellCount = data.count
         let height = estimatedSectionHeaderHeight + (CGFloat(cellCount) * AddressTableViewCell.estimatedSize.height)
         return CGSize(width: view.frame.width, height: height)
     }
@@ -310,7 +296,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         case .failure(let error):
             handleError(error)
         case .success(let data):
-            hasExactMatch = data.hasExactMatch
             handleData(data.domainSuggestions, data.invalidQuery)
         }
     }

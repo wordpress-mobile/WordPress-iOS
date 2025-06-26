@@ -77,7 +77,6 @@ class SiteAddressServiceTests: CoreDataTestCase {
     // Helpers
     func resultsAreSorted(_ results: SiteAddressServiceResult, forQuery query: String, expectMatch: Bool) {
         let suggestions = results.domainSuggestions
-        expect(results.hasExactMatch).to(equal(expectMatch))
 
         if results.hasExactMatch {
             expect(suggestions[0].domainName.contains(query)).to(beTrue())
