@@ -17,8 +17,6 @@ enum DomainSelectionType: Int, Identifiable {
 /// Contains the UI corresponding to the list of Domain suggestions.
 ///
 final class DomainSelectionViewController: CollapsableHeaderViewController {
-    static let noMatchCellReuseIdentifier = "noMatchCellReuseIdentifier"
-
     // MARK: Properties
     private struct Metrics {
         static let maxLabelWidth = CGFloat(290)
@@ -568,8 +566,6 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
                                                                    comment: "Accessibility hint for the domains search field in Site Creation.")
         static let suggestions: String = NSLocalizedString("Suggestions",
                                                            comment: "Suggested domains")
-        static let noMatch: String = NSLocalizedString("This domain is unavailable",
-                                                       comment: "Notifies the user that the a domain matching the search term wasn't returned in the results")
         static let backButtonTitle = NSLocalizedString("siteCreation.domain.backButton.title",
                                                        value: "Domains",
                                                        comment: "Back button title shown in Site Creation flow to come back from Plan selection to Domain selection"
@@ -706,21 +702,6 @@ extension DomainSelectionViewController: UITableViewDataSource {
         } else {
             return configureAddressCell(tableView, cellForRowAt: indexPath)
         }
-    }
-
-    func configureNoMatchCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: DomainSelectionViewController.noMatchCellReuseIdentifier) ?? {
-            // Create and configure a new TableView cell if one hasn't been queued yet
-            let newCell = UITableViewCell(style: .subtitle, reuseIdentifier: DomainSelectionViewController.noMatchCellReuseIdentifier)
-            newCell.detailTextLabel?.text = Strings.noMatch
-            newCell.detailTextLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-            newCell.detailTextLabel?.textColor = .secondaryLabel
-            newCell.addBottomBorder(withColor: .separator)
-            return newCell
-        }()
-
-        cell.textLabel?.attributedText = AddressTableViewCell.processName("\(lastSearchQuery ?? "").wordpress.com")
-        return cell
     }
 
     func configureAddressCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
