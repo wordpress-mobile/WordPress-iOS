@@ -6,23 +6,10 @@ import WordPressKit
 
 @MainActor
 struct TimeZoneSelectorViewModelTests {
-
-    @Test func initWithSelectedValue() async {
+    @Test func initAndCheckInitialState() async {
         let service = MockTimeZoneService()
-        let viewModel = TimeZoneSelectorViewModel(selectedValue: "America/New_York", service: service)
+        let viewModel = TimeZoneSelectorViewModel(service: service)
 
-        #expect(viewModel.selectedValue == "America/New_York")
-        #expect(viewModel.sections.isEmpty)
-        #expect(!viewModel.isLoading)
-        #expect(viewModel.error == nil)
-        #expect(viewModel.suggestedTimezoneRowViewModel == nil)
-    }
-
-    @Test func initWithNilSelectedValue() async {
-        let service = MockTimeZoneService()
-        let viewModel = TimeZoneSelectorViewModel(selectedValue: nil, service: service)
-
-        #expect(viewModel.selectedValue == nil)
         #expect(viewModel.sections.isEmpty)
         #expect(!viewModel.isLoading)
         #expect(viewModel.error == nil)
@@ -31,7 +18,7 @@ struct TimeZoneSelectorViewModelTests {
     @Test func filteredSectionsWithEmptySearchText() async {
         let mockGroups = createMockTimeZoneGroups()
         let service = MockTimeZoneService(timeZoneGroups: mockGroups)
-        let viewModel = TimeZoneSelectorViewModel(selectedValue: nil, service: service)
+        let viewModel = TimeZoneSelectorViewModel(service: service)
 
         await viewModel.loadTimezones()
 
@@ -44,7 +31,7 @@ struct TimeZoneSelectorViewModelTests {
     @Test func filteredSectionsWithMatchingSearchText() async {
         let mockGroups = createMockTimeZoneGroups()
         let service = MockTimeZoneService(timeZoneGroups: mockGroups)
-        let viewModel = TimeZoneSelectorViewModel(selectedValue: nil, service: service)
+        let viewModel = TimeZoneSelectorViewModel(service: service)
 
         await viewModel.loadTimezones()
 
@@ -59,24 +46,13 @@ struct TimeZoneSelectorViewModelTests {
     @Test func filteredSectionsWithNonMatchingSearchText() async {
         let mockGroups = createMockTimeZoneGroups()
         let service = MockTimeZoneService(timeZoneGroups: mockGroups)
-        let viewModel = TimeZoneSelectorViewModel(selectedValue: nil, service: service)
+        let viewModel = TimeZoneSelectorViewModel(service: service)
 
         await viewModel.loadTimezones()
 
         let filtered = viewModel.filteredSections(searchText: "NoTimeZoneForThisFilter")
 
         #expect(filtered.isEmpty)
-    }
-
-    @Test func selectedValueUpdate() async {
-        let service = MockTimeZoneService()
-        let viewModel = TimeZoneSelectorViewModel(selectedValue: "America/New_York", service: service)
-
-        #expect(viewModel.selectedValue == "America/New_York")
-
-        viewModel.selectedValue = "Europe/London"
-
-        #expect(viewModel.selectedValue == "Europe/London")
     }
 
     @Test func loadTimezonesSuccess() async {
@@ -92,7 +68,7 @@ struct TimeZoneSelectorViewModelTests {
         ]
 
         let service = MockTimeZoneService(timeZoneGroups: mockGroups)
-        let viewModel = TimeZoneSelectorViewModel(selectedValue: nil, service: service)
+        let viewModel = TimeZoneSelectorViewModel(service: service)
 
         #expect(viewModel.sections.isEmpty)
         #expect(!viewModel.isLoading)
@@ -110,7 +86,7 @@ struct TimeZoneSelectorViewModelTests {
 
     @Test func loadTimezonesError() async {
         let service = MockTimeZoneService(shouldThrowError: true)
-        let viewModel = TimeZoneSelectorViewModel(selectedValue: nil, service: service)
+        let viewModel = TimeZoneSelectorViewModel(service: service)
 
         #expect(viewModel.error == nil)
         #expect(!viewModel.isLoading)
@@ -132,7 +108,7 @@ struct TimeZoneSelectorViewModelTests {
         ]
 
         let service = MockTimeZoneService(timeZoneGroups: mockGroups)
-        let viewModel = TimeZoneSelectorViewModel(selectedValue: nil, service: service)
+        let viewModel = TimeZoneSelectorViewModel(service: service)
 
         #expect(viewModel.suggestedTimezoneRowViewModel == nil)
 
