@@ -3,11 +3,7 @@
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
 #import "MediaService.h"
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#else
 #import "WordPress-Swift.h"
-#endif
 @import WordPressData;
 
 @import Gridicons;

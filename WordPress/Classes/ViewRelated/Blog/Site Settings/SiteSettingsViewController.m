@@ -6,11 +6,7 @@
 #import "SettingsMultiTextViewController.h"
 #import "SettingTableViewCell.h"
 #import "SettingsTextViewController.h"
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#else
 #import "WordPress-Swift.h"
-#endif
 #import "AccountService.h"
 @import WordPressData;
 @import WordPressKit;

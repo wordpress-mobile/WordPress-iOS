@@ -3,11 +3,7 @@
 
 #import "WPAppAnalytics.h"
 
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#else
 #import "WordPress-Swift.h"
-#endif
 @import WordPressData;
 
 NSString * const WPAppAnalyticsDefaultsUserOptedOut                 = @"tracks_opt_out";
