@@ -263,20 +263,20 @@ extension PostSettingsViewController {
 // MARK: - PostSettingsViewController (Misc)
 
 extension PostSettingsViewController {
-    @objc public func configureFeaturedImageCell(cell: UITableViewCell, viewModel: PostSettingsFeaturedImageViewModel) {
-        var configuration = UIHostingConfiguration {
-            PostSettingsFeaturedImageCell(post: apost, viewModel: viewModel) { [weak self] in
-                self?.showFeaturedImageSelector(cell: cell)
-            }
-            .environment(\.presentingViewController, self)
-        }
-        if apost.featuredImage != nil {
-            configuration = configuration.margins(.all, 0)
-        }
-        cell.contentConfiguration = configuration
-        cell.selectionStyle = .none
-        cell.accessibilityIdentifier = "post_settings_featured_image_cell"
-    }
+//    @objc public func configureFeaturedImageCell(cell: UITableViewCell, viewModel: PostSettingsFeaturedImageViewModel) {
+//        var configuration = UIHostingConfiguration {
+//            PostSettingsFeaturedImageRow(post: apost, viewModel: viewModel) { [weak self] in
+//                self?.showFeaturedImageSelector(cell: cell)
+//            }
+//            .environment(\.presentingViewController, self)
+//        }
+//        if apost.featuredImage != nil {
+//            configuration = configuration.margins(.all, 0)
+//        }
+//        cell.contentConfiguration = configuration
+//        cell.selectionStyle = .none
+//        cell.accessibilityIdentifier = "post_settings_featured_image_cell"
+//    }
 
     private func showFeaturedImageSelector(cell: UITableViewCell) {
         guard let featuredImage = apost.featuredImage else { return }

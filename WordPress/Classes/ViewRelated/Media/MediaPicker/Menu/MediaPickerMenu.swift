@@ -4,10 +4,15 @@ import WordPressData
 /// A convenience API for creating actions for picking media from different
 /// source supported by the app: Photos library, Camera, Media library.
 struct MediaPickerMenu {
-    weak var presentingViewController: UIViewController?
+    var presentingViewController: UIViewController? {
+        _presentingViewController ?? UIViewController.topViewController
+    }
+
     var filter: MediaFilter?
     var isMultipleSelectionEnabled: Bool
     var initialSelection: [Media]
+
+    private weak var _presentingViewController: UIViewController?
 
     enum MediaFilter {
         case images
@@ -21,11 +26,11 @@ struct MediaPickerMenu {
     ///   - filter: By default, `nil` – allow all content types.
     ///   - isMultipleSelectionEnabled: By default, `false`.
     ///   - initialSelection: By default, `[]`.
-    init(viewController: UIViewController,
+    init(viewController: UIViewController? = nil,
          filter: MediaFilter? = nil,
          isMultipleSelectionEnabled: Bool = false,
          initialSelection: [Media] = []) {
-        self.presentingViewController = viewController
+        self._presentingViewController = viewController
         self.filter = filter
         self.isMultipleSelectionEnabled = isMultipleSelectionEnabled
         self.initialSelection = initialSelection
