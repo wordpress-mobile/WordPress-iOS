@@ -14,7 +14,6 @@
 @import WordPressShared;
 @import WordPressKit;
 @import WordPressUI;
-@import Reachability;
 
 typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowCategories = 0,
@@ -57,23 +56,13 @@ PostCategoriesViewControllerDelegate>
 
 #pragma mark - Properties: Services
 
-@property (nonatomic, strong, readonly) BlogService *blogService;
 @property (nonatomic, strong, readonly) SharingService *sharingService;
-
-#pragma mark - Properties: Reachability
-
-@property (nonatomic, strong, readwrite) Reachability *internetReachability;
 
 @end
 
 @implementation PostSettingsViewController
 
 #pragma mark - Initialization and dealloc
-
-- (void)dealloc
-{
-    [self.internetReachability stopNotifier];
-}
 
 - (instancetype)initWithPost:(AbstractPost *)aPost
 {
@@ -120,16 +109,10 @@ PostCategoriesViewControllerDelegate>
     self.featuredImageViewModel.tableView = self.tableView;
     self.featuredImageViewModel.delegate = self.featuredImageDelegate;
 
-    _blogService = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
-
     [self setupPostDateFormatter];
 
     [WPAnalytics track:WPAnalyticsStatPostSettingsShown];
 
-    // It's recommended to keep this call near the end of the initial setup, since we don't want
-    // reachability callbacks to trigger before such initial setup completes.
-    //
-    [self setupReachability];
     [self onViewDidLoad];
 }
 
@@ -189,19 +172,6 @@ PostCategoriesViewControllerDelegate>
     self.unsupportedConnections = unsupportedConnections;
 }
 
-- (void)setupReachability
-{
-    self.internetReachability = [Reachability reachabilityForInternetConnection];
-
-    __weak __typeof(self) weakSelf = self;
-
-    self.internetReachability.reachableBlock = ^void(Reachability * __unused reachability) {
-        [weakSelf internetIsReachableAgain];
-    };
-
-    [self.internetReachability startNotifier];
-}
-
 - (void)setupPostDateFormatter
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -209,18 +179,6 @@ PostCategoriesViewControllerDelegate>
     dateFormatter.timeStyle = NSDateFormatterShortStyle;
     dateFormatter.timeZone = [self.apost.blog timeZone];
     self.postDateFormatter = dateFormatter;
-}
-
-#pragma mark - Reachability handling
-
-- (void)internetIsReachableAgain
-{
-    [self synchUnavailableData];
-}
-
-- (void)synchUnavailableData
-{
-    // Post format syncing is now handled in the SwiftUI PostFormatPicker with pull-to-refresh
 }
 
 // sync the latest state of Twitter.
