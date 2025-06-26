@@ -8,8 +8,13 @@ struct PostAuthorPicker: View {
     @State private var searchText = ""
     @Environment(\.dismiss) private var dismiss
 
-    init(post: AbstractPost, onSelection: @escaping () -> Void) {
-        _viewModel = StateObject(wrappedValue: PostAuthorPickerViewModel(post: post, onSelection: onSelection))
+    init(blog: Blog, currentAuthorID: Int?, onSelection: @escaping (PostAuthorPickerViewModel.AuthorItem) -> Void) {
+        _viewModel = StateObject(wrappedValue: PostAuthorPickerViewModel(blog: blog, currentAuthorID: currentAuthorID, onSelection: onSelection))
+    }
+
+    /// Convenience initializer that extracts blog and authorID from post
+    init(post: AbstractPost, onSelection: @escaping (PostAuthorPickerViewModel.AuthorItem) -> Void) {
+        self.init(blog: post.blog, currentAuthorID: post.authorID?.intValue, onSelection: onSelection)
     }
 
     var body: some View {

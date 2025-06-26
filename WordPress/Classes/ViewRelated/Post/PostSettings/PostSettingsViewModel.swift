@@ -5,7 +5,7 @@ import WordPressShared
 
 @MainActor
 final class PostSettingsViewModel: ObservableObject {
-    private let post: AbstractPost
+    let post: AbstractPost
     let isStandalone: Bool
 
     @Published var settings: PostSettings {
@@ -17,6 +17,7 @@ final class PostSettingsViewModel: ObservableObject {
     @Published private(set) var isSaving = false
     @Published private(set) var hasChanges = false
     @Published var isShowingDeletedAlert = false
+    @Published var isPendingReview: Bool = false
 
     var navigationTitle: String {
         post is Page ? Strings.pageSettingsTitle : Strings.postSettingsTitle
@@ -28,6 +29,51 @@ final class PostSettingsViewModel: ObservableObject {
 
     var deletedAlertMessage: String {
         post is Page ? Strings.pageDeletedMessage : Strings.postDeletedMessage
+    }
+
+    var isMultiAuthorBlog: Bool {
+        post.blog.isMultiAuthor
+    }
+
+    var authorDisplayName: String {
+        settings.author?.displayName ?? post.authorNameForDisplay()
+    }
+
+    var authorAvatarURL: URL? {
+        settings.author?.avatarURL
+    }
+
+    var publishDateText: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+
+        if let date = settings.publishDate {
+            return formatter.string(from: date)
+        } else {
+            return NSLocalizedString("postSettings.publishDate.immediately", value: "Immediately", comment: "Text shown when post will be published immediately")
+        }
+    }
+
+    var visibilityText: String {
+        switch settings.status {
+        case .publishPrivate:
+            return NSLocalizedString("postSettings.visibility.private", value: "Private", comment: "Post visibility: Private")
+        default:
+            if settings.password != nil && !settings.password!.isEmpty {
+                return NSLocalizedString("postSettings.visibility.protected", value: "Password protected", comment: "Post visibility: Password protected")
+            } else {
+                return NSLocalizedString("postSettings.visibility.public", value: "Public", comment: "Post visibility: Public")
+            }
+        }
+    }
+
+    var timeZone: TimeZone {
+        post.blog.timeZone ?? TimeZone.current
+    }
+
+    var isDraftOrPending: Bool {
+        post.original().isStatus(in: [.draft, .pending])
     }
 
     private let originalSettings: PostSettings
@@ -43,6 +89,9 @@ final class PostSettingsViewModel: ObservableObject {
         let initialSettings = PostSettings(from: post)
         self.settings = initialSettings
         self.originalSettings = initialSettings
+
+        // Initialize pending review status
+        self.isPendingReview = post.status == .pending
     }
 
     func buttonCancelTapped() {
@@ -80,7 +129,7 @@ final class PostSettingsViewModel: ObservableObject {
                 coordinator.setNeedsSync(for: post)
             } else {
                 // When sync is not allowed, use the changes parameter
-                let changes = settings.makeUpdateParameters(from: originalSettings)
+                let changes = settings.makeUpdateParameters(from: post)
                 try await coordinator.save(post, changes: changes)
             }
             onDismiss?()
@@ -88,6 +137,20 @@ final class PostSettingsViewModel: ObservableObject {
             isSaving = false
             // `PostCoordinator` handles errors by showing an alert when needed
         }
+    }
+
+    func updateVisibility(_ selection: PostVisibilityPicker.Selection) {
+        switch selection.type {
+        case .public, .protected:
+            if post.original().status == .scheduled {
+                // Keep it scheduled
+            } else {
+                settings.status = .publish
+            }
+        case .private:
+            settings.status = .publishPrivate
+        }
+        settings.password = selection.password.isEmpty ? nil : selection.password
     }
 }
 
