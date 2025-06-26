@@ -55,16 +55,8 @@ final class PostSettingsViewModel: ObservableObject {
     }
 
     var visibilityText: String {
-        switch settings.status {
-        case .publishPrivate:
-            return NSLocalizedString("postSettings.visibility.private", value: "Private", comment: "Post visibility: Private")
-        default:
-            if settings.password != nil && !settings.password!.isEmpty {
-                return NSLocalizedString("postSettings.visibility.protected", value: "Password protected", comment: "Post visibility: Password protected")
-            } else {
-                return NSLocalizedString("postSettings.visibility.public", value: "Public", comment: "Post visibility: Public")
-            }
-        }
+        PostVisibility(status: settings.status, password: settings.password)
+            .localizedTitle
     }
 
     var timeZone: TimeZone {
@@ -136,6 +128,8 @@ final class PostSettingsViewModel: ObservableObject {
     }
 
     func updateVisibility(_ selection: PostVisibilityPicker.Selection) {
+        track(.editorPostVisibilityChanged)
+
         switch selection.type {
         case .public, .protected:
             if post.original().status == .scheduled {
@@ -152,17 +146,11 @@ final class PostSettingsViewModel: ObservableObject {
     // MARK: - Analytics
 
     private func trackChanges(from old: PostSettings, to new: PostSettings) {
-        func track(_ event: WPAnalyticsEvent) {
-            WPAnalytics.track(event, properties: ["via": "settings"])
-        }
         if old.author?.id != new.author?.id {
             track(.editorPostAuthorChanged)
         }
         if old.publishDate != new.publishDate {
             track(.editorPostScheduledChanged)
-        }
-        if old.status != new.status || old.password != new.password {
-            track(.editorPostVisibilityChanged)
         }
         if old.tags != new.tags {
             track(.editorPostTagsChanged)
@@ -170,6 +158,10 @@ final class PostSettingsViewModel: ObservableObject {
         if old.postFormat != new.postFormat {
             track(.editorPostFormatChanged)
         }
+    }
+
+    private func track(_ event: WPAnalyticsEvent) {
+        WPAnalytics.track(event, properties: ["via": "settings"])
     }
 }
 
