@@ -85,13 +85,3 @@ private enum Strings {
         comment: "Title for the post author selection screen"
     )
 }
-
-#if DEBUG
-struct PostAuthorPicker_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            PostAuthorPicker(post: AbstractPost(), onSelection: {})
-        }
-    }
-}
-#endif
