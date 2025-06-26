@@ -39,7 +39,6 @@ struct PostSettings: Hashable {
         publishDate = post.dateCreated
         password = post.password
 
-        // Initialize author if available
         if let authorID = post.authorID?.intValue, authorID > 0 {
             author = Author(
                 id: authorID,
