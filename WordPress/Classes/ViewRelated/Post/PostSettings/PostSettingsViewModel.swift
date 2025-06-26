@@ -124,9 +124,9 @@ final class PostSettingsViewModel: ObservableObject {
         do {
             let coordinator = PostCoordinator.shared
             if coordinator.isSyncAllowed(for: post) {
-                // Apply settings to the post and mark for sync
-                settings.apply(to: post)
-                coordinator.setNeedsSync(for: post)
+                let revision = post.createRevision()
+                settings.apply(to: revision)
+                coordinator.setNeedsSync(for: revision)
             } else {
                 // When sync is not allowed, use the changes parameter
                 let changes = settings.makeUpdateParameters(from: post)

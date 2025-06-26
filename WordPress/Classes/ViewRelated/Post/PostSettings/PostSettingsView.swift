@@ -98,45 +98,15 @@ private struct PostSettingsView: View {
 
     @ViewBuilder
     private var form: some View {
-        general
-
-        Section(header: Text(Strings.moreOptionsHeader)) {
-            HStack {
-                Text(Strings.slugLabel)
-                Spacer()
-                TextField(Strings.slugPlaceholder, text: $viewModel.settings.slug)
-                    .textFieldStyle(.plain)
-                    .multilineTextAlignment(.trailing)
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-            }
-        }
+        generalSection
     }
 
     @ViewBuilder
-    private var general: some View {
-        Section(header: Text(Strings.generalHeader)) {
-            // Author picker (only show for multi-author blogs)
+    private var generalSection: some View {
+        Section {
             if viewModel.isMultiAuthorBlog {
-                NavigationLink {
-                    PostAuthorPicker(
-                        blog: viewModel.post.blog,
-                        currentAuthorID: viewModel.settings.author?.id
-                    ) { selection in
-                        viewModel.settings.updateAuthor(with: selection)
-                        WPAnalytics.track(.editorPostAuthorChanged, properties: ["via": "settings"])
-                    }
-                } label: {
-                    HStack(spacing: 6) {
-                        Text(Strings.authorLabel)
-                        Spacer()
-                        AvatarView(style: .single(viewModel.authorAvatarURL), diameter: 22)
-                        Text(viewModel.authorDisplayName)
-                            .foregroundColor(.secondary)
-                    }
-                }
+                authorRow
             }
-
             if viewModel.isDraftOrPending {
                 // Pending review toggle
                 Toggle(isOn: $viewModel.isPendingReview) {
@@ -176,21 +146,38 @@ private struct PostSettingsView: View {
             }
         }
     }
+
+    private var authorRow: some View {
+        NavigationLink {
+            PostAuthorPicker(
+                blog: viewModel.post.blog,
+                currentAuthorID: viewModel.settings.author?.id
+            ) { selection in
+                viewModel.settings.updateAuthor(with: selection)
+                WPAnalytics.track(.editorPostAuthorChanged, properties: ["via": "settings"])
+            }
+        } label: {
+            PostSettingsAuthorRow(author: viewModel.settings.author)
+        }
+    }
 }
 
 @MainActor
 private struct PostSettingsAuthorRow: View {
-    let title: String
-    let displayName: String
-    let avatarURL: URL?
-    
+    let author: PostSettings.Author?
+
     var body: some View {
         HStack(spacing: 6) {
-            Text(title)
+            Text(Strings.authorLabel)
             Spacer()
-            AvatarView(style: .single(avatarURL), diameter: 22)
-            Text(displayName)
-                .foregroundColor(.secondary)
+            if let author {
+                AvatarView(style: .single(author.avatarURL), diameter: 22)
+                Text(author.displayName)
+                    .foregroundColor(.secondary)
+            } else {
+                Text("—")
+                    .foregroundColor(.secondary)
+            }
         }
     }
 }
