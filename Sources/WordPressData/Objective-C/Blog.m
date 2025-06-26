@@ -281,56 +281,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
 }
 
-- (NSArray *)sortedPostFormats
-{
-    if ([self.postFormats count] == 0) {
-        return @[];
-    }
-
-    NSMutableArray *sortedFormats = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
-
-    if (self.postFormats[PostFormatStandard]) {
-        [sortedFormats addObject:PostFormatStandard];
-    }
-
-    NSArray *sortedNonStandardFormats = [[self.postFormats keysSortedByValueUsingSelector:@selector(localizedCaseInsensitiveCompare:)] wp_filter:^BOOL(id obj) {
-        return ![obj isEqual:PostFormatStandard];
-    }];
-
-    [sortedFormats addObjectsFromArray:sortedNonStandardFormats];
-
-    return [NSArray arrayWithArray:sortedFormats];
-}
-
-- (NSArray *)sortedPostFormatNames
-{
-    return [[self sortedPostFormats] wp_map:^id(NSString *key) {
-        return self.postFormats[key];
-    }];
-}
-
-- (NSArray *)sortedConnections
-{
-    NSSortDescriptor *sortServiceDescriptor = [[NSSortDescriptor alloc] initWithKey:@"service"
-                                                                          ascending:YES
-                                                                           selector:@selector(localizedCaseInsensitiveCompare:)];
-    NSSortDescriptor *sortExternalNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"externalName"
-                                                                               ascending:YES
-                                                                                selector:@selector(caseInsensitiveCompare:)];
-    NSArray *sortDescriptors = @[sortServiceDescriptor, sortExternalNameDescriptor];
-    return [[self.connections allObjects] sortedArrayUsingDescriptors:sortDescriptors];
-}
-
-- (NSArray<Role *> *)sortedRoles
-{
-    return [self.roles sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
-}
-
-- (NSString *)defaultPostFormatText
-{
-    return [self postFormatTextFromSlug:self.settings.defaultPostFormat];
-}
-
 - (BOOL)hasMappedDomain {
     if (![self isHostedAtWPcom]) {
         return NO;

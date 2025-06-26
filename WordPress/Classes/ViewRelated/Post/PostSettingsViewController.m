@@ -46,7 +46,6 @@ PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) NSArray *postMetaSectionRows;
-@property (nonatomic, strong) NSArray *formatsList;
 
 @property (nonatomic, strong) NSArray *publicizeConnections;
 @property (nonatomic, strong) NSArray<PublicizeConnection *> *unsupportedConnections;
@@ -105,7 +104,6 @@ PostCategoriesViewControllerDelegate>
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
 
-    [self setupFormatsList];
     [self setupPublicizeConnections];
 
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
@@ -160,11 +158,6 @@ PostCategoriesViewControllerDelegate>
 }
 
 #pragma mark - Additional setup
-
-- (void)setupFormatsList
-{
-    self.formatsList = self.post.blog.sortedPostFormatNames;
-}
 
 - (void)setupPublicizeConnections
 {
@@ -227,29 +220,7 @@ PostCategoriesViewControllerDelegate>
 
 - (void)synchUnavailableData
 {
-    __weak __typeof(self) weakSelf = self;
-
-    if (self.formatsList.count == 0) {
-        [self synchPostFormatsAndDo:^{
-            // DRM: if we ever start synchronizing anything else that could affect the table data
-            // aside from the post formats, we will need reload the table view only once all of the
-            // synchronization calls complete.
-            //
-            [[weakSelf tableView] reloadData];
-        }];
-    }
-}
-
-- (void)synchPostFormatsAndDo:(void(^)(void))completionBlock
-{
-    __weak __typeof(self) weakSelf = self;
-
-    [self.blogService syncPostFormatsForBlog:self.apost.blog success:^{
-        [weakSelf setupFormatsList];
-        completionBlock();
-    } failure:^(NSError * _Nonnull __unused error) {
-        completionBlock();
-    }];
+    // Post format syncing is now handled in the SwiftUI PostFormatPicker with pull-to-refresh
 }
 
 // sync the latest state of Twitter.
@@ -770,73 +741,7 @@ PostCategoriesViewControllerDelegate>
     return cell;
 }
 
-- (void)showPostFormatSelector
-{
-    Post *post      = self.post;
-    NSArray *titles = post.blog.sortedPostFormatNames;
-
-    if (![self.internetReachability isReachable] && self.formatsList.count == 0) {
-        [self showCantShowPostFormatsAlert];
-        return;
-    }
-
-    if (post == nil || titles.count == 0 || post.postFormatText == nil || self.formatsList.count == 0) {
-        return;
-    }
-    NSDictionary *(^postFormatsDictionary)(NSArray *) = ^NSDictionary *(NSArray *titles) {
-        return @{
-                 SettingsSelectionDefaultValueKey   : [titles firstObject],
-                 SettingsSelectionTitleKey          : NSLocalizedString(@"Post Format", nil),
-                 SettingsSelectionTitlesKey         : titles,
-                 SettingsSelectionValuesKey         : titles,
-                 SettingsSelectionCurrentValueKey   : post.postFormatText
-                 };;
-    };
-
-    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:postFormatsDictionary(titles)];
-    __weak SettingsSelectionViewController *weakVc = vc;
-    __weak __typeof(self) weakSelf = self;
-    __weak Post *weakPost = post;
-    vc.onItemSelected = ^(NSString *status) {
-        // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
-        if ([status isKindOfClass:[NSString class]]) {
-            [WPAnalytics trackEvent:WPAnalyticsEventEditorPostFormatChanged properties:@{@"via": @"settings"}];
-            post.postFormatText = status;
-            [weakVc dismiss];
-            [self.tableView reloadData];
-        }
-    };
-    vc.onRefresh = ^(UIRefreshControl *refreshControl) {
-        [weakSelf synchPostFormatsAndDo:^{
-            NSArray *titles = weakPost.blog.sortedPostFormatNames;
-            if (titles.count) {
-                [weakVc reloadWithDictionary:postFormatsDictionary(titles)];
-            }
-            [refreshControl endRefreshing];
-        }];
-    };
-    vc.invokesRefreshOnViewWillAppear = YES;
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)showCantShowPostFormatsAlert
-{
-    NSString *title = NSLocalizedString(@"Connection not available",
-                                        @"Title of a prompt saying the app needs an internet connection before it can load post formats");
-
-    NSString *message = NSLocalizedString(@"Please check your internet connection and try again.",
-                                          @"Politely asks the user to check their internet connection before trying again. ");
-
-    NSString *cancelButtonTitle = NSLocalizedString(@"OK", @"Title of a button that dismisses a prompt");
-
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
-                                                                             message:message
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-
-    [alertController addCancelActionWithTitle:cancelButtonTitle handler:nil];
-
-    [alertController presentFromRootViewController];
-}
+// showPostFormatSelector is now implemented in PostSettingsViewController+Swift.swift
 
 - (void)toggleShareConnectionForIndexPath:(NSIndexPath *) indexPath
 {
