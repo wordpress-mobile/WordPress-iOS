@@ -118,7 +118,6 @@ private struct PostSettingsView: View {
                         timeZone: viewModel.timeZone,
                         updated: { date in
                             viewModel.settings.publishDate = date
-                            WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
                         }
                     ))
                 } label: {
@@ -131,7 +130,6 @@ private struct PostSettingsView: View {
                         selection: PostVisibilityPicker.Selection(post: viewModel.post),
                         onSubmit: { selection in
                             viewModel.updateVisibility(selection)
-                            WPAnalytics.track(.editorPostVisibilityChanged, properties: ["via": "settings"])
                         }
                     )
                 } label: {
@@ -148,7 +146,6 @@ private struct PostSettingsView: View {
                 currentAuthorID: viewModel.settings.author?.id
             ) { selection in
                 viewModel.settings.updateAuthor(with: selection)
-                WPAnalytics.track(.editorPostAuthorChanged, properties: ["via": "settings"])
             }
         } label: {
             PostSettingsAuthorRow(author: viewModel.settings.author)
@@ -158,8 +155,6 @@ private struct PostSettingsView: View {
     private var pendingReviewRow: some View {
         Toggle(isOn: $viewModel.settings.isPendingReview) {
             Text(Strings.pendingReviewLabel)
-        }.onChange(of: viewModel.settings.isPendingReview) { newValue in
-            WPAnalytics.track(.editorPostVisibilityChanged, properties: ["via": "settings"])
         }
     }
 }

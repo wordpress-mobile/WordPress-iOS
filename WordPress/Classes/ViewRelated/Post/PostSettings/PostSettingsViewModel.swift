@@ -11,6 +11,7 @@ final class PostSettingsViewModel: ObservableObject {
     @Published var settings: PostSettings {
         didSet {
             hasChanges = settings != originalSettings
+            trackChanges(from: oldValue, to: settings)
         }
     }
 
@@ -147,6 +148,26 @@ final class PostSettingsViewModel: ObservableObject {
             settings.status = .publishPrivate
         }
         settings.password = selection.password.isEmpty ? nil : selection.password
+    }
+
+    // MARK: - Analytics
+
+    private func trackChanges(from old: PostSettings, to new: PostSettings) {
+        if old.author?.id != new.author?.id {
+            WPAnalytics.track(.editorPostAuthorChanged, properties: ["via": "settings"])
+        }
+        if old.publishDate != new.publishDate {
+            WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
+        }
+        if old.status != new.status || old.password != new.password {
+            WPAnalytics.track(.editorPostVisibilityChanged, properties: ["via": "settings"])
+        }
+        if old.tags != new.tags {
+            WPAnalytics.track(.editorPostTagsChanged, properties: ["via": "settings"])
+        }
+        if old.postFormat != new.postFormat {
+            WPAnalytics.track(.editorPostFormatChanged, properties: ["via": "settings"])
+        }
     }
 }
 
