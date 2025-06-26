@@ -153,20 +153,23 @@ final class PostSettingsViewModel: ObservableObject {
     // MARK: - Analytics
 
     private func trackChanges(from old: PostSettings, to new: PostSettings) {
+        func track(_ event: WPAnalyticsEvent) {
+            WPAnalytics.track(event, properties: ["via": "settings"])
+        }
         if old.author?.id != new.author?.id {
-            WPAnalytics.track(.editorPostAuthorChanged, properties: ["via": "settings"])
+            track(.editorPostAuthorChanged)
         }
         if old.publishDate != new.publishDate {
-            WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
+            track(.editorPostScheduledChanged)
         }
         if old.status != new.status || old.password != new.password {
-            WPAnalytics.track(.editorPostVisibilityChanged, properties: ["via": "settings"])
+            track(.editorPostVisibilityChanged)
         }
         if old.tags != new.tags {
-            WPAnalytics.track(.editorPostTagsChanged, properties: ["via": "settings"])
+            track(.editorPostTagsChanged)
         }
         if old.postFormat != new.postFormat {
-            WPAnalytics.track(.editorPostFormatChanged, properties: ["via": "settings"])
+            track(.editorPostFormatChanged)
         }
     }
 }
