@@ -109,8 +109,9 @@ struct PostSettings: Hashable {
 }
 
 extension PostSettings {
-    mutating func updatePendingReviewStatus(_ isPending: Bool) {
-        status = isPending ? .pending : .draft
+    var isPendingReview: Bool {
+        get { status == .pending }
+        set { status = newValue ? .pending : .draft }
     }
 
     mutating func updateAuthor(with authorItem: PostAuthorPickerViewModel.AuthorItem) {

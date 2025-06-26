@@ -108,13 +108,7 @@ private struct PostSettingsView: View {
                 authorRow
             }
             if viewModel.isDraftOrPending {
-                // Pending review toggle
-                Toggle(isOn: $viewModel.isPendingReview) {
-                    Text(Strings.pendingReviewLabel)
-                }
-                .onChange(of: viewModel.isPendingReview) { selection in
-                    viewModel.settings.updatePendingReviewStatus(selection)
-                }
+                pendingReviewRow
             } else {
                 // Publish date picker
                 NavigationLink {
@@ -158,6 +152,14 @@ private struct PostSettingsView: View {
             }
         } label: {
             PostSettingsAuthorRow(author: viewModel.settings.author)
+        }
+    }
+
+    private var pendingReviewRow: some View {
+        Toggle(isOn: $viewModel.settings.isPendingReview) {
+            Text(Strings.pendingReviewLabel)
+        }.onChange(of: viewModel.settings.isPendingReview) { newValue in
+            WPAnalytics.track(.editorPostVisibilityChanged, properties: ["via": "settings"])
         }
     }
 }
@@ -230,7 +232,7 @@ private enum Strings {
 
     static let pendingReviewLabel = NSLocalizedString(
         "postSettings.pendingReview.label",
-        value: "Pending review",
+        value: "Pending Review",
         comment: "Label for the pending review toggle in Post Settings"
     )
 

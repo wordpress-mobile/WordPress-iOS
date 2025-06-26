@@ -17,7 +17,6 @@ final class PostSettingsViewModel: ObservableObject {
     @Published private(set) var isSaving = false
     @Published private(set) var hasChanges = false
     @Published var isShowingDeletedAlert = false
-    @Published var isPendingReview: Bool = false
 
     var navigationTitle: String {
         post is Page ? Strings.pageSettingsTitle : Strings.postSettingsTitle
@@ -89,9 +88,6 @@ final class PostSettingsViewModel: ObservableObject {
         let initialSettings = PostSettings(from: post)
         self.settings = initialSettings
         self.originalSettings = initialSettings
-
-        // Initialize pending review status
-        self.isPendingReview = post.status == .pending
     }
 
     func buttonCancelTapped() {
