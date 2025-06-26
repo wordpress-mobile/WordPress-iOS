@@ -112,8 +112,6 @@ steps:
               context: "Reader Unit Tests"
       - label: "🔬 Keystone Unit Tests"
         command: .buildkite/commands/run-unit-tests-for-scheme.sh Keystone
-        # Disabled till https://github.com/wordpress-mobile/WordPress-iOS/pull/24537 is completed
-        if: false
         plugins: [$CI_TOOLKIT_PLUGIN]
         artifact_paths:
           - "build/results/*"
