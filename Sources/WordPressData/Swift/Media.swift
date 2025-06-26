@@ -107,3 +107,9 @@ private extension MediaType {
         }
     }
 }
+
+extension Media: Identifiable {
+    public var id: NSManagedObjectID {
+        objectID
+    }
+}

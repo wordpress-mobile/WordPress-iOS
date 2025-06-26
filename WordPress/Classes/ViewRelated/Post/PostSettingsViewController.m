@@ -52,8 +52,6 @@ PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) NSDateFormatter *postDateFormatter;
 
-@property (nonatomic, strong) PostSettingsFeaturedImageViewModel *featuredImageViewModel;
-
 #pragma mark - Properties: Services
 
 @property (nonatomic, strong, readonly) SharingService *sharingService;
@@ -71,7 +69,6 @@ PostCategoriesViewControllerDelegate>
         self.apost = aPost;
         self.unsupportedConnections = @[];
         self.enabledConnections = [NSMutableArray array];
-        self.featuredImageViewModel = [[PostSettingsFeaturedImageViewModel alloc] initWithPost:aPost];
     }
     return self;
 }
@@ -105,9 +102,6 @@ PostCategoriesViewControllerDelegate>
     // Compensate for the first section's height of 1.0f
     self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
     self.tableView.accessibilityIdentifier = @"SettingsTable";
-
-    self.featuredImageViewModel.tableView = self.tableView;
-    self.featuredImageViewModel.delegate = self.featuredImageDelegate;
 
     [self setupPostDateFormatter];
 
@@ -550,7 +544,7 @@ PostCategoriesViewControllerDelegate>
 - (UITableViewCell *)makeFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
-    [self configureFeaturedImageCellWithCell:cell viewModel:self.featuredImageViewModel];
+    // [self configureFeaturedImageCellWithCell:cell viewModel:self.featuredImageViewModel];
     cell.tag = PostSettingsRowFeaturedImage;
     return cell;
 }

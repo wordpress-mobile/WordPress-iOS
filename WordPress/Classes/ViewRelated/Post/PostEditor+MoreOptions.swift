@@ -12,9 +12,19 @@ extension PostEditor {
             return showDeprecatedPostSettings()
         }
         // Use the new SwiftUI-based Post Settings
+        let originalFeaturedImageID = post.featuredImage?.mediaID
         let viewModel = PostSettingsViewModel(post: post)
         viewModel.onEditorPostSaved = { [weak self] in
             self?.editorContentWasUpdated()
+
+            // Check if featured image changed and notify Gutenberg
+            if let self,
+               let gutenbergVC = self as? GutenbergViewController,
+               originalFeaturedImageID != self.post.featuredImage?.mediaID {
+                let newMediaID = self.post.featuredImage?.mediaID ?? GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet as NSNumber
+                gutenbergVC.gutenbergDidRequestFeaturedImageId(newMediaID)
+            }
+
             self?.navigationController?.dismiss(animated: true)
         }
         let postSettingsVC = NewPostSettingsViewController(viewModel: viewModel)

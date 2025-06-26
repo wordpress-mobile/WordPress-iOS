@@ -305,7 +305,7 @@ struct PluginDetailsView: View {
             .listRowSeparator(.hidden)
             .fullScreenCover(item: $tappedScreenshot) {
                 if let viewController = self.lightbox(screenshot: $0) {
-                    LightboxView(viewController: viewController)
+                    WrappedViewController(viewController: viewController)
                         .ignoresSafeArea()
                 } else {
                     EmptyView()
@@ -584,7 +584,7 @@ extension Ratings {
     }
 }
 
-private struct LightboxView: UIViewControllerRepresentable {
+private struct WrappedViewController: UIViewControllerRepresentable {
     let viewController: UIViewController
 
     func makeUIViewController(context: Context) -> UIViewController {

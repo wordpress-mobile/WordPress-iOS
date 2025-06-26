@@ -39,7 +39,8 @@ private struct PostSettingsView: View {
 
     var body: some View {
         Form {
-            form
+            generalSection
+            featuredImageSection
         }
         .opacity(viewModel.isSaving ? 0.6 : 1.0)
         .disabled(viewModel.isSaving)
@@ -106,12 +107,7 @@ private struct PostSettingsView: View {
         }
     }
 
-    // MARK: - Form
-
-    @ViewBuilder
-    private var form: some View {
-        generalSection
-    }
+    // MARK: - "General" Section
 
     @ViewBuilder
     private var generalSection: some View {
@@ -173,6 +169,16 @@ private struct PostSettingsView: View {
             )
         } label: {
             SettingsRow(title: Strings.visibilityLabel, value: viewModel.visibilityText)
+        }
+    }
+
+    // MARK: - "Featured Image" Section
+
+    @ViewBuilder
+    private var featuredImageSection: some View {
+        Section(Strings.featuredImageHeader) {
+            PostSettingsFeaturedImageRow(viewModel: viewModel.featuredImageViewModel)
+                .accessibilityIdentifier("post_settings_featured_image_cell")
         }
     }
 }
@@ -279,5 +285,11 @@ private enum Strings {
         "postSettings.discardChanges.button",
         value: "Discard Changes",
         comment: "Button to confirm discarding changes"
+    )
+
+    static let featuredImageHeader = NSLocalizedString(
+        "postSettings.featuredImage.header",
+        value: "Featured Image",
+        comment: "Section header for Featured Image in Post Settings"
     )
 }

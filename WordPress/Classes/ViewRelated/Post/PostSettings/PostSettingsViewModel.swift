@@ -2,11 +2,13 @@ import Foundation
 import WordPressData
 import WordPressKit
 import WordPressShared
+import Combine
 
 @MainActor
 final class PostSettingsViewModel: ObservableObject {
     let post: AbstractPost
     let isStandalone: Bool
+    let featuredImageViewModel: PostSettingsFeaturedImageViewModel
 
     @Published var settings: PostSettings {
         didSet {
@@ -68,6 +70,7 @@ final class PostSettingsViewModel: ObservableObject {
     }
 
     private let originalSettings: PostSettings
+    private var cancellables = Set<AnyCancellable>()
 
     var onDismiss: (() -> Void)?
     var onEditorPostSaved: (() -> Void)?
@@ -80,6 +83,14 @@ final class PostSettingsViewModel: ObservableObject {
         let initialSettings = PostSettings(from: post)
         self.settings = initialSettings
         self.originalSettings = initialSettings
+
+        // Initialize featured image view model
+        self.featuredImageViewModel = PostSettingsFeaturedImageViewModel(post: post)
+
+        // Observe selection changes from featured image view model
+        featuredImageViewModel.$selection.dropFirst().sink { [weak self] media in
+            self?.settings.featuredImageID = media?.mediaID?.intValue
+        }.store(in: &cancellables)
     }
 
     func buttonCancelTapped() {
