@@ -34,6 +34,7 @@ final class NewPostSettingsViewController: UIHostingController<AnyView> {
 @MainActor
 private struct PostSettingsView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
+
     @State private var isShowingDiscardChangesAlert = false
 
     var body: some View {
@@ -44,36 +45,10 @@ private struct PostSettingsView: View {
         .disabled(viewModel.isSaving)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button(SharedStrings.Button.cancel) {
-                    if viewModel.hasChanges {
-                        isShowingDiscardChangesAlert = true
-                    } else {
-                        viewModel.buttonCancelTapped()
-                    }
-                }
-                .tint(AppColor.tint)
+                buttonCancel
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                if viewModel.isSaving {
-                    ProgressView()
-                } else {
-                    Group {
-                        if viewModel.isStandalone {
-                            Button(SharedStrings.Button.save) {
-                                viewModel.buttonSaveTapped()
-                            }
-                            .buttonStyle(.borderedProminent)
-                            .buttonBorderShape(.capsule)
-                        } else {
-                            Button(SharedStrings.Button.done) {
-                                viewModel.buttonSaveTapped()
-                            }
-                            .fontWeight(.medium)
-                        }
-                    }
-                    .disabled(!viewModel.hasChanges)
-                    .tint(AppColor.tint)
-                }
+                buttonSave
             }
         }
         .interactiveDismissDisabled(viewModel.isSaving || viewModel.hasChanges)
@@ -96,27 +71,184 @@ private struct PostSettingsView: View {
         }
     }
 
+    private var buttonCancel: some View {
+        Button(SharedStrings.Button.cancel) {
+            if viewModel.hasChanges {
+                isShowingDiscardChangesAlert = true
+            } else {
+                viewModel.buttonCancelTapped()
+            }
+        }
+        .tint(AppColor.tint)
+    }
+
+    @ViewBuilder
+    private var buttonSave: some View {
+        if viewModel.isSaving {
+            ProgressView()
+        } else {
+            Group {
+                if viewModel.isStandalone {
+                    Button(SharedStrings.Button.save) {
+                        viewModel.buttonSaveTapped()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.capsule)
+                } else {
+                    Button(SharedStrings.Button.done) {
+                        viewModel.buttonSaveTapped()
+                    }
+                    .fontWeight(.medium)
+                }
+            }
+            .disabled(!viewModel.hasChanges)
+            .tint(AppColor.tint)
+        }
+    }
+
+    // MARK: - Form
+
     @ViewBuilder
     private var form: some View {
-        Section(header: Text(Strings.moreOptionsHeader)) {
-            HStack {
-                Text(Strings.slugLabel)
-                Spacer()
-                TextField(Strings.slugPlaceholder, text: $viewModel.settings.slug)
-                    .textFieldStyle(.plain)
-                    .multilineTextAlignment(.trailing)
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
+        generalSection
+    }
+
+    @ViewBuilder
+    private var generalSection: some View {
+        Section {
+            if viewModel.isMultiAuthorBlog {
+                authorRow
+            }
+            if viewModel.isDraftOrPending {
+                pendingReviewRow
+            } else {
+                publishDateRow
+                visibilityRow
+            }
+        }
+    }
+
+    private var authorRow: some View {
+        NavigationLink {
+            PostAuthorPicker(
+                blog: viewModel.post.blog,
+                currentAuthorID: viewModel.settings.author?.id
+            ) { selection in
+                viewModel.settings.updateAuthor(with: selection)
+            }
+        } label: {
+            PostSettingsAuthorRow(author: viewModel.settings.author)
+        }
+    }
+
+    private var pendingReviewRow: some View {
+        Toggle(isOn: $viewModel.settings.isPendingReview) {
+            Text(Strings.pendingReviewLabel)
+        }
+    }
+
+    private var publishDateRow: some View {
+        NavigationLink {
+            PublishDatePickerView(configuration: PublishDatePickerConfiguration(
+                date: viewModel.settings.publishDate,
+                isRequired: true,
+                timeZone: viewModel.timeZone,
+                updated: { date in
+                    viewModel.settings.publishDate = date
+                }
+            ))
+        } label: {
+            SettingsRow(title: Strings.publishDateLabel, value: viewModel.publishDateText ?? "–")
+        }
+    }
+
+    private var visibilityRow: some View {
+        NavigationLink {
+            PostVisibilityPicker(
+                selection: PostVisibilityPicker.Selection(post: viewModel.post),
+                dismissOnSelection: true,
+                onSubmit: { selection in
+                    viewModel.updateVisibility(selection)
+                }
+            )
+        } label: {
+            SettingsRow(title: Strings.visibilityLabel, value: viewModel.visibilityText)
+        }
+    }
+}
+
+@MainActor
+private struct PostSettingsAuthorRow: View {
+    let author: PostSettings.Author?
+
+    var body: some View {
+        HStack(spacing: 6) {
+            Text(Strings.authorLabel)
+            Spacer()
+            if let author {
+                if let avatarURL = author.avatarURL {
+                    AvatarView(style: .single(avatarURL), diameter: 22)
+                }
+                Text(author.displayName)
+                    .foregroundColor(.secondary)
+            } else {
+                Text("—")
+                    .foregroundColor(.secondary)
             }
         }
     }
 }
 
+@MainActor
+private struct SettingsRow: View {
+    let title: String
+    let value: String
+
+    var body: some View {
+        HStack {
+            Text(title)
+            Spacer()
+            Text(value)
+                .foregroundColor(.secondary)
+        }
+    }
+}
+
 private enum Strings {
+    static let generalHeader = NSLocalizedString(
+        "postSettings.section.general",
+        value: "General",
+        comment: "Section header for General settings in Post Settings"
+    )
+
     static let moreOptionsHeader = NSLocalizedString(
         "postSettings.section.moreOptions",
         value: "More Options",
         comment: "Section header for More Options in Post Settings"
+    )
+
+    static let authorLabel = NSLocalizedString(
+        "postSettings.author.label",
+        value: "Author",
+        comment: "Label for the author field in Post Settings"
+    )
+
+    static let publishDateLabel = NSLocalizedString(
+        "postSettings.publishDate.label",
+        value: "Publish Date",
+        comment: "Label for the publish date field in Post Settings"
+    )
+
+    static let visibilityLabel = NSLocalizedString(
+        "postSettings.visibility.label",
+        value: "Visibility",
+        comment: "Label for the visibility field in Post Settings"
+    )
+
+    static let pendingReviewLabel = NSLocalizedString(
+        "postSettings.pendingReview.label",
+        value: "Pending Review",
+        comment: "Label for the pending review toggle in Post Settings"
     )
 
     static let slugLabel = NSLocalizedString(

@@ -5,12 +5,13 @@ import WordPressShared
 
 @MainActor
 final class PostSettingsViewModel: ObservableObject {
-    private let post: AbstractPost
+    let post: AbstractPost
     let isStandalone: Bool
 
     @Published var settings: PostSettings {
         didSet {
             hasChanges = settings != originalSettings
+            trackChanges(from: oldValue, to: settings)
         }
     }
 
@@ -28,6 +29,42 @@ final class PostSettingsViewModel: ObservableObject {
 
     var deletedAlertMessage: String {
         post is Page ? Strings.pageDeletedMessage : Strings.postDeletedMessage
+    }
+
+    var isMultiAuthorBlog: Bool {
+        post.blog.isMultiAuthor
+    }
+
+    var authorDisplayName: String {
+        settings.author?.displayName ?? post.authorNameForDisplay()
+    }
+
+    var authorAvatarURL: URL? {
+        settings.author?.avatarURL
+    }
+
+    var publishDateText: String? {
+        guard let date = settings.publishDate else {
+            return nil
+        }
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        formatter.timeZone = timeZone
+        return formatter.string(from: date)
+    }
+
+    var visibilityText: String {
+        PostVisibility(status: settings.status, password: settings.password)
+            .localizedTitle
+    }
+
+    var timeZone: TimeZone {
+        post.blog.timeZone ?? TimeZone.current
+    }
+
+    var isDraftOrPending: Bool {
+        post.original().isStatus(in: [.draft, .pending])
     }
 
     private let originalSettings: PostSettings
@@ -75,12 +112,12 @@ final class PostSettingsViewModel: ObservableObject {
         do {
             let coordinator = PostCoordinator.shared
             if coordinator.isSyncAllowed(for: post) {
-                // Apply settings to the post and mark for sync
-                settings.apply(to: post)
-                coordinator.setNeedsSync(for: post)
+                let revision = post.createRevision()
+                settings.apply(to: revision)
+                coordinator.setNeedsSync(for: revision)
             } else {
                 // When sync is not allowed, use the changes parameter
-                let changes = settings.makeUpdateParameters(from: originalSettings)
+                let changes = settings.makeUpdateParameters(from: post)
                 try await coordinator.save(post, changes: changes)
             }
             onDismiss?()
@@ -88,6 +125,43 @@ final class PostSettingsViewModel: ObservableObject {
             isSaving = false
             // `PostCoordinator` handles errors by showing an alert when needed
         }
+    }
+
+    func updateVisibility(_ selection: PostVisibilityPicker.Selection) {
+        track(.editorPostVisibilityChanged)
+
+        switch selection.type {
+        case .public, .protected:
+            if post.original().status == .scheduled {
+                // Keep it scheduled
+            } else {
+                settings.status = .publish
+            }
+        case .private:
+            settings.status = .publishPrivate
+        }
+        settings.password = selection.password.isEmpty ? nil : selection.password
+    }
+
+    // MARK: - Analytics
+
+    private func trackChanges(from old: PostSettings, to new: PostSettings) {
+        if old.author?.id != new.author?.id {
+            track(.editorPostAuthorChanged)
+        }
+        if old.publishDate != new.publishDate {
+            track(.editorPostScheduledChanged)
+        }
+        if old.tags != new.tags {
+            track(.editorPostTagsChanged)
+        }
+        if old.postFormat != new.postFormat {
+            track(.editorPostFormatChanged)
+        }
+    }
+
+    private func track(_ event: WPAnalyticsEvent) {
+        WPAnalytics.track(event, properties: ["via": "settings"])
     }
 }
 
