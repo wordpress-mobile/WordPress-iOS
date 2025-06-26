@@ -41,7 +41,7 @@ struct PostSettingsFeaturedImageRow: View {
                     }
                 }
             }
-            .padding(.vertical, 6)
+            .frame(minHeight: 44)
         }
     }
 
@@ -187,8 +187,10 @@ public final class PostSettingsFeaturedImageViewModel: ObservableObject {
     }
 
     private func setFeaturedImage(_ media: Media?) {
-        upload = nil
-        selection = media
+        withAnimation {
+            upload = nil
+            selection = media
+        }
     }
 }
 
