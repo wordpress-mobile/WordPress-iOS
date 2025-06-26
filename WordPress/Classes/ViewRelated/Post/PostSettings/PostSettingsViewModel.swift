@@ -43,16 +43,15 @@ final class PostSettingsViewModel: ObservableObject {
         settings.author?.avatarURL
     }
 
-    var publishDateText: String {
+    var publishDateText: String? {
+        guard let date = settings.publishDate else {
+            return nil
+        }
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
-
-        if let date = settings.publishDate {
-            return formatter.string(from: date)
-        } else {
-            return NSLocalizedString("postSettings.publishDate.immediately", value: "Immediately", comment: "Text shown when post will be published immediately")
-        }
+        formatter.timeZone = timeZone
+        return formatter.string(from: date)
     }
 
     var visibilityText: String {
