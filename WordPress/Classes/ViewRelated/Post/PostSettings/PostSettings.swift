@@ -19,7 +19,7 @@ struct PostSettings: Hashable {
     var password: String?
     var author: Author?
     var categoryIDs: Set<Int> = []
-    var tags: [String] = []
+    var tags: String = ""
     var featuredImageID: Int?
 
     // MARK: - Post-specific
@@ -53,7 +53,7 @@ struct PostSettings: Hashable {
         case let post as Post:
             postFormat = post.postFormat
             isStickyPost = post.isStickyPost
-            tags = AbstractPost.makeTags(from: post.tags ?? "")
+            tags = post.tags ?? ""
             categoryIDs = Set((post.categories ?? []).compactMap {
                 $0.categoryID?.intValue
             })
@@ -95,6 +95,28 @@ struct PostSettings: Hashable {
         } else {
             post.featuredImage = nil
         }
+
+        // Apply categories and tags for posts
+        if let post = post as? Post {
+            // Update tags
+            if post.tags != tags {
+                post.tags = tags
+            }
+
+            // Update categories
+            let currentCategoryIDs = Set((post.categories ?? []).compactMap { $0.categoryID?.intValue })
+            if currentCategoryIDs != categoryIDs {
+                // Find category objects for the IDs
+                let allCategories = post.blog.categories ?? []
+                let selectedCategories = allCategories.filter { category in
+                    if let categoryID = category.categoryID?.intValue {
+                        return categoryIDs.contains(categoryID)
+                    }
+                    return false
+                }
+                post.categories = Set(selectedCategories)
+            }
+        }
     }
 
     // MARK: - Diff Generation
@@ -128,5 +150,25 @@ extension PostSettings {
             displayName: authorItem.displayName,
             avatarURL: authorItem.avatarURL
         )
+    }
+
+    func makeCategoriesText(for post: AbstractPost) -> String {
+        guard let post = post as? Post else { return "" }
+
+        var categories: [Int: String] = [:]
+        for category in post.blog.categories ?? [] {
+            if let id = category.categoryID?.intValue, let name = category.categoryName {
+                categories[id] = name
+            }
+        }
+
+        return categoryIDs.compactMap { categories[$0] }
+            .sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
+            .joined(separator: ", ")
+    }
+
+    func makeTagsText() -> String {
+        AbstractPost.makeTags(from: tags)
+            .joined(separator: ", ")
     }
 }
