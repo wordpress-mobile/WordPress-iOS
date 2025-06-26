@@ -24,6 +24,10 @@ final class NewPostSettingsViewController: UIHostingController<AnyView> {
         viewModel.onDismiss = { [weak self] in
             self?.presentingViewController?.dismiss(animated: true)
         }
+
+        // Set the view controller reference for navigation
+        // This is temporary until we can fully migrate to SwiftUI navigation
+        viewModel.viewController = self
     }
 
     @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
@@ -41,8 +45,10 @@ private struct PostSettingsView: View {
         Form {
             generalSection
             featuredImageSection
+            if viewModel.isPost {
+                taxonomySection
+            }
         }
-        .opacity(viewModel.isSaving ? 0.6 : 1.0)
         .disabled(viewModel.isSaving)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -154,7 +160,7 @@ private struct PostSettingsView: View {
                 }
             ))
         } label: {
-            SettingsRow(title: Strings.publishDateLabel, value: viewModel.publishDateText ?? "–")
+            SettingsRow(Strings.publishDateLabel, value: viewModel.publishDateText ?? "–")
         }
     }
 
@@ -168,7 +174,7 @@ private struct PostSettingsView: View {
                 }
             )
         } label: {
-            SettingsRow(title: Strings.visibilityLabel, value: viewModel.visibilityText)
+            SettingsRow(Strings.visibilityLabel, value: viewModel.visibilityText)
         }
     }
 
@@ -180,6 +186,40 @@ private struct PostSettingsView: View {
             PostSettingsFeaturedImageRow(viewModel: viewModel.featuredImageViewModel)
                 .accessibilityIdentifier("post_settings_featured_image_cell")
         }
+    }
+
+    // MARK: - "Taxonomy" Section
+
+    @ViewBuilder
+    private var taxonomySection: some View {
+        Section(Strings.taxonomyHeader) {
+            categoriesRow
+            tagsRow
+        }
+    }
+
+    private var categoriesRow: some View {
+        Button(action: viewModel.showCategoriesPicker) {
+            HStack {
+                SettingsRow(Strings.categoriesLabel, value: viewModel.categoriesText)
+                Image(systemName: "chevron.forward")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundColor(Color(.tertiaryLabel))
+            }
+        }
+        .tint(.primary)
+    }
+
+    private var tagsRow: some View {
+        Button(action: viewModel.showTagsPicker) {
+            HStack {
+                SettingsRow(Strings.tagsLabel, value: viewModel.tagsText)
+                Image(systemName: "chevron.forward")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundColor(Color(.tertiaryLabel))
+            }
+        }
+        .tint(.primary)
     }
 }
 
@@ -209,6 +249,11 @@ private struct PostSettingsAuthorRow: View {
 private struct SettingsRow: View {
     let title: String
     let value: String
+
+    init(_ title: String, value: String) {
+        self.title = title
+        self.value = value
+    }
 
     var body: some View {
         HStack {
@@ -291,5 +336,23 @@ private enum Strings {
         "postSettings.featuredImage.header",
         value: "Featured Image",
         comment: "Section header for Featured Image in Post Settings"
+    )
+
+    static let taxonomyHeader = NSLocalizedString(
+        "postSettings.taxonomy.header",
+        value: "Taxonomy",
+        comment: "Label for the Taxonomy area (categories, keywords, ...) in post settings."
+    )
+
+    static let categoriesLabel = NSLocalizedString(
+        "postSettings.categories.label",
+        value: "Categories",
+        comment: "Label for the categories field. Should be the same as WP core."
+    )
+
+    static let tagsLabel = NSLocalizedString(
+        "postSettings.tags.label",
+        value: "Tags",
+        comment: "Label for the tags field. Should be the same as WP core."
     )
 }

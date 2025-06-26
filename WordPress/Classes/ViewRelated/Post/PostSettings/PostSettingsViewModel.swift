@@ -12,25 +12,28 @@ final class PostSettingsViewModel: ObservableObject {
 
     @Published var settings: PostSettings {
         didSet {
-            hasChanges = settings != originalSettings
+            refresh(with: settings)
             trackChanges(from: oldValue, to: settings)
         }
     }
 
     @Published private(set) var isSaving = false
     @Published private(set) var hasChanges = false
+    @Published private(set) var categoriesText = ""
+    @Published private(set) var tagsText = ""
+
     @Published var isShowingDeletedAlert = false
 
     var navigationTitle: String {
-        post is Page ? Strings.pageSettingsTitle : Strings.postSettingsTitle
+        isPost ? Strings.postSettingsTitle : Strings.pageSettingsTitle
     }
 
     var deletedAlertTitle: String {
-        post is Page ? Strings.pageDeletedTitle : Strings.postDeletedTitle
+        isPost ? Strings.postDeletedTitle : Strings.pageDeletedTitle
     }
 
     var deletedAlertMessage: String {
-        post is Page ? Strings.pageDeletedMessage : Strings.postDeletedMessage
+        isPost ? Strings.postDeletedMessage : Strings.pageDeletedMessage
     }
 
     var isMultiAuthorBlog: Bool {
@@ -69,11 +72,19 @@ final class PostSettingsViewModel: ObservableObject {
         post.original().isStatus(in: [.draft, .pending])
     }
 
+    var isPost: Bool {
+        post is Post
+    }
+
     private let originalSettings: PostSettings
     private var cancellables = Set<AnyCancellable>()
 
     var onDismiss: (() -> Void)?
     var onEditorPostSaved: (() -> Void)?
+
+    /// Weak reference to the view controller for navigation.
+    /// This is temporary until we can fully migrate to SwiftUI navigation.
+    weak var viewController: UIViewController?
 
     init(post: AbstractPost, isStandalone: Bool = false) {
         self.post = post
@@ -91,6 +102,16 @@ final class PostSettingsViewModel: ObservableObject {
         featuredImageViewModel.$selection.dropFirst().sink { [weak self] media in
             self?.settings.featuredImageID = media?.mediaID?.intValue
         }.store(in: &cancellables)
+
+        // Initialize cached text values
+        refresh(with: settings)
+    }
+
+    private func refresh(with settings: PostSettings) {
+        hasChanges = settings != originalSettings
+        categoriesText = settings.makeCategoriesText(for: post)
+            .stringByDecodingXMLCharacters()
+        tagsText = settings.makeTagsText()
     }
 
     func buttonCancelTapped() {
@@ -154,6 +175,29 @@ final class PostSettingsViewModel: ObservableObject {
         settings.password = selection.password.isEmpty ? nil : selection.password
     }
 
+    // MARK: - Navigation
+
+    func showCategoriesPicker() {
+        let categoriesVC = PostSettingsCategoriesPickerViewController(
+            blog: post.blog,
+            selectedCategoryIDs: settings.categoryIDs
+        ) { [weak self] newSelectedIDs in
+            self?.settings.categoryIDs = newSelectedIDs
+        }
+        viewController?.navigationController?.pushViewController(categoriesVC, animated: true)
+    }
+
+    func showTagsPicker() {
+        let tagsVC = PostTagPickerViewController(
+            tags: settings.tags,
+            blog: post.blog
+        )
+        tagsVC.onValueChanged = { [weak self] newTagsString in
+            self?.settings.tags = newTagsString
+        }
+        viewController?.navigationController?.pushViewController(tagsVC, animated: true)
+    }
+
     // MARK: - Analytics
 
     private func trackChanges(from old: PostSettings, to new: PostSettings) {
@@ -168,6 +212,13 @@ final class PostSettingsViewModel: ObservableObject {
         }
         if old.postFormat != new.postFormat {
             track(.editorPostFormatChanged)
+        }
+        if old.categoryIDs != new.categoryIDs {
+            track(.editorPostCategoryChanged)
+        }
+        if old.featuredImageID != new.featuredImageID {
+            let action = new.featuredImageID == nil ? "removed" : "changed"
+            WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": action])
         }
     }
 
