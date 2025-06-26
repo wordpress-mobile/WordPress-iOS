@@ -36,7 +36,6 @@ private struct PostSettingsView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
 
     @State private var isShowingDiscardChangesAlert = false
-    @State private var isShowingVisibilityPicker = false
 
     var body: some View {
         Form {
@@ -83,6 +82,7 @@ private struct PostSettingsView: View {
         .tint(AppColor.tint)
     }
 
+    @ViewBuilder
     private var buttonSave: some View {
         if viewModel.isSaving {
             ProgressView()
@@ -163,12 +163,12 @@ private struct PostSettingsView: View {
     }
 
     private var visibilityRow: some View {
-        NavigationLink(isActive: $isShowingVisibilityPicker) {
+        NavigationLink {
             PostVisibilityPicker(
                 selection: PostVisibilityPicker.Selection(post: viewModel.post),
+                dismissOnSelection: true,
                 onSubmit: { selection in
                     viewModel.updateVisibility(selection)
-                    isShowingVisibilityPicker = false
                 }
             )
         } label: {
