@@ -4,6 +4,7 @@ import CoreData
 @testable import WordPress
 @testable import WordPressData
 
+@MainActor
 @Suite("PostSettings Tests")
 struct PostSettingsTests {
 
