@@ -6,12 +6,18 @@ import WordPressShared
 /// A plain data structure representing the subset of post/page settings that can be edited in PostSettingsView.
 /// Used for change tracking and to separate UI state from Core Data objects.
 struct PostSettings: Hashable {
+    struct Author: Hashable {
+        let id: Int
+        let displayName: String
+        let avatarURL: URL?
+    }
+
     var excerpt: String
     var slug: String
     var status: BasePost.Status
     var publishDate: Date?
     var password: String?
-    var authorID: Int?
+    var author: Author?
     var categoryIDs: Set<Int> = []
     var tags: [String] = []
     var featuredImageID: Int?
@@ -32,7 +38,16 @@ struct PostSettings: Hashable {
         status = post.status ?? .draft
         publishDate = post.dateCreated
         password = post.password
-        authorID = post.authorID?.intValue
+
+        // Initialize author if available
+        if let authorID = post.authorID?.intValue, authorID > 0 {
+            author = Author(
+                id: authorID,
+                displayName: post.author ?? "–",
+                avatarURL: post.authorAvatarURL.flatMap(URL.init)
+            )
+        }
+
         featuredImageID = post.featuredImage?.mediaID?.intValue
 
         switch post {
@@ -58,18 +73,51 @@ struct PostSettings: Hashable {
         if post.wp_slug != slug {
             post.wp_slug = slug
         }
-        // TODO: implement it for the remaining fields
+        if post.status != status {
+            post.status = status
+        }
+        if post.dateCreated != publishDate {
+            post.dateCreated = publishDate
+        }
+        if post.password != password {
+            post.password = password
+        }
+        if let author, post.authorID?.intValue != author.id {
+            post.authorID = NSNumber(value: author.id)
+            post.author = author.displayName
+            post.authorAvatarURL = author.avatarURL?.absoluteString
+        }
     }
 
     // MARK: - Diff Generation
 
     /// Creates RemotePostUpdateParameters representing the changes from the original settings.
-    func makeUpdateParameters(from original: PostSettings) -> RemotePostUpdateParameters {
-        var parameters = RemotePostUpdateParameters()
-        if slug != original.slug {
-            parameters.slug = slug
+    /// Uses the existing RemotePostUpdateParameters.changes infrastructure by creating
+    /// a temporary post copy, applying the new settings, and computing the diff.
+    func makeUpdateParameters(from original: AbstractPost) -> RemotePostUpdateParameters {
+        guard let context = original.managedObjectContext else {
+            wpAssertionFailure("post must have a managed object context")
+            return RemotePostUpdateParameters()
         }
-        // TODO: implement it for the remaining field
+        // Create a temporary copy of the post to apply the new settings
+        let temporaryPost = original.createRevision()
+        self.apply(to: temporaryPost)
+        let parameters = RemotePostUpdateParameters.changes(from: original, to: temporaryPost)
+        context.delete(temporaryPost)
         return parameters
+    }
+}
+
+extension PostSettings {
+    mutating func updatePendingReviewStatus(_ isPending: Bool) {
+        status = isPending ? .pending : .draft
+    }
+
+    mutating func updateAuthor(with authorItem: PostAuthorPickerViewModel.AuthorItem) {
+        author = PostSettings.Author(
+            id: authorItem.id.intValue,
+            displayName: authorItem.displayName,
+            avatarURL: authorItem.avatarURL
+        )
     }
 }

@@ -286,9 +286,15 @@ extension PostSettingsViewController {
     }
 
     @objc public func showPostAuthorSelector() {
-        let picker = PostAuthorPicker(post: apost) { [weak self] in
+        let picker = PostAuthorPicker(post: apost) { [weak self] selection in
+            guard let self else { return }
+
+            self.apost.authorID = selection.id
+            self.apost.author = selection.displayName
+            self.apost.authorAvatarURL = selection.avatarURL?.absoluteString
+
             WPAnalytics.track(.editorPostAuthorChanged, properties: ["via": "settings"])
-            self?.tableView.reloadData()
+            self.tableView.reloadData()
         }
         let hostingController = UIHostingController(rootView: picker)
         navigationController?.pushViewController(hostingController, animated: true)

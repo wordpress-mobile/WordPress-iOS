@@ -20,34 +20,28 @@ final class PostAuthorPickerViewModel: ObservableObject {
 
     @Published private(set) var authors: [AuthorItem] = []
 
-    private let post: AbstractPost
-    private let onSelection: () -> Void
-    private let currentAuthorID: NSNumber?
+    private let blog: Blog
+    private let onSelection: (AuthorItem) -> Void
+    private let currentAuthorID: Int?
 
-    init(post: AbstractPost, onSelection: @escaping () -> Void) {
-        self.post = post
+    init(blog: Blog, currentAuthorID: Int?, onSelection: @escaping (AuthorItem) -> Void) {
+        self.blog = blog
+        self.currentAuthorID = currentAuthorID
         self.onSelection = onSelection
-        self.currentAuthorID = post.authorID
 
         loadAuthors()
     }
 
     func selectAuthor(_ author: AuthorItem) {
-        guard !post.isFault, post.managedObjectContext != nil else { return }
-
-        post.authorID = author.id
-        post.author = author.displayName
-        post.authorAvatarURL = author.avatarURL?.absoluteString
-
-        onSelection()
+        onSelection(author)
     }
 
     func isSelected(_ author: AuthorItem) -> Bool {
-        author.id == currentAuthorID
+        author.id.intValue == currentAuthorID
     }
 
     private func loadAuthors() {
-        authors = (post.blog.authors ?? [])
+        authors = (blog.authors ?? [])
             .filter { !$0.deletedFromBlog }
             .map(AuthorItem.init)
             .sorted {

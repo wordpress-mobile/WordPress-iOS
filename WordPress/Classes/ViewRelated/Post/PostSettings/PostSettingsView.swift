@@ -98,6 +98,8 @@ private struct PostSettingsView: View {
 
     @ViewBuilder
     private var form: some View {
+        general
+
         Section(header: Text(Strings.moreOptionsHeader)) {
             HStack {
                 Text(Strings.slugLabel)
@@ -110,13 +112,139 @@ private struct PostSettingsView: View {
             }
         }
     }
+
+    @ViewBuilder
+    private var general: some View {
+        Section(header: Text(Strings.generalHeader)) {
+            // Author picker (only show for multi-author blogs)
+            if viewModel.isMultiAuthorBlog {
+                NavigationLink {
+                    PostAuthorPicker(
+                        blog: viewModel.post.blog,
+                        currentAuthorID: viewModel.settings.author?.id
+                    ) { selection in
+                        viewModel.settings.updateAuthor(with: selection)
+                        WPAnalytics.track(.editorPostAuthorChanged, properties: ["via": "settings"])
+                    }
+                } label: {
+                    HStack(spacing: 6) {
+                        Text(Strings.authorLabel)
+                        Spacer()
+                        AvatarView(style: .single(viewModel.authorAvatarURL), diameter: 22)
+                        Text(viewModel.authorDisplayName)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+
+            if viewModel.isDraftOrPending {
+                // Pending review toggle
+                Toggle(isOn: $viewModel.isPendingReview) {
+                    Text(Strings.pendingReviewLabel)
+                }
+                .onChange(of: viewModel.isPendingReview) { selection in
+                    viewModel.settings.updatePendingReviewStatus(selection)
+                }
+            } else {
+                // Publish date picker
+                NavigationLink {
+                    PublishDatePickerView(configuration: PublishDatePickerConfiguration(
+                        date: viewModel.settings.publishDate,
+                        isRequired: false,
+                        timeZone: viewModel.timeZone,
+                        updated: { date in
+                            viewModel.settings.publishDate = date
+                            WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
+                        }
+                    ))
+                } label: {
+                    SettingsRow(title: Strings.publishDateLabel, value: viewModel.publishDateText)
+                }
+
+                // Visibility picker
+                NavigationLink {
+                    PostVisibilityPicker(
+                        selection: PostVisibilityPicker.Selection(post: viewModel.post),
+                        onSubmit: { selection in
+                            viewModel.updateVisibility(selection)
+                            WPAnalytics.track(.editorPostVisibilityChanged, properties: ["via": "settings"])
+                        }
+                    )
+                } label: {
+                    SettingsRow(title: Strings.visibilityLabel, value: viewModel.visibilityText)
+                }
+            }
+        }
+    }
+}
+
+@MainActor
+private struct PostSettingsAuthorRow: View {
+    let title: String
+    let displayName: String
+    let avatarURL: URL?
+    
+    var body: some View {
+        HStack(spacing: 6) {
+            Text(title)
+            Spacer()
+            AvatarView(style: .single(avatarURL), diameter: 22)
+            Text(displayName)
+                .foregroundColor(.secondary)
+        }
+    }
+}
+
+@MainActor
+private struct SettingsRow: View {
+    let title: String
+    let value: String
+
+    var body: some View {
+        HStack {
+            Text(title)
+            Spacer()
+            Text(value)
+                .foregroundColor(.secondary)
+        }
+    }
 }
 
 private enum Strings {
+    static let generalHeader = NSLocalizedString(
+        "postSettings.section.general",
+        value: "General",
+        comment: "Section header for General settings in Post Settings"
+    )
+
     static let moreOptionsHeader = NSLocalizedString(
         "postSettings.section.moreOptions",
         value: "More Options",
         comment: "Section header for More Options in Post Settings"
+    )
+
+    static let authorLabel = NSLocalizedString(
+        "postSettings.author.label",
+        value: "Author",
+        comment: "Label for the author field in Post Settings"
+    )
+
+    static let publishDateLabel = NSLocalizedString(
+        "postSettings.publishDate.label",
+        value: "Publish Date",
+        comment: "Label for the publish date field in Post Settings"
+    )
+
+    static let visibilityLabel = NSLocalizedString(
+        "postSettings.visibility.label",
+        value: "Visibility",
+        comment: "Label for the visibility field in Post Settings"
+    )
+
+    static let pendingReviewLabel = NSLocalizedString(
+        "postSettings.pendingReview.label",
+        value: "Pending review",
+        comment: "Label for the pending review toggle in Post Settings"
     )
 
     static let slugLabel = NSLocalizedString(
