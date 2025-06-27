@@ -19,7 +19,6 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowCategories = 0,
     PostSettingsRowTags,
     PostSettingsRowAuthor,
-    PostSettingsRowPublishDate,
     PostSettingsRowPendingReview,
     PostSettingsRowVisibility,
     PostSettingsRowFormat,
@@ -334,9 +333,7 @@ PostCategoriesViewControllerDelegate>
         [self showCategoriesSelection];
     } else if (cell.tag == PostSettingsRowTags) {
         [self showTagsPicker];
-    } else if (cell.tag == PostSettingsRowPublishDate) {
-        [self showPublishDatePicker];
-    } else if (cell.tag == PostSettingsRowVisibility) {
+    } if (cell.tag == PostSettingsRowVisibility) {
         [self showPostVisibilitySelector];
     } else if (cell.tag == PostSettingsRowAuthor) {
         [self showPostAuthorSelector];
@@ -381,7 +378,6 @@ PostCategoriesViewControllerDelegate>
         [metaRows addObject:@(PostSettingsRowPendingReview)];
     } else {
         [metaRows addObjectsFromArray:@[
-            @(PostSettingsRowPublishDate),
             @(PostSettingsRowVisibility)
         ]];
     }
@@ -401,25 +397,6 @@ PostCategoriesViewControllerDelegate>
         cell.accessibilityIdentifier = @"SetAuthor";
         cell.detailTextLabel.text = [self.apost authorNameForDisplay];
         cell.tag = PostSettingsRowAuthor;
-    } else if (row == PostSettingsRowPublishDate) {
-        // Publish date
-        cell = [self getWPTableViewDisclosureCellWithIdentifier:@"PostSettingsRowPublishDate"];
-        cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
-        if (self.apost.dateCreated) {
-            cell.detailTextLabel.text = [self.postDateFormatter stringFromDate:self.apost.dateCreated];
-        } else {
-            // Should never happen as this field is displayed only for published/scheduled posts
-            cell.detailTextLabel.text = @"";
-        }
-
-        if ([self.apost.status isEqualToString:PostStatusPrivate]) {
-            [cell disable];
-        } else {
-            [cell enable];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
-
-        cell.tag = PostSettingsRowPublishDate;
     } else if (row == PostSettingsRowVisibility) {
         // Visibility
         cell = [self getWPTableViewDisclosureCellWithIdentifier:@"PostSettingsRowVisibility"];
