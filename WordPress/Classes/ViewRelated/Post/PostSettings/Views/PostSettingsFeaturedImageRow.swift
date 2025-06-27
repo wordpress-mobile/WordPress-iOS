@@ -8,7 +8,7 @@ struct PostSettingsFeaturedImageRow: View {
     @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
     @State private var presentedMedia: Media?
 
-    @ScaledMetric(relativeTo: .body) var height = 100 // Matches "Exceprt"
+    @ScaledMetric(relativeTo: .body) var height = 108 // Matches "Exceprt"
 
     var body: some View {
         if let image = viewModel.selection {

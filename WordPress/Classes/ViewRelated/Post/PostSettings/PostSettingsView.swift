@@ -60,6 +60,7 @@ private struct PostSettingsView: View {
                 excerptSection
             }
             moreOptionsSection
+            infoSection
         }
         .disabled(viewModel.isSaving)
         .toolbar {
@@ -321,6 +322,41 @@ private struct PostSettingsView: View {
             Text(Strings.stickyPostLabel)
         }
     }
+
+    // MARK: - "Info" Section
+
+    @ViewBuilder
+    private var infoSection: some View {
+        Section(Strings.infoLabel) {
+            if let permalink = viewModel.permalink {
+                HStack {
+                    Text(Strings.permalinkLabel)
+                    Spacer()
+                    let text = Text(permalink)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                        .foregroundColor(.accentColor)
+                        .font(.footnote)
+                        .minimumScaleFactor(1.0)
+                    if let url = URL(string: permalink) {
+                        Link(destination: url) {
+                            text
+                        }
+                    } else {
+                        text.textSelection(.enabled)
+                    }
+                }
+            }
+
+            if let lastEditedText = viewModel.lastEditedText {
+                SettingsRow(Strings.lastEditedLabel, value: lastEditedText)
+            }
+
+            if let postID = viewModel.postID, postID > 0 {
+                SettingsRow(Strings.postIDLabel, value: String(postID))
+            }
+        }
+    }
 }
 
 @MainActor
@@ -349,7 +385,7 @@ private struct PostSettingsAuthorRow: View {
 private struct SettingsTextEditor: View {
     @Binding var text: String
 
-    @ScaledMetric(relativeTo: .body) var height = 100
+    @ScaledMetric(relativeTo: .body) var height = 108
 
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -547,5 +583,29 @@ private enum Strings {
         "postSettings.stickyPost.label",
         value: "Sticky",
         comment: "Label for the sticky post toggle. Sticky posts are displayed at the top of the blog."
+    )
+
+    static let infoLabel = NSLocalizedString(
+        "postSettings.metadata.header",
+        value: "Info",
+        comment: "Section header for Info in Post Settings"
+    )
+
+    static let permalinkLabel = NSLocalizedString(
+        "postSettings.permalink.label",
+        value: "Permalink",
+        comment: "Label for the permalink field in Post Settings"
+    )
+
+    static let lastEditedLabel = NSLocalizedString(
+        "postSettings.lastEdited.label",
+        value: "Last Edited",
+        comment: "Label for the last edited field in Post Settings"
+    )
+
+    static let postIDLabel = NSLocalizedString(
+        "postSettings.postID.label",
+        value: "Post ID",
+        comment: "Label for the post ID field in Post Settings"
     )
 }

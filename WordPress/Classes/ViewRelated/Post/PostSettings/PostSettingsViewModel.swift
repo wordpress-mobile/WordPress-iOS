@@ -36,10 +36,6 @@ final class PostSettingsViewModel: ObservableObject {
         isPost ? Strings.postDeletedMessage : Strings.pageDeletedMessage
     }
 
-    var isMultiAuthorBlog: Bool {
-        post.blog.isMultiAuthor
-    }
-
     var authorDisplayName: String {
         settings.author?.displayName ?? post.authorNameForDisplay()
     }
@@ -89,6 +85,45 @@ final class PostSettingsViewModel: ObservableObject {
         guard isPost else { return false }
         // Show sticky option if blog supports WPComRESTAPI OR user is admin
         return post.blog.supports(.wpComRESTAPI) || post.blog.isAdmin
+    }
+
+    // MARK: - Metadata Properties
+
+    var permalink: String? {
+        post.permaLink
+    }
+
+    var lastEditedText: String? {
+        guard let date = post.dateModified ?? post.dateCreated else {
+            return nil
+        }
+        return date.formatted(date: .abbreviated, time: .shortened)
+    }
+
+    var postID: Int? {
+        post.postID?.intValue
+    }
+
+    var wordCount: Int {
+        // Strip HTML tags and entities from content
+        let content = post.content ?? ""
+        let strippedContent = content
+            .replacingOccurrences(of: "<[^>]+>", with: " ", options: .regularExpression)
+            .replacingOccurrences(of: "&[^;]+;", with: " ", options: .regularExpression)
+            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        // Count words by splitting on whitespace
+        let words = strippedContent.components(separatedBy: .whitespacesAndNewlines)
+            .filter { !$0.isEmpty }
+
+        return words.count
+    }
+
+    var wordCountText: String {
+        let count = wordCount
+        let format = NSLocalizedString("postSettings.wordCount.format", value: "%d words", comment: "Word count format. %d is the number of words")
+        return String(format: format, count)
     }
 
     private let originalSettings: PostSettings
