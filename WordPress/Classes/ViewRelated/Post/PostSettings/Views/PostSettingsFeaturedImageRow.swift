@@ -33,15 +33,24 @@ struct PostSettingsFeaturedImageRow: View {
                     // The upload state when no image is selected. For the "Replace"
                     // flow, the app shows the upload differently (see `menu`).
                     uploading
+                        .padding(.vertical, 16)
                 } else {
                     makeMediaPicker {
-                        Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
-                            .frame(maxWidth: .infinity)
-                            .contentShape(Rectangle()) // Make the whole cell tappable
+                        VStack(spacing: 8) {
+                            Image(systemName: "photo.badge.plus")
+                                .font(.system(size: 28))
+                                .foregroundColor(.accentColor)
+                            Text(Strings.buttonSetFeaturedImage)
+                                .font(.headline)
+                                .foregroundColor(.accentColor)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 24)
+                        .contentShape(Rectangle()) // Make the whole cell tappable
                     }
                 }
             }
-            .frame(minHeight: 44)
+            .frame(minHeight: 80)
         }
     }
 
@@ -89,23 +98,28 @@ struct PostSettingsFeaturedImageRow: View {
     }
 
     private var uploading: some View {
-        HStack(alignment: .center, spacing: 0) {
+        HStack(alignment: .center, spacing: 16) {
             ProgressView()
-                .padding(.trailing, 12)
+                .scaleEffect(1.2)
 
-            Text(Strings.uploading)
-                .foregroundStyle(.secondary)
-                .lineLimit(1)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(Strings.uploading)
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+                Text(Strings.uploadingSubtitle)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
 
             Spacer(minLength: 8)
 
             Menu {
                 Button(role: .destructive, action: viewModel.buttonCancelTapped) {
-                    Label(Strings.cancelUpload, systemImage: "trash")
+                    Label(Strings.cancelUpload, systemImage: "xmark.circle.fill")
                 }
             } label: {
-                Image(systemName: "ellipsis")
-                    .font(.subheadline)
+                Image(systemName: "ellipsis.circle")
+                    .font(.title3)
                     .tint(.secondary)
             }
         }
@@ -197,6 +211,7 @@ public final class PostSettingsFeaturedImageViewModel: ObservableObject {
 private enum Strings {
     static let buttonSetFeaturedImage = NSLocalizedString("postSettings.featuredImage.setFeaturedImageButton", value: "Set Featured Image", comment: "Button in Post Settings")
     static let uploading = NSLocalizedString("postSettings.featuredImage.uploading", value: "Uploading…", comment: "Post Settings")
+    static let uploadingSubtitle = NSLocalizedString("postSettings.featuredImage.uploadingSubtitle", value: "Please wait...", comment: "Subtitle shown while uploading featured image")
     static let cancelUpload = NSLocalizedString("postSettings.featuredImage.cancelUpload", value: "Cancel Upload", comment: "Cancel upload button in Post Settings / Featured Image cell")
     static let replaceImage = NSLocalizedString("postSettings.featuredImage.replaceImage", value: "Replace", comment: "Replace image upload button in Post Settings / Featured Image cell")
     static let uploadFailed = NSLocalizedString("postSettings.featuredImage.uploadFailed", value: "Failed to upload new featured image", comment: "Snackbar title")

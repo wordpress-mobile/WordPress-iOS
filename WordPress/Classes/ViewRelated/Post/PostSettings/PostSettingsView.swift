@@ -50,12 +50,12 @@ private struct PostSettingsView: View {
 
     var body: some View {
         Form {
-            generalSection
             featuredImageSection
             if viewModel.isPost {
                 taxonomySection
             }
             excerptSection
+            generalSection
             moreOptionsSection
         }
         .disabled(viewModel.isSaving)
@@ -126,12 +126,14 @@ private struct PostSettingsView: View {
 
     @ViewBuilder
     private var generalSection: some View {
-        Section {
+        Section(Strings.generalHeader) {
+            if !viewModel.isDraftOrPending {
+                publishDateRow
+            }
             if viewModel.isMultiAuthorBlog {
                 authorRow
             }
             if !viewModel.isDraftOrPending {
-                publishDateRow
                 visibilityRow
             }
         }
@@ -243,12 +245,14 @@ private struct PostSettingsView: View {
     @ViewBuilder
     private var moreOptionsSection: some View {
         Section(Strings.moreOptionsHeader) {
+            // Most used options first
             slugRow
-            if viewModel.isDraftOrPending {
-                pendingReviewRow
-            }
             if viewModel.shouldShowStickyOption {
                 stickyPostRow
+            }
+            // Less frequently used options
+            if viewModel.isDraftOrPending {
+                pendingReviewRow
             }
             if viewModel.isPost {
                 postFormatRow
