@@ -1,3 +1,6 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
 # Most of the steps need to run on a macOS agent, so let's define it as a root property.
 agents:
   queue: mac
@@ -113,7 +116,10 @@ steps:
       - label: "🔬 Keystone Unit Tests"
         command: .buildkite/commands/run-unit-tests-for-scheme.sh Keystone
         # Disabled till https://github.com/wordpress-mobile/WordPress-iOS/pull/24537 is completed
-        if: false
+        #
+        # The boolean value has to be a string explicitly.
+        # See validation error against schema.
+        if: "false"
         plugins: [$CI_TOOLKIT_PLUGIN]
         artifact_paths:
           - "build/results/*"
