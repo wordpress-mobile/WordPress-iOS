@@ -12,8 +12,7 @@ final class PostSettingsViewModel: ObservableObject {
 
     @Published var settings: PostSettings {
         didSet {
-            refresh(with: settings)
-            trackChanges(from: oldValue, to: settings)
+            refresh(from: oldValue, to: settings)
         }
     }
 
@@ -119,19 +118,38 @@ final class PostSettingsViewModel: ObservableObject {
             self?.settings.featuredImageID = media?.mediaID?.intValue
         }.store(in: &cancellables)
 
-        // Initialize cached text values
-        refresh(with: settings)
+        // Initialize all cached properties
+        refreshCategoriesText()
+        refreshTagsText()
+        refreshParentPageText()
 
         WPAnalytics.track(.postSettingsShown)
     }
 
-    private func refresh(with settings: PostSettings) {
-        hasChanges = settings != originalSettings
+    private func refresh(from old: PostSettings, to new: PostSettings) {
+        hasChanges = new != originalSettings
+
+        if old.categoryIDs != new.categoryIDs {
+            refreshCategoriesText()
+        }
+        if old.tags != new.tags {
+            refreshTagsText()
+        }
+        if old.parentPageID != new.parentPageID {
+            refreshParentPageText()
+        }
+    }
+
+    private func refreshCategoriesText() {
         categoriesText = settings.makeCategoriesText(for: post)
             .stringByDecodingXMLCharacters()
-        tagsText = settings.makeTagsText()
+    }
 
-        // Update parent page text for pages
+    private func refreshTagsText() {
+        tagsText = settings.makeTagsText()
+    }
+
+    private func refreshParentPageText() {
         if let page = post as? Page,
            let context = page.managedObjectContext,
            let parentPageID = settings.parentPageID {
@@ -154,8 +172,9 @@ final class PostSettingsViewModel: ObservableObject {
         }
 
         guard isStandalone else {
-            // Apply settings and return to the editor
+            // Apply settings and return to the editor (editor-specific)
             settings.apply(to: post)
+            didSaveChanges()
             wpAssert(onEditorPostSaved != nil, "configuration missing")
             onEditorPostSaved?()
             return
@@ -179,11 +198,16 @@ final class PostSettingsViewModel: ObservableObject {
                 let changes = settings.makeUpdateParameters(from: post)
                 try await coordinator.save(post, changes: changes)
             }
+            didSaveChanges()
             onDismiss?()
         } catch {
             isSaving = false
             // `PostCoordinator` handles errors by showing an alert when needed
         }
+    }
+
+    private func didSaveChanges() {
+        trackChanges(from: originalSettings, to: settings)
     }
 
     func updateVisibility(_ selection: PostVisibilityPicker.Selection) {
@@ -257,10 +281,6 @@ final class PostSettingsViewModel: ObservableObject {
             if (old.status == .pending) != (new.status == .pending) {
                 track(.editorPostPendingReviewChanged)
             }
-        }
-        if old.password != new.password {
-            // Password protection is a visibility change
-            track(.editorPostVisibilityChanged)
         }
         if old.isStickyPost != new.isStickyPost {
             track(.editorPostStickyChanged)
