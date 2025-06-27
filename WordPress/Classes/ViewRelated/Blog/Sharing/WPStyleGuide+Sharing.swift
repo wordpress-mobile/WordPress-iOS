@@ -43,7 +43,7 @@ extension WPStyleGuide {
     ///
     /// - Returns: A template UIImage that can be tinted by a UIImageView's tintColor property.
     ///
-    @objc public class func iconForService(_ service: NSString) -> UIImage {
+    public class func iconForService(_ service: NSString) -> UIImage {
         let name = service.lowercased.replacingOccurrences(of: "_", with: "-")
         var iconName: String
 
@@ -68,7 +68,7 @@ extension WPStyleGuide {
         return image!.withRenderingMode(.alwaysTemplate)
     }
 
-    @objc public class func socialIcon(for service: NSString) -> UIImage {
+    public class func socialIcon(for service: NSString) -> UIImage {
         UIImage(named: "icon-\(service)") ?? iconForService(service)
     }
 }

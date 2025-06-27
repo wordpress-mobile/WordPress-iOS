@@ -39,17 +39,6 @@ final class PublishDatePickerViewController: UIHostingController<PublishDatePick
     }
 }
 
-extension PublishDatePickerViewController {
-    static func make(viewModel: PublishSettingsViewModel, onDateUpdated: @escaping (Date?) -> Void) -> PublishDatePickerViewController {
-        PublishDatePickerViewController(configuration: .init(
-            date: viewModel.date,
-            isRequired: viewModel.isRequired,
-            timeZone: viewModel.timeZone,
-            updated: onDateUpdated
-        ))
-    }
-}
-
 struct PublishDatePickerView: View {
     @State var configuration: PublishDatePickerConfiguration
 

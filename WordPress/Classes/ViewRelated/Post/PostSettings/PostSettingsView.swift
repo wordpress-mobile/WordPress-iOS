@@ -7,7 +7,7 @@ import WordPressShared
 import WordPressUI
 import SwiftUI
 
-final class NewPostSettingsViewController: UIHostingController<AnyView> {
+final class PostSettingsViewController: UIHostingController<AnyView> {
     private let viewModel: PostSettingsViewModel
 
     init(viewModel: PostSettingsViewModel) {
@@ -32,6 +32,13 @@ final class NewPostSettingsViewController: UIHostingController<AnyView> {
 
     @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    static func showStandaloneEditor(for post: AbstractPost, from presentingVC: UIViewController) {
+        let viewModel = PostSettingsViewModel(post: post, isStandalone: true)
+        let postSettingsVC = PostSettingsViewController(viewModel: viewModel)
+        let navigation = UINavigationController(rootViewController: postSettingsVC)
+        presentingVC.present(navigation, animated: true)
     }
 }
 

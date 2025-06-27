@@ -25,24 +25,6 @@ class PostTests: CoreDataTestCase {
         return category
     }
 
-    func testThatNoCategoriesReturnEmptyStringWhenCallingCategoriesText() {
-        let post = newTestPost()
-        let categoriesText = post.categoriesText()
-
-        XCTAssertEqual(categoriesText, "")
-    }
-
-    func testThatSomeCategoriesReturnAListWhenCallingCategoriesText() {
-
-        let post = newTestPost()
-
-        post.categories = [newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3")]
-
-        let categoriesText = post.categoriesText()
-
-        XCTAssertEqual(categoriesText, "1, 2, 3")
-    }
-
     func testSetCategoriesFromNamesWithTwoCategories() {
         let blog = newTestBlog()
         let post = newTestPost()

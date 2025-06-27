@@ -43,7 +43,7 @@ extension PostHelper {
                         // the connectionID, and return its keyringID.
                         let entryConnectionID = Int(key.removingPrefix(SkipPrefix.connection.rawValue))
 
-                        guard let connections = post.blog.connections as? Set<PublicizeConnection>,
+                        guard let connections = post.blog.connections,
                               let connectionID = entryConnectionID,
                               let connection = connections.first(where: { $0.connectionID.intValue == connectionID }) else {
                             /// Otherwise, fall back to the connectionID extracted from the metadata key.
@@ -94,7 +94,7 @@ extension PostHelper {
             // Try to add a key with the new format ONLY if the metadata hasn't been synced to the remote.
             let metadataKeyValue: String = {
                 guard entry[Keys.publicizeIdKey] == nil,
-                      let connections = post.blog.connections as? Set<PublicizeConnection>,
+                      let connections = post.blog.connections,
                       let connection = connections.first(where: { $0.keyringConnectionID == keyringID }) else {
                     // Fall back to the old keyring format.
                     return "\(SkipPrefix.keyring.rawValue)\(keyringID)"

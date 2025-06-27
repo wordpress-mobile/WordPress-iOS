@@ -101,13 +101,6 @@ public extension AbstractPost {
         }
     }
 
-    // MARK: - Misc
-
-    /// A title describing the status. Ie.: "Public" or "Private" or "Password protected"
-    @objc var titleForVisibility: String {
-        PostVisibility(post: self).localizedTitle
-    }
-
     /// Represent the supported properties used to sort posts.
     ///
     enum SortField {

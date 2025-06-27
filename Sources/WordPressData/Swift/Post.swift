@@ -65,21 +65,6 @@ public class Post: AbstractPost {
 
     // MARK: - Categories
 
-    /// Returns categories as a comma-separated list
-    ///
-    @objc public func categoriesText() -> String {
-
-        guard let allStrings = categories?.map({ return $0.categoryName as String }) else {
-            return ""
-        }
-
-        let orderedStrings = allStrings.sorted { (categoryName1, categoryName2) -> Bool in
-            return categoryName1.localizedCaseInsensitiveCompare(categoryName2) == .orderedAscending
-        }
-
-        return orderedStrings.joined(separator: ", ")
-    }
-
     /// Set the categories for a post
     ///
     /// - Parameter categoryNames: a `NSArray` with the names of the categories for this post. If
@@ -119,7 +104,7 @@ public class Post: AbstractPost {
         let isKeyringEntryDisabled = disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
 
         // try to check in case there's an entry for the PublicizeConnection that's keyed by the connectionID.
-        guard let connections = blog.connections as? Set<PublicizeConnection>,
+        guard let connections = blog.connections,
               let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
               let existingValue = disabledPublicizeConnections?[connection.connectionID]?[Constants.publicizeValueKey] else {
             // fall back to keyringID if there is no such entry with the connectionID.
@@ -130,10 +115,10 @@ public class Post: AbstractPost {
         return isConnectionEntryDisabled || isKeyringEntryDisabled
     }
 
-    @objc public func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
+    public func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
         // if there's another entry keyed by connectionID references to the same connection,
         // we need to make sure that the values are kept in sync.
-        if let connections = blog.connections as? Set<PublicizeConnection>,
+        if let connections = blog.connections,
            let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
            let _ = disabledPublicizeConnections?[connection.connectionID] {
             enablePublicizeConnection(keyedBy: connection.connectionID)
@@ -142,10 +127,10 @@ public class Post: AbstractPost {
         enablePublicizeConnection(keyedBy: keyringID)
     }
 
-    @objc public func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
+    public func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
         // if there's another entry keyed by connectionID references to the same connection,
         // we need to make sure that the values are kept in sync.
-        if let connections = blog.connections as? Set<PublicizeConnection>,
+        if let connections = blog.connections,
            let connectionID = connections.first(where: { $0.keyringConnectionID == keyringID })?.connectionID,
            let _ = disabledPublicizeConnections?[connectionID] {
             disablePublicizeConnection(keyedBy: connectionID)

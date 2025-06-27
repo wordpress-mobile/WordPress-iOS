@@ -11,7 +11,7 @@ import AutomatticTracks
 import Combine
 import ImagePlayground
 
-class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate, PublishingEditor {
+class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
     enum RequestHTMLReason {
