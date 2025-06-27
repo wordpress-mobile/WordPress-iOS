@@ -880,7 +880,7 @@ extension EditorConfiguration {
 
         self.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
         // Limited to Simple sites until application password auth is supported
-        self.plugins =  RemoteFeatureFlag.newGutenbergPlugins.enabled() && blog.isHostedAtWPcom
+        self.plugins = RemoteFeatureFlag.newGutenbergPlugins.enabled() && blog.isHostedAtWPcom
         self.locale = WordPressComLanguageDatabase().deviceLanguage.slug
 
         if !blog.isSelfHosted {
