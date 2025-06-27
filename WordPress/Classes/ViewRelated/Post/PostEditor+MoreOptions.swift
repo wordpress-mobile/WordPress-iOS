@@ -34,7 +34,6 @@ extension PostEditor {
 
     private func showDeprecatedPostSettings() {
         let viewController = PostSettingsViewController.make(for: post)
-        viewController.featuredImageDelegate = self as? FeaturedImageDelegate
         let doneButton = UIBarButtonItem(systemItem: .done, primaryAction: .init(handler: { [weak self] _ in
             self?.editorContentWasUpdated()
             self?.navigationController?.dismiss(animated: true)
