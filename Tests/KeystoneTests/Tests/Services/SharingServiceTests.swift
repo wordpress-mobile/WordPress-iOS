@@ -70,7 +70,7 @@ class SharingServiceTests: CoreDataTestCase {
         }
 
         // Then
-        let connections = try XCTUnwrap(blog.connections as? Set<PublicizeConnection>)
+        let connections = try XCTUnwrap(blog.connections)
 
         // the one with ID `1002` should be skipped since it's an unshared private connection from another user.
         XCTAssertEqual(connections.count, 2)

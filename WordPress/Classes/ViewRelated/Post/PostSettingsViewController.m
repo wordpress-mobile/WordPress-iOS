@@ -342,10 +342,6 @@ PostCategoriesViewControllerDelegate>
         [self showPostAuthorSelector];
     } else if (cell.tag == PostSettingsRowFormat) {
         [self showPostFormatSelector];
-    } else if (cell.tag == PostSettingsRowShareConnection) {
-        [self toggleShareConnectionForIndexPath:indexPath];
-    } else if (cell.tag == PostSettingsRowShareMessage) {
-        [self showEditShareMessageController];
     } else if (cell.tag == PostSettingsRowSlug) {
         [self showEditSlugController];
     } else if (cell.tag == PostSettingsRowExcerpt) {
