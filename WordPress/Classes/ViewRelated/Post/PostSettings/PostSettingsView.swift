@@ -247,6 +247,9 @@ private struct PostSettingsView: View {
             if viewModel.isDraftOrPending {
                 pendingReviewRow
             }
+            if viewModel.shouldShowStickyOption {
+                stickyPostRow
+            }
             if viewModel.isPost {
                 postFormatRow
             }
@@ -296,6 +299,12 @@ private struct PostSettingsView: View {
             .autocorrectionDisabled()
         } label: {
             SettingsRow(Strings.slugLabel, value: viewModel.slugText)
+        }
+    }
+
+    private var stickyPostRow: some View {
+        Toggle(isOn: $viewModel.settings.isStickyPost) {
+            Text(Strings.stickyPostLabel)
         }
     }
 }
@@ -350,10 +359,12 @@ private struct SettingsRow: View {
     var body: some View {
         HStack {
             Text(title)
+                .layoutPriority(1)
             Spacer()
             Text(value)
                 .foregroundColor(.secondary)
         }
+        .lineLimit(1)
     }
 }
 
@@ -502,5 +513,11 @@ private enum Strings {
         "postSettings.slug.hint",
         value: "The slug is the URL-friendly version of the post title.",
         comment: "Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso."
+    )
+
+    static let stickyPostLabel = NSLocalizedString(
+        "postSettings.stickyPost.label",
+        value: "Sticky",
+        comment: "Label for the sticky post toggle. Sticky posts are displayed at the top of the blog."
     )
 }
