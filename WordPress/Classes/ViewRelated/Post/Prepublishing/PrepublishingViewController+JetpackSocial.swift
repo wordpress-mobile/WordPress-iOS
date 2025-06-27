@@ -89,7 +89,7 @@ private extension PrepublishingViewController {
     var hasExistingConnections: Bool {
         coreDataStack.performQuery { [postObjectID = post.objectID] context in
             guard let post = (try? context.existingObject(with: postObjectID)) as? Post,
-                  let connections = post.blog.connections as? Set<PublicizeConnection> else {
+                  let connections = post.blog.connections else {
                 return false
             }
             return !connections.isEmpty

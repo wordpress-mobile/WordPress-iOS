@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class PublicizeInfo;
 @class BlobEntity;
 @class PostCategory;
+@class PublicizeConnection;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -136,7 +137,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet<PostCategory *> *categories;
 @property (nonatomic, strong, readwrite, nullable) NSSet *tags;
 @property (nonatomic, strong, readwrite, nullable) NSSet *comments;
-@property (nonatomic, strong, readwrite, nullable) NSSet *connections;
+@property (nonatomic, strong, readwrite, nullable) NSSet<PublicizeConnection *> *connections;
 @property (nonatomic, strong, readwrite, nullable) NSSet *inviteLinks;
 @property (nonatomic, strong, readwrite, nullable) NSSet *domains;
 @property (nonatomic, strong, readwrite, nullable) NSSet *themes;
