@@ -68,6 +68,11 @@ final class PostSettingsViewModel: ObservableObject {
         settings.slug.isEmpty ? (post.suggested_slug ?? "") : settings.slug
     }
 
+    var postFormatText: String {
+        guard let post = post as? Post else { return "" }
+        return post.blog.postFormatText(fromSlug: settings.postFormat) ?? NSLocalizedString("Standard", comment: "Default post format")
+    }
+
     var timeZone: TimeZone {
         post.blog.timeZone ?? TimeZone.current
     }

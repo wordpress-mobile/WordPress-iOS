@@ -239,7 +239,21 @@ private struct PostSettingsView: View {
             if viewModel.isDraftOrPending {
                 pendingReviewRow
             }
+            if viewModel.isPost {
+                postFormatRow
+            }
             slugRow
+        }
+    }
+
+    private var postFormatRow: some View {
+        NavigationLink {
+            PostFormatPicker(post: viewModel.post as! Post) { format in
+                viewModel.settings.postFormat = format
+                viewModel.viewController?.navigationController?.popViewController(animated: true)
+            }
+        } label: {
+            SettingsRow(Strings.postFormatLabel, value: viewModel.postFormatText)
         }
     }
 
@@ -426,6 +440,12 @@ private enum Strings {
         "postSettings.moreOptions.header",
         value: "More Options",
         comment: "Section header for More Options in Post Settings. Should use the same translation as core WP."
+    )
+
+    static let postFormatLabel = NSLocalizedString(
+        "postSettings.postFormat.label",
+        value: "Post Format",
+        comment: "Label for the post format field. Should be the same as WP core."
     )
 
     static let slugLabel = NSLocalizedString(
