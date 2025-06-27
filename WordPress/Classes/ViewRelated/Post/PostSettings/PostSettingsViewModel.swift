@@ -9,6 +9,7 @@ final class PostSettingsViewModel: ObservableObject {
     let post: AbstractPost
     let isStandalone: Bool
     let featuredImageViewModel: PostSettingsFeaturedImageViewModel
+    private(set) var socialSharingViewModel: PostSettingsSocialSharingViewModel?
 
     @Published var settings: PostSettings {
         didSet {
@@ -94,7 +95,11 @@ final class PostSettingsViewModel: ObservableObject {
 
     /// Weak reference to the view controller for navigation.
     /// This is temporary until we can fully migrate to SwiftUI navigation.
-    weak var viewController: UIViewController?
+    weak var viewController: UIViewController? {
+        didSet {
+            socialSharingViewModel?.viewController = viewController
+        }
+    }
 
     init(post: AbstractPost, isStandalone: Bool = false) {
         self.post = post
@@ -116,7 +121,30 @@ final class PostSettingsViewModel: ObservableObject {
         // Initialize cached text values
         refresh(with: settings)
 
+        // Initialize social sharing view model if this is a post
+        if let post = post as? Post {
+            setupSocialSharingViewModel(post: post)
+        }
+
         WPAnalytics.track(.postSettingsShown)
+    }
+    
+    private func setupSocialSharingViewModel(post: Post) {
+        // Create a binding to settings that the social sharing view model can use
+        let settingsBinding = Binding<PostSettings>(
+            get: { [weak self] in
+                self?.settings ?? PostSettings(from: post)
+            },
+            set: { [weak self] newValue in
+                self?.settings = newValue
+            }
+        )
+        
+        socialSharingViewModel = PostSettingsSocialSharingViewModel(
+            blog: post.blog,
+            settings: settingsBinding
+        )
+        socialSharingViewModel?.viewController = viewController
     }
 
     private func refresh(with settings: PostSettings) {
@@ -194,6 +222,9 @@ final class PostSettingsViewModel: ObservableObject {
             settings.status = .publishPrivate
         }
         settings.password = selection.password.isEmpty ? nil : selection.password
+
+        // Refresh social sharing when visibility changes
+        socialSharingViewModel?.refresh()
     }
 
     // MARK: - Navigation

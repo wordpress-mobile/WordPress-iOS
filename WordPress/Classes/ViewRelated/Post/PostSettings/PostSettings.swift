@@ -25,6 +25,8 @@ struct PostSettings: Hashable {
     // MARK: - Post-specific
     var postFormat: String?
     var isStickyPost = false
+    var publicizeMessage: String?
+    var disabledPublicizeConnectionKeyringIDs: Set<Int> = []
 
     // MARK: - Page-specific
     var parentPageID: Int?
@@ -57,6 +59,17 @@ struct PostSettings: Hashable {
             categoryIDs = Set((post.categories ?? []).compactMap {
                 $0.categoryID?.intValue
             })
+            publicizeMessage = post.publicizeMessage
+            
+            // Extract disabled connection keyring IDs
+            if let disabledConnections = post.disabledPublicizeConnections {
+                disabledPublicizeConnectionKeyringIDs = Set(disabledConnections.compactMap { keyringID, entry in
+                    guard entry[Post.Constants.publicizeValueKey] == Post.Constants.publicizeDisabledValue else {
+                        return nil
+                    }
+                    return keyringID.intValue
+                })
+            }
         case let page as Page:
             parentPageID = page.parentID?.intValue
         default:
@@ -128,6 +141,37 @@ struct PostSettings: Hashable {
             // Update sticky post setting
             if post.isStickyPost != isStickyPost {
                 post.isStickyPost = isStickyPost
+            }
+            
+            // Update publicize message
+            if post.publicizeMessage != publicizeMessage {
+                post.publicizeMessage = publicizeMessage
+            }
+            
+            // Update disabled publicize connections
+            if let disabledConnections = post.disabledPublicizeConnections {
+                // Get current disabled keyring IDs
+                let currentDisabledKeyringIDs = Set(disabledConnections.compactMap { keyringID, entry in
+                    guard entry[Post.Constants.publicizeValueKey] == Post.Constants.publicizeDisabledValue else {
+                        return nil
+                    }
+                    return keyringID.intValue
+                })
+                
+                // Enable connections that were disabled but are now enabled
+                for keyringID in currentDisabledKeyringIDs.subtracting(disabledPublicizeConnectionKeyringIDs) {
+                    post.enablePublicizeConnectionWithKeyringID(NSNumber(value: keyringID))
+                }
+                
+                // Disable connections that were enabled but are now disabled
+                for keyringID in disabledPublicizeConnectionKeyringIDs.subtracting(currentDisabledKeyringIDs) {
+                    post.disablePublicizeConnectionWithKeyringID(NSNumber(value: keyringID))
+                }
+            } else if !disabledPublicizeConnectionKeyringIDs.isEmpty {
+                // If there were no disabled connections before, disable the ones in settings
+                for keyringID in disabledPublicizeConnectionKeyringIDs {
+                    post.disablePublicizeConnectionWithKeyringID(NSNumber(value: keyringID))
+                }
             }
         }
 

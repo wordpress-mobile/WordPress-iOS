@@ -49,6 +49,7 @@ private struct PostSettingsView: View {
                 taxonomySection
             }
             excerptSection
+            socialSharingSection
             moreOptionsSection
         }
         .disabled(viewModel.isSaving)
@@ -231,6 +232,15 @@ private struct PostSettingsView: View {
         }
     }
 
+    // MARK: - "Jetpack Social" Section
+
+    @ViewBuilder
+    private var socialSharingSection: some View {
+        if let socialViewModel = viewModel.socialSharingViewModel {
+            PostSettingsSocialSection(viewModel: socialViewModel)
+        }
+    }
+
     // MARK: - "More Options" Section
 
     @ViewBuilder
@@ -376,6 +386,21 @@ private struct SettingsTextFieldView: View {
     }
 }
 
+@MainActor
+private struct PostSettingsSocialSection: View {
+    @ObservedObject var viewModel: PostSettingsSocialSharingViewModel
+
+    var body: some View {
+        if !viewModel.isHidden {
+            Section {
+                PostSettingsSocialSharingRow(viewModel: viewModel)
+            } header: {
+                Text(Strings.jetpackSocialHeader)
+            }
+        }
+    }
+}
+
 private enum Strings {
     static let generalHeader = NSLocalizedString(
         "postSettings.section.general",
@@ -495,5 +520,11 @@ private enum Strings {
         "postSettings.slug.hint",
         value: "The slug is the URL-friendly version of the post title.",
         comment: "Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso."
+    )
+
+    static let jetpackSocialHeader = NSLocalizedString(
+        "postSettings.jetpackSocial.header",
+        value: "Jetpack Social",
+        comment: "Label for the Jetpack Social section in post Settings. Should be the same as WP core."
     )
 }
