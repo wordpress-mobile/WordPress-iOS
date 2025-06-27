@@ -38,7 +38,7 @@ final class PostSettingsViewController: UIHostingController<AnyView> {
         let viewModel = PostSettingsViewModel(post: post, isStandalone: true)
         let postSettingsVC = PostSettingsViewController(viewModel: viewModel)
         let navigation = UINavigationController(rootViewController: postSettingsVC)
-        presentingVC.present(navigation, animated: true)    }
+        presentingVC.present(navigation, animated: true)
     }
 }
 
