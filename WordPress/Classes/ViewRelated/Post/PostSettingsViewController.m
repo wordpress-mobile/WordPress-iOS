@@ -355,7 +355,7 @@ PostCategoriesViewControllerDelegate>
     if (indexPath.row == PostSettingsRowCategories) {
         // Categories
         cell.textLabel.text = NSLocalizedString(@"Categories", @"Label for the categories field. Should be the same as WP core.");
-        cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
+
         cell.tag = PostSettingsRowCategories;
         cell.accessibilityIdentifier = @"Categories";
 

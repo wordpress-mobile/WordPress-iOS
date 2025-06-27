@@ -65,21 +65,6 @@ public class Post: AbstractPost {
 
     // MARK: - Categories
 
-    /// Returns categories as a comma-separated list
-    ///
-    @objc public func categoriesText() -> String {
-
-        guard let allStrings = categories?.map({ return $0.categoryName as String }) else {
-            return ""
-        }
-
-        let orderedStrings = allStrings.sorted { (categoryName1, categoryName2) -> Bool in
-            return categoryName1.localizedCaseInsensitiveCompare(categoryName2) == .orderedAscending
-        }
-
-        return orderedStrings.joined(separator: ", ")
-    }
-
     /// Set the categories for a post
     ///
     /// - Parameter categoryNames: a `NSArray` with the names of the categories for this post. If
