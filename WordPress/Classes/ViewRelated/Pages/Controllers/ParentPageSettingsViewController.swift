@@ -51,6 +51,9 @@ class ParentPageSettingsViewController: UIViewController {
     private var filteredRows: [ImmuTableSection]!
     private var selectedPage: Page!
 
+    /// Called when the parent page selection changes
+    var onSelectionChanged: ((Page?) -> Void)?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -205,7 +208,16 @@ extension ParentPageSettingsViewController: UITableViewDelegate {
         guard let row = sections[indexPath.section].rows[indexPath.row] as? Row else {
             return
         }
-        selectedPage.parentID = row.page?.postID
+
+        // Call the new closure if available
+        onSelectionChanged?(row.page)
+
+        // Maintain backward compatibility: update the page's parentID directly
+        // if onSelectionChanged is not set
+        if onSelectionChanged == nil {
+            selectedPage.parentID = row.page?.postID
+        }
+
         tableView.reloadData()
     }
 }

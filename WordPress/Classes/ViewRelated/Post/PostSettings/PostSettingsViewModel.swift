@@ -21,6 +21,7 @@ final class PostSettingsViewModel: ObservableObject {
     @Published private(set) var hasChanges = false
     @Published private(set) var categoriesText = ""
     @Published private(set) var tagsText = ""
+    @Published private(set) var parentPageText: String?
 
     @Published var isShowingDeletedAlert = false
 
@@ -114,6 +115,8 @@ final class PostSettingsViewModel: ObservableObject {
 
         // Initialize cached text values
         refresh(with: settings)
+
+        WPAnalytics.track(.postSettingsShown)
     }
 
     private func refresh(with settings: PostSettings) {
@@ -121,6 +124,15 @@ final class PostSettingsViewModel: ObservableObject {
         categoriesText = settings.makeCategoriesText(for: post)
             .stringByDecodingXMLCharacters()
         tagsText = settings.makeTagsText()
+
+        // Update parent page text for pages
+        if let page = post as? Page,
+           let context = page.managedObjectContext,
+           let parentPageID = settings.parentPageID {
+            parentPageText = Page.parentPageText(in: context, parentID: NSNumber(value: parentPageID))
+        } else {
+            parentPageText = nil
+        }
     }
 
     func buttonCancelTapped() {
@@ -234,6 +246,18 @@ final class PostSettingsViewModel: ObservableObject {
         }
         if old.slug != new.slug {
             track(.editorPostSlugChanged)
+        }
+        if old.status != new.status {
+            if (old.status == .pending) != (new.status == .pending) {
+                track(.editorPostPendingReviewChanged)
+            }
+        }
+        if old.password != new.password {
+            // Password protection is a visibility change
+            track(.editorPostVisibilityChanged)
+        }
+        if old.isStickyPost != new.isStickyPost {
+            track(.editorPostStickyChanged)
         }
     }
 

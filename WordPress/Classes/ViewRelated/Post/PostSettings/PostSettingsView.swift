@@ -236,13 +236,16 @@ private struct PostSettingsView: View {
     @ViewBuilder
     private var moreOptionsSection: some View {
         Section(Strings.moreOptionsHeader) {
+            slugRow
             if viewModel.isDraftOrPending {
                 pendingReviewRow
             }
             if viewModel.isPost {
                 postFormatRow
             }
-            slugRow
+            if !viewModel.isPost {
+                parentPageRow
+            }
         }
     }
 
@@ -254,6 +257,23 @@ private struct PostSettingsView: View {
             }
         } label: {
             SettingsRow(Strings.postFormatLabel, value: viewModel.postFormatText)
+        }
+    }
+
+    private var parentPageRow: some View {
+        NavigationLink {
+            if let page = viewModel.post as? Page {
+                ParentPagePicker(
+                    blog: viewModel.post.blog,
+                    currentPage: page,
+                    onSelection: { selectedParentPage in
+                        viewModel.settings.parentPageID = selectedParentPage?.postID?.intValue
+                        viewModel.viewController?.navigationController?.popViewController(animated: true)
+                    }
+                )
+            }
+        } label: {
+            SettingsRow(Strings.parentPageLabel, value: viewModel.parentPageText ?? Strings.topLevelPage)
         }
     }
 
@@ -446,6 +466,18 @@ private enum Strings {
         "postSettings.postFormat.label",
         value: "Post Format",
         comment: "Label for the post format field. Should be the same as WP core."
+    )
+
+    static let parentPageLabel = NSLocalizedString(
+        "postSettings.parentPage.label",
+        value: "Parent Page",
+        comment: "Label for the parent page field"
+    )
+
+    static let topLevelPage = NSLocalizedString(
+        "postSettings.parentPage.topLevel",
+        value: "Top level",
+        comment: "Cell title for the Top Level option case"
     )
 
     static let slugLabel = NSLocalizedString(
