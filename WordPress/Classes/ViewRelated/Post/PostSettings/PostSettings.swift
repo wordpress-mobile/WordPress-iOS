@@ -99,8 +99,8 @@ struct PostSettings: Hashable {
             post.featuredImage = nil
         }
 
-        // Apply categories and tags for posts
-        if let post = post as? Post {
+        switch post {
+        case let post as Post:
             // Update tags
             if post.tags != tags {
                 post.tags = tags
@@ -129,13 +129,12 @@ struct PostSettings: Hashable {
             if post.isStickyPost != isStickyPost {
                 post.isStickyPost = isStickyPost
             }
-        }
-
-        // Apply page-specific settings
-        if let page = post as? Page {
+        case let page as Page:
             if page.parentID?.intValue != parentPageID {
                 page.parentID = parentPageID.map { NSNumber(value: $0) }
             }
+        default:
+            wpAssertionFailure("unsupported post type", userInfo: ["post_type": String(describing: type(of: post))])
         }
     }
 
