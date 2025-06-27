@@ -242,9 +242,11 @@ private struct PostSettingsView: View {
             HStack {
                 Text(Strings.excerptHeader)
                 Spacer()
-                Text("\(viewModel.settings.excerpt.count)/500")
-                    .font(.caption2)
-                    .foregroundColor(viewModel.settings.excerpt.count > 400 ? .orange : .secondary)
+                if viewModel.settings.excerpt.count > 0 {
+                    Text("\(viewModel.settings.excerpt.count)")
+                        .font(.caption2)
+                        .foregroundColor(viewModel.settings.excerpt.count > 400 ? .orange : .secondary)
+                }
             }
         }
     }
@@ -346,7 +348,6 @@ private struct PostSettingsAuthorRow: View {
 @MainActor
 private struct SettingsTextEditor: View {
     @Binding var text: String
-    let maxLength = 500
 
     @ScaledMetric(relativeTo: .body) var height = 100
 
@@ -361,11 +362,6 @@ private struct SettingsTextEditor: View {
             }
             TextEditor(text: $text)
                 .frame(height: height)
-                .onChange(of: text) { newValue in
-                    if newValue.count > maxLength {
-                        text = String(newValue.prefix(maxLength))
-                    }
-                }
         }
         .frame(height: height)
         .listRowInsets(EdgeInsets(top: 2, leading: 16, bottom: 0, trailing: 16))
@@ -501,7 +497,7 @@ private enum Strings {
 
     static let excerptPlaceholder = NSLocalizedString(
         "postSettings.excerpt.placeholder",
-        value: "Write a brief summary of your post. This will appear in search results and when your post is shared on social media.",
+        value: "Write a brief summary of your post to appear on blog index, archives, and search results.",
         comment: "Placeholder text for the excerpt field in Post Settings"
     )
 

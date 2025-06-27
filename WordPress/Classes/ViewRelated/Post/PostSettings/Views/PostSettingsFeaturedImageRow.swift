@@ -8,6 +8,8 @@ struct PostSettingsFeaturedImageRow: View {
     @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
     @State private var presentedMedia: Media?
 
+    @ScaledMetric(relativeTo: .body) var height = 100 // Matches "Exceprt"
+
     var body: some View {
         if let image = viewModel.selection {
             SiteMediaImage(media: image, size: .large)
@@ -33,24 +35,24 @@ struct PostSettingsFeaturedImageRow: View {
                     // The upload state when no image is selected. For the "Replace"
                     // flow, the app shows the upload differently (see `menu`).
                     uploading
-                        .padding(.vertical, 16)
+                        .padding(.vertical, 12)
                 } else {
                     makeMediaPicker {
-                        VStack(spacing: 8) {
+                        VStack(spacing: 6) {
                             Image(systemName: "photo.badge.plus")
-                                .font(.system(size: 28))
+                                .font(.system(size: 24))
                                 .foregroundColor(.accentColor)
                             Text(Strings.buttonSetFeaturedImage)
-                                .font(.headline)
-                                .foregroundColor(.accentColor)
+                                .font(.callout.weight(.medium))
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 24)
+                        .foregroundColor(.accentColor)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .contentShape(Rectangle()) // Make the whole cell tappable
                     }
                 }
             }
-            .frame(minHeight: 80)
+            .frame(height: height)
+            .listRowInsets(EdgeInsets(top: 1, leading: 16, bottom: 1, trailing: 16))
         }
     }
 
