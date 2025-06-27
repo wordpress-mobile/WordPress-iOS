@@ -171,7 +171,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         subscribeToWillEnterForeground()
 
         if RemoteFeatureFlag.newGutenberg.enabled() {
-            GutenbergKit.EditorViewController.warmup()
+            GutenbergKit.EditorViewController.warmup(
+                configuration: blog.flatMap(EditorConfiguration.init(blog:)) ?? .default
+            )
         }
     }
 

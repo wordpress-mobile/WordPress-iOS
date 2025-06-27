@@ -880,7 +880,17 @@ extension EditorConfiguration {
 
         self.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
         // Limited to Simple sites until application password auth is supported
-        self.plugins = RemoteFeatureFlag.newGutenbergPlugins.enabled() && blog.isHostedAtWPcom
+        if RemoteFeatureFlag.newGutenbergPlugins.enabled() && blog.isHostedAtWPcom {
+            self.plugins = true
+            if var editorAssetsEndpoint = blog.wordPressComRestApi?.baseURL {
+                editorAssetsEndpoint.appendPathComponent("wpcom/v2")
+                for part in siteApiNamespace {
+                    editorAssetsEndpoint.appendPathComponent(part)
+                }
+                editorAssetsEndpoint.appendPathComponent("editor-assets")
+                self.editorAssetsEndpoint = editorAssetsEndpoint
+            }
+        }
         self.locale = WordPressComLanguageDatabase().deviceLanguage.slug
 
         if !blog.isSelfHosted {
