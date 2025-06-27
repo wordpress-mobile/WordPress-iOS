@@ -45,6 +45,7 @@ struct PrepublishingAutoSharingView: View {
                 remainingSharesLabel(text: text, showsWarning: model.showsWarning)
             }
         }
+        .lineLimit(1)
     }
 
     @ViewBuilder
@@ -66,7 +67,7 @@ struct PrepublishingAutoSharingView: View {
     }
 
     private var socialIconsView: some View {
-        HStack(spacing: -2.0) {
+        HStack(spacing: -6) {
             ForEach(model.services, id: \.self) { service in
                 iconImage(service.name.localIconImage, opaque: service.usesOpaqueIcon)
             }
