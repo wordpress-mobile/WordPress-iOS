@@ -401,7 +401,6 @@ PostCategoriesViewControllerDelegate>
         // Visibility
         cell = [self getWPTableViewDisclosureCellWithIdentifier:@"PostSettingsRowVisibility"];
         cell.textLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
-        cell.detailTextLabel.text = [self.apost titleForVisibility];
         cell.tag = PostSettingsRowVisibility;
         cell.accessibilityIdentifier = @"Visibility";
 
