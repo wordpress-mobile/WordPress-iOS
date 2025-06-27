@@ -119,13 +119,9 @@ struct PostSettings: Hashable {
                 }
                 post.categories = Set(selectedCategories)
             }
-
-            // Update post format
             if post.postFormat != postFormat {
                 post.postFormat = postFormat
             }
-
-            // Update sticky post setting
             if post.isStickyPost != isStickyPost {
                 post.isStickyPost = isStickyPost
             }
