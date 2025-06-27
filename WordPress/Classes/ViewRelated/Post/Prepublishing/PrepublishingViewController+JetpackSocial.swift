@@ -283,25 +283,27 @@ extension PrepublishingViewController: PrepublishingSocialAccountsDelegate {
     }
 
     func didFinish(with connectionChanges: [Int: Bool], message: String?) {
-        coreDataStack.performAndSave({ [postObjectID = post.objectID] context in
-            guard let post = (try? context.existingObject(with: postObjectID)) as? Post else {
-                return
-            }
-
-            connectionChanges.forEach { (keyringID, enabled) in
-                if enabled {
-                    post.enablePublicizeConnectionWithKeyringID(NSNumber(value: keyringID))
-                } else {
-                    post.disablePublicizeConnectionWithKeyringID(NSNumber(value: keyringID))
-                }
-            }
-
-            let isMessageEmpty = message?.isEmpty ?? true
-            post.publicizeMessage = isMessageEmpty ? nil : message
-
-        }, completion: { [weak self] in
-            self?.reloadData()
-        }, on: .main)
+        DispatchQueue.main.async {
+            self._didFinish(with: connectionChanges, message: message)
+        }
     }
 
+    private func _didFinish(with connectionChanges: [Int: Bool], message: String?) {
+        guard let post = post as? Post else {
+            wpAssertionFailure("invalid post type")
+            return
+        }
+        connectionChanges.forEach { (keyringID, enabled) in
+            if enabled {
+                post.enablePublicizeConnectionWithKeyringID(NSNumber(value: keyringID))
+            } else {
+                post.disablePublicizeConnectionWithKeyringID(NSNumber(value: keyringID))
+            }
+        }
+
+        let isMessageEmpty = message?.isEmpty ?? true
+        post.publicizeMessage = isMessageEmpty ? nil : message
+
+        reloadData()
+    }
 }
