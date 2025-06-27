@@ -64,6 +64,10 @@ final class PostSettingsViewModel: ObservableObject {
             .localizedTitle
     }
 
+    var slugText: String {
+        settings.slug.isEmpty ? (post.suggested_slug ?? "") : settings.slug
+    }
+
     var timeZone: TimeZone {
         post.blog.timeZone ?? TimeZone.current
     }
@@ -222,6 +226,9 @@ final class PostSettingsViewModel: ObservableObject {
         }
         if old.excerpt != new.excerpt {
             track(.editorPostExcerptChanged)
+        }
+        if old.slug != new.slug {
+            track(.editorPostSlugChanged)
         }
     }
 

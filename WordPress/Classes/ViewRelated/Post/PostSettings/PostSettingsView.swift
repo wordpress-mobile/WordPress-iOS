@@ -49,6 +49,7 @@ private struct PostSettingsView: View {
                 taxonomySection
             }
             excerptSection
+            moreOptionsSection
         }
         .disabled(viewModel.isSaving)
         .toolbar {
@@ -231,6 +232,30 @@ private struct PostSettingsView: View {
             SettingsTextEditor(text: $viewModel.settings.excerpt)
         }
     }
+
+    // MARK: - "More Options" Section
+
+    @ViewBuilder
+    private var moreOptionsSection: some View {
+        Section(Strings.moreOptionsHeader) {
+            slugRow
+        }
+    }
+
+    private var slugRow: some View {
+        NavigationLink {
+            SettingsTextFieldView(
+                title: Strings.slugLabel,
+                text: $viewModel.settings.slug,
+                placeholder: Strings.slugPlaceholder,
+                hint: Strings.slugHint
+            )
+            .autocapitalization(.none)
+            .autocorrectionDisabled()
+        } label: {
+            SettingsRow(Strings.slugLabel, value: viewModel.slugText)
+        }
+    }
 }
 
 @MainActor
@@ -291,17 +316,37 @@ private struct SettingsRow: View {
     }
 }
 
+@MainActor
+private struct SettingsTextFieldView: View {
+    let title: String
+    @Binding var text: String
+    let placeholder: String
+    let hint: String
+
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        Form {
+            Section {
+                TextField(placeholder, text: $text)
+                    .focused($isFocused)
+            } footer: {
+                Text(hint)
+            }
+        }
+        .navigationTitle(title)
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            isFocused = true
+        }
+    }
+}
+
 private enum Strings {
     static let generalHeader = NSLocalizedString(
         "postSettings.section.general",
         value: "General",
         comment: "Section header for General settings in Post Settings"
-    )
-
-    static let moreOptionsHeader = NSLocalizedString(
-        "postSettings.section.moreOptions",
-        value: "More Options",
-        comment: "Section header for More Options in Post Settings"
     )
 
     static let authorLabel = NSLocalizedString(
@@ -326,18 +371,6 @@ private enum Strings {
         "postSettings.pendingReview.label",
         value: "Pending Review",
         comment: "Label for the pending review toggle in Post Settings"
-    )
-
-    static let slugLabel = NSLocalizedString(
-        "postSettings.slug.label",
-        value: "Slug",
-        comment: "Label for the slug field. Should be the same as WP core."
-    )
-
-    static let slugPlaceholder = NSLocalizedString(
-        "postSettings.slug.placeholder",
-        value: "Enter slug",
-        comment: "Placeholder text for the slug field"
     )
 
     static let discardChangesTitle = NSLocalizedString(
@@ -386,5 +419,29 @@ private enum Strings {
         "postSettings.excerpt.header",
         value: "Excerpt",
         comment: "Section header for Excerpt in Post Settings"
+    )
+
+    static let moreOptionsHeader = NSLocalizedString(
+        "postSettings.moreOptions.header",
+        value: "More Options",
+        comment: "Section header for More Options in Post Settings. Should use the same translation as core WP."
+    )
+
+    static let slugLabel = NSLocalizedString(
+        "postSettings.slug.label",
+        value: "Slug",
+        comment: "Label for the slug field. Should be the same as WP core."
+    )
+
+    static let slugPlaceholder = NSLocalizedString(
+        "postSettings.slug.placeholder",
+        value: "Enter slug",
+        comment: "Placeholder for the slug field"
+    )
+
+    static let slugHint = NSLocalizedString(
+        "postSettings.slug.hint",
+        value: "The slug is the URL-friendly version of the post title.",
+        comment: "Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso."
     )
 }
