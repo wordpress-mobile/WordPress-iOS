@@ -865,9 +865,8 @@ extension EditorConfiguration {
         if isWPComSite {
             if let siteId {
                 siteApiNamespace.append("sites/\(siteId)")
-            } else {
-                siteApiNamespace.append("sites/\(siteDomain)")
             }
+            siteApiNamespace.append("sites/\(siteDomain)")
         }
 
         self = EditorConfiguration()
@@ -883,9 +882,11 @@ extension EditorConfiguration {
         if RemoteFeatureFlag.newGutenbergPlugins.enabled() && blog.isHostedAtWPcom {
             self.plugins = true
             if var editorAssetsEndpoint = blog.wordPressComRestApi?.baseURL {
-                editorAssetsEndpoint.appendPathComponent("wpcom/v2")
-                for part in siteApiNamespace {
-                    editorAssetsEndpoint.appendPathComponent(part)
+                editorAssetsEndpoint.appendPathComponent("wpcom/v2/sites")
+                if let siteId {
+                    editorAssetsEndpoint.appendPathComponent(siteId)
+                } else {
+                    editorAssetsEndpoint.appendPathComponent(siteDomain)
                 }
                 editorAssetsEndpoint.appendPathComponent("editor-assets")
                 self.editorAssetsEndpoint = editorAssetsEndpoint
