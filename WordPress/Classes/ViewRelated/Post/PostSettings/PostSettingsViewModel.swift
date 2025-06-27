@@ -86,6 +86,12 @@ final class PostSettingsViewModel: ObservableObject {
         post is Post
     }
 
+    var shouldShowStickyOption: Bool {
+        guard isPost else { return false }
+        // Show sticky option if blog supports WPComRESTAPI OR user is admin
+        return post.blog.supports(.wpComRESTAPI) || post.blog.isAdmin
+    }
+
     private let originalSettings: PostSettings
     private var cancellables = Set<AnyCancellable>()
 
