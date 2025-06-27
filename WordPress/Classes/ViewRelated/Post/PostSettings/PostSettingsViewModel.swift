@@ -12,7 +12,7 @@ final class PostSettingsViewModel: ObservableObject {
 
     @Published var settings: PostSettings {
         didSet {
-            refresh(with: settings)
+            refresh(from: oldValue, to: settings)
         }
     }
 
@@ -118,19 +118,38 @@ final class PostSettingsViewModel: ObservableObject {
             self?.settings.featuredImageID = media?.mediaID?.intValue
         }.store(in: &cancellables)
 
-        // Initialize cached text values
-        refresh(with: settings)
+        // Initialize all cached properties
+        refreshCategoriesText()
+        refreshTagsText()
+        refreshParentPageText()
 
         WPAnalytics.track(.postSettingsShown)
     }
 
-    private func refresh(with settings: PostSettings) {
-        hasChanges = settings != originalSettings
+    private func refresh(from old: PostSettings, to new: PostSettings) {
+        hasChanges = new != originalSettings
+
+        if old.categoryIDs != new.categoryIDs {
+            refreshCategoriesText()
+        }
+        if old.tags != new.tags {
+            refreshTagsText()
+        }
+        if old.parentPageID != new.parentPageID {
+            refreshParentPageText()
+        }
+    }
+
+    private func refreshCategoriesText() {
         categoriesText = settings.makeCategoriesText(for: post)
             .stringByDecodingXMLCharacters()
-        tagsText = settings.makeTagsText()
+    }
 
-        // Update parent page text for pages
+    private func refreshTagsText() {
+        tagsText = settings.makeTagsText()
+    }
+
+    private func refreshParentPageText() {
         if let page = post as? Page,
            let context = page.managedObjectContext,
            let parentPageID = settings.parentPageID {
