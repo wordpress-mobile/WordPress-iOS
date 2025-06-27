@@ -13,7 +13,6 @@ final class PostSettingsViewModel: ObservableObject {
     @Published var settings: PostSettings {
         didSet {
             refresh(with: settings)
-            trackChanges(from: oldValue, to: settings)
         }
     }
 
@@ -154,8 +153,9 @@ final class PostSettingsViewModel: ObservableObject {
         }
 
         guard isStandalone else {
-            // Apply settings and return to the editor
+            // Apply settings and return to the editor (editor-specific)
             settings.apply(to: post)
+            didSaveChanges()
             wpAssert(onEditorPostSaved != nil, "configuration missing")
             onEditorPostSaved?()
             return
@@ -179,11 +179,16 @@ final class PostSettingsViewModel: ObservableObject {
                 let changes = settings.makeUpdateParameters(from: post)
                 try await coordinator.save(post, changes: changes)
             }
+            didSaveChanges()
             onDismiss?()
         } catch {
             isSaving = false
             // `PostCoordinator` handles errors by showing an alert when needed
         }
+    }
+
+    private func didSaveChanges() {
+        trackChanges(from: originalSettings, to: settings)
     }
 
     func updateVisibility(_ selection: PostVisibilityPicker.Selection) {
@@ -257,10 +262,6 @@ final class PostSettingsViewModel: ObservableObject {
             if (old.status == .pending) != (new.status == .pending) {
                 track(.editorPostPendingReviewChanged)
             }
-        }
-        if old.password != new.password {
-            // Password protection is a visibility change
-            track(.editorPostVisibilityChanged)
         }
         if old.isStickyPost != new.isStickyPost {
             track(.editorPostStickyChanged)
