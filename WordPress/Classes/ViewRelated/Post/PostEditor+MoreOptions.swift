@@ -24,7 +24,7 @@ extension PostEditor {
 
             self?.navigationController?.dismiss(animated: true)
         }
-        let postSettingsVC = NewPostSettingsViewController(viewModel: viewModel)
+        let postSettingsVC = PostSettingsViewController(viewModel: viewModel)
         let navigation = UINavigationController(rootViewController: postSettingsVC)
         self.navigationController?.present(navigation, animated: true)
     }

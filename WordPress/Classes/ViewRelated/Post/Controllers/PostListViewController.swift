@@ -244,7 +244,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
     func showSettings(for post: AbstractPost) {
         WPAnalytics.track(.postListSettingsAction, properties: propertiesForAnalytics())
-        NewPostSettingsViewController.showStandaloneEditor(for: post, from: self)
+        PostSettingsViewController.showStandaloneEditor(for: post, from: self)
     }
 
     // MARK: - NetworkAwareUI
