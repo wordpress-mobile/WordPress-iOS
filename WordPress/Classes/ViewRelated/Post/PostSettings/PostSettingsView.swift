@@ -33,6 +33,13 @@ final class NewPostSettingsViewController: UIHostingController<AnyView> {
     @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    static func showStandaloneEditor(for post: AbstractPost, from presentingVC: UIViewController) {
+        let viewModel = PostSettingsViewModel(post: post, isStandalone: true)
+        let postSettingsVC = NewPostSettingsViewController(viewModel: viewModel)
+        let navigation = UINavigationController(rootViewController: postSettingsVC)
+        presentingVC.present(navigation, animated: true)    }
+    }
 }
 
 @MainActor

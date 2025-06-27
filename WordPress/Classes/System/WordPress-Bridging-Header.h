@@ -20,7 +20,6 @@
 
 #import "PageSettingsViewController.h"
 #import "PostCategoryService.h"
-#import "PostSettingsViewController.h"
 #import "PostTagService.h"
 
 #import "ReaderPostService.h"

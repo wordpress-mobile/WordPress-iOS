@@ -42,7 +42,7 @@ extension PageListViewController: InteractivePostViewDelegate {
 
     func showSettings(for post: AbstractPost) {
         WPAnalytics.track(.postListSettingsAction, properties: propertiesForAnalytics())
-        PostSettingsViewController.showStandaloneEditor(for: post, from: self)
+        NewPostSettingsViewController.showStandaloneEditor(for: post, from: self)
     }
 
     func setHomepage(for apost: AbstractPost) {

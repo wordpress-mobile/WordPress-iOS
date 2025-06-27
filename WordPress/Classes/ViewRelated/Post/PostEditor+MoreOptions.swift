@@ -8,9 +8,6 @@ extension PostEditor {
 
     @MainActor
     func displayPostSettings() {
-        guard FeatureFlag.postSettingsV2.enabled else {
-            return showDeprecatedPostSettings()
-        }
         // Use the new SwiftUI-based Post Settings
         let originalFeaturedImageID = post.featuredImage?.mediaID
         let viewModel = PostSettingsViewModel(post: post)
@@ -29,19 +26,6 @@ extension PostEditor {
         }
         let postSettingsVC = NewPostSettingsViewController(viewModel: viewModel)
         let navigation = UINavigationController(rootViewController: postSettingsVC)
-        self.navigationController?.present(navigation, animated: true)
-    }
-
-    private func showDeprecatedPostSettings() {
-        let viewController = PostSettingsViewController.make(for: post)
-        let doneButton = UIBarButtonItem(systemItem: .done, primaryAction: .init(handler: { [weak self] _ in
-            self?.editorContentWasUpdated()
-            self?.navigationController?.dismiss(animated: true)
-        }))
-        doneButton.accessibilityIdentifier = "close"
-        viewController.navigationItem.rightBarButtonItem = doneButton
-
-        let navigation = UINavigationController(rootViewController: viewController)
         self.navigationController?.present(navigation, animated: true)
     }
 
