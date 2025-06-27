@@ -86,7 +86,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (NSString *)authorNameForDisplay;
 - (NSString *)blavatarForDisplay;
 - (NSString *)dateStringForDisplay;
-- (BOOL)isMultiAuthorBlog;
 - (BOOL)isPrivateAtWPCom;
 
 

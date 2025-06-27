@@ -320,11 +320,6 @@
     return self.blog.isPrivateAtWPCom;
 }
 
-- (BOOL)isMultiAuthorBlog
-{
-    return self.blog.isMultiAuthor;
-}
-
 - (BOOL)isUploading
 {
     return self.remoteStatus == AbstractPostRemoteStatusPushing;

@@ -377,10 +377,6 @@ PostCategoriesViewControllerDelegate>
 {
     NSMutableArray *metaRows = [[NSMutableArray alloc] init];
 
-    if (self.apost.isMultiAuthorBlog) {
-        [metaRows addObject:@(PostSettingsRowAuthor)];
-    }
-
     if (self.isDraftOrPending) {
         [metaRows addObject:@(PostSettingsRowPendingReview)];
     } else {
