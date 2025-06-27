@@ -18,7 +18,6 @@
 
 #import "NSObject+Helpers.h"
 
-#import "PageSettingsViewController.h"
 #import "PostCategoryService.h"
 #import "PostTagService.h"
 
