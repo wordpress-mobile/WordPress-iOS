@@ -69,6 +69,9 @@ struct PostSettings: Hashable {
     /// Applies the settings to an AbstractPost instance.
     /// Only updates properties that have actually changed.
     func apply(to post: AbstractPost) {
+        if post.mt_excerpt != excerpt {
+            post.mt_excerpt = excerpt
+        }
         if post.wp_slug != slug {
             post.wp_slug = slug
         }

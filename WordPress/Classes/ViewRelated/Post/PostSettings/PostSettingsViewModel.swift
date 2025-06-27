@@ -220,6 +220,9 @@ final class PostSettingsViewModel: ObservableObject {
             let action = new.featuredImageID == nil ? "removed" : "changed"
             WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": action])
         }
+        if old.excerpt != new.excerpt {
+            track(.editorPostExcerptChanged)
+        }
     }
 
     private func track(_ event: WPAnalyticsEvent) {

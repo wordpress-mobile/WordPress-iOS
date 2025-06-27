@@ -48,6 +48,7 @@ private struct PostSettingsView: View {
             if viewModel.isPost {
                 taxonomySection
             }
+            excerptSection
         }
         .disabled(viewModel.isSaving)
         .toolbar {
@@ -221,6 +222,15 @@ private struct PostSettingsView: View {
         }
         .tint(.primary)
     }
+
+    // MARK: - "Excerpt" Section
+
+    @ViewBuilder
+    private var excerptSection: some View {
+        Section(Strings.excerptHeader) {
+            SettingsTextEditor(text: $viewModel.settings.excerpt)
+        }
+    }
 }
 
 @MainActor
@@ -242,6 +252,22 @@ private struct PostSettingsAuthorRow: View {
                     .foregroundColor(.secondary)
             }
         }
+    }
+}
+
+/// A text editor that is displayed with two-lines when empty and grows up to
+/// a certain height limit as you add more text.
+@MainActor
+private struct SettingsTextEditor: View {
+    @Binding var text: String
+
+    @ScaledMetric(relativeTo: .body) var minHeight = 60
+    @ScaledMetric(relativeTo: .body) var maxHeight = 128
+
+    var body: some View {
+        TextEditor(text: $text)
+            .frame(minHeight: minHeight, maxHeight: maxHeight)
+            .listRowInsets(EdgeInsets(top: 2, leading: 16, bottom: 0, trailing: 16))
     }
 }
 
@@ -354,5 +380,11 @@ private enum Strings {
         "postSettings.tags.label",
         value: "Tags",
         comment: "Label for the tags field. Should be the same as WP core."
+    )
+
+    static let excerptHeader = NSLocalizedString(
+        "postSettings.excerpt.header",
+        value: "Excerpt",
+        comment: "Section header for Excerpt in Post Settings"
     )
 }
