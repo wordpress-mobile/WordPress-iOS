@@ -321,12 +321,11 @@ private struct PostSettingsAuthorRow: View {
 private struct SettingsTextEditor: View {
     @Binding var text: String
 
-    @ScaledMetric(relativeTo: .body) var minHeight = 60
-    @ScaledMetric(relativeTo: .body) var maxHeight = 128
+    @ScaledMetric(relativeTo: .body) var height = 84
 
     var body: some View {
         TextEditor(text: $text)
-            .frame(minHeight: minHeight, maxHeight: maxHeight)
+            .frame(height: height)
             .listRowInsets(EdgeInsets(top: 2, leading: 16, bottom: 0, trailing: 16))
     }
 }
