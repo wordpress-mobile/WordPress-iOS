@@ -24,12 +24,8 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowVisibility,
     PostSettingsRowFormat,
     PostSettingsRowFeaturedImage,
-    PostSettingsRowShareConnection,
-    PostSettingsRowShareMessage,
     PostSettingsRowSlug,
     PostSettingsRowExcerpt,
-    PostSettingsRowSocialNoConnections,
-    PostSettingsRowSocialRemainingShares,
     PostSettingsRowParentPage
 };
 
@@ -214,34 +210,16 @@ PostCategoriesViewControllerDelegate>
 - (void)configureSections
 {
     NSNumber *stickyPostSection = @(PostSettingsSectionStickyPost);
-    NSNumber *disabledTwitterSection = @(PostSettingsSectionDisabledTwitter);
-    NSNumber *remainingSharesSection = @(PostSettingsSectionSharesRemaining);
-    NSNumber *shareSection = @(PostSettingsSectionShare);
     NSMutableArray *sections = [@[ @(PostSettingsSectionMeta),
                                    @(PostSettingsSectionFeaturedImage),
                                    @(PostSettingsSectionTaxonomy),
                                    stickyPostSection,
-                                   shareSection,
-                                   disabledTwitterSection,
-                                   remainingSharesSection,
                                    @(PostSettingsSectionMoreOptions) ] mutableCopy];
     // Remove sticky post section for self-hosted non Jetpack site
     // and non admin user
     //
     if (![self.apost.blog supports:BlogFeatureWPComRESTAPI] && !self.apost.blog.isAdmin) {
         [sections removeObject:stickyPostSection];
-    }
-
-    if (self.unsupportedConnections.count == 0) {
-        [sections removeObject:disabledTwitterSection];
-    }
-
-    if ([self numberOfRowsForShareSection] == 0) {
-        [sections removeObject:shareSection];
-    }
-
-    if (![self showRemainingShares]) {
-        [sections removeObject:remainingSharesSection];
     }
 
     self.sections = [sections copy];
@@ -265,12 +243,6 @@ PostCategoriesViewControllerDelegate>
     } else if (sec == PostSettingsSectionFeaturedImage) {
         return 1;
     } else if (sec == PostSettingsSectionStickyPost) {
-        return 1;
-    } else if (sec == PostSettingsSectionShare) {
-        return [self numberOfRowsForShareSection];
-    } else if (sec == PostSettingsSectionDisabledTwitter) {
-        return self.unsupportedConnections.count;
-    } else if (sec == PostSettingsSectionSharesRemaining) {
         return 1;
     } else if (sec == PostSettingsSectionMoreOptions) {
         return 3;
@@ -296,36 +268,12 @@ PostCategoriesViewControllerDelegate>
     } else if (sec == PostSettingsSectionStickyPost) {
         return NSLocalizedString(@"Mark as Sticky", @"Label for the Mark as Sticky option in post settings.");
 
-    } else if (sec == PostSettingsSectionShare && [self numberOfRowsForShareSection] > 0) {
-        return NSLocalizedString(@"Jetpack Social", @"Label for the Sharing section in post Settings. Should be the same as WP core.");
-
-    } else if (sec == PostSettingsSectionDisabledTwitter) {
-        return NSLocalizedStringWithDefaultValue(@"postSettings.section.disabledTwitter.header",
-                                                 nil,
-                                                 [NSBundle mainBundle],
-                                                 @"Twitter Auto-Sharing Is No Longer Available",
-                                                 @"Section title for the disabled Twitter service in the Post Settings screen");
-
     } else if (sec == PostSettingsSectionMoreOptions) {
         return NSLocalizedString(@"More Options", @"Label for the More Options area in post settings. Should use the same translation as core WP.");
 
     } else if (sec == PostSettingsSectionPageAttributes) {
         return NSLocalizedStringWithDefaultValue(@"postSettings.section.pageAttributes", nil, [NSBundle mainBundle], @"Page Attributes", @"Section title for Page Attributes");
     }
-    return nil;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
-    if (sec == PostSettingsSectionDisabledTwitter) {
-        TwitterDeprecationTableFooterView *footerView = [[TwitterDeprecationTableFooterView alloc] init];
-        footerView.presentingViewController = self;
-        footerView.source = @"post_settings";
-
-        return footerView;
-    }
-
     return nil;
 }
 
@@ -366,11 +314,7 @@ PostCategoriesViewControllerDelegate>
         cell = [self makeFeaturedImageCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionStickyPost) {
         cell = [self configureStickyPostCellForIndexPath:indexPath];
-    } else if (sec == PostSettingsSectionShare || sec == PostSettingsSectionDisabledTwitter) {
-        cell = [self showNoConnection] ? [self configureNoConnectionCell] : [self configureShareCellForIndexPath:indexPath];
-    } else if (sec == PostSettingsSectionSharesRemaining) {
-        cell = [self configureRemainingSharesCell];
-    } else if (sec == PostSettingsSectionMoreOptions) {
+    } if (sec == PostSettingsSectionMoreOptions) {
         cell = [self configureMoreOptionsCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionPageAttributes) {
         cell = [self configurePageAttributesCellForIndexPath:indexPath];
@@ -398,8 +342,6 @@ PostCategoriesViewControllerDelegate>
         [self showPostAuthorSelector];
     } else if (cell.tag == PostSettingsRowFormat) {
         [self showPostFormatSelector];
-    } else if (sec == PostSettingsSectionDisabledTwitter) {
-        [self showShareDetailForIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareConnection) {
         [self toggleShareConnectionForIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareMessage) {
@@ -411,19 +353,6 @@ PostCategoriesViewControllerDelegate>
     } else if (cell.tag == PostSettingsRowParentPage) {
         [self showParentPageController];
     }
-}
-
-- (NSInteger)numberOfRowsForShareSection
-{
-    if ([self.apost.status isEqualToString:@"private"]) {
-        return 0;
-    }
-
-    if (self.apost.blog.supportsPublicize && self.publicizeConnections.count > 0) {
-        // One row per publicize connection plus an extra row for the publicze message
-        return self.publicizeConnections.count + 1;
-    }
-    return [self showNoConnection] ? 1 : 0;
 }
 
 - (UITableViewCell *)configureTaxonomyCellForIndexPath:(NSIndexPath *)indexPath
@@ -563,75 +492,6 @@ PostCategoriesViewControllerDelegate>
     return cell;
 }
 
-- (UITableViewCell *)configureSocialCellForIndexPath:(NSIndexPath *)indexPath
-                                          connection:(PublicizeConnection *)connection
-                                      canEditSharing:(BOOL)canEditSharing
-                                             section:(NSInteger)section
-{
-    UITableViewCell *cell = [self getWPTableViewImageAndAccessoryCell];
-    UIImage *image = [[WPStyleGuide socialIconFor:connection.service] resizedTo:CGSizeMake(28.0, 28.0) format: ScalingModeScaleAspectFill];
-    [cell.imageView setImage:image];
-    cell.imageView.alpha = 1.0;
-    if (!canEditSharing) {
-        cell.imageView.alpha = 0.36;
-    }
-    cell.textLabel.text = connection.externalDisplay;
-    cell.textLabel.enabled = canEditSharing;
-    if (connection.isBroken) {
-        cell.accessoryView = section == PostSettingsSectionShare ?
-        [WPStyleGuide sharingCellWarningAccessoryImageView] :
-        [WPStyleGuide sharingCellErrorAccessoryImageView];
-    } else {
-        UISwitch *switchAccessory = [[UISwitch alloc] initWithFrame:CGRectZero];
-        // This interaction is handled at a cell level
-        switchAccessory.userInteractionEnabled = NO;
-        switchAccessory.on = ![self.post publicizeConnectionDisabledForKeyringID:connection.keyringConnectionID];
-        switchAccessory.enabled = canEditSharing;
-        cell.accessoryView = switchAccessory;
-    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.tag = PostSettingsRowShareConnection;
-    cell.accessibilityIdentifier = [NSString stringWithFormat:@"%@ %@", connection.service, connection.externalDisplay];
-    return cell;
-}
-
-- (UITableViewCell *)configureDisclosureCellWithSharing:(BOOL)canEditSharing
-{
-    UITableViewCell *cell = [self getWPTableViewDisclosureCell];
-    cell.textLabel.text = NSLocalizedString(@"Message", @"Label for the share message field on the post settings.");
-    cell.textLabel.enabled = canEditSharing;
-    cell.detailTextLabel.text = self.post.publicizeMessage ? self.post.publicizeMessage : self.post.titleForDisplay;
-    cell.detailTextLabel.enabled = canEditSharing;
-    cell.tag = PostSettingsRowShareMessage;
-    cell.accessibilityIdentifier = @"Customize the message";
-    return cell;
-}
-
-- (UITableViewCell *)configureShareCellForIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell;
-    BOOL canEditSharing = [self userCanEditSharing];
-    NSInteger sec = [[self.sections objectAtIndex:indexPath.section] integerValue];
-    NSArray<PublicizeConnection *> *connections = sec == PostSettingsSectionShare ? self.publicizeConnections : self.unsupportedConnections;
-
-    if (indexPath.row < connections.count) {
-        PublicizeConnection *connection = connections[indexPath.row];
-        if ([RemoteFeature enabled:RemoteFeatureFlagJetpackSocialImprovements]) {
-            BOOL hasRemainingShares = self.enabledConnections.count < [self remainingSocialShares];
-            BOOL isSwitchOn = ![self.post publicizeConnectionDisabledForKeyringID:connection.keyringConnectionID];
-            canEditSharing = canEditSharing && (hasRemainingShares || isSwitchOn);
-        }
-        cell = [self configureSocialCellForIndexPath:indexPath
-                                          connection:connection
-                                      canEditSharing:canEditSharing
-                                             section:sec];
-    } else {
-        cell = [self configureDisclosureCellWithSharing:canEditSharing];
-    }
-    cell.userInteractionEnabled = canEditSharing;
-    return cell;
-}
-
 - (UITableViewCell *)configureMoreOptionsCellForIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
@@ -679,91 +539,6 @@ PostCategoriesViewControllerDelegate>
     return cell;
 }
 
-- (WPTableViewCell *)getWPTableViewImageAndAccessoryCell
-{
-    static NSString *WPTableViewImageAndAccesoryCellIdentifier = @"WPTableViewImageAndAccesoryCellIdentifier";
-    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:WPTableViewImageAndAccesoryCellIdentifier];
-    if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:WPTableViewImageAndAccesoryCellIdentifier];
-        [WPStyleGuide configureTableViewCell:cell];
-    }
-    cell.accessoryView = nil;
-    cell.imageView.image = nil;
-    cell.tag = 0;
-    return cell;
-}
-
-// showPostFormatSelector is now implemented in PostSettingsViewController+Swift.swift
-
-- (void)toggleShareConnectionForIndexPath:(NSIndexPath *) indexPath
-{
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    BOOL isJetpackSocialEnabled = [RemoteFeature enabled:RemoteFeatureFlagJetpackSocialImprovements];
-    if (indexPath.row < self.publicizeConnections.count) {
-        PublicizeConnection *connection = self.publicizeConnections[indexPath.row];
-        if (connection.isBroken) {
-            SharingDetailViewController *controller = [[SharingDetailViewController alloc] initWithBlog:self.post.blog
-                                                                                    publicizeConnection:connection];
-            [self.navigationController pushViewController:controller animated:YES];
-        } else {
-            UISwitch *cellSwitch = (UISwitch *)cell.accessoryView;
-            [cellSwitch setOn:!cellSwitch.on animated:YES];
-            if (cellSwitch.on) {
-                [self.post enablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
-
-                if (isJetpackSocialEnabled) {
-                    [self.enabledConnections addObject:connection.keyringConnectionID];
-                    [self reloadSocialSectionComparingValue:[self remainingSocialShares]];
-                }
-            } else {
-                [self.post disablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
-
-                if (isJetpackSocialEnabled) {
-                    [self.enabledConnections removeObject:connection.keyringConnectionID];
-                    [self reloadSocialSectionComparingValue:[self remainingSocialShares] - 1];
-                }
-            }
-            if (isJetpackSocialEnabled) {
-                [WPAnalytics trackEvent:WPAnalyticsEventJetpackSocialConnectionToggled
-                             properties:@{@"source": PostSettingsAnalyticsTrackingSource,
-                                          @"value": cellSwitch.on ? @"true" : @"false"}];
-            }
-        }
-    }
-}
-
-- (void)showShareDetailForIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row >= self.unsupportedConnections.count) {
-        return;
-    }
-
-    PublicizeConnection *connection = self.unsupportedConnections[indexPath.row];
-    SharingDetailViewController *controller = [[SharingDetailViewController alloc] initWithBlog:self.apost.blog
-                                                                            publicizeConnection:connection];
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
-- (void)showEditShareMessageController
-{
-    NSString *text = !self.post.publicizeMessage ? self.post.titleForDisplay : self.post.publicizeMessage;
-
-    SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:text
-                                                                                    placeholder:nil
-                                                                                           hint:NSLocalizedString(@"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message.", @"Hint displayed when the user is customizing the share message.")
-                                                                                     isPassword:NO];
-    vc.title = NSLocalizedString(@"Customize the message", @"Title for the edition of the share message.");
-    vc.onValueChanged = ^(NSString *value) {
-        if (value.length) {
-            self.post.publicizeMessage = value;
-        } else {
-            self.post.publicizeMessage = nil;
-        }
-        [self.tableView reloadData];
-    };
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 - (void)showEditSlugController
 {
     SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:self.apost.slugForDisplay
@@ -805,41 +580,6 @@ PostCategoriesViewControllerDelegate>
                                                                                     selectionMode:CategoriesSelectionModePost];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
-}
-
-#pragma mark - Jetpack Social
-
-- (UITableViewCell *)configureGenericCellWith:(UIView *)view {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewGenericCellIdentifier];
-    for (UIView *subview in cell.contentView.subviews) {
-        [subview removeFromSuperview];
-    }
-    [cell.contentView addSubview:view];
-    [cell.contentView pinSubviewToAllEdges:view];
-    return cell;
-}
-
-- (UITableViewCell *)configureNoConnectionCell
-{
-    UITableViewCell *cell = [self configureGenericCellWith:[self createNoConnectionView]];
-    cell.tag = PostSettingsRowSocialNoConnections;
-    return cell;
-}
-
-- (UITableViewCell *)configureRemainingSharesCell
-{
-    UITableViewCell *cell = [self configureGenericCellWith:[self createRemainingSharesView]];
-    cell.tag = PostSettingsRowSocialRemainingShares;
-    return cell;
-}
-
-- (void)reloadSocialSectionComparingValue:(NSUInteger)value
-{
-    if (self.enabledConnections.count == value) {
-        NSUInteger sharingSection = [self.sections indexOfObject:@(PostSettingsSectionShare)];
-        NSIndexSet *sharingSectionSet = [NSIndexSet indexSetWithIndex:sharingSection];
-        [self.tableView reloadSections:sharingSectionSet withRowAnimation:UITableViewRowAnimationNone];
-    }
 }
 
 // MARK: - Page Attributes
