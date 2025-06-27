@@ -123,9 +123,7 @@ private struct PostSettingsView: View {
             if viewModel.isMultiAuthorBlog {
                 authorRow
             }
-            if viewModel.isDraftOrPending {
-                pendingReviewRow
-            } else {
+            if !viewModel.isDraftOrPending {
                 publishDateRow
                 visibilityRow
             }
@@ -238,6 +236,9 @@ private struct PostSettingsView: View {
     @ViewBuilder
     private var moreOptionsSection: some View {
         Section(Strings.moreOptionsHeader) {
+            if viewModel.isDraftOrPending {
+                pendingReviewRow
+            }
             slugRow
         }
     }
