@@ -48,6 +48,8 @@ private struct PostSettingsView: View {
             if viewModel.isPost {
                 taxonomySection
             }
+            excerptSection
+            moreOptionsSection
         }
         .disabled(viewModel.isSaving)
         .toolbar {
@@ -121,9 +123,7 @@ private struct PostSettingsView: View {
             if viewModel.isMultiAuthorBlog {
                 authorRow
             }
-            if viewModel.isDraftOrPending {
-                pendingReviewRow
-            } else {
+            if !viewModel.isDraftOrPending {
                 publishDateRow
                 visibilityRow
             }
@@ -221,6 +221,76 @@ private struct PostSettingsView: View {
         }
         .tint(.primary)
     }
+
+    // MARK: - "Excerpt" Section
+
+    @ViewBuilder
+    private var excerptSection: some View {
+        Section(Strings.excerptHeader) {
+            SettingsTextEditor(text: $viewModel.settings.excerpt)
+        }
+    }
+
+    // MARK: - "More Options" Section
+
+    @ViewBuilder
+    private var moreOptionsSection: some View {
+        Section(Strings.moreOptionsHeader) {
+            slugRow
+            if viewModel.isDraftOrPending {
+                pendingReviewRow
+            }
+            if viewModel.isPost {
+                postFormatRow
+            }
+            if !viewModel.isPost {
+                parentPageRow
+            }
+        }
+    }
+
+    private var postFormatRow: some View {
+        NavigationLink {
+            PostFormatPicker(post: viewModel.post as! Post) { format in
+                viewModel.settings.postFormat = format
+                viewModel.viewController?.navigationController?.popViewController(animated: true)
+            }
+        } label: {
+            SettingsRow(Strings.postFormatLabel, value: viewModel.postFormatText)
+        }
+    }
+
+    private var parentPageRow: some View {
+        NavigationLink {
+            if let page = viewModel.post as? Page {
+                ParentPagePicker(
+                    blog: viewModel.post.blog,
+                    currentPage: page,
+                    onSelection: { selectedParentPage in
+                        viewModel.settings.parentPageID = selectedParentPage?.postID?.intValue
+                        viewModel.viewController?.navigationController?.popViewController(animated: true)
+                    }
+                )
+            }
+        } label: {
+            SettingsRow(Strings.parentPageLabel, value: viewModel.parentPageText ?? Strings.topLevelPage)
+        }
+    }
+
+    private var slugRow: some View {
+        NavigationLink {
+            SettingsTextFieldView(
+                title: Strings.slugLabel,
+                text: $viewModel.settings.slug,
+                placeholder: Strings.slugPlaceholder,
+                hint: Strings.slugHint
+            )
+            .autocapitalization(.none)
+            .autocorrectionDisabled()
+        } label: {
+            SettingsRow(Strings.slugLabel, value: viewModel.slugText)
+        }
+    }
 }
 
 @MainActor
@@ -245,6 +315,21 @@ private struct PostSettingsAuthorRow: View {
     }
 }
 
+/// A text editor that is displayed with two-lines when empty and grows up to
+/// a certain height limit as you add more text.
+@MainActor
+private struct SettingsTextEditor: View {
+    @Binding var text: String
+
+    @ScaledMetric(relativeTo: .body) var height = 84
+
+    var body: some View {
+        TextEditor(text: $text)
+            .frame(height: height)
+            .listRowInsets(EdgeInsets(top: 2, leading: 16, bottom: 0, trailing: 16))
+    }
+}
+
 @MainActor
 private struct SettingsRow: View {
     let title: String
@@ -265,17 +350,37 @@ private struct SettingsRow: View {
     }
 }
 
+@MainActor
+private struct SettingsTextFieldView: View {
+    let title: String
+    @Binding var text: String
+    let placeholder: String
+    let hint: String
+
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        Form {
+            Section {
+                TextField(placeholder, text: $text)
+                    .focused($isFocused)
+            } footer: {
+                Text(hint)
+            }
+        }
+        .navigationTitle(title)
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            isFocused = true
+        }
+    }
+}
+
 private enum Strings {
     static let generalHeader = NSLocalizedString(
         "postSettings.section.general",
         value: "General",
         comment: "Section header for General settings in Post Settings"
-    )
-
-    static let moreOptionsHeader = NSLocalizedString(
-        "postSettings.section.moreOptions",
-        value: "More Options",
-        comment: "Section header for More Options in Post Settings"
     )
 
     static let authorLabel = NSLocalizedString(
@@ -300,18 +405,6 @@ private enum Strings {
         "postSettings.pendingReview.label",
         value: "Pending Review",
         comment: "Label for the pending review toggle in Post Settings"
-    )
-
-    static let slugLabel = NSLocalizedString(
-        "postSettings.slug.label",
-        value: "Slug",
-        comment: "Label for the slug field. Should be the same as WP core."
-    )
-
-    static let slugPlaceholder = NSLocalizedString(
-        "postSettings.slug.placeholder",
-        value: "Enter slug",
-        comment: "Placeholder text for the slug field"
     )
 
     static let discardChangesTitle = NSLocalizedString(
@@ -354,5 +447,53 @@ private enum Strings {
         "postSettings.tags.label",
         value: "Tags",
         comment: "Label for the tags field. Should be the same as WP core."
+    )
+
+    static let excerptHeader = NSLocalizedString(
+        "postSettings.excerpt.header",
+        value: "Excerpt",
+        comment: "Section header for Excerpt in Post Settings"
+    )
+
+    static let moreOptionsHeader = NSLocalizedString(
+        "postSettings.moreOptions.header",
+        value: "More Options",
+        comment: "Section header for More Options in Post Settings. Should use the same translation as core WP."
+    )
+
+    static let postFormatLabel = NSLocalizedString(
+        "postSettings.postFormat.label",
+        value: "Post Format",
+        comment: "Label for the post format field. Should be the same as WP core."
+    )
+
+    static let parentPageLabel = NSLocalizedString(
+        "postSettings.parentPage.label",
+        value: "Parent Page",
+        comment: "Label for the parent page field"
+    )
+
+    static let topLevelPage = NSLocalizedString(
+        "postSettings.parentPage.topLevel",
+        value: "Top level",
+        comment: "Cell title for the Top Level option case"
+    )
+
+    static let slugLabel = NSLocalizedString(
+        "postSettings.slug.label",
+        value: "Slug",
+        comment: "Label for the slug field. Should be the same as WP core."
+    )
+
+    static let slugPlaceholder = NSLocalizedString(
+        "postSettings.slug.placeholder",
+        value: "Enter slug",
+        comment: "Placeholder for the slug field"
+    )
+
+    static let slugHint = NSLocalizedString(
+        "postSettings.slug.hint",
+        value: "The slug is the URL-friendly version of the post title.",
+        comment: "Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso."
     )
 }

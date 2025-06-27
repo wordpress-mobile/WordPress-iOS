@@ -69,6 +69,9 @@ struct PostSettings: Hashable {
     /// Applies the settings to an AbstractPost instance.
     /// Only updates properties that have actually changed.
     func apply(to post: AbstractPost) {
+        if post.mt_excerpt != excerpt {
+            post.mt_excerpt = excerpt
+        }
         if post.wp_slug != slug {
             post.wp_slug = slug
         }
@@ -115,6 +118,23 @@ struct PostSettings: Hashable {
                     return false
                 }
                 post.categories = Set(selectedCategories)
+            }
+
+            // Update post format
+            if post.postFormat != postFormat {
+                post.postFormat = postFormat
+            }
+
+            // Update sticky post setting
+            if post.isStickyPost != isStickyPost {
+                post.isStickyPost = isStickyPost
+            }
+        }
+
+        // Apply page-specific settings
+        if let page = post as? Page {
+            if page.parentID?.intValue != parentPageID {
+                page.parentID = parentPageID.map { NSNumber(value: $0) }
             }
         }
     }

@@ -45,9 +45,9 @@ public class Page: AbstractPost {
 
     @objc public var isSiteHomepage: Bool {
         guard let postID,
-            let homepageID = blog.homepagePageID,
-            let homepageType = blog.homepageType,
-            homepageType == .page else {
+              let homepageID = blog.homepagePageID,
+              let homepageType = blog.homepageType,
+              homepageType == .page else {
             return false
         }
 
@@ -56,12 +56,29 @@ public class Page: AbstractPost {
 
     @objc public var isSitePostsPage: Bool {
         guard let postID,
-            let postsPageID = blog.homepagePostsPageID,
-            let homepageType = blog.homepageType,
-            homepageType == .page else {
+              let postsPageID = blog.homepagePostsPageID,
+              let homepageType = blog.homepageType,
+              homepageType == .page else {
             return false
         }
 
         return postsPageID == postID.intValue
+    }
+
+    // MARK: - Parent Page
+
+    /// Returns the display text for the parent page
+    public static func parentPageText(in context: NSManagedObjectContext, parentID: NSNumber) -> String? {
+        guard parentID.intValue > 0 else {
+            return nil
+        }
+        let request = NSFetchRequest<Page>(entityName: Page.entityName())
+        request.fetchLimit = 1
+        request.predicate = NSPredicate(format: "postID == %@", parentID)
+
+        guard let parent = try? context.fetch(request).first else {
+            return nil
+        }
+        return parent.titleForDisplay()
     }
 }
