@@ -87,12 +87,6 @@ final class PostSettingsViewModel: ObservableObject {
         return post.blog.supports(.wpComRESTAPI) || post.blog.isAdmin
     }
 
-    // MARK: - Metadata Properties
-
-    var permalink: String? {
-        post.permaLink
-    }
-
     var lastEditedText: String? {
         guard let date = post.dateModified ?? post.dateCreated else {
             return nil
@@ -101,29 +95,10 @@ final class PostSettingsViewModel: ObservableObject {
     }
 
     var postID: Int? {
-        post.postID?.intValue
-    }
-
-    var wordCount: Int {
-        // Strip HTML tags and entities from content
-        let content = post.content ?? ""
-        let strippedContent = content
-            .replacingOccurrences(of: "<[^>]+>", with: " ", options: .regularExpression)
-            .replacingOccurrences(of: "&[^;]+;", with: " ", options: .regularExpression)
-            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-
-        // Count words by splitting on whitespace
-        let words = strippedContent.components(separatedBy: .whitespacesAndNewlines)
-            .filter { !$0.isEmpty }
-
-        return words.count
-    }
-
-    var wordCountText: String {
-        let count = wordCount
-        let format = NSLocalizedString("postSettings.wordCount.format", value: "%d words", comment: "Word count format. %d is the number of words")
-        return String(format: format, count)
+        guard let postID = post.postID?.intValue, postID > 0 else {
+            return nil
+        }
+        return postID
     }
 
     private let originalSettings: PostSettings

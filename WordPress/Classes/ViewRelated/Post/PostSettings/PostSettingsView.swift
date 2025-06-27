@@ -133,10 +133,10 @@ private struct PostSettingsView: View {
         Section(Strings.generalHeader) {
             authorRow
             if !viewModel.isDraftOrPending {
-                publishDateRow
+                visibilityRow
             }
             if !viewModel.isDraftOrPending {
-                visibilityRow
+                publishDateRow
             }
         }
     }
@@ -258,15 +258,15 @@ private struct PostSettingsView: View {
     @ViewBuilder
     private var moreOptionsSection: some View {
         Section(Strings.moreOptionsHeader) {
-            slugRow
-            if viewModel.isPost {
-                postFormatRow
-            }
             if viewModel.isDraftOrPending {
                 pendingReviewRow
             }
             if viewModel.shouldShowStickyOption {
                 stickyPostRow
+            }
+            slugRow
+            if viewModel.isPost {
+                postFormatRow
             }
             if !viewModel.isPost {
                 parentPageRow
@@ -327,33 +327,14 @@ private struct PostSettingsView: View {
 
     @ViewBuilder
     private var infoSection: some View {
-        Section(Strings.infoLabel) {
-            if let permalink = viewModel.permalink {
-                HStack {
-                    Text(Strings.permalinkLabel)
-                    Spacer()
-                    let text = Text(permalink)
-                        .lineLimit(1)
-                        .truncationMode(.middle)
-                        .foregroundColor(.accentColor)
-                        .font(.footnote)
-                        .minimumScaleFactor(1.0)
-                    if let url = URL(string: permalink) {
-                        Link(destination: url) {
-                            text
-                        }
-                    } else {
-                        text.textSelection(.enabled)
-                    }
+        if viewModel.lastEditedText != nil || viewModel.postID != nil {
+            Section(Strings.infoLabel) {
+                if let lastEditedText = viewModel.lastEditedText {
+                    SettingsRow(Strings.lastEditedLabel, value: lastEditedText)
                 }
-            }
-
-            if let lastEditedText = viewModel.lastEditedText {
-                SettingsRow(Strings.lastEditedLabel, value: lastEditedText)
-            }
-
-            if let postID = viewModel.postID, postID > 0 {
-                SettingsRow(Strings.postIDLabel, value: String(postID))
+                if let postID = viewModel.postID {
+                    SettingsRow(Strings.postIDLabel, value: String(postID))
+                }
             }
         }
     }
@@ -373,6 +354,7 @@ private struct PostSettingsAuthorRow: View {
                 }
                 Text(author.displayName)
                     .foregroundColor(.secondary)
+                    .textSelection(.enabled)
             } else {
                 Text("—")
                     .foregroundColor(.secondary)
@@ -421,6 +403,7 @@ private struct SettingsRow: View {
             Spacer()
             Text(value)
                 .foregroundColor(.secondary)
+                .textSelection(.enabled)
         }
         .lineLimit(1)
     }
