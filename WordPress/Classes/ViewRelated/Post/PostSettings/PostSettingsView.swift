@@ -53,9 +53,12 @@ private struct PostSettingsView: View {
             featuredImageSection
             if viewModel.isPost {
                 taxonomySection
+                excerptSection
             }
-            excerptSection
             generalSection
+            if !viewModel.isPost {
+                excerptSection
+            }
             moreOptionsSection
         }
         .disabled(viewModel.isSaving)
@@ -127,11 +130,9 @@ private struct PostSettingsView: View {
     @ViewBuilder
     private var generalSection: some View {
         Section(Strings.generalHeader) {
+            authorRow
             if !viewModel.isDraftOrPending {
                 publishDateRow
-            }
-            if viewModel.isMultiAuthorBlog {
-                authorRow
             }
             if !viewModel.isDraftOrPending {
                 visibilityRow
@@ -235,27 +236,34 @@ private struct PostSettingsView: View {
 
     @ViewBuilder
     private var excerptSection: some View {
-        Section(Strings.excerptHeader) {
+        Section {
             SettingsTextEditor(text: $viewModel.settings.excerpt)
+        } header: {
+            HStack {
+                Text(Strings.excerptHeader)
+                Spacer()
+                Text("\(viewModel.settings.excerpt.count)/500")
+                    .font(.caption2)
+                    .foregroundColor(viewModel.settings.excerpt.count > 400 ? .orange : .secondary)
+            }
         }
     }
 
     // MARK: - "More Options" Section
 
+    /// The least-used options.
     @ViewBuilder
     private var moreOptionsSection: some View {
         Section(Strings.moreOptionsHeader) {
-            // Most used options first
             slugRow
-            if viewModel.shouldShowStickyOption {
-                stickyPostRow
+            if viewModel.isPost {
+                postFormatRow
             }
-            // Less frequently used options
             if viewModel.isDraftOrPending {
                 pendingReviewRow
             }
-            if viewModel.isPost {
-                postFormatRow
+            if viewModel.shouldShowStickyOption {
+                stickyPostRow
             }
             if !viewModel.isPost {
                 parentPageRow
@@ -335,18 +343,32 @@ private struct PostSettingsAuthorRow: View {
     }
 }
 
-/// A text editor that is displayed with two-lines when empty and grows up to
-/// a certain height limit as you add more text.
 @MainActor
 private struct SettingsTextEditor: View {
     @Binding var text: String
+    let maxLength = 500
 
-    @ScaledMetric(relativeTo: .body) var height = 84
+    @ScaledMetric(relativeTo: .body) var height = 100
 
     var body: some View {
-        TextEditor(text: $text)
-            .frame(height: height)
-            .listRowInsets(EdgeInsets(top: 2, leading: 16, bottom: 0, trailing: 16))
+        ZStack(alignment: .topLeading) {
+            if text.isEmpty {
+                Text(Strings.excerptPlaceholder)
+                    .foregroundColor(Color(.placeholderText))
+                    .padding(.horizontal, 5)
+                    .padding(.vertical, 8)
+                    .allowsHitTesting(false)
+            }
+            TextEditor(text: $text)
+                .frame(height: height)
+                .onChange(of: text) { newValue in
+                    if newValue.count > maxLength {
+                        text = String(newValue.prefix(maxLength))
+                    }
+                }
+        }
+        .frame(height: height)
+        .listRowInsets(EdgeInsets(top: 2, leading: 16, bottom: 0, trailing: 16))
     }
 }
 
@@ -475,6 +497,12 @@ private enum Strings {
         "postSettings.excerpt.header",
         value: "Excerpt",
         comment: "Section header for Excerpt in Post Settings"
+    )
+
+    static let excerptPlaceholder = NSLocalizedString(
+        "postSettings.excerpt.placeholder",
+        value: "Write a brief summary of your post. This will appear in search results and when your post is shared on social media.",
+        comment: "Placeholder text for the excerpt field in Post Settings"
     )
 
     static let moreOptionsHeader = NSLocalizedString(
