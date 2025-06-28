@@ -130,7 +130,7 @@ private struct PostSettingsView: View {
 
     @ViewBuilder
     private var generalSection: some View {
-        Section(Strings.generalHeader) {
+        Section {
             authorRow
             if !viewModel.isDraftOrPending {
                 visibilityRow
@@ -138,6 +138,8 @@ private struct PostSettingsView: View {
             if !viewModel.isDraftOrPending {
                 publishDateRow
             }
+        } header: {
+            SectionHeader(Strings.generalHeader)
         }
     }
 
@@ -193,9 +195,11 @@ private struct PostSettingsView: View {
 
     @ViewBuilder
     private var featuredImageSection: some View {
-        Section(Strings.featuredImageHeader) {
+        Section {
             PostSettingsFeaturedImageRow(viewModel: viewModel.featuredImageViewModel)
                 .accessibilityIdentifier("post_settings_featured_image_cell")
+        } header: {
+            SectionHeader(Strings.featuredImageHeader)
         }
     }
 
@@ -203,9 +207,11 @@ private struct PostSettingsView: View {
 
     @ViewBuilder
     private var taxonomySection: some View {
-        Section(Strings.taxonomyHeader) {
+        Section {
             categoriesRow
             tagsRow
+        } header: {
+            SectionHeader(Strings.taxonomyHeader)
         }
     }
 
@@ -241,7 +247,7 @@ private struct PostSettingsView: View {
             SettingsTextEditor(text: $viewModel.settings.excerpt)
         } header: {
             HStack {
-                Text(Strings.excerptHeader)
+                SectionHeader(Strings.excerptHeader)
                 Spacer()
                 if viewModel.settings.excerpt.count > 0 {
                     Text("\(viewModel.settings.excerpt.count)")
@@ -257,7 +263,7 @@ private struct PostSettingsView: View {
     /// The least-used options.
     @ViewBuilder
     private var moreOptionsSection: some View {
-        Section(Strings.moreOptionsHeader) {
+        Section {
             if viewModel.isDraftOrPending {
                 pendingReviewRow
             }
@@ -271,6 +277,8 @@ private struct PostSettingsView: View {
             if !viewModel.isPost {
                 parentPageRow
             }
+        } header: {
+            SectionHeader(Strings.moreOptionsHeader)
         }
     }
 
@@ -328,13 +336,15 @@ private struct PostSettingsView: View {
     @ViewBuilder
     private var infoSection: some View {
         if viewModel.lastEditedText != nil || viewModel.postID != nil {
-            Section(Strings.infoLabel) {
+            Section {
                 if let lastEditedText = viewModel.lastEditedText {
                     SettingsRow(Strings.lastEditedLabel, value: lastEditedText)
                 }
                 if let postID = viewModel.postID {
                     SettingsRow(Strings.postIDLabel, value: String(postID))
                 }
+            } header: {
+                SectionHeader(Strings.infoLabel)
             }
         }
     }
