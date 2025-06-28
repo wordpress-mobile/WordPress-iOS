@@ -251,15 +251,7 @@ private struct PostSettingsView: View {
                 PostSettingExcerptRow(text: viewModel.settings.excerpt)
             }
         } header: {
-            HStack {
-                SectionHeader(Strings.excerptHeader)
-                Spacer()
-                if viewModel.settings.excerpt.count > 0 {
-                    Text("\(viewModel.settings.excerpt.count)")
-                        .font(.caption2)
-                        .foregroundColor(viewModel.settings.excerpt.count > 400 ? .orange : .secondary)
-                }
-            }
+            SectionHeader(Strings.excerptHeader)
         }
     }
 
