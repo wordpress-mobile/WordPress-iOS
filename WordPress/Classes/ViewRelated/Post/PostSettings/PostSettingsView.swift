@@ -52,13 +52,10 @@ private struct PostSettingsView: View {
         Form {
             featuredImageSection
             if viewModel.isPost {
-                taxonomySection
-                excerptSection
+                organizationSection
             }
+            excerptSection
             generalSection
-            if !viewModel.isPost {
-                excerptSection
-            }
             moreOptionsSection
             infoSection
         }
@@ -203,10 +200,10 @@ private struct PostSettingsView: View {
         }
     }
 
-    // MARK: - "Taxonomy" Section
+    // MARK: - "Organization" Section
 
     @ViewBuilder
-    private var taxonomySection: some View {
+    private var organizationSection: some View {
         Section {
             categoriesRow
             tagsRow
@@ -230,7 +227,7 @@ private struct PostSettingsView: View {
     private var tagsRow: some View {
         Button(action: viewModel.showTagsPicker) {
             HStack {
-                SettingsRow(Strings.tagsLabel, value: viewModel.tagsText)
+                PostSettingsTagsRow(tags: viewModel.settings.tags)
                 Image(systemName: "chevron.forward")
                     .font(.footnote.weight(.semibold))
                     .foregroundColor(Color(.tertiaryLabel))
@@ -434,7 +431,7 @@ private enum Strings {
 
     static let publishDateLabel = NSLocalizedString(
         "postSettings.publishDate.label",
-        value: "Publish Date",
+        value: "Date",
         comment: "Label for the publish date field in Post Settings"
     )
 
@@ -475,21 +472,15 @@ private enum Strings {
     )
 
     static let taxonomyHeader = NSLocalizedString(
-        "postSettings.taxonomy.header",
-        value: "Taxonomy",
-        comment: "Label for the Taxonomy area (categories, keywords, ...) in post settings."
+        "postSettings.organization.header",
+        value: "Organization",
+        comment: "Label for the Organization area (categories, keywords, ...) in post settings."
     )
 
     static let categoriesLabel = NSLocalizedString(
         "postSettings.categories.label",
         value: "Categories",
         comment: "Label for the categories field. Should be the same as WP core."
-    )
-
-    static let tagsLabel = NSLocalizedString(
-        "postSettings.tags.label",
-        value: "Tags",
-        comment: "Label for the tags field. Should be the same as WP core."
     )
 
     static let excerptHeader = NSLocalizedString(
