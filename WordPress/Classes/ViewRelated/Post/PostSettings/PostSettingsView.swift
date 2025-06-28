@@ -244,7 +244,12 @@ private struct PostSettingsView: View {
     @ViewBuilder
     private var excerptSection: some View {
         Section {
-            SettingsTextEditor(text: $viewModel.settings.excerpt)
+            NavigationLink {
+                PostSettingsExcerptEditor(text: $viewModel.settings.excerpt)
+                    .navigationTitle(Strings.excerptHeader)
+            } label: {
+                PostSettingExcerptRow(text: viewModel.settings.excerpt)
+            }
         } header: {
             HStack {
                 SectionHeader(Strings.excerptHeader)
@@ -374,29 +379,6 @@ private struct PostSettingsAuthorRow: View {
 }
 
 @MainActor
-private struct SettingsTextEditor: View {
-    @Binding var text: String
-
-    @ScaledMetric(relativeTo: .body) var height = 108
-
-    var body: some View {
-        ZStack(alignment: .topLeading) {
-            if text.isEmpty {
-                Text(Strings.excerptPlaceholder)
-                    .foregroundColor(Color(.placeholderText))
-                    .padding(.horizontal, 5)
-                    .padding(.vertical, 8)
-                    .allowsHitTesting(false)
-            }
-            TextEditor(text: $text)
-                .frame(height: height)
-        }
-        .frame(height: height)
-        .listRowInsets(EdgeInsets(top: 2, leading: 16, bottom: 0, trailing: 16))
-    }
-}
-
-@MainActor
 private struct SettingsRow: View {
     let title: String
     let value: String
@@ -522,12 +504,6 @@ private enum Strings {
         "postSettings.excerpt.header",
         value: "Excerpt",
         comment: "Section header for Excerpt in Post Settings"
-    )
-
-    static let excerptPlaceholder = NSLocalizedString(
-        "postSettings.excerpt.placeholder",
-        value: "Write a brief summary of your post to appear on blog index, archives, and search results.",
-        comment: "Placeholder text for the excerpt field in Post Settings"
     )
 
     static let moreOptionsHeader = NSLocalizedString(

@@ -16,7 +16,7 @@ struct PostSettingsFeaturedImageRow: View {
                 makeMediaView(with: image)
             } else {
                 Group {
-                    if viewModel.upload == nil {
+                    if viewModel.upload != nil {
                         // The upload state when no image is selected. For the "Replace"
                         // flow, the app shows the upload differently (see `menu`).
                         uploadingStateView
