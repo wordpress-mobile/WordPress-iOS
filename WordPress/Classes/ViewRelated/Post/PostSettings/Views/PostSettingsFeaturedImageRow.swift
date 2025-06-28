@@ -8,51 +8,62 @@ struct PostSettingsFeaturedImageRow: View {
     @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
     @State private var presentedMedia: Media?
 
-    @ScaledMetric(relativeTo: .body) var height = 108 // Matches "Exceprt"
+    @ScaledMetric(relativeTo: .body) var height = 110
 
     var body: some View {
-        if let image = viewModel.selection {
-            SiteMediaImage(media: image, size: .large)
-                .loadingStyle(.spinner)
-                // warning: SiteMediaImage doesn't seem to reload otherwise; might want to change it later
-                .id(image)
-                .accessibilityIdentifier("featured_image_current_image")
-                .aspectRatio(1.0 / ReaderPostCell.coverAspectRatio, contentMode: .fit)
-                .overlay {
-                    menu
-                }
-                .contextMenu {
-                    actions
-                }
-                .sheet(item: $presentedMedia) { media in
-                    LightboxView(media: media)
-                        .ignoresSafeArea()
-                }
-                .listRowInsets(EdgeInsets.zero)
-        } else {
-            Group {
-                if viewModel.upload != nil {
-                    // The upload state when no image is selected. For the "Replace"
-                    // flow, the app shows the upload differently (see `menu`).
-                    uploading
-                        .padding(.vertical, 12)
-                } else {
-                    makeMediaPicker {
-                        VStack(spacing: 6) {
-                            Image(systemName: "photo.badge.plus")
-                                .font(.system(size: 24))
-                                .foregroundColor(.accentColor)
-                            Text(Strings.buttonSetFeaturedImage)
-                                .font(.callout.weight(.medium))
+        Group {
+            if let image = viewModel.selection {
+                makeMediaView(with: image)
+            } else {
+                Group {
+                    if viewModel.upload == nil {
+                        // The upload state when no image is selected. For the "Replace"
+                        // flow, the app shows the upload differently (see `menu`).
+                        uploadingStateView
+                    } else {
+                        makeMediaPicker {
+                            setFeaturedImageView
                         }
-                        .foregroundColor(.accentColor)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .contentShape(Rectangle()) // Make the whole cell tappable
                     }
                 }
+                .listRowBackground(Color.clear)
+                .frame(height: height)
             }
-            .frame(height: height)
-            .listRowInsets(EdgeInsets(top: 1, leading: 16, bottom: 1, trailing: 16))
+        }
+        .listRowInsets(EdgeInsets.zero)
+    }
+
+    private func makeMediaView(with image: Media) -> some View {
+        SiteMediaImage(media: image, size: .large)
+            .loadingStyle(.spinner)
+            // warning: SiteMediaImage doesn't seem to reload otherwise; might want to change it later
+            .id(image)
+            .accessibilityIdentifier("featured_image_current_image")
+            .aspectRatio(1.0 / ReaderPostCell.coverAspectRatio, contentMode: .fit)
+            .overlay {
+                menu
+            }
+            .contextMenu {
+                actions
+            }
+            .sheet(item: $presentedMedia) { media in
+                LightboxView(media: media)
+                    .ignoresSafeArea()
+            }
+    }
+
+    private var setFeaturedImageView: some View {
+        makeWithProminentBackground {
+            VStack(spacing: 4) {
+                Image(systemName: "photo.on.rectangle.angled")
+                    .font(.title)
+                    .symbolRenderingMode(.hierarchical)
+
+                Text(Strings.buttonSetFeaturedImage)
+                    .font(.subheadline)
+            }
+            .foregroundColor(.accentColor)
+            .fontWeight(.medium)
         }
     }
 
@@ -99,31 +110,47 @@ struct PostSettingsFeaturedImageRow: View {
         }
     }
 
-    private var uploading: some View {
-        HStack(alignment: .center, spacing: 16) {
-            ProgressView()
-                .scaleEffect(1.2)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(Strings.uploading)
-                    .font(.headline)
-                    .foregroundStyle(.primary)
-                Text(Strings.uploadingSubtitle)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+    private var uploadingStateView: some View {
+        Menu {
+            Button(role: .destructive, action: viewModel.buttonCancelTapped) {
+                Label(Strings.cancelUpload, systemImage: "xmark.circle.fill")
             }
+        } label: {
+            makeWithProminentBackground {
+                HStack {
+                    ProgressView()
 
-            Spacer(minLength: 8)
-
-            Menu {
-                Button(role: .destructive, action: viewModel.buttonCancelTapped) {
-                    Label(Strings.cancelUpload, systemImage: "xmark.circle.fill")
+                    Text(Strings.uploading)
+                        .font(.headline)
+                        .fontWeight(.medium)
                 }
-            } label: {
-                Image(systemName: "ellipsis.circle")
-                    .font(.title3)
-                    .tint(.secondary)
+                .tint(.accentColor)
+                .foregroundColor(.accentColor)
             }
+            .overlay(alignment: .topTrailing) {
+                Image(systemName: "ellipsis.circle")
+                    .foregroundStyle(Color.secondary)
+                    .padding(12)
+            }
+        }
+    }
+
+    /// A nice tinted background for the button and other states.
+    private func makeWithProminentBackground<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
+        ZStack {
+            // System background that adapts to dark mode
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(UIColor.secondarySystemGroupedBackground))
+
+            // Very subtle accent tint
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.accentColor.opacity(0.02))
+
+            content()
+
+            // Prominent border
+            RoundedRectangle(cornerRadius: 12)
+                .strokeBorder(Color.accentColor.opacity(0.3), lineWidth: 1)
         }
     }
 
@@ -213,7 +240,6 @@ public final class PostSettingsFeaturedImageViewModel: ObservableObject {
 private enum Strings {
     static let buttonSetFeaturedImage = NSLocalizedString("postSettings.featuredImage.setFeaturedImageButton", value: "Set Featured Image", comment: "Button in Post Settings")
     static let uploading = NSLocalizedString("postSettings.featuredImage.uploading", value: "Uploading…", comment: "Post Settings")
-    static let uploadingSubtitle = NSLocalizedString("postSettings.featuredImage.uploadingSubtitle", value: "Please wait...", comment: "Subtitle shown while uploading featured image")
     static let cancelUpload = NSLocalizedString("postSettings.featuredImage.cancelUpload", value: "Cancel Upload", comment: "Cancel upload button in Post Settings / Featured Image cell")
     static let replaceImage = NSLocalizedString("postSettings.featuredImage.replaceImage", value: "Replace", comment: "Replace image upload button in Post Settings / Featured Image cell")
     static let uploadFailed = NSLocalizedString("postSettings.featuredImage.uploadFailed", value: "Failed to upload new featured image", comment: "Snackbar title")
