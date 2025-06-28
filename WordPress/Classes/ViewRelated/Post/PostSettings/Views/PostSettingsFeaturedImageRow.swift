@@ -8,7 +8,7 @@ struct PostSettingsFeaturedImageRow: View {
     @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
     @State private var presentedMedia: Media?
 
-    @ScaledMetric(relativeTo: .body) var height = 110
+    @ScaledMetric(relativeTo: .body) var height = 120
 
     var body: some View {
         Group {
@@ -60,7 +60,7 @@ struct PostSettingsFeaturedImageRow: View {
                     .symbolRenderingMode(.hierarchical)
 
                 Text(Strings.buttonSetFeaturedImage)
-                    .font(.subheadline)
+                    .font(.body)
             }
             .foregroundColor(.accentColor)
             .fontWeight(.medium)
