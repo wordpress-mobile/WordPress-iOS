@@ -9,7 +9,7 @@ struct PostSettingsTagsRow: View {
         HStack {
             ScaledImage("wpdl-tag", height: 21)
                 .foregroundColor(.secondary)
-                .padding(.trailing, 2)
+                .padding(.trailing, 3)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(Strings.tagsLabel)

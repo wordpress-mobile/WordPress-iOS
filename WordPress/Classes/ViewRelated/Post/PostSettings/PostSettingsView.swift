@@ -197,6 +197,7 @@ private struct PostSettingsView: View {
                 publishDateRow
                 visibilityRow
             }
+            slugRow
         } header: {
             SectionHeader(Strings.generalHeader)
         }
@@ -256,13 +257,12 @@ private struct PostSettingsView: View {
     @ViewBuilder
     private var moreOptionsSection: some View {
         Section {
-            if viewModel.isDraftOrPending {
-                pendingReviewRow
-            }
             if viewModel.shouldShowStickyOption {
                 stickyPostRow
             }
-            slugRow
+            if viewModel.isDraftOrPending {
+                pendingReviewRow
+            }
             if viewModel.isPost {
                 postFormatRow
             }
