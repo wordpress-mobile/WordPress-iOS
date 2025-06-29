@@ -130,10 +130,8 @@ private struct PostSettingsView: View {
         Section {
             authorRow
             if !viewModel.isDraftOrPending {
-                visibilityRow
-            }
-            if !viewModel.isDraftOrPending {
                 publishDateRow
+                visibilityRow
             }
         } header: {
             SectionHeader(Strings.generalHeader)
