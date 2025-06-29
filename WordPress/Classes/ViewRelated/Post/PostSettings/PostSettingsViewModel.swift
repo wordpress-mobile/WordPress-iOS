@@ -91,7 +91,7 @@ final class PostSettingsViewModel: ObservableObject {
         guard let date = post.dateModified ?? post.dateCreated else {
             return nil
         }
-        return date.formatted(date: .abbreviated, time: .shortened)
+        return date.toMediumString()
     }
 
     var postID: Int? {
