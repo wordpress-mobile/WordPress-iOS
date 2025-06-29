@@ -187,15 +187,15 @@ struct PostSettingsFeaturedImageRow: View {
             content()
         }
     }
-    
+
     private func handleDroppedImages(_ items: [Data]) {
         guard let imageData = items.first else { return }
-        
+
         Task {
             await viewModel.handleDroppedImageData(imageData)
         }
     }
-    
+
     private var dropOverlay: some View {
         RoundedRectangle(cornerRadius: 12)
             .fill(Color.accentColor.opacity(0.1))
@@ -286,7 +286,7 @@ public final class PostSettingsFeaturedImageViewModel: ObservableObject {
             selection = media
         }
     }
-    
+
     @MainActor
     func handleDroppedImageData(_ imageData: Data) async {
         guard let image = UIImage(data: imageData) else {
@@ -299,7 +299,7 @@ public final class PostSettingsFeaturedImageViewModel: ObservableObject {
 //            items: [.asset(asset)],
 //            source: "drag-drop"
 //        )
-//        
+//
 //        setFeaturedImage(selection: selection)
     }
 }

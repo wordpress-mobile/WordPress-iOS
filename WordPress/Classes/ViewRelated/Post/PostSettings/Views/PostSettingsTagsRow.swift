@@ -3,11 +3,11 @@ import WordPressUI
 import WordPressData
 
 struct PostSettingsTagsRow: View {
-    let tags: String
+    let tags: [String]
 
     var body: some View {
         HStack {
-            ScaledImage("wpdl-tag", height: 17)
+            ScaledImage("wpdl-tag", height: 20)
                 .foregroundColor(.secondary)
 
             VStack(alignment: .leading, spacing: 2) {
@@ -15,10 +15,10 @@ struct PostSettingsTagsRow: View {
                     .font(.body)
                     .foregroundColor(.primary)
 
-                let tags = AbstractPost.makeTagsText(tags)
                 if tags.isEmpty {
-                    Text(Strings.addTag)
+                    Text(Strings.addTags)
                         .font(.body)
+                        .font(.subheadline)
                         .foregroundColor(Color(.tertiaryLabel))
                 } else {
                     PostSettingsTruncatedArrayTextView(values: tags)
@@ -37,9 +37,9 @@ private enum Strings {
         comment: "Label for the tags field. Should be the same as WP core."
     )
 
-    static let addTag = NSLocalizedString(
-        "postSettings.tags.addTagButton",
-        value: "Add Tag",
-        comment: "Label for the add tag button field. Should be the same as WP core."
+    static let addTags = NSLocalizedString(
+        "postSettings.tags.addTagsButton",
+        value: "Add Tags",
+        comment: "Label for the add tags button field. Should be the same as WP core."
     )
 }

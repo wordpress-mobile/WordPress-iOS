@@ -215,7 +215,7 @@ private struct PostSettingsView: View {
     private var categoriesRow: some View {
         Button(action: viewModel.showCategoriesPicker) {
             HStack {
-                SettingsRow(Strings.categoriesLabel, value: viewModel.categoriesText)
+                PostSettingsCategoriesRow(categories: viewModel.displayedCategories)
                 Image(systemName: "chevron.forward")
                     .font(.footnote.weight(.semibold))
                     .foregroundColor(Color(.tertiaryLabel))
@@ -227,7 +227,7 @@ private struct PostSettingsView: View {
     private var tagsRow: some View {
         Button(action: viewModel.showTagsPicker) {
             HStack {
-                PostSettingsTagsRow(tags: viewModel.settings.tags)
+                PostSettingsTagsRow(tags: viewModel.displayedTags)
                 Image(systemName: "chevron.forward")
                     .font(.footnote.weight(.semibold))
                     .foregroundColor(Color(.tertiaryLabel))

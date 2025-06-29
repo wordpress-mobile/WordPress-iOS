@@ -171,23 +171,18 @@ extension PostSettings {
         )
     }
 
-    func makeCategoriesText(for post: AbstractPost) -> String {
-        guard let post = post as? Post else { return "" }
-
+    func getCategoryNames(for post: AbstractPost) -> [String] {
+        guard let post = post as? Post else {
+            return []
+        }
         var categories: [Int: String] = [:]
         for category in post.blog.categories ?? [] {
             if let id = category.categoryID?.intValue, let name = category.categoryName {
                 categories[id] = name
             }
         }
-
         return categoryIDs.compactMap { categories[$0] }
             .sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
-            .joined(separator: ", ")
-    }
-
-    func makeTagsText() -> String {
-        AbstractPost.makeTags(from: tags)
-            .joined(separator: ", ")
+            .map { $0.stringByDecodingXMLCharacters() }
     }
 }
