@@ -123,69 +123,6 @@ private struct PostSettingsView: View {
         }
     }
 
-    // MARK: - "General" Section
-
-    @ViewBuilder
-    private var generalSection: some View {
-        Section {
-            authorRow
-            if !viewModel.isDraftOrPending {
-                publishDateRow
-                visibilityRow
-            }
-        } header: {
-            SectionHeader(Strings.generalHeader)
-        }
-    }
-
-    private var authorRow: some View {
-        NavigationLink {
-            PostAuthorPicker(
-                blog: viewModel.post.blog,
-                currentAuthorID: viewModel.settings.author?.id
-            ) { selection in
-                viewModel.settings.updateAuthor(with: selection)
-            }
-        } label: {
-            PostSettingsAuthorRow(author: viewModel.settings.author)
-        }
-    }
-
-    private var pendingReviewRow: some View {
-        Toggle(isOn: $viewModel.settings.isPendingReview) {
-            Text(Strings.pendingReviewLabel)
-        }
-    }
-
-    private var publishDateRow: some View {
-        NavigationLink {
-            PublishDatePickerView(configuration: PublishDatePickerConfiguration(
-                date: viewModel.settings.publishDate,
-                isRequired: true,
-                timeZone: viewModel.timeZone,
-                updated: { date in
-                    viewModel.settings.publishDate = date
-                }
-            ))
-        } label: {
-            SettingsRow(Strings.publishDateLabel, value: viewModel.publishDateText ?? "–")
-        }
-    }
-
-    private var visibilityRow: some View {
-        NavigationLink {
-            PostVisibilityPicker(
-                selection: PostVisibilityPicker.Selection(post: viewModel.post),
-                dismissOnSelection: true,
-                onSubmit: { selection in
-                    viewModel.updateVisibility(selection)
-                }
-            )
-        } label: {
-            SettingsRow(Strings.visibilityLabel, value: viewModel.visibilityText)
-        }
-    }
-
     // MARK: - "Featured Image" Section
 
     @ViewBuilder
@@ -247,6 +184,69 @@ private struct PostSettingsView: View {
             }
         } header: {
             SectionHeader(Strings.excerptHeader)
+        }
+    }
+
+    // MARK: - "General" Section
+
+    @ViewBuilder
+    private var generalSection: some View {
+        Section {
+            authorRow
+            if !viewModel.isDraftOrPending {
+                publishDateRow
+                visibilityRow
+            }
+        } header: {
+            SectionHeader(Strings.generalHeader)
+        }
+    }
+
+    private var authorRow: some View {
+        NavigationLink {
+            PostAuthorPicker(
+                blog: viewModel.post.blog,
+                currentAuthorID: viewModel.settings.author?.id
+            ) { selection in
+                viewModel.settings.updateAuthor(with: selection)
+            }
+        } label: {
+            PostSettingsAuthorRow(author: viewModel.settings.author)
+        }
+    }
+
+    private var pendingReviewRow: some View {
+        Toggle(isOn: $viewModel.settings.isPendingReview) {
+            Text(Strings.pendingReviewLabel)
+        }
+    }
+
+    private var publishDateRow: some View {
+        NavigationLink {
+            PublishDatePickerView(configuration: PublishDatePickerConfiguration(
+                date: viewModel.settings.publishDate,
+                isRequired: true,
+                timeZone: viewModel.timeZone,
+                updated: { date in
+                    viewModel.settings.publishDate = date
+                }
+            ))
+        } label: {
+            SettingsRow(Strings.publishDateLabel, value: viewModel.publishDateText ?? "–")
+        }
+    }
+
+    private var visibilityRow: some View {
+        NavigationLink {
+            PostVisibilityPicker(
+                selection: PostVisibilityPicker.Selection(post: viewModel.post),
+                dismissOnSelection: true,
+                onSubmit: { selection in
+                    viewModel.updateVisibility(selection)
+                }
+            )
+        } label: {
+            SettingsRow(Strings.visibilityLabel, value: viewModel.visibilityText)
         }
     }
 
@@ -329,11 +329,11 @@ private struct PostSettingsView: View {
     private var infoSection: some View {
         if viewModel.lastEditedText != nil || viewModel.postID != nil {
             Section {
-                if let lastEditedText = viewModel.lastEditedText {
-                    SettingsRow(Strings.lastEditedLabel, value: lastEditedText)
-                }
                 if let postID = viewModel.postID {
                     SettingsRow(Strings.postIDLabel, value: String(postID))
+                }
+                if let lastEditedText = viewModel.lastEditedText {
+                    SettingsRow(Strings.lastEditedLabel, value: lastEditedText)
                 }
             } header: {
                 SectionHeader(Strings.infoLabel)
@@ -555,7 +555,7 @@ private enum Strings {
 
     static let postIDLabel = NSLocalizedString(
         "postSettings.postID.label",
-        value: "Post ID",
+        value: "ID",
         comment: "Label for the post ID field in Post Settings"
     )
 }
