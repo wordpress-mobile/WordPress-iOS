@@ -3,12 +3,10 @@ import AsyncImageKit
 import WordPressData
 import WordPressUI
 import UIKit
-import UniformTypeIdentifiers
 
 struct PostSettingsFeaturedImageRow: View {
     @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
     @State private var presentedMedia: Media?
-    @State private var isDroppingImage = false
 
     @ScaledMetric(relativeTo: .body) var height = 120
 
@@ -52,17 +50,6 @@ struct PostSettingsFeaturedImageRow: View {
                 LightboxView(media: media)
                     .ignoresSafeArea()
             }
-            .dropDestination(for: Data.self) { items, _ in
-                handleDroppedImages(items)
-                return true
-            } isTargeted: { isTargeted in
-                isDroppingImage = isTargeted
-            }
-            .overlay {
-                if isDroppingImage {
-                    dropOverlay
-                }
-            }
     }
 
     private var setFeaturedImageView: some View {
@@ -77,17 +64,6 @@ struct PostSettingsFeaturedImageRow: View {
             }
             .foregroundColor(.accentColor)
             .fontWeight(.medium)
-        }
-        .dropDestination(for: Data.self) { items, _ in
-            handleDroppedImages(items)
-            return true
-        } isTargeted: { isTargeted in
-            isDroppingImage = isTargeted
-        }
-        .overlay {
-            if isDroppingImage {
-                dropOverlay
-            }
         }
     }
 
@@ -187,33 +163,6 @@ struct PostSettingsFeaturedImageRow: View {
             content()
         }
     }
-
-    private func handleDroppedImages(_ items: [Data]) {
-        guard let imageData = items.first else { return }
-
-        Task {
-            await viewModel.handleDroppedImageData(imageData)
-        }
-    }
-
-    private var dropOverlay: some View {
-        RoundedRectangle(cornerRadius: 12)
-            .fill(Color.accentColor.opacity(0.1))
-            .overlay {
-                RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(Color.accentColor, lineWidth: 2)
-                    .background {
-                        VStack(spacing: 8) {
-                            Image(systemName: "photo.badge.plus")
-                                .font(.title)
-                            Text(Strings.dropImage)
-                                .font(.headline)
-                        }
-                        .foregroundColor(.accentColor)
-                    }
-            }
-            .animation(.easeInOut(duration: 0.2), value: isDroppingImage)
-    }
 }
 
 public final class PostSettingsFeaturedImageViewModel: ObservableObject {
@@ -286,22 +235,6 @@ public final class PostSettingsFeaturedImageViewModel: ObservableObject {
             selection = media
         }
     }
-
-    @MainActor
-    func handleDroppedImageData(_ imageData: Data) async {
-        guard let image = UIImage(data: imageData) else {
-            Notice(title: Strings.invalidImage, message: nil).post()
-            return
-        }
-
-//        let asset = ExportableAsset(image: image)
-//        let selection = MediaPickerSelection(
-//            items: [.asset(asset)],
-//            source: "drag-drop"
-//        )
-//
-//        setFeaturedImage(selection: selection)
-    }
 }
 
 private enum Strings {
@@ -310,6 +243,4 @@ private enum Strings {
     static let cancelUpload = NSLocalizedString("postSettings.featuredImage.cancelUpload", value: "Cancel Upload", comment: "Cancel upload button in Post Settings / Featured Image cell")
     static let replaceImage = NSLocalizedString("postSettings.featuredImage.replaceImage", value: "Replace", comment: "Replace image upload button in Post Settings / Featured Image cell")
     static let uploadFailed = NSLocalizedString("postSettings.featuredImage.uploadFailed", value: "Failed to upload new featured image", comment: "Snackbar title")
-    static let dropImage = NSLocalizedString("postSettings.featuredImage.dropImage", value: "Drop Image", comment: "Text shown when dragging an image over the featured image area")
-    static let invalidImage = NSLocalizedString("postSettings.featuredImage.invalidImage", value: "Invalid Image", comment: "Error shown when dropped file is not a valid image")
 }
