@@ -14,6 +14,14 @@ extension String {
         return trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }
 
+    /// Inspired by https://github.com/Automattic/wp-calypso/blob/trunk/client/lib/formatting/capital-p-dangit.js
+    public func capitalPDangit() -> String {
+        if compare("wordpress", options: [.caseInsensitive]) == .orderedSame {
+            return "WordPress"
+        }
+        return self
+    }
+
     /// Returns `self` if not empty, or `nil` otherwise
     ///
     public func nonEmptyString() -> String? {

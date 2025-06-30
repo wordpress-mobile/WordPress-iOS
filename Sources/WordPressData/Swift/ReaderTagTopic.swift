@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 @objc(ReaderTagTopic)
 open class ReaderTagTopic: ReaderAbstractTopic {
@@ -54,7 +55,10 @@ open class ReaderTagTopic: ReaderAbstractTopic {
     }
 
     public var formattedTitle: String {
-        title.split(separator: "-").map(\.capitalized).joined(separator: " ")
+        title.split(separator: "-")
+            .map(\.capitalized)
+            .joined(separator: " ")
+            .capitalPDangit()
     }
 
     /// Convenience method to update the tag's `following` state and also updates `showInMenu`.
