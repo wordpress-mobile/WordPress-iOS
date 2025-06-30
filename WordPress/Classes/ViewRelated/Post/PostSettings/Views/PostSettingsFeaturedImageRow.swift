@@ -38,7 +38,6 @@ struct PostSettingsFeaturedImageRow: View {
             .loadingStyle(.spinner)
             // warning: SiteMediaImage doesn't seem to reload otherwise; might want to change it later
             .id(image)
-            .accessibilityIdentifier("featured_image_current_image")
             .aspectRatio(1.0 / ReaderPostCell.coverAspectRatio, contentMode: .fit)
             .overlay {
                 menu

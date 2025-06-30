@@ -61,7 +61,7 @@ class EditorGutenbergTests_02: EditorGutenbergTests {
             .openPostSettings()
             .selectCategory(name: "Wedding")
             .addTag(name: "tag \(Date().toString())")
-            .closePostSettings()
+            .savePostSettings()
             .postAndViewEpilogue(action: .publish)
             .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPaidSite)
             .tapDone()
@@ -81,7 +81,7 @@ class EditorGutenbergTests_03: EditorGutenbergTests {
             .verifyPostSettings(hasImage: false)
             .setFeaturedImage()
             .verifyPostSettings(hasImage: true)
-            .closePostSettings()
+            .savePostSettings()
     }
 }
 

@@ -51,14 +51,15 @@ private struct PostSettingsView: View {
     var body: some View {
         Form {
             featuredImageSection
+            generalSection
             if viewModel.isPost {
                 organizationSection
             }
             excerptSection
-            generalSection
             moreOptionsSection
             infoSection
         }
+        .accessibilityIdentifier("post_settings_form")
         .disabled(viewModel.isSaving)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -97,6 +98,7 @@ private struct PostSettingsView: View {
             }
         }
         .tint(AppColor.tint)
+        .accessibilityIdentifier("post_settings_cancel_button")
     }
 
     @ViewBuilder
@@ -118,6 +120,7 @@ private struct PostSettingsView: View {
                     .fontWeight(.medium)
                 }
             }
+            .accessibilityIdentifier("post_settings_save_button")
             .disabled(!viewModel.hasChanges)
             .tint(AppColor.tint)
         }
@@ -157,6 +160,7 @@ private struct PostSettingsView: View {
             }
         }
         .tint(.primary)
+        .accessibilityIdentifier("post_settings_categories")
     }
 
     private var tagsRow: some View {
@@ -169,6 +173,7 @@ private struct PostSettingsView: View {
             }
         }
         .tint(.primary)
+        .accessibilityIdentifier("post_settings_tags")
     }
 
     // MARK: - "Excerpt" Section

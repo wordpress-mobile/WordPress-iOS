@@ -48,7 +48,7 @@ class EditorAztecTests: XCTestCase {
 //            .verifyPostSettings(withCategory: category, withTag: tag, hasImage: false)
 //            .setFeaturedImage()
 //            .verifyPostSettings(withCategory: category, withTag: tag, hasImage: true)
-//            .closePostSettings()
+//            .savePostSettings()
 //        AztecEditorScreen(mode: .rich).publish()
 //            .viewPublishedPost(withTitle: title)
 //            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomPaidSite)
