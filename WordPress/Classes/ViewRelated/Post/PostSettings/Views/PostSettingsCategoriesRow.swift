@@ -7,9 +7,8 @@ struct PostSettingsCategoriesRow: View {
 
     var body: some View {
         HStack {
-            ScaledImage("wpdl-category", height: 21)
-                .foregroundColor(.secondary)
-                .padding(.trailing, 3)
+            PostSettingsIconView("wpdl-category")
+                .padding(.trailing, 2)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(Strings.categoriesLabel)
