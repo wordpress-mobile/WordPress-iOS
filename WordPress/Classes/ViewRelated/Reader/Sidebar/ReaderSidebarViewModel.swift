@@ -30,8 +30,8 @@ final class ReaderSidebarViewModel: ObservableObject {
             menu = [.subscrtipions, .lists, .tags, .saved, .likes]
             library = []
         } else {
-            menu = [.recent, .discover, .search]
-            library = [.subscrtipions, .lists, .tags, .saved, .likes]
+            menu = [.recent, .discover, .saved, .likes, .search]
+            library = [.subscrtipions, .lists, .tags]
             restoreSelection(defaultValue: .main(.recent))
         }
 
