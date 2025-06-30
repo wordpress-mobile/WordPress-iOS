@@ -7,6 +7,7 @@
 * [*] Add search to “Jetpack Activity List” and display actors and dates [#24597]
 * [*] Fix an issue with content in "Restore" and "Download Backup" flows covering the navigation bar [#24597]
 * [*] Show when the downloadable backup expires in Backup List [#24597]
+* [*] Fix a couple of visual issues in Post List [#24647]
 
 25.9
 -----
