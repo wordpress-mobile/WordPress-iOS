@@ -129,7 +129,7 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         ])
         mainStackView.spacing = 4
         contentView.addSubview(mainStackView)
-        mainStackView.pinEdges(to: contentView.layoutMarginsGuide)
+        mainStackView.pinEdges(to: contentView.layoutMarginsGuide, insets: UIEdgeInsets (horizontal: 0, vertical: 2))
 
         // It is added last to ensure it's tappable
         setupEllipsisButton()
@@ -146,6 +146,11 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         featuredImageView.layer.masksToBounds = true
         featuredImageView.layer.cornerRadius = 5
         featuredImageView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        featuredImageView.layer.shadowColor = UIColor.black.cgColor
+        featuredImageView.layer.shadowOpacity = 0.15
+        featuredImageView.layer.shadowRadius = 6
+        featuredImageView.layer.shadowOffset = CGSize(width: 0, height: 3)
+        featuredImageView.layer.shadowPath = UIBezierPath(rect: CGRect(origin: .zero, size: Constants.imageSize)).cgPath
 
         NSLayoutConstraint.activate([
             featuredImageView.widthAnchor.constraint(equalToConstant: Constants.imageSize.width),
@@ -174,5 +179,5 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
 }
 
 private enum Constants {
-    static let imageSize = CGSize(width: 64, height: 64)
+    static let imageSize = CGSize(width: 60, height: 60)
 }

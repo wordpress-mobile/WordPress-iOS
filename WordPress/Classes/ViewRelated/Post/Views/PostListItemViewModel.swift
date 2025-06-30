@@ -68,7 +68,7 @@ private func makeContentString(for post: Post, syncStateViewModel: PostSyncState
     let string = NSMutableAttributedString()
     if !title.isEmpty {
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold),
+            .font: UIFont.preferredFont(forTextStyle: .headline),
             .foregroundColor: foregroundColor
         ]
         let titleAttributedString = NSAttributedString(string: title, attributes: attributes)
@@ -81,8 +81,8 @@ private func makeContentString(for post: Post, syncStateViewModel: PostSyncState
             string.append(NSAttributedString(string: "\n"))
         }
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular),
-            .foregroundColor: foregroundColor
+            .font: UIFont.preferredFont(forTextStyle: .subheadline),
+            .foregroundColor: UIColor.secondaryLabel
         ]
         let snippetAttributedString = NSAttributedString(string: adjustedSnippet, attributes: attributes)
         string.append(snippetAttributedString)
@@ -90,6 +90,8 @@ private func makeContentString(for post: Post, syncStateViewModel: PostSyncState
 
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.paragraphSpacing = 4
+    paragraphStyle.lineBreakMode = .byTruncatingTail
+
     string.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: string.length))
 
     return string
