@@ -81,6 +81,7 @@ struct PostSettingsFeaturedImageRow: View {
                     Image(systemName: "ellipsis")
                         .foregroundStyle(Color(.label))
                         .font(.system(size: 18))
+                        .accessibilityIdentifier("featured_image_current_image_menu") // not ideal
                 }
             }
             .shadow(color: .black.opacity(0.5), radius: 10)

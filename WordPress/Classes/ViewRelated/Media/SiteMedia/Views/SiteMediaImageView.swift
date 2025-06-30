@@ -78,7 +78,6 @@ final class SiteMediaImageView: UIView {
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.accessibilityIgnoresInvertColors = true
-        imageView.accessibilityIdentifier = "featured_image_current_image"
 
         backgroundColor = .secondarySystemBackground
     }

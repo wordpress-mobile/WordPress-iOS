@@ -47,7 +47,7 @@ public class EditorPostSettings: ScreenObject {
     var chooseFromMediaButton: XCUIElement { app.buttons["Choose from Media"].firstMatch }
     var saveButton: XCUIElement { saveButtonGetter(app) }
     var backButton: XCUIElement? { backButtonGetter(app) }
-    var selectedFeaturedImage: XCUIElement { app.images["featured_image_current_image"].firstMatch }
+    var selectedFeaturedImage: XCUIElement { app.images["featured_image_current_image_menu"].firstMatch }
     var firstCalendarDayButton: XCUIElement { firstCalendarDayButtonGetter(app) }
     var monthLabel: XCUIElement { monthLabelGetter(app) }
     var nextMonthButton: XCUIElement { nextMonthButtonGetter(app) }
