@@ -300,7 +300,7 @@ class AbstractPostListViewController: UIViewController,
         if noResultsViewController.view.isDescendant(of: tableView) == false {
             self.addChild(noResultsViewController)
             tableView.addSubview(noResultsViewController.view)
-            noResultsViewController.view.frame = tableView.frame.offsetBy(dx: 0, dy: -view.safeAreaInsets.top + 40)
+            noResultsViewController.view.pinEdges(to: view.safeAreaLayoutGuide)
             noResultsViewController.didMove(toParent: self)
         }
 
