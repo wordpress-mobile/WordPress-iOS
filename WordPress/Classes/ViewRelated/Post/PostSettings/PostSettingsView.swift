@@ -50,14 +50,16 @@ private struct PostSettingsView: View {
 
     var body: some View {
         Form {
-            generalSection
             featuredImageSection
+            generalSection
             if viewModel.isPost {
-                taxonomySection
+                organizationSection
             }
             excerptSection
             moreOptionsSection
+            infoSection
         }
+        .accessibilityIdentifier("post_settings_form")
         .disabled(viewModel.isSaving)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -96,6 +98,7 @@ private struct PostSettingsView: View {
             }
         }
         .tint(AppColor.tint)
+        .accessibilityIdentifier("post_settings_cancel_button")
     }
 
     @ViewBuilder
@@ -117,8 +120,75 @@ private struct PostSettingsView: View {
                     .fontWeight(.medium)
                 }
             }
+            .accessibilityIdentifier("post_settings_save_button")
             .disabled(!viewModel.hasChanges)
             .tint(AppColor.tint)
+        }
+    }
+
+    // MARK: - "Featured Image" Section
+
+    @ViewBuilder
+    private var featuredImageSection: some View {
+        Section {
+            PostSettingsFeaturedImageRow(viewModel: viewModel.featuredImageViewModel)
+                .accessibilityIdentifier("post_settings_featured_image_cell")
+        } header: {
+            SectionHeader(Strings.featuredImageHeader)
+        }
+    }
+
+    // MARK: - "Organization" Section
+
+    @ViewBuilder
+    private var organizationSection: some View {
+        Section {
+            categoriesRow
+            tagsRow
+        } header: {
+            SectionHeader(Strings.taxonomyHeader)
+        }
+    }
+
+    private var categoriesRow: some View {
+        Button(action: viewModel.showCategoriesPicker) {
+            HStack {
+                PostSettingsCategoriesRow(categories: viewModel.displayedCategories)
+                Image(systemName: "chevron.forward")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundColor(Color(.tertiaryLabel))
+            }
+        }
+        .tint(.primary)
+        .accessibilityIdentifier("post_settings_categories")
+    }
+
+    private var tagsRow: some View {
+        Button(action: viewModel.showTagsPicker) {
+            HStack {
+                PostSettingsTagsRow(tags: viewModel.displayedTags)
+                Image(systemName: "chevron.forward")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundColor(Color(.tertiaryLabel))
+            }
+        }
+        .tint(.primary)
+        .accessibilityIdentifier("post_settings_tags")
+    }
+
+    // MARK: - "Excerpt" Section
+
+    @ViewBuilder
+    private var excerptSection: some View {
+        Section {
+            NavigationLink {
+                PostSettingsExcerptEditor(text: $viewModel.settings.excerpt)
+                    .navigationTitle(Strings.excerptHeader)
+            } label: {
+                PostSettingExcerptRow(text: viewModel.settings.excerpt)
+            }
+        } header: {
+            SectionHeader(Strings.excerptHeader)
         }
     }
 
@@ -127,13 +197,14 @@ private struct PostSettingsView: View {
     @ViewBuilder
     private var generalSection: some View {
         Section {
-            if viewModel.isMultiAuthorBlog {
-                authorRow
-            }
+            authorRow
             if !viewModel.isDraftOrPending {
                 publishDateRow
                 visibilityRow
             }
+            slugRow
+        } header: {
+            SectionHeader(Strings.generalHeader)
         }
     }
 
@@ -185,70 +256,17 @@ private struct PostSettingsView: View {
         }
     }
 
-    // MARK: - "Featured Image" Section
-
-    @ViewBuilder
-    private var featuredImageSection: some View {
-        Section(Strings.featuredImageHeader) {
-            PostSettingsFeaturedImageRow(viewModel: viewModel.featuredImageViewModel)
-                .accessibilityIdentifier("post_settings_featured_image_cell")
-        }
-    }
-
-    // MARK: - "Taxonomy" Section
-
-    @ViewBuilder
-    private var taxonomySection: some View {
-        Section(Strings.taxonomyHeader) {
-            categoriesRow
-            tagsRow
-        }
-    }
-
-    private var categoriesRow: some View {
-        Button(action: viewModel.showCategoriesPicker) {
-            HStack {
-                SettingsRow(Strings.categoriesLabel, value: viewModel.categoriesText)
-                Image(systemName: "chevron.forward")
-                    .font(.footnote.weight(.semibold))
-                    .foregroundColor(Color(.tertiaryLabel))
-            }
-        }
-        .tint(.primary)
-    }
-
-    private var tagsRow: some View {
-        Button(action: viewModel.showTagsPicker) {
-            HStack {
-                SettingsRow(Strings.tagsLabel, value: viewModel.tagsText)
-                Image(systemName: "chevron.forward")
-                    .font(.footnote.weight(.semibold))
-                    .foregroundColor(Color(.tertiaryLabel))
-            }
-        }
-        .tint(.primary)
-    }
-
-    // MARK: - "Excerpt" Section
-
-    @ViewBuilder
-    private var excerptSection: some View {
-        Section(Strings.excerptHeader) {
-            SettingsTextEditor(text: $viewModel.settings.excerpt)
-        }
-    }
-
     // MARK: - "More Options" Section
 
+    /// The least-used options.
     @ViewBuilder
     private var moreOptionsSection: some View {
-        Section(Strings.moreOptionsHeader) {
-            slugRow
-            if viewModel.isDraftOrPending {
-                pendingReviewRow
-            }
+        Section {
             if viewModel.shouldShowStickyOption {
                 stickyPostRow
+            }
+            if viewModel.isDraftOrPending {
+                pendingReviewRow
             }
             if viewModel.isPost {
                 postFormatRow
@@ -256,6 +274,8 @@ private struct PostSettingsView: View {
             if !viewModel.isPost {
                 parentPageRow
             }
+        } header: {
+            SectionHeader(Strings.moreOptionsHeader)
         }
     }
 
@@ -307,6 +327,24 @@ private struct PostSettingsView: View {
             Text(Strings.stickyPostLabel)
         }
     }
+
+    // MARK: - "Info" Section
+
+    @ViewBuilder
+    private var infoSection: some View {
+        if viewModel.lastEditedText != nil || viewModel.postID != nil {
+            Section {
+                if let postID = viewModel.postID {
+                    SettingsRow(Strings.postIDLabel, value: String(postID))
+                }
+                if let lastEditedText = viewModel.lastEditedText {
+                    SettingsRow(Strings.lastEditedLabel, value: lastEditedText)
+                }
+            } header: {
+                SectionHeader(Strings.infoLabel)
+            }
+        }
+    }
 }
 
 @MainActor
@@ -323,26 +361,12 @@ private struct PostSettingsAuthorRow: View {
                 }
                 Text(author.displayName)
                     .foregroundColor(.secondary)
+                    .textSelection(.enabled)
             } else {
                 Text("—")
                     .foregroundColor(.secondary)
             }
         }
-    }
-}
-
-/// A text editor that is displayed with two-lines when empty and grows up to
-/// a certain height limit as you add more text.
-@MainActor
-private struct SettingsTextEditor: View {
-    @Binding var text: String
-
-    @ScaledMetric(relativeTo: .body) var height = 84
-
-    var body: some View {
-        TextEditor(text: $text)
-            .frame(height: height)
-            .listRowInsets(EdgeInsets(top: 2, leading: 16, bottom: 0, trailing: 16))
     }
 }
 
@@ -363,6 +387,7 @@ private struct SettingsRow: View {
             Spacer()
             Text(value)
                 .foregroundColor(.secondary)
+                .textSelection(.enabled)
         }
         .lineLimit(1)
     }
@@ -409,7 +434,7 @@ private enum Strings {
 
     static let publishDateLabel = NSLocalizedString(
         "postSettings.publishDate.label",
-        value: "Publish Date",
+        value: "Date",
         comment: "Label for the publish date field in Post Settings"
     )
 
@@ -450,21 +475,15 @@ private enum Strings {
     )
 
     static let taxonomyHeader = NSLocalizedString(
-        "postSettings.taxonomy.header",
-        value: "Taxonomy",
-        comment: "Label for the Taxonomy area (categories, keywords, ...) in post settings."
+        "postSettings.organization.header",
+        value: "Organization",
+        comment: "Label for the Organization area (categories, keywords, ...) in post settings."
     )
 
     static let categoriesLabel = NSLocalizedString(
         "postSettings.categories.label",
         value: "Categories",
         comment: "Label for the categories field. Should be the same as WP core."
-    )
-
-    static let tagsLabel = NSLocalizedString(
-        "postSettings.tags.label",
-        value: "Tags",
-        comment: "Label for the tags field. Should be the same as WP core."
     )
 
     static let excerptHeader = NSLocalizedString(
@@ -519,5 +538,29 @@ private enum Strings {
         "postSettings.stickyPost.label",
         value: "Sticky",
         comment: "Label for the sticky post toggle. Sticky posts are displayed at the top of the blog."
+    )
+
+    static let infoLabel = NSLocalizedString(
+        "postSettings.metadata.header",
+        value: "Info",
+        comment: "Section header for Info in Post Settings"
+    )
+
+    static let permalinkLabel = NSLocalizedString(
+        "postSettings.permalink.label",
+        value: "Permalink",
+        comment: "Label for the permalink field in Post Settings"
+    )
+
+    static let lastEditedLabel = NSLocalizedString(
+        "postSettings.lastEdited.label",
+        value: "Last Edited",
+        comment: "Label for the last edited field in Post Settings"
+    )
+
+    static let postIDLabel = NSLocalizedString(
+        "postSettings.postID.label",
+        value: "ID",
+        comment: "Label for the post ID field in Post Settings"
     )
 }

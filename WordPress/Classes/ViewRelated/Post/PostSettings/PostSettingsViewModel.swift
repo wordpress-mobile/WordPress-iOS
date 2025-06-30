@@ -18,8 +18,8 @@ final class PostSettingsViewModel: ObservableObject {
 
     @Published private(set) var isSaving = false
     @Published private(set) var hasChanges = false
-    @Published private(set) var categoriesText = ""
-    @Published private(set) var tagsText = ""
+    @Published private(set) var displayedCategories: [String] = []
+    @Published private(set) var displayedTags: [String] = []
     @Published private(set) var parentPageText: String?
 
     @Published var isShowingDeletedAlert = false
@@ -34,10 +34,6 @@ final class PostSettingsViewModel: ObservableObject {
 
     var deletedAlertMessage: String {
         isPost ? Strings.postDeletedMessage : Strings.pageDeletedMessage
-    }
-
-    var isMultiAuthorBlog: Bool {
-        post.blog.isMultiAuthor
     }
 
     var authorDisplayName: String {
@@ -91,6 +87,20 @@ final class PostSettingsViewModel: ObservableObject {
         return post.blog.supports(.wpComRESTAPI) || post.blog.isAdmin
     }
 
+    var lastEditedText: String? {
+        guard let date = post.dateModified ?? post.dateCreated else {
+            return nil
+        }
+        return date.toMediumString()
+    }
+
+    var postID: Int? {
+        guard let postID = post.postID?.intValue, postID > 0 else {
+            return nil
+        }
+        return postID
+    }
+
     private let originalSettings: PostSettings
     private var cancellables = Set<AnyCancellable>()
 
@@ -119,8 +129,8 @@ final class PostSettingsViewModel: ObservableObject {
         }.store(in: &cancellables)
 
         // Initialize all cached properties
-        refreshCategoriesText()
-        refreshTagsText()
+        refreshDisplayedCategories()
+        refreshDisplayedTags()
         refreshParentPageText()
 
         WPAnalytics.track(.postSettingsShown)
@@ -130,23 +140,22 @@ final class PostSettingsViewModel: ObservableObject {
         hasChanges = new != originalSettings
 
         if old.categoryIDs != new.categoryIDs {
-            refreshCategoriesText()
+            refreshDisplayedCategories()
         }
         if old.tags != new.tags {
-            refreshTagsText()
+            refreshDisplayedTags()
         }
         if old.parentPageID != new.parentPageID {
             refreshParentPageText()
         }
     }
 
-    private func refreshCategoriesText() {
-        categoriesText = settings.makeCategoriesText(for: post)
-            .stringByDecodingXMLCharacters()
+    private func refreshDisplayedCategories() {
+        displayedCategories = settings.getCategoryNames(for: post)
     }
 
-    private func refreshTagsText() {
-        tagsText = settings.makeTagsText()
+    private func refreshDisplayedTags() {
+        displayedTags = AbstractPost.makeTags(from: settings.tags)
     }
 
     private func refreshParentPageText() {

@@ -221,10 +221,10 @@ struct PostSettingsTests {
         settings.categoryIDs = Set([1, 2])
 
         // When
-        let categoriesText = settings.makeCategoriesText(for: post)
+        let categoryNames = settings.getCategoryNames(for: post)
 
         // Then
-        #expect(categoriesText == "Apple, Technology") // Alphabetically sorted
+        #expect(categoryNames == ["Apple", "Technology"]) // Alphabetically sorted
     }
 
     @Test("Generates empty categories text for pages")
@@ -237,10 +237,10 @@ struct PostSettingsTests {
         settings.categoryIDs = Set([1, 2])
 
         // When
-        let categoriesText = settings.makeCategoriesText(for: page)
+        let categoryNames = settings.getCategoryNames(for: page)
 
         // Then
-        #expect(categoriesText == "")
+        #expect(categoryNames == [])
     }
 
     @Test("Generates tags text correctly")
@@ -254,7 +254,7 @@ struct PostSettingsTests {
         settings.tags = "swift, ios, testing"
 
         // When
-        let tagsText = settings.makeTagsText()
+        let tagsText = settings.tags
 
         // Then
         #expect(tagsText == "swift, ios, testing")
@@ -271,7 +271,7 @@ struct PostSettingsTests {
         settings.tags = ""
 
         // When
-        let tagsText = settings.makeTagsText()
+        let tagsText = settings.tags
 
         // Then
         #expect(tagsText == "")

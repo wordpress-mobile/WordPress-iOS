@@ -4,39 +4,39 @@ import XCTest
 public class EditorPostSettings: ScreenObject {
 
     private let settingsTableGetter: (XCUIApplication) -> XCUIElement = {
-        $0.tables["SettingsTable"]
+        $0.collectionViews["post_settings_form"].firstMatch
     }
 
     private let categoriesSectionGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Categories"]
+        $0.buttons["post_settings_categories"].firstMatch
     }
 
     private let tagsSectionGetter: (XCUIApplication) -> XCUIElement = {
-        $0.cells["Tags"]
+        $0.buttons["post_settings_tags"].firstMatch
     }
 
     private let publishDateButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.staticTexts["Publish Date"]
+        $0.staticTexts["Publish Date"].firstMatch
     }
 
     private let dateSelectorGetter: (XCUIApplication) -> XCUIElement = {
-        $0.staticTexts["Immediately"]
+        $0.staticTexts["Immediately"].firstMatch
     }
 
     private let nextMonthButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Next Month"]
+        $0.buttons["Next Month"].firstMatch
     }
 
     private let monthLabelGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Month"]
+        $0.buttons["Month"].firstMatch
     }
 
     private let firstCalendarDayButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons.containing(.staticText, identifier: "1").element
     }
 
-    private let closeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars.buttons["close"]
+    private let saveButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars.buttons["post_settings_save_button"].firstMatch
     }
 
     private let backButtonGetter: (XCUIApplication) -> XCUIElement? = {
@@ -45,10 +45,9 @@ public class EditorPostSettings: ScreenObject {
 
     var categoriesSection: XCUIElement { categoriesSectionGetter(app) }
     var chooseFromMediaButton: XCUIElement { app.buttons["Choose from Media"].firstMatch }
-    var closeButton: XCUIElement { closeButtonGetter(app) }
+    var saveButton: XCUIElement { saveButtonGetter(app) }
     var backButton: XCUIElement? { backButtonGetter(app) }
-    var featuredImageCell: XCUIElement { app.cells["post_settings_featured_image_cell"].firstMatch }
-    var selectedFeaturedImage: XCUIElement { app.otherElements["featured_image_current_image"].firstMatch }
+    var selectedFeaturedImage: XCUIElement { app.images["featured_image_current_image_menu"].firstMatch }
     var firstCalendarDayButton: XCUIElement { firstCalendarDayButtonGetter(app) }
     var monthLabel: XCUIElement { monthLabelGetter(app) }
     var nextMonthButton: XCUIElement { nextMonthButtonGetter(app) }
@@ -88,13 +87,13 @@ public class EditorPostSettings: ScreenObject {
     }
 
     public func removeFeatureImage() throws -> EditorPostSettings {
-        featuredImageCell.tap()
+        app.buttons["post_settings_featured_image_cell"].firstMatch.tap()
         app.buttons["featured_image_button_remove"].firstMatch.tap()
         return try EditorPostSettings()
     }
 
     public func setFeaturedImage() throws -> EditorPostSettings {
-        featuredImageCell.tap()
+        app.buttons["post_settings_featured_image_cell"].firstMatch.tap()
         chooseFromMediaButton.tap()
         try MediaPickerAlbumScreen()
             .selectImage(atIndex: 0) // Select latest uploaded image
@@ -118,10 +117,13 @@ public class EditorPostSettings: ScreenObject {
         return try EditorPostSettings()
     }
 
-    @discardableResult
-    public func closePostSettings() throws -> BlockEditorScreen {
-        closeButton.tap()
+    public func closePostSettings() {
+        app.buttons["post_settings_cancel_button"].firstMatch.tap()
+    }
 
+    @discardableResult
+    public func savePostSettings() throws -> BlockEditorScreen {
+        saveButton.tap()
         return try BlockEditorScreen()
     }
 

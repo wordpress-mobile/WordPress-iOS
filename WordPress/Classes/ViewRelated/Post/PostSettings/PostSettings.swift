@@ -99,8 +99,8 @@ struct PostSettings: Hashable {
             post.featuredImage = nil
         }
 
-        // Apply categories and tags for posts
-        if let post = post as? Post {
+        switch post {
+        case let post as Post:
             // Update tags
             if post.tags != tags {
                 post.tags = tags
@@ -129,13 +129,12 @@ struct PostSettings: Hashable {
             if post.isStickyPost != isStickyPost {
                 post.isStickyPost = isStickyPost
             }
-        }
-
-        // Apply page-specific settings
-        if let page = post as? Page {
+        case let page as Page:
             if page.parentID?.intValue != parentPageID {
                 page.parentID = parentPageID.map { NSNumber(value: $0) }
             }
+        default:
+            wpAssertionFailure("unsupported post type", userInfo: ["post_type": String(describing: type(of: post))])
         }
     }
 
@@ -172,23 +171,18 @@ extension PostSettings {
         )
     }
 
-    func makeCategoriesText(for post: AbstractPost) -> String {
-        guard let post = post as? Post else { return "" }
-
+    func getCategoryNames(for post: AbstractPost) -> [String] {
+        guard let post = post as? Post else {
+            return []
+        }
         var categories: [Int: String] = [:]
         for category in post.blog.categories ?? [] {
             if let id = category.categoryID?.intValue, let name = category.categoryName {
                 categories[id] = name
             }
         }
-
         return categoryIDs.compactMap { categories[$0] }
             .sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
-            .joined(separator: ", ")
-    }
-
-    func makeTagsText() -> String {
-        AbstractPost.makeTags(from: tags)
-            .joined(separator: ", ")
+            .map { $0.stringByDecodingXMLCharacters() }
     }
 }

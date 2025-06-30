@@ -8,40 +8,61 @@ struct PostSettingsFeaturedImageRow: View {
     @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
     @State private var presentedMedia: Media?
 
+    @ScaledMetric(relativeTo: .body) var height = 120
+
     var body: some View {
-        if let image = viewModel.selection {
-            SiteMediaImage(media: image, size: .large)
-                .loadingStyle(.spinner)
-                // warning: SiteMediaImage doesn't seem to reload otherwise; might want to change it later
-                .id(image)
-                .accessibilityIdentifier("featured_image_current_image")
-                .aspectRatio(1.0 / ReaderPostCell.coverAspectRatio, contentMode: .fit)
-                .overlay {
-                    menu
-                }
-                .contextMenu {
-                    actions
-                }
-                .sheet(item: $presentedMedia) { media in
-                    LightboxView(media: media)
-                        .ignoresSafeArea()
-                }
-                .listRowInsets(EdgeInsets.zero)
-        } else {
-            Group {
-                if viewModel.upload != nil {
-                    // The upload state when no image is selected. For the "Replace"
-                    // flow, the app shows the upload differently (see `menu`).
-                    uploading
-                } else {
-                    makeMediaPicker {
-                        Label(Strings.buttonSetFeaturedImage, systemImage: "photo.badge.plus")
-                            .frame(maxWidth: .infinity)
-                            .contentShape(Rectangle()) // Make the whole cell tappable
+        Group {
+            if let image = viewModel.selection {
+                makeMediaView(with: image)
+            } else {
+                Group {
+                    if viewModel.upload != nil {
+                        // The upload state when no image is selected. For the "Replace"
+                        // flow, the app shows the upload differently (see `menu`).
+                        uploadingStateView
+                    } else {
+                        makeMediaPicker {
+                            setFeaturedImageView
+                        }
                     }
                 }
+                .listRowBackground(Color.clear)
+                .frame(height: height)
             }
-            .frame(minHeight: 44)
+        }
+        .listRowInsets(EdgeInsets.zero)
+    }
+
+    private func makeMediaView(with image: Media) -> some View {
+        SiteMediaImage(media: image, size: .large)
+            .loadingStyle(.spinner)
+            // warning: SiteMediaImage doesn't seem to reload otherwise; might want to change it later
+            .id(image)
+            .aspectRatio(1.0 / ReaderPostCell.coverAspectRatio, contentMode: .fit)
+            .overlay {
+                menu
+            }
+            .contextMenu {
+                actions
+            }
+            .sheet(item: $presentedMedia) { media in
+                LightboxView(media: media)
+                    .ignoresSafeArea()
+            }
+    }
+
+    private var setFeaturedImageView: some View {
+        makeWithProminentBackground {
+            VStack(spacing: 4) {
+                Image(systemName: "photo.on.rectangle.angled")
+                    .font(.title)
+                    .symbolRenderingMode(.hierarchical)
+
+                Text(Strings.buttonSetFeaturedImage)
+                    .font(.body)
+            }
+            .foregroundColor(.accentColor)
+            .fontWeight(.medium)
         }
     }
 
@@ -60,6 +81,7 @@ struct PostSettingsFeaturedImageRow: View {
                     Image(systemName: "ellipsis")
                         .foregroundStyle(Color(.label))
                         .font(.system(size: 18))
+                        .accessibilityIdentifier("featured_image_current_image_menu") // not ideal
                 }
             }
             .shadow(color: .black.opacity(0.5), radius: 10)
@@ -88,26 +110,47 @@ struct PostSettingsFeaturedImageRow: View {
         }
     }
 
-    private var uploading: some View {
-        HStack(alignment: .center, spacing: 0) {
-            ProgressView()
-                .padding(.trailing, 12)
-
-            Text(Strings.uploading)
-                .foregroundStyle(.secondary)
-                .lineLimit(1)
-
-            Spacer(minLength: 8)
-
-            Menu {
-                Button(role: .destructive, action: viewModel.buttonCancelTapped) {
-                    Label(Strings.cancelUpload, systemImage: "trash")
-                }
-            } label: {
-                Image(systemName: "ellipsis")
-                    .font(.subheadline)
-                    .tint(.secondary)
+    private var uploadingStateView: some View {
+        Menu {
+            Button(role: .destructive, action: viewModel.buttonCancelTapped) {
+                Label(Strings.cancelUpload, systemImage: "xmark.circle.fill")
             }
+        } label: {
+            makeWithProminentBackground {
+                HStack {
+                    ProgressView()
+
+                    Text(Strings.uploading)
+                        .font(.headline)
+                        .fontWeight(.medium)
+                }
+                .tint(.accentColor)
+                .foregroundColor(.accentColor)
+            }
+            .overlay(alignment: .topTrailing) {
+                Image(systemName: "ellipsis.circle")
+                    .foregroundStyle(Color.secondary)
+                    .padding(12)
+            }
+        }
+    }
+
+    /// A nice tinted background for the button and other states.
+    private func makeWithProminentBackground<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
+        ZStack {
+            // System background that adapts to dark mode
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(UIColor.secondarySystemGroupedBackground))
+
+            // Very subtle accent tint
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.accentColor.opacity(0.02))
+
+            content()
+
+            // Prominent border
+            RoundedRectangle(cornerRadius: 12)
+                .strokeBorder(Color.accentColor.opacity(0.3), lineWidth: 1)
         }
     }
 

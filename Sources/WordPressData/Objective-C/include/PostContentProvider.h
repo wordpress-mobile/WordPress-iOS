@@ -12,6 +12,5 @@
 - (NSString *)blogNameForDisplay;
 - (NSURL *)featuredImageURLForDisplay;
 - (NSURL *)authorURL;
-- (NSString *)slugForDisplay;
 - (NSArray <NSString *> *)tagsForDisplay;
 @end

@@ -76,14 +76,6 @@
     return [self dateCreated];
 }
 
-- (NSString *)slugForDisplay
-{
-    if (self.wp_slug.length > 0) {
-        return self.wp_slug;
-    }
-    return self.suggested_slug;
-}
-
 - (BOOL)hasContent
 {
     BOOL titleIsEmpty = self.postTitle ? self.postTitle.isEmpty : YES;
