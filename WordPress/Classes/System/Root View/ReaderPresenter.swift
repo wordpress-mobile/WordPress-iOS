@@ -36,8 +36,6 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         supplementary.navigationBar.prefersLargeTitles = true
 
         super.init()
-
-        sidebarViewModel.navigate = { [weak self] in self?.navigate(to: $0) }
     }
 
     // TODO: (reader) update to allow seamless transitions between split view and tabs
@@ -189,22 +187,6 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
             hostVC.navigationItem.largeTitleDisplayMode = .never
         }
         return hostVC
-    }
-
-    private func navigate(to item: ReaderSidebarNavigation) {
-        switch item {
-        case .addTag:
-            let addTagVC = UIHostingController(rootView: ReaderTagsAddTagView())
-            addTagVC.modalPresentationStyle = .formSheet
-            let preferredHeight: CGFloat = 124
-            addTagVC.sheetPresentationController?.detents = [.custom(resolver: { _ in
-                preferredHeight
-            })]
-            addTagVC.preferredContentSize = CGSize(width: 420, height: preferredHeight)
-            sidebar.present(addTagVC, animated: true, completion: nil)
-        case .discoverTags:
-            ReaderSelectInterestsViewController.show(from: sidebar)
-        }
     }
 
     private func makeErrorViewController() -> UIViewController {
