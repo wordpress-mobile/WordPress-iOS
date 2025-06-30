@@ -140,6 +140,7 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
             statusLabel
         ])
         mainStackView.spacing = 4
+        mainStackView.setCustomSpacing(5, after: headerView)
         contentView.addSubview(mainStackView)
         mainStackView.pinEdges(to: contentView.layoutMarginsGuide, insets: UIEdgeInsets(top: 0, left: 0, bottom: 2, right: -2))
 
@@ -182,6 +183,7 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         ellipsisButton.setImage(UIImage(named: "more-horizontal-mobile"), for: .normal)
         ellipsisButton.tintColor = .tertiaryLabel
 
+        /// warning: See `spacer` in `PostListHeaderView` to understand the layout
         NSLayoutConstraint.activate([
             ellipsisButton.heightAnchor.constraint(equalToConstant: 40),
             ellipsisButton.widthAnchor.constraint(equalToConstant: 56)

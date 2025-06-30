@@ -8,6 +8,7 @@ final class PostListHeaderView: UIView {
     private let textLabel = UILabel()
     private let icon = UIImageView()
     private let indicator = UIActivityIndicatorView(style: .medium)
+    private let spacer = SpacerView(width: 24)
 
     // MARK: - Initializer
 
@@ -34,6 +35,7 @@ final class PostListHeaderView: UIView {
         }
         icon.isHidden = viewModel.iconInfo == nil
         indicator.isHidden = !viewModel.isShowingIndicator
+        spacer.isHidden = !viewModel.isShowingEllipsis
 
         if viewModel.isShowingIndicator {
             indicator.startAnimating()
@@ -46,7 +48,7 @@ final class PostListHeaderView: UIView {
         setupIcon()
 
         // Trailing spacer to allocate enough space for the "More" button.
-        let accessoriesStackView = UIStackView(arrangedSubviews: [icon, indicator, SpacerView(width: 40)])
+        let accessoriesStackView = UIStackView(arrangedSubviews: [icon, indicator, spacer])
         accessoriesStackView.spacing = 4
         let stackView = UIStackView(arrangedSubviews: [textLabel, accessoriesStackView])
 
