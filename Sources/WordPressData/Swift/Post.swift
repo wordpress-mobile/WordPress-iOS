@@ -231,14 +231,14 @@ public class Post: AbstractPost {
             if let preview = PostPreviewCache.shared.excerpt[excerpt] {
                 return preview
             }
-            let preview = excerpt.makePlainText()
+            let preview = excerpt.makePlainText().withCollapsedNewlines()
             PostPreviewCache.shared.excerpt[excerpt] = preview
             return preview
         } else if let content {
             if let preview = PostPreviewCache.shared.content[content] {
                 return preview
             }
-            let preview = content.summarized()
+            let preview = content.summarized().withCollapsedNewlines()
             PostPreviewCache.shared.content[content] = preview
             return preview
         } else {
@@ -257,6 +257,13 @@ public class Post: AbstractPost {
         }
 
         return title
+    }
+}
+
+private extension String {
+    // Normalize newlines by collapsing multiple occurrences of newlines to a single newline
+    func withCollapsedNewlines() -> String {
+        replacingOccurrences(of: "[\n]{2,}", with: "\n", options: .regularExpression)
     }
 }
 
