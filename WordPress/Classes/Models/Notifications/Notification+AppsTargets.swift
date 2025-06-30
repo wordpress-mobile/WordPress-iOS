@@ -363,7 +363,7 @@ extension WordPressData.Notification {
 
 // MARK: - Notifiable
 
-extension WordPressData.Notification: Notifiable {
+extension WordPressData.Notification: @retroactive Notifiable {
     public var notificationIdentifier: String {
         return notificationId
     }

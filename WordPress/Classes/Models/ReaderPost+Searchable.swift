@@ -1,7 +1,7 @@
 import Foundation
 import WordPressData
 
-extension ReaderPost: SearchableItemConvertable {
+extension ReaderPost: @retroactive SearchableItemConvertable {
     public var searchItemType: SearchItemType {
         return .readerPost
     }
