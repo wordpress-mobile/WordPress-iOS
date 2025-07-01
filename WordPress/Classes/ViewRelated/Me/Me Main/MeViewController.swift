@@ -151,6 +151,18 @@ public class MeViewController: UITableViewController {
             action: pushAccountSettings(),
             accessibilityIdentifier: "accountSettings")
 
+        let domains = NavigationItemRow(
+            title: AllDomainsListViewController.Strings.title,
+            icon: UIImage(named: "wpl-globe")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
+            accessoryType: accessoryType,
+            action: { [weak self] action in
+                self?.showOrPushController(AllDomainsListViewController())
+                WPAnalytics.track(.meDomainsTapped)
+            },
+            accessibilityIdentifier: "myDomains"
+        )
+
         let helpAndSupportIndicator = IndicatorNavigationItemRow(
             title: RowTitles.support,
             icon: UIImage(named: "wpl-help")?.withRenderingMode(.alwaysTemplate),
@@ -187,30 +199,15 @@ public class MeViewController: UITableViewController {
                     if shouldShowQRLoginRow {
                         loggedInRows.append(qrLogin)
                     }
-
+                    if BuildSettings.current.brand == .jetpack, RemoteFeatureFlag.domainManagement.enabled() && !isSidebarModeEnabled {
+                        loggedInRows.append(domains)
+                    }
                     rows = loggedInRows + rows
                 }
                 return rows
             }()),
             ImmuTableSection(rows: [helpAndSupportIndicator]),
         ])
-
-        if BuildSettings.current.brand == .jetpack, RemoteFeatureFlag.domainManagement.enabled() && loggedIn && !isSidebarModeEnabled {
-            sections.append(.init(rows: [
-                NavigationItemRow(
-                    title: AllDomainsListViewController.Strings.title,
-                    icon: UIImage(named: "wpl-globe")?.withRenderingMode(.alwaysTemplate),
-                    tintColor: .label,
-                    accessoryType: accessoryType,
-                    action: { [weak self] action in
-                        self?.showOrPushController(AllDomainsListViewController())
-                        WPAnalytics.track(.meDomainsTapped)
-                    },
-                    accessibilityIdentifier: "myDomains"
-                )
-            ])
-            )
-        }
 
         sections.append(
             ImmuTableSection(rows: [
