@@ -2,9 +2,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class Blog;
-@class PostTag;
-
 @interface PostTagService : LocalCoreDataService
 
 /**

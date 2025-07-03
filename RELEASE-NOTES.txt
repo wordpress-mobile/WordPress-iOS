@@ -8,6 +8,8 @@
 * [*] Fix an issue with content in "Restore" and "Download Backup" flows covering the navigation bar [#24597]
 * [*] Show when the downloadable backup expires in Backup List [#24597]
 * [*] Fix incorrectly capitalized tag "WordPress" in Reader [#24649]
+* [*] Fix an issue with domains sometimes being incorrectly sorted on the "Domain Search" screen [#24631]
+* [*] Fix a couple of visual issues in Post List [#24647]
 
 25.9
 -----

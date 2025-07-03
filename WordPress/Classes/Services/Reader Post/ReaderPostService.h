@@ -1,5 +1,5 @@
+@import CoreData;
 #import <Foundation/Foundation.h>
-@import WordPressData;
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wnullability-completeness"
@@ -7,6 +7,7 @@
 @class ReaderPost;
 @class ReaderAbstractTopic;
 @class WordPressComRestApi;
+@protocol CoreDataStack;
 
 extern NSString * const ReaderPostServiceErrorDomain;
 extern NSString * const ReaderPostServiceToggleSiteFollowingState;

@@ -3,11 +3,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class Blog;
-@class Menu;
-@class MenuLocation;
-@class MenuItem;
-
 typedef void(^MenusServiceSuccessBlock)(void);
 typedef void(^MenusServiceCreateOrUpdateMenuRequestSuccessBlock)(void);
 typedef void(^MenusServiceMenusRequestSuccessBlock)(NSArray<Menu *> * _Nullable menus);

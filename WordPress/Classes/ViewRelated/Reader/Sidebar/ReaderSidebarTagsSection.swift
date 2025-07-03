@@ -39,30 +39,6 @@ struct ReaderSidebarTagsSection: View {
             })
         }
         .onDelete(perform: delete)
-
-        if !viewModel.menu.contains(.tags) {
-            Button {
-                viewModel.navigate(.addTag)
-            } label: {
-                Label {
-                    Text(Strings.addTag)
-                } icon: {
-                    ReaderSidebarImage(name: "reader-menu-plus")
-                }
-            }
-            .listItemTint(AppColor.primary)
-
-            Button {
-                viewModel.navigate(.discoverTags)
-            } label: {
-                Label {
-                    Text(Strings.discoverTags)
-                } icon: {
-                    ReaderSidebarImage(name: "reader-menu-explorer")
-                }
-            }
-            .listItemTint(AppColor.primary)
-        }
     }
 
     func delete(at offsets: IndexSet) {

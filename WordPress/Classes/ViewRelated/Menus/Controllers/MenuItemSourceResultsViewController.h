@@ -1,7 +1,7 @@
+@import CoreData;
 #import <UIKit/UIKit.h>
 #import "MenuItemSourceTextBar.h"
 #import "MenuItemSourceCell.h"
-@import WordPressData;
 
 NS_ASSUME_NONNULL_BEGIN
 

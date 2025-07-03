@@ -1,11 +1,6 @@
 #import "PageSettingsViewController.h"
 #import "PostSettingsViewController_Internal.h"
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#else
 #import "WordPress-Swift.h"
-#endif
-
 @interface PageSettingsViewController ()
 
 @end

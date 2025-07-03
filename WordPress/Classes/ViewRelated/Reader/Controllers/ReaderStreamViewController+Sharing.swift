@@ -81,7 +81,7 @@ private extension ReaderSiteTopic {
     }
 }
 
-extension ReaderSiteTopic: UIActivityItemSource {
+extension ReaderSiteTopic: @retroactive UIActivityItemSource {
     public func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
         return shareableURL as Any
     }

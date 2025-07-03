@@ -5,12 +5,10 @@ import WordPressShared
 // MARK: - SiteAddressService
 
 struct SiteAddressServiceResult {
-    let hasExactMatch: Bool
     let domainSuggestions: [DomainSuggestion]
     let invalidQuery: Bool
 
-    init(hasExactMatch: Bool = false, domainSuggestions: [DomainSuggestion] = [], invalidQuery: Bool = false) {
-        self.hasExactMatch = hasExactMatch
+    init(domainSuggestions: [DomainSuggestion] = [], invalidQuery: Bool = false) {
         self.domainSuggestions = domainSuggestions
         self.invalidQuery = invalidQuery
     }
@@ -77,56 +75,25 @@ final class DomainsServiceAdapter: SiteAddressService {
     // MARK: SiteAddressService
 
     func addresses(for query: String, type: DomainsServiceRemote.DomainSuggestionType, completion: @escaping SiteAddressServiceCompletion) {
-        domainsService.getDomainSuggestions(query: query,
-                                            quantity: domainRequestQuantity,
-                                            domainSuggestionType: type,
-                                            success: { domainSuggestions in
-            switch type {
-            case .freeAndPaid:
-                let hasExactMatch = domainSuggestions.contains { domain -> Bool in
-                    return domain.domainNameStrippingSubdomain.caseInsensitiveCompare(query) == .orderedSame
+        domainsService.getDomainSuggestions(
+            query: query,
+            quantity: domainRequestQuantity,
+            domainSuggestionType: type,
+            success: { suggestions in
+                completion(Result.success(.init(domainSuggestions: suggestions)))
+            },
+            failure: { error in
+                if (error as NSError).code == DomainsServiceAdapter.emptyResultsErrorCode {
+                    completion(Result.success(SiteAddressServiceResult()))
+                    return
                 }
-                completion(Result.success(.init(hasExactMatch: hasExactMatch, domainSuggestions: domainSuggestions)))
-            default:
-                completion(Result.success(self.sortSuggestions(for: query, suggestions: domainSuggestions)))
-            }
-        },
-                                            failure: { error in
-            if (error as NSError).code == DomainsServiceAdapter.emptyResultsErrorCode {
-                completion(Result.success(SiteAddressServiceResult()))
-                return
-            }
-            if (error as NSError).code == WordPressComRestApiErrorCode.invalidQuery.rawValue {
-                completion(Result.success(SiteAddressServiceResult(invalidQuery: true)))
-                return
-            }
+                if (error as NSError).code == WordPressComRestApiErrorCode.invalidQuery.rawValue {
+                    completion(Result.success(SiteAddressServiceResult(invalidQuery: true)))
+                    return
+                }
 
-            completion(Result.failure(error))
-        })
-    }
-
-    private func sortSuggestions(for query: String, suggestions: [DomainSuggestion]) -> SiteAddressServiceResult {
-        var hasExactMatch = false
-        let sortedSuggestions = suggestions.sorted { (lhs, rhs) -> Bool in
-            if lhs.domainNameStrippingSubdomain.caseInsensitiveCompare(query) == .orderedSame
-                && rhs.domainNameStrippingSubdomain.caseInsensitiveCompare(query) == .orderedSame {
-                // If each are an exact match sort alphabetically on the full domain and mark that we found a match
-                hasExactMatch = true
-                return lhs.domainName.caseInsensitiveCompare(rhs.domainName) == .orderedAscending
-            } else if lhs.domainNameStrippingSubdomain.caseInsensitiveCompare(query) == .orderedSame {
-                // If lhs side is a match (and rhs isn't given the previous cases) then we are sorted.
-                hasExactMatch = true
-                return true
-            } else if rhs.domainNameStrippingSubdomain.caseInsensitiveCompare(query) == .orderedSame {
-                // If rhs side is a match (and lhs isn't given the previous cases) then we are not sorted.
-                hasExactMatch = true
-                return false
-            } else {
-                // If neither rhs nor lhs ara a match then sort alphabetically
-                return lhs.domainName.caseInsensitiveCompare(rhs.domainName) == .orderedAscending
+                completion(Result.failure(error))
             }
-        }
-
-        return SiteAddressServiceResult(hasExactMatch: hasExactMatch, domainSuggestions: sortedSuggestions)
+        )
     }
 }

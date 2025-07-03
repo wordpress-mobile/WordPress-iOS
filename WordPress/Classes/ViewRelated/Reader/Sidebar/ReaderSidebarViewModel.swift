@@ -16,9 +16,8 @@ final class ReaderSidebarViewModel: ObservableObject {
     @Published var isCompact = false
     let isReaderAppModeEnabled: Bool
 
-    var navigate: (ReaderSidebarNavigation) -> Void = { _ in }
-
     let menu: [ReaderStaticScreen]
+    let library: [ReaderStaticScreen]
 
     init(menuStore: ReaderMenuStoreProtocol = ReaderMenuStore(),
          contextManager: CoreDataStackSwift = ContextManager.shared,
@@ -29,8 +28,10 @@ final class ReaderSidebarViewModel: ObservableObject {
         self.isReaderAppModeEnabled = isReaderAppModeEnabled
         if isReaderAppModeEnabled {
             menu = [.subscrtipions, .lists, .tags, .saved, .likes]
+            library = []
         } else {
             menu = [.recent, .discover, .saved, .likes, .search]
+            library = [.subscrtipions, .lists, .tags]
             restoreSelection(defaultValue: .main(.recent))
         }
 
@@ -82,11 +83,6 @@ enum ReaderSidebarItem: Identifiable, Hashable {
     case organization(TaggedManagedObjectID<ReaderTeamTopic>)
 
     var id: ReaderSidebarItem { self }
-}
-
-enum ReaderSidebarNavigation {
-    case addTag
-    case discoverTags
 }
 
 /// One of the predefined main navigation areas in the reader. The app displays

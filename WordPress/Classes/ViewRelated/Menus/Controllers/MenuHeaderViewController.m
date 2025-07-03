@@ -1,11 +1,7 @@
 #import "MenuHeaderViewController.h"
 #import "MenusSelectionView.h"
 #import "Menu+ViewDesign.h"
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#else
 #import "WordPress-Swift.h"
-#endif
 @import WordPressData;
 @import WordPressShared;
 

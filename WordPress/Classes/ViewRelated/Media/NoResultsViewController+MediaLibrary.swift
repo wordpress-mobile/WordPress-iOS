@@ -10,7 +10,7 @@ extension NoResultsViewController {
     }
 
     @objc func configureForFetching() {
-        configure(title: LocalizedText.fetchingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        configure(title: "", accessoryView: NoResultsViewController.loadingAccessoryView())
         view.layoutIfNeeded()
     }
 

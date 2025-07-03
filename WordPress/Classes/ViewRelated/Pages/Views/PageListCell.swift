@@ -21,9 +21,14 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
 
     // MARK: - PostSearchResultCell
 
-    var attributedText: NSAttributedString? {
+    var titleAttributedText: NSAttributedString? {
         get { titleLabel.attributedText }
         set { titleLabel.attributedText = newValue }
+    }
+
+    var excerptAttributedText: NSAttributedString? {
+        get { nil }  // Pages don't have excerpts in the list
+        set { }  // Pages don't have excerpts in the list
     }
 
     // MARK: AbstractPostListCell

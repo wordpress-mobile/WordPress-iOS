@@ -1,11 +1,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-@import WordPressData;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class WPAccount;
 @class RemoteUser;
+@protocol CoreDataStack;
 
 extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 

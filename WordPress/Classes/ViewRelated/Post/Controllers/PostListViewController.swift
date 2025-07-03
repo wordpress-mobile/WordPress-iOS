@@ -284,7 +284,7 @@ private extension PostListViewController {
 
     func noResultsTitle() -> String {
         if syncHelper.isSyncing == true {
-            return NoResultsText.fetchingTitle
+            return ""
         }
         return noResultsFilteredTitle()
     }
@@ -306,7 +306,6 @@ private extension PostListViewController {
     }
 
     struct NoResultsText {
-        static let fetchingTitle = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         static let noDraftsTitle = NSLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")

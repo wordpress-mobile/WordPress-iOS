@@ -119,7 +119,6 @@ fileprivate extension NotificationsTableViewCellContent {
             VStack(alignment: .leading, spacing: 0) {
                 if let title = info.title {
                     Text(title)
-                        .style(.bodySmall(.regular))
                         .foregroundStyle(Color.primary)
                         .layoutPriority(1)
                         .lineLimit(2)
@@ -130,7 +129,7 @@ fileprivate extension NotificationsTableViewCellContent {
                         .style(.bodySmall(.regular))
                         .foregroundStyle(Color.secondary)
                         .layoutPriority(2)
-                        .lineLimit(1)
+                        .lineLimit(2)
                         .padding(.top, .DS.Padding.half)
                 }
             }

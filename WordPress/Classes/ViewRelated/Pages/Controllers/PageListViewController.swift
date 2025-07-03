@@ -471,7 +471,7 @@ private extension PageListViewController {
 
     func noResultsTitle() -> String {
         if syncHelper.isSyncing == true {
-            return NoResultsText.fetchingTitle
+            return ""
         }
         return noResultsFilteredTitle()
     }
@@ -493,7 +493,6 @@ private extension PageListViewController {
     }
 
     struct NoResultsText {
-        static let fetchingTitle = NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
         static let noDraftsTitle = NSLocalizedString("You don't have any draft pages", comment: "Displayed when the user views drafts in the pages list and there are no pages")
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled pages", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed pages", comment: "Displayed when the user views trashed in the pages list and there are no pages")

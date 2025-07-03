@@ -1,3 +1,6 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
 # Most of the steps need to run on a macOS agent, so let's define it as a root property.
 agents:
   queue: mac
@@ -111,17 +114,12 @@ steps:
           - github_commit_status:
               context: "Reader Unit Tests"
       - label: "🔬 Keystone Unit Tests"
-        command: |
-          if .buildkite/commands/should-skip-job.sh --job-type validation; then
-            exit 0
-          fi
-
-          .buildkite/commands/shared-set-up.sh
-          xcodebuild \
-            -scheme Keystone \
-            -destination 'platform=iOS Simulator,OS=18.2,name=iPhone 16' \
-            test \
-            | xcbeautify
+        command: .buildkite/commands/run-unit-tests-for-scheme.sh Keystone
+        # Disabled till https://github.com/wordpress-mobile/WordPress-iOS/pull/24537 is completed
+        #
+        # The boolean value has to be a string explicitly.
+        # See validation error against schema.
+        if: "false"
         plugins: [$CI_TOOLKIT_PLUGIN]
         artifact_paths:
           - "build/results/*"
@@ -129,17 +127,7 @@ steps:
           - github_commit_status:
               context: "Unit Tests Keystone"
       - label: "🔬 WordPressData Unit Tests"
-        command: |
-          if .buildkite/commands/should-skip-job.sh --job-type validation; then
-            exit 0
-          fi
-
-          .buildkite/commands/shared-set-up.sh
-          xcodebuild \
-            -scheme WordPressData \
-            -destination 'platform=iOS Simulator,OS=18.2,name=iPhone 16' \
-            test \
-            | xcbeautify
+        command: .buildkite/commands/run-unit-tests-for-scheme.sh WordPressData
         plugins: [$CI_TOOLKIT_PLUGIN]
         artifact_paths:
           - "build/results/*"
