@@ -2,6 +2,7 @@ import UIKit
 import MobileCoreServices
 import UniformTypeIdentifiers
 import ShareExtensionCore
+import WordPressData
 
 // MARK: - Functionality related to sharing a blog via the reader.
 
@@ -80,7 +81,7 @@ private extension ReaderSiteTopic {
     }
 }
 
-extension ReaderSiteTopic: UIActivityItemSource {
+extension ReaderSiteTopic: @retroactive UIActivityItemSource {
     public func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
         return shareableURL as Any
     }

@@ -231,7 +231,7 @@ extension BlogDashboardViewController {
 
     private enum Strings {
         static let home = NSLocalizedString("Home", comment: "Title for the dashboard screen.")
-        static let failureTitle = NSLocalizedString("Couldn't update. Check that you're online and refresh.", comment: "Content show when the dashboard fails to load")
+        static let failureTitle = NSLocalizedString("Couldn't load data. Please refresh again later.", comment: "Content show when the dashboard fails to load")
         static let dismiss = NSLocalizedString(
             "blogDashboard.dismiss",
             value: "Dismiss",

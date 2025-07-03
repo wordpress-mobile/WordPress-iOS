@@ -1,189 +1,152 @@
+import Testing
 import Foundation
-import XCTest
 import WordPressKit
-import WordPressUI
 
 @testable import WordPress
-@testable import WordPressData
 
-class TimeZoneSelectorViewModelTests: CoreDataTestCase {
+@MainActor
+struct TimeZoneSelectorViewModelTests {
+    @Test func initAndCheckInitialState() async {
+        let service = MockTimeZoneService()
+        let viewModel = TimeZoneSelectorViewModel(service: service)
 
-    private var viewModel: TimeZoneSelectorViewModel!
-
-    private var timeZoneGroups: [TimeZoneGroup]!
-
-    override func setUp() {
-        super.setUp()
-
-        // Given TimeZoneGroups
-        // When new ViewModel created with TimeZoneStore with state=loaded
-        loadTimeZoneGroupsIntoViewModel()
+        #expect(viewModel.sections.isEmpty)
+        #expect(!viewModel.isLoading)
+        #expect(viewModel.error == nil)
     }
 
-    override func tearDown() {
-        viewModel = nil
-        timeZoneGroups = nil
+    @Test func filteredSectionsWithEmptySearchText() async {
+        let mockGroups = createMockTimeZoneGroups()
+        let service = MockTimeZoneService(timeZoneGroups: mockGroups)
+        let viewModel = TimeZoneSelectorViewModel(service: service)
 
-        super.tearDown()
+        await viewModel.loadTimezones()
+
+        let filtered = viewModel.filteredSections(searchText: "")
+
+        #expect(filtered.count == viewModel.sections.count)
+        #expect(filtered == viewModel.sections)
     }
 
-    func loadTimeZoneGroupsIntoViewModel(selectedValue: String = "", filter: String? = nil) {
-        timeZoneGroups = [timeZoneGroup()]
+    @Test func filteredSectionsWithMatchingSearchText() async {
+        let mockGroups = createMockTimeZoneGroups()
+        let service = MockTimeZoneService(timeZoneGroups: mockGroups)
+        let viewModel = TimeZoneSelectorViewModel(service: service)
 
-        let loaded = TimeZoneStoreState.loaded(timeZoneGroups)
-        viewModel = TimeZoneSelectorViewModel(
-                state: TimeZoneSelectorViewModel.State.with(storeState: loaded),
-                selectedValue: selectedValue,
-                filter: filter)
+        await viewModel.loadTimezones()
+
+        let filtered = viewModel.filteredSections(searchText: "Addis")
+
+        #expect(filtered.count == 1)
+        #expect(filtered[0].name == "Africa")
+        #expect(filtered[0].timezones.count == 1)
+        #expect(filtered[0].timezones[0].timezone.label == "Addis Ababa")
     }
 
-    func testReady() throws {
-        switch viewModel.state {
-        case .loading:
-            XCTFail()
-        case .ready(let groups):
-            // Then viewModel should be ready
-            XCTAssertEqual(groups.count, timeZoneGroups.count)
-        case .error:
-            XCTFail()
-        }
+    @Test func filteredSectionsWithNonMatchingSearchText() async {
+        let mockGroups = createMockTimeZoneGroups()
+        let service = MockTimeZoneService(timeZoneGroups: mockGroups)
+        let viewModel = TimeZoneSelectorViewModel(service: service)
+
+        await viewModel.loadTimezones()
+
+        let filtered = viewModel.filteredSections(searchText: "NoTimeZoneForThisFilter")
+
+        #expect(filtered.isEmpty)
     }
 
-    func testGroups() {
-        // Then viewModel allTimeZonesGroup() count is equal to mock data count
-        XCTAssertEqual(viewModel.groups.count, timeZoneGroups.count)
+    @Test func loadTimezonesSuccess() async {
+        // Create mock data
+        let mockGroups = [
+            TimeZoneGroup(name: "Africa", timezones: [
+                NamedTimeZone(label: "Abidjan", value: "Africa/Abidjan"),
+                NamedTimeZone(label: "Accra", value: "Africa/Accra")
+            ]),
+            TimeZoneGroup(name: "America", timezones: [
+                NamedTimeZone(label: "New York", value: "America/New_York")
+            ])
+        ]
+
+        let service = MockTimeZoneService(timeZoneGroups: mockGroups)
+        let viewModel = TimeZoneSelectorViewModel(service: service)
+
+        #expect(viewModel.sections.isEmpty)
+        #expect(!viewModel.isLoading)
+
+        await viewModel.loadTimezones()
+
+        #expect(!viewModel.isLoading)
+        #expect(viewModel.error == nil)
+        #expect(viewModel.sections.count == 2)
+        #expect(viewModel.sections[0].name == "Africa")
+        #expect(viewModel.sections[0].timezones.count == 2)
+        #expect(viewModel.sections[1].name == "America")
+        #expect(viewModel.sections[1].timezones.count == 1)
     }
 
-    func testFilteredGroupsExists() {
-        // When user types "Addis" which exists
-        loadTimeZoneGroupsIntoViewModel(filter: "Addis")
+    @Test func loadTimezonesError() async {
+        let service = MockTimeZoneService(shouldThrowError: true)
+        let viewModel = TimeZoneSelectorViewModel(service: service)
 
-        // Then viewModel filteredGroups should be Addis_Ababa
-        let filteredGroups = viewModel.filteredGroups
-        XCTAssertEqual(filteredGroups.count, 1)
+        #expect(viewModel.error == nil)
+        #expect(!viewModel.isLoading)
 
-        let timeZoneGroup: TimeZoneGroup = filteredGroups[0]
-        XCTAssertEqual(timeZoneGroup.timezones.count, 1)
-        XCTAssertEqual(timeZoneGroup.name, "Africa")
+        await viewModel.loadTimezones()
 
-        let timeZone: WPTimeZone = timeZoneGroup.timezones[0]
-        XCTAssertEqual(timeZone.label, Constants.timeZoneTestTuple3.label)
-        XCTAssertEqual(timeZone.value, Constants.timeZoneTestTuple3.value)
+        #expect(!viewModel.isLoading)
+        #expect(viewModel.error != nil)
+        #expect(viewModel.sections.isEmpty)
     }
 
-    func testFilteredGroupsDoesNotExist() {
-        // When user types an invalid filter
-        loadTimeZoneGroupsIntoViewModel(filter: "NoTimeZoneForThisFilter")
+    @Test func loadTimezonesUpdatesSuggestion() async {
+        // Mock timezone groups containing device's current timezone
+        let deviceTimezone = TimeZone.current.identifier
+        let mockGroups = [
+            TimeZoneGroup(name: "Test", timezones: [
+                NamedTimeZone(label: "Test Zone", value: deviceTimezone)
+            ])
+        ]
 
-        // Then viewModel filteredGroups will be empty
-        let filteredGroups = viewModel.filteredGroups
-        XCTAssertEqual(filteredGroups.count, 0)
+        let service = MockTimeZoneService(timeZoneGroups: mockGroups)
+        let viewModel = TimeZoneSelectorViewModel(service: service)
+
+        #expect(viewModel.suggestedTimezoneRowViewModel == nil)
+
+        await viewModel.loadTimezones()
+
+        #expect(viewModel.suggestedTimezoneRowViewModel != nil)
+        #expect(viewModel.suggestedTimezoneRowViewModel?.timezone.value.caseInsensitiveCompare(deviceTimezone) == .orderedSame)
     }
 
-    func testGetTimeZoneForIdentifier() {
-        // When TimeZoneIdentifier = "Africa/Addis_Ababa"
-        // Then "Africa/Addis_Ababa" WPTimeZone returned
-        guard let timeZone = viewModel.getTimeZoneForIdentifier(Constants.timeZoneTestTuple3.value) else {
-            XCTFail()
-            return
-        }
+    // MARK: - Helpers
 
-        XCTAssertNotNil(timeZone)
-        XCTAssertEqual(timeZone.label, Constants.timeZoneTestTuple3.label)
-        XCTAssertEqual(timeZone.value, Constants.timeZoneTestTuple3.value)
+    private func createMockTimeZoneGroups() -> [TimeZoneGroup] {
+        [
+            TimeZoneGroup(name: "Africa", timezones: [
+                NamedTimeZone(label: "Abidjan", value: "Africa/Abidjan"),
+                NamedTimeZone(label: "Accra", value: "Africa/Accra"),
+                NamedTimeZone(label: "Addis Ababa", value: "Africa/Addis_Ababa")
+            ]),
+            TimeZoneGroup(name: "America", timezones: [
+                NamedTimeZone(label: "New York", value: "America/New_York"),
+                NamedTimeZone(label: "Los Angeles", value: "America/Los_Angeles")
+            ])
+        ]
     }
-
-    func testTableViewModel() {
-        // When viewModel has no selected value
-        let immuTable: ImmuTable = viewModel.tableViewModel(selectionHandler: { (selectedTimezone) in
-        })
-
-        // Then section count = 1
-        let sections = immuTable.sections
-        XCTAssertNotNil(sections)
-        XCTAssertEqual(sections.count, 1)
-
-        // Then rows count = 3
-        let section: ImmuTableSection = sections[0]
-        let rows = section.rows
-        XCTAssertNotNil(rows)
-        XCTAssertEqual(rows.count, 3)
-    }
-
-    func testTableViewModelSelectedValue() {
-        // When selectedValue = "Africa/Addis_Ababa"
-        loadTimeZoneGroupsIntoViewModel(selectedValue: Constants.timeZoneTestTuple3.value)
-
-        // Then selectedValue should be Addis_Ababa
-        XCTAssertEqual(viewModel.selectedValue, Constants.timeZoneTestTuple3.value)
-    }
-
-    func testNoResultsViewModelLoading() {
-        // Given viewModel
-        // When loading
-        viewModel = TimeZoneSelectorViewModel(
-                state: TimeZoneSelectorViewModel.State.with(storeState: TimeZoneStoreState.loading),
-                selectedValue: "",
-                filter: nil)
-
-        // Then noResultsViewModel exists
-        guard let noResultsVCModel: NoResultsViewController.Model = viewModel.noResultsViewModel else {
-            XCTFail()
-            return
-        }
-
-        // Then accessoryView exists
-        XCTAssertNotNil(noResultsVCModel.accessoryView)
-
-        // Then noResultsViewModel title is loading
-        XCTAssertEqual(noResultsVCModel.titleText, TimeZoneSelectorViewModel.LocalizedText.loadingTitle)
-    }
-
-    func testNoResultsViewModelReady() {
-        // Given ViewModel
-        // When ViewModel state is ready
-
-        // Then noResultsViewModel is nil
-        XCTAssertNil(viewModel.noResultsViewModel)
-    }
-
-    func testNoResultsViewModelError() {
-        // Given ViewModel
-        // When ViewModel state is error
-        viewModel = TimeZoneSelectorViewModel(
-                state: TimeZoneSelectorViewModel.State.with(storeState: TimeZoneStoreState.error(testError())),
-                selectedValue: "",
-                filter: nil)
-
-        // Then noResultsViewModel exists
-        guard let noResultsVCModel: NoResultsViewController.Model = viewModel.noResultsViewModel else {
-            XCTFail()
-            return
-        }
-
-        // Then noResultsViewModel title is No Connection
-        XCTAssertEqual(noResultsVCModel.titleText, TimeZoneSelectorViewModel.LocalizedText.noConnectionTitle)
-    }
-
-    func timeZoneGroup() -> TimeZoneGroup {
-        var zones = [WPTimeZone]()
-        zones.append(NamedTimeZone(label: Constants.timeZoneTestTuple1.label, value: Constants.timeZoneTestTuple1.value))
-        zones.append(NamedTimeZone(label: Constants.timeZoneTestTuple2.label, value: Constants.timeZoneTestTuple2.value))
-        zones.append(NamedTimeZone(label: Constants.timeZoneTestTuple3.label, value: Constants.timeZoneTestTuple3.value))
-        return TimeZoneGroup(name: "Africa", timezones: zones)
-    }
-
 }
 
-private extension TimeZoneSelectorViewModelTests {
-    enum DecodingError: Error {
-        case decodingFailed
+private struct MockTimeZoneService: TimeZoneServiceProtocol {
+    var shouldThrowError = false
+    var timeZoneGroups: [TimeZoneGroup] = []
+
+    func timezones() async throws -> [TimeZoneGroup] {
+        if shouldThrowError {
+            throw MockError.testError
+        }
+        return timeZoneGroups
     }
 
-    enum Constants {
-        typealias timeZoneTestTuple = (label: String, value: String)
-        static let timeZoneTestTuple1: timeZoneTestTuple = (label: "Abidjan", value: "Africa/Abidjan")
-        static let timeZoneTestTuple2: timeZoneTestTuple = (label: "Accra", value: "Africa/Accra")
-        static let timeZoneTestTuple3: timeZoneTestTuple = (label: "Addis Ababa", value: "Africa/Addis_Ababa")
+    enum MockError: Error {
+        case testError
     }
 }

@@ -40,14 +40,15 @@ enum AbstractPostHelper {
         for (badge, color) in badges {
             if string.length > 0 {
                 string.append(NSAttributedString(string: " · ", attributes: [
-                    .foregroundColor: UIColor.secondaryLabel
+                    .foregroundColor: UIColor.secondaryLabel,
+                    .font: UIFont.preferredFont(forTextStyle: .footnote).withWeight(.bold)
                 ]))
             }
             string.append(NSAttributedString(string: badge, attributes: [
-                .foregroundColor: color ?? UIColor.secondaryLabel
+                .foregroundColor: color ?? UIColor.secondaryLabel,
+                .font: UIFont.preferredFont(forTextStyle: .footnote)
             ]))
         }
-        string.addAttribute(.font, value: WPStyleGuide.fontForTextStyle(.footnote), range: NSRange(location: 0, length: string.length))
         return string
     }
 }

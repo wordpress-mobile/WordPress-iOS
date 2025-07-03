@@ -2,12 +2,7 @@
 #import "MediaService.h"
 @import WordPressData;
 @import WordPressShared;
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#else
 #import "WordPress-Swift.h"
-#endif
-
 @implementation Media (Extensions)
 
 - (NSError *)errorWithMessage:(NSString *)errorMessage {

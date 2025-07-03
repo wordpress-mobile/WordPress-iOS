@@ -3,11 +3,7 @@
 #import "WPError.h"
 #import "PostCategoryService.h"
 #import "CommentService.h"
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#else
 #import "WordPress-Swift.h"
-#endif
 @import WordPressData;
 @import WordPressKit;
 @import WordPressShared;

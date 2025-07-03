@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 #import <WordPressKit/WordPressKit.h>
-@import WordPressData;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -12,6 +11,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 @class BasePost;
 @class RemoteUser;
 @class CommentServiceRemoteFactory;
+@protocol CoreDataStack;
 
 @interface CommentService : NSObject
 

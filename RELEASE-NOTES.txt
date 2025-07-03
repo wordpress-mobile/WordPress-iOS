@@ -1,12 +1,14 @@
 26.0
 -----
 * [**] Add new “Subscribers” screen that shows both your email and Reader subscribers [#24513]
+* [*] Improve search in TimeZone Picker for more accurate results [#24612]
 * [*] Fix an issue with “Stats / Subscribers” sometimes not showing the latest email subscribers [#24513]
 * [*] Fix an issue with "Stats" / "Subscribers" / "Emails" showing html encoded characters [#24513]
 * [*] Add search to “Jetpack Activity List” and display actors and dates [#24597]
 * [*] Fix an issue with content in "Restore" and "Download Backup" flows covering the navigation bar [#24597]
 * [*] Show when the downloadable backup expires in Backup List [#24597]
 * [*] Fix an issue with domains sometimes being incorrectly sorted on the "Domain Search" screen [#24631]
+* [*] Fix a couple of visual issues in Post List [#24647]
 
 25.9
 -----

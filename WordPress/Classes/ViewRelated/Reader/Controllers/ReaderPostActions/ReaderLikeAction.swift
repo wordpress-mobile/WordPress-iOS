@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 
 /// Encapsulates a command to toggle a post's liked status
 final class ReaderLikeAction {

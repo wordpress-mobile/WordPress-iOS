@@ -1,5 +1,6 @@
 import UIKit
 import WordPressData
+import WordPressKit
 import WordPressFlux
 import WordPressUI
 

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressData
 
 struct ReaderBlockingHelper {
     func blockSite(forPost post: ReaderPost, context: NSManagedObjectContext = ContextManager.shared.mainContext) {

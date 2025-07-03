@@ -14,8 +14,29 @@ final class ItemProviderMediaExporter: MediaExporter {
         self.provider = provider
     }
 
-    func export(onCompletion: @escaping (MediaExport) -> Void, onError: @escaping (MediaExportError) -> Void) -> Progress {
+    func export(onCompletion originalOnCompletion: @escaping (MediaExport) -> Void, onError originalOnError: @escaping (MediaExportError) -> Void) -> Progress {
         let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
+        let onCompletion: (MediaExport) -> Void
+        let onError: (MediaExportError) -> Void
+
+        // Create a temporary directory to hold the exported file from the `NSItemProvider` instance.
+        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        do {
+            try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+
+            // Delete the temporary directory after we are done with the exported file.
+            onCompletion = {
+                try? FileManager.default.removeItem(at: tempDir)
+                originalOnCompletion($0)
+            }
+            onError = {
+                try? FileManager.default.removeItem(at: tempDir)
+                originalOnError($0)
+            }
+        } catch {
+            originalOnError(MediaExportSystemError.failedWith(systemError: error))
+            return progress
+        }
 
         // It's important to use the `MediaImageExporter` because it strips the
         // GPS data and performs other image manipulations before the upload.
@@ -36,7 +57,10 @@ final class ItemProviderMediaExporter: MediaExporter {
         }
 
         // `MediaImageExporter` doesn't support GIF, so it requires special handling.
-        func processGIF(at url: URL) throws {
+        func processGIF(at original: URL) throws {
+            let url = try self.mediaFileManager.makeLocalMediaURL(withFilename: original.lastPathComponent, fileExtension: original.pathExtension)
+            try FileManager.default.copyItem(at: original, to: url)
+
             let pixelSize = url.pixelSize
             let media = MediaExport(url: url, fileSize: url.fileSize, width: pixelSize.width, height: pixelSize.height, duration: nil)
             let exportProgress = Progress(totalUnitCount: 1)
@@ -68,9 +92,11 @@ final class ItemProviderMediaExporter: MediaExporter {
 
             // Retaining `self` on purpose.
             do {
-                let copyURL = try self.mediaFileManager.makeLocalMediaURL(withFilename: url.lastPathComponent, fileExtension: url.pathExtension)
+                let copyURL = tempDir.appendingPathComponent(url.lastPathComponent)
                 try FileManager.default.copyItem(at: url, to: copyURL)
 
+                // The "process" functions are responsible for making sure the end result file
+                // (the one passed to `onCompletion` block) is located in the local Media library dir (`mediaFileManager`).
                 if self.hasConformingType(.gif) {
                     try processGIF(at: copyURL)
                 } else if self.hasConformingType(.image) {

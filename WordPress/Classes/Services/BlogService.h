@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-@import WordPressData;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -7,8 +6,10 @@ extern NSString *const WordPressMinimumVersion;
 extern NSString *const WPBlogUpdatedNotification;
 extern NSString *const WPBlogSettingsUpdatedNotification;
 
+@class Blog;
 @class WPAccount;
 @class SiteInfo;
+@protocol CoreDataStack;
 
 @interface BlogService : NSObject
 

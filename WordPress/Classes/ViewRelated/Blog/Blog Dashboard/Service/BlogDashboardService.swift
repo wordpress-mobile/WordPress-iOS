@@ -47,24 +47,24 @@ final class BlogDashboardService {
         let deviceID = remoteFeatureFlagStore.deviceID
 
         remoteService.fetch(cards: cardsToFetch, forBlogID: dotComID, deviceId: deviceID, success: { [weak self] cardsDictionary in
+            guard let self else {
+                DDLogError("The BlogDashboardService instance is deallocated")
+                return
+            }
 
-            guard let cardsDictionary = self?.parseCardsForLocalContent(cardsDictionary, blog: blog) else {
+            guard let cardsDictionary = self.parseCardsForLocalContent(cardsDictionary, blog: blog) else {
                 failure?([])
                 return
             }
 
-            if let cards = self?.decode(cardsDictionary, blog: blog) {
+            if let cards = self.decode(cardsDictionary, blog: blog) {
 
                 blog.dashboardState.hasCachedData = true
                 blog.dashboardState.failedToLoad = false
 
-                self?.persistence.persist(cards: cardsDictionary, for: dotComID)
+                self.persistence.persist(cards: cardsDictionary, for: dotComID)
 
-                guard let items = self?.parse(cards, blog: blog, dotComID: dotComID) else {
-                    failure?([])
-                    return
-                }
-
+                let items = self.parse(cards, blog: blog, dotComID: dotComID)
                 completion(items)
             } else {
                 blog.dashboardState.failedToLoad = true
@@ -73,9 +73,15 @@ final class BlogDashboardService {
 
         }, failure: { [weak self] error in
             DDLogError("Failed to fetch Dashboard Cards: \(error.localizedDescription)")
+
+            guard let self else {
+                DDLogError("The BlogDashboardService instance is deallocated")
+                return
+            }
+
             blog.dashboardState.failedToLoad = true
-            let items = self?.fetchLocal(blog: blog)
-            failure?(items ?? [])
+            let items = self.fetchLocal(blog: blog)
+            failure?(items)
         })
     }
 

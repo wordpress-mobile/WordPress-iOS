@@ -235,10 +235,19 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
         for cell in cells {
             guard let cell = cell as? PostSearchResultCell else { continue }
 
-            assert(cell.attributedText != nil)
-            let string = NSMutableAttributedString(attributedString: cell.attributedText ?? .init())
-            PostSearchViewModel.highlight(terms: terms, in: string)
-            cell.attributedText = string
+            // Highlight title
+            if let titleText = cell.titleAttributedText {
+                let titleString = NSMutableAttributedString(attributedString: titleText)
+                PostSearchViewModel.highlight(terms: terms, in: titleString)
+                cell.titleAttributedText = titleString
+            }
+
+            // Highlight excerpt
+            if let excerptText = cell.excerptAttributedText {
+                let excerptString = NSMutableAttributedString(attributedString: excerptText)
+                PostSearchViewModel.highlight(terms: terms, in: excerptString)
+                cell.excerptAttributedText = excerptString
+            }
         }
     }
 }
@@ -250,5 +259,6 @@ private enum Constants {
 }
 
 protocol PostSearchResultCell: AnyObject {
-    var attributedText: NSAttributedString? { get set }
+    var titleAttributedText: NSAttributedString? { get set }
+    var excerptAttributedText: NSAttributedString? { get set }
 }

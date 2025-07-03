@@ -1,10 +1,11 @@
+@import CoreData;
 #import <Foundation/Foundation.h>
-@import WordPressData;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class Blog;
 @class PostCategory;
+@protocol CoreDataStack;
 
 typedef NS_ENUM(NSInteger, PostCategoryServiceErrors) {
     PostCategoryServiceErrorsBlogNotFound

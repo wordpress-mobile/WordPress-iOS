@@ -4,12 +4,7 @@
 #import "ReaderGapMarker.h"
 #import "ReaderSiteService.h"
 #import "WPAppAnalytics.h"
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#else
 #import "WordPress-Swift.h"
-#endif
-
 @import WordPressData;
 @import WordPressKit;
 @import WordPressShared;

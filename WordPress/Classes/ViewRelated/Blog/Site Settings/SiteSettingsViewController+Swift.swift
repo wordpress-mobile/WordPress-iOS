@@ -102,14 +102,14 @@ extension SiteSettingsViewController {
     }
 
     @objc public func showTimezoneSelector() {
-        let controller = TimeZoneSelectorViewController(selectedValue: timezoneValue) { [weak self] (newValue) in
-            self?.navigationController?.popViewController(animated: true)
+        let view = TimeZoneSelectorView(selectedValue: timezoneValue) { [weak self] newValue in
             self?.blog.settings?.gmtOffset = newValue.gmtOffset as NSNumber?
             self?.blog.settings?.timezoneString = newValue.timezoneString
             self?.saveSettings()
             self?.trackSettingsChange(fieldName: "timezone",
                                       value: newValue.value as Any)
         }
+        let controller = UIHostingController(rootView: view)
         navigationController?.pushViewController(controller, animated: true)
     }
 

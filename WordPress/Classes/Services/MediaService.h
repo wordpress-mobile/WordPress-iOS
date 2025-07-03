@@ -4,8 +4,6 @@
 
 @class Media;
 @class RemoteVideoPressVideo;
-@class Blog;
-@class AbstractPost;
 @protocol ExportableAsset;
 
 extern NSErrorDomain _Nonnull const MediaServiceErrorDomain;

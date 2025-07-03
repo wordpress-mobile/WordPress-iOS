@@ -1,4 +1,5 @@
 import UIKit
+import WordPressData
 import WordPressShared
 
 /// The purpose of this class is to handle WordPress.com Push Authentication Notifications.

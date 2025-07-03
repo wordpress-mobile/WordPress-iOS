@@ -9,14 +9,10 @@ extern NSString * const WPTabBarCurrentlySelectedScreenReader;
 extern NSString * const WPTabBarCurrentlySelectedScreenNotifications;
 extern NSNotificationName const WPTabBarHeightChangedNotification;
 
-@class AbstractPost;
-@class Blog;
-@class BloggingPromptCoordinator;
 @class MeViewController;
 @class MySitesCoordinator;
 @class NotificationsViewController;
 @class ReaderPresenter;
-@protocol ScenePresenter;
 
 @interface WPTabBarController : UITabBarController <UIViewControllerTransitioningDelegate>
 

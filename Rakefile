@@ -413,7 +413,7 @@ namespace :install do
         puts "Press 'Y' to install Homebrew.  Press 'N' for exit"
         puts '====================================================================================='
 
-        if display_prompt_response == true
+        if display_prompt_response?
           Rake::Task['install:tools:homebrew:install'].invoke
         else
           abort('')
@@ -598,7 +598,7 @@ namespace :gpg_key do
     puts 'Do you need to generate a new GPG Key?'
     puts "Press 'Y' to create a new key.  Press 'N' to skip"
 
-    display_prompt_response
+    display_prompt_response?
   end
 
   # ask user if they want to create a key,  loop till given a valid answer
@@ -610,7 +610,7 @@ namespace :gpg_key do
     puts '====================================================================================='
     puts "Press 'Y' for Yes.  Press 'N' for custom configuration"
 
-    display_prompt_response
+    display_prompt_response?
   end
 
   # display prompt for developer to aid in setting up default key
@@ -626,7 +626,7 @@ end
 
 # prompt for a Y or N response, continue asking if other character
 # return true for Y and false for N
-def display_prompt_response
+def display_prompt_response?
   response = $stdin.gets.strip.upcase
   until %w[Y N].include?(response)
     puts 'Invalid entry, please enter Y or N'

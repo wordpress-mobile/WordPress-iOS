@@ -6,6 +6,7 @@
 #import "MenuItemTagsViewController.h"
 #import "MenuItemPostsViewController.h"
 #import "Menu.h"
+@import WordPressData;
 
 static CGFloat const SourceHeaderViewHeight = 60.0;
 

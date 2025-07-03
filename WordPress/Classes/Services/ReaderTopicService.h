@@ -1,5 +1,5 @@
+@import CoreData;
 #import <Foundation/Foundation.h>
-@import WordPressData;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -9,6 +9,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 @class ReaderTagTopic;
 @class ReaderSiteTopic;
 @class ReaderSearchTopic;
+@protocol CoreDataStack;
 
 @interface ReaderTopicService : NSObject
 

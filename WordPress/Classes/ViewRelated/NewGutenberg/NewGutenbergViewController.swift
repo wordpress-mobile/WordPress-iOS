@@ -127,62 +127,11 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenbergKit, post: post)
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
-        let selfHostedApiUrl = post.blog.url(withPath: "wp-json/")
-        let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
-        let siteApiRoot = post.blog.isAccessibleThroughWPCom() && isWPComSite ? post.blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
-        let siteId = post.blog.dotComID?.stringValue
-        let siteDomain = post.blog.primaryDomainAddress
-        let authToken = post.blog.authToken ?? ""
-        var authHeader = "Bearer \(authToken)"
-
-        let applicationPassword = try? post.blog.getApplicationToken()
-
-        if let appPassword = applicationPassword, let username = post.blog.username {
-            let credentials = "\(username):\(appPassword)"
-            if let credentialsData = credentials.data(using: .utf8) {
-                let base64Credentials = credentialsData.base64EncodedString()
-                authHeader = "Basic \(base64Credentials)"
-            }
-        }
-
-        // Must provide both namespace forms to detect usages of both forms in third-party code
-        var siteApiNamespace: [String] = []
-        if isWPComSite {
-            if let siteId {
-                siteApiNamespace.append("sites/\(siteId)")
-            }
-            siteApiNamespace.append("sites/\(siteDomain)")
-        }
-
-        var conf = EditorConfiguration(
-            title: post.postTitle ?? "",
-            content: post.content ?? ""
-        )
+        var conf = EditorConfiguration(blog: post.blog)
+        conf.title = post.postTitle ?? ""
+        conf.content = post.content ?? ""
         conf.postID = post.postID?.intValue != -1 ? post.postID?.intValue : nil
         conf.postType = post is Page ? "page" : "post"
-
-        conf.siteURL = post.blog.url ?? ""
-        conf.siteApiRoot = siteApiRoot ?? ""
-        conf.siteApiNamespace = siteApiNamespace
-        conf.namespaceExcludedPaths = ["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"]
-        conf.authHeader = authHeader
-
-        conf.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
-        // Limited to Simple sites until application password auth is supported
-        conf.plugins = RemoteFeatureFlag.newGutenbergPlugins.enabled() && post.blog.isHostedAtWPcom
-        conf.locale = WordPressComLanguageDatabase().deviceLanguage.slug
-
-        if !post.blog.isSelfHosted {
-            let siteType: String = post.blog.isHostedAtWPcom ? "simple" : "atomic"
-            do {
-                conf.webViewGlobals = [
-                    try WebViewGlobal(name: "_currentSiteType", value: .string(siteType))
-                ]
-            } catch {
-                wpAssertionFailure("Failed to create WebViewGlobal", userInfo: ["error": "\(error)"])
-                conf.webViewGlobals = []
-            }
-        }
 
         self.editorViewController = GutenbergKit.EditorViewController(configuration: conf)
 
@@ -888,6 +837,74 @@ extension NewGutenbergViewController {
                 DDLogError("Error fetching settings: \(err)")
             }
         })
+    }
+}
+
+extension EditorConfiguration {
+    init(blog: Blog) {
+        let selfHostedApiUrl = blog.url(withPath: "wp-json/")
+        let isWPComSite = blog.isHostedAtWPcom || blog.isAtomic()
+        let siteApiRoot = blog.isAccessibleThroughWPCom() && isWPComSite ? blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
+        let siteId = blog.dotComID?.stringValue
+        let siteDomain = blog.primaryDomainAddress
+        let authToken = blog.authToken ?? ""
+        var authHeader = "Bearer \(authToken)"
+
+        let applicationPassword = try? blog.getApplicationToken()
+
+        if let appPassword = applicationPassword, let username = blog.username {
+            let credentials = "\(username):\(appPassword)"
+            if let credentialsData = credentials.data(using: .utf8) {
+                let base64Credentials = credentialsData.base64EncodedString()
+                authHeader = "Basic \(base64Credentials)"
+            }
+        }
+
+        // Must provide both namespace forms to detect usages of both forms in third-party code
+        var siteApiNamespace: [String] = []
+        if isWPComSite {
+            if let siteId {
+                siteApiNamespace.append("sites/\(siteId)")
+            }
+            siteApiNamespace.append("sites/\(siteDomain)")
+        }
+
+        self = EditorConfiguration()
+
+        self.siteURL = blog.url ?? ""
+        self.siteApiRoot = siteApiRoot ?? ""
+        self.siteApiNamespace = siteApiNamespace
+        self.namespaceExcludedPaths = ["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"]
+        self.authHeader = authHeader
+
+        self.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
+        // Limited to Simple sites until application password auth is supported
+        if RemoteFeatureFlag.newGutenbergPlugins.enabled() && blog.isHostedAtWPcom {
+            self.plugins = true
+            if var editorAssetsEndpoint = blog.wordPressComRestApi?.baseURL {
+                editorAssetsEndpoint.appendPathComponent("wpcom/v2/sites")
+                if let siteId {
+                    editorAssetsEndpoint.appendPathComponent(siteId)
+                } else {
+                    editorAssetsEndpoint.appendPathComponent(siteDomain)
+                }
+                editorAssetsEndpoint.appendPathComponent("editor-assets")
+                self.editorAssetsEndpoint = editorAssetsEndpoint
+            }
+        }
+        self.locale = WordPressComLanguageDatabase().deviceLanguage.slug
+
+        if !blog.isSelfHosted {
+            let siteType: String = blog.isHostedAtWPcom ? "simple" : "atomic"
+            do {
+                self.webViewGlobals = [
+                    try WebViewGlobal(name: "_currentSiteType", value: .string(siteType))
+                ]
+            } catch {
+                wpAssertionFailure("Failed to create WebViewGlobal", userInfo: ["error": "\(error)"])
+                self.webViewGlobals = []
+            }
+        }
     }
 }
 

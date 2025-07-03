@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import Combine
+import DesignSystem
 import WordPressData
 import WordPressUI
 
@@ -122,13 +123,15 @@ private struct ReaderSidebarView: View {
     @ViewBuilder
     private var regularContent: some View {
         Section {
-            let screens = viewModel.menu
-            ForEach(screens) {
-                makePrimaryNavigationItem($0.localizedTitle, imageName: $0.imageName)
-                    .tag(ReaderSidebarItem.main($0))
-                    .listRowSeparator((viewModel.isCompact && $0 != screens.last) ? .visible : .hidden, edges: .bottom)
-                    .accessibilityIdentifier($0.accessibilityIdentifier)
-                    .withDisabledSelection(isEditing)
+            makeForEach(for: viewModel.menu)
+
+            if !viewModel.library.isEmpty {
+                Text(Strings.library)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 0, trailing: 20))
+
+                makeForEach(for: viewModel.library)
             }
         }
         if !favorites.isEmpty || isEditing {
@@ -144,17 +147,6 @@ private struct ReaderSidebarView: View {
             }
         }
         makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
-            if !viewModel.menu.contains(.subscrtipions) {
-                Label {
-                    Text(Strings.subscriptions)
-                } icon: {
-                    ReaderSidebarImage(name: "reader-menu-subscriptions")
-                }
-                .tag(ReaderSidebarItem.allSubscriptions)
-                .listItemTint(AppColor.primary)
-                .withDisabledSelection(isEditing)
-            }
-
             ReaderSidebarSubscriptionsSection(viewModel: viewModel)
                 .environment(\.siteIconBackgroundColor, Color(viewModel.isCompact ? .secondarySystemBackground : .systemBackground))
         }
@@ -163,6 +155,16 @@ private struct ReaderSidebarView: View {
         }
         makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
             ReaderSidebarTagsSection(viewModel: viewModel)
+        }
+    }
+
+    private func makeForEach(for items: [ReaderStaticScreen]) -> some View {
+        ForEach(items) {
+            makePrimaryNavigationItem($0.localizedTitle, imageName: $0.imageName)
+                .tag(ReaderSidebarItem.main($0))
+                .listRowSeparator((viewModel.isCompact && $0 != items.last) ? .visible : .hidden, edges: .bottom)
+                .accessibilityIdentifier($0.accessibilityIdentifier)
+                .withDisabledSelection(isEditing)
         }
     }
 
@@ -265,6 +267,7 @@ private extension View {
 
 private struct Strings {
     static let reader = SharedStrings.Reader.title
+    static let library = NSLocalizedString("reader.sidebar.section.library.title", value: "Library", comment: "Reader sidebar section title")
     static let subscriptions = NSLocalizedString("reader.sidebar.section.subscriptions.title", value: "Subscriptions", comment: "Reader sidebar section title")
     static let favorites = NSLocalizedString("reader.sidebar.section.favorites.title", value: "Favorites", comment: "Reader sidebar section title")
     static let lists = NSLocalizedString("reader.sidebar.section.lists.title", value: "Lists", comment: "Reader sidebar section title")
