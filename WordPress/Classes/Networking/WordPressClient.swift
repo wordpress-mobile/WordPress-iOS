@@ -30,8 +30,8 @@ extension WordPressClient {
         let resolver: ApiUrlResolver
         switch site {
         case let .dotCom(siteId, _):
-            apiRootURL = try! ParsedUrl.parse(input: "https://public-api.wordpress.com/wp/v2/site/\(siteId)")
-            resolver = WpComDotOrgApiUrlResolver(siteUrl: "\(siteId)")
+            apiRootURL = try! ParsedUrl.parse(input: AppEnvironment.current.wordPressComApiBase.absoluteString)
+            resolver = WpComDotOrgApiUrlResolver(siteId: "\(siteId)", baseUrl: .custom(apiRootURL))
         case let .selfHosted(_, url, _, _):
             apiRootURL = url
             resolver = WpOrgSiteApiUrlResolver(apiRootUrl: url)

@@ -154,34 +154,21 @@ private extension RemoteMedia {
         self.descriptionText = media.description.raw
         self.alt = media.altText
 
-        if case let .object(mediaDetails) = media.mediaDetails {
-            if case let .int(width) = mediaDetails["width"] {
-                self.width = NSNumber(value: width)
-            }
-            if case let .int(height) = mediaDetails["height"] {
-                self.height = NSNumber(value: height)
-            }
-            if case let .int(length) = mediaDetails["length"] {
-                self.length = NSNumber(value: length)
-            }
-            if case let .string(file) = mediaDetails["file"] {
-                self.file = file
-            }
-
-            if case let .object(sizes) = mediaDetails["sizes"] {
-                if case let .object(medium) = sizes["medium"],
-                   case let .string(url) = medium["source_url"] {
-                    self.mediumURL = URL(string: url)
-                }
-                if case let .object(large) = sizes["large"],
-                   case let .string(url) = large["source_url"] {
-                    self.largeURL = URL(string: url)
-                }
-                if case let .object(thumbnail) = sizes["thumbnail"],
-                   case let .string(url) = thumbnail["source_url"] {
-                    self.remoteThumbnailURL = url
-                }
-            }
+        switch media.mediaDetails.parseAsMimeType(mimeType: media.mimeType) {
+        case let .audio(audio):
+            self.length = NSNumber(value: audio.length)
+        case let .image(image):
+            self.width = NSNumber(value: image.width)
+            self.height = NSNumber(value: image.height)
+            self.remoteThumbnailURL = image.sizes?["thumbnail"]?.sourceUrl
+            self.mediumURL = (image.sizes?["medium"]?.sourceUrl).flatMap(URL.init(string:))
+            self.largeURL = (image.sizes?["large"]?.sourceUrl).flatMap(URL.init(string:))
+        case let .video(video):
+            self.width = NSNumber(value: video.width)
+            self.height = NSNumber(value: video.height)
+            self.length = NSNumber(value: video.length)
+        case .none, .document:
+            break
         }
 
         self.localURL = nil
