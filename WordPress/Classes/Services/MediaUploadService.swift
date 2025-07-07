@@ -3,8 +3,20 @@ import WordPressData
 import WordPressCore
 import WordPressAPI
 import WordPressAPIInternal
+import UniformTypeIdentifiers
+
+protocol MediaUploadServiceEventObserver: Sendable {
+    func handle(event: MediaUploadService.Event, asset: ExportableAsset, service: MediaUploadService)
+}
 
 actor MediaUploadService {
+    enum Event: Sendable {
+        case overallProgress(Progress)
+        case thumbnail(URL)
+    }
+
+    nonisolated static let progressUserInfoKeyThumbnail = ProgressUserInfoKey(rawValue: "MediaUploadService.thumbnail")
+
     private let coreDataStack: CoreDataStackSwift
     private let blog: TaggedManagedObjectID<Blog>
     private let client: WordPressClient
@@ -21,21 +33,38 @@ actor MediaUploadService {
     ///   - asset: The asset to upload.
     ///   - progress: A progress object to track the upload progress.
     /// - Returns: The saved Media instance.
-    func uploadToMediaLibrary(asset: ExportableAsset, fulfilling progress: Progress? = nil) async throws -> TaggedManagedObjectID<Media> {
-        precondition(progress == nil || progress!.totalUnitCount > 0)
-
-        let overallProgress = progress ?? Progress.discreteProgress(totalUnitCount: 100)
+    func uploadToMediaLibrary(asset: ExportableAsset, observer: MediaUploadServiceEventObserver) async throws -> TaggedManagedObjectID<Media> {
+        let overallProgress = Progress.discreteProgress(totalUnitCount: 100)
         overallProgress.completedUnitCount = 0
 
-        let export = try await exportAsset(asset, parentProgress: overallProgress)
+        await MainActor.run {
+            observer.handle(event: .overallProgress(overallProgress), asset: asset, service: self)
+        }
+
+        let export = try await exportAsset(asset, parentProgress: overallProgress, withPendingUnitCount: 10)
+
+        try Task.checkCancellation()
+
+        if let thumbnail = await thumbnail(of: export) {
+            await MainActor.run {
+                observer.handle(event: .thumbnail(thumbnail), asset: asset, service: self)
+            }
+        }
 
         let uploadingProgress = Progress.discreteProgress(totalUnitCount: 100)
-        overallProgress.addChild(uploadingProgress, withPendingUnitCount: Int64((1.0 - overallProgress.fractionCompleted) * Double(overallProgress.totalUnitCount)))
-        let uploaded = try await client.api.uploadMedia(
-            params: MediaCreateParams(from: export),
-            fromLocalFileURL: export.url,
-            fulfilling: uploadingProgress
-        ).data
+        overallProgress.addChild(uploadingProgress, withPendingUnitCount: 90)
+
+        let uploaded = try await withTaskCancellationHandler {
+            try await client.api.uploadMedia(
+                params: MediaCreateParams(from: export),
+                fromLocalFileURL: export.url,
+                fulfilling: uploadingProgress
+            ).data
+        } onCancel: {
+            uploadingProgress.cancel()
+        }
+
+        try Task.checkCancellation()
 
         let media = try await coreDataStack.performAndSave { [blogID = blog] context in
             let blog = try context.existingObject(with: blogID)
@@ -57,7 +86,7 @@ actor MediaUploadService {
 
 private extension MediaUploadService {
 
-    func exportAsset(_ exportable: ExportableAsset, parentProgress: Progress) async throws -> MediaExport {
+    func exportAsset(_ exportable: ExportableAsset, parentProgress: Progress, withPendingUnitCount unitCount: Int64) async throws -> MediaExport {
         let options = try await coreDataStack.performQuery { [blogID = blog] context in
             let blog = try context.existingObject(with: blogID)
             let allowableFileExtensions = blog.allowedFileTypes as? Set<String> ?? []
@@ -79,7 +108,7 @@ private extension MediaUploadService {
                 }
             )
             // The "export" part covers the initial 10% of the overall progress.
-            parentProgress.addChild(progress, withPendingUnitCount: progress.totalUnitCount / 10)
+            parentProgress.addChild(progress, withPendingUnitCount: unitCount)
         }
     }
 
@@ -113,7 +142,7 @@ private extension MediaUploadService {
 
     func configureMedia(_ media: Media, withExport export: MediaExport) {
         media.absoluteLocalURL = export.url
-        media.filename = export.url.lastPathComponent
+        media.filename = export.filename ?? export.url.lastPathComponent
         media.mediaType = (export.url as NSURL).assetMediaType
 
         if let fileSize = export.fileSize {
@@ -187,6 +216,25 @@ private extension MediaUploadService {
         return nil
     }
 
+    func thumbnail(of exported: MediaExport) async -> URL? {
+        let exporter = MediaThumbnailExporter()
+        exporter.mediaDirectoryType = .cache
+        exporter.options.preferredSize = await MediaImageService.getThumbnailSize(for: exported.size ?? CGSizeMake(100, 100), size: .small)
+        exporter.options.scale = 1 // In pixels
+
+        if exported.url.isGif {
+            exporter.options.thumbnailImageType = UTType.gif.identifier
+        }
+
+        guard exporter.supportsThumbnailExport(forFile: exported.url),
+              let (_, thumbnail) = try? await exporter.exportThumbnail(forFileURL: exported.url)
+        else {
+            return nil
+        }
+
+        return thumbnail.url
+    }
+
     func updateMedia(_ media: Media, with remote: MediaWithEditContext) {
         media.mediaID = NSNumber(value: remote.id)
         media.remoteURL = remote.sourceUrl
@@ -245,7 +293,7 @@ private extension MediaCreateParams {
             dateGmt: nil,
             slug: nil,
             status: nil,
-            title: export.url.lastPathComponent, // TODO: Add a `filename` property to `MediaExport`.
+            title: export.filename ?? export.url.lastPathComponent,
             author: nil,
             commentStatus: nil,
             pingStatus: nil,

@@ -248,6 +248,7 @@ class MediaThumbnailExporter: MediaExporter {
             try fileManager.moveItem(at: export.url, to: thumbnail)
             // Configure with the new URL
             let thumbnailExport = MediaExport(url: thumbnail,
+                                              filename: nil,
                                                    fileSize: export.fileSize,
                                                    width: export.width,
                                                    height: export.height,

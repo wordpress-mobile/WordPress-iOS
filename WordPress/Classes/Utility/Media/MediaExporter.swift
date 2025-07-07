@@ -11,8 +11,9 @@ enum MediaExportProgressUnits {
 ///
 class MediaExport {
     /// The resulting file URL of an export.
-    ///
     let url: URL
+    /// The name of the original file.
+    let filename: String?
     /// The resulting file size in bytes of the export.
     let fileSize: Int64?
     /// The pixel width of the media exported.
@@ -24,13 +25,21 @@ class MediaExport {
     /// A caption to be added to the media item.
     let caption: String?
 
-    init(url: URL, fileSize: Int64?, width: CGFloat?, height: CGFloat?, duration: TimeInterval?, caption: String? = nil) {
+    init(url: URL, filename: String?, fileSize: Int64?, width: CGFloat?, height: CGFloat?, duration: TimeInterval?, caption: String? = nil) {
         self.url = url
+        self.filename = filename
         self.fileSize = fileSize
         self.height = height
         self.width = width
         self.duration = duration
         self.caption = caption
+    }
+
+    var size: CGSize? {
+        if let width, let height {
+            return CGSizeMake(width, height)
+        }
+        return nil
     }
 }
 

@@ -1,16 +1,30 @@
 import UIKit
 import Photos
 import PhotosUI
+import WordPressCore
 import WordPressData
 import WordPressShared
+import SwiftUI
 
 final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate, ExternalMediaPickerViewDelegate, UIDocumentPickerDelegate, ImagePlaygroundPickerDelegate {
     let blog: Blog
     let coordinator: MediaCoordinator
+    weak var viewController: UIViewController?
 
-    init(blog: Blog, coordinator: MediaCoordinator) {
+    private var mediaUploadService: MediaUploadService?
+
+    init(blog: Blog, coordinator: MediaCoordinator, viewController: UIViewController) {
         self.blog = blog
         self.coordinator = coordinator
+        self.viewController = viewController
+
+        if FeatureFlag.newUploadMedia.enabled, let client = try? WordPressClient(site: WordPressSite(blog: blog)) {
+            self.mediaUploadService = MediaUploadService(
+                coreDataStack: ContextManager.shared,
+                blog: TaggedManagedObjectID(blog),
+                client: client
+            )
+        }
     }
 
     func makeMenu(for viewController: UIViewController) -> UIMenu {
@@ -47,6 +61,18 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
             .showPhotosPicker(delegate: self)
     }
 
+    private func addMedia(_ assets: [ExportableAsset], analytics: MediaAnalyticsInfo) {
+        if let mediaUploadService, let viewController {
+            let mediaUploadingView = MediaUploadingView(mediaUploadService: mediaUploadService, assets: assets)
+            let hostingController = UIHostingController(rootView: mediaUploadingView)
+            viewController.present(hostingController, animated: true)
+        } else {
+            for asset in assets {
+                coordinator.addMedia(from: asset, to: blog, analyticsInfo: analytics)
+            }
+        }
+    }
+
     // MARK: - PHPickerViewControllerDelegate
 
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
@@ -56,10 +82,8 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
             return
         }
 
-        for result in results {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
-            coordinator.addMedia(from: result.itemProvider, to: blog, analyticsInfo: info)
-        }
+        let assets = results.map { $0.itemProvider }
+        addMedia(assets, analytics: MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker))
     }
 
     // MARK: - ImagePlaygroundPickerDelegate
@@ -67,11 +91,8 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
     func imagePlaygroundViewController(_ viewController: UIViewController, didCreateImageAt imageURL: URL) {
         viewController.presentingViewController?.dismiss(animated: true)
 
-        coordinator.addMedia(
-            from: MediaPickerMenu.makeItemProvider(with: imageURL),
-            to: blog,
-            analyticsInfo: MediaAnalyticsInfo(origin: .mediaLibrary(.imagePlayground), selectionMethod: .fullScreenPicker)
-        )
+        let asset = MediaPickerMenu.makeItemProvider(with: imageURL)
+        addMedia([asset], analytics: MediaAnalyticsInfo(origin: .mediaLibrary(.imagePlayground), selectionMethod: .fullScreenPicker))
     }
 
     // MARK: - ImagePickerControllerDelegate
@@ -79,35 +100,37 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
     func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         picker.presentingViewController?.dismiss(animated: true)
 
-        func addAsset(from asset: ExportableAsset) {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.camera), selectionMethod: .fullScreenPicker)
-            coordinator.addMedia(from: asset, to: blog, analyticsInfo: info)
-        }
+        var assets = [ExportableAsset]()
+
         guard let mediaType = info[.mediaType] as? String else {
             return
         }
         switch mediaType {
         case UTType.image.identifier:
             if let image = info[.originalImage] as? UIImage {
-                addAsset(from: image)
+                assets.append(image)
             }
         case UTType.movie.identifier:
             if let videoURL = info[.mediaURL] as? URL {
-                addAsset(from: videoURL as NSURL)
+                assets.append(videoURL as NSURL)
             }
         default:
             break
         }
+
+        guard !assets.isEmpty else { return }
+
+        addMedia(assets, analytics: MediaAnalyticsInfo(origin: .mediaLibrary(.camera), selectionMethod: .fullScreenPicker))
     }
 
     // MARK: - ExternalMediaPickerViewDelegate
 
     func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection assets: [ExternalMediaAsset]) {
         viewController.presentingViewController?.dismiss(animated: true)
-        for asset in assets {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(viewController.source), selectionMethod: .fullScreenPicker)
-            coordinator.addMedia(from: asset, to: blog, analyticsInfo: info)
 
+        addMedia(assets, analytics: MediaAnalyticsInfo(origin: .mediaLibrary(viewController.source), selectionMethod: .fullScreenPicker))
+
+        for _ in assets {
             switch viewController.source {
             case .stockPhotos:
                 WPAnalytics.track(.stockMediaUploaded)
@@ -137,10 +160,7 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
     }
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        for documentURL in urls as [NSURL] {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.otherApps), selectionMethod: .documentPicker)
-            coordinator.addMedia(from: documentURL, to: blog, analyticsInfo: info)
-        }
+        addMedia(urls.map { $0 as NSURL }, analytics: MediaAnalyticsInfo(origin: .mediaLibrary(.otherApps), selectionMethod: .documentPicker))
     }
 
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {

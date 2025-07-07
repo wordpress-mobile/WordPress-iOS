@@ -68,6 +68,7 @@ class MediaExternalExporter: MediaExporter {
                                                                   fileExtension: "gif")
             try data.write(to: mediaURL)
             onCompletion(MediaExport(url: mediaURL,
+                                     filename: asset.name,
                                      fileSize: mediaURL.fileSize,
                                      width: mediaURL.pixelSize.width,
                                      height: mediaURL.pixelSize.height,
