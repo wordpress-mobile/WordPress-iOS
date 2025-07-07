@@ -228,6 +228,7 @@ class MediaImageExporter: MediaExporter {
             writer.nullifyGPSData = options.stripsGeoLocationIfNeeded
             let result = try writer.writeImageSource(source)
             onCompletion(MediaExport(url: url,
+                                     filename: filename,
                                           fileSize: url.fileSize,
                                           width: result.width,
                                           height: result.height,

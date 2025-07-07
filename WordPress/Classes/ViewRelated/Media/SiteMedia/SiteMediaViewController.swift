@@ -11,7 +11,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
     private lazy var collectionViewController = SiteMediaCollectionViewController(blog: blog)
     private lazy var buttonAddMedia = UIButton(type: .custom)
-    private lazy var buttonAddMediaMenuController = SiteMediaAddMediaMenuController(blog: blog, coordinator: coordinator)
+    private lazy var buttonAddMediaMenuController = SiteMediaAddMediaMenuController(blog: blog, coordinator: coordinator, viewController: self)
     private var buttonFilter: UIButton?
 
     private lazy var toolbarItemDelete = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(buttonDeleteTapped))

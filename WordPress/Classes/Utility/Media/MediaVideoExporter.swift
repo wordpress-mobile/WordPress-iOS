@@ -176,6 +176,7 @@ class MediaVideoExporter: MediaExporter {
             }
             progress.completedUnitCount = MediaExportProgressUnits.done
             onCompletion(MediaExport(url: mediaURL,
+                                     filename: filename,
                                           fileSize: mediaURL.fileSize,
                                           width: mediaURL.pixelSize.width,
                                           height: mediaURL.pixelSize.height,

@@ -149,6 +149,7 @@ class MediaURLExporter: MediaExporter {
                                                                     fileExtension: "gif")
             try fileManager.copyItem(at: url, to: mediaURL)
             onCompletion(MediaExport(url: mediaURL,
+                                     filename: nil,
                                     fileSize: mediaURL.fileSize,
                                     width: mediaURL.pixelSize.width,
                                     height: mediaURL.pixelSize.height,
@@ -172,6 +173,7 @@ class MediaURLExporter: MediaExporter {
                                                                   fileExtension: fileExtension)
             try fileManager.copyItem(at: url, to: mediaURL)
             onCompletion(MediaExport(url: mediaURL,
+                                     filename: nil,
                                      fileSize: mediaURL.fileSize,
                                      width: nil,
                                      height: nil,
