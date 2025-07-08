@@ -7,8 +7,6 @@ import WordPressUI
 // MARK: - PeopleViewController
 
 class PeopleViewController: UITableViewController {
-    private let isUsersOnly = FeatureFlag.newsletterSubscribers.enabled
-
     // MARK: Properties
 
     private static let refreshRowPadding = 4
@@ -337,10 +335,9 @@ private extension PeopleViewController {
 
     func filtersAvailableForBlog(_ blog: Blog?) -> [Filter] {
         guard let blog, blog.siteVisibility == .private else {
-            return Filter.defaultFilters
+            return [.users]
         }
-
-        return Filter.allCases
+        return [.users, .viewers]
     }
 
     func refreshInterface() {
@@ -534,8 +531,8 @@ private extension PeopleViewController {
     }
 
     func setupTableView() {
-        guard !isUsersOnly else {
-            return
+        guard filtersAvailableForBlog(blog).count > 1 else {
+            return // Do not show the filter bar
         }
 
         filterBar.translatesAutoresizingMaskIntoConstraints = false
@@ -550,7 +547,7 @@ private extension PeopleViewController {
     }
 
     func setupView() {
-        title = isUsersOnly ? Strings.title : NSLocalizedString("People", comment: "Noun. Title of the people management feature.")
+        title = Strings.title
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
