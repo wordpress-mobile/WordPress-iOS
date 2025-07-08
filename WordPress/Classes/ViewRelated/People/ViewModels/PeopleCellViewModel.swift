@@ -61,7 +61,7 @@ struct PeopleCellViewModel {
     }
 
     var superAdminBackgroundColor: UIColor {
-        return .secondarySystemGroupedBackground
+        return UIAppColor.red(.shade50)
     }
 
     var superAdminHidden: Bool {
