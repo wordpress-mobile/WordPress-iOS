@@ -478,7 +478,7 @@ private extension PeopleViewController {
             return
         }
         addChild(noResultsViewController)
-        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        tableView.addSubview(noResultsViewController.view)
         noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
 
         if let headerView = tableView.tableHeaderView {
@@ -533,7 +533,6 @@ private extension PeopleViewController {
 
         let indexToSet = Filter.allCases.firstIndex(where: { $0 == defaultFilter }) ?? 0
         filterBar.setSelectedIndex(indexToSet)
-        filter = defaultFilter
     }
 
     func setupTableView() {
@@ -563,6 +562,9 @@ private extension PeopleViewController {
 
         setupFilterBar()
         setupTableView()
+
+        /// - warning: This needs to happen after the view it fully configured
+        filter = defaultFilter
     }
 
     @objc private func selectedFilterDidChange(_ filterBar: FilterTabBar) {
