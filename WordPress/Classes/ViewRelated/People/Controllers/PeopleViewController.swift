@@ -480,7 +480,13 @@ private extension PeopleViewController {
         addChild(noResultsViewController)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToSafeArea(noResultsViewController.view)
+
+        if let headerView = tableView.tableHeaderView {
+            noResultsViewController.view.topAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
+        } else {
+            noResultsViewController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        }
+        noResultsViewController.view.pinEdges([.horizontal, .bottom], to: view.safeAreaLayoutGuide)
 
         noResultsViewController.didMove(toParent: self)
     }
