@@ -17,7 +17,6 @@ final class ReaderSidebarViewModel: ObservableObject {
     let isReaderAppModeEnabled: Bool
 
     let menu: [ReaderStaticScreen]
-    let library: [ReaderStaticScreen]
 
     init(menuStore: ReaderMenuStoreProtocol = ReaderMenuStore(),
          contextManager: CoreDataStackSwift = ContextManager.shared,
@@ -28,10 +27,8 @@ final class ReaderSidebarViewModel: ObservableObject {
         self.isReaderAppModeEnabled = isReaderAppModeEnabled
         if isReaderAppModeEnabled {
             menu = [.subscrtipions, .lists, .tags, .saved, .likes]
-            library = []
         } else {
             menu = [.recent, .discover, .saved, .likes, .search]
-            library = [.subscrtipions, .lists, .tags]
             restoreSelection(defaultValue: .main(.recent))
         }
 
