@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-05-14 07:10:17+0000 */
+/* Translation-Revision-Date: 2025-07-08 13:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -341,9 +341,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "關於 iOS 版 Jetpack";
 
-/* My Profile 'About me' label */
-"About Me" = "關於我";
-
 /* Link to About screen for Jetpack for iOS */
 "About Reader for iOS" = "關於 iOS 版閱讀器";
 
@@ -393,21 +390,11 @@ translators: %s: Block name e.g. \"Image block\" */
 "Active, Autoupdates on" = "已啟用，開啟自動更新";
 
 /* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature
-   Title for the activity list */
+   Noun. Name of the Activity Log feature */
 "Activity" = "活動";
 
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "活動記錄";
-
-/* No comment provided by engineer. */
-"Activity Logs" = "活動記錄";
-
-/* Label for the Activity Type filter button */
-"Activity Type" = "活動類型";
-
-/* Label for the Activity Type filter button when there are more than 1 activity type selected */
-"Activity Type (%1$d)" = "活動類型 (%1$d)";
 
 /* No comment provided by engineer. */
 "Add Block After" = "在之後新增區塊";
@@ -426,9 +413,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Add URL" = "新增網址";
-
-/* Add a profile photo to Me > My Profile */
-"Add a Profile Photo" = "新增個人檔案照片";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "新增網域";
@@ -631,17 +615,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A failure reason for when an error HTTP status code was returned from the site. */
 "An HTTP error code was returned." = "已傳回 HTTP 錯誤代碼。";
 
-/* Error message when loading failed because there's no connection */
-"An active internet connection is required" = "需要有效的網際網路連線";
-
 /* Error message shown when trying to scan a log in code without an active internet connection. */
 "An active internet connection is required to scan log in codes" = "需要有效的網際網路連線才能掃描登入碼";
 
 /* Error message shown when trying to view the scan status and there is no internet connection. */
 "An active internet connection is required to view Jetpack Scan" = "需要有效的網際網路連線才能檢視 Jetpack Scan";
-
-/* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
-"An active internet connection is required to view activities" = "需要有效的網際網路連線才能檢視活動";
 
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
@@ -881,16 +859,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the Background Color section */
 "Background Color" = "背景色彩";
 
-/* Title of the cell displaying status of a backup in progress */
-"Backing up site" = "正在備份網站";
-
 /* Noun. Links to a blog's Jetpack Backups screen.
    Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
-   Title for Jetpack Backup Update Status Failed screen
-   Title for the Jetpack's backup list
-   Title of section showing backup status */
+   Title for Jetpack Backup Update Status Failed screen */
 "Backup" = "備份";
 
 /* Title for error displayed when preparing a backup fails. */
@@ -1118,7 +1091,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -1282,9 +1254,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Choose audio" = "選擇音樂";
 
-/* Title to choose date range in a calendar */
-"Choose date range" = "選擇日期範圍";
-
 /* No comment provided by engineer. */
 "Choose file" = "選擇檔案";
 
@@ -1324,14 +1293,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "清除裝置媒體快取";
 
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "清除舊活動記錄";
-
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "清除焦點索引";
-
-/* Message of the trash confirmation alert. */
-"Clear all old activity logs?" = "是否清除所有舊活動記錄？";
 
 /* No comment provided by engineer. */
 "Clear search" = "清除搜尋";
@@ -1542,8 +1505,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "聯絡支援團隊";
 
-/* Button label for contacting support
-   Title of a button. A call to action to contact support for assistance. */
+/* Button label for contacting support */
 "Contact support" = "聯絡支援團隊";
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
@@ -1669,6 +1631,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "無法連線。 你的主機服務提供者封鎖了 POST 請求，但此應用程式需要使用 POST 請求才能與你的網站通訊。 請聯絡主機服務提供者解決此問題。";
 
+/* Content show when the dashboard fails to load */
+"Couldn't load data. Please refresh again later." = "無法載入資料。 請稍後再重新整理。";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "無法載入標籤。";
 
@@ -1680,9 +1645,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Indicating that referrer couldn't be unmarked as spam */
 "Couldn't unmark as spam" = "無法取消垃圾訊息的標示";
-
-/* Content show when the dashboard fails to load */
-"Couldn't update. Check that you're online and refresh." = "無法更新。 請確認你為上線狀態並重新整理。";
 
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "無法自動關閉帳號";
@@ -1754,14 +1716,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Creating dashboard" = "建立儀表板";
 
-/* Description of the cell displaying status of a backup in progress */
-"Creating downloadable backup" = "正在建立可下載的備份";
-
 /* No comment provided by engineer. */
 "Crosspost" = "多重發佈";
-
-/* No comment provided by engineer. */
-"Current" = "目前記錄";
 
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "目前佈景主題";
@@ -1786,9 +1742,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the Jetpack Restore Status message. */
 "Currently restoring site" = "目前正在還原網站";
-
-/* Title of the cell displaying status of a rewind in progress */
-"Currently restoring your site" = "目前正在還原你的網站";
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "目前正在還原：%1$@";
@@ -1840,9 +1793,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Writing Date Format Settings Title */
 "Date Format" = "日期格式";
 
-/* Label of a button that displays a calendar */
-"Date Range" = "日期範圍";
-
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
 "Date and Time Format" = "日期與時間格式";
@@ -1872,8 +1822,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Defaults for New Posts" = "新文章預設值";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "刪除";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1990,7 +1939,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Dismiss screen" = "關閉畫面";
 
 /* Display Name label text.
-   My Profile display name label
    User's Display Name */
 "Display Name" = "顯示名稱";
 
@@ -2011,7 +1959,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -2118,15 +2065,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "點兩下即可檢視嵌入選項。";
 
-/* Download button title */
-"Download" = "下載";
-
 /* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "下載備份";
-
-/* Title displayed for download backup action.
-   Title for button allowing user to backup their Jetpack site */
-"Download backup" = "下載備份";
 
 /* Title for the button that will download the backup file. */
 "Download file" = "下載檔案";
@@ -2318,9 +2258,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "加密記錄";
 
-/* Placeholder for the end date in calendar range selection */
-"End Date" = "結束日期";
-
 /* Enter a custom value */
 "Enter a custom value" = "輸入自訂值";
 
@@ -2353,8 +2290,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "輸入伺服器憑證";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "錯誤";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
@@ -2452,9 +2388,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "更新加速網站設定時發生錯誤";
-
-/* Title for the activity detail view */
-"Event" = "活動";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "每天";
@@ -2559,12 +2492,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title displayed whilst fetching media from the user's media library */
 "Fetching media..." = "正在擷取媒體…";
 
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
-"Fetching pages..." = "正在擷取頁面…";
-
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
-"Fetching posts..." = "正在擷取文章...";
-
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "正在擷取網站內容...";
 
@@ -2592,9 +2519,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Film & Television site intent topic */
 "Film & Television" = "電影和電視";
 
-/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
-"Filter by activity type" = "依活動類型篩選";
-
 /* Finance site intent topic */
 "Finance" = "財經";
 
@@ -2604,8 +2528,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "尋找你的網站位址";
 
-/* My Profile first name label
-   Register Domain - Domain contact information field First name
+/* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "名字";
 
@@ -3167,9 +3090,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "須安裝 Jetpack %@ 或更新版本。是否要更新 Jetpack？";
 
-/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup for Multisite 安裝提供可下載的備份，無需一鍵還原。 詳情請見 %1$@。";
-
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack 常見問題";
 
@@ -3274,8 +3194,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Large image size. Should be the same as in core WP. */
 "Large" = "大";
 
-/* My Profile last name label
-   Register Domain - Domain contact information field Last name
+/* Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "姓氏";
 
@@ -3426,12 +3345,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Loading" = "正在載入";
 
-/* Text displayed while loading the activity feed for a site */
-"Loading Activities..." = "正在載入活動⋯⋯";
-
-/* Text displayed while loading the activity feed for a site */
-"Loading Backups..." = "正在載入備份…";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "正在載入選單...";
 
@@ -3468,8 +3381,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "正在載入...";
 
 /* Local Services site intent topic */
@@ -3480,9 +3392,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Lock icon" = "鎖定圖示";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "依建立日期排列記錄檔案";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -3528,9 +3437,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button title. Takes the user to the Enter account password screen. */
 "Login with account password" = "使用帳號密碼登入";
-
-/* No comment provided by engineer. */
-"Logs" = "記錄";
 
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "在尋找統計資料嗎？";
@@ -3779,8 +3685,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Music site intent topic */
 "Music" = "音樂";
 
-/* Link to My Profile section
-   My Profile view title */
+/* Link to My Profile section */
 "My Profile" = "我的個人檔案";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
@@ -3892,9 +3797,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label */
 "Next period" = "下個期間";
 
-/* Label for a cancel button */
-"No" = "不";
-
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "尚未 %@";
 
@@ -3918,15 +3820,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "沒有可用的預覽網址";
-
-/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities available" = "無活動";
-
-/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities recorded in the selected date range." = "選取的日期範圍內沒有任何活動記錄。";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log */
-"No activity yet" = "尚未有活動";
 
 /* No comment provided by engineer. */
 "No application can handle this request." = "沒有應用程式可以處理這項要求。";
@@ -3968,9 +3861,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "尚無日期";
 
-/* Accessibility label for no currently selected range. */
-"No date range selected" = "未選取任何日期範圍";
-
 /* No comment provided by engineer. */
 "No description" = "無描述";
 
@@ -4001,12 +3891,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "還沒有人按讚";
-
-/* Title for the view when there aren't any backups to display for a given filter. */
-"No matching backups found" = "找不到相符的備份";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"No matching events found." = "找不到符合條件的活動。";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "沒有符合你搜尋條件的媒體";
@@ -4223,8 +4107,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
-   Title for the view when there's an error loading the plugin
-   Title for the view when there's an error loading time zones */
+   Title for the view when there's an error loading the plugin */
 "Oops" = "噢噢";
 
 /* An informal exclaimation meaning `something went wrong`. */
@@ -4964,12 +4847,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "重新傳送";
 
-/* Accessibility label for the reset activity type button */
-"Reset Activity Type filter" = "重設活動類型篩選器";
-
-/* Accessibility label for the reset date range button */
-"Reset Date Range filter" = "重設日期範圍篩選器";
-
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "重設密碼";
 
@@ -4982,13 +4859,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the fix section in Threat Details: Threat is not fixable */
 "Resolving the threat" = "正在解決威脅";
 
-/* Title displayed for restore action.
-   Title for button allowing user to restore their Jetpack site
-   Title for Jetpack Restore Complete screen
+/* Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen
-   Title of section showing restore status */
+   Title for the Jetpack Restore Site Screen */
 "Restore" = "還原";
 
 /* Title for Jetpack Restore Failed screen */
@@ -5002,13 +4876,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title for restore site action */
 "Restore to this point" = "還原至此時間點";
-
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Restored to %@" = "已還原至 %@";
-
-/* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
-   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
-"Restoring to %@" = "正在還原至 %@";
 
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
@@ -5247,12 +5114,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "無法使用已選取的媒體。";
 
-/* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "選取範圍：僅限 %1$@";
-
-/* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "選取範圍：%1$@ 到 %2$@";
-
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "已選取：%s";
@@ -5445,9 +5306,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "透過電子郵件註冊";
 
-/* Text displayed as a footer of a table view with Activities when user is on a free plan */
-"Since you're on a free plan, you'll see limited events in your Activity Log." = "由於你使用免費方案，你將無法在活動記錄中查看所有活動。";
-
 /* Notice displayed to the user after clearing the Siri activity donations. */
 "Siri Reset Confirmation" = "已成功清除 Siri 快速鍵建議";
 
@@ -5600,9 +5458,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Sorry, usernames must have letters (a-z) too!" = "抱歉，使用者名稱也必須包含字母 (a-z)!";
 
 /* No comment provided by engineer. */
-"Sorry, you cannot access this feature. Please check your User Role on this site." = "很抱歉，你無法存取此功能。請檢查你在此網站上的使用者角色。";
-
-/* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "很抱歉，你不可使用該網站位址。";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
@@ -5641,9 +5496,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Standard post format label */
 "Standard" = "標準";
-
-/* Placeholder for the start date in calendar range selection */
-"Start Date" = "開始日期";
 
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
@@ -5702,9 +5554,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app successfully unsubscribed from the comments for the post */
 "Successfully unfollowed conversation" = "已成功取消追蹤討論";
-
-/* Label displayed to the user left of the time zone suggestion button */
-"Suggestion:" = "建議：";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -5900,9 +5749,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "科技";
 
-/* My Profile 'About me' hint text */
-"Tell us a bit about you." = "請稍微談談你自己。";
-
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "告訴我們你希望建立什麼類型的網站";
 
@@ -5971,9 +5817,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "全球最棒的粉絲";
-
-/* No comment provided by engineer. */
-"The app can't recognize the server response. Please, check the configuration of your site." = "應用程式無法辨識伺服器回應。請檢查你網站的設定。";
 
 /* No comment provided by engineer. */
 "The basics" = "基本功能";
@@ -6125,9 +5968,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "變更密碼時發生錯誤";
 
-/* Text displayed when there is a failure loading the activity feed */
-"There was an error loading activities" = "載入活動時發生錯誤";
-
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "載入外掛程式時發生錯誤";
 
@@ -6149,9 +5989,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "載入此外掛程式時發生錯誤";
 
-/* Error message when time zones can't be loaded */
-"There was an error loading time zones" = "載入時區時發生錯誤";
-
 /* Text displayed when there is a failure saving the username. */
 "There was an error saving the username" = "儲存使用者名稱時發生錯誤";
 
@@ -6160,9 +5997,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when user tries to create a downloadable backup when there is already one being prepared */
 "There's a backup currently being prepared, please wait before starting the next one" = "正在準備建立備份，請稍後再開始建立其他備份";
-
-/* Text displayed when user tries to start a restore when there is already one running */
-"There's a restore currently in progress, please wait before starting next one" = "正在進行還原作業，請稍後再開始其他還原作業";
 
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting the next one" = "正在進行還原作業，請稍後再開始其他還原作業";
@@ -6184,9 +6018,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "此色彩組合可能讓人難以閱讀。 請嘗試更深的背景顏色和\/或較亮的文字顏色。";
-
-/* Notifies the user that the a domain matching the search term wasn't returned in the results */
-"This domain is unavailable" = "此網域不可使用";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "這個電子郵件地址沒有在 WordPress.com 上註冊。";
@@ -6266,8 +6097,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Writing Time Format Settings Title */
 "Time Format" = "時間格式";
 
-/* Label for the timezone setting
-   Title for the time zone selector */
+/* Label for the timezone setting */
 "Time Zone" = "時區";
 
 /* Error when the uses takes more than 1 minute to submit a security key. */
@@ -6395,14 +6225,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Try to load the list of interests again. */
 "Try Again" = "再試一次";
 
-/* Text displayed in the view when there aren't any backups to display for a given filter. */
-"Try adjusting your date range filter" = "請嘗試調整你的日期範圍篩選條件";
-
-/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"Try adjusting your date range or activity type filters" = "請嘗試調整你的日期範圍或活動類型篩選條件";
-
-/* Button label for trying to retrieve the activities type again
-   Button label for trying to retrieve the history again
+/* Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails. */
@@ -6522,9 +6345,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "無法還原網站";
 
-/* Text displayed when a site restore fails. */
-"Unable to restore your site, please try again later or contact support." = "無法還原你的網站，請稍後再試一次，或者聯絡支援團隊。";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "無法儲存媒體項目。";
 
@@ -6634,9 +6454,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for an untitled post in the revision browser */
 "Untitled" = "無標題";
 
-/* Help text shown below the list of debug logs. */
-"Up to seven days worth of logs are saved." = "可儲存最多七天的記錄。";
-
 /* Title for the card displaying upcoming scheduled posts. */
 "Upcoming scheduled posts" = "即將發表的排程文章";
 
@@ -6648,9 +6465,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label action for updating a link on the editor */
 "Update Link" = "更新連結";
-
-/* Update profile photo in Me > My Profile */
-"Update Profile Photo" = "更新個人檔案照片";
 
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "上傳網站圖示";
@@ -6949,9 +6763,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The subtitle text on the magic link requested screen followed by the email address. */
 "We just sent a magic link to" = "我們剛將神奇連結傳送至：";
 
-/* Message displayed when a backup has finished */
-"We successfully created a backup of your site as of %@" = "我們已成功建立截至 %@ 為止的網站備份";
-
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "我們已透過 %1$@ 順利建立你的網站備份。";
 
@@ -7108,9 +6919,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "如果留言的內容、名稱、URL、電子郵件或 IP 位址中含有以下文字，該留言將標記為垃圾留言。你也可以輸入部分字詞，例如「press」會與「WordPress」相配。";
 
-/* Text display when the view when there aren't any Activities to display in the Activity Log */
-"When you make changes to your site you'll be able to see your activity history here." = "當你變更自己的網站內容時，即可在此查看你的活動記錄。";
-
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "糟糕，發生了點錯誤，我們無法將你登入。請再試一次！";
 
@@ -7220,8 +7028,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* 'This Year' label for the the year. */
 "Year" = "年";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "好";
 
 /* Button label that confirms the user wants to log in and will authenticate them via the browser */
@@ -7384,17 +7191,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "你的備份現在已可下載";
 
-/* Text displayed when a site backup takes too long. */
-"Your backup is taking longer than usual, please check again in a few minutes." = "備份的時間比平常更長，請在數分鐘後再返回查看。";
-
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "你目前的使用者名稱為 %1$@。除少數例外情況外，其他人只會看到你的顯示名稱 %2$@。";
-
-/* Text displayed in the view when there aren't any Backups to display */
-"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "你的第一次備份將於 24 小時內顯示於此；備份完成後，你會收到通知";
-
-/* Title for the view when there aren't any Backups to display */
-"Your first backup will be ready soon" = "第一次備份即將準備就緒";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "正在設定你的新網域 %@。 你的網域最多可能需要 30 分鐘才能開始運作。";
@@ -7407,9 +7205,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "我們會將你的文章、網頁與設定透過電子郵件傳送至 %@。";
-
-/* Text displayed when a site restore takes too long. */
-"Your restore is taking longer than usual, please check again in a few minutes." = "還原的時間比平常更長，請在數分鐘後再返回查看。";
 
 /* This is shown to the user when their domain search query contains invalid characters. */
 "Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "你的搜尋包含 WordPress.com 網域不支援的字元。 允許使用以下字元：A–Z、a–z、0–9。";
@@ -7429,14 +7224,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Restore Complete message. */
 "Your site has been restored" = "你的網站已經還原";
 
-/* Title of a message displayed when a site has finished rewinding */
-"Your site has been succesfully restored" = "已成功還原你的網站";
-
 /* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "整個 Web 都會使用你的網站圖示：瀏覽器索引標籤、社群媒體的網站預覽，以及 WordPress.com 閱讀器。";
-
-/* Title of a message displayed when user starts a restore operation */
-"Your site is being restored" = "正在還原網站";
 
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "你的網站空間不足，無法上傳媒體檔案。";
@@ -7480,8 +7269,60 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title for the list of third-party software we use */
 "acknowledgements.title" = "合作廠商";
 
-/* Dismiss button title */
-"activityList.dismiss.title" = "關閉";
+/* Placeholder text shown when the activity actor's display name is empty */
+"activity.unknownUser" = "不明的使用者";
+
+/* Label for the backup checkpoint date */
+"activityDetail.checkpointDate" = "檢查點日期";
+
+/* Button title for downloading a backup */
+"activityDetail.download.button" = "下載";
+
+/* Button title for restoring a backup */
+"activityDetail.restore.button" = "還原";
+
+/* Section title for restore site actions */
+"activityDetail.section.restoreSite" = "還原網站";
+
+/* Section title for user information */
+"activityDetail.section.user" = "使用者";
+
+/* Title for the activity detail view */
+"activityDetail.title" = "活動";
+
+/* Deselect all button */
+"activityLogs.activityTypes.deselectAll" = "取消全選";
+
+/* Empty state message when no activity types are available */
+"activityLogs.activityTypes.empty" = "沒有可用的活動類型";
+
+/* Select all button */
+"activityLogs.activityTypes.selectAll" = "選取全部";
+
+/* Activity type selection screen title */
+"activityLogs.activityTypes.title" = "活動類型";
+
+/* Empty state message for activity logs */
+"activityLogs.empty" = "無活動";
+
+/* Activity types filter label */
+"activityLogs.filter.activityTypes" = "活動類型";
+
+/* End date filter label */
+"activityLogs.filter.endDate" = "結束日期";
+
+/* Reset filters button label */
+"activityLogs.filter.reset" = "重設篩選條件";
+
+/* Start date filter label */
+"activityLogs.filter.startDate" = "開始日期";
+
+/* Notice shown to free plan users about limited activity log events */
+"activityLogs.freePlan.notice" = "由於你使用免費方案，你將無法在活動記錄中查看所有活動。";
+
+/* Title for activity logs screen
+   Title for the activity logs screen */
+"activityLogs.title" = "活動";
 
 /* Screen title */
 "addCategory.navigationTitle" = "新增分類";
@@ -7573,6 +7414,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The list item of experimental features that users can choose to enable */
 "application-settings.experimental-features" = "實驗性功能";
 
+/* Button label to authorize application passwords */
+"application.password.authorize" = "授權";
+
+/* Description for the application passwords feature */
+"application.password.description" = "你現在可以授與應用程式權限來使用應用程式密碼，以便快速安全地存取網站內容。";
+
+/* Title for the new application passwords feature */
+"application.password.new.title" = "新功能：應用程式密碼";
+
 /* Title of row for displaying an application password's creation date */
 "applicationPassword.item.creationDate" = "建立日期";
 
@@ -7631,9 +7481,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An alert suggesting to load autosaved revision for a published post */
 "autosaveAlert.viewChanges" = "檢視變更";
 
-/* An error message displayed when attempting to update an avatar while the user's email address is not verified. */
-"avatar.update.email.verification.required" = "若想更新大頭貼，請先驗證電子郵件地址。";
-
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "無法載入圖片。 請選擇其他圖片，或稍後再試。";
 
@@ -7645,6 +7492,34 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "關閉";
+
+/* Download button title */
+"backup.download.header.download" = "下載";
+
+/* Shows when the download link will expire. %@ is the relative time (e.g., 'in 2 hours') */
+"backup.download.header.expiresIn" = "將在 %@後到期";
+
+/* Message displayed when a backup has finished. %@ is the date and time. */
+"backup.download.header.message" = "你的「%@」備份已準備就緒";
+
+/* Title shown when a backup is ready to download */
+"backup.download.header.title" = "備份已可下載";
+
+/* Message shown when a downloadable backup is in progress */
+"backup.inProgress.message" = "正在準備網站備份以供下載";
+
+/* Title shown when a downloadable backup is being created */
+"backup.inProgress.title" = "正在建立可下載的備份";
+
+/* Text displayed in the view when there aren't any Backups to display */
+"backups.empty.subtitle" = "你的第一次備份將於 24 小時內顯示於此；備份完成後，你會收到通知";
+
+/* Title for the view when there aren't any Backups to display */
+"backups.empty.title" = "你的首次備份很快就會完成";
+
+/* Title for backups screen
+   Title for the backups screen */
+"backups.title" = "備份";
 
 /* Button title for the button that shows the Blaze flow when tapped. */
 "blaze.campaigns.create.button.title" = "建立";
@@ -8396,6 +8271,27 @@ Example: Reply to Pamela Nguyen */
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
 
+/* Cancel dialog confirmation title */
+"inviteSubscribers.cancelConfirmationTitle" = "你確定要捨棄新訂閱者？";
+
+/* Cancel dialog confirmation button */
+"inviteSubscribers.discardChanges" = "捨棄變更";
+
+/* A footer view (small text). The button title is inserted by the app via a parameter. */
+"inviteSubscribers.disclosure" = "按一下「%@」，即表示你已徵得所有人同意，願意接收你傳送的電子郵件。 若你的訂閱者投訴垃圾訊息或退信的機率過高，我們可能會對你的帳號採取行動。";
+
+/* Field title (not shown, accessibility) */
+"inviteSubscribers.fieldTitleEmail" = "電子郵件";
+
+/* Import success snackbar title */
+"inviteSubscribers.importSuccessMessage" = "匯入作業需要幾分鐘的時間才能完成";
+
+/* Import success snackbar title */
+"inviteSubscribers.importSuccessTitle" = "已開始匯入";
+
+/* Screen title */
+"inviteSubscribers.title" = "新增訂閱者";
+
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "用這個連結直接加入成員，就不需要一個一個邀請。 造訪此 URL 的人都可以註冊你的組織，即使他們是從其他人那裡收到連結，因此請務必與值得信任的人分享。";
 
@@ -9028,6 +8924,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "重新申請你的 Google Domains 網域";
+
+/* Title for the menu item */
+"mySite.menu.subscribers" = "訂閱者";
+
+/* Title for the menu item */
+"mySite.menu.users" = "使用者";
 
 /* Button title. Displays the account and setting screen. */
 "mySite.noSites.button.accountAndSettings" = "帳號與設定";
@@ -9759,6 +9661,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "可見度";
 
+/* An error message displayed when attempting to update their profile while the user's email address is not verified. */
+"profile.update.email.verification.required" = "若想更新個人檔案，請先驗證電子郵件地址。";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "prologue.title.reader" = "訂閱你喜歡的網站並探索新網誌。";
 
@@ -10234,6 +10139,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.sidebar.section.favorites.title" = "我的最愛";
 
 /* Reader sidebar section title */
+"reader.sidebar.section.library.title" = "媒體庫";
+
+/* Reader sidebar section title */
 "reader.sidebar.section.lists.title" = "清單";
 
 /* Reader sidebar section title */
@@ -10295,15 +10203,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "新增標籤";
-
-/* Navigation title */
-"reader.tags.addTag.details" = "你可以隨意輸入任何標籤名稱";
-
-/* Placeholder for text field */
-"reader.tags.addTag.placeholder" = "標籤";
-
-/* Navigation title */
-"reader.tags.addTag.title" = "新增標籤";
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "探索更多標籤";
@@ -10465,6 +10364,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "shared.button.cancel" = "取消";
 
 /* A shared button title used in different contexts */
+"shared.button.clear" = "清除";
+
+/* A shared button title used in different contexts */
 "shared.button.close" = "關閉";
 
 /* A shared button title used in different contexts */
@@ -10497,6 +10399,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A shared button title used in different contexts */
 "shared.button.save" = "儲存";
 
+/* A shared button title used in different contexts (send email, send message, sent invites) */
+"shared.button.send" = "傳送";
+
 /* A shared button title used in different contexts */
 "shared.button.share" = "分享";
 
@@ -10511,6 +10416,27 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A generic error message */
 "shared.error.geneirc" = "發生錯誤";
+
+/* A generic error message */
+"shared.error.generic" = "發生錯誤";
+
+/* As in default value */
+"shared.misc.default" = "預設";
+
+/* Default value with a value. Example usage when ordering items: Default (Date Edited). */
+"shared.misc.defaultWithValue" = "預設 (%@)";
+
+/* A default filter value */
+"shared.misc.showAll" = "顯示全部";
+
+/* Sort ordering */
+"shared.misc.sortAascending" = "遞增";
+
+/* A button title used in different contexts */
+"shared.misc.sortBy" = "排序依據";
+
+/* Sort ordering */
+"shared.misc.sortDescending" = "遞減";
 
 /* Sidebar button title on iPad */
 "sidebar.addSite" = "新增網站";
@@ -11020,11 +10946,149 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Submit feedback screen submit fsuccess notice title */
 "submitFeedback.successNoticeTitle" = "已送出你的意見回饋";
 
+/* Button title */
+"subscriberDetails.buttonDeleteSubscriber" = "刪除訂閱者";
+
+/* Remove subscriber confirmation dialog message; subscriber name as input. */
+"subscriberDetails.deleteSubscriberConfirmationDialog.message" = "你確定要移除「%@」嗎？ 他們不會再收到貴網站的新通知。";
+
+/* Remove subscriber confirmation dialog title */
+"subscriberDetails.deleteSubscriberConfirmationDialog.title" = "刪除訂閱者";
+
+/* Form field name */
+"subscriberDetails.fieldName.country" = "國家\/地區";
+
+/* Form field name */
+"subscriberDetails.fieldName.email" = "電子郵件";
+
+/* Form field name */
+"subscriberDetails.fieldName.paidUpgrade" = "付費升級服務";
+
+/* Form field name */
+"subscriberDetails.fieldName.plan" = "方案";
+
+/* Form field name */
+"subscriberDetails.fieldName.planEndDate" = "結束日期";
+
+/* Form field name */
+"subscriberDetails.fieldName.planStartDate" = "開始日期";
+
+/* Form field name */
+"subscriberDetails.fieldName.planStatus" = "方案狀態";
+
+/* Form field name */
+"subscriberDetails.fieldName.renewalInterval" = "續訂間隔";
+
+/* Form field name */
+"subscriberDetails.fieldName.renewalPrice" = "續訂價格";
+
+/* Form field name */
+"subscriberDetails.fieldName.site" = "網站";
+
+/* Form field name (has to be short!) */
+"subscriberDetails.fieldName.statsClickedEmails" = "已點擊";
+
+/* Form field name (has to be short!) */
+"subscriberDetails.fieldName.statsEmailCount" = "電子郵件";
+
+/* Form field name (has to be short!) */
+"subscriberDetails.fieldName.statsOpenedEmails" = "開啟數";
+
+/* Form field name */
+"subscriberDetails.fieldName.subscriptionDate" = "訂閱日期";
+
+/* Name of a free plan */
+"subscriberDetails.plan.free" = "免費";
+
+/* Newsletter subscription plan type */
+"subscriberDetails.plan.gift" = "禮物";
+
+/* Card section title */
+"subscriberDetails.section.newletterSubscription" = "電子報訂閱";
+
+/* Card section title */
+"subscriberDetails.section.subscriberDetails" = "訂閱者詳細資料";
+
+/* Button title */
+"subscribers.buttonDeleteSubscriber" = "刪除訂閱者";
+
+/* Remove subscriber confirmation dialog message; subscriber name as input. */
+"subscribers.deleteSubscriberConfirmationDialog.message" = "你確定要移除「%@」嗎？ 他們不會再收到貴網站的新通知。";
+
+/* Remove subscriber confirmation dialog title */
+"subscribers.deleteSubscriberConfirmationDialog.title" = "刪除訂閱者";
+
+/* Empty state view title */
+"subscribers.empty" = "沒有訂閱者";
+
+/* Empty state view title */
+"subscribers.filter.emailSubscription" = "電子郵件訂閱";
+
+/* Empty state view title */
+"subscribers.filter.paymentType" = "付款";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.blocked" = "未傳送";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.email" = "已訂閱";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.reader" = "未訂閱";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.unconfirmed" = "未確認";
+
+/* Subscription type filter */
+"subscribers.filterBySubscriptionType.free" = "免費";
+
+/* Subscription type filter */
+"subscribers.filterBySubscriptionType.paid" = "已付費";
+
+/* Part of the label in the menu showing how many subscribers are displayed (has to have two arguments!) */
+"subscribers.menu.nOutOf" = "%1$@ 人，共 %2$@ 人";
+
+/* Part of the label in the menu showing how many subscribers are displayed */
+"subscribers.menu.subscribers" = "訂閱者：";
+
+/* Subscribers sort by field */
+"subscribers.sortField.dateSubscribed" = "訂閱日期";
+
+/* Subscribers sort by field */
+"subscribers.sortField.email" = "電子郵件";
+
+/* Subscribers sort by field */
+"subscribers.sortField.name" = "名稱";
+
+/* Subscribers sort by field */
+"subscribers.sortField.plan" = "方案";
+
+/* Subscribers sort by field */
+"subscribers.sortField.subscriptionStatus" = "電子郵件訂閱";
+
+/* Screen title */
+"subscribers.title" = "訂閱者";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "在此討論中";
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "網站成員";
+
+/* Label for the current activity log file in the list. */
+"support.activityLogs.currentLogTilte" = "目前";
+
+/* Message shown in the alert when attempting to clear old activity logs. */
+"support.activityLogs.deleteLogsAlert.message" = "你確定要刪除所有活動記錄嗎？";
+
+/* Title shown in the alert when attempting to clear old activity logs. */
+"support.activityLogs.deleteLogsAlert.title" = "刪除記錄";
+
+/* Title shown in the navigation bar of the Activity Logs screen. */
+"support.activityLogs.navigationTitle" = "活動記錄";
+
+/* Footer text explaining the log retention policy in the Activity Logs screen. */
+"support.activityLogs.sectionFooter" = "可儲存最多七天的記錄。";
 
 /* Dismiss the current view */
 "support.button.close.title" = "完成";
@@ -11170,6 +11234,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "這些項目將會刪除：";
 
+/* Section title for suggested timezones */
+"timeZoneSelector.suggested" = "建議";
+
+/* Title for the time zone selector */
+"timeZoneSelector.title" = "時區";
+
 /* Tip for sidebar */
 "tips.sidebar.message" = "向右滑動即可存取網站、閱讀器、通知和個人檔案。";
 
@@ -11291,8 +11361,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site Subscribers */
 "users.list.title.subscribers" = "訂閱者";
 
-/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
-"visit our documentation page" = "請造訪我們的文件頁面";
+/* Screen title */
+"users.title" = "使用者";
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "關閉";

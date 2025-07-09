@@ -335,9 +335,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "O Jetpack pro iOS";
 
-/* My Profile 'About me' label */
-"About Me" = "O mně";
-
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "O WordPressu";
 
@@ -381,21 +378,11 @@ translators: %s: Block name e.g. \"Image block\" */
 "Active, Autoupdates on" = "Aktivní, automatické aktualizace zapnuty";
 
 /* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature
-   Title for the activity list */
+   Noun. Name of the Activity Log feature */
 "Activity" = "Aktivita";
 
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Protokol aktivit";
-
-/* No comment provided by engineer. */
-"Activity Logs" = "Protokoly aktivit";
-
-/* Label for the Activity Type filter button */
-"Activity Type" = "Typ aktivit";
-
-/* Label for the Activity Type filter button when there are more than 1 activity type selected */
-"Activity Type (%1$d)" = "Typ aktivit (%1$d)";
 
 /* No comment provided by engineer. */
 "Add Block After" = "Přidat blok po";
@@ -414,9 +401,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Add URL" = "Přidat URL";
-
-/* Add a profile photo to Me > My Profile */
-"Add a Profile Photo" = "Přidat profilovou fotku";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Přidat doménu";
@@ -598,17 +582,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A failure reason for when an error HTTP status code was returned from the site. */
 "An HTTP error code was returned." = "Byl vrácen kód chyby HTTP.";
 
-/* Error message when loading failed because there's no connection */
-"An active internet connection is required" = "Je vyžadováno aktivní připojení k internetu";
-
 /* Error message shown when trying to scan a log in code without an active internet connection. */
 "An active internet connection is required to scan log in codes" = "Ke skenování přihlašovacích kódů je vyžadováno aktivní připojení k internetu";
 
 /* Error message shown when trying to view the scan status and there is no internet connection. */
 "An active internet connection is required to view Jetpack Scan" = "K prohlížení Jetpack Skenu je vyžadováno aktivní připojení k internetu ";
-
-/* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
-"An active internet connection is required to view activities" = "K prohlížení aktivit je vyžadováno aktivní připojení k internetu";
 
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
@@ -845,16 +823,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the Background Color section */
 "Background Color" = "Barva pozadí";
 
-/* Title of the cell displaying status of a backup in progress */
-"Backing up site" = "Zálohování webu";
-
 /* Noun. Links to a blog's Jetpack Backups screen.
    Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
-   Title for Jetpack Backup Update Status Failed screen
-   Title for the Jetpack's backup list
-   Title of section showing backup status */
+   Title for Jetpack Backup Update Status Failed screen */
 "Backup" = "Záloha";
 
 /* Title for error displayed when preparing a backup fails. */
@@ -1055,7 +1028,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -1219,9 +1191,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Choose audio" = "Zvolit audio";
 
-/* Title to choose date range in a calendar */
-"Choose date range" = "Vyberte časové období";
-
 /* No comment provided by engineer. */
 "Choose file" = "Vyberte soubor";
 
@@ -1261,14 +1230,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Vymažte mezipaměť médií zařízení";
 
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "Vyčistit staré protokoly aktivit";
-
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "Vymazat index reflektorů";
-
-/* Message of the trash confirmation alert. */
-"Clear all old activity logs?" = "Vymazat všechny staré protokoly aktivit?";
 
 /* No comment provided by engineer. */
 "Clear search" = "Vymazat vyhledávání";
@@ -1476,8 +1439,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Kontaktovat podporu";
 
-/* Button label for contacting support
-   Title of a button. A call to action to contact support for assistance. */
+/* Button label for contacting support */
 "Contact support" = "Kontaktovat podporu";
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
@@ -1606,9 +1568,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Indicating that referrer couldn't be unmarked as spam */
 "Couldn't unmark as spam" = "Označení jako spam se nepodařilo zrušit";
 
-/* Content show when the dashboard fails to load */
-"Couldn't update. Check that you're online and refresh." = "Aktualizace se nezdařila. Zkontrolujte, zda jste online, a obnovte stránku.";
-
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Účet se nepodařilo zavřít automaticky";
 
@@ -1679,14 +1638,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Creating dashboard" = "Vytváření řídicího panelu";
 
-/* Description of the cell displaying status of a backup in progress */
-"Creating downloadable backup" = "Vytváření zálohy ke stažení";
-
 /* No comment provided by engineer. */
 "Crosspost" = "Crosspost";
-
-/* No comment provided by engineer. */
-"Current" = "Aktuální";
 
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Aktuální šablona";
@@ -1711,9 +1664,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the Jetpack Restore Status message. */
 "Currently restoring site" = "Aktuálně se obnovuje web";
-
-/* Title of the cell displaying status of a rewind in progress */
-"Currently restoring your site" = "Právě se obnovuje váš web";
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Aktuálně se obnovuje: %1$@";
@@ -1765,9 +1715,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Writing Date Format Settings Title */
 "Date Format" = "Formát data";
 
-/* Label of a button that displays a calendar */
-"Date Range" = "Časové rozmezí";
-
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
 "Date and Time Format" = "Formát data a času";
@@ -1794,8 +1741,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Defaults for New Posts" = "Výchozí pro nové příspěvky";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Smazat";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1906,7 +1852,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Dismiss screen" = "Zavřít obrazovku";
 
 /* Display Name label text.
-   My Profile display name label
    User's Display Name */
 "Display Name" = "Zobrazované jméno";
 
@@ -1927,7 +1872,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -2034,15 +1978,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Dvojitým klepnutím zobrazíte možnosti vložení.";
 
-/* Download button title */
-"Download" = "Stáhnout";
-
 /* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "Stáhnout zálohu";
-
-/* Title displayed for download backup action.
-   Title for button allowing user to backup their Jetpack site */
-"Download backup" = "Stáhnout zálohu";
 
 /* Title for the button that will download the backup file. */
 "Download file" = "Stáhnout soubor";
@@ -2228,9 +2165,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Šifrované protokoly";
 
-/* Placeholder for the end date in calendar range selection */
-"End Date" = "Koncové datum";
-
 /* Enter a custom value */
 "Enter a custom value" = "Zadejte vlastní hodnotu";
 
@@ -2263,8 +2197,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Zadejte přihlašovací údaje k serveru";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "Chyba";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
@@ -2359,9 +2292,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Chyba při aktualizaci zrychlení webu";
-
-/* Title for the activity detail view */
-"Event" = "Událost";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "Každý den";
@@ -2463,12 +2393,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title displayed whilst fetching media from the user's media library */
 "Fetching media..." = "Načítání médií...";
 
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
-"Fetching pages..." = "Načítám stránky...";
-
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
-"Fetching posts..." = "Načítám příspěvky...";
-
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Načítání stránek...";
 
@@ -2493,9 +2417,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Film & Television site intent topic */
 "Film & Television" = "Film a televize";
 
-/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
-"Filter by activity type" = "Filtrovat podle typu aktivity";
-
 /* Finance site intent topic */
 "Finance" = "Finance";
 
@@ -2505,8 +2426,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Najděte adresu svého webu";
 
-/* My Profile first name label
-   Register Domain - Domain contact information field First name
+/* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Jméno";
 
@@ -3041,9 +2961,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Plugin Jetpack, verze %@ nebo novější, je vyžadován pro zobrazení statistik. Přejete si nainstalovat tento plugin?";
 
-/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup pro instalace na více webů poskytuje zálohy ke stažení, žádné obnovení jediným kliknutím. Další informace %1$@.";
-
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack nejčastější dotazy";
 
@@ -3148,8 +3065,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Velký obrázek";
 
-/* My Profile last name label
-   Register Domain - Domain contact information field Last name
+/* Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "Příjmení";
 
@@ -3300,12 +3216,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Loading" = "Načítání";
 
-/* Text displayed while loading the activity feed for a site */
-"Loading Activities..." = "Načítání aktivit ...";
-
-/* Text displayed while loading the activity feed for a site */
-"Loading Backups..." = "Načítání záloh...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Načítání menu...";
 
@@ -3342,8 +3252,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Načítání…";
 
 /* Local Services site intent topic */
@@ -3354,9 +3263,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Lock icon" = "Ikona zámku";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "Zaznamenávat soubory dle data vytvoření";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -3399,9 +3305,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button title. Takes the user to the Enter account password screen. */
 "Login with account password" = "Přihlaste se heslem účtu";
-
-/* No comment provided by engineer. */
-"Logs" = "Protokoly";
 
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "Hledáte statistiky?";
@@ -3647,8 +3550,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Music site intent topic */
 "Music" = "Hudba";
 
-/* Link to My Profile section
-   My Profile view title */
+/* Link to My Profile section */
 "My Profile" = "Můj profil";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
@@ -3754,9 +3656,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label */
 "Next period" = "Další období";
 
-/* Label for a cancel button */
-"No" = "Ne";
-
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "Ještě ne %@";
 
@@ -3780,15 +3679,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Není k dispozici žádná adresa URL náhledu";
-
-/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities available" = "Nejsou k dispozici žádné aktivity";
-
-/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities recorded in the selected date range." = "Ve vybraném časovém období nebyly zaznamenány žádné aktivity.";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log */
-"No activity yet" = "Zatím žádná aktivita";
 
 /* No comment provided by engineer. */
 "No application can handle this request." = "Aplikace nedokáže zpracovat tento požadavek. ";
@@ -3830,9 +3720,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Zatím žádná data";
 
-/* Accessibility label for no currently selected range. */
-"No date range selected" = "Není vybráno žádné časové období";
-
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Žádné opravené hrozby";
 
@@ -3860,12 +3747,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Zatím žádné to se mi líbí";
-
-/* Title for the view when there aren't any backups to display for a given filter. */
-"No matching backups found" = "Nebyly nalezeny žádné odpovídající zálohy";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"No matching events found." = "Nebyly nalezeny žádné odpovídající události.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "Vašemu vyhledávání neodpovídají žádná média";
@@ -4079,8 +3960,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
-   Title for the view when there's an error loading the plugin
-   Title for the view when there's an error loading time zones */
+   Title for the view when there's an error loading the plugin */
 "Oops" = "Jejda";
 
 /* An informal exclaimation meaning `something went wrong`. */
@@ -4802,12 +4682,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Přeposlat";
 
-/* Accessibility label for the reset activity type button */
-"Reset Activity Type filter" = "Obnovit filtr typu aktivity";
-
-/* Accessibility label for the reset date range button */
-"Reset Date Range filter" = "Obnovit filtr časového období";
-
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Resetovat vaše heslo";
 
@@ -4820,13 +4694,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the fix section in Threat Details: Threat is not fixable */
 "Resolving the threat" = "Řešení hrozby";
 
-/* Title displayed for restore action.
-   Title for button allowing user to restore their Jetpack site
-   Title for Jetpack Restore Complete screen
+/* Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen
-   Title of section showing restore status */
+   Title for the Jetpack Restore Site Screen */
 "Restore" = "Obnovit";
 
 /* Title for Jetpack Restore Failed screen */
@@ -4840,13 +4711,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title for restore site action */
 "Restore to this point" = "Obnovte do tohoto bodu";
-
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Restored to %@" = "Obnoveno k %@";
-
-/* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
-   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
-"Restoring to %@" = "Obnovování do %@";
 
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
@@ -5079,12 +4943,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Vybrané médium není k dispozici.";
 
-/* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "Vybraný rozsah: pouze %1$@";
-
-/* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "Vybraný rozsah: %1$@ až %2$@";
-
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Vybráno: %s";
@@ -5274,9 +5132,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Zaregistrujte se pomocí e-mailu";
 
-/* Text displayed as a footer of a table view with Activities when user is on a free plan */
-"Since you're on a free plan, you'll see limited events in your Activity Log." = "Jelikož máte bezplatný plán, uvidíte v protokolu aktivit omezené události.";
-
 /* Notice displayed to the user after clearing the Siri activity donations. */
 "Siri Reset Confirmation" = "Úspěšně vymazány návrhy zkratek Siri";
 
@@ -5429,9 +5284,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Sorry, usernames must have letters (a-z) too!" = "Uživatelské jméno musí obsahovat také nějaké písmeno!";
 
 /* No comment provided by engineer. */
-"Sorry, you cannot access this feature. Please check your User Role on this site." = "Je nám líto, tato funkce není dostupná. Zkontrolujte vaší uživatelskou roli na této stránce.";
-
-/* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Nemůžete použít tuto adresu webu.";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
@@ -5470,9 +5322,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Standard post format label */
 "Standard" = "Standardní";
-
-/* Placeholder for the start date in calendar range selection */
-"Start Date" = "Počáteční datum";
 
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
@@ -5531,9 +5380,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app successfully unsubscribed from the comments for the post */
 "Successfully unfollowed conversation" = "Odhlásili jste se z odběru komentářů k příspěvku.";
-
-/* Label displayed to the user left of the time zone suggestion button */
-"Suggestion:" = "Doporučení:";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -5714,9 +5560,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "Technologie";
 
-/* My Profile 'About me' hint text */
-"Tell us a bit about you." = "Řekněte nám něco o sobě.";
-
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "Řekněte nám, jakou stránku byste chtěli vytvořit";
 
@@ -5782,9 +5625,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "Nejlepší fanoušci světa";
-
-/* No comment provided by engineer. */
-"The app can't recognize the server response. Please, check the configuration of your site." = "Aplikace nemůže rozpoznat odpověď serveru. Zkontrolujte prosím konfiguraci svého webu.";
 
 /* No comment provided by engineer. */
 "The basics" = "Základy";
@@ -5933,9 +5773,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "Při změně hesla došlo k chybě.";
 
-/* Text displayed when there is a failure loading the activity feed */
-"There was an error loading activities" = "Při načítání aktivit došlo k chybě";
-
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Při načítání pluginů došlo k chybě";
 
@@ -5957,9 +5794,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "Při načítání tohoto pluginu došlo k chybě";
 
-/* Error message when time zones can't be loaded */
-"There was an error loading time zones" = "Při načítání časových pásem došlo k chybě";
-
 /* Text displayed when there is a failure saving the username. */
 "There was an error saving the username" = "Při ukládání uživatelského jména došlo k chybě";
 
@@ -5968,9 +5802,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when user tries to create a downloadable backup when there is already one being prepared */
 "There's a backup currently being prepared, please wait before starting the next one" = "Právě se připravuje záloha, počkejte prosím před zahájením dalšího";
-
-/* Text displayed when user tries to start a restore when there is already one running */
-"There's a restore currently in progress, please wait before starting next one" = "Právě probíhá obnovení, počkejte prosím před zahájením dalšího";
 
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting the next one" = "Právě probíhá obnovení, počkejte prosím před zahájením dalšího";
@@ -5992,9 +5823,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "Tato barevná kombinace může být obtížně čitelná. Zkuste použít tmavší barvu pozadí a\/nebo světlejší barvu textu.";
-
-/* Notifies the user that the a domain matching the search term wasn't returned in the results */
-"This domain is unavailable" = "Tato doména není k dispozici";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "Tato e-mailová adresa není zaregistrována na WordPress.com.";
@@ -6074,8 +5902,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Writing Time Format Settings Title */
 "Time Format" = "Formát času";
 
-/* Label for the timezone setting
-   Title for the time zone selector */
+/* Label for the timezone setting */
 "Time Zone" = "Časové pásmo";
 
 /* WordPress.com Marketing Footer Text */
@@ -6197,14 +6024,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Try to load the list of interests again. */
 "Try Again" = "Opakovat";
 
-/* Text displayed in the view when there aren't any backups to display for a given filter. */
-"Try adjusting your date range filter" = "Zkuste upravit časové období filtru";
-
-/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"Try adjusting your date range or activity type filters" = "Zkuste upravit filtry časového období nebo typu aktivity";
-
-/* Button label for trying to retrieve the activities type again
-   Button label for trying to retrieve the history again
+/* Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails. */
@@ -6321,9 +6141,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Web nelze obnovit";
 
-/* Text displayed when a site restore fails. */
-"Unable to restore your site, please try again later or contact support." = "Váš web nelze obnovit, zkuste to znovu později nebo kontaktujte podporu.";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Nelze uložit mediální položku.";
 
@@ -6427,9 +6244,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Bez názvu";
 
-/* Help text shown below the list of debug logs. */
-"Up to seven days worth of logs are saved." = "Až sedm dní jsou uloženy přihlašovací údaje.";
-
 /* Title for the card displaying upcoming scheduled posts. */
 "Upcoming scheduled posts" = "Nadcházející plánované příspěvky";
 
@@ -6441,9 +6255,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label action for updating a link on the editor */
 "Update Link" = "Aktualizovat odkaz";
-
-/* Update profile photo in Me > My Profile */
-"Update Profile Photo" = "Aktualizace profilového obrázku";
 
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "Aktualizovat ikonu webu";
@@ -6729,9 +6540,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The subtitle text on the magic link requested screen followed by the email address. */
 "We just sent a magic link to" = "Právě jsme poslali kouzelný odkaz";
 
-/* Message displayed when a backup has finished */
-"We successfully created a backup of your site as of %@" = "Úspěšně jsme vytvořili zálohu vašeho webu od %@";
-
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "Úspěšně jsme vytvořili zálohu vašeho webu z %1$@.";
 
@@ -6882,9 +6690,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Pokud komentář obsahuje jakékoliv z těchto slov ve svém obsahu, jméně, URL, e-mailu, nebo IP, bude označen jako spam. Můžete také zadat části slov, takže podmínce \"press\" bude odpovídat \"WordPress\".";
 
-/* Text display when the view when there aren't any Activities to display in the Activity Log */
-"When you make changes to your site you'll be able to see your activity history here." = "Když na svém webu provedete změny, uvidíte zde svoji historii aktivit.";
-
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Jejda, něco se pokazilo a nemohli jsme vás přihlásit. Zkuste to prosím znovu!";
 
@@ -6985,8 +6790,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* 'This Year' label for the the year. */
 "Year" = "Rok";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "Ano";
 
 /* Button label that confirms the user wants to log in and will authenticate them via the browser */
@@ -7137,17 +6941,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Vaše záloha je nyní k dispozici ke stažení";
 
-/* Text displayed when a site backup takes too long. */
-"Your backup is taking longer than usual, please check again in a few minutes." = "Záloha trvá déle než obvykle, zkontrolujte to prosím znovu za několik minut.";
-
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Vaše aktuální uživatelské jméno je %1$@. Až na několik výjimek uvidí ostatní pouze vaše zobrazované jméno, %2$@.";
-
-/* Text displayed in the view when there aren't any Backups to display */
-"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Vaše první záloha se zde zobrazí do 24 hodin a po dokončení zálohy obdržíte oznámení";
-
-/* Title for the view when there aren't any Backups to display */
-"Your first backup will be ready soon" = "Vaše první záloha bude brzy připravena";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Vaše nová doména %@ se nastavuje. Může trvat až 30 minut, než vaše doména začne fungovat.";
@@ -7157,9 +6952,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Vaše příspěvky, stránky a nastavení budou zaslány na %@.";
-
-/* Text displayed when a site restore takes too long. */
-"Your restore is taking longer than usual, please check again in a few minutes." = "Obnova trvá déle než obvykle, zkontrolujte to prosím znovu za několik minut.";
 
 /* This is shown to the user when their domain search query contains invalid characters. */
 "Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "Vaše vyhledávání obsahuje znaky, které nejsou podporovány v doménách WordPress.com. Jsou povoleny pouze alfanumerické znaky: A–Z, a–z, 0–9.";
@@ -7179,14 +6971,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Restore Complete message. */
 "Your site has been restored" = "Váš web byl obnoven";
 
-/* Title of a message displayed when a site has finished rewinding */
-"Your site has been succesfully restored" = "Vaše stránka byla úspěšně obnovena";
-
 /* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Ikona vašeho webu se používá na celém webu: na kartách prohlížeče, náhledech stránek na sociálních sítích a ve čtečce WordPress.com.";
-
-/* Title of a message displayed when user starts a restore operation */
-"Your site is being restored" = "Vaše stránka se obnovuje";
 
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Váš web je mimo prostor pro nahrávání médií.";
@@ -7223,9 +7009,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active atomic site. */
 "accountSettings.closeAccount.error.atomicSite" = "Tento uživatelský účet nelze okamžitě zavřít, protože má aktivní nákupy. Chcete-li dokončit smazání účtu, kontaktujte náš tým podpory.";
-
-/* Dismiss button title */
-"activityList.dismiss.title" = "Odmítnout";
 
 /* Age between dates equaling one hour. */
 "an hour" = "hodina";
@@ -7872,9 +7655,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "nepřečtené";
-
-/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
-"visit our documentation page" = "navštivte naši stránku s dokumentací";
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Odmítnout";

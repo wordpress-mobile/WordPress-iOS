@@ -44,9 +44,6 @@
 /* Label for active Theme browser cell */
 "ACTIVE" = "ใช้งาน";
 
-/* My Profile 'About me' label */
-"About Me" = "เกี่ยวกับฉัน";
-
 /* Title for the account section in site settings screen */
 "Account" = "บัญชี";
 
@@ -59,9 +56,6 @@
 
 /* Title of alert when theme activation fails */
 "Activation Error" = "ผิดพลาดในการเปิดใช้งาน";
-
-/* No comment provided by engineer. */
-"Activity Logs" = "log กิจกรรม";
 
 /* No comment provided by engineer. */
 "Add alt text" = "เพิ่ม alt text";
@@ -193,7 +187,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -221,9 +214,6 @@
 
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "การรับรองผิดพลาด";
-
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "ล้างค่า log กิจกรรมเก่า";
 
 /* Label for number of clicks.
    Period Stats 'Clicks' header */
@@ -316,9 +306,6 @@
    Title for the button to progress with creating the site with the selected design. */
 "Create Site" = "สร้างเว็บไซต์";
 
-/* No comment provided by engineer. */
-"Current" = "ตอนนี้";
-
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "theme ปัจจุบัน";
 
@@ -344,8 +331,7 @@
 "Defaults for New Posts" = "ค่าเริ่มต้นสำหรับเรื่องใหม่";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "ลบ";
 
 /* Title for button on the comment details page that deletes the comment when tapped. */
@@ -387,7 +373,6 @@
 "Dismiss" = "ยกเลิก";
 
 /* Display Name label text.
-   My Profile display name label
    User's Display Name */
 "Display Name" = "ชื่อที่แสดง";
 
@@ -396,7 +381,6 @@
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -450,8 +434,7 @@
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "ใส่ชื่อผู้ใช้";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "ผิดพลาด";
 
 /* Text displayed when load post fails. */
@@ -469,14 +452,7 @@
 /* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
 "Fetching comments..." = "กำลังดึงความเห็น...";
 
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
-"Fetching pages..." = "กลำังดึงข้อมูลหน้า...";
-
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
-"Fetching posts..." = "กำลังดึงข้อมูลเรื่อง...";
-
-/* My Profile first name label
-   Register Domain - Domain contact information field First name
+/* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "ชื่อ";
 
@@ -580,8 +556,7 @@
 /* Large image size. Should be the same as in core WP. */
 "Large" = "ขนาดใหญ่";
 
-/* My Profile last name label
-   Register Domain - Domain contact information field Last name
+/* Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "นามสกุล";
 
@@ -638,12 +613,8 @@
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "กำลังโหลด...";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "ไฟล์ log โดยวันที่สร้างขึ้น";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -654,9 +625,6 @@
 
 /* Login Request Expired */
 "Login Request Expired" = "คำขอเข้าสู่ระบบหมดอายุ";
-
-/* No comment provided by engineer. */
-"Logs" = "log";
 
 /* Title of a button. */
 "Lost your password?" = "จำรหัสผ่านไม่ได้?";
@@ -710,8 +678,7 @@
    Trashes the comment */
 "Move to Trash" = "ย้ายไปถังขยะ";
 
-/* Link to My Profile section
-   My Profile view title */
+/* Link to My Profile section */
 "My Profile" = "ประวัติส่วนตัวของฉัน";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
@@ -739,9 +706,6 @@
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "ต่อไป";
-
-/* Label for a cancel button */
-"No" = "ไม่";
 
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "ไม่มีการเชื่อมต่อ";
@@ -1035,13 +999,10 @@
 /* Setting: WordPress.com Surveys */
 "Research" = "การค้นคว้า";
 
-/* Title displayed for restore action.
-   Title for button allowing user to restore their Jetpack site
-   Title for Jetpack Restore Complete screen
+/* Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen
-   Title of section showing restore status */
+   Title for the Jetpack Restore Site Screen */
 "Restore" = "กู้คืน";
 
 /* A prompt to attempt the failed network request again
@@ -1175,9 +1136,6 @@
 "Sorry, usernames must have letters (a-z) too!" = "ขอโทษครับ ชื่อผู้ใช้ต้องมีตัวอักษร (a ถึง z)  ด้วย";
 
 /* No comment provided by engineer. */
-"Sorry, you cannot access this feature. Please check your User Role on this site." = "ขอโทษครับ คุณไม่สามารถใช้คำสั่งนี้  กรุณาตรวจสอบบทบาทของคุณบนเว็บนี้";
-
-/* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "ขอโทษครับ คุณไม่อาจจะใช้ที่อยู่เว็บนั้นได้";
 
 /* Discussion Settings Title
@@ -1261,9 +1219,6 @@
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL นั้นขาดโฮสท์ที่ใช้งานได้";
-
-/* No comment provided by engineer. */
-"The app can't recognize the server response. Please, check the configuration of your site." = "แอพไม่สามารถจดจำการตอบสนองของเซิร์ฟเวอร์ กรุณา ตรวจสอบการตั้งค่าเว็บของคุณ";
 
 /* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "การรับรองสำหรับเซิร์ฟเวอร์นี้ใช้งานไม่ได้ คุณอาจจะเชื่อมต่อกับเซิร์ฟเวอร์ที่แกล้งทำเป็น “%@” ซึ่งสามารถทำให้ข้อความความลับของคุณอยู่ในความเสี่ยง\n\nคุณต้องการที่จะเชื่อมั่นการรับรองนี้อยู่หรือไม่?";
@@ -1520,8 +1475,7 @@
 /* Title for the writing section in site settings screen */
 "Writing" = "การเขียน";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "ใช่";
 
 /* Comments Yesterday Section Header

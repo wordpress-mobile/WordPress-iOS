@@ -74,9 +74,6 @@
 /* Label for active Theme browser cell */
 "ACTIVE" = "GWEITHREDOL";
 
-/* My Profile 'About me' label */
-"About Me" = "Amdanaf Fi";
-
 /* Title for the account section in site settings screen */
 "Account" = "Cyfrif";
 
@@ -89,9 +86,6 @@
 
 /* Title of alert when theme activation fails */
 "Activation Error" = "Gwall Cychwyn";
-
-/* No comment provided by engineer. */
-"Activity Logs" = "Cofnodion Gweithgarwch";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Ychwanegu testun arall";
@@ -300,7 +294,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -348,9 +341,6 @@
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Gwirio'r nwyddau â brynwyd...";
-
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "Clirio'r Hen Gofnodion Gweithgaredd";
 
 /* Label for number of clicks.
    Period Stats 'Clicks' header */
@@ -469,8 +459,7 @@
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Cysylltu â Chefnogaeth";
 
-/* Button label for contacting support
-   Title of a button. A call to action to contact support for assistance. */
+/* Button label for contacting support */
 "Contact support" = "Cysylltu â Chefnogaeth";
 
 /* Menus alert button title to continue making changes. */
@@ -515,9 +504,6 @@
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Bydd dewis dewislen gwahanol yn dileu'r newidiadau rydych wedi eu gwneud i'r ddewislen gyfredol. A ydych yn siŵr eich bod am barhau?";
 
-/* No comment provided by engineer. */
-"Current" = "Cyfredol";
-
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Y Thema Bresennol";
 
@@ -543,8 +529,7 @@
 "Defaults for New Posts" = "Rhagosodiadau Gwefannau Newydd";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Dileu";
 
 /* Menus confirmation button for deleting a menu. */
@@ -610,7 +595,6 @@
 "Dismiss" = "Cau";
 
 /* Display Name label text.
-   My Profile display name label
    User's Display Name */
 "Display Name" = "Enw Dangos";
 
@@ -622,7 +606,6 @@
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -685,8 +668,7 @@
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Rhowch enw defnyddiwr";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "Gwall";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
@@ -726,17 +708,10 @@
 /* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
 "Fetching comments..." = "Estyn sylwadau...";
 
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
-"Fetching pages..." = "Estyn tudalennau...";
-
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
-"Fetching posts..." = "Estyn cofnodion...";
-
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Estyn gwefannau...";
 
-/* My Profile first name label
-   Register Domain - Domain contact information field First name
+/* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Enw Cyntaf";
 
@@ -881,8 +856,7 @@
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Mawr";
 
-/* My Profile last name label
-   Register Domain - Domain contact information field Last name
+/* Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "Enw Olaf";
 
@@ -951,12 +925,8 @@
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Llwytho...";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "Ffeiliau Cofnod yn ôl Dyddiad Creu";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -970,9 +940,6 @@
 
 /* Login Request Expired */
 "Login Request Expired" = "Daeth y Cais Mewngofnodi i Ben";
-
-/* No comment provided by engineer. */
-"Logs" = "Cofnodion";
 
 /* Title of a button. */
 "Lost your password?" = "Wedi colli eich cyfrinair?";
@@ -1041,8 +1008,7 @@
    Trashes the comment */
 "Move to Trash" = "Symud i'r Sbwriel";
 
-/* Link to My Profile section
-   My Profile view title */
+/* Link to My Profile section */
 "My Profile" = "Fy Mhroffil";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
@@ -1065,9 +1031,6 @@
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Nesaf";
-
-/* Label for a cancel button */
-"No" = "Na";
 
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Dim Categori";
@@ -1196,8 +1159,7 @@
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
-   Title for the view when there's an error loading the plugin
-   Title for the view when there's an error loading time zones */
+   Title for the view when there's an error loading the plugin */
 "Oops" = "Wps";
 
 /* An informal exclaimation meaning `something went wrong`. */
@@ -1460,13 +1422,10 @@
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Newid Maint a Thocio";
 
-/* Title displayed for restore action.
-   Title for button allowing user to restore their Jetpack site
-   Title for Jetpack Restore Complete screen
+/* Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen
-   Title of section showing restore status */
+   Title for the Jetpack Restore Site Screen */
 "Restore" = "Adfer";
 
 /* A prompt to attempt the failed network request again
@@ -1660,9 +1619,6 @@
 "Sorry, usernames must have letters (a-z) too!" = "Ymddiheuriadau, rhaid i enwau defnyddwyr fod â llythennau (a-z) hefyd!";
 
 /* No comment provided by engineer. */
-"Sorry, you cannot access this feature. Please check your User Role on this site." = "Ymddiheuriadau, ni allwch gael mynediad i'r nodwedd hon. Gwiriwch eich Rôl Defnydd ar y wefan hon.";
-
-/* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Nid oes modd i chi ddefnyddio'r cyfeiriad gwefan hwn.";
 
 /* Discussion Settings Title
@@ -1727,9 +1683,6 @@
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Tacsonomi";
 
-/* My Profile 'About me' hint text */
-"Tell us a bit about you." = "Dywedwch wrthym amdanoch eich hun.";
-
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Amodau Gwasanaeth";
 
@@ -1762,9 +1715,6 @@
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "Nid oes gan URL westai dilys.";
-
-/* No comment provided by engineer. */
-"The app can't recognize the server response. Please, check the configuration of your site." = "Nid yw'r ap yn gallu a adnabod ymateb y gweinydd. Gwiriwch ffurfweddiad eich gwefan.";
 
 /* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Mae'r dystysgrif ar gyfer y gweinydd hwn yn annilys. Gall eich bod yn cysylltu â gweinydd sy'n esgus bod yn “%@” sy'n gallu peryglu eich gwybodaeth gyfrinachol.\n\nHoffech chi ymddiried yn y dystysgrif beth bynnag?";
@@ -1962,9 +1912,6 @@
 /* No comment provided by engineer. */
 "Unsupported" = "Heb ei gynnal";
 
-/* Help text shown below the list of debug logs. */
-"Up to seven days worth of logs are saved." = "Mae gwerth saith diwrnod o ffeiliau cofnod yn cael eu cadw.";
-
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
    Label action for updating a link on the editor
@@ -2120,8 +2067,7 @@
 /* Title for the writing section in site settings screen */
 "Writing" = "Ysgrifennu";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "Iawn";
 
 /* Comments Yesterday Section Header
