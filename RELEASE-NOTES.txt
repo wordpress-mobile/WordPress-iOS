@@ -14,6 +14,8 @@
 * [*] Fix incorrectly capitalized tag "WordPress" in Reader [#24649]
 * [*] Fix an issue with domains sometimes being incorrectly sorted on the "Domain Search" screen [#24631]
 * [*] Fix a couple of visual issues in Post List [#24647]
+* [*] Fix an issue where the empty state view covering top tabs on the "Users" screen [#24659]
+* [*] Fix an issue with invisible "Super Admin" badge on the "Users" screen [#24659]
 
 25.9
 -----

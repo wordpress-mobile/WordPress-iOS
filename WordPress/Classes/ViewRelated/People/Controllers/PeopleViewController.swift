@@ -7,8 +7,6 @@ import WordPressUI
 // MARK: - PeopleViewController
 
 class PeopleViewController: UITableViewController {
-    private let isUsersOnly = FeatureFlag.newsletterSubscribers.enabled
-
     // MARK: Properties
 
     private static let refreshRowPadding = 4
@@ -337,10 +335,9 @@ private extension PeopleViewController {
 
     func filtersAvailableForBlog(_ blog: Blog?) -> [Filter] {
         guard let blog, blog.siteVisibility == .private else {
-            return Filter.defaultFilters
+            return [.users]
         }
-
-        return Filter.allCases
+        return [.users, .viewers]
     }
 
     func refreshInterface() {
@@ -481,9 +478,15 @@ private extension PeopleViewController {
             return
         }
         addChild(noResultsViewController)
-        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        tableView.addSubview(noResultsViewController.view)
         noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToSafeArea(noResultsViewController.view)
+
+        if let headerView = tableView.tableHeaderView {
+            noResultsViewController.view.topAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
+        } else {
+            noResultsViewController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        }
+        noResultsViewController.view.pinEdges([.horizontal, .bottom], to: view.safeAreaLayoutGuide)
 
         noResultsViewController.didMove(toParent: self)
     }
@@ -530,12 +533,11 @@ private extension PeopleViewController {
 
         let indexToSet = Filter.allCases.firstIndex(where: { $0 == defaultFilter }) ?? 0
         filterBar.setSelectedIndex(indexToSet)
-        filter = defaultFilter
     }
 
     func setupTableView() {
-        guard !isUsersOnly else {
-            return
+        guard filtersAvailableForBlog(blog).count > 1 else {
+            return // Do not show the filter bar
         }
 
         filterBar.translatesAutoresizingMaskIntoConstraints = false
@@ -550,7 +552,7 @@ private extension PeopleViewController {
     }
 
     func setupView() {
-        title = isUsersOnly ? Strings.title : NSLocalizedString("People", comment: "Noun. Title of the people management feature.")
+        title = Strings.title
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
@@ -560,6 +562,9 @@ private extension PeopleViewController {
 
         setupFilterBar()
         setupTableView()
+
+        /// - warning: This needs to happen after the view it fully configured
+        filter = defaultFilter
     }
 
     @objc private func selectedFilterDidChange(_ filterBar: FilterTabBar) {
