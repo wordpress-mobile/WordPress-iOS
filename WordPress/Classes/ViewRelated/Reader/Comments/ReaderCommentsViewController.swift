@@ -77,6 +77,8 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         } else {
             fetchPost()
         }
+
+        trackCommentsOpened()
     }
 
     override func viewWillAppear(_ animated: Bool) {

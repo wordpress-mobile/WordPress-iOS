@@ -26,7 +26,8 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
 
     private let headerView = PostListHeaderView()
     private let ellipsisButton = UIButton(type: .system)
-    private let contentLabel = UILabel()
+    private let titleLabel = UILabel()
+    private let excerptLabel = UILabel()
     private let featuredImageView = AsyncImageView()
     private let statusLabel = UILabel()
 
@@ -36,9 +37,14 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
 
     // MARK: - PostSearchResultCell
 
-    var attributedText: NSAttributedString? {
-        get { contentLabel.attributedText }
-        set { contentLabel.attributedText = newValue }
+    var titleAttributedText: NSAttributedString? {
+        get { titleLabel.attributedText }
+        set { titleLabel.attributedText = newValue }
+    }
+
+    var excerptAttributedText: NSAttributedString? {
+        get { excerptLabel.attributedText }
+        set { excerptLabel.attributedText = newValue }
     }
 
     // MARK: AbstractPostListCell
@@ -73,7 +79,8 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
 
     private func _configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
         headerView.configure(with: viewModel)
-        contentLabel.attributedText = viewModel.content
+        titleLabel.attributedText = viewModel.title
+        excerptLabel.attributedText = viewModel.excerpt
 
         featuredImageView.isHidden = viewModel.imageURL == nil
         featuredImageView.layer.opacity = viewModel.syncStateViewModel.isEditable ? 1 : 0.25
@@ -111,15 +118,20 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     // MARK: - Setup
 
     private func setupViews() {
-        setupContentLabel()
+        setupTitleLabel()
+        setupExcerptLabel()
         setupFeaturedImageView()
         setupStatusLabel()
 
+        let textStackView = UIStackView(arrangedSubviews: [titleLabel, excerptLabel])
+        textStackView.axis = .vertical
+        textStackView.spacing = 3
+
         contentStackView.addArrangedSubviews([
-            contentLabel,
+            textStackView,
             featuredImageView
         ])
-        contentStackView.spacing = 16
+        contentStackView.spacing = 8
         contentStackView.alignment = .top
 
         mainStackView.addArrangedSubviews([
@@ -128,24 +140,32 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
             statusLabel
         ])
         mainStackView.spacing = 4
+        mainStackView.setCustomSpacing(5, after: headerView)
         contentView.addSubview(mainStackView)
-        mainStackView.pinEdges(to: contentView.layoutMarginsGuide)
+        mainStackView.pinEdges(to: contentView.layoutMarginsGuide, insets: UIEdgeInsets(top: 0, left: 0, bottom: 2, right: -2))
 
         // It is added last to ensure it's tappable
         setupEllipsisButton()
     }
 
-    private func setupContentLabel() {
-        contentLabel.adjustsFontForContentSizeCategory = true
-        contentLabel.numberOfLines = 3
-        contentLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    private func setupTitleLabel() {
+        titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.numberOfLines = 2
+        titleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    }
+
+    private func setupExcerptLabel() {
+        excerptLabel.adjustsFontForContentSizeCategory = true
+        excerptLabel.numberOfLines = 2
+        excerptLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
 
     private func setupFeaturedImageView() {
         featuredImageView.contentMode = .scaleAspectFill
         featuredImageView.layer.masksToBounds = true
-        featuredImageView.layer.cornerRadius = 5
+        featuredImageView.layer.cornerRadius = 8
         featuredImageView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        featuredImageView.configuration.isErrorViewEnabled = false
 
         NSLayoutConstraint.activate([
             featuredImageView.widthAnchor.constraint(equalToConstant: Constants.imageSize.width),
@@ -161,11 +181,12 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
 
     private func setupEllipsisButton() {
         ellipsisButton.setImage(UIImage(named: "more-horizontal-mobile"), for: .normal)
-        ellipsisButton.tintColor = .secondaryLabel
+        ellipsisButton.tintColor = .tertiaryLabel
 
+        /// warning: See `spacer` in `PostListHeaderView` to understand the layout
         NSLayoutConstraint.activate([
-            ellipsisButton.heightAnchor.constraint(equalToConstant: 44),
-            ellipsisButton.widthAnchor.constraint(equalToConstant: 54)
+            ellipsisButton.heightAnchor.constraint(equalToConstant: 40),
+            ellipsisButton.widthAnchor.constraint(equalToConstant: 56)
         ])
 
         contentView.addSubview(ellipsisButton)
@@ -174,5 +195,5 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
 }
 
 private enum Constants {
-    static let imageSize = CGSize(width: 64, height: 64)
+    static let imageSize = CGSize(width: 54, height: 54)
 }

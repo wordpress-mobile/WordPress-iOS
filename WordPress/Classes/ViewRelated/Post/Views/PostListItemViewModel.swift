@@ -4,7 +4,8 @@ import WordPressShared
 
 final class PostListItemViewModel {
     let post: Post
-    let content: NSAttributedString
+    let title: NSAttributedString
+    let excerpt: NSAttributedString
     let imageURL: URL?
     let badges: NSAttributedString
     let syncStateViewModel: PostSyncStateViewModel
@@ -20,7 +21,8 @@ final class PostListItemViewModel {
         self.statusViewModel = PostCardStatusViewModel(post: post)
         self.syncStateViewModel = PostSyncStateViewModel(post: post)
         self.badges = makeBadgesString(for: post, syncStateViewModel: syncStateViewModel, shouldHideAuthor: shouldHideAuthor)
-        self.content = makeContentString(for: post, syncStateViewModel: syncStateViewModel)
+        self.title = makeTitleString(for: post, isDisabled: !syncStateViewModel.isEditable)
+        self.excerpt = makeExcerptString(for: post, isDisabled: !syncStateViewModel.isEditable)
     }
 }
 
@@ -60,36 +62,39 @@ private func makeAccessibilityLabel(for post: Post, statusViewModel: PostCardSta
         .joined(separator: " ")
 }
 
-private func makeContentString(for post: Post, syncStateViewModel: PostSyncStateViewModel) -> NSAttributedString {
+private func makeTitleString(for post: Post, isDisabled: Bool) -> NSAttributedString {
     let title = post.titleForDisplay()
-    let snippet = post.contentPreviewForDisplay()
-    let foregroundColor = syncStateViewModel.isEditable ? UIColor.label : UIColor.tertiaryLabel
 
-    let string = NSMutableAttributedString()
-    if !title.isEmpty {
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold),
-            .foregroundColor: foregroundColor
-        ]
-        let titleAttributedString = NSAttributedString(string: title, attributes: attributes)
-        string.append(titleAttributedString)
-    }
-    if !snippet.isEmpty {
-        // Normalize newlines by collapsing multiple occurrences of newlines to a single newline
-        let adjustedSnippet = snippet.replacingOccurrences(of: "[\n]{2,}", with: "\n", options: .regularExpression)
-        if string.length > 0 {
-            string.append(NSAttributedString(string: "\n"))
-        }
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular),
-            .foregroundColor: foregroundColor
-        ]
-        let snippetAttributedString = NSAttributedString(string: adjustedSnippet, attributes: attributes)
-        string.append(snippetAttributedString)
-    }
+    let foregroundColor = isDisabled ? UIColor.tertiaryLabel : UIColor.label
+
+    let attributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont.preferredFont(forTextStyle: .headline),
+        .foregroundColor: foregroundColor
+    ]
 
     let paragraphStyle = NSMutableParagraphStyle()
-    paragraphStyle.paragraphSpacing = 4
+    paragraphStyle.lineBreakMode = .byTruncatingTail
+
+    let string = NSMutableAttributedString(string: title, attributes: attributes)
+    string.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: string.length))
+
+    return string
+}
+
+private func makeExcerptString(for post: Post, isDisabled: Bool) -> NSAttributedString {
+    let excerpt = post.contentPreviewForDisplay()
+
+    let foregroundColor = isDisabled ? UIColor.tertiaryLabel : UIColor.secondaryLabel
+
+    let attributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont.preferredFont(forTextStyle: .subheadline),
+        .foregroundColor: foregroundColor
+    ]
+
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineBreakMode = .byTruncatingTail
+
+    let string = NSMutableAttributedString(string: excerpt, attributes: attributes)
     string.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: string.length))
 
     return string

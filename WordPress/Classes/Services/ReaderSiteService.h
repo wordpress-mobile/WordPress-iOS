@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
-@import WordPressData;
+
+@protocol CoreDataStack;
 
 NS_ASSUME_NONNULL_BEGIN
 

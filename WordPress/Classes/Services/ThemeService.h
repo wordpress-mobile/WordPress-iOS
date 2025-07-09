@@ -1,10 +1,9 @@
-@import WordPressData;
-
 NS_ASSUME_NONNULL_BEGIN
 
 @class Blog;
 @class Theme;
 @class WPAccount;
+@protocol CoreDataStack;
 
 typedef void(^ThemeServiceSuccessBlock)(void);
 typedef void(^ThemeServiceThemeRequestSuccessBlock)(Theme * _Nullable theme);

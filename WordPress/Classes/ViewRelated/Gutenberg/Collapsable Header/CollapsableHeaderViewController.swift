@@ -233,7 +233,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         configureSubtitleToCategoryBarSpacing()
         configureHeaderImageView()
         navigationItem.titleView = titleView
-        largeTitleView.font = WPStyleGuide.serifFontForTextStyle(UIFont.TextStyle.largeTitle, fontWeight: .semibold)
+        largeTitleView.font = UIFont.make(.recoleta, textStyle: .largeTitle, weight: .medium)
         toggleFilterBarConstraints()
         styleButtons()
         setStaticText()

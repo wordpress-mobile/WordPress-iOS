@@ -1,13 +1,7 @@
 #import "SuggestionsTableView.h"
 #import "SuggestionsTableViewCell.h"
-#ifdef KEYSTONE
-#import "Keystone-Swift.h"
-#else
 #import "WordPress-Swift.h"
-#endif
-// For some reason, the modular import does not work.
-// @import WordPressData;
-#import <WordPressData/WordPressData.h>
+@import WordPressData;
 
 CGFloat const STVDefaultMinHeaderHeight = 0.f;
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";

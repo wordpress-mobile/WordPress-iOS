@@ -336,9 +336,6 @@
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "About Jetpack for iOS";
 
-/* My Profile 'About me' label */
-"About Me" = "About Me";
-
 /* Link to About screen for Jetpack for iOS */
 "About Reader for iOS" = "About Reader for iOS";
 
@@ -400,33 +397,72 @@
 "Active, Autoupdates on" = "Active, Autoupdates on";
 
 /* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature
-   Title for the activity list */
+   Noun. Name of the Activity Log feature */
 "Activity" = "Activity";
 
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Activity Log";
 
-/* No comment provided by engineer. */
-"Activity Logs" = "Activity Logs";
+/* Placeholder text shown when the activity actor's display name is empty */
+"activity.unknownUser" = "Unknown User";
 
-/* Label for the Activity Type filter button */
-"Activity Type" = "Activity Type";
+/* Label for the backup checkpoint date */
+"activityDetail.checkpointDate" = "Checkpoint Date";
 
-/* Label for the Activity Type filter button when there are more than 1 activity type selected */
-"Activity Type (%1$d)" = "Activity Type (%1$d)";
+/* Button title for downloading a backup */
+"activityDetail.download.button" = "Download";
 
-/* Dismiss button title */
-"activityList.dismiss.title" = "Dismiss";
+/* Button title for restoring a backup */
+"activityDetail.restore.button" = "Restore";
+
+/* Section title for restore site actions */
+"activityDetail.section.restoreSite" = "Restore Site";
+
+/* Section title for user information */
+"activityDetail.section.user" = "User";
+
+/* Title for the activity detail view */
+"activityDetail.title" = "Event";
+
+/* Deselect all button */
+"activityLogs.activityTypes.deselectAll" = "Deselect All";
+
+/* Empty state message when no activity types are available */
+"activityLogs.activityTypes.empty" = "No activity types available";
+
+/* Select all button */
+"activityLogs.activityTypes.selectAll" = "Select All";
+
+/* Activity type selection screen title */
+"activityLogs.activityTypes.title" = "Activity Types";
+
+/* Empty state message for activity logs */
+"activityLogs.empty" = "No Activity";
+
+/* Activity types filter label */
+"activityLogs.filter.activityTypes" = "Activity Types";
+
+/* End date filter label */
+"activityLogs.filter.endDate" = "End Date";
+
+/* Reset filters button label */
+"activityLogs.filter.reset" = "Reset Filters";
+
+/* Start date filter label */
+"activityLogs.filter.startDate" = "Start Date";
+
+/* Notice shown to free plan users about limited activity log events */
+"activityLogs.freePlan.notice" = "Since you're on a free plan, you'll see limited events in your Activity Log.";
+
+/* Title for activity logs screen
+   Title for the activity logs screen */
+"activityLogs.title" = "Activity";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Add a domain";
 
 /* No comment provided by engineer. */
 "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left." = "Add a new block at any time by tapping on the + icon in the toolbar on the bottom left.";
-
-/* Add a profile photo to Me > My Profile */
-"Add a Profile Photo" = "Add a Profile Photo";
 
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Add a shortcode…";
@@ -677,14 +713,8 @@
 /* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
 "Always Send Crash Logs" = "Always Send Crash Logs";
 
-/* Error message when loading failed because there's no connection */
-"An active internet connection is required" = "An active internet connection is required";
-
 /* Error message shown when trying to scan a log in code without an active internet connection. */
 "An active internet connection is required to scan log in codes" = "An active internet connection is required to scan log in codes";
-
-/* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
-"An active internet connection is required to view activities" = "An active internet connection is required to view activities";
 
 /* Error message shown when trying to view the scan status and there is no internet connection. */
 "An active internet connection is required to view Jetpack Scan" = "An active internet connection is required to view Jetpack Scan";
@@ -774,6 +804,15 @@
 
 /* The list item of experimental features that users can choose to enable */
 "application-settings.experimental-features" = "Experimental Features";
+
+/* Button label to authorize application passwords */
+"application.password.authorize" = "Authorize";
+
+/* Description for the application passwords feature */
+"application.password.description" = "You can now grant the app permission to use application passwords for quick and secure access to your site content.";
+
+/* Title for the new application passwords feature */
+"application.password.new.title" = "New: Application Passwords";
 
 /* Title of row for displaying an application password's creation date */
 "applicationPassword.item.creationDate" = "Creation Date";
@@ -1027,12 +1066,6 @@
 /* No comment provided by engineer. */
 "Available to all users" = "Available to all users";
 
-/* An error message displayed when attempting to update an avatar while the user's email address is not verified. */
-"avatar.update.email.verification.required" = "To update your avatar, you need to verify your email address first.";
-
-/* An error message displayed when attempting to update their profile while the user's email address is not verified. */
-"profile.update.email.verification.required" = "To update your profile, you need to verify your email address first.";
-
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "Unable to load the image. Please choose a different one or try again later.";
 
@@ -1066,20 +1099,43 @@
 /* Title for the Background Color section */
 "Background Color" = "Background Color";
 
-/* Title of the cell displaying status of a backup in progress */
-"Backing up site" = "Backing up site";
-
 /* Noun. Links to a blog's Jetpack Backups screen.
    Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
-   Title for Jetpack Backup Update Status Failed screen
-   Title for the Jetpack's backup list
-   Title of section showing backup status */
+   Title for Jetpack Backup Update Status Failed screen */
 "Backup" = "Backup";
 
 /* Title for error displayed when preparing a backup fails. */
 "Backup failed" = "Backup failed";
+
+/* Download button title */
+"backup.download.header.download" = "Download";
+
+/* Shows when the download link will expire. %@ is the relative time (e.g., 'in 2 hours') */
+"backup.download.header.expiresIn" = "Expires %@";
+
+/* Message displayed when a backup has finished. %@ is the date and time. */
+"backup.download.header.message" = "Your backup from %@ is ready";
+
+/* Title shown when a backup is ready to download */
+"backup.download.header.title" = "Backup ready to download";
+
+/* Message shown when a downloadable backup is in progress */
+"backup.inProgress.message" = "Preparing your site backup for download";
+
+/* Title shown when a downloadable backup is being created */
+"backup.inProgress.title" = "Creating downloadable backup";
+
+/* Text displayed in the view when there aren't any Backups to display */
+"backups.empty.subtitle" = "Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed";
+
+/* Title for the view when there aren't any Backups to display */
+"backups.empty.title" = "Your first backup will be ready soon";
+
+/* Title for backups screen
+   Title for the backups screen */
+"backups.title" = "Backups";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
 "Bar Chart depicting Comments for the selected period." = "Bar Chart depicting Comments for the selected period.";
@@ -1456,7 +1512,6 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -1617,9 +1672,6 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* No comment provided by engineer. */
 "Choose audio" = "Choose audio";
 
-/* Title to choose date range in a calendar */
-"Choose date range" = "Choose date range";
-
 /* No comment provided by engineer. */
 "Choose file" = "Choose file";
 
@@ -1668,14 +1720,8 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Save Draft";
 
-/* Message of the trash confirmation alert. */
-"Clear all old activity logs?" = "Clear all old activity logs?";
-
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Clear Device Media Cache";
-
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "Clear Old Activity Logs";
 
 /* No comment provided by engineer. */
 "Clear search" = "Clear search";
@@ -1971,8 +2017,7 @@ Example: Reply to Pamela Nguyen */
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Contact Support";
 
-/* Button label for contacting support
-   Title of a button. A call to action to contact support for assistance. */
+/* Button label for contacting support */
 "Contact support" = "Contact support";
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
@@ -2098,6 +2143,9 @@ Example: Reply to Pamela Nguyen */
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem.";
 
+/* Content show when the dashboard fails to load */
+"Couldn't load data. Please refresh again later." = "Couldn't load data. Please refresh again later.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Couldn't load tags.";
 
@@ -2109,9 +2157,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Indicating that referrer couldn't be unmarked as spam */
 "Couldn't unmark as spam" = "Couldn't unmark as spam";
-
-/* Content show when the dashboard fails to load */
-"Couldn't update. Check that you're online and refresh." = "Couldn't update. Check that you're online and refresh.";
 
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Couldn’t close account automatically";
@@ -2189,14 +2234,8 @@ Example: Reply to Pamela Nguyen */
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Creating dashboard" = "Creating dashboard";
 
-/* Description of the cell displaying status of a backup in progress */
-"Creating downloadable backup" = "Creating downloadable backup";
-
 /* No comment provided by engineer. */
 "Crosspost" = "Crosspost";
-
-/* No comment provided by engineer. */
-"Current" = "Current";
 
 /* Period Accessibility label. Prefix the current selected period. Ex. Current period: 2019 */
 "Current period: %@" = "Current period: %@";
@@ -2221,9 +2260,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the Jetpack Restore Status message. */
 "Currently restoring site" = "Currently restoring site";
-
-/* Title of the cell displaying status of a rewind in progress */
-"Currently restoring your site" = "Currently restoring your site";
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Currently restoring: %1$@";
@@ -2384,9 +2420,6 @@ Example: Reply to Pamela Nguyen */
    Writing Date Format Settings Title */
 "Date Format" = "Date Format";
 
-/* Label of a button that displays a calendar */
-"Date Range" = "Date Range";
-
 /* Navigates to debug menu only available in development builds */
 "Debug" = "Debug";
 
@@ -2476,8 +2509,7 @@ Example: Reply to Pamela Nguyen */
 "Defaults for New Posts" = "Defaults for New Posts";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Delete";
 
 /* Screen Reader: Button that deletes a menu. */
@@ -2597,7 +2629,6 @@ Example: Reply to Pamela Nguyen */
 "Dismiss screen" = "Dismiss screen";
 
 /* Display Name label text.
-   My Profile display name label
    User's Display Name */
 "Display Name" = "Display Name";
 
@@ -2753,7 +2784,6 @@ Example: Reply to Pamela Nguyen */
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -2862,13 +2892,6 @@ Example: Reply to Pamela Nguyen */
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "double-tap to change unit";
-
-/* Download button title */
-"Download" = "Download";
-
-/* Title displayed for download backup action.
-   Title for button allowing user to backup their Jetpack site */
-"Download backup" = "Download backup";
 
 /* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "Download Backup";
@@ -3081,9 +3104,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Encrypted Logs";
 
-/* Placeholder for the end date in calendar range selection */
-"End Date" = "End Date";
-
 /* Enter a custom value */
 "Enter a custom value" = "Enter a custom value";
 
@@ -3119,8 +3139,7 @@ Example: Reply to Pamela Nguyen */
 /* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
 "entityMetadataFooterView.id" = "ID";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "Error";
 
 /* There was an error activating a plugin, placeholder is the plugin name */
@@ -3218,9 +3237,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Error updating speed up site settings";
-
-/* Title for the activity detail view */
-"Event" = "Event";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "Every day";
@@ -3359,12 +3375,6 @@ Example: Reply to Pamela Nguyen */
 /* Title displayed whilst fetching media from the user's media library */
 "Fetching media..." = "Fetching media...";
 
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
-"Fetching pages..." = "Fetching pages...";
-
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
-"Fetching posts..." = "Fetching posts...";
-
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Fetching sites...";
 
@@ -3395,9 +3405,6 @@ Example: Reply to Pamela Nguyen */
 /* Film & Television site intent topic */
 "Film & Television" = "Film & Television";
 
-/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
-"Filter by activity type" = "Filter by activity type";
-
 /* Finance site intent topic */
 "Finance" = "Finance";
 
@@ -3407,8 +3414,7 @@ Example: Reply to Pamela Nguyen */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Find your site address";
 
-/* My Profile first name label
-   Register Domain - Domain contact information field First name
+/* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "First Name";
 
@@ -4072,6 +4078,27 @@ Example: Reply to Pamela Nguyen */
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organization, even if they received the link from somebody else, so make sure that you share it with trusted people.";
 
+/* Cancel dialog confirmation title */
+"inviteSubscribers.cancelConfirmationTitle" = "Are you sure you want to discard the new subscribers?";
+
+/* Cancel dialog confirmation button */
+"inviteSubscribers.discardChanges" = "Discard Changes";
+
+/* A footer view (small text). The button title is inserted by the app via a parameter. */
+"inviteSubscribers.disclosure" = "By clicking \"%@,\" you represent that you've obtained the appropriate consent to email each person. Spam complaints or high bounce rate from your subscribers may lead to action against your account.";
+
+/* Field title (not shown, accessibility) */
+"inviteSubscribers.fieldTitleEmail" = "Email";
+
+/* Import success snackbar title */
+"inviteSubscribers.importSuccessMessage" = "It make take a few minutes before the import completes";
+
+/* Import success snackbar title */
+"inviteSubscribers.importSuccessTitle" = "Import Started";
+
+/* Screen title */
+"inviteSubscribers.title" = "Add Subscribers";
+
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP address";
 
@@ -4098,9 +4125,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Jetpack %@ or later is required. Do you want to update Jetpack?";
-
-/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@.";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack could not be installed at this time.";
@@ -4492,8 +4516,7 @@ Please install the %3$@ to use the app with this site.";
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Large";
 
-/* My Profile last name label
-   Register Domain - Domain contact information field Last name
+/* Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "Last Name";
 
@@ -4653,12 +4676,6 @@ Please install the %3$@ to use the app with this site.";
 /* No comment provided by engineer. */
 "Loading" = "Loading";
 
-/* Text displayed while loading the activity feed for a site */
-"Loading Activities..." = "Loading Activities...";
-
-/* Text displayed while loading the activity feed for a site */
-"Loading Backups..." = "Loading Backups...";
-
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "Loading comment...";
 
@@ -4695,8 +4712,7 @@ Please install the %3$@ to use the app with this site.";
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Loading...";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
@@ -4707,9 +4723,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* No comment provided by engineer. */
 "Lock icon" = "Lock icon";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "Log Files By Created Date";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -4770,9 +4783,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Instruction label in the two-factor authorization screen WordPress.com login authentication. Note: it has to mention that it's for a WordPress.com account. */
 "login.twoFactorInstructions.details" = "Please enter the verification code from your authentication app for your WordPress.com account.";
-
-/* No comment provided by engineer. */
-"Logs" = "Logs";
 
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "Looking for stats?";
@@ -5285,8 +5295,7 @@ Please install the %3$@ to use the app with this site.";
    Music site intent topic */
 "Music" = "Music";
 
-/* Link to My Profile section
-   My Profile view title */
+/* Link to My Profile section */
 "My Profile" = "My Profile";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
@@ -5335,6 +5344,12 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Reclaim your Google Domains";
+
+/* Title for the menu item */
+"mySite.menu.subscribers" = "Subscribers";
+
+/* Title for the menu item */
+"mySite.menu.users" = "Users";
 
 /* Button title. Displays the account and setting screen. */
 "mySite.noSites.button.accountAndSettings" = "Account and settings";
@@ -5463,23 +5478,11 @@ Please install the %3$@ to use the app with this site.";
 /* Accessibility label */
 "Next period" = "Next period";
 
-/* Label for a cancel button */
-"No" = "No";
-
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "No %@ yet";
 
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "No Accounts Found";
-
-/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities available" = "No activities available";
-
-/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities recorded in the selected date range." = "No activities recorded in the selected date range.";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log */
-"No activity yet" = "No activity yet";
 
 /* No comment provided by engineer. */
 "No application can handle this request." = "No application can handle this request.";
@@ -5527,9 +5530,6 @@ Please install the %3$@ to use the app with this site.";
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "No data yet";
 
-/* Accessibility label for no currently selected range. */
-"No date range selected" = "No date range selected";
-
 /* No comment provided by engineer. */
 "No description" = "No description";
 
@@ -5563,12 +5563,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "No likes yet";
-
-/* Title for the view when there aren't any backups to display for a given filter. */
-"No matching backups found" = "No matching backups found";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"No matching events found." = "No matching events found.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "No media matching your search";
@@ -5896,8 +5890,7 @@ Please install the %3$@ to use the app with this site.";
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
-   Title for the view when there's an error loading the plugin
-   Title for the view when there's an error loading time zones */
+   Title for the view when there's an error loading the plugin */
 "Oops" = "Oops";
 
 /* An informal exclaimation meaning `something went wrong`. */
@@ -7000,6 +6993,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Register Domain - error displayed when there's a problem when purchasing the domain. */
 "Problem purchasing your domain. Please try again." = "Problem purchasing your domain. Please try again.";
 
+/* An error message displayed when attempting to update their profile while the user's email address is not verified. */
+"profile.update.email.verification.required" = "To update your profile, you need to verify your email address first.";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "prologue.title.reader" = "Subscribe to your favorite sites and discover new blogs.";
 
@@ -7545,6 +7541,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "reader.sidebar.section.favorites.title" = "Favorites";
 
 /* Reader sidebar section title */
+"reader.sidebar.section.library.title" = "Library";
+
+/* Reader sidebar section title */
 "reader.sidebar.section.lists.title" = "Lists";
 
 /* Reader sidebar section title */
@@ -7609,15 +7608,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Add a Tag";
-
-/* Navigation title */
-"reader.tags.addTag.details" = "You can enter any arbitrary tag name";
-
-/* Placeholder for text field */
-"reader.tags.addTag.placeholder" = "Tag";
-
-/* Navigation title */
-"reader.tags.addTag.title" = "Add Tag";
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Discover more tags";
@@ -7914,12 +7904,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Resend";
 
-/* Accessibility label for the reset activity type button */
-"Reset Activity Type filter" = "Reset Activity Type filter";
-
-/* Accessibility label for the reset date range button */
-"Reset Date Range filter" = "Reset Date Range filter";
-
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Reset your password";
 
@@ -7950,13 +7934,10 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for the fix section in Threat Details: Threat is not fixable */
 "Resolving the threat" = "Resolving the threat";
 
-/* Title displayed for restore action.
-   Title for button allowing user to restore their Jetpack site
-   Title for Jetpack Restore Complete screen
+/* Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen
-   Title of section showing restore status */
+   Title for the Jetpack Restore Site Screen */
 "Restore" = "Restore";
 
 /* Title for Jetpack Restore Failed screen */
@@ -7970,13 +7951,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Button title for restore site action */
 "Restore to this point" = "Restore to this point";
-
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Restored to %@" = "Restored to %@";
-
-/* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
-   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
-"Restoring to %@" = "Restoring to %@";
 
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
@@ -8221,12 +8195,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Selected media is unavailable.";
 
-/* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "Selected range: %1$@ only";
-
-/* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "Selected range: %1$@ to %2$@";
-
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".\ntranslators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Selected: %s";
 
@@ -8352,6 +8320,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.cancel" = "Cancel";
 
 /* A shared button title used in different contexts */
+"shared.button.clear" = "Clear";
+
+/* A shared button title used in different contexts */
 "shared.button.close" = "Close";
 
 /* A shared button title used in different contexts */
@@ -8384,6 +8355,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* A shared button title used in different contexts */
 "shared.button.save" = "Save";
 
+/* A shared button title used in different contexts (send email, send message, sent invites) */
+"shared.button.send" = "Send";
+
 /* A shared button title used in different contexts */
 "shared.button.share" = "Share";
 
@@ -8398,6 +8372,27 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* A generic error message */
 "shared.error.geneirc" = "Something went wrong";
+
+/* A generic error message */
+"shared.error.generic" = "Something went wrong";
+
+/* As in default value */
+"shared.misc.default" = "Default";
+
+/* Default value with a value. Example usage when ordering items: Default (Date Edited). */
+"shared.misc.defaultWithValue" = "Default (%@)";
+
+/* A default filter value */
+"shared.misc.showAll" = "Show All";
+
+/* Sort ordering */
+"shared.misc.sortAascending" = "Ascending";
+
+/* A button title used in different contexts */
+"shared.misc.sortBy" = "Sort By";
+
+/* Sort ordering */
+"shared.misc.sortDescending" = "Descending";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Dismiss";
@@ -8519,9 +8514,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Sign up with Email";
-
-/* Text displayed as a footer of a table view with Activities when user is on a free plan */
-"Since you're on a free plan, you'll see limited events in your Activity Log." = "Since you're on a free plan, you'll see limited events in your Activity Log.";
 
 /* Notice displayed to the user after clearing the Siri activity donations. */
 "Siri Reset Confirmation" = "Successfully cleared Siri Shortcut Suggestions";
@@ -8958,9 +8950,6 @@ Feel free to replace it with other bracket types that you think looks better for
 "Sorry, usernames must have letters (a-z) too!" = "Sorry, usernames must have letters (a-z) too!";
 
 /* No comment provided by engineer. */
-"Sorry, you cannot access this feature. Please check your User Role on this site." = "Sorry, you cannot access this feature. Please check your User Role on this site.";
-
-/* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Sorry, you may not use that site address.";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
@@ -8999,9 +8988,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Standard post format label */
 "Standard" = "Standard";
-
-/* Placeholder for the start date in calendar range selection */
-"Start Date" = "Start Date";
 
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
@@ -9259,6 +9245,129 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Submit feedback screen submit fsuccess notice title */
 "submitFeedback.successNoticeTitle" = "Feedback sent";
 
+/* Button title */
+"subscriberDetails.buttonDeleteSubscriber" = "Delete Subscriber";
+
+/* Remove subscriber confirmation dialog message; subscriber name as input. */
+"subscriberDetails.deleteSubscriberConfirmationDialog.message" = "Are you sure you want to remove %@? They will no longer receive new notifications from your site.";
+
+/* Remove subscriber confirmation dialog title */
+"subscriberDetails.deleteSubscriberConfirmationDialog.title" = "Delete the subscriber";
+
+/* Form field name */
+"subscriberDetails.fieldName.country" = "Country";
+
+/* Form field name */
+"subscriberDetails.fieldName.email" = "Email";
+
+/* Form field name */
+"subscriberDetails.fieldName.paidUpgrade" = "Paid Upgrade";
+
+/* Form field name */
+"subscriberDetails.fieldName.plan" = "Plan";
+
+/* Form field name */
+"subscriberDetails.fieldName.planEndDate" = "End Date";
+
+/* Form field name */
+"subscriberDetails.fieldName.planStartDate" = "Start Date";
+
+/* Form field name */
+"subscriberDetails.fieldName.planStatus" = "Plan Status";
+
+/* Form field name */
+"subscriberDetails.fieldName.renewalInterval" = "Renewal Interval";
+
+/* Form field name */
+"subscriberDetails.fieldName.renewalPrice" = "Renewal Price";
+
+/* Form field name */
+"subscriberDetails.fieldName.site" = "Site";
+
+/* Form field name (has to be short!) */
+"subscriberDetails.fieldName.statsClickedEmails" = "Clicked";
+
+/* Form field name (has to be short!) */
+"subscriberDetails.fieldName.statsEmailCount" = "Emails";
+
+/* Form field name (has to be short!) */
+"subscriberDetails.fieldName.statsOpenedEmails" = "Opened";
+
+/* Form field name */
+"subscriberDetails.fieldName.subscriptionDate" = "Subscription Date";
+
+/* Name of a free plan */
+"subscriberDetails.plan.free" = "Free";
+
+/* Newsletter subscription plan type */
+"subscriberDetails.plan.gift" = "Gift";
+
+/* Card section title */
+"subscriberDetails.section.newletterSubscription" = "Newsletter Subscription";
+
+/* Card section title */
+"subscriberDetails.section.subscriberDetails" = "Subscriber Details";
+
+/* Button title */
+"subscribers.buttonDeleteSubscriber" = "Delete Subscriber";
+
+/* Remove subscriber confirmation dialog message; subscriber name as input. */
+"subscribers.deleteSubscriberConfirmationDialog.message" = "Are you sure you want to remove %@? They will no longer receive new notifications from your site.";
+
+/* Remove subscriber confirmation dialog title */
+"subscribers.deleteSubscriberConfirmationDialog.title" = "Delete the subscriber";
+
+/* Empty state view title */
+"subscribers.empty" = "No Subscribers";
+
+/* Empty state view title */
+"subscribers.filter.emailSubscription" = "Email Subscription";
+
+/* Empty state view title */
+"subscribers.filter.paymentType" = "Payment";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.blocked" = "Not Sending";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.email" = "Subscribed";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.reader" = "Not Subscribed";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.unconfirmed" = "Not Confirmed";
+
+/* Subscription type filter */
+"subscribers.filterBySubscriptionType.free" = "Free";
+
+/* Subscription type filter */
+"subscribers.filterBySubscriptionType.paid" = "Paid";
+
+/* Part of the label in the menu showing how many subscribers are displayed (has to have two arguments!) */
+"subscribers.menu.nOutOf" = "%1$@ out of %2$@";
+
+/* Part of the label in the menu showing how many subscribers are displayed */
+"subscribers.menu.subscribers" = "Subscribers:";
+
+/* Subscribers sort by field */
+"subscribers.sortField.dateSubscribed" = "Date Subscribed";
+
+/* Subscribers sort by field */
+"subscribers.sortField.email" = "Email";
+
+/* Subscribers sort by field */
+"subscribers.sortField.name" = "Name";
+
+/* Subscribers sort by field */
+"subscribers.sortField.plan" = "Plan";
+
+/* Subscribers sort by field */
+"subscribers.sortField.subscriptionStatus" = "Email Subscription";
+
+/* Screen title */
+"subscribers.title" = "Subscribers";
+
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Successfully cleared spotlight index";
 
@@ -9270,9 +9379,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The app successfully unsubscribed from the comments for the post */
 "Successfully unfollowed conversation" = "Successfully unfollowed conversation";
-
-/* Label displayed to the user left of the time zone suggestion button */
-"Suggestion:" = "Suggestion:";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -9293,6 +9399,21 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Support button that appears in the Theme Browser Header
    Theme Support action title */
 "Support" = "Support";
+
+/* Label for the current activity log file in the list. */
+"support.activityLogs.currentLogTilte" = "Current";
+
+/* Message shown in the alert when attempting to clear old activity logs. */
+"support.activityLogs.deleteLogsAlert.message" = "Are you sure you want to delete all activity logs?";
+
+/* Title shown in the alert when attempting to clear old activity logs. */
+"support.activityLogs.deleteLogsAlert.title" = "Delete Logs";
+
+/* Title shown in the navigation bar of the Activity Logs screen. */
+"support.activityLogs.navigationTitle" = "Activity Logs";
+
+/* Footer text explaining the log retention policy in the Activity Logs screen. */
+"support.activityLogs.sectionFooter" = "Up to seven days worth of logs are saved.";
 
 /* Dismiss the current view */
 "support.button.close.title" = "Done";
@@ -9615,9 +9736,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Technology site intent topic */
 "Technology" = "Technology";
 
-/* My Profile 'About me' hint text */
-"Tell us a bit about you." = "Tell us a bit about you.";
-
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "Tell us what kind of site you'd like to make";
 
@@ -9668,9 +9786,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* No comment provided by engineer. */
 "That username is not allowed." = "That username is not allowed.";
-
-/* No comment provided by engineer. */
-"The app can't recognize the server response. Please, check the configuration of your site." = "The app can't recognize the server response. Please, check the configuration of your site.";
 
 /* No comment provided by engineer. */
 "The basics" = "The basics";
@@ -9843,9 +9958,6 @@ Feel free to replace it with other bracket types that you think looks better for
    Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "There was an error changing the password";
 
-/* Text displayed when there is a failure loading the activity feed */
-"There was an error loading activities" = "There was an error loading activities";
-
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "There was an error loading plugins";
 
@@ -9867,9 +9979,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "There was an error loading this plugin";
 
-/* Error message when time zones can't be loaded */
-"There was an error loading time zones" = "There was an error loading time zones";
-
 /* Text displayed when there is a failure saving the username. */
 "There was an error saving the username" = "There was an error saving the username";
 
@@ -9878,9 +9987,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Text displayed when user tries to create a downloadable backup when there is already one being prepared */
 "There's a backup currently being prepared, please wait before starting the next one" = "There's a backup currently being prepared, please wait before starting the next one";
-
-/* Text displayed when user tries to start a restore when there is already one running */
-"There's a restore currently in progress, please wait before starting next one" = "There's a restore currently in progress, please wait before starting next one";
 
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting the next one" = "There's a restore currently in progress, please wait before starting the next one";
@@ -9902,9 +10008,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a darker background color and/or a brighter text color." = "This color combination may be hard for people to read. Try using a darker background color and/or a brighter text color.";
-
-/* Notifies the user that the a domain matching the search term wasn't returned in the results */
-"This domain is unavailable" = "This domain is unavailable";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "This email address is not registered on WordPress.com.";
@@ -9987,12 +10090,17 @@ Feel free to replace it with other bracket types that you think looks better for
    Writing Time Format Settings Title */
 "Time Format" = "Time Format";
 
-/* Label for the timezone setting
-   Title for the time zone selector */
+/* Label for the timezone setting */
 "Time Zone" = "Time Zone";
 
 /* Error when the uses takes more than 1 minute to submit a security key. */
 "Time's up, but don't worry, your security is our priority. Please try again!" = "Time's up, but don't worry, your security is our priority. Please try again!";
+
+/* Section title for suggested timezones */
+"timeZoneSelector.suggested" = "Suggested";
+
+/* Title for the time zone selector */
+"timeZoneSelector.title" = "Time Zone";
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips for getting the most out of WordPress.com.";
@@ -10126,19 +10234,12 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Theme Try & Customize action title */
 "Try & Customize" = "Try & Customize";
 
-/* Text displayed in the view when there aren't any backups to display for a given filter. */
-"Try adjusting your date range filter" = "Try adjusting your date range filter";
-
-/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"Try adjusting your date range or activity type filters" = "Try adjusting your date range or activity type filters";
-
 /* Retries an Action
    Try Again. Action
    Try to load the list of interests again. */
 "Try Again" = "Try Again";
 
-/* Button label for trying to retrieve the activities type again
-   Button label for trying to retrieve the history again
+/* Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails. */
@@ -10248,9 +10349,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Unable to restore your site";
-
-/* Text displayed when a site restore fails. */
-"Unable to restore your site, please try again later or contact support." = "Unable to restore your site, please try again later or contact support.";
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Unable to save media item.";
@@ -10379,9 +10477,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Untitled";
 
-/* Help text shown below the list of debug logs. */
-"Up to seven days worth of logs are saved." = "Up to seven days worth of logs are saved.";
-
 /* Title for the card displaying upcoming scheduled posts. */
 "Upcoming scheduled posts" = "Upcoming scheduled posts";
 
@@ -10393,9 +10488,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Label action for updating a link on the editor */
 "Update Link" = "Update Link";
-
-/* Update profile photo in Me > My Profile */
-"Update Profile Photo" = "Update Profile Photo";
 
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "Update Site Icon";
@@ -10600,6 +10692,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Site Subscribers */
 "users.list.title.subscribers" = "Subscribers";
 
+/* Screen title */
+"users.title" = "Users";
+
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "USES";
 
@@ -10699,9 +10794,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Text of a button that links to the VaultPress dashboard. */
 "Visit Dashboard" = "Visit Dashboard";
 
-/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
-"visit our documentation page" = "visit our documentation page";
-
 /* Title for the button that will open a link to this site. */
 "Visit site" = "Visit site";
 
@@ -10790,9 +10882,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The subtitle text on the magic link requested screen followed by the email address. */
 "We just sent a magic link to" = "We just sent a magic link to";
-
-/* Message displayed when a backup has finished */
-"We successfully created a backup of your site as of %@" = "We successfully created a backup of your site as of %@";
 
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "We successfully created a backup of your site from %1$@.";
@@ -10967,9 +11056,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".";
-
-/* Text display when the view when there aren't any Activities to display in the Activity Log */
-"When you make changes to your site you'll be able to see your activity history here." = "When you make changes to your site you'll be able to see your activity history here.";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Whoops, something went wrong and we couldn't log you in. Please try again!";
@@ -11186,8 +11272,7 @@ from anywhere.";
 /* 'This Year' label for the the year. */
 "Year" = "Year";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "Yes";
 
 /* Button label that confirms the user wants to log in and will authenticate them via the browser */
@@ -11341,17 +11426,8 @@ from anywhere.";
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Your backup is now available for download";
 
-/* Text displayed when a site backup takes too long. */
-"Your backup is taking longer than usual, please check again in a few minutes." = "Your backup is taking longer than usual, please check again in a few minutes.";
-
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Your current username is %1$@. With few exceptions, others will only ever see your display name, %2$@.";
-
-/* Text displayed in the view when there aren't any Backups to display */
-"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed";
-
-/* Title for the view when there aren't any Backups to display */
-"Your first backup will be ready soon" = "Your first backup will be ready soon";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working.";
@@ -11364,9 +11440,6 @@ from anywhere.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Your posts, pages, and settings will be mailed to you at %@.";
-
-/* Text displayed when a site restore takes too long. */
-"Your restore is taking longer than usual, please check again in a few minutes." = "Your restore is taking longer than usual, please check again in a few minutes.";
 
 /* This is shown to the user when their domain search query contains invalid characters. */
 "Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9.";
@@ -11383,17 +11456,11 @@ from anywhere.";
 /* Title for the Jetpack Restore Complete message. */
 "Your site has been restored" = "Your site has been restored";
 
-/* Title of a message displayed when a site has finished rewinding */
-"Your site has been succesfully restored" = "Your site has been succesfully restored";
-
 /* Title for label when the user has VaultPress enabled. */
 "Your site has VaultPress" = "Your site has VaultPress";
 
 /* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
-
-/* Title of a message displayed when user starts a restore operation */
-"Your site is being restored" = "Your site is being restored";
 
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Your site is out of storage space for media uploads.";

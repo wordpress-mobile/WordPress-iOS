@@ -3,7 +3,7 @@ import WordPressData
 import WordPressKit
 import Gutenberg
 
-extension BlockEditorSettings: GutenbergEditorSettings {
+extension BlockEditorSettings: @retroactive GutenbergEditorSettings {
     public var colors: [[String: String]]? {
         elementsByType(.color)
     }
