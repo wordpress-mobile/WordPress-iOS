@@ -124,15 +124,6 @@ private struct ReaderSidebarView: View {
     private var regularContent: some View {
         Section {
             makeForEach(for: viewModel.menu)
-
-            if !viewModel.library.isEmpty {
-                Text(Strings.library)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.secondary)
-                    .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 0, trailing: 20))
-
-                makeForEach(for: viewModel.library)
-            }
         }
         if !favorites.isEmpty || isEditing {
             makeSection(Strings.favorites, isExpanded: $isSectionFavoritesExpanded) {
@@ -147,20 +138,29 @@ private struct ReaderSidebarView: View {
             }
         }
         makeSection(Strings.subscriptions, isExpanded: $isSectionSubscriptionsExpanded) {
+            if !viewModel.isReaderAppModeEnabled {
+                makeForEach(for: [.subscrtipions], isChevronHidden: true)
+            }
             ReaderSidebarSubscriptionsSection(viewModel: viewModel)
                 .environment(\.siteIconBackgroundColor, Color(viewModel.isCompact ? .secondarySystemBackground : .systemBackground))
         }
         makeSection(Strings.lists, isExpanded: $isSectionListsExpanded) {
+            if !viewModel.isReaderAppModeEnabled {
+                makeForEach(for: [.lists], isChevronHidden: true)
+            }
             ReaderSidebarListsSection(viewModel: viewModel)
         }
         makeSection(Strings.tags, isExpanded: $isSectionTagsExpanded) {
+            if !viewModel.isReaderAppModeEnabled {
+                makeForEach(for: [.tags], isChevronHidden: true)
+            }
             ReaderSidebarTagsSection(viewModel: viewModel)
         }
     }
 
-    private func makeForEach(for items: [ReaderStaticScreen]) -> some View {
+    private func makeForEach(for items: [ReaderStaticScreen], isChevronHidden: Bool = false) -> some View {
         ForEach(items) {
-            makePrimaryNavigationItem($0.localizedTitle, imageName: $0.imageName)
+            makePrimaryNavigationItem($0.localizedTitle, imageName: $0.imageName, isChevronHidden: isChevronHidden)
                 .tag(ReaderSidebarItem.main($0))
                 .listRowSeparator((viewModel.isCompact && $0 != items.last) ? .visible : .hidden, edges: .bottom)
                 .accessibilityIdentifier($0.accessibilityIdentifier)
@@ -168,7 +168,7 @@ private struct ReaderSidebarView: View {
         }
     }
 
-    private func makePrimaryNavigationItem(_ title: String, imageName: String) -> some View {
+    private func makePrimaryNavigationItem(_ title: String, imageName: String, isChevronHidden: Bool) -> some View {
         HStack {
             Label {
                 Text(title)
@@ -177,7 +177,7 @@ private struct ReaderSidebarView: View {
                 ScaledImage(imageName, height: 24, relativeTo: .headline)
             }
             .lineLimit(1)
-            if viewModel.isCompact {
+            if viewModel.isCompact && !isChevronHidden {
                 Spacer()
                 Image(systemName: "chevron.forward")
                     .font(.system(size: 14).weight(.medium))
