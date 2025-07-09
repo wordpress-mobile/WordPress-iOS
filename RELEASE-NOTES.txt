@@ -16,6 +16,7 @@
 * [*] Fix a couple of visual issues in Post List [#24647]
 * [*] Fix an issue where the empty state view covering top tabs on the "Users" screen [#24659]
 * [*] Fix an issue with invisible "Super Admin" badge on the "Users" screen [#24659]
+* [*] Fix the "network connection lost" issue [#24661]
 
 25.9
 -----
