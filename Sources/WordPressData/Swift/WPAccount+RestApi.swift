@@ -30,7 +30,7 @@ extension WPAccount {
     private func makeWordPressComRestApi(authToken: String) -> WordPressComRestApi {
         let api = WordPressComRestApi.defaultApi(
             oAuthToken: authToken,
-            userAgent: WPUserAgent.defaultUserAgent(),
+            userAgent: WPUserAgent.wordPress(),
             localeKey: WordPressComRestApi.LocaleKeyDefault
         )
 
