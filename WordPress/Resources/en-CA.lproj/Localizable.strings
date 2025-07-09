@@ -341,9 +341,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "About Jetpack for iOS";
 
-/* My Profile 'About me' label */
-"About Me" = "About Me";
-
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "About WordPress";
 
@@ -390,21 +387,11 @@ translators: %s: Block name e.g. \"Image block\" */
 "Active, Autoupdates on" = "Active, Autoupdates on";
 
 /* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature
-   Title for the activity list */
+   Noun. Name of the Activity Log feature */
 "Activity" = "Activity";
 
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Activity Log";
-
-/* No comment provided by engineer. */
-"Activity Logs" = "Activity Logs";
-
-/* Label for the Activity Type filter button */
-"Activity Type" = "Activity Type";
-
-/* Label for the Activity Type filter button when there are more than 1 activity type selected */
-"Activity Type (%1$d)" = "Activity Type (%1$d)";
 
 /* No comment provided by engineer. */
 "Add Block After" = "Add Block After";
@@ -423,9 +410,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Add URL" = "Add URL";
-
-/* Add a profile photo to Me > My Profile */
-"Add a Profile Photo" = "Add a Profile Photo";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Add a domain";
@@ -628,17 +612,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A failure reason for when an error HTTP status code was returned from the site. */
 "An HTTP error code was returned." = "An HTTP error code was returned.";
 
-/* Error message when loading failed because there's no connection */
-"An active internet connection is required" = "An active internet connection is required";
-
 /* Error message shown when trying to scan a log in code without an active internet connection. */
 "An active internet connection is required to scan log in codes" = "An active internet connection is required to scan log in codes";
 
 /* Error message shown when trying to view the scan status and there is no internet connection. */
 "An active internet connection is required to view Jetpack Scan" = "An active internet connection is required to view Jetpack Scan";
-
-/* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
-"An active internet connection is required to view activities" = "An active internet connection is required to view activities";
 
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
@@ -878,16 +856,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the Background Color section */
 "Background Color" = "Background Colour";
 
-/* Title of the cell displaying status of a backup in progress */
-"Backing up site" = "Backing up site";
-
 /* Noun. Links to a blog's Jetpack Backups screen.
    Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
-   Title for Jetpack Backup Update Status Failed screen
-   Title for the Jetpack's backup list
-   Title of section showing backup status */
+   Title for Jetpack Backup Update Status Failed screen */
 "Backup" = "Backup";
 
 /* Title for error displayed when preparing a backup fails. */
@@ -1109,7 +1082,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -1273,9 +1245,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Choose audio" = "Choose audio";
 
-/* Title to choose date range in a calendar */
-"Choose date range" = "Choose date range";
-
 /* No comment provided by engineer. */
 "Choose file" = "Choose file";
 
@@ -1315,14 +1284,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Clear Device Media Cache";
 
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "Clear Old Activity Logs";
-
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "Clear Spotlight Index";
-
-/* Message of the trash confirmation alert. */
-"Clear all old activity logs?" = "Clear all old activity logs?";
 
 /* No comment provided by engineer. */
 "Clear search" = "Clear search";
@@ -1530,8 +1493,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Contact Support";
 
-/* Button label for contacting support
-   Title of a button. A call to action to contact support for assistance. */
+/* Button label for contacting support */
 "Contact support" = "Contact support";
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
@@ -1663,9 +1625,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Indicating that referrer couldn't be unmarked as spam */
 "Couldn't unmark as spam" = "Couldn't unmark as spam";
 
-/* Content show when the dashboard fails to load */
-"Couldn't update. Check that you're online and refresh." = "Couldn't update. Check that you're online and refresh.";
-
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Couldn’t close account automatically";
 
@@ -1736,14 +1695,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Creating dashboard" = "Creating dashboard";
 
-/* Description of the cell displaying status of a backup in progress */
-"Creating downloadable backup" = "Creating downloadable backup";
-
 /* No comment provided by engineer. */
 "Crosspost" = "Crosspost";
-
-/* No comment provided by engineer. */
-"Current" = "Current";
 
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Current Theme";
@@ -1768,9 +1721,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the Jetpack Restore Status message. */
 "Currently restoring site" = "Currently restoring site";
-
-/* Title of the cell displaying status of a rewind in progress */
-"Currently restoring your site" = "Currently restoring your site";
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Currently restoring: %1$@";
@@ -1822,9 +1772,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Writing Date Format Settings Title */
 "Date Format" = "Date Format";
 
-/* Label of a button that displays a calendar */
-"Date Range" = "Date Range";
-
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
 "Date and Time Format" = "Date and Time Format";
@@ -1854,8 +1801,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Defaults for New Posts" = "Defaults for New Posts";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Delete";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1972,7 +1918,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Dismiss screen" = "Dismiss screen";
 
 /* Display Name label text.
-   My Profile display name label
    User's Display Name */
 "Display Name" = "Display Name";
 
@@ -1993,7 +1938,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -2100,15 +2044,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Double tap to view embed options.";
 
-/* Download button title */
-"Download" = "Download";
-
 /* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "Download Backup";
-
-/* Title displayed for download backup action.
-   Title for button allowing user to backup their Jetpack site */
-"Download backup" = "Download backup";
 
 /* Title for the button that will download the backup file. */
 "Download file" = "Download file";
@@ -2303,9 +2240,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Encrypted Logs";
 
-/* Placeholder for the end date in calendar range selection */
-"End Date" = "End Date";
-
 /* Enter a custom value */
 "Enter a custom value" = "Enter a custom value";
 
@@ -2338,8 +2272,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Enter your server credentials";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "Error";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
@@ -2434,9 +2367,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Error updating speed up site settings";
-
-/* Title for the activity detail view */
-"Event" = "Event";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "Every day";
@@ -2538,12 +2468,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title displayed whilst fetching media from the user's media library */
 "Fetching media..." = "Fetching media…";
 
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
-"Fetching pages..." = "Fetching pages…";
-
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
-"Fetching posts..." = "Fetching posts…";
-
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Fetching sites…";
 
@@ -2571,9 +2495,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Film & Television site intent topic */
 "Film & Television" = "Film & Television";
 
-/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
-"Filter by activity type" = "Filter by activity type";
-
 /* Finance site intent topic */
 "Finance" = "Finance";
 
@@ -2583,8 +2504,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Find your site address";
 
-/* My Profile first name label
-   Register Domain - Domain contact information field First name
+/* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "First Name";
 
@@ -3146,9 +3066,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Jetpack %@ or later is required. Do you want to update Jetpack?";
 
-/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@.";
-
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack FAQ";
 
@@ -3253,8 +3170,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Large";
 
-/* My Profile last name label
-   Register Domain - Domain contact information field Last name
+/* Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "Last Name";
 
@@ -3402,12 +3318,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Loading" = "Loading";
 
-/* Text displayed while loading the activity feed for a site */
-"Loading Activities..." = "Loading Activities…";
-
-/* Text displayed while loading the activity feed for a site */
-"Loading Backups..." = "Loading Backups...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Loading Menus…";
 
@@ -3444,8 +3354,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Loading…";
 
 /* Local Services site intent topic */
@@ -3456,9 +3365,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Lock icon" = "Lock icon";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "Log Files By Created Date";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -3501,9 +3407,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button title. Takes the user to the Enter account password screen. */
 "Login with account password" = "Login with account password";
-
-/* No comment provided by engineer. */
-"Logs" = "Logs";
 
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "Looking for stats?";
@@ -3752,8 +3655,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Music site intent topic */
 "Music" = "Music";
 
-/* Link to My Profile section
-   My Profile view title */
+/* Link to My Profile section */
 "My Profile" = "My Profile";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
@@ -3865,9 +3767,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label */
 "Next period" = "Next period";
 
-/* Label for a cancel button */
-"No" = "No";
-
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "No %@ yet";
 
@@ -3891,15 +3790,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "No Preview URL available";
-
-/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities available" = "No activities available";
-
-/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities recorded in the selected date range." = "No activities recorded in the selected date range.";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log */
-"No activity yet" = "No activity yet";
 
 /* No comment provided by engineer. */
 "No application can handle this request." = "No application can handle this request.";
@@ -3941,9 +3831,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "No data yet";
 
-/* Accessibility label for no currently selected range. */
-"No date range selected" = "No date range selected";
-
 /* No comment provided by engineer. */
 "No description" = "No description";
 
@@ -3974,12 +3861,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "No likes yet";
-
-/* Title for the view when there aren't any backups to display for a given filter. */
-"No matching backups found" = "No matching backups found";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"No matching events found." = "No matching events found.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "No media matching your search";
@@ -4196,8 +4077,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
-   Title for the view when there's an error loading the plugin
-   Title for the view when there's an error loading time zones */
+   Title for the view when there's an error loading the plugin */
 "Oops" = "Oops";
 
 /* An informal exclaimation meaning `something went wrong`. */
@@ -4937,12 +4817,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Resend";
 
-/* Accessibility label for the reset activity type button */
-"Reset Activity Type filter" = "Reset Activity Type filter";
-
-/* Accessibility label for the reset date range button */
-"Reset Date Range filter" = "Reset Date Range filter";
-
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Reset your password";
 
@@ -4955,13 +4829,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the fix section in Threat Details: Threat is not fixable */
 "Resolving the threat" = "Resolving the threat";
 
-/* Title displayed for restore action.
-   Title for button allowing user to restore their Jetpack site
-   Title for Jetpack Restore Complete screen
+/* Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen
-   Title of section showing restore status */
+   Title for the Jetpack Restore Site Screen */
 "Restore" = "Restore";
 
 /* Title for Jetpack Restore Failed screen */
@@ -4975,13 +4846,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title for restore site action */
 "Restore to this point" = "Restore to this point";
-
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Restored to %@" = "Restored to %@";
-
-/* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
-   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
-"Restoring to %@" = "Restoring to %@";
 
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
@@ -5220,12 +5084,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Selected media is unavailable.";
 
-/* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "Selected range: %1$@ only";
-
-/* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "Selected range: %1$@ to %2$@";
-
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Selected: %s";
@@ -5415,9 +5273,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Sign up with Email";
 
-/* Text displayed as a footer of a table view with Activities when user is on a free plan */
-"Since you're on a free plan, you'll see limited events in your Activity Log." = "Since you're on a free plan, you'll see limited events in your Activity Log.";
-
 /* Notice displayed to the user after clearing the Siri activity donations. */
 "Siri Reset Confirmation" = "Successfully cleared Siri Shortcut Suggestions";
 
@@ -5570,9 +5425,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Sorry, usernames must have letters (a-z) too!" = "Sorry, usernames must have letters (a-z) too!";
 
 /* No comment provided by engineer. */
-"Sorry, you cannot access this feature. Please check your User Role on this site." = "Sorry, you cannot access this feature. Please check your User Role on this site.";
-
-/* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Sorry, you may not use that site address.";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
@@ -5611,9 +5463,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Standard post format label */
 "Standard" = "Standard";
-
-/* Placeholder for the start date in calendar range selection */
-"Start Date" = "Start Date";
 
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
@@ -5672,9 +5521,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app successfully unsubscribed from the comments for the post */
 "Successfully unfollowed conversation" = "Successfully unfollowed conversation";
-
-/* Label displayed to the user left of the time zone suggestion button */
-"Suggestion:" = "Suggestion:";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -5864,9 +5710,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "Technology";
 
-/* My Profile 'About me' hint text */
-"Tell us a bit about you." = "Tell us a bit about you.";
-
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "Tell us what kind of site you'd like to make";
 
@@ -5935,9 +5778,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "The World's Best Fans";
-
-/* No comment provided by engineer. */
-"The app can't recognize the server response. Please, check the configuration of your site." = "The app can't recognise the server response. Please, check the configuration of your site.";
 
 /* No comment provided by engineer. */
 "The basics" = "The basics";
@@ -6086,9 +5926,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "There was an error changing the password";
 
-/* Text displayed when there is a failure loading the activity feed */
-"There was an error loading activities" = "There was an error loading activities";
-
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "There was an error loading plugins";
 
@@ -6110,9 +5947,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "There was an error loading this plugin";
 
-/* Error message when time zones can't be loaded */
-"There was an error loading time zones" = "There was an error loading time zones";
-
 /* Text displayed when there is a failure saving the username. */
 "There was an error saving the username" = "There was an error saving the username";
 
@@ -6121,9 +5955,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when user tries to create a downloadable backup when there is already one being prepared */
 "There's a backup currently being prepared, please wait before starting the next one" = "There's a backup currently being prepared, please wait before starting the next one";
-
-/* Text displayed when user tries to start a restore when there is already one running */
-"There's a restore currently in progress, please wait before starting next one" = "There's a restore currently in progress, please wait before starting next one";
 
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting the next one" = "There's a restore currently in progress, please wait before starting the next one";
@@ -6145,9 +5976,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "This colour combination may be hard for people to read. Try using a darker background colour and\/or a brighter text colour.";
-
-/* Notifies the user that the a domain matching the search term wasn't returned in the results */
-"This domain is unavailable" = "This domain is unavailable";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "This email address is not registered on WordPress.com.";
@@ -6227,8 +6055,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Writing Time Format Settings Title */
 "Time Format" = "Time Format";
 
-/* Label for the timezone setting
-   Title for the time zone selector */
+/* Label for the timezone setting */
 "Time Zone" = "Time Zone";
 
 /* Error when the uses takes more than 1 minute to submit a security key. */
@@ -6356,14 +6183,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Try to load the list of interests again. */
 "Try Again" = "Try Again";
 
-/* Text displayed in the view when there aren't any backups to display for a given filter. */
-"Try adjusting your date range filter" = "Try adjusting your date range filter";
-
-/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"Try adjusting your date range or activity type filters" = "Try adjusting your date range or activity type filters";
-
-/* Button label for trying to retrieve the activities type again
-   Button label for trying to retrieve the history again
+/* Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails. */
@@ -6483,9 +6303,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Unable to restore your site";
 
-/* Text displayed when a site restore fails. */
-"Unable to restore your site, please try again later or contact support." = "Unable to restore your site, please try again later or contact support.";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Unable to save media item.";
 
@@ -6595,9 +6412,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Untitled";
 
-/* Help text shown below the list of debug logs. */
-"Up to seven days worth of logs are saved." = "Up to seven days worth of logs are saved.";
-
 /* Title for the card displaying upcoming scheduled posts. */
 "Upcoming scheduled posts" = "Upcoming scheduled posts";
 
@@ -6609,9 +6423,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label action for updating a link on the editor */
 "Update Link" = "Update Link";
-
-/* Update profile photo in Me > My Profile */
-"Update Profile Photo" = "Update Profile Photo";
 
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "Update site icon";
@@ -6913,9 +6724,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The subtitle text on the magic link requested screen followed by the email address. */
 "We just sent a magic link to" = "We just sent a magic link to";
 
-/* Message displayed when a backup has finished */
-"We successfully created a backup of your site as of %@" = "We successfully created a backup of your site as of %@";
-
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "We successfully created a backup of your site from %1$@.";
 
@@ -7069,9 +6877,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".";
 
-/* Text display when the view when there aren't any Activities to display in the Activity Log */
-"When you make changes to your site you'll be able to see your activity history here." = "When you make changes to your site you'll be able to see your activity history here.";
-
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Whoops, something went wrong and we couldn't log you in. Please try again!";
 
@@ -7181,8 +6986,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* 'This Year' label for the the year. */
 "Year" = "Year";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "Yes";
 
 /* Button label that confirms the user wants to log in and will authenticate them via the browser */
@@ -7342,17 +7146,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Your backup is now available for download";
 
-/* Text displayed when a site backup takes too long. */
-"Your backup is taking longer than usual, please check again in a few minutes." = "Your backup is taking longer than usual, please check again in a few minutes.";
-
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Your current username is %1$@. With few exceptions, others will only ever see your display name, %2$@.";
-
-/* Text displayed in the view when there aren't any Backups to display */
-"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed";
-
-/* Title for the view when there aren't any Backups to display */
-"Your first backup will be ready soon" = "Your first backup will be ready soon";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working.";
@@ -7362,9 +7157,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Your posts, pages, and settings will be mailed to you at %@.";
-
-/* Text displayed when a site restore takes too long. */
-"Your restore is taking longer than usual, please check again in a few minutes." = "Your restore is taking longer than usual, please check again in a few minutes.";
 
 /* This is shown to the user when their domain search query contains invalid characters. */
 "Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9.";
@@ -7384,14 +7176,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Restore Complete message. */
 "Your site has been restored" = "Your site has been restored";
 
-/* Title of a message displayed when a site has finished rewinding */
-"Your site has been succesfully restored" = "Your site has been succesfully restored";
-
 /* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader.";
-
-/* Title of a message displayed when user starts a restore operation */
-"Your site is being restored" = "Your site is being restored";
 
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Your site is out of storage space for media uploads.";
@@ -7428,9 +7214,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to having active atomic site. */
 "accountSettings.closeAccount.error.atomicSite" = "This user account cannot be closed immediately because it has active purchases. Please contact our support team to finish deleting the account.";
-
-/* Dismiss button title */
-"activityList.dismiss.title" = "Dismiss";
 
 /* Age between dates equaling one hour. */
 "an hour" = "an hour";
@@ -9693,9 +9476,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "unread";
-
-/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
-"visit our documentation page" = "visit our documentation page";
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Dismiss";

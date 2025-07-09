@@ -143,9 +143,6 @@
 /* Label for active Theme browser cell */
 "ACTIVE" = "AKTÍVNA";
 
-/* My Profile 'About me' label */
-"About Me" = "O mne";
-
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Zrýchlené mobilné stránky (AMP)";
 
@@ -174,18 +171,11 @@
 "Active, Autoupdates on" = "Aktívne, automatické aktualizácie zapnuté";
 
 /* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature
-   Title for the activity list */
+   Noun. Name of the Activity Log feature */
 "Activity" = "Aktivita";
-
-/* No comment provided by engineer. */
-"Activity Logs" = "Záznamy o činnosti";
 
 /* Alert option to add document contents into a blog post. */
 "Add Contents to Post" = "Pridať obsah do príspevku";
-
-/* Add a profile photo to Me > My Profile */
-"Add a Profile Photo" = "Pridať Profilovú fotografiu";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Pridať alt text";
@@ -266,12 +256,6 @@
 
 /* String displayed before offering alternative login methods */
 "Alternatively:" = "Prípadne:";
-
-/* Error message when loading failed because there's no connection */
-"An active internet connection is required" = "Vyžaduje sa aktívne internetové pripojenie";
-
-/* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
-"An active internet connection is required to view activities" = "Vyžaduje sa aktívne internetové pripojenie k náhľadu aktivít";
 
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
@@ -494,7 +478,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -571,9 +554,6 @@
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Vymazanie vyrovnávacej pamäte zariadenia";
-
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "Vyčistiť staré záznamy o činnosti";
 
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "Vyčistiť index Spotlight";
@@ -717,8 +697,7 @@
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Kontaktovať podporu";
 
-/* Button label for contacting support
-   Title of a button. A call to action to contact support for assistance. */
+/* Button label for contacting support */
 "Contact support" = "Kontaktovať podporu";
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
@@ -811,14 +790,8 @@
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Vytvorením nového menu stratíte zmeny, ktoré ste urobili v aktuálnom menu. Ste si istí, že chcete pokračovať?";
 
-/* No comment provided by engineer. */
-"Current" = "Súčasné";
-
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Aktuálna téma";
-
-/* Title of the cell displaying status of a rewind in progress */
-"Currently restoring your site" = "V súčasnosti sa vaša webová stránka obnovuje";
 
 /* Customize button that appears in Theme Browser Header
    Theme Customize action title */
@@ -860,8 +833,7 @@
 "Defaults for New Posts" = "Základné pre nové príspevky";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Odstrániť";
 
 /* Menus confirmation button for deleting a menu. */
@@ -944,7 +916,6 @@
 "Dismiss" = "Zrušiť";
 
 /* Display Name label text.
-   My Profile display name label
    User's Display Name */
 "Display Name" = "Zobraziť meno";
 
@@ -959,7 +930,6 @@
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -1071,8 +1041,7 @@
    Title of a button. */
 "Enter your password instead." = "Vpíšte svoje heslo.";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "Chyba";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
@@ -1129,9 +1098,6 @@
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Vyskytla sa chyba pri aktualizácii nastavení zrýchlenia webovej stránky.";
 
-/* Title for the activity detail view */
-"Event" = "Udalosť";
-
 /* Label for the excerpt field. Should be the same as WP core. */
 "Excerpt" = "Zhrnutie";
 
@@ -1178,12 +1144,6 @@
 /* Title displayed whilst fetching media from the user's media library */
 "Fetching media..." = "Načítavanie médií...";
 
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
-"Fetching pages..." = "Načítavajú sa webové stránky...";
-
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
-"Fetching posts..." = "Načítavajú sa články...";
-
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Stránka sa načítava...";
 
@@ -1193,8 +1153,7 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Typ súboru";
 
-/* My Profile first name label
-   Register Domain - Domain contact information field First name
+/* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Krstné meno";
 
@@ -1503,8 +1462,7 @@
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Veľký";
 
-/* My Profile last name label
-   Register Domain - Domain contact information field Last name
+/* Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "Priezvisko";
 
@@ -1588,9 +1546,6 @@
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Načítať viac článkov";
 
-/* Text displayed while loading the activity feed for a site */
-"Loading Activities..." = "Načítavanie Aktivít...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Načítanie menu...";
 
@@ -1612,15 +1567,11 @@
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Nahráva sa...";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "Miestne zmeny";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "Súbory denníka podľa dátumu vytvorenia";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -1647,9 +1598,6 @@
 
 /* Login Request Expired */
 "Login Request Expired" = "Žiadosť na prihlásenie vypršala";
-
-/* No comment provided by engineer. */
-"Logs" = "Logy";
 
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Zdá sa, že na vašej webovej stránke máte nastavený Jetpack. Gratulujeme! Prihláste sa s poverením WordPress.com a zapnite Štatistika a Upozornenia.";
@@ -1779,8 +1727,7 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Presunúť komentár do koša.";
 
-/* Link to My Profile section
-   My Profile view title */
+/* Link to My Profile section */
 "My Profile" = "Môj profil";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
@@ -1845,9 +1792,6 @@
 /* Accessibility label for the next notification button */
 "Next notification" = "Nasledujúce upozornenie";
 
-/* Label for a cancel button */
-"No" = "Nie";
-
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "Nie %@ ešte ";
 
@@ -1868,9 +1812,6 @@
 
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "Žiadne menu nieje vybrané";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log */
-"No activity yet" = "Zatiaľ žiadna aktivita";
 
 /* A short message that informs the user no sites could be loaded in the share extension. */
 "No available sites" = "Webové stránky nie sú dostupné";
@@ -2024,8 +1965,7 @@
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
-   Title for the view when there's an error loading the plugin
-   Title for the view when there's an error loading time zones */
+   Title for the view when there's an error loading the plugin */
 "Oops" = "Oops";
 
 /* An informal exclaimation meaning `something went wrong`. */
@@ -2428,13 +2368,10 @@
 /* The largest resolution allowed for uploading */
 "Resolution" = "Výsledok";
 
-/* Title displayed for restore action.
-   Title for button allowing user to restore their Jetpack site
-   Title for Jetpack Restore Complete screen
+/* Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen
-   Title of section showing restore status */
+   Title for the Jetpack Restore Site Screen */
 "Restore" = "Obnoviť";
 
 /* A prompt to attempt the failed network request again
@@ -2648,9 +2585,6 @@
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Prihláste sa cez E-mail";
 
-/* Text displayed as a footer of a table view with Activities when user is on a free plan */
-"Since you're on a free plan, you'll see limited events in your Activity Log." = "Keďže máte bezplatný plán, v logu aktivít uvidíte obmedzené udalosti.";
-
 /* Title for the Language Picker View */
 "Site Language" = "Jazyk webovej stránky";
 
@@ -2747,9 +2681,6 @@
 
 /* No comment provided by engineer. */
 "Sorry, usernames must have letters (a-z) too!" = "Ospravedlňujeme sa, ale používateľské meno musí obsahovať aj písmená (a-z)!";
-
-/* No comment provided by engineer. */
-"Sorry, you cannot access this feature. Please check your User Role on this site." = "Ľutujeme, ale nemáte prístup k tejto funkcii. Skontrolujte svoju rolu používateľa na týchto stránkach.";
 
 /* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Ospravedlňujeme sa, adresu tejto webovej stránky nemôžete použiť.";
@@ -2895,9 +2826,6 @@
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonómia";
 
-/* My Profile 'About me' hint text */
-"Tell us a bit about you." = "Povedz nám niečo o sebe.";
-
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Zmluvné podmienky";
 
@@ -2939,9 +2867,6 @@
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "V URL adrese chýba platný hostiteľ.";
-
-/* No comment provided by engineer. */
-"The app can't recognize the server response. Please, check the configuration of your site." = "Aplikácia nemôže rozpoznať odpoveď servera. Skontrolujte konfiguráciu na vašej webovej stránke.";
 
 /* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certifikát pre tento server je neplatný. Môžete sa pripájať na server, ktorý sa len tvári, že je \"%@\", a to môže ohroziť vaše dôverné informácie.\n\nChcete aj tak dôverovať tomuto certifikátu?";
@@ -3031,23 +2956,14 @@
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Došlo k chybe pri ukladaní zmien v nastaveniach zdieľania.";
 
-/* Text displayed when there is a failure loading the activity feed */
-"There was an error loading activities" = "Došlo k chybe pri načítavaní aktivít";
-
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Došlo k chybe pri načítavaní pluginov";
 
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "Pri načítavaní tohto pluginu sa vyskytla chyba";
 
-/* Error message when time zones can't be loaded */
-"There was an error loading time zones" = "Došlo k chybe pri načítavaní časových zón";
-
 /* Updating Role failed error message */
 "There was an error updating @%@" = "Došlo k chybe pri aktualizácii @%@";
-
-/* Text displayed when user tries to start a restore when there is already one running */
-"There's a restore currently in progress, please wait before starting next one" = "V súčasnosti prebieha obnovenie, počkajte kým začnete nové";
 
 /* Paragraph 1 of 2 of main text body for the delete screen. NOTE: it is important the localized 'can not' text be surrounded with the HTML '<b>' tags. */
 "This action <b>can not<\/b> be undone. Deleting the site will remove all content, contributors, domains, and upgrades from the site." = "Túto akciu <b> nie je možné <\/b>zrušiť. Odstránením stránky odstránite všetok obsah, užívateľov, domény a aktualizácie zo stránky.";
@@ -3091,8 +3007,7 @@
    Writing Time Format Settings Title */
 "Time Format" = "Formát času";
 
-/* Label for the timezone setting
-   Title for the time zone selector */
+/* Label for the timezone setting */
 "Time Zone" = "Časová zóna";
 
 /* WordPress.com Marketing Footer Text */
@@ -3164,8 +3079,7 @@
    Try to load the list of interests again. */
 "Try Again" = "Skúsiť znova";
 
-/* Button label for trying to retrieve the activities type again
-   Button label for trying to retrieve the history again
+/* Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails. */
@@ -3218,9 +3132,6 @@
 
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Nenašla sa webová stránka WordPress na tejto URL adrese. Ťuknite \"Potrebujete pomoc?\" na zobrazenie FAQ.";
-
-/* Text displayed when a site restore fails. */
-"Unable to restore your site, please try again later or contact support." = "Nepodarilo sa obnoviť webovú stránku, prosím pokus zopakujte alebo kontaktujte podporu.";
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Nedá sa uložiť mediálny súbor.";
@@ -3295,9 +3206,6 @@
 /* No comment provided by engineer. */
 "Unsupported" = "Nepodporovaný";
 
-/* Help text shown below the list of debug logs. */
-"Up to seven days worth of logs are saved." = "Až sedem dní sú uložené prihlasovacie údaje.";
-
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
    Label action for updating a link on the editor
@@ -3306,9 +3214,6 @@
 
 /* Label action for updating a link on the editor */
 "Update Link" = "Aktualizovať odkaz";
-
-/* Update profile photo in Me > My Profile */
-"Update Profile Photo" = "Aktualizovať Profilovú fotografiu";
 
 /* Describes a status of a plugin
    Updating label title */
@@ -3523,9 +3428,6 @@
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Pokiaľ komentár obsahuje akékoľvek z týchto slov vo svojom obsahu, mene, URL, e-mailu, alebo IP, bude označený ako spam. Môžete taktiež zadať časti slov, takže napríklad podmienke \"press\" bude odpovedať \"WordPress\".";
 
-/* Text display when the view when there aren't any Activities to display in the Activity Log */
-"When you make changes to your site you'll be able to see your activity history here." = "V prípade, že spravíte zmeny na webovej stránke, uvidíte ich v histórii aktivít.";
-
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Hups, niečo sa pokazilo a nepodarilo sa nám prihlásiť vás. Prosím, skúste ešte raz!";
 
@@ -3584,8 +3486,7 @@
 /* Title for the writing section in site settings screen */
 "Writing" = "Písanie";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "Áno";
 
 /* Comments Yesterday Section Header
@@ -3687,17 +3588,8 @@
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Vaše články, stránky a nastavenia vám budú odoslané na %@.";
 
-/* Text displayed when a site restore takes too long. */
-"Your restore is taking longer than usual, please check again in a few minutes." = "Obnovenie trvá dlhšie ako obvykle, prosím skontrolujte o niekoľko minút.  ";
-
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Adresa webovej stránky sa zobrazí na hornom paneli obrazovky, keď navštívite webovú stránku cez Safari.";
-
-/* Title of a message displayed when a site has finished rewinding */
-"Your site has been succesfully restored" = "Vaša webová stránka bola úspešne obnovená";
-
-/* Title of a message displayed when user starts a restore operation */
-"Your site is being restored" = "Vaša webová stránka sa obnovuje";
 
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Na vašej stránke nieje dostatok miesta pre nahratie nových súborov.";

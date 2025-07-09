@@ -86,9 +86,6 @@
 /* Label for active Theme browser cell */
 "ACTIVE" = "АКТИВНИ";
 
-/* My Profile 'About me' label */
-"About Me" = "За мен";
-
 /* Title for the account section in site settings screen */
 "Account" = "Профил";
 
@@ -109,12 +106,8 @@
 "Active, Autoupdates on" = "Активирано, автоматичните обновления са включени";
 
 /* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature
-   Title for the activity list */
+   Noun. Name of the Activity Log feature */
 "Activity" = "Дейност";
-
-/* No comment provided by engineer. */
-"Activity Logs" = "История на активността";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Добавете описателен текст";
@@ -333,7 +326,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -381,9 +373,6 @@
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Изтегляне на покупките...";
-
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "Изтриване на старата история на активността";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "Изчистване...";
@@ -505,8 +494,7 @@
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Връзка с отдела по поддръжка";
 
-/* Button label for contacting support
-   Title of a button. A call to action to contact support for assistance. */
+/* Button label for contacting support */
 "Contact support" = "Връзка с отдела по поддръжка";
 
 /* Apply changes localy to single block edition in the web block editor
@@ -560,9 +548,6 @@
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Създаването на ново меню ще отмени промените които сте направили към текущото меню. Сигурни ли сте, че искате да продължите?";
 
-/* No comment provided by engineer. */
-"Current" = "В момента";
-
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Настояща тема";
 
@@ -592,8 +577,7 @@
 "Defaults for New Posts" = "По подразбиране за нови публикации";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Изтриване";
 
 /* Menus confirmation button for deleting a menu. */
@@ -673,7 +657,6 @@
 "Dismiss" = "Премахване";
 
 /* Display Name label text.
-   My Profile display name label
    User's Display Name */
 "Display Name" = "Публично име";
 
@@ -685,7 +668,6 @@
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -754,8 +736,7 @@
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Потребителско име";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "Грешка";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
@@ -804,12 +785,6 @@
 /* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
 "Fetching comments..." = "Изтегляне на коментарите...";
 
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
-"Fetching pages..." = "Изтегляне на страниците...";
-
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
-"Fetching posts..." = "Изтегляне на публикациите...";
-
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Изтегляне на сайтовете...";
 
@@ -819,8 +794,7 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Файлов тип";
 
-/* My Profile first name label
-   Register Domain - Domain contact information field First name
+/* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Собствено име";
 
@@ -1037,8 +1011,7 @@
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Високо";
 
-/* My Profile last name label
-   Register Domain - Domain contact information field Last name
+/* Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "Фамилия";
 
@@ -1113,12 +1086,8 @@
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Зареждане...";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "Логове по дата на създаване";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -1136,9 +1105,6 @@
 
 /* Login Request Expired */
 "Login Request Expired" = "Заявката за влизане е изтекла";
-
-/* No comment provided by engineer. */
-"Logs" = "Логове";
 
 /* Title of a button. */
 "Lost your password?" = "Изгубена парола?";
@@ -1218,8 +1184,7 @@
    Trashes the comment */
 "Move to Trash" = "Преместване в кошчето";
 
-/* Link to My Profile section
-   My Profile view title */
+/* Link to My Profile section */
 "My Profile" = "Моят профил";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
@@ -1256,9 +1221,6 @@
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Следващо уведомление";
-
-/* Label for a cancel button */
-"No" = "Не";
 
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Без категория";
@@ -1387,8 +1349,7 @@
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
-   Title for the view when there's an error loading the plugin
-   Title for the view when there's an error loading time zones */
+   Title for the view when there's an error loading the plugin */
 "Oops" = "Опа";
 
 /* An informal exclaimation meaning `something went wrong`. */
@@ -1671,13 +1632,10 @@
 /* The largest resolution allowed for uploading */
 "Resolution" = "Разделителна способност";
 
-/* Title displayed for restore action.
-   Title for button allowing user to restore their Jetpack site
-   Title for Jetpack Restore Complete screen
+/* Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen
-   Title of section showing restore status */
+   Title for the Jetpack Restore Site Screen */
 "Restore" = "Възстановяване";
 
 /* A prompt to attempt the failed network request again
@@ -1871,9 +1829,6 @@
 "Sorry, usernames must have letters (a-z) too!" = "Потребителското име трябва да съдържа и букви (a-z).";
 
 /* No comment provided by engineer. */
-"Sorry, you cannot access this feature. Please check your User Role on this site." = "Нямате достъп до тази опция. Проверете правата си в този сайт.";
-
-/* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Не можете да използвате този адрес.";
 
 /* Discussion Settings Title
@@ -1962,9 +1917,6 @@
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Категоризация";
 
-/* My Profile 'About me' hint text */
-"Tell us a bit about you." = "Кажете ни нещо за себе си.";
-
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Условия за ползване";
 
@@ -2000,9 +1952,6 @@
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "Този адрес няма валиден хост.";
-
-/* No comment provided by engineer. */
-"The app can't recognize the server response. Please, check the configuration of your site." = "Приложението не разпознава отговора на сървъра. Проверете конфигурацията на сайта си.";
 
 /* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Сертификатът на този сървър е невалиден. Възможно е да се свързвате със сървър който се преструва че е \"%@\", което да изложи ваша конфиденциална информация на риск.\n\nСигурни ли сте, че искате да се доверите на този сертификат?";
@@ -2194,9 +2143,6 @@
 /* No comment provided by engineer. */
 "Unsupported" = "Не се поддържа";
 
-/* Help text shown below the list of debug logs. */
-"Up to seven days worth of logs are saved." = "Съхраняват се журнали за последните 7 дни.";
-
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
    Label action for updating a link on the editor
@@ -2364,8 +2310,7 @@
 /* Title for the writing section in site settings screen */
 "Writing" = "Писане";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "Да";
 
 /* Comments Yesterday Section Header

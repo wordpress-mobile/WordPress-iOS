@@ -102,7 +102,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -163,9 +162,6 @@
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Stvori ikonu vašeg web mjesta";
 
-/* No comment provided by engineer. */
-"Current" = "Trenutni";
-
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Trenutna tema";
 
@@ -173,8 +169,7 @@
 "Dashboard" = "Nadzorna ploča";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Obriši";
 
 /* Text displayed in HUD while a media item is being deleted. */
@@ -208,7 +203,6 @@
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -253,8 +247,7 @@
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "Unesite lozinku";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "Greška";
 
 /* Label for the Featured Image area in post settings. */
@@ -320,8 +313,7 @@
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Učitavam...";
 
 /* Button title.  Tapping takes the user to the login form.
@@ -339,9 +331,6 @@
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of Jetpack?" = "Jeste li sigurni da se želite odjaviti s Jetpacka?";
-
-/* No comment provided by engineer. */
-"Logs" = "Zapisnici";
 
 /* Title of a button. */
 "Lost your password?" = "Izgubili ste lozinku?";
@@ -393,9 +382,6 @@
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Sljedeće";
-
-/* Label for a cancel button */
-"No" = "Ne";
 
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Nema konekcije";
@@ -646,8 +632,7 @@
    Try to load the list of interests again. */
 "Try Again" = "Pokušajte ponovno";
 
-/* Button label for trying to retrieve the activities type again
-   Button label for trying to retrieve the history again
+/* Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails. */
@@ -757,8 +742,7 @@
 /* WordPress.com Notification Settings Title */
 "WordPress.com Updates" = "WordPress.com Statistika";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "Da";
 
 /* Comments Yesterday Section Header

@@ -341,9 +341,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "Mbi Jetpack-un për iOS";
 
-/* My Profile 'About me' label */
-"About Me" = "Rreth Meje";
-
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "Rreth WordPress-it";
 
@@ -390,21 +387,11 @@ translators: %s: Block name e.g. \"Image block\" */
 "Active, Autoupdates on" = "Aktive, me Vetëpërditësim të aktivizuar";
 
 /* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature
-   Title for the activity list */
+   Noun. Name of the Activity Log feature */
 "Activity" = "Veprimtari";
 
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Regjistër Veprimtarish";
-
-/* No comment provided by engineer. */
-"Activity Logs" = "Regjistra Veprimtarie";
-
-/* Label for the Activity Type filter button */
-"Activity Type" = "Lloj Veprimtarie";
-
-/* Label for the Activity Type filter button when there are more than 1 activity type selected */
-"Activity Type (%1$d)" = "Lloj Veprimtarie (%1$d)";
 
 /* No comment provided by engineer. */
 "Add Block After" = "Shtoni Bllok Pas";
@@ -423,9 +410,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Add URL" = "Shtoni URL";
-
-/* Add a profile photo to Me > My Profile */
-"Add a Profile Photo" = "Shtoni Foto Profili";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Shtoni përkatësi";
@@ -628,17 +612,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A failure reason for when an error HTTP status code was returned from the site. */
 "An HTTP error code was returned." = "U kthye kod gabimi HTTP.";
 
-/* Error message when loading failed because there's no connection */
-"An active internet connection is required" = "Lypse një lidhje internet aktive";
-
 /* Error message shown when trying to scan a log in code without an active internet connection. */
 "An active internet connection is required to scan log in codes" = "Për të skanuar regjistër në kode, lypset një lidhje internet aktive";
 
 /* Error message shown when trying to view the scan status and there is no internet connection. */
 "An active internet connection is required to view Jetpack Scan" = "Që të shihni Jetpack Scan, lypset një lidhje internet aktive";
-
-/* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
-"An active internet connection is required to view activities" = "Që të shihni veprimtari lypse një lidhje internet aktive";
 
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
@@ -878,16 +856,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the Background Color section */
 "Background Color" = "Ngjyrë Sfondi";
 
-/* Title of the cell displaying status of a backup in progress */
-"Backing up site" = "Kopjeruajtje sajti";
-
 /* Noun. Links to a blog's Jetpack Backups screen.
    Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
-   Title for Jetpack Backup Update Status Failed screen
-   Title for the Jetpack's backup list
-   Title of section showing backup status */
+   Title for Jetpack Backup Update Status Failed screen */
 "Backup" = "Kopjeruajtje";
 
 /* Title for error displayed when preparing a backup fails. */
@@ -1112,7 +1085,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -1276,9 +1248,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Choose audio" = "Zgjidhni audio";
 
-/* Title to choose date range in a calendar */
-"Choose date range" = "Zgjidhni interval datash";
-
 /* No comment provided by engineer. */
 "Choose file" = "Zgjidhni kartelë";
 
@@ -1318,14 +1287,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Pastro Fshehtinë Medie Pajisjeje";
 
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "Pastro Regjistra të Vjetër Veprimtarie";
-
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "Spastro Tregues Projektori";
-
-/* Message of the trash confirmation alert. */
-"Clear all old activity logs?" = "Të spastrohen krejt regjistrat e vjetër të veprimtarisë?";
 
 /* No comment provided by engineer. */
 "Clear search" = "Spastroje kërkimin";
@@ -1536,8 +1499,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Lidhuni Me Asistencën";
 
-/* Button label for contacting support
-   Title of a button. A call to action to contact support for assistance. */
+/* Button label for contacting support */
 "Contact support" = "Lidhuni me asistencën";
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
@@ -1675,9 +1637,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Indicating that referrer couldn't be unmarked as spam */
 "Couldn't unmark as spam" = "S’iu hoq dot shenja si i padëshiruar";
 
-/* Content show when the dashboard fails to load */
-"Couldn't update. Check that you're online and refresh." = "S’u përditësua dot. Kontrolloni nëse jeni në linjë dhe rifreksojeni.";
-
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Llogaria s’u mbyll dot automatikisht";
 
@@ -1748,12 +1707,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Creating dashboard" = "Krijim pulti";
 
-/* Description of the cell displaying status of a backup in progress */
-"Creating downloadable backup" = "Po krijohet kopjeruajtje e shkarkueshme";
-
-/* No comment provided by engineer. */
-"Current" = "I tanishmi";
-
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Tema e Tanishme";
 
@@ -1777,9 +1730,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the Jetpack Restore Status message. */
 "Currently restoring site" = "Sajti juaj po rikthehet";
-
-/* Title of the cell displaying status of a rewind in progress */
-"Currently restoring your site" = "Sajti juaj po rikthehet";
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Po rikthehet: %1$@";
@@ -1831,9 +1781,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Writing Date Format Settings Title */
 "Date Format" = "Format Datash";
 
-/* Label of a button that displays a calendar */
-"Date Range" = "Interval Datash";
-
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
 "Date and Time Format" = "Format Datash dhe Kohe";
@@ -1863,8 +1810,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Defaults for New Posts" = "Parazgjedhje për Postime të Reja";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Fshije";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1981,7 +1927,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Dismiss screen" = "Mos e merr parasysh";
 
 /* Display Name label text.
-   My Profile display name label
    User's Display Name */
 "Display Name" = "Emër Shfaqjeje";
 
@@ -2002,7 +1947,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -2109,15 +2053,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Prekeni dy herë që të shihni mundësi trupëzimi.";
 
-/* Download button title */
-"Download" = "Shkarkoje";
-
 /* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "Shkarkoje Kopjeruajtjen";
-
-/* Title displayed for download backup action.
-   Title for button allowing user to backup their Jetpack site */
-"Download backup" = "Shkarko kopjeruajtje";
 
 /* Title for the button that will download the backup file. */
 "Download file" = "Shkarko kartelën";
@@ -2312,9 +2249,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Regjistra të Fshehtëzuar";
 
-/* Placeholder for the end date in calendar range selection */
-"End Date" = "Datë Përfundimi";
-
 /* Enter a custom value */
 "Enter a custom value" = "Jepni një vlerë vetjake";
 
@@ -2347,8 +2281,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Jepni kredencialet tuaja për në shërbyes";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "Gabim";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
@@ -2446,9 +2379,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Gabim në përditësim rregullimesh përshpejtimi sajti";
-
-/* Title for the activity detail view */
-"Event" = "Veprimtari";
 
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "Çdo ditë";
@@ -2550,12 +2480,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title displayed whilst fetching media from the user's media library */
 "Fetching media..." = "Po sillet media…";
 
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
-"Fetching pages..." = "Po sillen faqet…";
-
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
-"Fetching posts..." = "Po sillen postimet…";
-
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Po sillen sajtet…";
 
@@ -2583,9 +2507,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Film & Television site intent topic */
 "Film & Television" = "Film & Televizion";
 
-/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
-"Filter by activity type" = "Filtroji sipas llojesh veprimtarie";
-
 /* Finance site intent topic */
 "Finance" = "Financë";
 
@@ -2595,8 +2516,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Gjeni adresën e sajtit tuaj";
 
-/* My Profile first name label
-   Register Domain - Domain contact information field First name
+/* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Emri";
 
@@ -3155,9 +3075,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Lypset Jetpack %@ ose më i ri. Doni të përditësohet Jetpack-u?";
 
-/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup për instalime Shumësajtëshe furnizon kopjeruajtje të shkarkueshme, jo rikthime me një klikim. Për më tepër hollësi, %1$@.";
-
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "FAQ-e mbi Jetpack-un";
 
@@ -3262,8 +3179,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Large image size. Should be the same as in core WP. */
 "Large" = "E madhe";
 
-/* My Profile last name label
-   Register Domain - Domain contact information field Last name
+/* Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "Mbiemri";
 
@@ -3414,12 +3330,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Loading" = "Po ngarkohet";
 
-/* Text displayed while loading the activity feed for a site */
-"Loading Activities..." = "Po ngarkohen Veprimtari…";
-
-/* Text displayed while loading the activity feed for a site */
-"Loading Backups..." = "Po ngarkohen Kopjeruajtje…";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Po ngarkohen Menu…";
 
@@ -3456,8 +3366,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Po ngarkohet…";
 
 /* Local Services site intent topic */
@@ -3468,9 +3377,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Lock icon" = "Ikonë kyçjeje";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "Kartela Regjistër Sipas Datash Krijimi";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -3513,9 +3419,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button title. Takes the user to the Enter account password screen. */
 "Login with account password" = "Hyrje me fjalëkalim llogarie";
-
-/* No comment provided by engineer. */
-"Logs" = "Regjistra";
 
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "Po shihni për statistika?";
@@ -3764,8 +3667,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Music site intent topic */
 "Music" = "Muzikë";
 
-/* Link to My Profile section
-   My Profile view title */
+/* Link to My Profile section */
 "My Profile" = "Profili Im";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
@@ -3877,9 +3779,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label */
 "Next period" = "Periudha pasuese";
 
-/* Label for a cancel button */
-"No" = "Jo";
-
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "Ende pa %@";
 
@@ -3903,15 +3802,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "S’ka URL Paraparje";
-
-/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities available" = "S’ka veprimtari të gatshme";
-
-/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities recorded in the selected date range." = "S’ka veprimtari të regjistruara në intervalin e përzgjedhur të datave.";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log */
-"No activity yet" = "Ende pa veprimtari";
 
 /* No comment provided by engineer. */
 "No application can handle this request." = "S’ka aplikacion për ta trajtuar këtë kërkesë.";
@@ -3953,9 +3843,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Ende pa të dhëna";
 
-/* Accessibility label for no currently selected range. */
-"No date range selected" = "S’u përzgjodh interval datash";
-
 /* No comment provided by engineer. */
 "No description" = "Pa përshkrim";
 
@@ -3986,12 +3873,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Ende pa pëlqime";
-
-/* Title for the view when there aren't any backups to display for a given filter. */
-"No matching backups found" = "S’u gjetën kopjeruajtje me përputhje";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"No matching events found." = "S’u gjetën veprimtari me përputhje.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "S’ka media që përputhet me kërkimin tuaj";
@@ -4208,8 +4089,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
-   Title for the view when there's an error loading the plugin
-   Title for the view when there's an error loading time zones */
+   Title for the view when there's an error loading the plugin */
 "Oops" = "Hëm";
 
 /* An informal exclaimation meaning `something went wrong`. */
@@ -4949,12 +4829,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Ridërgoje";
 
-/* Accessibility label for the reset activity type button */
-"Reset Activity Type filter" = "Zero filtër Lloj Veprimtarish";
-
-/* Accessibility label for the reset date range button */
-"Reset Date Range filter" = "Zero filtër Interval Datash";
-
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Ricaktoni fjalëkalimi tuaj";
 
@@ -4967,13 +4841,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the fix section in Threat Details: Threat is not fixable */
 "Resolving the threat" = "Zgjidhje kërcënimi";
 
-/* Title displayed for restore action.
-   Title for button allowing user to restore their Jetpack site
-   Title for Jetpack Restore Complete screen
+/* Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen
-   Title of section showing restore status */
+   Title for the Jetpack Restore Site Screen */
 "Restore" = "Riktheje";
 
 /* Title for Jetpack Restore Failed screen */
@@ -4987,13 +4858,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title for restore site action */
 "Restore to this point" = "Riktheje te kjo pikë";
-
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Restored to %@" = "U rikthye te %@";
-
-/* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
-   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
-"Restoring to %@" = "Po rikthehet te %@";
 
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
@@ -5232,12 +5096,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Media e përzgjedhur s’gjendet.";
 
-/* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "Interval i përzgjedhur: %1$@ vetëm";
-
-/* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "Interval i përzgjedhur: %1$@ deri në %2$@";
-
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "U përzgjodh: %s";
@@ -5427,9 +5285,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Regjistrohuni me Email";
 
-/* Text displayed as a footer of a table view with Activities when user is on a free plan */
-"Since you're on a free plan, you'll see limited events in your Activity Log." = "Meqë jeni nën një plan falas, te Regjistri juaj i Veprimtarisë do të shihni veprimtari të kufizuara.";
-
 /* Notice displayed to the user after clearing the Siri activity donations. */
 "Siri Reset Confirmation" = "U pastruan me sukses Sugjerime Shkurtoresh Siri";
 
@@ -5579,9 +5434,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Sorry, usernames must have letters (a-z) too!" = "Na ndjeni, emrat e përdoruesve duhet të përmbajnë edhe shkronja (a-z)!";
 
 /* No comment provided by engineer. */
-"Sorry, you cannot access this feature. Please check your User Role on this site." = "Na ndjeni, s’mund ta përdorni këtë veçori. Ju lutemi, kontrolloni Rolin tuaj si Përdorues në këtë sajt.";
-
-/* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Na ndjeni, s’mund të përdorni atë adresë sajti.";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
@@ -5620,9 +5472,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Standard post format label */
 "Standard" = "Standard";
-
-/* Placeholder for the start date in calendar range selection */
-"Start Date" = "Datë Fillimi";
 
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
@@ -5681,9 +5530,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app successfully unsubscribed from the comments for the post */
 "Successfully unfollowed conversation" = "Bisedës iu hoq ndjekja me sukses";
-
-/* Label displayed to the user left of the time zone suggestion button */
-"Suggestion:" = "Sugjerim:";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -5879,9 +5725,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "Teknologji";
 
-/* My Profile 'About me' hint text */
-"Tell us a bit about you." = "Tregonani një grimë për veten.";
-
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "Tregonani se ç’lloj sajti do të donit të bënit";
 
@@ -5950,9 +5793,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "Tifozët Më të Zjarrtë të Botës";
-
-/* No comment provided by engineer. */
-"The app can't recognize the server response. Please, check the configuration of your site." = "Aplikacioni s’e kupton dot përgjigjen e shërbyesit. Ju lutemi, kontrolloni formësimin e sajtit tuaj.";
 
 /* No comment provided by engineer. */
 "The basics" = "Bazat";
@@ -6104,9 +5944,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "Pati një gabim në ndryshimin e fjalëkalimit";
 
-/* Text displayed when there is a failure loading the activity feed */
-"There was an error loading activities" = "Pati një gabim në ngarkim veprimtarish";
-
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Pati një gabim në ngarkim shtojcash";
 
@@ -6128,9 +5965,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "Pati një gabim në ngarkimin e kësaj shtojce";
 
-/* Error message when time zones can't be loaded */
-"There was an error loading time zones" = "Pati një gabim në ngarkim zonash kohore";
-
 /* Text displayed when there is a failure saving the username. */
 "There was an error saving the username" = "Pati një gabim gjatë ruajtjes së emrit të përdoruesit";
 
@@ -6139,9 +5973,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when user tries to create a downloadable backup when there is already one being prepared */
 "There's a backup currently being prepared, please wait before starting the next one" = "Ka një kopjeruajtje që po kryhet, ju lutemi, pritni, përpara se të filloni një të re";
-
-/* Text displayed when user tries to start a restore when there is already one running */
-"There's a restore currently in progress, please wait before starting next one" = "Po kryhet një rikthim, ju lutemi, pritni, përpara se të nisni një tjetër";
 
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting the next one" = "Po kryhet një rikthim, ju lutemi, pritni, përpara se të nisni një tjetër";
@@ -6163,9 +5994,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "Kjo ndërthurje ngjyrash mund të jetë e vështirë për t’u lexuar nga njerëzit. Provoni të përdorni një ngjyrë sfondi më të errët dhe\/ose një ngjyrë më të ndritshme teksti.";
-
-/* Notifies the user that the a domain matching the search term wasn't returned in the results */
-"This domain is unavailable" = "Kjo përkatësi s’është e lirë";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "Kjo adresë email s’është e regjistruar në WordPress.com.";
@@ -6245,8 +6073,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Writing Time Format Settings Title */
 "Time Format" = "Format Kohe";
 
-/* Label for the timezone setting
-   Title for the time zone selector */
+/* Label for the timezone setting */
 "Time Zone" = "Zonë Kohore";
 
 /* Error when the uses takes more than 1 minute to submit a security key. */
@@ -6374,14 +6201,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Try to load the list of interests again. */
 "Try Again" = "Riprovoni";
 
-/* Text displayed in the view when there aren't any backups to display for a given filter. */
-"Try adjusting your date range filter" = "Provoni të ndryshoni intervalin tuaj të datave";
-
-/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"Try adjusting your date range or activity type filters" = "Provoni të ndryshoni filtrat për intervalin tuaj të datave ose për lloj veprimtarie";
-
-/* Button label for trying to retrieve the activities type again
-   Button label for trying to retrieve the history again
+/* Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails. */
@@ -6501,9 +6321,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "S’arrihet të rikthehet sajti juaj";
 
-/* Text displayed when a site restore fails. */
-"Unable to restore your site, please try again later or contact support." = "S’arrihet të rikthehet sajti juaj, ju lutemi, riprovoni më vonë ose lidhuni me asistencën.";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "S’arrihet të ruhet objekt media.";
 
@@ -6613,9 +6430,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Pa titull";
 
-/* Help text shown below the list of debug logs. */
-"Up to seven days worth of logs are saved." = "Ruhen regjistrime deri për shtatë ditë.";
-
 /* Title for the card displaying upcoming scheduled posts. */
 "Upcoming scheduled posts" = "Postime të ardhshme të planifikuara";
 
@@ -6627,9 +6441,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label action for updating a link on the editor */
 "Update Link" = "Përditësoni Lidhjen";
-
-/* Update profile photo in Me > My Profile */
-"Update Profile Photo" = "Përditësoni Foto Profili";
 
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "Përditësoni Ikonën e Sajtit";
@@ -6931,9 +6742,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The subtitle text on the magic link requested screen followed by the email address. */
 "We just sent a magic link to" = "Sapo dërguam një lidhje magjike te";
 
-/* Message displayed when a backup has finished */
-"We successfully created a backup of your site as of %@" = "Krijuam me sukses një kopjeruajtje të sajtit tuaj, siç qe më %1$@";
-
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "Krijuam me sukses një kopjeruajtje të sajtit tuaj prej %1$@.";
 
@@ -7087,9 +6895,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Kur një koment përmban cilëndo nga këto fjalë në lëndën e vet, emrin, URL-në, email-in, ose IP-në e tij, do t’i vihet shenjë si i padëshiruar. Mund të jepni edhe copa fjalësh, fjala vjen “press” do të ketë efekt edhe për “WordPress”.";
 
-/* Text display when the view when there aren't any Activities to display in the Activity Log */
-"When you make changes to your site you'll be able to see your activity history here." = "Kur bëni ndryshime te sajti juaj, këtu do të jeni në gjendje të shihni historikun e veprimtarisë tuaj.";
-
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Hëm, diç shkoi ters dhe s’bëmë dot futjen tuaj. Ju lutemi, riprovoni!";
 
@@ -7199,8 +7004,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* 'This Year' label for the the year. */
 "Year" = "Vit";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "Po";
 
 /* Button label that confirms the user wants to log in and will authenticate them via the browser */
@@ -7363,17 +7167,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Kopjeruajtja juaj tani është gati për shkarkim";
 
-/* Text displayed when a site backup takes too long. */
-"Your backup is taking longer than usual, please check again in a few minutes." = "Rikthimi juaj po zgjat më shumë se zakonisht, ju lutemi, rikontrolloni pas pak minutash.";
-
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Emri juaj i tanishëm i përdoruesit është %1$@. Me pak përjashtime, të tjerët zor se do të shohin emrin tuaj të ekranit, %2$@.";
-
-/* Text displayed in the view when there aren't any Backups to display */
-"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Kopjeruajtja juaj e parë do të shfaqet këtu brenda 34 orësh dhe do të merrni një njoftim, sapo kopjeruajtja të jetë plotësuar";
-
-/* Title for the view when there aren't any Backups to display */
-"Your first backup will be ready soon" = "Kopjeruajtja juaj e parë do të jetë gati së shpejti";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Përkatësia juaj e re %@ po ujdiset. Mund të duhen deri në 30 minuta që përkatësia juaj të fillojë të funksionojë.";
@@ -7383,9 +7178,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Postimet, faqet dhe rregullimet tuaja do t’ju dërgohen me email te %@.";
-
-/* Text displayed when a site restore takes too long. */
-"Your restore is taking longer than usual, please check again in a few minutes." = "Rikthimi juaj po zgjat më shumë se zakonisht, ju lutemi, rikontrolloni pas pak minutash.";
 
 /* This is shown to the user when their domain search query contains invalid characters. */
 "Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "Kërkimi juaj përmban shenja të pambuluara në përkatësi WordPress.com. Lejohen shenjat vijuese: A–Z, a–z, 0–9.";
@@ -7405,14 +7197,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Restore Complete message. */
 "Your site has been restored" = "Sajti juaj u rikthye";
 
-/* Title of a message displayed when a site has finished rewinding */
-"Your site has been succesfully restored" = "Sajti juaj u rikthye me sukses";
-
 /* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Ikona e sajtit tuaj përdoret nëpër internet: në skeda shfletuesi, paraparje sajti në media shoqërore, dhe te WordPress.com Reader.";
-
-/* Title of a message displayed when user starts a restore operation */
-"Your site is being restored" = "Sajti juaj po rikthehet";
 
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Sajti juaj s’ka më vend për ngarkime mediash.";
@@ -7455,9 +7241,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The title for the list of third-party software we use */
 "acknowledgements.title" = "Falënderime";
-
-/* Dismiss button title */
-"activityList.dismiss.title" = "Hidhe tej";
 
 /* Screen title */
 "addCategory.navigationTitle" = "Shtoni Kategori";
@@ -7594,9 +7377,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* An alert suggesting to load autosaved revision for a published post */
 "autosaveAlert.viewChanges" = "Shihini Ndryshimet";
-
-/* An error message displayed when attempting to update an avatar while the user's email address is not verified. */
-"avatar.update.email.verification.required" = "Që të përditësoni avatarin tuaj, lypset të verifikohet adresa juaj email së pari.";
 
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "S’arrihet të ngarkohet figura. Ju lutemi, zgjidhni një tjetër, ose riprovoni më vonë.";
@@ -10152,15 +9932,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Shtoni një Etiketë";
 
-/* Navigation title */
-"reader.tags.addTag.details" = "Mund të jepni çfarëdo emri etikete";
-
-/* Placeholder for text field */
-"reader.tags.addTag.placeholder" = "Etiketë";
-
-/* Navigation title */
-"reader.tags.addTag.title" = "Shtoni Etiketë";
-
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Zbuloni më tepër etiketa";
 
@@ -11134,9 +10905,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Site Subscribers */
 "users.list.title.subscribers" = "Pajtimtarë";
-
-/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
-"visit our documentation page" = "vizitoni faqen tonë të dokumentimit";
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Hidhe tej";

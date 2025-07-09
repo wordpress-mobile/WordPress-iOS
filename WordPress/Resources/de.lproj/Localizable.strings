@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-05-13 11:54:08+0000 */
+/* Translation-Revision-Date: 2025-07-08 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -341,9 +341,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "Über Jetpack für iOS";
 
-/* My Profile 'About me' label */
-"About Me" = "Über mich";
-
 /* Link to About screen for Jetpack for iOS */
 "About Reader for iOS" = "Über den Reader für iOS";
 
@@ -393,21 +390,11 @@ translators: %s: Block name e.g. \"Image block\" */
 "Active, Autoupdates on" = "Aktiv, automatische Updates an";
 
 /* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature
-   Title for the activity list */
+   Noun. Name of the Activity Log feature */
 "Activity" = "Aktivität";
 
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Aktivitätsprotokoll";
-
-/* No comment provided by engineer. */
-"Activity Logs" = "Aktivitätenlog";
-
-/* Label for the Activity Type filter button */
-"Activity Type" = "Aktivitätstyp";
-
-/* Label for the Activity Type filter button when there are more than 1 activity type selected */
-"Activity Type (%1$d)" = "Aktivitätstyp (%1$d)";
 
 /* No comment provided by engineer. */
 "Add Block After" = "Block dahinter hinzufügen";
@@ -426,9 +413,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Add URL" = "URL hinzufügen";
-
-/* Add a profile photo to Me > My Profile */
-"Add a Profile Photo" = "Profilfoto hinzufügen";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Domain hinzufügen";
@@ -631,17 +615,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A failure reason for when an error HTTP status code was returned from the site. */
 "An HTTP error code was returned." = "Es wurde ein HTTP-Fehlercode zurückgegeben.";
 
-/* Error message when loading failed because there's no connection */
-"An active internet connection is required" = "Es ist eine aktive Internetverbindung erforderlich.";
-
 /* Error message shown when trying to scan a log in code without an active internet connection. */
 "An active internet connection is required to scan log in codes" = "Für das Scannen von Anmeldecodes ist eine aktive Internetverbindung erforderlich";
 
 /* Error message shown when trying to view the scan status and there is no internet connection. */
 "An active internet connection is required to view Jetpack Scan" = "Eine aktive Internetverbindung wird benötigt, um Jetpack Scan anzusehen.";
-
-/* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
-"An active internet connection is required to view activities" = "Für die Anzeige der Aktivitäten ist eine aktive Internetverbindung erforderlich";
 
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
@@ -721,7 +699,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Applies the setting" = "Wendet die Einstellungen an";
 
 /* Apply action on the app extension tags picker screen. Saves the selected tags for the post. */
-"Apply" = "Übernehmen";
+"Apply" = "Anwenden";
 
 /* Approve action. Verb
    Approve comment (verb)
@@ -881,16 +859,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the Background Color section */
 "Background Color" = "Hintergrundfarbe";
 
-/* Title of the cell displaying status of a backup in progress */
-"Backing up site" = "Erstellung eines Backups der Website";
-
 /* Noun. Links to a blog's Jetpack Backups screen.
    Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
-   Title for Jetpack Backup Update Status Failed screen
-   Title for the Jetpack's backup list
-   Title of section showing backup status */
+   Title for Jetpack Backup Update Status Failed screen */
 "Backup" = "Backup";
 
 /* Title for error displayed when preparing a backup fails. */
@@ -1118,7 +1091,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -1153,7 +1125,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Image caption field label (for editing)
    Noun. Label for the caption for a media asset (image / video) */
-"Caption" = "Bildunterschrift";
+"Caption" = "Untertitel";
 
 /* Alert title. */
 "Careful!" = "Vorsicht!";
@@ -1282,9 +1254,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Choose audio" = "Audio-Datei wählen";
 
-/* Title to choose date range in a calendar */
-"Choose date range" = "Zeitraum auswählen";
-
 /* No comment provided by engineer. */
 "Choose file" = "Datei auswählen";
 
@@ -1324,14 +1293,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Medien-Cache des Geräts leeren";
 
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "Leere alte Aktivitätenlogs";
-
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "Spotlight-Index löschen";
-
-/* Message of the trash confirmation alert. */
-"Clear all old activity logs?" = "Sollen alle alten Aktivitätsprotokolle gelöscht werden?";
 
 /* No comment provided by engineer. */
 "Clear search" = "Suche löschen";
@@ -1542,8 +1505,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Support kontaktieren";
 
-/* Button label for contacting support
-   Title of a button. A call to action to contact support for assistance. */
+/* Button label for contacting support */
 "Contact support" = "Support kontaktieren";
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
@@ -1669,6 +1631,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Die Verbindung ist fehlgeschlagen. Dein Host blockiert POST-Anforderungen und die App benötigt diese, um mit deiner Website zu kommunizieren. Kontaktiere deinen Hosting-Anbieter, um dieses Problem zu beheben.";
 
+/* Content show when the dashboard fails to load */
+"Couldn't load data. Please refresh again later." = "Die Daten konnten nicht geladen werden. Bitte versuche es später noch einmal.";
+
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Schlagwörter konnten nicht geladen werden.";
 
@@ -1680,9 +1645,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Indicating that referrer couldn't be unmarked as spam */
 "Couldn't unmark as spam" = "Spam-Markierung konnte nicht entfernt werden";
-
-/* Content show when the dashboard fails to load */
-"Couldn't update. Check that you're online and refresh." = "Aktualisieren fehlgeschlagen.  Prüfe, ob du online bist, und aktualisiere.";
 
 /* Error title displayed when unable to close user account. */
 "Couldn’t close account automatically" = "Konto konnte nicht automatisch geschlossen werden";
@@ -1754,14 +1716,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Creating dashboard" = "Das Dashboard wird erstellt";
 
-/* Description of the cell displaying status of a backup in progress */
-"Creating downloadable backup" = "Erstellung eines herunterladbaren Backups";
-
 /* No comment provided by engineer. */
 "Crosspost" = "Mehrfach posten";
-
-/* No comment provided by engineer. */
-"Current" = "Aktuell";
 
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Aktuelles Theme";
@@ -1786,9 +1742,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the Jetpack Restore Status message. */
 "Currently restoring site" = "Website wird derzeit wiederhergestellt";
-
-/* Title of the cell displaying status of a rewind in progress */
-"Currently restoring your site" = "Deine Website wird derzeit wiederhergestellt";
 
 /* Description of the current entry being restored. %1$@ is a placeholder for the specific entry being restored. */
 "Currently restoring: %1$@" = "Wird derzeit wiederhergestellt: %1$@";
@@ -1840,9 +1793,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Writing Date Format Settings Title */
 "Date Format" = "Datumsformat";
 
-/* Label of a button that displays a calendar */
-"Date Range" = "Zeitraum";
-
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
 "Date and Time Format" = "Datums- und Zeitformat";
@@ -1872,8 +1822,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Defaults for New Posts" = "Standardeinstellungen für neue Beiträge";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Löschen";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1990,7 +1939,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Dismiss screen" = "Bildschirm ausblenden";
 
 /* Display Name label text.
-   My Profile display name label
    User's Display Name */
 "Display Name" = "Anzeigename";
 
@@ -2011,7 +1959,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -2118,15 +2065,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Double tap to view embed options." = "Tippe zweimal, um die eingebetteten Optionen anzuzeigen.";
 
-/* Download button title */
-"Download" = "Herunterladen";
-
 /* Title for the Jetpack Download Backup Site Screen */
 "Download Backup" = "Backup herunterladen";
-
-/* Title displayed for download backup action.
-   Title for button allowing user to backup their Jetpack site */
-"Download backup" = "Backup herunterladen";
 
 /* Title for the button that will download the backup file. */
 "Download file" = "Datei herunterladen";
@@ -2321,9 +2261,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs */
 "Encrypted Logs" = "Verschlüsselte Logs";
 
-/* Placeholder for the end date in calendar range selection */
-"End Date" = "Enddatum";
-
 /* Enter a custom value */
 "Enter a custom value" = "Gib einen individuellen Wert ein";
 
@@ -2356,8 +2293,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Gib deine Server-Anmeldedaten ein";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "Fehler";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
@@ -2456,9 +2392,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Fehler beim Aktualisieren der Einstellungen zur Beschleunigung der Website";
 
-/* Title for the activity detail view */
-"Event" = "Ereignis";
-
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "Jeden Tag";
 
@@ -2526,6 +2459,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Failed to insert media.\nTap for more info." = "Medien konnten nicht eingefügt werden.\nFür weitere Infos tippen.";
 
+/* A message indicating that we couldn't load the user's settings. */
+"Failed to load settings" = "Einstellungen konnten nicht geladen werden";
+
 /* No comment provided by engineer. */
 "Failed to save files.\nPlease tap for options." = "Das Speichern der Dateien ist fehlgeschlagen.\nBitte tippe hier für Optionen.";
 
@@ -2559,12 +2495,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title displayed whilst fetching media from the user's media library */
 "Fetching media..." = "Medien werden geladen ...";
 
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
-"Fetching pages..." = "Seiten werden abgerufen ...";
-
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
-"Fetching posts..." = "Lade Beiträge ...";
-
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Seiten werden geladen ...";
 
@@ -2592,9 +2522,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Film & Television site intent topic */
 "Film & Television" = "Film und Fernsehen";
 
-/* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
-"Filter by activity type" = "Nach Aktivitätstyp filtern";
-
 /* Finance site intent topic */
 "Finance" = "Finanzen";
 
@@ -2604,8 +2531,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Finde deine Website-Adresse";
 
-/* My Profile first name label
-   Register Domain - Domain contact information field First name
+/* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Vorname";
 
@@ -3167,9 +3093,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Jetpack %@ oder höher ist erforderlich. Möchtest du Jetpack aktualisieren?";
 
-/* Message for Jetpack users that have multisite WP installation, thus Restore is not available. %1$@ is a placeholder for the string 'visit our documentation page'. */
-"Jetpack Backup for Multisite installations provides downloadable backups, no one-click restores. For more information %1$@." = "Jetpack Backup für Netzwerk-Installationen bietet Backups zum Herunterladen, keine Ein-Klick-Wiederherstellungen. Für weitere Informationen %1$@.";
-
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack FAQ";
 
@@ -3274,8 +3197,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Groß";
 
-/* My Profile last name label
-   Register Domain - Domain contact information field Last name
+/* Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "Nachname";
 
@@ -3426,12 +3348,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Loading" = "Wird geladen";
 
-/* Text displayed while loading the activity feed for a site */
-"Loading Activities..." = "Aktivitäten werden geladen ...";
-
-/* Text displayed while loading the activity feed for a site */
-"Loading Backups..." = "Backups werden geladen …";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Menüs werden geladen ...";
 
@@ -3468,8 +3384,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Wird geladen …";
 
 /* Local Services site intent topic */
@@ -3480,9 +3395,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Lock icon" = "Schloss-Icon";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "Protokolldateien nach Erstellungsdatum";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -3528,9 +3440,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button title. Takes the user to the Enter account password screen. */
 "Login with account password" = "Mit Konto-Passwort anmelden";
-
-/* No comment provided by engineer. */
-"Logs" = "Protokolle";
 
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "Du suchst die Statistiken?";
@@ -3779,8 +3688,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Music site intent topic */
 "Music" = "Musik";
 
-/* Link to My Profile section
-   My Profile view title */
+/* Link to My Profile section */
 "My Profile" = "Mein Profil";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
@@ -3892,9 +3800,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label */
 "Next period" = "Nächste Periode";
 
-/* Label for a cancel button */
-"No" = "Nein";
-
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "Noch kein %@";
 
@@ -3918,15 +3823,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Keine Vorschau-URL verfügbar";
-
-/* Title for the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities available" = "Keine Aktivitäten verfügbar";
-
-/* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
-"No activities recorded in the selected date range." = "Keine Aktivitäten im ausgewählten Zeitraum aufgezeichnet.";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log */
-"No activity yet" = "Noch keine Aktivität";
 
 /* No comment provided by engineer. */
 "No application can handle this request." = "Diese Anfrage kann von keiner Anwendung verarbeitet werden.";
@@ -3968,9 +3864,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Noch keine Daten";
 
-/* Accessibility label for no currently selected range. */
-"No date range selected" = "Kein Datumsbereich ausgewählt";
-
 /* No comment provided by engineer. */
 "No description" = "Keine Beschreibung";
 
@@ -4001,12 +3894,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Noch keine Likes";
-
-/* Title for the view when there aren't any backups to display for a given filter. */
-"No matching backups found" = "Keine passenden Backups gefunden";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"No matching events found." = "Keine passenden Ereignisse gefunden.";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "No media matching your search" = "Keine Medien entsprechen deiner Suche";
@@ -4223,8 +4110,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
-   Title for the view when there's an error loading the plugin
-   Title for the view when there's an error loading time zones */
+   Title for the view when there's an error loading the plugin */
 "Oops" = "Hoppala";
 
 /* An informal exclaimation meaning `something went wrong`. */
@@ -4967,12 +4853,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Erneut senden";
 
-/* Accessibility label for the reset activity type button */
-"Reset Activity Type filter" = "Aktivitätstyp-Filter zurücksetzen";
-
-/* Accessibility label for the reset date range button */
-"Reset Date Range filter" = "Datumsbereich-Filter zurücksetzen";
-
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Dein Passwort zurücksetzen";
 
@@ -4985,13 +4865,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the fix section in Threat Details: Threat is not fixable */
 "Resolving the threat" = "Beseitigen der Bedrohung";
 
-/* Title displayed for restore action.
-   Title for button allowing user to restore their Jetpack site
-   Title for Jetpack Restore Complete screen
+/* Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen
-   Title of section showing restore status */
+   Title for the Jetpack Restore Site Screen */
 "Restore" = "Wiederherstellen";
 
 /* Title for Jetpack Restore Failed screen */
@@ -5005,13 +4882,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button title for restore site action */
 "Restore to this point" = "Zu diesem Punkt wiederherstellen";
-
-/* Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date. */
-"Restored to %@" = "Wiederhergestellt auf %@";
-
-/* Notice showing the date the site is being restored to. '%@' is a placeholder that will expand to a date.
-   Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date. */
-"Restoring to %@" = "Wiederherstellung auf %@ läuft";
 
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
@@ -5250,12 +5120,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message when user tries a no longer existent video media object. */
 "Selected media is unavailable." = "Ausgewähltes Medium ist nicht verfügbar.";
 
-/* Accessibility label for summary of currently single date. %1$@ is the date */
-"Selected range: %1$@ only" = "Ausgewählter Bereich: nur %1$@";
-
-/* Accessibility label for summary of currently selected range. %1$@ is the start date, %2$@ is the end date. */
-"Selected range: %1$@ to %2$@" = "Ausgewählter Bereich: %1$@ bis %2$@";
-
 /* translators: %s: Select font size option value e.g: \"Selected: Large\".
 translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Selected: %s" = "Ausgewählt: %s";
@@ -5346,6 +5210,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Jetpack mit einem Freund teilen";
+
+/* Title for a button that recommends the app to others */
+"Share Reader with a friend" = "Reader mit einem Freund teilen";
 
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Teile WordPress mit Freunden";
@@ -5444,9 +5311,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Mit E-Mail-Adresse registrieren";
-
-/* Text displayed as a footer of a table view with Activities when user is on a free plan */
-"Since you're on a free plan, you'll see limited events in your Activity Log." = "Da du einen Free-Tarif hast, siehst du nur begrenzte Ereignisse in deinem Aktivitätsprotokoll.";
 
 /* Notice displayed to the user after clearing the Siri activity donations. */
 "Siri Reset Confirmation" = "Vorschläge für Siri-Shortcuts erfolgreich gelöscht";
@@ -5600,9 +5464,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Sorry, usernames must have letters (a-z) too!" = "Tut mir Leid, Benutzernamen müssen Buchstaben (A-Z) enthalten!";
 
 /* No comment provided by engineer. */
-"Sorry, you cannot access this feature. Please check your User Role on this site." = "Du hast leider keinen Zugriff auf diese Funktion. Bitte überprüfen Deine Benutzerrolle.";
-
-/* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Tut mir Leid, du darfst diese Website-Adresse leider nicht benutzen.";
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
@@ -5641,9 +5502,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Standard post format label */
 "Standard" = "Standard";
-
-/* Placeholder for the start date in calendar range selection */
-"Start Date" = "Anfangsdatum";
 
 /* Label for selecting the Start Over Settings item
    Title of Start Over settings page */
@@ -5702,9 +5560,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app successfully unsubscribed from the comments for the post */
 "Successfully unfollowed conversation" = "Der Unterhaltung wird nicht mehr gefolgt";
-
-/* Label displayed to the user left of the time zone suggestion button */
-"Suggestion:" = "Vorschlag:";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -5900,9 +5755,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Technology site intent topic */
 "Technology" = "Technologie";
 
-/* My Profile 'About me' hint text */
-"Tell us a bit about you." = "Erzähle ein wenig über dich.";
-
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "Teile uns mit, welche Art von Website du erstellen möchtest";
 
@@ -5971,9 +5823,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Example post title used in the login prologue screens. This is a post about football fans. */
 "The World's Best Fans" = "Die weltbesten Fans";
-
-/* No comment provided by engineer. */
-"The app can't recognize the server response. Please, check the configuration of your site." = "Die App konnte die Rückmeldung vom Server nicht verarbeiten. Bitte überprüfe die Konfiguration deiner Website.";
 
 /* No comment provided by engineer. */
 "The basics" = "Die Grundlagen";
@@ -6125,9 +5974,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "Beim Ändern des Passworts ist ein Fehler aufgetreten";
 
-/* Text displayed when there is a failure loading the activity feed */
-"There was an error loading activities" = "Beim Laden der Aktivitäten ist ein Fehler aufgetreten";
-
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Beim Laden der Plugins ist ein Fehler aufgetreten";
 
@@ -6149,9 +5995,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "Beim Laden dieses Plugins ist ein Fehler aufgetreten";
 
-/* Error message when time zones can't be loaded */
-"There was an error loading time zones" = "Beim Laden der Zeitzonen ist ein Fehler aufgetreten";
-
 /* Text displayed when there is a failure saving the username. */
 "There was an error saving the username" = "Beim Speichern des Benutzernamens ist ein Fehler aufgetreten";
 
@@ -6160,9 +6003,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when user tries to create a downloadable backup when there is already one being prepared */
 "There's a backup currently being prepared, please wait before starting the next one" = "Es wird gerade ein Backup vorbereitet. Bitte warte, bevor du mit dem nächsten beginnst";
-
-/* Text displayed when user tries to start a restore when there is already one running */
-"There's a restore currently in progress, please wait before starting next one" = "Es wird gerade eine Wiederherstellung vorgenommen. Bitte warte, bevor du mit der nächsten beginnst";
 
 /* Text displayed when user tries to start a restore when there is already one running */
 "There's a restore currently in progress, please wait before starting the next one" = "Es wird gerade eine Wiederherstellung vorgenommen. Bitte warte, bevor du mit der nächsten beginnst";
@@ -6184,9 +6024,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "Diese Farbkombination ist unter Umständen für manche Menschen schwer lesbar. Wähle eine dunklere Hintergrundfarbe und\/oder eine hellere Textfarbe.";
-
-/* Notifies the user that the a domain matching the search term wasn't returned in the results */
-"This domain is unavailable" = "Diese Domain ist nicht verfügbar";
 
 /* An error message informing the user the email address they entered did not match a WordPress.com account. */
 "This email address is not registered on WordPress.com." = "Diese E-Mail-Adresse ist auf WordPress.com nicht registriert.";
@@ -6266,8 +6103,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Writing Time Format Settings Title */
 "Time Format" = "Zeitformat";
 
-/* Label for the timezone setting
-   Title for the time zone selector */
+/* Label for the timezone setting */
 "Time Zone" = "Zeitzone";
 
 /* Error when the uses takes more than 1 minute to submit a security key. */
@@ -6395,14 +6231,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Try to load the list of interests again. */
 "Try Again" = "Erneut versuchen";
 
-/* Text displayed in the view when there aren't any backups to display for a given filter. */
-"Try adjusting your date range filter" = "Versuche, den Datumsbereichsfilter anzupassen";
-
-/* Text display when the view when there aren't any Activities to display in the Activity Log for a given filter. */
-"Try adjusting your date range or activity type filters" = "Versuche, deinen Zeitraum oder Aktivitätsfilter zu ändern";
-
-/* Button label for trying to retrieve the activities type again
-   Button label for trying to retrieve the history again
+/* Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails. */
@@ -6522,9 +6351,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Deine Website kann nicht wiederhergestellt werden";
 
-/* Text displayed when a site restore fails. */
-"Unable to restore your site, please try again later or contact support." = "Deine Website kann nicht wiederhergestellt werden. Versuche es später erneut oder wende dich an den Support.";
-
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Medienelement kann nicht gespeichert werden.";
 
@@ -6634,9 +6460,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Ohne Titel";
 
-/* Help text shown below the list of debug logs. */
-"Up to seven days worth of logs are saved." = "Es werden Protokolle von bis zu sieben Tagen gespeichert.";
-
 /* Title for the card displaying upcoming scheduled posts. */
 "Upcoming scheduled posts" = "Anstehende geplante Beiträge";
 
@@ -6648,9 +6471,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label action for updating a link on the editor */
 "Update Link" = "Link aktualisieren";
-
-/* Update profile photo in Me > My Profile */
-"Update Profile Photo" = "Profilfoto aktualisieren";
 
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "Website-Symbol aktualisieren";
@@ -6952,9 +6772,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The subtitle text on the magic link requested screen followed by the email address. */
 "We just sent a magic link to" = "Wir haben einen magischen Link an folgende Adresse geschickt:";
 
-/* Message displayed when a backup has finished */
-"We successfully created a backup of your site as of %@" = "Wir haben erfolgreich ein Backup deiner Website mit Stand %@ erstellt";
-
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "Wir haben erfolgreich ein Backup deiner Website vom %1$@ erstellt.";
 
@@ -7111,9 +6928,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Wenn ein Kommentar eines dieser Wörter im Inhalt, Namen, in der URL, E-Mail-Adresse oder der IP enthält, wird er als Spam gekennzeichnet. Du kannst auch Teilbegriffe eingeben. So wird beispielsweise bei der Eingabe von „press“ als Ergebnis „WordPress“ angezeigt.";
 
-/* Text display when the view when there aren't any Activities to display in the Activity Log */
-"When you make changes to your site you'll be able to see your activity history here." = "Wenn du Änderungen an deiner Website vornimmst, kann du hier deinen Aktivitätsverlauf sehen.";
-
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Ups, aufgrund eines Fehlers konnten wir dich nicht anmelden. Versuche es bitte noch einmal!";
 
@@ -7223,8 +7037,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* 'This Year' label for the the year. */
 "Year" = "Jahr";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "Ja";
 
 /* Button label that confirms the user wants to log in and will authenticate them via the browser */
@@ -7387,17 +7200,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Du kannst dein Backup nun herunterladen.";
 
-/* Text displayed when a site backup takes too long. */
-"Your backup is taking longer than usual, please check again in a few minutes." = "Dein Backup dauert länger als üblich, bitte überprüfe das hier in wenigen Minuten nochmal.";
-
 /* Instructional text that displays the current username and display name. */
 "Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Dein aktueller Benutzername lautet %1$@. Mit einigen Ausnahmen werden andere immer nur deinen Anzeigennamen, %2$@, sehen.";
-
-/* Text displayed in the view when there aren't any Backups to display */
-"Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed" = "Dein erstes Backup wird innerhalb von 24 Stunden hier bereitgestellt. Du erhältst eine Benachrichtigung, wenn das Backup abgeschlossen ist.";
-
-/* Title for the view when there aren't any Backups to display */
-"Your first backup will be ready soon" = "Dein erstes Backup ist bald fertig";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Deine neue Domain „%@“ wird eingerichtet. Es kann bis zu 30 Minuten dauern, bis deine Domain funktioniert.";
@@ -7410,9 +7214,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Deine Beiträge, Seiten und Einstellungen werden dir per E-Mail an %@ geschickt.";
-
-/* Text displayed when a site restore takes too long. */
-"Your restore is taking longer than usual, please check again in a few minutes." = "Deine Wiederherstellung dauert länger als üblich, bitte überprüfe das hier in wenigen Minuten nochmal.";
 
 /* This is shown to the user when their domain search query contains invalid characters. */
 "Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "Deine Suche enthält Zeichen, die in WordPress.com-Domains nicht unterstützt werden. Diese Zeichen sind zulässig: A–Z, a–z, 0–9.";
@@ -7432,14 +7233,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the Jetpack Restore Complete message. */
 "Your site has been restored" = "Deine Website wurde wiederhergestellt.";
 
-/* Title of a message displayed when a site has finished rewinding */
-"Your site has been succesfully restored" = "Deine Website wurde erfolgreich wiederhergestellt";
-
 /* Subtitle for the Site Icon Picker */
 "Your site icon is used across the web: in browser tabs, site previews on social media, and the WordPress.com Reader." = "Dein Website-Icon wird im Web verwendet: in Browser-Tabs, Website-Vorschauen in sozialen Medien und im WordPress.com-Reader.";
-
-/* Title of a message displayed when user starts a restore operation */
-"Your site is being restored" = "Deine Website wird wiederhergestellt";
 
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Deine Website hat für Medien-Uploads nicht mehr genügend Speicherplatz.";
@@ -7483,8 +7278,60 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title for the list of third-party software we use */
 "acknowledgements.title" = "Bestätigungen";
 
-/* Dismiss button title */
-"activityList.dismiss.title" = "Verwerfen";
+/* Placeholder text shown when the activity actor's display name is empty */
+"activity.unknownUser" = "Unbekannter Benutzer";
+
+/* Label for the backup checkpoint date */
+"activityDetail.checkpointDate" = "Datum des Prüfpunkts";
+
+/* Button title for downloading a backup */
+"activityDetail.download.button" = "Herunterladen";
+
+/* Button title for restoring a backup */
+"activityDetail.restore.button" = "Wiederherstellen";
+
+/* Section title for restore site actions */
+"activityDetail.section.restoreSite" = "Website wiederherstellen";
+
+/* Section title for user information */
+"activityDetail.section.user" = "Benutzer";
+
+/* Title for the activity detail view */
+"activityDetail.title" = "Ereignis";
+
+/* Deselect all button */
+"activityLogs.activityTypes.deselectAll" = "Auswahl aufheben";
+
+/* Empty state message when no activity types are available */
+"activityLogs.activityTypes.empty" = "Es sind keine Aktivitätstypen verfügbar";
+
+/* Select all button */
+"activityLogs.activityTypes.selectAll" = "Alle auswählen";
+
+/* Activity type selection screen title */
+"activityLogs.activityTypes.title" = "Aktivitätstypen";
+
+/* Empty state message for activity logs */
+"activityLogs.empty" = "Keine Aktivität";
+
+/* Activity types filter label */
+"activityLogs.filter.activityTypes" = "Aktivitätstypen";
+
+/* End date filter label */
+"activityLogs.filter.endDate" = "Enddatum";
+
+/* Reset filters button label */
+"activityLogs.filter.reset" = "Filter zurücksetzen";
+
+/* Start date filter label */
+"activityLogs.filter.startDate" = "Startdatum";
+
+/* Notice shown to free plan users about limited activity log events */
+"activityLogs.freePlan.notice" = "Da du einen Kostenlos-Tarif hast, siehst du in deinem Aktivitätsprotokoll nur begrenzte Ereignisse.";
+
+/* Title for activity logs screen
+   Title for the activity logs screen */
+"activityLogs.title" = "Aktivität";
 
 /* Screen title */
 "addCategory.navigationTitle" = "Kategorie hinzufügen";
@@ -7576,6 +7423,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The list item of experimental features that users can choose to enable */
 "application-settings.experimental-features" = "Experimentelle Funktionen";
 
+/* Button label to authorize application passwords */
+"application.password.authorize" = "Autorisieren";
+
+/* Description for the application passwords feature */
+"application.password.description" = "Du kannst der App jetzt die Berechtigung erteilen, Anwendungspasswörter für den schnellen und sicheren Zugriff auf deine Website-Inhalte zu verwenden.";
+
+/* Title for the new application passwords feature */
+"application.password.new.title" = "Neu: Anwendungspasswörter";
+
 /* Title of row for displaying an application password's creation date */
 "applicationPassword.item.creationDate" = "Erstellungsdatum";
 
@@ -7634,9 +7490,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An alert suggesting to load autosaved revision for a published post */
 "autosaveAlert.viewChanges" = "Änderungen anzeigen";
 
-/* An error message displayed when attempting to update an avatar while the user's email address is not verified. */
-"avatar.update.email.verification.required" = "Wenn du deinen Avatar aktualisieren möchtest, musst du zuerst deine E-Mail-Adresse bestätigen.";
-
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "Das Bild konnte nicht geladen werden. Bitte wähle ein anderes oder versuche es später noch einmal.";
 
@@ -7648,6 +7501,34 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Verwerfen";
+
+/* Download button title */
+"backup.download.header.download" = "Herunterladen";
+
+/* Shows when the download link will expire. %@ is the relative time (e.g., 'in 2 hours') */
+"backup.download.header.expiresIn" = "Läuft in %@ ab";
+
+/* Message displayed when a backup has finished. %@ is the date and time. */
+"backup.download.header.message" = "Dein Backup vom %@ ist fertig";
+
+/* Title shown when a backup is ready to download */
+"backup.download.header.title" = "Backup ist bereit für den Download";
+
+/* Message shown when a downloadable backup is in progress */
+"backup.inProgress.message" = "Dein Website-Backup wird für den Download vorbereitet";
+
+/* Title shown when a downloadable backup is being created */
+"backup.inProgress.title" = "Herunterladbares Backup wird erstellt";
+
+/* Text displayed in the view when there aren't any Backups to display */
+"backups.empty.subtitle" = "Dein erstes Backup wird innerhalb von 24 Stunden hier bereitgestellt. Du erhältst eine Benachrichtigung, wenn das Backup abgeschlossen ist.";
+
+/* Title for the view when there aren't any Backups to display */
+"backups.empty.title" = "Dein erstes Backup ist bald fertig";
+
+/* Title for backups screen
+   Title for the backups screen */
+"backups.title" = "Backups";
 
 /* Button title for the button that shows the Blaze flow when tapped. */
 "blaze.campaigns.create.button.title" = "Erstellen";
@@ -8408,6 +8289,27 @@ Example: Reply to Pamela Nguyen */
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
 
+/* Cancel dialog confirmation title */
+"inviteSubscribers.cancelConfirmationTitle" = "Bist du sicher, dass du die neuen Abonnenten verwerfen möchtest?";
+
+/* Cancel dialog confirmation button */
+"inviteSubscribers.discardChanges" = "Änderungen verwerfen";
+
+/* A footer view (small text). The button title is inserted by the app via a parameter. */
+"inviteSubscribers.disclosure" = "Mit deinem Klick auf „%@“ bestätigst du, dass du die entsprechende Einwilligung eingeholt hast, um diesen Personen eine E-Mail zu senden. Spam-Beschwerden oder hohe Absprungraten von deinen Abonnenten können dazu führen, dass wir Maßnahmen gegen dein Konto ergreifen.";
+
+/* Field title (not shown, accessibility) */
+"inviteSubscribers.fieldTitleEmail" = "E-Mail-Adresse";
+
+/* Import success snackbar title */
+"inviteSubscribers.importSuccessMessage" = "Es kann ein paar Minuten dauern, bis der Import abgeschlossen ist";
+
+/* Import success snackbar title */
+"inviteSubscribers.importSuccessTitle" = "Import gestartet";
+
+/* Screen title */
+"inviteSubscribers.title" = "Abonnenten hinzufügen";
+
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Verwende diesen Link, um deine Teammitglieder einzuladen. Jeder, der diese URL besucht, kann sich bei deiner Organisation registrieren, auch wenn er oder sie den Link von jemand anderem erhalten hat. Teile ihn also nur mit vertrauenswürdigen Personen.";
 
@@ -8477,6 +8379,9 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when a connection step is attempted in an invalid order */
 "jetpack.connection.error.context" = "Dieser Schritt ist noch nicht fertig";
 
+/* Title for the retry button shown when a connection step fails */
+"jetpack.connection.retry.button" = "Erneut versuchen";
+
 /* Status message when a connection step is pending */
 "jetpack.connection.stage.pending" = "Warten auf Start";
 
@@ -8488,6 +8393,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the finalization step in Jetpack connection flow */
 "jetpack.connection.step.finalize.title" = "Verbindung abschließen";
+
+/* Title for the install step in Jetpack connection flow */
+"jetpack.connection.step.install.title" = "Jetpack installieren";
+
+/* Title for the login step in Jetpack connection flow */
+"jetpack.connection.step.login.title" = "Bei WordPress.com anmelden";
 
 /* Title for the site connection step in Jetpack connection flow */
 "jetpack.connection.step.site.title" = "Mit deiner Website verbinden";
@@ -8714,8 +8625,14 @@ Example: Reply to Pamela Nguyen */
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "Du hast keine Berechtigung, diesen privaten Blog anzuzeigen.";
 
+/* Button to dismiss the re-authentication view */
+"login.appPasswordReAuth.cancelButton" = "Abbrechen";
+
 /* Description explaining why the user needs to re-authenticate */
 "login.appPasswordReAuth.description" = "Das der App zugewiesene Anwendungspasswort ist in deinem Profil nicht mehr vorhanden.\nBitte melde dich erneut an, um ein neues Anwendungspasswort für die App zu erstellen.";
+
+/* Button to start the re-authentication process */
+"login.appPasswordReAuth.signInButton" = "Anmelden";
 
 /* Title shown when the application password is invalid */
 "login.appPasswordReAuth.title" = "Ungültiges Anwendungspasswort";
@@ -8726,6 +8643,15 @@ Example: Reply to Pamela Nguyen */
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "als Spam markiert";
 
+/* Button title when verification link sending failed */
+"me.verifyEmail.button.retry" = "Erneut versuchen";
+
+/* Button title to send verification link */
+"me.verifyEmail.button.send" = "E-Mail erneut senden";
+
+/* Button title while verification link is being sent */
+"me.verifyEmail.button.sending" = "Wird gesendet …";
+
 /* Button title after verification link is sent */
 "me.verifyEmail.button.sent" = "E-Mail gesendet";
 
@@ -8734,6 +8660,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Message for email verification card with email address */
 "me.verifyEmail.message.withEmail" = "Verifiziere deine E-Mail-Adresse, um dein Konto zu sichern und auf weitere Funktionen zuzugreifen.\nSuche in deinem Posteingang unter %1$@ nach der Bestätigungs-E-Mail oder klicke auf „%2$@“, um eine neue E-Mail zu erhalten.";
+
+/* Title for email verification card */
+"me.verifyEmail.title" = "E-Mail-Adresse bestätigen";
 
 /* Me tab menu items */
 "meMenu.submitFeedback" = "Feedback senden";
@@ -9013,6 +8942,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Hol dir deine Google-Domains zurück";
+
+/* Title for the menu item */
+"mySite.menu.subscribers" = "Abonnenten";
+
+/* Title for the menu item */
+"mySite.menu.users" = "Benutzer";
 
 /* Button title. Displays the account and setting screen. */
 "mySite.noSites.button.accountAndSettings" = "Konto und Einstellungen";
@@ -9747,6 +9682,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Sichtbarkeit";
 
+/* An error message displayed when attempting to update their profile while the user's email address is not verified. */
+"profile.update.email.verification.required" = "Um dein Profil zu aktualisieren, musst du zuerst deine E-Mail-Adresse verifizieren.";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "prologue.title.reader" = "Abonniere deine Lieblingswebsites und entdecke neue Blogs.";
 
@@ -9795,6 +9733,15 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Du bist angemeldet!";
 
+/* No comment provided by engineer. */
+"reachability-utils.alert.cancel" = "OK";
+
+/* No comment provided by engineer. */
+"reachability-utils.alert.retry" = "Erneut versuchen?";
+
+/* No comment provided by engineer. */
+"reachability-utils.alert.title" = "Keine Verbindung";
+
 /* Message of error prompt shown when no internet connection is available */
 "reachability-utils.alert.utils" = "Die Internetverbindung wurde anscheinend unterbrochen.";
 
@@ -9841,6 +9788,9 @@ Tapping on this row allows the user to edit the sharing message. */
 "reader.comments.commentsClosed" = "Kommentare geschlossen";
 
 /* Empty state view title */
+"reader.comments.emptyStateTitle" = "Schreibe den ersten Kommentar.";
+
+/* Empty state view title */
 "reader.comments.errorLoadingComments" = "Beim Laden der Kommentare ist ein unerwarteter Fehler aufgetreten.";
 
 /* VoiceOver hint */
@@ -9848,6 +9798,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Error message that informs reader comments from a private blog cannot be fetched. */
 "reader.comments.noPermissionToViewPrivateBlog" = "Du bist nicht berechtigt, dieses private Blog anzuzeigen.";
+
+/* Navigation title */
+"reader.comments.title" = "Kommentare";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Zeigt Beiträge von der Website an";
@@ -9939,6 +9892,9 @@ but tapping on this button will remove their like from the post. */
 
 /* Used in multiple contexts, usually as a screen title */
 "reader.likes.title" = "Likes";
+
+/* Used in multiple contexts, usually as a screen title */
+"reader.lists.title" = "Listen";
 
 /* Reader logged-out screen details */
 "reader.loggedOut.details" = "Melde dich mit einem WordPress.com-Konto an, um deinen Lieblingsblogs zu folgen";
@@ -10213,6 +10169,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "reader.sidebar.section.favorites.title" = "Favoriten";
 
 /* Reader sidebar section title */
+"reader.sidebar.section.library.title" = "Bibliothek";
+
+/* Reader sidebar section title */
 "reader.sidebar.section.lists.title" = "Listen";
 
 /* Reader sidebar section title */
@@ -10278,15 +10237,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Schlagwort hinzufügen";
 
-/* Navigation title */
-"reader.tags.addTag.details" = "Du kannst einen beliebigen Schlagwortnamen eingeben";
-
-/* Placeholder for text field */
-"reader.tags.addTag.placeholder" = "Schlagwort";
-
-/* Navigation title */
-"reader.tags.addTag.title" = "Schlagwort hinzufügen";
-
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Mehr Schlagwörter entdecken";
 
@@ -10299,17 +10249,29 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Abonniert";
 
+/* Used in multiple contexts, usually as a screen title */
+"reader.tags.title" = "Schlagwörter";
+
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "%@ nicht mehr folgen";
 
 /* Field title */
 "reader.userProfile.site" = "Website";
 
+/* Reader Welcome screen login button */
+"reader.welcome.continueText" = "Weiter mit WordPress.com";
+
 /* Reader Welcome screen */
 "reader.welcome.subtitle" = "Werde Teil der größten Blogging-Community";
 
 /* Reader app primary navigation tab bar */
+"readerApp.tabBar.discover" = "Entdecken";
+
+/* Reader app primary navigation tab bar */
 "readerApp.tabBar.me" = "Ich";
+
+/* Reader app primary navigation tab bar */
+"readerApp.tabBar.notifications" = "Benachrichtigungen";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Zurück";
@@ -10441,6 +10403,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.cancel" = "Abbrechen";
 
 /* A shared button title used in different contexts */
+"shared.button.clear" = "Leeren";
+
+/* A shared button title used in different contexts */
 "shared.button.close" = "Schließen";
 
 /* A shared button title used in different contexts */
@@ -10473,6 +10438,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* A shared button title used in different contexts */
 "shared.button.save" = "Speichern";
 
+/* A shared button title used in different contexts (send email, send message, sent invites) */
+"shared.button.send" = "Absenden";
+
 /* A shared button title used in different contexts */
 "shared.button.share" = "Teilen";
 
@@ -10487,6 +10455,27 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* A generic error message */
 "shared.error.geneirc" = "Es ist ein Fehler aufgetreten";
+
+/* A generic error message */
+"shared.error.generic" = "Es ist ein Fehler aufgetreten";
+
+/* As in default value */
+"shared.misc.default" = "Standard";
+
+/* Default value with a value. Example usage when ordering items: Default (Date Edited). */
+"shared.misc.defaultWithValue" = "Standard (%@)";
+
+/* A default filter value */
+"shared.misc.showAll" = "Alle anzeigen";
+
+/* Sort ordering */
+"shared.misc.sortAascending" = "Aufsteigend";
+
+/* A button title used in different contexts */
+"shared.misc.sortBy" = "Sortieren nach";
+
+/* Sort ordering */
+"shared.misc.sortDescending" = "Absteigend";
 
 /* Sidebar button title on iPad */
 "sidebar.addSite" = "Website hinzufügen";
@@ -10587,8 +10576,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Message shown when there are no inactive plugins on the site */
 "site.plugins.empty.inactive" = "Keine inaktiven Plugins";
 
+/* The plugin fillter option for displaying active plugins */
+"site.plugins.filter.option.active" = "Aktiv";
+
 /* The plugin fillter option for displaying all plugins */
 "site.plugins.filter.option.all" = "Alle";
+
+/* The plugin fillter option for displaying inactive plugins */
+"site.plugins.filter.option.inactive" = "Inaktiv";
 
 /* Title of the plugin filter picker */
 "site.plugins.filter.title" = "Filtern";
@@ -10970,7 +10965,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "submit.feedback.footer" = "Wenn du Hilfe benötigst, kannst du dich jederzeit über den Bildschirm „Hilfe und Support“ an uns wenden";
 
 /* The button title for the Submit button in the In-App Feedback screen */
-"submit.feedback.submit.button" = "Übermitteln";
+"submit.feedback.submit.button" = "Absenden";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Feedback";
@@ -10996,11 +10991,149 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Submit feedback screen submit fsuccess notice title */
 "submitFeedback.successNoticeTitle" = "Feedback gesendet";
 
+/* Button title */
+"subscriberDetails.buttonDeleteSubscriber" = "Abonnent löschen";
+
+/* Remove subscriber confirmation dialog message; subscriber name as input. */
+"subscriberDetails.deleteSubscriberConfirmationDialog.message" = "Möchtest du %@ wirklich entfernen? Diese Person erhält dann keine neuen Benachrichtigungen mehr von deiner Website.";
+
+/* Remove subscriber confirmation dialog title */
+"subscriberDetails.deleteSubscriberConfirmationDialog.title" = "Abonnent löschen";
+
+/* Form field name */
+"subscriberDetails.fieldName.country" = "Land";
+
+/* Form field name */
+"subscriberDetails.fieldName.email" = "E-Mail-Adresse";
+
+/* Form field name */
+"subscriberDetails.fieldName.paidUpgrade" = "Kostenpflichtiges Upgrade";
+
+/* Form field name */
+"subscriberDetails.fieldName.plan" = "Tarif";
+
+/* Form field name */
+"subscriberDetails.fieldName.planEndDate" = "Enddatum";
+
+/* Form field name */
+"subscriberDetails.fieldName.planStartDate" = "Startdatum";
+
+/* Form field name */
+"subscriberDetails.fieldName.planStatus" = "Tarifstatus";
+
+/* Form field name */
+"subscriberDetails.fieldName.renewalInterval" = "Verlängerungsintervall";
+
+/* Form field name */
+"subscriberDetails.fieldName.renewalPrice" = "Preis für die Verlängerung";
+
+/* Form field name */
+"subscriberDetails.fieldName.site" = "Website";
+
+/* Form field name (has to be short!) */
+"subscriberDetails.fieldName.statsClickedEmails" = "Geklickt";
+
+/* Form field name (has to be short!) */
+"subscriberDetails.fieldName.statsEmailCount" = "E-Mails";
+
+/* Form field name (has to be short!) */
+"subscriberDetails.fieldName.statsOpenedEmails" = "Geöffnet";
+
+/* Form field name */
+"subscriberDetails.fieldName.subscriptionDate" = "Abonnement-Datum";
+
+/* Name of a free plan */
+"subscriberDetails.plan.free" = "Kostenlos";
+
+/* Newsletter subscription plan type */
+"subscriberDetails.plan.gift" = "Geschenk";
+
+/* Card section title */
+"subscriberDetails.section.newletterSubscription" = "Newsletter-Abonnement";
+
+/* Card section title */
+"subscriberDetails.section.subscriberDetails" = "Details zum Abonnenten";
+
+/* Button title */
+"subscribers.buttonDeleteSubscriber" = "Abonnent löschen";
+
+/* Remove subscriber confirmation dialog message; subscriber name as input. */
+"subscribers.deleteSubscriberConfirmationDialog.message" = "Möchtest du %@ wirklich entfernen? Diese Person erhält dann keine neuen Benachrichtigungen mehr von deiner Website.";
+
+/* Remove subscriber confirmation dialog title */
+"subscribers.deleteSubscriberConfirmationDialog.title" = "Abonnent löschen";
+
+/* Empty state view title */
+"subscribers.empty" = "Keine Abonnenten";
+
+/* Empty state view title */
+"subscribers.filter.emailSubscription" = "E-Mail-Abonnement";
+
+/* Empty state view title */
+"subscribers.filter.paymentType" = "Zahlung";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.blocked" = "Kein E-Mail-Versand";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.email" = "Abonniert";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.reader" = "Nicht abonniert";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.unconfirmed" = "Nicht bestätigt";
+
+/* Subscription type filter */
+"subscribers.filterBySubscriptionType.free" = "Kostenlos";
+
+/* Subscription type filter */
+"subscribers.filterBySubscriptionType.paid" = "Kostenpflichtig";
+
+/* Part of the label in the menu showing how many subscribers are displayed (has to have two arguments!) */
+"subscribers.menu.nOutOf" = "%1$@ von %2$@";
+
+/* Part of the label in the menu showing how many subscribers are displayed */
+"subscribers.menu.subscribers" = "Abonnenten:";
+
+/* Subscribers sort by field */
+"subscribers.sortField.dateSubscribed" = "Abonnementbeginn";
+
+/* Subscribers sort by field */
+"subscribers.sortField.email" = "E-Mail-Adresse";
+
+/* Subscribers sort by field */
+"subscribers.sortField.name" = "Name";
+
+/* Subscribers sort by field */
+"subscribers.sortField.plan" = "Tarif";
+
+/* Subscribers sort by field */
+"subscribers.sortField.subscriptionStatus" = "E-Mail-Abonnement";
+
+/* Screen title */
+"subscribers.title" = "Abonnenten";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "In dieser Konversation";
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "Website-Mitglieder";
+
+/* Label for the current activity log file in the list. */
+"support.activityLogs.currentLogTilte" = "Aktuell";
+
+/* Message shown in the alert when attempting to clear old activity logs. */
+"support.activityLogs.deleteLogsAlert.message" = "Bist du sicher, dass du alle Aktivitätsprotokolle löschen möchtest?";
+
+/* Title shown in the alert when attempting to clear old activity logs. */
+"support.activityLogs.deleteLogsAlert.title" = "Protokolle löschen";
+
+/* Title shown in the navigation bar of the Activity Logs screen. */
+"support.activityLogs.navigationTitle" = "Aktivitätsprotokolle";
+
+/* Footer text explaining the log retention policy in the Activity Logs screen. */
+"support.activityLogs.sectionFooter" = "Es werden Protokolle für einen Zeitraum von bis zu sieben Tagen gespeichert.";
 
 /* Dismiss the current view */
 "support.button.close.title" = "Fertig";
@@ -11149,6 +11282,12 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "Diese Auswahl wird gelöscht:";
 
+/* Section title for suggested timezones */
+"timeZoneSelector.suggested" = "Vorgeschlagen";
+
+/* Title for the time zone selector */
+"timeZoneSelector.title" = "Zeitzone";
+
 /* Tip for sidebar */
 "tips.sidebar.message" = "Wische nach rechts, um auf deine Websites, dein Profil, den Reader und Benachrichtigungen zuzugreifen";
 
@@ -11270,8 +11409,8 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Site Subscribers */
 "users.list.title.subscribers" = "Abonnenten";
 
-/* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
-"visit our documentation page" = "besuche unsere Dokumentationsseite";
+/* Screen title */
+"users.title" = "Benutzer";
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Verwerfen";
@@ -11374,6 +11513,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Button title for signing in with a different WordPress.com account */
 "wpComLogin.loginDenied.useDifferentAccount" = "Anderes Konto verwenden";
+
+/* Button title to log out the current WordPress.com account */
+"wpcom.token.alert.button.logout" = "Abmelden";
+
+/* Button title to Sign In to WordPress.com */
+"wpcom.token.alert.button.signin" = "Anmelden";
 
 /* Message title to be displayed when the user needs to re-authenticate their WordPress.com account. */
 "wpcom.token.fix.signin" = "Bei WordPress.com anmelden";

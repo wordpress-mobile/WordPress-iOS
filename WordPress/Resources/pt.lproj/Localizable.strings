@@ -92,9 +92,6 @@
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "MORADA";
 
-/* My Profile 'About me' label */
-"About Me" = "Sobre mim";
-
 /* Title for the account section in site settings screen */
 "Account" = "Conta";
 
@@ -120,15 +117,8 @@
 "Active, Autoupdates on" = "Activo, com actualizações automáticas";
 
 /* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature
-   Title for the activity list */
+   Noun. Name of the Activity Log feature */
 "Activity" = "Actividade";
-
-/* No comment provided by engineer. */
-"Activity Logs" = "Relatórios de actividade";
-
-/* Add a profile photo to Me > My Profile */
-"Add a Profile Photo" = "Adicionar uma foto de perfil";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Adicione texto alternativo (alt)";
@@ -362,7 +352,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -416,9 +405,6 @@
 
 /* Register Domain - Address information field City */
 "City" = "Cidade";
-
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "Limpar relatórios antigos de actividade";
 
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "Limpar o índice do Spotlight";
@@ -546,8 +532,7 @@
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Contactar suporte";
 
-/* Button label for contacting support
-   Title of a button. A call to action to contact support for assistance. */
+/* Button label for contacting support */
 "Contact support" = "Contactar suporte";
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
@@ -611,9 +596,6 @@
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Criar um novo menu irá descartar as alterações efectuadas no menu actual. Tem a certeza que quer continuar?";
 
-/* No comment provided by engineer. */
-"Current" = "Actual";
-
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Tema actual";
 
@@ -647,8 +629,7 @@
 "Defaults for New Posts" = "Por omissão para novos artigos";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Eliminar";
 
 /* Menus confirmation button for deleting a menu. */
@@ -725,7 +706,6 @@
 "Dismiss" = "Ignorar";
 
 /* Display Name label text.
-   My Profile display name label
    User's Display Name */
 "Display Name" = "Nome a mostrar";
 
@@ -737,7 +717,6 @@
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -818,8 +797,7 @@
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Insira o nome de utilizador";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "Erro";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
@@ -871,12 +849,6 @@
 /* Title displayed whilst fetching media from the user's media library */
 "Fetching media..." = "A obter multimédia...";
 
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
-"Fetching pages..." = "A obter páginas...";
-
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
-"Fetching posts..." = "A obter conteúdos...";
-
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "A obter sites...";
 
@@ -886,8 +858,7 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Tipo de ficheiro";
 
-/* My Profile first name label
-   Register Domain - Domain contact information field First name
+/* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Nome";
 
@@ -1108,8 +1079,7 @@
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Grande";
 
-/* My Profile last name label
-   Register Domain - Domain contact information field Last name
+/* Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "Apelido";
 
@@ -1184,9 +1154,6 @@
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Carregar mais conteúdos";
 
-/* Text displayed while loading the activity feed for a site */
-"Loading Activities..." = "A carregar actividades...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "A carregar menus...";
 
@@ -1199,12 +1166,8 @@
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "A carregar...";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "Ficheiros de relatório por data de criação.";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -1228,9 +1191,6 @@
 
 /* Login Request Expired */
 "Login Request Expired" = "Pedido de início de sessão expirado";
-
-/* No comment provided by engineer. */
-"Logs" = "Relatórios";
 
 /* Title of a button. */
 "Lost your password?" = "Esqueceu-se da senha?";
@@ -1327,8 +1287,7 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash. */
 "Moves the comment to the Trash." = "Move o comentário para o lixo.";
 
-/* Link to My Profile section
-   My Profile view title */
+/* Link to My Profile section */
 "My Profile" = "O meu perfil";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
@@ -1359,9 +1318,6 @@
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Notificação seguinte";
-
-/* Label for a cancel button */
-"No" = "Não";
 
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Sem categoria";
@@ -1493,8 +1449,7 @@
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
-   Title for the view when there's an error loading the plugin
-   Title for the view when there's an error loading time zones */
+   Title for the view when there's an error loading the plugin */
 "Oops" = "Ups";
 
 /* An informal exclaimation meaning `something went wrong`. */
@@ -1833,13 +1788,10 @@
 /* The largest resolution allowed for uploading */
 "Resolution" = "Resolução";
 
-/* Title displayed for restore action.
-   Title for button allowing user to restore their Jetpack site
-   Title for Jetpack Restore Complete screen
+/* Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen
-   Title of section showing restore status */
+   Title for the Jetpack Restore Site Screen */
 "Restore" = "Recuperar";
 
 /* A prompt to attempt the failed network request again
@@ -2033,9 +1985,6 @@
 "Sorry, usernames must have letters (a-z) too!" = "Desculpe mas o nome de utilizador também tem de incluir letras (a-z)!";
 
 /* No comment provided by engineer. */
-"Sorry, you cannot access this feature. Please check your User Role on this site." = "Pedimos desculpa, mas não tem acesso a esta funcionalidade. Por favor verifique o seu Perfil de Utilizador neste site.";
-
-/* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Desculpe mas não pode usar esse endereço de site.";
 
 /* Discussion Settings Title
@@ -2114,9 +2063,6 @@
 
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Taxonomia";
-
-/* My Profile 'About me' hint text */
-"Tell us a bit about you." = "Escreva algo sobre si.";
 
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Termos do serviço";
@@ -2201,14 +2147,8 @@
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Ocorreu um erro ao guardar alterações da gestão de partilha.";
 
-/* Text displayed when there is a failure loading the activity feed */
-"There was an error loading activities" = "Ocorreu um erro ao carregar actividades";
-
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Ocorreu um erro ao carregar os plugins";
-
-/* Error message when time zones can't be loaded */
-"There was an error loading time zones" = "Ocorreu um erro ao carregar os fusos horários";
 
 /* Updating Role failed error message */
 "There was an error updating @%@" = "Ocorreu um erro ao actualizar @%@";
@@ -2232,8 +2172,7 @@
 /* Message shown if a thumbnail preview of a media item unavailable. */
 "Thumbnail unavailable." = "Miniaturas indisponíveis.";
 
-/* Label for the timezone setting
-   Title for the time zone selector */
+/* Label for the timezone setting */
 "Time Zone" = "Fuso horário";
 
 /* WordPress.com Marketing Footer Text */
@@ -2289,8 +2228,7 @@
    Try to load the list of interests again. */
 "Try Again" = "Tentar de novo";
 
-/* Button label for trying to retrieve the activities type again
-   Button label for trying to retrieve the history again
+/* Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails. */
@@ -2576,8 +2514,7 @@
 /* Title for the writing section in site settings screen */
 "Writing" = "A escrever";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "Sim";
 
 /* Comments Yesterday Section Header
@@ -2616,12 +2553,6 @@
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Os seus artigos, páginas e definições serão enviadas para o endereço %@.";
-
-/* Title of a message displayed when a site has finished rewinding */
-"Your site has been succesfully restored" = "O seu site foi reposto com sucesso.";
-
-/* Title of a message displayed when user starts a restore operation */
-"Your site is being restored" = "O seu site está a ser reposto";
 
 /* Age between dates equaling one day. */
 "a day" = "um dia";

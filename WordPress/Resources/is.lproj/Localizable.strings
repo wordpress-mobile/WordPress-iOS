@@ -77,9 +77,6 @@
 /* Label for active Theme browser cell */
 "ACTIVE" = "VIRKT";
 
-/* My Profile 'About me' label */
-"About Me" = "Um mig";
-
 /* Title for the account section in site settings screen */
 "Account" = "Aðgangur";
 
@@ -92,9 +89,6 @@
 
 /* Title of alert when theme activation fails */
 "Activation Error" = "Villa kom upp við virkjun";
-
-/* No comment provided by engineer. */
-"Activity Logs" = "Aðgerðaskrá";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Bæta við alt texta";
@@ -306,7 +300,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -354,9 +347,6 @@
 
 /* Overlay message displayed while checking if site has premium purchases */
 "Checking purchases…" = "Athuga kaup…";
-
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "Hreinsa gamlar aðgerðaskrár";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "Hreinsa...";
@@ -478,8 +468,7 @@
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Hafa samband við notendaþjónustuna";
 
-/* Button label for contacting support
-   Title of a button. A call to action to contact support for assistance. */
+/* Button label for contacting support */
 "Contact support" = "Hafa samband við notendaþjónustu";
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
@@ -527,9 +516,6 @@
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Með því að búa til nýja valmynd missir þú breytingar sem þú hefur gert á núverandi valmynd. Ertu viss um að þú viljir halda áfram?";
 
-/* No comment provided by engineer. */
-"Current" = "Efst á baugi";
-
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Þema í notkun";
 
@@ -558,8 +544,7 @@
 "Defaults for New Posts" = "Sjálfgildi fyrir nýjar færslur";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Eyða";
 
 /* Menus confirmation button for deleting a menu. */
@@ -639,7 +624,6 @@
 "Dismiss" = "Loka";
 
 /* Display Name label text.
-   My Profile display name label
    User's Display Name */
 "Display Name" = "Nafn til að sýna";
 
@@ -651,7 +635,6 @@
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -718,8 +701,7 @@
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Sláðu inn notandanafn";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "Villa";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
@@ -774,12 +756,6 @@
 /* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
 "Fetching comments..." = "Sæki athugasemdir…";
 
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
-"Fetching pages..." = "Sæki síður…";
-
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
-"Fetching posts..." = "Sæki færslur...";
-
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Sæki vefi...";
 
@@ -789,8 +765,7 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Skráartegund";
 
-/* My Profile first name label
-   Register Domain - Domain contact information field First name
+/* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Eiginnafn";
 
@@ -977,8 +952,7 @@
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Stór";
 
-/* My Profile last name label
-   Register Domain - Domain contact information field Last name
+/* Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "Kenninafn";
 
@@ -1047,12 +1021,8 @@
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Hleð...";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "Atburðaskrár eftir dagsetningu";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -1070,9 +1040,6 @@
 
 /* Login Request Expired */
 "Login Request Expired" = "Innskráningarbeiðni rann út";
-
-/* No comment provided by engineer. */
-"Logs" = "Annálar";
 
 /* Title of a button. */
 "Lost your password?" = "Tapað lykilorð?";
@@ -1158,8 +1125,7 @@
    Trashes the comment */
 "Move to Trash" = "Flytja í rusl";
 
-/* Link to My Profile section
-   My Profile view title */
+/* Link to My Profile section */
 "My Profile" = "Minn prófíll";
 
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
@@ -1185,9 +1151,6 @@
 
 /* Accessibility label for the next notification button */
 "Next notification" = "Næsta tilknning";
-
-/* Label for a cancel button */
-"No" = "Nei";
 
 /* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
 "No Category" = "Enginn flokkur";
@@ -1319,8 +1282,7 @@
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
-   Title for the view when there's an error loading the plugin
-   Title for the view when there's an error loading time zones */
+   Title for the view when there's an error loading the plugin */
 "Oops" = "Úbbs";
 
 /* An informal exclaimation meaning `something went wrong`. */
@@ -1586,13 +1548,10 @@
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Minnka & skera til";
 
-/* Title displayed for restore action.
-   Title for button allowing user to restore their Jetpack site
-   Title for Jetpack Restore Complete screen
+/* Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen
-   Title of section showing restore status */
+   Title for the Jetpack Restore Site Screen */
 "Restore" = "Endurvekja";
 
 /* A prompt to attempt the failed network request again
@@ -1803,9 +1762,6 @@
 "Sorry, usernames must have letters (a-z) too!" = "Því miður, notendanöfn verða að hafa bókstafi (a-z) líka!";
 
 /* No comment provided by engineer. */
-"Sorry, you cannot access this feature. Please check your User Role on this site." = "Því miður, þú hefur ekki aðgang að þessum eiginleika. Vinsamlegast athugaðu hlutverk notanda þíns á þessum vef.";
-
-/* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Því miður, þú getur ekki notað þetta veffang.";
 
 /* Discussion Settings Title
@@ -1873,9 +1829,6 @@
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Flokkun";
 
-/* My Profile 'About me' hint text */
-"Tell us a bit about you." = "Segðu okkur eitthvað um sjálfa(n) þig.";
-
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Notendaskilmálar";
 
@@ -1908,9 +1861,6 @@
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "Vefslóðina vantar gilt nafn þjóns.";
-
-/* No comment provided by engineer. */
-"The app can't recognize the server response. Please, check the configuration of your site." = "Forritið gat ekki skilið svarið frá netþjóninum. Vinsamlegast yfirfarið stillingar á vefnum þínum.";
 
 /* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Skírteinið fyrir þennan netþjón er ógilt. Þú gætir verið að tengjast við netþjón sem er að þykjast vera “%@” og gæti það ógnað upplýsingaöryggi þínu.\n\nViltu treysta skírteininu engu að síður?";
@@ -2123,9 +2073,6 @@
 /* No comment provided by engineer. */
 "Unsupported" = "Óstutt";
 
-/* Help text shown below the list of debug logs. */
-"Up to seven days worth of logs are saved." = "Atburðaskrá er geymd í allt að sjö daga.";
-
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
    Label action for updating a link on the editor
@@ -2287,8 +2234,7 @@
 /* Title for the writing section in site settings screen */
 "Writing" = "Ritun";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "Já";
 
 /* Comments Yesterday Section Header

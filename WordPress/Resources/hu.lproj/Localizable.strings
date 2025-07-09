@@ -6,9 +6,6 @@
 /* Empty Post Title */
 "(No Title)" = "(Nincs cím)";
 
-/* No comment provided by engineer. */
-"Activity Logs" = "Tevékenységi napló";
-
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Haladó";
 
@@ -65,7 +62,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -77,9 +73,6 @@
 
 /* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategóriák";
-
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "Régi tevékenységi naplók törlése";
 
 /* Label for number of clicks.
    Period Stats 'Clicks' header */
@@ -122,15 +115,11 @@
 /* The button title text for creating a new account. */
 "Create Account" = "Fiók létrehozása";
 
-/* No comment provided by engineer. */
-"Current" = "Jelenlegi";
-
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Vezérlőpult";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Törlés";
 
 /* Text displayed in HUD while a media item is being deleted. */
@@ -152,7 +141,6 @@
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -200,8 +188,7 @@
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Felhasználónév megadása";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "Hiba";
 
 /* Label for the Featured Image area in post settings. */
@@ -273,12 +260,8 @@
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Betöltés...";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "Naplófájlok létrehozás szerint";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -289,9 +272,6 @@
 
 /* Title of a button for signing in. */
 "Log in" = "Bejelentkezés";
-
-/* No comment provided by engineer. */
-"Logs" = "Naplózás";
 
 /* Title of a button. */
 "Lost your password?" = "Elfelejtett jelszó";
@@ -336,9 +316,6 @@
    Title of a button.
    Title of a button. The text should be capitalized. */
 "Next" = "Következő";
-
-/* Label for a cancel button */
-"No" = "Nem";
 
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "Nincs még %@";
@@ -725,8 +702,7 @@
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "Igen";
 
 /* Comments Yesterday Section Header

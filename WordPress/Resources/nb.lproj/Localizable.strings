@@ -236,9 +236,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Address information field section header title */
 "ADDRESS" = "ADRESSE";
 
-/* My Profile 'About me' label */
-"About Me" = "Om meg";
-
 /* Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting */
 "Accelerated Mobile Pages (AMP)" = "Accelerated Mobile Pages (AMP)";
 
@@ -276,15 +273,11 @@ translators: %s: Block name e.g. \"Image block\" */
 "Active, Autoupdates on" = "Aktiv, autooppdatering på";
 
 /* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature
-   Title for the activity list */
+   Noun. Name of the Activity Log feature */
 "Activity" = "Aktivitet";
 
 /* Noun. Links to a blog's Activity screen. */
 "Activity Log" = "Aktivitetslogg";
-
-/* No comment provided by engineer. */
-"Activity Logs" = "Aktivitetslogger";
 
 /* No comment provided by engineer. */
 "Add Block After" = "Legg til blokk etter";
@@ -303,9 +296,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Add URL" = "Legg til URL";
-
-/* Add a profile photo to Me > My Profile */
-"Add a Profile Photo" = "Legg til et profilbilde";
 
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Legg til en korkode...";
@@ -432,12 +422,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
 "Always Send Crash Logs" = "Alltid send krasjlogger";
-
-/* Error message when loading failed because there's no connection */
-"An active internet connection is required" = "En aktiv internettilkobling er påkrevd";
-
-/* Error message shown when trying to view the Activity Log feature and there is no internet connection. */
-"An active internet connection is required to view activities" = "En aktiv internettilkobling kreves for å vise aktiviteter";
 
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
@@ -616,9 +600,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
-   Title for Jetpack Backup Update Status Failed screen
-   Title for the Jetpack's backup list
-   Title of section showing backup status */
+   Title for Jetpack Backup Update Status Failed screen */
 "Backup" = "Sikkerhetskopi";
 
 /* This description is used to set the accessibility label for the Period chart, with Comments selected. */
@@ -774,7 +756,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -901,9 +882,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Tøm enhetens mediehurtiglager";
-
-/* No comment provided by engineer. */
-"Clear Old Activity Logs" = "Slett gamle aktivitetslogger";
 
 /* Label for button that clears the spotlight index on device. */
 "Clear Spotlight Index" = "Tøm Spotlight-indeks";
@@ -1062,8 +1040,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for a button displayed when unable to close user account due to having atomic site. */
 "Contact Support" = "Kontakt kundestøtte";
 
-/* Button label for contacting support
-   Title of a button. A call to action to contact support for assistance. */
+/* Button label for contacting support */
 "Contact support" = "Kontakt kundestøtte";
 
 /* Alert title for contact us alert, placeholder for help email address, inserted at run time. */
@@ -1190,9 +1167,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Creating dashboard" = "Oppretter kontrollpanel";
 
-/* No comment provided by engineer. */
-"Current" = "Gjeldende";
-
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Gjeldende tema";
 
@@ -1204,9 +1178,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* translators: %s: current cell value. */
 "Current value is %s" = "Nåværende verdi er %s";
-
-/* Title of the cell displaying status of a rewind in progress */
-"Currently restoring your site" = "Ditt nettsted tilbakestilles nå";
 
 /* Customize button that appears in Theme Browser Header
    Theme Customize action title */
@@ -1260,8 +1231,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Defaults for New Posts" = "Standard for nye innlegg";
 
 /* Delete
-   Title for button that permanently deletes a media item (photo / video)
-   Title of the trash confirmation alert. */
+   Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Slett";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1360,7 +1330,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Dismiss" = "Ignorer";
 
 /* Display Name label text.
-   My Profile display name label
    User's Display Name */
 "Display Name" = "Visningsnavn";
 
@@ -1381,7 +1350,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done button title
    Done editing an image
    Done. Action.
-   Label for Done button
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
    Title for a Done button.
@@ -1433,9 +1401,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* translators: accessibility text (hint for switches) */
 "Double tap to toggle setting" = "Dobbelttrykk for å veksle innstilling";
-
-/* Download button title */
-"Download" = "Last ned";
 
 /* Label for number of file downloads. */
 "Downloads" = "Nedlastinger";
@@ -1581,8 +1546,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of a button. */
 "Enter your password instead." = "Skriv inn passordet i stedet.";
 
-/* Generic error alert title
-   Generic popup title for any type of error. */
+/* Generic error alert title */
 "Error" = "Feil";
 
 /* Menus error title for a menu that received an error while trying to delete it. */
@@ -1648,9 +1612,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of error dialog when updating speed up site settings fail. */
 "Error updating speed up site settings" = "Feil under oppdatering av sideinnstillinger";
 
-/* Title for the activity detail view */
-"Event" = "Hendelse";
-
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day" = "Hver dag";
 
@@ -1715,12 +1676,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title displayed whilst fetching media from the user's media library */
 "Fetching media..." = "Henter medier...";
 
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages. */
-"Fetching pages..." = "Henter sider …";
-
-/* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
-"Fetching posts..." = "Henter innlegg...";
-
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Henter sider...";
 
@@ -1745,8 +1700,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Finn nettstedsadressen";
 
-/* My Profile first name label
-   Register Domain - Domain contact information field First name
+/* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Fornavn";
 
@@ -2116,8 +2070,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Stor";
 
-/* My Profile last name label
-   Register Domain - Domain contact information field Last name
+/* Register Domain - Domain contact information field Last name
    User's Last Name */
 "Last Name" = "Etternavn";
 
@@ -2219,9 +2172,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A short label.  A call to action to load more posts. */
 "Load more posts" = "Last inn flere innlegg";
 
-/* Text displayed while loading the activity feed for a site */
-"Loading Activities..." = "Laster inn aktiviteter...";
-
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Laster inn menyer...";
 
@@ -2246,15 +2196,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Loading tags
    Loading. Verb
    Suggestions loading message
-   Text displayed in HUD while a media item is being loaded.
-   Text displayed while loading time zones */
+   Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Laster...";
 
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "Lokale endringer";
-
-/* No comment provided by engineer. */
-"Log Files By Created Date" = "Loggfiler etter startdato";
 
 /* Button title.  Tapping takes the user to the login form.
    Label for logging in to WordPress.com account
@@ -2287,9 +2233,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Login Request Expired */
 "Login Request Expired" = "Innloggingsforespørselen utløp";
-
-/* No comment provided by engineer. */
-"Logs" = "Logger";
 
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "Ser du etter statistikk?";
@@ -2477,8 +2420,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Music site intent topic */
 "Music" = "Musikk";
 
-/* Link to My Profile section
-   My Profile view title */
+/* Link to My Profile section */
 "My Profile" = "Min profil";
 
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
@@ -2555,9 +2497,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label */
 "Next period" = "Neste periode";
 
-/* Label for a cancel button */
-"No" = "Nei";
-
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "Ingen %@ ennå";
 
@@ -2581,9 +2520,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Ingen forhåndsvisnings-URL er tilgjengelig";
-
-/* Title for the view when there aren't any Activities to display in the Activity Log */
-"No activity yet" = "Ingen aktivitet ennå";
 
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "Ingen app kan håndtere denne forespørselen. Vennligst installer en nettleser.";
@@ -2796,8 +2732,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for the view when there's an error loading blogging prompts.
    Title for the view when there's an error loading scan status
    Title for the view when there's an error loading the history
-   Title for the view when there's an error loading the plugin
-   Title for the view when there's an error loading time zones */
+   Title for the view when there's an error loading the plugin */
 "Oops" = "Oops";
 
 /* An informal exclaimation meaning `something went wrong`. */
@@ -3393,13 +3328,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The largest resolution allowed for uploading */
 "Resolution" = "Oppløsning";
 
-/* Title displayed for restore action.
-   Title for button allowing user to restore their Jetpack site
-   Title for Jetpack Restore Complete screen
+/* Title for Jetpack Restore Complete screen
    Title for Jetpack Restore Status Failed screen
    Title for Jetpack Restore Status screen
-   Title for the Jetpack Restore Site Screen
-   Title of section showing restore status */
+   Title for the Jetpack Restore Site Screen */
 "Restore" = "Gjenopprett";
 
 /* A prompt to attempt the failed network request again
@@ -3707,9 +3639,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Registrer deg med epost";
 
-/* Text displayed as a footer of a table view with Activities when user is on a free plan */
-"Since you're on a free plan, you'll see limited events in your Activity Log." = "Siden du har et gratisabonnement, vil hendelsene du ser i aktivitetsloggen være begrenset.";
-
 /* Notice displayed to the user after clearing the Siri activity donations. */
 "Siri Reset Confirmation" = "Fjernet forslag til Siri-snarveier";
 
@@ -3833,9 +3762,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Sorry, usernames must have letters (a-z) too!" = "Beklager, brukernavn må ha bokstaver (a-z) også!";
-
-/* No comment provided by engineer. */
-"Sorry, you cannot access this feature. Please check your User Role on this site." = "Beklager, du kan ikke bruke denne funksjonen. Vennligst sjekk din brukerrolle på dette nettstedet.";
 
 /* No comment provided by engineer. */
 "Sorry, you may not use that site address." = "Beklager, du kan ikke bruke den nettstedsadressen.";
@@ -4048,9 +3974,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
 "Taxonomy" = "Klassifisering";
 
-/* My Profile 'About me' hint text */
-"Tell us a bit about you." = "Fortell oss litt om deg.";
-
 /* Create site, step 1. Select type of site. Title */
 "Tell us what kind of site you'd like to make" = "Fortell oss hva slags nettside du vil lage";
 
@@ -4107,9 +4030,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL-en savner en gyldig vert.";
-
-/* No comment provided by engineer. */
-"The app can't recognize the server response. Please, check the configuration of your site." = "Appen kjenner ikke igjen svaret fra serveren. Vennligst sjekk oppsettet på ditt nettsted.";
 
 /* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Sertifikatet for denne serveren er ikke gyldig. Du kan potensielt koble til en server som later som den er «%@», som kan eksponere informasjon om deg.\n\nVil du stole på sertifikatet uansett?";
@@ -4219,9 +4139,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "En feil oppstod under endring av passordet";
 
-/* Text displayed when there is a failure loading the activity feed */
-"There was an error loading activities" = "Det oppstod en feil under lasting av aktiviteter";
-
 /* Text displayed when there is a failure loading plugins */
 "There was an error loading plugins" = "Det oppstod en feil under lasting av utvidelser";
 
@@ -4231,17 +4148,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed when there is a failure loading the plugin */
 "There was an error loading this plugin" = "Det oppstod en feil under lasting av denne utvidelsen";
 
-/* Error message when time zones can't be loaded */
-"There was an error loading time zones" = "Det oppstod en feil under lasting av tidssoner";
-
 /* Text displayed when there is a failure saving the username. */
 "There was an error saving the username" = "Det oppsto en feil ved lagring av brukernavn";
 
 /* Updating Role failed error message */
 "There was an error updating @%@" = "Det oppstod en feil under oppdatering @%@";
-
-/* Text displayed when user tries to start a restore when there is already one running */
-"There's a restore currently in progress, please wait before starting next one" = "En gjenoppretting er underveis, vennligst vent før du starter en ny en";
 
 /* Insights 'This Year' header */
 "This Year" = "I år";
@@ -4291,8 +4202,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Writing Time Format Settings Title */
 "Time Format" = "Tidsformat";
 
-/* Label for the timezone setting
-   Title for the time zone selector */
+/* Label for the timezone setting */
 "Time Zone" = "Tidssone";
 
 /* WordPress.com Marketing Footer Text */
@@ -4393,8 +4303,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Try to load the list of interests again. */
 "Try Again" = "Prøv igjen";
 
-/* Button label for trying to retrieve the activities type again
-   Button label for trying to retrieve the history again
+/* Button label for trying to retrieve the history again
    Button label for trying to retrieve the scan status again
    Button that lets users try to reload the plugin directory after loading failure
    Re-load the history again. It appears if the loading call fails. */
@@ -4465,9 +4374,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Kunne ikke spille av video";
-
-/* Text displayed when a site restore fails. */
-"Unable to restore your site, please try again later or contact support." = "Kunne ikke gjenopprette siden din. Prøv igjen senere eller kontakt kundestøtte.";
 
 /* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
 "Unable to save media item." = "Kunne ikke lagre medieobjekt.";
@@ -4557,9 +4463,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Uten tittel";
 
-/* Help text shown below the list of debug logs. */
-"Up to seven days worth of logs are saved." = "Opp til sju dager med logger blir lagret.";
-
 /* (Verb) Title of button confirming updating settings for blogging reminders.
    Button label to update a plugin
    Label action for updating a link on the editor
@@ -4568,9 +4471,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label action for updating a link on the editor */
 "Update Link" = "Oppdater lenke";
-
-/* Update profile photo in Me > My Profile */
-"Update Profile Photo" = "Oppdater profilbilde";
 
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "Oppdater nettstedsikon";
@@ -4824,9 +4724,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Når en kommentar inneholder noen av disse ordene i innholdet, navnet, URLen, eposten eller IPen vil det bli markert som spam. Du kan skrive inn deler av ord, så \"press\" vil matche \"WordPress\".";
 
-/* Text display when the view when there aren't any Activities to display in the Activity Log */
-"When you make changes to your site you'll be able to see your activity history here." = "Når du gjør endringer på nettsiden din, vil du kunne se aktivitetshistorikken din her.";
-
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Oisann, noe gikk galt og vi klarte ikke å logge det deg på. Vennligst prøv igjen!";
 
@@ -4894,8 +4791,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* 'This Year' label for the the year. */
 "Year" = "År";
 
-/* Label for a button that clears all old activity logs
-   Yes */
+/* Yes */
 "Yes" = "Ja";
 
 /* Comments Yesterday Section Header
@@ -5006,20 +4902,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Dine innlegg, sider og innstillinger vil bli sent til deg på epostadressen %@.";
 
-/* Text displayed when a site restore takes too long. */
-"Your restore is taking longer than usual, please check again in a few minutes." = "Din gjenoppretting tar lenger tid enn vanlig, vennligst sjekk igjen om noen få minutter.";
-
 /* Body text of alert helping users understand their site address */
 "Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Sideadressen din vises i adresselinja øverst på skjermen når du besøker siden i Safari.";
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Dit nettsted er opprettet!";
-
-/* Title of a message displayed when a site has finished rewinding */
-"Your site has been succesfully restored" = "Nettstedet ditt har blitt gjenopprettet";
-
-/* Title of a message displayed when user starts a restore operation */
-"Your site is being restored" = "Nettstedet ditt gjenopprettes";
 
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Siden din har gått tom for lagringsplass for medieopplastninger.";
