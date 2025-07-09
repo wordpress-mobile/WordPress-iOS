@@ -6091,8 +6091,7 @@ Please install the %3$@ to use the app with this site.";
    Title of pending Comments filter. */
 "Pending" = "Pending";
 
-/* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature.
+/* Noun. Title. Links to the people management feature.
    People site intent topic */
 "People" = "People";
 
