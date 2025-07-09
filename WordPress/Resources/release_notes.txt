@@ -1,10 +1,11 @@
-* [**] Add new “Subscribers” screen that shows both your email and Reader subscribers [#24513]
-* [*] Improve search in TimeZone Picker for more accurate results [#24612]
-* [*] Fix an issue with “Stats / Subscribers” sometimes not showing the latest email subscribers [#24513]
-* [*] Fix an issue with "Stats" / "Subscribers" / "Emails" showing html encoded characters [#24513]
-* [*] Add search to “Jetpack Activity List” and display actors and dates [#24597]
-* [*] Fix an issue with content in "Restore" and "Download Backup" flows covering the navigation bar [#24597]
-* [*] Show when the downloadable backup expires in Backup List [#24597]
-* [*] Fix incorrectly capitalized tag "WordPress" in Reader [#24649]
-* [*] Fix an issue with domains sometimes being incorrectly sorted on the "Domain Search" screen [#24631]
-* [*] Fix a couple of visual issues in Post List [#24647]
+We added a new Subscribers screen that shows all of your email and Reader subscribers. Now you know who’s reading (and loving) your content.
+
+We made improvements to the TimeZone Picker so you’ll see more accurate suggestions for your local timezone.
+
+We gave a small facelift to the Post List, like streamlining labels, making images smaller and removing extra space, and moving loading indicators so they’re more visible.
+
+Finally, we squashed a number of bugs.
+- You’ll no longer see HTML encoded characters on various screens, so all your ampersands look exactly as they should. Rock on.
+- The “Restore” and “Download Backup” flows don’t cover the navigation bar anymore.
+- Domains are now correctly sorted on the Domain Search screen. Finding what you’re looking for is easier than ever.
+- We fixed a tag where “WordPress” was incorrectly capitalized in the Reader. (That one was keeping us awake at night.)
