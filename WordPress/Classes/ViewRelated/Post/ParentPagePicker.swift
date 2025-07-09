@@ -11,7 +11,7 @@ struct ParentPagePicker: View {
     private let onSelection: (Page?) -> Void
 
     @State private var isLoading = true
-    @State private var pages: [Page] = []
+    @State private var pages: [Page]?
     @State private var error: Error?
 
     init(blog: Blog, currentPage: Page, onSelection: @escaping (Page?) -> Void) {
@@ -22,19 +22,15 @@ struct ParentPagePicker: View {
 
     var body: some View {
         Group {
-            if isLoading {
-                ProgressView()
-            } else if let error {
-                EmptyStateView.failure(error: error) {
-                    Task { await loadPages() }
-                }
-            } else {
+            if let pages {
                 ParentPageSettingsViewControllerWrapper(
                     pages: pages,
                     selectedPage: currentPage,
                     onSelection: onSelection
                 )
                 .ignoresSafeArea()
+            } else {
+                ProgressView()
             }
         }
         .navigationTitle(Strings.title)
@@ -65,11 +61,8 @@ struct ParentPagePicker: View {
             }
 
             self.pages = pages
-            self.isLoading = false
         } catch {
             wpAssertionFailure("Failed to fetch pages", userInfo: ["error": "\(error)"]) // This should never happen
-            self.error = error
-            self.isLoading = false
         }
     }
 }
