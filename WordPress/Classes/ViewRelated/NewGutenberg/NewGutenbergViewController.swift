@@ -842,7 +842,7 @@ extension NewGutenbergViewController {
 
 extension EditorConfiguration {
     init(blog: Blog) {
-        let selfHostedApiUrl = blog.url(withPath: "wp-json/")
+        let selfHostedApiUrl = blog.restApiRootURL ?? blog.url(withPath: "wp-json/")
         let isWPComSite = blog.isHostedAtWPcom || blog.isAtomic()
         let siteApiRoot = blog.isAccessibleThroughWPCom() && isWPComSite ? blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
         let siteId = blog.dotComID?.stringValue
