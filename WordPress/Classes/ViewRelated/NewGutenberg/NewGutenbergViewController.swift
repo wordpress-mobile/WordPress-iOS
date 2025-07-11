@@ -877,7 +877,7 @@ extension EditorConfiguration {
         self.namespaceExcludedPaths = ["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"]
         self.authHeader = authHeader
 
-        if blog.isPrivate() && blog.isHostedAtWPcom {
+        if blog.isPrivate() {
             if let blogURL = URL(string: blog.url ?? ""),
                let cookies = HTTPCookieStorage.shared.cookies(for: blogURL) {
                 if let authCookie = cookies.first(where: { cookie in
