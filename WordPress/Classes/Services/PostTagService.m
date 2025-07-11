@@ -27,8 +27,8 @@ static const NSInteger PostTagIdDefaultValue = -1;
                 [self handleError:error forBlog:blog withFailure:failure];
                 return;
             }
-            
-            NSArray *tags = [self mergeTagsWithRemoteTags:remoteTags blog:blog];
+
+            NSArray *tags = [self saveRemoteTags:remoteTags toBlog:blog];
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             
             if (success) {
@@ -58,10 +58,10 @@ static const NSInteger PostTagIdDefaultValue = -1;
                               [self handleError:error forBlog:blog withFailure:failure];
                               return;
                           }
-                          
-                          NSArray *tags = [self mergeTagsWithRemoteTags:remoteTags blog:blog];
+
+                          NSArray *tags = [self saveRemoteTags:remoteTags toBlog:blog];
                           [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                          
+
                           if (success) {
                               success(tags);
                           }
@@ -80,9 +80,9 @@ static const NSInteger PostTagIdDefaultValue = -1;
     [remote getTagsWithPaging:paging
                       success:^(NSArray <RemotePostTag *> *remoteTags) {
                           [self.managedObjectContext performBlock:^{
-                              NSArray *tags = [remoteTags wp_map:^PostTag *(RemotePostTag *remoteTag) {
-                                  return [self tagFromRemoteTag:remoteTag blog:blog];
-                              }];
+                              NSArray<PostTag *> *tags = [self saveRemoteTags:remoteTags toBlog:blog];
+                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
                               if (success) {
                                   success(tags);
                               }
@@ -107,7 +107,7 @@ static const NSInteger PostTagIdDefaultValue = -1;
                                return;
                            }
                            
-                           NSArray *tags = [self mergeTagsWithRemoteTags:remoteTags blog:blog];
+                           NSArray *tags = [self saveRemoteTags:remoteTags toBlog:blog];
                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                            
                            if (success) {
@@ -169,55 +169,56 @@ static const NSInteger PostTagIdDefaultValue = -1;
     return nil;
 }
 
-- (nullable NSArray <PostTag *> *)mergeTagsWithRemoteTags:(NSArray<RemotePostTag *> *)remoteTags
-                                                     blog:(Blog *)blog
+- (NSArray<PostTag *> *)saveRemoteTags:(NSArray<RemotePostTag *> *)tags toBlog:(Blog *)blog
 {
-    if (!remoteTags.count) {
-        return nil;
+    if (tags.count == 0) {
+        return [NSArray array];
     }
-    
-    NSMutableArray *tags = [NSMutableArray arrayWithCapacity:remoteTags.count];
-    for (RemotePostTag *remoteTag in remoteTags) {
-        [tags addObject:[self tagFromRemoteTag:remoteTag blog:blog]];
-    }
-    
-    return [NSArray arrayWithArray:tags];
-}
 
-- (PostTag *)tagFromRemoteTag:(RemotePostTag *)remoteTag
-                         blog:(Blog *)blog
-{
-    PostTag *tag = [self existingTagForRemoteTag:remoteTag blog:blog];
-    if (!tag) {
-        NSEntityDescription *entityDescription = [NSEntityDescription entityForName:[PostTag entityName]
-                                                             inManagedObjectContext:self.managedObjectContext];
-        tag = [[PostTag alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:self.managedObjectContext];
-        tag.tagID = remoteTag.tagID;
-        tag.tagDescription = remoteTag.tagDescription;
-        tag.blog = blog;
+    NSManagedObjectContext *context = blog.managedObjectContext;
+    if (context == nil) {
+        return [NSArray array];
     }
-    
-    tag.name = remoteTag.name;
-    tag.slug = remoteTag.slug;
-    tag.tagDescription = remoteTag.tagDescription;
-    tag.postCount = remoteTag.postCount;
-    
-    return tag;
-}
 
-- (nullable PostTag *)existingTagForRemoteTag:(RemotePostTag *)remoteTag
-                                         blog:(Blog *)blog
-{
+    NSArray<NSNumber *> *remoteTagIDs = [tags wp_map:^NSNumber *(RemotePostTag *remoteTag) {
+        return remoteTag.tagID;
+    }];
+
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[PostTag entityName]];
-    request.predicate = [NSPredicate predicateWithFormat:@"blog = %@ AND tagID = %@", blog, remoteTag.tagID];
+    request.predicate = [NSPredicate predicateWithFormat:@"blog = %@ AND tagID IN %@", blog, remoteTagIDs];
+
     NSError *error;
-    NSArray *tags = [self.managedObjectContext executeFetchRequest:request error:&error];
+    NSArray<PostTag *> *existingTags = [context executeFetchRequest:request error:&error];
     if (error) {
-        DDLogError(@"Error when retrieving PostTag by tagID: %@", error);
-        return nil;
+        DDLogError(@"Error when retrieving PostTags by tagIDs: %@", error);
+        return [NSArray array];
     }
-    
-    return [tags firstObject];
+
+    NSMutableDictionary<NSNumber *, PostTag *> *existingTagsLookup = [NSMutableDictionary dictionaryWithCapacity:existingTags.count];
+    for (PostTag *tag in existingTags) {
+        existingTagsLookup[tag.tagID] = tag;
+    }
+
+    NSMutableArray<PostTag *> *savedTags = [NSMutableArray array];
+    for (RemotePostTag *remote in tags) {
+        PostTag *tag = existingTagsLookup[remote.tagID];
+        if (tag == nil) {
+            NSEntityDescription *entityDescription = [NSEntityDescription entityForName:[PostTag entityName]
+                                                                 inManagedObjectContext:context];
+            tag = [[PostTag alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
+        }
+
+        tag.tagID = remote.tagID;
+        tag.name = remote.name;
+        tag.slug = remote.slug;
+        tag.tagDescription = remote.tagDescription;
+        tag.postCount = remote.postCount;
+        tag.blog = blog;
+
+        [savedTags addObject:tag];
+    }
+
+    return savedTags;
 }
 
 - (void)saveNewTag:(PostTag *)tag
@@ -229,7 +230,7 @@ static const NSInteger PostTagIdDefaultValue = -1;
     NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
     [remote createTag:remoteTag success:^(RemotePostTag * _Nonnull tag) {
         if (success) {
-            PostTag *localTag = [self tagFromRemoteTag:tag blog:blog];
+            PostTag *localTag = [[self saveRemoteTags:@[tag] toBlog:blog] firstObject];
             [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
             success(localTag);
         }
