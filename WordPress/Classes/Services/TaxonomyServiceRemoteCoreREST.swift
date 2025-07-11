@@ -5,9 +5,6 @@ import WordPressData
 import WordPressAPI
 import WordPressAPIInternal
 
-// This variable is used to match the behaviour in `TaxonomyServiceRemoteREST`. See `TaxonomyRESTNumberMaxValue`.
-private let defaultPerPage: UInt32 = 1000;
-
 @objc class TaxonomyServiceRemoteCoreREST: NSObject, TaxonomyServiceRemote {
     let client: WordPressClient
 
@@ -40,7 +37,7 @@ private let defaultPerPage: UInt32 = 1000;
     func getCategoriesWithSuccess(_ success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
-                let response = try await client.api.categories.listWithEditContext(params: CategoryListParams(perPage: defaultPerPage))
+                let response = try await client.api.categories.listWithEditContext(params: CategoryListParams())
                 let categories = response.data.map(RemotePostCategory.init(category:))
                 success(categories)
             } catch {
@@ -139,7 +136,7 @@ private let defaultPerPage: UInt32 = 1000;
     func getTagsWithSuccess(_ success: @escaping ([RemotePostTag]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
-                let response = try await client.api.tags.listWithEditContext(params: TagListParams(perPage: defaultPerPage))
+                let response = try await client.api.tags.listWithEditContext(params: TagListParams())
                 let tags = response.data.map(RemotePostTag.init(tag:))
                 success(tags)
             } catch {
