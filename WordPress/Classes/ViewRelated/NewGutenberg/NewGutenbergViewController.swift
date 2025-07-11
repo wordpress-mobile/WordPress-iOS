@@ -877,6 +877,24 @@ extension EditorConfiguration {
         self.namespaceExcludedPaths = ["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"]
         self.authHeader = authHeader
 
+        if blog.isPrivate() && blog.isHostedAtWPcom {
+            if let blogURL = URL(string: blog.url ?? ""),
+               let cookies = HTTPCookieStorage.shared.cookies(for: blogURL) {
+                if let authCookie = cookies.first(where: { cookie in
+                    cookie.name.hasPrefix("wordpress_logged_in")
+                }) {
+                    let cookie = HTTPCookie(properties: [
+                        .domain: siteDomain,
+                        .path: "/",
+                        .name: authCookie.name,
+                        .value: authCookie.value,
+                        .secure: true
+                    ])!
+                    self.cookies.append(cookie)
+                }
+            }
+        }
+
         self.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
         // Limited to Simple sites until application password auth is supported
         if RemoteFeatureFlag.newGutenbergPlugins.enabled() && blog.isHostedAtWPcom {
