@@ -1,0 +1,11 @@
+We hebben een nieuw scherm met abonnees toegevoegd dat al je e-mail en Reader abonnees weergeeft. Nu weet je wie je inhoud leest (en ervan houdt).
+
+We hebben verbeteringen aangebracht in de tijd kiezer picker, zodat je nauwkeurigere suggesties ziet voor je lokale tijdzone.
+
+We hebben de berichtlijst een kleine facelift gegeven, zoals het stroomlijnen van labels, het kleiner maken van afbeeldingen en het verwijderen van extra ruimte, en het verplaatsen van laadindicatoren zodat ze beter zichtbaar zijn.
+
+Eindelijk hebben we een aantal bugs geplet.
+- Je ziet geen HTML gecodeerde tekens meer op verschillende schermen, dus alle je ampersands zien er precies uit zoals het hoort. Rock on.
+- De flows "Terugzetten" en "Back-up downloaden" bedekken de navigatiebalk niet meer.
+- Domeinen worden nu correct gesorteerd op het scherm Domeinen zoeken. Vinden wat je zoekt, is eenvoudiger dan ooit.
+- We hebben een Tag opgelost waarbij "WordPress" een verkeerd hoofdlettergebruik had in de Reader. (Daar lagen we 's nachts wakker van.)
