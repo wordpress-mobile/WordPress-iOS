@@ -1361,8 +1361,7 @@
    Title of pending Comments filter. */
 "Pending" = "Í bið";
 
-/* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature.
+/* Noun. Title. Links to the people management feature.
    People site intent topic */
 "People" = "Fólk";
 

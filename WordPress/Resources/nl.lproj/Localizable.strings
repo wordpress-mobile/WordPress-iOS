@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-07-04 07:32:31+0000 */
+/* Translation-Revision-Date: 2025-07-14 16:53:53+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: nl */
@@ -2647,7 +2647,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Generate new link" = "Genereer een nieuwe link";
 
 /* View title for initial auth views. */
-"Get Started" = "Hoe te starten";
+"Get Started" = "Ga aan de slag";
 
 /* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
 "Get a login link by email" = "Krijg een login link via e-mail";
@@ -3346,7 +3346,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Load more posts" = "Meer berichten laden";
 
 /* No comment provided by engineer. */
-"Loading" = "Bezig met laden";
+"Loading" = "Aan het laden";
 
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Menu's worden geladen...";
@@ -4281,8 +4281,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of pending Comments filter. */
 "Pending" = "In afwachting";
 
-/* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature.
+/* Noun. Title. Links to the people management feature.
    People site intent topic */
 "People" = "Mensen";
 
@@ -4477,7 +4476,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Post Categories" = "Berichtcategorieën";
 
 /* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Berichtformat";
+"Post Format" = "Bericht format";
 
 /* Name of the button to open the post settings
    The title of the Post Settings screen. */
@@ -7470,7 +7469,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "applicationPasswordRequired.feature.users" = "Gebruikersbeheer";
 
 /* Title for the button to authenticate with Application Passwords */
-"applicationPasswordRequired.getStartedButton" = "Aan de slag";
+"applicationPasswordRequired.getStartedButton" = "Ga aan de slag";
 
 /* Title for the prompt to upgrade to Application Passwords */
 "applicationPasswordRequired.title" = "Applicatie wachtwoord vereist";
