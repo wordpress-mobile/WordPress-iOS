@@ -1,0 +1,13 @@
+Adicionamos uma nova tela, Assinantes, que mostra todos os seus assinantes por e-mail e do Leitor. Agora você saberá quem está lendo (e amando) seu conteúdo.
+
+Fizemos melhorias no seletor de fuso horário para que você veja sugestões mais precisas para o seu fuso horário local.
+
+Adicionamos uma funcionalidade de pesquisa à lista de atividades do Jetpack, com datas e usuários para cada atividade. Nessa mesma área, você também pode ver a data de expiração de backups para download. Conhecimento é poder.
+
+Demos uma pequena repaginada na lista de posts: simplificamos as etiquetas, diminuímos as imagens, removemos espaços extras e movemos os indicadores de carregamento para que fiquem mais visíveis.
+
+Por fim, eliminamos vários bugs.
+- Você não verá mais caracteres codificados em HTML em várias telas, então o sinal "&" aparecerá exatamente como deveria. Aproveite!
+- Os fluxos "Restaurar" e "Fazer download do backup" não cobrem mais a barra de navegação.
+- Agora os domínios estão ordenados corretamente na tela Pesquisa de domínio. Encontrar o que você procura está mais fácil do que nunca.
+- Corrigimos uma tag onde "WordPress" estava capitalizado por engano no Leitor. (Passamos noites em claro por causa desse bug.)
