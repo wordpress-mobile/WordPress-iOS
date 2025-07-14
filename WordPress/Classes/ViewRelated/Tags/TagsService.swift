@@ -2,13 +2,10 @@ import Foundation
 import WordPressKit
 import WordPressData
 
-@MainActor
 class TagsService {
-    private let blog: Blog
     private let remote: TaxonomyServiceRemote?
 
     init(blog: Blog) {
-        self.blog = blog
         self.remote = Self.createRemote(for: blog)
     }
 

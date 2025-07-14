@@ -11,13 +11,23 @@ class TagsViewModel: ObservableObject {
     @Published var response: TagsPaginatedResponse?
     @Published var isLoading = false
     @Published var error: Error?
+    @Published private(set) var selectedTags: [String] = [] {
+        didSet {
+            onSelectedTagsChanged?(selectedTags.joined(separator: ", "))
+        }
+    }
+    private var selectedTagsSet: Set<String> = []
 
-    let blog: Blog
     private let tagsService: TagsService
+    var onSelectedTagsChanged: ((String) -> Void)?
 
-    init(blog: Blog) {
-        self.blog = blog
+    init(blog: Blog, selectedTags: String? = nil, onSelectedTagsChanged: ((String) -> Void)? = nil) {
         self.tagsService = TagsService(blog: blog)
+        self.selectedTags = selectedTags?.split(separator: ",").map {
+            $0.trimmingCharacters(in: .whitespacesAndNewlines)
+        } ?? []
+        self.selectedTagsSet = Set(self.selectedTags)
+        self.onSelectedTagsChanged = onSelectedTagsChanged
     }
 
     func onAppear() {
@@ -77,5 +87,26 @@ class TagsViewModel: ObservableObject {
                 nextPage: nil
             )
         }
+    }
+
+    func toggleSelection(for tag: RemotePostTag) {
+        guard let tagName = tag.name else { return }
+        if selectedTagsSet.contains(tagName) {
+            selectedTagsSet.remove(tagName)
+            selectedTags.removeAll { $0 == tagName }
+        } else {
+            selectedTagsSet.insert(tagName)
+            selectedTags.append(tagName)
+        }
+    }
+
+    func isSelected(_ tag: RemotePostTag) -> Bool {
+        guard let tagName = tag.name else { return false }
+        return selectedTagsSet.contains(tagName)
+    }
+
+    func removeSelectedTag(_ tagName: String) {
+        selectedTagsSet.remove(tagName)
+        selectedTags.removeAll { $0 == tagName }
     }
 }
