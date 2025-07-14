@@ -1429,8 +1429,7 @@
    Title of pending Comments filter. */
 "Pending" = "На изчакване";
 
-/* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature.
+/* Noun. Title. Links to the people management feature.
    People site intent topic */
 "People" = "Хора";
 

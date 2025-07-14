@@ -2861,8 +2861,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of pending Comments filter. */
 "Pending" = "Venter";
 
-/* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature.
+/* Noun. Title. Links to the people management feature.
    People site intent topic */
 "People" = "Folk";
 

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-06-30 06:33:46+0000 */
+/* Translation-Revision-Date: 2025-07-14 07:37:10+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: pl */
@@ -1679,8 +1679,7 @@
    Title of pending Comments filter. */
 "Pending" = "Oczekujące";
 
-/* Noun. Title of the people management feature.
-   Noun. Title. Links to the people management feature.
+/* Noun. Title. Links to the people management feature.
    People site intent topic */
 "People" = "Ludzie";
 
@@ -2196,7 +2195,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Stats" = "Statystyki";
 
 /* Label text that defines a post marked as sticky */
-"Sticky" = "Przypięty";
+"Sticky" = "Przypięto";
 
 /* User action to stop upload. */
 "Stop upload" = "Przerwij wgrywanie";
