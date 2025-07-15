@@ -5,29 +5,44 @@ import WordPressUI
 
 typealias TagsPaginatedResponse = DataViewPaginatedResponse<RemotePostTag, Int>
 
+enum TagsViewMode {
+    case selection(onSelectedTagsChanged: ((String) -> Void)?)
+    case pickOne(onTagTapped: (RemotePostTag) -> Void)
+    case browse
+}
+
 @MainActor
 class TagsViewModel: ObservableObject {
     @Published var searchText = ""
-    @Published var response: TagsPaginatedResponse?
-    @Published var isLoading = false
-    @Published var error: Error?
+    @Published private(set) var response: TagsPaginatedResponse?
+    @Published private(set) var isLoading = false
+    @Published private(set) var error: Error?
     @Published private(set) var selectedTags: [String] = [] {
         didSet {
-            onSelectedTagsChanged?(selectedTags.joined(separator: ", "))
+            if case .selection(let onSelectedTagsChanged) = mode {
+                onSelectedTagsChanged?(selectedTags.joined(separator: ", "))
+            }
         }
     }
     private var selectedTagsSet: Set<String> = []
 
-    private let tagsService: TagsService
-    var onSelectedTagsChanged: ((String) -> Void)?
+    let tagsService: TagsService
+    let mode: TagsViewMode
 
-    init(blog: Blog, selectedTags: String? = nil, onSelectedTagsChanged: ((String) -> Void)? = nil) {
+    var isBrowseMode: Bool {
+        if case .browse = mode {
+            return true
+        }
+        return false
+    }
+
+    init(blog: Blog, selectedTags: String? = nil, mode: TagsViewMode) {
         self.tagsService = TagsService(blog: blog)
+        self.mode = mode
         self.selectedTags = selectedTags?.split(separator: ",").map {
             $0.trimmingCharacters(in: .whitespacesAndNewlines)
         } ?? []
         self.selectedTagsSet = Set(self.selectedTags.map { $0.lowercased() })
-        self.onSelectedTagsChanged = onSelectedTagsChanged
     }
 
     func onAppear() {
@@ -37,7 +52,6 @@ class TagsViewModel: ObservableObject {
         }
     }
 
-    @MainActor
     func refresh() async {
         response = nil
         error = nil
@@ -57,7 +71,12 @@ class TagsViewModel: ObservableObject {
                 }
 
                 let offset = pageIndex ?? 0
-                let remoteTags = try await self.tagsService.getTags(number: 100, offset: offset)
+                let remoteTags = try await self.tagsService.getTags(
+                    number: 100,
+                    offset: offset,
+                    orderBy: self.isBrowseMode ? .byCount : .byName,
+                    order: self.isBrowseMode ? .orderDescending : .orderAscending
+                )
 
                 let hasMore = remoteTags.count == 100
                 let nextPage = hasMore ? offset + 100 : nil
@@ -128,4 +147,18 @@ class TagsViewModel: ObservableObject {
         selectedTagsSet.remove(lowercasedTagName)
         selectedTags.removeAll { $0.lowercased() == lowercasedTagName }
     }
+}
+
+extension Foundation.Notification.Name {
+    @MainActor
+    static let tagDeleted = Foundation.Notification.Name("tagDeleted")
+    @MainActor
+    static let tagCreated = Foundation.Notification.Name("tagCreated")
+    @MainActor
+    static let tagUpdated = Foundation.Notification.Name("tagUpdated")
+}
+
+struct TagNotificationUserInfoKeys {
+    static let tagID = "tagID"
+    static let tag = "tag"
 }
