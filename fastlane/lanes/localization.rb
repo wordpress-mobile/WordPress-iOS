@@ -115,7 +115,10 @@ UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
   phased_release: true,
   precheck_include_in_app_purchases: false,
   api_key_path: APP_STORE_CONNECT_KEY_PATH,
-  app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json'),
+  # [AINFRA-933] Disabling the use of `app_rating_config_path` after seeing the ASC API error:
+  # > The provided entity includes an unknown attribute - 'seventeenPlus' is not an attribute on the
+  # > resource 'ageRatingDeclarations'
+  # app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json'),
   copyright: "© #{Time.now.year} Automattic, Inc."
 }.freeze
 
