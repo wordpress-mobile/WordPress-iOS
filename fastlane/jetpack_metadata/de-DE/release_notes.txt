@@ -1,0 +1,13 @@
+Es gibt nun eine neue Abonnenten-Ansicht, die alle deine E-Mail- und Reader-Abonnenten anzeigt. Jetzt weißt du ganz genau, wer deine Inhalte liest (und liebt).
+
+Wir haben den TimeZone Picker verbessert, damit du bessere Vorschläge für deine lokale Zeitzone erhältst.
+
+Wir haben eine Suchfunktion für die Jetpack-Aktivitätsliste hinzugefügt. Außerdem erhältst du zu jeder Aktivität genaue Daten und Angaben zum Benutzer. In diesem Bereich kannst du auch sehen, wann dein herunterladbares Backup abläuft. Wissen ist Macht.
+
+Wir haben der Beitragsliste ein kleines Facelifting verpasst: Beschriftungen sehen jetzt noch besser aus, weil wir Bilder verkleinert und unnötigen Leerraum entfernt haben. Darüber hinaus haben wir die Ladeanzeigen verschoben, damit sie besser sichtbar sind.
+
+Zu guter Letzt haben wir noch ein paar andere Fehler behoben.
+- Es gab auf verschiedenen Bildschirmen ein Problem mit der Anzeige von HTML-kodierten Zeichen. Nun sehen alle kaufmännischen Und-Zeichen genau so aus, wie sie sollen. Ist das nicht großartig?
+- Die Flows „Wiederherstellen“ und „Backup herunterladen“ verdecken nicht mehr die Navigationsleiste.
+- Domains in der Domain-Suche sind jetzt richtig sortiert. Das zu finden, was du suchst, war noch nie einfacher.
+- Wir haben ein Problem mit einem Schlagwort behoben, bei dem „WordPress“ im Reader falsch geschrieben wurde. (Und dieses Problem hat uns wirklich den Schlaf geraubt.)

@@ -1,0 +1,13 @@
+Hemos añadido una nueva pantalla de suscriptores que muestra todas las personas suscritas por correo electrónico y a través del Lector. Ahora ya sabes quién está leyendo tu contenido (y a quién le está gustando).
+
+Hemos mejorado el selector de zona horaria para que puedas ver sugerencias más precisas para tu zona horaria local.
+
+Hemos añadido una función de búsqueda a la lista de actividades de Jetpack, con fechas y usuarios para cada actividad. En esta misma zona, también puedes ver cuándo caduca la copia de seguridad descargable. El conocimiento es poder.
+
+Le hemos hecho un pequeño lavado de cara a la lista de entradas: hemos optimizado las etiquetas, hemos hecho que las imágenes sean más pequeñas, hemos eliminado el espacio adicional y hemos movido los indicadores de carga para estén más visibles.
+
+Por último, hemos eliminado algunos errores.
+- Ya no verás caracteres codificados en HTML en varias pantallas, por lo que todos tus signos «&» se verán tal como deben verse. ¡Por fin!
+- Los flujos «Restaurar» y «Descargar copia de seguridad» ya no cubren la barra de navegación.
+- Los dominios ahora están ordenados correctamente en la pantalla de búsqueda de dominios. Encontrar lo que buscas es más fácil que nunca.
+- Hemos corregido una etiqueta en la que «WordPress» se escribía en mayúsculas de forma incorrecta en el Lector. (Este error no nos dejaba dormir por la noche).
