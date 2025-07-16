@@ -335,6 +335,7 @@ private struct TagRowView: View {
                 }
             } else {
                 TagRowContent(tag: tag, showPostCount: false, isSelected: viewModel.isSelected(tag))
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         switch viewModel.mode {
                         case .selection:
