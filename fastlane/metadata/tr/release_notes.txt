@@ -1,0 +1,11 @@
+Tüm e-posta ve Okuyucu abonelerinizi gösteren yeni bir Aboneler ekranı eklendi. Artık içeriğinizi kimin okuduğunu (ve sevdiğini) bilirsiniz.
+
+Yerel saat diliminiz için daha doğru öneriler görmeniz için Saat Dilimi Seçici'de iyileştirmeler yapıldı.
+
+Gönderi Listesinde küçük estetik değişiklikler yapıldı; örneğin etiketlerin düzene sokulması, görsellerin küçültülmesi ve ekstra alanın kaldırılması, yükleme göstergelerinin taşınması gibi.
+
+Son olarak birkaç hatayı giderdik.
+- Artık çeşitli ekranlarda HTML kodlu karakterler görmeyeceksiniz, bu nedenle tüm ve işaretleriniz tam olarak görünmesi gerektiği gibi görünür. İşte bu!
+- "Geri Yükle" ve "Yedeklemeyi İndir" akışları artık gezinme çubuğunu kapsamıyor.
+- Alan adları artık Alan Adı Arama ekranında doğru şekilde sıralanıyor. Aradığınız şeyi bulmak her zamankinden daha kolay.
+- "WordPress"in Okuyucu'da yanlış büyük harfle başladığı bir etiketi düzelttik. (Bu bizi geceleri uyanık tutuyordu).
