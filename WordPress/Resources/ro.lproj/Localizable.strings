@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-07-04 06:19:07+0000 */
+/* Translation-Revision-Date: 2025-07-15 07:27:54+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ro */
@@ -3956,7 +3956,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No themes matching your search" = "Nu s-a potrivit nicio temă cu căutarea ta";
 
 /* Message for a notice informing the user their scan completed and no threats were found */
-"No threats found" = "Nicio amenințare găsită";
+"No threats found" = "Nu am găsit nicio amenințare";
 
 /* No comment provided by engineer. */
 "No title" = "Fără titlu";
