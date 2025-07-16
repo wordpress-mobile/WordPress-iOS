@@ -6,8 +6,8 @@ Adicionamos uma funcionalidade de pesquisa à lista de atividades do Jetpack, co
 
 Demos uma pequena repaginada na lista de posts: simplificamos as etiquetas, diminuímos as imagens, removemos espaços extras e movemos os indicadores de carregamento para que fiquem mais visíveis.
 
-Por fim, eliminamos vários bugs.
+Por fim, fizemos várias melhorias.
 - Você não verá mais caracteres codificados em HTML em várias telas, então o sinal "&" aparecerá exatamente como deveria. Aproveite!
 - Os fluxos "Restaurar" e "Fazer download do backup" não cobrem mais a barra de navegação.
 - Agora os domínios estão ordenados corretamente na tela Pesquisa de domínio. Encontrar o que você procura está mais fácil do que nunca.
-- Corrigimos uma tag onde "WordPress" estava capitalizado por engano no Leitor. (Passamos noites em claro por causa desse bug.)
+- Aprimoramos a capitalização de "WordPress" no Leitor para maior consistência.

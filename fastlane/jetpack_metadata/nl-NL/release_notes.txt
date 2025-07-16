@@ -1,0 +1,13 @@
+We hebben een nieuw scherm Abonnees toegevoegd dat al je e-mail- en Reader-abonnees toont. Nu weet je wie je content leest (en waardeert).
+
+We hebben verbeteringen aangebracht aan de TimeZone-kiezer, zodat je nauwkeurigere suggesties voor je lokale tijdzone ziet.
+
+We hebben een zoekfunctie toegevoegd aan de Jetpack-activiteitenlijst, compleet met data en gebruikers voor elke activiteit. In dit zelfde gebied kun je ook zien wanneer je downloadbare back-up verloopt. Kennis is macht.
+
+We hebben een kleine facelift gegeven aan de berichtenlijst, zoals het stroomlijnen van labels, het kleiner maken van afbeeldingen en het verwijderen van extra ruimte en het verplaatsen van laad-indicatoren, zodat ze zichtbaarder zijn.
+
+Tot slot hebben we een paar bugs geplet.
+- Je ziet niet langer HTML gecodeerde tekens op verschillende schermen, zodat al je ampersands er precies zo uitzien als ze zouden moeten. Rock on.
+- De stromen 'Herstellen' en 'Back-up downloaden' bedekken de navigatiebalk niet meer.
+- Domeinen zijn nu correct gesorteerd in het scherm Domein zoeken. Het vinden van wat je zoekt is makkelijker dan ooit.
+- We hebben een tag opgelost waarbij 'WordPress' een verkeerde hoofdletter had in de Reader. (Die hield ons 's nachts wakker.)
