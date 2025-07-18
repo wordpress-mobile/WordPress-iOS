@@ -5,10 +5,10 @@ import WordPressData
 import WordPressAPI
 import WordPressAPIInternal
 
-@objc class TaxonomyServiceRemoteCoreREST: NSObject, TaxonomyServiceRemote {
+@objc public class TaxonomyServiceRemoteCoreREST: NSObject, TaxonomyServiceRemote {
     let client: WordPressClient
 
-    @objc convenience init?(blog: Blog) {
+    @objc public convenience init?(blog: Blog) {
         guard let site = try? WordPressSite(blog: blog) else { return nil }
 
         self.init(client: .init(site: site))
@@ -18,7 +18,7 @@ import WordPressAPIInternal
         self.client = client
     }
 
-    func createCategory(_ category: RemotePostCategory, success: ((RemotePostCategory) -> Void)?, failure: ((any Error) -> Void)? = nil) {
+    public func createCategory(_ category: RemotePostCategory, success: ((RemotePostCategory) -> Void)?, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
                 let params = CategoryCreateParams(
@@ -34,7 +34,7 @@ import WordPressAPIInternal
         }
     }
 
-    func getCategoriesWithSuccess(_ success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
+    public func getCategoriesWithSuccess(_ success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
                 let response = try await client.api.categories.listWithEditContext(params: CategoryListParams())
@@ -46,7 +46,7 @@ import WordPressAPIInternal
         }
     }
 
-    func getCategoriesWith(_ paging: RemoteTaxonomyPaging, success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
+    public func getCategoriesWith(_ paging: RemoteTaxonomyPaging, success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
                 let params = CategoryListParams(
@@ -65,7 +65,7 @@ import WordPressAPIInternal
         }
     }
 
-    func searchCategories(withName nameQuery: String, success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
+    public func searchCategories(withName nameQuery: String, success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
                 let params = CategoryListParams(search: nameQuery)
@@ -78,7 +78,7 @@ import WordPressAPIInternal
         }
     }
 
-    func createTag(_ tag: RemotePostTag, success: ((RemotePostTag) -> Void)?, failure: ((any Error) -> Void)? = nil) {
+    public func createTag(_ tag: RemotePostTag, success: ((RemotePostTag) -> Void)?, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
                 let params = TagCreateParams(
@@ -95,7 +95,7 @@ import WordPressAPIInternal
         }
     }
 
-    func update(_ tag: RemotePostTag, success: ((RemotePostTag) -> Void)?, failure: ((any Error) -> Void)? = nil) {
+    public func update(_ tag: RemotePostTag, success: ((RemotePostTag) -> Void)?, failure: ((any Error) -> Void)? = nil) {
         guard let tagID = tag.tagID else {
             failure?(URLError(.unknown))
             return
@@ -117,7 +117,7 @@ import WordPressAPIInternal
         }
     }
 
-    func delete(_ tag: RemotePostTag, success: (() -> Void)?, failure: ((any Error) -> Void)? = nil) {
+    public func delete(_ tag: RemotePostTag, success: (() -> Void)?, failure: ((any Error) -> Void)? = nil) {
         guard let tagID = tag.tagID else {
             failure?(URLError(.unknown))
             return
@@ -133,7 +133,7 @@ import WordPressAPIInternal
         }
     }
 
-    func getTagsWithSuccess(_ success: @escaping ([RemotePostTag]) -> Void, failure: ((any Error) -> Void)? = nil) {
+    public func getTagsWithSuccess(_ success: @escaping ([RemotePostTag]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
                 let response = try await client.api.tags.listWithEditContext(params: TagListParams())
@@ -145,7 +145,7 @@ import WordPressAPIInternal
         }
     }
 
-    func getTagsWith(_ paging: RemoteTaxonomyPaging, success: @escaping ([RemotePostTag]) -> Void, failure: ((any Error) -> Void)? = nil) {
+    public func getTagsWith(_ paging: RemoteTaxonomyPaging, success: @escaping ([RemotePostTag]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
                 let params = TagListParams(
@@ -164,7 +164,7 @@ import WordPressAPIInternal
         }
     }
 
-    func searchTags(withName nameQuery: String, success: @escaping ([RemotePostTag]) -> Void, failure: ((any Error) -> Void)? = nil) {
+    public func searchTags(withName nameQuery: String, success: @escaping ([RemotePostTag]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
                 let response = try await client.api.tags.listWithEditContext(params: TagListParams(search: nameQuery))
