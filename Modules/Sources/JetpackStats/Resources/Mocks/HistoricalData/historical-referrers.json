@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Google Search",
+    "domain": "google.com",
+    "metrics": {
+      "views": 5000,
+      "visitors": 4000,
+      "bounceRate": 25,
+      "timeOnSite": 300,
+      "comments": 180,
+      "likes": 420
+    }
+  },
+  {
+    "name": "Twitter/X",
+    "domain": "twitter.com",
+    "metrics": {
+      "views": 3500,
+      "visitors": 2800,
+      "bounceRate": 35,
+      "timeOnSite": 220,
+      "comments": 150,
+      "likes": 350
+    }
+  },
+  {
+    "name": "Reddit",
+    "domain": "reddit.com",
+    "metrics": {
+      "views": 2000,
+      "visitors": 1600,
+      "bounceRate": 30,
+      "timeOnSite": 280,
+      "comments": 120,
+      "likes": 280
+    }
+  },
+  {
+    "name": "Facebook",
+    "domain": "facebook.com",
+    "metrics": {
+      "views": 1500,
+      "visitors": 1200,
+      "bounceRate": 40,
+      "timeOnSite": 180,
+      "comments": 85,
+      "likes": 210
+    }
+  },
+  {
+    "name": "YouTube",
+    "domain": "youtube.com",
+    "metrics": {
+      "views": 1100,
+      "visitors": 880,
+      "bounceRate": 45,
+      "timeOnSite": 160,
+      "comments": 65,
+      "likes": 165
+    }
+  },
+  {
+    "name": "LinkedIn",
+    "domain": "linkedin.com",
+    "metrics": {
+      "views": 900,
+      "visitors": 720,
+      "bounceRate": 38,
+      "timeOnSite": 240,
+      "comments": 55,
+      "likes": 140
+    }
+  },
+  {
+    "name": "Hacker News",
+    "domain": "news.ycombinator.com",
+    "metrics": {
+      "views": 800,
+      "visitors": 640,
+      "bounceRate": 28,
+      "timeOnSite": 320,
+      "comments": 75,
+      "likes": 180
+    }
+  },
+  {
+    "name": "Flipboard",
+    "domain": "flipboard.com",
+    "metrics": {
+      "views": 600,
+      "visitors": 480,
+      "bounceRate": 50,
+      "timeOnSite": 140,
+      "comments": 35,
+      "likes": 95
+    }
+  },
+  {
+    "name": "Feedly",
+    "domain": "feedly.com",
+    "metrics": {
+      "views": 500,
+      "visitors": 400,
+      "bounceRate": 42,
+      "timeOnSite": 200,
+      "comments": 30,
+      "likes": 85
+    }
+  },
+  {
+    "name": "Apple News",
+    "domain": "apple.news",
+    "metrics": {
+      "views": 400,
+      "visitors": 320,
+      "bounceRate": 48,
+      "timeOnSite": 150,
+      "comments": 25,
+      "likes": 70
+    }
+  }
+]

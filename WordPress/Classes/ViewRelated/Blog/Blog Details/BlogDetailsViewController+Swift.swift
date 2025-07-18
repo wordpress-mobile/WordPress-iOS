@@ -266,11 +266,19 @@ extension BlogDetailsViewController {
             return MovedToJetpackViewController(source: .stats)
         }
 
-        let statsVC = StatsViewController()
-        statsVC.blog = blog
-        statsVC.hidesBottomBarWhenPushed = true
-        statsVC.navigationItem.largeTitleDisplayMode = .never
-        return statsVC
+        // Use new stats if feature flag is enabled
+        if FeatureFlag.newStats.enabled {
+            let statsVC = StatsHostingViewController(blog: blog)
+            statsVC.hidesBottomBarWhenPushed = true
+            statsVC.navigationItem.largeTitleDisplayMode = .never
+            return statsVC
+        } else {
+            let statsVC = StatsViewController()
+            statsVC.blog = blog
+            statsVC.hidesBottomBarWhenPushed = true
+            statsVC.navigationItem.largeTitleDisplayMode = .never
+            return statsVC
+        }
     }
 
     @objc(showDomainsFromSource:)

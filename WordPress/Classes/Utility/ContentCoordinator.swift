@@ -65,9 +65,15 @@ struct DefaultContentCoordinator: ContentCoordinator {
             setTimePeriodForStatsURLIfPossible(url)
         }
 
-        let statsViewController = StatsViewController()
-        statsViewController.blog = blog
-        controller?.navigationController?.pushViewController(statsViewController, animated: true)
+        if FeatureFlag.newStats.enabled {
+            let statsVC = StatsHostingViewController(blog: blog)
+            statsVC.hidesBottomBarWhenPushed = true
+            controller?.navigationController?.pushViewController(statsVC, animated: true)
+        } else {
+            let statsViewController = StatsViewController()
+            statsViewController.blog = blog
+            controller?.navigationController?.pushViewController(statsViewController, animated: true)
+        }
     }
 
     private func setTimePeriodForStatsURLIfPossible(_ url: URL) {

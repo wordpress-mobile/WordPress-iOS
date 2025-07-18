@@ -1,0 +1,132 @@
+[
+  {
+    "name": "Alex Johnson",
+    "userId": "1",
+    "role": "Editor-in-Chief",
+    "metrics": {
+      "views": 5000,
+      "comments": 280,
+      "likes": 850,
+      "visitors": 3500,
+      "bounceRate": 32,
+      "timeOnSite": 260
+    }
+  },
+  {
+    "name": "Chloe Zhang",
+    "userId": "2",
+    "role": "Executive Editor",
+    "metrics": {
+      "views": 4200,
+      "comments": 230,
+      "likes": 720,
+      "visitors": 2940,
+      "bounceRate": 34,
+      "timeOnSite": 245
+    }
+  },
+  {
+    "name": "Jordan Davis",
+    "userId": "3",
+    "role": "Senior Writer",
+    "metrics": {
+      "views": 3800,
+      "comments": 205,
+      "likes": 650,
+      "visitors": 2660,
+      "bounceRate": 36,
+      "timeOnSite": 235
+    }
+  },
+  {
+    "name": "Sofia Rodriguez",
+    "userId": "4",
+    "role": "Editor-at-Large",
+    "metrics": {
+      "views": 3300,
+      "comments": 175,
+      "likes": 580,
+      "visitors": 2310,
+      "bounceRate": 38,
+      "timeOnSite": 225
+    }
+  },
+  {
+    "name": "Morgan Smith",
+    "userId": "5",
+    "role": "Senior Editor",
+    "metrics": {
+      "views": 3000,
+      "comments": 160,
+      "likes": 520,
+      "visitors": 2100,
+      "bounceRate": 40,
+      "timeOnSite": 215
+    }
+  },
+  {
+    "name": "Emma Thompson",
+    "userId": "6",
+    "role": "Managing Editor",
+    "metrics": {
+      "views": 2700,
+      "comments": 145,
+      "likes": 465,
+      "visitors": 1890,
+      "bounceRate": 42,
+      "timeOnSite": 205
+    }
+  },
+  {
+    "name": "Riley Martinez",
+    "userId": "7",
+    "role": "Senior Reporter",
+    "metrics": {
+      "views": 2400,
+      "comments": 125,
+      "likes": 410,
+      "visitors": 1680,
+      "bounceRate": 39,
+      "timeOnSite": 220
+    }
+  },
+  {
+    "name": "Jamie Lee",
+    "userId": "8",
+    "role": "News Writer",
+    "metrics": {
+      "views": 2100,
+      "comments": 110,
+      "likes": 360,
+      "visitors": 1470,
+      "bounceRate": 44,
+      "timeOnSite": 195
+    }
+  },
+  {
+    "name": "Avery Taylor",
+    "userId": "9",
+    "role": "News Writer",
+    "metrics": {
+      "views": 1850,
+      "comments": 95,
+      "likes": 315,
+      "visitors": 1295,
+      "bounceRate": 46,
+      "timeOnSite": 185
+    }
+  },
+  {
+    "name": "Quinn Anderson",
+    "userId": "10",
+    "role": "Weekend Editor",
+    "metrics": {
+      "views": 1600,
+      "comments": 85,
+      "likes": 275,
+      "visitors": 1120,
+      "bounceRate": 48,
+      "timeOnSite": 175
+    }
+  }
+]

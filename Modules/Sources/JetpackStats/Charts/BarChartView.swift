@@ -1,0 +1,170 @@
+import SwiftUI
+import Charts
+
+struct BarChartView: View {
+    let data: ChartData
+
+    @State private var selectedDate: Date?
+    @State private var selectedDataPoints: SelectedDataPoints?
+
+    @Environment(\.context) var context
+
+    private var valueFormatter: StatsValueFormatter {
+        StatsValueFormatter(metric: data.metric)
+    }
+
+    var body: some View {
+        Chart {
+            previousPeriodBars
+            currentPeriodBars
+            selectionIndicatorMarks
+        }
+        .chartXAxis { xAxis }
+        .chartYAxis { yAxis }
+        .chartLegend(.hidden)
+        .modifier(ChartSelectionModifier(selection: $selectedDate))
+        .animation(.spring, value: ObjectIdentifier(data))
+        .onChange(of: selectedDate) {
+            selectedDataPoints = SelectedDataPoints.compute(for: $0, data: data)
+        }
+
+    }
+
+    // MARK: - Chart Marks
+
+    @ChartContentBuilder
+    private var currentPeriodBars: some ChartContent {
+        ForEach(data.currentData) { point in
+            BarMark(
+                x: .value("Date", point.date, unit: data.granularity.component),
+                y: .value("Value", point.value),
+                width: .ratio(0.75)
+            )
+            .foregroundStyle(data.metric.primaryColor)
+            .cornerRadius(4)
+            .opacity(getOpacityForCurrentPeriodBar(for: point))
+        }
+    }
+
+    private func getOpacityForCurrentPeriodBar(for point: DataPoint) -> CGFloat {
+        guard let selectedDataPoints else {
+            let isIncomplete = context.calendar.isIncompleteDataPeriod(for: point.date, granularity: data.granularity)
+            return isIncomplete ? 0.5 : 1
+        }
+        return selectedDataPoints.current?.id == point.id ? 1.0 : 0.5
+    }
+
+    @ChartContentBuilder
+    private var previousPeriodBars: some ChartContent {
+        ForEach(data.mappedPreviousData) { point in
+            BarMark(
+                x: .value("Date", point.date, unit: data.granularity.component),
+                y: .value("Value", point.value),
+                width: .ratio(0.75),
+                stacking: .unstacked
+            )
+            .foregroundStyle(Color.secondary)
+            .cornerRadius(4)
+            .opacity(shouldHighlightPreviousDataPoint(point) ? 0.5 : 0.2)
+        }
+    }
+
+    private func shouldHighlightPreviousDataPoint(_ dataPoint: DataPoint) -> Bool {
+        guard let selectedDataPoints else {
+            return false
+        }
+        return selectedDataPoints.current == nil && selectedDataPoints.previous?.id == dataPoint.id
+    }
+
+    @ChartContentBuilder
+    private var selectionIndicatorMarks: some ChartContent {
+        if #available(iOS 17.0, *),
+           let selectedDate,
+           let _ = selectedDataPoints {
+            RuleMark(x: .value("Selected", selectedDate))
+                .foregroundStyle(Color.clear)
+                .lineStyle(StrokeStyle(lineWidth: 1))
+                .offset(yStart: 32)
+                .zIndex(3)
+                .annotation(
+                    position: .top,
+                    spacing: 0,
+                    overflowResolution: .init(
+                        x: .fit(to: .chart),
+                        y: .disabled
+                    )
+                ) {
+                    tooltipView
+                }
+        }
+    }
+
+    // MARK: - Axis Configuration
+
+    private var xAxis: some AxisContent {
+        AxisMarks { value in
+            if let date = value.as(Date.self) {
+                AxisValueLabel {
+                    ChartAxisDateLabel(date: date, granularity: data.granularity)
+                }
+            }
+        }
+    }
+
+    private var yAxis: some AxisContent {
+        AxisMarks(values: .automatic) { value in
+            if let value = value.as(Int.self) {
+                AxisGridLine()
+                    .foregroundStyle(Color.secondary.opacity(0.33))
+                AxisValueLabel {
+                    if value > 0 {
+                        Text(valueFormatter.format(value: value, context: .compact))
+                            .font(.caption2.weight(.medium))
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Helper Views
+
+    @ViewBuilder
+    private var tooltipView: some View {
+        if let selectedPoints = selectedDataPoints {
+            ChartValueTooltipView(
+                currentPoint: selectedPoints.current,
+                previousPoint: selectedPoints.previous,
+                metric: data.metric,
+                granularity: data.granularity
+            )
+        }
+    }
+}
+
+// MARK: - Preview
+
+#Preview {
+    VStack(spacing: 20) {
+        BarChartView(
+            data: ChartData.mock(
+                metric: .visitors,
+                granularity: .day,
+                range: Calendar.demo.makeDateRange(for: .last7Days)
+            )
+        )
+        .frame(height: 250)
+        .padding()
+
+        BarChartView(
+            data: ChartData.mock(
+                metric: .likes,
+                granularity: .month,
+                range: Calendar.demo.makeDateRange(for: .thisYear)
+            )
+        )
+        .frame(height: 250)
+        .padding()
+    }
+    .background(Color(.systemGroupedBackground))
+}

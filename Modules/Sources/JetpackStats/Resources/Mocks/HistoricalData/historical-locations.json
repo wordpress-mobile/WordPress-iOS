@@ -1,0 +1,132 @@
+[
+  {
+    "country": "United States",
+    "countryCode": "US",
+    "flag": "🇺🇸",
+    "metrics": {
+      "views": 10000,
+      "visitors": 7000,
+      "bounceRate": 35,
+      "timeOnSite": 250,
+      "comments": 450,
+      "likes": 980
+    }
+  },
+  {
+    "country": "United Kingdom",
+    "countryCode": "GB",
+    "flag": "🇬🇧",
+    "metrics": {
+      "views": 4000,
+      "visitors": 2800,
+      "bounceRate": 38,
+      "timeOnSite": 230,
+      "comments": 180,
+      "likes": 390
+    }
+  },
+  {
+    "country": "Canada",
+    "countryCode": "CA",
+    "flag": "🇨🇦",
+    "metrics": {
+      "views": 2800,
+      "visitors": 1960,
+      "bounceRate": 40,
+      "timeOnSite": 220,
+      "comments": 125,
+      "likes": 270
+    }
+  },
+  {
+    "country": "Germany",
+    "countryCode": "DE",
+    "flag": "🇩🇪",
+    "metrics": {
+      "views": 2000,
+      "visitors": 1400,
+      "bounceRate": 42,
+      "timeOnSite": 210,
+      "comments": 90,
+      "likes": 195
+    }
+  },
+  {
+    "country": "Australia",
+    "countryCode": "AU",
+    "flag": "🇦🇺",
+    "metrics": {
+      "views": 1600,
+      "visitors": 1120,
+      "bounceRate": 41,
+      "timeOnSite": 215,
+      "comments": 72,
+      "likes": 155
+    }
+  },
+  {
+    "country": "France",
+    "countryCode": "FR",
+    "flag": "🇫🇷",
+    "metrics": {
+      "views": 1400,
+      "visitors": 980,
+      "bounceRate": 44,
+      "timeOnSite": 200,
+      "comments": 63,
+      "likes": 135
+    }
+  },
+  {
+    "country": "Japan",
+    "countryCode": "JP",
+    "flag": "🇯🇵",
+    "metrics": {
+      "views": 1100,
+      "visitors": 770,
+      "bounceRate": 45,
+      "timeOnSite": 190,
+      "comments": 50,
+      "likes": 105
+    }
+  },
+  {
+    "country": "India",
+    "countryCode": "IN",
+    "flag": "🇮🇳",
+    "metrics": {
+      "views": 1000,
+      "visitors": 700,
+      "bounceRate": 48,
+      "timeOnSite": 175,
+      "comments": 45,
+      "likes": 95
+    }
+  },
+  {
+    "country": "Netherlands",
+    "countryCode": "NL",
+    "flag": "🇳🇱",
+    "metrics": {
+      "views": 800,
+      "visitors": 560,
+      "bounceRate": 39,
+      "timeOnSite": 225,
+      "comments": 36,
+      "likes": 78
+    }
+  },
+  {
+    "country": "Sweden",
+    "countryCode": "SE",
+    "flag": "🇸🇪",
+    "metrics": {
+      "views": 650,
+      "visitors": 455,
+      "bounceRate": 37,
+      "timeOnSite": 235,
+      "comments": 29,
+      "likes": 63
+    }
+  }
+]

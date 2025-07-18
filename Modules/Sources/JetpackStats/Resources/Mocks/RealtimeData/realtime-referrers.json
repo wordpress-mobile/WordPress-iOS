@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Google Search",
+    "domain": "google.com",
+    "metrics": {
+      "views": 220
+    }
+  },
+  {
+    "name": "Twitter/X",
+    "domain": "twitter.com",
+    "metrics": {
+      "views": 160
+    }
+  },
+  {
+    "name": "Reddit",
+    "domain": "reddit.com",
+    "metrics": {
+      "views": 130
+    }
+  },
+  {
+    "name": "Hacker News",
+    "domain": "news.ycombinator.com",
+    "metrics": {
+      "views": 100
+    }
+  },
+  {
+    "name": "Direct Traffic",
+    "domain": "direct",
+    "metrics": {
+      "views": 85
+    }
+  },
+  {
+    "name": "LinkedIn",
+    "domain": "linkedin.com",
+    "metrics": {
+      "views": 70
+    }
+  },
+  {
+    "name": "Facebook",
+    "domain": "facebook.com",
+    "metrics": {
+      "views": 60
+    }
+  },
+  {
+    "name": "YouTube",
+    "domain": "youtube.com",
+    "metrics": {
+      "views": 50
+    }
+  }
+]
