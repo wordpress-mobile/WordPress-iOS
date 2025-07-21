@@ -83,6 +83,7 @@ extension ChartData {
         case .posts: 10...50
         case .timeOnSite: 120...300
         case .bounceRate: 40...80
+        case .downloads: 100...250
         }
     }
 }

@@ -10,6 +10,7 @@ struct SiteMetricsSet: Codable {
     var posts: Int?
     var bounceRate: Int?
     var timeOnSite: Int?
+    var downloads: Int?
 
     subscript(metric: SiteMetric) -> Int? {
         get {
@@ -21,6 +22,7 @@ struct SiteMetricsSet: Codable {
             case .posts: posts
             case .bounceRate: bounceRate
             case .timeOnSite: timeOnSite
+            case .downloads: downloads
             }
         }
         set {
@@ -32,6 +34,7 @@ struct SiteMetricsSet: Codable {
             case .posts: posts = newValue
             case .bounceRate: bounceRate = newValue
             case .timeOnSite: timeOnSite = newValue
+            case .downloads: downloads = newValue
             }
         }
     }

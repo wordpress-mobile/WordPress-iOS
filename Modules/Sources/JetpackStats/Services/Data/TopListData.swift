@@ -56,4 +56,28 @@ extension TopListData {
 
         var id: String { url }
     }
+
+    struct FileDownload: Codable, TopListItem {
+        let fileName: String
+        let filePath: String?
+        var metrics: SiteMetricsSet
+
+        var id: String { filePath ?? fileName }
+    }
+
+    struct SearchTerm: Codable, TopListItem {
+        let term: String
+        var metrics: SiteMetricsSet
+
+        var id: String { term }
+    }
+
+    struct Video: Codable, TopListItem {
+        let title: String
+        let postId: String
+        let videoUrl: URL?
+        var metrics: SiteMetricsSet
+
+        var id: String { postId }
+    }
 }

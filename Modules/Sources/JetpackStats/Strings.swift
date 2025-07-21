@@ -41,6 +41,7 @@ enum Strings {
         static let posts = AppLocalizedString("jetpackStats.siteMetrics.posts", value: "Posts", comment: "Site posts metric")
         static let timeOnSite = AppLocalizedString("jetpackStats.siteMetrics.timeOnSite", value: "Time on Site", comment: "Time on site metric")
         static let bounceRate = AppLocalizedString("jetpackStats.siteMetrics.bounceRate", value: "Bounce Rate", comment: "Bounce rate metric")
+        static let downloads = AppLocalizedString("jetpackStats.siteMetrics.downloads", value: "Downloads", comment: "Download count")
     }
 
     enum SiteDataTypes {
@@ -51,6 +52,9 @@ enum Strings {
         static let referrers = AppLocalizedString("jetpackStats.siteDataTypes.referrers", value: "Referrers", comment: "Referrers data type")
         static let locations = AppLocalizedString("jetpackStats.siteDataTypes.locations", value: "Locations", comment: "Locations data type")
         static let externalLinks = AppLocalizedString("jetpackStats.siteDataTypes.externalLinks", value: "External Links", comment: "External links data type")
+        static let fileDownloads = AppLocalizedString("jetpackStats.siteDataTypes.fileDownloads", value: "File Downloads", comment: "File downloads data type")
+        static let searchTerms = AppLocalizedString("jetpackStats.siteDataTypes.searchTerms", value: "Search Terms", comment: "Search terms data type")
+        static let videos = AppLocalizedString("jetpackStats.siteDataTypes.videos", value: "Videos", comment: "Videos data type")
     }
 
     enum Buttons {
@@ -91,6 +95,7 @@ enum Strings {
         static let mostPosts = AppLocalizedString("jetpackStats.topList.mostPosts", value: "Most Posts", comment: "Title for most posts (per author)")
         static let highestBounceRate = AppLocalizedString("jetpackStats.topList.highestBounceRate", value: "Highest Bounce Rate", comment: "Title for items with highest bounce rate")
         static let longestTimeOnSite = AppLocalizedString("jetpackStats.topList.longestTimeOnSite", value: "Longest Time on Site", comment: "Title for items with longest time on site")
+        static let mostDownloadeded = AppLocalizedString("jetpackStats.topList.mostDownloads", value: "Most Downloaded", comment: "Title for chart")
     }
 
     enum Errors {

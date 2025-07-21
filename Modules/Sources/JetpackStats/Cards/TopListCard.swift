@@ -59,19 +59,26 @@ struct TopListCard: View {
 
             Spacer()
 
-            Menu {
-                ForEach(getSupportedMetrics(for: viewModel.selection.item)) { metric in
-                    Button {
-                        viewModel.selection.metric = metric
-                    } label: {
-                        Label(metric.localizedTitle, systemImage: metric.systemImage)
+            let metrics = getSupportedMetrics(for: viewModel.selection.item)
+            if metrics.count > 1 {
+                Menu {
+                    ForEach(metrics) { metric in
+                        Button {
+                            viewModel.selection.metric = metric
+                        } label: {
+                            Label(metric.localizedTitle, systemImage: metric.systemImage)
+                        }
                     }
+                    .tint(Color.primary)
+                } label: {
+                    InlineValuePickerTitle(title: viewModel.selection.metric.localizedTitle)
                 }
-                .tint(Color.primary)
-            } label: {
-                InlineValuePickerTitle(title: viewModel.selection.metric.localizedTitle)
+                .fixedSize()
+            } else {
+                Text(viewModel.selection.metric.localizedTitle)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
             }
-            .fixedSize()
         }
     }
 

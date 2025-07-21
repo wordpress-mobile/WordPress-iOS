@@ -20,7 +20,8 @@ actor StatsService: StatsServiceProtocol {
     ]
 
     let supportedItems: [TopListItemType] = [
-        .postsAndPages, .posts, .pages, .referrers, .locations, .authors, .externalLinks
+        .postsAndPages, .posts, .pages, .referrers, .locations, .authors, .externalLinks,
+        .fileDownloads, .searchTerms, .videos
     ]
 
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
@@ -30,6 +31,9 @@ actor StatsService: StatsServiceProtocol {
         case .locations: [.views]
         case .authors: [.views]
         case .externalLinks: [.views]
+        case .fileDownloads: [.downloads]
+        case .searchTerms: [.views]
+        case .videos: [.views]
         }
     }
 
@@ -143,6 +147,33 @@ actor StatsService: StatsServiceProtocol {
             default:
                 throw StatsServiceError.unavailable
             }
+
+        case .fileDownloads:
+            switch metric {
+            case .downloads:
+                let data = try await getData(StatsFileDownloadsTimeIntervalData.self)
+                return mapFileDownloadsToTopListData(data)
+            default:
+                throw StatsServiceError.unavailable
+            }
+
+        case .searchTerms:
+            switch metric {
+            case .views:
+                let data = try await getData(StatsSearchTermTimeIntervalData.self)
+                return mapSearchTermsToTopListData(data)
+            default:
+                throw StatsServiceError.unavailable
+            }
+
+        case .videos:
+            switch metric {
+            case .views:
+                let data = try await getData(StatsTopVideosTimeIntervalData.self)
+                return mapVideosToTopListData(data)
+            default:
+                throw StatsServiceError.unavailable
+            }
         }
     }
 
@@ -204,12 +235,13 @@ actor StatsService: StatsServiceProtocol {
         var total = SiteMetricsSet()
         var metrics: [SiteMetric: [DataPoint]] = [:]
         for metric in supportedMetrics {
-            let mappedMetric = WordPressKit.StatsSiteMetricsResponse.Metric(metric)
-            let dataPoints = response.data.compactMap {
-                makeDataPoint(from: $0, metric: mappedMetric)
+            if let mappedMetric = WordPressKit.StatsSiteMetricsResponse.Metric(metric) {
+                let dataPoints = response.data.compactMap {
+                    makeDataPoint(from: $0, metric: mappedMetric)
+                }
+                metrics[metric] = dataPoints
+                total[metric] = DataPoint.getTotalValue(for: dataPoints, metric: metric)
             }
-            metrics[metric] = dataPoints
-            total[metric] = DataPoint.getTotalValue(for: dataPoints, metric: metric)
         }
         return SiteMetricsData(total: total, metrics: metrics)
     }
@@ -221,7 +253,6 @@ actor StatsService: StatsServiceProtocol {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
         let posts = filterKind != nil ? data.topPosts.filter { $0.kind == filterKind } : data.topPosts
-        
         let items = posts.map { post in
             TopListData.Post(
                 title: post.title,
@@ -305,6 +336,43 @@ actor StatsService: StatsServiceProtocol {
         }
         return TopListData(items: items)
     }
+
+    private func mapFileDownloadsToTopListData(_ data: StatsFileDownloadsTimeIntervalData) -> TopListData {
+        let items = data.fileDownloads.map { download in
+            TopListData.FileDownload(
+                fileName: URL(string: download.file)?.lastPathComponent ?? download.file,
+                filePath: download.file,
+                metrics: SiteMetricsSet(downloads: download.downloadCount)
+            )
+        }
+        return TopListData(items: items)
+    }
+
+    private func mapSearchTermsToTopListData(_ data: StatsSearchTermTimeIntervalData) -> TopListData {
+        let items = data.searchTerms.map { searchTerm in
+            TopListData.SearchTerm(
+                term: searchTerm.term,
+                metrics: SiteMetricsSet(
+                    views: searchTerm.viewsCount
+                )
+            )
+        }
+        return TopListData(items: items)
+    }
+
+    private func mapVideosToTopListData(_ data: StatsTopVideosTimeIntervalData) -> TopListData {
+        let items = data.videos.map { video in
+            TopListData.Video(
+                title: video.title,
+                postId: String(video.postID),
+                videoUrl: video.videoURL,
+                metrics: SiteMetricsSet(
+                    views: video.playsCount
+                )
+            )
+        }
+        return TopListData(items: items)
+    }
 }
 
 enum StatsServiceError: LocalizedError {
@@ -340,18 +408,15 @@ private extension StatsTopPost.Kind {
     }
 }
 
-// TODO: rework this
 private extension WordPressKit.StatsSiteMetricsResponse.Metric {
-    init(_ metric: SiteMetric) {
+    init?(_ metric: SiteMetric) {
         switch metric {
         case .views: self = .views
         case .visitors: self = .visitors
         case .likes: self = .likes
         case .comments: self = .comments
         case .posts: self = .posts
-        case .timeOnSite, .bounceRate:
-             wpAssertionFailure("not supported")
-            self = .views
+        case .timeOnSite, .bounceRate, .downloads: return nil
         }
     }
 }

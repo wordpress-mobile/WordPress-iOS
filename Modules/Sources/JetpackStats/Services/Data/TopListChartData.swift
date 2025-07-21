@@ -64,6 +64,12 @@ extension TopListChartData {
             return mockAuthors(metric: metric, count: count)
         case .externalLinks:
             return mockExternalLinks(metric: metric, count: count)
+        case .fileDownloads:
+            return mockFileDownloads(metric: metric, count: count)
+        case .searchTerms:
+            return mockSearchTerms(metric: metric, count: count)
+        case .videos:
+            return mockVideos(metric: metric, count: count)
         }
     }
 
@@ -189,6 +195,75 @@ extension TopListChartData {
         }
     }
 
+    private static func mockFileDownloads(metric: SiteMetric, count: Int) -> [TopListData.FileDownload] {
+        let files = [
+            ("annual-report-2024.pdf", "/downloads/reports/annual-report-2024.pdf", 2500),
+            ("swift-cheatsheet.pdf", "/downloads/docs/swift-cheatsheet.pdf", 2100),
+            ("app-screenshots.zip", "/downloads/media/app-screenshots.zip", 1800),
+            ("tutorial-video.mp4", "/downloads/videos/tutorial-video.mp4", 1500),
+            ("code-samples.zip", "/downloads/code/code-samples.zip", 1200),
+            ("whitepaper.pdf", "/downloads/docs/whitepaper.pdf", 900),
+            ("presentation.pptx", "/downloads/presentations/presentation.pptx", 600),
+            ("dataset.csv", "/downloads/data/dataset.csv", 400)
+        ]
+
+        return files.prefix(count).enumerated().map { index, data in
+            let baseValue = data.2
+            let metrics = createMetrics(baseValue: baseValue, metric: metric)
+            return TopListData.FileDownload(
+                fileName: data.0,
+                filePath: data.1,
+                metrics: metrics
+            )
+        }
+    }
+
+    private static func mockSearchTerms(metric: SiteMetric, count: Int) -> [TopListData.SearchTerm] {
+        let terms = [
+            ("swiftui tutorial", 3200),
+            ("ios development guide", 2800),
+            ("swift async await", 2400),
+            ("xcode tips", 2000),
+            ("swift performance", 1600),
+            ("ios app architecture", 1200),
+            ("swiftui animation", 800),
+            ("swift best practices", 500)
+        ]
+
+        return terms.prefix(count).enumerated().map { index, data in
+            let baseValue = data.1
+            let metrics = createMetrics(baseValue: baseValue, metric: metric)
+            return TopListData.SearchTerm(
+                term: data.0,
+                metrics: metrics
+            )
+        }
+    }
+
+    private static func mockVideos(metric: SiteMetric, count: Int) -> [TopListData.Video] {
+        let videos = [
+            ("Getting Started with SwiftUI", "101", "https://example.com/videos/swiftui-intro.mp4", 4500),
+            ("iOS Development Best Practices", "102", "https://example.com/videos/best-practices.mp4", 3800),
+            ("Advanced Swift Techniques", "103", "https://example.com/videos/advanced-swift.mp4", 3200),
+            ("Building Custom Views", "104", "https://example.com/videos/custom-views.mp4", 2600),
+            ("App Performance Optimization", "105", "https://example.com/videos/performance.mp4", 2000),
+            ("Debugging Like a Pro", "106", "https://example.com/videos/debugging.mp4", 1500),
+            ("SwiftUI Animations", "107", "https://example.com/videos/animations.mp4", 1000),
+            ("Testing Strategies", "108", "https://example.com/videos/testing.mp4", 700)
+        ]
+
+        return videos.prefix(count).enumerated().map { index, data in
+            let baseValue = data.3
+            let metrics = createMetrics(baseValue: baseValue, metric: metric)
+            return TopListData.Video(
+                title: data.0,
+                postId: data.1,
+                videoUrl: URL(string: data.2),
+                metrics: metrics
+            )
+        }
+    }
+
     private static func createMetrics(baseValue: Int, metric: SiteMetric) -> SiteMetricsSet {
         // Add some variation to make it more realistic
         let variation = Double.random(in: 0.8...1.2)
@@ -211,7 +286,10 @@ extension TopListChartData {
             return SiteMetricsSet(comments: Int(Double(value) * commentRatio))
         case .posts:
             let postsRatio = Double.random(in: 0.002...0.005)
-            return SiteMetricsSet(comments: Int(Double(value) * postsRatio))
+            return SiteMetricsSet(posts: Int(Double(value) * postsRatio))
+        case .downloads:
+            // Generic count metric (used for downloads, etc.)
+            return SiteMetricsSet(downloads: value)
         case .timeOnSite:
             // Time on site not applicable for top list items
             return SiteMetricsSet(views: value)

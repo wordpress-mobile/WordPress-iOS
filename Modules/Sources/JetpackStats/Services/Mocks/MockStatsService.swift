@@ -16,6 +16,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         case .locations: [.views, .visitors]
         case .authors: [.views, .comments, .likes]
         case .externalLinks: [.views, .visitors]
+        case .fileDownloads: [.downloads]
+        case .searchTerms: [.views, .visitors]
+        case .videos: [.views, .likes]
         }
     }
 
@@ -73,24 +76,25 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         for (_, dailyItems) in filteredData {
             for item in dailyItems {
                 let key = item.id
-                if let (existingItem, existingViews) = aggregatedItems[key] {
-                    // Aggregate views
-                    aggregatedItems[key] = (existingItem, existingViews + (item.metrics.views ?? 0))
+                if let (existingItem, existingValue) = aggregatedItems[key] {
+                    // Aggregate based on metric
+                    let metricValue = item.metrics[metric] ?? 0
+                    aggregatedItems[key] = (existingItem, existingValue + metricValue)
                 } else {
-                    aggregatedItems[key] = (item, item.metrics.views ?? 0)
+                    aggregatedItems[key] = (item, item.metrics[metric] ?? 0)
                 }
             }
         }
 
-        // Convert to array with updated views and sort
+        // Convert to array with updated metric value and sort
         let sortedItems = aggregatedItems.values
-            .map { (item, totalViews) -> any TopListItem in
-                // Create a mutable copy and update the aggregated views
+            .map { (item, totalValue) -> any TopListItem in
+                // Create a mutable copy and update the aggregated metric value
                 var mutableItem = item
-                mutableItem.metrics.views = totalViews
+                mutableItem.metrics[metric] = totalValue
                 return mutableItem
             }
-            .sorted { ($0.metrics.views ?? 0) > ($1.metrics.views ?? 0) }
+            .sorted { ($0.metrics[metric] ?? 0) > ($1.metrics[metric] ?? 0) }
 
         try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
 
@@ -147,6 +151,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                 let timeVariation = Double.random(in: 0.85...1.15)
                 mutableItem.metrics.timeOnSite = Int(Double(timeOnSite) * timeVariation)
             }
+            if let downloads = mutableItem.metrics.downloads {
+                mutableItem.metrics.downloads = Int(Double(downloads) * slowWave * smallVariation * rareSpike)
+            }
 
             return mutableItem
         }
@@ -181,8 +188,13 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         case .authors:
             fileName = "authors"
         case .externalLinks:
-            // Return empty array for now as we're not implementing mocks yet
-            return []
+            fileName = "external-links"
+        case .fileDownloads:
+            fileName = "file-downloads"
+        case .searchTerms:
+            fileName = "search-terms"
+        case .videos:
+            fileName = "videos"
         }
 
         // Load from JSON file
@@ -215,7 +227,19 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                     }
                     return copy
                 }
-            case .postsAndPages, .externalLinks:
+            case .externalLinks:
+                let links = try decoder.decode([TopListData.ExternalLink].self, from: data)
+                return links
+            case .fileDownloads:
+                let downloads = try decoder.decode([TopListData.FileDownload].self, from: data)
+                return downloads
+            case .searchTerms:
+                let terms = try decoder.decode([TopListData.SearchTerm].self, from: data)
+                return terms
+            case .videos:
+                let videos = try decoder.decode([TopListData.Video].self, from: data)
+                return videos
+            case .postsAndPages:
                 return [] // Already handled above
             }
         } catch {
@@ -266,8 +290,13 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         case .authors:
             fileName = "historical-authors"
         case .externalLinks:
-            // Return empty array for now as we're not implementing mocks yet
-            return []
+            fileName = "historical-external-links"
+        case .fileDownloads:
+            fileName = "historical-file-downloads"
+        case .searchTerms:
+            fileName = "historical-search-terms"
+        case .videos:
+            fileName = "historical-videos"
         }
 
         // Load from JSON file
@@ -300,7 +329,19 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                     }
                     return copy
                 }
-            case .postsAndPages, .externalLinks:
+            case .externalLinks:
+                let links = try decoder.decode([TopListData.ExternalLink].self, from: data)
+                return links
+            case .fileDownloads:
+                let downloads = try decoder.decode([TopListData.FileDownload].self, from: data)
+                return downloads
+            case .searchTerms:
+                let terms = try decoder.decode([TopListData.SearchTerm].self, from: data)
+                return terms
+            case .videos:
+                let videos = try decoder.decode([TopListData.Video].self, from: data)
+                return videos
+            case .postsAndPages:
                 return [] // Already handled above
             }
         } catch {
@@ -335,6 +376,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         if let timeOnSite = item.metrics.timeOnSite {
             let timeVariation = Double.random(in: 0.85...1.15)
             item.metrics.timeOnSite = Int(Double(timeOnSite) * timeVariation)
+        }
+        if let downloads = item.metrics.downloads {
+            item.metrics.downloads = Int(Double(downloads) * combinedFactor)
         }
         return item
     }
@@ -417,6 +461,10 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             // Percentage - inverse relationship with engagement
             let engagementFactor = growthFactor * seasonalFactor
             return Int(75 - (5 * engagementFactor) + Double.random(in: -5...5))
+
+        case .downloads:
+            let baseValue = 50.0
+            return Int(baseValue * growthFactor * seasonalFactor * weekendFactor * randomFactor)
         }
     }
 
