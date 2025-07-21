@@ -56,4 +56,8 @@ enum TopListItemType: Identifiable, CaseIterable, Sendable {
         case .downloads: Strings.TopListTitles.mostDownloadeded
         }
     }
+
+    static let secondaryItems: Set<TopListItemType> = [
+        .externalLinks, .fileDownloads, .searchTerms, .videos
+    ]
 }

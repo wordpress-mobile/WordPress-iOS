@@ -3,6 +3,7 @@ import SwiftUI
 @MainActor
 final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
     let items: [TopListItemType]
+    let groupedItems: [[TopListItemType]]
 
     var title: String {
         selection.item.getTitle(for: selection.metric)
@@ -42,6 +43,17 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         self.selection = selection
         self.dateRange = dateRange
         self.service = service
+
+
+        self.groupedItems = {
+            var primary = service.supportedItems.filter {
+                !TopListItemType.secondaryItems.contains($0)
+            }
+            var secondary = service.supportedItems.filter {
+                TopListItemType.secondaryItems.contains($0)
+            }
+            return [primary, secondary]
+        }()
     }
 
     func onAppear() {

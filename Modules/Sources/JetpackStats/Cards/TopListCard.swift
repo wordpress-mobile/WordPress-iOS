@@ -36,19 +36,23 @@ struct TopListCard: View {
     private var headerView: some View {
         HStack {
             Menu {
-                ForEach(viewModel.items) { item in
-                    Button {
-                        var selection = viewModel.selection
-                        selection.item = item
+                ForEach(Array(viewModel.groupedItems.enumerated()), id: \.offset) { _, items in
+                    Section {
+                        ForEach(items) { item in
+                            Button {
+                                var selection = viewModel.selection
+                                selection.item = item
 
-                        let supportedMetric = getSupportedMetrics(for: item)
-                        if !supportedMetric.contains(selection.metric),
-                           let metric = supportedMetric.first {
-                            selection.metric = metric
+                                let supportedMetric = getSupportedMetrics(for: item)
+                                if !supportedMetric.contains(selection.metric),
+                                   let metric = supportedMetric.first {
+                                    selection.metric = metric
+                                }
+                                viewModel.selection = selection
+                            } label: {
+                                Label(item.localizedTitle, systemImage: item.systemImage)
+                            }
                         }
-                        viewModel.selection = selection
-                    } label: {
-                        Label(item.localizedTitle, systemImage: item.systemImage)
                     }
                 }
                 .tint(Color.primary)

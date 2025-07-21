@@ -15,6 +15,10 @@ actor StatsService: StatsServiceProtocol {
     // Temporary
     private var mocks: MockStatsService
 
+    // Cache
+    private var siteStatsCache: [SiteStatsCacheKey: CachedSiteStats] = [:]
+    private let currentPeriodTTL: TimeInterval = 30 // 30 seconds for current period
+
     let supportedMetrics: [SiteMetric] = [
         .views, .visitors, .likes, .comments, .posts
     ]
@@ -52,6 +56,30 @@ actor StatsService: StatsServiceProtocol {
     // MARK: - StatsServiceProtocol
 
     func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsData {
+        // Check cache first
+        let cacheKey = SiteStatsCacheKey(interval: interval, granularity: granularity)
+
+        if let cached = siteStatsCache[cacheKey], !cached.isExpired {
+            return cached.data
+        }
+
+        // Fetch fresh data
+        let data = try await fetchSiteStats(interval: interval, granularity: granularity)
+
+        // Cache the result
+        // Historical data never expires (ttl = nil), current period data expires after 30 seconds
+        let ttl = intervalContainsCurrentDate(interval) ? currentPeriodTTL : nil
+
+        siteStatsCache[cacheKey] = CachedSiteStats(
+            data: data,
+            timestamp: Date(),
+            ttl: ttl
+        )
+
+        return data
+    }
+
+    private func fetchSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsData {
         let interval = convertDateIntervalSiteToLocal(interval)
 
         if granularity == .hour {
@@ -192,6 +220,17 @@ actor StatsService: StatsServiceProtocol {
         let start = convertDateSiteToLocal(dateInterval.start)
         let end = convertDateSiteToLocal(dateInterval.end.addingTimeInterval(-1))
         return DateInterval(start: start, end: end)
+    }
+
+    /// Checks if the date interval contains the current date in the site's timezone
+    private func intervalContainsCurrentDate(_ interval: DateInterval) -> Bool {
+        var calendar = Calendar.current
+        calendar.timeZone = siteTimeZone
+        let now = Date()
+        let startOfToday = calendar.startOfDay(for: now)
+        let endOfToday = calendar.date(byAdding: .day, value: 1, to: startOfToday)!.addingTimeInterval(-1)
+
+        return interval.start <= endOfToday && interval.end >= startOfToday
     }
 
     /// Convert from the site timezone (used in JetpackState) to the local
@@ -383,6 +422,26 @@ enum StatsServiceError: LocalizedError {
 
     var errorDescription: String? {
         Strings.Errors.generic
+    }
+}
+
+// MARK: - Cache
+
+private struct SiteStatsCacheKey: Hashable {
+    let interval: DateInterval
+    let granularity: DateRangeGranularity
+}
+
+private struct CachedSiteStats {
+    let data: SiteMetricsData
+    let timestamp: Date
+    let ttl: TimeInterval?
+
+    var isExpired: Bool {
+        guard let ttl else {
+            return false // No TTL means it never expires
+        }
+        return Date().timeIntervalSince(timestamp) > ttl
     }
 }
 
