@@ -198,7 +198,9 @@ actor StatsService: StatsServiceProtocol {
     /// timezone (expected by WordPressKit) while preserving the date components.
     private func convertDateSiteToLocal(_ date: Date) -> Date {
         let calendar = Calendar.current
-        let components = calendar.dateComponents(in: siteTimeZone, from: date)
+        var components = calendar.dateComponents(in: siteTimeZone, from: date)
+        components.timeZone = nil
+        components.nanosecond = nil
         guard let output = calendar.date(from: components) else {
             wpAssertionFailure("failed to convert date to local time zone", userInfo: ["date": date])
             return date
