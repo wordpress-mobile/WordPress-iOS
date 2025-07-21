@@ -103,15 +103,13 @@ struct TopListCard: View {
                 topListItemsView(data: mockData)
                     .redacted(reason: .placeholder)
             } else if let data = viewModel.matchedData {
-                topListItemsView(data: data)
+                if data.items.isEmpty {
+                    makeEmptyStateView(message: Strings.Chart.empty)
+                } else {
+                    topListItemsView(data: data)
+                }
             } else {
-                topListItemsView(data: mockData)
-                    .redacted(reason: .placeholder)
-                    .grayscale(1)
-                    .opacity(0.33)
-                    .overlay {
-                        SimpleErrorView(message: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
-                    }
+                makeEmptyStateView(message: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
             }
         }
     }
@@ -146,6 +144,16 @@ struct TopListCard: View {
         }
         .padding(.top, 16)
         .tint(Color.secondary.opacity(0.8))
+    }
+
+    private func makeEmptyStateView(message: String) -> some View {
+        topListItemsView(data: mockData)
+            .redacted(reason: .placeholder)
+            .grayscale(1)
+            .opacity(0.25)
+            .overlay {
+                SimpleErrorView(message: message)
+            }
     }
 
     private var mockData: TopListChartData {
