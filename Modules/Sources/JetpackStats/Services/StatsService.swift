@@ -20,7 +20,7 @@ actor StatsService: StatsServiceProtocol {
     ]
 
     let supportedItems: [TopListItemType] = [
-        .postsAndPages
+        .postsAndPages, .posts, .pages, .referrers, .locations, .authors, .externalLinks
     ]
 
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
@@ -106,10 +106,22 @@ actor StatsService: StatsServiceProtocol {
             }
 
         case .pages:
-            throw StatsServiceError.unavailable
+            switch metric {
+            case .views:
+                let data = try await getData(StatsTopPostsTimeIntervalData.self)
+                return mapPostsToTopListData(data, filterKind: .page)
+            default:
+                throw StatsServiceError.unavailable
+            }
 
         case .posts:
-            throw StatsServiceError.unavailable
+            switch metric {
+            case .views:
+                let data = try await getData(StatsTopPostsTimeIntervalData.self)
+                return mapPostsToTopListData(data, filterKind: .post)
+            default:
+                throw StatsServiceError.unavailable
+            }
 
         case .referrers:
             let data = try await getData(StatsTopReferrersTimeIntervalData.self)
@@ -124,7 +136,13 @@ actor StatsService: StatsServiceProtocol {
             return mapAuthorsToTopListData(data)
 
         case .externalLinks:
-            throw StatsServiceError.unavailable
+            switch metric {
+            case .views:
+                let data = try await getData(StatsTopClicksTimeIntervalData.self)
+                return mapClicksToTopListData(data)
+            default:
+                throw StatsServiceError.unavailable
+            }
         }
     }
 
@@ -196,13 +214,15 @@ actor StatsService: StatsServiceProtocol {
         return SiteMetricsData(total: total, metrics: metrics)
     }
 
-    private func mapPostsToTopListData(_ data: StatsTopPostsTimeIntervalData) -> TopListData {
+    private func mapPostsToTopListData(_ data: StatsTopPostsTimeIntervalData, filterKind: StatsTopPost.Kind? = nil) -> TopListData {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.timeZone = siteTimeZone
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
-        let items = data.topPosts.map { post in
+        let posts = filterKind != nil ? data.topPosts.filter { $0.kind == filterKind } : data.topPosts
+        
+        let items = posts.map { post in
             TopListData.Post(
                 title: post.title,
                 postId: String(post.postID),
@@ -271,6 +291,19 @@ actor StatsService: StatsServiceProtocol {
             scalarView.append(scalar)
         }
         return String(scalarView)
+    }
+
+    private func mapClicksToTopListData(_ data: StatsTopClicksTimeIntervalData) -> TopListData {
+        let items = data.clicks.map { click in
+            TopListData.ExternalLink(
+                url: click.clickedURL?.absoluteString ?? "",
+                title: click.title,
+                metrics: SiteMetricsSet(
+                    views: click.clicksCount
+                )
+            )
+        }
+        return TopListData(items: items)
     }
 }
 
