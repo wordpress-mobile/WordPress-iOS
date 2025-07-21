@@ -6,6 +6,7 @@ import GutenbergKit
 import SafariServices
 import WordPressData
 import WordPressShared
+import WebKit
 
 class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
@@ -306,6 +307,9 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         service.refreshSettings()
 
         Task { @MainActor in
+            // Load authentication cookies for private sites
+            await loadAuthenticationCookiesIfNeeded()
+
             // Start the editor with default settings after 3 seconds
             let timeoutTask = Task {
                 try await Task.sleep(nanoseconds: 3_000_000_000) // 3 seconds
@@ -336,6 +340,38 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             self.editorViewController.updateConfiguration(updatedConfig)
         }
         self.editorViewController.startEditorSetup()
+    }
+
+    // MARK: - Authentication
+
+    private func loadAuthenticationCookiesIfNeeded() async {
+        // Only load cookies if the site is private
+        guard post.blog.isPrivate() else {
+            DDLogInfo("Site is not private, skipping cookie loading for GutenbergKit")
+            return
+        }
+
+        DDLogInfo("Pre-loading authentication cookies for private site into shared cookie store")
+
+        guard let authenticator = RequestAuthenticator(blog: post.blog) else {
+            DDLogError("Failed to create RequestAuthenticator for blog")
+            return
+        }
+
+        // Use the blog's main URL to trigger cookie loading (same as preview does)
+        let authURL = URL(string: post.blog.url ?? "https://wordpress.com")!
+
+        await withCheckedContinuation { continuation in
+            // Use the default WKWebsiteDataStore cookie store that GutenbergKit will inherit
+            let cookieJar = WKWebsiteDataStore.default().httpCookieStore
+
+            // This mirrors exactly what PreviewWebKitViewController does:
+            // RequestAuthenticator.request() loads cookies into the cookie store
+            authenticator.request(url: authURL, cookieJar: cookieJar) { _ in
+                DDLogInfo("Authentication cookies loaded into shared cookie store for GutenbergKit")
+                continuation.resume()
+            }
+        }
     }
 }
 
