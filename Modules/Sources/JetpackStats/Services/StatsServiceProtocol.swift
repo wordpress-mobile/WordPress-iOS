@@ -7,6 +7,6 @@ protocol StatsServiceProtocol: AnyObject, Sendable {
     func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric]
 
     func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsData
-    func getTopListData(_ dataType: TopListItemType, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData
-    func getRealtimeTopListData(_ dataType: TopListItemType) async throws -> TopListData
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData
+    func getRealtimeTopListData(_ item: TopListItemType) async throws -> TopListData
 }

@@ -117,11 +117,13 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         // Fetch both current and previous period data concurrently
         async let currentTask = service.getTopListData(
             selection.item,
+            metric: selection.metric,
             interval: dateRange.dateInterval,
             granularity: granularity
         )
         async let previousTask = service.getTopListData(
             selection.item,
+            metric: selection.metric,
             interval: dateRange.effectiveComparisonInterval,
             granularity: granularity
         )

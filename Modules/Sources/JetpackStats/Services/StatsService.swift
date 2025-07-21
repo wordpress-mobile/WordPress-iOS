@@ -67,9 +67,9 @@ actor StatsService: StatsServiceProtocol {
         }
     }
 
-    func getTopListData(_ item: TopListItemType, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
         do {
-            return try await _getTopListData(item, interval: interval, granularity: granularity)
+            return try await _getTopListData(item, metric: metric, interval: interval, granularity: granularity)
         } catch {
             // A workaround for an issue where `/stats` return `"summary": null`
             // when there are no recoreded periods (happens when the entire requested
@@ -82,7 +82,7 @@ actor StatsService: StatsServiceProtocol {
         }
     }
 
-    private func _getTopListData(_ item: TopListItemType, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
+    private func _getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
 
         func getData<T: WordPressKit.StatsTimeIntervalData>(
             _ type: T.Type,
@@ -95,14 +95,21 @@ actor StatsService: StatsServiceProtocol {
 
         switch item {
         case .postsAndPages:
-            let data = try await getData(StatsTopPostsTimeIntervalData.self)
-            return mapPostsToTopListData(data)
+            switch metric {
+            case .views:
+                let data = try await getData(StatsTopPostsTimeIntervalData.self)
+                return mapPostsToTopListData(data)
+            case .comments:
+                fatalError()
+            default:
+                throw StatsServiceError.unavailable
+            }
 
         case .pages:
-            throw StatsServiceError.notImplemented
+            throw StatsServiceError.unavailable
 
         case .posts:
-            throw StatsServiceError.notImplemented
+            throw StatsServiceError.unavailable
 
         case .referrers:
             let data = try await getData(StatsTopReferrersTimeIntervalData.self)
@@ -117,7 +124,7 @@ actor StatsService: StatsServiceProtocol {
             return mapAuthorsToTopListData(data)
 
         case .externalLinks:
-            throw StatsServiceError.notImplemented
+            throw StatsServiceError.unavailable
         }
     }
 
@@ -267,19 +274,12 @@ actor StatsService: StatsServiceProtocol {
     }
 }
 
-// MARK: - Custom Errors
-
 enum StatsServiceError: LocalizedError {
-    case noData
-    case notImplemented
+    case unknown
+    case unavailable
 
     var errorDescription: String? {
-        switch self {
-        case .noData:
-            return "No data received from the server"
-        case .notImplemented:
-            return "Not implemented"
-        }
+        Strings.Errors.generic
     }
 }
 
@@ -340,7 +340,7 @@ private extension WordPressKit.StatsServiceRemoteV2 {
                 } else if let data {
                     continuation.resume(returning: data)
                 } else {
-                    continuation.resume(throwing: StatsServiceError.noData)
+                    continuation.resume(throwing: StatsServiceError.unknown)
                 }
             }
         }
@@ -354,7 +354,7 @@ private extension WordPressKit.StatsServiceRemoteV2 {
                 } else if let insight {
                     continuation.resume(returning: insight)
                 } else {
-                    continuation.resume(throwing: StatsServiceError.noData)
+                    continuation.resume(throwing: StatsServiceError.unknown)
                 }
             }
         }
@@ -368,7 +368,7 @@ private extension WordPressKit.StatsServiceRemoteV2 {
                 } else if let details {
                     continuation.resume(returning: details)
                 } else {
-                    continuation.resume(throwing: StatsServiceError.noData)
+                    continuation.resume(throwing: StatsServiceError.unknown)
                 }
             }
         }
@@ -382,7 +382,7 @@ private extension WordPressKit.StatsServiceRemoteV2 {
                 } else if let insight {
                     continuation.resume(returning: insight)
                 } else {
-                    continuation.resume(throwing: StatsServiceError.noData)
+                    continuation.resume(throwing: StatsServiceError.unknown)
                 }
             }
         }

@@ -55,11 +55,11 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         return SiteMetricsData(total: total, metrics: output)
     }
 
-    func getTopListData(_ dataType: TopListItemType, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
         await generateDataIfNeeded()
 
-        guard let typeData = dailyTopListData[dataType] else {
-            fatalError("data not configured for data type: \(dataType)")
+        guard let typeData = dailyTopListData[item] else {
+            fatalError("data not configured for data type: \(item)")
         }
 
         // Filter data within the date range
