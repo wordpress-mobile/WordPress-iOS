@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 enum Strings {
     static let stats = AppLocalizedString("jetpackStats.title", value: "Stats", comment: "Stats screen title")
@@ -37,6 +38,7 @@ enum Strings {
         static let visitorsNow = AppLocalizedString("jetpackStats.siteMetrics.visitorsNow", value: "Visitors Now", comment: "Current active visitors metric")
         static let likes = AppLocalizedString("jetpackStats.siteMetrics.likes", value: "Likes", comment: "Site likes metric")
         static let comments = AppLocalizedString("jetpackStats.siteMetrics.comments", value: "Comments", comment: "Site comments metric")
+        static let posts = AppLocalizedString("jetpackStats.siteMetrics.posts", value: "Posts", comment: "Site posts metric")
         static let timeOnSite = AppLocalizedString("jetpackStats.siteMetrics.timeOnSite", value: "Time on Site", comment: "Time on site metric")
         static let bounceRate = AppLocalizedString("jetpackStats.siteMetrics.bounceRate", value: "Bounce Rate", comment: "Bounce rate metric")
     }
@@ -77,6 +79,7 @@ enum Strings {
         static let lineChart = AppLocalizedString("jetpackStats.chart.lineChart", value: "Lines", comment: "Line chart type")
         static let barChart = AppLocalizedString("jetpackStats.chart.barChart", value: "Bars", comment: "Bar chart type")
         static let incompleteData = AppLocalizedString("jetpackStats.chart.incompleteData", value: "Might show incomplete data", comment: "Shown when current period data might be incomplete")
+        static let hourlyDataUnavailable = AppLocalizedString("jetpackStats.chart.hourlyDataNotAvailable", value: "Hourly data not available", comment: "Shown for metrics that don't support hourly data")
     }
 
     enum TopListTitles {
@@ -84,7 +87,12 @@ enum Strings {
         static let mostVisitors = AppLocalizedString("jetpackStats.topList.mostVisitors", value: "Most Visitors", comment: "Title for items with most visitors")
         static let mostCommented = AppLocalizedString("jetpackStats.topList.mostCommented", value: "Most Commented", comment: "Title for most commented items")
         static let mostLiked = AppLocalizedString("jetpackStats.topList.mostLiked", value: "Most Liked", comment: "Title for most liked items")
+        static let mostPosts = AppLocalizedString("jetpackStats.topList.mostPosts", value: "Most Posts", comment: "Title for most posts (per author)")
         static let highestBounceRate = AppLocalizedString("jetpackStats.topList.highestBounceRate", value: "Highest Bounce Rate", comment: "Title for items with highest bounce rate")
         static let longestTimeOnSite = AppLocalizedString("jetpackStats.topList.longestTimeOnSite", value: "Longest Time on Site", comment: "Title for items with longest time on site")
+    }
+
+    enum Errors {
+        static let generic = AppLocalizedString("jetpackStats.chart.generitcError", value: "Something went wrong", comment: "Genertic error message")
     }
 }

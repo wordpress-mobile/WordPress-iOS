@@ -20,6 +20,8 @@ class StatsPeriodHelper {
         oldestDate = oldestDate.normalizedDate()
 
         switch period {
+        case .hour:
+            fatalError("unsupported")
         case .day:
             return date > oldestDate
         case .week:
@@ -47,6 +49,8 @@ class StatsPeriodHelper {
         let date = dateIn.normalizedDate()
 
         switch period {
+        case .hour:
+            fatalError("unsupported")
         case .day:
             return date < currentDate.normalizedDate()
         case .week:
@@ -70,6 +74,8 @@ class StatsPeriodHelper {
 
     func endDate(from intervalStartDate: Date, period: StatsPeriodUnit) -> Date {
         switch period {
+        case .hour:
+            fatalError("unsupported")
         case .day:
             return intervalStartDate.normalizedDate()
         case .week:
@@ -103,6 +109,9 @@ class StatsPeriodHelper {
         }
 
         switch unit {
+        case .hour:
+            fatalError("unsupported")
+
         case .day:
             return adjustedDate.normalizedDate()
 

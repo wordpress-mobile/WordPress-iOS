@@ -82,9 +82,9 @@ struct RealtimeTopListCard: View {
             } else if let error = viewModel.loadingError {
                 loadingView
                     .redacted(reason: .placeholder)
+                    .opacity(0.1)
                     .overlay {
                         SimpleErrorView(error: error)
-                            .background(Color(.systemBackground))
                     }
             }
         }
@@ -102,16 +102,10 @@ struct RealtimeTopListCard: View {
         return TopListItemsView(
             data: chartData,
             itemLimit: 6,
-            showDetails: false,
-            showMoreButton: data.items.count > 6 || viewModel.isFirstLoad,
-            onShowMore: {
-                // Show more action
-            }
+            showDetails: false
         )
     }
-    
-    
-    
+
     private var loadingView: some View {
         topListItemsView(data: mockData)
     }

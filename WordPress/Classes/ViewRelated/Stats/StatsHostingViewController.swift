@@ -17,6 +17,21 @@ class StatsHostingViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
+    static func makeStatsViewController(for blog: Blog) -> UIViewController {
+        guard FeatureFlag.newStats.enabled else {
+            let statsVC = StatsViewController()
+            statsVC.blog = blog
+            statsVC.hidesBottomBarWhenPushed = true
+            statsVC.navigationItem.largeTitleDisplayMode = .never
+            return statsVC
+        }
+
+        let statsVC = StatsHostingViewController(blog: blog)
+        statsVC.hidesBottomBarWhenPushed = true
+        statsVC.navigationItem.largeTitleDisplayMode = .never
+        return statsVC
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

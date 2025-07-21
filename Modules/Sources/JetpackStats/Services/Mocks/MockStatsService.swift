@@ -6,6 +6,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     private var dailyTopListData: [TopListItemType: [Date: [any TopListItem]]] = [:]
     private let calendar: Calendar
 
+    let supportedMetrics = SiteMetric.allCases
+    let supportedItems = TopListItemType.allCases
+
     /// - parameter timeZone: The reporting time zone of a site.
     init(timeZone: TimeZone = .current) {
         var calendar = Calendar.current
@@ -21,23 +24,28 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         await generateTopListMockData()
     }
 
-    func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteStatsData {
+    func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsData {
         await generateDataIfNeeded()
+
+        var total = SiteMetricsSet()
         var output: [SiteMetric: [DataPoint]] = [:]
+
         for (metric, dataPoints) in hourlyData {
             // This isn't efficient by any means but it will do for the mocking purposes
             let filteredDataPoints = dataPoints.filter {
                 interval.start <= $0.date && $0.date < interval.end
             }
-            output[metric] = aggregateData(filteredDataPoints, granularity: granularity, range: interval, metric: metric)
+            let dataPoints = aggregateData(filteredDataPoints, granularity: granularity, range: interval, metric: metric)
+            output[metric] = dataPoints
+            total[metric] = DataPoint.getTotalValue(for: dataPoints, metric: metric)
         }
 
-        try? await Task.sleep(for: .milliseconds(Int.random(in: 200...600)))
+        try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
 
-        return SiteStatsData(metrics: output)
+        return SiteMetricsData(total: total, metrics: output)
     }
 
-    func getTopListData(_ dataType: TopListItemType, range: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
+    func getTopListData(_ dataType: TopListItemType, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
         await generateDataIfNeeded()
 
         guard let typeData = dailyTopListData[dataType] else {
@@ -46,7 +54,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         // Filter data within the date range
         let filteredData = typeData.filter { date, _ in
-            range.start <= date && date < range.end
+            interval.start <= date && date < interval.end
         }
 
         // Aggregate all items across the date range
@@ -74,7 +82,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             }
             .sorted { ($0.metrics.views ?? 0) > ($1.metrics.views ?? 0) }
 
-        try? await Task.sleep(for: .milliseconds(Int.random(in: 200...600)))
+        try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
 
         return TopListData(items: Array(sortedItems.prefix(20)))
     }
@@ -385,6 +393,10 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         case .comments:
             let baseValue = 3.0
+            return Int(baseValue * growthFactor * seasonalFactor * weekendFactor * randomFactor)
+
+        case .posts:
+            let baseValue = 1.0
             return Int(baseValue * growthFactor * seasonalFactor * weekendFactor * randomFactor)
 
         case .timeOnSite:

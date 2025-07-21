@@ -3,6 +3,7 @@ import SwiftUI
 struct TrafficTabView: View {
     @State private var dateRange: StatsDateRange
     @State private var isShowingCustomRangePicker = false
+    @State private var viewModels: [any TrafficCardViewModel] = []
 
     @Environment(\.context) var context
 
@@ -13,11 +14,19 @@ struct TrafficTabView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: Constants.step3) {
-                overviewChart
-                postAndPagesList
-                authorsList
+                ForEach(viewModels, id: \.id) { viewModel in
+                    makeItem(for: viewModel)
+                }
             }
             .padding(.vertical, Constants.step2)
+        }
+        .onAppear {
+            configureViewModels()
+        }
+        .onChange(of: dateRange) {
+            for viewModel in viewModels {
+                viewModel.dateRange = $0
+            }
         }
         .background(Constants.Colors.statsBackground)
         .toolbar {
@@ -33,6 +42,39 @@ struct TrafficTabView: View {
         .sheet(isPresented: $isShowingCustomRangePicker) {
             CustomDateRangePicker(dateRange: $dateRange)
         }
+    }
+
+    @ViewBuilder
+    private func makeItem(for viewModel: TrafficCardViewModel) -> some View {
+        switch viewModel {
+        case let viewModel as ChartCardViewModel:
+            ChartCard(viewModel: viewModel)
+                .cardStyle()
+        case let viewModel as TopListCardViewModel:
+            TopListCard(viewModel: viewModel)
+                .cardStyle()
+        default:
+            let _ = assertionFailure("Unsupported type: \(viewModel)")
+            EmptyView()
+        }
+    }
+
+    private func configureViewModels() {
+        guard viewModels.isEmpty else {
+            return
+        }
+        viewModels = [
+            ChartCardViewModel(
+                metrics: context.service.supportedMetrics,
+                dateRange: dateRange,
+                service: context.service
+            ),
+            TopListCardViewModel(
+                selection: .init(item: .postsAndPages, metric: .views),
+                dateRange: dateRange,
+                service: context.service
+            )
+        ]
     }
 
     // MARK: - Toolbar
@@ -89,36 +131,5 @@ struct TrafficTabView: View {
         let range = dateRange.effectiveComparisonInterval
         let localizedText = context.formatters.dateRange.string(from: range)
         return localizedText
-    }
-
-    // MARK: - Cards
-
-    private var overviewChart: some View {
-        ChartCard(
-            metrics: SiteMetric.allCases,
-            dateRange: dateRange,
-            service: context.service
-        )
-        .cardStyle()
-    }
-
-    private var postAndPagesList: some View {
-        TopListCard(
-            dateRange: dateRange,
-            availableDataTypes: TopListItemType.allCases,
-            initialDataType: .postsAndPages,
-            service: context.service
-        )
-        .cardStyle()
-    }
-
-    private var authorsList: some View {
-        TopListCard(
-            dateRange: dateRange,
-            availableDataTypes: TopListItemType.allCases,
-            initialDataType: .authors,
-            service: context.service
-        )
-        .cardStyle()
     }
 }

@@ -1,10 +1,18 @@
 import SwiftUI
 
 struct SimpleErrorView: View {
-    let error: Error
+    let message: String
+
+    init(message: String) {
+        self.message = message
+    }
+
+    init(error: Error) {
+        self.message = error.localizedDescription
+    }
 
     var body: some View {
-        Text(error.localizedDescription)
+        Text(message)
             .font(.subheadline.weight(.medium))
             .multilineTextAlignment(.center)
             .frame(maxWidth: 300)

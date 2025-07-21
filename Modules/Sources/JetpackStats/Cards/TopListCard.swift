@@ -1,40 +1,20 @@
 import SwiftUI
 
 struct TopListCard: View {
-    let dateRange: StatsDateRange
-    let availableItems: [TopListItemType]
-
-    @StateObject private var viewModel: TopListCardViewModel
-    @State private var selectedItem: TopListItemType
-    @State private var selectedMetric: SiteMetric = .views
-
-    private let itemLimit = 6
+    @ObservedObject private var viewModel: TopListCardViewModel
 
     @Environment(\.context) var context
 
-    init(
-        dateRange: StatsDateRange,
-        availableDataTypes: [TopListItemType] = TopListItemType.allCases,
-        initialDataType: TopListItemType = .postsAndPages,
-        service: any StatsServiceProtocol
-    ) {
-        self.dateRange = dateRange
-        self.availableItems = availableDataTypes
+    private let itemLimit = 6
 
-        let selectedItem = availableDataTypes.contains(initialDataType) ? initialDataType : availableDataTypes.first ?? .postsAndPages
-        self._selectedItem = State(initialValue: selectedItem)
-
-        let viewModel = TopListCardViewModel(service: service)
-        self._viewModel = StateObject(wrappedValue: viewModel)
-
-        viewModel.setSelectedMetric(.views)
-        viewModel.loadData(for: selectedItem, dateRange: self.dateRange, metric: .views)
+    init(viewModel: TopListCardViewModel) {
+        self.viewModel = viewModel
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                StatsCardTitleView(title: selectedItem.getTitle(for: selectedMetric))
+                StatsCardTitleView(title: viewModel.title)
                 Spacer(minLength: 44)
             }
             VStack(spacing: 12) {
@@ -42,55 +22,52 @@ struct TopListCard: View {
                 contentView
             }
         }
+        .onAppear {
+            viewModel.onAppear()
+        }
         .padding(Constants.step2)
         .overlay(alignment: .topTrailing) {
             moreMenu
         }
         .grayscale(viewModel.isStale ? 1 : 0)
         .animation(.smooth, value: viewModel.isStale)
-        .onChange(of: selectedItem) { newValue in
-            // Reset to views when data type changes, as not all metrics are available for all types
-            selectedMetric = .views
-            viewModel.loadData(for: newValue, dateRange: dateRange, metric: selectedMetric)
-        }
-        .onChange(of: selectedMetric) { _ in
-            viewModel.setSelectedMetric(selectedMetric)
-            viewModel.loadData(for: selectedItem, dateRange: dateRange, metric: selectedMetric)
-        }
-        .onChange(of: dateRange) { _ in
-            viewModel.loadData(for: selectedItem, dateRange: dateRange, metric: selectedMetric)
-        }
     }
 
     private var headerView: some View {
         HStack {
             Menu {
-                ForEach(availableItems) { dataType in
+                ForEach(viewModel.items) { item in
                     Button {
-                        selectedItem = dataType
+                        var selection = viewModel.selection
+                        selection.item = item
+                        if !item.availableMetrics.contains(selection.metric),
+                           let metric = item.availableMetrics.first {
+                            selection.metric = metric
+                        }
+                        viewModel.selection = selection
                     } label: {
-                        Label(dataType.localizedTitle, systemImage: dataType.systemImage)
+                        Label(item.localizedTitle, systemImage: item.systemImage)
                     }
                 }
                 .tint(Color.primary)
             } label: {
-                InlineValuePickerTitle(title: selectedItem.localizedTitle)
+                InlineValuePickerTitle(title: viewModel.selection.item.localizedTitle)
             }
             .fixedSize()
 
             Spacer()
 
             Menu {
-                ForEach(selectedItem.availableMetrics) { metric in
+                ForEach(viewModel.selection.item.availableMetrics) { metric in
                     Button {
-                        selectedMetric = metric
+                        viewModel.selection.metric = metric
                     } label: {
                         Label(metric.localizedTitle, systemImage: metric.systemImage)
                     }
                 }
                 .tint(Color.primary)
             } label: {
-                InlineValuePickerTitle(title: selectedMetric.localizedTitle)
+                InlineValuePickerTitle(title: viewModel.selection.metric.localizedTitle)
             }
             .fixedSize()
         }
@@ -127,82 +104,64 @@ struct TopListCard: View {
                     .redacted(reason: .placeholder)
             } else if let data = viewModel.matchedData {
                 topListItemsView(data: data)
-            } else if let error = viewModel.loadingError {
+            } else {
                 topListItemsView(data: mockData)
                     .redacted(reason: .placeholder)
                     .grayscale(1)
-                    .opacity(0.8)
+                    .opacity(0.33)
                     .overlay {
-                        SimpleErrorView(error: error)
-                            .background(Color(.systemBackground).opacity(0.66))
+                        SimpleErrorView(message: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
                     }
             }
         }
     }
 
     private func topListItemsView(data: TopListChartData) -> some View {
-        TopListItemsView(
-            data: data,
-            itemLimit: itemLimit,
-            showDetails: true,
-            showMoreButton: true,
-            onShowMore: {
-                // Not implemented
+        VStack(spacing: 0) {
+            ZStack(alignment: .top) {
+                // Ensure consistent sizing
+                TopListItemsView(data: mockData, itemLimit: itemLimit)
+                    .opacity(0)
+                TopListItemsView(data: data, itemLimit: itemLimit)
             }
-        )
+            showMoreButton
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private var showMoreButton: some View {
+        Button {
+            // Not implementd
+        } label: {
+            HStack(spacing: 4) {
+                Text(Strings.Buttons.showAll)
+                    .padding(.trailing, 4)
+                    .font(.callout)
+                    .foregroundColor(.primary)
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            .font(.body)
+        }
+        .padding(.top, 16)
+        .tint(Color.secondary.opacity(0.8))
     }
 
     private var mockData: TopListChartData {
-        TopListChartData.mock(for: selectedItem, metric: selectedMetric, itemCount: itemLimit)
+        TopListChartData.mock(for: viewModel.selection.item, metric: viewModel.selection.metric, itemCount: itemLimit)
     }
 }
 
-// MARK: - Preview
-
 #Preview {
-    ScrollView {
-        VStack(spacing: 20) {
-            // Posts & Pages
-            TopListCard(
-                dateRange: Calendar.demo.makeDateRange(for: .last7Days),
-                availableDataTypes: [.postsAndPages, .posts, .pages],
-                initialDataType: .postsAndPages,
-                service: MockStatsService()
-            )
-            .background(Color(.systemBackground))
-            .cornerRadius(12)
-
-            // Referrers
-            TopListCard(
-                dateRange: Calendar.demo.makeDateRange(for: .last30Days),
-                availableDataTypes: [.referrers],
-                initialDataType: .referrers,
-                service: MockStatsService()
-            )
-            .background(Color(.systemBackground))
-            .cornerRadius(12)
-
-            // Locations
-            TopListCard(
-                dateRange: Calendar.demo.makeDateRange(for: .last30Days),
-                availableDataTypes: [.locations],
-                initialDataType: .locations,
-                service: MockStatsService()
-            )
-            .background(Color(.systemBackground))
-            .cornerRadius(12)
-
-            // Authors
-            TopListCard(
-                dateRange: Calendar.demo.makeDateRange(for: .last30Days),
-                availableDataTypes: [.authors],
-                initialDataType: .authors,
-                service: MockStatsService()
-            )
-            .background(Color(.systemBackground))
-            .cornerRadius(12)
-        }
-        .padding()
-    }
-    .background(Color(.systemGroupedBackground))
+    TopListCard(viewModel: TopListCardViewModel(
+        selection: .init(
+            item: .postsAndPages,
+            metric: .views
+        ),
+        dateRange: Calendar.demo.makeDateRange(for: .last28Days),
+        service: MockStatsService()
+    ))
+    .cardStyle()
+    .padding()
 }

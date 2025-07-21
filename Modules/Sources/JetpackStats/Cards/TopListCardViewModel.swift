@@ -1,11 +1,22 @@
 import SwiftUI
 
 @MainActor
-final class TopListCardViewModel: ObservableObject {
-    @Published var matchedData: TopListChartData?
-    @Published var isLoading = true
-    @Published var loadingError: Error?
-    @Published var isStale = false
+final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
+    let items: [TopListItemType]
+
+    var title: String {
+        selection.item.getTitle(for: selection.metric)
+    }
+
+    @Published var selection: Selection {
+        didSet {
+            loadData()
+        }
+    }
+    @Published private(set) var matchedData: TopListChartData?
+    @Published private(set) var isLoading = true
+    @Published private(set) var loadingError: Error?
+    @Published private(set) var isStale = false
 
     private let service: any StatsServiceProtocol
 
@@ -13,13 +24,33 @@ final class TopListCardViewModel: ObservableObject {
     private var loadRequestCount = 0
     private var staleTimer: Task<Void, Never>?
 
+    var dateRange: StatsDateRange {
+        didSet { loadData() }
+    }
+
+    struct Selection: Equatable {
+        var item: TopListItemType
+        var metric: SiteMetric
+    }
+
     var isFirstLoad: Bool { isLoading && matchedData == nil }
 
-    init(service: any StatsServiceProtocol) {
+    private var isFirstAppear = true
+
+    init(selection: Selection, dateRange: StatsDateRange, service: any StatsServiceProtocol) {
+        self.items = service.supportedItems
+        self.selection = selection
+        self.dateRange = dateRange
         self.service = service
     }
 
-    func loadData(for item: TopListItemType, dateRange: StatsDateRange, metric: SiteMetric) {
+    func onAppear() {
+        guard isFirstAppear else { return }
+        isFirstAppear = false
+        loadData()
+    }
+
+    private func loadData() {
         loadingTask?.cancel()
         staleTimer?.cancel()
 
@@ -31,14 +62,14 @@ final class TopListCardViewModel: ObservableObject {
         // no response in more than T seconds.
         if matchedData != nil {
             staleTimer = Task { [weak self] in
-                try? await Task.sleep(for: .seconds(1))
+                try? await Task.sleep(for: .seconds(2))
                 guard !Task.isCancelled else { return }
                 self?.isStale = true
             }
         }
 
         // Create a new loading task
-        loadingTask = Task { [weak self] in
+        loadingTask = Task { [selection, dateRange, weak self] in
             guard let self else { return }
 
             // Add delay for subsequent requests to avoid rapid API calls when
@@ -48,19 +79,18 @@ final class TopListCardViewModel: ObservableObject {
             }
 
             guard !Task.isCancelled else { return }
-            self.selectedMetric = metric
-            await self.actuallyLoadData(for: item, dateRange: dateRange, metric: metric)
+            await self.actuallyLoadData(for: selection, dateRange: dateRange)
         }
     }
 
-    private func actuallyLoadData(for item: TopListItemType, dateRange: StatsDateRange, metric: SiteMetric) async {
+    private func actuallyLoadData(for selection: Selection, dateRange: StatsDateRange) async {
         isLoading = true
         loadingError = nil
 
         do {
             try Task.checkCancellation()
 
-            let data = try await getTopListData(for: item, dateRange: dateRange)
+            let data = try await getTopListData(for: selection, dateRange: dateRange)
 
             // Check for cancellation before updating the state
             try Task.checkCancellation()
@@ -81,18 +111,18 @@ final class TopListCardViewModel: ObservableObject {
         isLoading = false
     }
 
-    private func getTopListData(for item: TopListItemType, dateRange: StatsDateRange) async throws -> TopListChartData {
+    private func getTopListData(for selection: Selection, dateRange: StatsDateRange) async throws -> TopListChartData {
         let granularity = dateRange.dateInterval.preferredGranularity
 
         // Fetch both current and previous period data concurrently
         async let currentTask = service.getTopListData(
-            item,
-            range: dateRange.dateInterval,
+            selection.item,
+            interval: dateRange.dateInterval,
             granularity: granularity
         )
         async let previousTask = service.getTopListData(
-            item,
-            range: dateRange.effectiveComparisonInterval,
+            selection.item,
+            interval: dateRange.effectiveComparisonInterval,
             granularity: granularity
         )
 
@@ -105,21 +135,11 @@ final class TopListCardViewModel: ObservableObject {
         }
 
         // Calculate max value from current items based on selected metric
-        let metric = selectedMetric ?? .views
+        let metric = selection.metric
         let maxValue = current.items
             .compactMap { $0.metrics[metric] }
             .max() ?? 1
 
-        return TopListChartData(item: item, metric: metric, items: matchedItems, maxValue: maxValue)
-    }
-
-    var maxValue: Int {
-        matchedData?.maxValue ?? 1
-    }
-
-    private var selectedMetric: SiteMetric?
-
-    func setSelectedMetric(_ metric: SiteMetric) {
-        selectedMetric = metric
+        return TopListChartData(item: selection.item, metric: metric, items: matchedItems, maxValue: maxValue)
     }
 }

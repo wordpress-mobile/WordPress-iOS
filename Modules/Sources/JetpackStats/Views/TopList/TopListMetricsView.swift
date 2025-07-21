@@ -25,7 +25,7 @@ struct TopListMetricsView: View {
                 .font(.caption.weight(.medium)).tracking(-0.33)
                 .foregroundColor(trend.sentiment.foregroundColor)
                 .contentTransition(.numericText())
-                .padding(.trailing, -4)
+                .padding(.trailing, -2)
             }
         }
         .animation(.smooth, value: ID(currentValue: currentValue, previousValue: previousValue))

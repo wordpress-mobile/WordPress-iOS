@@ -85,6 +85,7 @@ extension TopListChartData {
             return TopListData.Post(
                 title: data.0,
                 postId: "\(index + 1)",
+                date: nil,
                 pageId: nil,
                 type: nil,
                 author: data.1,
@@ -188,94 +189,45 @@ extension TopListChartData {
         }
     }
 
-    private static func createMetrics(baseValue: Int, metric: SiteMetric) -> TopListData.Metrics {
+    private static func createMetrics(baseValue: Int, metric: SiteMetric) -> SiteMetricsSet {
         // Add some variation to make it more realistic
         let variation = Double.random(in: 0.8...1.2)
         let value = Int(Double(baseValue) * variation)
 
         switch metric {
         case .views:
-            return TopListData.Metrics(views: value)
+            return SiteMetricsSet(views: value)
         case .visitors:
             // Visitors are typically 60-80% of views
             let visitorRatio = Double.random(in: 0.6...0.8)
-            return TopListData.Metrics(visitors: Int(Double(value) * visitorRatio))
+            return SiteMetricsSet(visitors: Int(Double(value) * visitorRatio))
         case .likes:
             // Likes are typically 2-5% of views
             let likeRatio = Double.random(in: 0.02...0.05)
-            return TopListData.Metrics(likes: Int(Double(value) * likeRatio))
+            return SiteMetricsSet(likes: Int(Double(value) * likeRatio))
         case .comments:
             // Comments are typically 0.5-2% of views
             let commentRatio = Double.random(in: 0.005...0.02)
-            return TopListData.Metrics(comments: Int(Double(value) * commentRatio))
+            return SiteMetricsSet(comments: Int(Double(value) * commentRatio))
+        case .posts:
+            let postsRatio = Double.random(in: 0.002...0.005)
+            return SiteMetricsSet(comments: Int(Double(value) * postsRatio))
         case .timeOnSite:
             // Time on site not applicable for top list items
-            return TopListData.Metrics(views: value)
+            return SiteMetricsSet(views: value)
         case .bounceRate:
             // Bounce rate not applicable for top list items
-            return TopListData.Metrics(views: value)
+            return SiteMetricsSet(views: value)
         }
     }
 
     private static func mockPreviousItem(from item: any TopListItem, metric: SiteMetric) -> any TopListItem {
+        var item = item
+
         // Create previous value that's 70-130% of current value for realistic trends
         let trendFactor = Double.random(in: 0.7...1.3)
         let currentValue = item.metrics[metric] ?? 0
-        let previousValue = Int(Double(currentValue) * trendFactor)
-
-        var previousMetrics = item.metrics
-        switch metric {
-        case .views:
-            previousMetrics.views = previousValue
-        case .visitors:
-            previousMetrics.visitors = previousValue
-        case .likes:
-            previousMetrics.likes = previousValue
-        case .comments:
-            previousMetrics.comments = previousValue
-        case .timeOnSite, .bounceRate:
-            // These metrics are not applicable for top list items
-            previousMetrics.views = previousValue
-        }
-
-        // Return the same item type with updated metrics
-        if let post = item as? TopListData.Post {
-            return TopListData.Post(
-                title: post.title,
-                postId: post.postId,
-                pageId: post.pageId,
-                type: post.type,
-                author: post.author,
-                metrics: previousMetrics
-            )
-        } else if let referrer = item as? TopListData.Referrer {
-            return TopListData.Referrer(
-                name: referrer.name,
-                domain: referrer.domain,
-                metrics: previousMetrics
-            )
-        } else if let location = item as? TopListData.Location {
-            return TopListData.Location(
-                country: location.country,
-                flag: location.flag,
-                countryCode: location.countryCode,
-                metrics: previousMetrics
-            )
-        } else if let author = item as? TopListData.Author {
-            return TopListData.Author(
-                name: author.name,
-                userId: author.userId,
-                role: author.role,
-                metrics: previousMetrics,
-                avatarURL: author.avatarURL
-            )
-        } else if let link = item as? TopListData.ExternalLink {
-            return TopListData.ExternalLink(
-                url: link.url,
-                title: link.title,
-                metrics: previousMetrics
-            )
-        }
+        item.metrics[metric] = Int(Double(currentValue) * trendFactor)
 
         return item
     }

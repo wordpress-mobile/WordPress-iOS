@@ -108,7 +108,8 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             parentViewController.show(controller, sender: nil)
         case .stats:
             trackQuickActionsEvent(.statsAccessed, blog: blog)
-            StatsViewController.show(for: blog, from: parentViewController)
+            let statsVC = StatsHostingViewController.makeStatsViewController(for: blog)
+            parentViewController.show(statsVC, sender: nil)
         case .more:
             let viewController = BlogDetailsViewController()
             viewController.isScrollEnabled = true

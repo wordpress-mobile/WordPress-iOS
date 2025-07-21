@@ -34,6 +34,7 @@ enum Constants {
         static let green = Color(palette: CSColor.Green.self)
         static let orange = Color(palette: CSColor.Orange.self)
         static let pink = Color(palette: CSColor.Pink.self)
+        static let celadon = Color(palette: CSColor.Celadon.self)
     }
 
     static let step1: CGFloat = 12

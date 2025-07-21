@@ -31,7 +31,7 @@ struct TopListItemView: View {
             // Metrics view
             TopListMetricsView(
                 currentValue: currentItem.metrics[metric] ?? 0,
-                previousValue: previousItem?.metrics[metric],
+                previousValue: previousItem?.metrics[metric] ?? 0,
                 metric: metric,
                 showDetails: showDetails
             )

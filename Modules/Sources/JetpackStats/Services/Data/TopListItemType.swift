@@ -38,8 +38,8 @@ enum TopListItemType: Identifiable, CaseIterable {
     var availableMetrics: [SiteMetric] {
         switch self {
         case .postsAndPages, .posts, .pages: [.views, .visitors, .comments, .likes]
-        case .referrers: SiteMetric.allCases
-        case .locations: SiteMetric.allCases
+        case .referrers: [.views, .views]
+        case .locations: [.views, .views]
         case .authors: [.views, .comments, .likes]
         case .externalLinks: [.views, .visitors]
         }
@@ -51,6 +51,7 @@ enum TopListItemType: Identifiable, CaseIterable {
         case .visitors: Strings.TopListTitles.mostVisitors
         case .comments: Strings.TopListTitles.mostCommented
         case .likes: Strings.TopListTitles.mostLiked
+        case .posts: Strings.TopListTitles.mostPosts
         case .bounceRate: Strings.TopListTitles.highestBounceRate
         case .timeOnSite: Strings.TopListTitles.longestTimeOnSite
         }

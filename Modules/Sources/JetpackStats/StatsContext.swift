@@ -1,6 +1,6 @@
 import Foundation
 import SwiftUI
-import WordPressKit
+@preconcurrency import WordPressKit
 
 public struct StatsContext: Sendable {
     /// The reporting time zone (the time zone of the site).
@@ -10,7 +10,7 @@ public struct StatsContext: Sendable {
     let formatters: StatsFormatters
 
     public init(timeZone: TimeZone, siteID: Int, api: WordPressComRestApi) {
-        self.init(timeZone: timeZone, service: StatsService(siteID: siteID, api: api, siteTimezone: timeZone))
+        self.init(timeZone: timeZone, service: StatsService(siteID: siteID, api: api, timeZone: timeZone))
     }
 
     init(timeZone: TimeZone, service: (any StatsServiceProtocol)) {

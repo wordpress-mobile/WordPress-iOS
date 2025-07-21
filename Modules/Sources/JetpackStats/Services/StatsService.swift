@@ -1,128 +1,203 @@
 import Foundation
+import WordPressShared
 @preconcurrency import WordPressKit
 
-final class StatsService: StatsServiceProtocol {
+/// - warning: The dates in StatsServiceRemoteV2 are represented in TimeZone.local
+/// despite it accepting `siteTimezone` as a parameter. The parameter was
+/// added later and is only used in a small subset of methods, which means
+/// thay we have to convert the dates from the local time zone to the
+/// site reporting time zone (as expected by the app).
+actor StatsService: StatsServiceProtocol {
     private let siteID: Int
     private let api: WordPressComRestApi
-    private let remoteService: StatsServiceRemoteV2
+    private let service: StatsServiceRemoteV2
+    private let siteTimeZone: TimeZone
+    // Temporary
+    private var mocks: MockStatsService
 
-    init(siteID: Int, api: WordPressComRestApi, siteTimezone: TimeZone) {
+    let supportedMetrics: [SiteMetric] = [
+        .views, .visitors, .likes, .comments, .posts
+    ]
+
+    let supportedItems: [TopListItemType] = [
+        .postsAndPages
+    ]
+
+    init(siteID: Int, api: WordPressComRestApi, timeZone: TimeZone) {
         self.siteID = siteID
         self.api = api
-        self.remoteService = StatsServiceRemoteV2(
+        self.service = StatsServiceRemoteV2(
             wordPressComRestApi: api,
             siteID: siteID,
-            siteTimezone: siteTimezone
+            siteTimezone: timeZone
         )
+        self.siteTimeZone = timeZone
+        self.mocks = MockStatsService(timeZone: timeZone)
     }
 
-    /// - warning: The dates in StatsServiceRemoteV2 are represented in TimeZone.local
-    /// despite it accepting `siteTimezone` as a parameter. The parameter was
-    /// added later and is only used in a small subset of methods, which means
-    /// thay we have to convert the dates from the local time zone to the
-    /// site reporting time zone (as expected by the app).
-    func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteStatsData {
-        let period = mapGranularityToPeriod(granularity)
-        let endDate = interval.end
-        let summaryData: StatsSummaryTimeIntervalData = try await remoteService.getData(for: period, endingOn: endDate)
-        return mapToSiteStatsData(summaryData, interval: interval, granularity: granularity)
+    // MARK: - StatsServiceProtocol
+
+    func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsData {
+        let interval = convertDateIntervalSiteToLocal(interval)
+
+        if granularity == .hour {
+            // Hourly data is available only for "Views", so the service has to
+            // make a separate request to fetch the total metrics.
+            async let hourlyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(interval: interval, unit: .init(granularity))
+            async let dailyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(interval: interval, unit: .init(.day))
+
+            let (hourlyResponse, dailyResponse) = try await (hourlyResponseTask, dailyResponseTask)
+
+            var data = mapSiteMetricsResponse(hourlyResponse)
+            data.total = mapSiteMetricsResponse(dailyResponse).total
+            return data
+        } else {
+            let response: WordPressKit.StatsSiteMetricsResponse = try await service.getData(interval: interval, unit: .init(granularity))
+            return mapSiteMetricsResponse(response)
+        }
     }
 
-    func getTopListData(_ dataType: TopListItemType, range: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
-        let period = mapGranularityToPeriod(granularity)
-        let endDate = range.end
+    func getTopListData(_ item: TopListItemType, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
+        do {
+            return try await _getTopListData(item, interval: interval, granularity: granularity)
+        } catch {
+            // A workaround for an issue where `/stats` return `"summary": null`
+            // when there are no recoreded periods (happens when the entire requested
+            // period is _before_ the site creation).
+            if let error = error as? StatsServiceRemoteV2.ResponseError,
+               error == .emptySummary {
+                return TopListData(items: [])
+            }
+            throw error
+        }
+    }
 
-        switch dataType {
+    private func _getTopListData(_ item: TopListItemType, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
+
+        func getData<T: WordPressKit.StatsTimeIntervalData>(
+            _ type: T.Type,
+            parameters: [String: String]? = nil
+        ) async throws -> T where T: Sendable {
+            /// The `summarize: true` feature works correctly only with the `.day` granularity.
+            let interval = convertDateIntervalSiteToLocal(interval)
+            return try await service.getData(interval: interval, unit: .day, summarize: true, parameters: parameters)
+        }
+
+        switch item {
         case .postsAndPages:
-            throw StatsServiceError.notImplemented("Not implemented")
-
-        case .pages:
-            throw StatsServiceError.notImplemented("Not implemented")
-
-        case .posts:
-            let data: StatsTopPostsTimeIntervalData = try await remoteService.getData(for: period, endingOn: endDate)
+            let data = try await getData(StatsTopPostsTimeIntervalData.self)
             return mapPostsToTopListData(data)
 
+        case .pages:
+            throw StatsServiceError.notImplemented
+
+        case .posts:
+            throw StatsServiceError.notImplemented
+
         case .referrers:
-            let data: StatsTopReferrersTimeIntervalData = try await remoteService.getData(for: period, endingOn: endDate)
+            let data = try await getData(StatsTopReferrersTimeIntervalData.self)
             return mapReferrersToTopListData(data)
 
         case .locations:
-            let data: StatsTopCountryTimeIntervalData = try await remoteService.getData(for: period, endingOn: endDate)
+            let data = try await getData(StatsTopCountryTimeIntervalData.self)
             return mapCountriesToTopListData(data)
 
         case .authors:
-            let data: StatsTopAuthorsTimeIntervalData = try await remoteService.getData(for: period, endingOn: endDate)
+            let data = try await getData(StatsTopAuthorsTimeIntervalData.self)
             return mapAuthorsToTopListData(data)
 
         case .externalLinks:
-            throw StatsServiceError.notImplemented("Not implemented")
+            throw StatsServiceError.notImplemented
         }
     }
 
-    func getRealtimeTopListData(_ dataType: TopListItemType) async throws -> TopListData {
-        // NOTE: Realtime data requires different endpoints that are not yet available in WordPressKit
-        throw StatsServiceError.notImplemented("Not implemented")
+    func getRealtimeTopListData(_ item: TopListItemType) async throws -> TopListData {
+        try await mocks.getRealtimeTopListData(item)
     }
 
-    // MARK: - Private Helpers
+    // MARK: - Dates
 
-    private func mapGranularityToPeriod(_ granularity: DateRangeGranularity) -> StatsPeriodUnit {
-        switch granularity {
-        case .hour:
-#warning("Not implemented")
-            return .day
-        case .day:
-            return .day
-        case .month:
-            return .month
-        case .year:
-            return .year
+    /// Convert from the site timezone (used in JetpackState) to the local
+    /// timezone (expected by WordPressKit) while preserving the date components.
+    ///
+    /// For .hour unit, WPKit will send "2025-01-01 – 2025-01-07" (inclusive).
+    /// For other unit, it will send "2025-01-01 00:00:00 – 2025-01-07 23:59:59".
+    private func convertDateIntervalSiteToLocal(_ dateInterval: DateInterval) -> DateInterval {
+        let start = convertDateSiteToLocal(dateInterval.start)
+        let end = convertDateSiteToLocal(dateInterval.end.addingTimeInterval(-1))
+        return DateInterval(start: start, end: end)
+    }
+
+    /// Convert from the site timezone (used in JetpackState) to the local
+    /// timezone (expected by WordPressKit) while preserving the date components.
+    private func convertDateSiteToLocal(_ date: Date) -> Date {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents(in: siteTimeZone, from: date)
+        guard let output = calendar.date(from: components) else {
+            wpAssertionFailure("failed to convert date to local time zone", userInfo: ["date": date])
+            return date
         }
+        return output
     }
 
-    private func mapToSiteStatsData(_ summaryData: StatsSummaryTimeIntervalData, interval: DateInterval, granularity: DateRangeGranularity) -> SiteStatsData {
+    // MARK: - Mapping (WordPressKit -> JetpackStats)
+
+    private func mapSiteMetricsResponse(_ response: WordPressKit.StatsSiteMetricsResponse) -> SiteMetricsData {
+        var calendar = Calendar.current
+        calendar.timeZone = siteTimeZone
+
+        let now = Date.now
+
+        func makeDataPoint(from data: WordPressKit.StatsSiteMetricsResponse.PeriodData, metric: WordPressKit.StatsSiteMetricsResponse.Metric) -> DataPoint? {
+            guard let value = data[metric] else {
+                return nil
+            }
+            let date: Date = {
+                let components = calendar.dateComponents(in: TimeZone.current, from: data.date)
+                guard let output = calendar.date(from: components) else {
+                    wpAssertionFailure("failed to convert date to site time zone", userInfo: ["date": data.date])
+                    return data.date
+                }
+                return output
+            }()
+            guard date <= now else {
+                return nil // Filter out future dates
+            }
+            return DataPoint(date: date, value: value)
+        }
+
+        var total = SiteMetricsSet()
         var metrics: [SiteMetric: [DataPoint]] = [:]
-
-        // Map views
-        metrics[.views] = summaryData.summaryData.map { summary in
-            DataPoint(date: summary.periodStartDate, value: summary.viewsCount)
+        for metric in supportedMetrics {
+            let mappedMetric = WordPressKit.StatsSiteMetricsResponse.Metric(metric)
+            let dataPoints = response.data.compactMap {
+                makeDataPoint(from: $0, metric: mappedMetric)
+            }
+            metrics[metric] = dataPoints
+            total[metric] = DataPoint.getTotalValue(for: dataPoints, metric: metric)
         }
-
-        // Map visitors
-        metrics[.visitors] = summaryData.summaryData.map { summary in
-            DataPoint(date: summary.periodStartDate, value: summary.visitorsCount)
-        }
-
-        // Map likes
-        metrics[.likes] = summaryData.summaryData.map { summary in
-            DataPoint(date: summary.periodStartDate, value: summary.likesCount)
-        }
-
-        // Map comments
-        metrics[.comments] = summaryData.summaryData.map { summary in
-            DataPoint(date: summary.periodStartDate, value: summary.commentsCount)
-        }
-
-        // NOTE: Time on site and bounce rate not available in StatsSummaryData
-
-        return SiteStatsData(metrics: metrics)
+        return SiteMetricsData(total: total, metrics: metrics)
     }
 
     private func mapPostsToTopListData(_ data: StatsTopPostsTimeIntervalData) -> TopListData {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = siteTimeZone
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
         let items = data.topPosts.map { post in
             TopListData.Post(
                 title: post.title,
                 postId: String(post.postID),
+                date: post.date.flatMap(dateFormatter.date),
                 pageId: nil,
                 type: post.kind.description,
                 author: nil,
-                metrics: TopListData.Metrics(
+                metrics: SiteMetricsSet(
                     views: post.viewsCount
                 )
             )
         }
-
         return TopListData(items: items)
     }
 
@@ -131,7 +206,7 @@ final class StatsService: StatsServiceProtocol {
             TopListData.Referrer(
                 name: referrer.title,
                 domain: referrer.url?.host,
-                metrics: TopListData.Metrics(
+                metrics: SiteMetricsSet(
                     views: referrer.viewsCount
                 )
             )
@@ -146,7 +221,7 @@ final class StatsService: StatsServiceProtocol {
                 country: country.name,
                 flag: countryCodeToEmoji(country.code),
                 countryCode: country.code,
-                metrics: TopListData.Metrics(
+                metrics: SiteMetricsSet(
                     views: country.viewsCount
                 )
             )
@@ -161,7 +236,7 @@ final class StatsService: StatsServiceProtocol {
                 name: author.name,
                 userId: author.name, // NOTE: WordPressKit doesn't provide user ID
                 role: nil,
-                metrics: TopListData.Metrics(
+                metrics: SiteMetricsSet(
                     views: author.viewsCount
                 ),
                 avatarURL: author.iconURL
@@ -186,14 +261,14 @@ final class StatsService: StatsServiceProtocol {
 
 enum StatsServiceError: LocalizedError {
     case noData
-    case notImplemented(String)
-    
+    case notImplemented
+
     var errorDescription: String? {
         switch self {
         case .noData:
             return "No data received from the server"
-        case .notImplemented(let feature):
-            return "\(feature)"
+        case .notImplemented:
+            return "Not implemented"
         }
     }
 }
@@ -222,20 +297,37 @@ private extension StatsTopPost.Kind {
     }
 }
 
+// TODO: rework this
+private extension WordPressKit.StatsSiteMetricsResponse.Metric {
+    init(_ metric: SiteMetric) {
+        switch metric {
+        case .views: self = .views
+        case .visitors: self = .visitors
+        case .likes: self = .likes
+        case .comments: self = .comments
+        case .posts: self = .posts
+        case .timeOnSite, .bounceRate:
+             wpAssertionFailure("not supported")
+            self = .views
+        }
+    }
+}
+
 // MARK: - StatsServiceRemoteV2 Async Extensions
 
-private extension StatsServiceRemoteV2 {
-    func getData<TimeStatsType: StatsTimeIntervalData>(
+private extension WordPressKit.StatsServiceRemoteV2 {
+    func getData<TimeStatsType: WordPressKit.StatsTimeIntervalData>(
         interval: DateInterval,
-        unit: StatsPeriodUnit,
-        limit: Int = 10
-    ) async throws -> TimeStatsType where TimeStatsType: Sendable  {
+        unit: WordPressKit.StatsPeriodUnit,
+        summarize: Bool? = nil,
+        parameters: [String: String]? = nil
+    ) async throws -> TimeStatsType where TimeStatsType: Sendable {
         try await withCheckedThrowingContinuation { continuation in
             // `period` is ignored if you pass `startDate`, but it's a required parameter
-            getData(for: unit, unit: unit, startDate: interval.start, endingOn: interval.end, limit: limit) { (data: TimeStatsType?, error: Error?) in
-                if let error = error {
+            getData(for: unit, unit: unit, startDate: interval.start, endingOn: interval.end, limit: 0, summarize: summarize, parameters: parameters) { (data: TimeStatsType?, error: Error?) in
+                if let error {
                     continuation.resume(throwing: error)
-                } else if let data = data {
+                } else if let data {
                     continuation.resume(returning: data)
                 } else {
                     continuation.resume(throwing: StatsServiceError.noData)
@@ -244,12 +336,12 @@ private extension StatsServiceRemoteV2 {
         }
     }
 
-    func getInsight<InsightType: StatsInsightData,>(limit: Int = 10) async throws -> InsightType where InsightType: Sendable {
+    func getInsight<InsightType: StatsInsightData>(limit: Int = 10) async throws -> InsightType where InsightType: Sendable {
         try await withCheckedThrowingContinuation { continuation in
             getInsight(limit: limit) { (insight: InsightType?, error: Error?) in
-                if let error = error {
+                if let error {
                     continuation.resume(throwing: error)
-                } else if let insight = insight {
+                } else if let insight {
                     continuation.resume(returning: insight)
                 } else {
                     continuation.resume(throwing: StatsServiceError.noData)
@@ -261,9 +353,9 @@ private extension StatsServiceRemoteV2 {
     func getDetails(forPostID postID: Int) async throws -> StatsPostDetails {
         try await withCheckedThrowingContinuation { continuation in
             getDetails(forPostID: postID) { (details: StatsPostDetails?, error: Error?) in
-                if let error = error {
+                if let error {
                     continuation.resume(throwing: error)
-                } else if let details = details {
+                } else if let details {
                     continuation.resume(returning: details)
                 } else {
                     continuation.resume(throwing: StatsServiceError.noData)
@@ -275,28 +367,10 @@ private extension StatsServiceRemoteV2 {
     func getInsight(limit: Int = 10) async throws -> StatsLastPostInsight {
         try await withCheckedThrowingContinuation { continuation in
             getInsight(limit: limit) { (insight: StatsLastPostInsight?, error: Error?) in
-                if let error = error {
+                if let error {
                     continuation.resume(throwing: error)
-                } else if let insight = insight {
+                } else if let insight {
                     continuation.resume(returning: insight)
-                } else {
-                    continuation.resume(throwing: StatsServiceError.noData)
-                }
-            }
-        }
-    }
-
-    func getData(
-        for period: StatsPeriodUnit,
-        endingOn: Date,
-        limit: Int = 10
-    ) async throws -> StatsPublishedPostsTimeIntervalData {
-        try await withCheckedThrowingContinuation { continuation in
-            getData(for: period, endingOn: endingOn, limit: limit) { (data: StatsPublishedPostsTimeIntervalData?, error: Error?) in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let data = data {
-                    continuation.resume(returning: data)
                 } else {
                     continuation.resume(throwing: StatsServiceError.noData)
                 }
@@ -314,7 +388,7 @@ private extension StatsServiceRemoteV2 {
         }
     }
 
-    func getData(
+    func getEmailSummaryData(
         quantity: Int,
         sortField: StatsEmailsSummaryData.SortField = .opens,
         sortOrder: StatsEmailsSummaryData.SortOrder = .descending

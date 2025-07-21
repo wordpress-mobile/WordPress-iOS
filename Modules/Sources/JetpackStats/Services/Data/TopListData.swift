@@ -5,38 +5,19 @@ struct TopListData: Sendable {
 }
 
 protocol TopListItem: Codable, Sendable, Identifiable {
-    var metrics: TopListData.Metrics { get set }
+    var metrics: SiteMetricsSet { get set }
     var id: String { get }
 }
 
 extension TopListData {
-    struct Metrics: Codable {
-        var views: Int?
-        var visitors: Int?
-        var likes: Int?
-        var comments: Int?
-        var bounceRate: Int?
-        var timeOnSite: Int?
-
-        subscript(metric: SiteMetric) -> Int? {
-            switch metric {
-            case .views: views
-            case .visitors: visitors
-            case .likes: likes
-            case .comments: comments
-            case .bounceRate: bounceRate
-            case .timeOnSite: timeOnSite
-            }
-        }
-    }
-
     struct Post: Codable, TopListItem {
         let title: String
         let postId: String?
+        let date: Date?
         let pageId: String?
         let type: String?
         let author: String?
-        var metrics: Metrics
+        var metrics: SiteMetricsSet
 
         var id: String { postId ?? pageId ?? title }
     }
@@ -44,7 +25,7 @@ extension TopListData {
     struct Referrer: Codable, TopListItem {
         let name: String
         let domain: String?
-        var metrics: Metrics
+        var metrics: SiteMetricsSet
 
         var id: String { domain ?? name }
     }
@@ -53,7 +34,7 @@ extension TopListData {
         let country: String
         let flag: String?
         let countryCode: String?
-        var metrics: Metrics
+        var metrics: SiteMetricsSet
 
         var id: String { countryCode ?? country }
     }
@@ -62,7 +43,7 @@ extension TopListData {
         let name: String
         let userId: String
         let role: String?
-        var metrics: Metrics
+        var metrics: SiteMetricsSet
         var avatarURL: URL?
 
         var id: String { userId }
@@ -71,7 +52,7 @@ extension TopListData {
     struct ExternalLink: Codable, TopListItem {
         let url: String
         let title: String?
-        var metrics: Metrics
+        var metrics: SiteMetricsSet
 
         var id: String { url }
     }

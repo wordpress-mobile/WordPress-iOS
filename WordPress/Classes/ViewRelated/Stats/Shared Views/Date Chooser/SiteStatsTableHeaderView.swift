@@ -202,6 +202,8 @@ private extension SiteStatsTableHeaderView {
         dateFormatter.setLocalizedDateFormatFromTemplate(period.dateFormatTemplate)
 
         switch period {
+        case .hour:
+            fatalError("unsupported")
         case .day, .month, .year:
             return (dateFormatter.string(from: date), nil)
         case .week:

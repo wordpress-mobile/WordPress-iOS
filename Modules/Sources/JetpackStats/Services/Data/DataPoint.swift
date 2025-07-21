@@ -35,9 +35,9 @@ extension DataPoint {
         }
     }
 
-    static func getTotalValue(for dataPoints: [DataPoint], metric: SiteMetric) -> Int {
+    static func getTotalValue(for dataPoints: [DataPoint], metric: SiteMetric) -> Int? {
         guard !dataPoints.isEmpty else {
-            return 0
+            return nil
         }
         let total = dataPoints.reduce(0) { $0 + $1.value }
         switch metric.aggregarionStrategy {

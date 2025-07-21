@@ -87,7 +87,12 @@ struct TrendViewModel: Hashable {
     /// Formatted percentage string (shows "∞" for infinite change)
     /// - Example: "25%", "150.5%", or "∞" when previousValue was 0.
     var formattedPercentage: String {
-        guard let percentage else { return "∞" }
+        if currentValue == 0 && previousValue == 0 {
+            return "0"
+        }
+        guard let percentage else {
+            return "∞"
+        }
         return percentage.formatted(.percent.precision(.fractionLength(0...1)))
     }
 }

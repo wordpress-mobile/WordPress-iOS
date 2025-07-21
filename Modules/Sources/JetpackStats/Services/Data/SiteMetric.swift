@@ -5,6 +5,7 @@ enum SiteMetric: CaseIterable, Identifiable {
     case visitors
     case likes
     case comments
+    case posts
     case timeOnSite
     case bounceRate
 
@@ -16,6 +17,7 @@ enum SiteMetric: CaseIterable, Identifiable {
         case .visitors: Strings.SiteMetrics.visitors
         case .likes: Strings.SiteMetrics.likes
         case .comments: Strings.SiteMetrics.comments
+        case .posts: Strings.SiteMetrics.posts
         case .timeOnSite: Strings.SiteMetrics.timeOnSite
         case .bounceRate: Strings.SiteMetrics.bounceRate
         }
@@ -27,6 +29,7 @@ enum SiteMetric: CaseIterable, Identifiable {
         case .visitors: "person.2"
         case .likes: "star"
         case .comments: "bubble.left"
+        case .posts: "paragraphsign"
         case .timeOnSite: "clock"
         case .bounceRate: "rectangle.portrait.and.arrow.right"
         }
@@ -38,6 +41,7 @@ enum SiteMetric: CaseIterable, Identifiable {
         case .visitors: Constants.Colors.purple
         case .likes: Constants.Colors.red
         case .comments: Constants.Colors.green
+        case .posts: Constants.Colors.celadon
         case .timeOnSite: Constants.Colors.orange
         case .bounceRate: Constants.Colors.pink
         }
@@ -51,7 +55,7 @@ enum SiteMetric: CaseIterable, Identifiable {
 extension SiteMetric {
     var isHigherValueBetter: Bool {
         switch self {
-        case .views, .visitors, .likes, .comments, .timeOnSite:
+        case .views, .visitors, .likes, .comments, .timeOnSite, .posts:
             return true
         case .bounceRate:
             return false
@@ -60,7 +64,7 @@ extension SiteMetric {
 
     var aggregarionStrategy: AggregationStrategy {
         switch self {
-        case .views, .visitors, .likes, .comments:
+        case .views, .visitors, .likes, .comments, .posts:
             return .sum
         case .timeOnSite, .bounceRate:
             return .average

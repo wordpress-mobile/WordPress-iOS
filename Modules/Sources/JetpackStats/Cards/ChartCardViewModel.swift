@@ -1,27 +1,42 @@
 import SwiftUI
 
 @MainActor
-final class ChartCardViewModel: ObservableObject {
-    @Published var chartData: [SiteMetric: ChartData] = [:]
-    @Published var isLoading = true
-    @Published var loadingError: Error?
-    @Published var isStale = false
+final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
+    let metrics: [SiteMetric]
 
-    private let metrics: [SiteMetric]
+    @Published private(set) var chartData: [SiteMetric: ChartData] = [:]
+    @Published private(set) var isLoading = true
+    @Published private(set) var loadingError: Error?
+    @Published private(set) var isStale = false
+
+    var dateRange: StatsDateRange {
+        didSet {
+            loadData(for: dateRange)
+        }
+    }
+
     private let service: any StatsServiceProtocol
 
     private var loadingTask: Task<Void, Never>?
     private var loadRequestCount = 0
     private var staleTimer: Task<Void, Never>?
+    private var isFirstAppear = true
 
     var isFirstLoad: Bool { isLoading && chartData.isEmpty }
 
-    init(metrics: [SiteMetric], service: any StatsServiceProtocol) {
+    init(metrics: [SiteMetric], dateRange: StatsDateRange, service: any StatsServiceProtocol) {
         self.metrics = metrics
+        self.dateRange = dateRange
         self.service = service
     }
 
-    func loadData(for dateRange: StatsDateRange) {
+    func onAppear() {
+        guard isFirstAppear else { return }
+        isFirstAppear = false
+        loadData(for: dateRange)
+    }
+
+    private func loadData(for dateRange: StatsDateRange) {
         loadingTask?.cancel()
         staleTimer?.cancel()
 
@@ -33,7 +48,7 @@ final class ChartCardViewModel: ObservableObject {
         // no response in more than T seconds.
         if !chartData.isEmpty {
             staleTimer = Task { [weak self] in
-                try? await Task.sleep(for: .seconds(1))
+                try? await Task.sleep(for: .seconds(2))
                 guard !Task.isCancelled else { return }
                 self?.isStale = true
             }
@@ -100,7 +115,8 @@ final class ChartCardViewModel: ObservableObject {
         for (metric, dataPoints) in currentResponse.metrics {
             let previousDataPoints = previousResponse.metrics[metric] ?? []
 
-            // Map previous data to align with current period dates
+            // Map previous data to align with current period dates so they
+            // are displayed on the same timeline on the charts.
             let mappedPreviousDataPoints = DataPoint.mapDataPoints(
                 previousDataPoints,
                 from: dateRange.effectiveComparisonInterval,
@@ -112,7 +128,9 @@ final class ChartCardViewModel: ObservableObject {
             output[metric] = ChartData(
                 metric: metric,
                 granularity: granularity,
+                currentTotal: currentResponse.total[metric] ?? 0,
                 currentData: dataPoints,
+                previousTotal: previousResponse.total[metric] ?? 0,
                 previousData: previousDataPoints,
                 mappedPreviousData: mappedPreviousDataPoints
             )

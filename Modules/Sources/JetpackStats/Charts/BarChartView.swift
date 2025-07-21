@@ -22,6 +22,7 @@ struct BarChartView: View {
         .chartXAxis { xAxis }
         .chartYAxis { yAxis }
         .chartLegend(.hidden)
+        .environment(\.timeZone, context.timeZone)
         .modifier(ChartSelectionModifier(selection: $selectedDate))
         .animation(.spring, value: ObjectIdentifier(data))
         .onChange(of: selectedDate) {

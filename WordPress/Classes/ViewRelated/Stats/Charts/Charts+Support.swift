@@ -116,6 +116,8 @@ enum LineChartAnalyticsPropertyGranularityValue: String, CaseIterable {
 extension StatsPeriodUnit {
     var analyticsGranularity: BarChartAnalyticsPropertyGranularityValue {
         switch self {
+        case .hour:
+            fatalError("unsupported")
         case .day:
             return .days
         case .week:
@@ -129,6 +131,8 @@ extension StatsPeriodUnit {
 
     var analyticsGranularityLine: LineChartAnalyticsPropertyGranularityValue {
         switch self {
+        case .hour:
+            fatalError("unsupported")
         case .day:
             return .days
         case .week:

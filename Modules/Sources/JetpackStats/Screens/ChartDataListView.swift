@@ -281,11 +281,13 @@ struct RoundedCorner: Shape {
                 .views: ChartData(
                     metric: .views,
                     granularity: .day,
+                    currentTotal: 3000,
                     currentData: [
                         DataPoint(date: Date(), value: 1000),
                         DataPoint(date: Date().addingTimeInterval(-86400), value: 1200),
                         DataPoint(date: Date().addingTimeInterval(-172800), value: 800)
                     ],
+                    previousTotal: 2750,
                     previousData: [
                         DataPoint(date: Date().addingTimeInterval(-604800), value: 900),
                         DataPoint(date: Date().addingTimeInterval(-691200), value: 1100),

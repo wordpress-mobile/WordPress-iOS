@@ -3,17 +3,22 @@ import SwiftUI
 final class ChartData {
     let metric: SiteMetric
     let granularity: DateRangeGranularity
+    let currentTotal: Int
     let currentData: [DataPoint]
+    let previousTotal: Int
     let previousData: [DataPoint]
     let mappedPreviousData: [DataPoint]
 
-    lazy private(set) var currentTotal = DataPoint.getTotalValue(for: currentData, metric: metric)
-    lazy private(set) var previousTotal = DataPoint.getTotalValue(for: previousData, metric: metric)
+    var isEmpty: Bool {
+        currentData.isEmpty && previousData.isEmpty
+    }
 
-    init(metric: SiteMetric, granularity: DateRangeGranularity, currentData: [DataPoint], previousData: [DataPoint], mappedPreviousData: [DataPoint]) {
+    init(metric: SiteMetric, granularity: DateRangeGranularity, currentTotal: Int, currentData: [DataPoint], previousTotal: Int, previousData: [DataPoint], mappedPreviousData: [DataPoint]) {
         self.metric = metric
         self.granularity = granularity
+        self.currentTotal = currentTotal
         self.currentData = currentData
+        self.previousTotal = previousTotal
         self.previousData = previousData
         self.mappedPreviousData = mappedPreviousData
     }
@@ -38,7 +43,9 @@ extension ChartData {
         return ChartData(
             metric: metric,
             granularity: granularity,
+            currentTotal: DataPoint.getTotalValue(for: dataPoints, metric: metric) ?? 0,
             currentData: dataPoints,
+            previousTotal: DataPoint.getTotalValue(for: previousData, metric: metric) ?? 0,
             previousData: previousData,
             mappedPreviousData: previousData
         )
@@ -73,6 +80,7 @@ extension ChartData {
         case .visitors: 500...2500
         case .likes: 50...300
         case .comments: 10...100
+        case .posts: 10...50
         case .timeOnSite: 120...300
         case .bounceRate: 40...80
         }

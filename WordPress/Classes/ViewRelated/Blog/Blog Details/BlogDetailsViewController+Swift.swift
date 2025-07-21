@@ -265,20 +265,7 @@ extension BlogDetailsViewController {
         guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
             return MovedToJetpackViewController(source: .stats)
         }
-
-        // Use new stats if feature flag is enabled
-        if FeatureFlag.newStats.enabled {
-            let statsVC = StatsHostingViewController(blog: blog)
-            statsVC.hidesBottomBarWhenPushed = true
-            statsVC.navigationItem.largeTitleDisplayMode = .never
-            return statsVC
-        } else {
-            let statsVC = StatsViewController()
-            statsVC.blog = blog
-            statsVC.hidesBottomBarWhenPushed = true
-            statsVC.navigationItem.largeTitleDisplayMode = .never
-            return statsVC
-        }
+        return StatsHostingViewController.makeStatsViewController(for: blog)
     }
 
     @objc(showDomainsFromSource:)

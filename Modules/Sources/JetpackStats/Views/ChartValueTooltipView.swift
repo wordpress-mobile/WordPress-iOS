@@ -10,7 +10,11 @@ struct ChartValueTooltipView: View {
 
     private var formattedDate: String? {
         guard let date = currentPoint?.date ?? previousPoint?.date else { return nil }
-        return context.formatters.date.formatDate(date, granularity: granularity)
+        return formattedDate(date)
+    }
+
+    private func formattedDate(_ date: Date) -> String {
+         context.formatters.date.formatDate(date, granularity: granularity, context: .regular)
     }
 
     private var trend: TrendViewModel? {

@@ -32,6 +32,7 @@ struct StatsTabBar: View {
             }
             Divider()
         }
+        .padding(.top, 8)
         .background {
             backgroundView
         }

@@ -2,10 +2,10 @@ import SwiftUI
 import Charts
 
 struct ChartCard: View {
-    let metrics: [SiteMetric]
-    let dateRange: StatsDateRange
+    @ObservedObject private var viewModel: ChartCardViewModel
 
-    @StateObject private var viewModel: ChartCardViewModel
+    private var dateRange: StatsDateRange { viewModel.dateRange }
+    private var metrics: [SiteMetric] { viewModel.metrics }
 
     @State private var selectedMetric: SiteMetric
     @State private var selectedChartType: ChartType = .line
@@ -13,17 +13,10 @@ struct ChartCard: View {
 
     @ScaledMetric(relativeTo: .body) private var chartHeight = 180
 
-    init(metrics: [SiteMetric], dateRange: StatsDateRange, service: any StatsServiceProtocol) {
-        self.metrics = metrics
-        self.dateRange = dateRange
+    init(viewModel: ChartCardViewModel) {
+        self.viewModel = viewModel
 
-        assert(metrics.count > 0)
-        self._selectedMetric = .init(initialValue: metrics.first ?? .views)
-
-        let viewModel = ChartCardViewModel(metrics: metrics, service: service)
-        self._viewModel = StateObject(wrappedValue: viewModel)
-
-        viewModel.loadData(for: dateRange)
+        self._selectedMetric = .init(initialValue: viewModel.metrics.first ?? .views)
     }
 
     var body: some View {
@@ -40,15 +33,14 @@ struct ChartCard: View {
                 footerView
             }
         }
-        .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
+        .onAppear {
+            viewModel.onAppear()
+        }
         .overlay(alignment: .topTrailing) {
             moreMenu
         }
         .grayscale(viewModel.isStale ? 1 : 0)
         .animation(.smooth, value: viewModel.isStale)
-        .onChange(of: dateRange) { newRange in
-            viewModel.loadData(for: newRange)
-        }
     }
 
     private func headerView(for metric: SiteMetric) -> some View {
@@ -60,21 +52,27 @@ struct ChartCard: View {
 
     @ViewBuilder
     private var contentView: some View {
-        Group {
+        VStack(spacing: 14) {
+            // Showing currently selected (not loaded period) by design
+            ChartLegendView(
+                metric: selectedMetric,
+                currentPeriod: dateRange.dateInterval,
+                previousPeriod: dateRange.effectiveComparisonInterval
+            )
+            .frame(maxWidth: .infinity, alignment: .leading)
+
             if viewModel.isFirstLoad {
                 mainChartView(metric: selectedMetric, data: mockChartData)
-            } else if let chartData = viewModel.chartData[selectedMetric] {
-                mainChartView(metric: selectedMetric, data: chartData)
-            } else if let error = viewModel.loadingError {
-                mainChartView(metric: selectedMetric, data: mockChartData)
                     .redacted(reason: .placeholder)
-                    .grayscale(1)
-                    .opacity(0.66)
-                    .overlay {
-                        SimpleErrorView(error: error)
-                            .background(Color(.systemBackground).opacity(0.9))
-                            .padding(-2) // Wasn't covering the chart well
-                    }
+                    .opacity(0.33)
+            } else if let data = viewModel.chartData[selectedMetric] {
+                if data.isEmpty, data.granularity == .hour {
+                    loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
+                } else {
+                    mainChartView(metric: selectedMetric, data: data)
+                }
+            } else {
+                loadingErrorView(with: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
             }
         }
         .animation(.spring, value: selectedMetric)
@@ -86,6 +84,17 @@ struct ChartCard: View {
             data: viewModel.isFirstLoad ? viewModel.placeholderTabViewData : viewModel.tabViewData,
             selectedMetric: $selectedMetric
         )
+        .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
+    }
+
+    private func loadingErrorView(with message: String) -> some View {
+        mainChartView(metric: selectedMetric, data: mockChartData)
+            .redacted(reason: .placeholder)
+            .grayscale(1)
+            .opacity(0.1)
+            .overlay {
+                SimpleErrorView(message: message)
+            }
     }
 
     private var mockChartData: ChartData {
@@ -118,17 +127,6 @@ struct ChartCard: View {
     @ViewBuilder
     private var moreMenuContent: some View {
         Section {
-            ControlGroup {
-                ForEach(ChartType.allCases, id: \.self) { type in
-                    Button {
-                        selectedChartType = type
-                    } label: {
-                        Label(type.localizedTitle, systemImage: type.systemImage)
-                    }
-                }
-            }
-        }
-        Section {
             Button {
                 // Not implemented
             } label: {
@@ -140,6 +138,17 @@ struct ChartCard: View {
                 Label(Strings.Chart.showData, systemImage: "tablecells")
             }
         }
+        Section {
+            ControlGroup {
+                ForEach(ChartType.allCases, id: \.self) { type in
+                    Button {
+                        selectedChartType = type
+                    } label: {
+                        Label(type.localizedTitle, systemImage: type.systemImage)
+                    }
+                }
+            }
+        }
     }
 
     // MARK: - Chart View
@@ -147,24 +156,12 @@ struct ChartCard: View {
     @ViewBuilder
     private func mainChartView(metric: SiteMetric, data: ChartData) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            // Showing currently selected (not loaded period) by design
-            ChartLegendView(
-                metric: metric,
-                currentPeriod: dateRange.dateInterval,
-                previousPeriod: dateRange.effectiveComparisonInterval
-            )
-            .unredacted()
-            .padding(.bottom, 6)
-            .padding(.trailing, 20)
-
             ChartValuesSummaryView(
                 trend: TrendViewModel.make(data, context: .regular),
                 style: metrics.count > 1 ? .compact : .standard
             )
-
             chartContentView(data: data)
                 .frame(height: chartHeight)
-                .opacity(viewModel.isFirstLoad ? 0.33 : 1)
                 .transition(.push(from: .trailing).combined(with: .opacity).combined(with: .scale))
         }
     }
@@ -201,22 +198,23 @@ private enum ChartType: String, CaseIterable {
 
 // MARK: - Preview
 
+private struct ChartCardPreview: View {
+    @StateObject var viewModel = ChartCardViewModel(
+        metrics: [.views, .visitors, .likes, .comments],
+        dateRange: Calendar.demo.makeDateRange(for: .today),
+        service: MockStatsService()
+    )
+
+    var body: some View {
+        ChartCard(viewModel: viewModel)
+            .cardStyle()
+    }
+}
+
 #Preview {
     ScrollView {
         VStack(spacing: 20) {
-            ChartCard(
-                metrics: [.views, .visitors, .likes, .comments],
-                dateRange: Calendar.demo.makeDateRange(for: .last7Days),
-                service: MockStatsService()
-            )
-            .cardStyle()
-
-            ChartCard(
-                metrics: [.timeOnSite, .bounceRate],
-                dateRange: Calendar.demo.makeDateRange(for: .last30Days),
-                service: MockStatsService()
-            )
-            .cardStyle()
+            ChartCardPreview()
         }
         .padding(.vertical)
     }

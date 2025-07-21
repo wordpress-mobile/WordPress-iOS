@@ -13,7 +13,7 @@ struct MockStatsServiceTests {
         let dateInterval = calendar.makeDateInterval(for: .today)
 
         // WHEN
-        let response = try await service.getTopListData(.posts, range: dateInterval, granularity: dateInterval.preferredGranularity)
+        let response = try await service.getTopListData(.posts, interval: dateInterval, granularity: dateInterval.preferredGranularity)
 
         // THEN
         #expect(response.items.count > 0)
