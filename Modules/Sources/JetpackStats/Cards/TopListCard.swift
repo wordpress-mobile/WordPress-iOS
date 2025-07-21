@@ -40,8 +40,10 @@ struct TopListCard: View {
                     Button {
                         var selection = viewModel.selection
                         selection.item = item
-                        if !item.availableMetrics.contains(selection.metric),
-                           let metric = item.availableMetrics.first {
+
+                        let supportedMetric = getSupportedMetrics(for: item)
+                        if !supportedMetric.contains(selection.metric),
+                           let metric = supportedMetric.first {
                             selection.metric = metric
                         }
                         viewModel.selection = selection
@@ -58,7 +60,7 @@ struct TopListCard: View {
             Spacer()
 
             Menu {
-                ForEach(viewModel.selection.item.availableMetrics) { metric in
+                ForEach(getSupportedMetrics(for: viewModel.selection.item)) { metric in
                     Button {
                         viewModel.selection.metric = metric
                     } label: {
@@ -71,6 +73,10 @@ struct TopListCard: View {
             }
             .fixedSize()
         }
+    }
+
+    private func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
+        context.service.getSupportedMetrics(for: item)
     }
 
     private var moreMenu: some View {

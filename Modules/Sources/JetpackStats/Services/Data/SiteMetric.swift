@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum SiteMetric: CaseIterable, Identifiable {
+enum SiteMetric: CaseIterable, Identifiable, Sendable {
     case views
     case visitors
     case likes

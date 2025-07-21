@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum TopListItemType: Identifiable, CaseIterable {
+enum TopListItemType: Identifiable, CaseIterable, Sendable {
     case postsAndPages
     case posts
     case pages
@@ -32,16 +32,6 @@ enum TopListItemType: Identifiable, CaseIterable {
         case .locations: "map"
         case .authors: "person.2"
         case .externalLinks: "cursorarrow.click"
-        }
-    }
-
-    var availableMetrics: [SiteMetric] {
-        switch self {
-        case .postsAndPages, .posts, .pages: [.views, .visitors, .comments, .likes]
-        case .referrers: [.views, .views]
-        case .locations: [.views, .views]
-        case .authors: [.views, .comments, .likes]
-        case .externalLinks: [.views, .visitors]
         }
     }
 

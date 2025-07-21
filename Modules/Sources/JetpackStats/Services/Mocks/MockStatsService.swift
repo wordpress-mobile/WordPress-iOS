@@ -9,6 +9,16 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     let supportedMetrics = SiteMetric.allCases
     let supportedItems = TopListItemType.allCases
 
+    nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
+        switch item {
+        case .postsAndPages, .posts, .pages: [.views, .visitors, .comments, .likes]
+        case .referrers: [.views, .visitors]
+        case .locations: [.views, .visitors]
+        case .authors: [.views, .comments, .likes]
+        case .externalLinks: [.views, .visitors]
+        }
+    }
+
     /// - parameter timeZone: The reporting time zone of a site.
     init(timeZone: TimeZone = .current) {
         var calendar = Calendar.current

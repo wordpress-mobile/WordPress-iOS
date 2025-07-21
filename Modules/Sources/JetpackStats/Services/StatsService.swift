@@ -23,6 +23,16 @@ actor StatsService: StatsServiceProtocol {
         .postsAndPages
     ]
 
+    nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
+        switch item {
+        case .postsAndPages, .posts, .pages: [.views]
+        case .referrers: [.views]
+        case .locations: [.views]
+        case .authors: [.views]
+        case .externalLinks: [.views]
+        }
+    }
+
     init(siteID: Int, api: WordPressComRestApi, timeZone: TimeZone) {
         self.siteID = siteID
         self.api = api
