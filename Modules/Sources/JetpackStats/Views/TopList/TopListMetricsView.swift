@@ -28,7 +28,7 @@ struct TopListMetricsView: View {
                 .padding(.trailing, -2)
             }
         }
-        .animation(.smooth, value: ID(currentValue: currentValue, previousValue: previousValue))
+
     }
 
     private var trend: TrendViewModel? {

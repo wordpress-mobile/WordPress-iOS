@@ -101,4 +101,17 @@ enum Strings {
     enum Errors {
         static let generic = AppLocalizedString("jetpackStats.chart.generitcError", value: "Something went wrong", comment: "Genertic error message")
     }
+
+    enum SearchTerms {
+        static let fromSearch = AppLocalizedString("jetpackStats.searchTerms.fromSearch", value: "From search", comment: "Caption shown below search terms")
+    }
+
+    enum Videos {
+        static func postId(_ id: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.videos.postId", value: "Post #%1$@", comment: "Post ID for video. %1$@ is the post ID"),
+                id
+            )
+        }
+    }
 }

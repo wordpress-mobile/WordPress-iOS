@@ -21,6 +21,12 @@ struct TopListItemView: View {
                 TopListAuthorRowView(item: author, showDetails: showDetails)
             case let link as TopListData.ExternalLink:
                 TopListExternalLinkRowView(item: link, showDetails: showDetails)
+            case let download as TopListData.FileDownload:
+                TopListFileDownloadRowView(item: download, showDetails: showDetails)
+            case let searchTerm as TopListData.SearchTerm:
+                TopListSearchTermRowView(item: searchTerm, showDetails: showDetails)
+            case let video as TopListData.Video:
+                TopListVideoRowView(item: video, showDetails: showDetails)
             default:
                 let _ = assertionFailure("unsupported item: \(currentItem)")
                 EmptyView()
