@@ -70,11 +70,7 @@ actor StatsService: StatsServiceProtocol {
         // Historical data never expires (ttl = nil), current period data expires after 30 seconds
         let ttl = intervalContainsCurrentDate(interval) ? currentPeriodTTL : nil
 
-        siteStatsCache[cacheKey] = CachedSiteStats(
-            data: data,
-            timestamp: Date(),
-            ttl: ttl
-        )
+        siteStatsCache[cacheKey] = CachedSiteStats(data: data, timestamp: Date(), ttl: ttl)
 
         return data
     }
