@@ -887,7 +887,6 @@ private extension NewGutenbergViewController {
     }
 }
 
-
 extension EditorConfiguration {
     init(blog: Blog) {
         let selfHostedApiUrl = blog.restApiRootURL ?? blog.url(withPath: "wp-json/")
