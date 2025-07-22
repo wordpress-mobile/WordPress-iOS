@@ -28,7 +28,7 @@ struct TopListMetricsView: View {
                 .padding(.trailing, -2)
             }
         }
-
+        .animation(.spring, value: trend)
     }
 
     private var trend: TrendViewModel? {
@@ -36,10 +36,5 @@ struct TopListMetricsView: View {
             return nil
         }
         return TrendViewModel(currentValue: currentValue, previousValue: previousValue, metric: metric)
-    }
-
-    private struct ID: Hashable {
-        let currentValue: Int
-        let previousValue: Int?
     }
 }

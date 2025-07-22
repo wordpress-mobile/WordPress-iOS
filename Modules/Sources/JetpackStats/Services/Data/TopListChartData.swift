@@ -1,9 +1,19 @@
 import Foundation
 
-struct TopListChartData {
-    struct Item {
+final class TopListChartData {
+    struct Item: Identifiable {
+        let id: ItemID
         let current: any TopListItem
         let previous: (any TopListItem)?
+    }
+
+    /// - warning: It's required for animations in ``TopListItemsView`` to work
+    /// well for IDs to be unique across the domains. If we were just to use
+    /// `String`, there would be collisions across domains, e.g. post and author
+    /// using the same String ID "1".
+    struct ItemID: Hashable {
+        let type: TopListItemType
+        let id: String
     }
 
     let item: TopListItemType
@@ -19,21 +29,29 @@ struct TopListChartData {
     var listID: ListID {
         ListID(item: item, metric: metric)
     }
+
+    init(item: TopListItemType, metric: SiteMetric, items: [Item], maxValue: Int) {
+        self.item = item
+        self.metric = metric
+        self.items = items
+        self.maxValue = maxValue
+    }
 }
 
 // MARK: - Mock Data
 
 extension TopListChartData {
     static func mock(
-        for item: TopListItemType,
+        for itemType: TopListItemType,
         metric: SiteMetric = .views,
         itemCount: Int = 6
     ) -> TopListChartData {
-        let items = mockItems(for: item, metric: metric, count: itemCount)
+        let items = mockItems(for: itemType, metric: metric, count: itemCount)
         let matchedItems = items.map { item in
             // Create previous item with slightly different values
             let previousItem = mockPreviousItem(from: item, metric: metric)
-            return Item(current: item, previous: previousItem)
+            let itemID = ItemID(type: itemType, id: item.id)
+            return Item(id: itemID, current: item, previous: previousItem)
         }
 
         let maxValue = items
@@ -41,7 +59,7 @@ extension TopListChartData {
             .max() ?? 1
 
         return TopListChartData(
-            item: item,
+            item: itemType,
             metric: metric,
             items: matchedItems,
             maxValue: maxValue

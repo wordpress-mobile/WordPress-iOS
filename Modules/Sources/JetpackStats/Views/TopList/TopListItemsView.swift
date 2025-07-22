@@ -7,7 +7,7 @@ struct TopListItemsView: View {
 
     var body: some View {
         VStack(spacing: Constants.step1 / 2) {
-            ForEach(data.items.prefix(itemLimit), id: \.current.id) { item in
+            ForEach(data.items.prefix(itemLimit)) { item in
                 TopListItemView(
                     currentItem: item.current,
                     previousItem: item.previous,
@@ -15,9 +15,11 @@ struct TopListItemsView: View {
                     maxValue: data.maxValue,
                     showDetails: showDetails
                 )
-                .transition(.opacity)
+                .transition(.move(edge: .leading)
+                    .combined(with: .scale(scale: 0.75))
+                    .combined(with: .opacity))
             }
         }
-        .animation(.spring, value: data.items.map(\.current.id))
+        .animation(.spring, value: ObjectIdentifier(data))
     }
 }

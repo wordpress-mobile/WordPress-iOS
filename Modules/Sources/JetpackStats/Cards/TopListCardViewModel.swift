@@ -109,7 +109,6 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
             // Cancel stale timer and reset stale flag when data is successfully loaded
             staleTimer?.cancel()
             isStale = false
-
             matchedData = data
         } catch is CancellationError {
             return
@@ -144,7 +143,8 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         // Match current items with their previous counterparts
         let matchedItems = current.items.map { currentItem in
             let previousItem = previous.items.first { $0.id == currentItem.id }
-            return TopListChartData.Item(current: currentItem, previous: previousItem)
+            let itemID = TopListChartData.ItemID(type: selection.item, id: currentItem.id)
+            return TopListChartData.Item(id: itemID, current: currentItem, previous: previousItem)
         }
 
         // Calculate max value from current items based on selected metric

@@ -95,7 +95,10 @@ struct RealtimeTopListCard: View {
         let chartData = TopListChartData(
             item: selectedItem,
             metric: .views,
-            items: data.items.map { TopListChartData.Item(current: $0, previous: nil) },
+            items: data.items.map {
+                let itemID = TopListChartData.ItemID(type: selectedItem, id: $0.id)
+                return TopListChartData.Item(id: itemID, current: $0, previous: nil)
+            },
             maxValue: viewModel.maxValue,
         )
         
