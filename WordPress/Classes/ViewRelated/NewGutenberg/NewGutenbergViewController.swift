@@ -304,7 +304,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         Task { @MainActor in
             let timeoutTask = Task {
                 try await Task.sleep(nanoseconds: 3_000_000_000) // 3 seconds
-                if !Task.isCancelled && !hasEditorStarted {
+                if !Task.isCancelled {
                     startEditor()
                 }
             }
