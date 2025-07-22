@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+@preconcurrency import WordPressKit
 
 actor MockStatsService: ObservableObject, StatsServiceProtocol {
     private var hourlyData: [SiteMetric: [DataPoint]] = [:]
@@ -239,6 +240,24 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         }
     }
 
+    func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
+        // Load from JSON file in Mocks/Misc directory
+        guard let url = Bundle.module.url(forResource: "post-details", withExtension: "json") else {
+            throw URLError(.fileDoesNotExist)
+        }
+        
+        let data = try Data(contentsOf: url)
+        let jsonObject = try JSONSerialization.jsonObject(with: data) as! [String: AnyObject]
+        
+        // Simulate network delay
+        try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        
+        guard let details = StatsPostDetails(jsonDictionary: jsonObject) else {
+            throw URLError(.cannotParseResponse)
+        }
+        
+        return details
+    }
 
     // MARK: - Data Aggregation
 

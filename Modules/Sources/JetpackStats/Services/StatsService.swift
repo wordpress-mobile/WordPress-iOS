@@ -187,6 +187,10 @@ actor StatsService: StatsServiceProtocol {
         try await mocks.getRealtimeTopListData(item)
     }
 
+    func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
+        try await service.getDetails(forPostID: postID)
+    }
+
     // MARK: - Dates
 
     /// Convert from the site timezone (used in JetpackState) to the local

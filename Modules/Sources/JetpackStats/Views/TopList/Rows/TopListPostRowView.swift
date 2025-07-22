@@ -16,7 +16,6 @@ struct TopListPostRowView: View {
             }
             .font(.callout)
             .foregroundColor(.primary)
-            .lineSpacing(-3)
             .lineLimit(2)
             .padding(.trailing, 4)
         }

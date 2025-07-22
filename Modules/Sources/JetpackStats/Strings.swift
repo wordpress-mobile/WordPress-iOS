@@ -114,4 +114,15 @@ enum Strings {
             )
         }
     }
+    
+    enum PostDetails {
+        static let title = AppLocalizedString("jetpackStats.postDetails.title", value: "Post Stats", comment: "Navigation title")
+        static let allTimeStats = AppLocalizedString("jetpackStats.postDetails.allTimeStats", value: "All-time stats", comment: "Header for all-time statistics section")
+        static func published(_ date: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.postDetails.published", value: "Published %1$@", comment: "Shows when the post was published. %1$@ is the formatted date."),
+                date
+            )
+        }
+    }
 }

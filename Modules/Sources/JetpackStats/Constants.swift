@@ -40,6 +40,7 @@ enum Constants {
     static let step1: CGFloat = 12
     static let step2: CGFloat = 18
     static let step3: CGFloat = 24
+    static let step4: CGFloat = 32
 }
 
 private extension Color {

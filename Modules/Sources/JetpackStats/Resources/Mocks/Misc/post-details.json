@@ -1,0 +1,152 @@
+{
+  "date": "2025-01-22",
+  "views": 45892,
+  "highest_month": 3248,
+  "highest_day_average": 147,
+  "highest_week_average": 892,
+  "fields": ["views", "visitors", "likes", "comments"],
+  "years": {
+    "2025": {
+      "total": 2847,
+      "months": {
+        "1": 2847
+      }
+    },
+    "2024": {
+      "total": 43045,
+      "months": {
+        "1": 2156,
+        "2": 3248,
+        "3": 2987,
+        "4": 3156,
+        "5": 3421,
+        "6": 3087,
+        "7": 3654,
+        "8": 3892,
+        "9": 3421,
+        "10": 3987,
+        "11": 4156,
+        "12": 3880
+      }
+    }
+  },
+  "averages": {
+    "2025": {
+      "overall": 92,
+      "months": {
+        "1": 92
+      }
+    },
+    "2024": {
+      "overall": 118,
+      "months": {
+        "1": 70,
+        "2": 112,
+        "3": 96,
+        "4": 105,
+        "5": 110,
+        "6": 103,
+        "7": 118,
+        "8": 125,
+        "9": 114,
+        "10": 129,
+        "11": 139,
+        "12": 125
+      }
+    }
+  },
+  "weeks": [
+    {
+      "total": 892,
+      "average": 127,
+      "change": 15.2,
+      "days": [
+        { "day": "2025-01-15", "count": 98 },
+        { "day": "2025-01-16", "count": 134 },
+        { "day": "2025-01-17", "count": 156 },
+        { "day": "2025-01-18", "count": 89 },
+        { "day": "2025-01-19", "count": 102 },
+        { "day": "2025-01-20", "count": 178 },
+        { "day": "2025-01-21", "count": 135 }
+      ]
+    },
+    {
+      "total": 774,
+      "average": 111,
+      "change": -8.7,
+      "days": [
+        { "day": "2025-01-08", "count": 89 },
+        { "day": "2025-01-09", "count": 125 },
+        { "day": "2025-01-10", "count": 134 },
+        { "day": "2025-01-11", "count": 78 },
+        { "day": "2025-01-12", "count": 95 },
+        { "day": "2025-01-13", "count": 145 },
+        { "day": "2025-01-14", "count": 108 }
+      ]
+    },
+    {
+      "total": 847,
+      "average": 121,
+      "change": { "isInfinity": true },
+      "days": [
+        { "day": "2025-01-01", "count": 45 },
+        { "day": "2025-01-02", "count": 112 },
+        { "day": "2025-01-03", "count": 156 },
+        { "day": "2025-01-04", "count": 134 },
+        { "day": "2025-01-05", "count": 98 },
+        { "day": "2025-01-06", "count": 167 },
+        { "day": "2025-01-07", "count": 135 }
+      ]
+    },
+    {
+      "total": 912,
+      "average": 130,
+      "change": 5.4,
+      "days": [
+        { "day": "2024-12-25", "count": 67 },
+        { "day": "2024-12-26", "count": 89 },
+        { "day": "2024-12-27", "count": 145 },
+        { "day": "2024-12-28", "count": 156 },
+        { "day": "2024-12-29", "count": 134 },
+        { "day": "2024-12-30", "count": 189 },
+        { "day": "2024-12-31", "count": 132 }
+      ]
+    }
+  ],
+  "data": [
+    ["2025-01-08", 89],
+    ["2025-01-09", 125],
+    ["2025-01-10", 134],
+    ["2025-01-11", 78],
+    ["2025-01-12", 95],
+    ["2025-01-13", 145],
+    ["2025-01-14", 108],
+    ["2025-01-15", 98],
+    ["2025-01-16", 134],
+    ["2025-01-17", 156],
+    ["2025-01-18", 89],
+    ["2025-01-19", 102],
+    ["2025-01-20", 178],
+    ["2025-01-21", 135]
+  ],
+  "post": {
+    "ID": 12345,
+    "post_title": "Apple's Vision Pro is a lonely computer",
+    "post_author": "42",
+    "post_date_gmt": "2024-03-15 14:30:00",
+    "post_content": "<p>After spending a month with Apple's $3,499 Vision Pro, I've come to a stark realization: this might be the most impressive device I've ever used, and also the loneliest.</p>\n\n<p>The Vision Pro does things that feel like magic. It can transform your living room into a personal IMAX theater, let you arrange infinite virtual monitors around your desk, or transport you to Mount Hood while you're sitting on your couch. The eye tracking is so precise it feels telepathic, and the hand gestures are more natural than any interface I've used.</p>\n\n<h2>The isolation problem</h2>\n<p>But here's the thing: every moment you spend in the Vision Pro is a moment you're not spending with the people around you. Sure, you can see them through the passthrough cameras, rendered in surprisingly high quality. You can even make eye contact through the bizarre EyeSight display. But you're not really <em>there</em> with them. You're in Apple's meticulously crafted digital bubble, experiencing a world they can't see.</p>\n\n<p>This isn't just a Vision Pro problem — it's the fundamental challenge facing all headsets. Meta's Quest 3 has the same issue, though at least it doesn't cost as much as a used car. Even the upcoming Samsung headset will face this reality: strapping a computer to your face is inherently antisocial.</p>",
+    "post_excerpt": "The Vision Pro is an incredible piece of technology that fundamentally misunderstands how humans want to use computers.",
+    "post_status": "publish",
+    "comment_status": "open",
+    "post_password": "",
+    "post_name": "apple-vision-pro-lonely-computer-review",
+    "post_modified_gmt": "2024-12-20 09:15:00",
+    "post_content_filtered": "",
+    "post_parent": 0,
+    "guid": "https://example.com/?p=12345",
+    "post_type": "post",
+    "post_mime_type": "",
+    "comment_count": "487",
+    "permalink": "https://example.com/2024/03/apple-vision-pro-lonely-computer-review/"
+  }
+}

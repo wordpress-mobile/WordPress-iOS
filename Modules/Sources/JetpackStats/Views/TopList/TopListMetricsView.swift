@@ -18,7 +18,6 @@ struct TopListMetricsView: View {
                 Image(systemName: "chevron.forward")
                     .font(.caption2.weight(.bold))
                     .foregroundStyle(Color(.tertiaryLabel))
-                    .padding(.trailing, -2)
             }
             if showDetails, let trend {
                 Text(trend.formattedTrend)
