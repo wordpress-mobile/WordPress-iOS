@@ -37,9 +37,10 @@ struct TopListItemView: View {
             // Metrics view
             TopListMetricsView(
                 currentValue: currentItem.metrics[metric] ?? 0,
-                previousValue: previousItem?.metrics[metric] ?? 0,
+                previousValue: previousItem?.metrics[metric],
                 metric: metric,
-                showDetails: showDetails
+                showDetails: showDetails,
+                showChevron: currentItem is TopListData.Post
             )
         }
         .padding(.vertical, 7)

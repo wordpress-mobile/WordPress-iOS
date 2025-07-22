@@ -4,15 +4,22 @@ struct TopListMetricsView: View {
     let currentValue: Int
     let previousValue: Int?
     let metric: SiteMetric
-    let showDetails: Bool
+    var showDetails = true
+    var showChevron = false
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 2) {
-            Text(StatsValueFormatter.formatNumber(currentValue, onlyLarge: true))
-                .font(.subheadline.weight(.medium)).tracking(-0.1)
-                .foregroundColor(.primary)
-                .contentTransition(.numericText())
+            HStack(spacing: 3) {
+                Text(StatsValueFormatter.formatNumber(currentValue, onlyLarge: true))
+                    .font(.subheadline.weight(.medium)).tracking(-0.1)
+                    .foregroundColor(.primary)
+                    .contentTransition(.numericText())
 
+                Image(systemName: "chevron.forward")
+                    .font(.caption2.weight(.bold))
+                    .foregroundStyle(Color(.tertiaryLabel))
+                    .padding(.trailing, -2)
+            }
             if showDetails, let trend {
                 Text(trend.formattedTrend)
                     .fixedSize()
