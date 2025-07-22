@@ -128,18 +128,23 @@ private extension ApplicationPasswordRepository {
         for password in passwords {
             let api = WordPressAPI(urlSession: session, apiRootUrl: apiRootURL, authentication: .init(username: siteUsername, password: password.password))
             do {
-                _ = try await api.users.retrieveMeWithViewContext()
+                _ = try await api.applicationPasswords.retrieveCurrentWithViewContext()
                 validPasswords.append(password)
-            } catch {
-                invalidPasswords.append(password)
+            } catch let error as WpApiError {
+                if case let .WpError(errorCode, _, _, _) = error {
+                    if errorCode == .Unauthorized {
+                        invalidPasswords.append(password)
+                    }
+                }
             }
         }
-
-        DDLogInfo("\(validPasswords.count) valid passwords, \(invalidPasswords.count) invalid passwords found for user (\(siteUsername)) on \(siteUrl)")
 
         if !invalidPasswords.isEmpty {
             try await storage.delete(invalidPasswords)
         }
+
+        DDLogInfo("\(passwords.count) passwords stored for user (\(siteUsername)) on \(siteUrl).")
+        DDLogInfo("\(validPasswords.count) have been verified, and \(invalidPasswords.count) invalid ones have been deleted.")
 
         // Make sure the saved password in `Blog` is one of the valid ones.
         if !validPasswords.isEmpty {
