@@ -7,25 +7,18 @@ struct TopListPostRowView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(item.title)
-                .font(.callout)
-                .foregroundColor(.primary)
-                .lineLimit(1)
-
-            if showDetails {
-                if let author = item.author {
-                    Text(verbatim: author)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
-                }
-                if let date = item.date {
-                    Text(verbatim: date.toMediumString())
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
-                }
+            ZStack {
+                // Ensure stable height
+                Text(item.title)
+                    .lineLimit(2, reservesSpace: true)
+                    .opacity(0)
+                Text(item.title)
             }
+            .font(.callout)
+            .foregroundColor(.primary)
+            .lineSpacing(-3)
+            .lineLimit(2)
+            .padding(.trailing, 4)
         }
     }
 }

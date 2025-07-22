@@ -31,6 +31,7 @@ struct TopListCard: View {
         }
         .grayscale(viewModel.isStale ? 1 : 0)
         .animation(.smooth, value: viewModel.isStale)
+        .animation(.spring, value: viewModel.matchedData.map(ObjectIdentifier.init)) // placing is important
     }
 
     private var headerView: some View {

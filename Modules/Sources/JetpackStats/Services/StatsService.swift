@@ -125,7 +125,7 @@ actor StatsService: StatsServiceProtocol {
         case .postsAndPages:
             switch metric {
             case .views:
-                let data = try await getData(StatsTopPostsTimeIntervalData.self)
+                let data = try await getData(StatsTopPostsTimeIntervalData.self, parameters: ["skip_archives": "1"])
                 return mapPostsToTopListData(data)
             case .comments:
                 fatalError()

@@ -14,18 +14,11 @@ struct TopListMetricsView: View {
                 .contentTransition(.numericText())
 
             if showDetails, let trend {
-                HStack(alignment: .center, spacing: 4) {
-                    HStack(spacing: 0) {
-                        Image(systemName: trend.systemImage)
-                            .font(.caption2.weight(.medium))
-                            .scaleEffect(x: 0.8, y: 0.8)
-                        Text("\(trend.formattedPercentage)")
-                    }
-                }
-                .font(.caption.weight(.medium)).tracking(-0.33)
-                .foregroundColor(trend.sentiment.foregroundColor)
-                .contentTransition(.numericText())
-                .padding(.trailing, -2)
+                Text(trend.formattedTrend)
+                    .fixedSize()
+                    .foregroundColor(trend.sentiment.foregroundColor)
+                    .contentTransition(.numericText())
+                    .font(.caption.weight(.medium)).tracking(-0.33)
             }
         }
         .animation(.spring, value: trend)
