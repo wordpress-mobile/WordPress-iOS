@@ -158,11 +158,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         configureNavigationBar()
         refreshInterface()
 
-        // Show activity indicator while fetching settings
-        showActivityIndicator()
-
-        // Fetch block editor settings
-        fetchBlockEditorSettings()
+        setupEditor()
 
         // TODO: reimplement
 //        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
@@ -300,32 +296,67 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         activityIndicator = nil
     }
 
-    // MARK: - Block Editor Settings
+    // MARK: - Editor Setup
 
-    private func fetchBlockEditorSettings() {
-        let service = RawBlockEditorSettingsService.getService(forBlog: post.blog)
-        service.refreshSettings()
+    private func setupEditor() {
+        showActivityIndicator()
 
         Task { @MainActor in
-            // Load authentication cookies for private sites
-            await loadAuthenticationCookiesIfNeeded()
-
-            // Start the editor with default settings after 3 seconds
             let timeoutTask = Task {
                 try await Task.sleep(nanoseconds: 3_000_000_000) // 3 seconds
-                if !Task.isCancelled {
+                if !Task.isCancelled && !hasEditorStarted {
                     startEditor()
                 }
             }
 
-            do {
-                let settings = try await service.getSettings()
-                timeoutTask.cancel()
-                startEditor(with: settings)
-            } catch {
-                timeoutTask.cancel()
-                DDLogError("Error fetching block editor settings: \(error)")
-                startEditor()
+            async let settingsResult = fetchBlockEditorSettingsAsync()
+            async let cookiesResult = loadAuthenticationCookiesAsync()
+
+            let settings = await settingsResult
+            let cookiesLoaded = await cookiesResult
+
+            timeoutTask.cancel()
+
+            if settings == nil {
+                DDLogError("Failed fetching block editor settings")
+            }
+            if !cookiesLoaded {
+                DDLogWarn("Failed loading Authentication cookies")
+            }
+
+            startEditor(with: settings)
+        }
+    }
+
+    private func fetchBlockEditorSettingsAsync() async -> [String: Any]? {
+        let service = RawBlockEditorSettingsService.getService(forBlog: post.blog)
+        service.refreshSettings()
+
+        do {
+            let settings = try await service.getSettings()
+            return settings
+        } catch {
+            return nil
+        }
+    }
+
+    private func loadAuthenticationCookiesAsync() async -> Bool {
+        guard post.blog.isPrivate() else {
+            return true
+        }
+
+        guard let authenticator = RequestAuthenticator(blog: post.blog) else {
+            return false
+        }
+
+        // Use the blog's main URL to trigger cookie loading
+        let authURL = URL(string: post.blog.url ?? "https://wordpress.com")!
+
+        return await withCheckedContinuation { continuation in
+            let cookieJar = WKWebsiteDataStore.default().httpCookieStore
+
+            authenticator.request(url: authURL, cookieJar: cookieJar) { _ in
+                continuation.resume(returning: true)
             }
         }
     }
@@ -340,38 +371,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             self.editorViewController.updateConfiguration(updatedConfig)
         }
         self.editorViewController.startEditorSetup()
-    }
-
-    // MARK: - Authentication
-
-    private func loadAuthenticationCookiesIfNeeded() async {
-        // Only load cookies if the site is private
-        guard post.blog.isPrivate() else {
-            DDLogInfo("Site is not private, skipping cookie loading for GutenbergKit")
-            return
-        }
-
-        DDLogInfo("Pre-loading authentication cookies for private site into shared cookie store")
-
-        guard let authenticator = RequestAuthenticator(blog: post.blog) else {
-            DDLogError("Failed to create RequestAuthenticator for blog")
-            return
-        }
-
-        // Use the blog's main URL to trigger cookie loading (same as preview does)
-        let authURL = URL(string: post.blog.url ?? "https://wordpress.com")!
-
-        await withCheckedContinuation { continuation in
-            // Use the default WKWebsiteDataStore cookie store that GutenbergKit will inherit
-            let cookieJar = WKWebsiteDataStore.default().httpCookieStore
-
-            // This mirrors exactly what PreviewWebKitViewController does:
-            // RequestAuthenticator.request() loads cookies into the cookie store
-            authenticator.request(url: authURL, cookieJar: cookieJar) { _ in
-                DDLogInfo("Authentication cookies loaded into shared cookie store for GutenbergKit")
-                continuation.resume()
-            }
-        }
     }
 }
 
@@ -855,26 +854,6 @@ private extension NewGutenbergViewController {
     }
 }
 
-// Block Editor Settings
-extension NewGutenbergViewController {
-
-    private func fetchBlockSettings() {
-        guard let service = editorSettingsService else {
-            return // TODO: when can it happen?
-        }
-        service.fetchSettings({ [weak self] result in
-            switch result {
-            case .success(let response):
-                if response.hasChanges {
-                    // TODO: inject in hte editor
-                    // self.gutenberg.updateEditorSettings(response.blockEditorSettings)
-                }
-            case .failure(let err):
-                DDLogError("Error fetching settings: \(err)")
-            }
-        })
-    }
-}
 
 extension EditorConfiguration {
     init(blog: Blog) {
