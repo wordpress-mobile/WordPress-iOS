@@ -349,14 +349,47 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             return false
         }
 
-        // Use the blog's main URL to trigger cookie loading
-        let authURL = URL(string: post.blog.url ?? "https://wordpress.com")!
+        let cookieJar = WKWebsiteDataStore.default().httpCookieStore
+
+        // Clear expired cookies before loading authentication
+        await clearExpiredAuthenticationCookies(in: cookieJar)
 
         return await withCheckedContinuation { continuation in
-            let cookieJar = WKWebsiteDataStore.default().httpCookieStore
-
+            // Always call authenticator.request() to ensure cookies are properly loaded into WKWebView
+            // The authenticator will check for existing valid cookies and only fetch new ones if needed
+            let authURL = URL(string: post.blog.url ?? "https://wordpress.com")!
             authenticator.request(url: authURL, cookieJar: cookieJar) { _ in
+                DDLogInfo("Authentication cookies loaded into shared cookie store for GutenbergKit")
                 continuation.resume(returning: true)
+            }
+        }
+    }
+
+    private func clearExpiredAuthenticationCookies(in cookieStore: WKHTTPCookieStore) async {
+        await withCheckedContinuation { continuation in
+            cookieStore.getAllCookies { cookies in
+                let expiredAuthCookies = cookies.filter { cookie in
+                    let isAuthCookie = (cookie.name == "wordpress_logged_in" || cookie.name.hasPrefix("wordpress_logged_in_")) &&
+                                      cookie.domain.contains("wordpress.com")
+                    let isExpired = cookie.expiresDate?.timeIntervalSinceNow ?? 0 <= 300 // Expired or expiring within 5 minutes
+                    return isAuthCookie && isExpired
+                }
+
+                // Remove expired cookies
+                let group = DispatchGroup()
+                for cookie in expiredAuthCookies {
+                    group.enter()
+                    cookieStore.delete(cookie) {
+                        group.leave()
+                    }
+                }
+
+                group.notify(queue: .main) {
+                    if !expiredAuthCookies.isEmpty {
+                        DDLogInfo("Cleared \(expiredAuthCookies.count) expired authentication cookies")
+                    }
+                    continuation.resume()
+                }
             }
         }
     }
