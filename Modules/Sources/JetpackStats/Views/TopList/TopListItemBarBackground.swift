@@ -11,7 +11,7 @@ struct TopListItemBarBackground: View {
         GeometryReader { geometry in
             HStack(spacing: 0) {
                 RoundedRectangle(cornerRadius: 6)
-                    .fill(barColor.opacity(colorScheme == .light ? 0.09 : 0.5))
+                    .fill(barColor.opacity(colorScheme == .light ? 0.09 : 0.25))
                     .frame(width: barWidth(in: geometry))
                     .animation(.spring(response: 0.4, dampingFraction: 0.8), value: value)
                 Spacer(minLength: 0)
