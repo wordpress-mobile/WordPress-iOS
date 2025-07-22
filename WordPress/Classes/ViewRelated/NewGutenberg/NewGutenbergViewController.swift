@@ -354,10 +354,13 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         // Clear expired cookies before loading authentication
         await clearExpiredAuthenticationCookies(in: cookieJar)
 
+        guard let authURL = URL(string: post.blog.url ?? "") else {
+            return false
+        }
+
         return await withCheckedContinuation { continuation in
             // Always call authenticator.request() to ensure cookies are properly loaded into WKWebView
             // The authenticator will check for existing valid cookies and only fetch new ones if needed
-            let authURL = URL(string: post.blog.url ?? "https://wordpress.com")!
             authenticator.request(url: authURL, cookieJar: cookieJar) { _ in
                 DDLogInfo("Authentication cookies loaded into shared cookie store for GutenbergKit")
                 continuation.resume(returning: true)
