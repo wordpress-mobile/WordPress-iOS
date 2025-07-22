@@ -190,6 +190,40 @@ actor StatsService: StatsServiceProtocol {
     func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
         try await service.getDetails(forPostID: postID)
     }
+    
+    func getPostLikes(for postID: Int, count: Int) async throws -> PostLikes {
+        // Create PostServiceRemoteREST instance
+        let postService = PostServiceRemoteREST(
+            wordPressComRestApi: api,
+            siteID: NSNumber(value: siteID)
+        )
+        
+        // Fetch likes using the REST API
+        let result = try await withCheckedThrowingContinuation { continuation in
+            postService.getLikesForPostID(
+                NSNumber(value: postID),
+                count: NSNumber(value: count),
+                before: nil,
+                excludeUserIDs: nil,
+                success: { users, found in
+                    let likeUsers = users.map { remoteLike in
+                        PostLikeUser(
+                            id: remoteLike.userID.intValue,
+                            name: remoteLike.displayName ?? remoteLike.username ?? "Unknown",
+                            avatarURL: remoteLike.avatarURL.flatMap(URL.init)
+                        )
+                    }
+                    let postLikes = PostLikes(users: likeUsers, totalCount: found.intValue)
+                    continuation.resume(returning: postLikes)
+                },
+                failure: { error in
+                    continuation.resume(throwing: error ?? StatsServiceError.unknown)
+                }
+            )
+        }
+        
+        return result
+    }
 
     // MARK: - Dates
 

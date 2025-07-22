@@ -124,5 +124,31 @@ enum Strings {
                 date
             )
         }
+        
+        // Peak Performance
+        static let peakPerformance = AppLocalizedString("jetpackStats.postDetails.peakPerformance", value: "Peak Performance", comment: "Title for peak performance card")
+        static let bestMonth = AppLocalizedString("jetpackStats.postDetails.bestMonth", value: "Best Month", comment: "Label for highest monthly views")
+        static let bestDayAverage = AppLocalizedString("jetpackStats.postDetails.bestDayAverage", value: "Best Day Average", comment: "Label for highest daily average views")
+        static let bestWeekAverage = AppLocalizedString("jetpackStats.postDetails.bestWeekAverage", value: "Best Week Average", comment: "Label for highest weekly average views")
+        
+        // Weekly Activity
+        static let recentWeeks = AppLocalizedString("jetpackStats.postDetails.recentWeeks", value: "Recent Weeks", comment: "Title for recent weeks activity heatmap")
+        static let weeklyActivity = AppLocalizedString("jetpackStats.postDetails.weeklyActivity", value: "Weekly Activity", comment: "Title for weekly activity heatmap")
+        static let less = AppLocalizedString("jetpackStats.postDetails.less", value: "Less", comment: "Legend label for lower activity")
+        static let more = AppLocalizedString("jetpackStats.postDetails.more", value: "More", comment: "Legend label for higher activity")
+        
+        // Monthly Activity
+        static let monthlyActivity = AppLocalizedString("jetpackStats.postDetails.monthlyActivity", value: "Monthly Activity", comment: "Title for monthly activity heatmap")
+        static let views = AppLocalizedString("jetpackStats.postDetails.views", value: "views", comment: "Views label (lowercase)")
+        static let total = AppLocalizedString("jetpackStats.postDetails.total", value: "Total", comment: "Total label")
+        static let avgPerDay = AppLocalizedString("jetpackStats.postDetails.avgPerDay", value: "avg/day", comment: "Average per day abbreviation")
+        
+        // Likes
+        static func likesCount(_ count: Int) -> String {
+            let format = count == 1 
+                ? AppLocalizedString("jetpackStats.postDetails.like", value: "%1$d like", comment: "Singular like count. %1$d is the number.")
+                : AppLocalizedString("jetpackStats.postDetails.likes", value: "%1$d likes", comment: "Plural likes count. %1$d is the number.")
+            return String.localizedStringWithFormat(format, count)
+        }
     }
 }

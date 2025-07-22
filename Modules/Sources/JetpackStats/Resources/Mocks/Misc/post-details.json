@@ -28,6 +28,40 @@
         "11": 4156,
         "12": 3880
       }
+    },
+    "2023": {
+      "total": 28567,
+      "months": {
+        "1": 1856,
+        "2": 2134,
+        "3": 2567,
+        "4": 2234,
+        "5": 2678,
+        "6": 2456,
+        "7": 2890,
+        "8": 2345,
+        "9": 2123,
+        "10": 2567,
+        "11": 2345,
+        "12": 2372
+      }
+    },
+    "2022": {
+      "total": 15234,
+      "months": {
+        "1": 1234,
+        "2": 1345,
+        "3": 1456,
+        "4": 1234,
+        "5": 1345,
+        "6": 1123,
+        "7": 1234,
+        "8": 1345,
+        "9": 1234,
+        "10": 1123,
+        "11": 1234,
+        "12": 1327
+      }
     }
   },
   "averages": {
@@ -52,6 +86,40 @@
         "10": 129,
         "11": 139,
         "12": 125
+      }
+    },
+    "2023": {
+      "overall": 78,
+      "months": {
+        "1": 60,
+        "2": 76,
+        "3": 83,
+        "4": 75,
+        "5": 86,
+        "6": 82,
+        "7": 93,
+        "8": 76,
+        "9": 71,
+        "10": 83,
+        "11": 78,
+        "12": 77
+      }
+    },
+    "2022": {
+      "overall": 42,
+      "months": {
+        "1": 40,
+        "2": 48,
+        "3": 47,
+        "4": 41,
+        "5": 43,
+        "6": 37,
+        "7": 40,
+        "8": 43,
+        "9": 41,
+        "10": 36,
+        "11": 41,
+        "12": 43
       }
     }
   },
@@ -131,7 +199,7 @@
   ],
   "post": {
     "ID": 12345,
-    "post_title": "Apple's Vision Pro is a lonely computer",
+    "post_title": "Matter Smart Home Protocol Still Doesn't Matter: A Year Later",
     "post_author": "42",
     "post_date_gmt": "2024-03-15 14:30:00",
     "post_content": "<p>After spending a month with Apple's $3,499 Vision Pro, I've come to a stark realization: this might be the most impressive device I've ever used, and also the loneliest.</p>\n\n<p>The Vision Pro does things that feel like magic. It can transform your living room into a personal IMAX theater, let you arrange infinite virtual monitors around your desk, or transport you to Mount Hood while you're sitting on your couch. The eye tracking is so precise it feels telepathic, and the hand gestures are more natural than any interface I've used.</p>\n\n<h2>The isolation problem</h2>\n<p>But here's the thing: every moment you spend in the Vision Pro is a moment you're not spending with the people around you. Sure, you can see them through the passthrough cameras, rendered in surprisingly high quality. You can even make eye contact through the bizarre EyeSight display. But you're not really <em>there</em> with them. You're in Apple's meticulously crafted digital bubble, experiencing a world they can't see.</p>\n\n<p>This isn't just a Vision Pro problem — it's the fundamental challenge facing all headsets. Meta's Quest 3 has the same issue, though at least it doesn't cost as much as a used car. Even the upcoming Samsung headset will face this reality: strapping a computer to your face is inherently antisocial.</p>",
