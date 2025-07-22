@@ -354,7 +354,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         // Clear expired cookies before loading authentication
         await clearExpiredAuthenticationCookies(in: cookieJar)
 
-        guard let authURL = URL(string: post.blog.url ?? "") else {
+        guard let blogURL = post.blog.url, let authURL = URL(string: blogURL) else {
             return false
         }
 
