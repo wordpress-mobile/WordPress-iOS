@@ -369,11 +369,15 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     private func clearExpiredAuthenticationCookies(in cookieStore: WKHTTPCookieStore) async {
+        guard let blogURLString = post.blog.url, let blogURL = URL(string: blogURLString) else {
+            return
+        }
+
         await withCheckedContinuation { continuation in
             cookieStore.getAllCookies { cookies in
                 let expiredAuthCookies = cookies.filter { cookie in
-                    let isAuthCookie = (cookie.name == "wordpress_logged_in" || cookie.name.hasPrefix("wordpress_logged_in_")) &&
-                                      cookie.domain.contains("wordpress.com")
+                    let isAuthCookie = cookie.name.hasPrefix("wordpress_logged_in") &&
+                        self.cookieMatchesBlogDomain(cookie, blogURL: blogURL)
                     let isExpired = cookie.expiresDate.map { $0 < Date() } ?? false
                     return isAuthCookie && isExpired
                 }
@@ -388,13 +392,25 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
                 }
 
                 group.notify(queue: .main) {
-                    if !expiredAuthCookies.isEmpty {
-                        DDLogInfo("Cleared \(expiredAuthCookies.count) expired authentication cookies")
-                    }
                     continuation.resume()
                 }
             }
         }
+    }
+
+    private func cookieMatchesBlogDomain(_ cookie: HTTPCookie, blogURL: URL) -> Bool {
+        guard let host = blogURL.host else { return false }
+
+        let matchesDomain: Bool
+        if cookie.domain.hasPrefix(".") {
+            // Wildcard domain (e.g., ".wordpress.com" matches "site.wordpress.com")
+            matchesDomain = host.hasSuffix(cookie.domain) || host == String(cookie.domain.dropFirst())
+        } else {
+            // Exact domain match
+            matchesDomain = host == cookie.domain
+        }
+
+        return matchesDomain
     }
 
     private func startEditor(with settings: [String: Any]? = nil) {
