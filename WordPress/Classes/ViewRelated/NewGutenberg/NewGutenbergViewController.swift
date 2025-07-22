@@ -351,66 +351,17 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         let cookieJar = WKWebsiteDataStore.default().httpCookieStore
 
-        // Clear expired cookies before loading authentication
-        await clearExpiredAuthenticationCookies(in: cookieJar)
-
         guard let blogURL = post.blog.url, let authURL = URL(string: blogURL) else {
             return false
         }
 
         return await withCheckedContinuation { continuation in
             // Always call authenticator.request() to ensure cookies are properly loaded into WKWebView
-            // The authenticator will check for existing valid cookies and only fetch new ones if needed
             authenticator.request(url: authURL, cookieJar: cookieJar) { _ in
                 DDLogInfo("Authentication cookies loaded into shared cookie store for GutenbergKit")
                 continuation.resume(returning: true)
             }
         }
-    }
-
-    private func clearExpiredAuthenticationCookies(in cookieStore: WKHTTPCookieStore) async {
-        guard let blogURLString = post.blog.url, let blogURL = URL(string: blogURLString) else {
-            return
-        }
-
-        await withCheckedContinuation { continuation in
-            cookieStore.getAllCookies { cookies in
-                let expiredAuthCookies = cookies.filter { cookie in
-                    let isAuthCookie = cookie.name.hasPrefix("wordpress_logged_in") &&
-                        self.cookieMatchesBlogDomain(cookie, blogURL: blogURL)
-                    let isExpired = cookie.expiresDate.map { $0 < Date() } ?? false
-                    return isAuthCookie && isExpired
-                }
-
-                // Remove expired cookies
-                let group = DispatchGroup()
-                for cookie in expiredAuthCookies {
-                    group.enter()
-                    cookieStore.delete(cookie) {
-                        group.leave()
-                    }
-                }
-
-                group.notify(queue: .main) {
-                    continuation.resume()
-                }
-            }
-        }
-    }
-
-    private func cookieMatchesBlogDomain(_ cookie: HTTPCookie, blogURL: URL) -> Bool {
-        guard let host = blogURL.host else { return false }
-
-        let matchesDomain: Bool
-        if cookie.domain.hasPrefix(".") {
-            // Wildcard domain (e.g., ".wordpress.com" matches "site.wordpress.com")
-            matchesDomain = host.hasSuffix(cookie.domain) || host == String(cookie.domain.dropFirst())
-        } else {
-            // Exact domain match
-            matchesDomain = host == cookie.domain
-        }
-
-        return matchesDomain
     }
 
     private func startEditor(with settings: [String: Any]? = nil) {
