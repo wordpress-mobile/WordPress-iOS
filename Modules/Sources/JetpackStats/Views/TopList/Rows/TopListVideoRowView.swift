@@ -10,7 +10,7 @@ struct TopListVideoRowView: View {
                 Image(systemName: "play.circle.fill")
                     .font(.caption)
                     .foregroundColor(.secondary)
-                
+
                 Text(item.title)
                     .font(.callout)
                     .foregroundColor(.primary)

@@ -44,7 +44,6 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         self.dateRange = dateRange
         self.service = service
 
-
         self.groupedItems = {
             var primary = service.supportedItems.filter {
                 !TopListItemType.secondaryItems.contains($0)

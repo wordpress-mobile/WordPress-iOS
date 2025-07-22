@@ -37,11 +37,11 @@ struct TrendViewModel: Hashable {
 
     /// The percentage change between periods (nil if the previous value was 0).
     /// - Example: 0.5 for 50% increase, 0.25 for 25% decrease
-    var percentage: Double? {
+    var percentage: Decimal? {
         guard previousValue != 0 else {
             return nil
         }
-        return Double(abs(currentValue - previousValue)) / Double(abs(previousValue))
+        return Decimal(abs(currentValue - previousValue)) / Decimal(abs(previousValue))
     }
 
     // MARK: Formatting
@@ -93,7 +93,11 @@ struct TrendViewModel: Hashable {
         guard let percentage else {
             return "∞"
         }
-        return percentage.formatted(.percent.precision(.fractionLength(0...1)))
+        return percentage.formatted(
+            .percent
+            .notation(.compactName)
+            .precision(.fractionLength(0...1))
+        )
     }
 }
 

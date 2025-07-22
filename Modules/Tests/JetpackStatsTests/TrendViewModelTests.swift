@@ -62,7 +62,7 @@ struct TrendViewModelTests {
         (0, 100, 1.0),        // 100% decrease
         (100, 100, 0.0)       // No change
     ])
-    func testPercentageCalculation(current: Int, previous: Int, expected: Double) {
+    func testPercentageCalculation(current: Int, previous: Int, expected: Decimal) {
         // GIVEN
         let viewModel = TrendViewModel(currentValue: current, previousValue: previous, metric: .views)
 
@@ -122,6 +122,7 @@ struct TrendViewModelTests {
     @Test("Formatted percentage string", arguments: [
         (150, 100, "50%"),
         (175, 100, "75%"),
+        (1, 1000, "1K%"),
         (100, 100, "0%"),
         (125, 100, "25%"),
         (100, 0, "∞")

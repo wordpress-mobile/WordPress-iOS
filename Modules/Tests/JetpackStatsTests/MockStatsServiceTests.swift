@@ -13,7 +13,12 @@ struct MockStatsServiceTests {
         let dateInterval = calendar.makeDateInterval(for: .today)
 
         // WHEN
-        let response = try await service.getTopListData(.posts, interval: dateInterval, granularity: dateInterval.preferredGranularity)
+        let response = try await service.getTopListData(
+            .posts,
+            metric: .views,
+            interval: dateInterval,
+            granularity: dateInterval.preferredGranularity
+        )
 
         // THEN
         #expect(response.items.count > 0)
@@ -39,7 +44,10 @@ struct MockStatsServiceTests {
         let granularity = dateInterval.preferredGranularity
 
         // WHEN
-        let response = try await service.getSiteStats(interval: dateInterval, granularity: granularity)
+        let response = try await service.getSiteStats(
+            interval: dateInterval,
+            granularity: granularity
+        )
 
         // THEN - Basic validations
         #expect(response.metrics.count > 0, "Should return at least one data point")
