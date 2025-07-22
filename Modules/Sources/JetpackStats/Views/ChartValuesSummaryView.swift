@@ -12,37 +12,43 @@ struct ChartValuesSummaryView: View {
     var body: some View {
         Group {
             switch style {
-            case .standard:
-                HStack(alignment: .center, spacing: 16) {
-                    Text(trend.formattedCurrentValue)
-                        .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
-                        .foregroundColor(.primary)
-                        .contentTransition(.numericText())
-
-                    BadgeTrendIndicator(trend: trend)
-                }
-            case .compact:
-                HStack(alignment: .center, spacing: 12) {
-                    Text(trend.formattedCurrentValue)
-                        .font(.subheadline.weight(.medium))
-                        .foregroundColor(.primary)
-                        .contentTransition(.numericText())
-
-                    Group {
-                        Text(trend.formattedChange)
-                        HStack(spacing: 2) {
-                            Image(systemName: trend.systemImage)
-                                .font(.caption2.weight(.medium))
-                            Text(trend.formattedPercentage)
-                        }
-                    }
-                    .contentTransition(.numericText())
-                    .font(.subheadline.weight(.medium))
-                    .foregroundColor(trend.sentiment.foregroundColor)
-                }
+            case .standard: standard
+            case .compact: compact
             }
         }
         .animation(.default, value: trend)
+    }
+
+    private var standard: some View {
+        HStack(alignment: .center, spacing: 16) {
+            Text(trend.formattedCurrentValue)
+                .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
+                .foregroundColor(.primary)
+                .contentTransition(.numericText())
+
+            BadgeTrendIndicator(trend: trend)
+        }
+    }
+
+    private var compact: some View {
+        HStack(alignment: .center, spacing: 12) {
+            Text(trend.formattedCurrentValue)
+                .font(.system(.subheadline, design: .rounded, weight: .medium))
+                .foregroundColor(.primary)
+                .contentTransition(.numericText())
+
+            Group {
+                Text(trend.formattedChange)
+                HStack(spacing: 2) {
+                    Image(systemName: trend.systemImage)
+                        .font(.caption2.weight(.medium))
+                    Text(trend.formattedPercentage)
+                }
+            }
+            .contentTransition(.numericText())
+            .font(.system(.subheadline, design: .rounded, weight: .medium))
+            .foregroundColor(trend.sentiment.foregroundColor)
+        }
     }
 }
 
