@@ -80,6 +80,19 @@
     }
   },
   {
+    "pageId": "rtp1",
+    "title": "About The Verge",
+    "author": "Editorial Team",
+    "metrics": {
+      "views": 120,
+      "comments": 0,
+      "likes": 15,
+      "visitors": 96,
+      "bounceRate": 60,
+      "timeOnSite": 90
+    }
+  },
+  {
     "postId": "rt9",
     "title": "Nothing Phone (2) Review",
     "author": "Jay Peters",
@@ -100,6 +113,19 @@
     }
   },
   {
+    "pageId": "rtp2",
+    "title": "Contact Us",
+    "author": "Support Team",
+    "metrics": {
+      "views": 95,
+      "comments": 0,
+      "likes": 8,
+      "visitors": 76,
+      "bounceRate": 65,
+      "timeOnSite": 75
+    }
+  },
+  {
     "postId": "rt11",
     "title": "iPhone 15 Pro Max: Six Months Later",
     "author": "David Pierce",
@@ -110,6 +136,19 @@
     }
   },
   {
+    "pageId": "rtp3",
+    "title": "Newsletter Signup",
+    "author": "Marketing Team",
+    "metrics": {
+      "views": 80,
+      "comments": 2,
+      "likes": 12,
+      "visitors": 64,
+      "bounceRate": 55,
+      "timeOnSite": 120
+    }
+  },
+  {
     "postId": "rt12",
     "title": "The Best Smart Home Devices of 2024",
     "author": "Emma Roth",
@@ -117,6 +156,45 @@
       "views": 75,
       "comments": 6,
       "likes": 18
+    }
+  },
+  {
+    "pageId": "rtp4",
+    "title": "Privacy Policy",
+    "author": "Legal Team",
+    "metrics": {
+      "views": 65,
+      "comments": 1,
+      "likes": 5,
+      "visitors": 52,
+      "bounceRate": 70,
+      "timeOnSite": 60
+    }
+  },
+  {
+    "pageId": "rtp5",
+    "title": "Terms of Service",
+    "author": "Legal Team",
+    "metrics": {
+      "views": 55,
+      "comments": 0,
+      "likes": 3,
+      "visitors": 44,
+      "bounceRate": 72,
+      "timeOnSite": 55
+    }
+  },
+  {
+    "pageId": "rtp6",
+    "title": "Advertise with Us",
+    "author": "Sales Team",
+    "metrics": {
+      "views": 45,
+      "comments": 0,
+      "likes": 2,
+      "visitors": 36,
+      "bounceRate": 58,
+      "timeOnSite": 110
     }
   }
 ]

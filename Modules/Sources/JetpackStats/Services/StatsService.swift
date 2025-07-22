@@ -24,13 +24,13 @@ actor StatsService: StatsServiceProtocol {
     ]
 
     let supportedItems: [TopListItemType] = [
-        .postsAndPages, .posts, .pages, .referrers, .locations, .authors, .externalLinks,
+        .postsAndPages, .referrers, .locations, .authors, .externalLinks,
         .fileDownloads, .searchTerms, .videos
     ]
 
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
         switch item {
-        case .postsAndPages, .posts, .pages: [.views]
+        case .postsAndPages: [.views]
         case .referrers: [.views]
         case .locations: [.views]
         case .authors: [.views]
@@ -129,24 +129,6 @@ actor StatsService: StatsServiceProtocol {
                 return mapPostsToTopListData(data)
             case .comments:
                 fatalError()
-            default:
-                throw StatsServiceError.unavailable
-            }
-
-        case .pages:
-            switch metric {
-            case .views:
-                let data = try await getData(StatsTopPostsTimeIntervalData.self)
-                return mapPostsToTopListData(data, filterKind: .page)
-            default:
-                throw StatsServiceError.unavailable
-            }
-
-        case .posts:
-            switch metric {
-            case .views:
-                let data = try await getData(StatsTopPostsTimeIntervalData.self)
-                return mapPostsToTopListData(data, filterKind: .post)
             default:
                 throw StatsServiceError.unavailable
             }

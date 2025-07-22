@@ -2,8 +2,6 @@ import SwiftUI
 
 enum TopListItemType: Identifiable, CaseIterable, Sendable {
     case postsAndPages
-    case posts
-    case pages
     case authors
     case referrers
     case locations
@@ -17,8 +15,6 @@ enum TopListItemType: Identifiable, CaseIterable, Sendable {
     var localizedTitle: String {
         switch self {
         case .postsAndPages: Strings.SiteDataTypes.postsAndPages
-        case .posts: Strings.SiteDataTypes.posts
-        case .pages: Strings.SiteDataTypes.pages
         case .authors: Strings.SiteDataTypes.authors
         case .referrers: Strings.SiteDataTypes.referrers
         case .locations: Strings.SiteDataTypes.locations
@@ -31,9 +27,7 @@ enum TopListItemType: Identifiable, CaseIterable, Sendable {
 
     var systemImage: String {
         switch self {
-        case .postsAndPages: "doc.on.doc"
-        case .posts: "doc.text"
-        case .pages: "doc"
+        case .postsAndPages: "doc.text"
         case .referrers: "link"
         case .locations: "map"
         case .authors: "person.2"

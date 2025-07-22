@@ -131,7 +131,7 @@ struct RealtimeTopListCard: View {
         VStack(spacing: 20) {
             // Posts & Pages
             RealtimeTopListCard(
-                availableDataTypes: [.postsAndPages, .posts, .pages],
+                availableDataTypes: [.postsAndPages],
                 initialDataType: .postsAndPages,
                 service: MockStatsService()
             )

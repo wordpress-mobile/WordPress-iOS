@@ -11,7 +11,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
         switch item {
-        case .postsAndPages, .posts, .pages: [.views, .visitors, .comments, .likes]
+        case .postsAndPages: [.views, .visitors, .comments, .likes]
         case .referrers: [.views, .visitors]
         case .locations: [.views, .visitors]
         case .authors: [.views, .comments, .likes]
@@ -172,15 +172,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     private func loadRealtimeBaseItems(for dataType: TopListItemType) -> [any TopListItem] {
         let fileName: String
         switch dataType {
-        case .posts:
-            fileName = "posts"
-        case .pages:
-            fileName = "pages"
         case .postsAndPages:
-            // Load both posts and pages
-            let posts = loadRealtimeBaseItems(for: .posts)
-            let pages = loadRealtimeBaseItems(for: .pages)
-            return posts + pages
+            fileName = "postsAndPages"
         case .referrers:
             fileName = "referrers"
         case .locations:
@@ -209,9 +202,6 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
             // Decode based on data type
             switch dataType {
-            case .posts, .pages:
-                let posts = try decoder.decode([TopListData.Post].self, from: data)
-                return posts
             case .referrers:
                 let referrers = try decoder.decode([TopListData.Referrer].self, from: data)
                 return referrers
@@ -240,13 +230,15 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                 let videos = try decoder.decode([TopListData.Video].self, from: data)
                 return videos
             case .postsAndPages:
-                return [] // Already handled above
+                let posts = try decoder.decode([TopListData.Post].self, from: data)
+                return posts
             }
         } catch {
             print("Failed to load \(fileName).json: \(error)")
             return []
         }
     }
+
 
     // MARK: - Data Aggregation
 
@@ -274,15 +266,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     private func loadHistoricalItems(for dataType: TopListItemType) -> [any TopListItem] {
         let fileName: String
         switch dataType {
-        case .posts:
-            fileName = "historical-posts"
-        case .pages:
-            fileName = "historical-pages"
         case .postsAndPages:
-            // Load both posts and pages
-            let posts = loadHistoricalItems(for: .posts)
-            let pages = loadHistoricalItems(for: .pages)
-            return posts + pages
+            fileName = "historical-postsAndPages"
         case .referrers:
             fileName = "historical-referrers"
         case .locations:
@@ -311,9 +296,6 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
             // Decode based on data type
             switch dataType {
-            case .posts, .pages:
-                let posts = try decoder.decode([TopListData.Post].self, from: data)
-                return posts
             case .referrers:
                 let referrers = try decoder.decode([TopListData.Referrer].self, from: data)
                 return referrers
@@ -342,13 +324,15 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                 let videos = try decoder.decode([TopListData.Video].self, from: data)
                 return videos
             case .postsAndPages:
-                return [] // Already handled above
+                let posts = try decoder.decode([TopListData.Post].self, from: data)
+                return posts
             }
         } catch {
             print("Failed to load \(fileName).json: \(error)")
             return []
         }
     }
+
 
     // MARK: - Data Generation
 

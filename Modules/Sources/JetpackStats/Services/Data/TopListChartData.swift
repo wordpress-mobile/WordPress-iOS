@@ -72,7 +72,7 @@ extension TopListChartData {
         count: Int
     ) -> [any TopListItem] {
         switch item {
-        case .postsAndPages, .posts, .pages:
+        case .postsAndPages:
             return mockPosts(metric: metric, count: count)
         case .referrers:
             return mockReferrers(metric: metric, count: count)
