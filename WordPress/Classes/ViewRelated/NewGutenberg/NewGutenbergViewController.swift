@@ -345,15 +345,13 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             return true
         }
 
-        guard let authenticator = RequestAuthenticator(blog: post.blog) else {
+        guard let authenticator = RequestAuthenticator(blog: post.blog),
+            let blogURL = post.blog.url,
+            let authURL = URL(string: blogURL) else {
             return false
         }
 
         let cookieJar = WKWebsiteDataStore.default().httpCookieStore
-
-        guard let blogURL = post.blog.url, let authURL = URL(string: blogURL) else {
-            return false
-        }
 
         return await withCheckedContinuation { continuation in
             // Always call authenticator.request() to ensure cookies are properly loaded into WKWebView
