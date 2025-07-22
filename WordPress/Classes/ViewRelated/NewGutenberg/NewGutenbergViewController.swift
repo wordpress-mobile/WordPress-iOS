@@ -374,7 +374,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
                 let expiredAuthCookies = cookies.filter { cookie in
                     let isAuthCookie = (cookie.name == "wordpress_logged_in" || cookie.name.hasPrefix("wordpress_logged_in_")) &&
                                       cookie.domain.contains("wordpress.com")
-                    let isExpired = cookie.expiresDate?.timeIntervalSinceNow ?? 0 <= 0
+                    let isExpired = cookie.expiresDate.map { $0 < Date() } ?? false
                     return isAuthCookie && isExpired
                 }
 
