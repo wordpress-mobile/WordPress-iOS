@@ -64,11 +64,11 @@ struct TrafficTabView: View {
             return
         }
         viewModels = [
-//            ChartCardViewModel(
-//                metrics: context.service.supportedMetrics,
-//                dateRange: dateRange,
-//                service: context.service
-//            ),
+            ChartCardViewModel(
+                metrics: context.service.supportedMetrics,
+                dateRange: dateRange,
+                service: context.service
+            ),
             TopListCardViewModel(
                 selection: .init(item: .postsAndPages, metric: .views),
                 dateRange: dateRange,
