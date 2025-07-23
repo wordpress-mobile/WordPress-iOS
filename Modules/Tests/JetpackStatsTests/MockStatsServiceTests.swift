@@ -14,7 +14,7 @@ struct MockStatsServiceTests {
 
         // WHEN
         let response = try await service.getTopListData(
-            .posts,
+            .postsAndPages,
             metric: .views,
             interval: dateInterval,
             granularity: dateInterval.preferredGranularity

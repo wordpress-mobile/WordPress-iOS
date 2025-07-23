@@ -106,94 +106,15 @@ struct StandaloneChartCard: View {
     private func computeChartData() async {
         isComputingData = true
         defer { isComputingData = false }
-        
-        // Perform the computation asynchronously
-        let data = await Task.detached { [dataPoints, dateRange, metric, context] in
-            return self.generateChartData(dataPoints: dataPoints, dateRange: dateRange, metric: metric, context: context)
-        }.value
-        
-        cachedChartData = data
-    }
-    
-    private func generateChartData(dataPoints: [DataPoint], dateRange: StatsDateRange, metric: SiteMetric, context: StatsContext) -> ChartData {
-        // Filter data points within the selected date range
-        let filteredDataPoints = dataPoints.filter { dataPoint in
-            dateRange.dateInterval.contains(dataPoint.date)
-        }
-        
-        // Determine appropriate granularity based on date range
-        let granularity = dateRange.dateInterval.preferredGranularity
-        
-        // Aggregate data based on granularity
-        let aggregator = StatsDataAggregator(calendar: context.calendar)
-        let aggregatedData = aggregator.aggregate(filteredDataPoints, granularity: granularity)
-        let normalizedData = aggregator.normalizeForMetric(aggregatedData, metric: metric)
-        
-        // Generate complete date sequence for the range
-        let dateSequence = aggregator.generateDateSequence(
-            dateInterval: dateRange.dateInterval,
-            by: granularity.component
-        )
-        
-        // Create data points for chart
-        let currentDataPoints = dateSequence.map { date in
-            let aggregationDate = aggregator.makeAggegationDate(for: date, granularity: granularity)
-            return DataPoint(date: date, value: normalizedData[aggregationDate ?? date] ?? 0)
-        }
-        
-        let currentTotal = currentDataPoints.reduce(0) { $0 + $1.value }
-        
-        // Calculate previous period data for comparison
-        let previousDateRange = StatsDateRange(
-            interval: dateRange.effectiveComparisonInterval,
-            component: dateRange.component,
-            comparison: dateRange.comparison,
-            calendar: context.calendar
-        )
-        
-        // Get data points for previous period
-        let previousFilteredDataPoints = dataPoints.filter { dataPoint in
-            previousDateRange.dateInterval.contains(dataPoint.date)
-        }
-        
-        // Aggregate previous period data
-        let previousAggregated = aggregator.aggregate(previousFilteredDataPoints, granularity: granularity)
-        let previousNormalized = aggregator.normalizeForMetric(previousAggregated, metric: metric)
-        
-        // Generate date sequence for previous period
-        let previousDateSequence = aggregator.generateDateSequence(
-            dateInterval: previousDateRange.dateInterval,
-            by: granularity.component
-        )
-        
-        // Create previous data points
-        let previousDataPoints = previousDateSequence.map { date in
-            let aggregationDate = aggregator.makeAggegationDate(for: date, granularity: granularity)
-            return DataPoint(date: date, value: previousNormalized[aggregationDate ?? date] ?? 0)
-        }
-        
-        let previousTotal = previousDataPoints.reduce(0) { $0 + $1.value }
-        
-        // Map previous data points to current period dates for overlay
-        let mappedPreviousData = DataPoint.mapDataPoints(
-            previousDataPoints,
-            from: previousDateRange.dateInterval,
-            to: dateRange.dateInterval,
-            component: dateRange.component,
-            calendar: context.calendar
-        )
-        
-        return ChartData(
+
+        cachedChartData = await generateChartData(
+            dataPoints: dataPoints,
+            dateRange: dateRange,
             metric: metric,
-            granularity: granularity,
-            currentTotal: currentTotal,
-            currentData: currentDataPoints,
-            previousTotal: previousTotal,
-            previousData: previousDataPoints,
-            mappedPreviousData: mappedPreviousData
+            context: context
         )
     }
-    
+
     // MARK: - Controls
     
     private var moreMenu: some View {
@@ -274,6 +195,58 @@ struct StandaloneChartCard: View {
             }
         }
     }
+}
+
+private func generateChartData(dataPoints: [DataPoint], dateRange: StatsDateRange, metric: SiteMetric, context: StatsContext) async -> ChartData {
+    let granularity = dateRange.dateInterval.preferredGranularity
+    let aggregator = StatsDataAggregator(calendar: context.calendar)
+
+    // Filter data points for current period
+    let currentDataPoints = dataPoints.filter { dataPoint in
+        dateRange.dateInterval.contains(dataPoint.date)
+    }
+
+    // Process current period
+    let currentPeriod = aggregator.processPeriod(
+        dataPoints: currentDataPoints,
+        dateInterval: dateRange.dateInterval,
+        granularity: granularity,
+        metric: metric
+    )
+
+    // Create previous period using calendar extension
+    let previousDateInterval = dateRange.effectiveComparisonInterval
+
+    // Filter data points for previous period
+    let previousDataPoints = dataPoints.filter { dataPoint in
+        previousDateInterval.contains(dataPoint.date)
+    }
+
+    let previousPeriod = aggregator.processPeriod(
+        dataPoints: previousDataPoints,
+        dateInterval: previousDateInterval,
+        granularity: granularity,
+        metric: metric
+    )
+
+    // Map previous data points to current period dates for overlay
+    let mappedPreviousData = DataPoint.mapDataPoints(
+        previousPeriod.dataPoints,
+        from: previousDateInterval,
+        to: dateRange.dateInterval,
+        component: dateRange.component,
+        calendar: context.calendar
+    )
+
+    return ChartData(
+        metric: metric,
+        granularity: granularity,
+        currentTotal: currentPeriod.total,
+        currentData: currentPeriod.dataPoints,
+        previousTotal: previousPeriod.total,
+        previousData: previousPeriod.dataPoints,
+        mappedPreviousData: mappedPreviousData
+    )
 }
 
 // MARK: - Preview

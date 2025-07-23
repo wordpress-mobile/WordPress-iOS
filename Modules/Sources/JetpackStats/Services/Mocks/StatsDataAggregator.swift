@@ -111,4 +111,45 @@ struct StatsDataAggregator {
         }
         return dates
     }
+    
+    /// Processes a period of data by aggregating and normalizing data points.
+    /// - Parameters:
+    ///   - dataPoints: Data points already filtered for the period
+    ///   - dateInterval: The date interval to process
+    ///   - granularity: The aggregation granularity
+    ///   - metric: The metric type for normalization
+    /// - Returns: Processed period data with aggregated data points and total
+    func processPeriod(
+        dataPoints: [DataPoint],
+        dateInterval: DateInterval,
+        granularity: DateRangeGranularity,
+        metric: SiteMetric
+    ) -> PeriodData {
+        // Aggregate data
+        let aggregatedData = aggregate(dataPoints, granularity: granularity)
+        let normalizedData = normalizeForMetric(aggregatedData, metric: metric)
+        
+        // Generate complete date sequence for the range
+        let dateSequence = generateDateSequence(
+            dateInterval: dateInterval,
+            by: granularity.component
+        )
+        
+        // Create data points for each date in the sequence
+        let periodDataPoints = dateSequence.map { date in
+            let aggregationDate = makeAggegationDate(for: date, granularity: granularity)
+            return DataPoint(date: date, value: normalizedData[aggregationDate ?? date] ?? 0)
+        }
+        
+        // Calculate total using DataPoint's getTotalValue method
+        let total = DataPoint.getTotalValue(for: periodDataPoints, metric: metric) ?? 0
+        
+        return PeriodData(dataPoints: periodDataPoints, total: total)
+    }
+}
+
+/// Represents processed data for a specific period
+struct PeriodData {
+    let dataPoints: [DataPoint]
+    let total: Int
 }
