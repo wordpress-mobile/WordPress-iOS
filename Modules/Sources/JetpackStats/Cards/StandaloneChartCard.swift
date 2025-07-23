@@ -18,8 +18,7 @@ struct StandaloneChartCard: View {
     @State private var dateRange: StatsDateRange
     @State private var selectedChartType: ChartType = .line
     @State private var isShowingDatePicker = false
-    @State private var cachedChartData: ChartData?
-    @State private var isComputingData = false
+    @State private var chartData: ChartData?
     
     @ScaledMetric private var chartHeight = 160
     
@@ -39,11 +38,9 @@ struct StandaloneChartCard: View {
     var body: some View {
         VStack(spacing: Constants.step1) {
             VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    StatsCardTitleView(title: metric.localizedTitle)
-                    Spacer()
-                }
-                
+                StatsCardTitleView(title: metric.localizedTitle)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
                 // Show legend for current and comparison periods
                 ChartLegendView(
                     metric: metric,
@@ -56,14 +53,17 @@ struct StandaloneChartCard: View {
             }
             
             // Chart content
-            if let chartData = cachedChartData {
-                chartContent(chartData: chartData)
-                    .frame(height: chartHeight)
-            } else if isComputingData {
-                ProgressView()
-                    .frame(height: chartHeight)
+            Group {
+                if let chartData = chartData {
+                    chartContent(chartData: chartData)
+                } else {
+                    chartContent(chartData: .mock(metric: .views, granularity: .day, range: dateRange))
+                        .redacted(reason: .placeholder)
+                        .opacity(0.33)
+                }
             }
-            
+            .frame(height: chartHeight)
+
             // Date range controls
             dateRangeControls
         }
@@ -75,7 +75,7 @@ struct StandaloneChartCard: View {
             CustomDateRangePicker(dateRange: $dateRange)
         }
         .task(id: dateRange) {
-            await computeChartData()
+            await refreshChartData()
         }
     }
     
@@ -92,7 +92,7 @@ struct StandaloneChartCard: View {
     }
     
     private var trend: TrendViewModel {
-        guard let chartData = cachedChartData else {
+        guard let chartData = chartData else {
             return TrendViewModel(currentValue: 0, previousValue: 0, metric: metric)
         }
         return TrendViewModel(
@@ -101,18 +101,16 @@ struct StandaloneChartCard: View {
             metric: metric
         )
     }
-    
-    @MainActor
-    private func computeChartData() async {
-        isComputingData = true
-        defer { isComputingData = false }
 
-        cachedChartData = await generateChartData(
+    private func refreshChartData() async {
+        let chartData = await generateChartData(
             dataPoints: dataPoints,
             dateRange: dateRange,
             metric: metric,
             context: context
         )
+        guard !Task.isCancelled else { return }
+        self.chartData = chartData
     }
 
     // MARK: - Controls
@@ -163,37 +161,25 @@ struct StandaloneChartCard: View {
             
             // Navigation controls
             HStack(spacing: 4) {
-                // Previous button
-                Button {
-                    withAnimation(.spring(response: 0.3)) {
-                        dateRange = dateRange.navigate(.backward)
-                    }
-                } label: {
-                    Image(systemName: "chevron.backward")
-                        .font(.subheadline.weight(.medium))
-                        .foregroundColor(dateRange.canNavigate(in: .backward) ? .primary : Color(.quaternaryLabel))
-                        .frame(width: 36, height: 36)
-                        .background(Color(.secondarySystemBackground))
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                }
-                .disabled(!dateRange.canNavigate(in: .backward))
-                
-                // Next button
-                Button {
-                    withAnimation(.spring(response: 0.3)) {
-                        dateRange = dateRange.navigate(.forward)
-                    }
-                } label: {
-                    Image(systemName: "chevron.forward")
-                        .font(.subheadline.weight(.medium))
-                        .foregroundColor(dateRange.canNavigate(in: .forward) ? .primary : Color(.quaternaryLabel))
-                        .frame(width: 36, height: 36)
-                        .background(Color(.secondarySystemBackground))
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                }
-                .disabled(!dateRange.canNavigate(in: .forward))
+                navigationButton(direction: .backward)
+                navigationButton(direction: .forward)
             }
         }
+    }
+    
+    @ViewBuilder
+    private func navigationButton(direction: NavigationDirection) -> some View {
+        Button {
+            dateRange = dateRange.navigate(direction)
+        } label: {
+            Image(systemName: direction == .backward ? "chevron.backward" : "chevron.forward")
+                .font(.subheadline.weight(.medium))
+                .foregroundColor(dateRange.canNavigate(in: direction) ? .primary : Color(.quaternaryLabel))
+                .frame(width: 36, height: 36)
+                .background(Color(.secondarySystemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+        }
+        .disabled(!dateRange.canNavigate(in: direction))
     }
 }
 
