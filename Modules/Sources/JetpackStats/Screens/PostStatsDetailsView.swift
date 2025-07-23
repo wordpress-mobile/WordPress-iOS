@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 import WordPressKit
+import Charts
 
 struct PostStatsDetailsView: View {
     let post: TopListData.Post
@@ -10,12 +11,25 @@ struct PostStatsDetailsView: View {
     @State private var postLikes: PostLikes?
     @State private var isLoading = true
     @State private var error: Error?
+    @State private var chartDateRange: StatsDateRange
+    
+    init(post: TopListData.Post) {
+        self.post = post
+        // Initialize with last 14 days
+        let calendar = Calendar.current
+        let dateRange = calendar.makeDateRange(for: .last7Days)
+        self._chartDateRange = State(initialValue: dateRange)
+    }
     
     var body: some View {
         ScrollView {
             VStack(spacing: Constants.step2) {
                 if let details {
                     PostHeaderCard(post: post, details: details, postLikes: postLikes, context: context)
+                        .cardStyle()
+                    
+                    // Views Over Time Chart
+                    PostViewsChartCard(details: details, dateRange: $chartDateRange)
                         .cardStyle()
                     
                     // Peak Performance Card
@@ -425,7 +439,6 @@ private struct DayCell: View {
     }
 }
 
-
 private struct YearlySummaryCard: View {
     let yearlyTotals: [Int: Int]
     let overallAverages: [Int: Int]
@@ -630,6 +643,157 @@ private struct MonthCellExpanded: View {
         }
     }
 }
+
+// MARK: - Chart Components
+
+private enum ChartType: String, CaseIterable {
+    case line
+    case columns
+    
+    var localizedTitle: String {
+        switch self {
+        case .line: Strings.Chart.lineChart
+        case .columns: Strings.Chart.barChart
+        }
+    }
+    
+    var systemImage: String {
+        switch self {
+        case .line: "chart.line.uptrend.xyaxis"
+        case .columns: "chart.bar"
+        }
+    }
+}
+
+private struct PostViewsChartCard: View {
+    let details: StatsPostDetails
+    @Binding var dateRange: StatsDateRange
+    @State private var selectedChartType: ChartType = .line
+    @State private var isShowingDatePicker = false
+    @Environment(\.context) private var context
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            VStack(spacing: Constants.step2) {
+                // Header
+                HStack {
+                    StatsCardTitleView(title: Strings.PostDetails.viewsOverTime)
+                    Spacer()
+                }
+                
+                // Period selector
+                HStack {
+                    Button(action: { isShowingDatePicker = true }) {
+                        HStack(spacing: 4) {
+                            Text(context.dateRangeFormatter.string(from: dateRange))
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                            Image(systemName: "chevron.down")
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    Spacer()
+                }
+                
+                // Chart content
+                chartContent
+                    .frame(height: 180)
+            }
+            .padding(Constants.step2)
+        }
+        .overlay(alignment: .topTrailing) {
+            moreMenu
+        }
+        .sheet(isPresented: $isShowingDatePicker) {
+            CustomDateRangePicker(dateRange: $dateRange)
+        }
+    }
+    
+    @ViewBuilder
+    private var chartContent: some View {
+        switch selectedChartType {
+        case .line:
+            LineChartView(data: chartData)
+        case .columns:
+            BarChartView(data: chartData)
+        }
+    }
+    
+    private var chartData: ChartData {
+        // Get all available data points from different sources
+        let allDataPoints = getAllAvailableDataPoints()
+        
+        // Filter data points within the selected date range
+        let filteredDataPoints = allDataPoints.filter { dataPoint in
+            dateRange.dateInterval.contains(dataPoint.date)
+        }
+        
+        // Determine appropriate granularity based on date range
+        let granularity = dateRange.dateInterval.preferredGranularity
+        
+        // Aggregate data based on granularity
+        let aggregator = StatsDataAggregator(calendar: context.calendar)
+        let aggregatedData = aggregator.aggregate(filteredDataPoints, granularity: granularity)
+        let normalizedData = aggregator.normalizeForMetric(aggregatedData, metric: .views)
+        
+        // Generate complete date sequence for the range
+        let dateSequence = aggregator.generateDateSequence(
+            dateInterval: dateRange.dateInterval,
+            by: granularity.component
+        )
+        
+        // Create data points for chart
+        let dataPoints = dateSequence.map { date in
+            let aggregationDate = aggregator.makeAggegationDate(for: date, granularity: granularity)
+            return DataPoint(date: date, value: normalizedData[aggregationDate ?? date] ?? 0)
+        }
+        
+        let total = dataPoints.reduce(0) { $0 + $1.value }
+        
+        // For post details, we don't have previous period data
+        return ChartData(
+            metric: .views,
+            granularity: granularity,
+            currentTotal: total,
+            currentData: dataPoints,
+            previousTotal: 0,
+            previousData: [],
+            mappedPreviousData: []
+        )
+    }
+    
+    private func getAllAvailableDataPoints() -> [DataPoint] {
+        // Use the data field which contains all available daily data
+        return details.data.compactMap { postView in
+            guard let date = context.calendar.date(from: postView.date) else { return nil }
+            return DataPoint(date: date, value: postView.viewsCount)
+        }
+    }
+    
+    private var moreMenu: some View {
+        Menu {
+            Section {
+                ControlGroup {
+                    ForEach(ChartType.allCases, id: \.self) { type in
+                        Button {
+                            selectedChartType = type
+                        } label: {
+                            Label(type.localizedTitle, systemImage: type.systemImage)
+                        }
+                    }
+                }
+            }
+        } label: {
+            Image(systemName: "ellipsis")
+                .font(.body)
+                .foregroundColor(.secondary)
+                .frame(width: 50, height: 50)
+        }
+        .tint(Color.primary)
+    }
+}
+
 
 
 #Preview {
