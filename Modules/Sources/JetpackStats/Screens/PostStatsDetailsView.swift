@@ -11,56 +11,18 @@ struct PostStatsDetailsView: View {
     @State private var dataPoints: [DataPoint] = []
     @State private var isLoading = true
     @State private var error: Error?
-    
-    init(post: TopListData.Post) {
+
+    private let initialDateRange: StatsDateRange
+
+    init(post: TopListData.Post, dateRange: StatsDateRange) {
         self.post = post
+        self.initialDateRange = dateRange
     }
     
     var body: some View {
         ScrollView {
             VStack(spacing: Constants.step2) {
-                if let details {
-                    PostHeaderCard(post: post, details: details, postLikes: postLikes, context: context)
-                        .cardStyle()
-                    
-                    // Views Over Time Chart
-                    if !dataPoints.isEmpty {
-                        let calendar = Calendar.current
-                        let dateRange = calendar.makeDateRange(for: .last7Days)
-                        StandaloneChartCard(dataPoints: dataPoints, metric: .views, initialDateRange: dateRange)
-                            .cardStyle()
-                    }
-                    
-                    // Peak Performance Card
-                    if details.highestMonth != nil || details.highestDayAverage != nil || details.highestWeekAverage != nil {
-                        PeakPerformanceCard(details: details)
-                            .cardStyle()
-                    }
-                    
-                    // Weekly Trends Chart
-                    if !details.recentWeeks.isEmpty {
-                        WeeklyTrendsCard(weeks: details.recentWeeks, context: context)
-                            .cardStyle()
-                    }
-                    
-                    // Yearly Summary
-                    if !details.yearlyTotals.isEmpty {
-                        YearlySummaryCard(
-                            yearlyTotals: details.yearlyTotals,
-                            overallAverages: details.overallAverages,
-                            monthlyBreakdown: details.monthlyBreakdown
-                        )
-                        .cardStyle()
-                    }
-                } else if isLoading {
-                    ProgressView()
-                        .frame(maxWidth: .infinity, minHeight: 200)
-                        .cardStyle()
-                } else if let error {
-                    SimpleErrorView(error: error)
-                        .frame(maxWidth: .infinity, minHeight: 200)
-                        .cardStyle()
-                }
+                contents
             }
             .padding(.vertical, Constants.step1)
         }
@@ -68,10 +30,55 @@ struct PostStatsDetailsView: View {
         .navigationTitle(Strings.PostDetails.title)
         .navigationBarTitleDisplayMode(.inline)
         .task {
+            try? await Task.sleep(for: .seconds(5))
             await loadPostDetails()
         }
     }
-    
+
+    @ViewBuilder
+    private var contents: some View {
+        if let details {
+            PostHeaderCard(post: post, details: details, postLikes: postLikes, context: context)
+                .cardStyle()
+
+            // Views Over Time Chart
+            if !dataPoints.isEmpty {
+                StandaloneChartCard(dataPoints: dataPoints, metric: .views, initialDateRange: initialDateRange)
+                    .cardStyle()
+            }
+
+            // Peak Performance Card
+            if details.highestMonth != nil || details.highestDayAverage != nil || details.highestWeekAverage != nil {
+                PeakPerformanceCard(details: details)
+                    .cardStyle()
+            }
+
+            // Weekly Trends Chart
+            if !details.recentWeeks.isEmpty {
+                WeeklyTrendsCard(weeks: details.recentWeeks, context: context)
+                    .cardStyle()
+            }
+
+            // Yearly Summary
+            if !details.yearlyTotals.isEmpty {
+                YearlySummaryCard(
+                    yearlyTotals: details.yearlyTotals,
+                    overallAverages: details.overallAverages,
+                    monthlyBreakdown: details.monthlyBreakdown
+                )
+                .cardStyle()
+            }
+        } else if isLoading {
+            ProgressView()
+                .frame(maxWidth: .infinity, minHeight: 200)
+                .cardStyle()
+        } else if let error {
+            SimpleErrorView(error: error)
+                .frame(maxWidth: .infinity, minHeight: 200)
+                .cardStyle()
+        }
+    }
+
     private func loadPostDetails() async {
         guard let postId = post.postId, let postIdInt = Int(postId) else { return }
         
@@ -99,12 +106,12 @@ struct PostStatsDetailsView: View {
     }
     
     private func convertToDataPoints(from data: [StatsPostViews]) -> [DataPoint] {
+        // Convert DateComponents to Date using site timezone (similar to how StatsService does it)
+        var calendar = context.calendar
+        calendar.timeZone = context.timeZone
+
         // Convert StatsPostViews to DataPoints using the site timezone
         return data.compactMap { postView in
-            // Convert DateComponents to Date using site timezone (similar to how StatsService does it)
-            var calendar = context.calendar
-            calendar.timeZone = context.timeZone
-            
             guard let date = calendar.date(from: postView.date) else { return nil }
             return DataPoint(date: date, value: postView.viewsCount)
         }
@@ -643,7 +650,7 @@ private struct MonthCellExpanded: View {
     
     private var heatmapColor: Color {
         if viewsCount == 0 {
-            return Color(UIColor.systemGray6)
+            return Color(UIColor.secondarySystemBackground)
         }
         
         // Use ColorStudio blue gradient
@@ -659,9 +666,6 @@ private struct MonthCellExpanded: View {
     }
 }
 
-
-
-
 #Preview {
     NavigationStack {
         PostStatsDetailsView(
@@ -673,7 +677,8 @@ private struct MonthCellExpanded: View {
                 type: "post",
                 author: nil,
                 metrics: .init(views: 45892, likes: 26, comments: 487)
-            )
+            ),
+            dateRange: Calendar.demo.makeDateRange(for: .thisYear)
         )
         .environment(\.context, StatsContext.demo)
     }
