@@ -150,11 +150,5 @@ enum Strings {
                 : AppLocalizedString("jetpackStats.postDetails.likes", value: "%1$d likes", comment: "Plural likes count. %1$d is the number.")
             return String.localizedStringWithFormat(format, count)
         }
-        
-        // Chart
-        static let viewsOverTime = AppLocalizedString("jetpackStats.postDetails.viewsOverTime", value: "Views Over Time", comment: "Title for post views chart")
-        static let last14Days = AppLocalizedString("jetpackStats.postDetails.last14Days", value: "Last 14 Days", comment: "Chart period option")
-        static let monthly = AppLocalizedString("jetpackStats.postDetails.monthly", value: "Monthly", comment: "Chart period option")
-        static let weekly = AppLocalizedString("jetpackStats.postDetails.weekly", value: "Weekly", comment: "Chart period option")
     }
 }
