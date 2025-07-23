@@ -43,15 +43,24 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         var total = SiteMetricsSet()
         var output: [SiteMetric: [DataPoint]] = [:]
+        
+        let aggregator = StatsDataAggregator(calendar: calendar)
 
-        for (metric, dataPoints) in hourlyData {
-            // This isn't efficient by any means but it will do for the mocking purposes
-            let filteredDataPoints = dataPoints.filter {
+        for (metric, allDataPoints) in hourlyData {
+            // Filter data points for the period
+            let filteredDataPoints = allDataPoints.filter {
                 interval.start <= $0.date && $0.date < interval.end
             }
-            let dataPoints = aggregateData(filteredDataPoints, granularity: granularity, range: interval, metric: metric)
-            output[metric] = dataPoints
-            total[metric] = DataPoint.getTotalValue(for: dataPoints, metric: metric)
+            
+            // Use processPeriod to aggregate and normalize the data
+            let periodData = aggregator.processPeriod(
+                dataPoints: filteredDataPoints,
+                dateInterval: interval,
+                granularity: granularity,
+                metric: metric
+            )
+            output[metric] = periodData.dataPoints
+            total[metric] = periodData.total
         }
 
         try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
@@ -307,27 +316,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         )
     }
 
-    // MARK: - Data Aggregation
-
-    /// Aggregates raw data into data points based on granularity
-    private func aggregateData(_ dataPoints: [DataPoint], granularity: DateRangeGranularity, range: DateInterval, metric: SiteMetric) -> [DataPoint] {
-        let aggregator = StatsDataAggregator(calendar: calendar)
-
-        // Step 1: Perform aggregation
-        let aggregatedData = aggregator.aggregate(dataPoints, granularity: granularity)
-
-        // Step 2: Normalize data for metrics that need averaging
-        let normalizedData = aggregator.normalizeForMetric(aggregatedData, metric: metric)
-
-        // Step 3: Generate complete data points
-        let dateSequence = aggregator.generateDateSequence(dateInterval: range, by: granularity.component)
-
-        // Map dates to data points, using 0 for missing values
-        return dateSequence.map { date in
-            let aggregationDate = aggregator.makeAggegationDate(for: date, granularity: granularity)
-            return DataPoint(date: date, value: normalizedData[aggregationDate ?? date] ?? 0)
-        }
-    }
+    // MARK: - Data Loading
 
     /// Loads historical items from JSON files based on the data type
     private func loadHistoricalItems(for dataType: TopListItemType) -> [any TopListItem] {
