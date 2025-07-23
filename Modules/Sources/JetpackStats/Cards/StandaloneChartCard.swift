@@ -14,7 +14,7 @@ struct StandaloneChartCard: View {
     
     /// The metric type being displayed (e.g., views, likes, comments)
     let metric: SiteMetric
-    
+
     @State private var dateRange: StatsDateRange
     @State private var selectedChartType: ChartType = .line
     @State private var isShowingDatePicker = false
@@ -23,7 +23,9 @@ struct StandaloneChartCard: View {
     @ScaledMetric private var chartHeight = 160
     
     @Environment(\.context) private var context
-    
+
+    @Environment(\.redactionReasons) private var redactionReasons
+
     /// Creates a new standalone chart card.
     /// - Parameters:
     ///   - dataPoints: The array of data points to display
@@ -34,7 +36,7 @@ struct StandaloneChartCard: View {
         self.metric = metric
         self._dateRange = State(initialValue: initialDateRange)
     }
-    
+
     var body: some View {
         VStack(spacing: Constants.step1) {
             VStack(alignment: .leading, spacing: 8) {
@@ -54,8 +56,9 @@ struct StandaloneChartCard: View {
             
             // Chart content
             Group {
-                if let chartData = chartData {
+                if let chartData {
                     chartContent(chartData: chartData)
+                        .opacity(redactionReasons.contains(.placeholder) ? 0.2 : 1.0)
                 } else {
                     chartContent(chartData: .mock(metric: .views, granularity: .day, range: dateRange))
                         .redacted(reason: .placeholder)

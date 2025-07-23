@@ -191,7 +191,7 @@ actor StatsService: StatsServiceProtocol {
         try await service.getDetails(forPostID: postID)
     }
     
-    func getPostLikes(for postID: Int, count: Int) async throws -> PostLikes {
+    func getPostLikes(for postID: Int, count: Int) async throws -> PostLikesData {
         // Create PostServiceRemoteREST instance
         let postService = PostServiceRemoteREST(
             wordPressComRestApi: api,
@@ -207,13 +207,13 @@ actor StatsService: StatsServiceProtocol {
                 excludeUserIDs: nil,
                 success: { users, found in
                     let likeUsers = users.map { remoteLike in
-                        PostLikeUser(
+                        PostLikesData.PostLikeUser(
                             id: remoteLike.userID.intValue,
                             name: remoteLike.displayName ?? remoteLike.username ?? "Unknown",
                             avatarURL: remoteLike.avatarURL.flatMap(URL.init)
                         )
                     }
-                    let postLikes = PostLikes(users: likeUsers, totalCount: found.intValue)
+                    let postLikes = PostLikesData(users: likeUsers, totalCount: found.intValue)
                     continuation.resume(returning: postLikes)
                 },
                 failure: { error in
@@ -314,13 +314,12 @@ actor StatsService: StatsServiceProtocol {
             TopListData.Post(
                 title: post.title,
                 postId: String(post.postID),
+                postURL: post.postURL,
                 date: post.date.flatMap(dateFormatter.date),
                 pageId: nil,
                 type: post.kind.description,
                 author: nil,
-                metrics: SiteMetricsSet(
-                    views: post.viewsCount
-                )
+                metrics: SiteMetricsSet(views: post.viewsCount)
             )
         }
         return TopListData(items: items)
@@ -331,9 +330,7 @@ actor StatsService: StatsServiceProtocol {
             TopListData.Referrer(
                 name: referrer.title,
                 domain: referrer.url?.host,
-                metrics: SiteMetricsSet(
-                    views: referrer.viewsCount
-                )
+                metrics: SiteMetricsSet(views: referrer.viewsCount)
             )
         }
 
@@ -346,9 +343,7 @@ actor StatsService: StatsServiceProtocol {
                 country: country.name,
                 flag: countryCodeToEmoji(country.code),
                 countryCode: country.code,
-                metrics: SiteMetricsSet(
-                    views: country.viewsCount
-                )
+                metrics: SiteMetricsSet(views: country.viewsCount)
             )
         }
 
@@ -361,9 +356,7 @@ actor StatsService: StatsServiceProtocol {
                 name: author.name,
                 userId: author.name, // NOTE: WordPressKit doesn't provide user ID
                 role: nil,
-                metrics: SiteMetricsSet(
-                    views: author.viewsCount
-                ),
+                metrics: SiteMetricsSet(views: author.viewsCount),
                 avatarURL: author.iconURL
             )
         }

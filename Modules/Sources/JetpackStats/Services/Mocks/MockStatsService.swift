@@ -268,52 +268,31 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         return details
     }
     
-    func getPostLikes(for postID: Int, count: Int) async throws -> PostLikes {
+    func getPostLikes(for postID: Int, count: Int) async throws -> PostLikesData {
         // Simulate network delay
         try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
-        
-        // Generate mock users who liked the post
-        let mockUsers = [
-            PostLikeUser(
-                id: 1,
-                name: "Sarah Chen",
-                avatarURL: Bundle.module.path(forResource: "author1", ofType: "jpg").map { URL(filePath: $0) }
-            ),
-            PostLikeUser(
-                id: 2,
-                name: "Marcus Johnson",
-                avatarURL: Bundle.module.path(forResource: "author2", ofType: "jpg").map { URL(filePath: $0) }
-            ),
-            PostLikeUser(
-                id: 3,
-                name: "Emily Rodriguez",
-                avatarURL: Bundle.module.path(forResource: "author3", ofType: "jpg").map { URL(filePath: $0) }
-            ),
-            PostLikeUser(
-                id: 4,
-                name: "Alex Thompson",
-                avatarURL: Bundle.module.path(forResource: "author4", ofType: "jpg").map { URL(filePath: $0) }
-            ),
-            PostLikeUser(
-                id: 5,
-                name: "Nina Patel",
-                avatarURL: Bundle.module.path(forResource: "author5", ofType: "jpg").map { URL(filePath: $0) }
-            ),
-            PostLikeUser(
-                id: 6,
-                name: "James Wilson",
-                avatarURL: Bundle.module.path(forResource: "author6", ofType: "jpg").map { URL(filePath: $0) }
+
+        func makeUser(id: Int, name: String) -> PostLikesData.PostLikeUser {
+            PostLikesData.PostLikeUser(
+                id: id,
+                name: name,
+                avatarURL: Bundle.module.path(forResource: "author\(id)", ofType: "jpg").map { URL(filePath: $0) }
             )
+        }
+
+        let mockUsers = [
+            makeUser(id: 1, name: "Sarah Chen"),
+            makeUser(id: 2, name: "Marcus Johnson"),
+            makeUser(id: 3, name: "Emily Rodriguez"),
+            makeUser(id: 4, name: "Alex Thompson"),
+            makeUser(id: 5, name: "Nina Patel"),
+            makeUser(id: 6, name: "James Wilson")
         ]
-        
-        // Return requested number of users
+
         let requestedCount = min(count, mockUsers.count)
         let selectedUsers = Array(mockUsers.prefix(requestedCount))
         
-        return PostLikes(
-            users: selectedUsers,
-            totalCount: 26 // Match the mock post's like count
-        )
+        return PostLikesData(users: selectedUsers, totalCount: 26)
     }
 
     // MARK: - Data Loading

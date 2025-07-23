@@ -7,7 +7,7 @@ struct PostStatsDetailsView: View {
     
     @Environment(\.context) private var context
     @State private var details: StatsPostDetails?
-    @State private var postLikes: PostLikes?
+    @State private var postLikes: PostLikesData?
     @State private var dataPoints: [DataPoint] = []
     @State private var isLoading = true
     @State private var error: Error?
@@ -30,23 +30,31 @@ struct PostStatsDetailsView: View {
         .navigationTitle(Strings.PostDetails.title)
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            try? await Task.sleep(for: .seconds(5))
             await loadPostDetails()
         }
     }
 
     @ViewBuilder
     private var contents: some View {
-        if let details {
-            PostHeaderCard(post: post, details: details, postLikes: postLikes, context: context)
+        PostHeaderCard(
+            post: post,
+            details: details,
+            postLikes: postLikes,
+            isLoading: isLoading
+        )
+        .cardStyle()
+
+        // Views Over Time Chart
+        if !dataPoints.isEmpty {
+            StandaloneChartCard(dataPoints: dataPoints, metric: .views, initialDateRange: initialDateRange)
                 .cardStyle()
+        } else if isLoading {
+            StandaloneChartCard(dataPoints: mockDataPoints, metric: .views, initialDateRange: initialDateRange)
+                .cardStyle()
+                .redacted(reason: .placeholder)
+        }
 
-            // Views Over Time Chart
-            if !dataPoints.isEmpty {
-                StandaloneChartCard(dataPoints: dataPoints, metric: .views, initialDateRange: initialDateRange)
-                    .cardStyle()
-            }
-
+        if let details {
             // Peak Performance Card
             if details.highestMonth != nil || details.highestDayAverage != nil || details.highestWeekAverage != nil {
                 PeakPerformanceCard(details: details)
@@ -68,10 +76,6 @@ struct PostStatsDetailsView: View {
                 )
                 .cardStyle()
             }
-        } else if isLoading {
-            ProgressView()
-                .frame(maxWidth: .infinity, minHeight: 200)
-                .cardStyle()
         } else if let error {
             SimpleErrorView(error: error)
                 .frame(maxWidth: .infinity, minHeight: 200)
@@ -83,7 +87,7 @@ struct PostStatsDetailsView: View {
         guard let postId = post.postId, let postIdInt = Int(postId) else { return }
         
         async let detailsTask = context.service.getPostDetails(for: postIdInt)
-        async let likesTask: PostLikes? = {
+        async let likesTask: PostLikesData? = {
             if (post.metrics.likes ?? 0) > 0 {
                 return try? await context.service.getPostLikes(for: postIdInt, count: 20)
             }
@@ -116,65 +120,85 @@ struct PostStatsDetailsView: View {
             return DataPoint(date: date, value: postView.viewsCount)
         }
     }
+
+    private var mockDataPoints: [DataPoint] {
+        ChartData.mock(
+            metric: .views,
+            granularity: initialDateRange.dateInterval.preferredGranularity,
+            range: initialDateRange
+        ).currentData
+    }
 }
 
 private struct PostHeaderCard: View {
     let post: TopListData.Post
-    let details: StatsPostDetails
-    let postLikes: PostLikes?
-    let context: StatsContext
-    
+    let details: StatsPostDetails?
+    let postLikes: PostLikesData?
+    var isLoading: Bool
+
+    @Environment(\.context) var context
+
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.step2) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(post.title)
-                    .font(.title3.weight(.semibold))
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(3)
+            postDetailsView
 
-                if let dateGMT = details.post?.dateGMT {
-                    HStack(spacing: 6) {
-                        Text(Strings.PostDetails.published(formatPublishedDate(dateGMT)))
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        
-                        // Permalink button
-                        if let permalink = details.post?.permalink, let url = URL(string: permalink) {
-                            Button(action: {
-                                UIApplication.shared.open(url)
-                            }) {
-                                Image(systemName: "link")
-                                    .font(.footnote)
-                                    .foregroundColor(.accentColor)
-                            }
-                        }
-                    }
-                }
-
-                // Likes strip
-                if let postLikes, !postLikes.users.isEmpty {
-                    PostLikesStrip(likes: postLikes)
-                        .padding(.top, Constants.step2)
-                }
+            if let postLikes, !postLikes.users.isEmpty {
+                PostLikesStrip(likes: postLikes)
+            } else if isLoading {
+                PostLikesStrip(likes: .mock)
+                    .redacted(reason: .placeholder)
             }
 
             Divider()
 
-            // Metrics with visual separation
-            HStack(spacing: Constants.step3) {
-                MetricView(metric: .views, value: details.totalViewsCount)
-                if let likesCount = post.metrics.likes {
-                    MetricView(metric: .likes, value: likesCount)
-                }
-                if let commentCount = details.post?.commentCount, let count = Int(commentCount) {
-                    MetricView(metric: .comments, value: count)
-                }
+            if let metrics {
+                PostStatsMetricsStripView(metrics: metrics)
+            } else if isLoading {
+                PostStatsMetricsStripView(metrics: .mock)
+                    .redacted(reason: .placeholder)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(EdgeInsets(top: Constants.step2, leading: Constants.step2, bottom: Constants.step1, trailing: Constants.step2))
     }
-    
+
+    private var postDetailsView: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(post.title)
+                .font(.title3.weight(.semibold))
+                .multilineTextAlignment(.leading)
+                .lineLimit(3)
+
+            if let dateGMT = post.date ?? details?.post?.dateGMT {
+                HStack(spacing: 6) {
+                    Text(Strings.PostDetails.published(formatPublishedDate(dateGMT)))
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+
+                    // Permalink button
+                    if let postURL = post.postURL ?? details?.post?.permalink.flatMap(URL.init) {
+                        Link(destination: postURL) {
+                            Image(systemName: "link")
+                                .font(.footnote)
+                                .foregroundColor(.accentColor)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private var metrics: SiteMetricsSet? {
+        guard let details else {
+            return nil
+        }
+        return SiteMetricsSet(
+            views: details.totalViewsCount,
+            likes: postLikes?.totalCount,
+            comments: details.post?.commentCount.flatMap { Int($0) }
+        )
+    }
+
     private func formatPublishedDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -184,35 +208,54 @@ private struct PostHeaderCard: View {
     }
 }
 
-private struct MetricView: View {
-    let metric: SiteMetric
-    let value: Int
+private struct PostStatsMetricsStripView: View {
+    let metrics: SiteMetricsSet
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            VStack(alignment: .leading, spacing: 2) {
-                Image(systemName: metric.systemImage)
-                    .font(.caption2.weight(.medium))
-                    .foregroundColor(.secondary)
-
-                Text(metric.localizedTitle.uppercased())
-                    .font(.caption.weight(.medium))
-                    .foregroundColor(.secondary)
+        HStack(spacing: Constants.step2) {
+            ForEach([SiteMetric.views, .visitors, .comments]) { metric in
+                MetricView(metric: metric, value: metrics[metric])
             }
-
-            Text(StatsValueFormatter(metric: metric).format(value: value))
-                .contentTransition(.numericText())
-                .animation(.spring, value: value)
-                .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
-                .foregroundColor(.primary)
         }
-        .lineLimit(1)
-        .frame(minWidth: 78, alignment: .leading)
+    }
+
+    struct MetricView: View {
+        let metric: SiteMetric
+        let value: Int?
+
+        var body: some View {
+            VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Image(systemName: metric.systemImage)
+                        .font(.caption2.weight(.medium))
+                        .foregroundColor(.secondary)
+
+                    Text(metric.localizedTitle.uppercased())
+                        .font(.caption.weight(.medium))
+                        .foregroundColor(.secondary)
+                }
+
+                Text(formattedValue)
+                    .contentTransition(.numericText())
+                    .animation(.spring, value: value)
+                    .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
+                    .foregroundColor(.primary)
+            }
+            .lineLimit(1)
+            .frame(minWidth: 78, alignment: .leading)
+        }
+
+        var formattedValue: String {
+            guard let value else {
+                return "–"
+            }
+            return StatsValueFormatter(metric: metric).format(value: value)
+        }
     }
 }
 
 private struct PostLikesStrip: View {
-    let likes: PostLikes
+    let likes: PostLikesData
     
     private let avatarSize: CGFloat = 28
     private let maxVisibleAvatars = 5

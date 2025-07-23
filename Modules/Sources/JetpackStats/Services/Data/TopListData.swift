@@ -13,6 +13,7 @@ extension TopListData {
     struct Post: Codable, TopListItem {
         let title: String
         let postId: String?
+        var postURL: URL?
         let date: Date?
         let pageId: String?
         let type: String?

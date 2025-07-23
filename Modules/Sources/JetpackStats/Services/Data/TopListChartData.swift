@@ -109,6 +109,7 @@ extension TopListChartData {
             return TopListData.Post(
                 title: data.0,
                 postId: "\(index + 1)",
+                postURL: nil,
                 date: nil,
                 pageId: nil,
                 type: nil,
