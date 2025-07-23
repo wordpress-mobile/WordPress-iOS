@@ -215,6 +215,10 @@ private extension ApplicationPasswordRepository {
 
         DDLogInfo("Application password is created for user \(siteUsername) to access REST API at \(apiRootURL)")
 
+        Task { @MainActor in
+            NotificationCenter.default.post(name: SelfHostedSiteAuthenticator.applicationPasswordUpdated, object: nil)
+        }
+
         return password
     }
 
