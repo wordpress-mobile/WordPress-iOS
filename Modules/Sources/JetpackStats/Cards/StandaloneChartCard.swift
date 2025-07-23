@@ -18,6 +18,8 @@ struct StandaloneChartCard: View {
     @State private var dateRange: StatsDateRange
     @State private var selectedChartType: ChartType = .line
     @State private var isShowingDatePicker = false
+    @State private var cachedChartData: ChartData?
+    @State private var isComputingData = false
     
     @ScaledMetric private var chartHeight = 160
     
@@ -54,8 +56,13 @@ struct StandaloneChartCard: View {
             }
             
             // Chart content
-            chartContent
-                .frame(height: chartHeight)
+            if let chartData = cachedChartData {
+                chartContent(chartData: chartData)
+                    .frame(height: chartHeight)
+            } else if isComputingData {
+                ProgressView()
+                    .frame(height: chartHeight)
+            }
             
             // Date range controls
             dateRangeControls
@@ -67,12 +74,15 @@ struct StandaloneChartCard: View {
         .sheet(isPresented: $isShowingDatePicker) {
             CustomDateRangePicker(dateRange: $dateRange)
         }
+        .task(id: dateRange) {
+            await computeChartData()
+        }
     }
     
     // MARK: - Chart Content
     
     @ViewBuilder
-    private var chartContent: some View {
+    private func chartContent(chartData: ChartData) -> some View {
         switch selectedChartType {
         case .line:
             LineChartView(data: chartData)
@@ -82,14 +92,30 @@ struct StandaloneChartCard: View {
     }
     
     private var trend: TrendViewModel {
-        TrendViewModel(
+        guard let chartData = cachedChartData else {
+            return TrendViewModel(currentValue: 0, previousValue: 0, metric: metric)
+        }
+        return TrendViewModel(
             currentValue: chartData.currentTotal,
             previousValue: chartData.previousTotal,
             metric: metric
         )
     }
     
-    private var chartData: ChartData {
+    @MainActor
+    private func computeChartData() async {
+        isComputingData = true
+        defer { isComputingData = false }
+        
+        // Perform the computation asynchronously
+        let data = await Task.detached { [dataPoints, dateRange, metric, context] in
+            return self.generateChartData(dataPoints: dataPoints, dateRange: dateRange, metric: metric, context: context)
+        }.value
+        
+        cachedChartData = data
+    }
+    
+    private func generateChartData(dataPoints: [DataPoint], dateRange: StatsDateRange, metric: SiteMetric, context: StatsContext) -> ChartData {
         // Filter data points within the selected date range
         let filteredDataPoints = dataPoints.filter { dataPoint in
             dateRange.dateInterval.contains(dataPoint.date)
@@ -222,7 +248,7 @@ struct StandaloneChartCard: View {
                         dateRange = dateRange.navigate(.backward)
                     }
                 } label: {
-                    Image(systemName: "chevron.left")
+                    Image(systemName: "chevron.backward")
                         .font(.subheadline.weight(.medium))
                         .foregroundColor(dateRange.canNavigate(in: .backward) ? .primary : Color(.quaternaryLabel))
                         .frame(width: 36, height: 36)
@@ -237,7 +263,7 @@ struct StandaloneChartCard: View {
                         dateRange = dateRange.navigate(.forward)
                     }
                 } label: {
-                    Image(systemName: "chevron.right")
+                    Image(systemName: "chevron.forward")
                         .font(.subheadline.weight(.medium))
                         .foregroundColor(dateRange.canNavigate(in: .forward) ? .primary : Color(.quaternaryLabel))
                         .frame(width: 36, height: 36)
