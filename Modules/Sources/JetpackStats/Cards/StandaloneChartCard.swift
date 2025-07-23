@@ -168,7 +168,7 @@ struct StandaloneChartCard: View {
     }
     
     @ViewBuilder
-    private func navigationButton(direction: NavigationDirection) -> some View {
+    private func navigationButton(direction: Calendar.NavigationDirection) -> some View {
         Button {
             dateRange = dateRange.navigate(direction)
         } label: {
@@ -237,7 +237,7 @@ private func generateChartData(dataPoints: [DataPoint], dateRange: StatsDateRang
 
 // MARK: - Preview
 
-#Preview("Views Chart") {
+#Preview {
     let calendar = Calendar.current
     let dateRange = calendar.makeDateRange(for: .last7Days)
     
@@ -247,22 +247,8 @@ private func generateChartData(dataPoints: [DataPoint], dateRange: StatsDateRang
         initialDateRange: dateRange
     )
     .cardStyle()
-    .padding()
-    .background(Color(.systemGroupedBackground))
-    .environment(\.context, StatsContext.demo)
-}
-
-#Preview("Likes Chart") {
-    let calendar = Calendar.current
-    let dateRange = calendar.makeDateRange(for: .last30Days)
-    
-    return StandaloneChartCard(
-        dataPoints: generateMockDataPoints(days: 365, valueRange: 10...50),
-        metric: .likes,
-        initialDateRange: dateRange
-    )
-    .cardStyle()
-    .padding()
+    .padding(8)
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     .background(Color(.systemGroupedBackground))
     .environment(\.context, StatsContext.demo)
 }
