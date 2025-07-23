@@ -177,7 +177,7 @@ struct ChartCard: View {
     }
 }
 
-private enum ChartType: String, CaseIterable {
+enum ChartType: String, CaseIterable {
     case line
     case columns
 

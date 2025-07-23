@@ -250,27 +250,6 @@ struct StandaloneChartCard: View {
     }
 }
 
-// MARK: - Chart Type
-
-private enum ChartType: String, CaseIterable {
-    case line
-    case columns
-    
-    var localizedTitle: String {
-        switch self {
-        case .line: Strings.Chart.lineChart
-        case .columns: Strings.Chart.barChart
-        }
-    }
-    
-    var systemImage: String {
-        switch self {
-        case .line: "chart.line.uptrend.xyaxis"
-        case .columns: "chart.bar"
-        }
-    }
-}
-
 // MARK: - Preview
 
 #Preview("Views Chart") {
