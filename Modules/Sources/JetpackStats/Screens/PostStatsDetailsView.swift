@@ -4,7 +4,7 @@ import WordPressKit
 
 struct PostStatsDetailsView: View {
     let post: TopListData.Post
-    
+
     @State private var details: StatsPostDetails?
     @State private var postLikes: PostLikesData?
     @State private var dataPoints: [DataPoint] = []
@@ -19,7 +19,7 @@ struct PostStatsDetailsView: View {
         self.post = post
         self.initialDateRange = dateRange
     }
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: Constants.step2) {
@@ -53,7 +53,7 @@ struct PostStatsDetailsView: View {
             if !details.recentWeeks.isEmpty {
                 VStack(alignment: .leading, spacing: Constants.step2) {
                     StatsCardTitleView(title: Strings.PostDetails.recentWeeks)
-                    
+
                     WeeklyTrendsView(
                         weeks: WeeklyTrendsView.Week.make(from: details.recentWeeks, using: context.calendar),
                         calendar: context.calendar,
@@ -68,7 +68,7 @@ struct PostStatsDetailsView: View {
             if !dataPoints.isEmpty {
                 VStack(alignment: .leading, spacing: Constants.step2) {
                     StatsCardTitleView(title: Strings.PostDetails.monthlyActivity)
-                    
+
                     YearlyTrendsView(
                         viewModel: YearlyTrendsViewModel(
                             dataPoints: dataPoints,
@@ -194,7 +194,7 @@ struct PostStatsDetailsView: View {
             }
         }
     }
-    
+
     private func convertToDataPoints(from data: [StatsPostViews]) -> [DataPoint] {
         // Convert DateComponents to Date using site timezone (similar to how StatsService does it)
         var calendar = context.calendar

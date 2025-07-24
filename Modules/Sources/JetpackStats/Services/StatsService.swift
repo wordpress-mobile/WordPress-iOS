@@ -190,14 +190,14 @@ actor StatsService: StatsServiceProtocol {
     func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
         try await service.getDetails(forPostID: postID)
     }
-    
+
     func getPostLikes(for postID: Int, count: Int) async throws -> PostLikesData {
         // Create PostServiceRemoteREST instance
         let postService = PostServiceRemoteREST(
             wordPressComRestApi: api,
             siteID: NSNumber(value: siteID)
         )
-        
+
         // Fetch likes using the REST API
         let result = try await withCheckedThrowingContinuation { continuation in
             postService.getLikesForPostID(
@@ -221,7 +221,7 @@ actor StatsService: StatsServiceProtocol {
                 }
             )
         }
-        
+
         return result
     }
 

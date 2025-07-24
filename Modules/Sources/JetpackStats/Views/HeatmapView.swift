@@ -38,7 +38,7 @@ struct HeatmapCellView: View {
         self.color = color
         self.intensity = intensity
     }
-    
+
     var body: some View {
         RoundedRectangle(cornerRadius: 4)
             .fill(color)
@@ -60,16 +60,16 @@ struct HeatmapCellView: View {
 struct HeatmapLegendView: View {
     let metric: SiteMetric
     let labelWidth: CGFloat?
-    
+
     init(metric: SiteMetric, labelWidth: CGFloat? = nil) {
         self.metric = metric
         self.labelWidth = labelWidth
     }
-    
+
     var body: some View {
         HStack(spacing: Constants.step2) {
             HStack(spacing: 8) {
-                if let labelWidth = labelWidth {
+                if let labelWidth {
                     Text(Strings.PostDetails.less)
                         .font(.caption2)
                         .foregroundColor(.secondary)
@@ -79,7 +79,7 @@ struct HeatmapLegendView: View {
                         .font(.caption2)
                         .foregroundColor(.secondary)
                 }
-                
+
                 HStack(spacing: 3) {
                     ForEach(0..<5) { level in
                         RoundedRectangle(cornerRadius: 4)
@@ -87,16 +87,16 @@ struct HeatmapLegendView: View {
                             .frame(width: 16, height: 16)
                     }
                 }
-                
+
                 Text(Strings.PostDetails.more)
                     .font(.caption2)
                     .foregroundColor(.secondary)
             }
-            
+
             Spacer()
         }
     }
-    
+
     private func heatmapColor(for intensity: Double) -> Color {
         Constants.heatmapColor(baseColor: metric.primaryColor, intensity: intensity)
     }

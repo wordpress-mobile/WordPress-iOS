@@ -87,7 +87,7 @@ struct StatsDataAggregator {
         }
         return dates
     }
-    
+
     /// Processes a period of data by aggregating and normalizing data points.
     /// - Parameters:
     ///   - dataPoints: Data points already filtered for the period
@@ -103,7 +103,7 @@ struct StatsDataAggregator {
     ) -> PeriodData {
         // Aggregate and normalize data in one pass
         let normalizedData = aggregate(dataPoints, granularity: granularity, metric: metric)
-        
+
         // Generate complete date sequence for the range
         let dateSequence = generateDateSequence(dateInterval: dateInterval, by: granularity.component)
 
@@ -112,10 +112,10 @@ struct StatsDataAggregator {
             let aggregationDate = makeAggegationDate(for: date, granularity: granularity)
             return DataPoint(date: date, value: normalizedData[aggregationDate ?? date] ?? 0)
         }
-        
+
         // Calculate total using DataPoint's getTotalValue method
         let total = DataPoint.getTotalValue(for: periodDataPoints, metric: metric) ?? 0
-        
+
         return PeriodData(dataPoints: periodDataPoints, total: total)
     }
 }

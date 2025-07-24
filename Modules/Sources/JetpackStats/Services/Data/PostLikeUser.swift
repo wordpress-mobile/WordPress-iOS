@@ -3,24 +3,24 @@ import Foundation
 struct PostLikesData: Equatable, Sendable {
     let users: [PostLikeUser]
     let totalCount: Int
-    
+
     init(users: [PostLikeUser], totalCount: Int) {
         self.users = users
         self.totalCount = totalCount
     }
-    
+
     struct PostLikeUser: Equatable, Identifiable, Sendable {
         let id: Int
         let name: String
         let avatarURL: URL?
-        
+
         init(id: Int, name: String, avatarURL: URL? = nil) {
             self.id = id
             self.name = name
             self.avatarURL = avatarURL
         }
     }
-    
+
     static let mock = PostLikesData(users: [
         PostLikeUser(id: 0, name: "Alex Chen"),
         PostLikeUser(id: 1, name: "Maya Rodriguez"),

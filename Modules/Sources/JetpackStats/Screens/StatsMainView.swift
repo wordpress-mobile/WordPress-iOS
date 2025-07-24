@@ -52,15 +52,15 @@ public struct StatsMainView: View {
 
 private struct NavigationPreview<Content: View>: UIViewControllerRepresentable {
     let content: () -> Content
-    
+
     init(@ViewBuilder content: @escaping () -> Content) {
         self.content = content
     }
-    
+
     func makeUIViewController(context: Context) -> UINavigationController {
         let navigationController = UINavigationController()
         let router = StatsRouter(navigationController: navigationController)
-        
+
         let hostingController = UIHostingController(
             rootView: content()
                 .environment(\.router, router)
@@ -69,7 +69,7 @@ private struct NavigationPreview<Content: View>: UIViewControllerRepresentable {
         navigationController.viewControllers = [hostingController]
         return navigationController
     }
-    
+
     func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
         // No update needed
     }

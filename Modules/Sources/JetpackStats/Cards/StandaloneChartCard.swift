@@ -11,7 +11,7 @@ import Charts
 struct StandaloneChartCard: View {
     /// The data points to display in the chart
     let dataPoints: [DataPoint]
-    
+
     /// The metric type being displayed (e.g., views, likes, comments)
     let metric: SiteMetric
 
@@ -21,9 +21,9 @@ struct StandaloneChartCard: View {
     @State private var selectedChartType: ChartType = .line
     @State private var isShowingDatePicker = false
     @State private var chartData: ChartData?
-    
+
     @ScaledMetric private var chartHeight = 160
-    
+
     @Environment(\.context) private var context
 
     @Environment(\.redactionReasons) private var redactionReasons
@@ -61,11 +61,11 @@ struct StandaloneChartCard: View {
                     currentPeriod: dateRange.dateInterval,
                     previousPeriod: dateRange.effectiveComparisonInterval
                 )
-                
+
                 ChartValuesSummaryView(trend: trend, style: .compact)
                     .padding(.top, 8)
             }
-            
+
             chartView
 
             // Date range controls
@@ -122,7 +122,7 @@ struct StandaloneChartCard: View {
     // MARK: –
 
     private var trend: TrendViewModel {
-        guard let chartData = chartData else {
+        guard let chartData else {
             return TrendViewModel(currentValue: 0, previousValue: 0, metric: metric)
         }
         return TrendViewModel(
@@ -149,7 +149,7 @@ struct StandaloneChartCard: View {
     }
 
     // MARK: - Controls
-    
+
     private var moreMenu: some View {
         Menu {
             Section {
@@ -171,7 +171,7 @@ struct StandaloneChartCard: View {
         }
         .tint(Color.primary)
     }
-    
+
     private var dateRangeControls: some View {
         HStack(spacing: Constants.step1) {
             // Date range menu button
@@ -191,9 +191,9 @@ struct StandaloneChartCard: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
             }
             .tint(Color.primary)
-            
+
             Spacer()
-            
+
             // Navigation controls
             HStack(spacing: 4) {
                 navigationButton(direction: .backward)
@@ -201,7 +201,7 @@ struct StandaloneChartCard: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private func navigationButton(direction: Calendar.NavigationDirection) -> some View {
         Button {
@@ -280,7 +280,7 @@ private func generateChartData(
 #Preview {
     let calendar = Calendar.current
     let dateRange = calendar.makeDateRange(for: .last7Days)
-    
+
     return StandaloneChartCard(
         dataPoints: generateMockDataPoints(days: 365),
         metric: .views,
@@ -297,7 +297,7 @@ private func generateChartData(
 private func generateMockDataPoints(days: Int, valueRange: ClosedRange<Int> = 50...200) -> [DataPoint] {
     let calendar = Calendar.current
     let today = Date()
-    
+
     return (0..<days).compactMap { dayOffset in
         guard let date = calendar.date(byAdding: .day, value: -dayOffset, to: today) else { return nil }
         let value = Int.random(in: valueRange)

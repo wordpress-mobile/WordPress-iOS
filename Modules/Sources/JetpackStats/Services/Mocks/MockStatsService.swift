@@ -43,7 +43,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         var total = SiteMetricsSet()
         var output: [SiteMetric: [DataPoint]] = [:]
-        
+
         let aggregator = StatsDataAggregator(calendar: calendar)
 
         for (metric, allDataPoints) in hourlyData {
@@ -51,7 +51,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             let filteredDataPoints = allDataPoints.filter {
                 interval.start <= $0.date && $0.date < interval.end
             }
-            
+
             // Use processPeriod to aggregate and normalize the data
             let periodData = aggregator.processPeriod(
                 dataPoints: filteredDataPoints,
@@ -254,20 +254,20 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         guard let url = Bundle.module.url(forResource: "post-details", withExtension: "json") else {
             throw URLError(.fileDoesNotExist)
         }
-        
+
         let data = try Data(contentsOf: url)
         let jsonObject = try JSONSerialization.jsonObject(with: data) as! [String: AnyObject]
-        
+
         // Simulate network delay
         try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
-        
+
         guard let details = StatsPostDetails(jsonDictionary: jsonObject) else {
             throw URLError(.cannotParseResponse)
         }
-        
+
         return details
     }
-    
+
     func getPostLikes(for postID: Int, count: Int) async throws -> PostLikesData {
         // Simulate network delay
         try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
@@ -291,7 +291,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         let requestedCount = min(count, mockUsers.count)
         let selectedUsers = Array(mockUsers.prefix(requestedCount))
-        
+
         return PostLikesData(users: selectedUsers, totalCount: 26)
     }
 
@@ -367,7 +367,6 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             return []
         }
     }
-
 
     // MARK: - Data Generation
 

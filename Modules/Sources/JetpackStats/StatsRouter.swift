@@ -3,7 +3,7 @@ import UIKit
 
 public struct StatsRouter: Sendable {
     public weak var navigationController: UINavigationController?
-    
+
     public init(navigationController: UINavigationController? = nil) {
         self.navigationController = navigationController
     }
@@ -11,15 +11,15 @@ public struct StatsRouter: Sendable {
     @MainActor
     func navigate(to destination: StatsDestination) {
         guard let navigationController else { return }
-        
+
         let viewController: UIViewController
-        
+
         switch destination {
         case .postDetails(let post, let dateRange):
             let view = PostStatsDetailsView(post: post, dateRange: dateRange)
             viewController = UIHostingController(rootView: view)
         }
-        
+
         navigationController.pushViewController(viewController, animated: true)
     }
 }

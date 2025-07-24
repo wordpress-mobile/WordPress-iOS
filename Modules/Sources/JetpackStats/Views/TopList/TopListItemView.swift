@@ -82,7 +82,7 @@ private extension TopListItemView {
             return false
         }
     }
-    
+
     func navigateToDetails() {
         switch currentItem {
         case let post as TopListData.Post:

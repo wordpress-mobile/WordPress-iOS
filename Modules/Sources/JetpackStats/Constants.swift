@@ -41,7 +41,7 @@ enum Constants {
     static let step2: CGFloat = 18
     static let step3: CGFloat = 24
     static let step4: CGFloat = 32
-    
+
     static func heatmapColor(baseColor: Color, intensity: Double) -> Color {
         if intensity == 0 {
             return Color(UIColor.secondarySystemBackground)

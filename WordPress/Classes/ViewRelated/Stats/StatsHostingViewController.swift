@@ -66,7 +66,7 @@ class StatsHostingViewController: UIViewController {
 
         // Create the router with reference to navigation controller
         let router = StatsRouter(navigationController: navigationController)
-        
+
         // Create the SwiftUI view
         let statsView = StatsMainView(context: context)
             .environment(\.statsRouter, router)
