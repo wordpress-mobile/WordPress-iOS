@@ -34,28 +34,20 @@ struct PostStatsDetailsView: View {
         }
     }
 
-#warning("TEMP")
-
     @ViewBuilder
     private var contents: some View {
         headerView
             .cardStyle()
 
 //        // Views Over Time Chart
-//        if !dataPoints.isEmpty {
-//            makeChartView(dataPoints: dataPoints)
-//        } else if isLoading {
-//            makeChartView(dataPoints: mockDataPoints)
-//                .redacted(reason: .placeholder)
-//        }
+        if !dataPoints.isEmpty {
+            makeChartView(dataPoints: dataPoints)
+        } else if isLoading {
+            makeChartView(dataPoints: mockDataPoints)
+                .redacted(reason: .placeholder)
+        }
 
         if let details {
-            // Peak Performance Card
-//            if details.highestMonth != nil || details.highestDayAverage != nil || details.highestWeekAverage != nil {
-//                PeakPerformanceCard(details: details)
-//                    .cardStyle()
-//            }
-
             // Weekly Trends Chart
             if !details.recentWeeks.isEmpty {
                 VStack(alignment: .leading, spacing: Constants.step2) {
