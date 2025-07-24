@@ -3,6 +3,7 @@ import UIKit
 
 public protocol StatsRouterDelegate: AnyObject {
     func makeLikesListViewController(siteID: Int, postID: Int, totalLikes: Int) -> UIViewController?
+    func makeCommentsListViewController(siteID: Int, postID: Int) -> UIViewController?
 }
 
 public final class StatsRouter: @unchecked Sendable {
@@ -28,6 +29,14 @@ public final class StatsRouter: @unchecked Sendable {
     @MainActor
     public func navigateToLikesList(siteID: Int, postID: Int, totalLikes: Int) {
         guard let viewController = delegate?.makeLikesListViewController(siteID: siteID, postID: postID, totalLikes: totalLikes) else {
+            return
+        }
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    @MainActor
+    public func navigateToCommentsList(siteID: Int, postID: Int) {
+        guard let viewController = delegate?.makeCommentsListViewController(siteID: siteID, postID: postID) else {
             return
         }
         navigationController?.pushViewController(viewController, animated: true)

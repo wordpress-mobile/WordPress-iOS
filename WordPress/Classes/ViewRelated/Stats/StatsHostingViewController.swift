@@ -194,4 +194,17 @@ extension StatsHostingViewController: StatsRouterDelegate {
             totalLikes: totalLikes
         )
     }
+
+    func makeCommentsListViewController(siteID: Int, postID: Int) -> UIViewController? {
+        guard let siteID = blog.dotComID else {
+            return nil
+        }
+
+        let commentsVC = ReaderCommentsViewController(
+            postID: NSNumber(value: postID),
+            siteID: siteID
+        )
+        commentsVC.source = .postDetails
+        return commentsVC
+    }
 }

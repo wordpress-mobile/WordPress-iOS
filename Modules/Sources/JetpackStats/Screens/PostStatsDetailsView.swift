@@ -112,9 +112,13 @@ struct PostStatsDetailsView: View {
             Divider()
 
             if let metrics {
-                PostStatsMetricsStripView(metrics: metrics, onLikesTapped: navigateToLikesList)
+                PostStatsMetricsStripView(
+                    metrics: metrics,
+                    onLikesTapped: navigateToLikesList,
+                    onCommentsTapped: navigateToCommentsList
+                )
             } else if isLoading {
-                PostStatsMetricsStripView(metrics: .mock, onLikesTapped: nil)
+                PostStatsMetricsStripView(metrics: .mock, onLikesTapped: nil, onCommentsTapped: nil)
                     .redacted(reason: .placeholder)
             } else if let error {
                 SimpleErrorView(error: error)
@@ -228,11 +232,19 @@ struct PostStatsDetailsView: View {
         }
         router.navigateToLikesList(siteID: context.siteID, postID: postID, totalLikes: totalLikes)
     }
+
+    private func navigateToCommentsList() {
+        guard let postID = Int(post.postID ?? "") else {
+            return
+        }
+        router.navigateToCommentsList(siteID: context.siteID, postID: postID)
+    }
 }
 
 private struct PostStatsMetricsStripView: View {
     let metrics: SiteMetricsSet
     let onLikesTapped: (() -> Void)?
+    let onCommentsTapped: (() -> Void)?
 
     var body: some View {
         HStack(spacing: Constants.step2) {
@@ -240,8 +252,13 @@ private struct PostStatsMetricsStripView: View {
                 MetricView(metric: metric, value: metrics[metric])
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        if metric == .likes {
+                        switch metric {
+                        case .likes:
                             onLikesTapped?()
+                        case .comments:
+                            onCommentsTapped?()
+                        default:
+                            break
                         }
                     }
             }
@@ -263,12 +280,12 @@ private struct PostStatsMetricsStripView: View {
                         .font(.caption.weight(.medium))
                         .foregroundColor(.secondary)
 
-                    if metric != .views {
+                    if metric != .views && (value ?? 0) > 0 {
                         Image(systemName: "chevron.forward")
                             .font(.caption2.weight(.bold))
                             .scaleEffect(x: 0.7, y: 0.7)
                             .foregroundStyle(.secondary)
-                            .padding(.leading, 2)
+                            .padding(.leading, 1)
                     }
                 }
 
