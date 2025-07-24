@@ -57,7 +57,7 @@ struct StatsDataAggregator {
         // Second pass: normalize based on metric strategy
         var normalizedData: [Date: Int] = [:]
         for (date, dataPoint) in aggregatedData {
-            switch metric.aggregarionStrategy {
+            switch metric.aggregationStrategy {
             case .sum:
                 normalizedData[date] = dataPoint.sum
             case .average:

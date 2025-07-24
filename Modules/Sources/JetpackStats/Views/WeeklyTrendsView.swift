@@ -7,36 +7,27 @@ struct WeeklyTrendsView: View {
     private let cellSpacing: CGFloat = 4
     private let weekLabelWidth: CGFloat = 40
 
-    @State private var selectedDay: Week.Day?
+    @State private var selectedDay: DataPoint?
     @State private var selectedWeek: Week?
 
-    init(weeks: [Week], calendar: Calendar, timeZone: TimeZone, metric: SiteMetric = .views) {
-        self.viewModel = WeeklyTrendsViewModel(
-            weeks: weeks,
-            calendar: calendar,
-            timeZone: timeZone,
-            metric: metric
-        )
+    init(viewModel: WeeklyTrendsViewModel) {
+        self.viewModel = viewModel
     }
 
     struct Week {
-        struct Day {
-            let date: Date
-            let value: Int
-        }
-
         let startDate: Date
-        let days: [Day]
+        let days: [DataPoint]
+        let averagePerDay: Int
 
         static func make(from breakdown: StatsWeeklyBreakdown, using calendar: Calendar) -> Week? {
             guard let startDate = calendar.date(from: breakdown.startDay) else { return nil }
 
-            let days = breakdown.days.compactMap { day -> Day? in
+            let days = breakdown.days.compactMap { day -> DataPoint? in
                 guard let date = calendar.date(from: day.date) else { return nil }
-                return Day(date: date, value: day.viewsCount)
+                return DataPoint(date: date, value: day.viewsCount)
             }
 
-            return Week(startDate: startDate, days: days)
+            return Week(startDate: startDate, days: days, averagePerDay: 0)
         }
 
         static func make(from breakdowns: [StatsWeeklyBreakdown], using calendar: Calendar) -> [Week] {
@@ -123,27 +114,29 @@ struct WeeklyTrendsView: View {
 final class WeeklyTrendsViewModel: ObservableObject {
     let weeks: [WeeklyTrendsView.Week]
     let calendar: Calendar
-    let timeZone: TimeZone
     let metric: SiteMetric
 
     private let valueFormatter: StatsValueFormatter
     private let weekFormatter: DateFormatter
+    private let aggregator: StatsDataAggregator
 
     let dayLabels: [String]
     let maxValue: Int
 
-    init(weeks: [WeeklyTrendsView.Week], calendar: Calendar, timeZone: TimeZone, metric: SiteMetric = .views) {
-        self.weeks = weeks
+    init(dataPoints: [DataPoint], calendar: Calendar, metric: SiteMetric = .views) {
         self.calendar = calendar
-        self.timeZone = timeZone
         self.metric = metric
+
+        // Initialize aggregator
+        self.aggregator = StatsDataAggregator(calendar: calendar)
 
         // Initialize formatters
         self.valueFormatter = StatsValueFormatter(metric: metric)
 
         self.weekFormatter = DateFormatter()
         self.weekFormatter.dateFormat = "MMM d"
-        self.weekFormatter.timeZone = timeZone
+        self.weekFormatter.calendar = calendar
+        self.weekFormatter.timeZone = calendar.timeZone
 
         // Cache day labels
         let formatter = DateFormatter()
@@ -158,8 +151,44 @@ final class WeeklyTrendsViewModel: ObservableObject {
         let reorderedSymbols = Array(symbols[(firstWeekday - 1)...]) + Array(symbols[..<(firstWeekday - 1)])
         self.dayLabels = reorderedSymbols
 
+        // Process data points into weeks
+        let allWeeks = Self.processDataIntoWeeks(dataPoints: dataPoints, calendar: calendar, metric: metric)
+
+        // Keep only the most recent 5 weeks
+        self.weeks = Array(allWeeks.prefix(5))
+
         // Calculate max value once
-        self.maxValue = weeks.flatMap { $0.days }.map { $0.value }.max() ?? 1
+        self.maxValue = self.weeks.flatMap { $0.days }.map { $0.value }.max() ?? 1
+    }
+
+    private static func processDataIntoWeeks(dataPoints: [DataPoint], calendar: Calendar, metric: SiteMetric) -> [WeeklyTrendsView.Week] {
+        guard !dataPoints.isEmpty else { return [] }
+
+        // Group data points by week
+        var weeklyData: [Date: [DataPoint]] = [:]
+
+        for dataPoint in dataPoints {
+            let startOfWeek = calendar.dateInterval(of: .weekOfYear, for: dataPoint.date)?.start ?? dataPoint.date
+            weeklyData[startOfWeek, default: []].append(dataPoint)
+        }
+
+        // Create Week objects with sorted days and calculated average
+        let weeks = weeklyData.map { startDate, days in
+            let sortedDays = days.sorted { $0.date < $1.date }
+            let weekTotal = DataPoint.getTotalValue(for: sortedDays, metric: metric) ?? 0
+            let averagePerDay: Int
+            if sortedDays.isEmpty {
+                averagePerDay = 0
+            } else if metric.aggregationStrategy == .average {
+                averagePerDay = weekTotal
+            } else {
+                averagePerDay = weekTotal / sortedDays.count
+            }
+            return WeeklyTrendsView.Week(startDate: startDate, days: sortedDays, averagePerDay: averagePerDay)
+        }
+
+        // Sort weeks by start date (most recent first)
+        return weeks.sorted { $0.startDate > $1.startDate }
     }
 
     func weekLabel(for week: WeeklyTrendsView.Week) -> String {
@@ -184,7 +213,7 @@ final class WeeklyTrendsViewModel: ObservableObject {
 }
 
 private struct DayCell: View {
-    let day: WeeklyTrendsView.Week.Day
+    let day: DataPoint
     let week: WeeklyTrendsView.Week
     let previousWeek: WeeklyTrendsView.Week?
     let maxValue: Int
@@ -242,27 +271,32 @@ private struct DayCell: View {
 }
 
 private struct WeeklyTrendsTooltipView: View {
-    let day: WeeklyTrendsView.Week.Day
+    let day: DataPoint
     let week: WeeklyTrendsView.Week
     let previousWeek: WeeklyTrendsView.Week?
     let metric: SiteMetric
     let calendar: Calendar
     let formatter: WeeklyTrendsViewModel
 
-    private var weekTotal: Int {
-        week.days.reduce(0) { $0 + $1.value }
+    private var weekTotal: Int? {
+        week.days.isEmpty ? nil : DataPoint.getTotalValue(for: week.days, metric: metric)
     }
 
-    private var previousWeekTotal: Int {
-        previousWeek?.days.reduce(0) { $0 + $1.value } ?? 0
+    private var previousWeekTotal: Int? {
+        guard let previousWeek else { return nil }
+        return previousWeek.days.isEmpty ? nil : DataPoint.getTotalValue(for: previousWeek.days, metric: metric)
     }
 
     private var averagePerDay: Int {
-        week.days.isEmpty ? 0 : weekTotal / week.days.count
+        week.averagePerDay
     }
 
-    private var trendViewModel: TrendViewModel {
-        TrendViewModel(
+    private var trendViewModel: TrendViewModel? {
+        guard let weekTotal,
+              let previousWeekTotal else {
+            return nil
+        }
+        return TrendViewModel(
             currentValue: weekTotal,
             previousValue: previousWeekTotal,
             metric: metric,
@@ -293,13 +327,15 @@ private struct WeeklyTrendsTooltipView: View {
             // Week stats
             VStack(alignment: .leading, spacing: 4) {
                 // Week total
-                HStack(spacing: 4) {
-                    Text(Strings.PostDetails.weekTotal)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    Text(formatter.formatValue(weekTotal))
-                        .font(.caption)
-                        .fontWeight(.medium)
+                if let weekTotal {
+                    HStack(spacing: 4) {
+                        Text(Strings.PostDetails.weekTotal)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        Text(formatter.formatValue(weekTotal))
+                            .font(.caption)
+                            .fontWeight(.medium)
+                    }
                 }
 
                 // Average per day
@@ -313,7 +349,10 @@ private struct WeeklyTrendsTooltipView: View {
                 }
 
                 // Week-over-week change
-                if previousWeek != nil && (weekTotal != previousWeekTotal) {
+                if let trendViewModel,
+                   let weekTotal,
+                   let previousWeekTotal,
+                   weekTotal != previousWeekTotal {
                     HStack(spacing: 4) {
                         Text(Strings.PostDetails.weekOverWeek)
                             .font(.caption)
@@ -339,58 +378,41 @@ private struct WeeklyTrendsTooltipView: View {
 
 // MARK: - Mock Data
 
-extension WeeklyTrendsView.Week {
-    static func mockWeeks(count: Int = 8) -> [WeeklyTrendsView.Week] {
-        let calendar = Calendar.current
-        let today = Date()
+private func mockDataPoints(weeks: Int = 4) -> [DataPoint] {
+    let calendar = Calendar.current
+    let today = Date()
+    var dataPoints: [DataPoint] = []
 
-        return (0..<count).map { weekOffset in
-            let weekStart = calendar.date(byAdding: .weekOfYear, value: -weekOffset, to: today)!
-            let startOfWeek = calendar.dateInterval(of: .weekOfYear, for: weekStart)!.start
+    for weekOffset in 0..<weeks {
+        let weekStart = calendar.date(byAdding: .weekOfYear, value: -weekOffset, to: today)!
+        let startOfWeek = calendar.dateInterval(of: .weekOfYear, for: weekStart)!.start
 
-            let days = (0..<7).map { dayOffset in
-                let date = calendar.date(byAdding: .day, value: dayOffset, to: startOfWeek)!
+        for dayOffset in 0..<7 {
+            let date = calendar.date(byAdding: .day, value: dayOffset, to: startOfWeek)!
 
-                // Generate realistic view counts with patterns
-                let baseViews = Int.random(in: 20...150)
+            // Generate realistic view counts with patterns
+            let baseViews = Int.random(in: 20...150)
+            let isWeekend = calendar.isDateInWeekend(date)
+            let weekendMultiplier = isWeekend ? 0.7 : 1.0
+            let randomVariation = Double.random(in: 0.8...1.2)
+            let viewsCount = Int(Double(baseViews) * weekendMultiplier * randomVariation)
 
-                // Determine if this is a weekend based on the calendar
-                let isWeekend = calendar.isDateInWeekend(date)
-                let weekendMultiplier = isWeekend ? 0.7 : 1.0
-
-                let randomVariation = Double.random(in: 0.8...1.2)
-                let viewsCount = Int(Double(baseViews) * weekendMultiplier * randomVariation)
-
-                return WeeklyTrendsView.Week.Day(date: date, value: max(0, viewsCount))
-            }
-
-            return WeeklyTrendsView.Week(startDate: startOfWeek, days: days)
-        }.reversed()
-    }
-
-    static var mockHighTraffic: [WeeklyTrendsView.Week] {
-        mockWeeks(count: 8).map { week in
-            WeeklyTrendsView.Week(
-                startDate: week.startDate,
-                days: week.days.map { day in
-                    WeeklyTrendsView.Week.Day(
-                        date: day.date,
-                        value: Int.random(in: 150...250)
-                    )
-                }
-            )
+            dataPoints.append(DataPoint(date: date, value: max(0, viewsCount)))
         }
     }
 
-    static var mockEmpty: [WeeklyTrendsView.Week] {
-        mockWeeks(count: 8).map { week in
-            WeeklyTrendsView.Week(
-                startDate: week.startDate,
-                days: week.days.map { day in
-                    WeeklyTrendsView.Week.Day(date: day.date, value: 0)
-                }
-            )
-        }
+    return dataPoints
+}
+
+private func mockHighTrafficDataPoints(weeks: Int = 4) -> [DataPoint] {
+    mockDataPoints(weeks: weeks).map { dataPoint in
+        DataPoint(date: dataPoint.date, value: Int.random(in: 150...250))
+    }
+}
+
+private func mockEmptyDataPoints(weeks: Int = 4) -> [DataPoint] {
+    mockDataPoints(weeks: weeks).map { dataPoint in
+        DataPoint(date: dataPoint.date, value: 0)
     }
 }
 
@@ -400,28 +422,31 @@ extension WeeklyTrendsView.Week {
     ScrollView {
         VStack(spacing: Constants.step2) {
             WeeklyTrendsView(
-                weeks: WeeklyTrendsView.Week.mockWeeks(count: 4),
-                calendar: StatsContext.demo.calendar,
-                timeZone: StatsContext.demo.timeZone,
-                metric: .views
+                viewModel: WeeklyTrendsViewModel(
+                    dataPoints: mockDataPoints(),
+                    calendar: StatsContext.demo.calendar,
+                    metric: .views
+                )
             )
             .padding(Constants.step2)
             .cardStyle()
 
             WeeklyTrendsView(
-                weeks: Array(WeeklyTrendsView.Week.mockHighTraffic.prefix(4)),
-                calendar: StatsContext.demo.calendar,
-                timeZone: StatsContext.demo.timeZone,
-                metric: .views
+                viewModel: WeeklyTrendsViewModel(
+                    dataPoints: mockHighTrafficDataPoints(),
+                    calendar: StatsContext.demo.calendar,
+                    metric: .views
+                )
             )
             .padding(Constants.step2)
             .cardStyle()
 
             WeeklyTrendsView(
-                weeks: Array(WeeklyTrendsView.Week.mockEmpty.prefix(4)),
-                calendar: StatsContext.demo.calendar,
-                timeZone: StatsContext.demo.timeZone,
-                metric: .views
+                viewModel: WeeklyTrendsViewModel(
+                    dataPoints: mockEmptyDataPoints(),
+                    calendar: StatsContext.demo.calendar,
+                    metric: .views
+                )
             )
             .padding(Constants.step2)
             .cardStyle()

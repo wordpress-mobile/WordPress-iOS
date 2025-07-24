@@ -42,44 +42,41 @@ struct PostStatsDetailsView: View {
             .cardStyle()
 
         // Views Over Time Chart
-        if !dataPoints.isEmpty {
+        if details != nil {
             makeChartView(dataPoints: dataPoints)
         } else if isLoading {
             makeChartView(dataPoints: mockDataPoints)
                 .redacted(reason: .placeholder)
         }
 
-        if let details {
+        if details != nil {
             // Weekly Trends Chart
-            if !details.recentWeeks.isEmpty {
-                VStack(alignment: .leading, spacing: Constants.step2) {
-                    StatsCardTitleView(title: Strings.PostDetails.recentWeeks)
+            VStack(alignment: .leading, spacing: Constants.step2) {
+                StatsCardTitleView(title: Strings.PostDetails.recentWeeks)
 
-                    WeeklyTrendsView(
-                        weeks: WeeklyTrendsView.Week.make(from: details.recentWeeks, using: context.calendar),
-                        calendar: context.calendar,
-                        timeZone: context.timeZone
+                WeeklyTrendsView(
+                    viewModel: WeeklyTrendsViewModel(
+                        dataPoints: dataPoints,
+                        calendar: context.calendar
                     )
-                }
-                .padding(Constants.step2)
-                .cardStyle()
+                )
             }
+            .padding(Constants.step2)
+            .cardStyle()
 
             // Yearly Summary
-            if !dataPoints.isEmpty {
-                VStack(alignment: .leading, spacing: Constants.step2) {
-                    StatsCardTitleView(title: Strings.PostDetails.monthlyActivity)
+            VStack(alignment: .leading, spacing: Constants.step2) {
+                StatsCardTitleView(title: Strings.PostDetails.monthlyActivity)
 
-                    YearlyTrendsView(
-                        viewModel: YearlyTrendsViewModel(
-                            dataPoints: dataPoints,
-                            calendar: context.calendar
-                        )
+                YearlyTrendsView(
+                    viewModel: YearlyTrendsViewModel(
+                        dataPoints: dataPoints,
+                        calendar: context.calendar
                     )
-                }
-                .padding(Constants.step2)
-                .cardStyle()
+                )
             }
+            .padding(Constants.step2)
+            .cardStyle()
         }
     }
 

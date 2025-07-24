@@ -40,7 +40,7 @@ extension DataPoint {
             return nil
         }
         let total = dataPoints.reduce(0) { $0 + $1.value }
-        switch metric.aggregarionStrategy {
+        switch metric.aggregationStrategy {
         case .average:
             return total / dataPoints.count
         case .sum:
