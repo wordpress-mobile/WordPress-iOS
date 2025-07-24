@@ -72,12 +72,17 @@ struct PostStatsDetailsView: View {
             }
 
             // Yearly Summary
-            if !details.yearlyTotals.isEmpty {
-                YearlySummaryCard(
-                    yearlyTotals: details.yearlyTotals,
-                    overallAverages: details.overallAverages,
-                    monthlyBreakdown: details.monthlyBreakdown
-                )
+            if !dataPoints.isEmpty {
+                VStack(alignment: .leading, spacing: Constants.step2) {
+                    StatsCardTitleView(title: Strings.PostDetails.monthlyActivity)
+                    
+                    YearlyTrendsView(
+                        dataPoints: dataPoints,
+                        calendar: context.calendar,
+                        timeZone: context.timeZone
+                    )
+                }
+                .padding(Constants.step2)
                 .cardStyle()
             }
         }
@@ -403,186 +408,6 @@ private struct PeakPerformanceCard: View {
         }
         .padding(Constants.step2)
         .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
-
-
-private struct YearlySummaryCard: View {
-    let yearlyTotals: [Int: Int]
-    let overallAverages: [Int: Int]
-    let monthlyBreakdown: [StatsPostViews]
-    
-    private let cellSpacing: CGFloat = 6
-    private let monthNames = [
-        ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-        ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    ]
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: Constants.step2) {
-            StatsCardTitleView(title: Strings.PostDetails.monthlyActivity)
-            
-            // Year sections
-            let sortedYears = yearlyTotals.keys.sorted(by: >).prefix(3)
-            let maxMonthlyViews = monthlyBreakdown.map(\.viewsCount).max() ?? 5000
-            
-            VStack(spacing: Constants.step3) {
-                ForEach(sortedYears, id: \.self) { year in
-                    YearSection(
-                        year: year,
-                        monthlyData: getMonthlyData(for: year),
-                        maxViews: maxMonthlyViews,
-                        yearTotal: yearlyTotals[year] ?? 0,
-                        previousYearTotal: yearlyTotals[year - 1]
-                    )
-
-                    if year != sortedYears.last {
-                        Divider()
-                    }
-                }
-            }
-            
-            // Legend
-            HStack(spacing: Constants.step2) {
-                HStack(spacing: Constants.step1) {
-                    Text(Strings.PostDetails.less)
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-                    
-                    HStack(spacing: 3) {
-                        ForEach(0..<5) { level in
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(heatmapColor(for: Double(level) / 4.0))
-                                .frame(width: 16, height: 16)
-                        }
-                    }
-                    
-                    Text(Strings.PostDetails.more)
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-                }
-                
-                Spacer()
-            }
-            .padding(.top, Constants.step1)
-        }
-        .padding(Constants.step2)
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-    
-    private func getMonthlyData(for year: Int) -> [Int] {
-        var monthlyViews = Array(repeating: 0, count: 12)
-        
-        for postView in monthlyBreakdown {
-            if postView.date.year == year,
-               let month = postView.date.month,
-               month >= 1 && month <= 12 {
-                monthlyViews[month - 1] = postView.viewsCount
-            }
-        }
-        
-        return monthlyViews
-    }
-    
-    private func heatmapColor(for intensity: Double) -> Color {
-        Constants.heatmapColor(baseColor: Constants.Colors.blue, intensity: intensity)
-    }
-}
-
-private struct YearSection: View {
-    let year: Int
-    let monthlyData: [Int]
-    let maxViews: Int
-    let yearTotal: Int
-    let previousYearTotal: Int?
-    
-    private let cellSpacing: CGFloat = 6
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: Constants.step1) {
-            // Year header with total and growth
-            HStack(alignment: .center) {
-                Text(String(year))
-                    .font(.headline)
-
-                Spacer()
-
-                Text(StatsValueFormatter.formatNumber(yearTotal))
-                    .font(.headline)
-                    .foregroundColor(.secondary)
-                    .monospacedDigit()
-                
-
-                if let previousTotal = previousYearTotal, previousTotal > 0 {
-                    BadgeTrendIndicator(
-                        trend: TrendViewModel(
-                            currentValue: yearTotal,
-                            previousValue: previousTotal,
-                            metric: .views
-                        )
-                    )
-                }
-            }
-            
-            // Two-column grid
-            VStack(spacing: cellSpacing) {
-                // First row (Jan-Jun)
-                HStack(spacing: cellSpacing) {
-                    ForEach(0..<6) { index in
-                        MonthCellExpanded(
-                            month: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"][index],
-                            viewsCount: monthlyData[index],
-                            maxViews: maxViews
-                        )
-                    }
-                }
-                
-                // Second row (Jul-Dec)
-                HStack(spacing: cellSpacing) {
-                    ForEach(6..<12) { index in
-                        MonthCellExpanded(
-                            month: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][index - 6],
-                            viewsCount: monthlyData[index],
-                            maxViews: maxViews
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-private struct MonthCellExpanded: View {
-    let month: String
-    let viewsCount: Int
-    let maxViews: Int
-    
-    private var intensity: Double {
-        min(1.0, Double(viewsCount) / Double(maxViews))
-    }
-    
-    var body: some View {
-        VStack(spacing: 4) {
-            Text(month)
-                .font(.caption2)
-                .foregroundColor(.secondary)
-            
-            RoundedRectangle(cornerRadius: 6)
-                .fill(heatmapColor)
-                .frame(height: 44)
-                .overlay(
-                    Text(StatsValueFormatter.formatNumber(viewsCount))
-                        .font(.subheadline.weight(.medium))
-                        .foregroundColor(intensity > 0.6 ? .white : .primary)
-                        .minimumScaleFactor(0.8)
-                        .lineLimit(1)
-                )
-        }
-        .frame(maxWidth: .infinity)
-    }
-    
-    private var heatmapColor: Color {
-        Constants.heatmapColor(baseColor: Constants.Colors.blue, intensity: intensity)
     }
 }
 

@@ -151,5 +151,29 @@ enum Strings {
                 : AppLocalizedString("jetpackStats.postDetails.likes", value: "%1$d likes", comment: "Plural likes count. %1$d is the number.")
             return String.localizedStringWithFormat(format, count)
         }
+        
+        // Accessibility
+        static func weeklyActivityAccessibility(weeksCount: Int, metric: String, total: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.postDetails.weeklyActivity.accessibility", 
+                                   value: "Weekly activity heatmap showing %1$d weeks of %2$@ data. Total: %3$@", 
+                                   comment: "VoiceOver description for weekly activity heatmap. %1$d is number of weeks, %2$@ is metric name, %3$@ is total value"),
+                weeksCount, metric, total
+            )
+        }
+        
+        static func yearlyActivityAccessibility(yearsCount: Int, metric: String, total: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.postDetails.yearlyActivity.accessibility", 
+                                   value: "Yearly activity for %1$d years, %2$@: %3$@", 
+                                   comment: "VoiceOver description for yearly activity heatmap. %1$d is number of years, %2$@ is metric name, %3$@ is total value"),
+                yearsCount, metric, total
+            )
+        }
+        
+        // Tooltip
+        static let weekTotal = AppLocalizedString("jetpackStats.postDetails.weekTotal", value: "Week Total", comment: "Label for weekly total in tooltip")
+        static let dailyAverage = AppLocalizedString("jetpackStats.postDetails.dailyAverage", value: "Daily Average", comment: "Label for daily average in tooltip")
+        static let weekOverWeek = AppLocalizedString("jetpackStats.postDetails.weekOverWeek", value: "Week over Week", comment: "Label for week-over-week comparison in tooltip")
     }
 }

@@ -247,16 +247,6 @@ struct CustomDateRangePicker: View {
     }
 }
 
-private struct PopoverPresentationModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 16.4, *) {
-            content.presentationCompactAdaptation(.popover)
-        } else {
-            content
-        }
-    }
-}
-
 private struct QuickPeriodButtonView: View {
     let period: CustomDateRangePicker.QuickPeriod
 

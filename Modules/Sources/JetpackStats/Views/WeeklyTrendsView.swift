@@ -2,31 +2,21 @@ import SwiftUI
 import WordPressKit
 
 struct WeeklyTrendsView: View {
-    let weeks: [Week]
-    let calendar: Calendar
-    let timeZone: TimeZone
-    let metric: SiteMetric = .views
+    let viewModel: WeeklyTrendsViewModel
     
     private let cellSpacing: CGFloat = 4
     private let weekLabelWidth: CGFloat = 36
-
-    private var maxValue: Int {
-        weeks.flatMap { $0.days }.map { $0.value }.max() ?? 1
-    }
     
-    private var dayLabels: [String] {
-        // Get localized very short weekday symbols from Calendar
-        let formatter = DateFormatter()
-        formatter.calendar = calendar
-        formatter.locale = calendar.locale ?? Locale.current
-        
-        // Get weekday symbols in the order defined by the calendar's firstWeekday
-        let symbols = formatter.veryShortWeekdaySymbols ?? []
-        let firstWeekday = calendar.firstWeekday
-        
-        // Reorder symbols to start with the calendar's first weekday
-        let reorderedSymbols = Array(symbols[(firstWeekday - 1)...]) + Array(symbols[..<(firstWeekday - 1)])
-        return reorderedSymbols
+    @State private var selectedDay: Week.Day?
+    @State private var selectedWeek: Week?
+    
+    init(weeks: [Week], calendar: Calendar, timeZone: TimeZone, metric: SiteMetric = .views) {
+        self.viewModel = WeeklyTrendsViewModel(
+            weeks: weeks,
+            calendar: calendar,
+            timeZone: timeZone,
+            metric: metric
+        )
     }
     
     struct Week {
@@ -56,92 +46,156 @@ struct WeeklyTrendsView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: cellSpacing) {
-                // Day labels header
-                HStack(spacing: 0) {
-                    Color.clear
-                        .frame(width: weekLabelWidth)
-                    
-                    HStack(spacing: cellSpacing) {
-                        ForEach(dayLabels, id: \.self) { day in
-                            Text(day)
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                                .frame(maxWidth: .infinity)
-                                .multilineTextAlignment(.center)
-                        }
-                    }
-                }
-                
-                // Heatmap grid
-                VStack(spacing: cellSpacing) {
-                    // Show last 4 weeks, 7 days per week
-                    ForEach(Array(weeks.prefix(4).enumerated()), id: \.offset) { weekIndex, week in
-                        HStack(spacing: 8) {
-                            // Week label
-                            Text(weekLabel(for: week))
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                                .frame(width: weekLabelWidth, alignment: .trailing)
-                            
-                            HStack(spacing: cellSpacing) {
-                                // Days in the week
-                                ForEach(week.days, id: \.date) { day in
-                                    DayCell(
-                                        value: day.value,
-                                        maxValue: maxValue,
-                                        metric: metric
-                                    )
-                                    .frame(maxWidth: .infinity)
-                                    .aspectRatio(1, contentMode: .fit)
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                // Legend
+            header
+            heatmap
             legend
                 .padding(.top, Constants.step1)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(accessibilityLabel)
     }
 
-    private var legend: some View {
-        HStack(spacing: Constants.step1) {
-            Text(Strings.PostDetails.less)
-                .font(.caption2)
-                .foregroundColor(.secondary)
+    private var header: some View {
+        HStack(spacing: 0) {
+            Color.clear
+                .frame(width: weekLabelWidth)
 
-            HStack(spacing: 4) {
-                ForEach(0..<5) { level in
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(Constants.heatmapColor(baseColor: metric.primaryColor, intensity: Double(level) / 4.0))
-                        .frame(width: 16, height: 16)
+            HStack(spacing: cellSpacing) {
+                ForEach(viewModel.dayLabels, id: \.self) { day in
+                    Text(day)
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity)
+                        .multilineTextAlignment(.center)
+                        .accessibilityHidden(true)
                 }
             }
-
-            Text(Strings.PostDetails.more)
-                .font(.caption2)
-                .foregroundColor(.secondary)
         }
     }
 
-    private func weekLabel(for week: Week) -> String {
+    private var heatmap: some View {
+        VStack(spacing: cellSpacing) {
+            // Show last 4 weeks, 7 days per week
+            ForEach(Array(viewModel.weeks.prefix(4).enumerated()), id: \.offset) { weekIndex, week in
+                HStack(spacing: 8) {
+                    // Week label
+                    Text(viewModel.weekLabel(for: week))
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                        .frame(width: weekLabelWidth, alignment: .trailing)
+
+                    HStack(spacing: cellSpacing) {
+                        // Days in the week
+                        ForEach(week.days, id: \.date) { day in
+                            DayCell(
+                                day: day,
+                                week: week,
+                                previousWeek: viewModel.previousWeek(for: week),
+                                maxValue: viewModel.maxValue,
+                                metric: viewModel.metric,
+                                formatter: viewModel,
+                                calendar: viewModel.calendar
+                            )
+                            .frame(maxWidth: .infinity)
+                            .aspectRatio(1, contentMode: .fit)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private var legend: some View {
+        HeatmapLegendView(metric: viewModel.metric, labelWidth: weekLabelWidth)
+    }
+
+
+    private var accessibilityLabel: String {
+        let weeksCount = min(viewModel.weeks.count, 4)
+        let totalValue = viewModel.weeks.prefix(4).flatMap { $0.days }.reduce(0) { $0 + $1.value }
+        let formattedTotal = viewModel.formatValue(totalValue)
+
+        return Strings.PostDetails.weeklyActivityAccessibility(weeksCount: weeksCount, metric: viewModel.metric.localizedTitle, total: formattedTotal)
+    }
+}
+
+@MainActor
+final class WeeklyTrendsViewModel: ObservableObject {
+    let weeks: [WeeklyTrendsView.Week]
+    let calendar: Calendar
+    let timeZone: TimeZone
+    let metric: SiteMetric
+
+    private let valueFormatter: StatsValueFormatter
+    private let weekFormatter: DateFormatter
+
+    let dayLabels: [String]
+    let maxValue: Int
+
+    init(weeks: [WeeklyTrendsView.Week], calendar: Calendar, timeZone: TimeZone, metric: SiteMetric = .views) {
+        self.weeks = weeks
+        self.calendar = calendar
+        self.timeZone = timeZone
+        self.metric = metric
+
+        // Initialize formatters
+        self.valueFormatter = StatsValueFormatter(metric: metric)
+
+        self.weekFormatter = DateFormatter()
+        self.weekFormatter.dateFormat = "MMM d"
+        self.weekFormatter.timeZone = timeZone
+
+        // Cache day labels
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d"
-        formatter.timeZone = timeZone
-        return formatter.string(from: week.startDate)
+        formatter.calendar = calendar
+        formatter.locale = calendar.locale ?? Locale.current
+
+        // Get weekday symbols in the order defined by the calendar's firstWeekday
+        let symbols = formatter.veryShortWeekdaySymbols ?? []
+        let firstWeekday = calendar.firstWeekday
+
+        // Reorder symbols to start with the calendar's first weekday
+        let reorderedSymbols = Array(symbols[(firstWeekday - 1)...]) + Array(symbols[..<(firstWeekday - 1)])
+        self.dayLabels = reorderedSymbols
+
+        // Calculate max value once
+        self.maxValue = weeks.flatMap { $0.days }.map { $0.value }.max() ?? 1
+    }
+
+    func weekLabel(for week: WeeklyTrendsView.Week) -> String {
+        weekFormatter.string(from: week.startDate)
+    }
+
+    func formatValue(_ value: Int) -> String {
+        valueFormatter.format(value: value, context: .compact)
+    }
+
+    func heatmapColor(for intensity: Double) -> Color {
+        Constants.heatmapColor(baseColor: metric.primaryColor, intensity: intensity)
     }
     
-    private func heatmapColor(for intensity: Double) -> Color {
-        Constants.heatmapColor(baseColor: metric.primaryColor, intensity: intensity)
+    func previousWeek(for week: WeeklyTrendsView.Week) -> WeeklyTrendsView.Week? {
+        guard let weekIndex = weeks.firstIndex(where: { $0.startDate == week.startDate }),
+              weekIndex < weeks.count - 1 else {
+            return nil
+        }
+        return weeks[weekIndex + 1]
     }
 }
 
 private struct DayCell: View {
-    let value: Int
+    let day: WeeklyTrendsView.Week.Day
+    let week: WeeklyTrendsView.Week
+    let previousWeek: WeeklyTrendsView.Week?
     let maxValue: Int
     let metric: SiteMetric
+    let formatter: WeeklyTrendsViewModel
+    let calendar: Calendar
+    
+    @State private var showingPopover = false
+    
+    private var value: Int { day.value }
     
     private var intensity: Double {
         guard maxValue > 0 else {
@@ -151,24 +205,137 @@ private struct DayCell: View {
     }
     
     var body: some View {
-        RoundedRectangle(cornerRadius: 4)
-            .fill(heatmapColor)
-            .overlay {
-                if value > 0 {
-                    Text(formattedValue)
-                        .font(.caption.weight(.medium))
-                        .foregroundColor(.primary)
-                        .foregroundColor(intensity > 0.75 ? Color(.systemBackground) : .primary)
+        HeatmapCellView(
+            value: value,
+            metric: metric,
+            maxValue: maxValue
+        )
+        .onTapGesture {
+            showingPopover = true
+        }
+        .popover(isPresented: $showingPopover) {
+            WeeklyTrendsTooltipView(
+                day: day,
+                week: week,
+                previousWeek: previousWeek,
+                metric: metric,
+                calendar: calendar,
+                formatter: formatter
+            )
+            .modifier(PopoverPresentationModifier())
+        }
+        .accessibilityElement()
+        .accessibilityLabel(accessibilityLabel)
+        .accessibilityAddTraits(.isButton)
+    }
+
+    
+    private var accessibilityLabel: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        dateFormatter.calendar = calendar
+        
+        let dateString = dateFormatter.string(from: day.date)
+        let valueString = formatter.formatValue(value)
+        
+        return "\(dateString), \(valueString) \(metric.localizedTitle)"
+    }
+}
+
+private struct WeeklyTrendsTooltipView: View {
+    let day: WeeklyTrendsView.Week.Day
+    let week: WeeklyTrendsView.Week
+    let previousWeek: WeeklyTrendsView.Week?
+    let metric: SiteMetric
+    let calendar: Calendar
+    let formatter: WeeklyTrendsViewModel
+    
+    private var weekTotal: Int {
+        week.days.reduce(0) { $0 + $1.value }
+    }
+    
+    private var previousWeekTotal: Int {
+        previousWeek?.days.reduce(0) { $0 + $1.value } ?? 0
+    }
+    
+    private var averagePerDay: Int {
+        week.days.isEmpty ? 0 : weekTotal / week.days.count
+    }
+    
+    private var trendViewModel: TrendViewModel {
+        TrendViewModel(
+            currentValue: weekTotal,
+            previousValue: previousWeekTotal,
+            metric: metric,
+            context: .regular
+        )
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            // Date header
+            Text(formattedDate)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+            
+            // Day value
+            HStack(spacing: 6) {
+                Circle()
+                    .fill(metric.primaryColor)
+                    .frame(width: 8, height: 8)
+                Text(formatter.formatValue(day.value))
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                Text(metric.localizedTitle)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+
+            // Week stats
+            VStack(alignment: .leading, spacing: 4) {
+                // Week total
+                HStack(spacing: 4) {
+                    Text(Strings.PostDetails.weekTotal)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(formatter.formatValue(weekTotal))
+                        .font(.caption)
+                        .fontWeight(.medium)
+                }
+                
+                // Average per day
+                HStack(spacing: 4) {
+                    Text(Strings.PostDetails.dailyAverage)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(formatter.formatValue(averagePerDay))
+                        .font(.caption)
+                        .fontWeight(.medium)
+                }
+                
+                // Week-over-week change
+                if previousWeek != nil && (weekTotal != previousWeekTotal) {
+                    HStack(spacing: 4) {
+                        Text(Strings.PostDetails.weekOverWeek)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        Text(trendViewModel.formattedTrendShort)
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(trendViewModel.sentiment.foregroundColor)
+                    }
                 }
             }
+        }
+        .padding()
     }
-
-    private var formattedValue: String {
-        StatsValueFormatter(metric: metric).format(value: value, context: .compact)
-    }
-
-    private var heatmapColor: Color {
-        Constants.heatmapColor(baseColor: metric.primaryColor, intensity: intensity)
+    
+    private var formattedDate: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d, yyyy"
+        dateFormatter.calendar = calendar
+        return dateFormatter.string(from: day.date)
     }
 }
 
@@ -237,7 +404,8 @@ extension WeeklyTrendsView.Week {
             WeeklyTrendsView(
                 weeks: WeeklyTrendsView.Week.mockWeeks(count: 4),
                 calendar: StatsContext.demo.calendar,
-                timeZone: StatsContext.demo.timeZone
+                timeZone: StatsContext.demo.timeZone,
+                metric: .views
             )
             .padding(Constants.step2)
             .cardStyle()
@@ -245,7 +413,8 @@ extension WeeklyTrendsView.Week {
             WeeklyTrendsView(
                 weeks: Array(WeeklyTrendsView.Week.mockHighTraffic.prefix(4)),
                 calendar: StatsContext.demo.calendar,
-                timeZone: StatsContext.demo.timeZone
+                timeZone: StatsContext.demo.timeZone,
+                metric: .views
             )
             .padding(Constants.step2)
             .cardStyle()
@@ -253,7 +422,8 @@ extension WeeklyTrendsView.Week {
             WeeklyTrendsView(
                 weeks: Array(WeeklyTrendsView.Week.mockEmpty.prefix(4)),
                 calendar: StatsContext.demo.calendar,
-                timeZone: StatsContext.demo.timeZone
+                timeZone: StatsContext.demo.timeZone,
+                metric: .views
             )
             .padding(Constants.step2)
             .cardStyle()
