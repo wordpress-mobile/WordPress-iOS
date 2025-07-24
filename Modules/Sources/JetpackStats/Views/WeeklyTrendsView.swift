@@ -173,17 +173,38 @@ final class WeeklyTrendsViewModel: ObservableObject {
 
         // Create Week objects with sorted days and calculated average
         let weeks = weeklyData.map { startDate, days in
-            let sortedDays = days.sorted { $0.date < $1.date }
-            let weekTotal = DataPoint.getTotalValue(for: sortedDays, metric: metric) ?? 0
+            // Create a dictionary of existing data points by date
+            var daysByDate: [Date: DataPoint] = [:]
+            for day in days {
+                // Normalize to start of day to avoid time component issues
+                let normalizedDate = calendar.startOfDay(for: day.date)
+                daysByDate[normalizedDate] = day
+            }
+
+            // Fill in all 7 days of the week
+            var completeDays: [DataPoint] = []
+            for dayOffset in 0..<7 {
+                if let date = calendar.date(byAdding: .day, value: dayOffset, to: startDate) {
+                    let normalizedDate = calendar.startOfDay(for: date)
+                    if let existingDay = daysByDate[normalizedDate] {
+                        completeDays.append(existingDay)
+                    } else {
+                        // Add empty day with 0 value
+                        completeDays.append(DataPoint(date: date, value: 0))
+                    }
+                }
+            }
+
+            let weekTotal = DataPoint.getTotalValue(for: completeDays, metric: metric) ?? 0
             let averagePerDay: Int
-            if sortedDays.isEmpty {
+            if completeDays.isEmpty {
                 averagePerDay = 0
             } else if metric.aggregationStrategy == .average {
                 averagePerDay = weekTotal
             } else {
-                averagePerDay = weekTotal / sortedDays.count
+                averagePerDay = weekTotal / completeDays.count
             }
-            return WeeklyTrendsView.Week(startDate: startDate, days: sortedDays, averagePerDay: averagePerDay)
+            return WeeklyTrendsView.Week(startDate: startDate, days: completeDays, averagePerDay: averagePerDay)
         }
 
         // Sort weeks by start date (most recent first)
