@@ -3,6 +3,7 @@ import SwiftUI
 struct TopListItemsView: View {
     let data: TopListChartData
     let itemLimit: Int
+    let dateRange: StatsDateRange
     var showDetails = true
 
     var body: some View {
@@ -13,7 +14,8 @@ struct TopListItemsView: View {
                     previousItem: item.previous,
                     metric: data.metric,
                     maxValue: data.maxValue,
-                    showDetails: showDetails
+                    showDetails: showDetails,
+                    dateRange: dateRange
                 )
                 .transition(.move(edge: .leading)
                     .combined(with: .scale(scale: 0.75))

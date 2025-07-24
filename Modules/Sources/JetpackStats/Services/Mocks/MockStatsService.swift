@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+@preconcurrency import WordPressKit
 
 actor MockStatsService: ObservableObject, StatsServiceProtocol {
     private var hourlyData: [SiteMetric: [DataPoint]] = [:]
@@ -43,14 +44,23 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         var total = SiteMetricsSet()
         var output: [SiteMetric: [DataPoint]] = [:]
 
-        for (metric, dataPoints) in hourlyData {
-            // This isn't efficient by any means but it will do for the mocking purposes
-            let filteredDataPoints = dataPoints.filter {
+        let aggregator = StatsDataAggregator(calendar: calendar)
+
+        for (metric, allDataPoints) in hourlyData {
+            // Filter data points for the period
+            let filteredDataPoints = allDataPoints.filter {
                 interval.start <= $0.date && $0.date < interval.end
             }
-            let dataPoints = aggregateData(filteredDataPoints, granularity: granularity, range: interval, metric: metric)
-            output[metric] = dataPoints
-            total[metric] = DataPoint.getTotalValue(for: dataPoints, metric: metric)
+
+            // Use processPeriod to aggregate and normalize the data
+            let periodData = aggregator.processPeriod(
+                dataPoints: filteredDataPoints,
+                dateInterval: interval,
+                granularity: granularity,
+                metric: metric
+            )
+            output[metric] = periodData.dataPoints
+            total[metric] = periodData.total
         }
 
         try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
@@ -239,28 +249,53 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         }
     }
 
-
-    // MARK: - Data Aggregation
-
-    /// Aggregates raw data into data points based on granularity
-    private func aggregateData(_ dataPoints: [DataPoint], granularity: DateRangeGranularity, range: DateInterval, metric: SiteMetric) -> [DataPoint] {
-        let aggregator = StatsDataAggregator(calendar: calendar)
-
-        // Step 1: Perform aggregation
-        let aggregatedData = aggregator.aggregate(dataPoints, granularity: granularity)
-
-        // Step 2: Normalize data for metrics that need averaging
-        let normalizedData = aggregator.normalizeForMetric(aggregatedData, metric: metric)
-
-        // Step 3: Generate complete data points
-        let dateSequence = aggregator.generateDateSequence(dateInterval: range, by: granularity.component)
-
-        // Map dates to data points, using 0 for missing values
-        return dateSequence.map { date in
-            let aggregationDate = aggregator.makeAggegationDate(for: date, granularity: granularity)
-            return DataPoint(date: date, value: normalizedData[aggregationDate ?? date] ?? 0)
+    func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
+        // Load from JSON file in Mocks/Misc directory
+        guard let url = Bundle.module.url(forResource: "post-details", withExtension: "json") else {
+            throw URLError(.fileDoesNotExist)
         }
+
+        let data = try Data(contentsOf: url)
+        let jsonObject = try JSONSerialization.jsonObject(with: data) as! [String: AnyObject]
+
+        // Simulate network delay
+        try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+
+        guard let details = StatsPostDetails(jsonDictionary: jsonObject) else {
+            throw URLError(.cannotParseResponse)
+        }
+
+        return details
     }
+
+    func getPostLikes(for postID: Int, count: Int) async throws -> PostLikesData {
+        // Simulate network delay
+        try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+
+        func makeUser(id: Int, name: String) -> PostLikesData.PostLikeUser {
+            PostLikesData.PostLikeUser(
+                id: id,
+                name: name,
+                avatarURL: Bundle.module.path(forResource: "author\(id)", ofType: "jpg").map { URL(filePath: $0) }
+            )
+        }
+
+        let mockUsers = [
+            makeUser(id: 1, name: "Sarah Chen"),
+            makeUser(id: 2, name: "Marcus Johnson"),
+            makeUser(id: 3, name: "Emily Rodriguez"),
+            makeUser(id: 4, name: "Alex Thompson"),
+            makeUser(id: 5, name: "Nina Patel"),
+            makeUser(id: 6, name: "James Wilson")
+        ]
+
+        let requestedCount = min(count, mockUsers.count)
+        let selectedUsers = Array(mockUsers.prefix(requestedCount))
+
+        return PostLikesData(users: selectedUsers, totalCount: 26)
+    }
+
+    // MARK: - Data Loading
 
     /// Loads historical items from JSON files based on the data type
     private func loadHistoricalItems(for dataType: TopListItemType) -> [any TopListItem] {
@@ -332,7 +367,6 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             return []
         }
     }
-
 
     // MARK: - Data Generation
 

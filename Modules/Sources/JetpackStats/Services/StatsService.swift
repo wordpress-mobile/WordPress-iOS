@@ -187,6 +187,44 @@ actor StatsService: StatsServiceProtocol {
         try await mocks.getRealtimeTopListData(item)
     }
 
+    func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
+        try await service.getDetails(forPostID: postID)
+    }
+
+    func getPostLikes(for postID: Int, count: Int) async throws -> PostLikesData {
+        // Create PostServiceRemoteREST instance
+        let postService = PostServiceRemoteREST(
+            wordPressComRestApi: api,
+            siteID: NSNumber(value: siteID)
+        )
+
+        // Fetch likes using the REST API
+        let result = try await withCheckedThrowingContinuation { continuation in
+            postService.getLikesForPostID(
+                NSNumber(value: postID),
+                count: NSNumber(value: count),
+                before: nil,
+                excludeUserIDs: nil,
+                success: { users, found in
+                    let likeUsers = users.map { remoteLike in
+                        PostLikesData.PostLikeUser(
+                            id: remoteLike.userID.intValue,
+                            name: remoteLike.displayName ?? remoteLike.username ?? "",
+                            avatarURL: remoteLike.avatarURL.flatMap(URL.init)
+                        )
+                    }
+                    let postLikes = PostLikesData(users: likeUsers, totalCount: found.intValue)
+                    continuation.resume(returning: postLikes)
+                },
+                failure: { error in
+                    continuation.resume(throwing: error ?? StatsServiceError.unknown)
+                }
+            )
+        }
+
+        return result
+    }
+
     // MARK: - Dates
 
     /// Convert from the site timezone (used in JetpackState) to the local
@@ -275,14 +313,12 @@ actor StatsService: StatsServiceProtocol {
         let items = posts.map { post in
             TopListData.Post(
                 title: post.title,
-                postId: String(post.postID),
+                postID: String(post.postID),
+                postURL: post.postURL,
                 date: post.date.flatMap(dateFormatter.date),
-                pageId: nil,
                 type: post.kind.description,
                 author: nil,
-                metrics: SiteMetricsSet(
-                    views: post.viewsCount
-                )
+                metrics: SiteMetricsSet(views: post.viewsCount)
             )
         }
         return TopListData(items: items)
@@ -293,9 +329,7 @@ actor StatsService: StatsServiceProtocol {
             TopListData.Referrer(
                 name: referrer.title,
                 domain: referrer.url?.host,
-                metrics: SiteMetricsSet(
-                    views: referrer.viewsCount
-                )
+                metrics: SiteMetricsSet(views: referrer.viewsCount)
             )
         }
 
@@ -308,9 +342,7 @@ actor StatsService: StatsServiceProtocol {
                 country: country.name,
                 flag: countryCodeToEmoji(country.code),
                 countryCode: country.code,
-                metrics: SiteMetricsSet(
-                    views: country.viewsCount
-                )
+                metrics: SiteMetricsSet(views: country.viewsCount)
             )
         }
 
@@ -323,9 +355,7 @@ actor StatsService: StatsServiceProtocol {
                 name: author.name,
                 userId: author.name, // NOTE: WordPressKit doesn't provide user ID
                 role: nil,
-                metrics: SiteMetricsSet(
-                    views: author.viewsCount
-                ),
+                metrics: SiteMetricsSet(views: author.viewsCount),
                 avatarURL: author.iconURL
             )
         }

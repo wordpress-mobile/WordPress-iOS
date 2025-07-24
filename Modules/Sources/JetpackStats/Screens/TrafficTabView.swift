@@ -12,7 +12,7 @@ struct TrafficTabView: View {
     }
 
     var body: some View {
-        ScrollView(showsIndicators: false) {
+        ScrollView {
             VStack(spacing: Constants.step3) {
                 ForEach(viewModels, id: \.id) { viewModel in
                     makeItem(for: viewModel)
@@ -28,7 +28,7 @@ struct TrafficTabView: View {
                 viewModel.dateRange = $0
             }
         }
-        .background(Constants.Colors.statsBackground)
+        .background(Constants.Colors.background)
         .toolbar {
             if #available(iOS 26, *) {
                 normalModeToolbarContent

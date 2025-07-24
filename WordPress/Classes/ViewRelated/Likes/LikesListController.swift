@@ -143,6 +143,18 @@ class LikesListController: NSObject {
         configureLoadingIndicator()
     }
 
+    /// Init with siteID and postID
+    ///
+    init(tableView: UITableView, siteID: NSNumber, postID: NSNumber, delegate: LikesListControllerDelegate? = nil) {
+        content = .post(id: postID)
+        self.siteID = siteID
+        self.tableView = tableView
+        self.delegate = delegate
+
+        super.init()
+        configureLoadingIndicator()
+    }
+
     private func configureLoadingIndicator() {
         loadingIndicator = UIActivityIndicatorView(style: .medium)
         loadingIndicator.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 44)

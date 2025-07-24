@@ -1,6 +1,6 @@
 import SwiftUI
 
-final class ChartData {
+final class ChartData: Sendable {
     let metric: SiteMetric
     let granularity: DateRangeGranularity
     let currentTotal: Int

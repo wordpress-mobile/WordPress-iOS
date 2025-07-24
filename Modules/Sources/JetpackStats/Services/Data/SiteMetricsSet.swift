@@ -38,4 +38,17 @@ struct SiteMetricsSet: Codable {
             }
         }
     }
+
+    static var mock: SiteMetricsSet {
+        SiteMetricsSet(
+            views: Int.random(in: 10...10000),
+            visitors: Int.random(in: 10...1000),
+            likes: Int.random(in: 10...1000),
+            comments: Int.random(in: 10...1000),
+            posts: Int.random(in: 10...100),
+            bounceRate: Int.random(in: 50...80),
+            timeOnSite: Int.random(in: 10...200),
+            downloads: Int.random(in: 10...500)
+        )
+    }
 }

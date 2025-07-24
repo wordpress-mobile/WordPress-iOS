@@ -66,7 +66,7 @@ extension SiteMetric {
         }
     }
 
-    var aggregarionStrategy: AggregationStrategy {
+    var aggregationStrategy: AggregationStrategy {
         switch self {
         case .views, .visitors, .likes, .comments, .posts, .downloads:
             return .sum

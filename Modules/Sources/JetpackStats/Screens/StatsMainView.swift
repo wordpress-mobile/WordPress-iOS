@@ -5,9 +5,11 @@ public struct StatsMainView: View {
     @State private var isTabBarBackgroundShown = true
 
     private let context: StatsContext
+    private let router: StatsRouter
 
-    public init(context: StatsContext) {
+    public init(context: StatsContext, router: StatsRouter) {
         self.context = context
+        self.router = router
     }
 
     public var body: some View {
@@ -18,10 +20,11 @@ public struct StatsMainView: View {
             .safeAreaInset(edge: .top) {
                 StatsTabBar(selectedTab: $selectedTab, showBackground: isTabBarBackgroundShown)
             }
-            .background(Constants.Colors.statsBackground)
+            .background(Constants.Colors.background)
             .navigationTitle(Strings.stats)
             .navigationBarTitleDisplayMode(.inline)
             .environment(\.context, context)
+            .environment(\.router, router)
     }
 
     @ViewBuilder
@@ -44,7 +47,22 @@ public struct StatsMainView: View {
 }
 
 #Preview {
-    NavigationStack {
-        StatsMainView(context: .demo)
+    PreviewStatsMainView()
+        .ignoresSafeArea()
+}
+
+private struct PreviewStatsMainView: UIViewControllerRepresentable {
+
+    func makeUIViewController(context: Context) -> UINavigationController {
+        let navigationController = UINavigationController()
+        let router = StatsRouter(viewController: navigationController, factory: MockStatsRouterScreenFactory())
+        let view = StatsMainView(context: .demo, router: router)
+        let hostingController = UIHostingController(rootView: view)
+        navigationController.viewControllers = [hostingController]
+        return navigationController
+    }
+
+    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
+        // No update needed
     }
 }

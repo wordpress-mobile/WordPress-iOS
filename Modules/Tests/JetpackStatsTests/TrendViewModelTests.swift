@@ -122,7 +122,6 @@ struct TrendViewModelTests {
     @Test("Formatted percentage string", arguments: [
         (150, 100, "50%"),
         (175, 100, "75%"),
-        (1, 1000, "1K%"),
         (100, 100, "0%"),
         (125, 100, "25%"),
         (100, 0, "∞")

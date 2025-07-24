@@ -23,7 +23,7 @@ enum Constants {
             dark: UIColor(red: 0.3, green: 0.15, blue: 0.15, alpha: 1.0)
         ))
 
-        static let statsBackground = Color(UIColor(
+        static let background = Color(UIColor(
             light: CSColor.Gray.shade(.shade0),
             dark: UIColor.systemBackground
         ))
@@ -40,6 +40,24 @@ enum Constants {
     static let step1: CGFloat = 12
     static let step2: CGFloat = 18
     static let step3: CGFloat = 24
+    static let step4: CGFloat = 32
+
+    static func heatmapColor(baseColor: Color, intensity: Double) -> Color {
+        if intensity == 0 {
+            return Color(UIColor.secondarySystemBackground)
+        }
+
+        // Use graduated opacity based on intensity
+        if intensity <= 0.25 {
+            return baseColor.opacity(0.07)
+        } else if intensity <= 0.5 {
+            return baseColor.opacity(0.14)
+        } else if intensity <= 0.75 {
+            return baseColor.opacity(0.25)
+        } else {
+            return baseColor.opacity(0.38)
+        }
+    }
 }
 
 private extension Color {

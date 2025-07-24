@@ -1,6 +1,6 @@
 import Foundation
 
-enum DateRangeGranularity {
+enum DateRangeGranularity: Comparable {
     case hour
     case day
     case month

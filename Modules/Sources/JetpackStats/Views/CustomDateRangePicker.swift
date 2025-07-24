@@ -29,7 +29,7 @@ struct CustomDateRangePicker: View {
             ScrollView {
                 contents
             }
-            .background(Constants.Colors.statsBackground)
+            .background(Constants.Colors.background)
             .navigationTitle(Strings.DatePicker.customRange)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -244,16 +244,6 @@ struct CustomDateRangePicker: View {
         startDate = interval.start
         // Same adjustment as in init: subtract 1 second for DatePicker display
         endDate = interval.end.addingTimeInterval(-1)
-    }
-}
-
-private struct PopoverPresentationModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 16.4, *) {
-            content.presentationCompactAdaptation(.popover)
-        } else {
-            content
-        }
     }
 }
 
