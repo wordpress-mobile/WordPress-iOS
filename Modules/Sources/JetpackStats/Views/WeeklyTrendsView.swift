@@ -5,7 +5,7 @@ struct WeeklyTrendsView: View {
     let viewModel: WeeklyTrendsViewModel
     
     private let cellSpacing: CGFloat = 4
-    private let weekLabelWidth: CGFloat = 36
+    private let weekLabelWidth: CGFloat = 40
     
     @State private var selectedDay: Week.Day?
     @State private var selectedWeek: Week?

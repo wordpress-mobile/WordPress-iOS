@@ -5,7 +5,7 @@ struct YearlyTrendsView: View {
     let viewModel: YearlyTrendsViewModel
 
     private let cellSpacing: CGFloat = 6
-    private let yearLabelWidth: CGFloat = 36
+    private let yearLabelWidth: CGFloat = 40
 
     init(viewModel: YearlyTrendsViewModel) {
         self.viewModel = viewModel
@@ -30,15 +30,14 @@ struct YearlyTrendsView: View {
     @ViewBuilder
     private func yearRow(for year: Int) -> some View {
         let monthlyData = viewModel.getMonthlyData(for: year)
-        
-        VStack(spacing: cellSpacing) {
-            // First row: Jul-Dec (top)
-            HStack(spacing: 8) {
-                Text(String(year))
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .frame(width: yearLabelWidth, alignment: .trailing)
-                
+
+        HStack(spacing: 8) {
+            Text(String(year))
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .frame(width: yearLabelWidth, alignment: .trailing)
+            VStack(spacing: cellSpacing) {
+                // First row: Jul-Dec (top)
                 HStack(spacing: cellSpacing) {
                     ForEach(6..<12) { index in
                         monthCell(dataPoint: monthlyData[index])
@@ -46,13 +45,7 @@ struct YearlyTrendsView: View {
                             .aspectRatio(1, contentMode: .fit)
                     }
                 }
-            }
-            
-            // Second row: Jan-Jun (bottom)
-            HStack(spacing: 8) {
-                Color.clear
-                    .frame(width: yearLabelWidth)
-                
+                // Second row: Jan-Jun (bottom)
                 HStack(spacing: cellSpacing) {
                     ForEach(0..<6) { index in
                         monthCell(dataPoint: monthlyData[index])
@@ -63,7 +56,7 @@ struct YearlyTrendsView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private func monthCell(dataPoint: DataPoint) -> some View {
         MonthCell(
@@ -73,7 +66,7 @@ struct YearlyTrendsView: View {
             formatter: viewModel
         )
     }
-    
+
     private var legend: some View {
         HeatmapLegendView(metric: viewModel.metric, labelWidth: yearLabelWidth)
     }
@@ -85,8 +78,7 @@ final class YearlyTrendsViewModel: ObservableObject {
     
     private let calendar: Calendar
     private let valueFormatter: StatsValueFormatter
-    private let aggregator: StatsDataAggregator
-    
+
     let sortedYears: [Int]
     let maxMonthlyViews: Int
     
@@ -99,7 +91,7 @@ final class YearlyTrendsViewModel: ObservableObject {
         self.valueFormatter = StatsValueFormatter(metric: metric)
         
         // Initialize aggregator with the calendar
-        self.aggregator = StatsDataAggregator(calendar: calendar)
+        let aggregator = StatsDataAggregator(calendar: calendar)
         
         // Use StatsDataAggregator to aggregate data by month
         let normalizedData = aggregator.aggregate(dataPoints, granularity: .month, metric: metric)
@@ -155,7 +147,6 @@ final class YearlyTrendsViewModel: ObservableObject {
     
     func getMonthlyData(for year: Int) -> [DataPoint] {
         guard let yearData = monthlyData[year] else {
-            assertionFailure()
             return []
         }
         return yearData
