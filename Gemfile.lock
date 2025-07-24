@@ -265,7 +265,7 @@ GEM
     nap (1.1.0)
     naturally (2.3.0)
     nkf (0.2.0)
-    nokogiri (1.18.8)
+    nokogiri (1.18.9)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     observer (0.1.2)
