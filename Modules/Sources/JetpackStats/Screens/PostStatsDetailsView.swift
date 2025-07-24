@@ -79,8 +79,7 @@ struct PostStatsDetailsView: View {
                     YearlyTrendsView(
                         viewModel: YearlyTrendsViewModel(
                             dataPoints: dataPoints,
-                            calendar: context.calendar,
-                            timeZone: context.timeZone
+                            calendar: context.calendar
                         )
                     )
                 }
