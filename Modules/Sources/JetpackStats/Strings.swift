@@ -117,19 +117,12 @@ enum Strings {
 
     enum PostDetails {
         static let title = AppLocalizedString("jetpackStats.postDetails.title", value: "Post Stats", comment: "Navigation title")
-        static let allTimeStats = AppLocalizedString("jetpackStats.postDetails.allTimeStats", value: "All-time stats", comment: "Header for all-time statistics section")
         static func published(_ date: String) -> String {
             String.localizedStringWithFormat(
                 AppLocalizedString("jetpackStats.postDetails.published", value: "Published %1$@", comment: "Shows when the post was published. %1$@ is the formatted date."),
                 date
             )
         }
-
-        // Peak Performance
-        static let peakPerformance = AppLocalizedString("jetpackStats.postDetails.peakPerformance", value: "Peak Performance", comment: "Title for peak performance card")
-        static let bestMonth = AppLocalizedString("jetpackStats.postDetails.bestMonth", value: "Best Month", comment: "Label for highest monthly views")
-        static let bestDayAverage = AppLocalizedString("jetpackStats.postDetails.bestDayAverage", value: "Best Day Average", comment: "Label for highest daily average views")
-        static let bestWeekAverage = AppLocalizedString("jetpackStats.postDetails.bestWeekAverage", value: "Best Week Average", comment: "Label for highest weekly average views")
 
         // Weekly Activity
         static let recentWeeks = AppLocalizedString("jetpackStats.postDetails.recentWeeks", value: "Recent Weeks", comment: "Title for recent weeks activity heatmap")
@@ -139,9 +132,6 @@ enum Strings {
 
         // Monthly Activity
         static let monthlyActivity = AppLocalizedString("jetpackStats.postDetails.monthsAndYears", value: "Months and Years", comment: "Title for monthly activity heatmap")
-        static let views = AppLocalizedString("jetpackStats.postDetails.views", value: "views", comment: "Views label (lowercase)")
-        static let total = AppLocalizedString("jetpackStats.postDetails.total", value: "Total", comment: "Total label")
-        static let avgPerDay = AppLocalizedString("jetpackStats.postDetails.avgPerDay", value: "avg/day", comment: "Average per day abbreviation")
 
         // Likes
         static let noLikesYet = AppLocalizedString("jetpackStats.postDetails.noLikesYet", value: "No likes yet", comment: "Label")
@@ -159,15 +149,6 @@ enum Strings {
                                    value: "Weekly activity heatmap showing %1$d weeks of %2$@ data. Total: %3$@",
                                    comment: "VoiceOver description for weekly activity heatmap. %1$d is number of weeks, %2$@ is metric name, %3$@ is total value"),
                 weeksCount, metric, total
-            )
-        }
-
-        static func yearlyActivityAccessibility(yearsCount: Int, metric: String, total: String) -> String {
-            String.localizedStringWithFormat(
-                AppLocalizedString("jetpackStats.postDetails.yearlyActivity.accessibility",
-                                   value: "Yearly activity for %1$d years, %2$@: %3$@",
-                                   comment: "VoiceOver description for yearly activity heatmap. %1$d is number of years, %2$@ is metric name, %3$@ is total value"),
-                yearsCount, metric, total
             )
         }
 
