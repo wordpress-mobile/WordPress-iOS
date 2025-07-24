@@ -16,27 +16,25 @@ struct StatsDataAggregationTests {
         let date3 = Date("2025-01-15T14:45:00Z")
         let date4 = Date("2025-01-15T15:10:00Z")
 
-        let testData: [Date: Int] = [
-            date1: 100,
-            date2: 200,
-            date3: 150,
-            date4: 300
+        let testData = [
+            DataPoint(date: date1, value: 100),
+            DataPoint(date: date2, value: 200),
+            DataPoint(date: date3, value: 150),
+            DataPoint(date: date4, value: 300)
         ]
 
-        let aggregated = aggregator.aggregate(testData, granularity: .hour)
+        let aggregated = aggregator.aggregate(testData, granularity: .hour, metric: .views)
 
         // Should have 2 hours worth of data
         #expect(aggregated.count == 2)
 
         // Check hour 14:00
         let hour14 = Date("2025-01-15T14:00:00Z")
-        #expect(aggregated[hour14]?.sum == 450) // 100 + 200 + 150
-        #expect(aggregated[hour14]?.count == 3)
+        #expect(aggregated[hour14] == 450) // 100 + 200 + 150
 
         // Check hour 15:00
         let hour15 = Date("2025-01-15T15:00:00Z")
-        #expect(aggregated[hour15]?.sum == 300)
-        #expect(aggregated[hour15]?.count == 1)
+        #expect(aggregated[hour15] == 300)
     }
 
     @Test
@@ -44,67 +42,63 @@ struct StatsDataAggregationTests {
         let aggregator = StatsDataAggregator(calendar: calendar)
 
         // Create test data across multiple days
-        let testData: [Date: Int] = [
-            Date("2025-01-15T08:00:00Z"): 100,
-            Date("2025-01-15T14:00:00Z"): 200,
-            Date("2025-01-15T20:00:00Z"): 150,
-            Date("2025-01-16T10:00:00Z"): 300
+        let testData = [
+            DataPoint(date: Date("2025-01-15T08:00:00Z"), value: 100),
+            DataPoint(date: Date("2025-01-15T14:00:00Z"), value: 200),
+            DataPoint(date: Date("2025-01-15T20:00:00Z"), value: 150),
+            DataPoint(date: Date("2025-01-16T10:00:00Z"), value: 300)
         ]
 
-        let aggregated = aggregator.aggregate(testData, granularity: .day)
+        let aggregated = aggregator.aggregate(testData, granularity: .day, metric: .views)
 
         #expect(aggregated.count == 2)
 
         let day1 = Date("2025-01-15T00:00:00Z")
         let day2 = Date("2025-01-16T00:00:00Z")
 
-        #expect(aggregated[day1]?.sum == 450)
-        #expect(aggregated[day1]?.count == 3)
-        #expect(aggregated[day2]?.sum == 300)
-        #expect(aggregated[day2]?.count == 1)
+        #expect(aggregated[day1] == 450)
+        #expect(aggregated[day2] == 300)
     }
 
     @Test
     func monthlyAggregation() {
         let aggregator = StatsDataAggregator(calendar: calendar)
 
-        let testData: [Date: Int] = [
-            Date("2025-01-15T08:00:00Z"): 100,
-            Date("2025-01-20T14:00:00Z"): 200,
-            Date("2025-02-10T10:00:00Z"): 300
+        let testData = [
+            DataPoint(date: Date("2025-01-15T08:00:00Z"), value: 100),
+            DataPoint(date: Date("2025-01-20T14:00:00Z"), value: 200),
+            DataPoint(date: Date("2025-02-10T10:00:00Z"), value: 300)
         ]
 
-        let aggregated = aggregator.aggregate(testData, granularity: .month)
+        let aggregated = aggregator.aggregate(testData, granularity: .month, metric: .views)
 
         #expect(aggregated.count == 2)
 
         let jan = Date("2025-01-01T00:00:00Z")
         let feb = Date("2025-02-01T00:00:00Z")
 
-        #expect(aggregated[jan]?.sum == 300)
-        #expect(aggregated[jan]?.count == 2)
-        #expect(aggregated[feb]?.sum == 300)
-        #expect(aggregated[feb]?.count == 1)
+        #expect(aggregated[jan] == 300)
+        #expect(aggregated[feb] == 300)
     }
 
     @Test
     func yearlyAggregation() {
         let aggregator = StatsDataAggregator(calendar: calendar)
 
-        let testData: [Date: Int] = [
-            Date("2025-01-15T08:00:00Z"): 100,
-            Date("2025-03-20T14:00:00Z"): 200,
-            Date("2025-05-10T10:00:00Z"): 300
+        let testData = [
+            DataPoint(date: Date("2025-01-15T08:00:00Z"), value: 100),
+            DataPoint(date: Date("2025-03-20T14:00:00Z"), value: 200),
+            DataPoint(date: Date("2025-05-10T10:00:00Z"), value: 300)
         ]
 
-        let aggregated = aggregator.aggregate(testData, granularity: .year)
+        let aggregated = aggregator.aggregate(testData, granularity: .year, metric: .views)
 
         // Year granularity aggregates by month
         #expect(aggregated.count == 1)
 
         let jan = Date("2025-01-01T00:00:00Z")
 
-        #expect(aggregated[jan]?.sum == 600)
+        #expect(aggregated[jan] == 600)
     }
 
     // MARK: - Date Sequence Generation Tests
@@ -196,56 +190,31 @@ struct StatsDataAggregationTests {
         #expect(sequence[2] == Date("2025-01-17T14:30:00Z"))
     }
 
-    // MARK: - Aggregation Helper Tests
+    // MARK: - Averaged Metrics Tests
 
     @Test
-    func aggregateByComponents() {
+    func aggregateWithAveragedMetric() {
         let aggregator = StatsDataAggregator(calendar: calendar)
 
-        let testData: [Date: Int] = [
-            Date("2025-01-15T14:15:00Z"): 100,
-            Date("2025-01-15T14:30:00Z"): 200,
-            Date("2025-01-15T15:10:00Z"): 300
+        let testData = [
+            DataPoint(date: Date("2025-01-15T08:00:00Z"), value: 300),
+            DataPoint(date: Date("2025-01-15T14:00:00Z"), value: 600),
+            DataPoint(date: Date("2025-01-15T20:00:00Z"), value: 900),
+            DataPoint(date: Date("2025-01-16T10:00:00Z"), value: 400)
         ]
 
-        let aggregated = aggregator.aggregateByComponents(
-            testData,
-            components: [Calendar.Component.year, Calendar.Component.month, Calendar.Component.day, Calendar.Component.hour]
-        )
+        // Test with timeOnSite metric which uses average strategy
+        let aggregated = aggregator.aggregate(testData, granularity: .day, metric: .timeOnSite)
 
         #expect(aggregated.count == 2)
-    }
 
-    @Test
-    func normalizeForMetric_regularMetrics() {
-        let aggregator = StatsDataAggregator(calendar: calendar)
+        let day1 = Date("2025-01-15T00:00:00Z")
+        let day2 = Date("2025-01-16T00:00:00Z")
 
-        let aggregatedData: [Date: AggregatedDataPoint] = [
-            Date("2025-01-15T00:00:00Z"): AggregatedDataPoint(sum: 600, count: 3),
-            Date("2025-01-16T00:00:00Z"): AggregatedDataPoint(sum: 900, count: 3)
-        ]
-
-        // For regular metrics (views, visitors, etc), values should not change
-        let normalized = aggregator.normalizeForMetric(aggregatedData, metric: SiteMetric.views)
-
-        #expect(normalized[Date("2025-01-15T00:00:00Z")] == 600)
-        #expect(normalized[Date("2025-01-16T00:00:00Z")] == 900)
-    }
-
-    @Test
-    func normalizeForMetric_averagedMetrics() {
-        let aggregator = StatsDataAggregator(calendar: calendar)
-
-        let aggregatedData: [Date: AggregatedDataPoint] = [
-            Date("2025-01-15T00:00:00Z"): AggregatedDataPoint(sum: 600, count: 3),
-            Date("2025-01-16T00:00:00Z"): AggregatedDataPoint(sum: 900, count: 3)
-        ]
-
-        // For timeOnSite and bounceRate, values should be averaged
-        let normalized = aggregator.normalizeForMetric(aggregatedData, metric: SiteMetric.timeOnSite)
-
-        #expect(normalized[Date("2025-01-15T00:00:00Z")] == 200) // 600/3
-        #expect(normalized[Date("2025-01-16T00:00:00Z")] == 300) // 900/3
+        // Values should be averaged: (300 + 600 + 900) / 3 = 600
+        #expect(aggregated[day1] == 600)
+        // Single value: 400 / 1 = 400
+        #expect(aggregated[day2] == 400)
     }
     
     // MARK: - Process Period Tests

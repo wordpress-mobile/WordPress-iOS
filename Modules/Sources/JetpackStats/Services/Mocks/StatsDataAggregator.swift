@@ -21,27 +21,29 @@ struct AggregatedDataPoint {
 ///     Date("2025-01-16T15:10:00Z"): 180
 /// ]
 ///
-/// // Aggregate by day
-/// let aggregated = aggregator.aggregate(hourlyData, granularity: .day)
+/// // Aggregate by day with normalization for views (sum strategy)
+/// let dailyViews = aggregator.aggregate(hourlyData, granularity: .day, metric: .views)
 /// // Result: [
-/// //   Date("2025-01-15T00:00:00Z"): AggregatedDataPoint(sum: 470, count: 3),
-/// //   Date("2025-01-16T00:00:00Z"): AggregatedDataPoint(sum: 480, count: 2)
+/// //   Date("2025-01-15T00:00:00Z"): 470,  // sum of all views
+/// //   Date("2025-01-16T00:00:00Z"): 480   // sum of all views
 /// // ]
 ///
-/// // Normalize for averaged metrics (e.g., bounce rate)
-/// let normalized = aggregator.normalizeForMetric(aggregated, metric: .bounceRate)
+/// // Aggregate by day with normalization for bounce rate (average strategy)
+/// let dailyBounceRate = aggregator.aggregate(hourlyData, granularity: .day, metric: .bounceRate)
 /// // Result: [
-/// //   Date("2025-01-15T00:00:00Z"): 156,  // 470/3
-/// //   Date("2025-01-16T00:00:00Z"): 240   // 480/2
+/// //   Date("2025-01-15T00:00:00Z"): 156,  // 470/3 (average)
+/// //   Date("2025-01-16T00:00:00Z"): 240   // 480/2 (average)
 /// // ]
 /// ```
 struct StatsDataAggregator {
     var calendar: Calendar
 
-    /// Aggregates data points based on the given granularity.
-    func aggregate(_ dataPoints: [DataPoint], granularity: DateRangeGranularity) -> [Date: AggregatedDataPoint] {
+    /// Aggregates data points based on the given granularity and normalizes for the specified metric.
+    /// This combines the previous aggregate and normalizeForMetric functions for efficiency.
+    func aggregate(_ dataPoints: [DataPoint], granularity: DateRangeGranularity, metric: SiteMetric) -> [Date: Int] {
         var aggregatedData: [Date: AggregatedDataPoint] = [:]
 
+        // First pass: aggregate data
         for dataPoint in dataPoints {
             if let aggregatedDate = makeAggegationDate(for: dataPoint.date, granularity: granularity) {
                 let existing = aggregatedData[aggregatedDate]
@@ -52,39 +54,8 @@ struct StatsDataAggregator {
             }
         }
 
-        return aggregatedData
-    }
-
-    func makeAggegationDate(for date: Date, granularity: DateRangeGranularity) -> Date? {
-        let dateComponents = calendar.dateComponents(granularity.calendarComponents, from: date)
-        return calendar.date(from: dateComponents)
-    }
-
-    /// Aggregates data based on the given granularity.
-    func aggregate(_ data: [Date: Int], granularity: DateRangeGranularity) -> [Date: AggregatedDataPoint] {
-        return aggregateByComponents(data, components: granularity.calendarComponents)
-    }
-
-    /// Aggregates data by specified calendar components.
-    func aggregateByComponents(_ data: [Date: Int], components: Set<Calendar.Component>) -> [Date: AggregatedDataPoint] {
-        var aggregatedData: [Date: AggregatedDataPoint] = [:]
-        for (date, value) in data {
-            let dateComponents = calendar.dateComponents(components, from: date)
-            if let aggregatedDate = calendar.date(from: dateComponents) {
-                let existing = aggregatedData[aggregatedDate]
-                aggregatedData[aggregatedDate] = AggregatedDataPoint(
-                    sum: (existing?.sum ?? 0) + value,
-                    count: (existing?.count ?? 0) + 1
-                )
-            }
-        }
-        return aggregatedData
-    }
-
-    /// Normalizes data for metrics that need averaging (timeOnSite, bounceRate).
-    func normalizeForMetric(_ aggregatedData: [Date: AggregatedDataPoint], metric: SiteMetric) -> [Date: Int] {
+        // Second pass: normalize based on metric strategy
         var normalizedData: [Date: Int] = [:]
-
         for (date, dataPoint) in aggregatedData {
             switch metric.aggregarionStrategy {
             case .sum:
@@ -99,7 +70,12 @@ struct StatsDataAggregator {
         return normalizedData
     }
 
-    /// Generates sequence of dates between start and end.
+    private func makeAggegationDate(for date: Date, granularity: DateRangeGranularity) -> Date? {
+        let dateComponents = calendar.dateComponents(granularity.calendarComponents, from: date)
+        return calendar.date(from: dateComponents)
+    }
+
+    /// Generates sequence of dates between start and end with the given component.
     func generateDateSequence(dateInterval: DateInterval, by component: Calendar.Component, value: Int = 1) -> [Date] {
         var dates: [Date] = []
         var currentDate = dateInterval.start
@@ -125,9 +101,8 @@ struct StatsDataAggregator {
         granularity: DateRangeGranularity,
         metric: SiteMetric
     ) -> PeriodData {
-        // Aggregate data
-        let aggregatedData = aggregate(dataPoints, granularity: granularity)
-        let normalizedData = normalizeForMetric(aggregatedData, metric: metric)
+        // Aggregate and normalize data in one pass
+        let normalizedData = aggregate(dataPoints, granularity: granularity, metric: metric)
         
         // Generate complete date sequence for the range
         let dateSequence = generateDateSequence(dateInterval: dateInterval, by: granularity.component)

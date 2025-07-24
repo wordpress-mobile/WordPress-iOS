@@ -118,8 +118,7 @@ final class YearlyTrendsViewModel: ObservableObject {
         self.aggregator = StatsDataAggregator(calendar: localCalendar)
         
         // Use StatsDataAggregator to aggregate data by month
-        let aggregatedData = aggregator.aggregate(dataPoints, granularity: .month)
-        let normalizedData = aggregator.normalizeForMetric(aggregatedData, metric: metric)
+        let normalizedData = aggregator.aggregate(dataPoints, granularity: .month, metric: metric)
         
         // Process normalized data into year -> month -> DataPoint structure
         var monthlyData: [Int: [Int: DataPoint]] = [:]
