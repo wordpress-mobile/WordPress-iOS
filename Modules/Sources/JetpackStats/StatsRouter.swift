@@ -36,8 +36,8 @@ public final class StatsRouter: @unchecked Sendable {
 
     @MainActor
     func navigateToCommentsList(siteID: Int, postID: Int) {
-        let commenstVC = factory.makeCommentsListViewController(siteID: siteID, postID: postID)
-        navigationController?.pushViewController(commenstVC, animated: true)
+        let commentsVC = factory.makeCommentsListViewController(siteID: siteID, postID: postID)
+        navigationController?.pushViewController(commentsVC, animated: true)
     }
 }
 
