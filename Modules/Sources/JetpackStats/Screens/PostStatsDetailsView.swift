@@ -264,7 +264,7 @@ private struct PostStatsMetricsStripView: View {
 
 private struct PostLikesStripView: View {
     let likes: PostLikesData
-    
+
     private let avatarSize: CGFloat = 28
     private let maxVisibleAvatars = 6
 
@@ -346,62 +346,6 @@ private struct PostLikesStripView: View {
                 .foregroundColor(.secondary)
         }
         .lineLimit(1)
-    }
-}
-
-private struct PeakPerformanceCard: View {
-    let details: StatsPostDetails
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: Constants.step2) {
-            StatsCardTitleView(title: Strings.PostDetails.peakPerformance)
-            
-            VStack(spacing: Constants.step1) {
-                if let highestMonth = details.highestMonth {
-                    HStack {
-                        Text(Strings.PostDetails.bestMonth)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        
-                        Spacer()
-                        
-                        Text(StatsValueFormatter.formatNumber(highestMonth))
-                            .font(.subheadline.weight(.semibold))
-                            .monospacedDigit()
-                    }
-                }
-                
-                if let highestDayAverage = details.highestDayAverage {
-                    HStack {
-                        Text(Strings.PostDetails.bestDayAverage)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        
-                        Spacer()
-                        
-                        Text(StatsValueFormatter.formatNumber(highestDayAverage))
-                            .font(.subheadline.weight(.semibold))
-                            .monospacedDigit()
-                    }
-                }
-                
-                if let highestWeekAverage = details.highestWeekAverage {
-                    HStack {
-                        Text(Strings.PostDetails.bestWeekAverage)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        
-                        Spacer()
-                        
-                        Text(StatsValueFormatter.formatNumber(highestWeekAverage))
-                            .font(.subheadline.weight(.semibold))
-                            .monospacedDigit()
-                    }
-                }
-            }
-        }
-        .padding(Constants.step2)
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
