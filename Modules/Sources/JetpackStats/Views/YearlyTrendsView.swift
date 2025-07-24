@@ -41,8 +41,8 @@ struct YearlyTrendsView: View {
                 
                 HStack(spacing: cellSpacing) {
                     ForEach(6..<12) { index in
-                        if let monthItem = monthlyData[index] {
-                            monthCell(monthItem: monthItem)
+                        if let dataPoint = monthlyData[index] {
+                            monthCell(dataPoint: dataPoint)
                                 .frame(maxWidth: .infinity)
                                 .aspectRatio(1, contentMode: .fit)
                         } else {
@@ -62,8 +62,8 @@ struct YearlyTrendsView: View {
                 
                 HStack(spacing: cellSpacing) {
                     ForEach(0..<6) { index in
-                        if let monthItem = monthlyData[index] {
-                            monthCell(monthItem: monthItem)
+                        if let dataPoint = monthlyData[index] {
+                            monthCell(dataPoint: dataPoint)
                                 .frame(maxWidth: .infinity)
                                 .aspectRatio(1, contentMode: .fit)
                         } else {
@@ -79,9 +79,9 @@ struct YearlyTrendsView: View {
     }
     
     @ViewBuilder
-    private func monthCell(monthItem: YearlyTrendsViewModel.MonthItem) -> some View {
+    private func monthCell(dataPoint: DataPoint) -> some View {
         MonthCell(
-            monthItem: monthItem,
+            dataPoint: dataPoint,
             metric: viewModel.metric,
             maxValue: viewModel.maxMonthlyViews,
             formatter: viewModel
@@ -95,64 +95,46 @@ struct YearlyTrendsView: View {
 
 @MainActor
 final class YearlyTrendsViewModel: ObservableObject {
-    struct MonthItem {
-        let date: Date // Beginning of month
-        let value: Int
-    }
-    
     let metric: SiteMetric
     
     private let valueFormatter: StatsValueFormatter
+    private let aggregator: StatsDataAggregator
     
     let sortedYears: [Int]
     let maxMonthlyViews: Int
     
-    private var monthlyData: [Int: [Int: MonthItem]] = [:] // year -> month -> MonthItem
+    private var monthlyData: [Int: [Int: DataPoint]] = [:] // year -> month -> DataPoint
     
     init(dataPoints: [DataPoint], calendar: Calendar, timeZone: TimeZone, metric: SiteMetric = .views) {
         self.metric = metric
         
         self.valueFormatter = StatsValueFormatter(metric: metric)
         
-        // Process data points to compute monthly totals
-        var monthlyData: [Int: [Int: MonthItem]] = [:]
-        var monthlyTotals: [String: Int] = [:] // Temporary storage for accumulating values
-        var maxMonthlyViews = 0
-        
         // Configure calendar with the correct time zone
         var localCalendar = calendar
         localCalendar.timeZone = timeZone
         
-        // First pass: accumulate values by year-month
-        for dataPoint in dataPoints {
-            let components = localCalendar.dateComponents([.year, .month], from: dataPoint.date)
-            guard let year = components.year, let month = components.month else { continue }
-            
-            let key = "\(year)-\(month)"
-            monthlyTotals[key, default: 0] += dataPoint.value
-        }
+        // Initialize aggregator with the local calendar
+        self.aggregator = StatsDataAggregator(calendar: localCalendar)
         
-        // Second pass: create MonthItems with beginning-of-month dates
-        for (key, value) in monthlyTotals {
-            let parts = key.split(separator: "-")
-            guard parts.count == 2,
-                  let year = Int(parts[0]),
-                  let month = Int(parts[1]) else { continue }
-            
-            // Create date at beginning of month
-            var dateComponents = DateComponents()
-            dateComponents.year = year
-            dateComponents.month = month
-            dateComponents.day = 1
-            
-            guard let monthDate = localCalendar.date(from: dateComponents) else { continue }
+        // Use StatsDataAggregator to aggregate data by month
+        let aggregatedData = aggregator.aggregate(dataPoints, granularity: .month)
+        let normalizedData = aggregator.normalizeForMetric(aggregatedData, metric: metric)
+        
+        // Process normalized data into year -> month -> DataPoint structure
+        var monthlyData: [Int: [Int: DataPoint]] = [:]
+        var maxMonthlyViews = 0
+        
+        for (date, value) in normalizedData {
+            let components = localCalendar.dateComponents([.year, .month], from: date)
+            guard let year = components.year, let month = components.month else { continue }
             
             if monthlyData[year] == nil {
                 monthlyData[year] = [:]
             }
             
-            let monthItem = MonthItem(date: monthDate, value: value)
-            monthlyData[year]?[month] = monthItem
+            let dataPoint = DataPoint(date: date, value: value)
+            monthlyData[year]?[month] = dataPoint
             
             // Track max monthly value
             maxMonthlyViews = max(maxMonthlyViews, value)
@@ -163,13 +145,13 @@ final class YearlyTrendsViewModel: ObservableObject {
         self.maxMonthlyViews = max(maxMonthlyViews, 1) // Avoid division by zero
     }
     
-    func getMonthlyData(for year: Int) -> [MonthItem?] {
-        var monthlyItems: [MonthItem?] = Array(repeating: nil, count: 12)
+    func getMonthlyData(for year: Int) -> [DataPoint?] {
+        var monthlyItems: [DataPoint?] = Array(repeating: nil, count: 12)
         
         if let yearData = monthlyData[year] {
-            for (month, item) in yearData {
+            for (month, dataPoint) in yearData {
                 if month >= 1 && month <= 12 {
-                    monthlyItems[month - 1] = item
+                    monthlyItems[month - 1] = dataPoint
                 }
             }
         }
@@ -183,7 +165,7 @@ final class YearlyTrendsViewModel: ObservableObject {
 }
 
 private struct MonthCell: View {
-    let monthItem: YearlyTrendsViewModel.MonthItem
+    let dataPoint: DataPoint
     let metric: SiteMetric
     let maxValue: Int
     let formatter: YearlyTrendsViewModel
@@ -192,7 +174,7 @@ private struct MonthCell: View {
     
     var body: some View {
         HeatmapCellView(
-            value: monthItem.value,
+            value: dataPoint.value,
             metric: metric,
             maxValue: maxValue
         )
@@ -201,8 +183,8 @@ private struct MonthCell: View {
         }
         .popover(isPresented: $showingPopover) {
             MonthlyTrendsTooltipView(
-                date: monthItem.date,
-                value: monthItem.value,
+                date: dataPoint.date,
+                value: dataPoint.value,
                 metric: metric,
                 formatter: formatter
             )
@@ -216,8 +198,8 @@ private struct MonthCell: View {
     private var accessibilityLabel: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM yyyy"
-        let dateString = dateFormatter.string(from: monthItem.date)
-        return "\(dateString), \(formatter.formatValue(monthItem.value)) \(metric.localizedTitle)"
+        let dateString = dateFormatter.string(from: dataPoint.date)
+        return "\(dateString), \(formatter.formatValue(dataPoint.value)) \(metric.localizedTitle)"
     }
 }
 

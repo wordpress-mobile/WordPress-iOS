@@ -36,7 +36,7 @@ struct AggregatedDataPoint {
 /// // ]
 /// ```
 struct StatsDataAggregator {
-    var calendar: Calendar = .current
+    var calendar: Calendar
 
     /// Aggregates data points based on the given granularity.
     func aggregate(_ dataPoints: [DataPoint], granularity: DateRangeGranularity) -> [Date: AggregatedDataPoint] {
@@ -130,11 +130,8 @@ struct StatsDataAggregator {
         let normalizedData = normalizeForMetric(aggregatedData, metric: metric)
         
         // Generate complete date sequence for the range
-        let dateSequence = generateDateSequence(
-            dateInterval: dateInterval,
-            by: granularity.component
-        )
-        
+        let dateSequence = generateDateSequence(dateInterval: dateInterval, by: granularity.component)
+
         // Create data points for each date in the sequence
         let periodDataPoints = dateSequence.map { date in
             let aggregationDate = makeAggegationDate(for: date, granularity: granularity)
