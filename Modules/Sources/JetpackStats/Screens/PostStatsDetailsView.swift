@@ -36,13 +36,8 @@ struct PostStatsDetailsView: View {
 
     @ViewBuilder
     private var contents: some View {
-        PostHeaderCard(
-            post: post,
-            details: details,
-            postLikes: postLikes,
-            isLoading: isLoading
-        )
-        .cardStyle()
+        headerView
+            .cardStyle()
 
         // Views Over Time Chart
         if !dataPoints.isEmpty {
@@ -76,11 +71,82 @@ struct PostStatsDetailsView: View {
                 )
                 .cardStyle()
             }
-        } else if let error {
-            SimpleErrorView(error: error)
-                .frame(maxWidth: .infinity, minHeight: 200)
-                .cardStyle()
         }
+    }
+
+    private var headerView: some View {
+        VStack(alignment: .leading, spacing: Constants.step2) {
+            postDetailsView
+
+            if let postLikes {
+                PostLikesStripView(likes: postLikes)
+            } else if isLoading {
+                PostLikesStripView(likes: .mock)
+                    .redacted(reason: .placeholder)
+            }
+
+            Divider()
+
+            if let metrics {
+                PostStatsMetricsStripView(metrics: metrics)
+            } else if isLoading {
+                PostStatsMetricsStripView(metrics: .mock)
+                    .redacted(reason: .placeholder)
+            } else if let error {
+                SimpleErrorView(error: error)
+                    .frame(minHeight: 200)
+
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(EdgeInsets(top: Constants.step2, leading: Constants.step2, bottom: Constants.step1, trailing: Constants.step2))
+    }
+
+    private var postDetailsView: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(post.title)
+                .font(.title3.weight(.semibold))
+                .multilineTextAlignment(.leading)
+                .lineLimit(3)
+
+            if let dateGMT = post.date ?? details?.post?.dateGMT {
+                HStack(spacing: 6) {
+                    Text(Strings.PostDetails.published(formatPublishedDate(dateGMT)))
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+
+                    // Permalink button
+                    if let postURL = post.postURL ?? details?.post?.permalink.flatMap(URL.init) {
+                        Link(destination: postURL) {
+                            Image(systemName: "link")
+                                .font(.footnote)
+                                .foregroundColor(.accentColor)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Data
+
+    private var metrics: SiteMetricsSet? {
+        guard let details else {
+            return nil
+        }
+        return SiteMetricsSet(
+            views: details.totalViewsCount,
+            likes: postLikes?.totalCount,
+            comments: details.post?.commentCount.flatMap { Int($0) }
+        )
+    }
+
+    private func formatPublishedDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        formatter.timeZone = context.timeZone
+        return formatter.string(from: date)
     }
 
     private func loadPostDetails() async {
@@ -129,84 +195,6 @@ struct PostStatsDetailsView: View {
             granularity: initialDateRange.dateInterval.preferredGranularity,
             range: initialDateRange
         ).currentData
-    }
-}
-
-private struct PostHeaderCard: View {
-    let post: TopListData.Post
-    let details: StatsPostDetails?
-    let postLikes: PostLikesData?
-    var isLoading: Bool
-
-    @Environment(\.context) var context
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: Constants.step2) {
-            postDetailsView
-
-            if let postLikes {
-                PostLikesStripView(likes: postLikes)
-            } else if isLoading {
-                PostLikesStripView(likes: .mock)
-                    .redacted(reason: .placeholder)
-            }
-
-            Divider()
-
-            if let metrics {
-                PostStatsMetricsStripView(metrics: metrics)
-            } else if isLoading {
-                PostStatsMetricsStripView(metrics: .mock)
-                    .redacted(reason: .placeholder)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(EdgeInsets(top: Constants.step2, leading: Constants.step2, bottom: Constants.step1, trailing: Constants.step2))
-    }
-
-    private var postDetailsView: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(post.title)
-                .font(.title3.weight(.semibold))
-                .multilineTextAlignment(.leading)
-                .lineLimit(3)
-
-            if let dateGMT = post.date ?? details?.post?.dateGMT {
-                HStack(spacing: 6) {
-                    Text(Strings.PostDetails.published(formatPublishedDate(dateGMT)))
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-
-                    // Permalink button
-                    if let postURL = post.postURL ?? details?.post?.permalink.flatMap(URL.init) {
-                        Link(destination: postURL) {
-                            Image(systemName: "link")
-                                .font(.footnote)
-                                .foregroundColor(.accentColor)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private var metrics: SiteMetricsSet? {
-        guard let details else {
-            return nil
-        }
-        return SiteMetricsSet(
-            views: details.totalViewsCount,
-            likes: postLikes?.totalCount,
-            comments: details.post?.commentCount.flatMap { Int($0) }
-        )
-    }
-
-    private func formatPublishedDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        formatter.timeZone = context.timeZone
-        return formatter.string(from: date)
     }
 }
 
