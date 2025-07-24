@@ -34,30 +34,35 @@ struct PostStatsDetailsView: View {
         }
     }
 
+#warning("TEMP")
+
     @ViewBuilder
     private var contents: some View {
         headerView
             .cardStyle()
 
-        // Views Over Time Chart
-        if !dataPoints.isEmpty {
-            makeChartView(dataPoints: dataPoints)
-        } else if isLoading {
-            makeChartView(dataPoints: mockDataPoints)
-                .redacted(reason: .placeholder)
-        }
+//        // Views Over Time Chart
+//        if !dataPoints.isEmpty {
+//            makeChartView(dataPoints: dataPoints)
+//        } else if isLoading {
+//            makeChartView(dataPoints: mockDataPoints)
+//                .redacted(reason: .placeholder)
+//        }
 
         if let details {
             // Peak Performance Card
-            if details.highestMonth != nil || details.highestDayAverage != nil || details.highestWeekAverage != nil {
-                PeakPerformanceCard(details: details)
-                    .cardStyle()
-            }
+//            if details.highestMonth != nil || details.highestDayAverage != nil || details.highestWeekAverage != nil {
+//                PeakPerformanceCard(details: details)
+//                    .cardStyle()
+//            }
 
             // Weekly Trends Chart
             if !details.recentWeeks.isEmpty {
-                WeeklyTrendsCard(weeks: details.recentWeeks, context: context)
-                    .cardStyle()
+                WeeklyTrendsView(
+                    weeks: WeeklyTrendsView.Week.make(from: details.recentWeeks, using: context.calendar),
+                    context: context
+                )
+                .cardStyle()
             }
 
             // Yearly Summary
@@ -395,144 +400,6 @@ private struct PeakPerformanceCard: View {
     }
 }
 
-private struct WeeklyTrendsCard: View {
-    let weeks: [StatsWeeklyBreakdown]
-    let context: StatsContext
-    
-    private let cellSpacing: CGFloat = 4
-    private let weekLabelWidth: CGFloat = 36
-    private let dayLabels = ["M", "T", "W", "T", "F", "S", "S"]
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: Constants.step2) {
-            StatsCardTitleView(title: Strings.PostDetails.recentWeeks)
-            
-            VStack(alignment: .leading, spacing: cellSpacing) {
-                // Day labels header
-                HStack(spacing: 0) {
-                    Color.clear
-                        .frame(width: weekLabelWidth)
-                    
-                    HStack(spacing: cellSpacing) {
-                        ForEach(dayLabels, id: \.self) { day in
-                            Text(day)
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                                .frame(maxWidth: .infinity)
-                                .multilineTextAlignment(.center)
-                        }
-                    }
-                }
-                
-                // Heatmap grid
-                VStack(spacing: cellSpacing) {
-                    // Show last 8 weeks, 7 days per week
-                    ForEach(Array(weeks.prefix(8).enumerated()), id: \.offset) { weekIndex, week in
-                        HStack(spacing: 8) {
-                            // Week label
-                            Text(weekLabel(for: week))
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                                .frame(width: weekLabelWidth, alignment: .trailing)
-                            
-                            HStack(spacing: cellSpacing) {
-                                // Days in the week
-                                ForEach(week.days, id: \.date) { day in
-                                    DayCell(viewsCount: day.viewsCount)
-                                        .frame(maxWidth: .infinity)
-                                        .aspectRatio(1, contentMode: .fit)
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                // Legend
-                HStack(spacing: Constants.step1) {
-                    Text(Strings.PostDetails.less)
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-                    
-                    HStack(spacing: 2) {
-                        ForEach(0..<5) { level in
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(heatmapColor(for: Double(level) / 4.0))
-                                .frame(width: 12, height: 12)
-                        }
-                    }
-                    
-                    Text(Strings.PostDetails.more)
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-                }
-                .padding(.top, Constants.step1)
-            }
-        }
-        .padding(Constants.step2)
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-    
-    private func weekLabel(for week: StatsWeeklyBreakdown) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d"
-        formatter.timeZone = context.timeZone
-        
-        guard let startDate = context.calendar.date(from: week.startDay) else { return "" }
-        return formatter.string(from: startDate)
-    }
-    
-    private func heatmapColor(for intensity: Double) -> Color {
-        // Use ColorStudio blue gradient
-        if intensity < 0.25 {
-            return Constants.Colors.blue.opacity(0.2)
-        } else if intensity < 0.5 {
-            return Constants.Colors.blue.opacity(0.4)
-        } else if intensity < 0.75 {
-            return Constants.Colors.blue.opacity(0.6)
-        } else {
-            return Constants.Colors.blue.opacity(0.85)
-        }
-    }
-}
-
-private struct DayCell: View {
-    let viewsCount: Int
-    
-    // Define max views for normalization (can be adjusted based on data)
-    private let maxViews = 200
-    
-    private var intensity: Double {
-        min(1.0, Double(viewsCount) / Double(maxViews))
-    }
-    
-    var body: some View {
-        RoundedRectangle(cornerRadius: 4)
-            .fill(heatmapColor)
-            .overlay(
-                Text("\(viewsCount)")
-                    .font(.caption2)
-                    .foregroundColor(intensity > 0.6 ? .white : .primary)
-                    .opacity(intensity > 0.3 ? 1 : 0)
-            )
-    }
-    
-    private var heatmapColor: Color {
-        if viewsCount == 0 {
-            return Color(UIColor.secondarySystemBackground)
-        }
-        
-        // Use ColorStudio blue gradient
-        if intensity < 0.25 {
-            return Constants.Colors.blue.opacity(0.2)
-        } else if intensity < 0.5 {
-            return Constants.Colors.blue.opacity(0.4)
-        } else if intensity < 0.75 {
-            return Constants.Colors.blue.opacity(0.6)
-        } else {
-            return Constants.Colors.blue.opacity(0.85)
-        }
-    }
-}
 
 private struct YearlySummaryCard: View {
     let yearlyTotals: [Int: Int]
@@ -612,20 +479,7 @@ private struct YearlySummaryCard: View {
     }
     
     private func heatmapColor(for intensity: Double) -> Color {
-        if intensity == 0 {
-            return Color(.secondarySystemBackground)
-        }
-        
-        // Use ColorStudio blue gradient
-        if intensity < 0.25 {
-            return Constants.Colors.blue.opacity(0.2)
-        } else if intensity < 0.5 {
-            return Constants.Colors.blue.opacity(0.4)
-        } else if intensity < 0.75 {
-            return Constants.Colors.blue.opacity(0.6)
-        } else {
-            return Constants.Colors.blue.opacity(0.85)
-        }
+        Constants.heatmapColor(baseColor: Constants.Colors.blue, intensity: intensity)
     }
 }
 
@@ -722,20 +576,7 @@ private struct MonthCellExpanded: View {
     }
     
     private var heatmapColor: Color {
-        if viewsCount == 0 {
-            return Color(UIColor.secondarySystemBackground)
-        }
-        
-        // Use ColorStudio blue gradient
-        if intensity < 0.25 {
-            return Constants.Colors.blue.opacity(0.2)
-        } else if intensity < 0.5 {
-            return Constants.Colors.blue.opacity(0.4)
-        } else if intensity < 0.75 {
-            return Constants.Colors.blue.opacity(0.6)
-        } else {
-            return Constants.Colors.blue.opacity(0.85)
-        }
+        Constants.heatmapColor(baseColor: Constants.Colors.blue, intensity: intensity)
     }
 }
 

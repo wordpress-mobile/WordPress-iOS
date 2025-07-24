@@ -41,6 +41,23 @@ enum Constants {
     static let step2: CGFloat = 18
     static let step3: CGFloat = 24
     static let step4: CGFloat = 32
+    
+    static func heatmapColor(baseColor: Color, intensity: Double) -> Color {
+        if intensity == 0 {
+            return Color(UIColor.secondarySystemBackground)
+        }
+        
+        // Use graduated opacity based on intensity
+        if intensity < 0.25 {
+            return baseColor.opacity(0.2)
+        } else if intensity < 0.5 {
+            return baseColor.opacity(0.4)
+        } else if intensity < 0.75 {
+            return baseColor.opacity(0.6)
+        } else {
+            return baseColor.opacity(0.85)
+        }
+    }
 }
 
 private extension Color {
