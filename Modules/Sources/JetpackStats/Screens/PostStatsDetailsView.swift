@@ -42,7 +42,6 @@ struct PostStatsDetailsView: View {
         // Views Over Time Chart
         if !dataPoints.isEmpty {
             makeChartView(dataPoints: dataPoints)
-                .cardStyle()
         } else if isLoading {
             makeChartView(dataPoints: mockDataPoints)
                 .redacted(reason: .placeholder)

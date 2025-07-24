@@ -66,20 +66,7 @@ struct StandaloneChartCard: View {
                     .padding(.top, 8)
             }
             
-            // Chart content
-            Group {
-                if dateRange.dateInterval.preferredGranularity < configuration.minimumGranularity {
-                    loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
-                } else if let chartData {
-                    chartContent(chartData: chartData)
-                        .opacity(redactionReasons.contains(.placeholder) ? 0.2 : 1.0)
-                } else {
-                    chartContent(chartData: mockData)
-                        .redacted(reason: .placeholder)
-                        .opacity(0.33)
-                }
-            }
-            .frame(height: chartHeight)
+            chartView
 
             // Date range controls
             dateRangeControls
@@ -95,7 +82,23 @@ struct StandaloneChartCard: View {
             await refreshChartData()
         }
     }
-    
+
+    private var chartView: some View {
+        Group {
+            if dateRange.dateInterval.preferredGranularity < configuration.minimumGranularity {
+                loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
+            } else if let chartData {
+                chartContent(chartData: chartData)
+                    .opacity(redactionReasons.contains(.placeholder) ? 0.2 : 1.0)
+            } else {
+                chartContent(chartData: mockData)
+                    .redacted(reason: .placeholder)
+                    .opacity(0.33)
+            }
+        }
+        .frame(height: chartHeight)
+    }
+
     @ViewBuilder
     private func chartContent(chartData: ChartData) -> some View {
         switch selectedChartType {
