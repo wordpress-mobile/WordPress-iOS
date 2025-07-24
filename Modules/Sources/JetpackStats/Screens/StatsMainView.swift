@@ -55,7 +55,7 @@ private struct PreviewStatsMainView: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UINavigationController {
         let navigationController = UINavigationController()
-        let router = StatsRouter(navigationController: navigationController)
+        let router = StatsRouter(viewController: navigationController, factory: MockStatsRouterScreenFactory())
         let view = StatsMainView(context: .demo, router: router)
         let hostingController = UIHostingController(rootView: view)
         navigationController.viewControllers = [hostingController]

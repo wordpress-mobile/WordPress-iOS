@@ -2,6 +2,7 @@ import UIKit
 import SwiftUI
 import JetpackStats
 import WordPressKit
+import WordPressShared
 
 /// A UIViewController wrapper for the new SwiftUI StatsMainView
 class StatsHostingViewController: UIViewController {
@@ -45,42 +46,23 @@ class StatsHostingViewController: UIViewController {
     }
 
     private func setupStatsView() {
-        guard let siteID = blog.dotComID?.intValue,
-              let api = blog.account?.wordPressComRestApi else {
+        guard var context = StatsContext(blog: blog) else {
             showErrorView()
             return
         }
 
-        let siteTimezone = blog.timeZone ?? TimeZone.current
-
-        // Create the context
-        let context: StatsContext
         if isUsingMockService {
             // For mock service, we need to use the internal initializer
             // Since we can't access it directly, we'll use the demo context
             context = StatsContext.demo
-        } else {
-            // For real service, use the public initializer
-            context = StatsContext(timeZone: siteTimezone, siteID: siteID, api: api)
         }
 
-        // Create the router with reference to navigation controller
-        let router = StatsRouter(navigationController: navigationController, delegate: self)
-
-        // Create the SwiftUI view
-        let statsView = StatsMainView(context: context, router: router)
+        let statsView = StatsMainView(context: context, router: StatsRouter(viewController: self))
         let hostingController = UIHostingController(rootView: AnyView(statsView))
 
-        // Add as child view controller
         addChild(hostingController)
         view.addSubview(hostingController.view)
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        hostingController.view.pinEdges()
         hostingController.didMove(toParent: self)
 
         self.hostingController = hostingController
@@ -171,7 +153,6 @@ class StatsHostingViewController: UIViewController {
     }
 }
 
-// MARK: - Presentation
 extension StatsHostingViewController {
     static func show(for blog: Blog, from viewController: UIViewController) {
         let statsVC = StatsHostingViewController(blog: blog)
@@ -181,30 +162,45 @@ extension StatsHostingViewController {
     }
 }
 
-// MARK: - StatsRouterDelegate
-extension StatsHostingViewController: StatsRouterDelegate {
-    func makeLikesListViewController(siteID: Int, postID: Int, totalLikes: Int) -> UIViewController? {
-        guard let siteID = blog.dotComID else {
+extension StatsContext {
+    init?(blog: Blog) {
+        guard let siteID = blog.dotComID?.intValue,
+              let api = blog.account?.wordPressComRestApi else {
+            wpAssertionFailure("required context missing")
             return nil
         }
-
-        return StatsLikesListViewController(
+        self.init(
+            timeZone: blog.timeZone ?? .current,
             siteID: siteID,
+            api: api
+        )
+    }
+}
+
+extension StatsRouter {
+    @MainActor
+    convenience init(viewController: UIViewController) {
+        self.init(
+            viewController: viewController,
+            factory: JetpackAppStatsRouterScreenFactory()
+        )
+    }
+}
+
+/// Shared router implementation for Jetpack app stats navigation
+private final class JetpackAppStatsRouterScreenFactory: StatsRouterScreenFactory {
+    func makeLikesListViewController(siteID: Int, postID: Int, totalLikes: Int) -> UIViewController {
+        StatsLikesListViewController(
+            siteID: siteID as NSNumber,
             postID: NSNumber(value: postID),
             totalLikes: totalLikes
         )
     }
 
-    func makeCommentsListViewController(siteID: Int, postID: Int) -> UIViewController? {
-        guard let siteID = blog.dotComID else {
-            return nil
-        }
-
-        let commentsVC = ReaderCommentsViewController(
+    func makeCommentsListViewController(siteID: Int, postID: Int) -> UIViewController {
+        ReaderCommentsViewController(
             postID: NSNumber(value: postID),
-            siteID: siteID
+            siteID: siteID as NSNumber
         )
-        commentsVC.source = .postDetails
-        return commentsVC
     }
 }

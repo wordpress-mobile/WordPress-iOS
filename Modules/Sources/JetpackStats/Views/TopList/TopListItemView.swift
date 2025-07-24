@@ -87,7 +87,7 @@ private extension TopListItemView {
     func navigateToDetails() {
         switch currentItem {
         case let post as TopListData.Post:
-            let detailsView = PostStatsDetailsView(post: post, dateRange: dateRange)
+            let detailsView = PostStatsView(post: post, dateRange: dateRange)
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView)

@@ -2,8 +2,30 @@ import SwiftUI
 import UIKit
 import WordPressKit
 
-struct PostStatsDetailsView: View {
-    let post: TopListData.Post
+public struct PostStatsView: View {
+    public struct PostInfo {
+        public let title: String
+        public let postID: String
+        public let postURL: URL?
+        public let date: Date?
+
+        public init(title: String, postID: String, postURL: URL? = nil, date: Date? = nil) {
+            self.title = title
+            self.postID = postID
+            self.postURL = postURL
+            self.date = date
+        }
+
+        init(from post: TopListData.Post) {
+            self.title = post.title
+            self.postID = post.postID ?? ""
+            self.postURL = post.postURL
+            self.date = post.date
+        }
+    }
+
+    private let post: PostInfo
+    private let initialDateRange: StatsDateRange?
 
     @State private var data: PostDetailsData?
     @State private var likes: PostLikesData?
@@ -14,14 +36,26 @@ struct PostStatsDetailsView: View {
     @Environment(\.context) private var context
     @Environment(\.router) private var router
 
-    private let initialDateRange: StatsDateRange
-
     init(post: TopListData.Post, dateRange: StatsDateRange) {
+        self.post = PostInfo(from: post)
+        self.initialDateRange = dateRange
+    }
+
+    init(post: PostInfo, dateRange: StatsDateRange) {
         self.post = post
         self.initialDateRange = dateRange
     }
 
-    var body: some View {
+    public static func make(post: PostInfo, context: StatsContext, router: StatsRouter) -> some View {
+        PostStatsView(
+            post: post,
+            dateRange: context.calendar.makeDateRange(for: .last30Days)
+        )
+        .environment(\.context, context)
+        .environment(\.router, router)
+    }
+
+    public var body: some View {
         ScrollView {
             VStack(spacing: Constants.step2) {
                 contents
@@ -72,7 +106,7 @@ struct PostStatsDetailsView: View {
         StandaloneChartCard(
             dataPoints: dataPoints,
             metric: .views,
-            initialDateRange: initialDateRange,
+            initialDateRange: dateRange,
             configuration: .init(minimumGranularity: .day)
         )
         .cardStyle()
@@ -143,6 +177,10 @@ struct PostStatsDetailsView: View {
 
     // MARK: - Data
 
+    private var dateRange: StatsDateRange {
+        initialDateRange ?? context.calendar.makeDateRange(for: .last30Days)
+    }
+
     private var metrics: SiteMetricsSet? {
         guard let data else {
             return nil
@@ -163,7 +201,7 @@ struct PostStatsDetailsView: View {
     }
 
     private func loadPostDetails() async {
-        guard let postID = Int(post.postID ?? "") else {
+        guard let postID = Int(post.postID) else {
             self.error = URLError(.unknown, userInfo: [NSLocalizedDescriptionKey: Strings.Errors.generic])
             self.isLoadingDetails = false
             return
@@ -197,13 +235,13 @@ struct PostStatsDetailsView: View {
     private var mockDataPoints: [DataPoint] {
         ChartData.mock(
             metric: .views,
-            granularity: initialDateRange.dateInterval.preferredGranularity,
-            range: initialDateRange
+            granularity: dateRange.dateInterval.preferredGranularity,
+            range: dateRange
         ).currentData
     }
 
     private func navigateToLikesList() {
-        guard let postID = Int(post.postID ?? "") else {
+        guard let postID = Int(post.postID) else {
             return
         }
         router.navigateToLikesList(
@@ -214,7 +252,7 @@ struct PostStatsDetailsView: View {
     }
 
     private func navigateToCommentsList() {
-        guard let postID = Int(post.postID ?? "") else {
+        guard let postID = Int(post.postID) else {
             return
         }
         router.navigateToCommentsList(siteID: context.siteID, postID: postID)
@@ -403,17 +441,14 @@ private struct PostLikesStripView: View {
 
 #Preview {
     NavigationStack {
-        PostStatsDetailsView(
+        PostStatsView(
             post: .init(
                 title: "Matter Smart Home Protocol Still Doesn't Matter: A Year Later",
                 postID: "12345",
                 postURL: URL(string: "example.com"),
-                date: .now,
-                type: "post",
-                author: nil,
-                metrics: .init(views: 45892, likes: 26, comments: 487)
+                date: .now
             ),
-            dateRange: Calendar.demo.makeDateRange(for: .thisYear)
+            dateRange: Calendar.demo.makeDateRange(for: .last30Days)
         )
         .environment(\.context, StatsContext.demo)
     }

@@ -1,52 +1,60 @@
 import SwiftUI
 import UIKit
 
-public protocol StatsRouterDelegate: AnyObject {
-    func makeLikesListViewController(siteID: Int, postID: Int, totalLikes: Int) -> UIViewController?
-    func makeCommentsListViewController(siteID: Int, postID: Int) -> UIViewController?
+@MainActor
+public protocol StatsRouterScreenFactory: AnyObject {
+    func makeLikesListViewController(siteID: Int, postID: Int, totalLikes: Int) -> UIViewController
+    func makeCommentsListViewController(siteID: Int, postID: Int) -> UIViewController
 }
 
 public final class StatsRouter: @unchecked Sendable {
-    public weak var navigationController: UINavigationController?
-    private weak var _delegate: StatsRouterDelegate?
-
-    public var delegate: StatsRouterDelegate? {
-        get { _delegate }
-        set { _delegate = newValue }
+    @MainActor
+    var navigationController: UINavigationController? {
+        (viewController as? UINavigationController) ?? viewController?.navigationController
     }
 
-    public init(navigationController: UINavigationController? = nil, delegate: StatsRouterDelegate? = nil) {
-        self.navigationController = navigationController
-        self._delegate = delegate
+    public weak var viewController: UIViewController?
+
+    let factory: StatsRouterScreenFactory
+
+    public init(viewController: UIViewController? = nil, factory: StatsRouterScreenFactory) {
+        self.viewController = viewController
+        self.factory = factory
     }
 
     @MainActor
-    public func navigate<Content: View>(to view: Content) {
+    func navigate<Content: View>(to view: Content) {
         let viewController = UIHostingController(rootView: view)
         navigationController?.pushViewController(viewController, animated: true)
     }
 
     @MainActor
-    public func navigateToLikesList(siteID: Int, postID: Int, totalLikes: Int) {
-        guard let viewController = delegate?.makeLikesListViewController(siteID: siteID, postID: postID, totalLikes: totalLikes) else {
-            return
-        }
-        navigationController?.pushViewController(viewController, animated: true)
+    func navigateToLikesList(siteID: Int, postID: Int, totalLikes: Int) {
+        let likesVC = factory.makeLikesListViewController(siteID: siteID, postID: postID, totalLikes: totalLikes)
+        navigationController?.pushViewController(likesVC, animated: true)
     }
 
     @MainActor
-    public func navigateToCommentsList(siteID: Int, postID: Int) {
-        guard let viewController = delegate?.makeCommentsListViewController(siteID: siteID, postID: postID) else {
-            return
-        }
-        navigationController?.pushViewController(viewController, animated: true)
+    func navigateToCommentsList(siteID: Int, postID: Int) {
+        let commenstVC = factory.makeCommentsListViewController(siteID: siteID, postID: postID)
+        navigationController?.pushViewController(commenstVC, animated: true)
+    }
+}
+
+class MockStatsRouterScreenFactory: StatsRouterScreenFactory {
+    func makeCommentsListViewController(siteID: Int, postID: Int) -> UIViewController {
+        UIHostingController(rootView: Text(Strings.Errors.generic))
+    }
+
+    func makeLikesListViewController(siteID: Int, postID: Int, totalLikes: Int) -> UIViewController {
+        UIHostingController(rootView: Text(Strings.Errors.generic))
     }
 }
 
 // MARK: - Environment Key
 
 private struct StatsRouterKey: EnvironmentKey {
-    static let defaultValue = StatsRouter()
+    static let defaultValue = StatsRouter(factory: MockStatsRouterScreenFactory())
 }
 
 extension EnvironmentValues {
