@@ -5,9 +5,11 @@ public struct StatsMainView: View {
     @State private var isTabBarBackgroundShown = true
 
     private let context: StatsContext
+    private let router: StatsRouter
 
-    public init(context: StatsContext) {
+    public init(context: StatsContext, router: StatsRouter) {
         self.context = context
+        self.router = router
     }
 
     public var body: some View {
@@ -22,6 +24,7 @@ public struct StatsMainView: View {
             .navigationTitle(Strings.stats)
             .navigationBarTitleDisplayMode(.inline)
             .environment(\.context, context)
+            .environment(\.router, router)
     }
 
     @ViewBuilder
@@ -44,28 +47,17 @@ public struct StatsMainView: View {
 }
 
 #Preview {
-    NavigationPreview {
-        StatsMainView(context: .demo)
-    }
-    .ignoresSafeArea()
+    PreviewStatsMainView()
+        .ignoresSafeArea()
 }
 
-private struct NavigationPreview<Content: View>: UIViewControllerRepresentable {
-    let content: () -> Content
-
-    init(@ViewBuilder content: @escaping () -> Content) {
-        self.content = content
-    }
+private struct PreviewStatsMainView: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UINavigationController {
         let navigationController = UINavigationController()
         let router = StatsRouter(navigationController: navigationController)
-
-        let hostingController = UIHostingController(
-            rootView: content()
-                .environment(\.router, router)
-        )
-
+        let view = StatsMainView(context: .demo, router: router)
+        let hostingController = UIHostingController(rootView: view)
         navigationController.viewControllers = [hostingController]
         return navigationController
     }
