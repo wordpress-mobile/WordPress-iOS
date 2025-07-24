@@ -5,10 +5,10 @@ import WordPressKit
 struct PostStatsDetailsView: View {
     let post: TopListData.Post
 
-    @State private var details: StatsPostDetails?
-    @State private var postLikes: PostLikesData?
-    @State private var dataPoints: [DataPoint] = []
-    @State private var isLoading = true
+    @State private var data: PostDetailsData?
+    @State private var likes: PostLikesData?
+    @State private var isLoadingDetails = true
+    @State private var isLoadingLikes = true
     @State private var error: Error?
 
     @Environment(\.context) private var context
@@ -42,24 +42,18 @@ struct PostStatsDetailsView: View {
             .cardStyle()
 
         // Views Over Time Chart
-        if details != nil {
-            makeChartView(dataPoints: dataPoints)
-        } else if isLoading {
+        if let data {
+            makeChartView(dataPoints: data.dataPoints)
+        } else if isLoadingDetails {
             makeChartView(dataPoints: mockDataPoints)
                 .redacted(reason: .placeholder)
         }
 
-        if details != nil {
+        if let data {
             // Weekly Trends Chart
             VStack(alignment: .leading, spacing: Constants.step2) {
                 StatsCardTitleView(title: Strings.PostDetails.recentWeeks)
-
-                WeeklyTrendsView(
-                    viewModel: WeeklyTrendsViewModel(
-                        dataPoints: dataPoints,
-                        calendar: context.calendar
-                    )
-                )
+                WeeklyTrendsView(viewModel: data.weeklyTrends)
             }
             .padding(Constants.step2)
             .cardStyle()
@@ -67,13 +61,7 @@ struct PostStatsDetailsView: View {
             // Yearly Summary
             VStack(alignment: .leading, spacing: Constants.step2) {
                 StatsCardTitleView(title: Strings.PostDetails.monthlyActivity)
-
-                YearlyTrendsView(
-                    viewModel: YearlyTrendsViewModel(
-                        dataPoints: dataPoints,
-                        calendar: context.calendar
-                    )
-                )
+                YearlyTrendsView(viewModel: data.yearlyTrends)
             }
             .padding(Constants.step2)
             .cardStyle()
@@ -94,14 +82,14 @@ struct PostStatsDetailsView: View {
         VStack(alignment: .leading, spacing: Constants.step2) {
             postDetailsView
 
-            if let postLikes {
+            if let likes {
                 Button {
                     navigateToLikesList()
                 } label: {
-                    PostLikesStripView(likes: postLikes)
+                    PostLikesStripView(likes: likes)
                         .contentShape(Rectangle())
                 }
-            } else if isLoading {
+            } else if isLoadingLikes {
                 PostLikesStripView(likes: .mock)
                     .redacted(reason: .placeholder)
             }
@@ -114,7 +102,7 @@ struct PostStatsDetailsView: View {
                     onLikesTapped: navigateToLikesList,
                     onCommentsTapped: navigateToCommentsList
                 )
-            } else if isLoading {
+            } else if isLoadingDetails {
                 PostStatsMetricsStripView(metrics: .mock, onLikesTapped: nil, onCommentsTapped: nil)
                     .redacted(reason: .placeholder)
             } else if let error {
@@ -134,14 +122,14 @@ struct PostStatsDetailsView: View {
                 .multilineTextAlignment(.leading)
                 .lineLimit(3)
 
-            if let dateGMT = post.date ?? details?.post?.dateGMT {
+            if let dateGMT = post.date ?? data?.post?.dateGMT {
                 HStack(spacing: 6) {
                     Text(Strings.PostDetails.published(formatPublishedDate(dateGMT)))
                         .font(.subheadline)
                         .foregroundColor(.secondary)
 
                     // Permalink button
-                    if let postURL = post.postURL ?? details?.post?.permalink.flatMap(URL.init) {
+                    if let postURL = post.postURL ?? data?.post?.permalink.flatMap(URL.init) {
                         Link(destination: postURL) {
                             Image(systemName: "link")
                                 .font(.footnote)
@@ -156,13 +144,13 @@ struct PostStatsDetailsView: View {
     // MARK: - Data
 
     private var metrics: SiteMetricsSet? {
-        guard let details else {
+        guard let data else {
             return nil
         }
         return SiteMetricsSet(
-            views: details.totalViewsCount,
-            likes: postLikes?.totalCount,
-            comments: details.post?.commentCount.flatMap { Int($0) }
+            views: data.views,
+            likes: likes?.totalCount,
+            comments: data.comments
         )
     }
 
@@ -177,40 +165,32 @@ struct PostStatsDetailsView: View {
     private func loadPostDetails() async {
         guard let postID = Int(post.postID ?? "") else {
             self.error = URLError(.unknown, userInfo: [NSLocalizedDescriptionKey: Strings.Errors.generic])
-            self.isLoading = false
+            self.isLoadingDetails = false
             return
         }
 
-        async let detailsTask = context.service.getPostDetails(for: postID)
-        async let likesTask: PostLikesData? = {
-            try? await context.service.getPostLikes(for: postID, count: 20)
-        }()
+        // Load likes in parallel and ignore errors
+        Task {
+            do {
+                self.likes = try await context.service.getPostLikes(for: postID, count: 10)
+            } catch {
+                // Do nothing
+            }
+            self.isLoadingLikes = false
+        }
 
         do {
-            let (details, likes) = try await (detailsTask, likesTask)
+            let details = try await context.service.getPostDetails(for: postID)
+            let data = await makeData(with: details, calendar: context.calendar)
             withAnimation(.spring) {
-                self.details = details
-                self.postLikes = likes
-                self.dataPoints = convertToDataPoints(from: details.data)
-                self.isLoading = false
+                self.data = data
+                self.isLoadingDetails = false
             }
         } catch {
             withAnimation(.spring) {
                 self.error = error
-                self.isLoading = false
+                self.isLoadingDetails = false
             }
-        }
-    }
-
-    private func convertToDataPoints(from data: [StatsPostViews]) -> [DataPoint] {
-        // Convert DateComponents to Date using site timezone (similar to how StatsService does it)
-        var calendar = context.calendar
-        calendar.timeZone = context.timeZone
-
-        // Convert StatsPostViews to DataPoints using the site timezone
-        return data.compactMap { postView in
-            guard let date = calendar.date(from: postView.date) else { return nil }
-            return DataPoint(date: date, value: postView.viewsCount)
         }
     }
 
@@ -223,11 +203,14 @@ struct PostStatsDetailsView: View {
     }
 
     private func navigateToLikesList() {
-        guard let postID = Int(post.postID ?? ""),
-              let totalLikes = postLikes?.totalCount else {
+        guard let postID = Int(post.postID ?? "") else {
             return
         }
-        router.navigateToLikesList(siteID: context.siteID, postID: postID, totalLikes: totalLikes)
+        router.navigateToLikesList(
+            siteID: context.siteID,
+            postID: postID,
+            totalLikes: likes?.totalCount ?? 0
+        )
     }
 
     private func navigateToCommentsList() {
@@ -236,6 +219,35 @@ struct PostStatsDetailsView: View {
         }
         router.navigateToCommentsList(siteID: context.siteID, postID: postID)
     }
+}
+
+private struct PostDetailsData {
+    let post: StatsPostDetails.Post?
+    let views: Int?
+    let comments: Int?
+    let dataPoints: [DataPoint]
+    let weeklyTrends: WeeklyTrendsViewModel
+    let yearlyTrends: YearlyTrendsViewModel
+}
+
+private func makeData(with details: StatsPostDetails, calendar: Calendar) async -> PostDetailsData {
+    let dataPoints: [DataPoint] = details.data.compactMap { postView in
+        guard let date = calendar.date(from: postView.date) else { return nil }
+        return DataPoint(date: date, value: postView.viewsCount)
+    }
+
+    let weeklyTrends = WeeklyTrendsViewModel(dataPoints: dataPoints, calendar: calendar)
+
+    let yearlyTrends = YearlyTrendsViewModel(dataPoints: dataPoints, calendar: calendar)
+
+    return PostDetailsData(
+        post: details.post,
+        views: details.totalViewsCount,
+        comments: details.post?.commentCount.flatMap { Int($0) },
+        dataPoints: dataPoints,
+        weeklyTrends: weeklyTrends,
+        yearlyTrends: yearlyTrends
+    )
 }
 
 private struct PostStatsMetricsStripView: View {

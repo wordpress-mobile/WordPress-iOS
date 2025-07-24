@@ -72,7 +72,6 @@ struct YearlyTrendsView: View {
     }
 }
 
-@MainActor
 final class YearlyTrendsViewModel: ObservableObject {
     let metric: SiteMetric
 

@@ -110,7 +110,6 @@ struct WeeklyTrendsView: View {
     }
 }
 
-@MainActor
 final class WeeklyTrendsViewModel: ObservableObject {
     let weeks: [WeeklyTrendsView.Week]
     let calendar: Calendar
