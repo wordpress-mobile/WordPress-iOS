@@ -12,15 +12,14 @@ protocol TopListItem: Codable, Sendable, Identifiable {
 extension TopListData {
     struct Post: Codable, TopListItem {
         let title: String
-        let postId: String?
+        let postID: String?
         var postURL: URL?
         let date: Date?
-        let pageId: String?
         let type: String?
         let author: String?
         var metrics: SiteMetricsSet
 
-        var id: String { postId ?? pageId ?? title }
+        var id: String { postID ?? title }
     }
 
     struct Referrer: Codable, TopListItem {

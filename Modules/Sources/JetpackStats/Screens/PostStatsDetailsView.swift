@@ -84,21 +84,22 @@ struct PostStatsDetailsView: View {
     }
 
     private func loadPostDetails() async {
-        guard let postId = post.postId, let postIdInt = Int(postId) else { return }
-        
+        guard let postId = post.postID, let postIdInt = Int(postId) else {
+            self.error = URLError(.unknown, userInfo: [NSLocalizedDescriptionKey: Strings.Errors.generic])
+            self.isLoading = false
+            return
+        }
+
         async let detailsTask = context.service.getPostDetails(for: postIdInt)
         async let likesTask: PostLikesData? = {
-            if (post.metrics.likes ?? 0) > 0 {
-                return try? await context.service.getPostLikes(for: postIdInt, count: 20)
-            }
-            return nil
+            try? await context.service.getPostLikes(for: postIdInt, count: 20)
         }()
         
         do {
             let (details, likes) = try await (detailsTask, likesTask)
             self.details = details
             self.postLikes = likes
-            
+
             // Convert data to DataPoints using site timezone
             self.dataPoints = convertToDataPoints(from: details.data)
             
@@ -142,10 +143,10 @@ private struct PostHeaderCard: View {
         VStack(alignment: .leading, spacing: Constants.step2) {
             postDetailsView
 
-            if let postLikes, !postLikes.users.isEmpty {
-                PostLikesStrip(likes: postLikes)
+            if let postLikes {
+                PostLikesStripView(likes: postLikes)
             } else if isLoading {
-                PostLikesStrip(likes: .mock)
+                PostLikesStripView(likes: .mock)
                     .redacted(reason: .placeholder)
             }
 
@@ -213,7 +214,7 @@ private struct PostStatsMetricsStripView: View {
 
     var body: some View {
         HStack(spacing: Constants.step2) {
-            ForEach([SiteMetric.views, .visitors, .comments]) { metric in
+            ForEach([SiteMetric.views, .likes, .comments]) { metric in
                 MetricView(metric: metric, value: metrics[metric])
             }
         }
@@ -254,58 +255,90 @@ private struct PostStatsMetricsStripView: View {
     }
 }
 
-private struct PostLikesStrip: View {
+private struct PostLikesStripView: View {
     let likes: PostLikesData
     
     private let avatarSize: CGFloat = 28
-    private let maxVisibleAvatars = 5
-    
-    var body: some View {
-        HStack {
-            // Overlapping avatars
-            HStack(spacing: -8) {
-                ForEach(likes.users.prefix(maxVisibleAvatars)) { user in
-                    AvatarView(name: user.name, imageURL: user.avatarURL, size: avatarSize)
-                        .overlay(
-                            Circle()
-                                .stroke(Color(UIColor.systemBackground), lineWidth: 2)
-                        )
-                }
-                
-                // Show additional count if there are more users
-                if likes.totalCount > maxVisibleAvatars {
-                    Circle()
-                        .fill(Color(UIColor.systemGray5))
-                        .frame(width: avatarSize, height: avatarSize)
-                        .overlay(
-                            Text("+\(likes.totalCount - maxVisibleAvatars)")
-                                .font(.caption.weight(.medium))
-                                .foregroundColor(.secondary)
-                        )
-                        .overlay(
-                            Circle()
-                                .stroke(Color(UIColor.systemBackground), lineWidth: 2)
-                        )
-                }
-            }
-            
-            Spacer()
-            
-            // Likes button
-            Button(action: {
-                // TODO: Navigate to likes detail screen
-            }) {
-                HStack(spacing: 4) {
-                    Text(Strings.PostDetails.likesCount(likes.totalCount))
-                        .font(.subheadline)
-                        .foregroundColor(.primary)
+    private let maxVisibleAvatars = 6
 
-                    Image(systemName: "chevron.right")
-                        .font(.caption.weight(.semibold))
-                        .foregroundColor(.secondary.opacity(0.66))
-                }
+    var body: some View {
+        if likes.users.isEmpty {
+            emptyStateView
+        } else {
+            HStack {
+                avatars
+                Spacer()
+                viewMore
             }
         }
+    }
+
+    // Overlapping avatars
+    private var avatars: some View {
+        HStack(spacing: -8) {
+            ForEach(likes.users.prefix(maxVisibleAvatars)) { user in
+                AvatarView(name: user.name, imageURL: user.avatarURL, size: avatarSize, backgroundColor: Color(.secondarySystemBackground))
+                    .overlay(
+                        Circle()
+                            .stroke(Color(UIColor.systemBackground), lineWidth: 1)
+                    )
+            }
+
+            // Show additional count if there are more users
+            if likes.totalCount > maxVisibleAvatars {
+                Text("+\((likes.totalCount - maxVisibleAvatars).formatted(.number.notation(.compactName)))")
+                    .font(.caption2.weight(.medium))
+                    .foregroundColor(.primary.opacity(0.8))
+                    .padding(.horizontal, 4)
+                    .frame(height: avatarSize + 2)
+                    .frame(minWidth: avatarSize + 2)
+                    .background {
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color(UIColor.secondarySystemBackground))
+                    }
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color(UIColor.systemBackground), lineWidth: 1)
+                    )
+            }
+        }
+    }
+
+    private var viewMore: some View {
+        // Likes button
+        Button(action: {
+            // TODO: Navigate to likes detail screen
+        }) {
+            HStack(spacing: 4) {
+                Text(Strings.PostDetails.likesCount(likes.totalCount))
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
+
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundColor(.secondary.opacity(0.66))
+            }
+        }
+    }
+
+    private var emptyStateView: some View {
+        HStack {
+            HStack(spacing: -8) {
+                ForEach(0...2, id: \.self) { _ in
+                    Circle()
+                        .frame(width: avatarSize, height: avatarSize)
+                        .foregroundStyle(Color(.secondarySystemBackground))
+                        .overlay(
+                            Circle()
+                                .stroke(Color(UIColor.systemBackground), lineWidth: 1)
+                        )
+                }
+            }
+            Text(Strings.PostDetails.noLikesYet)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+        }
+        .lineLimit(1)
     }
 }
 
@@ -488,7 +521,7 @@ private struct DayCell: View {
     
     private var heatmapColor: Color {
         if viewsCount == 0 {
-            return Color(UIColor.systemGray6)
+            return Color(UIColor.secondarySystemBackground)
         }
         
         // Use ColorStudio blue gradient
@@ -714,9 +747,8 @@ private struct MonthCellExpanded: View {
         PostStatsDetailsView(
             post: .init(
                 title: "Matter Smart Home Protocol Still Doesn't Matter: A Year Later",
-                postId: "12345",
+                postID: "12345",
                 date: .now,
-                pageId: nil,
                 type: "post",
                 author: nil,
                 metrics: .init(views: 45892, likes: 26, comments: 487)

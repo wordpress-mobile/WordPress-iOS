@@ -108,10 +108,9 @@ extension TopListChartData {
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListData.Post(
                 title: data.0,
-                postId: "\(index + 1)",
+                postID: "\(index + 1)",
                 postURL: nil,
                 date: nil,
-                pageId: nil,
                 type: nil,
                 author: data.1,
                 metrics: metrics

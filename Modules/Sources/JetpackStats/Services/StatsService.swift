@@ -313,10 +313,9 @@ actor StatsService: StatsServiceProtocol {
         let items = posts.map { post in
             TopListData.Post(
                 title: post.title,
-                postId: String(post.postID),
+                postID: String(post.postID),
                 postURL: post.postURL,
                 date: post.date.flatMap(dateFormatter.date),
-                pageId: nil,
                 type: post.kind.description,
                 author: nil,
                 metrics: SiteMetricsSet(views: post.viewsCount)

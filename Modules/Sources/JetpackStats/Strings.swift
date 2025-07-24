@@ -144,6 +144,7 @@ enum Strings {
         static let avgPerDay = AppLocalizedString("jetpackStats.postDetails.avgPerDay", value: "avg/day", comment: "Average per day abbreviation")
         
         // Likes
+        static let noLikesYet = AppLocalizedString("jetpackStats.postDetails.noLikesYet", value: "No likes yet", comment: "Label")
         static func likesCount(_ count: Int) -> String {
             let format = count == 1 
                 ? AppLocalizedString("jetpackStats.postDetails.like", value: "%1$d like", comment: "Singular like count. %1$d is the number.")

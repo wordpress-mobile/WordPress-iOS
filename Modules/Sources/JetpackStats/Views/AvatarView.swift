@@ -4,14 +4,9 @@ import AsyncImageKit
 
 struct AvatarView: View {
     let name: String
-    let imageURL: URL?
-    let size: CGFloat
-
-    init(name: String, imageURL: URL? = nil, size: CGFloat = 36) {
-        self.name = name
-        self.imageURL = imageURL
-        self.size = size
-    }
+    var imageURL: URL?
+    var size: CGFloat = 36
+    var backgroundColor = Color(.systemBackground)
 
     var body: some View {
         if let imageURL {
@@ -31,7 +26,7 @@ struct AvatarView: View {
 
     private var placeholderView: some View {
         Circle()
-            .fill(Color(.systemBackground))
+            .fill(backgroundColor)
             .frame(width: size, height: size)
             .overlay(
                 Text(initials)
