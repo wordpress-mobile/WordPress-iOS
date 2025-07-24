@@ -12,6 +12,7 @@ struct PostStatsDetailsView: View {
     @State private var error: Error?
 
     @Environment(\.context) private var context
+    @Environment(\.router) private var router
 
     private let initialDateRange: StatsDateRange
 
@@ -97,7 +98,12 @@ struct PostStatsDetailsView: View {
             postDetailsView
 
             if let postLikes {
-                PostLikesStripView(likes: postLikes)
+                Button {
+                    navigateToLikesList()
+                } label: {
+                    PostLikesStripView(likes: postLikes)
+                        .contentShape(Rectangle())
+                }
             } else if isLoading {
                 PostLikesStripView(likes: .mock)
                     .redacted(reason: .placeholder)
@@ -106,9 +112,9 @@ struct PostStatsDetailsView: View {
             Divider()
 
             if let metrics {
-                PostStatsMetricsStripView(metrics: metrics)
+                PostStatsMetricsStripView(metrics: metrics, onLikesTapped: navigateToLikesList)
             } else if isLoading {
-                PostStatsMetricsStripView(metrics: .mock)
+                PostStatsMetricsStripView(metrics: .mock, onLikesTapped: nil)
                     .redacted(reason: .placeholder)
             } else if let error {
                 SimpleErrorView(error: error)
@@ -214,15 +220,30 @@ struct PostStatsDetailsView: View {
             range: initialDateRange
         ).currentData
     }
+
+    private func navigateToLikesList() {
+        guard let postID = Int(post.postID ?? ""),
+              let totalLikes = postLikes?.totalCount else {
+            return
+        }
+        router.navigateToLikesList(siteID: context.siteID, postID: postID, totalLikes: totalLikes)
+    }
 }
 
 private struct PostStatsMetricsStripView: View {
     let metrics: SiteMetricsSet
+    let onLikesTapped: (() -> Void)?
 
     var body: some View {
         HStack(spacing: Constants.step2) {
             ForEach([SiteMetric.views, .likes, .comments]) { metric in
                 MetricView(metric: metric, value: metrics[metric])
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if metric == .likes {
+                            onLikesTapped?()
+                        }
+                    }
             }
         }
     }
@@ -233,7 +254,7 @@ private struct PostStatsMetricsStripView: View {
 
         var body: some View {
             VStack(alignment: .leading, spacing: 0) {
-                VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 2) {
                     Image(systemName: metric.systemImage)
                         .font(.caption2.weight(.medium))
                         .foregroundColor(.secondary)
@@ -241,13 +262,23 @@ private struct PostStatsMetricsStripView: View {
                     Text(metric.localizedTitle.uppercased())
                         .font(.caption.weight(.medium))
                         .foregroundColor(.secondary)
+
+                    if metric != .views {
+                        Image(systemName: "chevron.forward")
+                            .font(.caption2.weight(.bold))
+                            .scaleEffect(x: 0.7, y: 0.7)
+                            .foregroundStyle(.secondary)
+                            .padding(.leading, 2)
+                    }
                 }
 
-                Text(formattedValue)
-                    .contentTransition(.numericText())
-                    .animation(.spring, value: value)
-                    .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
-                    .foregroundColor(.primary)
+                HStack {
+                    Text(formattedValue)
+                        .contentTransition(.numericText())
+                        .animation(.spring, value: value)
+                        .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
+                        .foregroundColor(.primary)
+                }
             }
             .lineLimit(1)
             .frame(minWidth: 78, alignment: .leading)
@@ -312,19 +343,14 @@ private struct PostLikesStripView: View {
     }
 
     private var viewMore: some View {
-        // Likes button
-        Button(action: {
-            // TODO: Navigate to likes detail screen
-        }) {
-            HStack(spacing: 4) {
-                Text(Strings.PostDetails.likesCount(likes.totalCount))
-                    .font(.subheadline)
-                    .foregroundColor(.primary)
+        HStack(spacing: 4) {
+            Text(Strings.PostDetails.likesCount(likes.totalCount))
+                .font(.subheadline)
+                .foregroundColor(.primary)
 
-                Image(systemName: "chevron.right")
-                    .font(.caption.weight(.semibold))
-                    .foregroundColor(.secondary.opacity(0.66))
-            }
+            Image(systemName: "chevron.right")
+                .font(.caption.weight(.semibold))
+                .foregroundColor(.secondary.opacity(0.66))
         }
     }
 

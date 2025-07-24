@@ -8,12 +8,14 @@ public struct StatsContext: Sendable {
     let calendar: Calendar
     let service: any StatsServiceProtocol
     let formatters: StatsFormatters
+    let siteID: Int
 
     public init(timeZone: TimeZone, siteID: Int, api: WordPressComRestApi) {
-        self.init(timeZone: timeZone, service: StatsService(siteID: siteID, api: api, timeZone: timeZone))
+        self.init(timeZone: timeZone, siteID: siteID, service: StatsService(siteID: siteID, api: api, timeZone: timeZone))
     }
 
-    init(timeZone: TimeZone, service: (any StatsServiceProtocol)) {
+    init(timeZone: TimeZone, siteID: Int, service: (any StatsServiceProtocol)) {
+        self.siteID = siteID
         self.timeZone = timeZone
         self.calendar = {
             var calendar = Calendar.current
@@ -25,7 +27,7 @@ public struct StatsContext: Sendable {
         self.formatters = StatsFormatters(timeZone: timeZone)
     }
 
-    public static let demo = StatsContext(timeZone: .current, service: MockStatsService())
+    public static let demo = StatsContext(timeZone: .current, siteID: 1, service: MockStatsService())
 
     /// Memoized formatted pre-configured to work with the reporting time zone.
     final class StatsFormatters: Sendable {

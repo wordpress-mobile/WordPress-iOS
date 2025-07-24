@@ -1,16 +1,35 @@
 import SwiftUI
 import UIKit
 
-public struct StatsRouter: Sendable {
-    public weak var navigationController: UINavigationController?
+public protocol StatsRouterDelegate: AnyObject {
+    func makeLikesListViewController(siteID: Int, postID: Int, totalLikes: Int) -> UIViewController?
+}
 
-    public init(navigationController: UINavigationController? = nil) {
+public final class StatsRouter: @unchecked Sendable {
+    public weak var navigationController: UINavigationController?
+    private weak var _delegate: StatsRouterDelegate?
+
+    public var delegate: StatsRouterDelegate? {
+        get { _delegate }
+        set { _delegate = newValue }
+    }
+
+    public init(navigationController: UINavigationController? = nil, delegate: StatsRouterDelegate? = nil) {
         self.navigationController = navigationController
+        self._delegate = delegate
     }
 
     @MainActor
-    func navigate<Content: View>(to view: Content) {
+    public func navigate<Content: View>(to view: Content) {
         let viewController = UIHostingController(rootView: view)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    @MainActor
+    public func navigateToLikesList(siteID: Int, postID: Int, totalLikes: Int) {
+        guard let viewController = delegate?.makeLikesListViewController(siteID: siteID, postID: postID, totalLikes: totalLikes) else {
+            return
+        }
         navigationController?.pushViewController(viewController, animated: true)
     }
 }

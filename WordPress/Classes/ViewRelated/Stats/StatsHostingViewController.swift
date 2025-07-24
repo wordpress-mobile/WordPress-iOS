@@ -65,7 +65,7 @@ class StatsHostingViewController: UIViewController {
         }
 
         // Create the router with reference to navigation controller
-        let router = StatsRouter(navigationController: navigationController)
+        let router = StatsRouter(navigationController: navigationController, delegate: self)
 
         // Create the SwiftUI view
         let statsView = StatsMainView(context: context, router: router)
@@ -178,5 +178,20 @@ extension StatsHostingViewController {
 
         let navController = UINavigationController(rootViewController: statsVC)
         viewController.present(navController, animated: true)
+    }
+}
+
+// MARK: - StatsRouterDelegate
+extension StatsHostingViewController: StatsRouterDelegate {
+    func makeLikesListViewController(siteID: Int, postID: Int, totalLikes: Int) -> UIViewController? {
+        guard let siteID = blog.dotComID else {
+            return nil
+        }
+
+        return StatsLikesListViewController(
+            siteID: siteID,
+            postID: NSNumber(value: postID),
+            totalLikes: totalLikes
+        )
     }
 }
