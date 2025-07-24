@@ -9,23 +9,10 @@ public struct StatsRouter: Sendable {
     }
 
     @MainActor
-    func navigate(to destination: StatsDestination) {
-        guard let navigationController else { return }
-
-        let viewController: UIViewController
-
-        switch destination {
-        case .postDetails(let post, let dateRange):
-            let view = PostStatsDetailsView(post: post, dateRange: dateRange)
-            viewController = UIHostingController(rootView: view)
-        }
-
-        navigationController.pushViewController(viewController, animated: true)
+    func navigate<Content: View>(to view: Content) {
+        let viewController = UIHostingController(rootView: view)
+        navigationController?.pushViewController(viewController, animated: true)
     }
-}
-
-enum StatsDestination {
-    case postDetails(post: TopListData.Post, dateRange: StatsDateRange)
 }
 
 // MARK: - Environment Key

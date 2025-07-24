@@ -9,6 +9,7 @@ struct TopListItemView: View {
     let dateRange: StatsDateRange
 
     @Environment(\.router) private var router
+    @Environment(\.context) private var context
 
     var body: some View {
         if hasDetails {
@@ -86,7 +87,10 @@ private extension TopListItemView {
     func navigateToDetails() {
         switch currentItem {
         case let post as TopListData.Post:
-            router.navigate(to: .postDetails(post: post, dateRange: dateRange))
+            let detailsView = PostStatsDetailsView(post: post, dateRange: dateRange)
+                .environment(\.context, context)
+                .environment(\.router, router)
+            router.navigate(to: detailsView)
         default:
             break
         }

@@ -209,7 +209,7 @@ actor StatsService: StatsServiceProtocol {
                     let likeUsers = users.map { remoteLike in
                         PostLikesData.PostLikeUser(
                             id: remoteLike.userID.intValue,
-                            name: remoteLike.displayName ?? remoteLike.username ?? "Unknown",
+                            name: remoteLike.displayName ?? remoteLike.username ?? "",
                             avatarURL: remoteLike.avatarURL.flatMap(URL.init)
                         )
                     }

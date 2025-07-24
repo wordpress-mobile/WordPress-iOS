@@ -168,15 +168,15 @@ struct PostStatsDetailsView: View {
     }
 
     private func loadPostDetails() async {
-        guard let postId = post.postID, let postIdInt = Int(postId) else {
+        guard let postID = Int(post.postID ?? "") else {
             self.error = URLError(.unknown, userInfo: [NSLocalizedDescriptionKey: Strings.Errors.generic])
             self.isLoading = false
             return
         }
 
-        async let detailsTask = context.service.getPostDetails(for: postIdInt)
+        async let detailsTask = context.service.getPostDetails(for: postID)
         async let likesTask: PostLikesData? = {
-            try? await context.service.getPostLikes(for: postIdInt, count: 20)
+            try? await context.service.getPostLikes(for: postID, count: 20)
         }()
 
         do {
