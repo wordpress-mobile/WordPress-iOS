@@ -7,13 +7,8 @@ struct YearlyTrendsView: View {
     private let cellSpacing: CGFloat = 6
     private let yearLabelWidth: CGFloat = 36
 
-    init(dataPoints: [DataPoint], calendar: Calendar, timeZone: TimeZone, metric: SiteMetric = .views) {
-        self.viewModel = YearlyTrendsViewModel(
-            dataPoints: dataPoints,
-            calendar: calendar,
-            timeZone: timeZone,
-            metric: metric
-        )
+    init(viewModel: YearlyTrendsViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -22,8 +17,6 @@ struct YearlyTrendsView: View {
             legend
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(accessibilityLabel)
     }
 
     private var yearlyHeatmap: some View {
@@ -48,13 +41,16 @@ struct YearlyTrendsView: View {
                 
                 HStack(spacing: cellSpacing) {
                     ForEach(6..<12) { index in
-                        monthCell(
-                            month: viewModel.monthLabels[index],
-                            year: year,
-                            viewsCount: monthlyData[index]
-                        )
-                        .frame(maxWidth: .infinity)
-                        .aspectRatio(1, contentMode: .fit)
+                        if let monthItem = monthlyData[index] {
+                            monthCell(monthItem: monthItem)
+                                .frame(maxWidth: .infinity)
+                                .aspectRatio(1, contentMode: .fit)
+                        } else {
+                            // Empty cell for months with no data
+                            Color.clear
+                                .frame(maxWidth: .infinity)
+                                .aspectRatio(1, contentMode: .fit)
+                        }
                     }
                 }
             }
@@ -66,168 +62,175 @@ struct YearlyTrendsView: View {
                 
                 HStack(spacing: cellSpacing) {
                     ForEach(0..<6) { index in
-                        monthCell(
-                            month: viewModel.monthLabels[index],
-                            year: year,
-                            viewsCount: monthlyData[index]
-                        )
-                        .frame(maxWidth: .infinity)
-                        .aspectRatio(1, contentMode: .fit)
+                        if let monthItem = monthlyData[index] {
+                            monthCell(monthItem: monthItem)
+                                .frame(maxWidth: .infinity)
+                                .aspectRatio(1, contentMode: .fit)
+                        } else {
+                            // Empty cell for months with no data
+                            Color.clear
+                                .frame(maxWidth: .infinity)
+                                .aspectRatio(1, contentMode: .fit)
+                        }
                     }
                 }
             }
         }
     }
     
-    @State private var showingPopover = false
-    @State private var selectedMonth: (month: String, year: Int, viewsCount: Int)?
-    
     @ViewBuilder
-    private func monthCell(month: String, year: Int, viewsCount: Int) -> some View {
-        HeatmapCellView(
-            value: viewsCount,
+    private func monthCell(monthItem: YearlyTrendsViewModel.MonthItem) -> some View {
+        MonthCell(
+            monthItem: monthItem,
             metric: viewModel.metric,
-            maxValue: viewModel.maxMonthlyViews
+            maxValue: viewModel.maxMonthlyViews,
+            formatter: viewModel
         )
-        .onTapGesture {
-            selectedMonth = (month: month, year: year, viewsCount: viewsCount)
-            showingPopover = true
-        }
-        .popover(isPresented: $showingPopover) {
-            if let selected = selectedMonth {
-                MonthlyTrendsTooltipView(
-                    month: selected.month,
-                    year: selected.year,
-                    viewsCount: selected.viewsCount,
-                    metric: viewModel.metric,
-                    formatter: viewModel
-                )
-                .modifier(PopoverPresentationModifier())
-            }
-        }
-        .accessibilityElement()
-        .accessibilityLabel("\(month) \(year), \(viewModel.formatValue(viewsCount)) \(viewModel.metric.localizedTitle)")
-        .accessibilityAddTraits(.isButton)
     }
     
     private var legend: some View {
         HeatmapLegendView(metric: viewModel.metric, labelWidth: yearLabelWidth)
     }
-    
-    private var accessibilityLabel: String {
-        let yearsCount = min(viewModel.sortedYears.count, 3)
-        let totalValue = viewModel.sortedYears.prefix(3).reduce(0) { sum, year in
-            sum + (viewModel.yearlyTotals[year] ?? 0)
-        }
-        let formattedTotal = viewModel.formatValue(totalValue)
-        
-        return Strings.PostDetails.yearlyActivityAccessibility(
-            yearsCount: yearsCount,
-            metric: viewModel.metric.localizedTitle,
-            total: formattedTotal
-        )
-    }
 }
 
 @MainActor
 final class YearlyTrendsViewModel: ObservableObject {
-    let dataPoints: [DataPoint]
-    let calendar: Calendar
-    let timeZone: TimeZone
+    struct MonthItem {
+        let date: Date // Beginning of month
+        let value: Int
+    }
+    
     let metric: SiteMetric
     
     private let valueFormatter: StatsValueFormatter
     
-    let monthLabels: [String]
-    let yearlyTotals: [Int: Int]
     let sortedYears: [Int]
     let maxMonthlyViews: Int
     
-    private var monthlyData: [Int: [Int: Int]] = [:] // year -> month -> total views
+    private var monthlyData: [Int: [Int: MonthItem]] = [:] // year -> month -> MonthItem
     
     init(dataPoints: [DataPoint], calendar: Calendar, timeZone: TimeZone, metric: SiteMetric = .views) {
-        self.dataPoints = dataPoints
-        self.calendar = calendar
-        self.timeZone = timeZone
         self.metric = metric
         
         self.valueFormatter = StatsValueFormatter(metric: metric)
         
-        // Generate month labels using Calendar
-        let formatter = DateFormatter()
-        formatter.calendar = calendar
-        formatter.locale = calendar.locale ?? Locale.current
-        self.monthLabels = formatter.shortMonthSymbols ?? ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-        
-        // Process data points to compute yearly and monthly totals
-        var yearlyTotals: [Int: Int] = [:]
-        var monthlyData: [Int: [Int: Int]] = [:]
+        // Process data points to compute monthly totals
+        var monthlyData: [Int: [Int: MonthItem]] = [:]
+        var monthlyTotals: [String: Int] = [:] // Temporary storage for accumulating values
         var maxMonthlyViews = 0
         
         // Configure calendar with the correct time zone
         var localCalendar = calendar
         localCalendar.timeZone = timeZone
         
+        // First pass: accumulate values by year-month
         for dataPoint in dataPoints {
             let components = localCalendar.dateComponents([.year, .month], from: dataPoint.date)
             guard let year = components.year, let month = components.month else { continue }
             
-            // Update yearly total
-            yearlyTotals[year, default: 0] += dataPoint.value
+            let key = "\(year)-\(month)"
+            monthlyTotals[key, default: 0] += dataPoint.value
+        }
+        
+        // Second pass: create MonthItems with beginning-of-month dates
+        for (key, value) in monthlyTotals {
+            let parts = key.split(separator: "-")
+            guard parts.count == 2,
+                  let year = Int(parts[0]),
+                  let month = Int(parts[1]) else { continue }
             
-            // Update monthly total
+            // Create date at beginning of month
+            var dateComponents = DateComponents()
+            dateComponents.year = year
+            dateComponents.month = month
+            dateComponents.day = 1
+            
+            guard let monthDate = localCalendar.date(from: dateComponents) else { continue }
+            
             if monthlyData[year] == nil {
                 monthlyData[year] = [:]
             }
-            monthlyData[year]?[month, default: 0] += dataPoint.value
+            
+            let monthItem = MonthItem(date: monthDate, value: value)
+            monthlyData[year]?[month] = monthItem
             
             // Track max monthly value
-            let monthTotal = monthlyData[year]?[month] ?? 0
-            maxMonthlyViews = max(maxMonthlyViews, monthTotal)
+            maxMonthlyViews = max(maxMonthlyViews, value)
         }
         
-        self.yearlyTotals = yearlyTotals
         self.monthlyData = monthlyData
-        self.sortedYears = yearlyTotals.keys.sorted(by: >)
+        self.sortedYears = monthlyData.keys.sorted(by: >)
         self.maxMonthlyViews = max(maxMonthlyViews, 1) // Avoid division by zero
     }
     
-    func getMonthlyData(for year: Int) -> [Int] {
-        var monthlyViews = Array(repeating: 0, count: 12)
+    func getMonthlyData(for year: Int) -> [MonthItem?] {
+        var monthlyItems: [MonthItem?] = Array(repeating: nil, count: 12)
         
         if let yearData = monthlyData[year] {
-            for (month, views) in yearData {
+            for (month, item) in yearData {
                 if month >= 1 && month <= 12 {
-                    monthlyViews[month - 1] = views
+                    monthlyItems[month - 1] = item
                 }
             }
         }
         
-        return monthlyViews
+        return monthlyItems
     }
     
     func formatValue(_ value: Int) -> String {
         valueFormatter.format(value: value, context: .compact)
     }
+}
+
+private struct MonthCell: View {
+    let monthItem: YearlyTrendsViewModel.MonthItem
+    let metric: SiteMetric
+    let maxValue: Int
+    let formatter: YearlyTrendsViewModel
     
-    func heatmapColor(for intensity: Double) -> Color {
-        Constants.heatmapColor(baseColor: metric.primaryColor, intensity: intensity)
+    @State private var showingPopover = false
+    
+    var body: some View {
+        HeatmapCellView(
+            value: monthItem.value,
+            metric: metric,
+            maxValue: maxValue
+        )
+        .onTapGesture {
+            showingPopover = true
+        }
+        .popover(isPresented: $showingPopover) {
+            MonthlyTrendsTooltipView(
+                date: monthItem.date,
+                value: monthItem.value,
+                metric: metric,
+                formatter: formatter
+            )
+            .modifier(PopoverPresentationModifier())
+        }
+        .accessibilityElement()
+        .accessibilityLabel(accessibilityLabel)
+        .accessibilityAddTraits(.isButton)
+    }
+    
+    private var accessibilityLabel: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM yyyy"
+        let dateString = dateFormatter.string(from: monthItem.date)
+        return "\(dateString), \(formatter.formatValue(monthItem.value)) \(metric.localizedTitle)"
     }
 }
 
-
-
 private struct MonthlyTrendsTooltipView: View {
-    let month: String
-    let year: Int
-    let viewsCount: Int
+    let date: Date
+    let value: Int
     let metric: SiteMetric
     let formatter: YearlyTrendsViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             // Month header
-            Text("\(month) \(year)")
+            Text(formattedDate)
                 .font(.subheadline)
                 .fontWeight(.semibold)
             
@@ -236,7 +239,7 @@ private struct MonthlyTrendsTooltipView: View {
                 Circle()
                     .fill(metric.primaryColor)
                     .frame(width: 8, height: 8)
-                Text(formatter.formatValue(viewsCount))
+                Text(formatter.formatValue(value))
                     .font(.subheadline)
                     .fontWeight(.medium)
                 Text(metric.localizedTitle)
@@ -246,6 +249,12 @@ private struct MonthlyTrendsTooltipView: View {
         }
         .padding()
     }
+    
+    private var formattedDate: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM yyyy"
+        return dateFormatter.string(from: date)
+    }
 }
 
 // MARK: - Previews
@@ -254,10 +263,12 @@ private struct MonthlyTrendsTooltipView: View {
     ScrollView {
         VStack(spacing: Constants.step2) {
             YearlyTrendsView(
-                dataPoints: mockDataPoints(),
-                calendar: Calendar.current,
-                timeZone: TimeZone.current,
-                metric: .views
+                viewModel: YearlyTrendsViewModel(
+                    dataPoints: mockDataPoints(),
+                    calendar: Calendar.current,
+                    timeZone: TimeZone.current,
+                    metric: .views
+                )
             )
             .padding(Constants.step2)
             .cardStyle()

@@ -77,9 +77,11 @@ struct PostStatsDetailsView: View {
                     StatsCardTitleView(title: Strings.PostDetails.monthlyActivity)
                     
                     YearlyTrendsView(
-                        dataPoints: dataPoints,
-                        calendar: context.calendar,
-                        timeZone: context.timeZone
+                        viewModel: YearlyTrendsViewModel(
+                            dataPoints: dataPoints,
+                            calendar: context.calendar,
+                            timeZone: context.timeZone
+                        )
                     )
                 }
                 .padding(Constants.step2)
