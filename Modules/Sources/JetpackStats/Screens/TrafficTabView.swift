@@ -28,7 +28,7 @@ struct TrafficTabView: View {
                 viewModel.dateRange = $0
             }
         }
-        .background(Constants.Colors.statsBackground)
+        .background(Constants.Colors.background)
         .toolbar {
             if #available(iOS 26, *) {
                 normalModeToolbarContent

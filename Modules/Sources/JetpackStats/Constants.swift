@@ -23,7 +23,7 @@ enum Constants {
             dark: UIColor(red: 0.3, green: 0.15, blue: 0.15, alpha: 1.0)
         ))
 
-        static let statsBackground = Color(UIColor(
+        static let background = Color(UIColor(
             light: CSColor.Gray.shade(.shade0),
             dark: UIColor.systemBackground
         ))
@@ -46,16 +46,16 @@ enum Constants {
         if intensity == 0 {
             return Color(UIColor.secondarySystemBackground)
         }
-        
+
         // Use graduated opacity based on intensity
-        if intensity < 0.25 {
-            return baseColor.opacity(0.2)
-        } else if intensity < 0.5 {
-            return baseColor.opacity(0.4)
-        } else if intensity < 0.75 {
-            return baseColor.opacity(0.6)
+        if intensity <= 0.25 {
+            return baseColor.opacity(0.07)
+        } else if intensity <= 0.5 {
+            return baseColor.opacity(0.14)
+        } else if intensity <= 0.75 {
+            return baseColor.opacity(0.25)
         } else {
-            return baseColor.opacity(0.85)
+            return baseColor.opacity(0.38)
         }
     }
 }

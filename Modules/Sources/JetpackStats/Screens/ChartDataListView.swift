@@ -29,7 +29,7 @@ struct ChartDataListView: View {
                 }
             }
         }
-        .background(Constants.Colors.statsBackground)
+        .background(Constants.Colors.background)
         .navigationTitle("Chart Data")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

@@ -152,7 +152,7 @@ private struct MetricItemView: View {
     .background(Color(.systemBackground))
     .cardStyle()
     .frame(maxHeight: .infinity, alignment: .center)
-    .background(Constants.Colors.statsBackground)
+    .background(Constants.Colors.background)
 }
 
 #endif

@@ -115,5 +115,5 @@ struct RealtimeMetricsCard: View {
 #Preview {
     RealtimeMetricsCard()
         .padding()
-        .background(Constants.Colors.statsBackground)
+        .background(Constants.Colors.background)
 }

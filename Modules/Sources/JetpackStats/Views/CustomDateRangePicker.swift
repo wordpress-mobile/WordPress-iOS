@@ -29,7 +29,7 @@ struct CustomDateRangePicker: View {
             ScrollView {
                 contents
             }
-            .background(Constants.Colors.statsBackground)
+            .background(Constants.Colors.background)
             .navigationTitle(Strings.DatePicker.customRange)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

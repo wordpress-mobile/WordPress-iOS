@@ -26,7 +26,7 @@ struct PostStatsDetailsView: View {
             }
             .padding(.vertical, Constants.step1)
         }
-        .background(Constants.Colors.statsBackground)
+        .background(Constants.Colors.background)
         .navigationTitle(Strings.PostDetails.title)
         .navigationBarTitleDisplayMode(.inline)
         .task {
@@ -58,10 +58,16 @@ struct PostStatsDetailsView: View {
 
             // Weekly Trends Chart
             if !details.recentWeeks.isEmpty {
-                WeeklyTrendsView(
-                    weeks: WeeklyTrendsView.Week.make(from: details.recentWeeks, using: context.calendar),
-                    context: context
-                )
+                VStack(alignment: .leading, spacing: Constants.step2) {
+                    StatsCardTitleView(title: Strings.PostDetails.recentWeeks)
+                    
+                    WeeklyTrendsView(
+                        weeks: WeeklyTrendsView.Week.make(from: details.recentWeeks, using: context.calendar),
+                        calendar: context.calendar,
+                        timeZone: context.timeZone
+                    )
+                }
+                .padding(Constants.step2)
                 .cardStyle()
             }
 

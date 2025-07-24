@@ -18,7 +18,7 @@ public struct StatsMainView: View {
             .safeAreaInset(edge: .top) {
                 StatsTabBar(selectedTab: $selectedTab, showBackground: isTabBarBackgroundShown)
             }
-            .background(Constants.Colors.statsBackground)
+            .background(Constants.Colors.background)
             .navigationTitle(Strings.stats)
             .navigationBarTitleDisplayMode(.inline)
             .environment(\.context, context)
