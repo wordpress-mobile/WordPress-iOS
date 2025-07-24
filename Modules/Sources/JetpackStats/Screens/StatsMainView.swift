@@ -44,7 +44,33 @@ public struct StatsMainView: View {
 }
 
 #Preview {
-    NavigationStack {
+    NavigationPreview {
         StatsMainView(context: .demo)
+    }
+    .ignoresSafeArea()
+}
+
+private struct NavigationPreview<Content: View>: UIViewControllerRepresentable {
+    let content: () -> Content
+    
+    init(@ViewBuilder content: @escaping () -> Content) {
+        self.content = content
+    }
+    
+    func makeUIViewController(context: Context) -> UINavigationController {
+        let navigationController = UINavigationController()
+        let router = StatsRouter(navigationController: navigationController)
+        
+        let hostingController = UIHostingController(
+            rootView: content()
+                .environment(\.router, router)
+        )
+
+        navigationController.viewControllers = [hostingController]
+        return navigationController
+    }
+    
+    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
+        // No update needed
     }
 }

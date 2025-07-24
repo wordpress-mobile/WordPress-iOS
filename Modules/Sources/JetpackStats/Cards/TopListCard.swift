@@ -136,9 +136,9 @@ struct TopListCard: View {
         VStack(spacing: 0) {
             ZStack(alignment: .top) {
                 // Ensure consistent sizing
-                TopListItemsView(data: mockData, itemLimit: itemLimit)
+                TopListItemsView(data: mockData, itemLimit: itemLimit, dateRange: viewModel.dateRange)
                     .opacity(0)
-                TopListItemsView(data: data, itemLimit: itemLimit)
+                TopListItemsView(data: data, itemLimit: itemLimit, dateRange: viewModel.dateRange)
             }
             showMoreButton
                 .frame(maxWidth: .infinity, alignment: .leading)

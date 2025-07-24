@@ -105,6 +105,7 @@ struct RealtimeTopListCard: View {
         return TopListItemsView(
             data: chartData,
             itemLimit: 6,
+            dateRange: context.calendar.makeDateRange(for: .today),
             showDetails: false
         )
     }

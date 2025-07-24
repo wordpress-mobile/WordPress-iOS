@@ -7,7 +7,7 @@ struct TopListPostRowView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            ZStack {
+            ZStack(alignment: .leading) {
                 // Ensure stable height
                 Text(item.title)
                     .lineLimit(2, reservesSpace: true)

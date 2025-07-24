@@ -5,12 +5,13 @@ import WordPressKit
 struct PostStatsDetailsView: View {
     let post: TopListData.Post
     
-    @Environment(\.context) private var context
     @State private var details: StatsPostDetails?
     @State private var postLikes: PostLikesData?
     @State private var dataPoints: [DataPoint] = []
     @State private var isLoading = true
     @State private var error: Error?
+
+    @Environment(\.context) private var context
 
     private let initialDateRange: StatsDateRange
 
@@ -39,7 +40,7 @@ struct PostStatsDetailsView: View {
         headerView
             .cardStyle()
 
-//        // Views Over Time Chart
+        // Views Over Time Chart
         if !dataPoints.isEmpty {
             makeChartView(dataPoints: dataPoints)
         } else if isLoading {

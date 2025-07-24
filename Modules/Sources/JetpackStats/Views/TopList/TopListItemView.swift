@@ -6,8 +6,24 @@ struct TopListItemView: View {
     let metric: SiteMetric
     let maxValue: Int
     let showDetails: Bool
+    let dateRange: StatsDateRange
+
+    @Environment(\.router) private var router
 
     var body: some View {
+        if hasDetails {
+            Button {
+                navigateToDetails()
+            } label: {
+                content
+            }
+            .buttonStyle(PlainButtonStyle())
+        } else {
+            content
+        }
+    }
+
+    var content: some View {
         HStack(spacing: 0) {
             // Content-specific view
             switch currentItem {
@@ -40,7 +56,7 @@ struct TopListItemView: View {
                 previousValue: previousItem?.metrics[metric],
                 metric: metric,
                 showDetails: showDetails,
-                showChevron: currentItem is TopListData.Post
+                showChevron: hasDetails
             )
         }
         .padding(.vertical, 7)
@@ -52,5 +68,27 @@ struct TopListItemView: View {
             )
             .padding(.horizontal, -(Constants.step2 / 2))
         )
+    }
+}
+
+// MARK: - Private Methods
+
+private extension TopListItemView {
+    var hasDetails: Bool {
+        switch currentItem {
+        case is TopListData.Post:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    func navigateToDetails() {
+        switch currentItem {
+        case let post as TopListData.Post:
+            router.navigate(to: .postDetails(post: post, dateRange: dateRange))
+        default:
+            break
+        }
     }
 }

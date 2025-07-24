@@ -64,8 +64,12 @@ class StatsHostingViewController: UIViewController {
             context = StatsContext(timeZone: siteTimezone, siteID: siteID, api: api)
         }
 
+        // Create the router with reference to navigation controller
+        let router = StatsRouter(navigationController: navigationController)
+        
         // Create the SwiftUI view
         let statsView = StatsMainView(context: context)
+            .environment(\.statsRouter, router)
         let hostingController = UIHostingController(rootView: AnyView(statsView))
 
         // Add as child view controller
