@@ -94,19 +94,20 @@ struct PostStatsDetailsView: View {
         async let likesTask: PostLikesData? = {
             try? await context.service.getPostLikes(for: postIdInt, count: 20)
         }()
-        
+
         do {
             let (details, likes) = try await (detailsTask, likesTask)
-            self.details = details
-            self.postLikes = likes
-
-            // Convert data to DataPoints using site timezone
-            self.dataPoints = convertToDataPoints(from: details.data)
-            
-            self.isLoading = false
+            withAnimation(.spring) {
+                self.details = details
+                self.postLikes = likes
+                self.dataPoints = convertToDataPoints(from: details.data)
+                self.isLoading = false
+            }
         } catch {
-            self.error = error
-            self.isLoading = false
+            withAnimation(.spring) {
+                self.error = error
+                self.isLoading = false
+            }
         }
     }
     
@@ -748,6 +749,7 @@ private struct MonthCellExpanded: View {
             post: .init(
                 title: "Matter Smart Home Protocol Still Doesn't Matter: A Year Later",
                 postID: "12345",
+                postURL: URL(string: "example.com"),
                 date: .now,
                 type: "post",
                 author: nil,
