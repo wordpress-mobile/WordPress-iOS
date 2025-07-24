@@ -138,7 +138,7 @@ enum Strings {
         static let more = AppLocalizedString("jetpackStats.postDetails.more", value: "More", comment: "Legend label for higher activity")
         
         // Monthly Activity
-        static let monthlyActivity = AppLocalizedString("jetpackStats.postDetails.monthlyActivity", value: "Monthly Activity", comment: "Title for monthly activity heatmap")
+        static let monthlyActivity = AppLocalizedString("jetpackStats.postDetails.monthsAndYears", value: "Months and Years", comment: "Title for monthly activity heatmap")
         static let views = AppLocalizedString("jetpackStats.postDetails.views", value: "views", comment: "Views label (lowercase)")
         static let total = AppLocalizedString("jetpackStats.postDetails.total", value: "Total", comment: "Total label")
         static let avgPerDay = AppLocalizedString("jetpackStats.postDetails.avgPerDay", value: "avg/day", comment: "Average per day abbreviation")
