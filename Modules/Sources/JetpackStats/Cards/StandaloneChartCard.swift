@@ -15,6 +15,8 @@ struct StandaloneChartCard: View {
     /// The metric type being displayed (e.g., views, likes, comments)
     let metric: SiteMetric
 
+    private let configuration: Configuration
+
     @State private var dateRange: StatsDateRange
     @State private var selectedChartType: ChartType = .line
     @State private var isShowingDatePicker = false
@@ -26,15 +28,25 @@ struct StandaloneChartCard: View {
 
     @Environment(\.redactionReasons) private var redactionReasons
 
+    struct Configuration {
+        var minimumGranularity: DateRangeGranularity = .hour
+    }
+
     /// Creates a new standalone chart card.
     /// - Parameters:
     ///   - dataPoints: The array of data points to display
     ///   - metric: The metric type for proper formatting and colors
     ///   - initialDateRange: The initial date range to display
-    init(dataPoints: [DataPoint], metric: SiteMetric, initialDateRange: StatsDateRange) {
+    init(
+        dataPoints: [DataPoint],
+        metric: SiteMetric,
+        initialDateRange: StatsDateRange,
+        configuration: Configuration = .init()
+    ) {
         self.dataPoints = dataPoints
         self.metric = metric
         self._dateRange = State(initialValue: initialDateRange)
+        self.configuration = configuration
     }
 
     var body: some View {
@@ -56,11 +68,13 @@ struct StandaloneChartCard: View {
             
             // Chart content
             Group {
-                if let chartData {
+                if dateRange.dateInterval.preferredGranularity < configuration.minimumGranularity {
+                    loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
+                } else if let chartData {
                     chartContent(chartData: chartData)
                         .opacity(redactionReasons.contains(.placeholder) ? 0.2 : 1.0)
                 } else {
-                    chartContent(chartData: .mock(metric: .views, granularity: .day, range: dateRange))
+                    chartContent(chartData: mockData)
                         .redacted(reason: .placeholder)
                         .opacity(0.33)
                 }
@@ -82,8 +96,6 @@ struct StandaloneChartCard: View {
         }
     }
     
-    // MARK: - Chart Content
-    
     @ViewBuilder
     private func chartContent(chartData: ChartData) -> some View {
         switch selectedChartType {
@@ -93,7 +105,19 @@ struct StandaloneChartCard: View {
             BarChartView(data: chartData)
         }
     }
-    
+
+    private func loadingErrorView(with message: String) -> some View {
+        chartContent(chartData: mockData)
+            .redacted(reason: .placeholder)
+            .grayscale(1)
+            .opacity(0.1)
+            .overlay {
+                SimpleErrorView(message: message)
+            }
+    }
+
+    // MARK: –
+
     private var trend: TrendViewModel {
         guard let chartData = chartData else {
             return TrendViewModel(currentValue: 0, previousValue: 0, metric: metric)
@@ -110,10 +134,15 @@ struct StandaloneChartCard: View {
             dataPoints: dataPoints,
             dateRange: dateRange,
             metric: metric,
-            context: context
+            calendar: context.calendar,
+            granularity: max(dateRange.dateInterval.preferredGranularity, configuration.minimumGranularity)
         )
         guard !Task.isCancelled else { return }
         self.chartData = chartData
+    }
+
+    private var mockData: ChartData {
+        ChartData.mock(metric: .views, granularity: .day, range: dateRange)
     }
 
     // MARK: - Controls
@@ -186,9 +215,14 @@ struct StandaloneChartCard: View {
     }
 }
 
-private func generateChartData(dataPoints: [DataPoint], dateRange: StatsDateRange, metric: SiteMetric, context: StatsContext) async -> ChartData {
-    let granularity = dateRange.dateInterval.preferredGranularity
-    let aggregator = StatsDataAggregator(calendar: context.calendar)
+private func generateChartData(
+    dataPoints: [DataPoint],
+    dateRange: StatsDateRange,
+    metric: SiteMetric,
+    calendar: Calendar,
+    granularity: DateRangeGranularity
+) async -> ChartData {
+    let aggregator = StatsDataAggregator(calendar: calendar)
 
     // Filter data points for current period
     let currentDataPoints = dataPoints.filter { dataPoint in
@@ -224,7 +258,7 @@ private func generateChartData(dataPoints: [DataPoint], dateRange: StatsDateRang
         from: previousDateInterval,
         to: dateRange.dateInterval,
         component: dateRange.component,
-        calendar: context.calendar
+        calendar: calendar
     )
 
     return ChartData(

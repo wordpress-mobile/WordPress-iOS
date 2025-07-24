@@ -41,11 +41,10 @@ struct PostStatsDetailsView: View {
 
         // Views Over Time Chart
         if !dataPoints.isEmpty {
-            StandaloneChartCard(dataPoints: dataPoints, metric: .views, initialDateRange: initialDateRange)
+            makeChartView(dataPoints: dataPoints)
                 .cardStyle()
         } else if isLoading {
-            StandaloneChartCard(dataPoints: mockDataPoints, metric: .views, initialDateRange: initialDateRange)
-                .cardStyle()
+            makeChartView(dataPoints: mockDataPoints)
                 .redacted(reason: .placeholder)
         }
 
@@ -72,6 +71,16 @@ struct PostStatsDetailsView: View {
                 .cardStyle()
             }
         }
+    }
+
+    private func makeChartView(dataPoints: [DataPoint]) -> some View {
+        StandaloneChartCard(
+            dataPoints: dataPoints,
+            metric: .views,
+            initialDateRange: initialDateRange,
+            configuration: .init(minimumGranularity: .day)
+        )
+        .cardStyle()
     }
 
     private var headerView: some View {
