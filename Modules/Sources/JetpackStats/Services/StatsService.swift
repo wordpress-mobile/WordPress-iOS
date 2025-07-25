@@ -127,7 +127,10 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsTopPostsTimeIntervalData.self, parameters: ["skip_archives": "1"])
-                return mapPostsToTopListData(data)
+                let dateFormatter = makeHourlyDateFormatter()
+                return TopListData(items: data.topPosts.map {
+                    TopListData.Post($0, dateFormatter: dateFormatter)
+                })
             case .comments:
                 fatalError()
             default:
@@ -136,21 +139,24 @@ actor StatsService: StatsServiceProtocol {
 
         case .referrers:
             let data = try await getData(StatsTopReferrersTimeIntervalData.self)
-            return mapReferrersToTopListData(data)
+            return TopListData(items: data.referrers.map(TopListData.Referrer.init))
 
         case .locations:
             let data = try await getData(StatsTopCountryTimeIntervalData.self)
-            return mapCountriesToTopListData(data)
+            return TopListData(items: data.countries.map(TopListData.Location.init))
 
         case .authors:
             let data = try await getData(StatsTopAuthorsTimeIntervalData.self)
-            return mapAuthorsToTopListData(data)
+            let dateFormatter = makeHourlyDateFormatter()
+            return TopListData(items: data.topAuthors.map {
+                TopListData.Author($0, dateFormatter: dateFormatter)
+            })
 
         case .externalLinks:
             switch metric {
             case .views:
                 let data = try await getData(StatsTopClicksTimeIntervalData.self)
-                return mapClicksToTopListData(data)
+                return TopListData(items: data.clicks.map(TopListData.ExternalLink.init))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -159,7 +165,7 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .downloads:
                 let data = try await getData(StatsFileDownloadsTimeIntervalData.self)
-                return mapFileDownloadsToTopListData(data)
+                return TopListData(items: data.fileDownloads.map(TopListData.FileDownload.init))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -168,7 +174,7 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsSearchTermTimeIntervalData.self)
-                return mapSearchTermsToTopListData(data)
+                return TopListData(items: data.searchTerms.map(TopListData.SearchTerm.init))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -177,7 +183,7 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsTopVideosTimeIntervalData.self)
-                return mapVideosToTopListData(data)
+                return TopListData(items: data.videos.map(TopListData.Video.init))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -186,7 +192,13 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsArchiveTimeIntervalData.self)
-                return mapArchiveToTopListData(data)
+                let sections = data.summary.compactMap { (sectionName, items) -> TopListData.ArchiveSection? in
+                    guard !items.isEmpty else { return nil }
+                    return TopListData.ArchiveSection(sectionName: sectionName, items: items)
+                }
+                // Sort sections by total views
+                let sortedSections = sections.sorted { ($0.metrics.views ?? 0) > ($1.metrics.views ?? 0) }
+                return TopListData(items: sortedSections)
             default:
                 throw StatsServiceError.unavailable
             }
@@ -275,6 +287,14 @@ actor StatsService: StatsServiceProtocol {
 
     // MARK: - Mapping (WordPressKit -> JetpackStats)
 
+    private func makeHourlyDateFormatter() -> DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = siteTimeZone
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return dateFormatter
+    }
+
     private func mapSiteMetricsResponse(_ response: WordPressKit.StatsSiteMetricsResponse) -> SiteMetricsData {
         var calendar = Calendar.current
         calendar.timeZone = siteTimeZone
@@ -311,170 +331,6 @@ actor StatsService: StatsServiceProtocol {
             }
         }
         return SiteMetricsData(total: total, metrics: metrics)
-    }
-
-    private func mapPostsToTopListData(_ data: StatsTopPostsTimeIntervalData) -> TopListData {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.timeZone = siteTimeZone
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
-        let items = data.topPosts.map { post in
-            TopListData.Post(
-                title: post.title,
-                postID: String(post.postID),
-                postURL: post.postURL,
-                date: post.date.flatMap(dateFormatter.date),
-                type: post.kind.description,
-                author: nil,
-                metrics: SiteMetricsSet(views: post.viewsCount)
-            )
-        }
-        return TopListData(items: items)
-    }
-
-    private func mapReferrersToTopListData(_ data: StatsTopReferrersTimeIntervalData) -> TopListData {
-        let items = data.referrers.map { referrer in
-            TopListData.Referrer(
-                name: referrer.title,
-                domain: referrer.url?.host,
-                metrics: SiteMetricsSet(views: referrer.viewsCount)
-            )
-        }
-
-        return TopListData(items: items)
-    }
-
-    private func mapCountriesToTopListData(_ data: StatsTopCountryTimeIntervalData) -> TopListData {
-        let items = data.countries.map { country in
-            TopListData.Location(
-                country: country.name,
-                flag: countryCodeToEmoji(country.code),
-                countryCode: country.code,
-                metrics: SiteMetricsSet(views: country.viewsCount)
-            )
-        }
-
-        return TopListData(items: items)
-    }
-
-    private func mapAuthorsToTopListData(_ data: StatsTopAuthorsTimeIntervalData) -> TopListData {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.timeZone = siteTimeZone
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
-        let items = data.topAuthors.map { author in
-            TopListData.Author(
-                name: author.name,
-                userId: author.name, // NOTE: WordPressKit doesn't provide user ID
-                role: nil,
-                metrics: SiteMetricsSet(views: author.viewsCount),
-                avatarURL: author.iconURL,
-                posts: author.posts.map { post in
-                    TopListData.Post(
-                        title: post.title,
-                        postID: String(post.postID),
-                        postURL: post.postURL,
-                        date: post.date.flatMap(dateFormatter.date),
-                        type: post.kind.description,
-                        author: nil,
-                        metrics: SiteMetricsSet(views: post.viewsCount)
-                    )
-                }
-            )
-        }
-        return TopListData(items: items)
-    }
-
-    private func countryCodeToEmoji(_ code: String) -> String? {
-        let base: UInt32 = 127397
-        var scalarView = String.UnicodeScalarView()
-        for i in code.uppercased().unicodeScalars {
-            guard let scalar = UnicodeScalar(base + i.value) else { return nil }
-            scalarView.append(scalar)
-        }
-        return String(scalarView)
-    }
-
-    private func mapClicksToTopListData(_ data: StatsTopClicksTimeIntervalData) -> TopListData {
-        let items = data.clicks.map { click in
-            TopListData.ExternalLink(
-                url: click.clickedURL?.absoluteString ?? "",
-                title: click.title,
-                metrics: SiteMetricsSet(
-                    views: click.clicksCount
-                )
-            )
-        }
-        return TopListData(items: items)
-    }
-
-    private func mapFileDownloadsToTopListData(_ data: StatsFileDownloadsTimeIntervalData) -> TopListData {
-        let items = data.fileDownloads.map { download in
-            TopListData.FileDownload(
-                fileName: URL(string: download.file)?.lastPathComponent ?? download.file,
-                filePath: download.file,
-                metrics: SiteMetricsSet(downloads: download.downloadCount)
-            )
-        }
-        return TopListData(items: items)
-    }
-
-    private func mapSearchTermsToTopListData(_ data: StatsSearchTermTimeIntervalData) -> TopListData {
-        let items = data.searchTerms.map { searchTerm in
-            TopListData.SearchTerm(
-                term: searchTerm.term,
-                metrics: SiteMetricsSet(
-                    views: searchTerm.viewsCount
-                )
-            )
-        }
-        return TopListData(items: items)
-    }
-
-    private func mapVideosToTopListData(_ data: StatsTopVideosTimeIntervalData) -> TopListData {
-        let items = data.videos.map { video in
-            TopListData.Video(
-                title: video.title,
-                postId: String(video.postID),
-                videoUrl: video.videoURL,
-                metrics: SiteMetricsSet(
-                    views: video.playsCount
-                )
-            )
-        }
-        return TopListData(items: items)
-    }
-
-    private func mapArchiveToTopListData(_ data: StatsArchiveTimeIntervalData) -> TopListData {
-        // Convert the summary dictionary into archive sections
-        let sections = data.summary.compactMap { (sectionName, items) -> TopListData.ArchiveSection? in
-            guard !items.isEmpty else { return nil }
-
-            // Map archive items
-            let archiveItems = items.map { item in
-                TopListData.ArchiveItem(
-                    href: item.href,
-                    value: item.value,
-                    metrics: SiteMetricsSet(views: item.views)
-                )
-            }
-
-            // Calculate total views for the section
-            let totalViews = items.reduce(0) { $0 + $1.views }
-
-            return TopListData.ArchiveSection(
-                sectionName: sectionName,
-                items: archiveItems,
-                metrics: SiteMetricsSet(views: totalViews)
-            )
-        }
-
-        // Sort sections by total views
-        let sortedSections = sections.sorted { ($0.metrics.views ?? 0) > ($1.metrics.views ?? 0) }
-
-        return TopListData(items: sortedSections)
     }
 }
 
@@ -516,17 +372,6 @@ private extension WordPressKit.StatsPeriodUnit {
         case .day: self = .day
         case .month: self = .month
         case .year: self = .year
-        }
-    }
-}
-
-private extension StatsTopPost.Kind {
-    var description: String {
-        switch self {
-        case .post: "post"
-        case .page: "page"
-        case .homepage: "homepage"
-        case .unknown: "unknown"
         }
     }
 }
