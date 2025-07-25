@@ -29,15 +29,13 @@ struct TrafficTabView: View {
             }
         }
         .background(Constants.Colors.background)
-        .toolbar {
-            if #available(iOS 26, *) {
-                normalModeToolbarContent
-            }
-        }
+//        .toolbar {
+//            if #available(iOS 26, *) {
+//                normalModeToolbarContent
+//            }
+//        }
         .safeAreaInset(edge: .bottom) {
-            if #unavailable(iOS 26) {
-                LegacyFloatingDateControl(dateRange: $dateRange)
-            }
+            LegacyFloatingDateControl(dateRange: $dateRange)
         }
         .sheet(isPresented: $isShowingCustomRangePicker) {
             CustomDateRangePicker(dateRange: $dateRange)
@@ -59,16 +57,17 @@ struct TrafficTabView: View {
         }
     }
 
+    #warning("TEMP")
     private func configureViewModels() {
         guard viewModels.isEmpty else {
             return
         }
         viewModels = [
-            ChartCardViewModel(
-                metrics: context.service.supportedMetrics,
-                dateRange: dateRange,
-                service: context.service
-            ),
+//            ChartCardViewModel(
+//                metrics: context.service.supportedMetrics,
+//                dateRange: dateRange,
+//                service: context.service
+//            ),
             TopListCardViewModel(
                 selection: .init(item: .postsAndPages, metric: .views),
                 dateRange: dateRange,

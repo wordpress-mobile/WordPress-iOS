@@ -13,6 +13,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
         switch item {
         case .postsAndPages: [.views, .visitors, .comments, .likes]
+        case .archive: [.views]
         case .referrers: [.views, .visitors]
         case .locations: [.views, .visitors]
         case .authors: [.views, .comments, .likes]
@@ -184,6 +185,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         switch dataType {
         case .postsAndPages:
             fileName = "postsAndPages"
+        case .archive:
+            return generateMockArchiveData()
         case .referrers:
             fileName = "referrers"
         case .locations:
@@ -242,6 +245,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             case .postsAndPages:
                 let posts = try decoder.decode([TopListData.Post].self, from: data)
                 return posts
+            case .archive:
+                // This case is handled by generateMockArchiveData
+                return []
             }
         } catch {
             print("Failed to load \(fileName).json: \(error)")
@@ -303,6 +309,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         switch dataType {
         case .postsAndPages:
             fileName = "historical-postsAndPages"
+        case .archive:
+            return generateMockArchiveData()
         case .referrers:
             fileName = "historical-referrers"
         case .locations:
@@ -361,6 +369,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             case .postsAndPages:
                 let posts = try decoder.decode([TopListData.Post].self, from: data)
                 return posts
+            case .archive:
+                // This case is handled by generateMockArchiveData
+                return []
             }
         } catch {
             print("Failed to load \(fileName).json: \(error)")
@@ -535,5 +546,33 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
             dailyTopListData[dataType] = typeData
         }
+    }
+    
+    /// Generates mock archive data with expandable sections
+    private func generateMockArchiveData() -> [any TopListItem] {
+        // Create mock archive sections based on the example JSON structure
+        let otherSection = TopListData.ArchiveSection(
+            sectionName: "other",
+            items: [
+                TopListData.ArchiveItem(href: "http://example.com/wp-admin/admin.php?page=stats", value: "/wp-admin/admin.php?page=stats", metrics: SiteMetricsSet(views: 10)),
+                TopListData.ArchiveItem(href: "http://example.com/wp-admin/", value: "/wp-admin/", metrics: SiteMetricsSet(views: 4)),
+                TopListData.ArchiveItem(href: "http://example.com/wp-admin/edit.php", value: "/wp-admin/edit.php", metrics: SiteMetricsSet(views: 4)),
+                TopListData.ArchiveItem(href: "http://example.com/wp-admin/index.php", value: "/wp-admin/index.php", metrics: SiteMetricsSet(views: 2)),
+                TopListData.ArchiveItem(href: "http://example.com/wp-admin/revision.php?revision=12345", value: "/wp-admin/revision.php?revision=12345", metrics: SiteMetricsSet(views: 2))
+            ],
+            metrics: SiteMetricsSet(views: 25) // Total views for the section
+        )
+        
+        let authorSection = TopListData.ArchiveSection(
+            sectionName: "author",
+            items: [
+                TopListData.ArchiveItem(href: "http://example.com/author/johndoe/", value: "johndoe", metrics: SiteMetricsSet(views: 31)),
+                TopListData.ArchiveItem(href: "http://example.com/author/janedoe/", value: "janedoe", metrics: SiteMetricsSet(views: 5)),
+                TopListData.ArchiveItem(href: "http://example.com/author/testuser/", value: "testuser", metrics: SiteMetricsSet(views: 2))
+            ],
+            metrics: SiteMetricsSet(views: 40) // Total views for the section
+        )
+        
+        return [otherSection, authorSection]
     }
 }

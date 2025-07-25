@@ -9,6 +9,7 @@ enum TopListItemType: Identifiable, CaseIterable, Sendable {
     case fileDownloads
     case searchTerms
     case videos
+    case archive
 
     var id: TopListItemType { self }
 
@@ -22,12 +23,13 @@ enum TopListItemType: Identifiable, CaseIterable, Sendable {
         case .fileDownloads: Strings.SiteDataTypes.fileDownloads
         case .searchTerms: Strings.SiteDataTypes.searchTerms
         case .videos: Strings.SiteDataTypes.videos
+        case .archive: Strings.SiteDataTypes.archive
         }
     }
 
     var systemImage: String {
         switch self {
-        case .postsAndPages: "doc.text"
+        case .postsAndPages: "text.page"
         case .referrers: "link"
         case .locations: "map"
         case .authors: "person.2"
@@ -35,6 +37,7 @@ enum TopListItemType: Identifiable, CaseIterable, Sendable {
         case .fileDownloads: "arrow.down.circle"
         case .searchTerms: "magnifyingglass"
         case .videos: "play.rectangle"
+        case .archive: "rectangle.and.text.magnifyingglass"
         }
     }
 
@@ -52,6 +55,6 @@ enum TopListItemType: Identifiable, CaseIterable, Sendable {
     }
 
     static let secondaryItems: Set<TopListItemType> = [
-        .externalLinks, .fileDownloads, .searchTerms, .videos
+        .externalLinks, .fileDownloads, .searchTerms, .videos, .archive
     ]
 }

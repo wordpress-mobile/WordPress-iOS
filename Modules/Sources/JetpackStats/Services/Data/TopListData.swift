@@ -80,4 +80,20 @@ extension TopListData {
 
         var id: String { postId }
     }
+
+    struct ArchiveItem: Codable, TopListItem {
+        let href: String
+        let value: String
+        var metrics: SiteMetricsSet
+
+        var id: String { href }
+    }
+
+    struct ArchiveSection: Codable, TopListItem {
+        let sectionName: String
+        var items: [ArchiveItem]
+        var metrics: SiteMetricsSet
+
+        var id: String { sectionName }
+    }
 }

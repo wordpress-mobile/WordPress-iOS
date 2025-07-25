@@ -48,11 +48,11 @@ struct LegacyFloatingDateControl: View {
             dateRangeButtonContent
                 .contentShape(Rectangle())
                 .frame(height: buttonHeight)
+                .floatingStyle()
         }
         .tint(Color.primary)
         .menuOrder(.fixed)
         .buttonStyle(.plain)
-        .floatingStyle()
     }
 
     private var dateRangeButtonContent: some View {

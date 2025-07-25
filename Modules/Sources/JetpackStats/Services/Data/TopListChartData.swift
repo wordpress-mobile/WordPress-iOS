@@ -88,6 +88,8 @@ extension TopListChartData {
             return mockSearchTerms(metric: metric, count: count)
         case .videos:
             return mockVideos(metric: metric, count: count)
+        case .archive:
+            return mockArchive(metric: metric, count: count)
         }
     }
 
@@ -281,6 +283,58 @@ extension TopListChartData {
             )
         }
     }
+    
+    private static func mockArchive(metric: SiteMetric, count: Int) -> [any TopListItem] {
+        // Create mock archive sections
+        let archiveSections = [
+            ("pages", [
+                ("/about/", 2500),
+                ("/contact/", 1800),
+                ("/privacy-policy/", 1200),
+                ("/terms-of-service/", 800),
+                ("/faq/", 600)
+            ]),
+            ("categories", [
+                ("/category/technology/", 3200),
+                ("/category/design/", 2800),
+                ("/category/business/", 2400),
+                ("/category/lifestyle/", 1600)
+            ]),
+            ("tags", [
+                ("/tag/swift/", 2100),
+                ("/tag/ios/", 1900),
+                ("/tag/swiftui/", 1700),
+                ("/tag/mobile/", 1400)
+            ]),
+            ("archives", [
+                ("/2024/01/", 1500),
+                ("/2023/12/", 1300),
+                ("/2023/11/", 1100),
+                ("/2023/10/", 900)
+            ])
+        ]
+        
+        return archiveSections.prefix(count).map { sectionData in
+            let sectionName = sectionData.0
+            let items = sectionData.1.map { itemData in
+                let metrics = createMetrics(baseValue: itemData.1, metric: metric)
+                return TopListData.ArchiveItem(
+                    href: "https://example.com\(itemData.0)",
+                    value: itemData.0,
+                    metrics: metrics
+                )
+            }
+            
+            // Calculate total views for the section
+            let totalViews = items.reduce(0) { $0 + ($1.metrics[metric] ?? 0) }
+            
+            return TopListData.ArchiveSection(
+                sectionName: sectionName,
+                items: items,
+                metrics: SiteMetricsSet(views: totalViews)
+            )
+        }
+    }
 
     private static func createMetrics(baseValue: Int, metric: SiteMetric) -> SiteMetricsSet {
         // Add some variation to make it more realistic
@@ -324,6 +378,17 @@ extension TopListChartData {
         let trendFactor = Double.random(in: 0.7...1.3)
         let currentValue = item.metrics[metric] ?? 0
         item.metrics[metric] = Int(Double(currentValue) * trendFactor)
+        
+        // Special handling for archive sections - update child items too
+        if var archiveSection = item as? TopListData.ArchiveSection {
+            archiveSection.items = archiveSection.items.map { archiveItem in
+                var mutableItem = archiveItem
+                let itemCurrentValue = mutableItem.metrics[metric] ?? 0
+                mutableItem.metrics[metric] = Int(Double(itemCurrentValue) * trendFactor)
+                return mutableItem
+            }
+            return archiveSection
+        }
 
         return item
     }
