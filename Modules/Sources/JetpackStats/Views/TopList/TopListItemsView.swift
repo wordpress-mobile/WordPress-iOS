@@ -1,17 +1,5 @@
 import SwiftUI
 
-// MARK: - View Extension for Conditional Modifiers
-private extension View {
-    @ViewBuilder
-    func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
-        if condition {
-            transform(self)
-        } else {
-            self
-        }
-    }
-}
-
 struct TopListItemsView: View {
     let data: TopListChartData
     let itemLimit: Int
@@ -22,8 +10,8 @@ struct TopListItemsView: View {
 
     var body: some View {
         VStack(spacing: Constants.step1 / 2) {
-            ForEach(Array(data.items.prefix(itemLimit))) { item in
-                if let expandableItem = item.current as? any TopListExpandableItem {
+            ForEach(Array(data.items.prefix(itemLimit)), id: \.id) { item in
+                if let expandableItem = item as? any TopListExpandableItem {
                     // Expandable section with child items
                     VStack(spacing: Constants.step1 / 2) {
                         Button {
@@ -31,7 +19,7 @@ struct TopListItemsView: View {
                         } label: {
                             ExpandableItemView(
                                 section: expandableItem,
-                                previousItem: item.previous as? (any TopListExpandableItem),
+                                previousItem: data.previousItem(for: expandableItem) as? (any TopListExpandableItem),
                                 metric: data.metric,
                                 maxValue: data.maxValue,
                                 dateRange: dateRange,
@@ -62,8 +50,15 @@ struct TopListItemsView: View {
                         }
                     }
                 } else {
-                    makeItemView(for: item)
-                        .transition(.move(edge: .leading)
+                    TopListItemView(
+                        currentItem: item,
+                        previousItem: data.previousItem(for: item),
+                        metric: data.metric,
+                        maxValue: data.maxValue,
+                        showDetails: showDetails,
+                        dateRange: dateRange
+                    )
+                    .transition(.move(edge: .leading)
                         .combined(with: .scale(scale: 0.75))
                         .combined(with: .opacity))
                 }
@@ -71,17 +66,6 @@ struct TopListItemsView: View {
         }
         .animation(.spring, value: ObjectIdentifier(data))
         .animation(.spring, value: expandedSections)
-    }
-
-    private func makeItemView(for item: TopListChartData.Item) -> some View {
-        TopListItemView(
-            currentItem: item.current,
-            previousItem: item.previous,
-            metric: data.metric,
-            maxValue: data.maxValue,
-            showDetails: showDetails,
-            dateRange: dateRange
-        )
     }
 
     private func toggleSection(_ sectionId: String) {

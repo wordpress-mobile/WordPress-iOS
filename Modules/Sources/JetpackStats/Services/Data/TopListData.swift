@@ -104,12 +104,9 @@ extension TopListData {
 
         var displayName: String {
             switch sectionName.lowercased() {
-            case "author":
-                return Strings.ArchiveSections.author
-            case "other":
-                return Strings.ArchiveSections.other
-            default:
-                return sectionName.capitalized
+            case "author": Strings.ArchiveSections.author
+            case "other": Strings.ArchiveSections.other
+            default: sectionName.capitalized
             }
         }
     }

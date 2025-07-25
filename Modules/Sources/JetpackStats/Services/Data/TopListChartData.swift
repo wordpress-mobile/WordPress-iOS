@@ -1,24 +1,10 @@
 import Foundation
 
 final class TopListChartData {
-    struct Item: Identifiable {
-        let id: ItemID
-        let current: any TopListItem
-        let previous: (any TopListItem)?
-    }
-
-    /// - warning: It's required for animations in ``TopListItemsView`` to work
-    /// well for IDs to be unique across the domains. If we were just to use
-    /// `String`, there would be collisions across domains, e.g. post and author
-    /// using the same String ID "1".
-    struct ItemID: Hashable {
-        let type: TopListItemType
-        let id: String
-    }
-
     let item: TopListItemType
     let metric: SiteMetric
-    let items: [Item]
+    let items: [any TopListItem]
+    let previousItems: [String: any TopListItem]
     let maxValue: Int
 
     struct ListID: Hashable {
@@ -30,11 +16,16 @@ final class TopListChartData {
         ListID(item: item, metric: metric)
     }
 
-    init(item: TopListItemType, metric: SiteMetric, items: [Item], maxValue: Int) {
+    init(item: TopListItemType, metric: SiteMetric, items: [any TopListItem], previousItems: [String: any TopListItem] = [:], maxValue: Int) {
         self.item = item
         self.metric = metric
         self.items = items
+        self.previousItems = previousItems
         self.maxValue = maxValue
+    }
+    
+    func previousItem(for currentItem: any TopListItem) -> (any TopListItem)? {
+        previousItems[currentItem.id]
     }
 }
 
@@ -46,22 +37,24 @@ extension TopListChartData {
         metric: SiteMetric = .views,
         itemCount: Int = 6
     ) -> TopListChartData {
-        let items = mockItems(for: itemType, metric: metric, count: itemCount)
-        let matchedItems = items.map { item in
-            // Create previous item with slightly different values
+        let currentItems = mockItems(for: itemType, metric: metric, count: itemCount)
+        
+        // Create previous items dictionary
+        var previousItemsDict: [String: any TopListItem] = [:]
+        for item in currentItems {
             let previousItem = mockPreviousItem(from: item, metric: metric)
-            let itemID = ItemID(type: itemType, id: item.id)
-            return Item(id: itemID, current: item, previous: previousItem)
+            previousItemsDict[item.id] = previousItem
         }
 
-        let maxValue = items
+        let maxValue = currentItems
             .compactMap { $0.metrics[metric] }
             .max() ?? 1
 
         return TopListChartData(
             item: itemType,
             metric: metric,
-            items: matchedItems,
+            items: currentItems,
+            previousItems: previousItemsDict,
             maxValue: maxValue
         )
     }
