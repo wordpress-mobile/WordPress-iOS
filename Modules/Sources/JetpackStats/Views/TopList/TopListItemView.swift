@@ -83,6 +83,8 @@ private extension TopListItemView {
         switch currentItem {
         case is TopListData.Post:
             return true
+        case is TopListData.ArchiveItem:
+            return true
         default:
             return false
         }
@@ -95,6 +97,10 @@ private extension TopListItemView {
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView)
+        case let archiveItem as TopListData.ArchiveItem:
+            if let url = URL(string: archiveItem.href) {
+                router.openURL(url)
+            }
         default:
             break
         }
