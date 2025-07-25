@@ -53,11 +53,8 @@ struct ReferrerStatsView: View {
     var referrerInfoRow: some View {
         HStack(spacing: Constants.step1) {
             referrerIcon
-
             referrerDetails
-
             Spacer()
-
             viewsCount
         }
     }
@@ -154,7 +151,7 @@ struct ReferrerStatsView: View {
 
         }
         .padding(Constants.step2)
-        .cardStyle()
+//        .cardStyle()
     }
 
     private var childrenChartData: TopListChartData {

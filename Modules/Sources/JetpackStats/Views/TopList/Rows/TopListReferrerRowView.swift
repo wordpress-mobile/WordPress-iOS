@@ -28,19 +28,20 @@ struct TopListReferrerRowView: View {
                     .foregroundColor(.primary)
                     .lineLimit(1)
 
-                if let domain = item.domain {
-                    if let url = URL(string: "https://\(domain)") {
-                        Link(domain, destination: url)
+                HStack {
+                    if let domain = item.domain {
+                        Text(verbatim: domain)
                             .font(.caption)
-                            .tint(Constants.Colors.blue)
-                            .lineLimit(1)
-                    } else {
-                        Text(domain)
+                    }
+                    if !item.children.isEmpty {
+                        Text(verbatim: "+\(item.children)")
                             .font(.caption)
                             .foregroundColor(.secondary)
                             .lineLimit(1)
                     }
                 }
+                .foregroundColor(.secondary)
+                .lineLimit(1)
             }
         }
     }
