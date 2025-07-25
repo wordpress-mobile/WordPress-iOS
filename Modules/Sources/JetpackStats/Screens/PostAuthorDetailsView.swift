@@ -5,17 +5,28 @@ struct PostAuthorDetailsView: View {
     let author: TopListData.Author
     
     @State private var dateRange: StatsDateRange
+    @StateObject private var viewModel: TopListCardViewModel
     
     @Environment(\.context) private var context
     @ScaledMetric private var avatarSize = 80
     
-    init(author: TopListData.Author, initialDateRange: StatsDateRange? = nil) {
+    init(author: TopListData.Author, initialDateRange: StatsDateRange? = nil, context: StatsContext) {
         self.author = author
         let calendar = Calendar.current
-        self._dateRange = State(initialValue: initialDateRange ?? calendar.makeDateRange(for: .last30Days))
+        let range = initialDateRange ?? calendar.makeDateRange(for: .last30Days)
+        self._dateRange = State(initialValue: range)
+        
+        self._viewModel = StateObject(wrappedValue: TopListCardViewModel(
+            selection: .init(item: .authors, metric: .views),
+            dateRange: range,
+            service: context.service,
+            fetchLimit: 100
+        ))
     }
     
     var body: some View {
+        let authorPosts = extractAuthorPosts()
+        
         ScrollView {
             VStack(spacing: Constants.step2) {
                 // Author header
@@ -24,9 +35,12 @@ struct PostAuthorDetailsView: View {
                     .padding(.top, Constants.step2)
                 
                 // Posts list
-                if let posts = author.posts, !posts.isEmpty {
-                    postsSection(posts: posts)
+                if !authorPosts.isEmpty {
+                    postsSection(posts: authorPosts)
                         .padding(.horizontal, Constants.step2)
+                } else if viewModel.isLoading {
+                    ProgressView()
+                        .padding(.vertical, Constants.step4)
                 } else {
                     emptyPostsView
                         .padding(.horizontal, Constants.step2)
@@ -34,10 +48,30 @@ struct PostAuthorDetailsView: View {
             }
             .padding(.bottom, Constants.step2)
         }
+        .onAppear {
+            viewModel.onAppear()
+        }
+        .onChange(of: dateRange) { newRange in
+            viewModel.dateRange = newRange
+        }
         .navigationTitle(Strings.AuthorDetails.title)
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
             LegacyFloatingDateControl(dateRange: $dateRange)
+        }
+    }
+    
+    private func extractAuthorPosts() -> [TopListData.Post] {
+        guard let data = viewModel.matchedData else {
+            return []
+        }
+        
+        // Find the current author in the fetched data
+        if let fetchedAuthor = data.items.compactMap({ $0 as? TopListData.Author }).first(where: { $0.userId == author.userId }),
+           let posts = fetchedAuthor.posts {
+            return posts
+        } else {
+            return []
         }
     }
     
@@ -185,7 +219,8 @@ struct PostAuthorDetailsView: View {
                         metrics: SiteMetricsSet(views: 980)
                     )
                 ]
-            )
+            ),
+            context: StatsContext.demo
         )
     }
     .environment(\.context, StatsContext.demo)

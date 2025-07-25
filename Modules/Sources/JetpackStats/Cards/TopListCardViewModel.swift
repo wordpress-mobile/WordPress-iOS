@@ -20,6 +20,7 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
     @Published private(set) var isStale = false
 
     private let service: any StatsServiceProtocol
+    private let fetchLimit: Int
 
     private var loadingTask: Task<Void, Never>?
     private var loadRequestCount = 0
@@ -38,11 +39,12 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
 
     private var isFirstAppear = true
 
-    init(selection: Selection, dateRange: StatsDateRange, service: any StatsServiceProtocol) {
+    init(selection: Selection, dateRange: StatsDateRange, service: any StatsServiceProtocol, fetchLimit: Int = 20) {
         self.items = service.supportedItems
         self.selection = selection
         self.dateRange = dateRange
         self.service = service
+        self.fetchLimit = fetchLimit
 
         self.groupedItems = {
             let primary = service.supportedItems.filter {
@@ -129,7 +131,8 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
             selection.item,
             metric: selection.metric,
             interval: dateRange.dateInterval,
-            granularity: granularity
+            granularity: granularity,
+            limit: fetchLimit
         )
 
         // Fetch previous data only for items that support it
@@ -139,7 +142,8 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
                 selection.item,
                 metric: selection.metric,
                 interval: dateRange.effectiveComparisonInterval,
-                granularity: granularity
+                granularity: granularity,
+                limit: fetchLimit
             )
         }()
 

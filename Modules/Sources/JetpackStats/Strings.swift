@@ -166,8 +166,6 @@ enum Strings {
 
     enum AuthorDetails {
         static let title = AppLocalizedString("jetpackStats.authorDetails.title", value: "Author Details", comment: "Title for the author details screen")
-        static let periodFormat = AppLocalizedString("jetpackStats.authorDetails.periodFormat", value: "Data for %1$@", comment: "Shows the period for which author data is displayed. %1$@ is the date range.")
-        static let periodLabel = AppLocalizedString("jetpackStats.authorDetails.period", value: "Period", comment: "Label for the period selector")
         static let posts = AppLocalizedString("jetpackStats.authorDetails.posts", value: "Top Posts", comment: "Section title for author's posts")
         static let noPosts = AppLocalizedString("jetpackStats.authorDetails.noPosts", value: "No posts found for this period", comment: "Message shown when author has no posts for selected period")
     }

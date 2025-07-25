@@ -82,8 +82,8 @@ actor StatsService: StatsServiceProtocol {
         if granularity == .hour {
             // Hourly data is available only for "Views", so the service has to
             // make a separate request to fetch the total metrics.
-            async let hourlyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(interval: interval, unit: .init(granularity))
-            async let dailyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(interval: interval, unit: .init(.day))
+            async let hourlyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(interval: interval, unit: .init(granularity), limit: 0)
+            async let dailyResponseTask: WordPressKit.StatsSiteMetricsResponse = service.getData(interval: interval, unit: .init(.day), limit: 0)
 
             let (hourlyResponse, dailyResponse) = try await (hourlyResponseTask, dailyResponseTask)
 
@@ -91,14 +91,14 @@ actor StatsService: StatsServiceProtocol {
             data.total = mapSiteMetricsResponse(dailyResponse).total
             return data
         } else {
-            let response: WordPressKit.StatsSiteMetricsResponse = try await service.getData(interval: interval, unit: .init(granularity))
+            let response: WordPressKit.StatsSiteMetricsResponse = try await service.getData(interval: interval, unit: .init(granularity), limit: 0)
             return mapSiteMetricsResponse(response)
         }
     }
 
-    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListData {
         do {
-            return try await _getTopListData(item, metric: metric, interval: interval, granularity: granularity)
+            return try await _getTopListData(item, metric: metric, interval: interval, granularity: granularity, limit: limit)
         } catch {
             // A workaround for an issue where `/stats` return `"summary": null`
             // when there are no recoreded periods (happens when the entire requested
@@ -111,7 +111,7 @@ actor StatsService: StatsServiceProtocol {
         }
     }
 
-    private func _getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
+    private func _getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListData {
 
         func getData<T: WordPressKit.StatsTimeIntervalData>(
             _ type: T.Type,
@@ -119,7 +119,7 @@ actor StatsService: StatsServiceProtocol {
         ) async throws -> T where T: Sendable {
             /// The `summarize: true` feature works correctly only with the `.day` granularity.
             let interval = convertDateIntervalSiteToLocal(interval)
-            return try await service.getData(interval: interval, unit: .day, summarize: true, parameters: parameters)
+            return try await service.getData(interval: interval, unit: .day, summarize: true, limit: limit ?? 10)
         }
 
         switch item {
@@ -537,11 +537,12 @@ private extension WordPressKit.StatsServiceRemoteV2 {
         interval: DateInterval,
         unit: WordPressKit.StatsPeriodUnit,
         summarize: Bool? = nil,
+        limit: Int,
         parameters: [String: String]? = nil
     ) async throws -> TimeStatsType where TimeStatsType: Sendable {
         try await withCheckedThrowingContinuation { continuation in
             // `period` is ignored if you pass `startDate`, but it's a required parameter
-            getData(for: unit, unit: unit, startDate: interval.start, endingOn: interval.end, limit: 0, summarize: summarize, parameters: parameters) { (data: TimeStatsType?, error: Error?) in
+            getData(for: unit, unit: unit, startDate: interval.start, endingOn: interval.end, limit: limit, summarize: summarize, parameters: parameters) { (data: TimeStatsType?, error: Error?) in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if let data {

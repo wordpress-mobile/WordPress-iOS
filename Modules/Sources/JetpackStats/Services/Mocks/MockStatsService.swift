@@ -69,7 +69,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         return SiteMetricsData(total: total, metrics: output)
     }
 
-    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListData {
         await generateDataIfNeeded()
 
         guard let typeData = dailyTopListData[item] else {
@@ -109,7 +109,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
 
-        return TopListData(items: Array(sortedItems.prefix(20)))
+        return TopListData(items: Array(sortedItems.prefix(limit ?? Int.max)))
     }
 
     func getRealtimeTopListData(_ dataType: TopListItemType) async throws -> TopListData {
@@ -212,6 +212,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         do {
             let data = try Data(contentsOf: url)
             let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
 
             // Decode based on data type
             switch dataType {
@@ -336,6 +337,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         do {
             let data = try Data(contentsOf: url)
             let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
 
             // Decode based on data type
             switch dataType {
