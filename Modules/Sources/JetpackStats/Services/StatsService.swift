@@ -119,7 +119,7 @@ actor StatsService: StatsServiceProtocol {
         ) async throws -> T where T: Sendable {
             /// The `summarize: true` feature works correctly only with the `.day` granularity.
             let interval = convertDateIntervalSiteToLocal(interval)
-            return try await service.getData(interval: interval, unit: .day, summarize: true, limit: limit ?? 10)
+            return try await service.getData(interval: interval, unit: .day, summarize: true, limit: limit ?? 10, parameters: parameters)
         }
 
         switch item {
