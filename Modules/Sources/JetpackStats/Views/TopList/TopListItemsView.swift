@@ -92,7 +92,7 @@ private struct ArchiveSectionItemView: View {
     
     @Environment(\.router) private var router
     @Environment(\.context) private var context
-    
+
     var body: some View {
         HStack(spacing: 0) {
             TopListArchiveSectionRowView(
