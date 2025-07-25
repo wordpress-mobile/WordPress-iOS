@@ -60,6 +60,10 @@ struct AuthorStatsView: View {
                     imageURL: author.avatarURL,
                     size: avatarSize
                 )
+                .overlay(
+                    Circle()
+                        .stroke(Color(.opaqueSeparator), lineWidth: 1)
+                )
 
                 // Name and metrics
                 VStack(alignment: .leading, spacing: Constants.step1) {
