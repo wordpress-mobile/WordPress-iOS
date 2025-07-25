@@ -63,6 +63,7 @@ enum Strings {
         static let apply = AppLocalizedString("jetpackStats.button.apply", value: "Apply", comment: "Apply button")
         static let share = AppLocalizedString("jetpackStats.button.share", value: "Share", comment: "Share chart menu item")
         static let showAll = AppLocalizedString("jetpackStats.button.showAll", value: "Show All", comment: "Button title")
+        static let ok = AppLocalizedString("jetpackStats.button.ok", value: "OK", comment: "OK button")
     }
 
     enum DatePicker {
@@ -163,5 +164,7 @@ enum Strings {
         static let markAsSpam = AppLocalizedString("jetpackStats.referrerDetails.markAsSpam", value: "Mark as Spam", comment: "Button to mark a referrer as spam")
         static let markedAsSpam = AppLocalizedString("jetpackStats.referrerDetails.markedAsSpam", value: "Marked as Spam", comment: "Label shown when a referrer is already marked as spam")
         static let referralSources = AppLocalizedString("jetpackStats.referrerDetails.referralSources", value: "Referral Sources", comment: "Section title for the list of referral sources")
+        static let markAsSpamError = AppLocalizedString("jetpackStats.referrerDetails.markAsSpamError", value: "Failed to mark as spam", comment: "Error message when marking a referrer as spam fails")
+        static let errorAlertTitle = AppLocalizedString("jetpackStats.referrerDetails.errorAlertTitle", value: "Error", comment: "Title for error alert when marking referrer as spam fails")
     }
 }

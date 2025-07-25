@@ -2,21 +2,21 @@ import SwiftUI
 import WordPressUI
 
 struct ReferrerStatsView: View {
-    let referrer: TopListData.Referrer
+    @State var referrer: TopListData.Referrer
     let dateRange: StatsDateRange
 
     private let imageSize: CGFloat = 28
 
     @Environment(\.context) private var context
     @Environment(\.router) private var router
+    @State private var isMarkingAsSpam = false
+    @State private var showErrorAlert = false
+    @State private var errorMessage = ""
 
     var body: some View {
         ScrollView {
             VStack(spacing: Constants.step3) {
-                VStack(spacing: Constants.step1) {
-                    headerCard
-                    dateRangeLabel
-                }
+                headerCard
                 if !referrer.children.isEmpty {
                     childrenCard
                 }
@@ -26,6 +26,11 @@ struct ReferrerStatsView: View {
         .background(Constants.Colors.background)
         .navigationTitle(Strings.ReferrerDetails.title)
         .navigationBarTitleDisplayMode(.inline)
+        .alert(Strings.ReferrerDetails.errorAlertTitle, isPresented: $showErrorAlert) {
+            Button(Strings.Buttons.ok, role: .cancel) { }
+        } message: {
+            Text(errorMessage)
+        }
     }
 
     private var placeholderIcon: some View {
@@ -33,17 +38,6 @@ struct ReferrerStatsView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .foregroundColor(.secondary.opacity(0.5))
-    }
-
-    var dateRangeLabel: some View {
-        HStack {
-            Image(systemName: "calendar")
-                .font(.caption)
-                .foregroundColor(.secondary)
-            Text(context.formatters.dateRange.string(from: dateRange.dateInterval))
-                .font(.caption)
-                .foregroundColor(.secondary)
-        }
     }
 
     var headerCard: some View {
@@ -128,9 +122,14 @@ struct ReferrerStatsView: View {
             }
             .foregroundColor(.secondary)
             .frame(maxWidth: .infinity)
+        } else if isMarkingAsSpam {
+            ProgressView()
+                .frame(maxWidth: .infinity)
         } else {
             Button(role: .destructive) {
-                // TODO: Implement mark as spam functionality
+                Task {
+                    await markAsSpam()
+                }
             } label: {
                 Label(Strings.ReferrerDetails.markAsSpam, systemImage: "exclamationmark.triangle")
                     .foregroundColor(.red)
@@ -169,6 +168,23 @@ struct ReferrerStatsView: View {
             items: referrer.children,
             maxValue: maxValue
         )
+    }
+    
+    private func markAsSpam() async {
+        guard let domain = referrer.domain else { return }
+        
+        isMarkingAsSpam = true
+        
+        do {
+            try await context.service.toggleSpamState(for: domain, currentValue: referrer.isSpam ?? false)
+            // Update local state to reflect the change
+            referrer.isSpam = true
+        } catch {
+            errorMessage = error.localizedDescription.isEmpty ? Strings.ReferrerDetails.markAsSpamError : error.localizedDescription
+            showErrorAlert = true
+        }
+        
+        isMarkingAsSpam = false
     }
 }
 

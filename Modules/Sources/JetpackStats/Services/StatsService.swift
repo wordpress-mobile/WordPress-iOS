@@ -247,6 +247,10 @@ actor StatsService: StatsServiceProtocol {
         return result
     }
 
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) async throws {
+        try await service.toggleSpamState(for: referrerDomain, currentValue: currentValue)
+    }
+
     // MARK: - Dates
 
     /// Convert from the site timezone (used in JetpackState) to the local
