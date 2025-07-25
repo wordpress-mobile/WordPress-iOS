@@ -102,7 +102,7 @@ private extension TopListItemView {
                 router.openURL(url)
             }
         case let author as TopListData.Author:
-            let detailsView = PostAuthorDetailsView(author: author, initialDateRange: dateRange, context: context)
+            let detailsView = AuthorStatsView(author: author, initialDateRange: dateRange, context: context)
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView)

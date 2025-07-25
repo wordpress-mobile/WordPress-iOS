@@ -2,7 +2,7 @@ import SwiftUI
 import WordPressKit
 import DesignSystem
 
-struct PostAuthorDetailsView: View {
+struct AuthorStatsView: View {
     let author: TopListData.Author
     
     @State private var dateRange: StatsDateRange
@@ -168,7 +168,7 @@ struct PostAuthorDetailsView: View {
 
 #Preview {
     NavigationStack {
-        PostAuthorDetailsView(
+        AuthorStatsView(
             author: TopListData.Author(
                 name: "Alex Johnson",
                 userId: "1",
