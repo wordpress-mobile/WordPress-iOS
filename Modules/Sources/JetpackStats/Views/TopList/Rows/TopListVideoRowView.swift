@@ -2,7 +2,6 @@ import SwiftUI
 
 struct TopListVideoRowView: View {
     let item: TopListData.Video
-    let showDetails: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -17,12 +16,10 @@ struct TopListVideoRowView: View {
                     .lineLimit(1)
             }
 
-            if showDetails {
-                Text(Strings.Videos.postId(item.postId))
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
-            }
+            Text(Strings.Videos.postId(item.postId))
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .lineLimit(1)
         }
     }
 }

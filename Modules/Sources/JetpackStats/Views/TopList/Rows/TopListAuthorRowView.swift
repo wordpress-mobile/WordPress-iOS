@@ -2,7 +2,6 @@ import SwiftUI
 
 struct TopListAuthorRowView: View {
     let item: TopListData.Author
-    let showDetails: Bool
 
     var body: some View {
         HStack(spacing: 12) {
@@ -14,7 +13,7 @@ struct TopListAuthorRowView: View {
                     .foregroundColor(.primary)
                     .lineLimit(1)
 
-                if showDetails, let role = item.role {
+                if let role = item.role {
                     Text(role)
                         .font(.caption)
                         .foregroundColor(.secondary)

@@ -2,7 +2,6 @@ import SwiftUI
 
 struct TopListExternalLinkRowView: View {
     let item: TopListData.ExternalLink
-    let showDetails: Bool
 
     var body: some View {
         HStack(spacing: 12) {
@@ -17,12 +16,10 @@ struct TopListExternalLinkRowView: View {
                     .foregroundColor(.primary)
                     .lineLimit(1)
 
-                if showDetails {
-                    Text(item.url)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
-                }
+                Text(item.url)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
             }
         }
     }

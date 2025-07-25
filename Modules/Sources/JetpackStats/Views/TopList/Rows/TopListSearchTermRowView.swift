@@ -2,7 +2,6 @@ import SwiftUI
 
 struct TopListSearchTermRowView: View {
     let item: TopListData.SearchTerm
-    let showDetails: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -11,12 +10,10 @@ struct TopListSearchTermRowView: View {
                 .foregroundColor(.primary)
                 .lineLimit(1)
 
-            if showDetails {
-                Text(Strings.SearchTerms.fromSearch)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
-            }
+            Text(Strings.SearchTerms.fromSearch)
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .lineLimit(1)
         }
     }
 }

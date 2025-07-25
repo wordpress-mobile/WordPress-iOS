@@ -5,7 +5,6 @@ struct TopListItemView: View {
     let previousItem: (any TopListItem)?
     let metric: SiteMetric
     let maxValue: Int
-    let showDetails: Bool
     let dateRange: StatsDateRange
 
     @Environment(\.router) private var router
@@ -29,23 +28,23 @@ struct TopListItemView: View {
             // Content-specific view
             switch currentItem {
             case let post as TopListData.Post:
-                TopListPostRowView(item: post, showDetails: showDetails)
+                TopListPostRowView(item: post)
             case let referrer as TopListData.Referrer:
-                TopListReferrerRowView(item: referrer, showDetails: showDetails)
+                TopListReferrerRowView(item: referrer)
             case let location as TopListData.Location:
-                TopListLocationRowView(item: location, showDetails: showDetails)
+                TopListLocationRowView(item: location)
             case let author as TopListData.Author:
-                TopListAuthorRowView(item: author, showDetails: showDetails)
+                TopListAuthorRowView(item: author)
             case let link as TopListData.ExternalLink:
-                TopListExternalLinkRowView(item: link, showDetails: showDetails)
+                TopListExternalLinkRowView(item: link)
             case let download as TopListData.FileDownload:
-                TopListFileDownloadRowView(item: download, showDetails: showDetails)
+                TopListFileDownloadRowView(item: download)
             case let searchTerm as TopListData.SearchTerm:
-                TopListSearchTermRowView(item: searchTerm, showDetails: showDetails)
+                TopListSearchTermRowView(item: searchTerm)
             case let video as TopListData.Video:
-                TopListVideoRowView(item: video, showDetails: showDetails)
+                TopListVideoRowView(item: video)
             case let archiveItem as TopListData.ArchiveItem:
-                TopListArchiveItemRowView(item: archiveItem, showDetails: showDetails)
+                TopListArchiveItemRowView(item: archiveItem)
             default:
                 let _ = assertionFailure("unsupported item: \(currentItem)")
                 EmptyView()
@@ -66,7 +65,6 @@ struct TopListItemView: View {
                     currentValue: currentItem.metrics[metric] ?? 0,
                     previousValue: previousItem?.metrics[metric],
                     metric: metric,
-                    showDetails: showDetails,
                     showChevron: hasDetails
                 )
             }

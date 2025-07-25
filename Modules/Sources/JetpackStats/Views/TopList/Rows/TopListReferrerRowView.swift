@@ -3,7 +3,6 @@ import WordPressUI
 
 struct TopListReferrerRowView: View {
     let item: TopListData.Referrer
-    let showDetails: Bool
 
     var body: some View {
         HStack(spacing: 8) {
@@ -29,7 +28,7 @@ struct TopListReferrerRowView: View {
                     .foregroundColor(.primary)
                     .lineLimit(1)
 
-                if showDetails, let domain = item.domain {
+                if let domain = item.domain {
                     Text(domain)
                         .font(.caption)
                         .foregroundColor(.secondary)

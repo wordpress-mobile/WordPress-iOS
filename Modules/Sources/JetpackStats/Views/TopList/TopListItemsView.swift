@@ -4,7 +4,6 @@ struct TopListItemsView: View {
     let data: TopListChartData
     let itemLimit: Int
     let dateRange: StatsDateRange
-    var showDetails = true
 
     @State private var expandedSections: Set<TopListItemID> = []
 
@@ -61,7 +60,6 @@ struct TopListItemsView: View {
             previousItem: data.previousItem(for: item),
             metric: data.metric,
             maxValue: data.maxValue,
-            showDetails: showDetails,
             dateRange: dateRange
         )
     }
@@ -87,7 +85,6 @@ private struct ExpandableItemView: View {
         HStack(spacing: 0) {
             TopListExpandableSectionRowView(
                 item: section as any TopListExpandableItem,
-                showDetails: false,
                 isExpanded: isExpanded
             )
 
@@ -97,7 +94,6 @@ private struct ExpandableItemView: View {
                 currentValue: section.metrics[metric] ?? 0,
                 previousValue: previousItem?.metrics[metric],
                 metric: metric,
-                showDetails: false,
                 showChevron: false
             )
         }
