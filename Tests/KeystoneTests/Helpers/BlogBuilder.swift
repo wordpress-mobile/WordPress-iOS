@@ -23,7 +23,7 @@ final class BlogBuilder {
         }
 
         // Non-null properties in Core Data
-        blog.url = "https://\(blog.dotComID?.stringValue ?? "wwww").example.com"
+        blog.url = "https://\(blog.dotComID?.stringValue ?? "www").example.com"
         blog.xmlrpc = "\(blog.url!)/xmlrpc.php"
     }
 

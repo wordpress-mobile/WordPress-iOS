@@ -37,6 +37,10 @@ actor ApplicationPasswordRepository {
     private let storage: ApplicationPasswordStorage
     private var ongoing: [TaggedManagedObjectID<Blog>: CurrentValueSubject<ApplicationPassword?, Error>] = [:]
 
+    static func forTesting(coreDataStack: CoreDataStackSwift, keychain: KeychainAccessible) -> ApplicationPasswordRepository {
+        ApplicationPasswordRepository(coreDataStack: coreDataStack, keychain: keychain)
+    }
+
     private init(coreDataStack: CoreDataStackSwift, keychain: KeychainAccessible) {
         self.coreDataStack = coreDataStack
         self.storage = .init(keychain: keychain)
