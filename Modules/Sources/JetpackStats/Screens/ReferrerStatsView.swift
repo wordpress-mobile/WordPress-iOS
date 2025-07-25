@@ -34,7 +34,7 @@ struct ReferrerStatsView: View {
             .aspectRatio(contentMode: .fit)
             .foregroundColor(.secondary.opacity(0.5))
     }
-    
+
     var dateRangeLabel: some View {
         HStack {
             Image(systemName: "calendar")
@@ -55,19 +55,19 @@ struct ReferrerStatsView: View {
         .padding(Constants.step2)
         .cardStyle()
     }
-    
+
     var referrerInfoRow: some View {
         HStack(spacing: Constants.step1) {
             referrerIcon
-            
+
             referrerDetails
-            
+
             Spacer()
-            
+
             viewsCount
         }
     }
-    
+
     @ViewBuilder
     var referrerIcon: some View {
         if let iconURL = referrer.iconURL {
@@ -84,13 +84,13 @@ struct ReferrerStatsView: View {
                 .frame(width: imageSize, height: imageSize)
         }
     }
-    
+
     var referrerDetails: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(referrer.name)
                 .font(.headline)
                 .foregroundColor(.primary)
-            
+
             if let domain = referrer.domain, let url = URL(string: "https://\(domain)") {
                 Link(domain, destination: url)
                     .font(.subheadline)
@@ -101,7 +101,7 @@ struct ReferrerStatsView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     var viewsCount: some View {
         if let views = referrer.metrics.views {
@@ -138,7 +138,7 @@ struct ReferrerStatsView: View {
             .buttonStyle(.plain)
         }
     }
-    
+
     var childrenCard: some View {
         VStack(alignment: .leading, spacing: Constants.step2) {
             Text(Strings.ReferrerDetails.referralSources)
@@ -156,12 +156,12 @@ struct ReferrerStatsView: View {
         .padding(Constants.step2)
         .cardStyle()
     }
-    
+
     private var childrenChartData: TopListChartData {
         let maxValue = referrer.children
             .compactMap { $0.metrics.views }
             .max() ?? 1
-        
+
         return TopListChartData(
             item: .referrers,
             metric: .views,

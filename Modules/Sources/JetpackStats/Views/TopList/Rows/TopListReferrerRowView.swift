@@ -21,7 +21,7 @@ struct TopListReferrerRowView: View {
                 placeholderIcon
                     .frame(width: 24, height: 24)
             }
-            
+
             VStack(alignment: .leading, spacing: 2) {
                 Text(item.name)
                     .font(.callout)
@@ -43,7 +43,7 @@ struct TopListReferrerRowView: View {
             }
         }
     }
-    
+
     private var placeholderIcon: some View {
         Image(systemName: "link.circle.fill")
             .resizable()
