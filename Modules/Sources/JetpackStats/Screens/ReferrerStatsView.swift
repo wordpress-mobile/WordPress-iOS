@@ -3,6 +3,7 @@ import WordPressUI
 
 struct ReferrerStatsView: View {
     let referrer: TopListData.Referrer
+    let dateRange: StatsDateRange
 
     private let imageSize: CGFloat = 28
 
@@ -12,7 +13,10 @@ struct ReferrerStatsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: Constants.step3) {
-                headerCard
+                VStack(spacing: Constants.step1) {
+                    headerCard
+                    dateRangeLabel
+                }
                 if !referrer.children.isEmpty {
                     childrenCard
                 }
@@ -29,6 +33,17 @@ struct ReferrerStatsView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .foregroundColor(.secondary.opacity(0.5))
+    }
+    
+    var dateRangeLabel: some View {
+        HStack {
+            Image(systemName: "calendar")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            Text(context.formatters.dateRange.string(from: dateRange.dateInterval))
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
     }
 
     var headerCard: some View {
@@ -133,7 +148,7 @@ struct ReferrerStatsView: View {
             TopListItemsView(
                 data: childrenChartData,
                 itemLimit: referrer.children.count,
-                dateRange: context.calendar.makeDateRange(for: .thisYear), // Not used
+                dateRange: dateRange,
                 isNavigationDisabled: true
             )
 
@@ -160,7 +175,10 @@ struct ReferrerStatsView: View {
 
 #Preview {
     NavigationView {
-        ReferrerStatsView(referrer: .mock)
+        ReferrerStatsView(
+            referrer: .mock,
+            dateRange: Calendar.demo.makeDateRange(for: .thisYear)
+        )
     }
     .tint(Constants.Colors.blue)
 }

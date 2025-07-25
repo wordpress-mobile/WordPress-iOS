@@ -121,7 +121,7 @@ private extension TopListItemView {
                 .environment(\.router, router)
             router.navigate(to: detailsView)
         case let referrer as TopListData.Referrer:
-            let detailsView = ReferrerStatsView(referrer: referrer)
+            let detailsView = ReferrerStatsView(referrer: referrer, dateRange: dateRange)
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView)
