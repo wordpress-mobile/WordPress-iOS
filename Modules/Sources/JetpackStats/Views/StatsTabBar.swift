@@ -28,7 +28,7 @@ struct StatsTabBar: View {
                         tabButton(for: tab)
                     }
                 }
-                .padding(.horizontal, 32)
+                .padding(.horizontal, 27)
             }
             Divider()
         }
