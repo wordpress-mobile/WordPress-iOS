@@ -82,7 +82,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         }
 
         // Aggregate all items across the date range
-        var aggregatedItems: [String: (any TopListItem, Int)] = [:] // Store item and aggregated metrics
+        var aggregatedItems: [TopListItemID: (any TopListItem, Int)] = [:] // Store item and aggregated metrics
 
         for (_, dailyItems) in filteredData {
             for item in dailyItems {

@@ -146,7 +146,7 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         let (current, previous) = try await (currentTask, previousTask)
 
         // Build previous items dictionary
-        var previousItemsDict: [String: any TopListItem] = [:]
+        var previousItemsDict: [TopListItemID: any TopListItem] = [:]
         if let previousItems = previous?.items {
             for item in previousItems {
                 previousItemsDict[item.id] = item

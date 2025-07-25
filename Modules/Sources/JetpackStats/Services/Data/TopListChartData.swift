@@ -4,7 +4,7 @@ final class TopListChartData {
     let item: TopListItemType
     let metric: SiteMetric
     let items: [any TopListItem]
-    let previousItems: [String: any TopListItem]
+    let previousItems: [TopListItemID: any TopListItem]
     let maxValue: Int
 
     struct ListID: Hashable {
@@ -16,7 +16,7 @@ final class TopListChartData {
         ListID(item: item, metric: metric)
     }
 
-    init(item: TopListItemType, metric: SiteMetric, items: [any TopListItem], previousItems: [String: any TopListItem] = [:], maxValue: Int) {
+    init(item: TopListItemType, metric: SiteMetric, items: [any TopListItem], previousItems: [TopListItemID: any TopListItem] = [:], maxValue: Int) {
         self.item = item
         self.metric = metric
         self.items = items
@@ -40,7 +40,7 @@ extension TopListChartData {
         let currentItems = mockItems(for: itemType, metric: metric, count: itemCount)
         
         // Create previous items dictionary
-        var previousItemsDict: [String: any TopListItem] = [:]
+        var previousItemsDict: [TopListItemID: any TopListItem] = [:]
         for item in currentItems {
             let previousItem = mockPreviousItem(from: item, metric: metric)
             previousItemsDict[item.id] = previousItem

@@ -6,69 +6,71 @@ struct TopListItemsView: View {
     let dateRange: StatsDateRange
     var showDetails = true
     
-    @State private var expandedSections: Set<String> = []
+    @State private var expandedSections: Set<TopListItemID> = []
 
     var body: some View {
         VStack(spacing: Constants.step1 / 2) {
-            ForEach(Array(data.items.prefix(itemLimit)), id: \.id) { item in
-                if let expandableItem = item as? any TopListExpandableItem {
-                    // Expandable section with child items
-                    VStack(spacing: Constants.step1 / 2) {
-                        Button {
-                            toggleSection(expandableItem.id)
-                        } label: {
-                            ExpandableItemView(
-                                section: expandableItem,
-                                previousItem: data.previousItem(for: expandableItem) as? (any TopListExpandableItem),
-                                metric: data.metric,
-                                maxValue: data.maxValue,
-                                dateRange: dateRange,
-                                isExpanded: expandedSections.contains(expandableItem.id)
-                            )
-                        }
-                        .buttonStyle(.plain)
-
-                        // Expandable items
-                        if expandedSections.contains(expandableItem.id) {
-                            VStack(spacing: Constants.step1 / 2) {
-                                ForEach(Array(expandableItem.items), id: \.id) { childItem in
-                                    TopListItemView(
-                                        currentItem: childItem,
-                                        previousItem: nil,
-                                        metric: data.metric,
-                                        maxValue: data.maxValue,
-                                        showDetails: showDetails,
-                                        dateRange: dateRange
-                                    )
-                                    .padding(.leading, Constants.step2)
-                                    .transition(.asymmetric(
-                                        insertion: .opacity.combined(with: .move(edge: .top)),
-                                        removal: .opacity.combined(with: .move(edge: .top))
-                                    ))
-                                }
-                            }
-                        }
-                    }
+            ForEach(data.items.prefix(itemLimit), id: \.id) { item in
+                if let item = item as? any TopListExpandableItem {
+                    makeExpandableSection(with: item)
                 } else {
-                    TopListItemView(
-                        currentItem: item,
-                        previousItem: data.previousItem(for: item),
-                        metric: data.metric,
-                        maxValue: data.maxValue,
-                        showDetails: showDetails,
-                        dateRange: dateRange
-                    )
-                    .transition(.move(edge: .leading)
-                        .combined(with: .scale(scale: 0.75))
-                        .combined(with: .opacity))
+                    makeView(for: item)
+                        .transition(.move(edge: .leading)
+                            .combined(with: .scale(scale: 0.75))
+                            .combined(with: .opacity))
                 }
             }
         }
         .animation(.spring, value: ObjectIdentifier(data))
-        .animation(.spring, value: expandedSections)
     }
 
-    private func toggleSection(_ sectionId: String) {
+    private func makeExpandableSection(with item: any TopListExpandableItem) -> some View {
+        VStack(spacing: Constants.step1 / 2) {
+            Button {
+                withAnimation(.spring) {
+                    toggleSection(item.id)
+                }
+            } label: {
+                ExpandableItemView(
+                    section: item,
+                    previousItem: data.previousItem(for: item) as? (any TopListExpandableItem),
+                    metric: data.metric,
+                    maxValue: data.maxValue,
+                    isExpanded: expandedSections.contains(item.id)
+                )
+            }
+            .buttonStyle(.plain)
+
+            if expandedSections.contains(item.id) {
+                VStack(spacing: Constants.step1 / 2) {
+                    ForEach(Array(item.children), id: \.id) { child in
+                        makeView(for: child)
+                            .padding(.leading, Constants.step2)
+                            .transition(.move(edge: .leading)
+                                .combined(with: .scale(scale: 0.75))
+                                .combined(with: .opacity))
+//                            .transition(.asymmetric(
+//                                insertion: .opacity.combined(with: .move(edge: .top)),
+//                                removal: .opacity.combined(with: .move(edge: .top))
+//                            ))
+                    }
+                }
+            }
+        }
+    }
+
+    private func makeView(for item: any TopListItem) -> some View {
+        TopListItemView(
+            currentItem: item,
+            previousItem: data.previousItem(for: item),
+            metric: data.metric,
+            maxValue: data.maxValue,
+            showDetails: showDetails,
+            dateRange: dateRange
+        )
+    }
+
+    private func toggleSection(_ sectionId: TopListItemID) {
         if expandedSections.contains(sectionId) {
             expandedSections.remove(sectionId)
         } else {
