@@ -1,0 +1,44 @@
+[
+  {
+    "term": "swiftui tutorial",
+    "metrics": {
+      "views": 32,
+      "visitors": 25
+    }
+  },
+  {
+    "term": "ios development guide",
+    "metrics": {
+      "views": 28,
+      "visitors": 22
+    }
+  },
+  {
+    "term": "swift async await",
+    "metrics": {
+      "views": 24,
+      "visitors": 19
+    }
+  },
+  {
+    "term": "xcode tips",
+    "metrics": {
+      "views": 20,
+      "visitors": 16
+    }
+  },
+  {
+    "term": "swift performance",
+    "metrics": {
+      "views": 16,
+      "visitors": 13
+    }
+  },
+  {
+    "term": "ios app architecture",
+    "metrics": {
+      "views": 12,
+      "visitors": 10
+    }
+  }
+]

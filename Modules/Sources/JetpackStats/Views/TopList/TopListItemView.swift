@@ -44,6 +44,8 @@ struct TopListItemView: View {
                 TopListSearchTermRowView(item: searchTerm, showDetails: showDetails)
             case let video as TopListData.Video:
                 TopListVideoRowView(item: video, showDetails: showDetails)
+            case let archiveItem as TopListData.ArchiveItem:
+                TopListArchiveItemRowView(item: archiveItem, showDetails: showDetails)
             default:
                 let _ = assertionFailure("unsupported item: \(currentItem)")
                 EmptyView()
@@ -79,6 +81,8 @@ private extension TopListItemView {
         switch currentItem {
         case is TopListData.Post:
             return true
+        case is TopListData.ArchiveItem:
+            return true
         default:
             return false
         }
@@ -91,6 +95,10 @@ private extension TopListItemView {
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView)
+        case let archiveItem as TopListData.ArchiveItem:
+            if let url = URL(string: archiveItem.href) {
+                router.openURL(url)
+            }
         default:
             break
         }

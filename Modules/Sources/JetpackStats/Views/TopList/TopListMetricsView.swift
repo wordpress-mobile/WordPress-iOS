@@ -15,9 +15,11 @@ struct TopListMetricsView: View {
                     .foregroundColor(.primary)
                     .contentTransition(.numericText())
 
-                Image(systemName: "chevron.forward")
-                    .font(.caption2.weight(.bold))
-                    .foregroundStyle(Color(.tertiaryLabel))
+                if showChevron {
+                    Image(systemName: "chevron.forward")
+                        .font(.caption2.weight(.bold))
+                        .foregroundStyle(Color(.tertiaryLabel))
+                }
             }
             if showDetails, let trend {
                 Text(trend.formattedTrend)

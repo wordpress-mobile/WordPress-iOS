@@ -46,6 +46,7 @@ enum Strings {
 
     enum SiteDataTypes {
         static let postsAndPages = AppLocalizedString("jetpackStats.siteDataTypes.postsAndPages", value: "Posts & Pages", comment: "Posts and pages data type")
+        static let archive = AppLocalizedString("jetpackStats.siteDataTypes.archive", value: "Archive", comment: "Archive data type")
         static let posts = AppLocalizedString("jetpackStats.siteDataTypes.posts", value: "Posts", comment: "Posts data type")
         static let pages = AppLocalizedString("jetpackStats.siteDataTypes.pages", value: "Pages", comment: "Pages data type")
         static let authors = AppLocalizedString("jetpackStats.siteDataTypes.authors", value: "Authors", comment: "Authors data type")
@@ -113,6 +114,11 @@ enum Strings {
                 id
             )
         }
+    }
+
+    enum ArchiveSections {
+        static let author = AppLocalizedString("jetpackStats.archiveSections.author", value: "Authors", comment: "Archive section for authors")
+        static let other = AppLocalizedString("jetpackStats.archiveSections.other", value: "Other", comment: "Archive section for other items")
     }
 
     enum PostDetails {

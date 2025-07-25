@@ -24,13 +24,14 @@ actor StatsService: StatsServiceProtocol {
     ]
 
     let supportedItems: [TopListItemType] = [
-        .postsAndPages, .referrers, .locations, .authors, .externalLinks,
+        .postsAndPages, .archive, .referrers, .locations, .authors, .externalLinks,
         .fileDownloads, .searchTerms, .videos
     ]
 
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
         switch item {
         case .postsAndPages: [.views]
+        case .archive: [.views]
         case .referrers: [.views]
         case .locations: [.views]
         case .authors: [.views]
@@ -177,6 +178,15 @@ actor StatsService: StatsServiceProtocol {
             case .views:
                 let data = try await getData(StatsTopVideosTimeIntervalData.self)
                 return mapVideosToTopListData(data)
+            default:
+                throw StatsServiceError.unavailable
+            }
+
+        case .archive:
+            switch metric {
+            case .views:
+                let data = try await getData(StatsArchiveTimeIntervalData.self)
+                return mapArchiveToTopListData(data)
             default:
                 throw StatsServiceError.unavailable
             }
@@ -421,6 +431,36 @@ actor StatsService: StatsServiceProtocol {
             )
         }
         return TopListData(items: items)
+    }
+
+    private func mapArchiveToTopListData(_ data: StatsArchiveTimeIntervalData) -> TopListData {
+        // Convert the summary dictionary into archive sections
+        let sections = data.summary.compactMap { (sectionName, items) -> TopListData.ArchiveSection? in
+            guard !items.isEmpty else { return nil }
+
+            // Map archive items
+            let archiveItems = items.map { item in
+                TopListData.ArchiveItem(
+                    href: item.href,
+                    value: item.value,
+                    metrics: SiteMetricsSet(views: item.views)
+                )
+            }
+
+            // Calculate total views for the section
+            let totalViews = items.reduce(0) { $0 + $1.views }
+
+            return TopListData.ArchiveSection(
+                sectionName: sectionName,
+                items: archiveItems,
+                metrics: SiteMetricsSet(views: totalViews)
+            )
+        }
+
+        // Sort sections by total views
+        let sortedSections = sections.sorted { ($0.metrics.views ?? 0) > ($1.metrics.views ?? 0) }
+
+        return TopListData(items: sortedSections)
     }
 }
 

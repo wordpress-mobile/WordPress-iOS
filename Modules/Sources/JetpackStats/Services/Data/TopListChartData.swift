@@ -1,24 +1,10 @@
 import Foundation
 
 final class TopListChartData {
-    struct Item: Identifiable {
-        let id: ItemID
-        let current: any TopListItem
-        let previous: (any TopListItem)?
-    }
-
-    /// - warning: It's required for animations in ``TopListItemsView`` to work
-    /// well for IDs to be unique across the domains. If we were just to use
-    /// `String`, there would be collisions across domains, e.g. post and author
-    /// using the same String ID "1".
-    struct ItemID: Hashable {
-        let type: TopListItemType
-        let id: String
-    }
-
     let item: TopListItemType
     let metric: SiteMetric
-    let items: [Item]
+    let items: [any TopListItem]
+    let previousItems: [TopListItemID: any TopListItem]
     let maxValue: Int
 
     struct ListID: Hashable {
@@ -30,11 +16,16 @@ final class TopListChartData {
         ListID(item: item, metric: metric)
     }
 
-    init(item: TopListItemType, metric: SiteMetric, items: [Item], maxValue: Int) {
+    init(item: TopListItemType, metric: SiteMetric, items: [any TopListItem], previousItems: [TopListItemID: any TopListItem] = [:], maxValue: Int) {
         self.item = item
         self.metric = metric
         self.items = items
+        self.previousItems = previousItems
         self.maxValue = maxValue
+    }
+
+    func previousItem(for currentItem: any TopListItem) -> (any TopListItem)? {
+        previousItems[currentItem.id]
     }
 }
 
@@ -46,22 +37,24 @@ extension TopListChartData {
         metric: SiteMetric = .views,
         itemCount: Int = 6
     ) -> TopListChartData {
-        let items = mockItems(for: itemType, metric: metric, count: itemCount)
-        let matchedItems = items.map { item in
-            // Create previous item with slightly different values
+        let currentItems = mockItems(for: itemType, metric: metric, count: itemCount)
+
+        // Create previous items dictionary
+        var previousItemsDict: [TopListItemID: any TopListItem] = [:]
+        for item in currentItems {
             let previousItem = mockPreviousItem(from: item, metric: metric)
-            let itemID = ItemID(type: itemType, id: item.id)
-            return Item(id: itemID, current: item, previous: previousItem)
+            previousItemsDict[item.id] = previousItem
         }
 
-        let maxValue = items
+        let maxValue = currentItems
             .compactMap { $0.metrics[metric] }
             .max() ?? 1
 
         return TopListChartData(
             item: itemType,
             metric: metric,
-            items: matchedItems,
+            items: currentItems,
+            previousItems: previousItemsDict,
             maxValue: maxValue
         )
     }
@@ -88,6 +81,8 @@ extension TopListChartData {
             return mockSearchTerms(metric: metric, count: count)
         case .videos:
             return mockVideos(metric: metric, count: count)
+        case .archive:
+            return mockArchive(metric: metric, count: count)
         }
     }
 
@@ -282,6 +277,58 @@ extension TopListChartData {
         }
     }
 
+    private static func mockArchive(metric: SiteMetric, count: Int) -> [any TopListItem] {
+        // Create mock archive sections
+        let archiveSections = [
+            ("pages", [
+                ("/about/", 2500),
+                ("/contact/", 1800),
+                ("/privacy-policy/", 1200),
+                ("/terms-of-service/", 800),
+                ("/faq/", 600)
+            ]),
+            ("categories", [
+                ("/category/technology/", 3200),
+                ("/category/design/", 2800),
+                ("/category/business/", 2400),
+                ("/category/lifestyle/", 1600)
+            ]),
+            ("tags", [
+                ("/tag/swift/", 2100),
+                ("/tag/ios/", 1900),
+                ("/tag/swiftui/", 1700),
+                ("/tag/mobile/", 1400)
+            ]),
+            ("archives", [
+                ("/2024/01/", 1500),
+                ("/2023/12/", 1300),
+                ("/2023/11/", 1100),
+                ("/2023/10/", 900)
+            ])
+        ]
+
+        return archiveSections.prefix(count).map { sectionData in
+            let sectionName = sectionData.0
+            let items = sectionData.1.map { itemData in
+                let metrics = createMetrics(baseValue: itemData.1, metric: metric)
+                return TopListData.ArchiveItem(
+                    href: "https://example.com\(itemData.0)",
+                    value: itemData.0,
+                    metrics: metrics
+                )
+            }
+
+            // Calculate total views for the section
+            let totalViews = items.reduce(0) { $0 + ($1.metrics[metric] ?? 0) }
+
+            return TopListData.ArchiveSection(
+                sectionName: sectionName,
+                items: items,
+                metrics: SiteMetricsSet(views: totalViews)
+            )
+        }
+    }
+
     private static func createMetrics(baseValue: Int, metric: SiteMetric) -> SiteMetricsSet {
         // Add some variation to make it more realistic
         let variation = Double.random(in: 0.8...1.2)
@@ -324,6 +371,17 @@ extension TopListChartData {
         let trendFactor = Double.random(in: 0.7...1.3)
         let currentValue = item.metrics[metric] ?? 0
         item.metrics[metric] = Int(Double(currentValue) * trendFactor)
+
+        // Special handling for archive sections - update child items too
+        if var archiveSection = item as? TopListData.ArchiveSection {
+            archiveSection.items = archiveSection.items.map { archiveItem in
+                var mutableItem = archiveItem
+                let itemCurrentValue = mutableItem.metrics[metric] ?? 0
+                mutableItem.metrics[metric] = Int(Double(itemCurrentValue) * trendFactor)
+                return mutableItem
+            }
+            return archiveSection
+        }
 
         return item
     }

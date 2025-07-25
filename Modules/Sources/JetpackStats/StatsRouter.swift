@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import SafariServices
 
 @MainActor
 public protocol StatsRouterScreenFactory: AnyObject {
@@ -38,6 +39,13 @@ public final class StatsRouter: @unchecked Sendable {
     func navigateToCommentsList(siteID: Int, postID: Int) {
         let commentsVC = factory.makeCommentsListViewController(siteID: siteID, postID: postID)
         navigationController?.pushViewController(commentsVC, animated: true)
+    }
+
+    @MainActor
+    func openURL(_ url: URL) {
+        // Open URL in in-app Safari
+        let safariViewController = SFSafariViewController(url: url)
+        viewController?.present(safariViewController, animated: true)
     }
 }
 

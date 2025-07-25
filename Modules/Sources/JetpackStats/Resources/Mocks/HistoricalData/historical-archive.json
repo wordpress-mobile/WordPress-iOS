@@ -1,0 +1,74 @@
+[
+  {
+    "sectionName": "other",
+    "items": [
+      {
+        "href": "http://example.com/wp-admin/admin.php?page=stats",
+        "value": "/wp-admin/admin.php?page=stats",
+        "metrics": {
+          "views": 10
+        }
+      },
+      {
+        "href": "http://example.com/wp-admin/",
+        "value": "/wp-admin/",
+        "metrics": {
+          "views": 4
+        }
+      },
+      {
+        "href": "http://example.com/wp-admin/edit.php",
+        "value": "/wp-admin/edit.php",
+        "metrics": {
+          "views": 4
+        }
+      },
+      {
+        "href": "http://example.com/wp-admin/index.php",
+        "value": "/wp-admin/index.php",
+        "metrics": {
+          "views": 2
+        }
+      },
+      {
+        "href": "http://example.com/wp-admin/revision.php?revision=12345",
+        "value": "/wp-admin/revision.php?revision=12345",
+        "metrics": {
+          "views": 2
+        }
+      }
+    ],
+    "metrics": {
+      "views": 25
+    }
+  },
+  {
+    "sectionName": "author",
+    "items": [
+      {
+        "href": "http://example.com/author/johndoe/",
+        "value": "johndoe",
+        "metrics": {
+          "views": 31
+        }
+      },
+      {
+        "href": "http://example.com/author/janedoe/",
+        "value": "janedoe",
+        "metrics": {
+          "views": 5
+        }
+      },
+      {
+        "href": "http://example.com/author/testuser/",
+        "value": "testuser",
+        "metrics": {
+          "views": 2
+        }
+      }
+    ],
+    "metrics": {
+      "views": 40
+    }
+  }
+]

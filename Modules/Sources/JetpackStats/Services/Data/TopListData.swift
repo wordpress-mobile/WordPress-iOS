@@ -4,9 +4,23 @@ struct TopListData: Sendable {
     let items: [any TopListItem]
 }
 
+/// - warning: It's required for animations in ``TopListItemsView`` to work
+/// well for IDs to be unique across the domains. If we were just to use
+/// `String`, there would be collisions across domains, e.g. post and author
+/// using the same String ID "1".
+struct TopListItemID: Hashable {
+    let type: TopListItemType
+    let id: String
+}
+
 protocol TopListItem: Codable, Sendable, Identifiable {
     var metrics: SiteMetricsSet { get set }
-    var id: String { get }
+    var id: TopListItemID { get }
+}
+
+protocol TopListExpandableItem: TopListItem {
+    var children: [any TopListItem] { get }
+    var displayName: String { get }
 }
 
 extension TopListData {
@@ -19,7 +33,9 @@ extension TopListData {
         let author: String?
         var metrics: SiteMetricsSet
 
-        var id: String { postID ?? title }
+        var id: TopListItemID {
+            TopListItemID(type: .postsAndPages, id: postID ?? title)
+        }
     }
 
     struct Referrer: Codable, TopListItem {
@@ -27,7 +43,9 @@ extension TopListData {
         let domain: String?
         var metrics: SiteMetricsSet
 
-        var id: String { domain ?? name }
+        var id: TopListItemID {
+            TopListItemID(type: .referrers, id: domain ?? name)
+        }
     }
 
     struct Location: Codable, TopListItem {
@@ -36,7 +54,9 @@ extension TopListData {
         let countryCode: String?
         var metrics: SiteMetricsSet
 
-        var id: String { countryCode ?? country }
+        var id: TopListItemID {
+            TopListItemID(type: .locations, id: countryCode ?? country)
+        }
     }
 
     struct Author: Codable, TopListItem {
@@ -46,7 +66,9 @@ extension TopListData {
         var metrics: SiteMetricsSet
         var avatarURL: URL?
 
-        var id: String { userId }
+        var id: TopListItemID {
+            TopListItemID(type: .authors, id: userId)
+        }
     }
 
     struct ExternalLink: Codable, TopListItem {
@@ -54,7 +76,9 @@ extension TopListData {
         let title: String?
         var metrics: SiteMetricsSet
 
-        var id: String { url }
+        var id: TopListItemID {
+            TopListItemID(type: .externalLinks, id: url)
+        }
     }
 
     struct FileDownload: Codable, TopListItem {
@@ -62,14 +86,18 @@ extension TopListData {
         let filePath: String?
         var metrics: SiteMetricsSet
 
-        var id: String { filePath ?? fileName }
+        var id: TopListItemID {
+            TopListItemID(type: .fileDownloads, id: filePath ?? fileName)
+        }
     }
 
     struct SearchTerm: Codable, TopListItem {
         let term: String
         var metrics: SiteMetricsSet
 
-        var id: String { term }
+        var id: TopListItemID {
+            TopListItemID(type: .searchTerms, id: term)
+        }
     }
 
     struct Video: Codable, TopListItem {
@@ -78,6 +106,38 @@ extension TopListData {
         let videoUrl: URL?
         var metrics: SiteMetricsSet
 
-        var id: String { postId }
+        var id: TopListItemID {
+            TopListItemID(type: .videos, id: postId)
+        }
+    }
+
+    struct ArchiveItem: Codable, TopListItem {
+        let href: String
+        let value: String
+        var metrics: SiteMetricsSet
+
+        var id: TopListItemID {
+            TopListItemID(type: .archive, id: href)
+        }
+    }
+
+    struct ArchiveSection: Codable, TopListExpandableItem {
+        let sectionName: String
+        var items: [ArchiveItem]
+        var metrics: SiteMetricsSet
+
+        var children: [any TopListItem] { items }
+
+        var id: TopListItemID {
+            TopListItemID(type: .archive, id: sectionName)
+        }
+
+        var displayName: String {
+            switch sectionName.lowercased() {
+            case "author": Strings.ArchiveSections.author
+            case "other": Strings.ArchiveSections.other
+            default: sectionName.capitalized
+            }
+        }
     }
 }

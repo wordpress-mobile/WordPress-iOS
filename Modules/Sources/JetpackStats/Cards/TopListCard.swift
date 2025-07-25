@@ -155,7 +155,7 @@ struct TopListCard: View {
                     .font(.callout)
                     .foregroundColor(.primary)
                 Image(systemName: "chevron.right")
-                    .font(.caption)
+                    .font(.caption.weight(.semibold))
                     .foregroundColor(.secondary)
             }
             .font(.body)

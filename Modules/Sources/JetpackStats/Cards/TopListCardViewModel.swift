@@ -124,27 +124,33 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
     private func getTopListData(for selection: Selection, dateRange: StatsDateRange) async throws -> TopListChartData {
         let granularity = dateRange.dateInterval.preferredGranularity
 
-        // Fetch both current and previous period data concurrently
+        // Fetch current data
         async let currentTask = service.getTopListData(
             selection.item,
             metric: selection.metric,
             interval: dateRange.dateInterval,
             granularity: granularity
         )
-        async let previousTask = service.getTopListData(
-            selection.item,
-            metric: selection.metric,
-            interval: dateRange.effectiveComparisonInterval,
-            granularity: granularity
-        )
+
+        // Fetch previous data only for items that support it
+        async let previousTask: TopListData? = {
+            guard selection.item != .archive else { return nil }
+            return try await service.getTopListData(
+                selection.item,
+                metric: selection.metric,
+                interval: dateRange.effectiveComparisonInterval,
+                granularity: granularity
+            )
+        }()
 
         let (current, previous) = try await (currentTask, previousTask)
 
-        // Match current items with their previous counterparts
-        let matchedItems = current.items.map { currentItem in
-            let previousItem = previous.items.first { $0.id == currentItem.id }
-            let itemID = TopListChartData.ItemID(type: selection.item, id: currentItem.id)
-            return TopListChartData.Item(id: itemID, current: currentItem, previous: previousItem)
+        // Build previous items dictionary
+        var previousItemsDict: [TopListItemID: any TopListItem] = [:]
+        if let previousItems = previous?.items {
+            for item in previousItems {
+                previousItemsDict[item.id] = item
+            }
         }
 
         // Calculate max value from current items based on selected metric
@@ -153,6 +159,12 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
             .compactMap { $0.metrics[metric] }
             .max() ?? 1
 
-        return TopListChartData(item: selection.item, metric: metric, items: matchedItems, maxValue: maxValue)
+        return TopListChartData(
+            item: selection.item,
+            metric: metric,
+            items: current.items,
+            previousItems: previousItemsDict,
+            maxValue: maxValue
+        )
     }
 }

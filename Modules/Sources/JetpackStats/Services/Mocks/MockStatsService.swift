@@ -13,6 +13,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
         switch item {
         case .postsAndPages: [.views, .visitors, .comments, .likes]
+        case .archive: [.views]
         case .referrers: [.views, .visitors]
         case .locations: [.views, .visitors]
         case .authors: [.views, .comments, .likes]
@@ -81,7 +82,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         }
 
         // Aggregate all items across the date range
-        var aggregatedItems: [String: (any TopListItem, Int)] = [:] // Store item and aggregated metrics
+        var aggregatedItems: [TopListItemID: (any TopListItem, Int)] = [:] // Store item and aggregated metrics
 
         for (_, dailyItems) in filteredData {
             for item in dailyItems {
@@ -184,6 +185,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         switch dataType {
         case .postsAndPages:
             fileName = "postsAndPages"
+        case .archive:
+            fileName = "archive"
         case .referrers:
             fileName = "referrers"
         case .locations:
@@ -242,6 +245,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             case .postsAndPages:
                 let posts = try decoder.decode([TopListData.Post].self, from: data)
                 return posts
+            case .archive:
+                let sections = try decoder.decode([TopListData.ArchiveSection].self, from: data)
+                return sections
             }
         } catch {
             print("Failed to load \(fileName).json: \(error)")
@@ -303,6 +309,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         switch dataType {
         case .postsAndPages:
             fileName = "historical-postsAndPages"
+        case .archive:
+            fileName = "historical-archive"
         case .referrers:
             fileName = "historical-referrers"
         case .locations:
@@ -361,6 +369,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             case .postsAndPages:
                 let posts = try decoder.decode([TopListData.Post].self, from: data)
                 return posts
+            case .archive:
+                let sections = try decoder.decode([TopListData.ArchiveSection].self, from: data)
+                return sections
             }
         } catch {
             print("Failed to load \(fileName).json: \(error)")
@@ -536,4 +547,5 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             dailyTopListData[dataType] = typeData
         }
     }
+
 }
