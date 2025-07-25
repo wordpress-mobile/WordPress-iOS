@@ -44,7 +44,10 @@ enum Constants {
 
     static func heatmapColor(baseColor: Color, intensity: Double) -> Color {
         if intensity == 0 {
-            return Color(UIColor.secondarySystemBackground)
+            return Color(UIColor(
+                light: UIColor.secondarySystemBackground,
+                dark: UIColor.tertiarySystemBackground
+            ))
         }
 
         // Use graduated opacity based on intensity
