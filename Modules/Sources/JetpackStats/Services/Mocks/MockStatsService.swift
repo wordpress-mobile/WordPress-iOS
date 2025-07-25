@@ -538,7 +538,35 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
                 // Apply mutations to each item for this day
                 let dailyItems = baseItems.map { item in
-                    mutateItemMetrics(item, growthFactor: growthFactor, seasonalFactor: seasonalFactor, weekendFactor: weekendFactor, randomFactor: randomFactor)
+                    var mutatedItem = mutateItemMetrics(item, growthFactor: growthFactor, seasonalFactor: seasonalFactor, weekendFactor: weekendFactor, randomFactor: randomFactor)
+                    
+                    // If it's an Author with posts, mutate the posts too
+                    if let author = mutatedItem as? TopListData.Author, let posts = author.posts {
+                        var mutatedAuthor = author
+                        mutatedAuthor.posts = posts.map { post in
+                            var mutatedPost = post
+                            // Apply similar mutation factors to post metrics
+                            let postRandomFactor = Double.random(in: 0.9...1.1) // Slight variation per post
+                            let postCombinedFactor = growthFactor * seasonalFactor * weekendFactor * randomFactor * postRandomFactor
+                            
+                            if let views = post.metrics.views {
+                                mutatedPost.metrics.views = Int(Double(views) * postCombinedFactor)
+                            }
+                            if let comments = post.metrics.comments {
+                                mutatedPost.metrics.comments = Int(Double(comments) * postCombinedFactor * 0.8)
+                            }
+                            if let likes = post.metrics.likes {
+                                mutatedPost.metrics.likes = Int(Double(likes) * postCombinedFactor * 0.9)
+                            }
+                            if let visitors = post.metrics.visitors {
+                                mutatedPost.metrics.visitors = Int(Double(visitors) * postCombinedFactor)
+                            }
+                            return mutatedPost
+                        }
+                        mutatedItem = mutatedAuthor
+                    }
+                    
+                    return mutatedItem
                 }
 
                 let startOfDay = calendar.startOfDay(for: currentDate)
