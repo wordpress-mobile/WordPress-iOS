@@ -43,7 +43,7 @@ struct TopListItemsView: View {
                                         showDetails: showDetails,
                                         dateRange: dateRange
                                     )
-                                    .padding(.leading, Constants.step4)
+                                    .padding(.leading, Constants.step2)
                                     .transition(.asymmetric(
                                         insertion: .opacity.combined(with: .move(edge: .top)),
                                         removal: .opacity.combined(with: .move(edge: .top))

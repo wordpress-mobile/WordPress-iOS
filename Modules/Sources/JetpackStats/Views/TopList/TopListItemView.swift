@@ -46,8 +46,6 @@ struct TopListItemView: View {
                 TopListVideoRowView(item: video, showDetails: showDetails)
             case let archiveItem as TopListData.ArchiveItem:
                 TopListArchiveItemRowView(item: archiveItem, showDetails: showDetails)
-            case let archiveSection as TopListData.ArchiveSection:
-                TopListArchiveSectionRowView(item: archiveSection, showDetails: showDetails)
             default:
                 let _ = assertionFailure("unsupported item: \(currentItem)")
                 EmptyView()

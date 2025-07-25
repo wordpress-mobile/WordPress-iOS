@@ -6,21 +6,20 @@ struct TopListArchiveSectionRowView: View {
     var isExpanded: Bool = false
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            HStack(spacing: 4) {
-                Image(systemName: isExpanded ? "chevron.down" : "chevron.forward")
-                    .frame(width: 16)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .animation(.none, value: isExpanded)
-                
-                Text(localizedSectionName)
-                    .font(.callout)
-                    .foregroundColor(.primary)
-                    .lineLimit(1)
-            }
-            .padding(.trailing, 4)
+        HStack(spacing: 0) {
+            Image(systemName: isExpanded ? "chevron.down" : "chevron.forward")
+                .frame(width: 12) // Centering
+                .font(.caption.weight(.semibold))
+                .foregroundColor(.secondary)
+                .frame(width: Constants.step2, alignment: .leading)
+                .animation(.none, value: isExpanded)
+
+            Text(localizedSectionName)
+                .font(.callout)
+                .foregroundColor(.primary)
+                .lineLimit(1)
         }
+        .padding(.trailing, 4)
     }
     
     private var localizedSectionName: String {
