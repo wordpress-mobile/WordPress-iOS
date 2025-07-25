@@ -21,7 +21,6 @@ extension TopListData.Referrer {
             name: referrer.title,
             domain: referrer.url?.host,
             iconURL: referrer.iconURL,
-            isSpam: referrer.isSpam,
             children: referrer.children.map { TopListData.Referrer($0) },
             metrics: SiteMetricsSet(views: referrer.viewsCount)
         )

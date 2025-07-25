@@ -132,13 +132,11 @@ extension TopListChartData {
                 name: data.0,
                 domain: data.1,
                 iconURL: nil,
-                isSpam: data.0 == "Facebook",
                 children: [
                     TopListData.Referrer(
                         name: "wordpress development tutorial",
                         domain: "google.com",
                         iconURL: URL(string: "https://www.google.com/favicon.ico"),
-                        isSpam: false,
                         children: [],
                         metrics: SiteMetricsSet(views: 850)
                     ),
@@ -146,7 +144,6 @@ extension TopListChartData {
                         name: "swift programming blog",
                         domain: "google.com",
                         iconURL: URL(string: "https://www.google.com/favicon.ico"),
-                        isSpam: false,
                         children: [],
                         metrics: SiteMetricsSet(views: 750)
                     ),
@@ -154,7 +151,6 @@ extension TopListChartData {
                         name: "ios app development best practices",
                         domain: "google.com",
                         iconURL: URL(string: "https://www.google.com/favicon.ico"),
-                        isSpam: false,
                         children: [],
                         metrics: SiteMetricsSet(views: 600)
                     )

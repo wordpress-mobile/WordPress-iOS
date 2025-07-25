@@ -2,7 +2,7 @@ import SwiftUI
 import WordPressUI
 
 struct ReferrerStatsView: View {
-    @State var referrer: TopListData.Referrer
+    let referrer: TopListData.Referrer
     let dateRange: StatsDateRange
 
     private let imageSize: CGFloat = 28
@@ -12,6 +12,7 @@ struct ReferrerStatsView: View {
     @State private var isMarkingAsSpam = false
     @State private var showErrorAlert = false
     @State private var errorMessage = ""
+    @State private var isMarkedAsSpam = false
 
     var body: some View {
         ScrollView {
@@ -110,7 +111,7 @@ struct ReferrerStatsView: View {
 
     @ViewBuilder
     var markAsSpamButton: some View {
-        if referrer.isSpam == true {
+        if isMarkedAsSpam {
             HStack {
                 Image(systemName: "checkmark.shield.fill")
                     .font(.subheadline)
@@ -165,21 +166,21 @@ struct ReferrerStatsView: View {
             maxValue: maxValue
         )
     }
-    
+
     private func markAsSpam() async {
         guard let domain = referrer.domain else { return }
-        
+
         isMarkingAsSpam = true
-        
+
         do {
-            try await context.service.toggleSpamState(for: domain, currentValue: referrer.isSpam ?? false)
+            try await context.service.toggleSpamState(for: domain, currentValue: isMarkedAsSpam)
             // Update local state to reflect the change
-            referrer.isSpam = true
+            isMarkedAsSpam = true
         } catch {
             errorMessage = error.localizedDescription.isEmpty ? Strings.ReferrerDetails.markAsSpamError : error.localizedDescription
             showErrorAlert = true
         }
-        
+
         isMarkingAsSpam = false
     }
 }
@@ -201,13 +202,11 @@ private extension TopListData.Referrer {
         name: "Google Search",
         domain: "google.com",
         iconURL: URL(string: "https://www.google.com/favicon.ico"),
-        isSpam: false,
         children: [
             TopListData.Referrer(
                 name: "wordpress development tutorial",
                 domain: "google.com",
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
-                isSpam: false,
                 children: [],
                 metrics: SiteMetricsSet(views: 850)
             ),
@@ -215,7 +214,6 @@ private extension TopListData.Referrer {
                 name: "swift programming blog",
                 domain: "google.com",
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
-                isSpam: false,
                 children: [],
                 metrics: SiteMetricsSet(views: 750)
             ),
@@ -223,7 +221,6 @@ private extension TopListData.Referrer {
                 name: "ios app development best practices",
                 domain: "google.com",
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
-                isSpam: false,
                 children: [],
                 metrics: SiteMetricsSet(views: 600)
             )
