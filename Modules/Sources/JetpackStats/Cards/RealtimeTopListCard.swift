@@ -7,23 +7,23 @@ struct RealtimeTopListCard: View {
     @State private var selectedItem: TopListItemType
 
     @Environment(\.context) var context
-    
+
     init(
         availableDataTypes: [TopListItemType] = TopListItemType.allCases,
         initialDataType: TopListItemType = .postsAndPages,
         service: any StatsServiceProtocol
     ) {
         self.availableItems = availableDataTypes
-        
+
         let selectedItem = availableDataTypes.contains(initialDataType) ? initialDataType : availableDataTypes.first ?? .postsAndPages
         self._selectedItem = State(initialValue: selectedItem)
-        
+
         let viewModel = RealtimeTopListCardViewModel(service: service)
         self._viewModel = StateObject(wrappedValue: viewModel)
-        
+
         viewModel.loadData(for: selectedItem)
     }
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
@@ -43,7 +43,6 @@ struct RealtimeTopListCard: View {
             viewModel.loadData(for: newValue)
         }
     }
-    
 
     private var headerView: some View {
         HStack {
@@ -99,7 +98,7 @@ struct RealtimeTopListCard: View {
             previousItems: [:], // No previous data for realtime
             maxValue: viewModel.maxValue
         )
-        
+
         return TopListItemsView(
             data: chartData,
             itemLimit: 6,
@@ -111,7 +110,7 @@ struct RealtimeTopListCard: View {
     private var loadingView: some View {
         topListItemsView(data: mockData)
     }
-    
+
     private var mockData: TopListData {
         let chartData = TopListChartData.mock(
             for: selectedItem,
@@ -120,7 +119,7 @@ struct RealtimeTopListCard: View {
         )
         return TopListData(items: chartData.items)
     }
-    
+
 }
 
 // MARK: - Preview
@@ -137,7 +136,7 @@ struct RealtimeTopListCard: View {
             .padding()
             .background(Color(.systemBackground))
             .cornerRadius(12)
-            
+
             // Referrers
             RealtimeTopListCard(
                 availableDataTypes: [.referrers],
@@ -147,7 +146,7 @@ struct RealtimeTopListCard: View {
             .padding()
             .background(Color(.systemBackground))
             .cornerRadius(12)
-            
+
             // Locations
             RealtimeTopListCard(
                 availableDataTypes: [.locations],

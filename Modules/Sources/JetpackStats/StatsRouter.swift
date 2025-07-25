@@ -40,7 +40,7 @@ public final class StatsRouter: @unchecked Sendable {
         let commentsVC = factory.makeCommentsListViewController(siteID: siteID, postID: postID)
         navigationController?.pushViewController(commentsVC, animated: true)
     }
-    
+
     @MainActor
     func openURL(_ url: URL) {
         // Open URL in in-app Safari

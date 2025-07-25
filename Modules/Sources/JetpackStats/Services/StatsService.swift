@@ -181,7 +181,7 @@ actor StatsService: StatsServiceProtocol {
             default:
                 throw StatsServiceError.unavailable
             }
-            
+
         case .archive:
             switch metric {
             case .views:
@@ -432,12 +432,12 @@ actor StatsService: StatsServiceProtocol {
         }
         return TopListData(items: items)
     }
-    
+
     private func mapArchiveToTopListData(_ data: StatsArchiveTimeIntervalData) -> TopListData {
         // Convert the summary dictionary into archive sections
         let sections = data.summary.compactMap { (sectionName, items) -> TopListData.ArchiveSection? in
             guard !items.isEmpty else { return nil }
-            
+
             // Map archive items
             let archiveItems = items.map { item in
                 TopListData.ArchiveItem(
@@ -446,20 +446,20 @@ actor StatsService: StatsServiceProtocol {
                     metrics: SiteMetricsSet(views: item.views)
                 )
             }
-            
+
             // Calculate total views for the section
             let totalViews = items.reduce(0) { $0 + $1.views }
-            
+
             return TopListData.ArchiveSection(
                 sectionName: sectionName,
                 items: archiveItems,
                 metrics: SiteMetricsSet(views: totalViews)
             )
         }
-        
+
         // Sort sections by total views
         let sortedSections = sections.sorted { ($0.metrics.views ?? 0) > ($1.metrics.views ?? 0) }
-        
+
         return TopListData(items: sortedSections)
     }
 }

@@ -131,7 +131,7 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
             interval: dateRange.dateInterval,
             granularity: granularity
         )
-        
+
         // Fetch previous data only for items that support it
         async let previousTask: TopListData? = {
             guard selection.item != .archive else { return nil }

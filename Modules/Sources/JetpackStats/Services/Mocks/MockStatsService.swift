@@ -547,7 +547,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             dailyTopListData[dataType] = typeData
         }
     }
-    
+
     /// Generates mock archive data with expandable sections
     private func generateMockArchiveData() -> [any TopListItem] {
         // Create mock archive sections based on the example JSON structure
@@ -562,7 +562,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             ],
             metrics: SiteMetricsSet(views: 25) // Total views for the section
         )
-        
+
         let authorSection = TopListData.ArchiveSection(
             sectionName: "author",
             items: [
@@ -572,7 +572,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             ],
             metrics: SiteMetricsSet(views: 40) // Total views for the section
         )
-        
+
         return [otherSection, authorSection]
     }
 }

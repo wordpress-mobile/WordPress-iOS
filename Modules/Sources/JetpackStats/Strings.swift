@@ -120,7 +120,7 @@ enum Strings {
         static let author = AppLocalizedString("jetpackStats.archiveSections.author", value: "Authors", comment: "Archive section for authors")
         static let other = AppLocalizedString("jetpackStats.archiveSections.other", value: "Other", comment: "Archive section for other items")
     }
-    
+
     enum PostDetails {
         static let title = AppLocalizedString("jetpackStats.postDetails.title", value: "Post Stats", comment: "Navigation title")
         static func published(_ date: String) -> String {

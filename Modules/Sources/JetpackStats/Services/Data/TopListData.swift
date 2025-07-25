@@ -29,7 +29,7 @@ extension TopListData {
         let author: String?
         var metrics: SiteMetricsSet
 
-        var id: TopListItemID { 
+        var id: TopListItemID {
             TopListItemID(type: .postsAndPages, id: postID ?? title)
         }
     }
@@ -39,7 +39,7 @@ extension TopListData {
         let domain: String?
         var metrics: SiteMetricsSet
 
-        var id: TopListItemID { 
+        var id: TopListItemID {
             TopListItemID(type: .referrers, id: domain ?? name)
         }
     }
@@ -50,7 +50,7 @@ extension TopListData {
         let countryCode: String?
         var metrics: SiteMetricsSet
 
-        var id: TopListItemID { 
+        var id: TopListItemID {
             TopListItemID(type: .locations, id: countryCode ?? country)
         }
     }
@@ -62,7 +62,7 @@ extension TopListData {
         var metrics: SiteMetricsSet
         var avatarURL: URL?
 
-        var id: TopListItemID { 
+        var id: TopListItemID {
             TopListItemID(type: .authors, id: userId)
         }
     }
@@ -72,7 +72,7 @@ extension TopListData {
         let title: String?
         var metrics: SiteMetricsSet
 
-        var id: TopListItemID { 
+        var id: TopListItemID {
             TopListItemID(type: .externalLinks, id: url)
         }
     }
@@ -82,7 +82,7 @@ extension TopListData {
         let filePath: String?
         var metrics: SiteMetricsSet
 
-        var id: TopListItemID { 
+        var id: TopListItemID {
             TopListItemID(type: .fileDownloads, id: filePath ?? fileName)
         }
     }
@@ -91,7 +91,7 @@ extension TopListData {
         let term: String
         var metrics: SiteMetricsSet
 
-        var id: TopListItemID { 
+        var id: TopListItemID {
             TopListItemID(type: .searchTerms, id: term)
         }
     }
@@ -102,7 +102,7 @@ extension TopListData {
         let videoUrl: URL?
         var metrics: SiteMetricsSet
 
-        var id: TopListItemID { 
+        var id: TopListItemID {
             TopListItemID(type: .videos, id: postId)
         }
     }
@@ -112,7 +112,7 @@ extension TopListData {
         let value: String
         var metrics: SiteMetricsSet
 
-        var id: TopListItemID { 
+        var id: TopListItemID {
             TopListItemID(type: .archive, id: href)
         }
     }
@@ -124,7 +124,7 @@ extension TopListData {
 
         var children: [any TopListItem] { items }
 
-        var id: TopListItemID { 
+        var id: TopListItemID {
             TopListItemID(type: .archive, id: sectionName)
         }
 

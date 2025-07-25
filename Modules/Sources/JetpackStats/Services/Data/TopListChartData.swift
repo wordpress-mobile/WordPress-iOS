@@ -23,7 +23,7 @@ final class TopListChartData {
         self.previousItems = previousItems
         self.maxValue = maxValue
     }
-    
+
     func previousItem(for currentItem: any TopListItem) -> (any TopListItem)? {
         previousItems[currentItem.id]
     }
@@ -38,7 +38,7 @@ extension TopListChartData {
         itemCount: Int = 6
     ) -> TopListChartData {
         let currentItems = mockItems(for: itemType, metric: metric, count: itemCount)
-        
+
         // Create previous items dictionary
         var previousItemsDict: [TopListItemID: any TopListItem] = [:]
         for item in currentItems {
@@ -276,7 +276,7 @@ extension TopListChartData {
             )
         }
     }
-    
+
     private static func mockArchive(metric: SiteMetric, count: Int) -> [any TopListItem] {
         // Create mock archive sections
         let archiveSections = [
@@ -306,7 +306,7 @@ extension TopListChartData {
                 ("/2023/10/", 900)
             ])
         ]
-        
+
         return archiveSections.prefix(count).map { sectionData in
             let sectionName = sectionData.0
             let items = sectionData.1.map { itemData in
@@ -317,10 +317,10 @@ extension TopListChartData {
                     metrics: metrics
                 )
             }
-            
+
             // Calculate total views for the section
             let totalViews = items.reduce(0) { $0 + ($1.metrics[metric] ?? 0) }
-            
+
             return TopListData.ArchiveSection(
                 sectionName: sectionName,
                 items: items,
@@ -371,7 +371,7 @@ extension TopListChartData {
         let trendFactor = Double.random(in: 0.7...1.3)
         let currentValue = item.metrics[metric] ?? 0
         item.metrics[metric] = Int(Double(currentValue) * trendFactor)
-        
+
         // Special handling for archive sections - update child items too
         if var archiveSection = item as? TopListData.ArchiveSection {
             archiveSection.items = archiveSection.items.map { archiveItem in

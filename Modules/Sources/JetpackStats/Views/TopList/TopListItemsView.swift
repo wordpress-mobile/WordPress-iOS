@@ -5,7 +5,7 @@ struct TopListItemsView: View {
     let itemLimit: Int
     let dateRange: StatsDateRange
     var showDetails = true
-    
+
     @State private var expandedSections: Set<TopListItemID> = []
 
     var body: some View {
@@ -94,9 +94,9 @@ private struct ExpandableItemView: View {
                 showDetails: false,
                 isExpanded: isExpanded
             )
-            
+
             Spacer(minLength: 4)
-            
+
             TopListMetricsView(
                 currentValue: section.metrics[metric] ?? 0,
                 previousValue: previousItem?.metrics[metric],

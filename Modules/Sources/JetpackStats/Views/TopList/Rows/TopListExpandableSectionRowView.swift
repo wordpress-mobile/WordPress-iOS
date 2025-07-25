@@ -4,7 +4,7 @@ struct TopListExpandableSectionRowView: View {
     let item: any TopListExpandableItem
     let showDetails: Bool
     var isExpanded: Bool = false
-    
+
     var body: some View {
         HStack(spacing: 0) {
             Image(systemName: isExpanded ? "chevron.down" : "chevron.forward")
