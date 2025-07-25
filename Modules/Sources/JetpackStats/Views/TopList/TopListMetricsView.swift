@@ -23,7 +23,6 @@ struct TopListMetricsView: View {
             }
             if showDetails, let trend {
                 Text(trend.formattedTrend)
-                    .fixedSize()
                     .foregroundColor(trend.sentiment.foregroundColor)
                     .contentTransition(.numericText())
                     .font(.caption.weight(.medium)).tracking(-0.33)

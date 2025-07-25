@@ -51,16 +51,25 @@ struct TopListItemView: View {
                 EmptyView()
             }
 
-            Spacer(minLength: 4)
+            Spacer(minLength: 6)
 
             // Metrics view
-            TopListMetricsView(
-                currentValue: currentItem.metrics[metric] ?? 0,
-                previousValue: previousItem?.metrics[metric],
-                metric: metric,
-                showDetails: showDetails,
-                showChevron: hasDetails
-            )
+            ZStack {
+                if previousItem != nil {
+                    // Reserve space to avoid junky animations when changing period
+                    Text("+4.8K (31.2%)")
+                        .font(.caption.weight(.medium)).tracking(-0.33)
+                        .opacity(0)
+                }
+
+                TopListMetricsView(
+                    currentValue: currentItem.metrics[metric] ?? 0,
+                    previousValue: previousItem?.metrics[metric],
+                    metric: metric,
+                    showDetails: showDetails,
+                    showChevron: hasDetails
+                )
+            }
         }
         .padding(.vertical, 7)
         .background(
