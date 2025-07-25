@@ -47,7 +47,7 @@ extension WordPressAuthenticator: WordPressAuthenticatorProtocol {
     }
 
     private static func selfHostedSiteLogin(_ viewController: UIViewController) -> Bool {
-        guard FeatureFlag.authenticateUsingApplicationPassword.enabled else { return false }
+        guard FeatureFlag.allowApplicationPasswords.enabled else { return false }
         guard let navigationController = viewController.navigationController else { return false }
 
         let view = LoginWithUrlView(presenter: viewController) { [weak viewController] blogID in

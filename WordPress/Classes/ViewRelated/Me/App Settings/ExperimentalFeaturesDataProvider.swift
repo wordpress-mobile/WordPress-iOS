@@ -1,11 +1,12 @@
 import Foundation
 import WordPressUI
 import UIKit
+import SwiftUI
 
 class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvider {
 
     let flags: [OverridableFlag] = [
-        FeatureFlag.authenticateUsingApplicationPassword,
+        FeatureFlag.allowApplicationPasswords,
         RemoteFeatureFlag.newGutenberg,
         FeatureFlag.newGutenbergThemeStyles,
     ]
@@ -42,6 +43,16 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
             }))
 
             self.presentViewController(alert)
+
+            return
+        }
+
+        if feature.key == FeatureFlag.allowApplicationPasswords.key && newValue {
+            let view = NavigationStack {
+                ApplicationPasswordsInfoView()
+            }
+            self.presentViewController(UIHostingController(rootView: view))
+            return
         }
     }
 

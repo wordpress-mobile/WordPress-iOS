@@ -19,7 +19,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case compliancePopover
     case googleDomainsCard
     case voiceToContent
-    case authenticateUsingApplicationPassword
+    case allowApplicationPasswords
     case newGutenbergThemeStyles
     case selfHostedSiteUserManagement
     case readerGutenbergCommentComposer
@@ -68,7 +68,7 @@ public enum FeatureFlag: Int, CaseIterable {
             return false
         case .voiceToContent:
             return app == .jetpack && BuildConfiguration.current.isInternal
-        case .authenticateUsingApplicationPassword:
+        case .allowApplicationPasswords:
             return false
         case .newGutenbergThemeStyles:
             return false
@@ -118,7 +118,7 @@ extension FeatureFlag {
         case .compliancePopover: "Compliance Popover"
         case .googleDomainsCard: "Google Domains Promotional Card"
         case .voiceToContent: "Voice to Content"
-        case .authenticateUsingApplicationPassword: "Application Passwords for self-hosted sites"
+        case .allowApplicationPasswords: "Allow creating Application Passwords"
         case .newGutenbergThemeStyles: "Experimental Block Editor Styles"
         case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
         case .pluginManagementOverhaul: "Plugin Management Overhaul"
@@ -136,7 +136,16 @@ extension FeatureFlag: OverridableFlag {
     }
 
     var key: String {
-        return "ff-override-\(String(describing: self))"
+        let key: String
+        switch self {
+        case .allowApplicationPasswords:
+            // This feature toggle description is already shipped and used in the production.
+            // We want to keep using the same key, but change the description.
+            key = "Application Passwords for self-hosted sites"
+        default:
+            key = String(describing: self)
+        }
+        return "ff-override-\(key)"
     }
 }
 
