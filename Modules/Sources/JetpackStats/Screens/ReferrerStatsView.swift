@@ -151,7 +151,6 @@ struct ReferrerStatsView: View {
 
         }
         .padding(Constants.step2)
-//        .cardStyle()
     }
 
     private var childrenChartData: TopListChartData {

@@ -28,13 +28,13 @@ struct TopListReferrerRowView: View {
                     .foregroundColor(.primary)
                     .lineLimit(1)
 
-                HStack {
+                HStack(spacing: 0) {
                     if let domain = item.domain {
                         Text(verbatim: domain)
                             .font(.caption)
                     }
                     if !item.children.isEmpty {
-                        Text(verbatim: "+\(item.children)")
+                        Text(verbatim: "…")
                             .font(.caption)
                             .foregroundColor(.secondary)
                             .lineLimit(1)
