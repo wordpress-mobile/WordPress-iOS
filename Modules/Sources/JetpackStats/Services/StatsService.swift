@@ -313,14 +313,13 @@ actor StatsService: StatsServiceProtocol {
         return SiteMetricsData(total: total, metrics: metrics)
     }
 
-    private func mapPostsToTopListData(_ data: StatsTopPostsTimeIntervalData, filterKind: StatsTopPost.Kind? = nil) -> TopListData {
+    private func mapPostsToTopListData(_ data: StatsTopPostsTimeIntervalData) -> TopListData {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.timeZone = siteTimeZone
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
-        let posts = filterKind != nil ? data.topPosts.filter { $0.kind == filterKind } : data.topPosts
-        let items = posts.map { post in
+        let items = data.topPosts.map { post in
             TopListData.Post(
                 title: post.title,
                 postID: String(post.postID),
@@ -360,16 +359,31 @@ actor StatsService: StatsServiceProtocol {
     }
 
     private func mapAuthorsToTopListData(_ data: StatsTopAuthorsTimeIntervalData) -> TopListData {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = siteTimeZone
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
         let items = data.topAuthors.map { author in
             TopListData.Author(
                 name: author.name,
                 userId: author.name, // NOTE: WordPressKit doesn't provide user ID
                 role: nil,
                 metrics: SiteMetricsSet(views: author.viewsCount),
-                avatarURL: author.iconURL
+                avatarURL: author.iconURL,
+                posts: author.posts.map { post in
+                    TopListData.Post(
+                        title: post.title,
+                        postID: String(post.postID),
+                        postURL: post.postURL,
+                        date: post.date.flatMap(dateFormatter.date),
+                        type: post.kind.description,
+                        author: nil,
+                        metrics: SiteMetricsSet(views: post.viewsCount)
+                    )
+                }
             )
         }
-
         return TopListData(items: items)
     }
 
