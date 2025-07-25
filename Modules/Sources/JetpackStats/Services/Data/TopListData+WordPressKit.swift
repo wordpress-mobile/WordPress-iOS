@@ -20,6 +20,8 @@ extension TopListData.Referrer {
         self.init(
             name: referrer.title,
             domain: referrer.url?.host,
+            iconURL: referrer.iconURL,
+            isSpam: referrer.isSpam,
             metrics: SiteMetricsSet(views: referrer.viewsCount)
         )
     }

@@ -131,6 +131,8 @@ extension TopListChartData {
             return TopListData.Referrer(
                 name: data.0,
                 domain: data.1,
+                iconURL: nil,
+                isSpam: data.0 == "Facebook",
                 metrics: metrics
             )
         }

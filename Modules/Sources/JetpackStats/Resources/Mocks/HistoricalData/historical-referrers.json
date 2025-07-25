@@ -2,6 +2,8 @@
   {
     "name": "Google Search",
     "domain": "google.com",
+    "iconURL": "https://www.google.com/favicon.ico",
+    "isSpam": false,
     "metrics": {
       "views": 5000,
       "visitors": 4000,
@@ -14,6 +16,8 @@
   {
     "name": "Twitter/X",
     "domain": "twitter.com",
+    "iconURL": "https://abs.twimg.com/favicons/twitter.3.ico",
+    "isSpam": false,
     "metrics": {
       "views": 3500,
       "visitors": 2800,
@@ -26,6 +30,8 @@
   {
     "name": "Reddit",
     "domain": "reddit.com",
+    "iconURL": "https://www.redditstatic.com/desktop2x/img/favicon/favicon-32x32.png",
+    "isSpam": false,
     "metrics": {
       "views": 2000,
       "visitors": 1600,
@@ -38,6 +44,8 @@
   {
     "name": "Facebook",
     "domain": "facebook.com",
+    "iconURL": "https://static.xx.fbcdn.net/rsrc.php/yD/r/d4ZIVX-5C-b.ico",
+    "isSpam": false,
     "metrics": {
       "views": 1500,
       "visitors": 1200,
@@ -50,6 +58,8 @@
   {
     "name": "YouTube",
     "domain": "youtube.com",
+    "iconURL": "https://www.youtube.com/s/desktop/8a0c81e8/img/favicon_32x32.png",
+    "isSpam": false,
     "metrics": {
       "views": 1100,
       "visitors": 880,
@@ -62,6 +72,8 @@
   {
     "name": "LinkedIn",
     "domain": "linkedin.com",
+    "iconURL": "https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca",
+    "isSpam": false,
     "metrics": {
       "views": 900,
       "visitors": 720,
@@ -74,6 +86,8 @@
   {
     "name": "Hacker News",
     "domain": "news.ycombinator.com",
+    "iconURL": "https://news.ycombinator.com/favicon.ico",
+    "isSpam": false,
     "metrics": {
       "views": 800,
       "visitors": 640,
@@ -86,6 +100,8 @@
   {
     "name": "Flipboard",
     "domain": "flipboard.com",
+    "iconURL": "https://s.flipboard.com/webapp/images/favicon/favicon-32x32.png",
+    "isSpam": false,
     "metrics": {
       "views": 600,
       "visitors": 480,
@@ -98,6 +114,8 @@
   {
     "name": "Feedly",
     "domain": "feedly.com",
+    "iconURL": "https://s3.feedly.com/img/feedly-512.png",
+    "isSpam": false,
     "metrics": {
       "views": 500,
       "visitors": 400,
@@ -110,6 +128,8 @@
   {
     "name": "Apple News",
     "domain": "apple.news",
+    "iconURL": null,
+    "isSpam": false,
     "metrics": {
       "views": 400,
       "visitors": 320,

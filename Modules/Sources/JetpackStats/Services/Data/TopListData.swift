@@ -41,6 +41,8 @@ extension TopListData {
     struct Referrer: Codable, TopListItem {
         let name: String
         let domain: String?
+        let iconURL: URL?
+        let isSpam: Bool?
         var metrics: SiteMetricsSet
 
         var id: TopListItemID {
