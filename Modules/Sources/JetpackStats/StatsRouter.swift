@@ -23,19 +23,16 @@ public final class StatsRouter: @unchecked Sendable {
         self.viewController = viewController
         self.factory = factory
     }
-    
+
     @MainActor
     private func findTopViewController() -> UIViewController? {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
+        guard let window = UIApplication.shared.mainWindow else {
             return nil
         }
-        
         var topController = window.rootViewController
         while let presented = topController?.presentedViewController {
             topController = presented
         }
-        
         return topController
     }
 
@@ -63,6 +60,14 @@ public final class StatsRouter: @unchecked Sendable {
         let safariViewController = SFSafariViewController(url: url)
         let vc = viewController ?? findTopViewController()
         vc?.present(safariViewController, animated: true)
+    }
+}
+
+private extension UIApplication {
+    @objc var mainWindow: UIWindow? {
+        connectedScenes
+            .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+            .first
     }
 }
 

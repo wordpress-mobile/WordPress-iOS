@@ -21,6 +21,7 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
 
     private let service: any StatsServiceProtocol
     private let fetchLimit: Int
+    private let filter: Filter?
 
     private var loadingTask: Task<Void, Never>?
     private var loadRequestCount = 0
@@ -30,21 +31,33 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         didSet { loadData() }
     }
 
-    struct Selection: Equatable {
+    struct Selection: Equatable, Sendable {
         var item: TopListItemType
         var metric: SiteMetric
+    }
+
+    enum Filter: Equatable {
+        case author(userId: String)
     }
 
     var isFirstLoad: Bool { isLoading && matchedData == nil }
 
     private var isFirstAppear = true
 
-    init(selection: Selection, dateRange: StatsDateRange, service: any StatsServiceProtocol, fetchLimit: Int = 20) {
-        self.items = service.supportedItems
+    init(
+        selection: Selection,
+        dateRange: StatsDateRange,
+        service: any StatsServiceProtocol,
+        items: [TopListItemType]? = nil,
+        fetchLimit: Int = 20,
+        filter: Filter? = nil
+    ) {
+        self.items = items ?? service.supportedItems
         self.selection = selection
         self.dateRange = dateRange
         self.service = service
         self.fetchLimit = fetchLimit
+        self.filter = filter
 
         self.groupedItems = {
             let primary = service.supportedItems.filter {
@@ -126,9 +139,18 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
     private func getTopListData(for selection: Selection, dateRange: StatsDateRange) async throws -> TopListChartData {
         let granularity = dateRange.dateInterval.preferredGranularity
 
+        // When filter is set for author, we need to fetch authors data
+        let fetchItem: TopListItemType
+        if let filter, case .author = filter {
+            // We have to fake it as "Posts & Pages" does not support filtering
+            fetchItem = .authors
+        } else {
+            fetchItem = selection.item
+        }
+
         // Fetch current data
         async let currentTask = service.getTopListData(
-            selection.item,
+            fetchItem,
             metric: selection.metric,
             interval: dateRange.dateInterval,
             granularity: granularity,
@@ -139,7 +161,7 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         async let previousTask: TopListData? = {
             guard selection.item != .archive else { return nil }
             return try await service.getTopListData(
-                selection.item,
+                fetchItem,
                 metric: selection.metric,
                 interval: dateRange.effectiveComparisonInterval,
                 granularity: granularity,
@@ -149,26 +171,42 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
 
         let (current, previous) = try await (currentTask, previousTask)
 
+        let currentItems = filteredItems(current.items)
+        let previousItems = filteredItems(previous?.items ?? [])
+
         // Build previous items dictionary
         var previousItemsDict: [TopListItemID: any TopListItem] = [:]
-        if let previousItems = previous?.items {
-            for item in previousItems {
-                previousItemsDict[item.id] = item
-            }
+        for item in previousItems {
+            previousItemsDict[item.id] = item
         }
 
-        // Calculate max value from current items based on selected metric
+        // Calculate max value from filtered items based on selected metric
         let metric = selection.metric
-        let maxValue = current.items
+        let maxValue = currentItems
             .compactMap { $0.metrics[metric] }
             .max() ?? 1
 
         return TopListChartData(
             item: selection.item,
             metric: metric,
-            items: current.items,
+            items: currentItems,
             previousItems: previousItemsDict,
             maxValue: maxValue
         )
     }
-}
+
+    private func filteredItems(_ items: [any TopListItem]) -> [any TopListItem] {
+        guard let filter else {
+            return items
+        }
+        switch filter {
+        case .author(let userId):
+            let authors = items.lazy.compactMap { $0 as? TopListData.Author }
+            if let author = authors.first(where: { $0.userId == userId }),
+               let posts = author.posts {
+                return posts
+            }
+            return []
+        }
+    }
+ }

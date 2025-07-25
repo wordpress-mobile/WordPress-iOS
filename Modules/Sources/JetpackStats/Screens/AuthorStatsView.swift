@@ -4,56 +4,43 @@ import DesignSystem
 
 struct AuthorStatsView: View {
     let author: TopListData.Author
-    
+
     @State private var dateRange: StatsDateRange
+
     @StateObject private var viewModel: TopListCardViewModel
-    
+
     @Environment(\.context) private var context
-    @ScaledMetric private var avatarSize = 80
-    
+
+    @ScaledMetric private var avatarSize = 60
+
     init(author: TopListData.Author, initialDateRange: StatsDateRange? = nil, context: StatsContext) {
         self.author = author
         let calendar = Calendar.current
         let range = initialDateRange ?? calendar.makeDateRange(for: .last30Days)
         self._dateRange = State(initialValue: range)
-        
+
         self._viewModel = StateObject(wrappedValue: TopListCardViewModel(
-            selection: .init(item: .authors, metric: .views),
+            selection: .init(item: .postsAndPages, metric: .views),
             dateRange: range,
             service: context.service,
-            fetchLimit: 100
+            fetchLimit: 32,
+            filter: .author(userId: author.userId)
         ))
     }
-    
+
     var body: some View {
-        let authorPosts = extractAuthorPosts()
-        
         ScrollView {
             VStack(spacing: Constants.step2) {
-                // Author header
-                authorHeader
+                headerView
                     .cardStyle()
-                
-                // Posts list
-                if !authorPosts.isEmpty {
-                    postsSection(posts: authorPosts)
-                        .cardStyle()
-                } else if viewModel.isLoading {
-                    ProgressView()
-                        .padding(.vertical, Constants.step4)
-                        .frame(maxWidth: .infinity)
-                        .cardStyle()
-                } else {
-                    emptyPostsView
-                        .cardStyle()
-                }
+
+                TopListCard(viewModel: viewModel)
+                    .cardStyle()
             }
             .padding(.vertical, Constants.step1)
         }
         .background(Constants.Colors.background)
-        .onAppear {
-            viewModel.onAppear()
-        }
+        .animation(.spring, value: viewModel.matchedData.map(ObjectIdentifier.init))
         .onChange(of: dateRange) { newRange in
             viewModel.dateRange = newRange
         }
@@ -63,106 +50,101 @@ struct AuthorStatsView: View {
             LegacyFloatingDateControl(dateRange: $dateRange)
         }
     }
-    
-    private func extractAuthorPosts() -> [TopListData.Post] {
-        guard let data = viewModel.matchedData else {
-            return []
-        }
-        
-        // Find the current author in the fetched data
-        if let fetchedAuthor = data.items.compactMap({ $0 as? TopListData.Author }).first(where: { $0.userId == author.userId }),
-           let posts = fetchedAuthor.posts {
-            return posts
-        } else {
-            return []
-        }
-    }
-    
-    private var authorHeader: some View {
-        VStack(spacing: Constants.step2) {
-            HStack(spacing: Constants.step2) {
+
+    private var headerView: some View {
+        VStack(spacing: Constants.step3) {
+            HStack(spacing: Constants.step3) {
                 // Avatar
-                AsyncImage(url: author.avatarURL) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Image(systemName: "person.circle.fill")
-                        .foregroundColor(.secondary)
-                }
-                .frame(width: avatarSize, height: avatarSize)
-                .clipShape(Circle())
-                
-                // Name and views
-                VStack(alignment: .leading, spacing: 4) {
+                AvatarView(
+                    name: author.name,
+                    imageURL: author.avatarURL,
+                    size: avatarSize
+                )
+
+                // Name and metrics
+                VStack(alignment: .leading, spacing: Constants.step1) {
                     Text(author.name)
                         .font(.title3)
                         .fontWeight(.semibold)
-                    
-                    // Views with trend
-                    HStack(spacing: 6) {
-                        HStack(spacing: 2) {
-                            Image(systemName: SiteMetric.views.systemImage)
-                                .font(.caption2.weight(.medium))
-                                .foregroundColor(.secondary)
-                            
-                            Text(SiteMetric.views.localizedTitle.uppercased())
-                                .font(.caption.weight(.medium))
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        Text(StatsValueFormatter.formatNumber(author.metrics.views ?? 0, onlyLarge: true))
-                            .font(Font.make(.recoleta, textStyle: .title2, weight: .medium))
-                            .foregroundColor(.primary)
+                        .foregroundColor(.primary)
+
+                    // Views for period
+                    if let data = calculatePeriodViews() {
+                        makeViewsView(current: data.current, previous: data.previous)
+                    } else {
+                        makeViewsView(current: 1000, previous: 500)
+                            .redacted(reason: .placeholder)
                     }
                 }
-                
+
                 Spacer()
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(Constants.step2)
+        .padding(Constants.step3)
     }
-    
-    
-    private func postsSection(posts: [TopListData.Post]) -> some View {
-        VStack(alignment: .leading, spacing: Constants.step2) {
-            StatsCardTitleView(title: Strings.AuthorDetails.posts)
-            
-            let maxViews = posts.compactMap { $0.metrics.views }.max() ?? 0
-            let topListData = TopListChartData(
-                item: .postsAndPages,
-                metric: .views,
-                items: posts,
-                previousItems: [:],
-                maxValue: maxViews
-            )
-            
-            TopListItemsView(
-                data: topListData,
-                itemLimit: 10,
-                dateRange: dateRange,
-                showDetails: true
-            )
+
+    private func makeViewsView(current: Int, previous: Int?) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 4) {
+                Image(systemName: SiteMetric.views.systemImage)
+                    .font(.caption.weight(.medium))
+                    .foregroundColor(.secondary)
+
+                Text(SiteMetric.views.localizedTitle)
+                    .font(.caption.weight(.medium))
+                    .foregroundColor(.secondary)
+                    .textCase(.uppercase)
+            }
+
+            HStack(spacing: Constants.step2) {
+                Text(StatsValueFormatter.formatNumber(current, onlyLarge: true))
+                    .font(Font.make(.recoleta, textStyle: .title2, weight: .medium))
+                    .foregroundColor(.primary)
+                    .contentTransition(.numericText())
+
+                // Trend badge
+                if let previous {
+                    let trend = TrendViewModel(
+                        currentValue: current,
+                        previousValue: previous,
+                        metric: .views
+                    )
+
+                    HStack(spacing: 4) {
+                        Image(systemName: trend.systemImage)
+                            .font(.caption2.weight(.semibold))
+                        Text(trend.formattedPercentage)
+                            .font(.caption.weight(.medium))
+                            .contentTransition(.numericText())
+                    }
+                    .foregroundColor(trend.sentiment.foregroundColor)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(trend.sentiment.backgroundColor)
+                    .clipShape(Capsule())
+                }
+            }
         }
-        .padding(Constants.step2)
     }
-    
-    
-    private var emptyPostsView: some View {
-        VStack(spacing: Constants.step1) {
-            Image(systemName: "doc.text")
-                .font(.largeTitle)
-                .foregroundColor(.secondary)
-            
-            Text(Strings.AuthorDetails.noPosts)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
+
+    private func calculatePeriodViews() -> (current: Int, previous: Int?)? {
+        guard let data = viewModel.matchedData else { return nil }
+
+        // Sum up views from all posts in the current period
+        let currentViews = data.items.compactMap { item in
+            (item as? TopListData.Post)?.metrics.views
+        }.reduce(0, +)
+
+        // Calculate previous period views if available
+        var previousViews: Int?
+        if !data.previousItems.isEmpty {
+            previousViews = data.previousItems.values.compactMap { item in
+                (item as? TopListData.Post)?.metrics.views
+            }.reduce(0, +)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, Constants.step4)
-        .padding(.horizontal, Constants.step2)
+
+        return (current: currentViews, previous: previousViews)
     }
 }
 

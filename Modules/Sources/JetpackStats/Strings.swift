@@ -165,8 +165,6 @@ enum Strings {
     }
 
     enum AuthorDetails {
-        static let title = AppLocalizedString("jetpackStats.authorDetails.title", value: "Author Details", comment: "Title for the author details screen")
-        static let posts = AppLocalizedString("jetpackStats.authorDetails.posts", value: "Top Posts", comment: "Section title for author's posts")
-        static let noPosts = AppLocalizedString("jetpackStats.authorDetails.noPosts", value: "No posts found for this period", comment: "Message shown when author has no posts for selected period")
+        static let title = AppLocalizedString("jetpackStats.authorDetails.title", value: "Author Stats", comment: "Title for the author details screen")
     }
 }

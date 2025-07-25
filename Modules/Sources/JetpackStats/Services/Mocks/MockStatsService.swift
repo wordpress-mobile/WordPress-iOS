@@ -539,7 +539,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                 // Apply mutations to each item for this day
                 let dailyItems = baseItems.map { item in
                     var mutatedItem = mutateItemMetrics(item, growthFactor: growthFactor, seasonalFactor: seasonalFactor, weekendFactor: weekendFactor, randomFactor: randomFactor)
-                    
+
                     // If it's an Author with posts, mutate the posts too
                     if let author = mutatedItem as? TopListData.Author, let posts = author.posts {
                         var mutatedAuthor = author
@@ -548,7 +548,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                             // Apply similar mutation factors to post metrics
                             let postRandomFactor = Double.random(in: 0.9...1.1) // Slight variation per post
                             let postCombinedFactor = growthFactor * seasonalFactor * weekendFactor * randomFactor * postRandomFactor
-                            
+
                             if let views = post.metrics.views {
                                 mutatedPost.metrics.views = Int(Double(views) * postCombinedFactor)
                             }
@@ -565,7 +565,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                         }
                         mutatedItem = mutatedAuthor
                     }
-                    
+
                     return mutatedItem
                 }
 
