@@ -5,8 +5,8 @@ struct TopListItemView: View {
     let previousItem: (any TopListItem)?
     let metric: SiteMetric
     let maxValue: Int
-    let showDetails: Bool
     let dateRange: StatsDateRange
+    var isNavigationDisabled = false
 
     @Environment(\.router) private var router
     @Environment(\.context) private var context
@@ -17,8 +17,9 @@ struct TopListItemView: View {
                 navigateToDetails()
             } label: {
                 content
+                    .contentShape(Rectangle()) // Make the entire view tappable
             }
-            .buttonStyle(PlainButtonStyle())
+            .buttonStyle(.plain)
         } else {
             content
         }
@@ -29,38 +30,47 @@ struct TopListItemView: View {
             // Content-specific view
             switch currentItem {
             case let post as TopListData.Post:
-                TopListPostRowView(item: post, showDetails: showDetails)
+                TopListPostRowView(item: post)
             case let referrer as TopListData.Referrer:
-                TopListReferrerRowView(item: referrer, showDetails: showDetails)
+                TopListReferrerRowView(item: referrer)
             case let location as TopListData.Location:
-                TopListLocationRowView(item: location, showDetails: showDetails)
+                TopListLocationRowView(item: location)
             case let author as TopListData.Author:
-                TopListAuthorRowView(item: author, showDetails: showDetails)
+                TopListAuthorRowView(item: author)
             case let link as TopListData.ExternalLink:
-                TopListExternalLinkRowView(item: link, showDetails: showDetails)
+                TopListExternalLinkRowView(item: link)
             case let download as TopListData.FileDownload:
-                TopListFileDownloadRowView(item: download, showDetails: showDetails)
+                TopListFileDownloadRowView(item: download)
             case let searchTerm as TopListData.SearchTerm:
-                TopListSearchTermRowView(item: searchTerm, showDetails: showDetails)
+                TopListSearchTermRowView(item: searchTerm)
             case let video as TopListData.Video:
-                TopListVideoRowView(item: video, showDetails: showDetails)
+                TopListVideoRowView(item: video)
             case let archiveItem as TopListData.ArchiveItem:
-                TopListArchiveItemRowView(item: archiveItem, showDetails: showDetails)
+                TopListArchiveItemRowView(item: archiveItem)
             default:
                 let _ = assertionFailure("unsupported item: \(currentItem)")
                 EmptyView()
             }
 
-            Spacer(minLength: 4)
+            Spacer(minLength: 6)
 
             // Metrics view
-            TopListMetricsView(
-                currentValue: currentItem.metrics[metric] ?? 0,
-                previousValue: previousItem?.metrics[metric],
-                metric: metric,
-                showDetails: showDetails,
-                showChevron: hasDetails
-            )
+            ZStack(alignment: .trailing) {
+                if previousItem != nil {
+                    // Reserve space to avoid junky animations when changing period
+                    Text("+4.8K (31.2%)")
+                        .font(.caption.weight(.medium)).tracking(-0.33)
+                        .opacity(0)
+                }
+
+                TopListMetricsView(
+                    currentValue: currentItem.metrics[metric] ?? 0,
+                    previousValue: previousItem?.metrics[metric],
+                    metric: metric,
+                    showChevron: hasDetails
+                )
+            }
+            .padding(.trailing, -3)
         }
         .padding(.vertical, 7)
         .background(
@@ -78,12 +88,17 @@ struct TopListItemView: View {
 
 private extension TopListItemView {
     var hasDetails: Bool {
+        guard !isNavigationDisabled else {
+            return false
+        }
         switch currentItem {
         case is TopListData.Post:
             return true
         case is TopListData.ArchiveItem:
             return true
         case is TopListData.Author:
+            return true
+        case is TopListData.Referrer:
             return true
         default:
             return false
@@ -103,6 +118,11 @@ private extension TopListItemView {
             }
         case let author as TopListData.Author:
             let detailsView = AuthorStatsView(author: author, initialDateRange: dateRange, context: context)
+                .environment(\.context, context)
+                .environment(\.router, router)
+            router.navigate(to: detailsView)
+        case let referrer as TopListData.Referrer:
+            let detailsView = ReferrerStatsView(referrer: referrer, dateRange: dateRange)
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView)

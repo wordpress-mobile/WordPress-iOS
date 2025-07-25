@@ -24,8 +24,8 @@ actor StatsService: StatsServiceProtocol {
     ]
 
     let supportedItems: [TopListItemType] = [
-        .postsAndPages, .archive, .referrers, .locations, .authors, .externalLinks,
-        .fileDownloads, .searchTerms, .videos
+        .postsAndPages, .authors, .referrers, .locations,
+        .externalLinks, .fileDownloads, .searchTerms, .videos, .archive
     ]
 
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
@@ -119,7 +119,7 @@ actor StatsService: StatsServiceProtocol {
         ) async throws -> T where T: Sendable {
             /// The `summarize: true` feature works correctly only with the `.day` granularity.
             let interval = convertDateIntervalSiteToLocal(interval)
-            return try await service.getData(interval: interval, unit: .day, summarize: true, limit: limit ?? 10)
+            return try await service.getData(interval: interval, unit: .day, summarize: true, limit: limit ?? 10, parameters: parameters)
         }
 
         switch item {
@@ -245,6 +245,10 @@ actor StatsService: StatsServiceProtocol {
         }
 
         return result
+    }
+
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) async throws {
+        try await service.toggleSpamState(for: referrerDomain, currentValue: currentValue)
     }
 
     // MARK: - Dates

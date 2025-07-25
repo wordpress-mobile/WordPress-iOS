@@ -130,19 +130,17 @@ public struct PostStatsView: View {
 
             Divider()
 
-            if let metrics {
+            if let error {
+                SimpleErrorView(error: error)
+                    .frame(minHeight: 210)
+            } else {
                 PostStatsMetricsStripView(
-                    metrics: metrics,
+                    metrics: metrics ?? .mock,
                     onLikesTapped: navigateToLikesList,
                     onCommentsTapped: navigateToCommentsList
                 )
-            } else if isLoadingDetails {
-                PostStatsMetricsStripView(metrics: .mock, onLikesTapped: nil, onCommentsTapped: nil)
-                    .redacted(reason: .placeholder)
-            } else if let error {
-                SimpleErrorView(error: error)
-                    .frame(minHeight: 200)
-
+                // Preserving view identity for better animations
+                .redacted(reason: metrics == nil ? .placeholder : [])
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -167,7 +165,7 @@ public struct PostStatsView: View {
                         Link(destination: postURL) {
                             Image(systemName: "link")
                                 .font(.footnote)
-                                .foregroundColor(.accentColor)
+                                .foregroundColor(Constants.Colors.blue)
                         }
                     }
                 }

@@ -2,7 +2,6 @@ import SwiftUI
 
 struct TopListLocationRowView: View {
     let item: TopListData.Location
-    let showDetails: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -17,7 +16,7 @@ struct TopListLocationRowView: View {
                     .lineLimit(1)
             }
 
-            if showDetails, let countryCode = item.countryCode {
+            if let countryCode = item.countryCode {
                 Text(countryCode)
                     .font(.caption)
                     .foregroundColor(.secondary)

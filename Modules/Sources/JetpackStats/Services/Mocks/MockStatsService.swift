@@ -302,6 +302,17 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         return PostLikesData(users: selectedUsers, totalCount: 26)
     }
 
+    func toggleSpamState(for referrerDomain: String, currentValue: Bool) async throws {
+        // Simulate network delay
+        try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+
+        // Mock implementation - randomly succeed or fail for testing
+        let shouldSucceed = Double.random(in: 0...1) > 0.1 // 90% success rate
+        if !shouldSucceed {
+            throw URLError(.networkConnectionLost)
+        }
+    }
+
     // MARK: - Data Loading
 
     /// Loads historical items from JSON files based on the data type

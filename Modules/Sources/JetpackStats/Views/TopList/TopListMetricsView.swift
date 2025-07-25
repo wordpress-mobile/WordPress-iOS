@@ -4,7 +4,6 @@ struct TopListMetricsView: View {
     let currentValue: Int
     let previousValue: Int?
     let metric: SiteMetric
-    var showDetails = true
     var showChevron = false
 
     var body: some View {
@@ -21,9 +20,8 @@ struct TopListMetricsView: View {
                         .foregroundStyle(Color(.tertiaryLabel))
                 }
             }
-            if showDetails, let trend {
+            if let trend {
                 Text(trend.formattedTrend)
-                    .fixedSize()
                     .foregroundColor(trend.sentiment.foregroundColor)
                     .contentTransition(.numericText())
                     .font(.caption.weight(.medium)).tracking(-0.33)

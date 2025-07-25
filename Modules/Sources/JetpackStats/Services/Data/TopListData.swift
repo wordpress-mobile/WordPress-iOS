@@ -41,10 +41,12 @@ extension TopListData {
     struct Referrer: Codable, TopListItem {
         let name: String
         let domain: String?
+        let iconURL: URL?
+        let children: [Referrer]
         var metrics: SiteMetricsSet
 
         var id: TopListItemID {
-            TopListItemID(type: .referrers, id: domain ?? name)
+            TopListItemID(type: .referrers, id: (domain ?? "–") + name)
         }
     }
 

@@ -195,5 +195,6 @@ struct TopListCard: View {
         service: MockStatsService()
     ))
     .cardStyle()
-    .padding()
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(Constants.Colors.background)
 }

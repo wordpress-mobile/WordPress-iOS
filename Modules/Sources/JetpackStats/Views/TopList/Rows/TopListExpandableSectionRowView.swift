@@ -2,7 +2,6 @@ import SwiftUI
 
 struct TopListExpandableSectionRowView: View {
     let item: any TopListExpandableItem
-    let showDetails: Bool
     var isExpanded: Bool = false
 
     var body: some View {

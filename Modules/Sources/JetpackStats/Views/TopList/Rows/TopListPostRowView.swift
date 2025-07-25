@@ -3,7 +3,6 @@ import WordPressShared
 
 struct TopListPostRowView: View {
     let item: TopListData.Post
-    let showDetails: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -17,7 +16,6 @@ struct TopListPostRowView: View {
             .font(.callout)
             .foregroundColor(.primary)
             .lineLimit(2)
-            .padding(.trailing, 4)
         }
     }
 }

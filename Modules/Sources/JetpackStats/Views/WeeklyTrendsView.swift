@@ -44,7 +44,6 @@ struct WeeklyTrendsView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(accessibilityLabel)
     }
 
     private var header: some View {
@@ -99,14 +98,6 @@ struct WeeklyTrendsView: View {
 
     private var legend: some View {
         HeatmapLegendView(metric: viewModel.metric, labelWidth: weekLabelWidth)
-    }
-
-    private var accessibilityLabel: String {
-        let weeksCount = min(viewModel.weeks.count, 4)
-        let totalValue = viewModel.weeks.prefix(4).flatMap { $0.days }.reduce(0) { $0 + $1.value }
-        let formattedTotal = viewModel.formatValue(totalValue)
-
-        return Strings.PostDetails.weeklyActivityAccessibility(weeksCount: weeksCount, metric: viewModel.metric.localizedTitle, total: formattedTotal)
     }
 }
 
@@ -273,7 +264,6 @@ private struct DayCell: View {
             .modifier(PopoverPresentationModifier())
         }
         .accessibilityElement()
-        .accessibilityLabel(accessibilityLabel)
         .accessibilityAddTraits(.isButton)
     }
 

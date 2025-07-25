@@ -2,7 +2,6 @@ import SwiftUI
 
 struct TopListArchiveItemRowView: View {
     let item: TopListData.ArchiveItem
-    let showDetails: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {

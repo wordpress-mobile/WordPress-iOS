@@ -20,6 +20,8 @@ extension TopListData.Referrer {
         self.init(
             name: referrer.title,
             domain: referrer.url?.host,
+            iconURL: referrer.iconURL,
+            children: referrer.children.map { TopListData.Referrer($0) },
             metrics: SiteMetricsSet(views: referrer.viewsCount)
         )
     }

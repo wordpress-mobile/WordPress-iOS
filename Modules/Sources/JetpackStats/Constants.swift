@@ -35,6 +35,8 @@ enum Constants {
         static let orange = Color(palette: CSColor.Orange.self)
         static let pink = Color(palette: CSColor.Pink.self)
         static let celadon = Color(palette: CSColor.Celadon.self)
+
+        static let jetpack = Color(palette: CSColor.JetpackGreen.self)
     }
 
     static let step1: CGFloat = 12
@@ -44,7 +46,10 @@ enum Constants {
 
     static func heatmapColor(baseColor: Color, intensity: Double) -> Color {
         if intensity == 0 {
-            return Color(UIColor.secondarySystemBackground)
+            return Color(UIColor(
+                light: UIColor.secondarySystemBackground,
+                dark: UIColor.tertiarySystemBackground
+            ))
         }
 
         // Use graduated opacity based on intensity
