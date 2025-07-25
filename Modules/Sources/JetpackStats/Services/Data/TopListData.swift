@@ -65,6 +65,7 @@ extension TopListData {
         let role: String?
         var metrics: SiteMetricsSet
         var avatarURL: URL?
+        var posts: [Post]?
 
         var id: TopListItemID {
             TopListItemID(type: .authors, id: userId)

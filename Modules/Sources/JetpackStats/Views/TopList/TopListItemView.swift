@@ -83,6 +83,8 @@ private extension TopListItemView {
             return true
         case is TopListData.ArchiveItem:
             return true
+        case is TopListData.Author:
+            return true
         default:
             return false
         }
@@ -99,6 +101,11 @@ private extension TopListItemView {
             if let url = URL(string: archiveItem.href) {
                 router.openURL(url)
             }
+        case let author as TopListData.Author:
+            let detailsView = PostAuthorDetailsView(author: author, initialDateRange: dateRange)
+                .environment(\.context, context)
+                .environment(\.router, router)
+            router.navigate(to: detailsView)
         default:
             break
         }

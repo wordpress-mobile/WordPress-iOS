@@ -45,10 +45,10 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         self.service = service
 
         self.groupedItems = {
-            var primary = service.supportedItems.filter {
+            let primary = service.supportedItems.filter {
                 !TopListItemType.secondaryItems.contains($0)
             }
-            var secondary = service.supportedItems.filter {
+            let secondary = service.supportedItems.filter {
                 TopListItemType.secondaryItems.contains($0)
             }
             return [primary, secondary]

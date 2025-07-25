@@ -7,7 +7,31 @@
       "views": 240,
       "comments": 85,
       "likes": 180
-    }
+    },
+    "posts": [
+      {
+        "title": "Breaking: Major Tech Announcement",
+        "postID": "1001",
+        "postURL": "https://example.com/breaking-tech",
+        "date": "2024-11-25T00:00:00Z",
+        "type": "post",
+        "author": "Alex Johnson",
+        "metrics": {
+          "views": 120
+        }
+      },
+      {
+        "title": "Live Blog: Conference Updates",
+        "postID": "1002",
+        "postURL": "https://example.com/live-conference",
+        "date": "2024-11-25T00:00:00Z",
+        "type": "post",
+        "author": "Alex Johnson",
+        "metrics": {
+          "views": 95
+        }
+      }
+    ]
   },
   {
     "name": "Sam Williams",
@@ -17,7 +41,20 @@
       "views": 190,
       "comments": 72,
       "likes": 145
-    }
+    },
+    "posts": [
+      {
+        "title": "Today's Market Analysis",
+        "postID": "2001",
+        "postURL": "https://example.com/market-analysis",
+        "date": "2024-11-25T00:00:00Z",
+        "type": "post",
+        "author": "Sam Williams",
+        "metrics": {
+          "views": 85
+        }
+      }
+    ]
   },
   {
     "name": "Jordan Chen",
@@ -27,7 +64,20 @@
       "views": 155,
       "comments": 58,
       "likes": 120
-    }
+    },
+    "posts": [
+      {
+        "title": "Contact Us",
+        "postID": "3001",
+        "postURL": "https://example.com/contact",
+        "date": null,
+        "type": "page",
+        "author": "Jordan Chen",
+        "metrics": {
+          "views": 70
+        }
+      }
+    ]
   },
   {
     "name": "Taylor Davis",
@@ -37,7 +87,8 @@
       "views": 130,
       "comments": 45,
       "likes": 95
-    }
+    },
+    "posts": []
   },
   {
     "name": "Morgan Smith",
@@ -47,7 +98,8 @@
       "views": 105,
       "comments": 38,
       "likes": 82
-    }
+    },
+    "posts": []
   },
   {
     "name": "Casey Brown",
@@ -57,7 +109,8 @@
       "views": 85,
       "comments": 30,
       "likes": 65
-    }
+    },
+    "posts": []
   },
   {
     "name": "Riley Martinez",
@@ -67,7 +120,8 @@
       "views": 70,
       "comments": 25,
       "likes": 55
-    }
+    },
+    "posts": []
   },
   {
     "name": "Jamie Lee",
@@ -77,6 +131,7 @@
       "views": 60,
       "comments": 20,
       "likes": 45
-    }
+    },
+    "posts": []
   }
 ]
