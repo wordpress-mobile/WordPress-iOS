@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct TopListArchiveSectionRowView: View {
-    let item: TopListData.ArchiveSection
+struct TopListExpandableSectionRowView: View {
+    let item: any TopListExpandableItem
     let showDetails: Bool
     var isExpanded: Bool = false
     
@@ -14,23 +14,11 @@ struct TopListArchiveSectionRowView: View {
                 .frame(width: Constants.step2, alignment: .leading)
                 .animation(.none, value: isExpanded)
 
-            Text(localizedSectionName)
+            Text(item.displayName)
                 .font(.callout)
                 .foregroundColor(.primary)
                 .lineLimit(1)
         }
         .padding(.trailing, 4)
-    }
-    
-    private var localizedSectionName: String {
-        switch item.sectionName.lowercased() {
-        case "author":
-            return Strings.ArchiveSections.author
-        case "other":
-            return Strings.ArchiveSections.other
-        default:
-            // Fallback to capitalized for any unknown sections
-            return item.sectionName.capitalized
-        }
     }
 }

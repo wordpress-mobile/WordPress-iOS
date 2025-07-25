@@ -9,6 +9,12 @@ protocol TopListItem: Codable, Sendable, Identifiable {
     var id: String { get }
 }
 
+protocol TopListExpandableItem: TopListItem {
+    associatedtype ItemType: TopListItem
+    var items: [ItemType] { get }
+    var displayName: String { get }
+}
+
 extension TopListData {
     struct Post: Codable, TopListItem {
         let title: String
@@ -89,11 +95,22 @@ extension TopListData {
         var id: String { href }
     }
 
-    struct ArchiveSection: Codable, TopListItem {
+    struct ArchiveSection: Codable, TopListExpandableItem {
         let sectionName: String
         var items: [ArchiveItem]
         var metrics: SiteMetricsSet
 
         var id: String { sectionName }
+
+        var displayName: String {
+            switch sectionName.lowercased() {
+            case "author":
+                return Strings.ArchiveSections.author
+            case "other":
+                return Strings.ArchiveSections.other
+            default:
+                return sectionName.capitalized
+            }
+        }
     }
 }

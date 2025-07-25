@@ -1,5 +1,17 @@
 import SwiftUI
 
+// MARK: - View Extension for Conditional Modifiers
+private extension View {
+    @ViewBuilder
+    func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
+    }
+}
+
 struct TopListItemsView: View {
     let data: TopListChartData
     let itemLimit: Int
@@ -10,33 +22,30 @@ struct TopListItemsView: View {
 
     var body: some View {
         VStack(spacing: Constants.step1 / 2) {
-            ForEach(data.items.prefix(itemLimit)) { item in
-                if let archiveSection = item.current as? TopListData.ArchiveSection {
-                    // Archive section with expandable items
+            ForEach(Array(data.items.prefix(itemLimit))) { item in
+                if let expandableItem = item.current as? any TopListExpandableItem {
+                    // Expandable section with child items
                     VStack(spacing: Constants.step1 / 2) {
-                        // Section header
                         Button {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                toggleSection(archiveSection.id)
-                            }
+                            toggleSection(expandableItem.id)
                         } label: {
-                            ArchiveSectionItemView(
-                                section: archiveSection,
-                                previousItem: item.previous,
+                            ExpandableItemView(
+                                section: expandableItem,
+                                previousItem: item.previous as? (any TopListExpandableItem),
                                 metric: data.metric,
                                 maxValue: data.maxValue,
                                 dateRange: dateRange,
-                                isExpanded: expandedSections.contains(archiveSection.id)
+                                isExpanded: expandedSections.contains(expandableItem.id)
                             )
                         }
-                        .buttonStyle(PlainButtonStyle())
-                        
+                        .buttonStyle(.plain)
+
                         // Expandable items
-                        if expandedSections.contains(archiveSection.id) {
+                        if expandedSections.contains(expandableItem.id) {
                             VStack(spacing: Constants.step1 / 2) {
-                                ForEach(archiveSection.items) { archiveItem in
+                                ForEach(Array(expandableItem.items), id: \.id) { childItem in
                                     TopListItemView(
-                                        currentItem: archiveItem,
+                                        currentItem: childItem,
                                         previousItem: nil,
                                         metric: data.metric,
                                         maxValue: data.maxValue,
@@ -53,25 +62,28 @@ struct TopListItemsView: View {
                         }
                     }
                 } else {
-                    // Regular item
-                    TopListItemView(
-                        currentItem: item.current,
-                        previousItem: item.previous,
-                        metric: data.metric,
-                        maxValue: data.maxValue,
-                        showDetails: showDetails,
-                        dateRange: dateRange
-                    )
-                    .transition(.move(edge: .leading)
+                    makeItemView(for: item)
+                        .transition(.move(edge: .leading)
                         .combined(with: .scale(scale: 0.75))
                         .combined(with: .opacity))
                 }
             }
         }
         .animation(.spring, value: ObjectIdentifier(data))
-        .animation(.easeInOut(duration: 0.25), value: expandedSections)
+        .animation(.spring, value: expandedSections)
     }
-    
+
+    private func makeItemView(for item: TopListChartData.Item) -> some View {
+        TopListItemView(
+            currentItem: item.current,
+            previousItem: item.previous,
+            metric: data.metric,
+            maxValue: data.maxValue,
+            showDetails: showDetails,
+            dateRange: dateRange
+        )
+    }
+
     private func toggleSection(_ sectionId: String) {
         if expandedSections.contains(sectionId) {
             expandedSections.remove(sectionId)
@@ -81,22 +93,18 @@ struct TopListItemsView: View {
     }
 }
 
-// Custom view for archive section header that can show expanded state
-private struct ArchiveSectionItemView: View {
-    let section: TopListData.ArchiveSection
-    let previousItem: (any TopListItem)?
+// Generic view for expandable section headers that can show expanded state
+private struct ExpandableItemView: View {
+    let section: any TopListExpandableItem
+    let previousItem: (any TopListExpandableItem)?
     let metric: SiteMetric
     let maxValue: Int
-    let dateRange: StatsDateRange
     let isExpanded: Bool
-    
-    @Environment(\.router) private var router
-    @Environment(\.context) private var context
 
     var body: some View {
         HStack(spacing: 0) {
-            TopListArchiveSectionRowView(
-                item: section,
+            TopListExpandableSectionRowView(
+                item: section as any TopListExpandableItem,
                 showDetails: false,
                 isExpanded: isExpanded
             )
