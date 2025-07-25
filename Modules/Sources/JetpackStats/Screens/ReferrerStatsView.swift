@@ -94,6 +94,7 @@ struct ReferrerStatsView: View {
             if let domain = referrer.domain, let url = URL(string: "https://\(domain)") {
                 Link(domain, destination: url)
                     .font(.subheadline)
+                    .tint(Constants.Colors.blue)
             } else if let domain = referrer.domain {
                 Text(domain)
                     .font(.subheadline)
@@ -180,7 +181,7 @@ struct ReferrerStatsView: View {
             dateRange: Calendar.demo.makeDateRange(for: .thisYear)
         )
     }
-    .tint(Constants.Colors.blue)
+    .tint(Constants.Colors.jetpack)
 }
 
 private extension TopListData.Referrer {

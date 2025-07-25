@@ -32,6 +32,7 @@ struct TopListReferrerRowView: View {
                     if let url = URL(string: "https://\(domain)") {
                         Link(domain, destination: url)
                             .font(.caption)
+                            .tint(Constants.Colors.blue)
                             .lineLimit(1)
                     } else {
                         Text(domain)

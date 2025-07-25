@@ -165,7 +165,7 @@ public struct PostStatsView: View {
                         Link(destination: postURL) {
                             Image(systemName: "link")
                                 .font(.footnote)
-                                .foregroundColor(.accentColor)
+                                .foregroundColor(Constants.Colors.blue)
                         }
                     }
                 }
