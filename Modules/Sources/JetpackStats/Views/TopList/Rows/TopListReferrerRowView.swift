@@ -29,10 +29,16 @@ struct TopListReferrerRowView: View {
                     .lineLimit(1)
 
                 if let domain = item.domain {
-                    Text(domain)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
+                    if let url = URL(string: "https://\(domain)") {
+                        Link(domain, destination: url)
+                            .font(.caption)
+                            .lineLimit(1)
+                    } else {
+                        Text(domain)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .lineLimit(1)
+                    }
                 }
             }
         }
