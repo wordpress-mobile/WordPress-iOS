@@ -23,6 +23,7 @@ struct AuthorStatsView: View {
             selection: .init(item: .postsAndPages, metric: .views),
             dateRange: range,
             service: context.service,
+            items: [.postsAndPages],
             fetchLimit: 32,
             filter: .author(userId: author.userId)
         ))
