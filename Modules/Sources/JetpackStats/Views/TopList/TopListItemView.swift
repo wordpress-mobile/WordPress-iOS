@@ -68,6 +68,7 @@ struct TopListItemView: View {
                     showChevron: hasDetails
                 )
             }
+            .padding(.trailing, -3)
         }
         .padding(.vertical, 7)
         .background(
