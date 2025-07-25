@@ -9,7 +9,7 @@ struct CardModifier: ViewModifier {
                     .stroke(Color(.opaqueSeparator), lineWidth: 0.5)
             )
             .clipShape(RoundedRectangle(cornerRadius: 16))
-            .padding(.horizontal, Constants.step1)
+            .padding(.horizontal, Constants.step2 / 2)
     }
 }
 

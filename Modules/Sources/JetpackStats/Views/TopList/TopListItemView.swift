@@ -17,7 +17,7 @@ struct TopListItemView: View {
             } label: {
                 content
             }
-            .buttonStyle(PlainButtonStyle())
+            .buttonStyle(.plain)
         } else {
             content
         }
@@ -53,7 +53,7 @@ struct TopListItemView: View {
             Spacer(minLength: 6)
 
             // Metrics view
-            ZStack {
+            ZStack(alignment: .trailing) {
                 if previousItem != nil {
                     // Reserve space to avoid junky animations when changing period
                     Text("+4.8K (31.2%)")
