@@ -4,6 +4,38 @@
     "domain": "google.com",
     "iconURL": "https://www.google.com/favicon.ico",
     "isSpam": false,
+    "children": [
+      {
+        "name": "wordpress blog best practices",
+        "domain": "google.com",
+        "iconURL": "https://www.google.com/favicon.ico",
+        "isSpam": false,
+        "children": [],
+        "metrics": {
+          "views": 1200,
+          "visitors": 960,
+          "bounceRate": 22,
+          "timeOnSite": 320,
+          "comments": 45,
+          "likes": 105
+        }
+      },
+      {
+        "name": "how to optimize wordpress site",
+        "domain": "google.com",
+        "iconURL": "https://www.google.com/favicon.ico",
+        "isSpam": false,
+        "children": [],
+        "metrics": {
+          "views": 950,
+          "visitors": 760,
+          "bounceRate": 25,
+          "timeOnSite": 290,
+          "comments": 35,
+          "likes": 82
+        }
+      }
+    ],
     "metrics": {
       "views": 5000,
       "visitors": 4000,
@@ -18,6 +50,53 @@
     "domain": "twitter.com",
     "iconURL": "https://abs.twimg.com/favicons/twitter.3.ico",
     "isSpam": false,
+    "children": [
+      {
+        "name": "@johndoe shared your post",
+        "domain": "twitter.com",
+        "iconURL": "https://abs.twimg.com/favicons/twitter.3.ico",
+        "isSpam": false,
+        "children": [],
+        "metrics": {
+          "views": 850,
+          "visitors": 680,
+          "bounceRate": 32,
+          "timeOnSite": 240,
+          "comments": 38,
+          "likes": 89
+        }
+      },
+      {
+        "name": "@webdev tweeted about your article",
+        "domain": "twitter.com",
+        "iconURL": "https://abs.twimg.com/favicons/twitter.3.ico",
+        "isSpam": false,
+        "children": [],
+        "metrics": {
+          "views": 720,
+          "visitors": 576,
+          "bounceRate": 35,
+          "timeOnSite": 210,
+          "comments": 32,
+          "likes": 72
+        }
+      },
+      {
+        "name": "#WordPress trending topic",
+        "domain": "twitter.com",
+        "iconURL": "https://abs.twimg.com/favicons/twitter.3.ico",
+        "isSpam": false,
+        "children": [],
+        "metrics": {
+          "views": 600,
+          "visitors": 480,
+          "bounceRate": 38,
+          "timeOnSite": 195,
+          "comments": 25,
+          "likes": 60
+        }
+      }
+    ],
     "metrics": {
       "views": 3500,
       "visitors": 2800,
@@ -32,6 +111,7 @@
     "domain": "reddit.com",
     "iconURL": "https://www.redditstatic.com/desktop2x/img/favicon/favicon-32x32.png",
     "isSpam": false,
+    "children": [],
     "metrics": {
       "views": 2000,
       "visitors": 1600,
@@ -46,6 +126,7 @@
     "domain": "facebook.com",
     "iconURL": "https://static.xx.fbcdn.net/rsrc.php/yD/r/d4ZIVX-5C-b.ico",
     "isSpam": false,
+    "children": [],
     "metrics": {
       "views": 1500,
       "visitors": 1200,
@@ -60,6 +141,7 @@
     "domain": "youtube.com",
     "iconURL": "https://www.youtube.com/s/desktop/8a0c81e8/img/favicon_32x32.png",
     "isSpam": false,
+    "children": [],
     "metrics": {
       "views": 1100,
       "visitors": 880,
@@ -74,6 +156,7 @@
     "domain": "linkedin.com",
     "iconURL": "https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca",
     "isSpam": false,
+    "children": [],
     "metrics": {
       "views": 900,
       "visitors": 720,
@@ -88,6 +171,7 @@
     "domain": "news.ycombinator.com",
     "iconURL": "https://news.ycombinator.com/favicon.ico",
     "isSpam": false,
+    "children": [],
     "metrics": {
       "views": 800,
       "visitors": 640,
@@ -95,48 +179,6 @@
       "timeOnSite": 320,
       "comments": 75,
       "likes": 180
-    }
-  },
-  {
-    "name": "Flipboard",
-    "domain": "flipboard.com",
-    "iconURL": "https://s.flipboard.com/webapp/images/favicon/favicon-32x32.png",
-    "isSpam": false,
-    "metrics": {
-      "views": 600,
-      "visitors": 480,
-      "bounceRate": 50,
-      "timeOnSite": 140,
-      "comments": 35,
-      "likes": 95
-    }
-  },
-  {
-    "name": "Feedly",
-    "domain": "feedly.com",
-    "iconURL": "https://s3.feedly.com/img/feedly-512.png",
-    "isSpam": false,
-    "metrics": {
-      "views": 500,
-      "visitors": 400,
-      "bounceRate": 42,
-      "timeOnSite": 200,
-      "comments": 30,
-      "likes": 85
-    }
-  },
-  {
-    "name": "Apple News",
-    "domain": "apple.news",
-    "iconURL": null,
-    "isSpam": false,
-    "metrics": {
-      "views": 400,
-      "visitors": 320,
-      "bounceRate": 48,
-      "timeOnSite": 150,
-      "comments": 25,
-      "likes": 70
     }
   }
 ]

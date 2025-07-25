@@ -43,6 +43,7 @@ extension TopListData {
         let domain: String?
         let iconURL: URL?
         let isSpam: Bool?
+        let children: [Referrer]
         var metrics: SiteMetricsSet
 
         var id: TopListItemID {

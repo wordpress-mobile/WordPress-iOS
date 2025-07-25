@@ -92,6 +92,8 @@ private extension TopListItemView {
             return true
         case is TopListData.Author:
             return true
+        case is TopListData.Referrer:
+            return true
         default:
             return false
         }
@@ -110,6 +112,11 @@ private extension TopListItemView {
             }
         case let author as TopListData.Author:
             let detailsView = AuthorStatsView(author: author, initialDateRange: dateRange, context: context)
+                .environment(\.context, context)
+                .environment(\.router, router)
+            router.navigate(to: detailsView)
+        case let referrer as TopListData.Referrer:
+            let detailsView = ReferrerStatsView(referrer: referrer)
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView)
