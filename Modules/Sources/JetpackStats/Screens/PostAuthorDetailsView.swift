@@ -1,5 +1,6 @@
 import SwiftUI
 import WordPressKit
+import DesignSystem
 
 struct PostAuthorDetailsView: View {
     let author: TopListData.Author
@@ -31,23 +32,25 @@ struct PostAuthorDetailsView: View {
             VStack(spacing: Constants.step2) {
                 // Author header
                 authorHeader
-                    .padding(.horizontal, Constants.step2)
-                    .padding(.top, Constants.step2)
+                    .cardStyle()
                 
                 // Posts list
                 if !authorPosts.isEmpty {
                     postsSection(posts: authorPosts)
-                        .padding(.horizontal, Constants.step2)
+                        .cardStyle()
                 } else if viewModel.isLoading {
                     ProgressView()
                         .padding(.vertical, Constants.step4)
+                        .frame(maxWidth: .infinity)
+                        .cardStyle()
                 } else {
                     emptyPostsView
-                        .padding(.horizontal, Constants.step2)
+                        .cardStyle()
                 }
             }
-            .padding(.bottom, Constants.step2)
+            .padding(.vertical, Constants.step1)
         }
+        .background(Constants.Colors.background)
         .onAppear {
             viewModel.onAppear()
         }
@@ -76,77 +79,55 @@ struct PostAuthorDetailsView: View {
     }
     
     private var authorHeader: some View {
-        VStack(spacing: Constants.step1) {
-            // Avatar
-            AsyncImage(url: author.avatarURL) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            } placeholder: {
-                Image(systemName: "person.circle.fill")
-                    .foregroundColor(.secondary)
-            }
-            .frame(width: avatarSize, height: avatarSize)
-            .clipShape(Circle())
-            
-            // Name and role
-            VStack(spacing: 4) {
-                Text(author.name)
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                
-                if let role = author.role {
-                    Text(role)
-                        .font(.subheadline)
+        VStack(spacing: Constants.step2) {
+            HStack(spacing: Constants.step2) {
+                // Avatar
+                AsyncImage(url: author.avatarURL) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    Image(systemName: "person.circle.fill")
                         .foregroundColor(.secondary)
                 }
-            }
-            
-            // Metrics summary
-            HStack(spacing: Constants.step3) {
-                metricSummaryItem(
-                    value: author.metrics.views ?? 0,
-                    label: SiteMetric.views.localizedTitle
-                )
+                .frame(width: avatarSize, height: avatarSize)
+                .clipShape(Circle())
                 
-                if let comments = author.metrics.comments {
-                    metricSummaryItem(
-                        value: comments,
-                        label: SiteMetric.comments.localizedTitle
-                    )
+                // Name and views
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(author.name)
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                    
+                    // Views with trend
+                    HStack(spacing: 6) {
+                        HStack(spacing: 2) {
+                            Image(systemName: SiteMetric.views.systemImage)
+                                .font(.caption2.weight(.medium))
+                                .foregroundColor(.secondary)
+                            
+                            Text(SiteMetric.views.localizedTitle.uppercased())
+                                .font(.caption.weight(.medium))
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        Text(StatsValueFormatter.formatNumber(author.metrics.views ?? 0, onlyLarge: true))
+                            .font(Font.make(.recoleta, textStyle: .title2, weight: .medium))
+                            .foregroundColor(.primary)
+                    }
                 }
                 
-                if let likes = author.metrics.likes {
-                    metricSummaryItem(
-                        value: likes,
-                        label: SiteMetric.likes.localizedTitle
-                    )
-                }
+                Spacer()
             }
-            .padding(.top, Constants.step1)
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Constants.step2)
-        .background(Color(.secondarySystemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
     
-    private func metricSummaryItem(value: Int, label: String) -> some View {
-        VStack(spacing: 4) {
-            Text(StatsValueFormatter.formatNumber(value, onlyLarge: true))
-                .font(.headline)
-                .fontWeight(.semibold)
-            
-            Text(label)
-                .font(.caption)
-                .foregroundColor(.secondary)
-        }
-    }
     
     private func postsSection(posts: [TopListData.Post]) -> some View {
-        VStack(alignment: .leading, spacing: Constants.step1) {
-            Text(Strings.AuthorDetails.posts)
-                .font(.headline)
+        VStack(alignment: .leading, spacing: Constants.step2) {
+            StatsCardTitleView(title: Strings.AuthorDetails.posts)
             
             let maxViews = posts.compactMap { $0.metrics.views }.max() ?? 0
             let topListData = TopListChartData(
@@ -164,6 +145,7 @@ struct PostAuthorDetailsView: View {
                 showDetails: true
             )
         }
+        .padding(Constants.step2)
     }
     
     
@@ -181,8 +163,6 @@ struct PostAuthorDetailsView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, Constants.step4)
         .padding(.horizontal, Constants.step2)
-        .background(Color(.secondarySystemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
 
@@ -192,11 +172,9 @@ struct PostAuthorDetailsView: View {
             author: TopListData.Author(
                 name: "Alex Johnson",
                 userId: "1",
-                role: "Editor-in-Chief",
+                role: nil,
                 metrics: SiteMetricsSet(
-                    views: 5000,
-                    likes: 850,
-                    comments: 280
+                    views: 5000
                 ),
                 avatarURL: nil,
                 posts: [
