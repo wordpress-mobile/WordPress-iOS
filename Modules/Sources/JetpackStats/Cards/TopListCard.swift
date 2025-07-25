@@ -36,31 +36,37 @@ struct TopListCard: View {
 
     private var headerView: some View {
         HStack {
-            Menu {
-                ForEach(Array(viewModel.groupedItems.enumerated()), id: \.offset) { _, items in
-                    Section {
-                        ForEach(items) { item in
-                            Button {
-                                var selection = viewModel.selection
-                                selection.item = item
+            if viewModel.items.count > 1 {
+                Menu {
+                    ForEach(Array(viewModel.groupedItems.enumerated()), id: \.offset) { _, items in
+                        Section {
+                            ForEach(items) { item in
+                                Button {
+                                    var selection = viewModel.selection
+                                    selection.item = item
 
-                                let supportedMetric = getSupportedMetrics(for: item)
-                                if !supportedMetric.contains(selection.metric),
-                                   let metric = supportedMetric.first {
-                                    selection.metric = metric
+                                    let supportedMetric = getSupportedMetrics(for: item)
+                                    if !supportedMetric.contains(selection.metric),
+                                       let metric = supportedMetric.first {
+                                        selection.metric = metric
+                                    }
+                                    viewModel.selection = selection
+                                } label: {
+                                    Label(item.localizedTitle, systemImage: item.systemImage)
                                 }
-                                viewModel.selection = selection
-                            } label: {
-                                Label(item.localizedTitle, systemImage: item.systemImage)
                             }
                         }
                     }
+                    .tint(Color.primary)
+                } label: {
+                    InlineValuePickerTitle(title: viewModel.selection.item.localizedTitle)
                 }
-                .tint(Color.primary)
-            } label: {
-                InlineValuePickerTitle(title: viewModel.selection.item.localizedTitle)
+                .fixedSize()
+            } else {
+                Text(viewModel.selection.item.localizedTitle)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
             }
-            .fixedSize()
 
             Spacer()
 

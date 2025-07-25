@@ -10,7 +10,42 @@
       "visitors": 3500,
       "bounceRate": 32,
       "timeOnSite": 260
-    }
+    },
+    "posts": [
+      {
+        "title": "The Future of Technology: AI and Machine Learning",
+        "postID": "101",
+        "postURL": "https://example.com/tech-ai-ml",
+        "date": "2024-11-15T00:00:00Z",
+        "type": "post",
+        "author": "Alex Johnson",
+        "metrics": {
+          "views": 1250
+        }
+      },
+      {
+        "title": "Understanding Climate Change: A Global Perspective",
+        "postID": "102",
+        "postURL": "https://example.com/climate-change",
+        "date": "2024-11-10T00:00:00Z",
+        "type": "post",
+        "author": "Alex Johnson",
+        "metrics": {
+          "views": 980
+        }
+      },
+      {
+        "title": "The Digital Revolution in Healthcare",
+        "postID": "103",
+        "postURL": "https://example.com/digital-healthcare",
+        "date": "2024-11-05T00:00:00Z",
+        "type": "post",
+        "author": "Alex Johnson",
+        "metrics": {
+          "views": 856
+        }
+      }
+    ]
   },
   {
     "name": "Chloe Zhang",
@@ -23,7 +58,31 @@
       "visitors": 2940,
       "bounceRate": 34,
       "timeOnSite": 245
-    }
+    },
+    "posts": [
+      {
+        "title": "Sustainable Living: A Guide to Eco-Friendly Practices",
+        "postID": "201",
+        "postURL": "https://example.com/sustainable-living",
+        "date": "2024-11-14T00:00:00Z",
+        "type": "post",
+        "author": "Chloe Zhang",
+        "metrics": {
+          "views": 1100
+        }
+      },
+      {
+        "title": "The Rise of Remote Work Culture",
+        "postID": "202",
+        "postURL": "https://example.com/remote-work",
+        "date": "2024-11-08T00:00:00Z",
+        "type": "post",
+        "author": "Chloe Zhang",
+        "metrics": {
+          "views": 890
+        }
+      }
+    ]
   },
   {
     "name": "Jordan Davis",
@@ -36,7 +95,31 @@
       "visitors": 2660,
       "bounceRate": 36,
       "timeOnSite": 235
-    }
+    },
+    "posts": [
+      {
+        "title": "Cryptocurrency: The Future of Finance?",
+        "postID": "301",
+        "postURL": "https://example.com/cryptocurrency",
+        "date": "2024-11-12T00:00:00Z",
+        "type": "post",
+        "author": "Jordan Davis",
+        "metrics": {
+          "views": 950
+        }
+      },
+      {
+        "title": "Mental Health in the Digital Age",
+        "postID": "302",
+        "postURL": "https://example.com/mental-health",
+        "date": "2024-11-06T00:00:00Z",
+        "type": "post",
+        "author": "Jordan Davis",
+        "metrics": {
+          "views": 780
+        }
+      }
+    ]
   },
   {
     "name": "Sofia Rodriguez",
@@ -49,7 +132,31 @@
       "visitors": 2310,
       "bounceRate": 38,
       "timeOnSite": 225
-    }
+    },
+    "posts": [
+      {
+        "title": "About Us",
+        "postID": "401",
+        "postURL": "https://example.com/about",
+        "date": null,
+        "type": "page",
+        "author": "Sofia Rodriguez",
+        "metrics": {
+          "views": 825
+        }
+      },
+      {
+        "title": "The Art of Storytelling in Journalism",
+        "postID": "402",
+        "postURL": "https://example.com/storytelling",
+        "date": "2024-11-09T00:00:00Z",
+        "type": "post",
+        "author": "Sofia Rodriguez",
+        "metrics": {
+          "views": 670
+        }
+      }
+    ]
   },
   {
     "name": "Morgan Smith",
@@ -62,7 +169,20 @@
       "visitors": 2100,
       "bounceRate": 40,
       "timeOnSite": 215
-    }
+    },
+    "posts": [
+      {
+        "title": "Breaking News: Major Policy Changes",
+        "postID": "501",
+        "postURL": "https://example.com/policy-changes",
+        "date": "2024-11-13T00:00:00Z",
+        "type": "post",
+        "author": "Morgan Smith",
+        "metrics": {
+          "views": 750
+        }
+      }
+    ]
   },
   {
     "name": "Emma Thompson",
@@ -75,7 +195,20 @@
       "visitors": 1890,
       "bounceRate": 42,
       "timeOnSite": 205
-    }
+    },
+    "posts": [
+      {
+        "title": "Editorial: The State of Modern Media",
+        "postID": "601",
+        "postURL": "https://example.com/modern-media",
+        "date": "2024-11-11T00:00:00Z",
+        "type": "post",
+        "author": "Emma Thompson",
+        "metrics": {
+          "views": 675
+        }
+      }
+    ]
   },
   {
     "name": "Riley Martinez",
@@ -88,7 +221,20 @@
       "visitors": 1680,
       "bounceRate": 39,
       "timeOnSite": 220
-    }
+    },
+    "posts": [
+      {
+        "title": "Local Community Events This Weekend",
+        "postID": "701",
+        "postURL": "https://example.com/local-events",
+        "date": "2024-11-07T00:00:00Z",
+        "type": "post",
+        "author": "Riley Martinez",
+        "metrics": {
+          "views": 600
+        }
+      }
+    ]
   },
   {
     "name": "Jamie Lee",
@@ -101,7 +247,20 @@
       "visitors": 1470,
       "bounceRate": 44,
       "timeOnSite": 195
-    }
+    },
+    "posts": [
+      {
+        "title": "Homepage",
+        "postID": "800",
+        "postURL": "https://example.com/",
+        "date": null,
+        "type": "homepage",
+        "author": "Jamie Lee",
+        "metrics": {
+          "views": 525
+        }
+      }
+    ]
   },
   {
     "name": "Avery Taylor",
@@ -114,7 +273,8 @@
       "visitors": 1295,
       "bounceRate": 46,
       "timeOnSite": 185
-    }
+    },
+    "posts": []
   },
   {
     "name": "Quinn Anderson",
@@ -127,6 +287,7 @@
       "visitors": 1120,
       "bounceRate": 48,
       "timeOnSite": 175
-    }
+    },
+    "posts": []
   }
 ]

@@ -69,7 +69,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         return SiteMetricsData(total: total, metrics: output)
     }
 
-    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity) async throws -> TopListData {
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListData {
         await generateDataIfNeeded()
 
         guard let typeData = dailyTopListData[item] else {
@@ -109,7 +109,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
 
-        return TopListData(items: Array(sortedItems.prefix(20)))
+        return TopListData(items: Array(sortedItems.prefix(limit ?? Int.max)))
     }
 
     func getRealtimeTopListData(_ dataType: TopListItemType) async throws -> TopListData {
@@ -212,6 +212,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         do {
             let data = try Data(contentsOf: url)
             let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
 
             // Decode based on data type
             switch dataType {
@@ -336,6 +337,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         do {
             let data = try Data(contentsOf: url)
             let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
 
             // Decode based on data type
             switch dataType {
@@ -536,7 +538,35 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
                 // Apply mutations to each item for this day
                 let dailyItems = baseItems.map { item in
-                    mutateItemMetrics(item, growthFactor: growthFactor, seasonalFactor: seasonalFactor, weekendFactor: weekendFactor, randomFactor: randomFactor)
+                    var mutatedItem = mutateItemMetrics(item, growthFactor: growthFactor, seasonalFactor: seasonalFactor, weekendFactor: weekendFactor, randomFactor: randomFactor)
+
+                    // If it's an Author with posts, mutate the posts too
+                    if let author = mutatedItem as? TopListData.Author, let posts = author.posts {
+                        var mutatedAuthor = author
+                        mutatedAuthor.posts = posts.map { post in
+                            var mutatedPost = post
+                            // Apply similar mutation factors to post metrics
+                            let postRandomFactor = Double.random(in: 0.9...1.1) // Slight variation per post
+                            let postCombinedFactor = growthFactor * seasonalFactor * weekendFactor * randomFactor * postRandomFactor
+
+                            if let views = post.metrics.views {
+                                mutatedPost.metrics.views = Int(Double(views) * postCombinedFactor)
+                            }
+                            if let comments = post.metrics.comments {
+                                mutatedPost.metrics.comments = Int(Double(comments) * postCombinedFactor * 0.8)
+                            }
+                            if let likes = post.metrics.likes {
+                                mutatedPost.metrics.likes = Int(Double(likes) * postCombinedFactor * 0.9)
+                            }
+                            if let visitors = post.metrics.visitors {
+                                mutatedPost.metrics.visitors = Int(Double(visitors) * postCombinedFactor)
+                            }
+                            return mutatedPost
+                        }
+                        mutatedItem = mutatedAuthor
+                    }
+
+                    return mutatedItem
                 }
 
                 let startOfDay = calendar.startOfDay(for: currentDate)

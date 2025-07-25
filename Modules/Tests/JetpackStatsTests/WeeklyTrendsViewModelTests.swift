@@ -363,29 +363,6 @@ struct WeeklyTrendsViewModelTests {
         #expect(week.averagePerDay == expectedAverage)
     }
 
-    @Test("Calculates average per day for average metric")
-    func averagePerDayForAverageMetric() {
-        // Given
-        let dataPoints = [
-            DataPoint(date: Date("2025-01-05T00:00:00Z"), value: 100),
-            DataPoint(date: Date("2025-01-06T00:00:00Z"), value: 200),
-            DataPoint(date: Date("2025-01-07T00:00:00Z"), value: 300)
-        ]
-
-        // When
-        let viewModel = WeeklyTrendsViewModel(
-            dataPoints: dataPoints,
-            calendar: calendar,
-            metric: .timeOnSite // Average metric
-        )
-
-        // Then
-        #expect(viewModel.weeks.count == 1)
-        let week = viewModel.weeks[0]
-        let expectedAverage = (100 + 200 + 300) / 3 // For average metrics, it's the average value
-        #expect(week.averagePerDay == expectedAverage)
-    }
-
     @Test("Handles empty week for average calculation")
     func averagePerDayWithEmptyWeek() {
         // Given

@@ -11,7 +11,8 @@ public protocol StatsRouterScreenFactory: AnyObject {
 public final class StatsRouter: @unchecked Sendable {
     @MainActor
     var navigationController: UINavigationController? {
-        (viewController as? UINavigationController) ?? viewController?.navigationController
+        let vc = viewController ?? findTopViewController()
+        return (vc as? UINavigationController) ?? vc?.navigationController
     }
 
     public weak var viewController: UIViewController?
@@ -21,6 +22,18 @@ public final class StatsRouter: @unchecked Sendable {
     public init(viewController: UIViewController? = nil, factory: StatsRouterScreenFactory) {
         self.viewController = viewController
         self.factory = factory
+    }
+
+    @MainActor
+    private func findTopViewController() -> UIViewController? {
+        guard let window = UIApplication.shared.mainWindow else {
+            return nil
+        }
+        var topController = window.rootViewController
+        while let presented = topController?.presentedViewController {
+            topController = presented
+        }
+        return topController
     }
 
     @MainActor
@@ -45,7 +58,16 @@ public final class StatsRouter: @unchecked Sendable {
     func openURL(_ url: URL) {
         // Open URL in in-app Safari
         let safariViewController = SFSafariViewController(url: url)
-        viewController?.present(safariViewController, animated: true)
+        let vc = viewController ?? findTopViewController()
+        vc?.present(safariViewController, animated: true)
+    }
+}
+
+private extension UIApplication {
+    @objc var mainWindow: UIWindow? {
+        connectedScenes
+            .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+            .first
     }
 }
 

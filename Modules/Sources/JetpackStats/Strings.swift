@@ -163,4 +163,8 @@ enum Strings {
         static let dailyAverage = AppLocalizedString("jetpackStats.postDetails.dailyAverage", value: "Daily Average", comment: "Label for daily average in tooltip")
         static let weekOverWeek = AppLocalizedString("jetpackStats.postDetails.weekOverWeek", value: "Week over Week", comment: "Label for week-over-week comparison in tooltip")
     }
+
+    enum AuthorDetails {
+        static let title = AppLocalizedString("jetpackStats.authorDetails.title", value: "Author Stats", comment: "Title for the author details screen")
+    }
 }
