@@ -6,6 +6,7 @@ struct TopListItemView: View {
     let metric: SiteMetric
     let maxValue: Int
     let dateRange: StatsDateRange
+    var isNavigationDisabled = false
 
     @Environment(\.router) private var router
     @Environment(\.context) private var context
@@ -86,6 +87,9 @@ struct TopListItemView: View {
 
 private extension TopListItemView {
     var hasDetails: Bool {
+        guard !isNavigationDisabled else {
+            return false
+        }
         switch currentItem {
         case is TopListData.Post:
             return true

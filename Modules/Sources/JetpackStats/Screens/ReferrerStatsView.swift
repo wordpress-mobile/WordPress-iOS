@@ -133,7 +133,8 @@ struct ReferrerStatsView: View {
             TopListItemsView(
                 data: childrenChartData,
                 itemLimit: referrer.children.count,
-                dateRange: context.calendar.makeDateRange(for: .thisYear)
+                dateRange: context.calendar.makeDateRange(for: .thisYear), // Not used
+                isNavigationDisabled: true
             )
 
         }
