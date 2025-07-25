@@ -49,10 +49,6 @@ struct TopListItemsView: View {
                             .transition(.move(edge: .leading)
                                 .combined(with: .scale(scale: 0.75))
                                 .combined(with: .opacity))
-//                            .transition(.asymmetric(
-//                                insertion: .opacity.combined(with: .move(edge: .top)),
-//                                removal: .opacity.combined(with: .move(edge: .top))
-//                            ))
                     }
                 }
             }

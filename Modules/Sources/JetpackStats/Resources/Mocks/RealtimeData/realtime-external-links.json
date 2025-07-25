@@ -1,0 +1,50 @@
+[
+  {
+    "url": "https://developer.apple.com",
+    "title": "Apple Developer",
+    "metrics": {
+      "views": 180,
+      "visitors": 120
+    }
+  },
+  {
+    "url": "https://swift.org",
+    "title": "Swift.org",
+    "metrics": {
+      "views": 150,
+      "visitors": 100
+    }
+  },
+  {
+    "url": "https://github.com",
+    "title": "GitHub",
+    "metrics": {
+      "views": 120,
+      "visitors": 80
+    }
+  },
+  {
+    "url": "https://stackoverflow.com",
+    "title": "Stack Overflow",
+    "metrics": {
+      "views": 100,
+      "visitors": 70
+    }
+  },
+  {
+    "url": "https://raywenderlich.com",
+    "title": "Ray Wenderlich",
+    "metrics": {
+      "views": 80,
+      "visitors": 50
+    }
+  },
+  {
+    "url": "https://nshipster.com",
+    "title": "NSHipster",
+    "metrics": {
+      "views": 60,
+      "visitors": 40
+    }
+  }
+]

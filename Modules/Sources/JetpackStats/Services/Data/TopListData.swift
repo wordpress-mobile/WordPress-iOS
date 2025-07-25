@@ -4,6 +4,10 @@ struct TopListData: Sendable {
     let items: [any TopListItem]
 }
 
+/// - warning: It's required for animations in ``TopListItemsView`` to work
+/// well for IDs to be unique across the domains. If we were just to use
+/// `String`, there would be collisions across domains, e.g. post and author
+/// using the same String ID "1".
 struct TopListItemID: Hashable {
     let type: TopListItemType
     let id: String

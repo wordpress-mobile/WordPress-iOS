@@ -186,7 +186,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         case .postsAndPages:
             fileName = "postsAndPages"
         case .archive:
-            return generateMockArchiveData()
+            fileName = "archive"
         case .referrers:
             fileName = "referrers"
         case .locations:
@@ -246,8 +246,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                 let posts = try decoder.decode([TopListData.Post].self, from: data)
                 return posts
             case .archive:
-                // This case is handled by generateMockArchiveData
-                return []
+                let sections = try decoder.decode([TopListData.ArchiveSection].self, from: data)
+                return sections
             }
         } catch {
             print("Failed to load \(fileName).json: \(error)")
@@ -310,7 +310,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         case .postsAndPages:
             fileName = "historical-postsAndPages"
         case .archive:
-            return generateMockArchiveData()
+            fileName = "historical-archive"
         case .referrers:
             fileName = "historical-referrers"
         case .locations:
@@ -370,8 +370,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                 let posts = try decoder.decode([TopListData.Post].self, from: data)
                 return posts
             case .archive:
-                // This case is handled by generateMockArchiveData
-                return []
+                let sections = try decoder.decode([TopListData.ArchiveSection].self, from: data)
+                return sections
             }
         } catch {
             print("Failed to load \(fileName).json: \(error)")
@@ -548,31 +548,4 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         }
     }
 
-    /// Generates mock archive data with expandable sections
-    private func generateMockArchiveData() -> [any TopListItem] {
-        // Create mock archive sections based on the example JSON structure
-        let otherSection = TopListData.ArchiveSection(
-            sectionName: "other",
-            items: [
-                TopListData.ArchiveItem(href: "http://example.com/wp-admin/admin.php?page=stats", value: "/wp-admin/admin.php?page=stats", metrics: SiteMetricsSet(views: 10)),
-                TopListData.ArchiveItem(href: "http://example.com/wp-admin/", value: "/wp-admin/", metrics: SiteMetricsSet(views: 4)),
-                TopListData.ArchiveItem(href: "http://example.com/wp-admin/edit.php", value: "/wp-admin/edit.php", metrics: SiteMetricsSet(views: 4)),
-                TopListData.ArchiveItem(href: "http://example.com/wp-admin/index.php", value: "/wp-admin/index.php", metrics: SiteMetricsSet(views: 2)),
-                TopListData.ArchiveItem(href: "http://example.com/wp-admin/revision.php?revision=12345", value: "/wp-admin/revision.php?revision=12345", metrics: SiteMetricsSet(views: 2))
-            ],
-            metrics: SiteMetricsSet(views: 25) // Total views for the section
-        )
-
-        let authorSection = TopListData.ArchiveSection(
-            sectionName: "author",
-            items: [
-                TopListData.ArchiveItem(href: "http://example.com/author/johndoe/", value: "johndoe", metrics: SiteMetricsSet(views: 31)),
-                TopListData.ArchiveItem(href: "http://example.com/author/janedoe/", value: "janedoe", metrics: SiteMetricsSet(views: 5)),
-                TopListData.ArchiveItem(href: "http://example.com/author/testuser/", value: "testuser", metrics: SiteMetricsSet(views: 2))
-            ],
-            metrics: SiteMetricsSet(views: 40) // Total views for the section
-        )
-
-        return [otherSection, authorSection]
-    }
 }
