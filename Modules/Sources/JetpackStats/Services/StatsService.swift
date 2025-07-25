@@ -24,8 +24,8 @@ actor StatsService: StatsServiceProtocol {
     ]
 
     let supportedItems: [TopListItemType] = [
-        .postsAndPages, .archive, .referrers, .locations, .authors, .externalLinks,
-        .fileDownloads, .searchTerms, .videos
+        .postsAndPages, .authors, .referrers, .locations,
+        .externalLinks, .fileDownloads, .searchTerms, .videos, .archive
     ]
 
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
