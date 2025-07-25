@@ -47,7 +47,7 @@ extension TopListData {
         var metrics: SiteMetricsSet
 
         var id: TopListItemID {
-            TopListItemID(type: .referrers, id: domain ?? name)
+            TopListItemID(type: .referrers, id: (domain ?? "–") + name)
         }
     }
 

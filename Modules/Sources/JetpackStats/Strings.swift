@@ -148,16 +148,6 @@ enum Strings {
             return String.localizedStringWithFormat(format, count)
         }
 
-        // Accessibility
-        static func weeklyActivityAccessibility(weeksCount: Int, metric: String, total: String) -> String {
-            String.localizedStringWithFormat(
-                AppLocalizedString("jetpackStats.postDetails.weeklyActivity.accessibility",
-                                   value: "Weekly activity heatmap showing %1$d weeks of %2$@ data. Total: %3$@",
-                                   comment: "VoiceOver description for weekly activity heatmap. %1$d is number of weeks, %2$@ is metric name, %3$@ is total value"),
-                weeksCount, metric, total
-            )
-        }
-
         // Tooltip
         static let weekTotal = AppLocalizedString("jetpackStats.postDetails.weekTotal", value: "Week Total", comment: "Label for weekly total in tooltip")
         static let dailyAverage = AppLocalizedString("jetpackStats.postDetails.dailyAverage", value: "Daily Average", comment: "Label for daily average in tooltip")
@@ -165,6 +155,13 @@ enum Strings {
     }
 
     enum AuthorDetails {
-        static let title = AppLocalizedString("jetpackStats.authorDetails.title", value: "Author Stats", comment: "Title for the author details screen")
+        static let title = AppLocalizedString("jetpackStats.authorDetails.title", value: "Author", comment: "Title for the author details screen")
+    }
+
+    enum ReferrerDetails {
+        static let title = AppLocalizedString("jetpackStats.referrerDetails.title", value: "Referrer", comment: "Title for the referrer details screen")
+        static let markAsSpam = AppLocalizedString("jetpackStats.referrerDetails.markAsSpam", value: "Mark as Spam", comment: "Button to mark a referrer as spam")
+        static let markedAsSpam = AppLocalizedString("jetpackStats.referrerDetails.markedAsSpam", value: "Marked as Spam", comment: "Label shown when a referrer is already marked as spam")
+        static let referralSources = AppLocalizedString("jetpackStats.referrerDetails.referralSources", value: "Referral Sources", comment: "Section title for the list of referral sources")
     }
 }

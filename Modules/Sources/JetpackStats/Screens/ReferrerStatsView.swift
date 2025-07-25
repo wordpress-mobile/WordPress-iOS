@@ -3,43 +3,38 @@ import WordPressUI
 
 struct ReferrerStatsView: View {
     let referrer: TopListData.Referrer
-    
+
+    private let imageSize: CGFloat = 28
+
+    @Environment(\.context) private var context
     @Environment(\.router) private var router
-    
+
     var body: some View {
-            ScrollView {
-                VStack(spacing: Constants.step2) {
-                    headerCard
-                    
-                    if !referrer.children.isEmpty {
-                        childrenCard
-                    }
+        ScrollView {
+            VStack(spacing: Constants.step3) {
+                headerCard
+                if !referrer.children.isEmpty {
+                    childrenCard
                 }
-                .padding(.horizontal, Constants.step2)
-                .padding(.vertical, Constants.step1)
             }
-            .background(Color(.systemGroupedBackground))
-            .navigationTitle(Strings.ReferrerStats.title)
-            .navigationBarTitleDisplayMode(.inline)
+            .padding(.vertical, Constants.step1)
+        }
+        .background(Constants.Colors.background)
+        .navigationTitle(Strings.ReferrerDetails.title)
+        .navigationBarTitleDisplayMode(.inline)
     }
-    
+
     private var placeholderIcon: some View {
         Image(systemName: "link.circle.fill")
             .resizable()
             .aspectRatio(contentMode: .fit)
             .foregroundColor(.secondary.opacity(0.5))
     }
-}
 
-// MARK: - Subviews
-
-private extension ReferrerStatsView {
     var headerCard: some View {
-        VStack(spacing: Constants.step1) {
+        VStack(spacing: Constants.step2) {
             referrerInfoRow
-            
             Divider()
-            
             markAsSpamButton
         }
         .padding(Constants.step2)
@@ -68,21 +63,23 @@ private extension ReferrerStatsView {
             } placeholder: {
                 placeholderIcon
             }
-            .frame(width: 48, height: 48)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .frame(width: imageSize, height: imageSize)
         } else {
             placeholderIcon
-                .frame(width: 48, height: 48)
+                .frame(width: imageSize, height: imageSize)
         }
     }
     
     var referrerDetails: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 2) {
             Text(referrer.name)
                 .font(.headline)
                 .foregroundColor(.primary)
             
-            if let domain = referrer.domain {
+            if let domain = referrer.domain, let url = URL(string: "https://\(domain)") {
+                Link(domain, destination: url)
+                    .font(.subheadline)
+            } else if let domain = referrer.domain {
                 Text(domain)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
@@ -93,111 +90,67 @@ private extension ReferrerStatsView {
     @ViewBuilder
     var viewsCount: some View {
         if let views = referrer.metrics.views {
-            VStack(alignment: .trailing, spacing: 4) {
+            VStack(alignment: .trailing, spacing: 0) {
                 Text(StatsValueFormatter.formatNumber(views))
-                    .font(.title2.weight(.semibold))
+                    .font(Font.make(.recoleta, textStyle: .title2, weight: .medium))
                     .foregroundColor(.primary)
                 Text(SiteMetric.views.localizedTitle)
-                    .font(.caption)
+                    .font(.footnote)
                     .foregroundColor(.secondary)
             }
         }
     }
-    
+
+    @ViewBuilder
     var markAsSpamButton: some View {
-        Button {
-            // TODO: Implement mark as spam functionality
-        } label: {
-            Label(Strings.ReferrerStats.markAsSpam, systemImage: "exclamationmark.triangle")
-                .font(.subheadline.weight(.medium))
-                .foregroundColor(.red)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
+        if referrer.isSpam == true {
+            HStack {
+                Image(systemName: "checkmark.shield.fill")
+                    .font(.subheadline)
+                Text(Strings.ReferrerDetails.markedAsSpam)
+                    .font(.subheadline.weight(.medium))
+            }
+            .foregroundColor(.secondary)
+            .frame(maxWidth: .infinity)
+        } else {
+            Button(role: .destructive) {
+                // TODO: Implement mark as spam functionality
+            } label: {
+                Label(Strings.ReferrerDetails.markAsSpam, systemImage: "exclamationmark.triangle")
+                    .foregroundColor(.red)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.plain)
         }
-        .buttonStyle(.plain)
     }
     
     var childrenCard: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text(Strings.ReferrerStats.referralSources)
+        VStack(alignment: .leading, spacing: Constants.step2) {
+            Text(Strings.ReferrerDetails.referralSources)
                 .font(.headline)
                 .foregroundColor(.primary)
-                .padding(.horizontal, Constants.step2)
-                .padding(.vertical, Constants.step1)
-            
-            Divider()
-            
-            ForEach(referrer.children, id: \.id) { child in
-                childRow(for: child)
-            }
+
+            TopListItemsView(
+                data: childrenChartData,
+                itemLimit: referrer.children.count,
+                dateRange: context.calendar.makeDateRange(for: .thisYear)
+            )
+
         }
+        .padding(Constants.step2)
         .cardStyle()
     }
     
-    func childRow(for child: TopListData.Referrer) -> some View {
-        VStack(spacing: 0) {
-            HStack {
-                childInfo(for: child)
-                
-                Spacer()
-                
-                if let views = child.metrics.views {
-                    Text(StatsValueFormatter.formatNumber(views))
-                        .font(.subheadline.weight(.medium))
-                        .foregroundColor(.secondary)
-                }
-            }
-            .padding(.horizontal, Constants.step2)
-            .padding(.vertical, Constants.step1)
-            
-            if child.id != referrer.children.last?.id {
-                Divider()
-                    .padding(.leading, Constants.step2)
-            }
-        }
-    }
-    
-    func childInfo(for child: TopListData.Referrer) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(child.name)
-                .font(.callout)
-                .foregroundColor(.primary)
-                .lineLimit(2)
-            
-            if let domain = child.domain, let url = URL(string: "https://\(domain)") {
-                Button {
-                    router.openURL(url)
-                } label: {
-                    Text(domain)
-                        .font(.caption)
-                        .underline()
-                }
-                .buttonStyle(.plain)
-            }
-        }
-    }
-}
-
-// MARK: - Strings
-
-private extension Strings {
-    enum ReferrerStats {
-        static let title = NSLocalizedString(
-            "stats.referrer.title",
-            value: "Referrer Details",
-            comment: "Title for the referrer details screen"
-        )
+    private var childrenChartData: TopListChartData {
+        let maxValue = referrer.children
+            .compactMap { $0.metrics.views }
+            .max() ?? 1
         
-        static let markAsSpam = NSLocalizedString(
-            "stats.referrer.markAsSpam",
-            value: "Mark as Spam",
-            comment: "Button to mark a referrer as spam"
-        )
-        
-        static let referralSources = NSLocalizedString(
-            "stats.referrer.referralSources",
-            value: "Referral Sources",
-            comment: "Section title for the list of referral sources"
+        return TopListChartData(
+            item: .referrers,
+            metric: .views,
+            items: referrer.children,
+            maxValue: maxValue
         )
     }
 }
@@ -205,7 +158,10 @@ private extension Strings {
 // MARK: - Preview
 
 #Preview {
-    ReferrerStatsView(referrer: .mock)
+    NavigationView {
+        ReferrerStatsView(referrer: .mock)
+    }
+    .tint(Constants.Colors.blue)
 }
 
 private extension TopListData.Referrer {
