@@ -17,6 +17,7 @@ struct TopListItemView: View {
                 navigateToDetails()
             } label: {
                 content
+                    .contentShape(Rectangle()) // Make the entire view tappable
             }
             .buttonStyle(.plain)
         } else {
