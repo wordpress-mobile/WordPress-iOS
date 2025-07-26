@@ -149,7 +149,6 @@ struct ReferrerStatsView: View {
                 dateRange: dateRange,
                 isNavigationDisabled: true
             )
-
         }
         .padding(.vertical, Constants.step2)
         .padding(.horizontal, Constants.step3)

@@ -99,7 +99,6 @@ let package = Package(
             dependencies: [
                 "WordPressUI",
                 .product(name: "WordPressKit", package: "WordPressKit-iOS"),
-                .product(name: "FSInteractiveMap", package: "FSInteractiveMap"),
             ],
             resources: [.process("Resources")]
         ),
