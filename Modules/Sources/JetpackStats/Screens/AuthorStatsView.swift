@@ -24,7 +24,6 @@ struct AuthorStatsView: View {
             dateRange: range,
             service: context.service,
             items: [.postsAndPages],
-            fetchLimit: 32,
             filter: .author(userId: author.userId)
         ))
     }
