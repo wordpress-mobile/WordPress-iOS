@@ -1,27 +1,20 @@
 import SwiftUI
-import FSInteractiveMap
 
-struct CountriesMapView: UIViewRepresentable {
+struct CountriesMapView: View {
     let data: CountriesMapData
-    let primaryColor: UIColor
-
-    func makeUIView(context: Context) -> FSInteractiveMapView {
-        let mapView = FSInteractiveMapView(frame: .zero)
-        mapView.backgroundColor = UIColor.secondarySystemGroupedBackground
-        return mapView
-    }
-
-    func updateUIView(_ mapView: FSInteractiveMapView, context: Context) {
-        // Set basic map colors
-        mapView.strokeColor = .secondarySystemGroupedBackground
-        mapView.fillColor = UIColor(light: .systemGray5, dark: .systemGray6)
-
-        // Load map with data and color axis
-        let colors = [
-            primaryColor.withAlphaComponent(0.1),
-            primaryColor
-        ]
-        mapView.loadMap("world-map", withData: data.mapData, colorAxis: colors)
+    let primaryColor: Color
+    
+    var body: some View {
+        InteractiveMapView(
+            svgResourceName: "world-map",
+            data: data.mapDataAsDouble,
+            colorAxis: [
+                primaryColor.opacity(0.1),
+                primaryColor
+            ],
+            strokeColor: Color(UIColor.secondarySystemGroupedBackground),
+            fillColor: Color(UIColor(light: .systemGray5, dark: .systemGray6))
+        )
     }
 }
 
@@ -29,6 +22,10 @@ struct CountriesMapData {
     let minViewsCount: Int
     let maxViewsCount: Int
     let mapData: [String: NSNumber]
+    
+    var mapDataAsDouble: [String: Double] {
+        mapData.mapValues { $0.doubleValue }
+    }
 
     init(locations: [TopListData.Location]) {
         let sortedLocations = locations.sorted { ($0.metrics.views ?? 0) > ($1.metrics.views ?? 0) }
@@ -49,11 +46,13 @@ struct CountriesMapContainer: View {
     let data: CountriesMapData
     let primaryColor: Color
 
+    @ScaledMetric private var mapHeight = 200
+
     var body: some View {
         VStack(spacing: 12) {
             // Map View
-            CountriesMapView(data: data, primaryColor: UIColor(primaryColor))
-                .frame(height: 224)
+            CountriesMapView(data: data, primaryColor: primaryColor)
+                .frame(height: mapHeight)
                 .cornerRadius(8)
 
             // Gradient Legend
