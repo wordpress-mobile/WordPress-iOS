@@ -38,12 +38,12 @@ struct InteractiveMapView: View {
     struct Configuration {
         let lightStyle: MapStyle
         let darkStyle: MapStyle
-        
+
         init(lightStyle: MapStyle, darkStyle: MapStyle) {
             self.lightStyle = lightStyle
             self.darkStyle = darkStyle
         }
-        
+
         init(tintColor: UIColor) {
             self.lightStyle = MapStyle(
                 colorAxis: [
@@ -63,12 +63,12 @@ struct InteractiveMapView: View {
             )
         }
     }
-    
+
     let svgResourceName: String
     let data: [String: Double]
     let configuration: Configuration
     @Binding var selectedCountryCode: String?
-    
+
     init(
         svgResourceName: String = "world-map",
         data: [String: Double],
@@ -93,7 +93,7 @@ struct InteractiveMapView: View {
     private var parameters: Parameters {
         Parameters(data: data, colorScheme: colorScheme)
     }
-    
+
     var body: some View {
         ZStack {
             if let processedSVG {
@@ -104,16 +104,16 @@ struct InteractiveMapView: View {
             await updateMap(parameters: parameters)
         }
     }
-    
+
     @MainActor
     private func updateMap(parameters: Parameters) async {
         guard let svgContent = await loadSVG(resourceName: svgResourceName) else {
             return
         }
-        
+
         // Get the style for the current color scheme
         let baseStyle = parameters.colorScheme == .dark ? configuration.darkStyle : configuration.lightStyle
-        
+
         // Resolve colors in the current trait collection
         let traitCollection = UITraitCollection(userInterfaceStyle: parameters.colorScheme == .dark ? .dark : .light)
         let resolvedStyle = MapStyle(
@@ -129,7 +129,7 @@ struct InteractiveMapView: View {
         guard !Task.isCancelled else { return }
         self.processedSVG = wrapSVGInHTML(processedSVGContent)
     }
-    
+
     private func wrapSVGInHTML(_ svg: String) -> String {
         // Load HTML template from resources
         guard let templatePath = Bundle.module.path(forResource: "interactive-map-template", ofType: "html"),
@@ -137,7 +137,7 @@ struct InteractiveMapView: View {
             // Fallback to inline HTML if template not found
             return "<html><body>\(svg)</body></html>"
         }
-        
+
         // Replace placeholder with SVG content
         return template.replacingOccurrences(of: "<!-- SVG_CONTENT_PLACEHOLDER -->", with: svg)
     }
@@ -169,32 +169,32 @@ private func processSVG(
     let values = data.values
     let minValue = values.min() ?? 0
     let maxValue = values.max() ?? 1
-    
+
     var processedContent = svgContent
-    
+
     // Process each country in the data
     for (countryCode, value) in data {
         let normalizedValue = (value - minValue) / (maxValue - minValue)
         let color = interpolateColor(normalizedValue, colorAxis: style.colorAxis)
-        
+
         // Replace fill color for paths with matching country codes
         processedContent = processCountryInSVG(processedContent, countryCode: countryCode, color: color)
     }
-    
+
     // Update default fill color for countries without data
     processedContent = updateDefaultColors(processedContent, strokeColor: style.strokeColor, fillColor: style.fillColor)
-    
+
     return processedContent
 }
 
 private func processCountryInSVG(_ svg: String, countryCode: String, color: UIColor) -> String {
     var result = svg
     let hexColor = color.toHex()
-    
+
     // Look for path elements with country code as ID
     // The SVG uses id="XX" where XX is the 2-letter country code
     let pattern = "(<path\\s+id=\"\(countryCode)\"[^>]*?)(?:fill=\"[^\"]*\")?([^>]*?>)"
-    
+
     if let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) {
         let range = NSRange(location: 0, length: result.utf16.count)
         result = regex.stringByReplacingMatches(
@@ -204,24 +204,24 @@ private func processCountryInSVG(_ svg: String, countryCode: String, color: UICo
             withTemplate: "$1 fill=\"\(hexColor)\" style=\"fill:\(hexColor)\"$2"
         )
     }
-    
+
     return result
 }
 
 private func updateDefaultColors(_ svg: String, strokeColor: UIColor, fillColor: UIColor) -> String {
     var result = svg
-    
+
     // First, update the CSS class that defines default colors
     let fillHex = fillColor.toHex()
     let strokeHex = strokeColor.toHex()
-    
+
     // Replace the .st0 class definition in the style tag
     result = result.replacingOccurrences(
         of: "\\.st0\\{[^}]*\\}",
         with: ".st0{fill:\(fillHex);stroke:\(strokeHex);stroke-width:1.0;}",
         options: .regularExpression
     )
-    
+
     return result
 }
 
@@ -230,10 +230,10 @@ private func interpolateColor(_ value: Double, colorAxis: [UIColor]) -> UIColor 
     guard colorAxis.count >= 2 else {
         return colorAxis.first ?? .blue
     }
-    
+
     // Clamp value between 0 and 1
     let clampedValue = min(max(value, 0), 1)
-    
+
     if colorAxis.count == 2 {
         // Simple interpolation between two colors
         return UIColor.interpolate(from: colorAxis[0], to: colorAxis[1], fraction: clampedValue)
@@ -243,7 +243,7 @@ private func interpolateColor(_ value: Double, colorAxis: [UIColor]) -> UIColor 
         let lowerIndex = Int(scaledValue)
         let upperIndex = min(lowerIndex + 1, colorAxis.count - 1)
         let fraction = scaledValue - Double(lowerIndex)
-        
+
         return UIColor.interpolate(
             from: colorAxis[lowerIndex],
             to: colorAxis[upperIndex],
@@ -257,19 +257,19 @@ private func interpolateColor(_ value: Double, colorAxis: [UIColor]) -> UIColor 
 private struct SVGWebView: UIViewRepresentable {
     let htmlContent: String
     @Binding var selectedCountryCode: String?
-    
+
     func makeCoordinator() -> Coordinator {
         Coordinator(selectedCountryCode: $selectedCountryCode)
     }
-    
+
     func makeUIView(context: Context) -> WKWebView {
         let configuration = WKWebViewConfiguration()
         configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
-        
+
         // Add message handlers for JavaScript communication
         configuration.userContentController.add(context.coordinator, name: "countrySelected")
         configuration.userContentController.add(context.coordinator, name: "countryHovered")
-        
+
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.isOpaque = false
         webView.backgroundColor = .clear
@@ -277,29 +277,29 @@ private struct SVGWebView: UIViewRepresentable {
         webView.navigationDelegate = context.coordinator
 
         webView.alpha = 0
-        
+
         return webView
     }
-    
+
     func updateUIView(_ webView: WKWebView, context: Context) {
         // Force reload by clearing cache when color scheme changes
         webView.loadHTMLString(htmlContent, baseURL: nil)
     }
-    
+
     class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
         @Binding var selectedCountryCode: String?
-        
+
         init(selectedCountryCode: Binding<String?>) {
             self._selectedCountryCode = selectedCountryCode
         }
-        
+
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             // Fade in when content is loaded
             UIView.animate(withDuration: 0.3, delay: 0.05, options: .curveEaseIn) {
                 webView.alpha = 1
             }
         }
-        
+
         func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
             if message.name == "countrySelected" {
                 DispatchQueue.main.async {
