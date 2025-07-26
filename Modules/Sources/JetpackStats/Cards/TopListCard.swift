@@ -193,15 +193,30 @@ struct TopListCard: View {
 }
 
 #Preview {
-    TopListCard(viewModel: TopListCardViewModel(
-        selection: .init(
-            item: .postsAndPages,
-            metric: .views
-        ),
-        dateRange: Calendar.demo.makeDateRange(for: .last28Days),
-        service: MockStatsService()
-    ))
-    .cardStyle()
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Constants.Colors.background)
+    TopListCardPreview(item: .locations)
+}
+
+private struct TopListCardPreview: View {
+    let item: TopListItemType
+
+    @StateObject private var viewModel: TopListCardViewModel
+
+    init(item: TopListItemType) {
+        self.item = item
+        self._viewModel = StateObject(wrappedValue: TopListCardViewModel(
+            selection: .init(
+                item: item,
+                metric: item == .fileDownloads ? .downloads : .views
+            ),
+            dateRange: Calendar.demo.makeDateRange(for: .last28Days),
+            service: MockStatsService()
+        ))
+    }
+
+    var body: some View {
+        TopListCard(viewModel: viewModel)
+            .cardStyle()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Constants.Colors.background)
+    }
 }
