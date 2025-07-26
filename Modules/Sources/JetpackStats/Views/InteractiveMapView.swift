@@ -61,7 +61,7 @@ struct InteractiveMapView: View {
         <!DOCTYPE html>
         <html>
         <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=4.0, user-scalable=yes">
             <style>
                 body {
                     margin: 0;
@@ -167,7 +167,7 @@ private func updateDefaultColors(_ svg: String, strokeColor: Color, fillColor: C
     // Replace the .st0 class definition in the style tag
     result = result.replacingOccurrences(
         of: "\\.st0\\{[^}]*\\}",
-        with: ".st0{fill:\(fillHex);stroke:\(strokeHex);stroke-width:0.5;}",
+        with: ".st0{fill:\(fillHex);stroke:\(strokeHex);stroke-width:1.0;}",
         options: .regularExpression
     )
     
@@ -215,7 +215,6 @@ private struct SVGWebView: UIViewRepresentable {
         configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
         
         let webView = WKWebView(frame: .zero, configuration: configuration)
-        webView.scrollView.isScrollEnabled = false
         webView.isOpaque = false
         webView.backgroundColor = .clear
         webView.scrollView.backgroundColor = .clear
@@ -239,44 +238,6 @@ private struct SVGWebView: UIViewRepresentable {
         }
     }
 }
-
-// MARK: - Color Extensions
-
-private extension Color {
-    func toHex() -> String {
-        let uiColor = UIColor(self)
-        var red: CGFloat = 0
-        var green: CGFloat = 0
-        var blue: CGFloat = 0
-        var alpha: CGFloat = 0
-        
-        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        
-        return String(format: "#%02X%02X%02X", 
-                      Int(red * 255), 
-                      Int(green * 255), 
-                      Int(blue * 255))
-    }
-    
-    static func interpolate(from: Color, to: Color, fraction: Double) -> Color {
-        let fromUIColor = UIColor(from)
-        let toUIColor = UIColor(to)
-        
-        var r1: CGFloat = 0, g1: CGFloat = 0, b1: CGFloat = 0, a1: CGFloat = 0
-        var r2: CGFloat = 0, g2: CGFloat = 0, b2: CGFloat = 0, a2: CGFloat = 0
-        
-        fromUIColor.getRed(&r1, green: &g1, blue: &b1, alpha: &a1)
-        toUIColor.getRed(&r2, green: &g2, blue: &b2, alpha: &a2)
-        
-        let r = r1 + (r2 - r1) * CGFloat(fraction)
-        let g = g1 + (g2 - g1) * CGFloat(fraction)
-        let b = b1 + (b2 - b1) * CGFloat(fraction)
-        let a = a1 + (a2 - a1) * CGFloat(fraction)
-        
-        return Color(UIColor(red: r, green: g, blue: b, alpha: a))
-    }
-}
-
 
 // MARK: - Preview
 
@@ -311,13 +272,12 @@ private extension Color {
             "CZ": 450
         ],
         colorAxis: [
-            Constants.Colors.blue.opacity(0.1),
+            Constants.Colors.blue.lightened(by: 0.8),
             Constants.Colors.blue
         ],
-        strokeColor: Color(UIColor.secondarySystemGroupedBackground),
-        fillColor: Color(UIColor(light: .systemGray5, dark: .systemGray6))
+        strokeColor: Color(UIColor(light: .systemGray2, dark: .systemGray2)),
+        fillColor: Color(UIColor(light: .systemGray6, dark: .red))
     )
-    .frame(height: 200)
-    .padding()
+    .frame(height: 230)
     .background(Color(UIColor.systemBackground))
 }

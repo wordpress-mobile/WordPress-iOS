@@ -9,7 +9,7 @@ struct CountriesMapView: View {
             svgResourceName: "world-map",
             data: data.mapDataAsDouble,
             colorAxis: [
-                primaryColor.opacity(0.1),
+                primaryColor.lightened(by: 0.9),
                 primaryColor
             ],
             strokeColor: Color(UIColor.secondarySystemGroupedBackground),
