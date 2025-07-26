@@ -6,14 +6,8 @@ struct CountriesMapView: View {
     
     var body: some View {
         InteractiveMapView(
-            svgResourceName: "world-map",
             data: data.mapDataAsDouble,
-            colorAxis: [
-                primaryColor.lightened(by: 0.9),
-                primaryColor
-            ],
-            strokeColor: Color(UIColor.secondarySystemGroupedBackground),
-            fillColor: Color(UIColor(light: .systemGray5, dark: .systemGray6))
+            configuration: InteractiveMapView.Configuration(tintColor: primaryColor)
         )
     }
 }

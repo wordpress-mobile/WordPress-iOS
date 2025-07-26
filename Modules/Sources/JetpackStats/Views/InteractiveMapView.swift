@@ -3,49 +3,125 @@ import WebKit
 
 /// A native SwiftUI implementation of an interactive map view that displays SVG maps
 /// with data-driven coloring of regions.
+///
+/// This view replaces the legacy FSInteractiveMap due to the performance issues
+/// with the previous implementation, particularly around rendering and excessive
+/// memory usage.
+///
+/// ## Implementation Details
+///
+/// The view uses WKWebView for rendering SVG content, which is the optimal approach
+/// on iOS for several reasons:
+/// - **Native SVG Support**: WKWebView provides the most complete and accurate SVG
+///   rendering on iOS, supporting all SVG features including complex paths, gradients,
+///   and transformations.
+/// - **Performance**: WebKit's rendering engine is highly optimized for vector graphics
+///   and provides hardware acceleration.
+/// - **Memory Efficiency**: Unlike UIKit-based approaches that rasterize SVG to bitmaps,
+///   WKWebView maintains the vector nature of the content.
+/// - **Smooth Animations**: CSS transitions and transforms are hardware-accelerated.
+///
+/// The view processes SVG files by:
+/// 1. Loading the SVG resource from the bundle
+/// 2. Dynamically updating fill colors based on data values
+/// 3. Applying theme-appropriate styling for light/dark modes
+/// 4. Wrapping the SVG in minimal HTML for optimal display
+///
+/// ## Usage Example
+/// ```swift
+/// InteractiveMapView(
+///     data: ["US": 1000, "GB": 750, "CA": 500],
+///     configuration: .init(tintColor: .blue)
+/// )
+/// ```
 struct InteractiveMapView: View {
+    struct Style {
+        let colorAxis: [Color]
+        let strokeColor: Color
+        let fillColor: Color
+    }
+    
+    struct Configuration {
+        let lightStyle: Style
+        let darkStyle: Style
+        
+        init(lightStyle: Style, darkStyle: Style) {
+            self.lightStyle = lightStyle
+            self.darkStyle = darkStyle
+        }
+        
+        init(tintColor: Color) {
+            self.lightStyle = Style(
+                colorAxis: [
+                    tintColor.lightened(by: 0.9),
+                    tintColor
+                ],
+                strokeColor: Color.secondary,
+                fillColor: Color(.systemGray5)
+            )
+            self.darkStyle = Style(
+                colorAxis: [
+                    tintColor.lightened(by: 0.9),
+                    tintColor
+                ],
+                strokeColor: Color(UIColor.secondarySystemGroupedBackground),
+                fillColor: Color(.systemBackground)
+            )
+        }
+    }
+    
     let svgResourceName: String
     let data: [String: Double]
-    let colorAxis: [Color]
-    let strokeColor: Color
-    let fillColor: Color
+    let configuration: Configuration
     
-    @State private var svgContent: String?
+    init(
+        svgResourceName: String = "world-map",
+        data: [String: Double],
+        configuration: Configuration
+    ) {
+        self.svgResourceName = svgResourceName
+        self.data = data
+        self.configuration = configuration
+    }
+
     @State private var processedSVG: String?
+
+    @Environment(\.colorScheme) private var colorScheme
+
+    private struct Parameters: Equatable {
+        let data: [String: Double]
+        let colorScheme: ColorScheme
+    }
+
+    private var parameters: Parameters {
+        Parameters(data: data, colorScheme: colorScheme)
+    }
     
     var body: some View {
         ZStack {
-            if let processedSVG = processedSVG {
-                // Use WKWebView to render the SVG as it provides the best SVG support
+            if let processedSVG {
                 SVGWebView(htmlContent: processedSVG)
-                    .background(Color.clear)
             }
         }
-        .onAppear {
-            Task {
-                if svgContent == nil {
-                    svgContent = await loadSVG(resourceName: svgResourceName)
-                }
-                await updateMap()
-            }
-        }
-        .onChange(of: data) { _ in
-            Task {
-                await updateMap()
-            }
+        .task(id: parameters) {
+            await updateMap(parameters: parameters)
         }
     }
     
     @MainActor
-    private func updateMap() async {
-        guard let svgContent = svgContent else { return }
+    private func updateMap(parameters: Parameters) async {
+        guard let svgContent = await loadSVG(resourceName: svgResourceName) else {
+            return
+        }
+        let style = parameters.colorScheme == .dark ? configuration.darkStyle : configuration.lightStyle
         let processedSVGContent = await processSVG(
             svgContent: svgContent,
-            data: data,
-            colorAxis: colorAxis,
-            strokeColor: strokeColor,
-            fillColor: fillColor
+            data: parameters.data,
+            colorAxis: style.colorAxis,
+            strokeColor: style.strokeColor,
+            fillColor: style.fillColor
         )
+        guard !Task.isCancelled else { return }
         self.processedSVG = wrapSVGInHTML(processedSVGContent)
     }
     
@@ -212,6 +288,7 @@ private struct SVGWebView: UIViewRepresentable {
     }
     
     func updateUIView(_ webView: WKWebView, context: Context) {
+        // Force reload by clearing cache when color scheme changes
         webView.loadHTMLString(htmlContent, baseURL: nil)
     }
     
@@ -229,7 +306,6 @@ private struct SVGWebView: UIViewRepresentable {
 
 #Preview {
     InteractiveMapView(
-        svgResourceName: "world-map",
         data: [
             "US": 15000,
             "GB": 8500,
@@ -257,12 +333,7 @@ private struct SVGWebView: UIViewRepresentable {
             "PT": 500,
             "CZ": 450
         ],
-        colorAxis: [
-            Constants.Colors.blue.lightened(by: 0.8),
-            Constants.Colors.blue
-        ],
-        strokeColor: Color(UIColor(light: .systemGray2, dark: .systemGray2)),
-        fillColor: Color(UIColor(light: .systemGray6, dark: .red))
+        configuration: .init(tintColor: Constants.Colors.blue)
     )
     .frame(height: 230)
     .background(Color(UIColor.systemBackground))
