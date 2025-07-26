@@ -54,7 +54,8 @@ extension TopListChartData {
             return cachedData
         }
 
-        let currentItems = mockItems(for: itemType, metric: metric, count: itemCount)
+        let currentItems = mockItems(for: itemType, metric: metric)
+            .prefix(itemCount)
 
         // Create previous items dictionary
         var previousItemsDict: [TopListItemID: any TopListItem] = [:]
@@ -70,7 +71,7 @@ extension TopListChartData {
         let chartData = TopListChartData(
             item: itemType,
             metric: metric,
-            items: currentItems,
+            items: Array(currentItems),
             previousItems: previousItemsDict,
             maxValue: maxValue
         )
@@ -81,34 +82,21 @@ extension TopListChartData {
         return chartData
     }
 
-    private static func mockItems(
-        for item: TopListItemType,
-        metric: SiteMetric,
-        count: Int
-    ) -> [any TopListItem] {
+    private static func mockItems(for item: TopListItemType, metric: SiteMetric) -> [any TopListItem] {
         switch item {
-        case .postsAndPages:
-            return mockPosts(metric: metric, count: count)
-        case .referrers:
-            return mockReferrers(metric: metric, count: count)
-        case .locations:
-            return mockLocations(metric: metric, count: count)
-        case .authors:
-            return mockAuthors(metric: metric, count: count)
-        case .externalLinks:
-            return mockExternalLinks(metric: metric, count: count)
-        case .fileDownloads:
-            return mockFileDownloads(metric: metric, count: count)
-        case .searchTerms:
-            return mockSearchTerms(metric: metric, count: count)
-        case .videos:
-            return mockVideos(metric: metric, count: count)
-        case .archive:
-            return mockArchive(metric: metric, count: count)
+        case .postsAndPages: mockPosts(metric: metric)
+        case .referrers: mockReferrers(metric: metric)
+        case .locations: mockLocations(metric: metric)
+        case .authors: mockAuthors(metric: metric)
+        case .externalLinks: mockExternalLinks(metric: metric)
+        case .fileDownloads: mockFileDownloads(metric: metric)
+        case .searchTerms: mockSearchTerms(metric: metric)
+        case .videos: mockVideos(metric: metric)
+        case .archive: mockArchive(metric: metric)
         }
     }
 
-    private static func mockPosts(metric: SiteMetric, count: Int) -> [TopListData.Post] {
+    private static func mockPosts(metric: SiteMetric) -> [TopListData.Post] {
         let posts = [
             ("Getting Started with SwiftUI", "John Doe", 3500),
             ("Understanding Async/Await in Swift", "Jane Smith", 2800),
@@ -120,7 +108,7 @@ extension TopListChartData {
             ("Debugging in Xcode", "Lisa Anderson", 850)
         ]
 
-        return posts.prefix(count).enumerated().map { index, data in
+        return posts.enumerated().map { index, data in
             let baseValue = data.2
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListData.Post(
@@ -135,7 +123,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockReferrers(metric: SiteMetric, count: Int) -> [TopListData.Referrer] {
+    private static func mockReferrers(metric: SiteMetric) -> [TopListData.Referrer] {
         let referrers = [
             ("Google", "google.com", 4200),
             ("Twitter", "twitter.com", 3100),
@@ -147,7 +135,7 @@ extension TopListChartData {
             ("Medium", "medium.com", 600)
         ]
 
-        return referrers.prefix(count).enumerated().map { index, data in
+        return referrers.enumerated().map { index, data in
             let baseValue = data.2
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListData.Referrer(
@@ -182,7 +170,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockLocations(metric: SiteMetric, count: Int) -> [TopListData.Location] {
+    private static func mockLocations(metric: SiteMetric) -> [TopListData.Location] {
         let locations = [
             ("United States", "US", "🇺🇸", 5600),
             ("United Kingdom", "GB", "🇬🇧", 3200),
@@ -194,7 +182,7 @@ extension TopListChartData {
             ("Netherlands", "NL", "🇳🇱", 900)
         ]
 
-        return locations.prefix(count).enumerated().map { index, data in
+        return locations.enumerated().map { index, data in
             let baseValue = data.3
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListData.Location(
@@ -206,7 +194,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockAuthors(metric: SiteMetric, count: Int) -> [TopListData.Author] {
+    private static func mockAuthors(metric: SiteMetric) -> [TopListData.Author] {
         let authors = [
             ("Alex Thompson", "Editor", 1, 2400),
             ("Maria Garcia", "Contributor", 2, 2100),
@@ -218,7 +206,7 @@ extension TopListChartData {
             ("Sarah Davis", "Contributor", 8, 400)
         ]
 
-        return authors.prefix(count).enumerated().map { index, data in
+        return authors.enumerated().map { index, data in
             let baseValue = data.3
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListData.Author(
@@ -231,7 +219,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockExternalLinks(metric: SiteMetric, count: Int) -> [TopListData.ExternalLink] {
+    private static func mockExternalLinks(metric: SiteMetric) -> [TopListData.ExternalLink] {
         let links = [
             ("Apple Developer", "https://developer.apple.com", 1800),
             ("Swift.org", "https://swift.org", 1500),
@@ -243,7 +231,7 @@ extension TopListChartData {
             ("SwiftUI Lab", "https://swiftui-lab.com", 300)
         ]
 
-        return links.prefix(count).enumerated().map { index, data in
+        return links.enumerated().map { index, data in
             let baseValue = data.2
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListData.ExternalLink(
@@ -254,7 +242,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockFileDownloads(metric: SiteMetric, count: Int) -> [TopListData.FileDownload] {
+    private static func mockFileDownloads(metric: SiteMetric) -> [TopListData.FileDownload] {
         let files = [
             ("annual-report-2024.pdf", "/downloads/reports/annual-report-2024.pdf", 2500),
             ("swift-cheatsheet.pdf", "/downloads/docs/swift-cheatsheet.pdf", 2100),
@@ -266,7 +254,7 @@ extension TopListChartData {
             ("dataset.csv", "/downloads/data/dataset.csv", 400)
         ]
 
-        return files.prefix(count).enumerated().map { index, data in
+        return files.enumerated().map { index, data in
             let baseValue = data.2
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListData.FileDownload(
@@ -277,7 +265,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockSearchTerms(metric: SiteMetric, count: Int) -> [TopListData.SearchTerm] {
+    private static func mockSearchTerms(metric: SiteMetric) -> [TopListData.SearchTerm] {
         let terms = [
             ("swiftui tutorial", 3200),
             ("ios development guide", 2800),
@@ -289,7 +277,7 @@ extension TopListChartData {
             ("swift best practices", 500)
         ]
 
-        return terms.prefix(count).enumerated().map { index, data in
+        return terms.enumerated().map { index, data in
             let baseValue = data.1
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListData.SearchTerm(
@@ -299,7 +287,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockVideos(metric: SiteMetric, count: Int) -> [TopListData.Video] {
+    private static func mockVideos(metric: SiteMetric) -> [TopListData.Video] {
         let videos = [
             ("Getting Started with SwiftUI", "101", "https://example.com/videos/swiftui-intro.mp4", 4500),
             ("iOS Development Best Practices", "102", "https://example.com/videos/best-practices.mp4", 3800),
@@ -311,7 +299,7 @@ extension TopListChartData {
             ("Testing Strategies", "108", "https://example.com/videos/testing.mp4", 700)
         ]
 
-        return videos.prefix(count).enumerated().map { index, data in
+        return videos.enumerated().map { index, data in
             let baseValue = data.3
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListData.Video(
@@ -323,7 +311,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockArchive(metric: SiteMetric, count: Int) -> [any TopListItem] {
+    private static func mockArchive(metric: SiteMetric) -> [any TopListItem] {
         // Create mock archive sections
         let archiveSections = [
             ("pages", [
@@ -353,7 +341,7 @@ extension TopListChartData {
             ])
         ]
 
-        return archiveSections.prefix(count).map { sectionData in
+        return archiveSections.map { sectionData in
             let sectionName = sectionData.0
             let items = sectionData.1.map { itemData in
                 let metrics = createMetrics(baseValue: itemData.1, metric: metric)
