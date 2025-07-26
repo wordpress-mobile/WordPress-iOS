@@ -97,7 +97,7 @@ struct CountriesMapData {
 
         let views = locations.compactMap(\.metrics.views)
         self.minViews = views.min() ?? 0
-        self.maxViews = views.min() ?? 0
+        self.maxViews = views.max() ?? 0
 
         self.mapData = {
             var output: [String: Int] = [:]

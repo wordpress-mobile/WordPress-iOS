@@ -126,7 +126,7 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
             staleTimer?.cancel()
             isStale = false
             matchedData = data
-            
+
             // Update cached CountriesMapData if locations are selected
             if selection.item == .locations {
                 updateCountriesMapDataCache(from: data)
@@ -217,11 +217,11 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
             return []
         }
     }
-    
+
     private func updateCountriesMapDataCache(from data: TopListChartData) {
         let locations = data.items.compactMap { $0 as? TopListData.Location }
         let previousLocations = data.previousItems.compactMapValues { $0 as? TopListData.Location }
-        
+
         cachedCountriesMapData = CountriesMapData(
             metric: selection.metric,
             locations: locations,

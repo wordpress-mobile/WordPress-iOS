@@ -174,7 +174,7 @@ private func processSVG(
 
     // Process each country in the data
     for (countryCode, value) in data {
-        let normalizedValue =  Double(value - minValue) / Double(maxValue - minValue)
+        let normalizedValue = Double(value - minValue) / Double(maxValue - minValue)
         let color = interpolateColor(normalizedValue, colorAxis: style.colorAxis)
 
         // Replace fill color for paths with matching country codes
