@@ -4,24 +4,19 @@ struct TopListLocationRowView: View {
     let item: TopListData.Location
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            HStack(spacing: 6) {
-                if let flag = item.flag {
-                    Text(flag)
-                        .font(.callout)
-                }
-                Text(item.country)
-                    .font(.callout)
-                    .foregroundColor(.primary)
-                    .lineLimit(1)
+        HStack(spacing: Constants.step2 / 2) {
+            if let flag = item.flag {
+                Text(flag)
+                    .font(.title2)
+            } else {
+                Image(systemName: "map")
+                    .font(.body)
+                    .foregroundStyle(.secondary)
             }
-
-            if let countryCode = item.countryCode {
-                Text(countryCode)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
-            }
+            Text(item.country)
+                .font(.body)
+                .foregroundColor(.primary)
         }
+        .lineLimit(1)
     }
 }

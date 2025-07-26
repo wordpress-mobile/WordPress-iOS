@@ -188,7 +188,11 @@ struct TopListCard: View {
     }
 
     private var mockData: TopListChartData {
-        TopListChartData.mock(for: viewModel.selection.item, metric: viewModel.selection.metric, itemCount: itemLimit)
+        TopListChartData.mock(
+            for: viewModel.selection.item,
+            metric: viewModel.selection.metric,
+            itemCount: itemLimit
+        )
     }
 }
 
