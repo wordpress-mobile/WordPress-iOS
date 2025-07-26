@@ -12,14 +12,17 @@ struct TrafficTabView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: Constants.step3) {
-                ForEach(viewModels, id: \.id) { viewModel in
-                    makeItem(for: viewModel)
-                }
+        List {
+            ForEach(viewModels, id: \.id) { viewModel in
+                makeItem(for: viewModel)
+                    .padding(.vertical, Constants.step1)
+                    .padding(.top, viewModel.id == viewModels.first?.id ? 8 : 0)
             }
-            .padding(.vertical, Constants.step2)
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+            .listRowInsets(.zero)
         }
+        .listStyle(.plain)
         .onAppear {
             configureViewModels()
         }
@@ -69,6 +72,16 @@ struct TrafficTabView: View {
             ),
             TopListCardViewModel(
                 selection: .init(item: .postsAndPages, metric: .views),
+                dateRange: dateRange,
+                service: context.service
+            ),
+            TopListCardViewModel(
+                selection: .init(item: .referrers, metric: .views),
+                dateRange: dateRange,
+                service: context.service
+            ),
+            TopListCardViewModel(
+                selection: .init(item: .locations, metric: .views),
                 dateRange: dateRange,
                 service: context.service
             )

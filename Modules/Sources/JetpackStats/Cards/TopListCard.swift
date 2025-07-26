@@ -5,7 +5,7 @@ struct TopListCard: View {
 
     @Environment(\.context) var context
 
-    private let itemLimit = 6
+    private let itemLimit = 5
 
     init(viewModel: TopListCardViewModel) {
         self.viewModel = viewModel
@@ -14,10 +14,16 @@ struct TopListCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                StatsCardTitleView(title: viewModel.title)
+                StatsCardTitleView(title: viewModel.selection.item == .locations ? "Countries" : viewModel.title)
                 Spacer(minLength: 44)
             }
-            VStack(spacing: 12) {
+            VStack(spacing: Constants.step2) {
+                if viewModel.selection.item == .locations {
+                    CountriesMapView(
+                        data: viewModel.cachedCountriesMapData ?? .init(metric: viewModel.selection.metric, locations: []),
+                        primaryColor: Constants.Colors.uiColorBlue
+                    )
+                }
                 headerView
                 contentView
             }
@@ -25,7 +31,8 @@ struct TopListCard: View {
         .onAppear {
             viewModel.onAppear()
         }
-        .padding(Constants.step2)
+        .padding(.vertical, Constants.step2)
+        .padding(.horizontal, Constants.step3)
         .overlay(alignment: .topTrailing) {
             moreMenu
         }
@@ -104,7 +111,7 @@ struct TopListCard: View {
             Image(systemName: "ellipsis")
                 .font(.body)
                 .foregroundColor(.secondary)
-                .frame(width: 50, height: 50)
+                .frame(width: 56, height: 50)
         }
         .tint(Color.primary)
     }
@@ -181,20 +188,39 @@ struct TopListCard: View {
     }
 
     private var mockData: TopListChartData {
-        TopListChartData.mock(for: viewModel.selection.item, metric: viewModel.selection.metric, itemCount: itemLimit)
+        TopListChartData.mock(
+            for: viewModel.selection.item,
+            metric: viewModel.selection.metric,
+            itemCount: itemLimit
+        )
     }
 }
 
 #Preview {
-    TopListCard(viewModel: TopListCardViewModel(
-        selection: .init(
-            item: .postsAndPages,
-            metric: .views
-        ),
-        dateRange: Calendar.demo.makeDateRange(for: .last28Days),
-        service: MockStatsService()
-    ))
-    .cardStyle()
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Constants.Colors.background)
+    TopListCardPreview(item: .locations)
+}
+
+private struct TopListCardPreview: View {
+    let item: TopListItemType
+
+    @StateObject private var viewModel: TopListCardViewModel
+
+    init(item: TopListItemType) {
+        self.item = item
+        self._viewModel = StateObject(wrappedValue: TopListCardViewModel(
+            selection: .init(
+                item: item,
+                metric: item == .fileDownloads ? .downloads : .views
+            ),
+            dateRange: Calendar.demo.makeDateRange(for: .last28Days),
+            service: MockStatsService()
+        ))
+    }
+
+    var body: some View {
+        TopListCard(viewModel: viewModel)
+            .cardStyle()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Constants.Colors.background)
+    }
 }

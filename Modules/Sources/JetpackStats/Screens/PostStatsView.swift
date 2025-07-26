@@ -1,6 +1,6 @@
 import SwiftUI
 import UIKit
-import WordPressKit
+@preconcurrency import WordPressKit
 
 public struct PostStatsView: View {
     public struct PostInfo {

@@ -35,7 +35,7 @@ struct TopListReferrerRowView: View {
                     }
                     if !item.children.isEmpty {
                         let prefix = item.domain == nil ? "" : ","
-                        Text(verbatim: "\(prefix) +\(item.children.count - 1)")
+                        Text(verbatim: "\(prefix) +\(item.children.count)")
                             .font(.caption)
                     }
                 }

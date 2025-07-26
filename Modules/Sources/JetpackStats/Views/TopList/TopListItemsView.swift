@@ -57,8 +57,8 @@ struct TopListItemsView: View {
 
     private func makeView(for item: any TopListItem) -> some View {
         TopListItemView(
-            currentItem: item,
-            previousItem: data.previousItem(for: item),
+            item: item,
+            previousValue: data.previousItem(for: item)?.metrics[data.metric],
             metric: data.metric,
             maxValue: data.maxValue,
             dateRange: dateRange,

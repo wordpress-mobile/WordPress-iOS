@@ -10,9 +10,9 @@ struct TopListItemBarBackground: View {
     var body: some View {
         GeometryReader { geometry in
             HStack(spacing: 0) {
-                RoundedRectangle(cornerRadius: 6)
+                RoundedRectangle(cornerRadius: Constants.step1)
                     .fill(barColor.opacity(colorScheme == .light ? 0.09 : 0.25))
-                    .frame(width: barWidth(in: geometry))
+                    .frame(width: max(8, barWidth(in: geometry)))
                 Spacer(minLength: 0)
             }
         }

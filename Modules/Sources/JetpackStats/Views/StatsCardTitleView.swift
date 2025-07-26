@@ -21,6 +21,7 @@ struct StatsCardTitleView: View {
     private var content: some View {
         let title = Text(title)
             .font(.headline)
+            .foregroundColor(.primary)
         if showChevron {
             // Note: had to do that to fix the animation issuse with Menu
             // hiding the image.

@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct TopListItemView: View {
-    let currentItem: any TopListItem
-    let previousItem: (any TopListItem)?
+    let item: any TopListItem
+    let previousValue: Int?
     let metric: SiteMetric
     let maxValue: Int
     let dateRange: StatsDateRange
@@ -28,7 +28,7 @@ struct TopListItemView: View {
     var content: some View {
         HStack(spacing: 0) {
             // Content-specific view
-            switch currentItem {
+            switch item {
             case let post as TopListData.Post:
                 TopListPostRowView(item: post)
             case let referrer as TopListData.Referrer:
@@ -48,7 +48,7 @@ struct TopListItemView: View {
             case let archiveItem as TopListData.ArchiveItem:
                 TopListArchiveItemRowView(item: archiveItem)
             default:
-                let _ = assertionFailure("unsupported item: \(currentItem)")
+                let _ = assertionFailure("unsupported item: \(item)")
                 EmptyView()
             }
 
@@ -56,7 +56,7 @@ struct TopListItemView: View {
 
             // Metrics view
             ZStack(alignment: .trailing) {
-                if previousItem != nil {
+                if previousValue != nil {
                     // Reserve space to avoid junky animations when changing period
                     Text("+4.8K (31.2%)")
                         .font(.caption.weight(.medium)).tracking(-0.33)
@@ -64,8 +64,8 @@ struct TopListItemView: View {
                 }
 
                 TopListMetricsView(
-                    currentValue: currentItem.metrics[metric] ?? 0,
-                    previousValue: previousItem?.metrics[metric],
+                    currentValue: item.metrics[metric] ?? 0,
+                    previousValue: previousValue,
                     metric: metric,
                     showChevron: hasDetails
                 )
@@ -75,11 +75,11 @@ struct TopListItemView: View {
         .padding(.vertical, 7)
         .background(
             TopListItemBarBackground(
-                value: currentItem.metrics[metric] ?? 0,
+                value: item.metrics[metric] ?? 0,
                 maxValue: maxValue,
                 barColor: metric.primaryColor
             )
-            .padding(.horizontal, -(Constants.step2 / 2))
+            .padding(.horizontal, -Constants.step1)
         )
     }
 }
@@ -91,7 +91,7 @@ private extension TopListItemView {
         guard !isNavigationDisabled else {
             return false
         }
-        switch currentItem {
+        switch item {
         case is TopListData.Post:
             return true
         case is TopListData.ArchiveItem:
@@ -106,7 +106,7 @@ private extension TopListItemView {
     }
 
     func navigateToDetails() {
-        switch currentItem {
+        switch item {
         case let post as TopListData.Post:
             let detailsView = PostStatsView(post: post, dateRange: dateRange)
                 .environment(\.context, context)
@@ -130,4 +130,240 @@ private extension TopListItemView {
             break
         }
     }
+}
+
+// MARK: - Preview
+
+#Preview {
+    ScrollView {
+        VStack(spacing: 24) {
+            makePreviewItems()
+        }
+        .padding()
+    }
+}
+
+@ViewBuilder
+private func makePreviewItems() -> some View {
+    // Posts & Pages
+    VStack(spacing: 8) {
+        makePreviewItem(
+            TopListData.Post(
+                title: "Getting Started with SwiftUI: A Comprehensive Guide",
+                postID: "1234",
+                postURL: URL(string: "https://example.com/swiftui-guide"),
+                date: Date().addingTimeInterval(-86400),
+                type: "post",
+                author: "John Doe",
+                metrics: SiteMetricsSet(views: 50000)
+            ),
+            previousValue: 45000
+        )
+
+        makePreviewItem(
+            TopListData.Post(
+                title: "About Us",
+                postID: "5678",
+                postURL: nil,
+                date: nil,
+                type: "page",
+                author: nil,
+                metrics: SiteMetricsSet(views: 3421)
+            ),
+            previousValue: 3500
+        )
+    }
+
+    // Authors
+    VStack(spacing: 8) {
+        makePreviewItem(
+            TopListData.Author(
+                name: "Sarah Johnson",
+                userId: "100",
+                role: "Administrator",
+                metrics: SiteMetricsSet(views: 50000),
+                avatarURL: nil,
+                posts: nil
+            ),
+            previousValue: 48000
+        )
+
+        makePreviewItem(
+            TopListData.Author(
+                name: "Michael Chen",
+                userId: "101",
+                role: "Editor",
+                metrics: SiteMetricsSet(views: 23100),
+                avatarURL: nil,
+                posts: nil
+            ),
+            previousValue: nil
+        )
+    }
+
+    // Referrers
+    VStack(spacing: 8) {
+        makePreviewItem(
+            TopListData.Referrer(
+                name: "Google Search",
+                domain: "google.com",
+                iconURL: URL(string: "https://www.google.com/favicon.ico"),
+                children: [],
+                metrics: SiteMetricsSet(views: 50000)
+            ),
+            previousValue: 42000
+        )
+
+        makePreviewItem(
+            TopListData.Referrer(
+                name: "Direct Traffic",
+                domain: nil,
+                iconURL: nil,
+                children: [],
+                metrics: SiteMetricsSet(views: 12300)
+            ),
+            previousValue: 15000
+        )
+    }
+
+    // Locations
+    VStack(spacing: 8) {
+        makePreviewItem(
+            TopListData.Location(
+                country: "United States",
+                flag: "🇺🇸",
+                countryCode: "US",
+                metrics: SiteMetricsSet(views: 50000)
+            ),
+            previousValue: 47500
+        )
+
+        makePreviewItem(
+            TopListData.Location(
+                country: "United Kingdom",
+                flag: "🇬🇧",
+                countryCode: "GB",
+                metrics: SiteMetricsSet(views: 15600)
+            ),
+            previousValue: nil
+        )
+    }
+
+    // External Links
+    VStack(spacing: 8) {
+        makePreviewItem(
+            TopListData.ExternalLink(
+                url: "https://developer.apple.com/documentation/swiftui",
+                title: "SwiftUI Documentation",
+                metrics: SiteMetricsSet(views: 50000)
+            ),
+            previousValue: 52000
+        )
+
+        makePreviewItem(
+            TopListData.ExternalLink(
+                url: "https://github.com/wordpress/wordpress-ios",
+                title: nil,
+                metrics: SiteMetricsSet(views: 1250)
+            ),
+            previousValue: 1100
+        )
+    }
+
+    // File Downloads
+    VStack(spacing: 8) {
+        makePreviewItem(
+            TopListData.FileDownload(
+                fileName: "wordpress-guide-2024.pdf",
+                filePath: "/downloads/guides/wordpress-guide-2024.pdf",
+                metrics: SiteMetricsSet(downloads: 50000)
+            ),
+            previousValue: 46000,
+            metric: .downloads
+        )
+
+        makePreviewItem(
+            TopListData.FileDownload(
+                fileName: "sample-theme.zip",
+                filePath: nil,
+                metrics: SiteMetricsSet(downloads: 1230)
+            ),
+            previousValue: nil,
+            metric: .downloads
+        )
+    }
+
+    // Search Terms
+    VStack(spacing: 8) {
+        makePreviewItem(
+            TopListData.SearchTerm(
+                term: "wordpress tutorial",
+                metrics: SiteMetricsSet(views: 50000)
+            ),
+            previousValue: 48500
+        )
+
+        makePreviewItem(
+            TopListData.SearchTerm(
+                term: "how to install plugins",
+                metrics: SiteMetricsSet(views: 890)
+            ),
+            previousValue: 950
+        )
+    }
+
+    // Videos
+    VStack(spacing: 8) {
+        makePreviewItem(
+            TopListData.Video(
+                title: "WordPress 6.0 Features Overview",
+                postId: "9012",
+                videoUrl: URL(string: "https://example.com/videos/wp-6-features"),
+                metrics: SiteMetricsSet(views: 50000)
+            ),
+            previousValue: 44000
+        )
+
+        makePreviewItem(
+            TopListData.Video(
+                title: "Building Your First Theme",
+                postId: "9013",
+                videoUrl: nil,
+                metrics: SiteMetricsSet(views: 3210)
+            ),
+            previousValue: nil
+        )
+    }
+
+    // Archive Items
+    VStack(spacing: 8) {
+        makePreviewItem(
+            TopListData.ArchiveItem(
+                href: "/2024/03/",
+                value: "March 2024",
+                metrics: SiteMetricsSet(views: 50000)
+            ),
+            previousValue: 51000
+        )
+
+        makePreviewItem(
+            TopListData.ArchiveItem(
+                href: "/category/tutorials/",
+                value: "Tutorials",
+                metrics: SiteMetricsSet(views: 12300)
+            ),
+            previousValue: 11000
+        )
+    }
+}
+
+private func makePreviewItem(_ item: any TopListItem, previousValue: Int? = nil, metric: SiteMetric = .views) -> some View {
+    TopListItemView(
+        item: item,
+        previousValue: previousValue,
+        metric: metric,
+        maxValue: 50000,
+        dateRange: Calendar.demo.makeDateRange(for: .last7Days)
+    )
+    .padding(.horizontal)
 }

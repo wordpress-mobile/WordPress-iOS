@@ -58,6 +58,14 @@ enum Strings {
         static let videos = AppLocalizedString("jetpackStats.siteDataTypes.videos", value: "Videos", comment: "Videos data type")
     }
 
+    enum Countries {
+        static let noViews = AppLocalizedString(
+            "jetpackStats.countries.noViews",
+            value: "No views",
+            comment: "Message shown when a country has no views"
+        )
+    }
+
     enum Buttons {
         static let cancel = AppLocalizedString("jetpackStats.button.cancel", value: "Cancel", comment: "Cancel button")
         static let apply = AppLocalizedString("jetpackStats.button.apply", value: "Apply", comment: "Apply button")

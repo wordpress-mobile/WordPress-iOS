@@ -21,12 +21,13 @@ struct ChartCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: 6) {
+            VStack(spacing: Constants.step1 / 2) {
                 headerView(for: selectedMetric)
                     .unredacted()
                 contentView
             }
-            .padding(Constants.step2)
+            .padding(.vertical, Constants.step2)
+            .padding(.horizontal, Constants.step3)
 
             if metrics.count > 1 {
                 Divider()
@@ -52,7 +53,7 @@ struct ChartCard: View {
 
     @ViewBuilder
     private var contentView: some View {
-        VStack(spacing: 14) {
+        VStack(spacing: Constants.step2) {
             // Showing currently selected (not loaded period) by design
             ChartLegendView(
                 metric: selectedMetric,
@@ -110,7 +111,7 @@ struct ChartCard: View {
             Image(systemName: "ellipsis")
                 .font(.body)
                 .foregroundColor(.secondary)
-                .frame(width: 50, height: 50)
+                .frame(width: 56, height: 50)
         }
         .tint(Color.primary)
         .sheet(isPresented: $isShowingRawData) {
@@ -155,13 +156,14 @@ struct ChartCard: View {
 
     @ViewBuilder
     private func mainChartView(metric: SiteMetric, data: ChartData) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: Constants.step1 / 2) {
             ChartValuesSummaryView(
                 trend: TrendViewModel.make(data, context: .regular),
                 style: metrics.count > 1 ? .compact : .standard
             )
             chartContentView(data: data)
                 .frame(height: chartHeight)
+                .padding(.horizontal, -Constants.step1)
                 .transition(.push(from: .trailing).combined(with: .opacity).combined(with: .scale))
         }
     }
