@@ -275,6 +275,11 @@ private struct SVGWebView: UIViewRepresentable {
         webView.backgroundColor = .clear
         webView.scrollView.backgroundColor = .clear
         webView.navigationDelegate = context.coordinator
+        
+        // Disable zooming
+        webView.scrollView.maximumZoomScale = 1.0
+        webView.scrollView.minimumZoomScale = 1.0
+        webView.scrollView.isMultipleTouchEnabled = false
 
         webView.alpha = 0
 
