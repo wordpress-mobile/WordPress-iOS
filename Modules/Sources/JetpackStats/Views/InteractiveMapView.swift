@@ -67,15 +67,18 @@ struct InteractiveMapView: View {
     let svgResourceName: String
     let data: [String: Double]
     let configuration: Configuration
+    @Binding var selectedCountryCode: String?
     
     init(
         svgResourceName: String = "world-map",
         data: [String: Double],
-        configuration: Configuration
+        configuration: Configuration,
+        selectedCountryCode: Binding<String?>
     ) {
         self.svgResourceName = svgResourceName
         self.data = data
         self.configuration = configuration
+        self._selectedCountryCode = selectedCountryCode
     }
 
     @State private var processedSVG: String?
@@ -94,7 +97,7 @@ struct InteractiveMapView: View {
     var body: some View {
         ZStack {
             if let processedSVG {
-                SVGWebView(htmlContent: processedSVG)
+                SVGWebView(htmlContent: processedSVG, selectedCountryCode: $selectedCountryCode)
             }
         }
         .task(id: parameters) {
@@ -150,7 +153,116 @@ struct InteractiveMapView: View {
                     width: auto;
                     height: auto;
                 }
+                path {
+                    cursor: pointer;
+                    transition: opacity 0.2s ease;
+                }
+                path:hover {
+                    opacity: 0.8;
+                    stroke-width: 2;
+                }
+                path.selected {
+                    stroke-width: 3;
+                    stroke: #007AFF;
+                }
             </style>
+            <script>
+                let selectedCountry = null;
+                let touchActive = false;
+                let initialTouchDistance = null;
+                
+                function getDistance(touches) {
+                    const dx = touches[0].clientX - touches[1].clientX;
+                    const dy = touches[0].clientY - touches[1].clientY;
+                    return Math.sqrt(dx * dx + dy * dy);
+                }
+                
+                function selectCountry(element) {
+                    if (selectedCountry && selectedCountry !== element) {
+                        selectedCountry.classList.remove('selected');
+                    }
+                    if (element && element.id) {
+                        element.classList.add('selected');
+                        selectedCountry = element;
+                        window.webkit.messageHandlers.countrySelected.postMessage(element.id);
+                    }
+                }
+                
+                function deselectCountry() {
+                    if (selectedCountry) {
+                        selectedCountry.classList.remove('selected');
+                        selectedCountry = null;
+                        window.webkit.messageHandlers.countrySelected.postMessage(null);
+                    }
+                }
+                
+                function setupCountryInteractions() {
+                    const svg = document.querySelector('svg');
+                    const paths = document.querySelectorAll('path[id]');
+                    
+                    // Touch events for mobile
+                    svg.addEventListener('touchstart', function(e) {
+                        if (e.touches.length === 1) {
+                            // Single touch - selection mode
+                            touchActive = true;
+                            const touch = e.touches[0];
+                            const element = document.elementFromPoint(touch.clientX, touch.clientY);
+                            if (element && element.tagName === 'path' && element.id) {
+                                selectCountry(element);
+                            }
+                        } else if (e.touches.length === 2) {
+                            // Two touches - zoom mode, disable selection
+                            touchActive = false;
+                            initialTouchDistance = getDistance(e.touches);
+                        }
+                    }, { passive: false });
+                    
+                    svg.addEventListener('touchmove', function(e) {
+                        if (e.touches.length === 1 && touchActive) {
+                            // Single touch - continue selection
+                            const touch = e.touches[0];
+                            const element = document.elementFromPoint(touch.clientX, touch.clientY);
+                            if (element && element.tagName === 'path' && element.id) {
+                                selectCountry(element);
+                            }
+                        } else if (e.touches.length === 2) {
+                            // Two touches - zoom mode, don't interfere
+                            touchActive = false;
+                        }
+                    }, { passive: false });
+                    
+                    svg.addEventListener('touchend', function(e) {
+                        if (e.touches.length === 0) {
+                            touchActive = false;
+                            initialTouchDistance = null;
+                        }
+                    }, { passive: false });
+                    
+                    // Mouse events for desktop
+                    paths.forEach(path => {
+                        path.addEventListener('mousedown', function(e) {
+                            e.preventDefault();
+                            selectCountry(this);
+                        });
+                        
+                        path.addEventListener('mouseenter', function(e) {
+                            if (e.buttons === 1) { // Mouse button is pressed
+                                selectCountry(this);
+                            }
+                        });
+                    });
+                    
+                    // Deselect when clicking outside
+                    svg.addEventListener('mousedown', function(e) {
+                        if (e.target === svg) {
+                            deselectCountry();
+                        }
+                    });
+                }
+                
+                // Setup interactions when DOM is loaded
+                document.addEventListener('DOMContentLoaded', setupCountryInteractions);
+            </script>
         </head>
         <body>
             \(svg)
@@ -273,14 +385,19 @@ private func interpolateColor(_ value: Double, colorAxis: [UIColor]) -> UIColor 
 
 private struct SVGWebView: UIViewRepresentable {
     let htmlContent: String
+    @Binding var selectedCountryCode: String?
     
     func makeCoordinator() -> Coordinator {
-        Coordinator()
+        Coordinator(selectedCountryCode: $selectedCountryCode)
     }
     
     func makeUIView(context: Context) -> WKWebView {
         let configuration = WKWebViewConfiguration()
         configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+        
+        // Add message handlers for JavaScript communication
+        configuration.userContentController.add(context.coordinator, name: "countrySelected")
+        configuration.userContentController.add(context.coordinator, name: "countryHovered")
         
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.isOpaque = false
@@ -298,11 +415,29 @@ private struct SVGWebView: UIViewRepresentable {
         webView.loadHTMLString(htmlContent, baseURL: nil)
     }
     
-    class Coordinator: NSObject, WKNavigationDelegate {
+    class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
+        @Binding var selectedCountryCode: String?
+        
+        init(selectedCountryCode: Binding<String?>) {
+            self._selectedCountryCode = selectedCountryCode
+        }
+        
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             // Fade in when content is loaded
             UIView.animate(withDuration: 0.3, delay: 0.05, options: .curveEaseIn) {
                 webView.alpha = 1
+            }
+        }
+        
+        func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+            if message.name == "countrySelected" {
+                DispatchQueue.main.async {
+                    if let countryCode = message.body as? String {
+                        self.selectedCountryCode = countryCode
+                    } else {
+                        self.selectedCountryCode = nil
+                    }
+                }
             }
         }
     }
@@ -339,7 +474,7 @@ private struct SVGWebView: UIViewRepresentable {
             "PT": 500,
             "CZ": 450
         ],
-        configuration: .init(tintColor: Constants.Colors.uiColorBlue)
+        configuration: .init(tintColor: Constants.Colors.uiColorBlue), selectedCountryCode: .constant(nil)
     )
     .frame(height: 230)
     .frame(maxWidth: .infinity, maxHeight: .infinity)

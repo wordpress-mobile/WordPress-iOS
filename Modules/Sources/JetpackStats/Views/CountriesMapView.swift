@@ -3,11 +3,13 @@ import SwiftUI
 struct CountriesMapView: View {
     let data: CountriesMapData
     let primaryColor: Color
+    @Binding var selectedCountryCode: String?
     
     var body: some View {
         InteractiveMapView(
             data: data.mapDataAsDouble,
-            configuration: InteractiveMapView.Configuration(tintColor: UIColor(primaryColor))
+            configuration: InteractiveMapView.Configuration(tintColor: UIColor(primaryColor)),
+            selectedCountryCode: $selectedCountryCode
         )
     }
 }
@@ -16,12 +18,30 @@ struct CountriesMapData {
     let minViewsCount: Int
     let maxViewsCount: Int
     let mapData: [String: NSNumber]
+    let locations: [TopListData.Location]
+    let previousLocations: [String: TopListData.Location]
     
     var mapDataAsDouble: [String: Double] {
         mapData.mapValues { $0.doubleValue }
     }
+    
+    func location(for countryCode: String) -> TopListData.Location? {
+        locations.first { $0.countryCode == countryCode }
+    }
+    
+    func previousLocation(for countryCode: String) -> TopListData.Location? {
+        previousLocations[countryCode]
+    }
 
-    init(locations: [TopListData.Location]) {
+    init(locations: [TopListData.Location], previousLocations: [TopListData.Location] = []) {
+        self.locations = locations
+        self.previousLocations = Dictionary(
+            uniqueKeysWithValues: previousLocations.compactMap { location in
+                guard let code = location.countryCode else { return nil }
+                return (code, location)
+            }
+        )
+        
         let sortedLocations = locations.sorted { ($0.metrics.views ?? 0) > ($1.metrics.views ?? 0) }
 
         self.minViewsCount = sortedLocations.last?.metrics.views ?? 0
@@ -41,13 +61,28 @@ struct CountriesMapContainer: View {
     let primaryColor: Color
 
     @ScaledMetric private var mapHeight = 200
+    @State private var selectedCountryCode: String?
 
     var body: some View {
         VStack(spacing: 12) {
-            // Map View
-            CountriesMapView(data: data, primaryColor: primaryColor)
-                .frame(height: mapHeight)
-                .cornerRadius(8)
+            // Map View with tooltip overlay
+            ZStack(alignment: .topLeading) {
+                CountriesMapView(data: data, primaryColor: primaryColor, selectedCountryCode: $selectedCountryCode)
+                    .frame(height: mapHeight)
+                    .cornerRadius(8)
+                
+                // Tooltip
+                if let countryCode = selectedCountryCode,
+                   let location = data.location(for: countryCode) {
+                    CountryTooltip(
+                        location: location,
+                        previousLocation: data.previousLocation(for: countryCode),
+                        primaryColor: primaryColor
+                    )
+                    .padding(8)
+                    .transition(.opacity)
+                }
+            }
 
             // Gradient Legend
             HStack(spacing: 0) {
@@ -76,6 +111,69 @@ struct CountriesMapContainer: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("World map showing views by country")
+    }
+}
+
+private struct CountryTooltip: View {
+    let location: TopListData.Location
+    let previousLocation: TopListData.Location?
+    let primaryColor: Color
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 6) {
+                Text(location.flag ?? "")
+                    .font(.title2)
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(location.country)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    
+                    if let views = location.metrics.views {
+                        VStack(alignment: .leading, spacing: 2) {
+                            HStack(spacing: 4) {
+                                Text("Views:")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                Text(views.abbreviatedString())
+                                    .font(.caption)
+                                    .foregroundColor(primaryColor)
+                                    .fontWeight(.semibold)
+                            }
+                            
+                            if let previousViews = previousLocation?.metrics.views {
+                                HStack(spacing: 4) {
+                                    Text("Previous:")
+                                        .font(.caption2)
+                                        .foregroundColor(.secondary)
+                                    Text(previousViews.abbreviatedString())
+                                        .font(.caption2)
+                                        .foregroundColor(.secondary)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if let previousViews = previousLocation?.metrics.views,
+               let currentViews = location.metrics.views,
+               previousViews > 0 {
+                let change = Double(currentViews - previousViews) / Double(previousViews) * 100
+                HStack(spacing: 4) {
+                    Image(systemName: change >= 0 ? "arrow.up.right" : "arrow.down.right")
+                        .font(.caption2)
+                    Text("\(abs(Int(change)))%")
+                        .font(.caption)
+                }
+                .foregroundColor(change >= 0 ? .green : .red)
+            }
+        }
+        .padding(12)
+        .background(Color(UIColor.secondarySystemBackground))
+        .cornerRadius(8)
+        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
     }
 }
 
@@ -149,5 +247,6 @@ private extension Int {
         primaryColor: Constants.Colors.blue
     )
     .padding()
-    .background(Color(UIColor.systemGroupedBackground))
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(Color(UIColor(light: .systemBackground, dark: .secondarySystemBackground)))
 }
