@@ -32,11 +32,28 @@ final class TopListChartData {
 // MARK: - Mock Data
 
 extension TopListChartData {
+    private struct CacheKey: Hashable {
+        let itemType: TopListItemType
+        let metric: SiteMetric
+        let itemCount: Int
+    }
+
+    @MainActor
+    private static var mockDataCache: [CacheKey: TopListChartData] = [:]
+
+    @MainActor
     static func mock(
         for itemType: TopListItemType,
         metric: SiteMetric = .views,
         itemCount: Int = 6
     ) -> TopListChartData {
+        let cacheKey = CacheKey(itemType: itemType, metric: metric, itemCount: itemCount)
+
+        // Return cached data if available
+        if let cachedData = mockDataCache[cacheKey] {
+            return cachedData
+        }
+
         let currentItems = mockItems(for: itemType, metric: metric, count: itemCount)
 
         // Create previous items dictionary
@@ -50,13 +67,18 @@ extension TopListChartData {
             .compactMap { $0.metrics[metric] }
             .max() ?? 1
 
-        return TopListChartData(
+        let chartData = TopListChartData(
             item: itemType,
             metric: metric,
             items: currentItems,
             previousItems: previousItemsDict,
             maxValue: maxValue
         )
+
+        // Cache the generated data
+        mockDataCache[cacheKey] = chartData
+
+        return chartData
     }
 
     private static func mockItems(

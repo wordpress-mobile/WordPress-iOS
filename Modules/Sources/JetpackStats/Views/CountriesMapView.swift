@@ -4,18 +4,18 @@ import FSInteractiveMap
 struct CountriesMapView: UIViewRepresentable {
     let data: CountriesMapData
     let primaryColor: UIColor
-    
+
     func makeUIView(context: Context) -> FSInteractiveMapView {
         let mapView = FSInteractiveMapView(frame: .zero)
         mapView.backgroundColor = UIColor.secondarySystemGroupedBackground
         return mapView
     }
-    
+
     func updateUIView(_ mapView: FSInteractiveMapView, context: Context) {
         // Set basic map colors
         mapView.strokeColor = .secondarySystemGroupedBackground
         mapView.fillColor = UIColor(light: .systemGray5, dark: .systemGray6)
-        
+
         // Load map with data and color axis
         let colors = [
             primaryColor.withAlphaComponent(0.1),
@@ -29,13 +29,13 @@ struct CountriesMapData {
     let minViewsCount: Int
     let maxViewsCount: Int
     let mapData: [String: NSNumber]
-    
+
     init(locations: [TopListData.Location]) {
         let sortedLocations = locations.sorted { ($0.metrics.views ?? 0) > ($1.metrics.views ?? 0) }
-        
+
         self.minViewsCount = sortedLocations.last?.metrics.views ?? 0
         self.maxViewsCount = sortedLocations.first?.metrics.views ?? 0
-        
+
         self.mapData = locations.reduce(into: [String: NSNumber]()) { result, location in
             if let countryCode = location.countryCode,
                let views = location.metrics.views {
@@ -48,22 +48,22 @@ struct CountriesMapData {
 struct CountriesMapContainer: View {
     let data: CountriesMapData
     let primaryColor: Color
-    
+
     var body: some View {
         VStack(spacing: 12) {
             // Map View
             CountriesMapView(data: data, primaryColor: UIColor(primaryColor))
                 .frame(height: 224)
                 .cornerRadius(8)
-            
+
             // Gradient Legend
             HStack(spacing: 0) {
                 Text(data.minViewsCount.abbreviatedString())
                     .font(.footnote)
                     .foregroundColor(.secondary)
-                
+
                 Spacer()
-                
+
                 LinearGradient(
                     colors: [primaryColor.opacity(0.1), primaryColor],
                     startPoint: .leading,
@@ -71,9 +71,9 @@ struct CountriesMapContainer: View {
                 )
                 .frame(height: 10)
                 .cornerRadius(5)
-                
+
                 Spacer()
-                
+
                 Text(data.maxViewsCount.abbreviatedString())
                     .font(.footnote)
                     .foregroundColor(.secondary)
@@ -90,7 +90,7 @@ private extension Int {
     func abbreviatedString() -> String {
         let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 1
-        
+
         if self >= 1_000_000 {
             return "\(formatter.string(from: NSNumber(value: Double(self) / 1_000_000)) ?? "0")M"
         } else if self >= 1_000 {
