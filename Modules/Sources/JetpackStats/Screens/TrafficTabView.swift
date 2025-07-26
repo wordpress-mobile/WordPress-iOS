@@ -16,6 +16,7 @@ struct TrafficTabView: View {
             ForEach(viewModels, id: \.id) { viewModel in
                 makeItem(for: viewModel)
                     .padding(.vertical, Constants.step1)
+                    .padding(.top, viewModel.id == viewModels.first?.id ? 8 : 0)
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)

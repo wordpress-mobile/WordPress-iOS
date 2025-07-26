@@ -68,12 +68,14 @@ private struct MetricItemView: View {
     var body: some View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 0) {
-                tabContent
-                    .padding(.vertical, Constants.step2)
-                    .padding(.leading, Constants.step3)
                 selectionIndicator
                     .padding(.leading, Constants.step3)
                     .padding(.trailing, Constants.step1)
+                tabContent
+                    .padding(.top, Constants.step1)
+                    .padding(.bottom, Constants.step2)
+                    .padding(.leading, Constants.step3)
+
             }
         }
         .buttonStyle(.plain)
