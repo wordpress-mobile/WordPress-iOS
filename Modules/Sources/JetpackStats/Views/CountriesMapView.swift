@@ -7,7 +7,7 @@ struct CountriesMapView: View {
     var body: some View {
         InteractiveMapView(
             data: data.mapDataAsDouble,
-            configuration: InteractiveMapView.Configuration(tintColor: primaryColor)
+            configuration: InteractiveMapView.Configuration(tintColor: UIColor(primaryColor))
         )
     }
 }

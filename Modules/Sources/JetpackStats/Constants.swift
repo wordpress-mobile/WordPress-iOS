@@ -36,6 +36,8 @@ enum Constants {
         static let pink = Color(palette: CSColor.Pink.self)
         static let celadon = Color(palette: CSColor.Celadon.self)
 
+        static let uiColorBlue = UIColor(palette: CSColor.Blue.self)
+
         static let jetpack = Color(palette: CSColor.JetpackGreen.self)
     }
 
@@ -67,6 +69,12 @@ enum Constants {
 
 private extension Color {
     init<T: ColorStudio.ColorStudioPalette>(palette: T.Type) {
-        self.init(uiColor: UIColor(light: T.shade(.shade50), dark: T.shade(.shade40)))
+        self.init(uiColor: UIColor(palette: palette))
+    }
+}
+
+private extension UIColor {
+    convenience init<T: ColorStudio.ColorStudioPalette>(palette: T.Type) {
+        self.init(light: T.shade(.shade50), dark: T.shade(.shade40))
     }
 }

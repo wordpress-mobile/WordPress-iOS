@@ -35,37 +35,31 @@ import WebKit
 /// )
 /// ```
 struct InteractiveMapView: View {
-    struct Style {
-        let colorAxis: [Color]
-        let strokeColor: Color
-        let fillColor: Color
-    }
-    
     struct Configuration {
-        let lightStyle: Style
-        let darkStyle: Style
+        let lightStyle: MapStyle
+        let darkStyle: MapStyle
         
-        init(lightStyle: Style, darkStyle: Style) {
+        init(lightStyle: MapStyle, darkStyle: MapStyle) {
             self.lightStyle = lightStyle
             self.darkStyle = darkStyle
         }
         
-        init(tintColor: Color) {
-            self.lightStyle = Style(
+        init(tintColor: UIColor) {
+            self.lightStyle = MapStyle(
                 colorAxis: [
-                    tintColor.lightened(by: 0.9),
+                    tintColor.lightened(by: 0.75),
                     tintColor
                 ],
-                strokeColor: Color.secondary,
-                fillColor: Color(.systemGray5)
+                strokeColor: UIColor(white: 0.85, alpha: 1),
+                fillColor: UIColor(white: 0.96, alpha: 1)
             )
-            self.darkStyle = Style(
+            self.darkStyle = MapStyle(
                 colorAxis: [
-                    tintColor.lightened(by: 0.9),
+                    tintColor.lightened(by: 0.7),
                     tintColor
                 ],
-                strokeColor: Color(UIColor.secondarySystemGroupedBackground),
-                fillColor: Color(.systemBackground)
+                strokeColor: UIColor(white: 0.33, alpha: 1),
+                fillColor: UIColor(white: 0.13, alpha: 1)
             )
         }
     }
@@ -113,13 +107,21 @@ struct InteractiveMapView: View {
         guard let svgContent = await loadSVG(resourceName: svgResourceName) else {
             return
         }
-        let style = parameters.colorScheme == .dark ? configuration.darkStyle : configuration.lightStyle
+        
+        // Get the style for the current color scheme
+        let baseStyle = parameters.colorScheme == .dark ? configuration.darkStyle : configuration.lightStyle
+        
+        // Resolve colors in the current trait collection
+        let traitCollection = UITraitCollection(userInterfaceStyle: parameters.colorScheme == .dark ? .dark : .light)
+        let resolvedStyle = MapStyle(
+            colorAxis: baseStyle.colorAxis.map { $0.resolvedColor(with: traitCollection) },
+            strokeColor: baseStyle.strokeColor.resolvedColor(with: traitCollection),
+            fillColor: baseStyle.fillColor.resolvedColor(with: traitCollection)
+        )
         let processedSVGContent = await processSVG(
             svgContent: svgContent,
             data: parameters.data,
-            colorAxis: style.colorAxis,
-            strokeColor: style.strokeColor,
-            fillColor: style.fillColor
+            style: resolvedStyle
         )
         guard !Task.isCancelled else { return }
         self.processedSVG = wrapSVGInHTML(processedSVGContent)
@@ -158,6 +160,12 @@ struct InteractiveMapView: View {
     }
 }
 
+struct MapStyle {
+    let colorAxis: [UIColor]
+    let strokeColor: UIColor
+    let fillColor: UIColor
+}
+
 // MARK: - SVG Processing
 
 private func loadSVG(resourceName: String) async -> String? {
@@ -172,9 +180,7 @@ private func loadSVG(resourceName: String) async -> String? {
 private func processSVG(
     svgContent: String,
     data: [String: Double],
-    colorAxis: [Color],
-    strokeColor: Color,
-    fillColor: Color
+    style: MapStyle
 ) async -> String {
     // Find min and max values in the data
     let values = data.values
@@ -186,19 +192,19 @@ private func processSVG(
     // Process each country in the data
     for (countryCode, value) in data {
         let normalizedValue = (value - minValue) / (maxValue - minValue)
-        let color = interpolateColor(normalizedValue, colorAxis: colorAxis)
+        let color = interpolateColor(normalizedValue, colorAxis: style.colorAxis)
         
         // Replace fill color for paths with matching country codes
         processedContent = processCountryInSVG(processedContent, countryCode: countryCode, color: color)
     }
     
     // Update default fill color for countries without data
-    processedContent = updateDefaultColors(processedContent, strokeColor: strokeColor, fillColor: fillColor)
+    processedContent = updateDefaultColors(processedContent, strokeColor: style.strokeColor, fillColor: style.fillColor)
     
     return processedContent
 }
 
-private func processCountryInSVG(_ svg: String, countryCode: String, color: Color) -> String {
+private func processCountryInSVG(_ svg: String, countryCode: String, color: UIColor) -> String {
     var result = svg
     let hexColor = color.toHex()
     
@@ -219,7 +225,7 @@ private func processCountryInSVG(_ svg: String, countryCode: String, color: Colo
     return result
 }
 
-private func updateDefaultColors(_ svg: String, strokeColor: Color, fillColor: Color) -> String {
+private func updateDefaultColors(_ svg: String, strokeColor: UIColor, fillColor: UIColor) -> String {
     var result = svg
     
     // First, update the CSS class that defines default colors
@@ -236,7 +242,7 @@ private func updateDefaultColors(_ svg: String, strokeColor: Color, fillColor: C
     return result
 }
 
-private func interpolateColor(_ value: Double, colorAxis: [Color]) -> Color {
+private func interpolateColor(_ value: Double, colorAxis: [UIColor]) -> UIColor {
     // Ensure we have at least 2 colors
     guard colorAxis.count >= 2 else {
         return colorAxis.first ?? .blue
@@ -247,7 +253,7 @@ private func interpolateColor(_ value: Double, colorAxis: [Color]) -> Color {
     
     if colorAxis.count == 2 {
         // Simple interpolation between two colors
-        return Color.interpolate(from: colorAxis[0], to: colorAxis[1], fraction: clampedValue)
+        return UIColor.interpolate(from: colorAxis[0], to: colorAxis[1], fraction: clampedValue)
     } else {
         // Multi-stop gradient interpolation
         let scaledValue = clampedValue * Double(colorAxis.count - 1)
@@ -255,7 +261,7 @@ private func interpolateColor(_ value: Double, colorAxis: [Color]) -> Color {
         let upperIndex = min(lowerIndex + 1, colorAxis.count - 1)
         let fraction = scaledValue - Double(lowerIndex)
         
-        return Color.interpolate(
+        return UIColor.interpolate(
             from: colorAxis[lowerIndex],
             to: colorAxis[upperIndex],
             fraction: fraction
@@ -333,8 +339,9 @@ private struct SVGWebView: UIViewRepresentable {
             "PT": 500,
             "CZ": 450
         ],
-        configuration: .init(tintColor: Constants.Colors.blue)
+        configuration: .init(tintColor: Constants.Colors.uiColorBlue)
     )
     .frame(height: 230)
-    .background(Color(UIColor.systemBackground))
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(Color(UIColor(light: .systemBackground, dark: .secondarySystemBackground)))
 }
