@@ -21,7 +21,7 @@ struct ChartCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: Constants.step1) {
+            VStack(spacing: Constants.step1 / 2) {
                 headerView(for: selectedMetric)
                     .unredacted()
                 contentView
@@ -53,7 +53,7 @@ struct ChartCard: View {
 
     @ViewBuilder
     private var contentView: some View {
-        VStack(spacing: Constants.step1 / 2) {
+        VStack(spacing: Constants.step2) {
             // Showing currently selected (not loaded period) by design
             ChartLegendView(
                 metric: selectedMetric,
