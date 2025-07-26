@@ -101,6 +101,8 @@
                 if (e.touches.length === 0) {
                     touchActive = false;
                     initialTouchDistance = null;
+                    // Clear selection when finger is lifted
+                    deselectCountry();
                 }
             }, { passive: false });
             
@@ -123,6 +125,11 @@
                 if (e.target === svg) {
                     deselectCountry();
                 }
+            });
+            
+            // Deselect when mouse button is released
+            document.addEventListener('mouseup', function(e) {
+                deselectCountry();
             });
         }
         
