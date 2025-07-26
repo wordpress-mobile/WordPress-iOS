@@ -163,10 +163,8 @@ struct ChartCard: View {
             )
             chartContentView(data: data)
                 .frame(height: chartHeight)
+                .padding(.horizontal, -Constants.step1)
                 .transition(.push(from: .trailing).combined(with: .opacity).combined(with: .scale))
-                .overlay(alignment: .topLeading) {
-
-                }
         }
     }
 
