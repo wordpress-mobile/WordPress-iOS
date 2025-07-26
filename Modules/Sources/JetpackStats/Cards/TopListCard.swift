@@ -14,10 +14,16 @@ struct TopListCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                StatsCardTitleView(title: viewModel.title)
+                StatsCardTitleView(title: viewModel.selection.item == .locations ? "Countries" : viewModel.title)
                 Spacer(minLength: 44)
             }
             VStack(spacing: 12) {
+                if viewModel.selection.item == .locations, let data = viewModel.matchedData, !data.items.isEmpty {
+                    CountriesMapContainer(
+                        data: CountriesMapData(locations: data.items.compactMap { $0 as? TopListData.Location }),
+                        primaryColor: Constants.Colors.blue
+                    )
+                }
                 headerView
                 contentView
             }
