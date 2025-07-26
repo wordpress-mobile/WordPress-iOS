@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct TopListItemView: View {
-    let currentItem: any TopListItem
-    let previousItem: (any TopListItem)?
+    let item: any TopListItem
+    let previousValue: Int?
     let metric: SiteMetric
     let maxValue: Int
     let dateRange: StatsDateRange
@@ -28,7 +28,7 @@ struct TopListItemView: View {
     var content: some View {
         HStack(spacing: 0) {
             // Content-specific view
-            switch currentItem {
+            switch item {
             case let post as TopListData.Post:
                 TopListPostRowView(item: post)
             case let referrer as TopListData.Referrer:
@@ -48,7 +48,7 @@ struct TopListItemView: View {
             case let archiveItem as TopListData.ArchiveItem:
                 TopListArchiveItemRowView(item: archiveItem)
             default:
-                let _ = assertionFailure("unsupported item: \(currentItem)")
+                let _ = assertionFailure("unsupported item: \(item)")
                 EmptyView()
             }
 
@@ -56,7 +56,7 @@ struct TopListItemView: View {
 
             // Metrics view
             ZStack(alignment: .trailing) {
-                if previousItem != nil {
+                if previousValue != nil {
                     // Reserve space to avoid junky animations when changing period
                     Text("+4.8K (31.2%)")
                         .font(.caption.weight(.medium)).tracking(-0.33)
@@ -64,8 +64,8 @@ struct TopListItemView: View {
                 }
 
                 TopListMetricsView(
-                    currentValue: currentItem.metrics[metric] ?? 0,
-                    previousValue: previousItem?.metrics[metric],
+                    currentValue: item.metrics[metric] ?? 0,
+                    previousValue: previousValue,
                     metric: metric,
                     showChevron: hasDetails
                 )
@@ -75,7 +75,7 @@ struct TopListItemView: View {
         .padding(.vertical, 7)
         .background(
             TopListItemBarBackground(
-                value: currentItem.metrics[metric] ?? 0,
+                value: item.metrics[metric] ?? 0,
                 maxValue: maxValue,
                 barColor: metric.primaryColor
             )
@@ -91,7 +91,7 @@ private extension TopListItemView {
         guard !isNavigationDisabled else {
             return false
         }
-        switch currentItem {
+        switch item {
         case is TopListData.Post:
             return true
         case is TopListData.ArchiveItem:
@@ -106,7 +106,7 @@ private extension TopListItemView {
     }
 
     func navigateToDetails() {
-        switch currentItem {
+        switch item {
         case let post as TopListData.Post:
             let detailsView = PostStatsView(post: post, dateRange: dateRange)
                 .environment(\.context, context)
