@@ -11,6 +11,9 @@ struct TopListItemView: View {
     @Environment(\.router) private var router
     @Environment(\.context) private var context
 
+    @ScaledMetric(relativeTo: .callout) private var cellHeight = 54
+    @ScaledMetric(relativeTo: .subheadline) private var minTrailingWidth = 80
+
     var body: some View {
         if hasDetails {
             Button {
@@ -26,7 +29,7 @@ struct TopListItemView: View {
     }
 
     var content: some View {
-        HStack(spacing: 0) {
+        HStack(alignment: .center, spacing: 0) {
             // Content-specific view
             switch item {
             case let post as TopListData.Post:
@@ -55,24 +58,16 @@ struct TopListItemView: View {
             Spacer(minLength: 6)
 
             // Metrics view
-            ZStack(alignment: .trailing) {
-                if previousValue != nil {
-                    // Reserve space to avoid junky animations when changing period
-                    Text("+4.8K (31.2%)")
-                        .font(.caption.weight(.medium)).tracking(-0.33)
-                        .opacity(0)
-                }
-
-                TopListMetricsView(
-                    currentValue: item.metrics[metric] ?? 0,
-                    previousValue: previousValue,
-                    metric: metric,
-                    showChevron: hasDetails
-                )
-            }
+            TopListMetricsView(
+                currentValue: item.metrics[metric] ?? 0,
+                previousValue: previousValue,
+                metric: metric,
+                showChevron: hasDetails
+            )
+            .frame(minWidth: previousValue == nil ? 20 : minTrailingWidth, alignment: .trailing)
             .padding(.trailing, -3)
         }
-        .padding(.vertical, 7)
+        .frame(height: cellHeight)
         .background(
             TopListItemBarBackground(
                 value: item.metrics[metric] ?? 0,
