@@ -17,11 +17,8 @@ struct InteractiveMapView: View {
         ZStack {
             if let processedSVG = processedSVG {
                 // Use WKWebView to render the SVG as it provides the best SVG support
-                SVGWebView(htmlContent: wrapSVGInHTML(processedSVG))
+                SVGWebView(htmlContent: processedSVG)
                     .background(Color.clear)
-            } else {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .onAppear {
@@ -42,18 +39,14 @@ struct InteractiveMapView: View {
     @MainActor
     private func updateMap() async {
         guard let svgContent = svgContent else { return }
-        
-        // Process SVG with current data
-        let processed = await processSVG(
+        let processedSVGContent = await processSVG(
             svgContent: svgContent,
             data: data,
             colorAxis: colorAxis,
             strokeColor: strokeColor,
             fillColor: fillColor
         )
-        
-        // Update UI
-        self.processedSVG = processed
+        self.processedSVG = wrapSVGInHTML(processedSVGContent)
     }
     
     private func wrapSVGInHTML(_ svg: String) -> String {
@@ -97,13 +90,6 @@ private func loadSVG(resourceName: String) async -> String? {
        let content = try? String(contentsOfFile: svgPath) {
         return content
     }
-    
-    // Try URL approach
-    if let url = Bundle.module.url(forResource: resourceName, withExtension: "svg"),
-       let content = try? String(contentsOf: url) {
-        return content
-    }
-    
     return nil
 }
 
