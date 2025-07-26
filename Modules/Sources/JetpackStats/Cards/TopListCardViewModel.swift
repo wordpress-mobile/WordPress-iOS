@@ -18,6 +18,7 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
     @Published private(set) var isLoading = true
     @Published private(set) var loadingError: Error?
     @Published private(set) var isStale = false
+    @Published private(set) var cachedCountriesMapData: CountriesMapData?
 
     private let service: any StatsServiceProtocol
     private let fetchLimit: Int
@@ -125,6 +126,13 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
             staleTimer?.cancel()
             isStale = false
             matchedData = data
+            
+            // Update cached CountriesMapData if locations are selected
+            if selection.item == .locations {
+                updateCountriesMapDataCache(from: data)
+            } else {
+                cachedCountriesMapData = nil
+            }
         } catch is CancellationError {
             return
         } catch {
@@ -208,5 +216,16 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
             }
             return []
         }
+    }
+    
+    private func updateCountriesMapDataCache(from data: TopListChartData) {
+        let locations = data.items.compactMap { $0 as? TopListData.Location }
+        let previousLocations = data.previousItems.compactMapValues { $0 as? TopListData.Location }
+        
+        cachedCountriesMapData = CountriesMapData(
+            metric: selection.metric,
+            locations: locations,
+            previousLocations: previousLocations
+        )
     }
  }

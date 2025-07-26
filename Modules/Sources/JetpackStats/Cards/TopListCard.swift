@@ -17,11 +17,11 @@ struct TopListCard: View {
                 StatsCardTitleView(title: viewModel.selection.item == .locations ? "Countries" : viewModel.title)
                 Spacer(minLength: 44)
             }
-            VStack(spacing: 12) {
-                if viewModel.selection.item == .locations, let data = viewModel.matchedData, !data.items.isEmpty {
-                    CountriesMapContainer(
-                        data: CountriesMapData(locations: data.items.compactMap { $0 as? TopListData.Location }),
-                        primaryColor: Constants.Colors.blue
+            VStack(spacing: Constants.step2) {
+                if viewModel.selection.item == .locations {
+                    CountriesMapView(
+                        data: viewModel.cachedCountriesMapData ?? .init(metric: viewModel.selection.metric, locations: []),
+                        primaryColor: Constants.Colors.uiColorBlue
                     )
                 }
                 headerView

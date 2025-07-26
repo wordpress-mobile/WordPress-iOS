@@ -65,13 +65,13 @@ struct InteractiveMapView: View {
     }
 
     let svgResourceName: String
-    let data: [String: Double]
+    let data: [String: Int]
     let configuration: Configuration
     @Binding var selectedCountryCode: String?
 
     init(
         svgResourceName: String = "world-map",
-        data: [String: Double],
+        data: [String: Int],
         configuration: Configuration,
         selectedCountryCode: Binding<String?>
     ) {
@@ -86,7 +86,7 @@ struct InteractiveMapView: View {
     @Environment(\.colorScheme) private var colorScheme
 
     private struct Parameters: Equatable {
-        let data: [String: Double]
+        let data: [String: Int]
         let colorScheme: ColorScheme
     }
 
@@ -162,7 +162,7 @@ private func loadSVG(resourceName: String) async -> String? {
 
 private func processSVG(
     svgContent: String,
-    data: [String: Double],
+    data: [String: Int],
     style: MapStyle
 ) async -> String {
     // Find min and max values in the data
@@ -174,7 +174,7 @@ private func processSVG(
 
     // Process each country in the data
     for (countryCode, value) in data {
-        let normalizedValue = (value - minValue) / (maxValue - minValue)
+        let normalizedValue =  Double(value - minValue) / Double(maxValue - minValue)
         let color = interpolateColor(normalizedValue, colorAxis: style.colorAxis)
 
         // Replace fill color for paths with matching country codes
