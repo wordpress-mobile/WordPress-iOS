@@ -111,7 +111,7 @@ struct TopListCard: View {
             Image(systemName: "ellipsis")
                 .font(.body)
                 .foregroundColor(.secondary)
-                .frame(width: 50, height: 50)
+                .frame(width: 56, height: 50)
         }
         .tint(Color.primary)
     }
