@@ -5,11 +5,11 @@ struct CardModifier: ViewModifier {
         content
             .background(Color(UIColor(light: .systemBackground, dark: .secondarySystemBackground)))
             .overlay(
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 26)
                     .stroke(Color(.opaqueSeparator), lineWidth: 0.5)
             )
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .padding(.horizontal, Constants.step2 / 2)
+            .clipShape(RoundedRectangle(cornerRadius: 26))
+            .padding(.horizontal, Constants.step1)
     }
 }
 

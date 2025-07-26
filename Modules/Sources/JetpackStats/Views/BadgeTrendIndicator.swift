@@ -19,7 +19,7 @@ struct BadgeTrendIndicator: View {
         .padding(.horizontal, 8)
         .padding(.vertical, 6)
         .background(trend.sentiment.backgroundColor)
-        .cornerRadius(6)
+        .cornerRadius(Constants.step1 / 2)
         .animation(.spring, value: trend.percentage)
     }
 }

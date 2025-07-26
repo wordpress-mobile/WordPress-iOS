@@ -40,7 +40,7 @@ struct HeatmapCellView: View {
     }
 
     var body: some View {
-        RoundedRectangle(cornerRadius: 4)
+        RoundedRectangle(cornerRadius: Constants.step1)
             .fill(color)
             .overlay {
                 if value > 0 {
@@ -82,7 +82,7 @@ struct HeatmapLegendView: View {
 
                 HStack(spacing: 3) {
                     ForEach(0..<5) { level in
-                        RoundedRectangle(cornerRadius: 4)
+                        RoundedRectangle(cornerRadius: Constants.step1)
                             .fill(heatmapColor(for: Double(level) / 4.0))
                             .frame(width: 16, height: 16)
                     }

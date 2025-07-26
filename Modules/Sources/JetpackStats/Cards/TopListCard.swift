@@ -31,7 +31,8 @@ struct TopListCard: View {
         .onAppear {
             viewModel.onAppear()
         }
-        .padding(Constants.step2)
+        .padding(.vertical, Constants.step2)
+        .padding(.horizontal, Constants.step3)
         .overlay(alignment: .topTrailing) {
             moreMenu
         }

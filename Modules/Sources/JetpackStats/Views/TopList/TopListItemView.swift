@@ -79,7 +79,7 @@ struct TopListItemView: View {
                 maxValue: maxValue,
                 barColor: metric.primaryColor
             )
-            .padding(.horizontal, -(Constants.step2 / 2))
+            .padding(.horizontal, -Constants.step1)
         )
     }
 }

@@ -24,7 +24,7 @@ enum Constants {
         ))
 
         static let background = Color(UIColor(
-            light: CSColor.Gray.shade(.shade0),
+            light: UIColor.secondarySystemBackground,
             dark: UIColor.systemBackground
         ))
 

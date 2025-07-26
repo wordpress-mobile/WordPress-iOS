@@ -32,7 +32,7 @@ enum TopListItemType: Identifiable, CaseIterable, Sendable {
         case .postsAndPages: "text.page"
         case .referrers: "link"
         case .locations: "map"
-        case .authors: "person.2"
+        case .authors: "person"
         case .externalLinks: "cursorarrow.click"
         case .fileDownloads: "arrow.down.circle"
         case .searchTerms: "magnifyingglass"

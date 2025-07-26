@@ -28,7 +28,7 @@ enum SiteMetric: CaseIterable, Identifiable, Sendable {
     var systemImage: String {
         switch self {
         case .views: "eyeglasses"
-        case .visitors: "person.2"
+        case .visitors: "person"
         case .likes: "star"
         case .comments: "bubble.left"
         case .posts: "paragraphsign"
