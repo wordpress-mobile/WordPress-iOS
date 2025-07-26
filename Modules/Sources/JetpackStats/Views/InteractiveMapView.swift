@@ -131,144 +131,15 @@ struct InteractiveMapView: View {
     }
     
     private func wrapSVGInHTML(_ svg: String) -> String {
-        """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=4.0, user-scalable=yes">
-            <style>
-                body {
-                    margin: 0;
-                    padding: 0;
-                    background: transparent;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    overflow: hidden;
-                }
-                svg {
-                    max-width: 100%;
-                    max-height: 100%;
-                    width: auto;
-                    height: auto;
-                }
-                path {
-                    cursor: pointer;
-                    transition: opacity 0.2s ease;
-                }
-                path:hover {
-                    opacity: 0.8;
-                    stroke-width: 2;
-                }
-                path.selected {
-                    stroke-width: 3;
-                    stroke: #007AFF;
-                }
-            </style>
-            <script>
-                let selectedCountry = null;
-                let touchActive = false;
-                let initialTouchDistance = null;
-                
-                function getDistance(touches) {
-                    const dx = touches[0].clientX - touches[1].clientX;
-                    const dy = touches[0].clientY - touches[1].clientY;
-                    return Math.sqrt(dx * dx + dy * dy);
-                }
-                
-                function selectCountry(element) {
-                    if (selectedCountry && selectedCountry !== element) {
-                        selectedCountry.classList.remove('selected');
-                    }
-                    if (element && element.id) {
-                        element.classList.add('selected');
-                        selectedCountry = element;
-                        window.webkit.messageHandlers.countrySelected.postMessage(element.id);
-                    }
-                }
-                
-                function deselectCountry() {
-                    if (selectedCountry) {
-                        selectedCountry.classList.remove('selected');
-                        selectedCountry = null;
-                        window.webkit.messageHandlers.countrySelected.postMessage(null);
-                    }
-                }
-                
-                function setupCountryInteractions() {
-                    const svg = document.querySelector('svg');
-                    const paths = document.querySelectorAll('path[id]');
-                    
-                    // Touch events for mobile
-                    svg.addEventListener('touchstart', function(e) {
-                        if (e.touches.length === 1) {
-                            // Single touch - selection mode
-                            touchActive = true;
-                            const touch = e.touches[0];
-                            const element = document.elementFromPoint(touch.clientX, touch.clientY);
-                            if (element && element.tagName === 'path' && element.id) {
-                                selectCountry(element);
-                            }
-                        } else if (e.touches.length === 2) {
-                            // Two touches - zoom mode, disable selection
-                            touchActive = false;
-                            initialTouchDistance = getDistance(e.touches);
-                        }
-                    }, { passive: false });
-                    
-                    svg.addEventListener('touchmove', function(e) {
-                        if (e.touches.length === 1 && touchActive) {
-                            // Single touch - continue selection
-                            const touch = e.touches[0];
-                            const element = document.elementFromPoint(touch.clientX, touch.clientY);
-                            if (element && element.tagName === 'path' && element.id) {
-                                selectCountry(element);
-                            }
-                        } else if (e.touches.length === 2) {
-                            // Two touches - zoom mode, don't interfere
-                            touchActive = false;
-                        }
-                    }, { passive: false });
-                    
-                    svg.addEventListener('touchend', function(e) {
-                        if (e.touches.length === 0) {
-                            touchActive = false;
-                            initialTouchDistance = null;
-                        }
-                    }, { passive: false });
-                    
-                    // Mouse events for desktop
-                    paths.forEach(path => {
-                        path.addEventListener('mousedown', function(e) {
-                            e.preventDefault();
-                            selectCountry(this);
-                        });
-                        
-                        path.addEventListener('mouseenter', function(e) {
-                            if (e.buttons === 1) { // Mouse button is pressed
-                                selectCountry(this);
-                            }
-                        });
-                    });
-                    
-                    // Deselect when clicking outside
-                    svg.addEventListener('mousedown', function(e) {
-                        if (e.target === svg) {
-                            deselectCountry();
-                        }
-                    });
-                }
-                
-                // Setup interactions when DOM is loaded
-                document.addEventListener('DOMContentLoaded', setupCountryInteractions);
-            </script>
-        </head>
-        <body>
-            \(svg)
-        </body>
-        </html>
-        """
+        // Load HTML template from resources
+        guard let templatePath = Bundle.module.path(forResource: "interactive-map-template", ofType: "html"),
+              let template = try? String(contentsOfFile: templatePath) else {
+            // Fallback to inline HTML if template not found
+            return "<html><body>\(svg)</body></html>"
+        }
+        
+        // Replace placeholder with SVG content
+        return template.replacingOccurrences(of: "<!-- SVG_CONTENT_PLACEHOLDER -->", with: svg)
     }
 }
 
