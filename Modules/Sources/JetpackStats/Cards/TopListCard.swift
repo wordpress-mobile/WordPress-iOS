@@ -5,7 +5,7 @@ struct TopListCard: View {
 
     @Environment(\.context) var context
 
-    private let itemLimit = 6
+    private let itemLimit = 5
 
     init(viewModel: TopListCardViewModel) {
         self.viewModel = viewModel
