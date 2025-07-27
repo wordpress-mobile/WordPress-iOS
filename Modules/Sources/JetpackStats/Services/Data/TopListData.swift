@@ -18,10 +18,6 @@ protocol TopListItem: Codable, Sendable, Identifiable {
     var id: TopListItemID { get }
 }
 
-protocol TopListExpandableItem: TopListItem {
-    var children: [any TopListItem] { get }
-    var displayName: String { get }
-}
 
 extension TopListData {
     struct Post: Codable, TopListItem {
@@ -124,12 +120,10 @@ extension TopListData {
         }
     }
 
-    struct ArchiveSection: Codable, TopListExpandableItem {
+    struct ArchiveSection: Codable, TopListItem {
         let sectionName: String
         var items: [ArchiveItem]
         var metrics: SiteMetricsSet
-
-        var children: [any TopListItem] { items }
 
         var id: TopListItemID {
             TopListItemID(type: .archive, id: sectionName)

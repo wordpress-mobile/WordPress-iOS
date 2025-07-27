@@ -1,5 +1,6 @@
 import SwiftUI
 import WordPressUI
+import DesignSystem
 
 struct ReferrerStatsView: View {
     let referrer: TopListData.Referrer
@@ -98,14 +99,7 @@ struct ReferrerStatsView: View {
     @ViewBuilder
     var viewsCount: some View {
         if let views = referrer.metrics.views {
-            VStack(alignment: .trailing, spacing: 0) {
-                Text(StatsValueFormatter.formatNumber(views))
-                    .font(Font.make(.recoleta, textStyle: .title2, weight: .medium))
-                    .foregroundColor(.primary)
-                Text(SiteMetric.views.localizedTitle)
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-            }
+            StandaloneMetricView(metric: .views, value: views)
         }
     }
 

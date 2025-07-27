@@ -12,7 +12,7 @@ struct TopListItemView: View {
     @Environment(\.context) private var context
 
     @ScaledMetric(relativeTo: .callout) private var cellHeight = 52
-    @ScaledMetric(relativeTo: .subheadline) private var minTrailingWidth = 80
+    @ScaledMetric(relativeTo: .subheadline) private var minTrailingWidth = 84
 
     var body: some View {
         if hasDetails {
@@ -50,6 +50,8 @@ struct TopListItemView: View {
                 TopListVideoRowView(item: video)
             case let archiveItem as TopListData.ArchiveItem:
                 TopListArchiveItemRowView(item: archiveItem)
+            case let archiveSection as TopListData.ArchiveSection:
+                TopListArchiveSectionRowView(item: archiveSection)
             default:
                 let _ = assertionFailure("unsupported item: \(item)")
                 EmptyView()
@@ -91,6 +93,8 @@ private extension TopListItemView {
             return true
         case is TopListData.ArchiveItem:
             return true
+        case is TopListData.ArchiveSection:
+            return true
         case is TopListData.Author:
             return true
         case is TopListData.Referrer:
@@ -118,6 +122,11 @@ private extension TopListItemView {
             router.navigate(to: detailsView)
         case let referrer as TopListData.Referrer:
             let detailsView = ReferrerStatsView(referrer: referrer, dateRange: dateRange)
+                .environment(\.context, context)
+                .environment(\.router, router)
+            router.navigate(to: detailsView)
+        case let archiveSection as TopListData.ArchiveSection:
+            let detailsView = ArchiveStatsView(archiveSection: archiveSection, dateRange: dateRange)
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView)

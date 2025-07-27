@@ -4,10 +4,17 @@ struct TopListArchiveItemRowView: View {
     let item: TopListData.ArchiveItem
 
     var body: some View {
-        Text(item.value)
-            .font(.callout)
-            .foregroundColor(.primary)
-            .lineLimit(1)
-            .lineSpacing(-2)
+        VStack(alignment: .leading, spacing: 2) {
+            Text(item.value)
+                .font(.callout)
+                .foregroundColor(.primary)
+                .lineLimit(1)
+            
+            Text(item.href)
+                .font(.footnote)
+                .foregroundColor(.secondary)
+                .lineLimit(1)
+                .truncationMode(.middle)
+        }
     }
 }
