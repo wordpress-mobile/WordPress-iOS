@@ -4,7 +4,7 @@ import SwiftUI
 
 actor MockStatsService: ObservableObject, StatsServiceProtocol {
     private var hourlyData: [SiteMetric: [DataPoint]] = [:]
-    private var dailyTopListData: [TopListItemType: [Date: [any TopListItem]]] = [:]
+    private var dailyTopListData: [TopListItemType: [Date: [any TopListItemProtocol]]] = [:]
     private let calendar: Calendar
 
     let supportedMetrics = SiteMetric.allCases
@@ -82,7 +82,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         }
 
         // Aggregate all items across the date range
-        var aggregatedItems: [TopListItemID: (any TopListItem, Int)] = [:] // Store item and aggregated metrics
+        var aggregatedItems: [TopListItemID: (any TopListItemProtocol, Int)] = [:] // Store item and aggregated metrics
 
         for (_, dailyItems) in filteredData {
             for item in dailyItems {
@@ -99,7 +99,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         // Convert to array with updated metric value and sort
         let sortedItems = aggregatedItems.values
-            .map { (item, totalValue) -> any TopListItem in
+            .map { (item, totalValue) -> any TopListItemProtocol in
                 // Create a mutable copy and update the aggregated metric value
                 var mutableItem = item
                 mutableItem.metrics[metric] = totalValue
@@ -117,7 +117,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         let baseItems = loadRealtimeBaseItems(for: dataType)
 
         // Add dynamic variations to simulate real-time changes
-        let realtimeItems = baseItems.map { item -> any TopListItem in
+        let realtimeItems = baseItems.map { item -> any TopListItemProtocol in
             let baseViews = item.metrics.views ?? 0
 
             // Use time-based seed for consistent gradual changes
@@ -178,7 +178,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         return TopListResponse(items: topItems)
     }
 
-    private func loadRealtimeBaseItems(for dataType: TopListItemType) -> [any TopListItem] {
+    private func loadRealtimeBaseItems(for dataType: TopListItemType) -> [any TopListItemProtocol] {
         let fileName: String
         switch dataType {
         case .postsAndPages:
@@ -314,7 +314,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     // MARK: - Data Loading
 
     /// Loads historical items from JSON files based on the data type
-    private func loadHistoricalItems(for dataType: TopListItemType) -> [any TopListItem] {
+    private func loadHistoricalItems(for dataType: TopListItemType) -> [any TopListItemProtocol] {
         let fileName: String
         switch dataType {
         case .postsAndPages:
@@ -393,7 +393,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     // MARK: - Data Generation
 
     /// Mutates item metrics based on growth factors and variations
-    private func mutateItemMetrics(_ item: any TopListItem, growthFactor: Double, seasonalFactor: Double, weekendFactor: Double, randomFactor: Double) -> any TopListItem {
+    private func mutateItemMetrics(_ item: any TopListItemProtocol, growthFactor: Double, seasonalFactor: Double, weekendFactor: Double, randomFactor: Double) -> any TopListItemProtocol {
         let combinedFactor = growthFactor * seasonalFactor * weekendFactor * randomFactor
 
         var item = item
@@ -520,7 +520,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         // Generate daily data for each type
         for dataType in TopListItemType.allCases {
-            var typeData: [Date: [any TopListItem]] = [:]
+            var typeData: [Date: [any TopListItemProtocol]] = [:]
 
             // Load base items from JSON files
             let baseItems = loadHistoricalItems(for: dataType)

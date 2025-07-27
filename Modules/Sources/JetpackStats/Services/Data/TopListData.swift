@@ -1,11 +1,11 @@
 import Foundation
 
 struct TopListResponse: Sendable {
-    let items: [any TopListItem]
+    let items: [any TopListItemProtocol]
 }
 
 struct TopListData: Sendable {
-    let items: [any TopListItem]
+    let items: [any TopListItemProtocol]
 }
 
 /// - warning: It's required for animations in ``TopListItemsView`` to work
@@ -17,14 +17,13 @@ struct TopListItemID: Hashable {
     let id: String
 }
 
-protocol TopListItem: Codable, Sendable, Identifiable {
+protocol TopListItemProtocol: Codable, Sendable, Identifiable {
     var metrics: SiteMetricsSet { get set }
     var id: TopListItemID { get }
 }
 
-
 extension TopListData {
-    struct Post: Codable, TopListItem {
+    struct Post: Codable, TopListItemProtocol {
         let title: String
         let postID: String?
         var postURL: URL?
@@ -38,7 +37,7 @@ extension TopListData {
         }
     }
 
-    struct Referrer: Codable, TopListItem {
+    struct Referrer: Codable, TopListItemProtocol {
         let name: String
         let domain: String?
         let iconURL: URL?
@@ -50,7 +49,7 @@ extension TopListData {
         }
     }
 
-    struct Location: Codable, TopListItem {
+    struct Location: Codable, TopListItemProtocol {
         let country: String
         let flag: String?
         let countryCode: String?
@@ -61,7 +60,7 @@ extension TopListData {
         }
     }
 
-    struct Author: Codable, TopListItem {
+    struct Author: Codable, TopListItemProtocol {
         let name: String
         let userId: String
         let role: String?
@@ -74,7 +73,7 @@ extension TopListData {
         }
     }
 
-    struct ExternalLink: Codable, TopListItem {
+    struct ExternalLink: Codable, TopListItemProtocol {
         let url: String
         let title: String?
         let children: [ExternalLink]
@@ -85,7 +84,7 @@ extension TopListData {
         }
     }
 
-    struct FileDownload: Codable, TopListItem {
+    struct FileDownload: Codable, TopListItemProtocol {
         let fileName: String
         let filePath: String?
         var metrics: SiteMetricsSet
@@ -95,7 +94,7 @@ extension TopListData {
         }
     }
 
-    struct SearchTerm: Codable, TopListItem {
+    struct SearchTerm: Codable, TopListItemProtocol {
         let term: String
         var metrics: SiteMetricsSet
 
@@ -104,7 +103,7 @@ extension TopListData {
         }
     }
 
-    struct Video: Codable, TopListItem {
+    struct Video: Codable, TopListItemProtocol {
         let title: String
         let postId: String
         let videoURL: URL?
@@ -115,7 +114,7 @@ extension TopListData {
         }
     }
 
-    struct ArchiveItem: Codable, TopListItem {
+    struct ArchiveItem: Codable, TopListItemProtocol {
         let href: String
         let value: String
         var metrics: SiteMetricsSet
@@ -125,7 +124,7 @@ extension TopListData {
         }
     }
 
-    struct ArchiveSection: Codable, TopListItem {
+    struct ArchiveSection: Codable, TopListItemProtocol {
         let sectionName: String
         var items: [ArchiveItem]
         var metrics: SiteMetricsSet

@@ -4,7 +4,7 @@ import DesignSystem
 struct TopListItemView: View {
     static let defaultCellHeight: CGFloat = 52
     
-    let item: any TopListItem
+    let item: any TopListItemProtocol
     let previousValue: Int?
     let metric: SiteMetric
     let maxValue: Int
@@ -391,7 +391,7 @@ private func makePreviewItems() -> some View {
 }
 
 @MainActor
-private func makePreviewItem(_ item: any TopListItem, previousValue: Int? = nil, metric: SiteMetric = .views) -> some View {
+private func makePreviewItem(_ item: any TopListItemProtocol, previousValue: Int? = nil, metric: SiteMetric = .views) -> some View {
     TopListItemView(
         item: item,
         previousValue: previousValue,

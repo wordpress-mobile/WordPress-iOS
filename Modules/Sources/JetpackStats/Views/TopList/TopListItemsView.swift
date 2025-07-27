@@ -27,7 +27,7 @@ struct TopListItemsView: View {
         .animation(.spring, value: ObjectIdentifier(data))
     }
 
-    private func makeView(for item: any TopListItem) -> some View {
+    private func makeView(for item: any TopListItemProtocol) -> some View {
         TopListItemView(
             item: item,
             previousValue: data.previousItem(for: item)?.metrics[data.metric],

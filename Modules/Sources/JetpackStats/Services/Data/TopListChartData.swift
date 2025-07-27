@@ -3,8 +3,8 @@ import Foundation
 final class TopListChartData {
     let item: TopListItemType
     let metric: SiteMetric
-    let items: [any TopListItem]
-    let previousItems: [TopListItemID: any TopListItem]
+    let items: [any TopListItemProtocol]
+    let previousItems: [TopListItemID: any TopListItemProtocol]
     let metrics: Metrics
 
     struct Metrics {
@@ -22,7 +22,7 @@ final class TopListChartData {
         ListID(item: item, metric: metric)
     }
 
-    init(item: TopListItemType, metric: SiteMetric, items: [any TopListItem], previousItems: [TopListItemID: any TopListItem] = [:]) {
+    init(item: TopListItemType, metric: SiteMetric, items: [any TopListItemProtocol], previousItems: [TopListItemID: any TopListItemProtocol] = [:]) {
         self.item = item
         self.metric = metric
         self.items = items
@@ -40,7 +40,7 @@ final class TopListChartData {
         )
     }
 
-    func previousItem(for currentItem: any TopListItem) -> (any TopListItem)? {
+    func previousItem(for currentItem: any TopListItemProtocol) -> (any TopListItemProtocol)? {
         previousItems[currentItem.id]
     }
 }
@@ -74,7 +74,7 @@ extension TopListChartData {
             .prefix(itemCount)
 
         // Create previous items dictionary
-        var previousItemsDict: [TopListItemID: any TopListItem] = [:]
+        var previousItemsDict: [TopListItemID: any TopListItemProtocol] = [:]
         for item in currentItems {
             let previousItem = mockPreviousItem(from: item, metric: metric)
             previousItemsDict[item.id] = previousItem
@@ -93,7 +93,7 @@ extension TopListChartData {
         return chartData
     }
 
-    private static func mockItems(for item: TopListItemType, metric: SiteMetric) -> [any TopListItem] {
+    private static func mockItems(for item: TopListItemType, metric: SiteMetric) -> [any TopListItemProtocol] {
         switch item {
         case .postsAndPages: mockPosts(metric: metric)
         case .referrers: mockReferrers(metric: metric)
@@ -323,7 +323,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockArchive(metric: SiteMetric) -> [any TopListItem] {
+    private static func mockArchive(metric: SiteMetric) -> [any TopListItemProtocol] {
         // Create mock archive sections
         let archiveSections = [
             ("pages", [
@@ -410,7 +410,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockPreviousItem(from item: any TopListItem, metric: SiteMetric) -> any TopListItem {
+    private static func mockPreviousItem(from item: any TopListItemProtocol, metric: SiteMetric) -> any TopListItemProtocol {
         var item = item
 
         // Create previous value that's 70-130% of current value for realistic trends

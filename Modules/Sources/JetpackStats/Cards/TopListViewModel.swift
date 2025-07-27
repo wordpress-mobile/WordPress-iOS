@@ -186,7 +186,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         let previousItems = filteredItems(previous?.items ?? [])
 
         // Build previous items dictionary
-        var previousItemsDict: [TopListItemID: any TopListItem] = [:]
+        var previousItemsDict: [TopListItemID: any TopListItemProtocol] = [:]
         for item in previousItems {
             previousItemsDict[item.id] = item
         }
@@ -202,7 +202,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         )
     }
 
-    private func filteredItems(_ items: [any TopListItem]) -> [any TopListItem] {
+    private func filteredItems(_ items: [any TopListItemProtocol]) -> [any TopListItemProtocol] {
         guard let filter else {
             return items
         }
