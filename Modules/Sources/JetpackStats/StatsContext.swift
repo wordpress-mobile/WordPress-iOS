@@ -9,6 +9,8 @@ public struct StatsContext: Sendable {
     let service: any StatsServiceProtocol
     let formatters: StatsFormatters
     let siteID: Int
+    /// A closure to preprocess avatar URLs to request the appropriate pixel size.
+    public var preprocessAvatar: (@Sendable (URL, CGFloat) -> URL)?
 
     public init(timeZone: TimeZone, siteID: Int, api: WordPressComRestApi) {
         self.init(timeZone: timeZone, siteID: siteID, service: StatsService(siteID: siteID, api: api, timeZone: timeZone))
@@ -25,6 +27,7 @@ public struct StatsContext: Sendable {
         }()
         self.service = service
         self.formatters = StatsFormatters(timeZone: timeZone)
+        self.preprocessAvatar = nil
     }
 
     public static let demo = StatsContext(timeZone: .current, siteID: 1, service: MockStatsService())

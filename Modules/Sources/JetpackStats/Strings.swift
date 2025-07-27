@@ -74,6 +74,7 @@ enum Strings {
         static let ok = AppLocalizedString("jetpackStats.button.ok", value: "OK", comment: "OK button")
         static let downloadCSV = AppLocalizedString("jetpackStats.button.downloadCSV", value: "Download CSV", comment: "Button to download data as CSV file")
         static let more = AppLocalizedString("jetpackStats.button.more", value: "More", comment: "More actions button")
+        static let learnMore = AppLocalizedString("jetpackStats.button.learnMore", value: "Learn More", comment: "Learn more about stats button")
     }
 
     enum DatePicker {
@@ -96,7 +97,7 @@ enum Strings {
         static let barChart = AppLocalizedString("jetpackStats.chart.barChart", value: "Bars", comment: "Bar chart type")
         static let incompleteData = AppLocalizedString("jetpackStats.chart.incompleteData", value: "Might show incomplete data", comment: "Shown when current period data might be incomplete")
         static let hourlyDataUnavailable = AppLocalizedString("jetpackStats.chart.hourlyDataNotAvailable", value: "Hourly data not available", comment: "Shown for metrics that don't support hourly data")
-        static let empty = AppLocalizedString("jetpackStats.chart.dataEmpty", value: "Not data available", comment: "Shown for empty states")
+        static let empty = AppLocalizedString("jetpackStats.chart.dataEmpty", value: "No data available", comment: "Shown for empty states")
     }
 
     enum TopListTitles {
@@ -142,7 +143,7 @@ enum Strings {
         static let more = AppLocalizedString("jetpackStats.postDetails.more", value: "More", comment: "Legend label for higher activity")
 
         // Monthly Activity
-        static let monthlyActivity = AppLocalizedString("jetpackStats.postDetails.monthsAndYears", value: "Months and Years", comment: "Title for monthly activity heatmap")
+        static let monthlyActivity = AppLocalizedString("jetpackStats.postDetails.monthsAndYears", value: "Recent Months", comment: "Title for monthly activity heatmap")
 
         // Likes
         static let noLikesYet = AppLocalizedString("jetpackStats.postDetails.noLikesYet", value: "No likes yet", comment: "Label")

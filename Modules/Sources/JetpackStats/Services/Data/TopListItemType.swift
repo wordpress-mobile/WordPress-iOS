@@ -57,4 +57,29 @@ enum TopListItemType: Identifiable, CaseIterable, Sendable {
     static let secondaryItems: Set<TopListItemType> = [
         .externalLinks, .fileDownloads, .searchTerms, .videos, .archive
     ]
+
+    var documentationURL: URL? {
+        URL(string: documentationPath)
+    }
+
+    private var documentationPath: String {
+        switch self {
+        case .postsAndPages, .archive:
+            "https://wordpress.com/support/stats/analyze-content-performance/#view-posts-pages-traffic"
+        case .authors:
+            "https://wordpress.com/support/stats/analyze-content-performance/#check-author-performance"
+        case .referrers:
+            "https://wordpress.com/support/stats/understand-traffic-sources/#identify-referrers"
+        case .searchTerms:
+            "https://wordpress.com/support/stats/understand-traffic-sources/#analyze-search-terms"
+        case .fileDownloads:
+            "https://wordpress.com/support/stats/analyze-content-performance/#track-file-downloads"
+        case .externalLinks:
+            "https://wordpress.com/support/stats/analyze-content-performance/#analyze-clicks"
+        case .locations:
+            "https://wordpress.com/support/stats/audience-insights/"
+        case .videos:
+            "https://wordpress.com/support/stats/analyze-content-performance/#see-video-traffic"
+        }
+    }
 }

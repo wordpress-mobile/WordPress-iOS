@@ -106,6 +106,10 @@ struct StatsDateRangeFormatter {
 
         if calendar.component(.year, from: startDate) == currentYear && calendar.component(.year, from: displayedEndDate) == currentYear {
             dateIntervalFormatter.dateTemplate = "MMM d"
+        } else {
+            dateIntervalFormatter.dateTemplate = nil
+            dateIntervalFormatter.dateStyle = .medium
+            dateIntervalFormatter.timeStyle = .none
         }
 
         return dateIntervalFormatter.string(from: startDate, to: displayedEndDate)

@@ -430,12 +430,10 @@ private extension WordPressKit.StatsServiceRemoteV2 {
         try await withCheckedThrowingContinuation { continuation in
             // `period` is ignored if you pass `startDate`, but it's a required parameter
             getData(for: unit, unit: unit, startDate: interval.start, endingOn: interval.end, limit: limit, summarize: summarize, parameters: parameters) { (data: TimeStatsType?, error: Error?) in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let data {
+               if let data {
                     continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: StatsServiceError.unknown)
+               } else {
+                    continuation.resume(throwing: error ?? StatsServiceError.unknown)
                 }
             }
         }
@@ -444,12 +442,10 @@ private extension WordPressKit.StatsServiceRemoteV2 {
     func getInsight<InsightType: StatsInsightData>(limit: Int = 10) async throws -> InsightType where InsightType: Sendable {
         try await withCheckedThrowingContinuation { continuation in
             getInsight(limit: limit) { (insight: InsightType?, error: Error?) in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let insight {
+                if let insight {
                     continuation.resume(returning: insight)
                 } else {
-                    continuation.resume(throwing: StatsServiceError.unknown)
+                    continuation.resume(throwing: error ?? StatsServiceError.unknown)
                 }
             }
         }
@@ -458,12 +454,10 @@ private extension WordPressKit.StatsServiceRemoteV2 {
     func getDetails(forPostID postID: Int) async throws -> StatsPostDetails {
         try await withCheckedThrowingContinuation { continuation in
             getDetails(forPostID: postID) { (details: StatsPostDetails?, error: Error?) in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let details {
+                if let details {
                     continuation.resume(returning: details)
                 } else {
-                    continuation.resume(throwing: StatsServiceError.unknown)
+                    continuation.resume(throwing: error ?? StatsServiceError.unknown)
                 }
             }
         }
@@ -472,12 +466,10 @@ private extension WordPressKit.StatsServiceRemoteV2 {
     func getInsight(limit: Int = 10) async throws -> StatsLastPostInsight {
         try await withCheckedThrowingContinuation { continuation in
             getInsight(limit: limit) { (insight: StatsLastPostInsight?, error: Error?) in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let insight {
+                if let insight {
                     continuation.resume(returning: insight)
                 } else {
-                    continuation.resume(throwing: StatsServiceError.unknown)
+                    continuation.resume(throwing: error ?? StatsServiceError.unknown)
                 }
             }
         }

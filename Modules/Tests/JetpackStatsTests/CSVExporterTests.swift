@@ -47,7 +47,7 @@ struct CSVExporterTests {
         let lines = csv.split(separator: "\r\n").map(String.init)
 
         // Verify we have header + 3 data rows
-        #expect(lines.count == 5)
+        #expect(lines.count == 4)
 
         // Verify headers
         let expectedHeaders = [

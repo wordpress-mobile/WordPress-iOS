@@ -13,10 +13,16 @@ struct TrafficTabView: View {
 
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: Constants.step3) {
+            VStack(spacing: Constants.step3) {
                 ForEach(viewModels, id: \.id) { viewModel in
                     makeItem(for: viewModel)
                 }
+
+                // Timezone info at the bottom with inset
+                TimezoneInfoView()
+                    .padding(.horizontal, Constants.step4)
+                    .padding(.top, Constants.step2)
+                    .padding(.bottom, Constants.step1)
             }
             .padding(.vertical, Constants.step2)
         }

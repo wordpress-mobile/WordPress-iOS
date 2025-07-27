@@ -166,6 +166,13 @@ struct TopListCard: View {
                 Label(Strings.Buttons.share, systemImage: "square.and.arrow.up")
             }
         }
+        if let documentationURL = viewModel.selection.item.documentationURL {
+            Section {
+                Link(destination: documentationURL) {
+                    Label(Strings.Buttons.learnMore, systemImage: "info.circle")
+                }
+            }
+        }
     }
 
     @ViewBuilder
@@ -173,6 +180,7 @@ struct TopListCard: View {
         Group {
             if viewModel.isFirstLoad {
                 topListItemsView(data: mockData)
+                    .allowsHitTesting(false)
                     .redacted(reason: .placeholder)
                     .pulsating()
             } else if let data = viewModel.data {
@@ -221,12 +229,12 @@ struct TopListCard: View {
     }
 
     private func makeEmptyStateView(message: String) -> some View {
-        topListItemsView(data: mockData)
+        topListItemsView(data: .init(item: viewModel.selection.item, metric: viewModel.selection.metric, items: []))
+            .allowsHitTesting(false)
             .redacted(reason: .placeholder)
-            .grayscale(1)
-            .opacity(0.25)
             .overlay {
                 SimpleErrorView(message: message)
+                    .offset(y: -18)
             }
     }
 

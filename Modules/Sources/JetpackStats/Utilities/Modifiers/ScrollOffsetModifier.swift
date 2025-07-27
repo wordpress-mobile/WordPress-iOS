@@ -9,7 +9,9 @@ struct ScrollOffsetModifier: ViewModifier {
             .onScrollGeometryChange(for: Bool.self) { geometry in
                 return (geometry.contentOffset.y - 20) > -geometry.contentInsets.top
             } action: { _, newValue in
-                isScrolled = newValue
+                if isScrolled != newValue {
+                    isScrolled = newValue
+                }
             }
     }
 }

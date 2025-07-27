@@ -8,10 +8,13 @@ struct AvatarView: View {
     var size: CGFloat = 36
     var backgroundColor = Color(.systemBackground)
 
+    @Environment(\.context) private var context
+
     var body: some View {
         Group {
             if let imageURL {
-                CachedAsyncImage(url: imageURL) { image in
+                let processedURL = context.preprocessAvatar?(imageURL, size) ?? imageURL
+                CachedAsyncImage(url: processedURL) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)

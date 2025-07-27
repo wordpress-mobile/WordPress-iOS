@@ -3,6 +3,7 @@ import SwiftUI
 import JetpackStats
 import WordPressKit
 import WordPressShared
+import Gravatar
 
 /// A UIViewController wrapper for the new SwiftUI StatsMainView
 class StatsHostingViewController: UIViewController {
@@ -174,6 +175,16 @@ extension StatsContext {
             siteID: siteID,
             api: api
         )
+
+        // Configure avatar preprocessing using Gravatar
+        self.preprocessAvatar = { url, size in
+            // Use AvatarURL from Gravatar to update the URL to the requested pixel size
+            guard let avatarURL = AvatarURL(url: url) else {
+                return url
+            }
+            let options = AvatarQueryOptions(preferredSize: .points(size))
+            return avatarURL.replacing(options: options)?.url ?? url
+        }
     }
 }
 

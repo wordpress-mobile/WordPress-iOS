@@ -100,7 +100,8 @@ struct TopListScreenView: View {
                 .pulsating(viewModel.isFirstLoad)
                 .animation(.smooth, value: viewModel.isFirstLoad)
         }
-        .padding(Constants.step3)
+        .padding(.vertical, Constants.step2)
+        .padding(.horizontal, Constants.step3)
     }
 
     private var listHeaderView: some View {
@@ -160,7 +161,7 @@ struct TopListScreenView: View {
     }
 
     private func itemsListView(data: TopListData) -> some View {
-        LazyVStack(spacing: Constants.step0_5) {
+        VStack(spacing: Constants.step0_5) {
             ForEach(data.items, id: \.id) { item in
                 TopListItemView(
                     item: item,

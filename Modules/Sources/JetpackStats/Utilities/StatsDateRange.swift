@@ -22,7 +22,7 @@ struct StatsDateRange: Equatable, Sendable {
         interval: DateInterval,
         component: Calendar.Component,
         comparison: DateRangeComparisonPeriod = .precedingPeriod,
-        calendar: Calendar = .current
+        calendar: Calendar
     ) {
         self.dateInterval = interval
         self.comparison = comparison
