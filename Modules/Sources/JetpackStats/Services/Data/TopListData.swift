@@ -73,6 +73,7 @@ extension TopListData {
     struct ExternalLink: Codable, TopListItem {
         let url: String
         let title: String?
+        let children: [ExternalLink]
         var metrics: SiteMetricsSet
 
         var id: TopListItemID {

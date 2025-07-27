@@ -237,6 +237,7 @@ extension TopListChartData {
             return TopListData.ExternalLink(
                 url: data.1,
                 title: data.0,
+                children: [],
                 metrics: metrics
             )
         }

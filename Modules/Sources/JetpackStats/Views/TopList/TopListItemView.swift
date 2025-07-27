@@ -117,6 +117,8 @@ private extension TopListItemView {
             return true
         case is TopListData.Referrer:
             return true
+        case is TopListData.ExternalLink:
+            return true
         default:
             return false
         }
@@ -145,6 +147,11 @@ private extension TopListItemView {
             router.navigate(to: detailsView)
         case let archiveSection as TopListData.ArchiveSection:
             let detailsView = ArchiveStatsView(archiveSection: archiveSection, dateRange: dateRange)
+                .environment(\.context, context)
+                .environment(\.router, router)
+            router.navigate(to: detailsView)
+        case let externalLink as TopListData.ExternalLink:
+            let detailsView = ExternalLinkStatsView(externalLink: externalLink, dateRange: dateRange)
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView)
@@ -277,6 +284,7 @@ private func makePreviewItems() -> some View {
             TopListData.ExternalLink(
                 url: "https://developer.apple.com/documentation/swiftui",
                 title: "SwiftUI Documentation",
+                children: [],
                 metrics: SiteMetricsSet(views: 50000)
             ),
             previousValue: 52000
@@ -286,6 +294,7 @@ private func makePreviewItems() -> some View {
             TopListData.ExternalLink(
                 url: "https://github.com/wordpress/wordpress-ios",
                 title: nil,
+                children: [],
                 metrics: SiteMetricsSet(views: 1250)
             ),
             previousValue: 1100

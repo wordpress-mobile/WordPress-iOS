@@ -10,11 +10,18 @@ struct TopListExternalLinkRowView: View {
                 .foregroundColor(.primary)
                 .lineLimit(1)
 
-            Text(item.url)
-                .font(.caption)
-                .foregroundColor(.secondary)
-                .lineLimit(1)
-                .truncationMode(.middle)
+            if item.children.count > 0 {
+                Text(Strings.ArchiveSections.itemCount(item.children.count))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+            } else {
+                Text(item.url)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+            }
         }
     }
 }

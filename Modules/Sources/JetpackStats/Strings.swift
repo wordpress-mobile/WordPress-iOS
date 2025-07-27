@@ -170,6 +170,12 @@ enum Strings {
         static let errorAlertTitle = AppLocalizedString("jetpackStats.referrerDetails.errorAlertTitle", value: "Error", comment: "Title for error alert when marking referrer as spam fails")
     }
     
+    enum ExternalLinkDetails {
+        static let title = AppLocalizedString("jetpackStats.externalLinkDetails.title", value: "External Link", comment: "Title for the external link details screen")
+        static let openLink = AppLocalizedString("jetpackStats.externalLinkDetails.openLink", value: "Open Link", comment: "Button to open the external link in browser")
+        static let childLinks = AppLocalizedString("jetpackStats.externalLinkDetails.childLinks", value: "Sub-links", comment: "Section title for the list of child links")
+    }
+    
     enum ContextMenuActions {
         static let openInBrowser = AppLocalizedString("jetpackStats.contextMenu.openInBrowser", value: "Open in Browser", comment: "Context menu action to open link in browser")
         static let copyURL = AppLocalizedString("jetpackStats.contextMenu.copyURL", value: "Copy URL", comment: "Context menu action to copy URL")
