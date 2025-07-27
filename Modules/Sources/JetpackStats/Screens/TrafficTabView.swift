@@ -13,7 +13,7 @@ struct TrafficTabView: View {
 
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: Constants.step3) {
+            VStack(spacing: Constants.step3) {
                 ForEach(viewModels, id: \.id) { viewModel in
                     makeItem(for: viewModel)
                 }

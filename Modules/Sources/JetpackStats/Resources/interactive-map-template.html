@@ -58,34 +58,7 @@
             const svg = document.querySelector('svg');
             const paths = document.querySelectorAll('path[id]');
             
-            // Touch events for mobile
-            svg.addEventListener('touchstart', function(e) {
-                if (e.touches.length === 1) {
-                    // Single touch - selection on tap only
-                    const touch = e.touches[0];
-                    const element = document.elementFromPoint(touch.clientX, touch.clientY);
-                    if (element && element.tagName === 'path' && element.id) {
-                        selectCountry(element);
-                    } else if (element === svg || !element.id) {
-                        // Tapped outside any country - deselect
-                        deselectCountry();
-                    }
-                } else if (e.touches.length === 2) {
-                    // Two touches - prevent zoom
-                    e.preventDefault();
-                }
-            }, { passive: false });
-            
-            svg.addEventListener('touchmove', function(e) {
-                // Prevent any dragging behavior
-                e.preventDefault();
-            }, { passive: false });
-            
-            svg.addEventListener('touchend', function(e) {
-                // Do nothing - keep selection until user taps elsewhere
-            }, { passive: false });
-            
-            // Mouse events for desktop - click only
+            // Click events for all devices
             paths.forEach(path => {
                 path.addEventListener('click', function(e) {
                     e.preventDefault();

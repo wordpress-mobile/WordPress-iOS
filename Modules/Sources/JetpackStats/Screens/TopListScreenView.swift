@@ -161,7 +161,7 @@ struct TopListScreenView: View {
     }
 
     private func itemsListView(data: TopListData) -> some View {
-        LazyVStack(spacing: Constants.step0_5) {
+        VStack(spacing: Constants.step0_5) {
             ForEach(data.items, id: \.id) { item in
                 TopListItemView(
                     item: item,
