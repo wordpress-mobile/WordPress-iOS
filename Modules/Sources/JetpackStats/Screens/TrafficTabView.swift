@@ -30,11 +30,9 @@ struct TrafficTabView: View {
             }
         }
         .background(Constants.Colors.background)
-//        .toolbar {
-//            if #available(iOS 26, *) {
+        .toolbar {
 //                normalModeToolbarContent
-//            }
-//        }
+        }
         .safeAreaInset(edge: .bottom) {
             LegacyFloatingDateControl(dateRange: $dateRange)
         }

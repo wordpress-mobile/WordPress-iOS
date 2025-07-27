@@ -26,17 +26,18 @@ struct TopListScreenView: View {
         ScrollView {
             VStack(spacing: Constants.step4) {
                 headerView
-                    .background(Color(.secondarySystemBackground))
+                    .background(Color(.secondarySystemBackground).opacity(0.75))
                     .cardStyle()
 
                 VStack {
                     listHeaderView
                         .padding(.horizontal, Constants.step3)
                     listContentView
+                        .grayscale(viewModel.isStale ? 1 : 0)
+                        .animation(.smooth, value: viewModel.isStale)
                 }
             }
             .padding(.vertical, Constants.step2)
-
             .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
         }
         .background(Color(.systemBackground))
@@ -44,6 +45,9 @@ struct TopListScreenView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             viewModel.onAppear()
+        }
+        .safeAreaInset(edge: .bottom) {
+            LegacyFloatingDateControl(dateRange: $viewModel.dateRange)
         }
     }
     
