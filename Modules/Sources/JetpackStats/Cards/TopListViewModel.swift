@@ -1,7 +1,7 @@
 import SwiftUI
 
 @MainActor
-final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
+final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     let items: [TopListItemType]
     let groupedItems: [[TopListItemType]]
 
@@ -51,7 +51,8 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         service: any StatsServiceProtocol,
         items: [TopListItemType]? = nil,
         fetchLimit: Int = 20,
-        filter: Filter? = nil
+        filter: Filter? = nil,
+        initialData: TopListChartData? = nil
     ) {
         self.items = items ?? service.supportedItems
         self.selection = selection
@@ -59,6 +60,8 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         self.service = service
         self.fetchLimit = fetchLimit
         self.filter = filter
+        self.matchedData = initialData
+        self.isLoading = initialData == nil
 
         self.groupedItems = {
             let primary = service.supportedItems.filter {

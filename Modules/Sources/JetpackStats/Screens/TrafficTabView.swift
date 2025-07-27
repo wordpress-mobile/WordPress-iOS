@@ -49,7 +49,7 @@ struct TrafficTabView: View {
         case let viewModel as ChartCardViewModel:
             ChartCard(viewModel: viewModel)
                 .cardStyle()
-        case let viewModel as TopListCardViewModel:
+        case let viewModel as TopListViewModel:
             TopListCard(viewModel: viewModel)
                 .cardStyle()
         default:
@@ -68,17 +68,17 @@ struct TrafficTabView: View {
                 dateRange: dateRange,
                 service: context.service
             ),
-            TopListCardViewModel(
+            TopListViewModel(
                 selection: .init(item: .postsAndPages, metric: .views),
                 dateRange: dateRange,
                 service: context.service
             ),
-            TopListCardViewModel(
+            TopListViewModel(
                 selection: .init(item: .referrers, metric: .views),
                 dateRange: dateRange,
                 service: context.service
             ),
-            TopListCardViewModel(
+            TopListViewModel(
                 selection: .init(item: .locations, metric: .views),
                 dateRange: dateRange,
                 service: context.service

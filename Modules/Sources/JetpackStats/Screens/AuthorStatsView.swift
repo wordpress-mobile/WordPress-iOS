@@ -7,7 +7,7 @@ struct AuthorStatsView: View {
 
     @State private var dateRange: StatsDateRange
 
-    @StateObject private var viewModel: TopListCardViewModel
+    @StateObject private var viewModel: TopListViewModel
 
     @Environment(\.context) private var context
 
@@ -19,7 +19,7 @@ struct AuthorStatsView: View {
         let range = initialDateRange ?? calendar.makeDateRange(for: .last30Days)
         self._dateRange = State(initialValue: range)
 
-        self._viewModel = StateObject(wrappedValue: TopListCardViewModel(
+        self._viewModel = StateObject(wrappedValue: TopListViewModel(
             selection: .init(item: .postsAndPages, metric: .views),
             dateRange: range,
             service: context.service,

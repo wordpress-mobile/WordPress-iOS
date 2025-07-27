@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TopListCard: View {
-    @ObservedObject private var viewModel: TopListCardViewModel
+    @ObservedObject private var viewModel: TopListViewModel
 
     private let itemLimit: Int
     private let reserveSpace: Bool
@@ -10,7 +10,7 @@ struct TopListCard: View {
     @Environment(\.router) var router
 
     init(
-        viewModel: TopListCardViewModel,
+        viewModel: TopListViewModel,
         itemLimit: Int = 5,
         reserveSpace: Bool = true
     ) {
@@ -98,7 +98,8 @@ struct TopListCard: View {
         let screen = TopListScreenView(
             selection: viewModel.selection,
             dateRange: viewModel.dateRange,
-            service: context.service
+            service: context.service,
+            initialData: viewModel.matchedData
         )
         router.navigate(to: screen)
     }
@@ -244,11 +245,11 @@ struct TopListCard: View {
 private struct TopListCardPreview: View {
     let item: TopListItemType
 
-    @StateObject private var viewModel: TopListCardViewModel
+    @StateObject private var viewModel: TopListViewModel
 
     init(item: TopListItemType) {
         self.item = item
-        self._viewModel = StateObject(wrappedValue: TopListCardViewModel(
+        self._viewModel = StateObject(wrappedValue: TopListViewModel(
             selection: .init(
                 item: item,
                 metric: item == .fileDownloads ? .downloads : .views
