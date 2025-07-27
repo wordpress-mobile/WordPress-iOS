@@ -189,4 +189,9 @@ enum Strings {
         static let copySearchTerm = AppLocalizedString("jetpackStats.contextMenu.copySearchTerm", value: "Copy Search Term", comment: "Context menu action to copy search term")
         static let copyVideoURL = AppLocalizedString("jetpackStats.contextMenu.copyVideoURL", value: "Copy Video URL", comment: "Context menu action to copy video URL")
     }
+    
+    enum Metrics {
+        static let total = AppLocalizedString("jetpackStats.metrics.total", value: "Total", comment: "Label for total value")
+        static let items = AppLocalizedString("jetpackStats.metrics.items", value: "items", comment: "Label for item count")
+    }
 }

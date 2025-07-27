@@ -2,11 +2,12 @@ import SwiftUI
 
 struct TopListCard: View {
     @ObservedObject private var viewModel: TopListCardViewModel
+
     private let itemLimit: Int
     private let reserveSpace: Bool
 
     @Environment(\.context) var context
-
+    @Environment(\.router) var router
 
     init(
         viewModel: TopListCardViewModel,
@@ -182,7 +183,12 @@ struct TopListCard: View {
 
     private var showMoreButton: some View {
         Button {
-            // Not implementd
+            let screen = TopListScreenView(
+                selection: viewModel.selection,
+                dateRange: viewModel.dateRange,
+                service: context.service
+            )
+            router.navigate(to: screen)
         } label: {
             HStack(spacing: 4) {
                 Text(Strings.Buttons.showAll)
@@ -219,7 +225,9 @@ struct TopListCard: View {
 }
 
 #Preview {
-    TopListCardPreview(item: .authors)
+    NavigationView {
+        TopListCardPreview(item: .authors)
+    }
 }
 
 private struct TopListCardPreview: View {

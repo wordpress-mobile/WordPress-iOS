@@ -2,6 +2,8 @@ import SwiftUI
 import DesignSystem
 
 struct TopListItemView: View {
+    static let defaultCellHeight: CGFloat = 52
+    
     let item: any TopListItem
     let previousValue: Int?
     let metric: SiteMetric
@@ -10,7 +12,7 @@ struct TopListItemView: View {
 
     @State private var isTapped = false
 
-    @ScaledMetric(relativeTo: .callout) private var cellHeight = 52
+    @ScaledMetric(relativeTo: .callout) private var cellHeight = TopListItemView.defaultCellHeight
     @ScaledMetric(relativeTo: .subheadline) private var minTrailingWidth = 84
 
     @Environment(\.router) var router
@@ -172,7 +174,7 @@ private extension TopListItemView {
     }
 }
 
-@ViewBuilder
+@MainActor @ViewBuilder
 private func makePreviewItems() -> some View {
     // Posts & Pages
     VStack(spacing: 8) {
@@ -388,6 +390,7 @@ private func makePreviewItems() -> some View {
     }
 }
 
+@MainActor
 private func makePreviewItem(_ item: any TopListItem, previousValue: Int? = nil, metric: SiteMetric = .views) -> some View {
     TopListItemView(
         item: item,
