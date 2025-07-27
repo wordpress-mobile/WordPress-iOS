@@ -4,6 +4,9 @@ struct TopListItemsView: View {
     let data: TopListChartData
     let itemLimit: Int
     let dateRange: StatsDateRange
+    var reserveSpace: Bool = false
+    
+    @ScaledMetric(relativeTo: .callout) private var cellHeight = 52
 
     var body: some View {
         VStack(spacing: Constants.step1 / 2) {
@@ -12,6 +15,12 @@ struct TopListItemsView: View {
                     .transition(.move(edge: .leading)
                         .combined(with: .scale(scale: 0.75))
                         .combined(with: .opacity))
+            }
+            
+            if reserveSpace && data.items.count < itemLimit {
+                ForEach(0..<(itemLimit - data.items.count), id: \.self) { _ in
+                    PlaceholderRowView(height: cellHeight)
+                }
             }
         }
         .padding(.horizontal, Constants.step1)
@@ -26,5 +35,23 @@ struct TopListItemsView: View {
             maxValue: data.maxValue,
             dateRange: dateRange
         )
+        .frame(height: cellHeight)
+    }
+}
+
+struct PlaceholderRowView: View {
+    let height: CGFloat
+    
+    var body: some View {
+        Rectangle()
+            .fill(Color.clear)
+            .background(
+                TopListItemBarBackground(
+                    value: 100,
+                    maxValue: 100,
+                    barColor: .secondary.opacity(0.33)
+                )
+            )
+            .frame(height: height)
     }
 }

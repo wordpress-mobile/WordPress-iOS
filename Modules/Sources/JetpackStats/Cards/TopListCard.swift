@@ -2,13 +2,20 @@ import SwiftUI
 
 struct TopListCard: View {
     @ObservedObject private var viewModel: TopListCardViewModel
+    private let itemLimit: Int
+    private let reserveSpace: Bool
 
     @Environment(\.context) var context
 
-    private let itemLimit = 5
 
-    init(viewModel: TopListCardViewModel) {
+    init(
+        viewModel: TopListCardViewModel,
+        itemLimit: Int = 5,
+        reserveSpace: Bool = true
+    ) {
         self.viewModel = viewModel
+        self.itemLimit = itemLimit
+        self.reserveSpace = reserveSpace
     }
 
     var body: some View {
@@ -50,26 +57,7 @@ struct TopListCard: View {
         HStack {
             if viewModel.items.count > 1 {
                 Menu {
-                    ForEach(Array(viewModel.groupedItems.enumerated()), id: \.offset) { _, items in
-                        Section {
-                            ForEach(items) { item in
-                                Button {
-                                    var selection = viewModel.selection
-                                    selection.item = item
-
-                                    let supportedMetric = getSupportedMetrics(for: item)
-                                    if !supportedMetric.contains(selection.metric),
-                                       let metric = supportedMetric.first {
-                                        selection.metric = metric
-                                    }
-                                    viewModel.selection = selection
-                                } label: {
-                                    Label(item.localizedTitle, systemImage: item.systemImage)
-                                }
-                            }
-                        }
-                    }
-                    .tint(Color.primary)
+                    itemTypePicker
                 } label: {
                     InlineValuePickerTitle(title: viewModel.selection.item.localizedTitle)
                 }
@@ -85,14 +73,7 @@ struct TopListCard: View {
             let metrics = getSupportedMetrics(for: viewModel.selection.item)
             if metrics.count > 1 {
                 Menu {
-                    ForEach(metrics) { metric in
-                        Button {
-                            viewModel.selection.metric = metric
-                        } label: {
-                            Label(metric.localizedTitle, systemImage: metric.systemImage)
-                        }
-                    }
-                    .tint(Color.primary)
+                    makeMetricPicker(with: metrics)
                 } label: {
                     InlineValuePickerTitle(title: viewModel.selection.metric.localizedTitle)
                 }
@@ -103,6 +84,40 @@ struct TopListCard: View {
                     .fontWeight(.medium)
             }
         }
+    }
+
+    private var itemTypePicker: some View {
+        ForEach(Array(viewModel.groupedItems.enumerated()), id: \.offset) { _, items in
+            Section {
+                ForEach(items) { item in
+                    Button {
+                        var selection = viewModel.selection
+                        selection.item = item
+
+                        let supportedMetric = getSupportedMetrics(for: item)
+                        if !supportedMetric.contains(selection.metric),
+                           let metric = supportedMetric.first {
+                            selection.metric = metric
+                        }
+                        viewModel.selection = selection
+                    } label: {
+                        Label(item.localizedTitle, systemImage: item.systemImage)
+                    }
+                }
+            }
+        }
+        .tint(Color.primary)
+    }
+
+    private func makeMetricPicker(with metrics: [SiteMetric]) -> some View {
+        ForEach(metrics) { metric in
+            Button {
+                viewModel.selection.metric = metric
+            } label: {
+                Label(metric.localizedTitle, systemImage: metric.systemImage)
+            }
+        }
+        .tint(Color.primary)
     }
 
     private func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
@@ -153,12 +168,12 @@ struct TopListCard: View {
 
     private func topListItemsView(data: TopListChartData) -> some View {
         VStack(spacing: 0) {
-            ZStack(alignment: .top) {
-                // Ensure consistent sizing
-                TopListItemsView(data: mockData, itemLimit: itemLimit, dateRange: viewModel.dateRange)
-                    .opacity(0)
-                TopListItemsView(data: data, itemLimit: itemLimit, dateRange: viewModel.dateRange)
-            }
+            TopListItemsView(
+                data: data,
+                itemLimit: itemLimit,
+                dateRange: viewModel.dateRange,
+                reserveSpace: reserveSpace
+            )
             showMoreButton
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, Constants.step3)
@@ -204,7 +219,7 @@ struct TopListCard: View {
 }
 
 #Preview {
-    TopListCardPreview(item: .locations)
+    TopListCardPreview(item: .authors)
 }
 
 private struct TopListCardPreview: View {

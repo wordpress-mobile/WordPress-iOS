@@ -34,8 +34,12 @@ struct AuthorStatsView: View {
                 headerView
                     .cardStyle()
 
-                TopListCard(viewModel: viewModel)
-                    .cardStyle()
+                TopListCard(
+                    viewModel: viewModel,
+                    itemLimit: 6,
+                    reserveSpace: false
+                )
+                .cardStyle()
             }
             .padding(.vertical, Constants.step1)
         }
