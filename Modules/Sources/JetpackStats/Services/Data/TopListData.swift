@@ -1,5 +1,9 @@
 import Foundation
 
+struct TopListResponse: Sendable {
+    let items: [any TopListItem]
+}
+
 struct TopListData: Sendable {
     let items: [any TopListItem]
 }

@@ -17,7 +17,8 @@ struct MockStatsServiceTests {
             .postsAndPages,
             metric: .views,
             interval: dateInterval,
-            granularity: dateInterval.preferredGranularity
+            granularity: dateInterval.preferredGranularity,
+            limit: nil
         )
 
         // THEN

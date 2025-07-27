@@ -1,6 +1,6 @@
 import Foundation
 
-struct SiteMetricsData: Sendable {
+struct SiteMetricsResponse: Sendable {
     var total: SiteMetricsSet
 
     /// Data points with the requested granularity.

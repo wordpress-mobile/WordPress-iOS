@@ -56,7 +56,7 @@ actor StatsService: StatsServiceProtocol {
 
     // MARK: - StatsServiceProtocol
 
-    func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsData {
+    func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsResponse {
         // Check cache first
         let cacheKey = SiteStatsCacheKey(interval: interval, granularity: granularity)
 
@@ -76,7 +76,7 @@ actor StatsService: StatsServiceProtocol {
         return data
     }
 
-    private func fetchSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsData {
+    private func fetchSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsResponse {
         let interval = convertDateIntervalSiteToLocal(interval)
 
         if granularity == .hour {
@@ -96,7 +96,7 @@ actor StatsService: StatsServiceProtocol {
         }
     }
 
-    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListData {
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListResponse {
         do {
             return try await _getTopListData(item, metric: metric, interval: interval, granularity: granularity, limit: limit)
         } catch {
@@ -105,13 +105,13 @@ actor StatsService: StatsServiceProtocol {
             // period is _before_ the site creation).
             if let error = error as? StatsServiceRemoteV2.ResponseError,
                error == .emptySummary {
-                return TopListData(items: [])
+                return TopListResponse(items: [])
             }
             throw error
         }
     }
 
-    private func _getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListData {
+    private func _getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListResponse {
 
         func getData<T: WordPressKit.StatsTimeIntervalData>(
             _ type: T.Type,
@@ -128,7 +128,7 @@ actor StatsService: StatsServiceProtocol {
             case .views:
                 let data = try await getData(StatsTopPostsTimeIntervalData.self, parameters: ["skip_archives": "1"])
                 let dateFormatter = makeHourlyDateFormatter()
-                return TopListData(items: data.topPosts.map {
+                return TopListResponse(items: data.topPosts.map {
                     TopListData.Post($0, dateFormatter: dateFormatter)
                 })
             case .comments:
@@ -139,16 +139,16 @@ actor StatsService: StatsServiceProtocol {
 
         case .referrers:
             let data = try await getData(StatsTopReferrersTimeIntervalData.self)
-            return TopListData(items: data.referrers.map(TopListData.Referrer.init))
+            return TopListResponse(items: data.referrers.map(TopListData.Referrer.init))
 
         case .locations:
             let data = try await getData(StatsTopCountryTimeIntervalData.self)
-            return TopListData(items: data.countries.map(TopListData.Location.init))
+            return TopListResponse(items: data.countries.map(TopListData.Location.init))
 
         case .authors:
             let data = try await getData(StatsTopAuthorsTimeIntervalData.self)
             let dateFormatter = makeHourlyDateFormatter()
-            return TopListData(items: data.topAuthors.map {
+            return TopListResponse(items: data.topAuthors.map {
                 TopListData.Author($0, dateFormatter: dateFormatter)
             })
 
@@ -156,7 +156,7 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsTopClicksTimeIntervalData.self)
-                return TopListData(items: data.clicks.map(TopListData.ExternalLink.init))
+                return TopListResponse(items: data.clicks.map(TopListData.ExternalLink.init))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -165,7 +165,7 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .downloads:
                 let data = try await getData(StatsFileDownloadsTimeIntervalData.self)
-                return TopListData(items: data.fileDownloads.map(TopListData.FileDownload.init))
+                return TopListResponse(items: data.fileDownloads.map(TopListData.FileDownload.init))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -174,7 +174,7 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsSearchTermTimeIntervalData.self)
-                return TopListData(items: data.searchTerms.map(TopListData.SearchTerm.init))
+                return TopListResponse(items: data.searchTerms.map(TopListData.SearchTerm.init))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -183,7 +183,7 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsTopVideosTimeIntervalData.self)
-                return TopListData(items: data.videos.map(TopListData.Video.init))
+                return TopListResponse(items: data.videos.map(TopListData.Video.init))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -198,14 +198,14 @@ actor StatsService: StatsServiceProtocol {
                 }
                 // Sort sections by total views
                 let sortedSections = sections.sorted { ($0.metrics.views ?? 0) > ($1.metrics.views ?? 0) }
-                return TopListData(items: sortedSections)
+                return TopListResponse(items: sortedSections)
             default:
                 throw StatsServiceError.unavailable
             }
         }
     }
 
-    func getRealtimeTopListData(_ item: TopListItemType) async throws -> TopListData {
+    func getRealtimeTopListData(_ item: TopListItemType) async throws -> TopListResponse {
         try await mocks.getRealtimeTopListData(item)
     }
 
@@ -299,7 +299,7 @@ actor StatsService: StatsServiceProtocol {
         return dateFormatter
     }
 
-    private func mapSiteMetricsResponse(_ response: WordPressKit.StatsSiteMetricsResponse) -> SiteMetricsData {
+    private func mapSiteMetricsResponse(_ response: WordPressKit.StatsSiteMetricsResponse) -> SiteMetricsResponse {
         var calendar = Calendar.current
         calendar.timeZone = siteTimeZone
 
@@ -334,7 +334,7 @@ actor StatsService: StatsServiceProtocol {
                 total[metric] = DataPoint.getTotalValue(for: dataPoints, metric: metric)
             }
         }
-        return SiteMetricsData(total: total, metrics: metrics)
+        return SiteMetricsResponse(total: total, metrics: metrics)
     }
 }
 
@@ -355,7 +355,7 @@ private struct SiteStatsCacheKey: Hashable {
 }
 
 private struct CachedSiteStats {
-    let data: SiteMetricsData
+    let data: SiteMetricsResponse
     let timestamp: Date
     let ttl: TimeInterval?
 

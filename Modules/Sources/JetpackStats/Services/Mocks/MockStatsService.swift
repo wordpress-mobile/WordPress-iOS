@@ -39,7 +39,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         await generateTopListMockData()
     }
 
-    func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsData {
+    func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsResponse {
         await generateDataIfNeeded()
 
         var total = SiteMetricsSet()
@@ -66,10 +66,10 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
 
-        return SiteMetricsData(total: total, metrics: output)
+        return SiteMetricsResponse(total: total, metrics: output)
     }
 
-    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListData {
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListResponse {
         await generateDataIfNeeded()
 
         guard let typeData = dailyTopListData[item] else {
@@ -109,10 +109,10 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
 
-        return TopListData(items: Array(sortedItems.prefix(limit ?? Int.max)))
+        return TopListResponse(items: Array(sortedItems.prefix(limit ?? Int.max)))
     }
 
-    func getRealtimeTopListData(_ dataType: TopListItemType) async throws -> TopListData {
+    func getRealtimeTopListData(_ dataType: TopListItemType) async throws -> TopListResponse {
         // Load base items from JSON
         let baseItems = loadRealtimeBaseItems(for: dataType)
 
@@ -175,9 +175,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         let topItems = Array(sortedItems.prefix(10))
 
-        return TopListData(
-            items: topItems
-        )
+        return TopListResponse(items: topItems)
     }
 
     private func loadRealtimeBaseItems(for dataType: TopListItemType) -> [any TopListItem] {

@@ -169,7 +169,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         )
 
         // Fetch previous data only for items that support it
-        async let previousTask: TopListData? = {
+        async let previousTask: TopListResponse? = {
             guard selection.item != .archive else { return nil }
             return try await service.getTopListData(
                 fetchItem,

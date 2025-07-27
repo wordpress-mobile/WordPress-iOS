@@ -2,7 +2,7 @@ import SwiftUI
 
 @MainActor
 final class RealtimeTopListCardViewModel: ObservableObject {
-    @Published var topListData: TopListData?
+    @Published var topListData: TopListResponse?
     @Published var isLoading = true
     @Published var loadingError: Error?
 
