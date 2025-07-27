@@ -4,7 +4,6 @@ struct TopListItemsView: View {
     let data: TopListChartData
     let itemLimit: Int
     let dateRange: StatsDateRange
-    var isNavigationDisabled = false
 
     @State private var expandedSections: Set<TopListItemID> = []
 
@@ -61,8 +60,7 @@ struct TopListItemsView: View {
             previousValue: data.previousItem(for: item)?.metrics[data.metric],
             metric: data.metric,
             maxValue: data.maxValue,
-            dateRange: dateRange,
-            isNavigationDisabled: isNavigationDisabled
+            dateRange: dateRange
         )
     }
 

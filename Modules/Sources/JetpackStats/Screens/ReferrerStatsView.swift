@@ -146,8 +146,7 @@ struct ReferrerStatsView: View {
             TopListItemsView(
                 data: childrenChartData,
                 itemLimit: referrer.children.count,
-                dateRange: dateRange,
-                isNavigationDisabled: true
+                dateRange: dateRange
             )
         }
         .padding(.vertical, Constants.step2)

@@ -254,13 +254,6 @@ private func interpolateColor(_ value: Double, colorAxis: [UIColor]) -> UIColor 
 
 // MARK: - SVG WebView
 
-/// A shared web view context with resources that can be reused across
-/// multiple web view instances.
-private final class WebViewContext {
-    let processPool = WKProcessPool()
-    static let shared = WebViewContext()
-}
-
 private struct SVGWebView: UIViewRepresentable {
     let htmlContent: String
     @Binding var selectedCountryCode: String?
@@ -272,7 +265,6 @@ private struct SVGWebView: UIViewRepresentable {
     func makeUIView(context: Context) -> WKWebView {
         let configuration = WKWebViewConfiguration()
         configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
-        configuration.processPool = WebViewContext.shared.processPool
 
         // Add message handlers for JavaScript communication
         configuration.userContentController.add(context.coordinator.scriptMessageHandler, name: "countrySelected")
