@@ -9,19 +9,25 @@ struct AvatarView: View {
     var backgroundColor = Color(.systemBackground)
 
     var body: some View {
-        if let imageURL {
-            CachedAsyncImage(url: imageURL) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            } placeholder: {
+        Group {
+            if let imageURL {
+                CachedAsyncImage(url: imageURL) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    placeholderView
+                }
+                .frame(width: size, height: size)
+                .clipShape(Circle())
+            } else {
                 placeholderView
             }
-            .frame(width: size, height: size)
-            .clipShape(Circle())
-        } else {
-            placeholderView
         }
+        .overlay(
+              RoundedRectangle(cornerRadius: size / 2)
+                .stroke(Color(.opaqueSeparator).opacity(0.66), lineWidth: 0.5)
+          )
     }
 
     private var placeholderView: some View {
@@ -31,7 +37,7 @@ struct AvatarView: View {
             .overlay(
                 Text(initials)
                     .font(.system(size: size * 0.4, weight: .medium))
-                    .foregroundColor(Color.secondary)
+                    .foregroundColor(Color.primary.opacity(0.9))
             )
     }
 

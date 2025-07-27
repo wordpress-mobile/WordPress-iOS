@@ -112,19 +112,6 @@ enum Strings {
         static let generic = AppLocalizedString("jetpackStats.chart.generitcError", value: "Something went wrong", comment: "Genertic error message")
     }
 
-    enum SearchTerms {
-        static let fromSearch = AppLocalizedString("jetpackStats.searchTerms.fromSearch", value: "From search", comment: "Caption shown below search terms")
-    }
-
-    enum Videos {
-        static func postId(_ id: String) -> String {
-            String.localizedStringWithFormat(
-                AppLocalizedString("jetpackStats.videos.postId", value: "Post #%1$@", comment: "Post ID for video. %1$@ is the post ID"),
-                id
-            )
-        }
-    }
-
     enum ArchiveSections {
         static let author = AppLocalizedString("jetpackStats.archiveSections.author", value: "Authors", comment: "Archive section for authors")
         static let other = AppLocalizedString("jetpackStats.archiveSections.other", value: "Other", comment: "Archive section for other items")

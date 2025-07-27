@@ -11,7 +11,7 @@ struct TopListItemView: View {
     @Environment(\.router) private var router
     @Environment(\.context) private var context
 
-    @ScaledMetric(relativeTo: .callout) private var cellHeight = 54
+    @ScaledMetric(relativeTo: .callout) private var cellHeight = 52
     @ScaledMetric(relativeTo: .subheadline) private var minTrailingWidth = 80
 
     var body: some View {
@@ -34,12 +34,12 @@ struct TopListItemView: View {
             switch item {
             case let post as TopListData.Post:
                 TopListPostRowView(item: post)
+            case let author as TopListData.Author:
+                TopListAuthorRowView(item: author)
             case let referrer as TopListData.Referrer:
                 TopListReferrerRowView(item: referrer)
             case let location as TopListData.Location:
                 TopListLocationRowView(item: location)
-            case let author as TopListData.Author:
-                TopListAuthorRowView(item: author)
             case let link as TopListData.ExternalLink:
                 TopListExternalLinkRowView(item: link)
             case let download as TopListData.FileDownload:
@@ -175,9 +175,9 @@ private func makePreviewItems() -> some View {
             TopListData.Author(
                 name: "Sarah Johnson",
                 userId: "100",
-                role: "Administrator",
+                role: nil, // Real API doesn't have roles
                 metrics: SiteMetricsSet(views: 50000),
-                avatarURL: nil,
+                avatarURL: Bundle.module.url(forResource: "author4", withExtension: "jpg"),
                 posts: nil
             ),
             previousValue: 48000
@@ -187,7 +187,7 @@ private func makePreviewItems() -> some View {
             TopListData.Author(
                 name: "Michael Chen",
                 userId: "101",
-                role: "Editor",
+                role: nil,
                 metrics: SiteMetricsSet(views: 23100),
                 avatarURL: nil,
                 posts: nil
@@ -313,7 +313,7 @@ private func makePreviewItems() -> some View {
             TopListData.Video(
                 title: "WordPress 6.0 Features Overview",
                 postId: "9012",
-                videoUrl: URL(string: "https://example.com/videos/wp-6-features"),
+                videoURL: URL(string: "https://example.com/videos/wp-6-features"),
                 metrics: SiteMetricsSet(views: 50000)
             ),
             previousValue: 44000
@@ -323,7 +323,7 @@ private func makePreviewItems() -> some View {
             TopListData.Video(
                 title: "Building Your First Theme",
                 postId: "9013",
-                videoUrl: nil,
+                videoURL: nil,
                 metrics: SiteMetricsSet(views: 3210)
             ),
             previousValue: nil

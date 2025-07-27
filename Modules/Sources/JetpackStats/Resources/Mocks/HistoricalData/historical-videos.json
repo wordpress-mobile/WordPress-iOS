@@ -2,7 +2,7 @@
   {
     "title": "Getting Started with SwiftUI",
     "postId": "101",
-    "videoUrl": "https://example.com/videos/swiftui-intro.mp4",
+    "videoURL": "https://example.com/videos/swiftui-intro.mp4",
     "metrics": {
       "views": 4500,
       "likes": 250
@@ -11,7 +11,7 @@
   {
     "title": "iOS Development Best Practices",
     "postId": "102",
-    "videoUrl": "https://example.com/videos/best-practices.mp4",
+    "videoURL": "https://example.com/videos/best-practices.mp4",
     "metrics": {
       "views": 3800,
       "likes": 210
@@ -20,7 +20,7 @@
   {
     "title": "Advanced Swift Techniques",
     "postId": "103",
-    "videoUrl": "https://example.com/videos/advanced-swift.mp4",
+    "videoURL": "https://example.com/videos/advanced-swift.mp4",
     "metrics": {
       "views": 3200,
       "likes": 180
@@ -29,7 +29,7 @@
   {
     "title": "Building Custom Views",
     "postId": "104",
-    "videoUrl": "https://example.com/videos/custom-views.mp4",
+    "videoURL": "https://example.com/videos/custom-views.mp4",
     "metrics": {
       "views": 2600,
       "likes": 140
@@ -38,7 +38,7 @@
   {
     "title": "App Performance Optimization",
     "postId": "105",
-    "videoUrl": "https://example.com/videos/performance.mp4",
+    "videoURL": "https://example.com/videos/performance.mp4",
     "metrics": {
       "views": 2000,
       "likes": 110
@@ -47,7 +47,7 @@
   {
     "title": "Debugging Like a Pro",
     "postId": "106",
-    "videoUrl": "https://example.com/videos/debugging.mp4",
+    "videoURL": "https://example.com/videos/debugging.mp4",
     "metrics": {
       "views": 1500,
       "likes": 90

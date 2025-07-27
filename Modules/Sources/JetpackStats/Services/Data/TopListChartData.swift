@@ -305,7 +305,7 @@ extension TopListChartData {
             return TopListData.Video(
                 title: data.0,
                 postId: data.1,
-                videoUrl: URL(string: data.2),
+                videoURL: URL(string: data.2),
                 metrics: metrics
             )
         }

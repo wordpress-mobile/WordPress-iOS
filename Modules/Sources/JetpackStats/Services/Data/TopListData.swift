@@ -106,7 +106,7 @@ extension TopListData {
     struct Video: Codable, TopListItem {
         let title: String
         let postId: String
-        let videoUrl: URL?
+        let videoURL: URL?
         var metrics: SiteMetricsSet
 
         var id: TopListItemID {

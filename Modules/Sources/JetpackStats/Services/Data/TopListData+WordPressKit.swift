@@ -95,7 +95,7 @@ extension TopListData.Video {
         self.init(
             title: video.title,
             postId: String(video.postID),
-            videoUrl: video.videoURL,
+            videoURL: video.videoURL,
             metrics: SiteMetricsSet(views: video.playsCount)
         )
     }
