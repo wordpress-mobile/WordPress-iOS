@@ -5,7 +5,6 @@ struct TopListItemsView: View {
     let itemLimit: Int
     let dateRange: StatsDateRange
 
-
     var body: some View {
         VStack(spacing: Constants.step1 / 2) {
             ForEach(data.items.prefix(itemLimit), id: \.id) { item in
@@ -18,7 +17,6 @@ struct TopListItemsView: View {
         .animation(.spring, value: ObjectIdentifier(data))
     }
 
-
     private func makeView(for item: any TopListItem) -> some View {
         TopListItemView(
             item: item,
@@ -28,5 +26,4 @@ struct TopListItemsView: View {
             dateRange: dateRange
         )
     }
-
 }

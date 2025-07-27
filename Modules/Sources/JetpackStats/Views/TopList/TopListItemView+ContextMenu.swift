@@ -43,20 +43,20 @@ extension TopListItemView {
             Button {
                 router.openURL(url)
             } label: {
-                Label("Open in Browser", systemImage: "safari")
+                Label(Strings.ContextMenuActions.openInBrowser, systemImage: "safari")
             }
             
             Button {
                 UIPasteboard.general.url = url
             } label: {
-                Label("Copy URL", systemImage: "doc.on.doc")
+                Label(Strings.ContextMenuActions.copyURL, systemImage: "doc.on.doc")
             }
         }
         
         Button {
             UIPasteboard.general.string = post.title
         } label: {
-            Label("Copy Title", systemImage: "doc.on.doc")
+            Label(Strings.ContextMenuActions.copyTitle, systemImage: "doc.on.doc")
         }
     }
     
@@ -67,7 +67,7 @@ extension TopListItemView {
         Button {
             UIPasteboard.general.string = author.name
         } label: {
-            Label("Copy Name", systemImage: "doc.on.doc")
+            Label(Strings.ContextMenuActions.copyName, systemImage: "doc.on.doc")
         }
     }
     
@@ -81,13 +81,13 @@ extension TopListItemView {
                     router.openURL(url)
                 }
             } label: {
-                Label("Open in Browser", systemImage: "safari")
+                Label(Strings.ContextMenuActions.openInBrowser, systemImage: "safari")
             }
             
             Button {
                 UIPasteboard.general.string = domain
             } label: {
-                Label("Copy Domain", systemImage: "doc.on.doc")
+                Label(Strings.ContextMenuActions.copyDomain, systemImage: "doc.on.doc")
             }
         }
     }
@@ -99,7 +99,7 @@ extension TopListItemView {
         Button {
             UIPasteboard.general.string = location.country
         } label: {
-            Label("Copy Country Name", systemImage: "doc.on.doc")
+            Label(Strings.ContextMenuActions.copyCountryName, systemImage: "doc.on.doc")
         }
     }
     
@@ -111,7 +111,7 @@ extension TopListItemView {
             Button {
                 router.openURL(url)
             } label: {
-                Label("Open in Browser", systemImage: "safari")
+                Label(Strings.ContextMenuActions.openInBrowser, systemImage: "safari")
             }
         }
         
@@ -129,14 +129,14 @@ extension TopListItemView {
         Button {
             UIPasteboard.general.string = download.fileName
         } label: {
-            Label("Copy File Name", systemImage: "doc.on.doc")
+            Label(Strings.ContextMenuActions.copyFileName, systemImage: "doc.on.doc")
         }
         
         if let path = download.filePath {
             Button {
                 UIPasteboard.general.string = path
             } label: {
-                Label("Copy File Path", systemImage: "doc.on.doc")
+                Label(Strings.ContextMenuActions.copyFilePath, systemImage: "doc.on.doc")
             }
         }
     }
@@ -151,13 +151,13 @@ extension TopListItemView {
                 router.openURL(url)
             }
         } label: {
-            Label("Search in Google", systemImage: "magnifyingglass")
+            Label(Strings.ContextMenuActions.searchInGoogle, systemImage: "magnifyingglass")
         }
         
         Button {
             UIPasteboard.general.string = searchTerm.term
         } label: {
-            Label("Copy Search Term", systemImage: "doc.on.doc")
+            Label(Strings.ContextMenuActions.copySearchTerm, systemImage: "doc.on.doc")
         }
     }
     
@@ -169,20 +169,20 @@ extension TopListItemView {
             Button {
                 router.openURL(url)
             } label: {
-                Label("Watch Video", systemImage: "play.circle")
+                Label(Strings.ContextMenuActions.openInBrowser, systemImage: "safari")
             }
             
             Button {
                 UIPasteboard.general.url = url
             } label: {
-                Label("Copy Video URL", systemImage: "doc.on.doc")
+                Label(Strings.ContextMenuActions.copyVideoURL, systemImage: "doc.on.doc")
             }
         }
         
         Button {
             UIPasteboard.general.string = video.title
         } label: {
-            Label("Copy Title", systemImage: "doc.on.doc")
+            Label(Strings.ContextMenuActions.copyTitle, systemImage: "doc.on.doc")
         }
     }
     
@@ -194,7 +194,7 @@ extension TopListItemView {
             Button {
                 router.openURL(url)
             } label: {
-                Label("Open in Browser", systemImage: "safari")
+                Label(Strings.ContextMenuActions.openInBrowser, systemImage: "safari")
             }
         }
         

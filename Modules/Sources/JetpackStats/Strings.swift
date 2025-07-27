@@ -169,4 +169,18 @@ enum Strings {
         static let markAsSpamError = AppLocalizedString("jetpackStats.referrerDetails.markAsSpamError", value: "Failed to mark as spam", comment: "Error message when marking a referrer as spam fails")
         static let errorAlertTitle = AppLocalizedString("jetpackStats.referrerDetails.errorAlertTitle", value: "Error", comment: "Title for error alert when marking referrer as spam fails")
     }
+    
+    enum ContextMenuActions {
+        static let openInBrowser = AppLocalizedString("jetpackStats.contextMenu.openInBrowser", value: "Open in Browser", comment: "Context menu action to open link in browser")
+        static let copyURL = AppLocalizedString("jetpackStats.contextMenu.copyURL", value: "Copy URL", comment: "Context menu action to copy URL")
+        static let copyTitle = AppLocalizedString("jetpackStats.contextMenu.copyTitle", value: "Copy Title", comment: "Context menu action to copy title")
+        static let copyName = AppLocalizedString("jetpackStats.contextMenu.copyName", value: "Copy Name", comment: "Context menu action to copy name")
+        static let copyDomain = AppLocalizedString("jetpackStats.contextMenu.copyDomain", value: "Copy Domain", comment: "Context menu action to copy domain")
+        static let copyCountryName = AppLocalizedString("jetpackStats.contextMenu.copyCountryName", value: "Copy Country Name", comment: "Context menu action to copy country name")
+        static let copyFileName = AppLocalizedString("jetpackStats.contextMenu.copyFileName", value: "Copy File Name", comment: "Context menu action to copy file name")
+        static let copyFilePath = AppLocalizedString("jetpackStats.contextMenu.copyFilePath", value: "Copy File Path", comment: "Context menu action to copy file path")
+        static let searchInGoogle = AppLocalizedString("jetpackStats.contextMenu.searchInGoogle", value: "Search in Google", comment: "Context menu action to search term in Google")
+        static let copySearchTerm = AppLocalizedString("jetpackStats.contextMenu.copySearchTerm", value: "Copy Search Term", comment: "Context menu action to copy search term")
+        static let copyVideoURL = AppLocalizedString("jetpackStats.contextMenu.copyVideoURL", value: "Copy Video URL", comment: "Context menu action to copy video URL")
+    }
 }

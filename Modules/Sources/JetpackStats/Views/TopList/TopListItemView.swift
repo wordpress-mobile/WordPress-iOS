@@ -47,14 +47,8 @@ struct TopListItemView: View {
                     )
             }
             .buttonStyle(.plain)
-            .contextMenu {
-                contextMenuContent
-            }
         } else {
             content
-                .contextMenu {
-                    contextMenuContent
-                }
         }
     }
 
@@ -100,6 +94,9 @@ struct TopListItemView: View {
             .padding(.trailing, -3)
         }
         .frame(height: cellHeight)
+        .contextMenu {
+            contextMenuContent
+        }
         .background(
             TopListItemBarBackground(
                 value: item.metrics[metric] ?? 0,
