@@ -32,6 +32,7 @@ struct LineChartView: View {
         }
         .chartXAxis { xAxis }
         .chartYAxis { yAxis }
+        .chartYScale(domain: yAxisDomain)
         .chartLegend(.hidden)
         .environment(\.timeZone, context.timeZone)
         .modifier(ChartSelectionModifier(selection: $selectedDate))
@@ -179,6 +180,19 @@ struct LineChartView: View {
                 }
             }
         }
+    }
+
+    private var yAxisDomain: ClosedRange<Int> {
+        // If all values are zero, show a reasonable range
+        if data.maxValue == 0 {
+            return 0...100
+        }
+        guard data.maxValue > 0 else {
+            return data.maxValue...0 // Just in case; should never happend
+        }
+        // Add some padding above the max value
+        let padding = max(Int(Double(data.maxValue) * 0.66), 1)
+        return 0...(data.maxValue + padding)
     }
 
     // MARK: - Helper Views

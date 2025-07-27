@@ -79,7 +79,7 @@ struct ChartCard: View {
         }
         .animation(.spring, value: selectedMetric)
         .animation(.spring, value: selectedChartType)
-        .animation(.smooth, value: viewModel.isFirstLoad)
+        .animation(.easeInOut, value: viewModel.isFirstLoad)
     }
 
     private var footerView: some View {

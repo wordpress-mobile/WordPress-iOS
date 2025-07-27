@@ -8,6 +8,7 @@ final class ChartData: Sendable {
     let previousTotal: Int
     let previousData: [DataPoint]
     let mappedPreviousData: [DataPoint]
+    let maxValue: Int
 
     var isEmpty: Bool {
         currentData.isEmpty && previousData.isEmpty
@@ -21,6 +22,15 @@ final class ChartData: Sendable {
         self.previousTotal = previousTotal
         self.previousData = previousData
         self.mappedPreviousData = mappedPreviousData
+        
+        var maxValue = 0 // Faster without creating intermediate arrays
+        for point in currentData {
+            maxValue = max(maxValue, point.value)
+        }
+        for point in mappedPreviousData {
+            maxValue = max(maxValue, point.value)
+        }
+        self.maxValue = maxValue
     }
 }
 
