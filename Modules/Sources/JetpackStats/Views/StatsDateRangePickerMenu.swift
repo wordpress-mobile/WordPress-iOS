@@ -68,7 +68,6 @@ struct StatsDateRangePickerMenu: View {
                     }
                 }
                 .lineLimit(1)
-                .disabled(!selection.isComparisonPeriodEnabled(period))
             }
         } label: {
             Label(Strings.DatePicker.compareWith, systemImage: "arrow.left.arrow.right")
