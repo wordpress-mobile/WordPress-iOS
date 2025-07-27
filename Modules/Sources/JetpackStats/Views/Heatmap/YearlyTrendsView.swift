@@ -239,7 +239,7 @@ private struct MonthlyTrendsTooltipView: View {
             YearlyTrendsView(
                 viewModel: YearlyTrendsViewModel(
                     dataPoints: mockDataPoints(),
-                    calendar: Calendar.current,
+                    calendar: Calendar.demo,
                     metric: .views
                 )
             )
@@ -252,7 +252,7 @@ private struct MonthlyTrendsTooltipView: View {
 
 private func mockDataPoints() -> [DataPoint] {
     var dataPoints: [DataPoint] = []
-    let calendar = Calendar.current
+    let calendar = Calendar.demo
 
     for year in [2021, 2022, 2023, 2024] {
         for month in 1...12 {

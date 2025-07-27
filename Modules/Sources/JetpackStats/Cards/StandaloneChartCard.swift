@@ -278,8 +278,7 @@ private func generateChartData(
 // MARK: - Preview
 
 #Preview {
-    let calendar = Calendar.current
-    let dateRange = calendar.makeDateRange(for: .last7Days)
+    let dateRange = Calendar.demo.makeDateRange(for: .last7Days)
 
     return StandaloneChartCard(
         dataPoints: generateMockDataPoints(days: 365),
@@ -295,7 +294,7 @@ private func generateChartData(
 
 // Helper function to generate mock data
 private func generateMockDataPoints(days: Int, valueRange: ClosedRange<Int> = 50...200) -> [DataPoint] {
-    let calendar = Calendar.current
+    let calendar = Calendar.demo
     let today = Date()
 
     return (0..<days).compactMap { dayOffset in

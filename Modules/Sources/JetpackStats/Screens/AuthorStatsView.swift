@@ -15,8 +15,8 @@ struct AuthorStatsView: View {
 
     init(author: TopListItem.Author, initialDateRange: StatsDateRange? = nil, context: StatsContext) {
         self.author = author
-        let calendar = Calendar.current
-        let range = initialDateRange ?? calendar.makeDateRange(for: .last30Days)
+
+        let range = initialDateRange ?? context.calendar.makeDateRange(for: .last30Days)
         self._dateRange = State(initialValue: range)
 
         self._viewModel = StateObject(wrappedValue: TopListViewModel(

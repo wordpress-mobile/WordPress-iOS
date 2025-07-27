@@ -278,7 +278,7 @@ private struct QuickPeriodButtonView: View {
 #Preview {
     struct PreviewContainer: View {
         @State private var showingPicker = true
-        @State private var dateRange = StatsDateRange(interval: DateInterval(start: Date(), duration: 86400 * 7), component: .day)
+        @State private var dateRange = Calendar.demo.makeDateRange(for: .today)
 
         var body: some View {
             ZStack {

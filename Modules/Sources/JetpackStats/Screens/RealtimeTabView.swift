@@ -1,18 +1,7 @@
 import SwiftUI
 
 struct RealtimeTabView: View {
-    @State private var dateRangeComparison = StatsDateRange(
-        interval: {
-            let now = Date()
-            let thirtyMinutesAgo = now.addingTimeInterval(-30 * 60)
-            return DateInterval(start: thirtyMinutesAgo, end: now)
-        }(),
-        component: .day
-    )
-
     @Environment(\.context) var context
-
-    let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
 
     var body: some View {
         ScrollView {
@@ -27,9 +16,6 @@ struct RealtimeTabView: View {
                 realtimeTopLocations
             }
             .padding(.vertical, Constants.step2)
-        }
-        .onReceive(timer) { _ in
-            updateDateRange()
         }
     }
 
@@ -60,15 +46,6 @@ struct RealtimeTabView: View {
             service: context.service
         )
         .cardStyle()
-    }
-
-    private func updateDateRange() {
-        let now = Date()
-        let thirtyMinutesAgo = now.addingTimeInterval(-30 * 60)
-        dateRangeComparison = StatsDateRange(
-            interval: DateInterval(start: thirtyMinutesAgo, end: now),
-            component: .day
-        )
     }
 }
 
