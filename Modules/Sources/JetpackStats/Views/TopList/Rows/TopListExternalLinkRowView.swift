@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TopListExternalLinkRowView: View {
-    let item: TopListData.ExternalLink
+    let item: TopListItem.ExternalLink
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {

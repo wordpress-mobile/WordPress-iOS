@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TopListVideoRowView: View {
-    let item: TopListData.Video
+    let item: TopListItem.Video
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {

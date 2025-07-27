@@ -2,7 +2,7 @@ import SwiftUI
 import WordPressShared
 
 struct TopListPostRowView: View {
-    let item: TopListData.Post
+    let item: TopListItem.Post
 
     var body: some View {
         Text(item.title)

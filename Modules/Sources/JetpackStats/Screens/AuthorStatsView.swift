@@ -3,7 +3,7 @@ import WordPressKit
 import DesignSystem
 
 struct AuthorStatsView: View {
-    let author: TopListData.Author
+    let author: TopListItem.Author
 
     @State private var dateRange: StatsDateRange
 
@@ -13,7 +13,7 @@ struct AuthorStatsView: View {
 
     @ScaledMetric private var avatarSize = 60
 
-    init(author: TopListData.Author, initialDateRange: StatsDateRange? = nil, context: StatsContext) {
+    init(author: TopListItem.Author, initialDateRange: StatsDateRange? = nil, context: StatsContext) {
         self.author = author
         let calendar = Calendar.current
         let range = initialDateRange ?? calendar.makeDateRange(for: .last30Days)
@@ -141,14 +141,14 @@ struct AuthorStatsView: View {
 
         // Sum up views from all posts in the current period
         let currentViews = data.items.compactMap { item in
-            (item as? TopListData.Post)?.metrics.views
+            (item as? TopListItem.Post)?.metrics.views
         }.reduce(0, +)
 
         // Calculate previous period views if available
         var previousViews: Int?
         if !data.previousItems.isEmpty {
             previousViews = data.previousItems.values.compactMap { item in
-                (item as? TopListData.Post)?.metrics.views
+                (item as? TopListItem.Post)?.metrics.views
             }.reduce(0, +)
         }
 
@@ -159,7 +159,7 @@ struct AuthorStatsView: View {
 #Preview {
     NavigationStack {
         AuthorStatsView(
-            author: TopListData.Author(
+            author: TopListItem.Author(
                 name: "Alex Johnson",
                 userId: "1",
                 role: nil,
@@ -168,7 +168,7 @@ struct AuthorStatsView: View {
                 ),
                 avatarURL: nil,
                 posts: [
-                    TopListData.Post(
+                    TopListItem.Post(
                         title: "The Future of Technology: AI and Machine Learning",
                         postID: "1",
                         postURL: URL(string: "https://example.com/post1"),
@@ -177,7 +177,7 @@ struct AuthorStatsView: View {
                         author: "Alex Johnson",
                         metrics: SiteMetricsSet(views: 1250)
                     ),
-                    TopListData.Post(
+                    TopListItem.Post(
                         title: "Understanding Climate Change",
                         postID: "2",
                         postURL: URL(string: "https://example.com/post2"),

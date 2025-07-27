@@ -2,7 +2,7 @@ import SwiftUI
 import WordPressUI
 
 struct TopListReferrerRowView: View {
-    let item: TopListData.Referrer
+    let item: TopListItem.Referrer
 
     var body: some View {
         HStack(spacing: Constants.step0_5) {

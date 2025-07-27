@@ -65,49 +65,49 @@ struct CountriesMapView: View {
 #Preview {
     CountriesMapView(
         data: CountriesMapData(metric: .views, locations: [
-            TopListData.Location(
+            TopListItem.Location(
                 country: "United States",
                 flag: "🇺🇸",
                 countryCode: "US",
                 metrics: SiteMetricsSet(views: 10000)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "United Kingdom",
                 flag: "🇬🇧",
                 countryCode: "GB",
                 metrics: SiteMetricsSet(views: 4000)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "Canada",
                 flag: "🇨🇦",
                 countryCode: "CA",
                 metrics: SiteMetricsSet(views: 2800)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "Germany",
                 flag: "🇩🇪",
                 countryCode: "DE",
                 metrics: SiteMetricsSet(views: 2000)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "Australia",
                 flag: "🇦🇺",
                 countryCode: "AU",
                 metrics: SiteMetricsSet(views: 1600)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "France",
                 flag: "🇫🇷",
                 countryCode: "FR",
                 metrics: SiteMetricsSet(views: 1400)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "Japan",
                 flag: "🇯🇵",
                 countryCode: "JP",
                 metrics: SiteMetricsSet(views: 1100)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "Netherlands",
                 flag: "🇳🇱",
                 countryCode: "NL",

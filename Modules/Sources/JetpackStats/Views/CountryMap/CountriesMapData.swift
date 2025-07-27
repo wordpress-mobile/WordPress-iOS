@@ -5,26 +5,26 @@ struct CountriesMapData {
     let minViews: Int
     let maxViews: Int
     let mapData: [String: Int]
-    let locations: [TopListData.Location]
-    let previousLocations: [String: TopListData.Location]
+    let locations: [TopListItem.Location]
+    let previousLocations: [String: TopListItem.Location]
 
-    func location(for countryCode: String) -> TopListData.Location? {
+    func location(for countryCode: String) -> TopListItem.Location? {
         locations.first { $0.countryCode == countryCode }
     }
 
-    func previousLocation(for countryCode: String) -> TopListData.Location? {
+    func previousLocation(for countryCode: String) -> TopListItem.Location? {
         previousLocations[countryCode]
     }
 
     init(
         metric: SiteMetric,
-        locations: [TopListData.Location],
-        previousLocations: [TopListItemID: TopListData.Location] = [:]
+        locations: [TopListItem.Location],
+        previousLocations: [TopListItemID: TopListItem.Location] = [:]
     ) {
         self.metric = metric
         self.locations = locations
         self.previousLocations = {
-            var output: [String: TopListData.Location] = [:]
+            var output: [String: TopListItem.Location] = [:]
             for location in previousLocations.values {
                 if let countryCode = location.countryCode {
                     output[countryCode] = location

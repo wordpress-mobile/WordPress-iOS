@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TopListArchiveItemRowView: View {
-    let item: TopListData.ArchiveItem
+    let item: TopListItem.ArchiveItem
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {

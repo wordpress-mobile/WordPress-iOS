@@ -4,7 +4,7 @@ struct TopListResponse: Sendable {
     let items: [any TopListItemProtocol]
 }
 
-struct TopListData: Sendable {
+struct TopListItem: Sendable {
     let items: [any TopListItemProtocol]
 }
 
@@ -22,7 +22,7 @@ protocol TopListItemProtocol: Codable, Sendable, Identifiable {
     var id: TopListItemID { get }
 }
 
-extension TopListData {
+extension TopListItem {
     struct Post: Codable, TopListItemProtocol {
         let title: String
         let postID: String?

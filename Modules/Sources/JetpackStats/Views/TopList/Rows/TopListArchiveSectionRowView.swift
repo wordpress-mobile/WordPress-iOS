@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TopListArchiveSectionRowView: View {
-    let item: TopListData.ArchiveSection
+    let item: TopListItem.ArchiveSection
     
     var body: some View {
         HStack(spacing: Constants.step0_5) {

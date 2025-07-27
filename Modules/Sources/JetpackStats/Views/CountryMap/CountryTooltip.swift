@@ -2,8 +2,8 @@ import SwiftUI
 
 struct CountryTooltip: View {
     let countryCode: String
-    let location: TopListData.Location?
-    let previousLocation: TopListData.Location?
+    let location: TopListItem.Location?
+    let previousLocation: TopListItem.Location?
     let primaryColor: Color
 
     private var countryName: String {
@@ -124,13 +124,13 @@ private struct CountryTooltipRow: View {
         // With data
         CountryTooltip(
             countryCode: "US",
-            location: TopListData.Location(
+            location: TopListItem.Location(
                 country: "United States",
                 flag: "🇺🇸",
                 countryCode: "US",
                 metrics: SiteMetricsSet(views: 15000)
             ),
-            previousLocation: TopListData.Location(
+            previousLocation: TopListItem.Location(
                 country: "United States",
                 flag: "🇺🇸",
                 countryCode: "US",

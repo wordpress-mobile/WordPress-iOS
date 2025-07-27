@@ -9,25 +9,25 @@ extension TopListItemView {
         Group {
             // Item-specific actions
             switch item {
-            case let post as TopListData.Post:
+            case let post as TopListItem.Post:
                 postActions(post)
-            case let author as TopListData.Author:
+            case let author as TopListItem.Author:
                 authorActions(author)
-            case let referrer as TopListData.Referrer:
+            case let referrer as TopListItem.Referrer:
                 referrerActions(referrer)
-            case let location as TopListData.Location:
+            case let location as TopListItem.Location:
                 locationActions(location)
-            case let link as TopListData.ExternalLink:
+            case let link as TopListItem.ExternalLink:
                 externalLinkActions(link)
-            case let download as TopListData.FileDownload:
+            case let download as TopListItem.FileDownload:
                 fileDownloadActions(download)
-            case let searchTerm as TopListData.SearchTerm:
+            case let searchTerm as TopListItem.SearchTerm:
                 searchTermActions(searchTerm)
-            case let video as TopListData.Video:
+            case let video as TopListItem.Video:
                 videoActions(video)
-            case let archiveItem as TopListData.ArchiveItem:
+            case let archiveItem as TopListItem.ArchiveItem:
                 archiveItemActions(archiveItem)
-            case let archiveSection as TopListData.ArchiveSection:
+            case let archiveSection as TopListItem.ArchiveSection:
                 archiveSectionActions(archiveSection)
             default:
                 EmptyView()
@@ -38,7 +38,7 @@ extension TopListItemView {
     // MARK: - Post Actions
     
     @ViewBuilder
-    func postActions(_ post: TopListData.Post) -> some View {
+    func postActions(_ post: TopListItem.Post) -> some View {
         if let url = post.postURL {
             Button {
                 router.openURL(url)
@@ -63,7 +63,7 @@ extension TopListItemView {
     // MARK: - Author Actions
     
     @ViewBuilder
-    func authorActions(_ author: TopListData.Author) -> some View {
+    func authorActions(_ author: TopListItem.Author) -> some View {
         Button {
             UIPasteboard.general.string = author.name
         } label: {
@@ -74,7 +74,7 @@ extension TopListItemView {
     // MARK: - Referrer Actions
     
     @ViewBuilder
-    func referrerActions(_ referrer: TopListData.Referrer) -> some View {
+    func referrerActions(_ referrer: TopListItem.Referrer) -> some View {
         if let domain = referrer.domain {
             Button {
                 if let url = URL(string: "https://\(domain)") {
@@ -95,7 +95,7 @@ extension TopListItemView {
     // MARK: - Location Actions
     
     @ViewBuilder
-    func locationActions(_ location: TopListData.Location) -> some View {
+    func locationActions(_ location: TopListItem.Location) -> some View {
         Button {
             UIPasteboard.general.string = location.country
         } label: {
@@ -106,7 +106,7 @@ extension TopListItemView {
     // MARK: - External Link Actions
     
     @ViewBuilder
-    func externalLinkActions(_ link: TopListData.ExternalLink) -> some View {
+    func externalLinkActions(_ link: TopListItem.ExternalLink) -> some View {
         if let url = URL(string: link.url) {
             Button {
                 router.openURL(url)
@@ -125,7 +125,7 @@ extension TopListItemView {
     // MARK: - File Download Actions
     
     @ViewBuilder
-    func fileDownloadActions(_ download: TopListData.FileDownload) -> some View {
+    func fileDownloadActions(_ download: TopListItem.FileDownload) -> some View {
         Button {
             UIPasteboard.general.string = download.fileName
         } label: {
@@ -144,7 +144,7 @@ extension TopListItemView {
     // MARK: - Search Term Actions
     
     @ViewBuilder
-    func searchTermActions(_ searchTerm: TopListData.SearchTerm) -> some View {
+    func searchTermActions(_ searchTerm: TopListItem.SearchTerm) -> some View {
         Button {
             let query = searchTerm.term.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
             if let url = URL(string: "https://www.google.com/search?q=\(query)") {
@@ -164,7 +164,7 @@ extension TopListItemView {
     // MARK: - Video Actions
     
     @ViewBuilder
-    func videoActions(_ video: TopListData.Video) -> some View {
+    func videoActions(_ video: TopListItem.Video) -> some View {
         if let url = video.videoURL {
             Button {
                 router.openURL(url)
@@ -189,7 +189,7 @@ extension TopListItemView {
     // MARK: - Archive Item Actions
     
     @ViewBuilder
-    func archiveItemActions(_ archiveItem: TopListData.ArchiveItem) -> some View {
+    func archiveItemActions(_ archiveItem: TopListItem.ArchiveItem) -> some View {
         if let url = URL(string: archiveItem.href) {
             Button {
                 router.openURL(url)
@@ -208,7 +208,7 @@ extension TopListItemView {
     // MARK: - Archive Section Actions
     
     @ViewBuilder
-    func archiveSectionActions(_ section: TopListData.ArchiveSection) -> some View {
+    func archiveSectionActions(_ section: TopListItem.ArchiveSection) -> some View {
         // No specific actions for archive sections
         EmptyView()
     }

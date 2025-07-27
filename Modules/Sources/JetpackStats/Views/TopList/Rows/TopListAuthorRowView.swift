@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TopListAuthorRowView: View {
-    let item: TopListData.Author
+    let item: TopListItem.Author
 
     var body: some View {
         HStack(spacing: Constants.step0_5) {

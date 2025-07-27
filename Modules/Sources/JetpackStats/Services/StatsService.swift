@@ -129,7 +129,7 @@ actor StatsService: StatsServiceProtocol {
                 let data = try await getData(StatsTopPostsTimeIntervalData.self, parameters: ["skip_archives": "1"])
                 let dateFormatter = makeHourlyDateFormatter()
                 return TopListResponse(items: data.topPosts.map {
-                    TopListData.Post($0, dateFormatter: dateFormatter)
+                    TopListItem.Post($0, dateFormatter: dateFormatter)
                 })
             case .comments:
                 fatalError()
@@ -139,24 +139,24 @@ actor StatsService: StatsServiceProtocol {
 
         case .referrers:
             let data = try await getData(StatsTopReferrersTimeIntervalData.self)
-            return TopListResponse(items: data.referrers.map(TopListData.Referrer.init))
+            return TopListResponse(items: data.referrers.map(TopListItem.Referrer.init))
 
         case .locations:
             let data = try await getData(StatsTopCountryTimeIntervalData.self)
-            return TopListResponse(items: data.countries.map(TopListData.Location.init))
+            return TopListResponse(items: data.countries.map(TopListItem.Location.init))
 
         case .authors:
             let data = try await getData(StatsTopAuthorsTimeIntervalData.self)
             let dateFormatter = makeHourlyDateFormatter()
             return TopListResponse(items: data.topAuthors.map {
-                TopListData.Author($0, dateFormatter: dateFormatter)
+                TopListItem.Author($0, dateFormatter: dateFormatter)
             })
 
         case .externalLinks:
             switch metric {
             case .views:
                 let data = try await getData(StatsTopClicksTimeIntervalData.self)
-                return TopListResponse(items: data.clicks.map(TopListData.ExternalLink.init))
+                return TopListResponse(items: data.clicks.map(TopListItem.ExternalLink.init))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -165,7 +165,7 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .downloads:
                 let data = try await getData(StatsFileDownloadsTimeIntervalData.self)
-                return TopListResponse(items: data.fileDownloads.map(TopListData.FileDownload.init))
+                return TopListResponse(items: data.fileDownloads.map(TopListItem.FileDownload.init))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -174,7 +174,7 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsSearchTermTimeIntervalData.self)
-                return TopListResponse(items: data.searchTerms.map(TopListData.SearchTerm.init))
+                return TopListResponse(items: data.searchTerms.map(TopListItem.SearchTerm.init))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -183,7 +183,7 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsTopVideosTimeIntervalData.self)
-                return TopListResponse(items: data.videos.map(TopListData.Video.init))
+                return TopListResponse(items: data.videos.map(TopListItem.Video.init))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -192,9 +192,9 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsArchiveTimeIntervalData.self)
-                let sections = data.summary.compactMap { (sectionName, items) -> TopListData.ArchiveSection? in
+                let sections = data.summary.compactMap { (sectionName, items) -> TopListItem.ArchiveSection? in
                     guard !items.isEmpty else { return nil }
-                    return TopListData.ArchiveSection(sectionName: sectionName, items: items)
+                    return TopListItem.ArchiveSection(sectionName: sectionName, items: items)
                 }
                 // Sort sections by total views
                 let sortedSections = sections.sorted { ($0.metrics.views ?? 0) > ($1.metrics.views ?? 0) }

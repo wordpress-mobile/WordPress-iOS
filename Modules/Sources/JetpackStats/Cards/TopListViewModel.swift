@@ -208,7 +208,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         }
         switch filter {
         case .author(let userId):
-            let authors = items.lazy.compactMap { $0 as? TopListData.Author }
+            let authors = items.lazy.compactMap { $0 as? TopListItem.Author }
             if let author = authors.first(where: { $0.userId == userId }),
                let posts = author.posts {
                 return posts
@@ -218,8 +218,8 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     }
 
     private func updateCountriesMapDataCache(from data: TopListChartData) {
-        let locations = data.items.compactMap { $0 as? TopListData.Location }
-        let previousLocations = data.previousItems.compactMapValues { $0 as? TopListData.Location }
+        let locations = data.items.compactMap { $0 as? TopListItem.Location }
+        let previousLocations = data.previousItems.compactMapValues { $0 as? TopListItem.Location }
 
         cachedCountriesMapData = CountriesMapData(
             metric: selection.metric,

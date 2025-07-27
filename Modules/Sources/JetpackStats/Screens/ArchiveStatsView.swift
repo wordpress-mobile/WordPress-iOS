@@ -2,7 +2,7 @@ import SwiftUI
 import DesignSystem
 
 struct ArchiveStatsView: View {
-    let archiveSection: TopListData.ArchiveSection
+    let archiveSection: TopListItem.ArchiveSection
     let dateRange: StatsDateRange
     
     @Environment(\.context) private var context
@@ -96,21 +96,21 @@ struct ArchiveStatsView: View {
     .tint(Constants.Colors.jetpack)
 }
 
-private extension TopListData.ArchiveSection {
-    static let mock = TopListData.ArchiveSection(
+private extension TopListItem.ArchiveSection {
+    static let mock = TopListItem.ArchiveSection(
         sectionName: "author",
         items: [
-            TopListData.ArchiveItem(
+            TopListItem.ArchiveItem(
                 href: "/author/john-doe/",
                 value: "John Doe",
                 metrics: SiteMetricsSet(views: 5000)
             ),
-            TopListData.ArchiveItem(
+            TopListItem.ArchiveItem(
                 href: "/author/jane-smith/",
                 value: "Jane Smith",
                 metrics: SiteMetricsSet(views: 4200)
             ),
-            TopListData.ArchiveItem(
+            TopListItem.ArchiveItem(
                 href: "/author/mike-jones/",
                 value: "Mike Jones",
                 metrics: SiteMetricsSet(views: 3100)

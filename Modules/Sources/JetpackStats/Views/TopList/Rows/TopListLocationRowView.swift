@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TopListLocationRowView: View {
-    let item: TopListData.Location
+    let item: TopListItem.Location
 
     var body: some View {
         HStack(spacing: Constants.step0_5) {

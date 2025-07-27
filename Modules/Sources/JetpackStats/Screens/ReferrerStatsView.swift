@@ -3,7 +3,7 @@ import WordPressUI
 import DesignSystem
 
 struct ReferrerStatsView: View {
-    let referrer: TopListData.Referrer
+    let referrer: TopListItem.Referrer
     let dateRange: StatsDateRange
 
     private let imageSize: CGFloat = 28
@@ -186,27 +186,27 @@ struct ReferrerStatsView: View {
     .tint(Constants.Colors.jetpack)
 }
 
-private extension TopListData.Referrer {
-    static let mock = TopListData.Referrer(
+private extension TopListItem.Referrer {
+    static let mock = TopListItem.Referrer(
         name: "Google Search",
         domain: "google.com",
         iconURL: URL(string: "https://www.google.com/favicon.ico"),
         children: [
-            TopListData.Referrer(
+            TopListItem.Referrer(
                 name: "wordpress development tutorial",
                 domain: "google.com",
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
                 children: [],
                 metrics: SiteMetricsSet(views: 850)
             ),
-            TopListData.Referrer(
+            TopListItem.Referrer(
                 name: "swift programming blog",
                 domain: "google.com",
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
                 children: [],
                 metrics: SiteMetricsSet(views: 750)
             ),
-            TopListData.Referrer(
+            TopListItem.Referrer(
                 name: "ios app development best practices",
                 domain: "google.com",
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),

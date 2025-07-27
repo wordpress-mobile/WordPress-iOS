@@ -215,13 +215,13 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             // Decode based on data type
             switch dataType {
             case .referrers:
-                let referrers = try decoder.decode([TopListData.Referrer].self, from: data)
+                let referrers = try decoder.decode([TopListItem.Referrer].self, from: data)
                 return referrers
             case .locations:
-                let locations = try decoder.decode([TopListData.Location].self, from: data)
+                let locations = try decoder.decode([TopListItem.Location].self, from: data)
                 return locations
             case .authors:
-                let authors = try decoder.decode([TopListData.Author].self, from: data)
+                let authors = try decoder.decode([TopListItem.Author].self, from: data)
                 return authors.map {
                     var copy = $0
                     copy.avatarURL = Bundle.module.path(forResource: "author\($0.userId)", ofType: "jpg").map {
@@ -230,22 +230,22 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                     return copy
                 }
             case .externalLinks:
-                let links = try decoder.decode([TopListData.ExternalLink].self, from: data)
+                let links = try decoder.decode([TopListItem.ExternalLink].self, from: data)
                 return links
             case .fileDownloads:
-                let downloads = try decoder.decode([TopListData.FileDownload].self, from: data)
+                let downloads = try decoder.decode([TopListItem.FileDownload].self, from: data)
                 return downloads
             case .searchTerms:
-                let terms = try decoder.decode([TopListData.SearchTerm].self, from: data)
+                let terms = try decoder.decode([TopListItem.SearchTerm].self, from: data)
                 return terms
             case .videos:
-                let videos = try decoder.decode([TopListData.Video].self, from: data)
+                let videos = try decoder.decode([TopListItem.Video].self, from: data)
                 return videos
             case .postsAndPages:
-                let posts = try decoder.decode([TopListData.Post].self, from: data)
+                let posts = try decoder.decode([TopListItem.Post].self, from: data)
                 return posts
             case .archive:
-                let sections = try decoder.decode([TopListData.ArchiveSection].self, from: data)
+                let sections = try decoder.decode([TopListItem.ArchiveSection].self, from: data)
                 return sections
             }
         } catch {
@@ -351,13 +351,13 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             // Decode based on data type
             switch dataType {
             case .referrers:
-                let referrers = try decoder.decode([TopListData.Referrer].self, from: data)
+                let referrers = try decoder.decode([TopListItem.Referrer].self, from: data)
                 return referrers
             case .locations:
-                let locations = try decoder.decode([TopListData.Location].self, from: data)
+                let locations = try decoder.decode([TopListItem.Location].self, from: data)
                 return locations
             case .authors:
-                let authors = try decoder.decode([TopListData.Author].self, from: data)
+                let authors = try decoder.decode([TopListItem.Author].self, from: data)
                 return authors.map {
                     var copy = $0
                     copy.avatarURL = Bundle.module.path(forResource: "author\($0.userId)", ofType: "jpg").map {
@@ -366,22 +366,22 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                     return copy
                 }
             case .externalLinks:
-                let links = try decoder.decode([TopListData.ExternalLink].self, from: data)
+                let links = try decoder.decode([TopListItem.ExternalLink].self, from: data)
                 return links
             case .fileDownloads:
-                let downloads = try decoder.decode([TopListData.FileDownload].self, from: data)
+                let downloads = try decoder.decode([TopListItem.FileDownload].self, from: data)
                 return downloads
             case .searchTerms:
-                let terms = try decoder.decode([TopListData.SearchTerm].self, from: data)
+                let terms = try decoder.decode([TopListItem.SearchTerm].self, from: data)
                 return terms
             case .videos:
-                let videos = try decoder.decode([TopListData.Video].self, from: data)
+                let videos = try decoder.decode([TopListItem.Video].self, from: data)
                 return videos
             case .postsAndPages:
-                let posts = try decoder.decode([TopListData.Post].self, from: data)
+                let posts = try decoder.decode([TopListItem.Post].self, from: data)
                 return posts
             case .archive:
-                let sections = try decoder.decode([TopListData.ArchiveSection].self, from: data)
+                let sections = try decoder.decode([TopListItem.ArchiveSection].self, from: data)
                 return sections
             }
         } catch {
@@ -550,7 +550,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                     var mutatedItem = mutateItemMetrics(item, growthFactor: growthFactor, seasonalFactor: seasonalFactor, weekendFactor: weekendFactor, randomFactor: randomFactor)
 
                     // If it's an Author with posts, mutate the posts too
-                    if let author = mutatedItem as? TopListData.Author, let posts = author.posts {
+                    if let author = mutatedItem as? TopListItem.Author, let posts = author.posts {
                         var mutatedAuthor = author
                         mutatedAuthor.posts = posts.map { post in
                             var mutatedPost = post

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TopListSearchTermRowView: View {
-    let item: TopListData.SearchTerm
+    let item: TopListItem.SearchTerm
 
     var body: some View {
         Text(item.term)

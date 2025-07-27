@@ -3,7 +3,7 @@ import WordPressUI
 import DesignSystem
 
 struct ExternalLinkStatsView: View {
-    let externalLink: TopListData.ExternalLink
+    let externalLink: TopListItem.ExternalLink
     let dateRange: StatsDateRange
 
     private let imageSize: CGFloat = 28
@@ -142,24 +142,24 @@ struct ExternalLinkStatsView: View {
     .tint(Constants.Colors.jetpack)
 }
 
-private extension TopListData.ExternalLink {
-    static let mock = TopListData.ExternalLink(
+private extension TopListItem.ExternalLink {
+    static let mock = TopListItem.ExternalLink(
         url: "https://developer.apple.com",
         title: "Apple Developer",
         children: [
-            TopListData.ExternalLink(
+            TopListItem.ExternalLink(
                 url: "https://developer.apple.com/documentation/swiftui",
                 title: "SwiftUI Documentation",
                 children: [],
                 metrics: SiteMetricsSet(views: 850)
             ),
-            TopListData.ExternalLink(
+            TopListItem.ExternalLink(
                 url: "https://developer.apple.com/documentation/uikit",
                 title: "UIKit Documentation",
                 children: [],
                 metrics: SiteMetricsSet(views: 750)
             ),
-            TopListData.ExternalLink(
+            TopListItem.ExternalLink(
                 url: "https://developer.apple.com/xcode",
                 title: "Xcode",
                 children: [],

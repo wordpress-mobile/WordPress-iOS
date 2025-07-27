@@ -107,7 +107,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockPosts(metric: SiteMetric) -> [TopListData.Post] {
+    private static func mockPosts(metric: SiteMetric) -> [TopListItem.Post] {
         let posts = [
             ("Getting Started with SwiftUI", "John Doe", 3500),
             ("Understanding Async/Await in Swift", "Jane Smith", 2800),
@@ -122,7 +122,7 @@ extension TopListChartData {
         return posts.enumerated().map { index, data in
             let baseValue = data.2
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
-            return TopListData.Post(
+            return TopListItem.Post(
                 title: data.0,
                 postID: "\(index + 1)",
                 postURL: nil,
@@ -134,7 +134,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockReferrers(metric: SiteMetric) -> [TopListData.Referrer] {
+    private static func mockReferrers(metric: SiteMetric) -> [TopListItem.Referrer] {
         let referrers = [
             ("Google", "google.com", 4200),
             ("Twitter", "twitter.com", 3100),
@@ -149,26 +149,26 @@ extension TopListChartData {
         return referrers.enumerated().map { index, data in
             let baseValue = data.2
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
-            return TopListData.Referrer(
+            return TopListItem.Referrer(
                 name: data.0,
                 domain: data.1,
                 iconURL: nil,
                 children: [
-                    TopListData.Referrer(
+                    TopListItem.Referrer(
                         name: "wordpress development tutorial",
                         domain: "google.com",
                         iconURL: URL(string: "https://www.google.com/favicon.ico"),
                         children: [],
                         metrics: SiteMetricsSet(views: 850)
                     ),
-                    TopListData.Referrer(
+                    TopListItem.Referrer(
                         name: "swift programming blog",
                         domain: "google.com",
                         iconURL: URL(string: "https://www.google.com/favicon.ico"),
                         children: [],
                         metrics: SiteMetricsSet(views: 750)
                     ),
-                    TopListData.Referrer(
+                    TopListItem.Referrer(
                         name: "ios app development best practices",
                         domain: "google.com",
                         iconURL: URL(string: "https://www.google.com/favicon.ico"),
@@ -181,7 +181,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockLocations(metric: SiteMetric) -> [TopListData.Location] {
+    private static func mockLocations(metric: SiteMetric) -> [TopListItem.Location] {
         let locations = [
             ("United States", "US", "🇺🇸", 5600),
             ("United Kingdom", "GB", "🇬🇧", 3200),
@@ -196,7 +196,7 @@ extension TopListChartData {
         return locations.enumerated().map { index, data in
             let baseValue = data.3
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
-            return TopListData.Location(
+            return TopListItem.Location(
                 country: data.0,
                 flag: data.2,
                 countryCode: data.1,
@@ -205,7 +205,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockAuthors(metric: SiteMetric) -> [TopListData.Author] {
+    private static func mockAuthors(metric: SiteMetric) -> [TopListItem.Author] {
         let authors = [
             ("Alex Thompson", "Editor", 1, 2400),
             ("Maria Garcia", "Contributor", 2, 2100),
@@ -220,7 +220,7 @@ extension TopListChartData {
         return authors.enumerated().map { index, data in
             let baseValue = data.3
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
-            return TopListData.Author(
+            return TopListItem.Author(
                 name: data.0,
                 userId: String(data.2),
                 role: data.1,
@@ -230,7 +230,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockExternalLinks(metric: SiteMetric) -> [TopListData.ExternalLink] {
+    private static func mockExternalLinks(metric: SiteMetric) -> [TopListItem.ExternalLink] {
         let links = [
             ("Apple Developer", "https://developer.apple.com", 1800),
             ("Swift.org", "https://swift.org", 1500),
@@ -245,7 +245,7 @@ extension TopListChartData {
         return links.enumerated().map { index, data in
             let baseValue = data.2
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
-            return TopListData.ExternalLink(
+            return TopListItem.ExternalLink(
                 url: data.1,
                 title: data.0,
                 children: [],
@@ -254,7 +254,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockFileDownloads(metric: SiteMetric) -> [TopListData.FileDownload] {
+    private static func mockFileDownloads(metric: SiteMetric) -> [TopListItem.FileDownload] {
         let files = [
             ("annual-report-2024.pdf", "/downloads/reports/annual-report-2024.pdf", 2500),
             ("swift-cheatsheet.pdf", "/downloads/docs/swift-cheatsheet.pdf", 2100),
@@ -269,7 +269,7 @@ extension TopListChartData {
         return files.enumerated().map { index, data in
             let baseValue = data.2
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
-            return TopListData.FileDownload(
+            return TopListItem.FileDownload(
                 fileName: data.0,
                 filePath: data.1,
                 metrics: metrics
@@ -277,7 +277,7 @@ extension TopListChartData {
         }
     }
 
-    private static func mockSearchTerms(metric: SiteMetric) -> [TopListData.SearchTerm] {
+    private static func mockSearchTerms(metric: SiteMetric) -> [TopListItem.SearchTerm] {
         let terms = [
             ("swiftui tutorial", 3200),
             ("ios development guide", 2800),
@@ -292,14 +292,14 @@ extension TopListChartData {
         return terms.enumerated().map { index, data in
             let baseValue = data.1
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
-            return TopListData.SearchTerm(
+            return TopListItem.SearchTerm(
                 term: data.0,
                 metrics: metrics
             )
         }
     }
 
-    private static func mockVideos(metric: SiteMetric) -> [TopListData.Video] {
+    private static func mockVideos(metric: SiteMetric) -> [TopListItem.Video] {
         let videos = [
             ("Getting Started with SwiftUI", "101", "https://example.com/videos/swiftui-intro.mp4", 4500),
             ("iOS Development Best Practices", "102", "https://example.com/videos/best-practices.mp4", 3800),
@@ -314,7 +314,7 @@ extension TopListChartData {
         return videos.enumerated().map { index, data in
             let baseValue = data.3
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
-            return TopListData.Video(
+            return TopListItem.Video(
                 title: data.0,
                 postId: data.1,
                 videoURL: URL(string: data.2),
@@ -357,7 +357,7 @@ extension TopListChartData {
             let sectionName = sectionData.0
             let items = sectionData.1.map { itemData in
                 let metrics = createMetrics(baseValue: itemData.1, metric: metric)
-                return TopListData.ArchiveItem(
+                return TopListItem.ArchiveItem(
                     href: "https://example.com\(itemData.0)",
                     value: itemData.0,
                     metrics: metrics
@@ -367,7 +367,7 @@ extension TopListChartData {
             // Calculate total views for the section
             let totalViews = items.reduce(0) { $0 + ($1.metrics[metric] ?? 0) }
 
-            return TopListData.ArchiveSection(
+            return TopListItem.ArchiveSection(
                 sectionName: sectionName,
                 items: items,
                 metrics: SiteMetricsSet(views: totalViews)
@@ -419,7 +419,7 @@ extension TopListChartData {
         item.metrics[metric] = Int(Double(currentValue) * trendFactor)
 
         // Special handling for archive sections - update child items too
-        if var archiveSection = item as? TopListData.ArchiveSection {
+        if var archiveSection = item as? TopListItem.ArchiveSection {
             archiveSection.items = archiveSection.items.map { archiveItem in
                 var mutableItem = archiveItem
                 let itemCurrentValue = mutableItem.metrics[metric] ?? 0
