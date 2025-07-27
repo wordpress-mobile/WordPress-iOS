@@ -7,15 +7,14 @@ struct TopListItemView: View {
     let metric: SiteMetric
     let maxValue: Int
     let dateRange: StatsDateRange
-    var isNavigationDisabled = false
 
-    @Environment(\.router) var router
-    @Environment(\.context) var context
+    @State private var isTapped = false
 
     @ScaledMetric(relativeTo: .callout) private var cellHeight = 52
     @ScaledMetric(relativeTo: .subheadline) private var minTrailingWidth = 84
 
-    @State private var isTapped = false
+    @Environment(\.router) var router
+    @Environment(\.context) var context
 
     var body: some View {
         if hasDetails {
@@ -112,9 +111,6 @@ struct TopListItemView: View {
 
 private extension TopListItemView {
     var hasDetails: Bool {
-        guard !isNavigationDisabled else {
-            return false
-        }
         switch item {
         case is TopListData.Post:
             return true
