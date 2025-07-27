@@ -14,7 +14,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             loadData()
         }
     }
-    @Published private(set) var data: TopListChartData?
+    @Published private(set) var data: TopListData?
     @Published private(set) var isLoading = true
     @Published private(set) var loadingError: Error?
     @Published private(set) var isStale = false
@@ -52,7 +52,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         items: [TopListItemType]? = nil,
         fetchLimit: Int = 20,
         filter: Filter? = nil,
-        initialData: TopListChartData? = nil
+        initialData: TopListData? = nil
     ) {
         self.items = items ?? service.supportedItems
         self.selection = selection
@@ -147,7 +147,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         isLoading = false
     }
 
-    private func getTopListData(for selection: Selection, dateRange: StatsDateRange) async throws -> TopListChartData {
+    private func getTopListData(for selection: Selection, dateRange: StatsDateRange) async throws -> TopListData {
         let granularity = dateRange.dateInterval.preferredGranularity
 
         // When filter is set for author, we need to fetch authors data
@@ -194,7 +194,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         // Calculate max value from filtered items based on selected metric
         let metric = selection.metric
 
-        return TopListChartData(
+        return TopListData(
             item: selection.item,
             metric: metric,
             items: currentItems,
@@ -217,7 +217,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         }
     }
 
-    private func updateCountriesMapDataCache(from data: TopListChartData) {
+    private func updateCountriesMapDataCache(from data: TopListData) {
         let locations = data.items.compactMap { $0 as? TopListItem.Location }
         let previousLocations = data.previousItems.compactMapValues { $0 as? TopListItem.Location }
 

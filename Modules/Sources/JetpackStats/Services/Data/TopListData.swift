@@ -1,6 +1,6 @@
 import Foundation
 
-final class TopListChartData {
+final class TopListData {
     let item: TopListItemType
     let metric: SiteMetric
     let items: [any TopListItemProtocol]
@@ -47,7 +47,7 @@ final class TopListChartData {
 
 // MARK: - Mock Data
 
-extension TopListChartData {
+extension TopListData {
     private struct CacheKey: Hashable {
         let itemType: TopListItemType
         let metric: SiteMetric
@@ -55,14 +55,14 @@ extension TopListChartData {
     }
 
     @MainActor
-    private static var mockDataCache: [CacheKey: TopListChartData] = [:]
+    private static var mockDataCache: [CacheKey: TopListData] = [:]
 
     @MainActor
     static func mock(
         for itemType: TopListItemType,
         metric: SiteMetric = .views,
         itemCount: Int = 6
-    ) -> TopListChartData {
+    ) -> TopListData {
         let cacheKey = CacheKey(itemType: itemType, metric: metric, itemCount: itemCount)
 
         // Return cached data if available
@@ -80,7 +80,7 @@ extension TopListChartData {
             previousItemsDict[item.id] = previousItem
         }
 
-        let chartData = TopListChartData(
+        let chartData = TopListData(
             item: itemType,
             metric: metric,
             items: Array(currentItems),

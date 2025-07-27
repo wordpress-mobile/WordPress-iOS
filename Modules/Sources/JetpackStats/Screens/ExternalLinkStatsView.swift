@@ -121,8 +121,8 @@ struct ExternalLinkStatsView: View {
         .cardStyle()
     }
 
-    private var childrenChartData: TopListChartData {
-        return TopListChartData(
+    private var childrenChartData: TopListData {
+        return TopListData(
             item: .externalLinks,
             metric: .views,
             items: externalLink.children

@@ -184,7 +184,7 @@ struct TopListCard: View {
         }
     }
 
-    private func topListItemsView(data: TopListChartData) -> some View {
+    private func topListItemsView(data: TopListData) -> some View {
         VStack(spacing: 0) {
             TopListItemsView(
                 data: data,
@@ -227,8 +227,8 @@ struct TopListCard: View {
             }
     }
 
-    private var mockData: TopListChartData {
-        TopListChartData.mock(
+    private var mockData: TopListData {
+        TopListData.mock(
             for: viewModel.selection.item,
             metric: viewModel.selection.metric,
             itemCount: itemLimit

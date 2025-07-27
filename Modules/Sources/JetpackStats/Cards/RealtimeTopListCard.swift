@@ -91,7 +91,7 @@ struct RealtimeTopListCard: View {
     }
 
     private func topListItemsView(data: TopListResponse) -> some View {
-        let chartData = TopListChartData(
+        let chartData = TopListData(
             item: selectedItem,
             metric: .views,
             items: data.items,
@@ -110,7 +110,7 @@ struct RealtimeTopListCard: View {
     }
 
     private var mockData: TopListResponse {
-        let chartData = TopListChartData.mock(
+        let chartData = TopListData.mock(
             for: selectedItem,
             metric: .views,
             itemCount: 6

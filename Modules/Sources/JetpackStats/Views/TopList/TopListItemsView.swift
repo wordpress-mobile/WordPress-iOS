@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TopListItemsView: View {
-    let data: TopListChartData
+    let data: TopListData
     let itemLimit: Int
     let dateRange: StatsDateRange
     var reserveSpace: Bool = false

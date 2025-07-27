@@ -75,8 +75,8 @@ struct ArchiveStatsView: View {
         }
     }
     
-    private var itemsChartData: TopListChartData {
-        return TopListChartData(
+    private var itemsChartData: TopListData {
+        return TopListData(
             item: .archive,
             metric: .views,
             items: archiveSection.items

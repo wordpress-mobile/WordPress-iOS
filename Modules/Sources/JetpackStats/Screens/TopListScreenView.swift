@@ -11,7 +11,7 @@ struct TopListScreenView: View {
         selection: TopListViewModel.Selection,
         dateRange: StatsDateRange,
         service: any StatsServiceProtocol,
-        initialData: TopListChartData? = nil
+        initialData: TopListData? = nil
     ) {
         self._viewModel = StateObject(wrappedValue: TopListViewModel(
             selection: selection,
@@ -64,12 +64,12 @@ struct TopListScreenView: View {
     }
     
     @ViewBuilder
-    private func metricsOverviewView(data: TopListChartData) -> some View {
+    private func metricsOverviewView(data: TopListData) -> some View {
         let totalValue = data.metrics.total
         let previousTotalValue = data.metrics.previousTotal
         let formattedValue = StatsValueFormatter(metric: viewModel.selection.metric).format(value: totalValue)
         let trend = TrendViewModel(currentValue: totalValue, previousValue: previousTotalValue, metric: viewModel.selection.metric)
-        
+
         VStack(spacing: Constants.step3) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(formattedValue)
@@ -78,7 +78,7 @@ struct TopListScreenView: View {
                     .foregroundColor(.primary)
                     .lineLimit(1)
                     .animation(.spring, value: formattedValue)
-                
+
                 BadgeTrendIndicator(trend: trend)
             }
 
