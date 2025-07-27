@@ -12,11 +12,13 @@ struct TopListCard: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: Constants.step2) {
             HStack {
                 StatsCardTitleView(title: viewModel.selection.item == .locations ? "Countries" : viewModel.title)
                 Spacer(minLength: 44)
             }
+            .padding(.horizontal, Constants.step3)
+
             VStack(spacing: Constants.step1) {
                 if viewModel.selection.item == .locations {
                     CountriesMapView(
@@ -24,16 +26,18 @@ struct TopListCard: View {
                         primaryColor: Constants.Colors.uiColorBlue
                     )
                     .padding(.vertical, Constants.step1)
+                    .padding(.horizontal, Constants.step2)
                 }
-                headerView
-                contentView
+                listHeaderView
+                    .padding(.horizontal, Constants.step3)
+
+                listContentView
             }
         }
         .onAppear {
             viewModel.onAppear()
         }
         .padding(.vertical, Constants.step2)
-        .padding(.horizontal, Constants.step3)
         .overlay(alignment: .topTrailing) {
             moreMenu
         }
@@ -42,7 +46,7 @@ struct TopListCard: View {
         .animation(.spring, value: viewModel.matchedData.map(ObjectIdentifier.init)) // placing is important
     }
 
-    private var headerView: some View {
+    private var listHeaderView: some View {
         HStack {
             if viewModel.items.count > 1 {
                 Menu {
@@ -129,7 +133,7 @@ struct TopListCard: View {
     }
 
     @ViewBuilder
-    private var contentView: some View {
+    private var listContentView: some View {
         Group {
             if viewModel.isFirstLoad {
                 topListItemsView(data: mockData)

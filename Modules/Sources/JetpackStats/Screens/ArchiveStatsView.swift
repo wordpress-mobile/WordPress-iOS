@@ -52,7 +52,8 @@ struct ArchiveStatsView: View {
             Text(itemsTitle)
                 .font(.headline)
                 .foregroundColor(.primary)
-            
+                .padding(.horizontal, Constants.step3)
+
             TopListItemsView(
                 data: itemsChartData,
                 itemLimit: archiveSection.items.count,
@@ -60,7 +61,6 @@ struct ArchiveStatsView: View {
             )
         }
         .padding(.vertical, Constants.step2)
-        .padding(.horizontal, Constants.step3)
         .cardStyle()
     }
     

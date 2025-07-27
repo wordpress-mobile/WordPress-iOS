@@ -87,6 +87,7 @@ struct TopListItemView: View {
             .frame(minWidth: previousValue == nil ? 20 : minTrailingWidth, alignment: .trailing)
             .padding(.trailing, -3)
         }
+        .padding(.horizontal, Constants.step1)
         .frame(height: cellHeight)
         .contextMenu {
             contextMenuContent
@@ -97,7 +98,6 @@ struct TopListItemView: View {
                 maxValue: maxValue,
                 barColor: metric.primaryColor
             )
-            .padding(.horizontal, -Constants.step1)
         )
     }
 }

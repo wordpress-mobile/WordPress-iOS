@@ -136,6 +136,7 @@ struct ReferrerStatsView: View {
             Text(Strings.ReferrerDetails.referralSources)
                 .font(.headline)
                 .foregroundColor(.primary)
+                .padding(.horizontal, Constants.step3)
 
             TopListItemsView(
                 data: childrenChartData,
@@ -144,7 +145,6 @@ struct ReferrerStatsView: View {
             )
         }
         .padding(.vertical, Constants.step2)
-        .padding(.horizontal, Constants.step3)
         .cardStyle()
     }
 

@@ -14,6 +14,7 @@ struct TopListItemsView: View {
                         .combined(with: .opacity))
             }
         }
+        .padding(.horizontal, Constants.step1)
         .animation(.spring, value: ObjectIdentifier(data))
     }
 
