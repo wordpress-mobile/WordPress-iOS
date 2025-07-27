@@ -267,7 +267,7 @@ private struct SVGWebView: UIViewRepresentable {
         configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
 
         // Add message handlers for JavaScript communication
-        configuration.userContentController.add(context.coordinator, name: "countrySelected")
+        configuration.userContentController.add(context.coordinator.scriptMessageHandler, name: "countrySelected")
 
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.isOpaque = false
@@ -292,7 +292,7 @@ private struct SVGWebView: UIViewRepresentable {
         context.coordinator.setHTML(htmlContent)
     }
 
-    class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
+    class Coordinator: NSObject, WKNavigationDelegate {
         @Binding var selectedCountryCode: String?
         weak var webView: WKWebView?
 
@@ -300,10 +300,15 @@ private struct SVGWebView: UIViewRepresentable {
         private var isReloadNeeded = false
         private var lastReloadDate: Date?
 
+        let scriptMessageHandler: ScriptMessageHandler
+
         init(selectedCountryCode: Binding<String?>) {
             self._selectedCountryCode = selectedCountryCode
+            self.scriptMessageHandler = ScriptMessageHandler()
 
             super.init()
+
+            scriptMessageHandler.coordinator = self
 
             NotificationCenter.default.addObserver(
                 self,
@@ -322,18 +327,6 @@ private struct SVGWebView: UIViewRepresentable {
             // Fade in when content is loaded
             UIView.animate(withDuration: 0.3, delay: 0.05, options: .curveEaseIn) {
                 webView.alpha = 1
-            }
-        }
-
-        func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-            if message.name == "countrySelected" {
-                DispatchQueue.main.async {
-                    if let countryCode = message.body as? String {
-                        self.selectedCountryCode = countryCode
-                    } else {
-                        self.selectedCountryCode = nil
-                    }
-                }
             }
         }
 
@@ -358,6 +351,26 @@ private struct SVGWebView: UIViewRepresentable {
             isReloadNeeded = false
             lastReloadDate = Date()
             webView.loadHTMLString(htmlContent, baseURL: nil)
+        }
+
+        func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+            if message.name == "countrySelected" {
+                DispatchQueue.main.async {
+                    if let countryCode = message.body as? String {
+                        self.selectedCountryCode = countryCode
+                    } else {
+                        self.selectedCountryCode = nil
+                    }
+                }
+            }
+        }
+
+        class ScriptMessageHandler: NSObject, WKScriptMessageHandler {
+            weak var coordinator: Coordinator?
+
+            func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+                coordinator?.userContentController(userContentController, didReceive: message)
+            }
         }
     }
 }
