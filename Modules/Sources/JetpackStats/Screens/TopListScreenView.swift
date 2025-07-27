@@ -18,7 +18,7 @@ struct TopListScreenView: View {
             selection: selection,
             dateRange: dateRange,
             service: service,
-            fetchLimit: 0, // Get all items
+            fetchLimit: nil, // Get all items
             initialData: initialData
         ))
     }
@@ -160,7 +160,7 @@ struct TopListScreenView: View {
     }
 
     private func itemsListView(data: TopListData) -> some View {
-        LazyVStack(spacing: Constants.step1 / 2) {
+        LazyVStack(spacing: Constants.step0_5) {
             ForEach(data.items, id: \.id) { item in
                 TopListItemView(
                     item: item,
