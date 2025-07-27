@@ -13,7 +13,7 @@ struct BadgeTrendIndicator: View {
                 .font(.caption2.weight(.semibold))
                 .scaleEffect(x: 0.9, y: 0.9)
             Text(trend.formattedPercentage)
-                .font(.footnote.weight(.semibold))
+                .font(.system(.footnote, design: .rounded, weight: .semibold)).tracking(-0.25)
         }
         .foregroundColor(trend.sentiment.foregroundColor)
         .padding(.horizontal, 8)
