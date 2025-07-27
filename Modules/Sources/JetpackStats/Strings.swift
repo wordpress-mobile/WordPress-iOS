@@ -142,7 +142,7 @@ enum Strings {
         static let more = AppLocalizedString("jetpackStats.postDetails.more", value: "More", comment: "Legend label for higher activity")
 
         // Monthly Activity
-        static let monthlyActivity = AppLocalizedString("jetpackStats.postDetails.monthsAndYears", value: "Months and Years", comment: "Title for monthly activity heatmap")
+        static let monthlyActivity = AppLocalizedString("jetpackStats.postDetails.monthsAndYears", value: "Recent Months", comment: "Title for monthly activity heatmap")
 
         // Likes
         static let noLikesYet = AppLocalizedString("jetpackStats.postDetails.noLikesYet", value: "No likes yet", comment: "Label")

@@ -140,7 +140,9 @@ final class YearlyTrendsViewModel: ObservableObject {
         }
 
         self.monthlyData = monthlyData
-        self.sortedYears = monthlyData.keys.sorted(by: >)
+        // Sort years in descending order and take only the last 5 years
+        let allSortedYears = monthlyData.keys.sorted(by: >)
+        self.sortedYears = Array(allSortedYears.prefix(4))
         self.maxMonthlyViews = max(maxMonthlyViews, 1) // Avoid division by zero
     }
 
