@@ -21,7 +21,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     @Published private(set) var cachedCountriesMapData: CountriesMapData?
 
     private let service: any StatsServiceProtocol
-    private let fetchLimit: Int
+    private let fetchLimit: Int?
     private let filter: Filter?
 
     private var loadingTask: Task<Void, Never>?
@@ -50,7 +50,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         dateRange: StatsDateRange,
         service: any StatsServiceProtocol,
         items: [TopListItemType]? = nil,
-        fetchLimit: Int = 20,
+        fetchLimit: Int? = 100,
         filter: Filter? = nil,
         initialData: TopListData? = nil
     ) {

@@ -1,11 +1,15 @@
 import SwiftUI
 import DesignSystem
+import UniformTypeIdentifiers
 
 struct TopListScreenView: View {
     @StateObject private var viewModel: TopListViewModel
 
     @Environment(\.router) var router
     @Environment(\.context) var context
+    
+    @State private var isExportingCSV = false
+    @State private var csvDocument: CSVDocument?
     
     init(
         selection: TopListViewModel.Selection,
@@ -17,7 +21,7 @@ struct TopListScreenView: View {
             selection: selection,
             dateRange: dateRange,
             service: service,
-            fetchLimit: 100, // Get more items for the full screen
+            fetchLimit: 0, // Get all items
             initialData: initialData
         ))
     }
@@ -43,11 +47,34 @@ struct TopListScreenView: View {
         .background(Color(.systemBackground))
         .navigationTitle(viewModel.selection.item.localizedTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button(action: { exportCSV() }) {
+                        Label(Strings.Buttons.downloadCSV, systemImage: "square.and.arrow.down")
+                    }
+                    .disabled(viewModel.data?.items.isEmpty ?? true)
+                } label: {
+                    Image(systemName: "ellipsis")
+                }
+            }
+        }
         .onAppear {
             viewModel.onAppear()
         }
         .safeAreaInset(edge: .bottom) {
             LegacyFloatingDateControl(dateRange: $viewModel.dateRange)
+        }
+        .fileExporter(
+            isPresented: $isExportingCSV,
+            document: csvDocument,
+            contentType: .commaSeparatedText,
+            defaultFilename: generateCSVFilename()
+        ) { result in
+            if case .failure(let error) = result {
+                print("Failed to export CSV: \(error)")
+            }
+            csvDocument = nil
         }
     }
     
@@ -162,6 +189,58 @@ struct TopListScreenView: View {
             metric: viewModel.selection.metric,
             itemCount: 10
         )
+    }
+    
+    // MARK: - CSV Export
+    
+    private func exportCSV() {
+        guard let data = viewModel.data else { return }
+        
+        let exporter = CSVExporter()
+        let csvContent = exporter.generateCSV(from: data.items, metric: viewModel.selection.metric)
+        
+        csvDocument = CSVDocument(text: csvContent)
+        isExportingCSV = true
+    }
+    
+    private func generateCSVFilename() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: Date())
+        
+        let itemName = viewModel.selection.item.localizedTitle
+            .replacingOccurrences(of: " ", with: "_")
+            .replacingOccurrences(of: "&", with: "and")
+        
+        let metricName = viewModel.selection.metric.localizedTitle
+            .replacingOccurrences(of: " ", with: "_")
+        
+        return "\(itemName)_\(metricName)_\(dateString).csv"
+    }
+}
+
+// MARK: - CSV Document
+
+struct CSVDocument: FileDocument {
+    static var readableContentTypes: [UTType] { [.commaSeparatedText] }
+    
+    var text: String
+    
+    init(text: String) {
+        self.text = text
+    }
+    
+    init(configuration: ReadConfiguration) throws {
+        guard let data = configuration.file.regularFileContents,
+              let string = String(data: data, encoding: .utf8) else {
+            throw CocoaError(.fileReadCorruptFile)
+        }
+        text = string
+    }
+    
+    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+        let data = text.data(using: .utf8) ?? Data()
+        return FileWrapper(regularFileWithContents: data)
     }
 }
 

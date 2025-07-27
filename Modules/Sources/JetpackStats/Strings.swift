@@ -72,6 +72,8 @@ enum Strings {
         static let share = AppLocalizedString("jetpackStats.button.share", value: "Share", comment: "Share chart menu item")
         static let showAll = AppLocalizedString("jetpackStats.button.showAll", value: "Show All", comment: "Button title")
         static let ok = AppLocalizedString("jetpackStats.button.ok", value: "OK", comment: "OK button")
+        static let downloadCSV = AppLocalizedString("jetpackStats.button.downloadCSV", value: "Download CSV", comment: "Button to download data as CSV file")
+        static let more = AppLocalizedString("jetpackStats.button.more", value: "More", comment: "More actions button")
     }
 
     enum DatePicker {
@@ -188,5 +190,24 @@ enum Strings {
         static let searchInGoogle = AppLocalizedString("jetpackStats.contextMenu.searchInGoogle", value: "Search in Google", comment: "Context menu action to search term in Google")
         static let copySearchTerm = AppLocalizedString("jetpackStats.contextMenu.copySearchTerm", value: "Copy Search Term", comment: "Context menu action to copy search term")
         static let copyVideoURL = AppLocalizedString("jetpackStats.contextMenu.copyVideoURL", value: "Copy Video URL", comment: "Context menu action to copy video URL")
+    }
+    
+    enum CSVExport {
+        static let title = AppLocalizedString("jetpackStats.csv.title", value: "Title", comment: "CSV header for title column")
+        static let url = AppLocalizedString("jetpackStats.csv.url", value: "URL", comment: "CSV header for URL column")
+        static let date = AppLocalizedString("jetpackStats.csv.date", value: "Date", comment: "CSV header for date column")
+        static let type = AppLocalizedString("jetpackStats.csv.type", value: "Type", comment: "CSV header for type column")
+        static let author = AppLocalizedString("jetpackStats.csv.author", value: "Author", comment: "CSV header for author column")
+        static let name = AppLocalizedString("jetpackStats.csv.name", value: "Name", comment: "CSV header for name column")
+        static let domain = AppLocalizedString("jetpackStats.csv.domain", value: "Domain", comment: "CSV header for domain column")
+        static let country = AppLocalizedString("jetpackStats.csv.country", value: "Country", comment: "CSV header for country column")
+        static let countryCode = AppLocalizedString("jetpackStats.csv.countryCode", value: "Country Code", comment: "CSV header for country code column")
+        static let role = AppLocalizedString("jetpackStats.csv.role", value: "Role", comment: "CSV header for role column")
+        static let fileName = AppLocalizedString("jetpackStats.csv.fileName", value: "File Name", comment: "CSV header for file name column")
+        static let filePath = AppLocalizedString("jetpackStats.csv.filePath", value: "File Path", comment: "CSV header for file path column")
+        static let searchTerm = AppLocalizedString("jetpackStats.csv.searchTerm", value: "Search Term", comment: "CSV header for search term column")
+        static let videoURL = AppLocalizedString("jetpackStats.csv.videoURL", value: "Video URL", comment: "CSV header for video URL column")
+        static let section = AppLocalizedString("jetpackStats.csv.section", value: "Section", comment: "CSV header for section column")
+        static let value = AppLocalizedString("jetpackStats.csv.value", value: "Value", comment: "CSV header for generic value column")
     }
 }
