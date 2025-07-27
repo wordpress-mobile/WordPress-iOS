@@ -39,11 +39,6 @@ struct TopListItemView: View {
                     .contentShape(Rectangle()) // Make the entire view tappable
                     .scaleEffect(isTapped ? 0.97 : 1.0)
                     .opacity(isTapped ? 0.85 : 1.0)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.black.opacity(isTapped ? 0.05 : 0))
-                            .padding(.horizontal, -Constants.step1)
-                    )
             }
             .buttonStyle(.plain)
         } else {
