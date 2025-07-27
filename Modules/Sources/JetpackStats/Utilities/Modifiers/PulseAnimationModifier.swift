@@ -19,7 +19,7 @@ private struct PulsingMask: View {
     @State private var opacity: Double = 0.5
     
     var body: some View {
-        Color(UIColor(light: .systemBackground, dark: .secondarySystemBackground))
+        Constants.Colors.secondaryBackground
             .opacity(opacity)
             .onAppear {
                 withAnimation(

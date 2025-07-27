@@ -410,5 +410,5 @@ private struct SVGWebView: UIViewRepresentable {
     )
     .frame(height: 230)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color(UIColor(light: .systemBackground, dark: .secondarySystemBackground)))
+    .background(Constants.Colors.secondaryBackground)
 }
