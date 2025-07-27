@@ -164,6 +164,11 @@ struct ChartCard: View {
                 }
             }
         }
+        Section {
+            Link(destination: URL(string: "https://wordpress.com/support/stats/understand-your-sites-traffic/")!) {
+                Label(Strings.Buttons.learnMore, systemImage: "info.circle")
+            }
+        }
     }
 
     // MARK: - Chart View

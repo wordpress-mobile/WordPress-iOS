@@ -74,6 +74,7 @@ enum Strings {
         static let ok = AppLocalizedString("jetpackStats.button.ok", value: "OK", comment: "OK button")
         static let downloadCSV = AppLocalizedString("jetpackStats.button.downloadCSV", value: "Download CSV", comment: "Button to download data as CSV file")
         static let more = AppLocalizedString("jetpackStats.button.more", value: "More", comment: "More actions button")
+        static let learnMore = AppLocalizedString("jetpackStats.button.learnMore", value: "Learn More", comment: "Learn more about stats button")
     }
 
     enum DatePicker {

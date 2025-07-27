@@ -166,6 +166,13 @@ struct TopListCard: View {
                 Label(Strings.Buttons.share, systemImage: "square.and.arrow.up")
             }
         }
+        if let documentationURL = viewModel.selection.item.documentationURL {
+            Section {
+                Link(destination: documentationURL) {
+                    Label(Strings.Buttons.learnMore, systemImage: "info.circle")
+                }
+            }
+        }
     }
 
     @ViewBuilder
