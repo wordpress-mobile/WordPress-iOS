@@ -173,6 +173,7 @@ struct TopListCard: View {
         Group {
             if viewModel.isFirstLoad {
                 topListItemsView(data: mockData)
+                    .allowsHitTesting(false)
                     .redacted(reason: .placeholder)
                     .pulsating()
             } else if let data = viewModel.data {
@@ -222,6 +223,7 @@ struct TopListCard: View {
 
     private func makeEmptyStateView(message: String) -> some View {
         topListItemsView(data: mockData)
+            .allowsHitTesting(false)
             .redacted(reason: .placeholder)
             .grayscale(1)
             .opacity(0.25)
