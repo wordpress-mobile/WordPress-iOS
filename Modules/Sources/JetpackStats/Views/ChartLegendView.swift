@@ -8,7 +8,7 @@ struct ChartLegendView: View {
     @Environment(\.context) var context
 
     var body: some View {
-        HStack(spacing: 12) {
+        VStack(alignment: .leading, spacing: 2) {
             // Current period
             HStack(spacing: 6) {
                 Circle()

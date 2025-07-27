@@ -21,7 +21,7 @@ struct ChartCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: Constants.step1 / 2) {
+            VStack(spacing: Constants.step1) {
                 headerView(for: selectedMetric)
                     .unredacted()
                 contentView
@@ -65,12 +65,22 @@ struct ChartCard: View {
     private var contentView: some View {
         VStack(spacing: Constants.step1 / 2) {
             // Showing currently selected (not loaded period) by design
-            ChartLegendView(
-                metric: selectedMetric,
-                currentPeriod: dateRange.dateInterval,
-                previousPeriod: dateRange.effectiveComparisonInterval
-            )
-            .frame(maxWidth: .infinity, alignment: .leading)
+            HStack(alignment: .firstTextBaseline, spacing: 0) {
+                ChartLegendView(
+                    metric: selectedMetric,
+                    currentPeriod: dateRange.dateInterval,
+                    previousPeriod: dateRange.effectiveComparisonInterval
+                )
+
+                Spacer(minLength: 8)
+
+                if let data = viewModel.chartData[selectedMetric] {
+                    ChartValuesSummaryView(
+                        trend: TrendViewModel.make(data, context: .regular),
+                        style: metrics.count > 1 ? .compact : .standard
+                    )
+                }
+            }
 
             if viewModel.isFirstLoad {
                 mainChartView(metric: selectedMetric, data: mockChartData)
@@ -176,10 +186,6 @@ struct ChartCard: View {
     @ViewBuilder
     private func mainChartView(metric: SiteMetric, data: ChartData) -> some View {
         VStack(alignment: .leading, spacing: Constants.step1 / 2) {
-            ChartValuesSummaryView(
-                trend: TrendViewModel.make(data, context: .regular),
-                style: metrics.count > 1 ? .compact : .standard
-            )
             chartContentView(data: data)
                 .frame(height: chartHeight)
                 .padding(.horizontal, -Constants.step1)
