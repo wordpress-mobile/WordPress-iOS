@@ -10,18 +10,21 @@ struct TopListItemBarBackground: View {
     var body: some View {
         GeometryReader { geometry in
             HStack(spacing: 0) {
-                RoundedRectangle(cornerRadius: Constants.step1)
-                    .fill(
-                        LinearGradient(
-                            colors: [
-                                barColor.opacity(colorScheme == .light ? 0.06 : 0.15),
-                                barColor.opacity(colorScheme == .light ? 0.12 : 0.3)
-                            ],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .frame(width: max(8, barWidth(in: geometry)))
+                LinearGradient(
+                    colors: [
+                        barColor.opacity(colorScheme == .light ? 0.06 : 0.15),
+                        barColor.opacity(colorScheme == .light ? 0.12 : 0.3),
+                    ],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .mask(
+                    HStack(spacing: 0) {
+                        RoundedRectangle(cornerRadius: Constants.step1)
+                            .frame(width: max(8, barWidth(in: geometry)))
+                        Spacer(minLength: 0)
+                    }
+                )
                 Spacer(minLength: 0)
             }
         }
