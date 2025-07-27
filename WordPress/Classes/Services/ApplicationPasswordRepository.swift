@@ -187,28 +187,9 @@ private extension ApplicationPasswordRepository {
 
         let password: ApplicationPassword
         if let dotComApi, let dotComSiteId {
-            let remote = JetpackProxyServiceRemote(wordPressComRestApi: dotComApi)
-            let result = try await withCheckedThrowingContinuation { continuation in
-                remote.proxyRequest(
-                    for: dotComSiteId.intValue,
-                    path: "/wp/v2/users/me/application-passwords",
-                    method: .post,
-                    parameters: parameters
-                ) { result in
-                    continuation.resume(with: result)
-                }
-            }
-
-            let json = try JSONSerialization.data(withJSONObject: result, options: [])
-            struct Response: Decodable {
-                var data: ApplicationPassword
-            }
-
-            password = try JSONDecoder().decode(Response.self, from: json).data
+            password = try await createPasswordOnJetpackSites(api: dotComApi, siteid: dotComSiteId.intValue, parameters: parameters)
         } else if let dotOrgApi {
-            let result = try await dotOrgApi.post(path: "/wp/v2/users/me/application-passwords", parameters: parameters).get()
-            let json = try JSONSerialization.data(withJSONObject: result, options: [])
-            password = try JSONDecoder().decode(ApplicationPassword.self, from: json)
+            password = try await createPasswordOnSelfHostedSites(api: dotOrgApi, parameters: parameters)
         } else {
             // This error should never happen since a blog is accessible via either dot-com or a dot-org API.
             throw ApplicationPasswordRepositoryError.unknown
@@ -224,6 +205,53 @@ private extension ApplicationPasswordRepository {
         }
 
         return password
+    }
+
+    // When a site is fully connected to Jetpack (a.k.a, "user connection"), we can use the Jetpack Proxy endpoint to
+    // call its REST API.
+    func createPasswordOnJetpackSites(api: WordPressComRestApi, siteid: Int, parameters: [String: AnyHashable]) async throws -> ApplicationPassword {
+        let remote = JetpackProxyServiceRemote(wordPressComRestApi: api)
+        let result = try await withCheckedThrowingContinuation { continuation in
+            remote.proxyRequest(
+                for: siteid,
+                path: "/wp/v2/users/me/application-passwords",
+                method: .post,
+                parameters: parameters
+            ) { result in
+                continuation.resume(with: result)
+            }
+        }
+
+        let json = try JSONSerialization.data(withJSONObject: result, options: [])
+        struct Response: Decodable {
+            var data: ApplicationPassword
+        }
+
+        return try JSONDecoder().decode(Response.self, from: json).data
+    }
+
+    // For sites that are not on WP.com, we try to create an application password via wp-json REST API using `WordPressOrgRestApi`.
+    func createPasswordOnSelfHostedSites(api: WordPressOrgRestApi, parameters: [String: AnyHashable]) async throws -> ApplicationPassword {
+        // WordPressOrgRestApi uses cookie and nonce authentication to access the wp-json REST API. Cookies are
+        // obtained by simulating wp-login with the site's username and password, and the nonce is fetched from wp-admin.
+        // Some sites may block these authentication requests. We verify REST API accessibility before attempting
+        // to create the application password and throw an appropriate error if access fails.
+        do {
+            let _ = try await api.get(path: "/wp/v2/users/me", parameters: ["context": "edit"]).get()
+        } catch {
+            switch error {
+            case let .endpointError(error) where error.code == "rest_not_logged_in":
+                fallthrough
+            case .unparsableResponse, .unacceptableStatusCode:
+                throw ApplicationPasswordRepositoryError.restApiInaccessible
+            default:
+                break
+            }
+        }
+
+        let result = try await api.post(path: "/wp/v2/users/me/application-passwords", parameters: parameters).get()
+        let json = try JSONSerialization.data(withJSONObject: result, options: [])
+        return try JSONDecoder().decode(ApplicationPassword.self, from: json)
     }
 
     func assign(_ password: ApplicationPassword, apiRootURL: ParsedUrl, to blogId: TaggedManagedObjectID<Blog>) async throws {
@@ -350,6 +378,7 @@ private actor ApplicationPasswordStorage {
 
 enum ApplicationPasswordRepositoryError: LocalizedError {
     case usernameNotFound
+    case restApiInaccessible
     case unknown
 
     var errorDescription: String? {
@@ -359,6 +388,12 @@ enum ApplicationPasswordRepositoryError: LocalizedError {
                 "applicationPasswordRepository.error.usernameNotFound",
                 value: "Unable to find username for the site",
                 comment: "Error message when the username cannot be found for application password creation"
+            )
+        case .restApiInaccessible:
+            return NSLocalizedString(
+                "applicationPasswordRepository.error.restApiInaccessible",
+                value: "Unable to access the site's REST API",
+                comment: "Error message when the site's REST API is not accessible for application password creation"
             )
         case .unknown:
             return NSLocalizedString(

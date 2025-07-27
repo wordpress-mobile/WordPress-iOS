@@ -45,6 +45,7 @@ struct ApplicationPasswordsRepositoryTests {
         let blog = try await createSelfHostedSite()
 
         stubApiDiscovery(siteHost: "www.example.com")
+        stubSelfHostedSiteWpV2GetUser()
         stubSelfHostedSiteCreateApplicationPassword(host: "www.example.com", password: "1234 5678")
 
         let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
@@ -54,6 +55,33 @@ struct ApplicationPasswordsRepositoryTests {
             try context.existingObject(with: blog).getApplicationToken(using: keychain)
         }
         #expect(password == "1234 5678")
+    }
+
+    @Test
+    func selfHostedSiteWithInaccessibleRestApi() async throws {
+        let blog = try await createSelfHostedSite()
+
+        stubApiDiscovery(siteHost: "www.example.com")
+
+        stub(condition: isHost("www.example.com") && isPath("/wp-login.php")) { _ in
+            HTTPStubsResponse(data: "<html>Logged in</html>".data(using: .utf8)!, statusCode: 200, headers: nil)
+        }
+        stub(condition: isHost("www.example.com") && isPath("/wp-admin/admin-ajax.php") && containsQueryParams(["action": "rest-nonce"])) { _ in
+            HTTPStubsResponse(data: "<html>not allowed</html>".data(using: .utf8)!, statusCode: 400, headers: nil)
+        }
+        stub(condition: isHost("www.example.com") && isPath("/wp-admin/post-new.php")) { _ in
+            HTTPStubsResponse(data: "<html>not allowed</html>".data(using: .utf8)!, statusCode: 400, headers: nil)
+        }
+        stub(condition: isHost("www.example.com") && isPath("/wp-json/wp/v2/users/me")) { _ in
+            let json = #"{"code":"rest_not_logged_in","message":"You are not currently logged in.","data":{"status":401}}"#
+            return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 401, headers: nil)
+        }
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+
+        await #expect(throws: ApplicationPasswordRepositoryError.restApiInaccessible) {
+            try await repository.createPasswordIfNeeded(for: blog)
+        }
     }
 }
 
@@ -74,6 +102,7 @@ private extension ApplicationPasswordsRepositoryTests {
     }
 
     func createSimpleSite() async throws -> TaggedManagedObjectID<Blog> {
+        stubApiDiscoveryFailure(siteHost: "simple.wordpress.com")
         stub(condition: isHost("simple.wordpress.com") && isPath("/wp-json")) { _ in
             HTTPStubsResponse(data: "<html>Page not found</html>".data(using: .utf8)!, statusCode: 404, headers: nil)
         }
@@ -114,7 +143,7 @@ private extension ApplicationPasswordsRepositoryTests {
         stub(condition: isHost(host) && isPath("/wp-login.php")) { _ in
             HTTPStubsResponse(data: "<html>Logged in</html>".data(using: .utf8)!, statusCode: 200, headers: nil)
         }
-        stub(condition: isHost(host) && isPath("/wp-admin/admin-ajax.php?action=rest-nonce")) { _ in
+        stub(condition: isHost(host) && isPath("/wp-admin/admin-ajax.php") && containsQueryParams(["action": "rest-nonce"])) { _ in
             HTTPStubsResponse(data: "abcd".data(using: .utf8)!, statusCode: 200, headers: nil)
         }
         stub(condition: isHost(host) && isPath("/wp-json/wp/v2/users/me/application-passwords")) { _ in
@@ -236,6 +265,70 @@ private extension ApplicationPasswordsRepositoryTests {
         }
     }
 
+    func stubSelfHostedSiteWpV2GetUser() {
+        stub(condition: isPath("/wp-json/wp/v2/users/me")) { _ in
+            let json = """
+                {
+                  "id": 1,
+                  "username": "demo",
+                  "name": "demo",
+                  "first_name": "",
+                  "last_name": "",
+                  "email": "tony.li@automattic.com",
+                  "url": "https://atomic.com",
+                  "description": "",
+                  "link": "https://atomic.com/author/demo/",
+                  "locale": "en_US",
+                  "nickname": "demo",
+                  "slug": "demo",
+                  "roles": [
+                    "administrator"
+                  ],
+                  "registered_date": "2025-07-11T04:37:16+00:00",
+                  "capabilities": {
+                    "switch_themes": true,
+                    "edit_themes": true,
+                    "activate_plugins": true
+                  },
+                  "extra_capabilities": {
+                    "administrator": true
+                  },
+                  "avatar_urls": {
+                    "24": "https://secure.gravatar.com/avatar/hash?s=24&d=mm&r=g",
+                    "48": "https://secure.gravatar.com/avatar/hash?s=48&d=mm&r=g",
+                    "96": "https://secure.gravatar.com/avatar/hash?s=96&d=mm&r=g"
+                  },
+                  "meta": {
+                    "persisted_preferences": [],
+                    "jetpack_donation_warning_dismissed": false
+                  },
+                  "_links": {
+                    "self": [
+                      {
+                        "href": "https://atomic.com/wp-json/wp/v2/users/1",
+                        "targetHints": {
+                          "allow": [
+                            "GET",
+                            "POST",
+                            "PUT",
+                            "PATCH",
+                            "DELETE"
+                          ]
+                        }
+                      }
+                    ],
+                    "collection": [
+                      {
+                        "href": "https://atomic.com/wp-json/wp/v2/users"
+                      }
+                    ]
+                  }
+                }
+                """
+            return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 201, headers: nil)
+        }
+    }
+
     func stubApiDiscovery(siteHost: String) {
         stub(condition: isHost(siteHost) && isPath("/")) { _ in
             HTTPStubsResponse(
@@ -294,6 +387,14 @@ private extension ApplicationPasswordsRepositoryTests {
                 """
             return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 200, headers: nil)
         }
+    }
 
+    func stubApiDiscoveryFailure(siteHost: String) {
+        stub(condition: isHost(siteHost) && isPath("/")) { _ in
+            HTTPStubsResponse(data: "<html>homepage</html>".data(using: .utf8)!, statusCode: 200, headers: nil)
+        }
+        stub(condition: isHost(siteHost) && isPath("/wp-json")) { _ in
+            HTTPStubsResponse(data: "<html>page not found</html>".data(using: .utf8)!, statusCode: 404, headers: nil)
+        }
     }
 }
