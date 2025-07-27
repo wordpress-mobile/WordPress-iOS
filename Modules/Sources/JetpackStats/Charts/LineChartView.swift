@@ -138,20 +138,10 @@ struct LineChartView: View {
             .foregroundStyle(data.metric.primaryColor)
             .symbolSize(60)
             .annotation(position: .top, spacing: 4) {
-                Text(valueFormatter.format(value: maxPoint.value, context: .compact))
-                    .fixedSize() // Important
-                    .font(.caption.weight(.semibold))
-                    .foregroundColor(data.metric.primaryColor)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background {
-                        ZStack {
-                            Capsule()
-                                .fill(Color(.systemBackground).opacity(0.75))
-                            Capsule()
-                                .fill(data.metric.primaryColor.opacity(0.1))
-                        }
-                    }
+                SignificantPointAnnotation(
+                    value: maxPoint.value,
+                    metric: data.metric
+                )
             }
         }
     }

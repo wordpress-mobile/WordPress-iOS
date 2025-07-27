@@ -96,22 +96,12 @@ struct BarChartView: View {
             )
             .opacity(0)
             .annotation(position: .top, spacing: 8) {
-                Text(valueFormatter.format(value: maxPoint.value, context: .compact))
-                    .fixedSize()
-                    .font(.caption.weight(.semibold))
-                    .foregroundColor(data.metric.primaryColor)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background {
-                        ZStack {
-                            Capsule()
-                                .fill(Color(.systemBackground).opacity(0.75))
-                            Capsule()
-                                .fill(data.metric.primaryColor.opacity(0.1))
-                        }
-                    }
+                SignificantPointAnnotation(
+                    value: maxPoint.value,
+                    metric: data.metric
+                )
                 // Important for drag selection to work correctly.
-                    .opacity(selectedDate == nil ? 1 : 0)
+                .opacity(selectedDate == nil ? 1 : 0)
             }
         }
     }
