@@ -22,7 +22,7 @@ final class ChartData: Sendable {
         self.previousTotal = previousTotal
         self.previousData = previousData
         self.mappedPreviousData = mappedPreviousData
-        
+
         var maxValue = 0 // Faster without creating intermediate arrays
         for point in currentData {
             maxValue = max(maxValue, point.value)
