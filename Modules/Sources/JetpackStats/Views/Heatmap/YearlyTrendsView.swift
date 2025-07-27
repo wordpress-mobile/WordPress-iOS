@@ -1,5 +1,5 @@
 import SwiftUI
-import WordPressKit
+@preconcurrency import WordPressKit
 
 struct YearlyTrendsView: View {
     let viewModel: YearlyTrendsViewModel

@@ -90,13 +90,12 @@ struct RealtimeTopListCard: View {
         .animation(.spring, value: selectedItem)
     }
 
-    private func topListItemsView(data: TopListData) -> some View {
-        let chartData = TopListChartData(
+    private func topListItemsView(data: TopListResponse) -> some View {
+        let chartData = TopListData(
             item: selectedItem,
             metric: .views,
             items: data.items,
-            previousItems: [:], // No previous data for realtime
-            maxValue: viewModel.maxValue
+            previousItems: [:] // No previous data for realtime
         )
 
         return TopListItemsView(
@@ -110,13 +109,13 @@ struct RealtimeTopListCard: View {
         topListItemsView(data: mockData)
     }
 
-    private var mockData: TopListData {
-        let chartData = TopListChartData.mock(
+    private var mockData: TopListResponse {
+        let chartData = TopListData.mock(
             for: selectedItem,
             metric: .views,
             itemCount: 6
         )
-        return TopListData(items: chartData.items)
+        return TopListResponse(items: chartData.items)
     }
 
 }

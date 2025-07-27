@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=4.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         body {
             margin: 0;
@@ -34,14 +34,6 @@
     </style>
     <script>
         let selectedCountry = null;
-        let touchActive = false;
-        let initialTouchDistance = null;
-        
-        function getDistance(touches) {
-            const dx = touches[0].clientX - touches[1].clientX;
-            const dy = touches[0].clientY - touches[1].clientY;
-            return Math.sqrt(dx * dx + dy * dy);
-        }
         
         function selectCountry(element) {
             if (selectedCountry && selectedCountry !== element) {
@@ -69,67 +61,44 @@
             // Touch events for mobile
             svg.addEventListener('touchstart', function(e) {
                 if (e.touches.length === 1) {
-                    // Single touch - selection mode
-                    touchActive = true;
+                    // Single touch - selection on tap only
                     const touch = e.touches[0];
                     const element = document.elementFromPoint(touch.clientX, touch.clientY);
                     if (element && element.tagName === 'path' && element.id) {
                         selectCountry(element);
+                    } else if (element === svg || !element.id) {
+                        // Tapped outside any country - deselect
+                        deselectCountry();
                     }
                 } else if (e.touches.length === 2) {
-                    // Two touches - zoom mode, disable selection
-                    touchActive = false;
-                    initialTouchDistance = getDistance(e.touches);
+                    // Two touches - prevent zoom
+                    e.preventDefault();
                 }
             }, { passive: false });
             
             svg.addEventListener('touchmove', function(e) {
-                if (e.touches.length === 1 && touchActive) {
-                    // Single touch - continue selection
-                    const touch = e.touches[0];
-                    const element = document.elementFromPoint(touch.clientX, touch.clientY);
-                    if (element && element.tagName === 'path' && element.id) {
-                        selectCountry(element);
-                    }
-                } else if (e.touches.length === 2) {
-                    // Two touches - zoom mode, don't interfere
-                    touchActive = false;
-                }
+                // Prevent any dragging behavior
+                e.preventDefault();
             }, { passive: false });
             
             svg.addEventListener('touchend', function(e) {
-                if (e.touches.length === 0) {
-                    touchActive = false;
-                    initialTouchDistance = null;
-                    // Clear selection when finger is lifted
-                    deselectCountry();
-                }
+                // Do nothing - keep selection until user taps elsewhere
             }, { passive: false });
             
-            // Mouse events for desktop
+            // Mouse events for desktop - click only
             paths.forEach(path => {
-                path.addEventListener('mousedown', function(e) {
+                path.addEventListener('click', function(e) {
                     e.preventDefault();
+                    e.stopPropagation();
                     selectCountry(this);
                 });
-                
-                path.addEventListener('mouseenter', function(e) {
-                    if (e.buttons === 1) { // Mouse button is pressed
-                        selectCountry(this);
-                    }
-                });
             });
             
-            // Deselect when clicking outside
-            svg.addEventListener('mousedown', function(e) {
-                if (e.target === svg) {
+            // Deselect when clicking outside any country
+            svg.addEventListener('click', function(e) {
+                if (e.target === svg || !e.target.id) {
                     deselectCountry();
                 }
-            });
-            
-            // Deselect when mouse button is released
-            document.addEventListener('mouseup', function(e) {
-                deselectCountry();
             });
         }
         

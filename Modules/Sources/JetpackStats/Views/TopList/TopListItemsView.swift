@@ -1,112 +1,57 @@
 import SwiftUI
 
 struct TopListItemsView: View {
-    let data: TopListChartData
+    let data: TopListData
     let itemLimit: Int
     let dateRange: StatsDateRange
-    var isNavigationDisabled = false
+    var reserveSpace: Bool = false
 
-    @State private var expandedSections: Set<TopListItemID> = []
+    @ScaledMetric(relativeTo: .callout) private var cellHeight = 52
 
     var body: some View {
         VStack(spacing: Constants.step1 / 2) {
             ForEach(data.items.prefix(itemLimit), id: \.id) { item in
-                if let item = item as? any TopListExpandableItem {
-                    makeExpandableSection(with: item)
-                } else {
-                    makeView(for: item)
-                        .transition(.move(edge: .leading)
-                            .combined(with: .scale(scale: 0.75))
-                            .combined(with: .opacity))
+                makeView(for: item)
+                    .transition(.move(edge: .leading)
+                        .combined(with: .scale(scale: 0.75))
+                        .combined(with: .opacity))
+            }
+
+            if reserveSpace && data.items.count < itemLimit {
+                ForEach(0..<(itemLimit - data.items.count), id: \.self) { _ in
+                    PlaceholderRowView(height: cellHeight)
                 }
             }
         }
+        .padding(.horizontal, Constants.step1)
         .animation(.spring, value: ObjectIdentifier(data))
     }
 
-    private func makeExpandableSection(with item: any TopListExpandableItem) -> some View {
-        VStack(spacing: Constants.step1 / 2) {
-            Button {
-                withAnimation(.spring) {
-                    toggleSection(item.id)
-                }
-            } label: {
-                ExpandableItemView(
-                    section: item,
-                    previousItem: data.previousItem(for: item) as? (any TopListExpandableItem),
-                    metric: data.metric,
-                    maxValue: data.maxValue,
-                    isExpanded: expandedSections.contains(item.id)
-                )
-            }
-            .buttonStyle(.plain)
-
-            if expandedSections.contains(item.id) {
-                VStack(spacing: Constants.step1 / 2) {
-                    ForEach(Array(item.children), id: \.id) { child in
-                        makeView(for: child)
-                            .padding(.leading, Constants.step2)
-                            .transition(.move(edge: .leading)
-                                .combined(with: .scale(scale: 0.75))
-                                .combined(with: .opacity))
-                    }
-                }
-            }
-        }
-    }
-
-    private func makeView(for item: any TopListItem) -> some View {
+    private func makeView(for item: any TopListItemProtocol) -> some View {
         TopListItemView(
             item: item,
             previousValue: data.previousItem(for: item)?.metrics[data.metric],
             metric: data.metric,
-            maxValue: data.maxValue,
-            dateRange: dateRange,
-            isNavigationDisabled: isNavigationDisabled
+            maxValue: data.metrics.maxValue,
+            dateRange: dateRange
         )
-    }
-
-    private func toggleSection(_ sectionId: TopListItemID) {
-        if expandedSections.contains(sectionId) {
-            expandedSections.remove(sectionId)
-        } else {
-            expandedSections.insert(sectionId)
-        }
+        .frame(height: cellHeight)
     }
 }
 
-// Generic view for expandable section headers that can show expanded state
-private struct ExpandableItemView: View {
-    let section: any TopListExpandableItem
-    let previousItem: (any TopListExpandableItem)?
-    let metric: SiteMetric
-    let maxValue: Int
-    let isExpanded: Bool
+struct PlaceholderRowView: View {
+    let height: CGFloat
 
     var body: some View {
-        HStack(spacing: 0) {
-            TopListExpandableSectionRowView(
-                item: section as any TopListExpandableItem,
-                isExpanded: isExpanded
+        Rectangle()
+            .fill(Color.clear)
+            .background(
+                TopListItemBarBackground(
+                    value: 100,
+                    maxValue: 100,
+                    barColor: .secondary.opacity(0.5)
+                )
             )
-
-            Spacer(minLength: 4)
-
-            TopListMetricsView(
-                currentValue: section.metrics[metric] ?? 0,
-                previousValue: previousItem?.metrics[metric],
-                metric: metric,
-                showChevron: false
-            )
-        }
-        .padding(.vertical, 7)
-        .background(
-            TopListItemBarBackground(
-                value: section.metrics[metric] ?? 0,
-                maxValue: maxValue,
-                barColor: metric.primaryColor
-            )
-            .padding(.horizontal, -(Constants.step2 / 2))
-        )
+            .frame(height: height)
     }
 }

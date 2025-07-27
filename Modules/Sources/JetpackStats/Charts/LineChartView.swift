@@ -28,10 +28,12 @@ struct LineChartView: View {
             currentPeriodMarks
             previousPeriodMarks
             currentTimeBoundaryMark
+            significantPointAnnotations
             selectionIndicatorMarks
         }
         .chartXAxis { xAxis }
         .chartYAxis { yAxis }
+        .chartYScale(domain: yAxisDomain)
         .chartLegend(.hidden)
         .environment(\.timeZone, context.timeZone)
         .modifier(ChartSelectionModifier(selection: $selectedDate))
@@ -51,7 +53,16 @@ struct LineChartView: View {
                 y: .value("Value", point.value),
                 series: .value("Period", "Current")
             )
-            .foregroundStyle(data.metric.backgroundColor(in: colorScheme))
+            .foregroundStyle(
+                LinearGradient(
+                    colors: [
+                        data.metric.primaryColor.opacity(colorScheme == .light ? 0.15 : 0.25),
+                        data.metric.primaryColor.opacity(0.0)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
             .interpolationMethod(.linear)
 
             LineMark(
@@ -112,6 +123,26 @@ struct LineChartView: View {
                 lineCap: .round,
                 dash: [5, 5]
             ))
+        }
+    }
+
+    @ChartContentBuilder
+    private var significantPointAnnotations: some ChartContent {
+        if selectedDate == nil,
+           let maxPoint = data.significantPoints.currentMax,
+           data.currentData.count > 0 {
+            PointMark(
+                x: .value("Date", maxPoint.date),
+                y: .value("Value", maxPoint.value)
+            )
+            .foregroundStyle(data.metric.primaryColor)
+            .symbolSize(60)
+            .annotation(position: .top, spacing: 4) {
+                SignificantPointAnnotation(
+                    value: maxPoint.value,
+                    metric: data.metric
+                )
+            }
         }
     }
 
@@ -179,6 +210,19 @@ struct LineChartView: View {
                 }
             }
         }
+    }
+
+    private var yAxisDomain: ClosedRange<Int> {
+        // If all values are zero, show a reasonable range
+        if data.maxValue == 0 {
+            return 0...100
+        }
+        guard data.maxValue > 0 else {
+            return data.maxValue...0 // Just in case; should never happend
+        }
+        // Add some padding above the max value
+        let padding = max(Int(Double(data.maxValue) * 0.66), 1)
+        return 0...(data.maxValue + padding)
     }
 
     // MARK: - Helper Views

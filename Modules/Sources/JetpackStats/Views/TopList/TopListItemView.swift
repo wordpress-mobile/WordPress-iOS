@@ -1,23 +1,46 @@
 import SwiftUI
+import DesignSystem
 
 struct TopListItemView: View {
-    let item: any TopListItem
+    static let defaultCellHeight: CGFloat = 52
+
+    let item: any TopListItemProtocol
     let previousValue: Int?
     let metric: SiteMetric
     let maxValue: Int
     let dateRange: StatsDateRange
-    var isNavigationDisabled = false
 
-    @Environment(\.router) private var router
-    @Environment(\.context) private var context
+    @State private var isTapped = false
+
+    @ScaledMetric(relativeTo: .callout) private var cellHeight = TopListItemView.defaultCellHeight
+    @ScaledMetric(relativeTo: .subheadline) private var minTrailingWidth = 84
+
+    @Environment(\.router) var router
+    @Environment(\.context) var context
 
     var body: some View {
         if hasDetails {
             Button {
-                navigateToDetails()
+                // Trigger animation
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    isTapped = true
+                }
+
+                // Reset after a delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                        isTapped = false
+                    }
+                    // Navigate after animation starts
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                        navigateToDetails()
+                    }
+                }
             } label: {
                 content
                     .contentShape(Rectangle()) // Make the entire view tappable
+                    .scaleEffect(isTapped ? 0.97 : 1.0)
+                    .opacity(isTapped ? 0.85 : 1.0)
             }
             .buttonStyle(.plain)
         } else {
@@ -26,27 +49,29 @@ struct TopListItemView: View {
     }
 
     var content: some View {
-        HStack(spacing: 0) {
+        HStack(alignment: .center, spacing: 0) {
             // Content-specific view
             switch item {
-            case let post as TopListData.Post:
+            case let post as TopListItem.Post:
                 TopListPostRowView(item: post)
-            case let referrer as TopListData.Referrer:
-                TopListReferrerRowView(item: referrer)
-            case let location as TopListData.Location:
-                TopListLocationRowView(item: location)
-            case let author as TopListData.Author:
+            case let author as TopListItem.Author:
                 TopListAuthorRowView(item: author)
-            case let link as TopListData.ExternalLink:
+            case let referrer as TopListItem.Referrer:
+                TopListReferrerRowView(item: referrer)
+            case let location as TopListItem.Location:
+                TopListLocationRowView(item: location)
+            case let link as TopListItem.ExternalLink:
                 TopListExternalLinkRowView(item: link)
-            case let download as TopListData.FileDownload:
+            case let download as TopListItem.FileDownload:
                 TopListFileDownloadRowView(item: download)
-            case let searchTerm as TopListData.SearchTerm:
+            case let searchTerm as TopListItem.SearchTerm:
                 TopListSearchTermRowView(item: searchTerm)
-            case let video as TopListData.Video:
+            case let video as TopListItem.Video:
                 TopListVideoRowView(item: video)
-            case let archiveItem as TopListData.ArchiveItem:
+            case let archiveItem as TopListItem.ArchiveItem:
                 TopListArchiveItemRowView(item: archiveItem)
+            case let archiveSection as TopListItem.ArchiveSection:
+                TopListArchiveSectionRowView(item: archiveSection)
             default:
                 let _ = assertionFailure("unsupported item: \(item)")
                 EmptyView()
@@ -55,31 +80,26 @@ struct TopListItemView: View {
             Spacer(minLength: 6)
 
             // Metrics view
-            ZStack(alignment: .trailing) {
-                if previousValue != nil {
-                    // Reserve space to avoid junky animations when changing period
-                    Text("+4.8K (31.2%)")
-                        .font(.caption.weight(.medium)).tracking(-0.33)
-                        .opacity(0)
-                }
-
-                TopListMetricsView(
-                    currentValue: item.metrics[metric] ?? 0,
-                    previousValue: previousValue,
-                    metric: metric,
-                    showChevron: hasDetails
-                )
-            }
+            TopListMetricsView(
+                currentValue: item.metrics[metric] ?? 0,
+                previousValue: previousValue,
+                metric: metric,
+                showChevron: hasDetails
+            )
+            .frame(minWidth: previousValue == nil ? 20 : minTrailingWidth, alignment: .trailing)
             .padding(.trailing, -3)
         }
-        .padding(.vertical, 7)
+        .padding(.horizontal, Constants.step1)
+        .frame(height: cellHeight)
+        .contextMenu {
+            contextMenuContent
+        }
         .background(
             TopListItemBarBackground(
                 value: item.metrics[metric] ?? 0,
                 maxValue: maxValue,
                 barColor: metric.primaryColor
             )
-            .padding(.horizontal, -Constants.step1)
         )
     }
 }
@@ -88,17 +108,18 @@ struct TopListItemView: View {
 
 private extension TopListItemView {
     var hasDetails: Bool {
-        guard !isNavigationDisabled else {
-            return false
-        }
         switch item {
-        case is TopListData.Post:
+        case is TopListItem.Post:
             return true
-        case is TopListData.ArchiveItem:
+        case is TopListItem.ArchiveItem:
             return true
-        case is TopListData.Author:
+        case is TopListItem.ArchiveSection:
             return true
-        case is TopListData.Referrer:
+        case is TopListItem.Author:
+            return true
+        case is TopListItem.Referrer:
+            return true
+        case is TopListItem.ExternalLink:
             return true
         default:
             return false
@@ -107,22 +128,32 @@ private extension TopListItemView {
 
     func navigateToDetails() {
         switch item {
-        case let post as TopListData.Post:
+        case let post as TopListItem.Post:
             let detailsView = PostStatsView(post: post, dateRange: dateRange)
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView)
-        case let archiveItem as TopListData.ArchiveItem:
+        case let archiveItem as TopListItem.ArchiveItem:
             if let url = URL(string: archiveItem.href) {
                 router.openURL(url)
             }
-        case let author as TopListData.Author:
+        case let author as TopListItem.Author:
             let detailsView = AuthorStatsView(author: author, initialDateRange: dateRange, context: context)
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView)
-        case let referrer as TopListData.Referrer:
+        case let referrer as TopListItem.Referrer:
             let detailsView = ReferrerStatsView(referrer: referrer, dateRange: dateRange)
+                .environment(\.context, context)
+                .environment(\.router, router)
+            router.navigate(to: detailsView)
+        case let archiveSection as TopListItem.ArchiveSection:
+            let detailsView = ArchiveStatsView(archiveSection: archiveSection, dateRange: dateRange)
+                .environment(\.context, context)
+                .environment(\.router, router)
+            router.navigate(to: detailsView)
+        case let externalLink as TopListItem.ExternalLink:
+            let detailsView = ExternalLinkStatsView(externalLink: externalLink, dateRange: dateRange)
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView)
@@ -143,12 +174,12 @@ private extension TopListItemView {
     }
 }
 
-@ViewBuilder
+@MainActor @ViewBuilder
 private func makePreviewItems() -> some View {
     // Posts & Pages
     VStack(spacing: 8) {
         makePreviewItem(
-            TopListData.Post(
+            TopListItem.Post(
                 title: "Getting Started with SwiftUI: A Comprehensive Guide",
                 postID: "1234",
                 postURL: URL(string: "https://example.com/swiftui-guide"),
@@ -161,7 +192,7 @@ private func makePreviewItems() -> some View {
         )
 
         makePreviewItem(
-            TopListData.Post(
+            TopListItem.Post(
                 title: "About Us",
                 postID: "5678",
                 postURL: nil,
@@ -177,22 +208,22 @@ private func makePreviewItems() -> some View {
     // Authors
     VStack(spacing: 8) {
         makePreviewItem(
-            TopListData.Author(
+            TopListItem.Author(
                 name: "Sarah Johnson",
                 userId: "100",
-                role: "Administrator",
+                role: nil, // Real API doesn't have roles
                 metrics: SiteMetricsSet(views: 50000),
-                avatarURL: nil,
+                avatarURL: Bundle.module.url(forResource: "author4", withExtension: "jpg"),
                 posts: nil
             ),
             previousValue: 48000
         )
 
         makePreviewItem(
-            TopListData.Author(
+            TopListItem.Author(
                 name: "Michael Chen",
                 userId: "101",
-                role: "Editor",
+                role: nil,
                 metrics: SiteMetricsSet(views: 23100),
                 avatarURL: nil,
                 posts: nil
@@ -204,7 +235,7 @@ private func makePreviewItems() -> some View {
     // Referrers
     VStack(spacing: 8) {
         makePreviewItem(
-            TopListData.Referrer(
+            TopListItem.Referrer(
                 name: "Google Search",
                 domain: "google.com",
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
@@ -215,7 +246,7 @@ private func makePreviewItems() -> some View {
         )
 
         makePreviewItem(
-            TopListData.Referrer(
+            TopListItem.Referrer(
                 name: "Direct Traffic",
                 domain: nil,
                 iconURL: nil,
@@ -229,7 +260,7 @@ private func makePreviewItems() -> some View {
     // Locations
     VStack(spacing: 8) {
         makePreviewItem(
-            TopListData.Location(
+            TopListItem.Location(
                 country: "United States",
                 flag: "🇺🇸",
                 countryCode: "US",
@@ -239,7 +270,7 @@ private func makePreviewItems() -> some View {
         )
 
         makePreviewItem(
-            TopListData.Location(
+            TopListItem.Location(
                 country: "United Kingdom",
                 flag: "🇬🇧",
                 countryCode: "GB",
@@ -252,18 +283,20 @@ private func makePreviewItems() -> some View {
     // External Links
     VStack(spacing: 8) {
         makePreviewItem(
-            TopListData.ExternalLink(
+            TopListItem.ExternalLink(
                 url: "https://developer.apple.com/documentation/swiftui",
                 title: "SwiftUI Documentation",
+                children: [],
                 metrics: SiteMetricsSet(views: 50000)
             ),
             previousValue: 52000
         )
 
         makePreviewItem(
-            TopListData.ExternalLink(
+            TopListItem.ExternalLink(
                 url: "https://github.com/wordpress/wordpress-ios",
                 title: nil,
+                children: [],
                 metrics: SiteMetricsSet(views: 1250)
             ),
             previousValue: 1100
@@ -273,7 +306,7 @@ private func makePreviewItems() -> some View {
     // File Downloads
     VStack(spacing: 8) {
         makePreviewItem(
-            TopListData.FileDownload(
+            TopListItem.FileDownload(
                 fileName: "wordpress-guide-2024.pdf",
                 filePath: "/downloads/guides/wordpress-guide-2024.pdf",
                 metrics: SiteMetricsSet(downloads: 50000)
@@ -283,7 +316,7 @@ private func makePreviewItems() -> some View {
         )
 
         makePreviewItem(
-            TopListData.FileDownload(
+            TopListItem.FileDownload(
                 fileName: "sample-theme.zip",
                 filePath: nil,
                 metrics: SiteMetricsSet(downloads: 1230)
@@ -296,7 +329,7 @@ private func makePreviewItems() -> some View {
     // Search Terms
     VStack(spacing: 8) {
         makePreviewItem(
-            TopListData.SearchTerm(
+            TopListItem.SearchTerm(
                 term: "wordpress tutorial",
                 metrics: SiteMetricsSet(views: 50000)
             ),
@@ -304,7 +337,7 @@ private func makePreviewItems() -> some View {
         )
 
         makePreviewItem(
-            TopListData.SearchTerm(
+            TopListItem.SearchTerm(
                 term: "how to install plugins",
                 metrics: SiteMetricsSet(views: 890)
             ),
@@ -315,20 +348,20 @@ private func makePreviewItems() -> some View {
     // Videos
     VStack(spacing: 8) {
         makePreviewItem(
-            TopListData.Video(
+            TopListItem.Video(
                 title: "WordPress 6.0 Features Overview",
                 postId: "9012",
-                videoUrl: URL(string: "https://example.com/videos/wp-6-features"),
+                videoURL: URL(string: "https://example.com/videos/wp-6-features"),
                 metrics: SiteMetricsSet(views: 50000)
             ),
             previousValue: 44000
         )
 
         makePreviewItem(
-            TopListData.Video(
+            TopListItem.Video(
                 title: "Building Your First Theme",
                 postId: "9013",
-                videoUrl: nil,
+                videoURL: nil,
                 metrics: SiteMetricsSet(views: 3210)
             ),
             previousValue: nil
@@ -338,7 +371,7 @@ private func makePreviewItems() -> some View {
     // Archive Items
     VStack(spacing: 8) {
         makePreviewItem(
-            TopListData.ArchiveItem(
+            TopListItem.ArchiveItem(
                 href: "/2024/03/",
                 value: "March 2024",
                 metrics: SiteMetricsSet(views: 50000)
@@ -347,7 +380,7 @@ private func makePreviewItems() -> some View {
         )
 
         makePreviewItem(
-            TopListData.ArchiveItem(
+            TopListItem.ArchiveItem(
                 href: "/category/tutorials/",
                 value: "Tutorials",
                 metrics: SiteMetricsSet(views: 12300)
@@ -357,7 +390,8 @@ private func makePreviewItems() -> some View {
     }
 }
 
-private func makePreviewItem(_ item: any TopListItem, previousValue: Int? = nil, metric: SiteMetric = .views) -> some View {
+@MainActor
+private func makePreviewItem(_ item: any TopListItemProtocol, previousValue: Int? = nil, metric: SiteMetric = .views) -> some View {
     TopListItemView(
         item: item,
         previousValue: previousValue,

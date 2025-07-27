@@ -62,102 +62,52 @@ struct CountriesMapView: View {
     }
 }
 
-struct CountriesMapData {
-    let metric: SiteMetric
-    let minViews: Int
-    let maxViews: Int
-    let mapData: [String: Int]
-    let locations: [TopListData.Location]
-    let previousLocations: [String: TopListData.Location]
-
-    func location(for countryCode: String) -> TopListData.Location? {
-        locations.first { $0.countryCode == countryCode }
-    }
-
-    func previousLocation(for countryCode: String) -> TopListData.Location? {
-        previousLocations[countryCode]
-    }
-
-    init(
-        metric: SiteMetric,
-        locations: [TopListData.Location],
-        previousLocations: [TopListItemID: TopListData.Location] = [:]
-    ) {
-        self.metric = metric
-        self.locations = locations
-        self.previousLocations = {
-            var output: [String: TopListData.Location] = [:]
-            for location in previousLocations.values {
-                if let countryCode = location.countryCode {
-                    output[countryCode] = location
-                }
-            }
-            return output
-        }()
-
-        let views = locations.compactMap(\.metrics.views)
-        self.minViews = views.min() ?? 0
-        self.maxViews = views.max() ?? 0
-
-        self.mapData = {
-            var output: [String: Int] = [:]
-            for location in locations {
-                if let countryCode = location.countryCode,
-                   let views = location.metrics.views {
-                    output[countryCode] = views
-                }
-            }
-            return output
-        }()
-    }
-}
-
 #Preview {
     CountriesMapView(
         data: CountriesMapData(metric: .views, locations: [
-            TopListData.Location(
+            TopListItem.Location(
                 country: "United States",
                 flag: "🇺🇸",
                 countryCode: "US",
                 metrics: SiteMetricsSet(views: 10000)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "United Kingdom",
                 flag: "🇬🇧",
                 countryCode: "GB",
                 metrics: SiteMetricsSet(views: 4000)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "Canada",
                 flag: "🇨🇦",
                 countryCode: "CA",
                 metrics: SiteMetricsSet(views: 2800)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "Germany",
                 flag: "🇩🇪",
                 countryCode: "DE",
                 metrics: SiteMetricsSet(views: 2000)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "Australia",
                 flag: "🇦🇺",
                 countryCode: "AU",
                 metrics: SiteMetricsSet(views: 1600)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "France",
                 flag: "🇫🇷",
                 countryCode: "FR",
                 metrics: SiteMetricsSet(views: 1400)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "Japan",
                 flag: "🇯🇵",
                 countryCode: "JP",
                 metrics: SiteMetricsSet(views: 1100)
             ),
-            TopListData.Location(
+            TopListItem.Location(
                 country: "Netherlands",
                 flag: "🇳🇱",
                 countryCode: "NL",

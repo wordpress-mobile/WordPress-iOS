@@ -17,7 +17,8 @@ struct MockStatsServiceTests {
             .postsAndPages,
             metric: .views,
             interval: dateInterval,
-            granularity: dateInterval.preferredGranularity
+            granularity: dateInterval.preferredGranularity,
+            limit: nil
         )
 
         // THEN
@@ -26,7 +27,7 @@ struct MockStatsServiceTests {
 
         // THEN all items are posts
         for item in response.items {
-            if let post = item as? TopListData.Post {
+            if let post = item as? TopListItem.Post {
                 #expect(!post.title.isEmpty)
                 #expect((post.metrics.views ?? 0) > 0)
             } else {

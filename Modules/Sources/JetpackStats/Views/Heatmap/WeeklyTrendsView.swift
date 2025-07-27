@@ -1,5 +1,5 @@
 import SwiftUI
-import WordPressKit
+@preconcurrency import WordPressKit
 
 struct WeeklyTrendsView: View {
     let viewModel: WeeklyTrendsViewModel

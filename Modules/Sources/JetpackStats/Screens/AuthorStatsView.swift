@@ -1,25 +1,25 @@
 import SwiftUI
-import WordPressKit
+@preconcurrency import WordPressKit
 import DesignSystem
 
 struct AuthorStatsView: View {
-    let author: TopListData.Author
+    let author: TopListItem.Author
 
     @State private var dateRange: StatsDateRange
 
-    @StateObject private var viewModel: TopListCardViewModel
+    @StateObject private var viewModel: TopListViewModel
 
     @Environment(\.context) private var context
 
     @ScaledMetric private var avatarSize = 60
 
-    init(author: TopListData.Author, initialDateRange: StatsDateRange? = nil, context: StatsContext) {
+    init(author: TopListItem.Author, initialDateRange: StatsDateRange? = nil, context: StatsContext) {
         self.author = author
         let calendar = Calendar.current
         let range = initialDateRange ?? calendar.makeDateRange(for: .last30Days)
         self._dateRange = State(initialValue: range)
 
-        self._viewModel = StateObject(wrappedValue: TopListCardViewModel(
+        self._viewModel = StateObject(wrappedValue: TopListViewModel(
             selection: .init(item: .postsAndPages, metric: .views),
             dateRange: range,
             service: context.service,
@@ -34,13 +34,17 @@ struct AuthorStatsView: View {
                 headerView
                     .cardStyle()
 
-                TopListCard(viewModel: viewModel)
-                    .cardStyle()
+                TopListCard(
+                    viewModel: viewModel,
+                    itemLimit: 6,
+                    reserveSpace: false
+                )
+                .cardStyle()
             }
             .padding(.vertical, Constants.step1)
         }
         .background(Constants.Colors.background)
-        .animation(.spring, value: viewModel.matchedData.map(ObjectIdentifier.init))
+        .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
         .onChange(of: dateRange) { newRange in
             viewModel.dateRange = newRange
         }
@@ -133,18 +137,18 @@ struct AuthorStatsView: View {
     }
 
     private func calculatePeriodViews() -> (current: Int, previous: Int?)? {
-        guard let data = viewModel.matchedData else { return nil }
+        guard let data = viewModel.data else { return nil }
 
         // Sum up views from all posts in the current period
         let currentViews = data.items.compactMap { item in
-            (item as? TopListData.Post)?.metrics.views
+            (item as? TopListItem.Post)?.metrics.views
         }.reduce(0, +)
 
         // Calculate previous period views if available
         var previousViews: Int?
         if !data.previousItems.isEmpty {
             previousViews = data.previousItems.values.compactMap { item in
-                (item as? TopListData.Post)?.metrics.views
+                (item as? TopListItem.Post)?.metrics.views
             }.reduce(0, +)
         }
 
@@ -155,7 +159,7 @@ struct AuthorStatsView: View {
 #Preview {
     NavigationStack {
         AuthorStatsView(
-            author: TopListData.Author(
+            author: TopListItem.Author(
                 name: "Alex Johnson",
                 userId: "1",
                 role: nil,
@@ -164,7 +168,7 @@ struct AuthorStatsView: View {
                 ),
                 avatarURL: nil,
                 posts: [
-                    TopListData.Post(
+                    TopListItem.Post(
                         title: "The Future of Technology: AI and Machine Learning",
                         postID: "1",
                         postURL: URL(string: "https://example.com/post1"),
@@ -173,7 +177,7 @@ struct AuthorStatsView: View {
                         author: "Alex Johnson",
                         metrics: SiteMetricsSet(views: 1250)
                     ),
-                    TopListData.Post(
+                    TopListItem.Post(
                         title: "Understanding Climate Change",
                         postID: "2",
                         postURL: URL(string: "https://example.com/post2"),

@@ -1,25 +1,24 @@
 import SwiftUI
 
 struct TopListAuthorRowView: View {
-    let item: TopListData.Author
+    let item: TopListItem.Author
 
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: Constants.step0_5) {
             AvatarView(name: item.name, imageURL: item.avatarURL)
 
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 1) {
                 Text(item.name)
-                    .font(.callout)
+                    .font(.body)
                     .foregroundColor(.primary)
-                    .lineLimit(1)
 
                 if let role = item.role {
                     Text(role)
                         .font(.caption)
                         .foregroundColor(.secondary)
-                        .lineLimit(1)
                 }
             }
+            .lineLimit(1)
         }
     }
 }

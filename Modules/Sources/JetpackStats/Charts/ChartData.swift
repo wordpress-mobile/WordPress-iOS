@@ -8,9 +8,18 @@ final class ChartData: Sendable {
     let previousTotal: Int
     let previousData: [DataPoint]
     let mappedPreviousData: [DataPoint]
+    let maxValue: Int
+    let significantPoints: SignificantPoints
 
     var isEmpty: Bool {
         currentData.isEmpty && previousData.isEmpty
+    }
+
+    struct SignificantPoints: Sendable {
+        let currentMax: DataPoint?
+        let currentMin: DataPoint?
+        let previousMax: DataPoint?
+        let previousMin: DataPoint?
     }
 
     init(metric: SiteMetric, granularity: DateRangeGranularity, currentTotal: Int, currentData: [DataPoint], previousTotal: Int, previousData: [DataPoint], mappedPreviousData: [DataPoint]) {
@@ -21,6 +30,41 @@ final class ChartData: Sendable {
         self.previousTotal = previousTotal
         self.previousData = previousData
         self.mappedPreviousData = mappedPreviousData
+
+        var maxValue = 0 // Faster without creating intermediate arrays
+        var currentMaxPoint: DataPoint?
+        var currentMinPoint: DataPoint?
+
+        for point in currentData {
+            if point.value > maxValue {
+                maxValue = point.value
+                currentMaxPoint = point
+            }
+            if point.value > 0 && (currentMinPoint == nil || point.value < currentMinPoint!.value) {
+                currentMinPoint = point
+            }
+        }
+
+        var previousMaxPoint: DataPoint?
+        var previousMinPoint: DataPoint?
+
+        for point in mappedPreviousData {
+            maxValue = max(maxValue, point.value)
+            if previousMaxPoint == nil || point.value > previousMaxPoint!.value {
+                previousMaxPoint = point
+            }
+            if point.value > 0 && (previousMinPoint == nil || point.value < previousMinPoint!.value) {
+                previousMinPoint = point
+            }
+        }
+
+        self.maxValue = maxValue
+        self.significantPoints = SignificantPoints(
+            currentMax: currentMaxPoint,
+            currentMin: currentMinPoint,
+            previousMax: previousMaxPoint,
+            previousMin: previousMinPoint
+        )
     }
 }
 

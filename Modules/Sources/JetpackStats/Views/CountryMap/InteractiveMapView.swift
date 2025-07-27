@@ -267,8 +267,7 @@ private struct SVGWebView: UIViewRepresentable {
         configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
 
         // Add message handlers for JavaScript communication
-        configuration.userContentController.add(context.coordinator, name: "countrySelected")
-        configuration.userContentController.add(context.coordinator, name: "countryHovered")
+        configuration.userContentController.add(context.coordinator.scriptMessageHandler, name: "countrySelected")
 
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.isOpaque = false
@@ -276,21 +275,52 @@ private struct SVGWebView: UIViewRepresentable {
         webView.scrollView.backgroundColor = .clear
         webView.navigationDelegate = context.coordinator
 
+        // Disable zooming
+        webView.scrollView.maximumZoomScale = 1.0
+        webView.scrollView.minimumZoomScale = 1.0
+        webView.scrollView.isMultipleTouchEnabled = false
+
         webView.alpha = 0
+
+        context.coordinator.webView = webView
 
         return webView
     }
 
     func updateUIView(_ webView: WKWebView, context: Context) {
         // Force reload by clearing cache when color scheme changes
-        webView.loadHTMLString(htmlContent, baseURL: nil)
+        context.coordinator.setHTML(htmlContent)
     }
 
-    class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
+    class Coordinator: NSObject, WKNavigationDelegate {
         @Binding var selectedCountryCode: String?
+        weak var webView: WKWebView?
+
+        private var htmlContent: String?
+        private var isReloadNeeded = false
+        private var lastReloadDate: Date?
+
+        let scriptMessageHandler: ScriptMessageHandler
 
         init(selectedCountryCode: Binding<String?>) {
             self._selectedCountryCode = selectedCountryCode
+            self.scriptMessageHandler = ScriptMessageHandler()
+
+            super.init()
+
+            scriptMessageHandler.coordinator = self
+
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(Coordinator.applicationWillEnterForeground),
+                name: UIApplication.willEnterForegroundNotification,
+                object: nil
+            )
+        }
+
+        func setHTML(_ html: String) {
+            self.htmlContent = html
+            webView?.loadHTMLString(html, baseURL: nil)
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -298,6 +328,29 @@ private struct SVGWebView: UIViewRepresentable {
             UIView.animate(withDuration: 0.3, delay: 0.05, options: .curveEaseIn) {
                 webView.alpha = 1
             }
+        }
+
+        func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+            isReloadNeeded = true
+            if UIApplication.shared.applicationState == .active {
+                reloadIfNeeded()
+            }
+        }
+
+        @objc private func applicationWillEnterForeground() {
+            reloadIfNeeded()
+        }
+
+        private func reloadIfNeeded() {
+            guard isReloadNeeded,
+                  Date.now.timeIntervalSince((lastReloadDate ?? .distantPast)) > 8,
+                  let webView,
+                  let htmlContent else {
+                return
+            }
+            isReloadNeeded = false
+            lastReloadDate = Date()
+            webView.loadHTMLString(htmlContent, baseURL: nil)
         }
 
         func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
@@ -309,6 +362,14 @@ private struct SVGWebView: UIViewRepresentable {
                         self.selectedCountryCode = nil
                     }
                 }
+            }
+        }
+
+        class ScriptMessageHandler: NSObject, WKScriptMessageHandler {
+            weak var coordinator: Coordinator?
+
+            func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+                coordinator?.userContentController(userContentController, didReceive: message)
             }
         }
     }
@@ -349,5 +410,5 @@ private struct SVGWebView: UIViewRepresentable {
     )
     .frame(height: 230)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color(UIColor(light: .systemBackground, dark: .secondarySystemBackground)))
+    .background(Constants.Colors.secondaryBackground)
 }

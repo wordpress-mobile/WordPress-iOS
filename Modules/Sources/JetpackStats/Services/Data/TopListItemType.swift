@@ -37,7 +37,7 @@ enum TopListItemType: Identifiable, CaseIterable, Sendable {
         case .fileDownloads: "arrow.down.circle"
         case .searchTerms: "magnifyingglass"
         case .videos: "play.rectangle"
-        case .archive: "rectangle.and.text.magnifyingglass"
+        case .archive: "folder"
         }
     }
 

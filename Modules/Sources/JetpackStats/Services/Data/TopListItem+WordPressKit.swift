@@ -1,7 +1,7 @@
 import Foundation
-import WordPressKit
+@preconcurrency import WordPressKit
 
-extension TopListData.Post {
+extension TopListItem.Post {
     init(_ post: WordPressKit.StatsTopPost, dateFormatter: DateFormatter) {
         self.init(
             title: post.title,
@@ -15,19 +15,19 @@ extension TopListData.Post {
     }
 }
 
-extension TopListData.Referrer {
+extension TopListItem.Referrer {
     init(_ referrer: WordPressKit.StatsReferrer) {
         self.init(
             name: referrer.title,
             domain: referrer.url?.host,
             iconURL: referrer.iconURL,
-            children: referrer.children.map { TopListData.Referrer($0) },
+            children: referrer.children.map { TopListItem.Referrer($0) },
             metrics: SiteMetricsSet(views: referrer.viewsCount)
         )
     }
 }
 
-extension TopListData.Location {
+extension TopListItem.Location {
     init(_ country: WordPressKit.StatsCountry) {
         self.init(
             country: country.name,
@@ -48,7 +48,7 @@ extension TopListData.Location {
     }
 }
 
-extension TopListData.Author {
+extension TopListItem.Author {
     init(_ author: WordPressKit.StatsTopAuthor, dateFormatter: DateFormatter) {
         self.init(
             name: author.name,
@@ -56,22 +56,23 @@ extension TopListData.Author {
             role: nil,
             metrics: SiteMetricsSet(views: author.viewsCount),
             avatarURL: author.iconURL,
-            posts: author.posts.map { TopListData.Post($0, dateFormatter: dateFormatter) }
+            posts: author.posts.map { TopListItem.Post($0, dateFormatter: dateFormatter) }
         )
     }
 }
 
-extension TopListData.ExternalLink {
+extension TopListItem.ExternalLink {
     init(_ click: WordPressKit.StatsClick) {
         self.init(
             url: click.clickedURL?.absoluteString ?? "",
             title: click.title,
+            children: click.children.map { TopListItem.ExternalLink($0) },
             metrics: SiteMetricsSet(views: click.clicksCount)
         )
     }
 }
 
-extension TopListData.FileDownload {
+extension TopListItem.FileDownload {
     init(_ download: WordPressKit.StatsFileDownload) {
         self.init(
             fileName: URL(string: download.file)?.lastPathComponent ?? download.file,
@@ -81,7 +82,7 @@ extension TopListData.FileDownload {
     }
 }
 
-extension TopListData.SearchTerm {
+extension TopListItem.SearchTerm {
     init(_ searchTerm: WordPressKit.StatsSearchTerm) {
         self.init(
             term: searchTerm.term,
@@ -90,18 +91,18 @@ extension TopListData.SearchTerm {
     }
 }
 
-extension TopListData.Video {
+extension TopListItem.Video {
     init(_ video: WordPressKit.StatsVideo) {
         self.init(
             title: video.title,
             postId: String(video.postID),
-            videoUrl: video.videoURL,
+            videoURL: video.videoURL,
             metrics: SiteMetricsSet(views: video.playsCount)
         )
     }
 }
 
-extension TopListData.ArchiveItem {
+extension TopListItem.ArchiveItem {
     init(_ item: WordPressKit.StatsArchiveItem) {
         self.init(
             href: item.href,
@@ -111,9 +112,9 @@ extension TopListData.ArchiveItem {
     }
 }
 
-extension TopListData.ArchiveSection {
+extension TopListItem.ArchiveSection {
     init(sectionName: String, items: [WordPressKit.StatsArchiveItem]) {
-        let archiveItems = items.map { TopListData.ArchiveItem($0) }
+        let archiveItems = items.map { TopListItem.ArchiveItem($0) }
         let totalViews = items.reduce(0) { $0 + $1.views }
 
         self.init(

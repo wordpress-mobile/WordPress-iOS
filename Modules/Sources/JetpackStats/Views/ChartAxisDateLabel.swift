@@ -7,11 +7,14 @@ struct ChartAxisDateLabel: View {
     @Environment(\.context) var context
 
     var body: some View {
-        if granularity == .hour {
-            hourLabel
-        } else {
-            standardLabel
+        Group {
+            if granularity == .hour {
+                hourLabel
+            } else {
+                standardLabel
+            }
         }
+        .fixedSize() // Prevent from clipping (sometimes happens)
     }
 
     private var standardLabel: some View {

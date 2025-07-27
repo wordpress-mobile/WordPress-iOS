@@ -12,15 +12,13 @@ struct TrafficTabView: View {
     }
 
     var body: some View {
-        List {
-            ForEach(viewModels, id: \.id) { viewModel in
-                makeItem(for: viewModel)
-                    .padding(.vertical, Constants.step1)
-                    .padding(.top, viewModel.id == viewModels.first?.id ? 8 : 0)
+        ScrollView {
+            LazyVStack(spacing: Constants.step3) {
+                ForEach(viewModels, id: \.id) { viewModel in
+                    makeItem(for: viewModel)
+                }
             }
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
-            .listRowInsets(.zero)
+            .padding(.vertical, Constants.step2)
         }
         .listStyle(.plain)
         .onAppear {
@@ -32,11 +30,9 @@ struct TrafficTabView: View {
             }
         }
         .background(Constants.Colors.background)
-//        .toolbar {
-//            if #available(iOS 26, *) {
+        .toolbar {
 //                normalModeToolbarContent
-//            }
-//        }
+        }
         .safeAreaInset(edge: .bottom) {
             LegacyFloatingDateControl(dateRange: $dateRange)
         }
@@ -51,7 +47,7 @@ struct TrafficTabView: View {
         case let viewModel as ChartCardViewModel:
             ChartCard(viewModel: viewModel)
                 .cardStyle()
-        case let viewModel as TopListCardViewModel:
+        case let viewModel as TopListViewModel:
             TopListCard(viewModel: viewModel)
                 .cardStyle()
         default:
@@ -70,17 +66,17 @@ struct TrafficTabView: View {
                 dateRange: dateRange,
                 service: context.service
             ),
-            TopListCardViewModel(
+            TopListViewModel(
                 selection: .init(item: .postsAndPages, metric: .views),
                 dateRange: dateRange,
                 service: context.service
             ),
-            TopListCardViewModel(
+            TopListViewModel(
                 selection: .init(item: .referrers, metric: .views),
                 dateRange: dateRange,
                 service: context.service
             ),
-            TopListCardViewModel(
+            TopListViewModel(
                 selection: .init(item: .locations, metric: .views),
                 dateRange: dateRange,
                 service: context.service

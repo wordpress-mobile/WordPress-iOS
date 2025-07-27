@@ -2,6 +2,26 @@
   {
     "url": "https://developer.apple.com",
     "title": "Apple Developer",
+    "children": [
+      {
+        "url": "https://developer.apple.com/documentation/swiftui",
+        "title": "SwiftUI Documentation",
+        "children": [],
+        "metrics": {
+          "views": 50,
+          "visitors": 35
+        }
+      },
+      {
+        "url": "https://developer.apple.com/documentation/uikit",
+        "title": "UIKit Documentation",
+        "children": [],
+        "metrics": {
+          "views": 30,
+          "visitors": 20
+        }
+      }
+    ],
     "metrics": {
       "views": 180,
       "visitors": 120
@@ -10,6 +30,7 @@
   {
     "url": "https://swift.org",
     "title": "Swift.org",
+    "children": [],
     "metrics": {
       "views": 150,
       "visitors": 100
@@ -18,6 +39,17 @@
   {
     "url": "https://github.com",
     "title": "GitHub",
+    "children": [
+      {
+        "url": "https://github.com/wordpress-mobile/WordPress-iOS",
+        "title": "WordPress-iOS Repository",
+        "children": [],
+        "metrics": {
+          "views": 40,
+          "visitors": 25
+        }
+      }
+    ],
     "metrics": {
       "views": 120,
       "visitors": 80
@@ -26,6 +58,7 @@
   {
     "url": "https://stackoverflow.com",
     "title": "Stack Overflow",
+    "children": [],
     "metrics": {
       "views": 100,
       "visitors": 70
@@ -34,6 +67,7 @@
   {
     "url": "https://raywenderlich.com",
     "title": "Ray Wenderlich",
+    "children": [],
     "metrics": {
       "views": 80,
       "visitors": 50
@@ -42,6 +76,7 @@
   {
     "url": "https://nshipster.com",
     "title": "NSHipster",
+    "children": [],
     "metrics": {
       "views": 60,
       "visitors": 40

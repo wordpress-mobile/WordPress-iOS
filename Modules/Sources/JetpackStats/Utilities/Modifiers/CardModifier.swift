@@ -3,7 +3,7 @@ import SwiftUI
 struct CardModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .background(Color(UIColor(light: .systemBackground, dark: .secondarySystemBackground)))
+            .background(Constants.Colors.secondaryBackground)
             .overlay(
                 RoundedRectangle(cornerRadius: 26)
                     .stroke(Color(.opaqueSeparator), lineWidth: 0.5)

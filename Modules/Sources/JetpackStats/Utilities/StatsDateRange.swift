@@ -61,19 +61,6 @@ struct StatsDateRange: Equatable, Sendable {
         calendar.canNavigate(dateInterval, direction: direction)
     }
 
-    /// Returns true if the specified comparison period is enabled.
-    func isComparisonPeriodEnabled(_ period: DateRangeComparisonPeriod) -> Bool {
-        switch period {
-        case .precedingPeriod:
-            // Preceding period is always available
-            return true
-        case .samePeriodLastYear:
-            // Same period last year requires the date range to be less than a year
-            let components = calendar.dateComponents([.year], from: dateInterval.start, to: dateInterval.end)
-            return (components.year ?? 0) < 1
-        }
-    }
-
     /// Generates a list of available adjacent periods in the specified direction.
     /// - Parameters:
     ///   - direction: The navigation direction (previous or next)

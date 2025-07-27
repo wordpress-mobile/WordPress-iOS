@@ -28,6 +28,11 @@ enum Constants {
             dark: UIColor.systemBackground
         ))
 
+        static let secondaryBackground = Color(UIColor(
+            light: UIColor.systemBackground,
+            dark: UIColor.secondarySystemBackground
+        ))
+
         static let blue = Color(palette: CSColor.Blue.self)
         static let purple = Color(palette: CSColor.Purple.self)
         static let red = Color(palette: CSColor.Red.self)
@@ -41,6 +46,7 @@ enum Constants {
         static let jetpack = Color(palette: CSColor.JetpackGreen.self)
     }
 
+    static let step0_5: CGFloat = 9
     static let step1: CGFloat = 12
     static let step2: CGFloat = 18
     static let step3: CGFloat = 24

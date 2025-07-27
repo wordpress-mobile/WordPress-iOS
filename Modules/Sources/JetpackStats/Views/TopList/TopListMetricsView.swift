@@ -10,7 +10,7 @@ struct TopListMetricsView: View {
         VStack(alignment: .trailing, spacing: 2) {
             HStack(spacing: 3) {
                 Text(StatsValueFormatter.formatNumber(currentValue, onlyLarge: true))
-                    .font(.subheadline.weight(.medium)).tracking(-0.1)
+                    .font(.system(.subheadline, design: .rounded, weight: .medium)).tracking(-0.1)
                     .foregroundColor(.primary)
                     .contentTransition(.numericText())
 
@@ -18,13 +18,14 @@ struct TopListMetricsView: View {
                     Image(systemName: "chevron.forward")
                         .font(.caption2.weight(.bold))
                         .foregroundStyle(Color(.tertiaryLabel))
+                        .padding(.trailing, -2)
                 }
             }
             if let trend {
                 Text(trend.formattedTrend)
                     .foregroundColor(trend.sentiment.foregroundColor)
                     .contentTransition(.numericText())
-                    .font(.caption.weight(.medium)).tracking(-0.33)
+                    .font(.system(.caption, design: .rounded, weight: .medium)).tracking(-0.33)
             }
         }
         .animation(.spring, value: trend)

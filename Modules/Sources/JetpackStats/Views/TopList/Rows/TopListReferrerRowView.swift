@@ -2,10 +2,10 @@ import SwiftUI
 import WordPressUI
 
 struct TopListReferrerRowView: View {
-    let item: TopListData.Referrer
+    let item: TopListItem.Referrer
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: Constants.step0_5) {
             // Icon or placeholder
             if let iconURL = item.iconURL {
                 CachedAsyncImage(url: iconURL) { image in
@@ -22,9 +22,9 @@ struct TopListReferrerRowView: View {
                     .frame(width: 24, height: 24)
             }
 
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 1) {
                 Text(item.name)
-                    .font(.callout)
+                    .font(.body)
                     .foregroundColor(.primary)
                     .lineLimit(1)
 
@@ -46,9 +46,6 @@ struct TopListReferrerRowView: View {
     }
 
     private var placeholderIcon: some View {
-        Image(systemName: "link.circle.fill")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .foregroundColor(.secondary.opacity(0.5))
+        Image(systemName: "link")
     }
 }

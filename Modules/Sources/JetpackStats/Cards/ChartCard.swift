@@ -34,6 +34,16 @@ struct ChartCard: View {
                 footerView
             }
         }
+        .background(
+            LinearGradient(
+                colors: [
+                    selectedMetric.primaryColor.opacity(0.02),
+                    selectedMetric.primaryColor.opacity(0.0)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
         .onAppear {
             viewModel.onAppear()
         }
@@ -65,12 +75,14 @@ struct ChartCard: View {
             if viewModel.isFirstLoad {
                 mainChartView(metric: selectedMetric, data: mockChartData)
                     .redacted(reason: .placeholder)
-                    .opacity(0.33)
+                    .opacity(0.2)
+                    .pulsating()
             } else if let data = viewModel.chartData[selectedMetric] {
                 if data.isEmpty, data.granularity == .hour {
                     loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
                 } else {
                     mainChartView(metric: selectedMetric, data: data)
+                        .transition(.opacity.combined(with: .scale(scale: 0.97)))
                 }
             } else {
                 loadingErrorView(with: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
@@ -78,6 +90,7 @@ struct ChartCard: View {
         }
         .animation(.spring, value: selectedMetric)
         .animation(.spring, value: selectedChartType)
+        .animation(.easeInOut, value: viewModel.isFirstLoad)
     }
 
     private var footerView: some View {
@@ -86,6 +99,7 @@ struct ChartCard: View {
             selectedMetric: $selectedMetric
         )
         .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
+        .pulsating(viewModel.isFirstLoad)
     }
 
     private func loadingErrorView(with message: String) -> some View {

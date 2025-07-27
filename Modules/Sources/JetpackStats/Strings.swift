@@ -72,6 +72,8 @@ enum Strings {
         static let share = AppLocalizedString("jetpackStats.button.share", value: "Share", comment: "Share chart menu item")
         static let showAll = AppLocalizedString("jetpackStats.button.showAll", value: "Show All", comment: "Button title")
         static let ok = AppLocalizedString("jetpackStats.button.ok", value: "OK", comment: "OK button")
+        static let downloadCSV = AppLocalizedString("jetpackStats.button.downloadCSV", value: "Download CSV", comment: "Button to download data as CSV file")
+        static let more = AppLocalizedString("jetpackStats.button.more", value: "More", comment: "More actions button")
     }
 
     enum DatePicker {
@@ -112,22 +114,16 @@ enum Strings {
         static let generic = AppLocalizedString("jetpackStats.chart.generitcError", value: "Something went wrong", comment: "Genertic error message")
     }
 
-    enum SearchTerms {
-        static let fromSearch = AppLocalizedString("jetpackStats.searchTerms.fromSearch", value: "From search", comment: "Caption shown below search terms")
-    }
-
-    enum Videos {
-        static func postId(_ id: String) -> String {
-            String.localizedStringWithFormat(
-                AppLocalizedString("jetpackStats.videos.postId", value: "Post #%1$@", comment: "Post ID for video. %1$@ is the post ID"),
-                id
-            )
-        }
-    }
-
     enum ArchiveSections {
         static let author = AppLocalizedString("jetpackStats.archiveSections.author", value: "Authors", comment: "Archive section for authors")
         static let other = AppLocalizedString("jetpackStats.archiveSections.other", value: "Other", comment: "Archive section for other items")
+
+        static func itemCount(_ count: Int) -> String {
+            let format = count == 1
+                ? AppLocalizedString("jetpackStats.archiveSections.itemCount.singular", value: "%1$d item", comment: "Singular item count for archive sections. %1$d is the number.")
+                : AppLocalizedString("jetpackStats.archiveSections.itemCount.plural", value: "%1$d items", comment: "Plural item count for archive sections. %1$d is the number.")
+            return String.localizedStringWithFormat(format, count)
+        }
     }
 
     enum PostDetails {
@@ -174,5 +170,44 @@ enum Strings {
         static let referralSources = AppLocalizedString("jetpackStats.referrerDetails.referralSources", value: "Referral Sources", comment: "Section title for the list of referral sources")
         static let markAsSpamError = AppLocalizedString("jetpackStats.referrerDetails.markAsSpamError", value: "Failed to mark as spam", comment: "Error message when marking a referrer as spam fails")
         static let errorAlertTitle = AppLocalizedString("jetpackStats.referrerDetails.errorAlertTitle", value: "Error", comment: "Title for error alert when marking referrer as spam fails")
+    }
+
+    enum ExternalLinkDetails {
+        static let title = AppLocalizedString("jetpackStats.externalLinkDetails.title", value: "External Link", comment: "Title for the external link details screen")
+        static let openLink = AppLocalizedString("jetpackStats.externalLinkDetails.openLink", value: "Open Link", comment: "Button to open the external link in browser")
+        static let childLinks = AppLocalizedString("jetpackStats.externalLinkDetails.childLinks", value: "Sub-links", comment: "Section title for the list of child links")
+    }
+
+    enum ContextMenuActions {
+        static let openInBrowser = AppLocalizedString("jetpackStats.contextMenu.openInBrowser", value: "Open in Browser", comment: "Context menu action to open link in browser")
+        static let copyURL = AppLocalizedString("jetpackStats.contextMenu.copyURL", value: "Copy URL", comment: "Context menu action to copy URL")
+        static let copyTitle = AppLocalizedString("jetpackStats.contextMenu.copyTitle", value: "Copy Title", comment: "Context menu action to copy title")
+        static let copyName = AppLocalizedString("jetpackStats.contextMenu.copyName", value: "Copy Name", comment: "Context menu action to copy name")
+        static let copyDomain = AppLocalizedString("jetpackStats.contextMenu.copyDomain", value: "Copy Domain", comment: "Context menu action to copy domain")
+        static let copyCountryName = AppLocalizedString("jetpackStats.contextMenu.copyCountryName", value: "Copy Country Name", comment: "Context menu action to copy country name")
+        static let copyFileName = AppLocalizedString("jetpackStats.contextMenu.copyFileName", value: "Copy File Name", comment: "Context menu action to copy file name")
+        static let copyFilePath = AppLocalizedString("jetpackStats.contextMenu.copyFilePath", value: "Copy File Path", comment: "Context menu action to copy file path")
+        static let searchInGoogle = AppLocalizedString("jetpackStats.contextMenu.searchInGoogle", value: "Search in Google", comment: "Context menu action to search term in Google")
+        static let copySearchTerm = AppLocalizedString("jetpackStats.contextMenu.copySearchTerm", value: "Copy Search Term", comment: "Context menu action to copy search term")
+        static let copyVideoURL = AppLocalizedString("jetpackStats.contextMenu.copyVideoURL", value: "Copy Video URL", comment: "Context menu action to copy video URL")
+    }
+
+    enum CSVExport {
+        static let title = AppLocalizedString("jetpackStats.csv.title", value: "Title", comment: "CSV header for title column")
+        static let url = AppLocalizedString("jetpackStats.csv.url", value: "URL", comment: "CSV header for URL column")
+        static let date = AppLocalizedString("jetpackStats.csv.date", value: "Date", comment: "CSV header for date column")
+        static let type = AppLocalizedString("jetpackStats.csv.type", value: "Type", comment: "CSV header for type column")
+        static let author = AppLocalizedString("jetpackStats.csv.author", value: "Author", comment: "CSV header for author column")
+        static let name = AppLocalizedString("jetpackStats.csv.name", value: "Name", comment: "CSV header for name column")
+        static let domain = AppLocalizedString("jetpackStats.csv.domain", value: "Domain", comment: "CSV header for domain column")
+        static let country = AppLocalizedString("jetpackStats.csv.country", value: "Country", comment: "CSV header for country column")
+        static let countryCode = AppLocalizedString("jetpackStats.csv.countryCode", value: "Country Code", comment: "CSV header for country code column")
+        static let role = AppLocalizedString("jetpackStats.csv.role", value: "Role", comment: "CSV header for role column")
+        static let fileName = AppLocalizedString("jetpackStats.csv.fileName", value: "File Name", comment: "CSV header for file name column")
+        static let filePath = AppLocalizedString("jetpackStats.csv.filePath", value: "File Path", comment: "CSV header for file path column")
+        static let searchTerm = AppLocalizedString("jetpackStats.csv.searchTerm", value: "Search Term", comment: "CSV header for search term column")
+        static let videoURL = AppLocalizedString("jetpackStats.csv.videoURL", value: "Video URL", comment: "CSV header for video URL column")
+        static let section = AppLocalizedString("jetpackStats.csv.section", value: "Section", comment: "CSV header for section column")
+        static let value = AppLocalizedString("jetpackStats.csv.value", value: "Value", comment: "CSV header for generic value column")
     }
 }

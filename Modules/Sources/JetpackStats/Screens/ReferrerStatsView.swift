@@ -1,8 +1,9 @@
 import SwiftUI
 import WordPressUI
+import DesignSystem
 
 struct ReferrerStatsView: View {
-    let referrer: TopListData.Referrer
+    let referrer: TopListItem.Referrer
     let dateRange: StatsDateRange
 
     private let imageSize: CGFloat = 28
@@ -98,14 +99,7 @@ struct ReferrerStatsView: View {
     @ViewBuilder
     var viewsCount: some View {
         if let views = referrer.metrics.views {
-            VStack(alignment: .trailing, spacing: 0) {
-                Text(StatsValueFormatter.formatNumber(views))
-                    .font(Font.make(.recoleta, textStyle: .title2, weight: .medium))
-                    .foregroundColor(.primary)
-                Text(SiteMetric.views.localizedTitle)
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-            }
+            StandaloneMetricView(metric: .views, value: views)
         }
     }
 
@@ -142,29 +136,23 @@ struct ReferrerStatsView: View {
             Text(Strings.ReferrerDetails.referralSources)
                 .font(.headline)
                 .foregroundColor(.primary)
+                .padding(.horizontal, Constants.step3)
 
             TopListItemsView(
                 data: childrenChartData,
                 itemLimit: referrer.children.count,
-                dateRange: dateRange,
-                isNavigationDisabled: true
+                dateRange: dateRange
             )
         }
         .padding(.vertical, Constants.step2)
-        .padding(.horizontal, Constants.step3)
         .cardStyle()
     }
 
-    private var childrenChartData: TopListChartData {
-        let maxValue = referrer.children
-            .compactMap { $0.metrics.views }
-            .max() ?? 1
-
-        return TopListChartData(
+    private var childrenChartData: TopListData {
+        return TopListData(
             item: .referrers,
             metric: .views,
-            items: referrer.children,
-            maxValue: maxValue
+            items: referrer.children
         )
     }
 
@@ -198,27 +186,27 @@ struct ReferrerStatsView: View {
     .tint(Constants.Colors.jetpack)
 }
 
-private extension TopListData.Referrer {
-    static let mock = TopListData.Referrer(
+private extension TopListItem.Referrer {
+    static let mock = TopListItem.Referrer(
         name: "Google Search",
         domain: "google.com",
         iconURL: URL(string: "https://www.google.com/favicon.ico"),
         children: [
-            TopListData.Referrer(
+            TopListItem.Referrer(
                 name: "wordpress development tutorial",
                 domain: "google.com",
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
                 children: [],
                 metrics: SiteMetricsSet(views: 850)
             ),
-            TopListData.Referrer(
+            TopListItem.Referrer(
                 name: "swift programming blog",
                 domain: "google.com",
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),
                 children: [],
                 metrics: SiteMetricsSet(views: 750)
             ),
-            TopListData.Referrer(
+            TopListItem.Referrer(
                 name: "ios app development best practices",
                 domain: "google.com",
                 iconURL: URL(string: "https://www.google.com/favicon.ico"),

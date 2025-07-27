@@ -1,7 +1,7 @@
 import SwiftUI
 
 @MainActor
-final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
+final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     let items: [TopListItemType]
     let groupedItems: [[TopListItemType]]
 
@@ -14,14 +14,14 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
             loadData()
         }
     }
-    @Published private(set) var matchedData: TopListChartData?
+    @Published private(set) var data: TopListData?
     @Published private(set) var isLoading = true
     @Published private(set) var loadingError: Error?
     @Published private(set) var isStale = false
     @Published private(set) var cachedCountriesMapData: CountriesMapData?
 
     private let service: any StatsServiceProtocol
-    private let fetchLimit: Int
+    private let fetchLimit: Int?
     private let filter: Filter?
 
     private var loadingTask: Task<Void, Never>?
@@ -41,7 +41,7 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         case author(userId: String)
     }
 
-    var isFirstLoad: Bool { isLoading && matchedData == nil }
+    var isFirstLoad: Bool { isLoading && data == nil }
 
     private var isFirstAppear = true
 
@@ -50,8 +50,9 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         dateRange: StatsDateRange,
         service: any StatsServiceProtocol,
         items: [TopListItemType]? = nil,
-        fetchLimit: Int = 20,
-        filter: Filter? = nil
+        fetchLimit: Int? = 100,
+        filter: Filter? = nil,
+        initialData: TopListData? = nil
     ) {
         self.items = items ?? service.supportedItems
         self.selection = selection
@@ -59,6 +60,8 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         self.service = service
         self.fetchLimit = fetchLimit
         self.filter = filter
+        self.data = initialData
+        self.isLoading = initialData == nil
 
         self.groupedItems = {
             let primary = service.supportedItems.filter {
@@ -87,7 +90,7 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
 
         // If we have data, start a timer to mark data as stale if there is
         // no response in more than T seconds.
-        if matchedData != nil {
+        if data != nil {
             staleTimer = Task { [weak self] in
                 try? await Task.sleep(for: .seconds(2))
                 guard !Task.isCancelled else { return }
@@ -125,7 +128,7 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
             // Cancel stale timer and reset stale flag when data is successfully loaded
             staleTimer?.cancel()
             isStale = false
-            matchedData = data
+            self.data = data
 
             // Update cached CountriesMapData if locations are selected
             if selection.item == .locations {
@@ -137,14 +140,14 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
             return
         } catch {
             loadingError = error
-            matchedData = nil
+            data = nil
         }
 
         loadRequestCount = 0
         isLoading = false
     }
 
-    private func getTopListData(for selection: Selection, dateRange: StatsDateRange) async throws -> TopListChartData {
+    private func getTopListData(for selection: Selection, dateRange: StatsDateRange) async throws -> TopListData {
         let granularity = dateRange.dateInterval.preferredGranularity
 
         // When filter is set for author, we need to fetch authors data
@@ -166,7 +169,7 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         )
 
         // Fetch previous data only for items that support it
-        async let previousTask: TopListData? = {
+        async let previousTask: TopListResponse? = {
             guard selection.item != .archive else { return nil }
             return try await service.getTopListData(
                 fetchItem,
@@ -183,33 +186,29 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         let previousItems = filteredItems(previous?.items ?? [])
 
         // Build previous items dictionary
-        var previousItemsDict: [TopListItemID: any TopListItem] = [:]
+        var previousItemsDict: [TopListItemID: any TopListItemProtocol] = [:]
         for item in previousItems {
             previousItemsDict[item.id] = item
         }
 
         // Calculate max value from filtered items based on selected metric
         let metric = selection.metric
-        let maxValue = currentItems
-            .compactMap { $0.metrics[metric] }
-            .max() ?? 1
 
-        return TopListChartData(
+        return TopListData(
             item: selection.item,
             metric: metric,
             items: currentItems,
-            previousItems: previousItemsDict,
-            maxValue: maxValue
+            previousItems: previousItemsDict
         )
     }
 
-    private func filteredItems(_ items: [any TopListItem]) -> [any TopListItem] {
+    private func filteredItems(_ items: [any TopListItemProtocol]) -> [any TopListItemProtocol] {
         guard let filter else {
             return items
         }
         switch filter {
         case .author(let userId):
-            let authors = items.lazy.compactMap { $0 as? TopListData.Author }
+            let authors = items.lazy.compactMap { $0 as? TopListItem.Author }
             if let author = authors.first(where: { $0.userId == userId }),
                let posts = author.posts {
                 return posts
@@ -218,9 +217,9 @@ final class TopListCardViewModel: ObservableObject, TrafficCardViewModel {
         }
     }
 
-    private func updateCountriesMapDataCache(from data: TopListChartData) {
-        let locations = data.items.compactMap { $0 as? TopListData.Location }
-        let previousLocations = data.previousItems.compactMapValues { $0 as? TopListData.Location }
+    private func updateCountriesMapDataCache(from data: TopListData) {
+        let locations = data.items.compactMap { $0 as? TopListItem.Location }
+        let previousLocations = data.previousItems.compactMapValues { $0 as? TopListItem.Location }
 
         cachedCountriesMapData = CountriesMapData(
             metric: selection.metric,

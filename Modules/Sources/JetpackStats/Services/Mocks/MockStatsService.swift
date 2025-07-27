@@ -4,7 +4,7 @@ import SwiftUI
 
 actor MockStatsService: ObservableObject, StatsServiceProtocol {
     private var hourlyData: [SiteMetric: [DataPoint]] = [:]
-    private var dailyTopListData: [TopListItemType: [Date: [any TopListItem]]] = [:]
+    private var dailyTopListData: [TopListItemType: [Date: [any TopListItemProtocol]]] = [:]
     private let calendar: Calendar
 
     let supportedMetrics = SiteMetric.allCases
@@ -39,7 +39,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         await generateTopListMockData()
     }
 
-    func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsData {
+    func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsResponse {
         await generateDataIfNeeded()
 
         var total = SiteMetricsSet()
@@ -66,10 +66,10 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
 
-        return SiteMetricsData(total: total, metrics: output)
+        return SiteMetricsResponse(total: total, metrics: output)
     }
 
-    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListData {
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListResponse {
         await generateDataIfNeeded()
 
         guard let typeData = dailyTopListData[item] else {
@@ -82,7 +82,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         }
 
         // Aggregate all items across the date range
-        var aggregatedItems: [TopListItemID: (any TopListItem, Int)] = [:] // Store item and aggregated metrics
+        var aggregatedItems: [TopListItemID: (any TopListItemProtocol, Int)] = [:] // Store item and aggregated metrics
 
         for (_, dailyItems) in filteredData {
             for item in dailyItems {
@@ -99,7 +99,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         // Convert to array with updated metric value and sort
         let sortedItems = aggregatedItems.values
-            .map { (item, totalValue) -> any TopListItem in
+            .map { (item, totalValue) -> any TopListItemProtocol in
                 // Create a mutable copy and update the aggregated metric value
                 var mutableItem = item
                 mutableItem.metrics[metric] = totalValue
@@ -109,15 +109,15 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
 
-        return TopListData(items: Array(sortedItems.prefix(limit ?? Int.max)))
+        return TopListResponse(items: Array(sortedItems.prefix(limit ?? Int.max)))
     }
 
-    func getRealtimeTopListData(_ dataType: TopListItemType) async throws -> TopListData {
+    func getRealtimeTopListData(_ dataType: TopListItemType) async throws -> TopListResponse {
         // Load base items from JSON
         let baseItems = loadRealtimeBaseItems(for: dataType)
 
         // Add dynamic variations to simulate real-time changes
-        let realtimeItems = baseItems.map { item -> any TopListItem in
+        let realtimeItems = baseItems.map { item -> any TopListItemProtocol in
             let baseViews = item.metrics.views ?? 0
 
             // Use time-based seed for consistent gradual changes
@@ -175,12 +175,10 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         let topItems = Array(sortedItems.prefix(10))
 
-        return TopListData(
-            items: topItems
-        )
+        return TopListResponse(items: topItems)
     }
 
-    private func loadRealtimeBaseItems(for dataType: TopListItemType) -> [any TopListItem] {
+    private func loadRealtimeBaseItems(for dataType: TopListItemType) -> [any TopListItemProtocol] {
         let fileName: String
         switch dataType {
         case .postsAndPages:
@@ -217,13 +215,13 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             // Decode based on data type
             switch dataType {
             case .referrers:
-                let referrers = try decoder.decode([TopListData.Referrer].self, from: data)
+                let referrers = try decoder.decode([TopListItem.Referrer].self, from: data)
                 return referrers
             case .locations:
-                let locations = try decoder.decode([TopListData.Location].self, from: data)
+                let locations = try decoder.decode([TopListItem.Location].self, from: data)
                 return locations
             case .authors:
-                let authors = try decoder.decode([TopListData.Author].self, from: data)
+                let authors = try decoder.decode([TopListItem.Author].self, from: data)
                 return authors.map {
                     var copy = $0
                     copy.avatarURL = Bundle.module.path(forResource: "author\($0.userId)", ofType: "jpg").map {
@@ -232,22 +230,22 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                     return copy
                 }
             case .externalLinks:
-                let links = try decoder.decode([TopListData.ExternalLink].self, from: data)
+                let links = try decoder.decode([TopListItem.ExternalLink].self, from: data)
                 return links
             case .fileDownloads:
-                let downloads = try decoder.decode([TopListData.FileDownload].self, from: data)
+                let downloads = try decoder.decode([TopListItem.FileDownload].self, from: data)
                 return downloads
             case .searchTerms:
-                let terms = try decoder.decode([TopListData.SearchTerm].self, from: data)
+                let terms = try decoder.decode([TopListItem.SearchTerm].self, from: data)
                 return terms
             case .videos:
-                let videos = try decoder.decode([TopListData.Video].self, from: data)
+                let videos = try decoder.decode([TopListItem.Video].self, from: data)
                 return videos
             case .postsAndPages:
-                let posts = try decoder.decode([TopListData.Post].self, from: data)
+                let posts = try decoder.decode([TopListItem.Post].self, from: data)
                 return posts
             case .archive:
-                let sections = try decoder.decode([TopListData.ArchiveSection].self, from: data)
+                let sections = try decoder.decode([TopListItem.ArchiveSection].self, from: data)
                 return sections
             }
         } catch {
@@ -316,7 +314,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     // MARK: - Data Loading
 
     /// Loads historical items from JSON files based on the data type
-    private func loadHistoricalItems(for dataType: TopListItemType) -> [any TopListItem] {
+    private func loadHistoricalItems(for dataType: TopListItemType) -> [any TopListItemProtocol] {
         let fileName: String
         switch dataType {
         case .postsAndPages:
@@ -353,13 +351,13 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             // Decode based on data type
             switch dataType {
             case .referrers:
-                let referrers = try decoder.decode([TopListData.Referrer].self, from: data)
+                let referrers = try decoder.decode([TopListItem.Referrer].self, from: data)
                 return referrers
             case .locations:
-                let locations = try decoder.decode([TopListData.Location].self, from: data)
+                let locations = try decoder.decode([TopListItem.Location].self, from: data)
                 return locations
             case .authors:
-                let authors = try decoder.decode([TopListData.Author].self, from: data)
+                let authors = try decoder.decode([TopListItem.Author].self, from: data)
                 return authors.map {
                     var copy = $0
                     copy.avatarURL = Bundle.module.path(forResource: "author\($0.userId)", ofType: "jpg").map {
@@ -368,22 +366,22 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                     return copy
                 }
             case .externalLinks:
-                let links = try decoder.decode([TopListData.ExternalLink].self, from: data)
+                let links = try decoder.decode([TopListItem.ExternalLink].self, from: data)
                 return links
             case .fileDownloads:
-                let downloads = try decoder.decode([TopListData.FileDownload].self, from: data)
+                let downloads = try decoder.decode([TopListItem.FileDownload].self, from: data)
                 return downloads
             case .searchTerms:
-                let terms = try decoder.decode([TopListData.SearchTerm].self, from: data)
+                let terms = try decoder.decode([TopListItem.SearchTerm].self, from: data)
                 return terms
             case .videos:
-                let videos = try decoder.decode([TopListData.Video].self, from: data)
+                let videos = try decoder.decode([TopListItem.Video].self, from: data)
                 return videos
             case .postsAndPages:
-                let posts = try decoder.decode([TopListData.Post].self, from: data)
+                let posts = try decoder.decode([TopListItem.Post].self, from: data)
                 return posts
             case .archive:
-                let sections = try decoder.decode([TopListData.ArchiveSection].self, from: data)
+                let sections = try decoder.decode([TopListItem.ArchiveSection].self, from: data)
                 return sections
             }
         } catch {
@@ -395,7 +393,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     // MARK: - Data Generation
 
     /// Mutates item metrics based on growth factors and variations
-    private func mutateItemMetrics(_ item: any TopListItem, growthFactor: Double, seasonalFactor: Double, weekendFactor: Double, randomFactor: Double) -> any TopListItem {
+    private func mutateItemMetrics(_ item: any TopListItemProtocol, growthFactor: Double, seasonalFactor: Double, weekendFactor: Double, randomFactor: Double) -> any TopListItemProtocol {
         let combinedFactor = growthFactor * seasonalFactor * weekendFactor * randomFactor
 
         var item = item
@@ -522,7 +520,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         // Generate daily data for each type
         for dataType in TopListItemType.allCases {
-            var typeData: [Date: [any TopListItem]] = [:]
+            var typeData: [Date: [any TopListItemProtocol]] = [:]
 
             // Load base items from JSON files
             let baseItems = loadHistoricalItems(for: dataType)
@@ -552,7 +550,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                     var mutatedItem = mutateItemMetrics(item, growthFactor: growthFactor, seasonalFactor: seasonalFactor, weekendFactor: weekendFactor, randomFactor: randomFactor)
 
                     // If it's an Author with posts, mutate the posts too
-                    if let author = mutatedItem as? TopListData.Author, let posts = author.posts {
+                    if let author = mutatedItem as? TopListItem.Author, let posts = author.posts {
                         var mutatedAuthor = author
                         mutatedAuthor.posts = posts.map { post in
                             var mutatedPost = post

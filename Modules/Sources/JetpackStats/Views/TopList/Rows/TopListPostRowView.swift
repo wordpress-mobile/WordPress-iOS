@@ -2,20 +2,13 @@ import SwiftUI
 import WordPressShared
 
 struct TopListPostRowView: View {
-    let item: TopListData.Post
+    let item: TopListItem.Post
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            ZStack(alignment: .leading) {
-                // Ensure stable height
-                Text(item.title)
-                    .lineLimit(2, reservesSpace: true)
-                    .opacity(0)
-                Text(item.title)
-            }
+        Text(item.title)
             .font(.callout)
             .foregroundColor(.primary)
+            .lineSpacing(-2)
             .lineLimit(2)
-        }
     }
 }

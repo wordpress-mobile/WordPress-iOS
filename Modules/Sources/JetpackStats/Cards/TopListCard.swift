@@ -1,70 +1,71 @@
 import SwiftUI
 
 struct TopListCard: View {
-    @ObservedObject private var viewModel: TopListCardViewModel
+    @ObservedObject private var viewModel: TopListViewModel
+
+    private let itemLimit: Int
+    private let reserveSpace: Bool
 
     @Environment(\.context) var context
+    @Environment(\.router) var router
 
-    private let itemLimit = 5
-
-    init(viewModel: TopListCardViewModel) {
+    init(
+        viewModel: TopListViewModel,
+        itemLimit: Int = 5,
+        reserveSpace: Bool = true
+    ) {
         self.viewModel = viewModel
+        self.itemLimit = itemLimit
+        self.reserveSpace = reserveSpace
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: Constants.step2) {
             HStack {
                 StatsCardTitleView(title: viewModel.selection.item == .locations ? "Countries" : viewModel.title)
                 Spacer(minLength: 44)
             }
-            VStack(spacing: Constants.step2) {
+            .padding(.horizontal, Constants.step3)
+
+            VStack(spacing: Constants.step1) {
                 if viewModel.selection.item == .locations {
                     CountriesMapView(
                         data: viewModel.cachedCountriesMapData ?? .init(metric: viewModel.selection.metric, locations: []),
                         primaryColor: Constants.Colors.uiColorBlue
                     )
+                    .padding(.vertical, Constants.step1)
+                    .padding(.horizontal, Constants.step2)
                 }
-                headerView
-                contentView
+                listHeaderView
+                    .padding(.horizontal, Constants.step3)
+
+                listContentView
             }
         }
         .onAppear {
             viewModel.onAppear()
         }
         .padding(.vertical, Constants.step2)
-        .padding(.horizontal, Constants.step3)
         .overlay(alignment: .topTrailing) {
             moreMenu
         }
         .grayscale(viewModel.isStale ? 1 : 0)
         .animation(.smooth, value: viewModel.isStale)
-        .animation(.spring, value: viewModel.matchedData.map(ObjectIdentifier.init)) // placing is important
+        .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init)) // placing is important
+        .background(
+            Color.clear
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    navigateToTopListScreen()
+                }
+        )
     }
 
-    private var headerView: some View {
+    private var listHeaderView: some View {
         HStack {
             if viewModel.items.count > 1 {
                 Menu {
-                    ForEach(Array(viewModel.groupedItems.enumerated()), id: \.offset) { _, items in
-                        Section {
-                            ForEach(items) { item in
-                                Button {
-                                    var selection = viewModel.selection
-                                    selection.item = item
-
-                                    let supportedMetric = getSupportedMetrics(for: item)
-                                    if !supportedMetric.contains(selection.metric),
-                                       let metric = supportedMetric.first {
-                                        selection.metric = metric
-                                    }
-                                    viewModel.selection = selection
-                                } label: {
-                                    Label(item.localizedTitle, systemImage: item.systemImage)
-                                }
-                            }
-                        }
-                    }
-                    .tint(Color.primary)
+                    itemTypePicker
                 } label: {
                     InlineValuePickerTitle(title: viewModel.selection.item.localizedTitle)
                 }
@@ -80,14 +81,7 @@ struct TopListCard: View {
             let metrics = getSupportedMetrics(for: viewModel.selection.item)
             if metrics.count > 1 {
                 Menu {
-                    ForEach(metrics) { metric in
-                        Button {
-                            viewModel.selection.metric = metric
-                        } label: {
-                            Label(metric.localizedTitle, systemImage: metric.systemImage)
-                        }
-                    }
-                    .tint(Color.primary)
+                    makeMetricPicker(with: metrics)
                 } label: {
                     InlineValuePickerTitle(title: viewModel.selection.metric.localizedTitle)
                 }
@@ -98,6 +92,53 @@ struct TopListCard: View {
                     .fontWeight(.medium)
             }
         }
+    }
+
+    private func navigateToTopListScreen() {
+        let screen = TopListScreenView(
+            selection: viewModel.selection,
+            dateRange: viewModel.dateRange,
+            service: context.service,
+            initialData: viewModel.data
+        )
+        .environment(\.context, context)
+        .environment(\.router, router)
+
+        router.navigate(to: screen)
+    }
+
+    private var itemTypePicker: some View {
+        ForEach(Array(viewModel.groupedItems.enumerated()), id: \.offset) { _, items in
+            Section {
+                ForEach(items) { item in
+                    Button {
+                        var selection = viewModel.selection
+                        selection.item = item
+
+                        let supportedMetric = getSupportedMetrics(for: item)
+                        if !supportedMetric.contains(selection.metric),
+                           let metric = supportedMetric.first {
+                            selection.metric = metric
+                        }
+                        viewModel.selection = selection
+                    } label: {
+                        Label(item.localizedTitle, systemImage: item.systemImage)
+                    }
+                }
+            }
+        }
+        .tint(Color.primary)
+    }
+
+    private func makeMetricPicker(with metrics: [SiteMetric]) -> some View {
+        ForEach(metrics) { metric in
+            Button {
+                viewModel.selection.metric = metric
+            } label: {
+                Label(metric.localizedTitle, systemImage: metric.systemImage)
+            }
+        }
+        .tint(Color.primary)
     }
 
     private func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
@@ -128,12 +169,13 @@ struct TopListCard: View {
     }
 
     @ViewBuilder
-    private var contentView: some View {
+    private var listContentView: some View {
         Group {
             if viewModel.isFirstLoad {
                 topListItemsView(data: mockData)
                     .redacted(reason: .placeholder)
-            } else if let data = viewModel.matchedData {
+                    .pulsating()
+            } else if let data = viewModel.data {
                 if data.items.isEmpty {
                     makeEmptyStateView(message: Strings.Chart.empty)
                 } else {
@@ -145,22 +187,23 @@ struct TopListCard: View {
         }
     }
 
-    private func topListItemsView(data: TopListChartData) -> some View {
+    private func topListItemsView(data: TopListData) -> some View {
         VStack(spacing: 0) {
-            ZStack(alignment: .top) {
-                // Ensure consistent sizing
-                TopListItemsView(data: mockData, itemLimit: itemLimit, dateRange: viewModel.dateRange)
-                    .opacity(0)
-                TopListItemsView(data: data, itemLimit: itemLimit, dateRange: viewModel.dateRange)
-            }
+            TopListItemsView(
+                data: data,
+                itemLimit: itemLimit,
+                dateRange: viewModel.dateRange,
+                reserveSpace: reserveSpace
+            )
             showMoreButton
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, Constants.step3)
         }
     }
 
     private var showMoreButton: some View {
         Button {
-            // Not implementd
+            navigateToTopListScreen()
         } label: {
             HStack(spacing: 4) {
                 Text(Strings.Buttons.showAll)
@@ -187,8 +230,8 @@ struct TopListCard: View {
             }
     }
 
-    private var mockData: TopListChartData {
-        TopListChartData.mock(
+    private var mockData: TopListData {
+        TopListData.mock(
             for: viewModel.selection.item,
             metric: viewModel.selection.metric,
             itemCount: itemLimit
@@ -197,17 +240,19 @@ struct TopListCard: View {
 }
 
 #Preview {
-    TopListCardPreview(item: .locations)
+    NavigationView {
+        TopListCardPreview(item: .authors)
+    }
 }
 
 private struct TopListCardPreview: View {
     let item: TopListItemType
 
-    @StateObject private var viewModel: TopListCardViewModel
+    @StateObject private var viewModel: TopListViewModel
 
     init(item: TopListItemType) {
         self.item = item
-        self._viewModel = StateObject(wrappedValue: TopListCardViewModel(
+        self._viewModel = StateObject(wrappedValue: TopListViewModel(
             selection: .init(
                 item: item,
                 metric: item == .fileDownloads ? .downloads : .views

@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct TopListLocationRowView: View {
-    let item: TopListData.Location
+    let item: TopListItem.Location
 
     var body: some View {
-        HStack(spacing: Constants.step2 / 2) {
+        HStack(spacing: Constants.step0_5) {
             if let flag = item.flag {
                 Text(flag)
                     .font(.title2)

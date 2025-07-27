@@ -16,7 +16,7 @@ public struct PostStatsView: View {
             self.date = date
         }
 
-        init(from post: TopListData.Post) {
+        init(from post: TopListItem.Post) {
             self.title = post.title
             self.postID = post.postID ?? ""
             self.postURL = post.postURL
@@ -36,7 +36,7 @@ public struct PostStatsView: View {
     @Environment(\.context) private var context
     @Environment(\.router) private var router
 
-    init(post: TopListData.Post, dateRange: StatsDateRange) {
+    init(post: TopListItem.Post, dateRange: StatsDateRange) {
         self.post = PostInfo(from: post)
         self.initialDateRange = dateRange
     }
