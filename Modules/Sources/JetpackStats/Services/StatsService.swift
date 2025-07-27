@@ -121,18 +121,18 @@ actor StatsService: StatsServiceProtocol {
             let interval = convertDateIntervalSiteToLocal(interval)
             return try await service.getData(interval: interval, unit: .day, summarize: true, limit: limit ?? 0, parameters: parameters)
         }
-        
+
         // Helper function to sort items by metric value (descending) and then by itemID for stable ordering
         func sortItems(_ items: [any TopListItemProtocol]) -> [any TopListItemProtocol] {
             items.sorted { lhs, rhs in
                 let lhsValue = lhs.metrics[metric] ?? 0
                 let rhsValue = rhs.metrics[metric] ?? 0
-                
+
                 // First sort by metric value (descending)
                 if lhsValue != rhsValue {
                     return lhsValue > rhsValue
                 }
-                
+
                 // If values are equal, sort by itemID for stable ordering
                 return lhs.id.id < rhs.id.id
             }

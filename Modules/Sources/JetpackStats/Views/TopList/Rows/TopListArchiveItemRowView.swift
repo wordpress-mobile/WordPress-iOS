@@ -9,7 +9,7 @@ struct TopListArchiveItemRowView: View {
                 .font(.callout)
                 .foregroundColor(.primary)
                 .lineLimit(1)
-            
+
             Text(item.href)
                 .font(.footnote)
                 .foregroundColor(.secondary)

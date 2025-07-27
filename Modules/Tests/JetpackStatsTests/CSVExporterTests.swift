@@ -130,7 +130,7 @@ struct CSVExporterTests {
         // Then
         #expect(csv.isEmpty)
     }
-    
+
     @Test("CSV uses RFC 4180 compliant line endings")
     func testCSVLineEndings() {
         // Given
@@ -154,17 +154,17 @@ struct CSVExporterTests {
                 metrics: SiteMetricsSet(views: 2)
             )
         ]
-        
+
         let exporter = CSVExporter()
-        
+
         // When
         let csv = exporter.generateCSV(from: posts, metric: .views)
-        
+
         // Then
         // Verify CRLF line endings are used (RFC 4180 standard)
         #expect(csv.contains("\r\n"))
         #expect(!csv.contains("\n\r")) // Wrong order
-        
+
         // Verify we have exactly 2 CRLF sequences (after header and first data row)
         let crlfCount = csv.components(separatedBy: "\r\n").count - 1
         #expect(crlfCount == 2)

@@ -3,7 +3,7 @@ import DesignSystem
 
 struct TopListItemView: View {
     static let defaultCellHeight: CGFloat = 52
-    
+
     let item: any TopListItemProtocol
     let previousValue: Int?
     let metric: SiteMetric
@@ -25,7 +25,7 @@ struct TopListItemView: View {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                     isTapped = true
                 }
-                
+
                 // Reset after a delay
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {

@@ -44,7 +44,6 @@ final class RealtimeTopListCardViewModel: ObservableObject {
         isLoading = false
     }
 
-
     private func startRealtimeUpdates() {
         realtimeTimer = Task { [weak self] in
             while !Task.isCancelled {

@@ -4,7 +4,7 @@ import DesignSystem
 struct StandaloneMetricView: View {
     let metric: SiteMetric
     let value: Int
-    
+
     var body: some View {
         VStack(alignment: .trailing, spacing: 0) {
             HStack(spacing: 4) {

@@ -5,7 +5,7 @@ struct TopListItemsView: View {
     let itemLimit: Int
     let dateRange: StatsDateRange
     var reserveSpace: Bool = false
-    
+
     @ScaledMetric(relativeTo: .callout) private var cellHeight = 52
 
     var body: some View {
@@ -16,7 +16,7 @@ struct TopListItemsView: View {
                         .combined(with: .scale(scale: 0.75))
                         .combined(with: .opacity))
             }
-            
+
             if reserveSpace && data.items.count < itemLimit {
                 ForEach(0..<(itemLimit - data.items.count), id: \.self) { _ in
                     PlaceholderRowView(height: cellHeight)

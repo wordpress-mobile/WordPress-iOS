@@ -14,7 +14,7 @@ final class ChartData: Sendable {
     var isEmpty: Bool {
         currentData.isEmpty && previousData.isEmpty
     }
-    
+
     struct SignificantPoints: Sendable {
         let currentMax: DataPoint?
         let currentMin: DataPoint?
@@ -34,7 +34,7 @@ final class ChartData: Sendable {
         var maxValue = 0 // Faster without creating intermediate arrays
         var currentMaxPoint: DataPoint?
         var currentMinPoint: DataPoint?
-        
+
         for point in currentData {
             if point.value > maxValue {
                 maxValue = point.value
@@ -44,10 +44,10 @@ final class ChartData: Sendable {
                 currentMinPoint = point
             }
         }
-        
+
         var previousMaxPoint: DataPoint?
         var previousMinPoint: DataPoint?
-        
+
         for point in mappedPreviousData {
             maxValue = max(maxValue, point.value)
             if previousMaxPoint == nil || point.value > previousMaxPoint!.value {
@@ -57,7 +57,7 @@ final class ChartData: Sendable {
                 previousMinPoint = point
             }
         }
-        
+
         self.maxValue = maxValue
         self.significantPoints = SignificantPoints(
             currentMax: currentMaxPoint,

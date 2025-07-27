@@ -117,7 +117,7 @@ enum Strings {
     enum ArchiveSections {
         static let author = AppLocalizedString("jetpackStats.archiveSections.author", value: "Authors", comment: "Archive section for authors")
         static let other = AppLocalizedString("jetpackStats.archiveSections.other", value: "Other", comment: "Archive section for other items")
-        
+
         static func itemCount(_ count: Int) -> String {
             let format = count == 1
                 ? AppLocalizedString("jetpackStats.archiveSections.itemCount.singular", value: "%1$d item", comment: "Singular item count for archive sections. %1$d is the number.")
@@ -171,13 +171,13 @@ enum Strings {
         static let markAsSpamError = AppLocalizedString("jetpackStats.referrerDetails.markAsSpamError", value: "Failed to mark as spam", comment: "Error message when marking a referrer as spam fails")
         static let errorAlertTitle = AppLocalizedString("jetpackStats.referrerDetails.errorAlertTitle", value: "Error", comment: "Title for error alert when marking referrer as spam fails")
     }
-    
+
     enum ExternalLinkDetails {
         static let title = AppLocalizedString("jetpackStats.externalLinkDetails.title", value: "External Link", comment: "Title for the external link details screen")
         static let openLink = AppLocalizedString("jetpackStats.externalLinkDetails.openLink", value: "Open Link", comment: "Button to open the external link in browser")
         static let childLinks = AppLocalizedString("jetpackStats.externalLinkDetails.childLinks", value: "Sub-links", comment: "Section title for the list of child links")
     }
-    
+
     enum ContextMenuActions {
         static let openInBrowser = AppLocalizedString("jetpackStats.contextMenu.openInBrowser", value: "Open in Browser", comment: "Context menu action to open link in browser")
         static let copyURL = AppLocalizedString("jetpackStats.contextMenu.copyURL", value: "Copy URL", comment: "Context menu action to copy URL")
@@ -191,7 +191,7 @@ enum Strings {
         static let copySearchTerm = AppLocalizedString("jetpackStats.contextMenu.copySearchTerm", value: "Copy Search Term", comment: "Context menu action to copy search term")
         static let copyVideoURL = AppLocalizedString("jetpackStats.contextMenu.copyVideoURL", value: "Copy Video URL", comment: "Context menu action to copy video URL")
     }
-    
+
     enum CSVExport {
         static let title = AppLocalizedString("jetpackStats.csv.title", value: "Title", comment: "CSV header for title column")
         static let url = AppLocalizedString("jetpackStats.csv.url", value: "URL", comment: "CSV header for URL column")

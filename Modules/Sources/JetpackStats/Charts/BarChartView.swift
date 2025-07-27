@@ -86,7 +86,7 @@ struct BarChartView: View {
         }
         return selectedDataPoints.current == nil && selectedDataPoints.previous?.id == dataPoint.id
     }
-    
+
     @ChartContentBuilder
     private var significantPointAnnotations: some ChartContent {
         if let maxPoint = data.significantPoints.currentMax, data.currentData.count > 0 {

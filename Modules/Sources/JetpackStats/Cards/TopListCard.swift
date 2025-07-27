@@ -93,7 +93,7 @@ struct TopListCard: View {
             }
         }
     }
-    
+
     private func navigateToTopListScreen() {
         let screen = TopListScreenView(
             selection: viewModel.selection,

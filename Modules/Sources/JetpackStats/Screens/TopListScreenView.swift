@@ -7,7 +7,7 @@ struct TopListScreenView: View {
 
     @Environment(\.router) var router
     @Environment(\.context) var context
-    
+
     init(
         selection: TopListViewModel.Selection,
         dateRange: StatsDateRange,
@@ -22,7 +22,7 @@ struct TopListScreenView: View {
             initialData: initialData
         ))
     }
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: Constants.step4) {
@@ -79,7 +79,7 @@ struct TopListScreenView: View {
             LegacyFloatingDateControl(dateRange: $viewModel.dateRange)
         }
     }
-    
+
     @ViewBuilder
     private var headerView: some View {
         HStack(alignment: .top, spacing: Constants.step1) {
@@ -174,7 +174,7 @@ struct TopListScreenView: View {
         }
         .padding(.horizontal, Constants.step1)
     }
-    
+
     private func makeEmptyStateView(message: String) -> some View {
         itemsListView(data: mockData)
             .redacted(reason: .placeholder)
@@ -184,7 +184,7 @@ struct TopListScreenView: View {
                 SimpleErrorView(message: message)
             }
     }
-    
+
     private var mockData: TopListData {
         TopListData.mock(
             for: viewModel.selection.item,
@@ -192,21 +192,21 @@ struct TopListScreenView: View {
             itemCount: 10
         )
     }
-    
+
     // MARK: - CSV Export
-    
+
     private func generateCSVFilename() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: Date())
-        
+
         let itemName = viewModel.selection.item.localizedTitle
             .replacingOccurrences(of: " ", with: "_")
             .replacingOccurrences(of: "&", with: "and")
-        
+
         let metricName = viewModel.selection.metric.localizedTitle
             .replacingOccurrences(of: " ", with: "_")
-        
+
         return "\(itemName)_\(metricName)_\(dateString).csv"
     }
 }
@@ -217,7 +217,7 @@ struct CSVDataRepresentation: Transferable {
     let items: [any TopListItemProtocol]
     let metric: SiteMetric
     let fileName: String
-    
+
     static var transferRepresentation: some TransferRepresentation {
         let dataRepresentation = DataRepresentation(exportedContentType: .plainText) { (representation: CSVDataRepresentation) in
             try representation.generateCSVData()
@@ -228,7 +228,7 @@ struct CSVDataRepresentation: Transferable {
             return dataRepresentation
         }
     }
-    
+
     private func generateCSVData() throws -> Data {
         let exporter = CSVExporter()
         let csvContent = exporter.generateCSV(from: items, metric: metric)

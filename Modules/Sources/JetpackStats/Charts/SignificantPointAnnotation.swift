@@ -4,13 +4,13 @@ struct SignificantPointAnnotation: View {
     let value: Int
     let metric: SiteMetric
     let valueFormatter: StatsValueFormatter
-    
+
     init(value: Int, metric: SiteMetric) {
         self.value = value
         self.metric = metric
         self.valueFormatter = StatsValueFormatter(metric: metric)
     }
-    
+
     var body: some View {
         Text(valueFormatter.format(value: value, context: .compact))
             .fixedSize()

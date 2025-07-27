@@ -14,7 +14,7 @@ extension TopListItem.Post: CSVExportable {
             Strings.CSVExport.type,
         ]
     }
-    
+
     var csvValues: [String] {
         [
             title,
@@ -32,7 +32,7 @@ extension TopListItem.Referrer: CSVExportable {
             Strings.CSVExport.domain
         ]
     }
-    
+
     var csvValues: [String] {
         [
             name,
@@ -48,7 +48,7 @@ extension TopListItem.Location: CSVExportable {
             Strings.CSVExport.countryCode
         ]
     }
-    
+
     var csvValues: [String] {
         [
             country,
@@ -64,7 +64,7 @@ extension TopListItem.Author: CSVExportable {
             Strings.CSVExport.role
         ]
     }
-    
+
     var csvValues: [String] {
         [
             name,
@@ -80,7 +80,7 @@ extension TopListItem.ExternalLink: CSVExportable {
             Strings.CSVExport.url
         ]
     }
-    
+
     var csvValues: [String] {
         [
             title ?? url,
@@ -96,7 +96,7 @@ extension TopListItem.FileDownload: CSVExportable {
             Strings.CSVExport.filePath
         ]
     }
-    
+
     var csvValues: [String] {
         [
             fileName,
@@ -111,7 +111,7 @@ extension TopListItem.SearchTerm: CSVExportable {
             Strings.CSVExport.searchTerm
         ]
     }
-    
+
     var csvValues: [String] {
         [
             term
@@ -126,7 +126,7 @@ extension TopListItem.Video: CSVExportable {
             Strings.CSVExport.videoURL
         ]
     }
-    
+
     var csvValues: [String] {
         [
             title,
@@ -142,7 +142,7 @@ extension TopListItem.ArchiveItem: CSVExportable {
             Strings.CSVExport.url
         ]
     }
-    
+
     var csvValues: [String] {
         [
             value,
@@ -157,7 +157,7 @@ extension TopListItem.ArchiveSection: CSVExportable {
             Strings.CSVExport.section
         ]
     }
-    
+
     var csvValues: [String] {
         [
             displayName

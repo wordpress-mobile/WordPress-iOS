@@ -27,12 +27,12 @@ final class TopListData {
         self.metric = metric
         self.items = items
         self.previousItems = previousItems
-        
+
         // Precompute metrics
         let maxValue = items.compactMap { $0.metrics[metric] }.max() ?? 0
         let total = items.reduce(0) { $0 + ($1.metrics[metric] ?? 0) }
         let previousTotal = previousItems.values.reduce(0) { $0 + ($1.metrics[metric] ?? 0) }
-        
+
         self.metrics = Metrics(
             maxValue: maxValue,
             total: total,

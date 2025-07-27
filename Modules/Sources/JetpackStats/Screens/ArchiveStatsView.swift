@@ -4,10 +4,10 @@ import DesignSystem
 struct ArchiveStatsView: View {
     let archiveSection: TopListItem.ArchiveSection
     let dateRange: StatsDateRange
-    
+
     @Environment(\.context) private var context
     @Environment(\.router) private var router
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: Constants.step3) {
@@ -22,7 +22,7 @@ struct ArchiveStatsView: View {
         .navigationTitle(archiveSection.displayName)
         .navigationBarTitleDisplayMode(.inline)
     }
-    
+
     var headerCard: some View {
         VStack(spacing: Constants.step2) {
             HStack {
@@ -30,14 +30,14 @@ struct ArchiveStatsView: View {
                     Text(archiveSection.displayName)
                         .font(.headline)
                         .foregroundColor(.primary)
-                    
+
                     Text(Strings.ArchiveSections.itemCount(archiveSection.items.count))
                         .font(.footnote)
                         .foregroundColor(.secondary)
                 }
-                
+
                 Spacer()
-                
+
                 if let totalViews = archiveSection.metrics.views {
                     StandaloneMetricView(metric: .views, value: totalViews)
                 }
@@ -46,7 +46,7 @@ struct ArchiveStatsView: View {
         .padding(Constants.step2)
         .cardStyle()
     }
-    
+
     var itemsCard: some View {
         VStack(alignment: .leading, spacing: Constants.step2) {
             Text(itemsTitle)
@@ -63,7 +63,7 @@ struct ArchiveStatsView: View {
         .padding(.vertical, Constants.step2)
         .cardStyle()
     }
-    
+
     private var itemsTitle: String {
         switch archiveSection.sectionName.lowercased() {
         case "author":
@@ -74,7 +74,7 @@ struct ArchiveStatsView: View {
             return archiveSection.displayName
         }
     }
-    
+
     private var itemsChartData: TopListData {
         return TopListData(
             item: .archive,

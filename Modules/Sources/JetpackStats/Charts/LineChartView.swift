@@ -125,7 +125,7 @@ struct LineChartView: View {
             ))
         }
     }
-    
+
     @ChartContentBuilder
     private var significantPointAnnotations: some ChartContent {
         if selectedDate == nil,

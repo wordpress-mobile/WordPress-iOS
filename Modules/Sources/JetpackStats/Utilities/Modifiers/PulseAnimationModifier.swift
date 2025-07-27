@@ -17,7 +17,7 @@ struct PulseAnimationModifier: ViewModifier {
 
 private struct PulsingMask: View {
     @State private var opacity: Double = 0.5
-    
+
     var body: some View {
         Constants.Colors.secondaryBackground
             .opacity(opacity)
