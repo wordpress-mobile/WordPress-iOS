@@ -5,7 +5,6 @@ struct CustomDateRangePicker: View {
 
     @State private var startDate: Date
     @State private var endDate: Date
-    @State private var showingTimezoneInfo = false
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.context) private var context
@@ -86,28 +85,7 @@ struct CustomDateRangePicker: View {
                 .foregroundStyle(.secondary)
                 .contentTransition(.numericText())
                 .animation(.spring, value: formattedDateCount)
-            timezoneInfoRow
-        }
-    }
-
-    private var timezoneInfoRow: some View {
-        Button {
-            showingTimezoneInfo = true
-        } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "location")
-                    .font(.caption2)
-                Text(formattedTimeZone)
-                Image(systemName: "info.circle")
-                    .font(.caption)
-                    .foregroundColor(.accentColor)
-            }
-            .font(.footnote)
-            .foregroundColor(.secondary)
-        }
-        .buttonStyle(.plain)
-        .popover(isPresented: $showingTimezoneInfo) {
-            timezoneInfoContent
+            TimezoneInfoView()
         }
     }
 
@@ -118,11 +96,6 @@ struct CustomDateRangePicker: View {
         formatter.calendar = calendar
         formatter.maximumUnitCount = 1
         return formatter.string(from: startDate, to: endDate.addingTimeInterval(1)) ?? ""
-    }
-
-    private var formattedTimeZone: String {
-        let name = context.timeZone.localizedName(for: .standard, locale: .current)
-        return name ?? context.timeZone.identifier
     }
 
     private var dateSelectionSection: some View {
@@ -167,27 +140,6 @@ struct CustomDateRangePicker: View {
                 .environment(\.timeZone, context.timeZone)
         }
         .lineLimit(1)
-    }
-
-    @ViewBuilder
-    private var timezoneInfoContent: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(Strings.DatePicker.siteTimeZone)
-                .font(.headline)
-                .foregroundStyle(.primary)
-
-            Text(Strings.DatePicker.siteTimeZoneDescription)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-
-            Text("\(formattedTimeZone) (\(context.formatters.date.formattedTimeOffset))")
-                .font(.footnote)
-                .foregroundColor(.primary)
-        }
-        .padding()
-        .frame(idealWidth: 280, maxWidth: 320)
-        .modifier(PopoverPresentationModifier())
     }
 
     // MARK: - Quick Periods
