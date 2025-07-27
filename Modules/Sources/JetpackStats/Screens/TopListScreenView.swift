@@ -24,14 +24,30 @@ struct TopListScreenView: View {
     
     var body: some View {
         ScrollView {
+            // Gradient background for the header section
             VStack(spacing: Constants.step3) {
                 headerView
-                    .background(Color(.secondarySystemBackground).opacity(0.8))
                     .cardStyle()
+                    .background {
+                        LinearGradient(
+                            colors: [
+                                Color(.secondarySystemBackground),
+                                Color(.secondarySystemBackground),
+                                Color(.secondarySystemBackground),
+                                Color(.systemBackground)
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                        .frame(height: 500) // Approximate height to cover header area
+                        .offset(y: -100)
+                        .ignoresSafeArea()
+                    }
 
                 listContentView
             }
             .padding(.vertical, Constants.step2)
+
             .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
         }
         .background(Color(.systemBackground))
@@ -136,7 +152,7 @@ struct TopListScreenView: View {
         }
     }
     
-    private func itemsListView(data: TopListChartData) -> some View {
+    private func itemsListView(data: TopListData) -> some View {
         LazyVStack(spacing: Constants.step1 / 2) {
             ForEach(data.items, id: \.id) { item in
                 TopListItemView(
@@ -162,8 +178,8 @@ struct TopListScreenView: View {
             }
     }
     
-    private var mockData: TopListChartData {
-        TopListChartData.mock(
+    private var mockData: TopListData {
+        TopListData.mock(
             for: viewModel.selection.item,
             metric: viewModel.selection.metric,
             itemCount: 10

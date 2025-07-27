@@ -1,5 +1,5 @@
 import Foundation
-import WordPressKit
+@preconcurrency import WordPressKit
 
 extension TopListItem.Post {
     init(_ post: WordPressKit.StatsTopPost, dateFormatter: DateFormatter) {

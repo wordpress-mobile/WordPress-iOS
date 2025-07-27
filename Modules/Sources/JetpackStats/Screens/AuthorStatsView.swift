@@ -1,5 +1,5 @@
 import SwiftUI
-import WordPressKit
+@preconcurrency import WordPressKit
 import DesignSystem
 
 struct AuthorStatsView: View {

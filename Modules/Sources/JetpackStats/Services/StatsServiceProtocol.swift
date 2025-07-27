@@ -1,5 +1,5 @@
 import Foundation
-import WordPressKit
+@preconcurrency import WordPressKit
 
 protocol StatsServiceProtocol: AnyObject, Sendable {
     var supportedMetrics: [SiteMetric] { get }
