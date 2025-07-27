@@ -122,15 +122,10 @@ struct ExternalLinkStatsView: View {
     }
 
     private var childrenChartData: TopListChartData {
-        let maxValue = externalLink.children
-            .compactMap { $0.metrics.views }
-            .max() ?? 1
-
         return TopListChartData(
             item: .externalLinks,
             metric: .views,
-            items: externalLink.children,
-            maxValue: maxValue
+            items: externalLink.children
         )
     }
 }

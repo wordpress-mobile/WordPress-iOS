@@ -95,8 +95,7 @@ struct RealtimeTopListCard: View {
             item: selectedItem,
             metric: .views,
             items: data.items,
-            previousItems: [:], // No previous data for realtime
-            maxValue: viewModel.maxValue
+            previousItems: [:] // No previous data for realtime
         )
 
         return TopListItemsView(

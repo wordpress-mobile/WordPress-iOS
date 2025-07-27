@@ -51,7 +51,7 @@ struct TopListCard: View {
         }
         .grayscale(viewModel.isStale ? 1 : 0)
         .animation(.smooth, value: viewModel.isStale)
-        .animation(.spring, value: viewModel.matchedData.map(ObjectIdentifier.init)) // placing is important
+        .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init)) // placing is important
         .background(
             Color.clear
                 .contentShape(Rectangle())
@@ -99,7 +99,7 @@ struct TopListCard: View {
             selection: viewModel.selection,
             dateRange: viewModel.dateRange,
             service: context.service,
-            initialData: viewModel.matchedData
+            initialData: viewModel.data
         )
         router.navigate(to: screen)
     }
@@ -172,7 +172,7 @@ struct TopListCard: View {
                 topListItemsView(data: mockData)
                     .redacted(reason: .placeholder)
                     .pulsating()
-            } else if let data = viewModel.matchedData {
+            } else if let data = viewModel.data {
                 if data.items.isEmpty {
                     makeEmptyStateView(message: Strings.Chart.empty)
                 } else {

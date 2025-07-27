@@ -191,7 +191,6 @@ enum Strings {
     }
     
     enum Metrics {
-        static let total = AppLocalizedString("jetpackStats.metrics.total", value: "Total", comment: "Label for total value")
         static let items = AppLocalizedString("jetpackStats.metrics.items", value: "items", comment: "Label for item count")
     }
 }

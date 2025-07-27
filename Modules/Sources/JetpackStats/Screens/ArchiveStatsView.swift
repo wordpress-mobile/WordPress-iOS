@@ -76,15 +76,10 @@ struct ArchiveStatsView: View {
     }
     
     private var itemsChartData: TopListChartData {
-        let maxValue = archiveSection.items
-            .compactMap { $0.metrics.views }
-            .max() ?? 1
-        
         return TopListChartData(
             item: .archive,
             metric: .views,
-            items: archiveSection.items,
-            maxValue: maxValue
+            items: archiveSection.items
         )
     }
 }

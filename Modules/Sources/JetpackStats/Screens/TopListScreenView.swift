@@ -26,12 +26,15 @@ struct TopListScreenView: View {
         ScrollView {
             VStack(spacing: Constants.step3) {
                 headerView
+                    .background(Color(.secondarySystemBackground).opacity(0.8))
                     .cardStyle()
+
                 listContentView
             }
             .padding(.vertical, Constants.step2)
+            .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
         }
-        .background(Color(.secondarySystemBackground))
+        .background(Color(.systemBackground))
         .navigationTitle(viewModel.selection.item.localizedTitle)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
@@ -41,65 +44,47 @@ struct TopListScreenView: View {
     
     @ViewBuilder
     private var headerView: some View {
-        VStack(alignment: .leading, spacing: Constants.step4) {
-            Text(viewModel.selection.item.getTitle(for: viewModel.selection.metric))
-                .font(.title3.weight(.semibold))
-                .foregroundColor(.primary)
-            
+        VStack(alignment: .leading, spacing: Constants.step2) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(viewModel.selection.item.getTitle(for: viewModel.selection.metric))
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                Text(context.formatters.dateRange.string(from: viewModel.dateRange.dateInterval))
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+
             // Always show the metrics view to preserve identity
-            metricsOverviewView(data: viewModel.matchedData ?? mockData)
+            metricsOverviewView(data: viewModel.data ?? mockData)
                 .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
                 .pulsating(viewModel.isFirstLoad)
                 .animation(.smooth, value: viewModel.isFirstLoad)
         }
-        .padding(Constants.step4)
+        .padding(Constants.step3)
     }
     
     @ViewBuilder
     private func metricsOverviewView(data: TopListChartData) -> some View {
-        let totalValue = data.items.reduce(0) { $0 + ($1.metrics[viewModel.selection.metric] ?? 0) }
-        let previousTotalValue = data.previousItems.values.reduce(0) { $0 + ($1.metrics[viewModel.selection.metric] ?? 0) }
+        let totalValue = data.metrics.total
+        let previousTotalValue = data.metrics.previousTotal
+        let formattedValue = StatsValueFormatter(metric: viewModel.selection.metric).format(value: totalValue)
+        let trend = TrendViewModel(currentValue: totalValue, previousValue: previousTotalValue, metric: viewModel.selection.metric)
         
         VStack(spacing: Constants.step3) {
-            // Total value section
-            VStack(alignment: .leading, spacing: Constants.step1) {
-                Text(Strings.Metrics.total)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .textCase(.uppercase)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(formattedValue)
+                    .contentTransition(.numericText())
+                    .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
+                    .foregroundColor(.primary)
+                    .lineLimit(1)
+                    .animation(.spring, value: formattedValue)
                 
-                HStack(alignment: .firstTextBaseline, spacing: Constants.step2) {
-                    Text(StatsValueFormatter.formatNumber(totalValue))
-                        .font(Font.make(.recoleta, textStyle: .largeTitle, weight: .medium))
-                        .foregroundColor(.primary)
-                        .minimumScaleFactor(0.8)
-                        .lineLimit(1)
-                    
-                    if previousTotalValue > 0 {
-                        let trend = TrendViewModel(
-                            currentValue: totalValue,
-                            previousValue: previousTotalValue,
-                            metric: viewModel.selection.metric
-                        )
-                        BadgeTrendIndicator(trend: trend)
-                            .scaleEffect(1.2)
-                    }
-                }
+                BadgeTrendIndicator(trend: trend)
             }
-            
+
             // Metadata section
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: Constants.step1) {
-                    Label {
-                        Text(context.formatters.dateRange.string(from: viewModel.dateRange.dateInterval))
-                            .font(.subheadline)
-                            .foregroundColor(.primary)
-                    } icon: {
-                        Image(systemName: "calendar")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    
                     HStack(spacing: Constants.step2) {
                         Label {
                             Text("\(data.items.count) \(Strings.Metrics.items)")
@@ -131,8 +116,7 @@ struct TopListScreenView: View {
             }
         }
     }
-    
-    
+
     @ViewBuilder
     private var listContentView: some View {
         Group {
@@ -140,7 +124,7 @@ struct TopListScreenView: View {
                 itemsListView(data: mockData)
                     .redacted(reason: .placeholder)
                     .pulsating()
-            } else if let data = viewModel.matchedData {
+            } else if let data = viewModel.data {
                 if data.items.isEmpty {
                     makeEmptyStateView(message: Strings.Chart.empty)
                 } else {
@@ -153,26 +137,19 @@ struct TopListScreenView: View {
     }
     
     private func itemsListView(data: TopListChartData) -> some View {
-        LazyVStack(spacing: 0) {
-            ForEach(Array(data.items.enumerated()), id: \.offset) { index, item in
-                VStack(spacing: 0) {
-                    TopListItemView(
-                        item: item,
-                        previousValue: data.previousItem(for: item)?.metrics[viewModel.selection.metric],
-                        metric: viewModel.selection.metric,
-                        maxValue: data.maxValue,
-                        dateRange: viewModel.dateRange
-                    )
-                    .frame(height: TopListItemView.defaultCellHeight)
-                    
-                    if index < data.items.count - 1 {
-                        Divider()
-                            .padding(.leading, Constants.step3)
-                    }
-                }
+        LazyVStack(spacing: Constants.step1 / 2) {
+            ForEach(data.items, id: \.id) { item in
+                TopListItemView(
+                    item: item,
+                    previousValue: data.previousItem(for: item)?.metrics[viewModel.selection.metric],
+                    metric: viewModel.selection.metric,
+                    maxValue: data.metrics.maxValue,
+                    dateRange: viewModel.dateRange
+                )
+                .frame(height: TopListItemView.defaultCellHeight)
             }
         }
-        .padding(.horizontal, Constants.step3)
+        .padding(.horizontal, Constants.step1)
     }
     
     private func makeEmptyStateView(message: String) -> some View {

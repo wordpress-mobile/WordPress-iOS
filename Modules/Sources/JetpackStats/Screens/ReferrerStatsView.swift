@@ -149,15 +149,10 @@ struct ReferrerStatsView: View {
     }
 
     private var childrenChartData: TopListChartData {
-        let maxValue = referrer.children
-            .compactMap { $0.metrics.views }
-            .max() ?? 1
-
         return TopListChartData(
             item: .referrers,
             metric: .views,
-            items: referrer.children,
-            maxValue: maxValue
+            items: referrer.children
         )
     }
 

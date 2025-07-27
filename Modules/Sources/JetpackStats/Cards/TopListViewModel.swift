@@ -14,7 +14,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             loadData()
         }
     }
-    @Published private(set) var matchedData: TopListChartData?
+    @Published private(set) var data: TopListChartData?
     @Published private(set) var isLoading = true
     @Published private(set) var loadingError: Error?
     @Published private(set) var isStale = false
@@ -41,7 +41,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         case author(userId: String)
     }
 
-    var isFirstLoad: Bool { isLoading && matchedData == nil }
+    var isFirstLoad: Bool { isLoading && data == nil }
 
     private var isFirstAppear = true
 
@@ -60,7 +60,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         self.service = service
         self.fetchLimit = fetchLimit
         self.filter = filter
-        self.matchedData = initialData
+        self.data = initialData
         self.isLoading = initialData == nil
 
         self.groupedItems = {
@@ -90,7 +90,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
 
         // If we have data, start a timer to mark data as stale if there is
         // no response in more than T seconds.
-        if matchedData != nil {
+        if data != nil {
             staleTimer = Task { [weak self] in
                 try? await Task.sleep(for: .seconds(2))
                 guard !Task.isCancelled else { return }
@@ -128,7 +128,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             // Cancel stale timer and reset stale flag when data is successfully loaded
             staleTimer?.cancel()
             isStale = false
-            matchedData = data
+            self.data = data
 
             // Update cached CountriesMapData if locations are selected
             if selection.item == .locations {
@@ -140,7 +140,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             return
         } catch {
             loadingError = error
-            matchedData = nil
+            data = nil
         }
 
         loadRequestCount = 0
@@ -193,16 +193,12 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
 
         // Calculate max value from filtered items based on selected metric
         let metric = selection.metric
-        let maxValue = currentItems
-            .compactMap { $0.metrics[metric] }
-            .max() ?? 1
 
         return TopListChartData(
             item: selection.item,
             metric: metric,
             items: currentItems,
-            previousItems: previousItemsDict,
-            maxValue: maxValue
+            previousItems: previousItemsDict
         )
     }
 

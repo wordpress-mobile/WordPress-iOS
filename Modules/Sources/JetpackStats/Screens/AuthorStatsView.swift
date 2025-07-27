@@ -44,7 +44,7 @@ struct AuthorStatsView: View {
             .padding(.vertical, Constants.step1)
         }
         .background(Constants.Colors.background)
-        .animation(.spring, value: viewModel.matchedData.map(ObjectIdentifier.init))
+        .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
         .onChange(of: dateRange) { newRange in
             viewModel.dateRange = newRange
         }
@@ -137,7 +137,7 @@ struct AuthorStatsView: View {
     }
 
     private func calculatePeriodViews() -> (current: Int, previous: Int?)? {
-        guard let data = viewModel.matchedData else { return nil }
+        guard let data = viewModel.data else { return nil }
 
         // Sum up views from all posts in the current period
         let currentViews = data.items.compactMap { item in

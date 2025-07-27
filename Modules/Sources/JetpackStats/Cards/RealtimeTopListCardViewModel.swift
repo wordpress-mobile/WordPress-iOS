@@ -44,11 +44,6 @@ final class RealtimeTopListCardViewModel: ObservableObject {
         isLoading = false
     }
 
-    var maxValue: Int {
-        guard let data = topListData else { return 1 }
-        let values = data.items.compactMap { $0.metrics[.views] }
-        return values.max() ?? 1
-    }
 
     private func startRealtimeUpdates() {
         realtimeTimer = Task { [weak self] in

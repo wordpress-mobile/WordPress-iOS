@@ -5,7 +5,13 @@ final class TopListChartData {
     let metric: SiteMetric
     let items: [any TopListItem]
     let previousItems: [TopListItemID: any TopListItem]
-    let maxValue: Int
+    let metrics: Metrics
+
+    struct Metrics {
+        let maxValue: Int
+        let total: Int
+        let previousTotal: Int
+    }
 
     struct ListID: Hashable {
         let item: TopListItemType
@@ -16,12 +22,22 @@ final class TopListChartData {
         ListID(item: item, metric: metric)
     }
 
-    init(item: TopListItemType, metric: SiteMetric, items: [any TopListItem], previousItems: [TopListItemID: any TopListItem] = [:], maxValue: Int) {
+    init(item: TopListItemType, metric: SiteMetric, items: [any TopListItem], previousItems: [TopListItemID: any TopListItem] = [:]) {
         self.item = item
         self.metric = metric
         self.items = items
         self.previousItems = previousItems
-        self.maxValue = maxValue
+        
+        // Precompute metrics
+        let maxValue = items.compactMap { $0.metrics[metric] }.max() ?? 0
+        let total = items.reduce(0) { $0 + ($1.metrics[metric] ?? 0) }
+        let previousTotal = previousItems.values.reduce(0) { $0 + ($1.metrics[metric] ?? 0) }
+        
+        self.metrics = Metrics(
+            maxValue: maxValue,
+            total: total,
+            previousTotal: previousTotal
+        )
     }
 
     func previousItem(for currentItem: any TopListItem) -> (any TopListItem)? {
@@ -64,16 +80,11 @@ extension TopListChartData {
             previousItemsDict[item.id] = previousItem
         }
 
-        let maxValue = currentItems
-            .compactMap { $0.metrics[metric] }
-            .max() ?? 1
-
         let chartData = TopListChartData(
             item: itemType,
             metric: metric,
             items: Array(currentItems),
-            previousItems: previousItemsDict,
-            maxValue: maxValue
+            previousItems: previousItemsDict
         )
 
         // Cache the generated data
