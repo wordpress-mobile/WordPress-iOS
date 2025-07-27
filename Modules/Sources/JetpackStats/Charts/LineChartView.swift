@@ -28,6 +28,7 @@ struct LineChartView: View {
             currentPeriodMarks
             previousPeriodMarks
             currentTimeBoundaryMark
+            significantPointAnnotations
             selectionIndicatorMarks
         }
         .chartXAxis { xAxis }
@@ -122,6 +123,36 @@ struct LineChartView: View {
                 lineCap: .round,
                 dash: [5, 5]
             ))
+        }
+    }
+    
+    @ChartContentBuilder
+    private var significantPointAnnotations: some ChartContent {
+        if selectedDate == nil,
+           let maxPoint = data.significantPoints.currentMax,
+           data.currentData.count > 0 {
+            PointMark(
+                x: .value("Date", maxPoint.date),
+                y: .value("Value", maxPoint.value)
+            )
+            .foregroundStyle(data.metric.primaryColor)
+            .symbolSize(60)
+            .annotation(position: .top, spacing: 4) {
+                Text(valueFormatter.format(value: maxPoint.value, context: .compact))
+                    .fixedSize() // Important
+                    .font(.caption.weight(.semibold))
+                    .foregroundColor(data.metric.primaryColor)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background {
+                        ZStack {
+                            Capsule()
+                                .fill(Color(.systemBackground).opacity(0.75))
+                            Capsule()
+                                .fill(data.metric.primaryColor.opacity(0.1))
+                        }
+                    }
+            }
         }
     }
 

@@ -34,6 +34,16 @@ struct ChartCard: View {
                 footerView
             }
         }
+        .background(
+            LinearGradient(
+                colors: [
+                    selectedMetric.primaryColor.opacity(0.02),
+                    selectedMetric.primaryColor.opacity(0.0)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
         .onAppear {
             viewModel.onAppear()
         }
@@ -66,6 +76,7 @@ struct ChartCard: View {
                 mainChartView(metric: selectedMetric, data: mockChartData)
                     .redacted(reason: .placeholder)
                     .opacity(0.2)
+                    .modifier(PulseAnimationModifier())
             } else if let data = viewModel.chartData[selectedMetric] {
                 if data.isEmpty, data.granularity == .hour {
                     loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
