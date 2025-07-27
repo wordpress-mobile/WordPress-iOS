@@ -24,27 +24,16 @@ struct TopListScreenView: View {
     
     var body: some View {
         ScrollView {
-            // Gradient background for the header section
-            VStack(spacing: Constants.step3) {
+            VStack(spacing: Constants.step4) {
                 headerView
+                    .background(Color(.secondarySystemBackground))
                     .cardStyle()
-                    .background {
-                        LinearGradient(
-                            colors: [
-                                Color(.secondarySystemBackground),
-                                Color(.secondarySystemBackground),
-                                Color(.secondarySystemBackground),
-                                Color(.systemBackground)
-                            ],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                        .frame(height: 500) // Approximate height to cover header area
-                        .offset(y: -100)
-                        .ignoresSafeArea()
-                    }
 
-                listContentView
+                VStack {
+                    listHeaderView
+                        .padding(.horizontal, Constants.step3)
+                    listContentView
+                }
             }
             .padding(.vertical, Constants.step2)
 
@@ -60,7 +49,7 @@ struct TopListScreenView: View {
     
     @ViewBuilder
     private var headerView: some View {
-        VStack(alignment: .leading, spacing: Constants.step2) {
+        HStack(alignment: .top, spacing: Constants.step1) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(viewModel.selection.item.getTitle(for: viewModel.selection.metric))
                     .font(.headline)
@@ -70,6 +59,8 @@ struct TopListScreenView: View {
                     .foregroundColor(.secondary)
             }
 
+            Spacer()
+
             // Always show the metrics view to preserve identity
             metricsOverviewView(data: viewModel.data ?? mockData)
                 .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
@@ -78,80 +69,63 @@ struct TopListScreenView: View {
         }
         .padding(Constants.step3)
     }
-    
+
+    private var listHeaderView: some View {
+        HStack {
+            Text(viewModel.selection.item.localizedTitle)
+                .font(.subheadline)
+                .fontWeight(.medium)
+
+            Spacer()
+
+            Text(viewModel.selection.metric.localizedTitle)
+                .font(.subheadline)
+                .fontWeight(.medium)
+        }
+    }
+
     @ViewBuilder
     private func metricsOverviewView(data: TopListData) -> some View {
-        let totalValue = data.metrics.total
-        let previousTotalValue = data.metrics.previousTotal
-        let formattedValue = StatsValueFormatter(metric: viewModel.selection.metric).format(value: totalValue)
-        let trend = TrendViewModel(currentValue: totalValue, previousValue: previousTotalValue, metric: viewModel.selection.metric)
+        let formattedValue = StatsValueFormatter(metric: data.metric)
+            .format(value: data.metrics.total)
+        let trend = TrendViewModel(
+            currentValue: data.metrics.total,
+            previousValue: data.metrics.previousTotal,
+            metric: data.metric
+        )
 
-        VStack(spacing: Constants.step3) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(formattedValue)
-                    .contentTransition(.numericText())
-                    .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
-                    .foregroundColor(.primary)
-                    .lineLimit(1)
-                    .animation(.spring, value: formattedValue)
+        VStack(alignment: .trailing, spacing: 0) {
+            Text(formattedValue)
+                .contentTransition(.numericText())
+                .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
+                .foregroundColor(.primary)
+                .lineLimit(1)
+                .animation(.spring, value: formattedValue)
 
-                BadgeTrendIndicator(trend: trend)
-            }
-
-            // Metadata section
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: Constants.step1) {
-                    HStack(spacing: Constants.step2) {
-                        Label {
-                            Text("\(data.items.count) \(Strings.Metrics.items)")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        } icon: {
-                            Image(systemName: "list.bullet")
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        Divider()
-                            .frame(height: 12)
-                        
-                        Label {
-                            Text(viewModel.selection.metric.localizedTitle)
-                                .font(.caption)
-                                .fontWeight(.medium)
-                                .foregroundColor(.secondary)
-                        } icon: {
-                            Image(systemName: viewModel.selection.metric.systemImage)
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                }
-                
-                Spacer()
-            }
+            Text(trend.formattedTrendShort2)
+                .font(.system(.subheadline, design: .rounded, weight: .medium)).tracking(-0.2)
+                .foregroundStyle(trend.sentiment.foregroundColor)
+                .padding(.top, -4)
         }
     }
 
     @ViewBuilder
     private var listContentView: some View {
-        Group {
-            if viewModel.isFirstLoad {
-                itemsListView(data: mockData)
-                    .redacted(reason: .placeholder)
-                    .pulsating()
-            } else if let data = viewModel.data {
-                if data.items.isEmpty {
-                    makeEmptyStateView(message: Strings.Chart.empty)
-                } else {
-                    itemsListView(data: data)
-                }
+        if viewModel.isFirstLoad {
+            itemsListView(data: mockData)
+                .redacted(reason: .placeholder)
+                .pulsating()
+        } else if let data = viewModel.data {
+            if data.items.isEmpty {
+                makeEmptyStateView(message: Strings.Chart.empty)
             } else {
-                makeEmptyStateView(message: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
+                itemsListView(data: data)
             }
+        } else {
+            makeEmptyStateView(message: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
         }
     }
-    
+
     private func itemsListView(data: TopListData) -> some View {
         LazyVStack(spacing: Constants.step1 / 2) {
             ForEach(data.items, id: \.id) { item in

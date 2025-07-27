@@ -58,7 +58,7 @@ struct TrendViewModel: Hashable {
 
     /// A completed formatted trend with the absolute change and the percentage change.
     var formattedTrendShort2: String {
-        "\(formattedChange)  \(iconSign) \(formattedPercentage)"
+        "\(formattedChange)   \(iconSign) \(formattedPercentage)"
     }
 
     /// Formatted string showing the absolute change with sign.
