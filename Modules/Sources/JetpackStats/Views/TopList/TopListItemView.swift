@@ -13,14 +13,36 @@ struct TopListItemView: View {
 
     @ScaledMetric(relativeTo: .callout) private var cellHeight = 52
     @ScaledMetric(relativeTo: .subheadline) private var minTrailingWidth = 84
+    @State private var isTapped = false
 
     var body: some View {
         if hasDetails {
             Button {
-                navigateToDetails()
+                // Trigger animation
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    isTapped = true
+                }
+                
+                // Reset after a delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                        isTapped = false
+                    }
+                    // Navigate after animation starts
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                        navigateToDetails()
+                    }
+                }
             } label: {
                 content
                     .contentShape(Rectangle()) // Make the entire view tappable
+                    .scaleEffect(isTapped ? 0.97 : 1.0)
+                    .opacity(isTapped ? 0.85 : 1.0)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.black.opacity(isTapped ? 0.05 : 0))
+                            .padding(.horizontal, -Constants.step1)
+                    )
             }
             .buttonStyle(.plain)
         } else {
