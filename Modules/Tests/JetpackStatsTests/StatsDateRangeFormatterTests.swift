@@ -6,6 +6,7 @@ import Foundation
 struct StatsDateRangeFormatterTests {
     let calendar = Calendar.mock(timeZone: .eastern)
     let locale = Locale(identifier: "en_US")
+    let now = Date("2025-07-15T10:00:00-03:00")
 
     // MARK: - Date Range Formatting
 
@@ -194,7 +195,7 @@ struct StatsDateRangeFormatterTests {
             start: Date("2025-06-10T00:00:00-03:00"),
             end: Date("2025-06-11T00:00:00-03:00")
         )
-        #expect(formatter.string(from: customDay) == "Jun 10")
+        #expect(formatter.string(from: customDay, now: now) == "Jun 10")
 
         // Custom range in same month
         let customRange = DateInterval(
