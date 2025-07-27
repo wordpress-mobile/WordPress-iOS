@@ -49,7 +49,7 @@ struct PlaceholderRowView: View {
                 TopListItemBarBackground(
                     value: 100,
                     maxValue: 100,
-                    barColor: .secondary.opacity(0.33)
+                    barColor: .secondary.opacity(0.5)
                 )
             )
             .frame(height: height)

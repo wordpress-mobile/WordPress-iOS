@@ -8,9 +8,6 @@ struct TopListScreenView: View {
     @Environment(\.router) var router
     @Environment(\.context) var context
     
-    @State private var isExportingCSV = false
-    @State private var csvDocument: CSVDocument?
-    
     init(
         selection: TopListViewModel.Selection,
         dateRange: StatsDateRange,
@@ -50,10 +47,26 @@ struct TopListScreenView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
-                    Button(action: { exportCSV() }) {
-                        Label(Strings.Buttons.downloadCSV, systemImage: "square.and.arrow.down")
+                    if let data = viewModel.data, !data.items.isEmpty {
+                        ShareLink(
+                            item: CSVDataRepresentation(
+                                items: data.items,
+                                metric: viewModel.selection.metric,
+                                fileName: generateCSVFilename()
+                            ),
+                            preview: SharePreview(
+                                generateCSVFilename(),
+                                image: Image(systemName: "doc.text")
+                            )
+                        ) {
+                            Label(Strings.Buttons.downloadCSV, systemImage: "square.and.arrow.down")
+                        }
+                    } else {
+                        Button(action: {}) {
+                            Label(Strings.Buttons.downloadCSV, systemImage: "square.and.arrow.down")
+                        }
+                        .disabled(true)
                     }
-                    .disabled(viewModel.data?.items.isEmpty ?? true)
                 } label: {
                     Image(systemName: "ellipsis")
                 }
@@ -64,17 +77,6 @@ struct TopListScreenView: View {
         }
         .safeAreaInset(edge: .bottom) {
             LegacyFloatingDateControl(dateRange: $viewModel.dateRange)
-        }
-        .fileExporter(
-            isPresented: $isExportingCSV,
-            document: csvDocument,
-            contentType: .commaSeparatedText,
-            defaultFilename: generateCSVFilename()
-        ) { result in
-            if case .failure(let error) = result {
-                print("Failed to export CSV: \(error)")
-            }
-            csvDocument = nil
         }
     }
     
@@ -193,16 +195,6 @@ struct TopListScreenView: View {
     
     // MARK: - CSV Export
     
-    private func exportCSV() {
-        guard let data = viewModel.data else { return }
-        
-        let exporter = CSVExporter()
-        let csvContent = exporter.generateCSV(from: data.items, metric: viewModel.selection.metric)
-        
-        csvDocument = CSVDocument(text: csvContent)
-        isExportingCSV = true
-    }
-    
     private func generateCSVFilename() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -219,28 +211,31 @@ struct TopListScreenView: View {
     }
 }
 
-// MARK: - CSV Document
+// MARK: - CSV Data Representation
 
-struct CSVDocument: FileDocument {
-    static var readableContentTypes: [UTType] { [.commaSeparatedText] }
+struct CSVDataRepresentation: Transferable {
+    let items: [any TopListItemProtocol]
+    let metric: SiteMetric
+    let fileName: String
     
-    var text: String
-    
-    init(text: String) {
-        self.text = text
-    }
-    
-    init(configuration: ReadConfiguration) throws {
-        guard let data = configuration.file.regularFileContents,
-              let string = String(data: data, encoding: .utf8) else {
-            throw CocoaError(.fileReadCorruptFile)
+    static var transferRepresentation: some TransferRepresentation {
+        let dataRepresentation = DataRepresentation(exportedContentType: .plainText) { (representation: CSVDataRepresentation) in
+            try representation.generateCSVData()
         }
-        text = string
+        if #available(iOS 17.0, *) {
+            return dataRepresentation.suggestedFileName { $0.fileName }
+        } else {
+            return dataRepresentation
+        }
     }
     
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        let data = text.data(using: .utf8) ?? Data()
-        return FileWrapper(regularFileWithContents: data)
+    private func generateCSVData() throws -> Data {
+        let exporter = CSVExporter()
+        let csvContent = exporter.generateCSV(from: items, metric: metric)
+        guard let data = csvContent.data(using: .utf8) else {
+            throw CocoaError(.fileWriteUnknown)
+        }
+        return data
     }
 }
 
