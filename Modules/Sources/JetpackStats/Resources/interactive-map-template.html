@@ -56,20 +56,16 @@
         
         function setupCountryInteractions() {
             const svg = document.querySelector('svg');
-            const paths = document.querySelectorAll('path[id]');
             
-            // Click events for all devices
-            paths.forEach(path => {
-                path.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    selectCountry(this);
-                });
-            });
-            
-            // Deselect when clicking outside any country
+            // Single click handler for all interactions
             svg.addEventListener('click', function(e) {
-                if (e.target === svg || !e.target.id) {
+                e.preventDefault();
+                
+                // Check if the clicked element is a path with an ID (country)
+                if (e.target.tagName === 'path' && e.target.id) {
+                    selectCountry(e.target);
+                } else {
+                    // Clicked outside any country or on a path without ID
                     deselectCountry();
                 }
             });
