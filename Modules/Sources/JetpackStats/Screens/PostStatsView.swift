@@ -257,7 +257,7 @@ public struct PostStatsView: View {
     }
 }
 
-private struct PostDetailsData {
+private struct PostDetailsData: @unchecked Sendable {
     let post: StatsPostDetails.Post?
     let views: Int?
     let comments: Int?
