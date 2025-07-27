@@ -52,6 +52,13 @@ struct TopListCard: View {
         .grayscale(viewModel.isStale ? 1 : 0)
         .animation(.smooth, value: viewModel.isStale)
         .animation(.spring, value: viewModel.matchedData.map(ObjectIdentifier.init)) // placing is important
+        .background(
+            Color.clear
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    navigateToTopListScreen()
+                }
+        )
     }
 
     private var listHeaderView: some View {
@@ -85,6 +92,15 @@ struct TopListCard: View {
                     .fontWeight(.medium)
             }
         }
+    }
+    
+    private func navigateToTopListScreen() {
+        let screen = TopListScreenView(
+            selection: viewModel.selection,
+            dateRange: viewModel.dateRange,
+            service: context.service
+        )
+        router.navigate(to: screen)
     }
 
     private var itemTypePicker: some View {
@@ -183,12 +199,7 @@ struct TopListCard: View {
 
     private var showMoreButton: some View {
         Button {
-            let screen = TopListScreenView(
-                selection: viewModel.selection,
-                dateRange: viewModel.dateRange,
-                service: context.service
-            )
-            router.navigate(to: screen)
+            navigateToTopListScreen()
         } label: {
             HStack(spacing: 4) {
                 Text(Strings.Buttons.showAll)
