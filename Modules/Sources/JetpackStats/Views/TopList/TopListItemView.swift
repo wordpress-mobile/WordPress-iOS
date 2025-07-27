@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 struct TopListItemView: View {
     let item: any TopListItem
@@ -8,11 +9,12 @@ struct TopListItemView: View {
     let dateRange: StatsDateRange
     var isNavigationDisabled = false
 
-    @Environment(\.router) private var router
-    @Environment(\.context) private var context
+    @Environment(\.router) var router
+    @Environment(\.context) var context
 
     @ScaledMetric(relativeTo: .callout) private var cellHeight = 52
     @ScaledMetric(relativeTo: .subheadline) private var minTrailingWidth = 84
+
     @State private var isTapped = false
 
     var body: some View {
@@ -45,8 +47,14 @@ struct TopListItemView: View {
                     )
             }
             .buttonStyle(.plain)
+            .contextMenu {
+                contextMenuContent
+            }
         } else {
             content
+                .contextMenu {
+                    contextMenuContent
+                }
         }
     }
 
