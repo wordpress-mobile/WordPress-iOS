@@ -17,6 +17,7 @@ struct BarChartView: View {
         Chart {
             previousPeriodBars
             currentPeriodBars
+            significantPointAnnotations
             selectionIndicatorMarks
         }
         .chartXAxis { xAxis }
@@ -84,6 +85,35 @@ struct BarChartView: View {
             return false
         }
         return selectedDataPoints.current == nil && selectedDataPoints.previous?.id == dataPoint.id
+    }
+    
+    @ChartContentBuilder
+    private var significantPointAnnotations: some ChartContent {
+        if let maxPoint = data.significantPoints.currentMax, data.currentData.count > 0 {
+            PointMark(
+                x: .value("Date", maxPoint.date, unit: data.granularity.component),
+                y: .value("Value", maxPoint.value)
+            )
+            .opacity(0)
+            .annotation(position: .top, spacing: 8) {
+                Text(valueFormatter.format(value: maxPoint.value, context: .compact))
+                    .fixedSize()
+                    .font(.caption.weight(.semibold))
+                    .foregroundColor(data.metric.primaryColor)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background {
+                        ZStack {
+                            Capsule()
+                                .fill(Color(.systemBackground).opacity(0.75))
+                            Capsule()
+                                .fill(data.metric.primaryColor.opacity(0.1))
+                        }
+                    }
+                // Important for drag selection to work correctly.
+                    .opacity(selectedDate == nil ? 1 : 0)
+            }
+        }
     }
 
     @ChartContentBuilder
