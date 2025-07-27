@@ -41,7 +41,7 @@ struct TopListItemsView: View {
 
 struct PlaceholderRowView: View {
     let height: CGFloat
-    
+
     var body: some View {
         Rectangle()
             .fill(Color.clear)
