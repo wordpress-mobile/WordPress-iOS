@@ -4,7 +4,14 @@ protocol CSVExporterProtocol {
     func generateCSV(from items: [any TopListItemProtocol], metric: SiteMetric) -> String
 }
 
+/// Exports stats data to CSV format following RFC 4180 standard
 struct CSVExporter: CSVExporterProtocol {
+    // RFC 4180: Use CRLF for line endings
+    private static let lineEnding = "\r\n"
+    
+    // Characters that require field escaping according to RFC 4180
+    private static let charactersRequiringEscape = CharacterSet(charactersIn: ",\"\r\n")
+    
     func generateCSV(from items: [any TopListItemProtocol], metric: SiteMetric) -> String {
         guard !items.isEmpty else { return "" }
         
@@ -14,37 +21,48 @@ struct CSVExporter: CSVExporterProtocol {
             return ""
         }
         
-        // Build CSV content
-        var csvContent = [String]()
+        // Pre-allocate capacity for better performance
+        var csvLines = [String]()
+        csvLines.reserveCapacity(items.count + 1)
         
-        // Get headers and append metric name
-        var headers = exportableType.csvHeaders
-        headers.append(metric.localizedTitle)
-        csvContent.append(headers.map { escapeCSVField($0) }.joined(separator: ","))
+        // Build header row
+        let headers = exportableType.csvHeaders + [metric.localizedTitle]
+        csvLines.append(buildCSVRow(from: headers))
         
-        // Add rows
+        // Build data rows
         for item in items {
             guard let exportableItem = item as? CSVExportable else { continue }
             
-            // Get the values and append metric value
-            var values = exportableItem.csvValues
-            let metricValue = "\(item.metrics[metric] ?? 0)"
-            values.append(metricValue)
-            
-            let escapedRow = values.map { escapeCSVField($0) }
-            csvContent.append(escapedRow.joined(separator: ","))
+            let values = exportableItem.csvValues + [formatMetricValue(item.metrics[metric])]
+            csvLines.append(buildCSVRow(from: values))
         }
         
-        return csvContent.joined(separator: "\n")
+        return csvLines.joined(separator: Self.lineEnding)
     }
     
+    /// Builds a CSV row from an array of values, properly escaping fields as needed
+    private func buildCSVRow(from values: [String]) -> String {
+        values
+            .map { escapeCSVField($0) }
+            .joined(separator: ",")
+    }
+    
+    /// Formats a metric value for CSV export
+    private func formatMetricValue(_ value: Int?) -> String {
+        "\(value ?? 0)"
+    }
+    
+    /// Escapes a CSV field according to RFC 4180 rules:
+    /// - Fields containing comma, quotes, CR, or LF must be enclosed in double quotes
+    /// - Double quotes within fields must be escaped by doubling them
     private func escapeCSVField(_ field: String) -> String {
-        // Check if field needs escaping
-        if field.contains(",") || field.contains("\"") || field.contains("\n") || field.contains("\r") {
-            // Escape quotes by doubling them and wrap in quotes
-            let escaped = field.replacingOccurrences(of: "\"", with: "\"\"")
-            return "\"\(escaped)\""
+        // Quick check if escaping is needed
+        guard field.rangeOfCharacter(from: Self.charactersRequiringEscape) != nil else {
+            return field
         }
-        return field
+        
+        // Escape quotes by doubling them and wrap the field in quotes
+        let escaped = field.replacingOccurrences(of: "\"", with: "\"\"")
+        return "\"\(escaped)\""
     }
 }

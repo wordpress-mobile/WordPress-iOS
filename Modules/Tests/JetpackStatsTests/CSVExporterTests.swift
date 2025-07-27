@@ -44,7 +44,7 @@ struct CSVExporterTests {
         let csv = exporter.generateCSV(from: posts, metric: metric)
 
         // Then
-        let lines = csv.split(separator: "\n").map(String.init)
+        let lines = csv.split(separator: "\r\n").map(String.init)
 
         // Verify we have header + 3 data rows
         #expect(lines.count == 5)
@@ -109,7 +109,7 @@ struct CSVExporterTests {
         for (metric, expectedValue) in metricsToTest {
             // When
             let csv = exporter.generateCSV(from: [post], metric: metric)
-            let lines = csv.split(separator: "\n").map(String.init)
+            let lines = csv.split(separator: "\r\n").map(String.init)
 
             // Then
             #expect(lines.count == 2) // Header + 1 data row
@@ -129,5 +129,44 @@ struct CSVExporterTests {
 
         // Then
         #expect(csv.isEmpty)
+    }
+    
+    @Test("CSV uses RFC 4180 compliant line endings")
+    func testCSVLineEndings() {
+        // Given
+        let posts: [TopListItem.Post] = [
+            TopListItem.Post(
+                title: "Post 1",
+                postID: "1",
+                postURL: nil,
+                date: nil,
+                type: nil,
+                author: nil,
+                metrics: SiteMetricsSet(views: 1)
+            ),
+            TopListItem.Post(
+                title: "Post 2",
+                postID: "2",
+                postURL: nil,
+                date: nil,
+                type: nil,
+                author: nil,
+                metrics: SiteMetricsSet(views: 2)
+            )
+        ]
+        
+        let exporter = CSVExporter()
+        
+        // When
+        let csv = exporter.generateCSV(from: posts, metric: .views)
+        
+        // Then
+        // Verify CRLF line endings are used (RFC 4180 standard)
+        #expect(csv.contains("\r\n"))
+        #expect(!csv.contains("\n\r")) // Wrong order
+        
+        // Verify we have exactly 2 CRLF sequences (after header and first data row)
+        let crlfCount = csv.components(separatedBy: "\r\n").count - 1
+        #expect(crlfCount == 2)
     }
 }
