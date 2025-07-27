@@ -13,13 +13,13 @@ struct BadgeTrendIndicator: View {
                 .font(.caption2.weight(.semibold))
                 .scaleEffect(x: 0.9, y: 0.9)
             Text(trend.formattedPercentage)
-                .font(.system(.footnote, design: .rounded, weight: .semibold)).tracking(-0.25)
+                .font(.system(.caption, design: .rounded, weight: .semibold)).tracking(-0.25)
         }
         .foregroundColor(trend.sentiment.foregroundColor)
-        .padding(.horizontal, 8)
+        .padding(.horizontal, 7)
         .padding(.vertical, 6)
         .background(trend.sentiment.backgroundColor)
-        .cornerRadius(Constants.step1 / 2)
+        .cornerRadius(6)
         .animation(.spring, value: trend.percentage)
     }
 }
