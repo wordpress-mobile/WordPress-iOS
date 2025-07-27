@@ -229,13 +229,12 @@ struct TopListCard: View {
     }
 
     private func makeEmptyStateView(message: String) -> some View {
-        topListItemsView(data: mockData)
+        topListItemsView(data: .init(item: viewModel.selection.item, metric: viewModel.selection.metric, items: []))
             .allowsHitTesting(false)
             .redacted(reason: .placeholder)
-            .grayscale(1)
-            .opacity(0.25)
             .overlay {
                 SimpleErrorView(message: message)
+                    .offset(y: -18)
             }
     }
 

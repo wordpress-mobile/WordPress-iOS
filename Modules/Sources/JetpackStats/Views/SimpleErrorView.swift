@@ -13,7 +13,7 @@ struct SimpleErrorView: View {
 
     var body: some View {
         Text(message)
-            .font(.subheadline.weight(.medium))
+            .font(.body.weight(.medium))
             .multilineTextAlignment(.center)
             .frame(maxWidth: 300)
             .foregroundStyle(.secondary)

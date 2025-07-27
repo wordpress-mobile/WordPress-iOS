@@ -97,7 +97,7 @@ enum Strings {
         static let barChart = AppLocalizedString("jetpackStats.chart.barChart", value: "Bars", comment: "Bar chart type")
         static let incompleteData = AppLocalizedString("jetpackStats.chart.incompleteData", value: "Might show incomplete data", comment: "Shown when current period data might be incomplete")
         static let hourlyDataUnavailable = AppLocalizedString("jetpackStats.chart.hourlyDataNotAvailable", value: "Hourly data not available", comment: "Shown for metrics that don't support hourly data")
-        static let empty = AppLocalizedString("jetpackStats.chart.dataEmpty", value: "Not data available", comment: "Shown for empty states")
+        static let empty = AppLocalizedString("jetpackStats.chart.dataEmpty", value: "No data available", comment: "Shown for empty states")
     }
 
     enum TopListTitles {
