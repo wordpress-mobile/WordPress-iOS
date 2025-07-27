@@ -211,36 +211,6 @@ struct TopListScreenView: View {
     }
 }
 
-// MARK: - CSV Data Representation
-
-struct CSVDataRepresentation: Transferable {
-    let items: [any TopListItemProtocol]
-    let metric: SiteMetric
-    let fileName: String
-
-    static var transferRepresentation: some TransferRepresentation {
-        let dataRepresentation = DataRepresentation(exportedContentType: .plainText) { (representation: CSVDataRepresentation) in
-            try representation.generateCSVData()
-        }
-        if #available(iOS 17.0, *) {
-            return dataRepresentation.suggestedFileName { $0.fileName }
-        } else {
-            return dataRepresentation
-        }
-    }
-
-    private func generateCSVData() throws -> Data {
-        let exporter = CSVExporter()
-        let csvContent = exporter.generateCSV(from: items, metric: metric)
-        guard let data = csvContent.data(using: .utf8) else {
-            throw CocoaError(.fileWriteUnknown)
-        }
-        return data
-    }
-}
-
-// MARK: - Preview
-
 #Preview {
     NavigationStack {
         TopListScreenView(
