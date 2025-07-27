@@ -134,7 +134,7 @@ struct TopListCard: View {
             if viewModel.isFirstLoad {
                 topListItemsView(data: mockData)
                     .redacted(reason: .placeholder)
-                    .modifier(PulseAnimationModifier())
+                    .pulsating()
             } else if let data = viewModel.matchedData {
                 if data.items.isEmpty {
                     makeEmptyStateView(message: Strings.Chart.empty)

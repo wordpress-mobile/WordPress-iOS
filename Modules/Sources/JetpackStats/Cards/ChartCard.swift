@@ -76,7 +76,7 @@ struct ChartCard: View {
                 mainChartView(metric: selectedMetric, data: mockChartData)
                     .redacted(reason: .placeholder)
                     .opacity(0.2)
-                    .modifier(PulseAnimationModifier())
+                    .pulsating()
             } else if let data = viewModel.chartData[selectedMetric] {
                 if data.isEmpty, data.granularity == .hour {
                     loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
@@ -99,6 +99,7 @@ struct ChartCard: View {
             selectedMetric: $selectedMetric
         )
         .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
+        .pulsating(viewModel.isFirstLoad)
     }
 
     private func loadingErrorView(with message: String) -> some View {
