@@ -41,7 +41,16 @@ struct BarChartView: View {
                 y: .value("Value", point.value),
                 width: .ratio(0.75)
             )
-            .foregroundStyle(data.metric.primaryColor)
+            .foregroundStyle(
+                LinearGradient(
+                    colors: [
+                        data.metric.primaryColor,
+                        data.metric.primaryColor.opacity(0.5)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
             .cornerRadius(4)
             .opacity(getOpacityForCurrentPeriodBar(for: point))
         }
