@@ -121,6 +121,22 @@ actor StatsService: StatsServiceProtocol {
             let interval = convertDateIntervalSiteToLocal(interval)
             return try await service.getData(interval: interval, unit: .day, summarize: true, limit: limit ?? 0, parameters: parameters)
         }
+        
+        // Helper function to sort items by metric value (descending) and then by itemID for stable ordering
+        func sortItems(_ items: [any TopListItemProtocol]) -> [any TopListItemProtocol] {
+            items.sorted { lhs, rhs in
+                let lhsValue = lhs.metrics[metric] ?? 0
+                let rhsValue = rhs.metrics[metric] ?? 0
+                
+                // First sort by metric value (descending)
+                if lhsValue != rhsValue {
+                    return lhsValue > rhsValue
+                }
+                
+                // If values are equal, sort by itemID for stable ordering
+                return lhs.id.id < rhs.id.id
+            }
+        }
 
         switch item {
         case .postsAndPages:
@@ -128,9 +144,10 @@ actor StatsService: StatsServiceProtocol {
             case .views:
                 let data = try await getData(StatsTopPostsTimeIntervalData.self, parameters: ["skip_archives": "1"])
                 let dateFormatter = makeHourlyDateFormatter()
-                return TopListResponse(items: data.topPosts.map {
+                let items = data.topPosts.map {
                     TopListItem.Post($0, dateFormatter: dateFormatter)
-                })
+                }
+                return TopListResponse(items: sortItems(items))
             case .comments:
                 fatalError()
             default:
@@ -139,24 +156,28 @@ actor StatsService: StatsServiceProtocol {
 
         case .referrers:
             let data = try await getData(StatsTopReferrersTimeIntervalData.self)
-            return TopListResponse(items: data.referrers.map(TopListItem.Referrer.init))
+            let items = data.referrers.map(TopListItem.Referrer.init)
+            return TopListResponse(items: sortItems(items))
 
         case .locations:
             let data = try await getData(StatsTopCountryTimeIntervalData.self)
-            return TopListResponse(items: data.countries.map(TopListItem.Location.init))
+            let items = data.countries.map(TopListItem.Location.init)
+            return TopListResponse(items: sortItems(items))
 
         case .authors:
             let data = try await getData(StatsTopAuthorsTimeIntervalData.self)
             let dateFormatter = makeHourlyDateFormatter()
-            return TopListResponse(items: data.topAuthors.map {
+            let items = data.topAuthors.map {
                 TopListItem.Author($0, dateFormatter: dateFormatter)
-            })
+            }
+            return TopListResponse(items: sortItems(items))
 
         case .externalLinks:
             switch metric {
             case .views:
                 let data = try await getData(StatsTopClicksTimeIntervalData.self)
-                return TopListResponse(items: data.clicks.map(TopListItem.ExternalLink.init))
+                let items = data.clicks.map(TopListItem.ExternalLink.init)
+                return TopListResponse(items: sortItems(items))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -165,7 +186,8 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .downloads:
                 let data = try await getData(StatsFileDownloadsTimeIntervalData.self)
-                return TopListResponse(items: data.fileDownloads.map(TopListItem.FileDownload.init))
+                let items = data.fileDownloads.map(TopListItem.FileDownload.init)
+                return TopListResponse(items: sortItems(items))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -174,7 +196,8 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsSearchTermTimeIntervalData.self)
-                return TopListResponse(items: data.searchTerms.map(TopListItem.SearchTerm.init))
+                let items = data.searchTerms.map(TopListItem.SearchTerm.init)
+                return TopListResponse(items: sortItems(items))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -183,7 +206,8 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsTopVideosTimeIntervalData.self)
-                return TopListResponse(items: data.videos.map(TopListItem.Video.init))
+                let items = data.videos.map(TopListItem.Video.init)
+                return TopListResponse(items: sortItems(items))
             default:
                 throw StatsServiceError.unavailable
             }
