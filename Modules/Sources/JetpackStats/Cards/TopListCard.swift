@@ -161,6 +161,7 @@ struct TopListCard: View {
             }
             showMoreButton
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, Constants.step3)
         }
     }
 
