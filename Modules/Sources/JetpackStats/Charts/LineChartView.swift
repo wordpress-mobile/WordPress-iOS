@@ -52,7 +52,16 @@ struct LineChartView: View {
                 y: .value("Value", point.value),
                 series: .value("Period", "Current")
             )
-            .foregroundStyle(data.metric.backgroundColor(in: colorScheme))
+            .foregroundStyle(
+                LinearGradient(
+                    colors: [
+                        data.metric.primaryColor.opacity(colorScheme == .light ? 0.15 : 0.25),
+                        data.metric.primaryColor.opacity(0.0)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
             .interpolationMethod(.linear)
 
             LineMark(
