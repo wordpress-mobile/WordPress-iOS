@@ -65,12 +65,13 @@ struct ChartCard: View {
             if viewModel.isFirstLoad {
                 mainChartView(metric: selectedMetric, data: mockChartData)
                     .redacted(reason: .placeholder)
-                    .opacity(0.33)
+                    .opacity(0.2)
             } else if let data = viewModel.chartData[selectedMetric] {
                 if data.isEmpty, data.granularity == .hour {
                     loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
                 } else {
                     mainChartView(metric: selectedMetric, data: data)
+                        .transition(.opacity.combined(with: .scale(scale: 0.97)))
                 }
             } else {
                 loadingErrorView(with: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
@@ -78,6 +79,7 @@ struct ChartCard: View {
         }
         .animation(.spring, value: selectedMetric)
         .animation(.spring, value: selectedChartType)
+        .animation(.smooth, value: viewModel.isFirstLoad)
     }
 
     private var footerView: some View {
