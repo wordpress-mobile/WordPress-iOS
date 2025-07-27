@@ -101,6 +101,9 @@ struct TopListCard: View {
             service: context.service,
             initialData: viewModel.data
         )
+        .environment(\.context, context)
+        .environment(\.router, router)
+
         router.navigate(to: screen)
     }
 
