@@ -100,7 +100,8 @@ struct TopListScreenView: View {
                 .pulsating(viewModel.isFirstLoad)
                 .animation(.smooth, value: viewModel.isFirstLoad)
         }
-        .padding(Constants.step3)
+        .padding(.vertical, Constants.step2)
+        .padding(.horizontal, Constants.step3)
     }
 
     private var listHeaderView: some View {
