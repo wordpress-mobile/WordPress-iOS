@@ -24,14 +24,14 @@ struct ChartCardCustomizationView: View {
             // Reset Settings button at the bottom
             Section {
                 Button(action: resetToDefaults) {
-                    HStack {
-                        Spacer()
-                        Text(Strings.Buttons.resetSettings)
-                            .foregroundColor(.red)
-                        Spacer()
-                    }
+                    Text(Strings.Buttons.resetSettings)
+                        .foregroundColor(.red)
+                        .frame(maxWidth: .infinity, alignment: .center)
+
                 }
+                .padding(.top, 12)
                 .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
             }
         }
         .listStyle(.plain)
@@ -55,7 +55,7 @@ struct ChartCardCustomizationView: View {
                         updatedConfig.metrics = orderedSelectedMetrics
                         chartViewModel.updateConfiguration(updatedConfig)
                         chartViewModel.isEditing = false
-                        
+
                         dismiss()
                     }
                     .fontWeight(.semibold)

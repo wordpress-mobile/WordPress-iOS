@@ -45,6 +45,7 @@ struct TopListCard: View {
         .overlay(alignment: .topTrailing) {
             moreMenu
         }
+        .cardStyle()
         .grayscale(viewModel.isStale ? 1 : 0)
         .animation(.smooth, value: viewModel.isStale)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init)) // placing is important

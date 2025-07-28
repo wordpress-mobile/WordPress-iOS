@@ -34,11 +34,16 @@ struct ChartCard: View {
         }
         .onAppear {
             viewModel.onAppear()
+
+            viewModel.isEditing = true
         }
         .overlay(alignment: .topTrailing) {
             moreMenu
         }
-        .grayscale(viewModel.isStale ? 1 : 0)
+        .cardStyle()
+        .grayscale(viewModel.isStale || viewModel.isEditing ? 1 : 0)
+        .opacity(viewModel.isEditing ? 0.8 : 1)
+        .scaleEffect(viewModel.isEditing ? 0.95 : 1)
         .animation(.smooth, value: viewModel.isStale)
         .animation(.smooth, value: viewModel.isEditing)
         .sheet(isPresented: $viewModel.isEditing) {

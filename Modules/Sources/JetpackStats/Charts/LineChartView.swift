@@ -141,6 +141,7 @@ struct LineChartView: View {
                     value: maxPoint.value,
                     metric: data.metric
                 )
+                .opacity(selectedDate == nil ? 1 : 0)
             }
             .opacity(selectedDate == nil ? 1 : 0)
         }
