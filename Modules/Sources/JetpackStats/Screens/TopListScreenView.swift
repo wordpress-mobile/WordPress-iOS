@@ -27,7 +27,7 @@ struct TopListScreenView: View {
         ScrollView {
             VStack(spacing: Constants.step4) {
                 headerView
-                    .background(Color(.secondarySystemBackground).opacity(0.75))
+                    .background(Color(.secondarySystemBackground).opacity(0.7))
                     .cardStyle()
 
                 VStack {
@@ -82,7 +82,7 @@ struct TopListScreenView: View {
 
     @ViewBuilder
     private var headerView: some View {
-        HStack(alignment: .top, spacing: Constants.step1) {
+        HStack(alignment: .center, spacing: Constants.step1) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(viewModel.selection.item.getTitle(for: viewModel.selection.metric))
                     .font(.headline)
