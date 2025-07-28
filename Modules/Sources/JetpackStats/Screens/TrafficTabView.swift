@@ -69,7 +69,7 @@ struct TrafficTabView: View {
         case let viewModel as ChartCardViewModel:
             ChartCard(viewModel: viewModel)
         case let viewModel as TopListViewModel:
-            TopListCard(viewModel: viewModel, statsViewModel: self.viewModel)
+            TopListCard(viewModel: viewModel)
         default:
             let _ = assertionFailure("Unsupported type: \(viewModel)")
             EmptyView()
