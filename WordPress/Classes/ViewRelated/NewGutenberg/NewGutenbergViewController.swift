@@ -1044,15 +1044,13 @@ extension EditorConfiguration {
         self.authHeader = authHeader
 
         self.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
-        // Limited to Simple sites until application password auth is supported
-        if RemoteFeatureFlag.newGutenbergPlugins.enabled() && blog.isHostedAtWPcom {
+        // Limited to Jetpack-connected sites until editor assets endpoint is available in WordPress core
+        if EditorConfiguration.shouldEnablePlugins(for: blog, appPassword: applicationPassword) {
             self.plugins = true
-            if var editorAssetsEndpoint = blog.wordPressComRestApi?.baseURL {
-                editorAssetsEndpoint.appendPathComponent("wpcom/v2/sites")
-                if let siteId {
-                    editorAssetsEndpoint.appendPathComponent(siteId)
-                } else {
-                    editorAssetsEndpoint.appendPathComponent(siteDomain)
+            if var editorAssetsEndpoint = URL(string: self.siteApiRoot) {
+                editorAssetsEndpoint.appendPathComponent("wpcom/v2/")
+                if let namespace = siteApiNamespace.first {
+                    editorAssetsEndpoint.appendPathComponent(namespace)
                 }
                 editorAssetsEndpoint.appendPathComponent("editor-assets")
                 self.editorAssetsEndpoint = editorAssetsEndpoint
@@ -1071,6 +1069,18 @@ extension EditorConfiguration {
                 self.webViewGlobals = []
             }
         }
+    }
+
+    /// Returns true if the plugins should be enabled for the given blog.
+    /// This is used to determine if the editor should load third-party
+    /// plugins providing blocks.
+    static func shouldEnablePlugins(for blog: Blog, appPassword: String? = nil) -> Bool {
+        // Requires a Jetpack until editor assets endpoint is available in WordPress core.
+        // Requires a WP.com Simple site or an application password to authenticate all REST
+        // API requests, including those originating from non-core blocks.
+        return RemoteFeatureFlag.newGutenbergPlugins.enabled() &&
+        blog.isAccessibleThroughWPCom() &&
+        (blog.isHostedAtWPcom || appPassword != nil)
     }
 }
 
