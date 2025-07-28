@@ -5,10 +5,10 @@ enum TopListItemType: String, Identifiable, CaseIterable, Sendable, Codable {
     case authors
     case referrers
     case locations
-    case externalLinks
-    case fileDownloads
-    case searchTerms
     case videos
+    case externalLinks
+    case searchTerms
+    case fileDownloads
     case archive
 
     var id: TopListItemType { self }
@@ -55,7 +55,7 @@ enum TopListItemType: String, Identifiable, CaseIterable, Sendable, Codable {
     }
 
     static let secondaryItems: Set<TopListItemType> = [
-        .externalLinks, .fileDownloads, .searchTerms, .videos, .archive
+        .externalLinks, .fileDownloads, .searchTerms, .archive
     ]
 
     var documentationURL: URL? {
