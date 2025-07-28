@@ -6,6 +6,8 @@ struct TrafficTabView: View {
     @State private var isShowingCustomRangePicker = false
     @State private var isShowingAddCardSheet = false
 
+    @ScaledMetric private var maxWidth = 720
+
     @Environment(\.context) var context
 
     init(viewModel: StatsViewModel) {
@@ -28,6 +30,8 @@ struct TrafficTabView: View {
                     timeZoneInfo
                 }
                 .padding(.vertical, Constants.step2)
+                .frame(maxWidth: maxWidth, alignment: .center)
+                .frame(maxWidth: .infinity)
                 .onReceive(viewModel.scrollToCardSubject) { cardID in
                     // Use a more elegant spring animation for scrolling
                     withAnimation(.spring) {
@@ -149,9 +153,7 @@ struct TrafficTabView: View {
 
 #Preview {
     NavigationView {
-        TrafficTabView(
-            viewModel: StatsViewModel(context: .demo, initialDateRange: Calendar.demo.makeDateRange(for: .today))
-        )
+        TrafficTabView(viewModel: StatsViewModel(context: .demo))
     }
     .environment(\.context, .demo)
     .environment(\.router, StatsRouter(viewController: UINavigationController(), factory: MockStatsRouterScreenFactory()))

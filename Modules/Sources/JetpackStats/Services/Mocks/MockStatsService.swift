@@ -7,7 +7,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     private var dailyTopListData: [TopListItemType: [Date: [any TopListItemProtocol]]] = [:]
     private let calendar: Calendar
 
-    let supportedMetrics = SiteMetric.allCases.filter { $0 != .downloads }
+    let supportedMetrics = SiteMetric.allCases.filter {
+        $0 != .downloads && $0 != .bounceRate && $0 != .timeOnSite
+    }
     let supportedItems = TopListItemType.allCases
 
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {

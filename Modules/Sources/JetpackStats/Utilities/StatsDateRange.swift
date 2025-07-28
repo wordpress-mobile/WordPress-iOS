@@ -18,16 +18,21 @@ struct StatsDateRange: Equatable, Sendable {
     /// The calendar used for date calculations.
     let calendar: Calendar
 
+    /// The preset that was used to create this date range, if any.
+    var preset: DateIntervalPreset?
+
     init(
         interval: DateInterval,
         component: Calendar.Component,
         comparison: DateRangeComparisonPeriod = .precedingPeriod,
-        calendar: Calendar
+        calendar: Calendar,
+        preset: DateIntervalPreset? = nil
     ) {
         self.dateInterval = interval
         self.comparison = comparison
         self.component = component
         self.calendar = calendar
+        self.preset = preset
         self.effectiveComparisonInterval = interval
         self.refreshEffectiveComparisonPeriodInterval()
     }
@@ -35,6 +40,7 @@ struct StatsDateRange: Equatable, Sendable {
     mutating func update(preset: DateIntervalPreset) {
         dateInterval = calendar.makeDateInterval(for: preset)
         component = preset.component
+        self.preset = preset
         refreshEffectiveComparisonPeriodInterval()
     }
 
@@ -53,7 +59,8 @@ struct StatsDateRange: Equatable, Sendable {
     func navigate(_ direction: Calendar.NavigationDirection) -> StatsDateRange {
         // Use the component if available, otherwise determine it from the interval
         let newInterval = calendar.navigate(dateInterval, direction: direction, component: component)
-        return StatsDateRange(interval: newInterval, component: component, comparison: comparison, calendar: calendar)
+        // When navigating, we lose the preset since it's no longer a standard preset
+        return StatsDateRange(interval: newInterval, component: component, comparison: comparison, calendar: calendar, preset: nil)
     }
 
     /// Returns true if can navigate in the specified direction.
@@ -99,7 +106,8 @@ extension Calendar {
             interval: makeDateInterval(for: preset),
             component: preset.component,
             comparison: comparison,
-            calendar: self
+            calendar: self,
+            preset: preset
         )
     }
 }

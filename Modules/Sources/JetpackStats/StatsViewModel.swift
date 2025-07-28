@@ -7,6 +7,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     @Published var dateRange: StatsDateRange {
         didSet {
             updateViewModelsDateRange()
+            saveSelectedDateRangePreset()
         }
     }
     @Published private(set) var cards: [any TrafficCardViewModel] = []
@@ -14,13 +15,22 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     let scrollToCardSubject = PassthroughSubject<UUID, Never>()
 
     let context: StatsContext
+
     private let userDefaults: UserDefaults
     private let configurationKey = "JetpackStatsTrafficConfiguration"
+    private let dateRangePresetKey = "JetpackStatsSelectedDateRangePreset"
 
-    init(context: StatsContext, initialDateRange: StatsDateRange, userDefaults: UserDefaults = .standard) {
+    init(context: StatsContext, userDefaults: UserDefaults = .standard) {
         self.context = context
-        self.dateRange = initialDateRange
         self.userDefaults = userDefaults
+
+        // Try to load the saved preset, otherwise use the initial date range
+        if let savedPreset = Self.loadDateRangePreset(from: userDefaults, key: dateRangePresetKey) {
+            self.dateRange = context.calendar.makeDateRange(for: savedPreset)
+        } else {
+            self.dateRange = context.calendar.makeDateRange(for: .last7Days)
+        }
+
         self.trafficCardConfiguration = Self.loadConfiguration(
             from: userDefaults,
             key: configurationKey,
@@ -194,8 +204,40 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
         // Scroll to the moved card after a short delay
         Task {
-            try? await Task.sleep(for: .milliseconds(300))
+            try? await Task.sleep(for: .milliseconds(250))
             scrollToCardSubject.send(card.id)
         }
+    }
+
+    // MARK: - Date Range Persistence
+
+    private func saveSelectedDateRangePreset() {
+        if let preset = dateRange.preset {
+            userDefaults.set(preset.rawValue, forKey: dateRangePresetKey)
+        } else {
+            userDefaults.removeObject(forKey: dateRangePresetKey)
+        }
+    }
+
+    private static func loadDateRangePreset(from userDefaults: UserDefaults, key: String) -> DateIntervalPreset? {
+        guard let rawValue = userDefaults.string(forKey: key),
+              let preset = DateIntervalPreset(rawValue: rawValue) else {
+            return nil
+        }
+        return preset
+    }
+
+    // MARK: - Reset Settings
+
+    /// Resets all persistently stored settings including card configuration and date range preset
+    func resetAllSettings() {
+        // Reset card configuration
+        resetToDefault()
+
+        // Reset date range preset
+        userDefaults.removeObject(forKey: dateRangePresetKey)
+
+        // Reset date range to default
+        dateRange = context.calendar.makeDateRange(for: .last7Days)
     }
 }

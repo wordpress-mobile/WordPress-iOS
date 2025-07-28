@@ -12,8 +12,9 @@ public struct StatsMainView: View {
     public init(context: StatsContext, router: StatsRouter) {
         self.context = context
         self.router = router
-        let defaultDateRange = context.calendar.makeDateRange(for: .today)
-        self._viewModel = StateObject(wrappedValue: StatsViewModel(context: context, initialDateRange: defaultDateRange))
+
+        let viewModel = StatsViewModel(context: context)
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
 
     public var body: some View {

@@ -12,8 +12,8 @@ struct TopListItemBarBackground: View {
             HStack(spacing: 0) {
                 LinearGradient(
                     colors: [
-                        barColor.opacity(colorScheme == .light ? 0.06 : 0.15),
-                        barColor.opacity(colorScheme == .light ? 0.12 : 0.3),
+                        barColor.opacity(colorScheme == .light ? 0.06 : 0.22),
+                        barColor.opacity(colorScheme == .light ? 0.12 : 0.35),
                     ],
                     startPoint: .leading,
                     endPoint: .trailing

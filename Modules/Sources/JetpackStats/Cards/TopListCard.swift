@@ -43,6 +43,9 @@ struct TopListCard: View {
             moreMenu
         }
         .cardStyle()
+        .onTapGesture {
+            navigateToTopListScreen()
+        }
         .grayscale(viewModel.isStale ? 1 : 0)
         .opacity(viewModel.isEditing ? 0.6 : 1)
         .scaleEffect(viewModel.isEditing ? 0.95 : 1)
@@ -58,13 +61,6 @@ struct TopListCard: View {
             .presentationDetents([.medium, .large])
             .presentationDragIndicator(.visible)
         }
-        .background(
-            Color.clear
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    navigateToTopListScreen()
-                }
-        )
     }
 
     private var cardHeaderView: some View {
@@ -132,7 +128,7 @@ struct TopListCard: View {
         .environment(\.context, context)
         .environment(\.router, router)
 
-        router.navigate(to: screen)
+        router.navigate(to: screen, title: viewModel.selection.item.localizedTitle)
     }
 
     private var itemTypePicker: some View {
@@ -188,11 +184,6 @@ struct TopListCard: View {
     @ViewBuilder
     private var moreMenuContent: some View {
         Section {
-            Button {
-                // Not implemented
-            } label: {
-                Label(Strings.Buttons.share, systemImage: "square.and.arrow.up")
-            }
             if let documentationURL = viewModel.selection.item.documentationURL {
                 Link(destination: documentationURL) {
                     Label(Strings.Buttons.learnMore, systemImage: "info.circle")
@@ -275,9 +266,7 @@ struct TopListCard: View {
 }
 
 #Preview {
-    NavigationView {
-        TopListCardPreview(item: .authors)
-    }
+    TopListCardPreview(item: .authors)
 }
 
 private struct TopListCardPreview: View {
@@ -299,7 +288,6 @@ private struct TopListCardPreview: View {
 
     var body: some View {
         TopListCard(viewModel: viewModel)
-            .cardStyle()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Constants.Colors.background)
     }

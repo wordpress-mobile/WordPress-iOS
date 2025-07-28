@@ -50,16 +50,16 @@ struct InteractiveMapView: View {
                     tintColor.lightened(by: 0.75),
                     tintColor
                 ],
-                strokeColor: UIColor(white: 0.85, alpha: 1),
-                fillColor: UIColor(white: 0.96, alpha: 1)
+                strokeColor: UIColor(white: 0.8, alpha: 1),
+                fillColor: UIColor(white: 0.94, alpha: 1)
             )
             self.darkStyle = MapStyle(
                 colorAxis: [
                     tintColor.lightened(by: 0.7),
                     tintColor
                 ],
-                strokeColor: UIColor(white: 0.33, alpha: 1),
-                fillColor: UIColor(white: 0.13, alpha: 1)
+                strokeColor: UIColor(white: 0.36, alpha: 1),
+                fillColor: UIColor(white: 0.19, alpha: 1)
             )
         }
     }

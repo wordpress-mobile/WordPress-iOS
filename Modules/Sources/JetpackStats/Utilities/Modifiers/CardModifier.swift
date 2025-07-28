@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct CardModifier: ViewModifier {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+
     func body(content: Content) -> some View {
         content
             .background(Constants.Colors.secondaryBackground)
@@ -9,7 +11,7 @@ struct CardModifier: ViewModifier {
                     .stroke(Color(.opaqueSeparator), lineWidth: 0.5)
             )
             .clipShape(RoundedRectangle(cornerRadius: 26))
-            .padding(.horizontal, Constants.step1)
+            .padding(.horizontal, horizontalSizeClass == .regular ? Constants.step3 : Constants.step1)
     }
 }
 

@@ -43,7 +43,10 @@ struct LegacyFloatingDateControl: View {
 
     private var dateRangeButton: some View {
         Menu {
-            StatsDateRangePickerMenu(selection: $dateRange, isShowingCustomRangePicker: $isShowingCustomRangePicker)
+            StatsDateRangePickerMenu(
+                selection: $dateRange,
+                isShowingCustomRangePicker: $isShowingCustomRangePicker
+            )
         } label: {
             dateRangeButtonContent
                 .contentShape(Rectangle())

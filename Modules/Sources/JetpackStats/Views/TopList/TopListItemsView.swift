@@ -46,11 +46,15 @@ struct PlaceholderRowView: View {
         Rectangle()
             .fill(Color.clear)
             .background(
-                TopListItemBarBackground(
-                    value: 100,
-                    maxValue: 100,
-                    barColor: .secondary.opacity(0.5)
+                LinearGradient(
+                    colors: [
+                        Color.secondary.opacity(0.08),
+                        Color.secondary.opacity(0.02)
+                    ],
+                    startPoint: .leading,
+                    endPoint: .trailing
                 )
+                .clipShape(RoundedRectangle(cornerRadius: Constants.step1))
             )
             .frame(height: height)
     }

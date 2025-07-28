@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RealtimeTabView: View {
     @Environment(\.context) var context
+    @ScaledMetric private var maxWidth = 720
 
     var body: some View {
         ScrollView {
@@ -16,6 +17,8 @@ struct RealtimeTabView: View {
                 realtimeTopLocations
             }
             .padding(.vertical, Constants.step2)
+            .frame(maxWidth: maxWidth, alignment: .center)
+            .frame(maxWidth: maxWidth)
         }
     }
 

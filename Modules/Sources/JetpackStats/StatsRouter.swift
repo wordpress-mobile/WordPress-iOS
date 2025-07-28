@@ -37,8 +37,12 @@ public final class StatsRouter: @unchecked Sendable {
     }
 
     @MainActor
-    func navigate<Content: View>(to view: Content) {
+    func navigate<Content: View>(to view: Content, title: String? = nil) {
         let viewController = UIHostingController(rootView: view)
+        if let title {
+            // This ensures that it gets rendered instantly on navigation
+            viewController.title = title
+        }
         navigationController?.pushViewController(viewController, animated: true)
     }
 

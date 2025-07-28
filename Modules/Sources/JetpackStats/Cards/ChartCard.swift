@@ -53,6 +53,13 @@ struct ChartCard: View {
             .presentationDetents([.medium, .large])
             .presentationDragIndicator(.visible)
         }
+        .sheet(isPresented: $isShowingRawData) {
+            if let data = viewModel.chartData[selectedMetric] {
+                NavigationStack {
+                    ChartDataListView(data: data, dateRange: dateRange)
+                }
+            }
+        }
     }
 
     private func headerView(for metric: SiteMetric) -> some View {
@@ -165,15 +172,6 @@ struct ChartCard: View {
                 .frame(width: 56, height: 50)
         }
         .tint(Color.primary)
-        .sheet(isPresented: $isShowingRawData) {
-            NavigationStack {
-                ChartDataListView(
-                    chartDataDict: viewModel.chartData,
-                    selectedMetric: selectedMetric,
-                    dateRanges: dateRange
-                )
-            }
-        }
     }
 
     @ViewBuilder
@@ -190,11 +188,6 @@ struct ChartCard: View {
             }
         }
         Section {
-            Button {
-                // Not implemented
-            } label: {
-                Label(Strings.Buttons.share, systemImage: "square.and.arrow.up")
-            }
             Button {
                 isShowingRawData = true
             } label: {
