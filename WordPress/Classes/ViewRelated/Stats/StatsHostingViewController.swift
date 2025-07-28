@@ -8,10 +8,17 @@ import BuildSettingsKit
 
 /// A UIViewController wrapper for the new SwiftUI StatsMainView
 class StatsHostingViewController: UIViewController {
-    static func makeNewTrafficViewController(blog: Blog, parentViewController: UIViewController) -> UIViewController? {
-        guard let context = StatsContext(blog: blog) else {
-            return nil
+    static func makeNewTrafficViewController(blog: Blog? = nil, parentViewController: UIViewController, isDemo: Bool = false) -> UIViewController? {
+        let context: StatsContext
+        if isDemo {
+            context = StatsContext.demo
+        } else {
+            guard let blog, let blogContext = StatsContext(blog: blog) else {
+                return nil
+            }
+            context = blogContext
         }
+
         let statsView = StatsMainView(
             context: context,
             router: StatsRouter(viewController: parentViewController),

@@ -4,6 +4,7 @@ import WordPressShared
 import WordPressData
 import Combine
 import TipKit
+import BuildSettingsKit
 
 enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
     case insights = 0
@@ -58,6 +59,7 @@ public class SiteStatsDashboardViewController: UIViewController {
     private var pageViewController: UIPageViewController?
     private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
     private var tipObserver: TipObserver?
+    private var isUsingMockData = false
 
     @objc public lazy var manageInsightsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -96,11 +98,16 @@ public class SiteStatsDashboardViewController: UIViewController {
     }()
 
     private func createNewTrafficViewController() -> UIViewController? {
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
-              let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
-            return nil
+        if isUsingMockData {
+            // Create with demo context for mock data
+            return StatsHostingViewController.makeNewTrafficViewController(blog: nil, parentViewController: self, isDemo: true)
+        } else {
+            guard let siteID = SiteStatsInformation.sharedInstance.siteID,
+                  let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
+                return nil
+            }
+            return StatsHostingViewController.makeNewTrafficViewController(blog: blog, parentViewController: self, isDemo: false)
         }
-        return StatsHostingViewController.makeNewTrafficViewController(blog: blog, parentViewController: self)
     }
 
     private func createClassicTrafficViewController() -> UIViewController {
@@ -194,6 +201,17 @@ public class SiteStatsDashboardViewController: UIViewController {
                 self?.disableNewStats()
             }
             actions.append(switchToClassicAction)
+
+            // Toggle data source (only in debug builds)
+            if BuildConfiguration.current == .debug {
+                let toggleDataSource = UIAction(
+                    title: isUsingMockData ? "Use Real Data" : "Use Mock Data",
+                    image: UIImage(systemName: "arrow.triangle.2.circlepath")
+                ) { [weak self] _ in
+                    self?.toggleDataSource()
+                }
+                actions.append(toggleDataSource)
+            }
         } else {
             // Add "Try New Stats" option if feature is available but not enabled
             let tryNewStatsAction = UIAction(
@@ -235,6 +253,25 @@ public class SiteStatsDashboardViewController: UIViewController {
         trafficTableViewController = createClassicTrafficViewController()
         pageViewController?.setViewControllers([trafficTableViewController], direction: .forward, animated: false)
         configureNavBar()
+    }
+
+    private func toggleDataSource() {
+        isUsingMockData.toggle()
+
+        // Update the traffic view controller with new data source
+        guard let trafficVC = createNewTrafficViewController() else {
+            return
+        }
+
+        trafficTableViewController = trafficVC
+        pageViewController?.setViewControllers([trafficTableViewController], direction: .forward, animated: false)
+
+        // Update menu to reflect new state
+        statsMenuButton.menu = createStatsMenu()
+
+        // Show notice indicating the change
+        let message = isUsingMockData ? "Using mock data" : "Using real data"
+        Notice(title: message).post()
     }
 
     @available(iOS 17, *)
