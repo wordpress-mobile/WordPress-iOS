@@ -22,6 +22,21 @@ struct ChartCardCustomizationView: View {
             .onMove { from, to in
                 metrics.move(fromOffsets: from, toOffset: to)
             }
+            
+            // Reset Settings button at the bottom
+            if isEditingExisting {
+                Section {
+                    Button(action: resetToDefaults) {
+                        HStack {
+                            Spacer()
+                            Text(Strings.Buttons.resetSettings)
+                                .foregroundColor(.red)
+                            Spacer()
+                        }
+                    }
+                    .listRowBackground(Color.clear)
+                }
+            }
         }
         .listStyle(.plain)
         .environment(\.editMode, $editMode)
@@ -101,6 +116,20 @@ struct ChartCardCustomizationView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+    }
+    
+    private func resetToDefaults() {
+        guard let chartViewModel else { return }
+        
+        // Get default metrics from service (excluding downloads)
+        let defaultMetrics = viewModel.context.service.supportedMetrics.filter { $0 != .downloads }
+        
+        // Update selected metrics
+        selectedMetrics = Set(defaultMetrics)
+        
+        // Update the metrics array order to show default metrics first
+        let otherMetrics = metrics.filter { !defaultMetrics.contains($0) }
+        metrics = defaultMetrics + otherMetrics
     }
 }
 

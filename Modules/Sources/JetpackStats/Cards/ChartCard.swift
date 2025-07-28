@@ -7,8 +7,8 @@ struct ChartCard: View {
 
     private var dateRange: StatsDateRange { viewModel.dateRange }
     private var metrics: [SiteMetric] { viewModel.metrics }
+    private var selectedMetric: SiteMetric { viewModel.selectedMetric }
 
-    @State private var selectedMetric: SiteMetric
     @State private var selectedChartType: ChartType = .line
     @State private var isShowingRawData = false
 
@@ -17,8 +17,6 @@ struct ChartCard: View {
     init(viewModel: ChartCardViewModel, statsViewModel: StatsViewModel? = nil) {
         self.viewModel = viewModel
         self.statsViewModel = statsViewModel
-
-        self._selectedMetric = .init(initialValue: viewModel.metrics.first ?? .views)
     }
 
     var body: some View {
@@ -57,12 +55,9 @@ struct ChartCard: View {
         .sheet(isPresented: $viewModel.isEditing) {
             if let statsViewModel {
                 NavigationStack {
-                    ChartCardCustomizationView(
-                        viewModel: statsViewModel,
-                        chartViewModel: viewModel
-                    )
-                    .navigationTitle(Strings.AddChart.selectMetric)
-                    .navigationBarTitleDisplayMode(.inline)
+                    ChartCardCustomizationView(viewModel: statsViewModel, chartViewModel: viewModel)
+                        .navigationTitle(Strings.AddChart.selectMetric)
+                        .navigationBarTitleDisplayMode(.inline)
                 }
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
@@ -137,7 +132,7 @@ struct ChartCard: View {
     private var cardFooterView: some View {
         MetricsOverviewTabView(
             data: viewModel.isFirstLoad ? viewModel.placeholderTabViewData : viewModel.tabViewData,
-            selectedMetric: $selectedMetric
+            selectedMetric: $viewModel.selectedMetric
         )
         .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
         .pulsating(viewModel.isFirstLoad)

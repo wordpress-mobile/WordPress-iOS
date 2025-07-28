@@ -5,18 +5,13 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
     var id: UUID { configuration.id }
     var metrics: [SiteMetric] { configuration.metrics }
     
-    @Published private(set) var configuration: ChartCardConfiguration {
-        didSet {
-            configurationDelegate?.saveConfiguration(for: self)
-            loadData(for: dateRange)
-        }
-    }
-
+    @Published private(set) var configuration: ChartCardConfiguration
     @Published private(set) var chartData: [SiteMetric: ChartData] = [:]
     @Published private(set) var isLoading = true
     @Published private(set) var loadingError: Error?
     @Published private(set) var isStale = false
     @Published var isEditing = false
+    @Published var selectedMetric: SiteMetric
     
     weak var configurationDelegate: CardConfigurationDelegate?
 
@@ -37,12 +32,20 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
 
     init(configuration: ChartCardConfiguration, dateRange: StatsDateRange, service: any StatsServiceProtocol) {
         self.configuration = configuration
+        self.selectedMetric = configuration.metrics.first ?? .views
         self.dateRange = dateRange
         self.service = service
     }
     
     func updateConfiguration(_ newConfiguration: ChartCardConfiguration) {
         self.configuration = newConfiguration
+        
+        // Update selectedMetric if it's no longer available in the new configuration
+        if !newConfiguration.metrics.contains(selectedMetric) {
+            selectedMetric = newConfiguration.metrics.first ?? .views
+        }
+        
+        configurationDelegate?.saveConfiguration(for: self)
     }
 
     func onAppear() {

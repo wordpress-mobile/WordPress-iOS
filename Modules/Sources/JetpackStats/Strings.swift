@@ -80,6 +80,7 @@ enum Strings {
         static let addChart = AppLocalizedString("jetpackStats.button.addChart", value: "Add Chart", comment: "Button to add a new chart")
         static let deleteWidget = AppLocalizedString("jetpackStats.button.deleteWidget", value: "Delete Card", comment: "Button to delete a chart or widget")
         static let customize = AppLocalizedString("jetpackStats.button.customize", value: "Customize", comment: "Button to customize a chart or widget")
+        static let resetSettings = AppLocalizedString("jetpackStats.button.resetSettings", value: "Reset Settings", comment: "Button to reset chart settings to default")
     }
 
     enum DatePicker {
