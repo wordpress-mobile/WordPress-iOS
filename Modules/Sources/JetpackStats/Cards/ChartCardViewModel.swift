@@ -2,6 +2,7 @@ import SwiftUI
 
 @MainActor
 final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
+    let id: UUID
     let metrics: [SiteMetric]
 
     @Published private(set) var chartData: [SiteMetric: ChartData] = [:]
@@ -24,7 +25,8 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
 
     var isFirstLoad: Bool { isLoading && chartData.isEmpty }
 
-    init(metrics: [SiteMetric], dateRange: StatsDateRange, service: any StatsServiceProtocol) {
+    init(id: UUID = UUID(), metrics: [SiteMetric], dateRange: StatsDateRange, service: any StatsServiceProtocol) {
+        self.id = id
         self.metrics = metrics
         self.dateRange = dateRange
         self.service = service

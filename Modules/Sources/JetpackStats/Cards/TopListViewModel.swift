@@ -2,6 +2,7 @@ import SwiftUI
 
 @MainActor
 final class TopListViewModel: ObservableObject, TrafficCardViewModel {
+    let id: UUID
     let items: [TopListItemType]
     let groupedItems: [[TopListItemType]]
 
@@ -46,6 +47,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     private var isFirstAppear = true
 
     init(
+        id: UUID = UUID(),
         selection: Selection,
         dateRange: StatsDateRange,
         service: any StatsServiceProtocol,
@@ -54,6 +56,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         filter: Filter? = nil,
         initialData: TopListData? = nil
     ) {
+        self.id = id
         self.items = items ?? service.supportedItems
         self.selection = selection
         self.dateRange = dateRange

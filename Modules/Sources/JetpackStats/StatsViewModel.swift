@@ -62,20 +62,26 @@ final class StatsViewModel: ObservableObject {
 
     private func configureTrafficViewModels() {
         cards = trafficCardConfiguration.cards.compactMap { card in
-            switch card {
-            case .chart(let parameters):
-                return ChartCardViewModel(
-                    metrics: parameters.metrics,
-                    dateRange: dateRange,
-                    service: context.service
-                )
-            case .topList(let parameters):
-                return TopListViewModel(
-                    selection: .init(item: parameters.item, metric: parameters.metric),
-                    dateRange: dateRange,
-                    service: context.service
-                )
-            }
+            createViewModel(for: card)
+        }
+    }
+    
+    private func createViewModel(for card: TrafficCardConfiguration.Card) -> TrafficCardViewModel? {
+        switch card {
+        case .chart(let parameters):
+            return ChartCardViewModel(
+                id: parameters.id,
+                metrics: parameters.metrics,
+                dateRange: dateRange,
+                service: context.service
+            )
+        case .topList(let parameters):
+            return TopListViewModel(
+                id: parameters.id,
+                selection: .init(item: parameters.item, metric: parameters.metric),
+                dateRange: dateRange,
+                service: context.service
+            )
         }
     }
 
@@ -95,25 +101,39 @@ final class StatsViewModel: ObservableObject {
     
     func addChartWithMetrics(_ metrics: [SiteMetric]) {
         let parameters = TrafficCardConfiguration.ChartParameters(metrics: metrics)
-        trafficCardConfiguration.cards.append(.chart(parameters))
+        let card = TrafficCardConfiguration.Card.chart(parameters)
+        trafficCardConfiguration.cards.append(card)
+        
+        // Create and append the view model using shared logic
+        if let viewModel = createViewModel(for: card) {
+            cards.append(viewModel)
+        }
+        
         saveConfiguration()
-        configureTrafficViewModels()
     }
     
     func addTopList(item: TopListItemType, metric: SiteMetric) {
         let parameters = TrafficCardConfiguration.TopListParameters(item: item, metric: metric)
-        trafficCardConfiguration.cards.append(.topList(parameters))
+        let card = TrafficCardConfiguration.Card.topList(parameters)
+        trafficCardConfiguration.cards.append(card)
+        
+        // Create and append the view model using shared logic
+        if let viewModel = createViewModel(for: card) {
+            cards.append(viewModel)
+        }
+        
         saveConfiguration()
-        configureTrafficViewModels()
     }
     
     // MARK: - Deleting Cards
     
     func deleteCard(_ cardViewModel: TrafficCardViewModel) {
-        guard let index = cards.firstIndex(where: { $0.id == cardViewModel.id }) else { return }
+        // Find and remove the card from configuration using the protocol's id property
+        trafficCardConfiguration.cards.removeAll { $0.id == cardViewModel.id }
         
-        trafficCardConfiguration.cards.remove(at: index)
+        // Remove the card from the view models array
+        cards.removeAll { $0.id == cardViewModel.id }
+        
         saveConfiguration()
-        configureTrafficViewModels()
     }
 }
