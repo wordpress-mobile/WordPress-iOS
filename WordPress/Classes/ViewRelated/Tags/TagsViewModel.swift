@@ -26,7 +26,7 @@ class TagsViewModel: ObservableObject {
         self.selectedTags = selectedTags?.split(separator: ",").map {
             $0.trimmingCharacters(in: .whitespacesAndNewlines)
         } ?? []
-        self.selectedTagsSet = Set(self.selectedTags)
+        self.selectedTagsSet = Set(self.selectedTags.map { $0.lowercased() })
         self.onSelectedTagsChanged = onSelectedTagsChanged
     }
 
@@ -91,34 +91,41 @@ class TagsViewModel: ObservableObject {
 
     func toggleSelection(for tag: RemotePostTag) {
         guard let tagName = tag.name else { return }
-        if selectedTagsSet.contains(tagName) {
-            selectedTagsSet.remove(tagName)
-            selectedTags.removeAll { $0 == tagName }
+        let lowercasedTagName = tagName.lowercased()
+        if selectedTagsSet.contains(lowercasedTagName) {
+            selectedTagsSet.remove(lowercasedTagName)
+            selectedTags.removeAll { $0.lowercased() == lowercasedTagName }
         } else {
-            selectedTagsSet.insert(tagName)
+            selectedTagsSet.insert(lowercasedTagName)
             selectedTags.append(tagName)
         }
     }
 
     func addNewTag(named name: String) {
-        guard !selectedTagsSet.contains(name) else { return }
+        let lowercasedName = name.lowercased()
+        guard !selectedTagsSet.contains(lowercasedName) else { return }
 
-        selectedTagsSet.insert(name)
+        selectedTagsSet.insert(lowercasedName)
         selectedTags.append(name)
 
         // Create a new tag in the background, which is consistent with the web editor.
         Task {
-            _ = try await tagsService.createTag(named: name)
+            do {
+                _ = try await tagsService.createTag(named: name)
+            } catch {
+                removeSelectedTag(name)
+            }
         }
     }
 
     func isSelected(_ tag: RemotePostTag) -> Bool {
         guard let tagName = tag.name else { return false }
-        return selectedTagsSet.contains(tagName)
+        return selectedTagsSet.contains(tagName.lowercased())
     }
 
     func removeSelectedTag(_ tagName: String) {
-        selectedTagsSet.remove(tagName)
-        selectedTags.removeAll { $0 == tagName }
+        let lowercasedTagName = tagName.lowercased()
+        selectedTagsSet.remove(lowercasedTagName)
+        selectedTags.removeAll { $0.lowercased() == lowercasedTagName }
     }
 }
