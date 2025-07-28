@@ -20,24 +20,20 @@ struct TopListCard: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Constants.step2) {
+        VStack(spacing: 0) {
             cardHeaderView
+                .padding(.horizontal, Constants.step3)
 
-            VStack(spacing: Constants.step1) {
-                if viewModel.selection.item == .locations {
-                    CountriesMapView(
-                        data: viewModel.cachedCountriesMapData ?? .init(metric: viewModel.selection.metric, locations: []),
-                        primaryColor: Constants.Colors.uiColorBlue
-                    )
-                    .padding(.vertical, Constants.step1)
+            if viewModel.selection.item == .locations {
+                mapView
+                    .padding(.vertical, Constants.step2)
                     .padding(.horizontal, Constants.step2)
-                }
-
-                listHeaderView
-                    .padding(.horizontal, Constants.step3)
-
-                listContentView
             }
+
+            listHeaderView
+                .padding(.horizontal, Constants.step3)
+
+            listContentView
         }
         .onAppear {
             viewModel.onAppear()
@@ -63,7 +59,13 @@ struct TopListCard: View {
             StatsCardTitleView(title: viewModel.selection.item == .locations ? "Countries" : viewModel.title)
             Spacer(minLength: 44)
         }
-        .padding(.horizontal, Constants.step3)
+    }
+
+    private var mapView: some View {
+        CountriesMapView(
+            data: viewModel.cachedCountriesMapData ?? .init(metric: viewModel.selection.metric, locations: []),
+            primaryColor: Constants.Colors.uiColorBlue
+        )
     }
 
     private var listHeaderView: some View {
@@ -73,11 +75,14 @@ struct TopListCard: View {
                     itemTypePicker
                 } label: {
                     InlineValuePickerTitle(title: viewModel.selection.item.localizedTitle)
-                        .border(Color.red, width: 1)
+                        .padding(.top, Constants.step0_5)
+                        .padding(.vertical, Constants.step1 / 2) // Increase tap area
                 }
                 .fixedSize()
             } else {
                 Text(viewModel.selection.item.localizedTitle)
+                    .padding(.top, Constants.step0_5)
+                    .padding(.vertical, Constants.step1 / 2)
                     .font(.subheadline)
                     .fontWeight(.medium)
             }
@@ -90,11 +95,14 @@ struct TopListCard: View {
                     makeMetricPicker(with: metrics)
                 } label: {
                     InlineValuePickerTitle(title: viewModel.selection.metric.localizedTitle)
-                        .border(Color.red, width: 1)
+                        .padding(.top, Constants.step0_5)
+                        .padding(.vertical, Constants.step1 / 2)
                 }
                 .fixedSize()
             } else {
                 Text(viewModel.selection.metric.localizedTitle)
+                    .padding(.top, Constants.step0_5)
+                    .padding(.vertical, Constants.step1 / 2)
                     .font(.subheadline)
                     .fontWeight(.medium)
             }

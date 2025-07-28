@@ -22,7 +22,7 @@ struct StandaloneChartCard: View {
     @State private var isShowingDatePicker = false
     @State private var chartData: ChartData?
 
-    @ScaledMetric private var chartHeight = 160
+    @ScaledMetric private var chartHeight = 180
 
     @Environment(\.context) private var context
 
@@ -50,28 +50,17 @@ struct StandaloneChartCard: View {
     }
 
     var body: some View {
-        VStack(spacing: Constants.step1) {
-            VStack(alignment: .leading, spacing: 8) {
-                StatsCardTitleView(title: metric.localizedTitle)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                // Show legend for current and comparison periods
-                ChartLegendView(
-                    metric: metric,
-                    currentPeriod: dateRange.dateInterval,
-                    previousPeriod: dateRange.effectiveComparisonInterval
-                )
-
-                ChartValuesSummaryView(trend: trend, style: .compact)
-                    .padding(.top, 8)
-            }
-
-            chartView
-
-            // Date range controls
+        VStack(spacing: Constants.step2) {
+            StatsCardTitleView(title: metric.localizedTitle)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            chartHeaderView
+                .padding(.trailing, -Constants.step0_5)
+            chartContentView
+                .padding(.horizontal, -Constants.step1)
             dateRangeControls
         }
-        .padding(Constants.step2)
+        .padding(.vertical, Constants.step2)
+        .padding(.horizontal, Constants.step3)
         .overlay(alignment: .topTrailing) {
             moreMenu
         }
@@ -83,7 +72,33 @@ struct StandaloneChartCard: View {
         }
     }
 
-    private var chartView: some View {
+    private var chartHeaderView: some View {
+        // Showing currently selected (not loaded period) by design
+        HStack(alignment: .firstTextBaseline, spacing: 0) {
+            if let data = chartData {
+                ChartValuesSummaryView(
+                    trend: .make(data, context: .regular),
+                    style: .compact
+                )
+            } else {
+                ChartValuesSummaryView(
+                    trend: .init(currentValue: 100, previousValue: 10, metric: .views),
+                    style: .compact
+                )
+                .redacted(reason: .placeholder)
+            }
+
+            Spacer(minLength: 8)
+
+            ChartLegendView(
+                metric: metric,
+                currentPeriod: dateRange.dateInterval,
+                previousPeriod: dateRange.effectiveComparisonInterval
+            )
+        }
+    }
+
+    private var chartContentView: some View {
         Group {
             if dateRange.dateInterval.preferredGranularity < configuration.minimumGranularity {
                 loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
