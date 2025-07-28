@@ -19,7 +19,7 @@ struct AvatarView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                 } placeholder: {
-                    placeholderView
+                    Constants.Colors.background
                 }
                 .frame(width: size, height: size)
                 .clipShape(Circle())
