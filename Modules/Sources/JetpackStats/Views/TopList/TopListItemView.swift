@@ -132,7 +132,7 @@ private extension TopListItemView {
             let detailsView = PostStatsView(post: post, dateRange: dateRange)
                 .environment(\.context, context)
                 .environment(\.router, router)
-            router.navigate(to: detailsView)
+            router.navigate(to: detailsView, title: Strings.PostDetails.title)
         case let archiveItem as TopListItem.ArchiveItem:
             if let url = URL(string: archiveItem.href) {
                 router.openURL(url)
@@ -141,22 +141,22 @@ private extension TopListItemView {
             let detailsView = AuthorStatsView(author: author, initialDateRange: dateRange, context: context)
                 .environment(\.context, context)
                 .environment(\.router, router)
-            router.navigate(to: detailsView)
+            router.navigate(to: detailsView, title: Strings.AuthorDetails.title)
         case let referrer as TopListItem.Referrer:
             let detailsView = ReferrerStatsView(referrer: referrer, dateRange: dateRange)
                 .environment(\.context, context)
                 .environment(\.router, router)
-            router.navigate(to: detailsView)
+            router.navigate(to: detailsView, title: Strings.ReferrerDetails.title)
         case let archiveSection as TopListItem.ArchiveSection:
             let detailsView = ArchiveStatsView(archiveSection: archiveSection, dateRange: dateRange)
                 .environment(\.context, context)
                 .environment(\.router, router)
-            router.navigate(to: detailsView)
+            router.navigate(to: detailsView, title: archiveSection.displayName)
         case let externalLink as TopListItem.ExternalLink:
             let detailsView = ExternalLinkStatsView(externalLink: externalLink, dateRange: dateRange)
                 .environment(\.context, context)
                 .environment(\.router, router)
-            router.navigate(to: detailsView)
+            router.navigate(to: detailsView, title: Strings.ExternalLinkDetails.title)
         default:
             break
         }

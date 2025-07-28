@@ -43,6 +43,9 @@ struct TopListCard: View {
             moreMenu
         }
         .cardStyle()
+        .onTapGesture {
+            navigateToTopListScreen()
+        }
         .grayscale(viewModel.isStale ? 1 : 0)
         .opacity(viewModel.isEditing ? 0.6 : 1)
         .scaleEffect(viewModel.isEditing ? 0.95 : 1)
@@ -58,13 +61,6 @@ struct TopListCard: View {
             .presentationDetents([.medium, .large])
             .presentationDragIndicator(.visible)
         }
-        .background(
-            Color.clear
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    navigateToTopListScreen()
-                }
-        )
     }
 
     private var cardHeaderView: some View {
