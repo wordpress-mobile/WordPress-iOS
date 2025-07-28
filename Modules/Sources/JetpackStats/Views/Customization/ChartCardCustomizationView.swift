@@ -36,9 +36,7 @@ struct ChartCardCustomizationView: View {
             }
         }
         .onAppear {
-            metrics = viewModel.context.service.supportedMetrics.filter {
-                $0 != .downloads
-            }
+            metrics = viewModel.context.service.supportedMetrics
         }
     }
     

@@ -18,7 +18,11 @@ final class StatsViewModel: ObservableObject {
         self.context = context
         self.dateRange = initialDateRange
         self.userDefaults = userDefaults
-        self.trafficCardConfiguration = Self.loadConfiguration(from: userDefaults, key: configurationKey)
+        self.trafficCardConfiguration = Self.loadConfiguration(
+            from: userDefaults,
+            key: configurationKey,
+            context: context
+        )
         configureTrafficViewModels()
     }
 
@@ -28,24 +32,40 @@ final class StatsViewModel: ObservableObject {
     }
 
     func resetToDefault() {
-        trafficCardConfiguration = .defaultConfiguration
+        trafficCardConfiguration = makeDefaultConfiguration()
         userDefaults.removeObject(forKey: configurationKey)
     }
 
-    private static func loadConfiguration(from userDefaults: UserDefaults, key: String) -> TrafficCardConfiguration {
+    private static func loadConfiguration(from userDefaults: UserDefaults, key: String, context: StatsContext) -> TrafficCardConfiguration {
         guard let data = userDefaults.data(forKey: key),
               let configuration = try? JSONDecoder().decode(TrafficCardConfiguration.self, from: data) else {
-            return .defaultConfiguration
+            return makeDefaultConfiguration(context: context)
         }
         return configuration
+    }
+    
+    private static func makeDefaultConfiguration(context: StatsContext) -> TrafficCardConfiguration {
+        // Get available metrics from service, excluding downloads
+        let availableMetrics = context.service.supportedMetrics
+        
+        return TrafficCardConfiguration(cards: [
+            .chart(TrafficCardConfiguration.ChartParameters(metrics: availableMetrics)),
+            .topList(TrafficCardConfiguration.TopListParameters(item: .postsAndPages, metric: .views)),
+            .topList(TrafficCardConfiguration.TopListParameters(item: .referrers, metric: .views)),
+            .topList(TrafficCardConfiguration.TopListParameters(item: .locations, metric: .views))
+        ])
+    }
+    
+    private func makeDefaultConfiguration() -> TrafficCardConfiguration {
+        Self.makeDefaultConfiguration(context: context)
     }
 
     private func configureTrafficViewModels() {
         cards = trafficCardConfiguration.cards.compactMap { card in
             switch card {
-            case .chart:
+            case .chart(let parameters):
                 return ChartCardViewModel(
-                    metrics: context.service.supportedMetrics,
+                    metrics: parameters.metrics,
                     dateRange: dateRange,
                     service: context.service
                 )
@@ -68,15 +88,16 @@ final class StatsViewModel: ObservableObject {
     // MARK: - Adding Cards
     
     func addChart() {
-        trafficCardConfiguration.cards.append(.chart)
-        saveConfiguration()
-        configureTrafficViewModels()
+        // Add chart with default metrics
+        let defaultMetrics = context.service.supportedMetrics.filter { $0 != .downloads }
+        addChartWithMetrics(defaultMetrics)
     }
     
     func addChartWithMetrics(_ metrics: [SiteMetric]) {
-        // For now, we'll add a chart with all metrics
-        // In the future, this could be enhanced to support custom metric selection
-        addChart()
+        let parameters = TrafficCardConfiguration.ChartParameters(metrics: metrics)
+        trafficCardConfiguration.cards.append(.chart(parameters))
+        saveConfiguration()
+        configureTrafficViewModels()
     }
     
     func addTopList(item: TopListItemType, metric: SiteMetric) {
