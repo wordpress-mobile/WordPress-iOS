@@ -1,21 +1,20 @@
 import SwiftUI
 
 struct TrafficTabView: View {
-    @State private var dateRange: StatsDateRange
     @State private var isShowingCustomRangePicker = false
-    @State private var viewModels: [any TrafficCardViewModel] = []
+    @ObservedObject var viewModel: StatsViewModel
 
     @Environment(\.context) var context
 
-    init(dateRange: StatsDateRange) {
-        self._dateRange = State(initialValue: dateRange)
+    init(viewModel: StatsViewModel) {
+        self.viewModel = viewModel
     }
 
     var body: some View {
         ScrollView {
             VStack(spacing: Constants.step3) {
-                ForEach(viewModels, id: \.id) { viewModel in
-                    makeItem(for: viewModel)
+                ForEach(viewModel.cards, id: \.id) { card in
+                    makeItem(for: card)
                 }
 
                 // Timezone info at the bottom with inset
@@ -27,23 +26,15 @@ struct TrafficTabView: View {
             .padding(.vertical, Constants.step2)
         }
         .listStyle(.plain)
-        .onAppear {
-            configureViewModels()
-        }
-        .onChange(of: dateRange) {
-            for viewModel in viewModels {
-                viewModel.dateRange = $0
-            }
-        }
         .background(Constants.Colors.background)
         .toolbar {
-//                normalModeToolbarContent
+//          normalModeToolbarContent
         }
         .safeAreaInset(edge: .bottom) {
-            LegacyFloatingDateControl(dateRange: $dateRange)
+            LegacyFloatingDateControl(dateRange: $viewModel.dateRange)
         }
         .sheet(isPresented: $isShowingCustomRangePicker) {
-            CustomDateRangePicker(dateRange: $dateRange)
+            CustomDateRangePicker(dateRange: $viewModel.dateRange)
         }
     }
 
@@ -62,34 +53,6 @@ struct TrafficTabView: View {
         }
     }
 
-    private func configureViewModels() {
-        guard viewModels.isEmpty else {
-            return
-        }
-        viewModels = [
-            ChartCardViewModel(
-                metrics: context.service.supportedMetrics,
-                dateRange: dateRange,
-                service: context.service
-            ),
-            TopListViewModel(
-                selection: .init(item: .postsAndPages, metric: .views),
-                dateRange: dateRange,
-                service: context.service
-            ),
-            TopListViewModel(
-                selection: .init(item: .referrers, metric: .views),
-                dateRange: dateRange,
-                service: context.service
-            ),
-            TopListViewModel(
-                selection: .init(item: .locations, metric: .views),
-                dateRange: dateRange,
-                service: context.service
-            )
-        ]
-    }
-
     // MARK: - Toolbar
 
     @ToolbarContentBuilder
@@ -104,17 +67,17 @@ struct TrafficTabView: View {
 
     private func makeNavigationButton(direction: Calendar.NavigationDirection) -> some View {
         Menu {
-            ForEach(dateRange.availableAdjacentPeriods(in: direction)) { period in
+            ForEach(viewModel.dateRange.availableAdjacentPeriods(in: direction)) { period in
                 Button(period.displayText) {
-                    dateRange = period.range
+                    viewModel.dateRange = period.range
                 }
             }
         } label: {
             Image(systemName: direction.systemImage)
         } primaryAction: {
-            dateRange = dateRange.navigate(direction)
+            viewModel.dateRange = viewModel.dateRange.navigate(direction)
         }
-        .disabled(!dateRange.canNavigate(in: direction))
+        .disabled(!viewModel.dateRange.canNavigate(in: direction))
         .tint(.primary)
     }
 
@@ -122,7 +85,7 @@ struct TrafficTabView: View {
 
     private var datePickerToolbarItem: some View {
         Menu {
-            StatsDateRangePickerMenu(selection: $dateRange, isShowingCustomRangePicker: $isShowingCustomRangePicker)
+            StatsDateRangePickerMenu(selection: $viewModel.dateRange, isShowingCustomRangePicker: $isShowingCustomRangePicker)
         } label: {
             datePickerLabel
         }
@@ -134,15 +97,25 @@ struct TrafficTabView: View {
         HStack {
             Image(systemName: "calendar")
                 .font(.subheadline)
-            Text(context.formatters.dateRange.string(from: dateRange.dateInterval))
+            Text(context.formatters.dateRange.string(from: viewModel.dateRange.dateInterval))
                 .fontWeight(.medium)
         }
         .padding(.horizontal, 10)
     }
 
     private var comparisonRangeText: String {
-        let range = dateRange.effectiveComparisonInterval
+        let range = viewModel.dateRange.effectiveComparisonInterval
         let localizedText = context.formatters.dateRange.string(from: range)
         return localizedText
     }
+}
+
+#Preview {
+    NavigationView {
+        TrafficTabView(
+            viewModel: StatsViewModel(context: .demo, initialDateRange: Calendar.demo.makeDateRange(for: .today))
+        )
+    }
+    .environment(\.context, .demo)
+    .environment(\.router, StatsRouter(viewController: UINavigationController(), factory: MockStatsRouterScreenFactory()))
 }
