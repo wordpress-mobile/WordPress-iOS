@@ -294,9 +294,10 @@ actor StatsService: StatsServiceProtocol {
         calendar.timeZone = siteTimeZone
         let now = Date()
         let startOfToday = calendar.startOfDay(for: now)
-        let endOfToday = calendar.date(byAdding: .day, value: 1, to: startOfToday)!.addingTimeInterval(-1)
-
-        return interval.start <= endOfToday && interval.end >= startOfToday
+        guard let endOfToday = calendar.date(byAdding: .day, value: 1, to: startOfToday) else {
+            return false
+        }
+        return interval.end >= startOfToday && interval.start < endOfToday
     }
 
     /// Convert from the site timezone (used in JetpackState) to the local

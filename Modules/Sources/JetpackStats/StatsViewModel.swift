@@ -194,7 +194,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
         // Scroll to the moved card after a short delay
         Task {
-            try? await Task.sleep(for: .milliseconds(300))
+            try? await Task.sleep(for: .milliseconds(250))
             scrollToCardSubject.send(card.id)
         }
     }
