@@ -81,6 +81,11 @@ enum Strings {
         static let deleteWidget = AppLocalizedString("jetpackStats.button.deleteWidget", value: "Delete Card", comment: "Button to delete a chart or widget")
         static let customize = AppLocalizedString("jetpackStats.button.customize", value: "Customize", comment: "Button to customize a chart or widget")
         static let resetSettings = AppLocalizedString("jetpackStats.button.resetSettings", value: "Reset Settings", comment: "Button to reset chart settings to default")
+        static let moveCard = AppLocalizedString("jetpackStats.button.moveCard", value: "Move Card", comment: "Button to move a card")
+        static let moveUp = AppLocalizedString("jetpackStats.button.moveUp", value: "Move Up", comment: "Button to move card up")
+        static let moveDown = AppLocalizedString("jetpackStats.button.moveDown", value: "Move Down", comment: "Button to move card down")
+        static let moveToTop = AppLocalizedString("jetpackStats.button.moveToTop", value: "Move to the Top", comment: "Button to move card to the top")
+        static let moveToBottom = AppLocalizedString("jetpackStats.button.moveToBottom", value: "Move to the Bottom", comment: "Button to move card to the bottom")
     }
 
     enum DatePicker {

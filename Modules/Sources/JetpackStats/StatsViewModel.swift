@@ -157,4 +157,45 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         
         saveConfiguration()
     }
+    
+    func moveCard(_ card: any TrafficCardViewModel, direction: MoveDirection) {
+        // Find the index of the card in both arrays
+        guard let currentIndex = cards.firstIndex(where: { $0.id == card.id }),
+              let configIndex = trafficCardConfiguration.cards.firstIndex(where: { $0.id == card.id }) else {
+            return
+        }
+        
+        let newIndex: Int
+        switch direction {
+        case .up:
+            newIndex = max(0, currentIndex - 1)
+        case .down:
+            newIndex = min(cards.count - 1, currentIndex + 1)
+        case .top:
+            newIndex = 0
+        case .bottom:
+            newIndex = cards.count - 1
+        }
+        
+        // If the position hasn't changed, return early
+        if newIndex == currentIndex {
+            return
+        }
+        
+        // Move in cards array
+        let movedCard = cards.remove(at: currentIndex)
+        cards.insert(movedCard, at: newIndex)
+        
+        // Move in configuration array
+        let movedConfigCard = trafficCardConfiguration.cards.remove(at: configIndex)
+        trafficCardConfiguration.cards.insert(movedConfigCard, at: newIndex)
+        
+        saveConfiguration()
+        
+        // Scroll to the moved card after a short delay
+        Task {
+            try? await Task.sleep(for: .milliseconds(300))
+            scrollToCardSubject.send(card.id)
+        }
+    }
 }

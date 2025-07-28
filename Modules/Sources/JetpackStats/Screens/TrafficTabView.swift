@@ -75,13 +75,12 @@ struct TrafficTabView: View {
                     .font(.headline)
             }
             .foregroundColor(.secondary)
-            .padding(Constants.step0_5)
+            .padding(3)
         }
         .buttonStyle(.bordered)
         .buttonBorderShape(.capsule)
         .scaleEffect(isShowingAddCardSheet ? 0.95 : 1.0)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isShowingAddCardSheet)
-        .padding(.top, Constants.step1)
         .popover(isPresented: $isShowingAddCardSheet) {
             AddCardSheet { cardType in
                 viewModel.addCard(type: cardType)
