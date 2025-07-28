@@ -43,7 +43,6 @@ public struct StatsMainView: View {
             SubscribersTabView()
         }
     }
-
 }
 
 #Preview {

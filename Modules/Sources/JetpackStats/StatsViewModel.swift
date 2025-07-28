@@ -64,4 +64,25 @@ final class StatsViewModel: ObservableObject {
             card.dateRange = dateRange
         }
     }
+    
+    // MARK: - Adding Cards
+    
+    func addChart() {
+        trafficCardConfiguration.cards.append(.chart)
+        saveConfiguration()
+        configureTrafficViewModels()
+    }
+    
+    func addChartWithMetrics(_ metrics: [SiteMetric]) {
+        // For now, we'll add a chart with all metrics
+        // In the future, this could be enhanced to support custom metric selection
+        addChart()
+    }
+    
+    func addTopList(item: TopListItemType, metric: SiteMetric) {
+        let parameters = TrafficCardConfiguration.TopListParameters(item: item, metric: metric)
+        trafficCardConfiguration.cards.append(.topList(parameters))
+        saveConfiguration()
+        configureTrafficViewModels()
+    }
 }

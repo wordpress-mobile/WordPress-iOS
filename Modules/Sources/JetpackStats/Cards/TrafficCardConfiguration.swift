@@ -1,7 +1,7 @@
 import Foundation
 
 struct TrafficCardConfiguration: Codable {
-    let cards: [Card]
+    var cards: [Card]
 
     enum Card: Codable {
         case chart

@@ -69,12 +69,15 @@ enum Strings {
     enum Buttons {
         static let cancel = AppLocalizedString("jetpackStats.button.cancel", value: "Cancel", comment: "Cancel button")
         static let apply = AppLocalizedString("jetpackStats.button.apply", value: "Apply", comment: "Apply button")
+        static let done = AppLocalizedString("jetpackStats.button.done", value: "Done", comment: "Done button")
         static let share = AppLocalizedString("jetpackStats.button.share", value: "Share", comment: "Share chart menu item")
         static let showAll = AppLocalizedString("jetpackStats.button.showAll", value: "Show All", comment: "Button title")
         static let ok = AppLocalizedString("jetpackStats.button.ok", value: "OK", comment: "OK button")
         static let downloadCSV = AppLocalizedString("jetpackStats.button.downloadCSV", value: "Download CSV", comment: "Button to download data as CSV file")
         static let more = AppLocalizedString("jetpackStats.button.more", value: "More", comment: "More actions button")
         static let learnMore = AppLocalizedString("jetpackStats.button.learnMore", value: "Learn More", comment: "Learn more about stats button")
+        static let back = AppLocalizedString("jetpackStats.button.back", value: "Back", comment: "Back navigation button")
+        static let addChart = AppLocalizedString("jetpackStats.button.addChart", value: "Add Chart", comment: "Button to add a new chart")
     }
 
     enum DatePicker {
@@ -210,5 +213,18 @@ enum Strings {
         static let videoURL = AppLocalizedString("jetpackStats.csv.videoURL", value: "Video URL", comment: "CSV header for video URL column")
         static let section = AppLocalizedString("jetpackStats.csv.section", value: "Section", comment: "CSV header for section column")
         static let value = AppLocalizedString("jetpackStats.csv.value", value: "Value", comment: "CSV header for generic value column")
+    }
+    
+    enum AddChart {
+        static let title = AppLocalizedString("jetpackStats.addChart.title", value: "Add Chart", comment: "Title for add chart sheet")
+        static let whatToAdd = AppLocalizedString("jetpackStats.addChart.whatToAdd", value: "What would you like to add?", comment: "Question asking what type of chart to add")
+        static let chartOption = AppLocalizedString("jetpackStats.addChart.chartOption", value: "Chart", comment: "Chart option title")
+        static let chartDescription = AppLocalizedString("jetpackStats.addChart.chartDescription", value: "Visualize trends over time", comment: "Chart option description")
+        static let topListOption = AppLocalizedString("jetpackStats.addChart.topListOption", value: "Top List", comment: "Top list option title")
+        static let topListDescription = AppLocalizedString("jetpackStats.addChart.topListDescription", value: "See your top performing content", comment: "Top list option description")
+        static let selectMetric = AppLocalizedString("jetpackStats.addChart.selectMetric", value: "Select Metrics", comment: "Title for metric selection")
+        static let selectDataType = AppLocalizedString("jetpackStats.addChart.selectDataType", value: "Select Data Type", comment: "Title for data type selection")
+        static let selectedMetrics = AppLocalizedString("jetpackStats.addChart.selectedMetrics", value: "Selected Metrics", comment: "Header for selected metrics section")
+        static let availableMetrics = AppLocalizedString("jetpackStats.addChart.availableMetrics", value: "Available Metrics", comment: "Header for available metrics section")
     }
 }
