@@ -226,4 +226,18 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         }
         return preset
     }
+
+    // MARK: - Reset Settings
+
+    /// Resets all persistently stored settings including card configuration and date range preset
+    func resetAllSettings() {
+        // Reset card configuration
+        resetToDefault()
+
+        // Reset date range preset
+        userDefaults.removeObject(forKey: dateRangePresetKey)
+
+        // Reset date range to default
+        dateRange = context.calendar.makeDateRange(for: .last7Days)
+    }
 }
