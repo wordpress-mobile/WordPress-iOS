@@ -106,4 +106,14 @@ final class StatsViewModel: ObservableObject {
         saveConfiguration()
         configureTrafficViewModels()
     }
+    
+    // MARK: - Deleting Cards
+    
+    func deleteCard(_ cardViewModel: TrafficCardViewModel) {
+        guard let index = cards.firstIndex(where: { $0.id == cardViewModel.id }) else { return }
+        
+        trafficCardConfiguration.cards.remove(at: index)
+        saveConfiguration()
+        configureTrafficViewModels()
+    }
 }

@@ -3,6 +3,7 @@ import Charts
 
 struct ChartCard: View {
     @ObservedObject private var viewModel: ChartCardViewModel
+    private let statsViewModel: StatsViewModel?
 
     private var dateRange: StatsDateRange { viewModel.dateRange }
     private var metrics: [SiteMetric] { viewModel.metrics }
@@ -13,8 +14,9 @@ struct ChartCard: View {
 
     @ScaledMetric(relativeTo: .body) private var chartHeight = 180
 
-    init(viewModel: ChartCardViewModel) {
+    init(viewModel: ChartCardViewModel, statsViewModel: StatsViewModel? = nil) {
         self.viewModel = viewModel
+        self.statsViewModel = statsViewModel
 
         self._selectedMetric = .init(initialValue: viewModel.metrics.first ?? .views)
     }
@@ -194,6 +196,7 @@ struct ChartCard: View {
                 Label(Strings.Buttons.learnMore, systemImage: "info.circle")
             }
         }
+        EditCardMenuContent(viewModel: statsViewModel, cardViewModel: viewModel)
     }
 
     // MARK: - Chart View

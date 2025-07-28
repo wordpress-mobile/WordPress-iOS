@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TopListCard: View {
     @ObservedObject private var viewModel: TopListViewModel
+    private let statsViewModel: StatsViewModel?
 
     private let itemLimit: Int
     private let reserveSpace: Bool
@@ -11,10 +12,12 @@ struct TopListCard: View {
 
     init(
         viewModel: TopListViewModel,
+        statsViewModel: StatsViewModel? = nil,
         itemLimit: Int = 5,
         reserveSpace: Bool = true
     ) {
         self.viewModel = viewModel
+        self.statsViewModel = statsViewModel
         self.itemLimit = itemLimit
         self.reserveSpace = reserveSpace
     }
@@ -188,6 +191,7 @@ struct TopListCard: View {
                 }
             }
         }
+        EditCardMenuContent(viewModel: statsViewModel, cardViewModel: viewModel)
     }
 
     @ViewBuilder
