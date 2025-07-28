@@ -84,7 +84,7 @@ public enum FeatureFlag: Int, CaseIterable {
         case .newsletterSubscribers:
             return true
         case .newStats:
-            return BuildConfiguration.current == .debug
+            return false
         }
     }
 

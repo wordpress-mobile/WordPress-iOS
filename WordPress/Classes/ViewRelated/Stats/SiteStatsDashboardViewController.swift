@@ -1,6 +1,7 @@
 import UIKit
 import WordPressKit
 import WordPressShared
+import Combine
 
 enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
     case insights = 0
@@ -54,6 +55,7 @@ public class SiteStatsDashboardViewController: UIViewController {
 
     private var pageViewController: UIPageViewController?
     private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
+    private var tipObserver: TipObserver?
 
     @objc public lazy var manageInsightsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -62,6 +64,14 @@ public class SiteStatsDashboardViewController: UIViewController {
                 target: self,
                 action: #selector(manageInsightsButtonTapped))
         button.accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint to customize insights")
+        return button
+    }()
+
+    private lazy var statsMenuButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: UIImage(systemName: "ellipsis"),
+            menu: createStatsMenu()
+        )
         return button
     }()
 
@@ -117,7 +127,19 @@ public class SiteStatsDashboardViewController: UIViewController {
     }
 
     func configureNavBar() {
-        parent?.navigationItem.rightBarButtonItem = currentSelectedTab == .insights ? manageInsightsButton : nil
+        switch currentSelectedTab {
+        case .insights:
+            parent?.navigationItem.rightBarButtonItem = manageInsightsButton
+        case .traffic:
+            statsMenuButton.menu = createStatsMenu()
+            parent?.navigationItem.rightBarButtonItem = statsMenuButton
+            // Show tip for new stats if available
+            if #available(iOS 17, *), !FeatureFlag.newStats.enabled {
+                showNewStatsTip()
+            }
+        default:
+            parent?.navigationItem.rightBarButtonItem = nil
+        }
     }
 
     func configureJetpackBanner() {
@@ -134,6 +156,64 @@ public class SiteStatsDashboardViewController: UIViewController {
 
     @objc public func manageInsightsButtonTapped() {
         insightsTableViewController.showAddInsightView(source: "nav_bar")
+    }
+
+    private func createStatsMenu() -> UIMenu {
+        var actions: [UIMenuElement] = []
+        
+        // Add "Try New Stats" option if feature is available but not enabled
+        if !FeatureFlag.newStats.enabled {
+            let tryNewStatsAction = UIAction(
+                title: NSLocalizedString(
+                    "stats.menu.tryNewStats",
+                    value: "Try New Stats",
+                    comment: "Menu item to enable new stats experience"
+                ),
+                image: UIImage(systemName: "sparkles")
+            ) { [weak self] _ in
+                self?.enableNewStats()
+            }
+            actions.append(tryNewStatsAction)
+        }
+        
+        return UIMenu(children: actions)
+    }
+
+    private func enableNewStats() {
+        // Track analytics event
+        WPAnalytics.track(.statsNewStatsEnabled)
+
+        // Enable the feature flag
+        let overrideStore = FeatureFlagOverrideStore()
+        overrideStore.override(FeatureFlag.newStats, withValue: true)
+        
+        // Show the new stats view
+
+        guard let blogID = SiteStatsInformation.sharedInstance.siteID,
+              let blog = Blog.lookup(withID: blogID, in: ContextManager.shared.mainContext) else {
+            return
+        }
+
+        let statsVC = StatsHostingViewController(blog: blog)
+        statsVC.hidesBottomBarWhenPushed = true
+        navigationController?.popViewController(animated: false)
+        navigationController?.pushViewController(statsVC, animated: true)
+    }
+
+    @available(iOS 17, *)
+    private func showNewStatsTip() {
+        guard let button = parent?.navigationItem.rightBarButtonItem else { return }
+        
+        tipObserver?.cancel()
+        tipObserver = registerTipPopover(
+            AppTips.NewStatsTip(),
+            sourceItem: button,
+            arrowDirection: .up
+        ) { [weak self] action in
+            if action.id == "try-new-stats" {
+                self?.enableNewStats()
+            }
+        }
     }
 
     public override func viewWillDisappear(_ animated: Bool) {

@@ -4,6 +4,7 @@ import JetpackStats
 import WordPressKit
 import WordPressShared
 import Gravatar
+import BuildSettingsKit
 
 /// A UIViewController wrapper for the new SwiftUI StatsMainView
 class StatsHostingViewController: UIViewController {
@@ -79,16 +80,33 @@ class StatsHostingViewController: UIViewController {
     }
 
     private func createMenu() -> UIMenu {
-        let toggleDataSource = UIAction(
-            title: isUsingMockService ? "Use Real Data" : "Use Mock Data",
-            image: UIImage(systemName: "arrow.triangle.2.circlepath")
-        ) { [weak self] _ in
-            self?.toggleServiceType()
+        var actions: [UIMenuElement] = []
+        
+        // Toggle data source (only in debug builds)
+        if BuildConfiguration.current == .debug {
+            let toggleDataSource = UIAction(
+                title: isUsingMockService ? "Use Real Data" : "Use Mock Data",
+                image: UIImage(systemName: "arrow.triangle.2.circlepath")
+            ) { [weak self] _ in
+                self?.toggleServiceType()
+            }
+            actions.append(toggleDataSource)
         }
+        
+        // Disable New Stats option
+        let disableNewStatsAction = UIAction(
+            title: NSLocalizedString(
+                "stats.menu.disableNewStats",
+                value: "Disable New Stats",
+                comment: "Menu item to disable new stats experience and go back to classic stats"
+            ),
+            image: UIImage(systemName: "arrow.uturn.backward")
+        ) { [weak self] _ in
+            self?.disableNewStats()
+        }
+        actions.append(disableNewStatsAction)
 
-        // We can add more menu items here later
-
-        return UIMenu(children: [toggleDataSource])
+        return UIMenu(children: actions)
     }
 
     private func updateNavigationMenu() {
@@ -110,34 +128,20 @@ class StatsHostingViewController: UIViewController {
         // Update menu
         updateNavigationMenu()
 
-        // Show toast indicating the change
+        // Show notice indicating the change
         let message = isUsingMockService ? "Using mock data" : "Using real data"
-        showToast(message: message)
+        Notice(title: message).post()
     }
 
-    private func showToast(message: String) {
-        let toast = UILabel()
-        toast.text = message
-        toast.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-        toast.textColor = .white
-        toast.textAlignment = .center
-        toast.layer.cornerRadius = 8
-        toast.clipsToBounds = true
-        toast.translatesAutoresizingMaskIntoConstraints = false
+    
+    private func disableNewStats() {
+        // Track analytics event
+        WPAnalytics.track(.statsNewStatsDisabled)
 
-        view.addSubview(toast)
-        NSLayoutConstraint.activate([
-            toast.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            toast.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            toast.heightAnchor.constraint(equalToConstant: 40),
-            toast.widthAnchor.constraint(equalToConstant: 200)
-        ])
+        // Disable the feature flag
+        FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: false)
 
-        UIView.animate(withDuration: 0.3, delay: 2.0, options: .curveEaseOut) {
-            toast.alpha = 0
-        } completion: { _ in
-            toast.removeFromSuperview()
-        }
+        navigationController?.popViewController(animated: true)
     }
 
     private func showErrorView() {
