@@ -1,7 +1,9 @@
 import UIKit
 import WordPressKit
 import WordPressShared
+import WordPressData
 import Combine
+import TipKit
 
 enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
     case insights = 0
@@ -84,7 +86,24 @@ public class SiteStatsDashboardViewController: UIViewController {
         return viewController
     }()
 
-    private lazy var trafficTableViewController = {
+    private lazy var trafficTableViewController: UIViewController = {
+        // If new stats is enabled, show StatsHostingViewController instead
+        if FeatureFlag.newStats.enabled {
+            return createNewTrafficViewController() ?? createClassicTrafficViewController()
+        } else {
+            return createClassicTrafficViewController()
+        }
+    }()
+
+    private func createNewTrafficViewController() -> UIViewController? {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
+              let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
+            return nil
+        }
+        return StatsHostingViewController.makeNewTrafficViewController(blog: blog, parentViewController: self)
+    }
+
+    private func createClassicTrafficViewController() -> UIViewController {
         let date: Date
         if let selectedDate = SiteStatsDashboardPreferences.getLastSelectedDateFromUserDefaults() {
             date = selectedDate
@@ -97,7 +116,7 @@ public class SiteStatsDashboardViewController: UIViewController {
         let viewController = SiteStatsPeriodTableViewController(date: date, period: currentPeriod)
         viewController.bannerView = jetpackBannerView
         return viewController
-    }()
+    }
 
     private lazy var subscribersViewController = {
         let viewModel = StatsSubscribersViewModel()
@@ -131,9 +150,10 @@ public class SiteStatsDashboardViewController: UIViewController {
         case .insights:
             parent?.navigationItem.rightBarButtonItem = manageInsightsButton
         case .traffic:
+            // Always show the menu for switching between stats experiences
             statsMenuButton.menu = createStatsMenu()
             parent?.navigationItem.rightBarButtonItem = statsMenuButton
-            // Show tip for new stats if available
+            // Show tip for new stats if available and not enabled
             if #available(iOS 17, *), !FeatureFlag.newStats.enabled {
                 showNewStatsTip()
             }
@@ -160,9 +180,22 @@ public class SiteStatsDashboardViewController: UIViewController {
 
     private func createStatsMenu() -> UIMenu {
         var actions: [UIMenuElement] = []
-        
-        // Add "Try New Stats" option if feature is available but not enabled
-        if !FeatureFlag.newStats.enabled {
+
+        if FeatureFlag.newStats.enabled {
+            // Add "Switch to Classic Stats" option when new stats is enabled
+            let switchToClassicAction = UIAction(
+                title: NSLocalizedString(
+                    "stats.menu.switchToClassic",
+                    value: "Switch to Classic Stats",
+                    comment: "Menu item to switch back to classic stats experience"
+                ),
+                image: UIImage(systemName: "arrow.uturn.backward")
+            ) { [weak self] _ in
+                self?.disableNewStats()
+            }
+            actions.append(switchToClassicAction)
+        } else {
+            // Add "Try New Stats" option if feature is available but not enabled
             let tryNewStatsAction = UIAction(
                 title: NSLocalizedString(
                     "stats.menu.tryNewStats",
@@ -175,43 +208,51 @@ public class SiteStatsDashboardViewController: UIViewController {
             }
             actions.append(tryNewStatsAction)
         }
-        
+
         return UIMenu(children: actions)
     }
 
     private func enableNewStats() {
-        // Track analytics event
         WPAnalytics.track(.statsNewStatsEnabled)
 
-        // Enable the feature flag
-        let overrideStore = FeatureFlagOverrideStore()
-        overrideStore.override(FeatureFlag.newStats, withValue: true)
-        
-        // Show the new stats view
+        FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: true)
 
-        guard let blogID = SiteStatsInformation.sharedInstance.siteID,
-              let blog = Blog.lookup(withID: blogID, in: ContextManager.shared.mainContext) else {
+        // Update the traffic view controller to show new stats
+        guard let trafficVC = createNewTrafficViewController() else {
             return
         }
 
-        let statsVC = StatsHostingViewController(blog: blog)
-        statsVC.hidesBottomBarWhenPushed = true
-        navigationController?.popViewController(animated: false)
-        navigationController?.pushViewController(statsVC, animated: true)
+        trafficTableViewController = trafficVC
+        pageViewController?.setViewControllers([trafficTableViewController], direction: .forward, animated: false)
+        configureNavBar()
+    }
+
+    private func disableNewStats() {
+        WPAnalytics.track(.statsNewStatsDisabled)
+
+        FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: false)
+
+        trafficTableViewController = createClassicTrafficViewController()
+        pageViewController?.setViewControllers([trafficTableViewController], direction: .forward, animated: false)
+        configureNavBar()
     }
 
     @available(iOS 17, *)
     private func showNewStatsTip() {
         guard let button = parent?.navigationItem.rightBarButtonItem else { return }
-        
+
         tipObserver?.cancel()
         tipObserver = registerTipPopover(
             AppTips.NewStatsTip(),
             sourceItem: button,
             arrowDirection: .up
         ) { [weak self] action in
+            guard let self else { return }
             if action.id == "try-new-stats" {
-                self?.enableNewStats()
+                self.enableNewStats()
+                if self.presentedViewController is TipUIPopoverViewController {
+                    self.dismiss(animated: true)
+                }
             }
         }
     }
@@ -335,7 +376,9 @@ private extension SiteStatsDashboardViewController {
                                                        direction: .forward,
                                                        animated: false)
             } else {
-                trafficTableViewController.refreshData()
+                if let periodVC = trafficTableViewController as? SiteStatsPeriodTableViewController {
+                    periodVC.refreshData()
+                }
             }
         case .subscribers:
             if oldSelectedTab != .subscribers || pageViewControllerIsEmpty {

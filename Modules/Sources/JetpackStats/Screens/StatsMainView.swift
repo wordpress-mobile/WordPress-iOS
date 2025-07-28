@@ -8,28 +8,38 @@ public struct StatsMainView: View {
 
     private let context: StatsContext
     private let router: StatsRouter
+    private let showTabs: Bool
 
-    public init(context: StatsContext, router: StatsRouter) {
+    public init(context: StatsContext, router: StatsRouter, showTabs: Bool = true) {
         self.context = context
         self.router = router
+        self.showTabs = showTabs
 
         let viewModel = StatsViewModel(context: context)
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
 
     public var body: some View {
-        tabContent
-            .id(selectedTab)
-            .trackScrollOffset(isScrolling: $isTabBarBackgroundShown)
-            .toolbarBackground(.hidden, for: .navigationBar)
-            .safeAreaInset(edge: .top) {
-                StatsTabBar(selectedTab: $selectedTab, showBackground: isTabBarBackgroundShown)
-            }
-            .background(Constants.Colors.background)
-            .navigationTitle(Strings.stats)
-            .navigationBarTitleDisplayMode(.inline)
-            .environment(\.context, context)
-            .environment(\.router, router)
+        if showTabs {
+            tabContent
+                .id(selectedTab)
+                .trackScrollOffset(isScrolling: $isTabBarBackgroundShown)
+                .toolbarBackground(.hidden, for: .navigationBar)
+                .safeAreaInset(edge: .top) {
+                    StatsTabBar(selectedTab: $selectedTab, showBackground: isTabBarBackgroundShown)
+                }
+                .background(Constants.Colors.background)
+                .navigationTitle(Strings.stats)
+                .navigationBarTitleDisplayMode(.inline)
+                .environment(\.context, context)
+                .environment(\.router, router)
+        } else {
+            // When tabs are hidden, show only traffic tab without the tab bar
+            TrafficTabView(viewModel: viewModel)
+                .background(Constants.Colors.background)
+                .environment(\.context, context)
+                .environment(\.router, router)
+        }
     }
 
     @ViewBuilder

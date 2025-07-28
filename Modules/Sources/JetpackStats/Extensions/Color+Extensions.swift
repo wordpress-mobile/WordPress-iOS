@@ -29,7 +29,7 @@ extension UIColor {
         let b = b1 + (b2 - b1) * CGFloat(fraction)
         let a = a1 + (a2 - a1) * CGFloat(fraction)
 
-        return UIColor(red: r, green: g, blue: b, alpha: a)
+        return UIColor(red: max(0, r), green: max(0, g), blue: max(0, b), alpha: max(0, a))
     }
 
     /// Lightens the color by mixing it with white
