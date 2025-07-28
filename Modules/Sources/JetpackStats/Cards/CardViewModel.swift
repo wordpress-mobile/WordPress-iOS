@@ -2,11 +2,8 @@ import Foundation
 
 @MainActor
 protocol TrafficCardViewModel: AnyObject {
+    var id: UUID { get }
     var dateRange: StatsDateRange { get set }
-}
-
-extension TrafficCardViewModel {
-    nonisolated var id: ObjectIdentifier {
-        ObjectIdentifier(self)
-    }
+    var isEditing: Bool { get set }
+    var configurationDelegate: CardConfigurationDelegate? { get set }
 }

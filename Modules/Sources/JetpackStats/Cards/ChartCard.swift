@@ -6,17 +6,15 @@ struct ChartCard: View {
 
     private var dateRange: StatsDateRange { viewModel.dateRange }
     private var metrics: [SiteMetric] { viewModel.metrics }
+    private var selectedMetric: SiteMetric { viewModel.selectedMetric }
+    private var selectedChartType: ChartType { viewModel.selectedChartType }
 
-    @State private var selectedMetric: SiteMetric
-    @State private var selectedChartType: ChartType = .line
     @State private var isShowingRawData = false
 
     @ScaledMetric(relativeTo: .body) private var chartHeight = 180
 
     init(viewModel: ChartCardViewModel) {
         self.viewModel = viewModel
-
-        self._selectedMetric = .init(initialValue: viewModel.metrics.first ?? .views)
     }
 
     var body: some View {
@@ -34,24 +32,27 @@ struct ChartCard: View {
                 cardFooterView
             }
         }
-        .background(
-            LinearGradient(
-                colors: [
-                    selectedMetric.primaryColor.opacity(0.02),
-                    selectedMetric.primaryColor.opacity(0.0)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
         .onAppear {
             viewModel.onAppear()
         }
         .overlay(alignment: .topTrailing) {
             moreMenu
         }
+        .cardStyle()
         .grayscale(viewModel.isStale ? 1 : 0)
+        .opacity(viewModel.isEditing ? 0.6 : 1)
+        .scaleEffect(viewModel.isEditing ? 0.95 : 1)
         .animation(.smooth, value: viewModel.isStale)
+        .animation(.spring, value: viewModel.isEditing)
+        .sheet(isPresented: $viewModel.isEditing) {
+            NavigationStack {
+                ChartCardCustomizationView(chartViewModel: viewModel)
+                    .navigationTitle(Strings.AddChart.selectMetric)
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+            .presentationDetents([.medium, .large])
+            .presentationDragIndicator(.visible)
+        }
     }
 
     private func headerView(for metric: SiteMetric) -> some View {
@@ -67,6 +68,7 @@ struct ChartCard: View {
             chartHeaderView
                 .padding(.trailing, -Constants.step0_5)
             chartContentView
+                .padding(.bottom, 4)
         }
         .animation(.spring, value: selectedMetric)
         .animation(.spring, value: selectedChartType)
@@ -121,10 +123,20 @@ struct ChartCard: View {
     private var cardFooterView: some View {
         MetricsOverviewTabView(
             data: viewModel.isFirstLoad ? viewModel.placeholderTabViewData : viewModel.tabViewData,
-            selectedMetric: $selectedMetric
+            selectedMetric: $viewModel.selectedMetric
         )
         .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
         .pulsating(viewModel.isFirstLoad)
+        .background(
+            LinearGradient(
+                colors: [
+                    selectedMetric.primaryColor.opacity(0.03),
+                    Constants.Colors.secondaryBackground
+                ],
+                startPoint: .top,
+                endPoint: .center
+            )
+        )
     }
 
     private func loadingErrorView(with message: String) -> some View {
@@ -167,6 +179,17 @@ struct ChartCard: View {
     @ViewBuilder
     private var moreMenuContent: some View {
         Section {
+            ControlGroup {
+                ForEach(ChartType.allCases, id: \.self) { type in
+                    Button {
+                        viewModel.selectedChartType = type
+                    } label: {
+                        Label(type.localizedTitle, systemImage: type.systemImage)
+                    }
+                }
+            }
+        }
+        Section {
             Button {
                 // Not implemented
             } label: {
@@ -177,23 +200,11 @@ struct ChartCard: View {
             } label: {
                 Label(Strings.Chart.showData, systemImage: "tablecells")
             }
-        }
-        Section {
-            ControlGroup {
-                ForEach(ChartType.allCases, id: \.self) { type in
-                    Button {
-                        selectedChartType = type
-                    } label: {
-                        Label(type.localizedTitle, systemImage: type.systemImage)
-                    }
-                }
-            }
-        }
-        Section {
             Link(destination: URL(string: "https://wordpress.com/support/stats/understand-your-sites-traffic/")!) {
                 Label(Strings.Buttons.learnMore, systemImage: "info.circle")
             }
         }
+        EditCardMenuContent(cardViewModel: viewModel)
     }
 
     // MARK: - Chart View
@@ -219,7 +230,7 @@ struct ChartCard: View {
     }
 }
 
-enum ChartType: String, CaseIterable {
+enum ChartType: String, CaseIterable, Codable {
     case line
     case columns
 
@@ -242,7 +253,9 @@ enum ChartType: String, CaseIterable {
 
 private struct ChartCardPreview: View {
     @StateObject var viewModel = ChartCardViewModel(
-        metrics: [.views, .visitors, .likes, .comments],
+        configuration: ChartCardConfiguration(
+            metrics: [.views, .visitors, .likes, .comments]
+        ),
         dateRange: Calendar.demo.makeDateRange(for: .today),
         service: MockStatsService()
     )

@@ -42,9 +42,22 @@ struct TopListCard: View {
         .overlay(alignment: .topTrailing) {
             moreMenu
         }
+        .cardStyle()
         .grayscale(viewModel.isStale ? 1 : 0)
+        .opacity(viewModel.isEditing ? 0.6 : 1)
+        .scaleEffect(viewModel.isEditing ? 0.95 : 1)
         .animation(.smooth, value: viewModel.isStale)
+        .animation(.spring, value: viewModel.isEditing)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init)) // placing is important
+        .sheet(isPresented: $viewModel.isEditing) {
+            NavigationStack {
+                TopListCardCustomizationView(viewModel: viewModel)
+                    .navigationTitle(Strings.AddChart.selectDataType)
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+            .presentationDetents([.medium, .large])
+            .presentationDragIndicator(.visible)
+        }
         .background(
             Color.clear
                 .contentShape(Rectangle())
@@ -180,14 +193,13 @@ struct TopListCard: View {
             } label: {
                 Label(Strings.Buttons.share, systemImage: "square.and.arrow.up")
             }
-        }
-        if let documentationURL = viewModel.selection.item.documentationURL {
-            Section {
+            if let documentationURL = viewModel.selection.item.documentationURL {
                 Link(destination: documentationURL) {
                     Label(Strings.Buttons.learnMore, systemImage: "info.circle")
                 }
             }
         }
+        EditCardMenuContent(cardViewModel: viewModel)
     }
 
     @ViewBuilder
@@ -276,7 +288,7 @@ private struct TopListCardPreview: View {
     init(item: TopListItemType) {
         self.item = item
         self._viewModel = StateObject(wrappedValue: TopListViewModel(
-            selection: .init(
+            configuration: TopListCardConfiguration(
                 item: item,
                 metric: item == .fileDownloads ? .downloads : .views
             ),

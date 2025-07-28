@@ -1,6 +1,8 @@
 import SwiftUI
 
 public struct StatsMainView: View {
+    @StateObject private var viewModel: StatsViewModel
+
     @State private var selectedTab = StatsTab.traffic
     @State private var isTabBarBackgroundShown = true
 
@@ -10,6 +12,8 @@ public struct StatsMainView: View {
     public init(context: StatsContext, router: StatsRouter) {
         self.context = context
         self.router = router
+        let defaultDateRange = context.calendar.makeDateRange(for: .today)
+        self._viewModel = StateObject(wrappedValue: StatsViewModel(context: context, initialDateRange: defaultDateRange))
     }
 
     public var body: some View {
@@ -31,7 +35,7 @@ public struct StatsMainView: View {
     private var tabContent: some View {
         switch selectedTab {
         case .traffic:
-            TrafficTabView(dateRange: makeDefaultDateRange())
+            TrafficTabView(viewModel: viewModel)
         case .realtime:
             RealtimeTabView()
         case .insights:
@@ -39,10 +43,6 @@ public struct StatsMainView: View {
         case .subscribers:
             SubscribersTabView()
         }
-    }
-
-    private func makeDefaultDateRange() -> StatsDateRange {
-        context.calendar.makeDateRange(for: .today)
     }
 }
 

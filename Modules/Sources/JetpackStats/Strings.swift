@@ -12,7 +12,6 @@ enum Strings {
     }
 
     enum Calendar {
-        static let yesterday = AppLocalizedString("jetpackStats.calendar.yesterday", value: "Yesterday", comment: "Yesterday date range")
         static let today = AppLocalizedString("jetpackStats.calendar.today", value: "Today", comment: "Today date range")
         static let thisWeek = AppLocalizedString("jetpackStats.calendar.thisWeek", value: "This Week", comment: "This week date range")
         static let thisMonth = AppLocalizedString("jetpackStats.calendar.thisMonth", value: "This Month", comment: "This month date range")
@@ -47,8 +46,6 @@ enum Strings {
     enum SiteDataTypes {
         static let postsAndPages = AppLocalizedString("jetpackStats.siteDataTypes.postsAndPages", value: "Posts & Pages", comment: "Posts and pages data type")
         static let archive = AppLocalizedString("jetpackStats.siteDataTypes.archive", value: "Archive", comment: "Archive data type")
-        static let posts = AppLocalizedString("jetpackStats.siteDataTypes.posts", value: "Posts", comment: "Posts data type")
-        static let pages = AppLocalizedString("jetpackStats.siteDataTypes.pages", value: "Pages", comment: "Pages data type")
         static let authors = AppLocalizedString("jetpackStats.siteDataTypes.authors", value: "Authors", comment: "Authors data type")
         static let referrers = AppLocalizedString("jetpackStats.siteDataTypes.referrers", value: "Referrers", comment: "Referrers data type")
         static let locations = AppLocalizedString("jetpackStats.siteDataTypes.locations", value: "Locations", comment: "Locations data type")
@@ -69,12 +66,21 @@ enum Strings {
     enum Buttons {
         static let cancel = AppLocalizedString("jetpackStats.button.cancel", value: "Cancel", comment: "Cancel button")
         static let apply = AppLocalizedString("jetpackStats.button.apply", value: "Apply", comment: "Apply button")
+        static let done = AppLocalizedString("jetpackStats.button.done", value: "Done", comment: "Done button")
         static let share = AppLocalizedString("jetpackStats.button.share", value: "Share", comment: "Share chart menu item")
         static let showAll = AppLocalizedString("jetpackStats.button.showAll", value: "Show All", comment: "Button title")
         static let ok = AppLocalizedString("jetpackStats.button.ok", value: "OK", comment: "OK button")
         static let downloadCSV = AppLocalizedString("jetpackStats.button.downloadCSV", value: "Download CSV", comment: "Button to download data as CSV file")
-        static let more = AppLocalizedString("jetpackStats.button.more", value: "More", comment: "More actions button")
         static let learnMore = AppLocalizedString("jetpackStats.button.learnMore", value: "Learn More", comment: "Learn more about stats button")
+        static let addCard = AppLocalizedString("jetpackStats.button.addCard", value: "Add Card", comment: "Button to add a new chart")
+        static let deleteWidget = AppLocalizedString("jetpackStats.button.deleteWidget", value: "Delete Card", comment: "Button to delete a chart or widget")
+        static let customize = AppLocalizedString("jetpackStats.button.customize", value: "Edit Card", comment: "Button to customize a chart or widget")
+        static let resetSettings = AppLocalizedString("jetpackStats.button.resetSettings", value: "Reset Settings", comment: "Button to reset chart settings to default")
+        static let moveCard = AppLocalizedString("jetpackStats.button.moveCard", value: "Move Card", comment: "Button to move a card")
+        static let moveUp = AppLocalizedString("jetpackStats.button.moveUp", value: "Move Up", comment: "Button to move card up")
+        static let moveDown = AppLocalizedString("jetpackStats.button.moveDown", value: "Move Down", comment: "Button to move card down")
+        static let moveToTop = AppLocalizedString("jetpackStats.button.moveToTop", value: "Move to the Top", comment: "Button to move card to the top")
+        static let moveToBottom = AppLocalizedString("jetpackStats.button.moveToBottom", value: "Move to the Bottom", comment: "Button to move card to the bottom")
     }
 
     enum DatePicker {
@@ -198,7 +204,6 @@ enum Strings {
         static let url = AppLocalizedString("jetpackStats.csv.url", value: "URL", comment: "CSV header for URL column")
         static let date = AppLocalizedString("jetpackStats.csv.date", value: "Date", comment: "CSV header for date column")
         static let type = AppLocalizedString("jetpackStats.csv.type", value: "Type", comment: "CSV header for type column")
-        static let author = AppLocalizedString("jetpackStats.csv.author", value: "Author", comment: "CSV header for author column")
         static let name = AppLocalizedString("jetpackStats.csv.name", value: "Name", comment: "CSV header for name column")
         static let domain = AppLocalizedString("jetpackStats.csv.domain", value: "Domain", comment: "CSV header for domain column")
         static let country = AppLocalizedString("jetpackStats.csv.country", value: "Country", comment: "CSV header for country column")
@@ -209,6 +214,14 @@ enum Strings {
         static let searchTerm = AppLocalizedString("jetpackStats.csv.searchTerm", value: "Search Term", comment: "CSV header for search term column")
         static let videoURL = AppLocalizedString("jetpackStats.csv.videoURL", value: "Video URL", comment: "CSV header for video URL column")
         static let section = AppLocalizedString("jetpackStats.csv.section", value: "Section", comment: "CSV header for section column")
-        static let value = AppLocalizedString("jetpackStats.csv.value", value: "Value", comment: "CSV header for generic value column")
+    }
+
+    enum AddChart {
+        static let chartOption = AppLocalizedString("jetpackStats.addChart.chartOption", value: "Chart", comment: "Chart option title")
+        static let chartDescription = AppLocalizedString("jetpackStats.addChart.chartDescription", value: "Visualize trends over time", comment: "Chart option description")
+        static let topListOption = AppLocalizedString("jetpackStats.addChart.topListOption", value: "Top List", comment: "Top list option title")
+        static let topListDescription = AppLocalizedString("jetpackStats.addChart.topListDescription", value: "See your top performing content", comment: "Top list option description")
+        static let selectMetric = AppLocalizedString("jetpackStats.addChart.selectMetric", value: "Select Metrics", comment: "Title for metric selection")
+        static let selectDataType = AppLocalizedString("jetpackStats.addChart.selectDataType", value: "Select Data Type", comment: "Title for data type selection")
     }
 }

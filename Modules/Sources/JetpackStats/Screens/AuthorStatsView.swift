@@ -19,8 +19,12 @@ struct AuthorStatsView: View {
         let range = initialDateRange ?? context.calendar.makeDateRange(for: .last30Days)
         self._dateRange = State(initialValue: range)
 
+        let configuration = TopListCardConfiguration(
+            item: .postsAndPages,
+            metric: .views
+        )
         self._viewModel = StateObject(wrappedValue: TopListViewModel(
-            selection: .init(item: .postsAndPages, metric: .views),
+            configuration: configuration,
             dateRange: range,
             service: context.service,
             items: [.postsAndPages],

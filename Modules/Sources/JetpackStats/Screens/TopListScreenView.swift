@@ -14,8 +14,12 @@ struct TopListScreenView: View {
         service: any StatsServiceProtocol,
         initialData: TopListData? = nil
     ) {
+        let configuration = TopListCardConfiguration(
+            item: selection.item,
+            metric: selection.metric
+        )
         self._viewModel = StateObject(wrappedValue: TopListViewModel(
-            selection: selection,
+            configuration: configuration,
             dateRange: dateRange,
             service: service,
             fetchLimit: nil, // Get all items

@@ -2,12 +2,26 @@ import SwiftUI
 
 @MainActor
 final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
-    let metrics: [SiteMetric]
+    var id: UUID { configuration.id }
+    var metrics: [SiteMetric] { configuration.metrics }
 
+    @Published private(set) var configuration: ChartCardConfiguration
     @Published private(set) var chartData: [SiteMetric: ChartData] = [:]
     @Published private(set) var isLoading = true
     @Published private(set) var loadingError: Error?
     @Published private(set) var isStale = false
+
+    @Published var isEditing = false
+    @Published var selectedMetric: SiteMetric
+    @Published var selectedChartType: ChartType {
+        didSet {
+            // Update configuration when chart type changes
+            configuration.chartType = selectedChartType
+            configurationDelegate?.saveConfiguration(for: self)
+        }
+    }
+
+    weak var configurationDelegate: CardConfigurationDelegate?
 
     var dateRange: StatsDateRange {
         didSet {
@@ -24,10 +38,28 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
 
     var isFirstLoad: Bool { isLoading && chartData.isEmpty }
 
-    init(metrics: [SiteMetric], dateRange: StatsDateRange, service: any StatsServiceProtocol) {
-        self.metrics = metrics
+    init(configuration: ChartCardConfiguration, dateRange: StatsDateRange, service: any StatsServiceProtocol) {
+        self.configuration = configuration
+        self.selectedMetric = configuration.metrics.first ?? .views
+        self.selectedChartType = configuration.chartType
         self.dateRange = dateRange
         self.service = service
+    }
+
+    func updateConfiguration(_ newConfiguration: ChartCardConfiguration) {
+        self.configuration = newConfiguration
+
+        // Update selectedMetric if it's no longer available in the new configuration
+        if !newConfiguration.metrics.contains(selectedMetric) {
+            selectedMetric = newConfiguration.metrics.first ?? .views
+        }
+
+        // Update chart type from configuration (without triggering didSet)
+        if selectedChartType != newConfiguration.chartType {
+            selectedChartType = newConfiguration.chartType
+        }
+
+        configurationDelegate?.saveConfiguration(for: self)
     }
 
     func onAppear() {

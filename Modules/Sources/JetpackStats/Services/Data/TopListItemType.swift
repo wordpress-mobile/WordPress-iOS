@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum TopListItemType: Identifiable, CaseIterable, Sendable {
+enum TopListItemType: String, Identifiable, CaseIterable, Sendable, Codable {
     case postsAndPages
     case authors
     case referrers

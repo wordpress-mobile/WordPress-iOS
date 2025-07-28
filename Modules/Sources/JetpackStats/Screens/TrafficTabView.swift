@@ -1,49 +1,52 @@
 import SwiftUI
 
 struct TrafficTabView: View {
-    @State private var dateRange: StatsDateRange
+    @ObservedObject var viewModel: StatsViewModel
+
     @State private var isShowingCustomRangePicker = false
-    @State private var viewModels: [any TrafficCardViewModel] = []
+    @State private var isShowingAddCardSheet = false
 
     @Environment(\.context) var context
 
-    init(dateRange: StatsDateRange) {
-        self._dateRange = State(initialValue: dateRange)
+    init(viewModel: StatsViewModel) {
+        self.viewModel = viewModel
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: Constants.step3) {
-                ForEach(viewModels, id: \.id) { viewModel in
-                    makeItem(for: viewModel)
+        ScrollViewReader { proxy in
+            ScrollView {
+                VStack(spacing: Constants.step3) {
+                    ForEach(viewModel.cards, id: \.id) { card in
+                        makeItem(for: card)
+                            .id(card.id)
+                            .transition(.asymmetric(
+                                insertion: .push(from: .bottom).combined(with: .opacity),
+                                removal: .scale.combined(with: .opacity)
+                            ))
+                    }
+                    buttonAddChart
+                    timeZoneInfo
                 }
-
-                // Timezone info at the bottom with inset
-                TimezoneInfoView()
-                    .padding(.horizontal, Constants.step4)
-                    .padding(.top, Constants.step2)
-                    .padding(.bottom, Constants.step1)
+                .padding(.vertical, Constants.step2)
+                .onReceive(viewModel.scrollToCardSubject) { cardID in
+                    // Use a more elegant spring animation for scrolling
+                    withAnimation(.spring) {
+                        proxy.scrollTo(cardID, anchor: .top)
+                    }
+                }
             }
-            .padding(.vertical, Constants.step2)
+            .background(Constants.Colors.background)
+            .animation(.spring, value: viewModel.cards.map(\.id))
+            .listStyle(.plain)
         }
-        .listStyle(.plain)
-        .onAppear {
-            configureViewModels()
-        }
-        .onChange(of: dateRange) {
-            for viewModel in viewModels {
-                viewModel.dateRange = $0
-            }
-        }
-        .background(Constants.Colors.background)
         .toolbar {
-//                normalModeToolbarContent
+//          normalModeToolbarContent
         }
         .safeAreaInset(edge: .bottom) {
-            LegacyFloatingDateControl(dateRange: $dateRange)
+            LegacyFloatingDateControl(dateRange: $viewModel.dateRange)
         }
         .sheet(isPresented: $isShowingCustomRangePicker) {
-            CustomDateRangePicker(dateRange: $dateRange)
+            CustomDateRangePicker(dateRange: $viewModel.dateRange)
         }
     }
 
@@ -52,42 +55,45 @@ struct TrafficTabView: View {
         switch viewModel {
         case let viewModel as ChartCardViewModel:
             ChartCard(viewModel: viewModel)
-                .cardStyle()
         case let viewModel as TopListViewModel:
             TopListCard(viewModel: viewModel)
-                .cardStyle()
         default:
             let _ = assertionFailure("Unsupported type: \(viewModel)")
             EmptyView()
         }
     }
 
-    private func configureViewModels() {
-        guard viewModels.isEmpty else {
-            return
+    private var buttonAddChart: some View {
+        // Add Chart Button
+        Button(action: {
+            isShowingAddCardSheet = true
+        }) {
+            HStack(spacing: Constants.step1) {
+                Image(systemName: "plus")
+                    .font(.headline)
+                Text(Strings.Buttons.addCard)
+                    .font(.headline)
+            }
+            .foregroundColor(.secondary)
+            .padding(3)
         }
-        viewModels = [
-            ChartCardViewModel(
-                metrics: context.service.supportedMetrics,
-                dateRange: dateRange,
-                service: context.service
-            ),
-            TopListViewModel(
-                selection: .init(item: .postsAndPages, metric: .views),
-                dateRange: dateRange,
-                service: context.service
-            ),
-            TopListViewModel(
-                selection: .init(item: .referrers, metric: .views),
-                dateRange: dateRange,
-                service: context.service
-            ),
-            TopListViewModel(
-                selection: .init(item: .locations, metric: .views),
-                dateRange: dateRange,
-                service: context.service
-            )
-        ]
+        .buttonStyle(.bordered)
+        .buttonBorderShape(.capsule)
+        .scaleEffect(isShowingAddCardSheet ? 0.95 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isShowingAddCardSheet)
+        .popover(isPresented: $isShowingAddCardSheet) {
+            AddCardSheet { cardType in
+                viewModel.addCard(type: cardType)
+            }
+            .modifier(PopoverPresentationModifier())
+        }
+    }
+
+    private var timeZoneInfo: some View {
+        TimezoneInfoView()
+            .padding(.horizontal, Constants.step4)
+            .padding(.top, Constants.step2)
+            .padding(.bottom, Constants.step1)
     }
 
     // MARK: - Toolbar
@@ -104,17 +110,17 @@ struct TrafficTabView: View {
 
     private func makeNavigationButton(direction: Calendar.NavigationDirection) -> some View {
         Menu {
-            ForEach(dateRange.availableAdjacentPeriods(in: direction)) { period in
+            ForEach(viewModel.dateRange.availableAdjacentPeriods(in: direction)) { period in
                 Button(period.displayText) {
-                    dateRange = period.range
+                    viewModel.dateRange = period.range
                 }
             }
         } label: {
             Image(systemName: direction.systemImage)
         } primaryAction: {
-            dateRange = dateRange.navigate(direction)
+            viewModel.dateRange = viewModel.dateRange.navigate(direction)
         }
-        .disabled(!dateRange.canNavigate(in: direction))
+        .disabled(!viewModel.dateRange.canNavigate(in: direction))
         .tint(.primary)
     }
 
@@ -122,7 +128,7 @@ struct TrafficTabView: View {
 
     private var datePickerToolbarItem: some View {
         Menu {
-            StatsDateRangePickerMenu(selection: $dateRange, isShowingCustomRangePicker: $isShowingCustomRangePicker)
+            StatsDateRangePickerMenu(selection: $viewModel.dateRange, isShowingCustomRangePicker: $isShowingCustomRangePicker)
         } label: {
             datePickerLabel
         }
@@ -134,15 +140,19 @@ struct TrafficTabView: View {
         HStack {
             Image(systemName: "calendar")
                 .font(.subheadline)
-            Text(context.formatters.dateRange.string(from: dateRange.dateInterval))
+            Text(context.formatters.dateRange.string(from: viewModel.dateRange.dateInterval))
                 .fontWeight(.medium)
         }
         .padding(.horizontal, 10)
     }
+}
 
-    private var comparisonRangeText: String {
-        let range = dateRange.effectiveComparisonInterval
-        let localizedText = context.formatters.dateRange.string(from: range)
-        return localizedText
+#Preview {
+    NavigationView {
+        TrafficTabView(
+            viewModel: StatsViewModel(context: .demo, initialDateRange: Calendar.demo.makeDateRange(for: .today))
+        )
     }
+    .environment(\.context, .demo)
+    .environment(\.router, StatsRouter(viewController: UINavigationController(), factory: MockStatsRouterScreenFactory()))
 }
