@@ -162,7 +162,9 @@ public class SiteStatsDashboardViewController: UIViewController {
             parent?.navigationItem.rightBarButtonItem = statsMenuButton
             // Show tip for new stats if available and not enabled
             if #available(iOS 17, *), !FeatureFlag.newStats.enabled {
-                showNewStatsTip()
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                    self.showNewStatsTip()
+                }
             }
         default:
             parent?.navigationItem.rightBarButtonItem = nil
