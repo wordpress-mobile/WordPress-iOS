@@ -34,16 +34,6 @@ struct ChartCard: View {
                 cardFooterView
             }
         }
-        .background(
-            LinearGradient(
-                colors: [
-                    selectedMetric.primaryColor.opacity(0.02),
-                    selectedMetric.primaryColor.opacity(0.0)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
         .onAppear {
             viewModel.onAppear()
         }
@@ -78,6 +68,7 @@ struct ChartCard: View {
             chartHeaderView
                 .padding(.trailing, -Constants.step0_5)
             chartContentView
+                .padding(.bottom, 4)
         }
         .animation(.spring, value: selectedMetric)
         .animation(.spring, value: selectedChartType)
@@ -136,6 +127,16 @@ struct ChartCard: View {
         )
         .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
         .pulsating(viewModel.isFirstLoad)
+        .background(
+            LinearGradient(
+                colors: [
+                    selectedMetric.primaryColor.opacity(0.03),
+                    Constants.Colors.secondaryBackground
+                ],
+                startPoint: .top,
+                endPoint: .center
+            )
+        )
     }
 
     private func loadingErrorView(with message: String) -> some View {
