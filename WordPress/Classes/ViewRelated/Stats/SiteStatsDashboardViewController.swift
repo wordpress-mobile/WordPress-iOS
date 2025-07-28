@@ -193,16 +193,21 @@ public class SiteStatsDashboardViewController: UIViewController {
         if FeatureFlag.newStats.enabled {
             // Add "Switch to Classic Stats" option when new stats is enabled
             let switchToClassicAction = UIAction(
-                title: NSLocalizedString(
-                    "stats.menu.switchToClassic",
-                    value: "Switch to Classic Stats",
-                    comment: "Menu item to switch back to classic stats experience"
-                ),
+                title: Strings.switchToClassic,
                 image: UIImage(systemName: "arrow.uturn.backward")
             ) { [weak self] _ in
                 self?.disableNewStats()
             }
             actions.append(switchToClassicAction)
+
+            // Add "Send Feedback" option
+            let sendFeedbackAction = UIAction(
+                title: Strings.sendFeedback,
+                image: UIImage(systemName: "envelope")
+            ) { [weak self] _ in
+                self?.showFeedbackView()
+            }
+            actions.append(sendFeedbackAction)
 
             // Toggle data source (only in debug builds)
             if BuildConfiguration.current == .debug {
@@ -217,11 +222,7 @@ public class SiteStatsDashboardViewController: UIViewController {
         } else {
             // Add "Try New Stats" option if feature is available but not enabled
             let tryNewStatsAction = UIAction(
-                title: NSLocalizedString(
-                    "stats.menu.tryNewStats",
-                    value: "Try New Stats",
-                    comment: "Menu item to enable new stats experience"
-                ),
+                title: Strings.tryNewStats,
                 image: UIImage(systemName: "sparkles")
             ) { [weak self] _ in
                 self?.enableNewStats()
@@ -294,6 +295,10 @@ public class SiteStatsDashboardViewController: UIViewController {
                 }
             }
         }
+    }
+
+    private func showFeedbackView() {
+        present(SubmitFeedbackViewController(source: "new_stats", feedbackPrefix: "Stats"), animated: true)
     }
 
     public override func viewWillDisappear(_ animated: Bool) {
@@ -514,4 +519,26 @@ struct SiteStatsDashboardPreferences {
     }
 
     private static let lastSelectedStatsDateKey = "LastSelectedStatsDate"
+}
+
+// MARK: - Strings
+
+private enum Strings {
+    static let sendFeedback = NSLocalizedString(
+        "stats.menu.sendFeedback",
+        value: "Send Feedback",
+        comment: "Menu item to send feedback about new stats experience"
+    )
+
+    static let switchToClassic = NSLocalizedString(
+        "stats.menu.switchToClassic",
+        value: "Switch to Classic Stats",
+        comment: "Menu item to switch back to classic stats experience"
+    )
+
+    static let tryNewStats = NSLocalizedString(
+        "stats.menu.tryNewStats",
+        value: "Try New Stats",
+        comment: "Menu item to enable new stats experience"
+    )
 }

@@ -127,7 +127,7 @@ private class SafeAreaHostingController<Content: View>: UIHostingController<Cont
         // Apply the root view's bottom safe area inset
         let bottomInset = rootView.safeAreaInsets.bottom
         if additionalSafeAreaInsets.bottom != bottomInset {
-            additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: min(40, bottomInset), right: 0)
+            additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: min(20, bottomInset), right: 0)
         }
     }
 }
