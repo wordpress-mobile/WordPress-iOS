@@ -8,10 +8,10 @@ protocol CSVExporterProtocol {
 /// Exports stats data to CSV format following RFC 4180 standard
 struct CSVExporter: CSVExporterProtocol {
     // RFC 4180: Use CRLF for line endings
-    private static let lineEnding = "\r\n"
+    static let lineEnding = "\r\n"
 
     // Characters that require field escaping according to RFC 4180
-    private static let charactersRequiringEscape = CharacterSet(charactersIn: ",\"\r\n")
+    static let charactersRequiringEscape = CharacterSet(charactersIn: ",\"\r\n")
 
     func generateCSV(from items: [any TopListItemProtocol], metric: SiteMetric) -> String {
         guard !items.isEmpty else { return "" }
@@ -28,21 +28,21 @@ struct CSVExporter: CSVExporterProtocol {
 
         // Build header row
         let headers = exportableType.csvHeaders + [metric.localizedTitle]
-        csvLines.append(buildCSVRow(from: headers))
+        csvLines.append(Self.buildCSVRow(from: headers))
 
         // Build data rows
         for item in items {
             guard let exportableItem = item as? CSVExportable else { continue }
 
             let values = exportableItem.csvValues + [formatMetricValue(item.metrics[metric])]
-            csvLines.append(buildCSVRow(from: values))
+            csvLines.append(Self.buildCSVRow(from: values))
         }
 
         return csvLines.joined(separator: Self.lineEnding)
     }
 
     /// Builds a CSV row from an array of values, properly escaping fields as needed
-    private func buildCSVRow(from values: [String]) -> String {
+    static func buildCSVRow(from values: [String]) -> String {
         values
             .map { escapeCSVField($0) }
             .joined(separator: ",")
@@ -56,9 +56,9 @@ struct CSVExporter: CSVExporterProtocol {
     /// Escapes a CSV field according to RFC 4180 rules:
     /// - Fields containing comma, quotes, CR, or LF must be enclosed in double quotes
     /// - Double quotes within fields must be escaped by doubling them
-    private func escapeCSVField(_ field: String) -> String {
+    static func escapeCSVField(_ field: String) -> String {
         // Quick check if escaping is needed
-        guard field.rangeOfCharacter(from: Self.charactersRequiringEscape) != nil else {
+        guard field.rangeOfCharacter(from: charactersRequiringEscape) != nil else {
             return field
         }
 
@@ -91,5 +91,53 @@ struct CSVDataRepresentation: Transferable {
             throw CocoaError(.fileWriteUnknown)
         }
         return data
+    }
+}
+
+struct ChartDataCSVRepresentation: Transferable {
+    let data: ChartData
+    let dateRange: StatsDateRange
+    let context: StatsContext
+
+    static var transferRepresentation: some TransferRepresentation {
+        let dataRepresentation = DataRepresentation(exportedContentType: .commaSeparatedText) { (representation: ChartDataCSVRepresentation) in
+            try representation.generateCSVData()
+        }
+        if #available(iOS 17.0, *) {
+            return dataRepresentation.suggestedFileName { representation in
+                let dateString = representation.context.formatters.dateRange.string(from: representation.dateRange.dateInterval)
+                    .replacingOccurrences(of: "/", with: "-")
+                    .replacingOccurrences(of: ",", with: "")
+                return "\(representation.data.metric.localizedTitle)-\(dateString).csv"
+            }
+        } else {
+            return dataRepresentation
+        }
+    }
+
+    private func generateCSVData() throws -> Data {
+        let csvContent = generateCSV()
+        guard let data = csvContent.data(using: .utf8) else {
+            throw CocoaError(.fileWriteUnknown)
+        }
+        return data
+    }
+
+    private func generateCSV() -> String {
+        let formatter = StatsValueFormatter(metric: data.metric)
+        var csvLines = [String]()
+
+        // Header row
+        let headers = [Strings.CSVExport.date, data.metric.localizedTitle]
+        csvLines.append(CSVExporter.buildCSVRow(from: headers))
+
+        // Data rows
+        for point in data.currentData {
+            let dateString = context.formatters.date.formatDate(point.date, granularity: data.granularity)
+            let valueString = formatter.format(value: point.value)
+            csvLines.append(CSVExporter.buildCSVRow(from: [dateString, valueString]))
+        }
+
+        return csvLines.joined(separator: CSVExporter.lineEnding)
     }
 }

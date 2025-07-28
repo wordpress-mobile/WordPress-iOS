@@ -224,4 +224,14 @@ enum Strings {
         static let selectMetric = AppLocalizedString("jetpackStats.addChart.selectMetric", value: "Select Metrics", comment: "Title for metric selection")
         static let selectDataType = AppLocalizedString("jetpackStats.addChart.selectDataType", value: "Select Data Type", comment: "Title for data type selection")
     }
+
+    enum ChartData {
+        static let title = AppLocalizedString("jetpackStats.chartData.title", value: "Chart Data", comment: "Title for chart data screen")
+        static let total = AppLocalizedString("jetpackStats.chartData.total", value: "Total", comment: "Label for total value")
+        static let previous = AppLocalizedString("jetpackStats.chartData.previous", value: "Previous", comment: "Label for previous value")
+        static let change = AppLocalizedString("jetpackStats.chartData.change", value: "Change", comment: "Label for change value")
+        static let detailedData = AppLocalizedString("jetpackStats.chartData.detailedData", value: "Detailed Data", comment: "Section title for detailed data")
+        static let date = AppLocalizedString("jetpackStats.chartData.date", value: "DATE", comment: "Column header for date")
+        static let value = AppLocalizedString("jetpackStats.chartData.value", value: "VALUE", comment: "Column header for value")
+    }
 }
