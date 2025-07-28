@@ -18,88 +18,23 @@ class StatsHostingViewController: UIViewController {
             }
             context = blogContext
         }
-
+        
         let statsView = StatsMainView(
             context: context,
             router: StatsRouter(viewController: parentViewController),
             showTabs: false
         )
         let hostingController = SafeAreaHostingController(rootView: statsView)
-
+        
         return hostingController
     }
-
+    
     static func makeStatsViewController(for blog: Blog) -> UIViewController {
         let statsVC = StatsViewController()
         statsVC.blog = blog
         statsVC.hidesBottomBarWhenPushed = true
         statsVC.navigationItem.largeTitleDisplayMode = .never
         return statsVC
-    }
-
-    private func setupStatsView() {
-
-//        if isUsingMockService {
-//            // For mock service, we need to use the internal initializer
-//            // Since we can't access it directly, we'll use the demo context
-//            context = StatsContext.demo
-//        }
-//
-//        let statsView = StatsMainView(context: context, router: StatsRouter(viewController: self), showTabs: showTabs)
-//        let hostingController = UIHostingController(rootView: AnyView(statsView))
-//
-//        addChild(hostingController)
-//        view.addSubview(hostingController.view)
-//        hostingController.view.pinEdges()
-//        hostingController.didMove(toParent: self)
-//
-//        self.hostingController = hostingController
-    }
-
-    private func setupNavigationBar() {
-        // Add menu button with ellipsis
-        let menuButton = UIBarButtonItem(
-            image: UIImage(systemName: "ellipsis"),
-            menu: createMenu()
-        )
-        navigationItem.rightBarButtonItem = menuButton
-    }
-
-    private func createMenu() -> UIMenu {
-        var actions: [UIMenuElement] = []
-
-        // Toggle data source (only in debug builds)
-//        if BuildConfiguration.current == .debug {
-//            let toggleDataSource = UIAction(
-//                title: isUsingMockService ? "Use Real Data" : "Use Mock Data",
-//                image: UIImage(systemName: "arrow.triangle.2.circlepath")
-//            ) { [weak self] _ in
-//                self?.toggleServiceType()
-//            }
-//            actions.append(toggleDataSource)
-//        }
-
-        return UIMenu(children: actions)
-    }
-
-    private func toggleServiceType() {
-//        isUsingMockService.toggle()
-//
-//        // Remove existing hosting controller
-//        hostingController?.willMove(toParent: nil)
-//        hostingController?.view.removeFromSuperview()
-//        hostingController?.removeFromParent()
-//        hostingController = nil
-//
-//        // Recreate with new service
-//        setupStatsView()
-//
-//        // Update menu
-//        updateNavigationMenu()
-//
-//        // Show notice indicating the change
-//        let message = isUsingMockService ? "Using mock data" : "Using real data"
-//        Notice(title: message).post()
     }
 }
 
