@@ -1,9 +1,10 @@
 import SwiftUI
 
 public struct StatsMainView: View {
+    @StateObject private var viewModel: StatsViewModel
+
     @State private var selectedTab = StatsTab.traffic
     @State private var isTabBarBackgroundShown = true
-    @StateObject private var viewModel: StatsViewModel
 
     private let context: StatsContext
     private let router: StatsRouter
