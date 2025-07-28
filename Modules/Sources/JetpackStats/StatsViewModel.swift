@@ -26,7 +26,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
             key: configurationKey,
             context: context
         )
-        configureTrafficViewModels()
+        configureCards()
     }
 
     func saveConfiguration() {
@@ -63,7 +63,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         Self.makeDefaultConfiguration(context: context)
     }
 
-    private func configureTrafficViewModels() {
+    private func configureCards() {
         cards = trafficCardConfiguration.cards.compactMap { card in
             createViewModel(for: card)
         }
@@ -110,7 +110,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
             // Enable editing after a short delay to allow the card to be added and scrolled to
             Task {
-                try? await Task.sleep(for: .milliseconds(250))
+                try? await Task.sleep(for: .milliseconds(500))
                 scrollToCardSubject.send(viewModel.id)
                 try? await Task.sleep(for: .milliseconds(750))
                 viewModel.isEditing = true

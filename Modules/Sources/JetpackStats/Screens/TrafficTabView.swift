@@ -18,14 +18,19 @@ struct TrafficTabView: View {
                 VStack(spacing: Constants.step3) {
                     ForEach(viewModel.cards, id: \.id) { card in
                         makeItem(for: card)
+                            .id(card.id)
+                            .transition(.asymmetric(
+                                insertion: .push(from: .bottom).combined(with: .opacity),
+                                removal: .scale.combined(with: .opacity)
+                            ))
                     }
                     buttonAddChart
                     timeZoneInfo
                 }
                 .padding(.vertical, Constants.step2)
                 .onReceive(viewModel.scrollToCardSubject) { cardID in
-                    withAnimation {
-                        let _ = print(cardID)
+                    // Use a more elegant spring animation for scrolling
+                    withAnimation(.spring) {
                         proxy.scrollTo(cardID, anchor: .top)
                     }
                 }
@@ -65,18 +70,18 @@ struct TrafficTabView: View {
         }) {
             HStack(spacing: Constants.step1) {
                 Image(systemName: "plus")
-                    .font(.callout.weight(.medium))
-                Text(Strings.Buttons.addChart)
-                    .font(.callout)
-                    .fontWeight(.medium)
+                    .font(.headline)
+                Text(Strings.Buttons.addCard)
+                    .font(.headline)
             }
             .foregroundColor(.secondary)
-            .padding(.horizontal, Constants.step3)
-            .padding(.vertical, Constants.step1)
-            .background(Color(UIColor.secondarySystemFill))
-            .clipShape(Capsule())
+            .padding(Constants.step0_5)
         }
-        .padding(.top, Constants.step2)
+        .buttonStyle(.bordered)
+        .buttonBorderShape(.capsule)
+        .scaleEffect(isShowingAddCardSheet ? 0.95 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isShowingAddCardSheet)
+        .padding(.top, Constants.step1)
         .popover(isPresented: $isShowingAddCardSheet) {
             AddCardSheet { cardType in
                 viewModel.addCard(type: cardType)

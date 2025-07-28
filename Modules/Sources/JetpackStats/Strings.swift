@@ -77,7 +77,7 @@ enum Strings {
         static let more = AppLocalizedString("jetpackStats.button.more", value: "More", comment: "More actions button")
         static let learnMore = AppLocalizedString("jetpackStats.button.learnMore", value: "Learn More", comment: "Learn more about stats button")
         static let back = AppLocalizedString("jetpackStats.button.back", value: "Back", comment: "Back navigation button")
-        static let addChart = AppLocalizedString("jetpackStats.button.addChart", value: "Add Chart", comment: "Button to add a new chart")
+        static let addCard = AppLocalizedString("jetpackStats.button.addCard", value: "Add Card", comment: "Button to add a new chart")
         static let deleteWidget = AppLocalizedString("jetpackStats.button.deleteWidget", value: "Delete Card", comment: "Button to delete a chart or widget")
         static let customize = AppLocalizedString("jetpackStats.button.customize", value: "Customize", comment: "Button to customize a chart or widget")
         static let resetSettings = AppLocalizedString("jetpackStats.button.resetSettings", value: "Reset Settings", comment: "Button to reset chart settings to default")
