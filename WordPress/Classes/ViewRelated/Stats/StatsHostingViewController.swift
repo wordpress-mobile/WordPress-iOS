@@ -18,17 +18,17 @@ class StatsHostingViewController: UIViewController {
             }
             context = blogContext
         }
-        
+
         let statsView = StatsMainView(
             context: context,
             router: StatsRouter(viewController: parentViewController),
             showTabs: false
         )
         let hostingController = SafeAreaHostingController(rootView: statsView)
-        
+
         return hostingController
     }
-    
+
     static func makeStatsViewController(for blog: Blog) -> UIViewController {
         let statsVC = StatsViewController()
         statsVC.blog = blog

@@ -346,16 +346,24 @@ private extension SiteStatsDashboardViewController {
 
     func setupFilterBar() {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
+
+        // Always use modern style for stats dashboard
+        filterTabBar.configureModernStyle()
+        filterTabBar.tabSizingStyle = .equalWidths
+        filterTabBar.tintColor = UIColor.label
+        filterTabBar.selectedTitleColor = UIColor.label
+        filterTabBar.deselectedTabColor = UIColor.secondaryLabel
+        filterTabBar.backgroundColor = .systemBackground
+
         filterTabBar.isAutomaticTabSizingStyleEnabled = true
         filterTabBar.items = displayedTabs
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         filterTabBar.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
-        filterTabBar.backgroundColor = .systemBackground
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         currentSelectedTab = displayedTabs[filterBar.selectedIndex]
-
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         configureNavBar()
     }
 }
