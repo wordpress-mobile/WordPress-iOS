@@ -16,7 +16,8 @@ actor StatsService: StatsServiceProtocol {
     private var mocks: MockStatsService
 
     // Cache
-    private var siteStatsCache: [SiteStatsCacheKey: CachedSiteStats] = [:]
+    private var siteStatsCache: [SiteStatsCacheKey: CachedEntity<SiteMetricsResponse>] = [:]
+    private var topListCache: [TopListCacheKey: CachedEntity<TopListResponse>] = [:]
     private let currentPeriodTTL: TimeInterval = 30 // 30 seconds for current period
 
     let supportedMetrics: [SiteMetric] = [
@@ -71,7 +72,7 @@ actor StatsService: StatsServiceProtocol {
         // Historical data never expires (ttl = nil), current period data expires after 30 seconds
         let ttl = intervalContainsCurrentDate(interval) ? currentPeriodTTL : nil
 
-        siteStatsCache[cacheKey] = CachedSiteStats(data: data, timestamp: Date(), ttl: ttl)
+        siteStatsCache[cacheKey] = CachedEntity(data: data, timestamp: Date(), ttl: ttl)
 
         return data
     }
@@ -97,8 +98,22 @@ actor StatsService: StatsServiceProtocol {
     }
 
     func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListResponse {
+        // Check cache first
+        let cacheKey = TopListCacheKey(item: item, metric: metric, interval: interval, granularity: granularity, limit: limit)
+        if let cached = topListCache[cacheKey], !cached.isExpired {
+            return cached.data
+        }
+
+        // Fetch fresh data
         do {
-            return try await _getTopListData(item, metric: metric, interval: interval, granularity: granularity, limit: limit)
+            let data = try await _getTopListData(item, metric: metric, interval: interval, granularity: granularity, limit: limit)
+
+            // Cache the result
+            // Historical data never expires (ttl = nil), current period data expires after 30 seconds
+            let ttl = intervalContainsCurrentDate(interval) ? currentPeriodTTL : nil
+            topListCache[cacheKey] = CachedEntity(data: data, timestamp: Date(), ttl: ttl)
+
+            return data
         } catch {
             // A workaround for an issue where `/stats` return `"summary": null`
             // when there are no recoreded periods (happens when the entire requested
@@ -379,8 +394,8 @@ private struct SiteStatsCacheKey: Hashable {
     let granularity: DateRangeGranularity
 }
 
-private struct CachedSiteStats {
-    let data: SiteMetricsResponse
+private struct CachedEntity<T> {
+    let data: T
     let timestamp: Date
     let ttl: TimeInterval?
 
@@ -390,6 +405,14 @@ private struct CachedSiteStats {
         }
         return Date().timeIntervalSince(timestamp) > ttl
     }
+}
+
+private struct TopListCacheKey: Hashable {
+    let item: TopListItemType
+    let metric: SiteMetric
+    let interval: DateInterval
+    let granularity: DateRangeGranularity
+    let limit: Int?
 }
 
 // MARK: - Mapping
