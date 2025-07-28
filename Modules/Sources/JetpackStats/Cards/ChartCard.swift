@@ -3,7 +3,6 @@ import Charts
 
 struct ChartCard: View {
     @ObservedObject private var viewModel: ChartCardViewModel
-    private let statsViewModel: StatsViewModel?
 
     private var dateRange: StatsDateRange { viewModel.dateRange }
     private var metrics: [SiteMetric] { viewModel.metrics }
@@ -14,9 +13,8 @@ struct ChartCard: View {
 
     @ScaledMetric(relativeTo: .body) private var chartHeight = 180
 
-    init(viewModel: ChartCardViewModel, statsViewModel: StatsViewModel? = nil) {
+    init(viewModel: ChartCardViewModel) {
         self.viewModel = viewModel
-        self.statsViewModel = statsViewModel
     }
 
     var body: some View {
@@ -42,16 +40,15 @@ struct ChartCard: View {
         }
         .grayscale(viewModel.isStale ? 1 : 0)
         .animation(.smooth, value: viewModel.isStale)
+        .animation(.smooth, value: viewModel.isEditing)
         .sheet(isPresented: $viewModel.isEditing) {
-            if let statsViewModel {
-                NavigationStack {
-                    ChartCardCustomizationView(viewModel: statsViewModel, chartViewModel: viewModel)
-                        .navigationTitle(Strings.AddChart.selectMetric)
-                        .navigationBarTitleDisplayMode(.inline)
-                }
-                .presentationDetents([.medium, .large])
-                .presentationDragIndicator(.visible)
+            NavigationStack {
+                ChartCardCustomizationView(chartViewModel: viewModel)
+                    .navigationTitle(Strings.AddChart.selectMetric)
+                    .navigationBarTitleDisplayMode(.inline)
             }
+            .presentationDetents([.medium, .large])
+            .presentationDragIndicator(.visible)
         }
     }
 

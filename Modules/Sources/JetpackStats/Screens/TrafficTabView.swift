@@ -67,7 +67,7 @@ struct TrafficTabView: View {
     private func makeItem(for viewModel: TrafficCardViewModel) -> some View {
         switch viewModel {
         case let viewModel as ChartCardViewModel:
-            ChartCard(viewModel: viewModel, statsViewModel: self.viewModel)
+            ChartCard(viewModel: viewModel)
                 .cardStyle()
         case let viewModel as TopListViewModel:
             TopListCard(viewModel: viewModel, statsViewModel: self.viewModel)

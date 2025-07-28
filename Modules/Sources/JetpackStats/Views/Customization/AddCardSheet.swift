@@ -18,7 +18,7 @@ struct AddCardSheet: View {
                 if selectedCardType == nil {
                     cardTypeSelection
                 } else if selectedCardType == .chart {
-                    ChartCardCustomizationView(viewModel: viewModel)
+                    // Not implemented
                 } else if selectedCardType == .topList {
                     topListItemSelection
                 }

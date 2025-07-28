@@ -1,8 +1,7 @@
 import SwiftUI
 
 struct ChartCardCustomizationView: View {
-    @ObservedObject var viewModel: StatsViewModel
-    var chartViewModel: ChartCardViewModel? = nil
+    let chartViewModel: ChartCardViewModel
 
     @State private var selectedMetrics: Set<SiteMetric> = []
     @State private var metrics: [SiteMetric] = []
@@ -10,9 +9,8 @@ struct ChartCardCustomizationView: View {
 
     @ScaledMetric private var iconWidth = 26
 
+    @Environment(\.context) var context
     @Environment(\.dismiss) var dismiss
-    
-    private var isEditingExisting: Bool { chartViewModel != nil }
 
     var body: some View {
         List {
@@ -22,31 +20,27 @@ struct ChartCardCustomizationView: View {
             .onMove { from, to in
                 metrics.move(fromOffsets: from, toOffset: to)
             }
-            
+
             // Reset Settings button at the bottom
-            if isEditingExisting {
-                Section {
-                    Button(action: resetToDefaults) {
-                        HStack {
-                            Spacer()
-                            Text(Strings.Buttons.resetSettings)
-                                .foregroundColor(.red)
-                            Spacer()
-                        }
+            Section {
+                Button(action: resetToDefaults) {
+                    HStack {
+                        Spacer()
+                        Text(Strings.Buttons.resetSettings)
+                            .foregroundColor(.red)
+                        Spacer()
                     }
-                    .listRowBackground(Color.clear)
                 }
+                .listRowBackground(Color.clear)
             }
         }
         .listStyle(.plain)
         .environment(\.editMode, $editMode)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                if isEditingExisting {
-                    Button(Strings.Buttons.cancel) {
-                        chartViewModel?.isEditing = false
-                        dismiss()
-                    }
+                Button(Strings.Buttons.cancel) {
+                    chartViewModel.isEditing = false
+                    dismiss()
                 }
             }
             
@@ -55,17 +49,13 @@ struct ChartCardCustomizationView: View {
                     Button(Strings.Buttons.done) {
                         // Convert selected metrics to array in the order they appear in metrics
                         let orderedSelectedMetrics = metrics.filter { selectedMetrics.contains($0) }
-                        
-                        if let chartViewModel {
+
                             // Update existing chart configuration
-                            var updatedConfig = chartViewModel.configuration
-                            updatedConfig.metrics = orderedSelectedMetrics
-                            chartViewModel.updateConfiguration(updatedConfig)
-                            chartViewModel.isEditing = false
-                        } else {
-                            // Add new chart
-                            viewModel.addChartWithMetrics(orderedSelectedMetrics)
-                        }
+                        var updatedConfig = chartViewModel.configuration
+                        updatedConfig.metrics = orderedSelectedMetrics
+                        chartViewModel.updateConfiguration(updatedConfig)
+                        chartViewModel.isEditing = false
+                        
                         dismiss()
                     }
                     .fontWeight(.semibold)
@@ -73,17 +63,15 @@ struct ChartCardCustomizationView: View {
             }
         }
         .onAppear {
-            metrics = viewModel.context.service.supportedMetrics
-            
+            metrics = context.service.supportedMetrics
+
             // If editing existing chart, pre-select its current metrics
-            if let chartViewModel {
-                selectedMetrics = Set(chartViewModel.metrics)
-                
-                // Reorder metrics to put selected ones first in their current order
-                let currentMetrics = chartViewModel.metrics
-                let otherMetrics = metrics.filter { !currentMetrics.contains($0) }
-                metrics = currentMetrics + otherMetrics
-            }
+            selectedMetrics = Set(chartViewModel.metrics)
+
+            // Reorder metrics to put selected ones first in their current order
+            let currentMetrics = chartViewModel.metrics
+            let otherMetrics = metrics.filter { !currentMetrics.contains($0) }
+            metrics = currentMetrics + otherMetrics
         }
     }
     
@@ -119,11 +107,9 @@ struct ChartCardCustomizationView: View {
     }
     
     private func resetToDefaults() {
-        guard let chartViewModel else { return }
-        
         // Get default metrics from service (excluding downloads)
-        let defaultMetrics = viewModel.context.service.supportedMetrics.filter { $0 != .downloads }
-        
+        let defaultMetrics = context.service.supportedMetrics.filter { $0 != .downloads }
+
         // Update selected metrics
         selectedMetrics = Set(defaultMetrics)
         
@@ -131,47 +117,4 @@ struct ChartCardCustomizationView: View {
         let otherMetrics = metrics.filter { !defaultMetrics.contains($0) }
         metrics = defaultMetrics + otherMetrics
     }
-}
-
-// MARK: - Preview
-
-#Preview("Chart Customization") {
-    struct PreviewWrapper: View {
-        @State private var isPresented = true
-        
-        var body: some View {
-            Color.clear
-                .sheet(isPresented: $isPresented) {
-                    NavigationStack {
-                        ChartCardCustomizationView(
-                            viewModel: StatsViewModel(
-                                context: .demo,
-                                initialDateRange: Calendar.demo.makeDateRange(for: .today)
-                            )
-                        )
-                        .navigationTitle(Strings.AddChart.selectMetric)
-                        .navigationBarTitleDisplayMode(.inline)
-                    }
-                    .presentationDetents([.medium, .large])
-                    .presentationDragIndicator(.visible)
-                }
-        }
-    }
-    
-    return PreviewWrapper()
-        .environment(\.context, .demo)
-}
-
-#Preview("Chart Customization - Direct") {
-    NavigationStack {
-        ChartCardCustomizationView(
-            viewModel: StatsViewModel(
-                context: .demo,
-                initialDateRange: Calendar.demo.makeDateRange(for: .today)
-            )
-        )
-        .navigationTitle(Strings.AddChart.selectMetric)
-        .navigationBarTitleDisplayMode(.inline)
-    }
-    .environment(\.context, .demo)
 }
