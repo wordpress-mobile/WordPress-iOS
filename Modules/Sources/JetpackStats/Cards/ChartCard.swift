@@ -179,18 +179,6 @@ struct ChartCard: View {
     @ViewBuilder
     private var moreMenuContent: some View {
         Section {
-            Button {
-                // Not implemented
-            } label: {
-                Label(Strings.Buttons.share, systemImage: "square.and.arrow.up")
-            }
-            Button {
-                isShowingRawData = true
-            } label: {
-                Label(Strings.Chart.showData, systemImage: "tablecells")
-            }
-        }
-        Section {
             ControlGroup {
                 ForEach(ChartType.allCases, id: \.self) { type in
                     Button {
@@ -202,6 +190,16 @@ struct ChartCard: View {
             }
         }
         Section {
+            Button {
+                // Not implemented
+            } label: {
+                Label(Strings.Buttons.share, systemImage: "square.and.arrow.up")
+            }
+            Button {
+                isShowingRawData = true
+            } label: {
+                Label(Strings.Chart.showData, systemImage: "tablecells")
+            }
             Link(destination: URL(string: "https://wordpress.com/support/stats/understand-your-sites-traffic/")!) {
                 Label(Strings.Buttons.learnMore, systemImage: "info.circle")
             }
