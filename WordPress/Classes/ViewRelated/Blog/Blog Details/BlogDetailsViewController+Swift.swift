@@ -351,7 +351,7 @@ extension BlogDetailsViewController {
     }
 
     @objc public func checkApplicationPasswordEligibility() {
-        guard FeatureFlag.authenticateUsingApplicationPassword.enabled else { return }
+        guard FeatureFlag.allowApplicationPasswords.enabled else { return }
 
         // We have already got an application token for this site, no need to ask for another one.
         guard (try? blog.getApplicationToken()) == nil, let url = blog.url else { return }
