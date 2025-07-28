@@ -309,7 +309,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
                 }
             }
 
-            async let settingsResult = fetchBlockEditorSettingsAsync()
+            async let settingsResult = fetchBlockEditorSettings()
             async let cookiesResult = loadAuthenticationCookiesAsync()
 
             let settings = await settingsResult
@@ -328,7 +328,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         }
     }
 
-    private func fetchBlockEditorSettingsAsync() async -> [String: Any]? {
+    private func fetchBlockEditorSettings() async -> [String: Any]? {
         let service = RawBlockEditorSettingsService.getService(forBlog: post.blog)
         service.refreshSettings()
 
