@@ -64,7 +64,7 @@ enum AppTips {
         }
 
         var message: Text? {
-            Text(NSLocalizedString("tips.newStats.message", value: "Experience a faster, more powerful stats interface", comment: "Tip for new stats feature"))
+            Text(NSLocalizedString("tips.newStats.message", value: "Experience new sleek and powerful stats. Switch back whenever you like.", comment: "Tip for new stats feature"))
         }
 
         var image: Image? {
