@@ -184,11 +184,6 @@ struct TopListCard: View {
     @ViewBuilder
     private var moreMenuContent: some View {
         Section {
-            Button {
-                // Not implemented
-            } label: {
-                Label(Strings.Buttons.share, systemImage: "square.and.arrow.up")
-            }
             if let documentationURL = viewModel.selection.item.documentationURL {
                 Link(destination: documentationURL) {
                     Label(Strings.Buttons.learnMore, systemImage: "info.circle")

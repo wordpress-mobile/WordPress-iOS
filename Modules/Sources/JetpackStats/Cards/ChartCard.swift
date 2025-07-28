@@ -191,11 +191,6 @@ struct ChartCard: View {
         }
         Section {
             Button {
-                // Not implemented
-            } label: {
-                Label(Strings.Buttons.share, systemImage: "square.and.arrow.up")
-            }
-            Button {
                 isShowingRawData = true
             } label: {
                 Label(Strings.Chart.showData, systemImage: "tablecells")
