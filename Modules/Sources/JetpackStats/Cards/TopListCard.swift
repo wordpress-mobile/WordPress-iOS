@@ -128,7 +128,7 @@ struct TopListCard: View {
         .environment(\.context, context)
         .environment(\.router, router)
 
-        router.navigate(to: screen)
+        router.navigate(to: screen, title: viewModel.selection.item.localizedTitle)
     }
 
     private var itemTypePicker: some View {
