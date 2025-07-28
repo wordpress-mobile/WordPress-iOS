@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 @MainActor
 final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
@@ -9,6 +10,8 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         }
     }
     @Published private(set) var cards: [any TrafficCardViewModel] = []
+    
+    let scrollToCardSubject = PassthroughSubject<UUID, Never>()
 
     let context: StatsContext
     private let userDefaults: UserDefaults
@@ -95,39 +98,37 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     }
     
     // MARK: - Adding Cards
-    
-    func addChart() {
-        // Add chart with default metrics
-        let defaultMetrics = context.service.supportedMetrics.filter { $0 != .downloads }
-        addChartWithMetrics(defaultMetrics)
-    }
-    
-    func addChartWithMetrics(_ metrics: [SiteMetric]) {
-        let configuration = ChartCardConfiguration(metrics: metrics)
-        let card = TrafficCardConfiguration.Card.chart(configuration)
+
+    func addCard(type: AddCardType) {
+        let card = makeCard(type: type)
         trafficCardConfiguration.cards.append(card)
-        
-        // Create and append the view model using shared logic
+        saveConfiguration()
+
+        // Create and append the view model
         if let viewModel = createViewModel(for: card) {
             cards.append(viewModel)
+
+            // Enable editing after a short delay to allow the card to be added and scrolled to
+            Task {
+                try? await Task.sleep(for: .milliseconds(250))
+                scrollToCardSubject.send(viewModel.id)
+                try? await Task.sleep(for: .milliseconds(750))
+                viewModel.isEditing = true
+            }
         }
-        
-        saveConfiguration()
     }
-    
-    func addTopList(item: TopListItemType, metric: SiteMetric) {
-        let configuration = TopListCardConfiguration(item: item, metric: metric)
-        let card = TrafficCardConfiguration.Card.topList(configuration)
-        trafficCardConfiguration.cards.append(card)
-        
-        // Create and append the view model using shared logic
-        if let viewModel = createViewModel(for: card) {
-            cards.append(viewModel)
+
+    private func makeCard(type: AddCardType) -> TrafficCardConfiguration.Card {
+        switch type {
+        case .chart:
+            let configuration = ChartCardConfiguration(metrics: context.service.supportedMetrics)
+            return TrafficCardConfiguration.Card.chart(configuration)
+        case .topList:
+            let configuration = TopListCardConfiguration(item: .postsAndPages, metric: .views)
+            return TrafficCardConfiguration.Card.topList(configuration)
         }
-        
-        saveConfiguration()
     }
-    
+
     // MARK: - CardConfigurationDelegate
     
     func saveConfiguration(for card: any TrafficCardViewModel) {

@@ -1,9 +1,10 @@
 import SwiftUI
 
 struct TrafficTabView: View {
+    @ObservedObject var viewModel: StatsViewModel
+
     @State private var isShowingCustomRangePicker = false
     @State private var isShowingAddCardSheet = false
-    @ObservedObject var viewModel: StatsViewModel
 
     @Environment(\.context) var context
 
@@ -12,41 +13,27 @@ struct TrafficTabView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: Constants.step3) {
-                ForEach(viewModel.cards, id: \.id) { card in
-                    makeItem(for: card)
-                }
-                
-                // Add Chart Button
-                Button(action: {
-                    isShowingAddCardSheet = true
-                }) {
-                    HStack(spacing: Constants.step1) {
-                        Image(systemName: "plus")
-                            .font(.callout.weight(.medium))
-                        Text(Strings.Buttons.addChart)
-                            .font(.callout)
-                            .fontWeight(.medium)
+        ScrollViewReader { proxy in
+            ScrollView {
+                VStack(spacing: Constants.step3) {
+                    ForEach(viewModel.cards, id: \.id) { card in
+                        makeItem(for: card)
                     }
-                    .foregroundColor(.secondary)
-                    .padding(.horizontal, Constants.step3)
-                    .padding(.vertical, Constants.step1)
-                    .background(Color(UIColor.secondarySystemFill))
-                    .clipShape(Capsule())
+                    buttonAddChart
+                    timeZoneInfo
                 }
-                .padding(.top, Constants.step2)
-                
-                TimezoneInfoView()
-                    .padding(.horizontal, Constants.step4)
-                    .padding(.top, Constants.step2)
-                    .padding(.bottom, Constants.step1)
+                .padding(.vertical, Constants.step2)
+                .onReceive(viewModel.scrollToCardSubject) { cardID in
+                    withAnimation {
+                        let _ = print(cardID)
+                        proxy.scrollTo(cardID, anchor: .top)
+                    }
+                }
             }
-            .padding(.vertical, Constants.step2)
+            .background(Constants.Colors.background)
+            .animation(.spring, value: viewModel.cards.map(\.id))
+            .listStyle(.plain)
         }
-        .listStyle(.plain)
-        .background(Constants.Colors.background)
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.cards.map { ObjectIdentifier($0) })
         .toolbar {
 //          normalModeToolbarContent
         }
@@ -55,11 +42,6 @@ struct TrafficTabView: View {
         }
         .sheet(isPresented: $isShowingCustomRangePicker) {
             CustomDateRangePicker(dateRange: $viewModel.dateRange)
-        }
-        .sheet(isPresented: $isShowingAddCardSheet) {
-            AddCardSheet(viewModel: viewModel)
-                .presentationDetents([.medium])
-                .presentationDragIndicator(.visible)
         }
     }
 
@@ -74,6 +56,40 @@ struct TrafficTabView: View {
             let _ = assertionFailure("Unsupported type: \(viewModel)")
             EmptyView()
         }
+    }
+
+    private var buttonAddChart: some View{
+        // Add Chart Button
+        Button(action: {
+            isShowingAddCardSheet = true
+        }) {
+            HStack(spacing: Constants.step1) {
+                Image(systemName: "plus")
+                    .font(.callout.weight(.medium))
+                Text(Strings.Buttons.addChart)
+                    .font(.callout)
+                    .fontWeight(.medium)
+            }
+            .foregroundColor(.secondary)
+            .padding(.horizontal, Constants.step3)
+            .padding(.vertical, Constants.step1)
+            .background(Color(UIColor.secondarySystemFill))
+            .clipShape(Capsule())
+        }
+        .padding(.top, Constants.step2)
+        .popover(isPresented: $isShowingAddCardSheet) {
+            AddCardSheet { cardType in
+                viewModel.addCard(type: cardType)
+            }
+            .modifier(PopoverPresentationModifier())
+        }
+    }
+
+    private var timeZoneInfo: some View {
+        TimezoneInfoView()
+            .padding(.horizontal, Constants.step4)
+            .padding(.top, Constants.step2)
+            .padding(.bottom, Constants.step1)
     }
 
     // MARK: - Toolbar
