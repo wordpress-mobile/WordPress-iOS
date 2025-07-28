@@ -10,8 +10,16 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
     @Published private(set) var isLoading = true
     @Published private(set) var loadingError: Error?
     @Published private(set) var isStale = false
+
     @Published var isEditing = false
     @Published var selectedMetric: SiteMetric
+    @Published var selectedChartType: ChartType {
+        didSet {
+            // Update configuration when chart type changes
+            configuration.chartType = selectedChartType
+            configurationDelegate?.saveConfiguration(for: self)
+        }
+    }
     
     weak var configurationDelegate: CardConfigurationDelegate?
 
@@ -33,6 +41,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
     init(configuration: ChartCardConfiguration, dateRange: StatsDateRange, service: any StatsServiceProtocol) {
         self.configuration = configuration
         self.selectedMetric = configuration.metrics.first ?? .views
+        self.selectedChartType = configuration.chartType
         self.dateRange = dateRange
         self.service = service
     }
@@ -43,6 +52,11 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         // Update selectedMetric if it's no longer available in the new configuration
         if !newConfiguration.metrics.contains(selectedMetric) {
             selectedMetric = newConfiguration.metrics.first ?? .views
+        }
+        
+        // Update chart type from configuration (without triggering didSet)
+        if selectedChartType != newConfiguration.chartType {
+            selectedChartType = newConfiguration.chartType
         }
         
         configurationDelegate?.saveConfiguration(for: self)

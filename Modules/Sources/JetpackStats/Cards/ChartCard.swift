@@ -8,8 +8,8 @@ struct ChartCard: View {
     private var dateRange: StatsDateRange { viewModel.dateRange }
     private var metrics: [SiteMetric] { viewModel.metrics }
     private var selectedMetric: SiteMetric { viewModel.selectedMetric }
+    private var selectedChartType: ChartType { viewModel.selectedChartType }
 
-    @State private var selectedChartType: ChartType = .line
     @State private var isShowingRawData = false
 
     @ScaledMetric(relativeTo: .body) private var chartHeight = 180
@@ -193,7 +193,7 @@ struct ChartCard: View {
             ControlGroup {
                 ForEach(ChartType.allCases, id: \.self) { type in
                     Button {
-                        selectedChartType = type
+                        viewModel.selectedChartType = type
                     } label: {
                         Label(type.localizedTitle, systemImage: type.systemImage)
                     }
@@ -231,7 +231,7 @@ struct ChartCard: View {
     }
 }
 
-enum ChartType: String, CaseIterable {
+enum ChartType: String, CaseIterable, Codable {
     case line
     case columns
 
