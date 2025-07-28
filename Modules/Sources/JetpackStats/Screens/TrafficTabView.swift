@@ -63,7 +63,7 @@ struct TrafficTabView: View {
         }
     }
 
-    private var buttonAddChart: some View{
+    private var buttonAddChart: some View {
         // Add Chart Button
         Button(action: {
             isShowingAddCardSheet = true

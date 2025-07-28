@@ -43,7 +43,7 @@ struct ChartCardCustomizationView: View {
                     dismiss()
                 }
             }
-            
+
             ToolbarItem(placement: .navigationBarTrailing) {
                 if !selectedMetrics.isEmpty {
                     Button(Strings.Buttons.done) {
@@ -74,7 +74,7 @@ struct ChartCardCustomizationView: View {
             metrics = currentMetrics + otherMetrics
         }
     }
-    
+
     private func metricRow(metric: SiteMetric) -> some View {
         Button(action: {
             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -105,14 +105,14 @@ struct ChartCardCustomizationView: View {
         }
         .buttonStyle(.plain)
     }
-    
+
     private func resetToDefaults() {
         // Get default metrics from service (excluding downloads)
         let defaultMetrics = context.service.supportedMetrics.filter { $0 != .downloads }
 
         // Update selected metrics
         selectedMetrics = Set(defaultMetrics)
-        
+
         // Update the metrics array order to show default metrics first
         let otherMetrics = metrics.filter { !defaultMetrics.contains($0) }
         metrics = defaultMetrics + otherMetrics

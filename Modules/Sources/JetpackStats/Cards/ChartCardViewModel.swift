@@ -4,7 +4,7 @@ import SwiftUI
 final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
     var id: UUID { configuration.id }
     var metrics: [SiteMetric] { configuration.metrics }
-    
+
     @Published private(set) var configuration: ChartCardConfiguration
     @Published private(set) var chartData: [SiteMetric: ChartData] = [:]
     @Published private(set) var isLoading = true
@@ -20,7 +20,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
             configurationDelegate?.saveConfiguration(for: self)
         }
     }
-    
+
     weak var configurationDelegate: CardConfigurationDelegate?
 
     var dateRange: StatsDateRange {
@@ -45,20 +45,20 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         self.dateRange = dateRange
         self.service = service
     }
-    
+
     func updateConfiguration(_ newConfiguration: ChartCardConfiguration) {
         self.configuration = newConfiguration
-        
+
         // Update selectedMetric if it's no longer available in the new configuration
         if !newConfiguration.metrics.contains(selectedMetric) {
             selectedMetric = newConfiguration.metrics.first ?? .views
         }
-        
+
         // Update chart type from configuration (without triggering didSet)
         if selectedChartType != newConfiguration.chartType {
             selectedChartType = newConfiguration.chartType
         }
-        
+
         configurationDelegate?.saveConfiguration(for: self)
     }
 

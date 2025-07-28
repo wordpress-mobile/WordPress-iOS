@@ -44,18 +44,18 @@ struct TopListCardCustomizationView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private var filteredItemsList: some View {
         let filteredItems = viewModel.items.filter { item in
             item.localizedTitle.localizedCaseInsensitiveContains(searchText)
         }
-        
+
         ForEach(filteredItems) { item in
             itemRow(item: item)
         }
     }
-    
+
     private func itemRow(item: TopListItemType) -> some View {
         Button(action: {
             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -83,21 +83,21 @@ struct TopListCardCustomizationView: View {
         }
         .buttonStyle(.plain)
     }
-    
+
     private func updateConfiguration(with item: TopListItemType) {
         var updatedConfig = viewModel.configuration
         updatedConfig.item = item
-        
+
         // Adjust metric if current metric is not supported for the new item
         let supportedMetrics = context.service.getSupportedMetrics(for: item)
         if !supportedMetrics.contains(updatedConfig.metric),
            let firstMetric = supportedMetrics.first {
             updatedConfig.metric = firstMetric
         }
-        
+
         viewModel.updateConfiguration(updatedConfig)
         viewModel.isEditing = false
-        
+
         dismiss()
     }
 }

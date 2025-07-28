@@ -10,7 +10,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         }
     }
     @Published private(set) var cards: [any TrafficCardViewModel] = []
-    
+
     let scrollToCardSubject = PassthroughSubject<UUID, Never>()
 
     let context: StatsContext
@@ -46,11 +46,11 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         }
         return configuration
     }
-    
+
     private static func makeDefaultConfiguration(context: StatsContext) -> TrafficCardConfiguration {
         // Get available metrics from service, excluding downloads
         let availableMetrics = context.service.supportedMetrics
-        
+
         return TrafficCardConfiguration(cards: [
             .chart(ChartCardConfiguration(metrics: availableMetrics)),
             .topList(TopListCardConfiguration(item: .postsAndPages, metric: .views)),
@@ -58,7 +58,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
             .topList(TopListCardConfiguration(item: .locations, metric: .views))
         ])
     }
-    
+
     private func makeDefaultConfiguration() -> TrafficCardConfiguration {
         Self.makeDefaultConfiguration(context: context)
     }
@@ -68,10 +68,10 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
             createViewModel(for: card)
         }
     }
-    
+
     private func createViewModel(for card: TrafficCardConfiguration.Card) -> TrafficCardViewModel? {
         let viewModel: TrafficCardViewModel?
-        
+
         switch card {
         case .chart(let configuration):
             viewModel = ChartCardViewModel(
@@ -86,7 +86,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
                 service: context.service
             )
         }
-        
+
         viewModel?.configurationDelegate = self
         return viewModel
     }
@@ -96,7 +96,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
             card.dateRange = dateRange
         }
     }
-    
+
     // MARK: - Adding Cards
 
     func addCard(type: AddCardType) {
@@ -130,11 +130,11 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     }
 
     // MARK: - CardConfigurationDelegate
-    
+
     func saveConfiguration(for card: any TrafficCardViewModel) {
         // Find the index of the card in configuration
         guard let index = trafficCardConfiguration.cards.firstIndex(where: { $0.id == card.id }) else { return }
-        
+
         // Update the configuration based on the card type
         switch card {
         case let chartViewModel as ChartCardViewModel:
@@ -144,27 +144,27 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         default:
             assertionFailure("Unknown card type")
         }
-        
+
         saveConfiguration()
     }
-    
+
     func deleteCard(_ card: any TrafficCardViewModel) {
         // Find and remove the card from configuration using the protocol's id property
         trafficCardConfiguration.cards.removeAll { $0.id == card.id }
-        
+
         // Remove the card from the view models array
         cards.removeAll { $0.id == card.id }
-        
+
         saveConfiguration()
     }
-    
+
     func moveCard(_ card: any TrafficCardViewModel, direction: MoveDirection) {
         // Find the index of the card in both arrays
         guard let currentIndex = cards.firstIndex(where: { $0.id == card.id }),
               let configIndex = trafficCardConfiguration.cards.firstIndex(where: { $0.id == card.id }) else {
             return
         }
-        
+
         let newIndex: Int
         switch direction {
         case .up:
@@ -176,22 +176,22 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         case .bottom:
             newIndex = cards.count - 1
         }
-        
+
         // If the position hasn't changed, return early
         if newIndex == currentIndex {
             return
         }
-        
+
         // Move in cards array
         let movedCard = cards.remove(at: currentIndex)
         cards.insert(movedCard, at: newIndex)
-        
+
         // Move in configuration array
         let movedConfigCard = trafficCardConfiguration.cards.remove(at: configIndex)
         trafficCardConfiguration.cards.insert(movedConfigCard, at: newIndex)
-        
+
         saveConfiguration()
-        
+
         // Scroll to the moved card after a short delay
         Task {
             try? await Task.sleep(for: .milliseconds(300))

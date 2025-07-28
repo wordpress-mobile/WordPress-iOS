@@ -6,7 +6,7 @@ struct TrafficCardConfiguration: Codable {
     enum Card: Codable {
         case chart(ChartCardConfiguration)
         case topList(TopListCardConfiguration)
-        
+
         var id: UUID {
             switch self {
             case .chart(let config):

@@ -215,7 +215,7 @@ enum Strings {
         static let videoURL = AppLocalizedString("jetpackStats.csv.videoURL", value: "Video URL", comment: "CSV header for video URL column")
         static let section = AppLocalizedString("jetpackStats.csv.section", value: "Section", comment: "CSV header for section column")
     }
-    
+
     enum AddChart {
         static let chartOption = AppLocalizedString("jetpackStats.addChart.chartOption", value: "Chart", comment: "Chart option title")
         static let chartDescription = AppLocalizedString("jetpackStats.addChart.chartDescription", value: "Visualize trends over time", comment: "Chart option description")

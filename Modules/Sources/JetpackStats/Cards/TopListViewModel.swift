@@ -9,7 +9,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     var title: String {
         selection.item.getTitle(for: selection.metric)
     }
-    
+
     @Published private(set) var configuration: TopListCardConfiguration {
         didSet {
             configurationDelegate?.saveConfiguration(for: self)
@@ -28,7 +28,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     @Published private(set) var isStale = false
     @Published private(set) var cachedCountriesMapData: CountriesMapData?
     @Published var isEditing = false
-    
+
     weak var configurationDelegate: CardConfigurationDelegate?
 
     private let service: any StatsServiceProtocol
@@ -85,11 +85,11 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             return [primary, secondary]
         }()
     }
-    
+
     func updateConfiguration(_ newConfiguration: TopListCardConfiguration) {
         self.configuration = newConfiguration
     }
-    
+
     private func updateSelection() {
         selection = Selection(item: configuration.item, metric: configuration.metric)
     }
