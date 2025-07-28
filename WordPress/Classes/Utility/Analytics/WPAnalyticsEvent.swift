@@ -609,6 +609,10 @@ import WordPressShared
     case statsEmailsViewMoreTapped
     case statsSubscribersChartTapped
 
+    // New Stats
+    case statsNewStatsEnabled
+    case statsNewStatsDisabled
+
     // In-App Updates
     case inAppUpdateShown
     case inAppUpdateDismissed
@@ -1663,6 +1667,12 @@ import WordPressShared
             return "stats_emails_view_more_tapped"
         case .statsSubscribersChartTapped:
             return "stats_subscribers_chart_tapped"
+
+        // New Stats
+        case .statsNewStatsEnabled:
+            return "stats_new_stats_enabled"
+        case .statsNewStatsDisabled:
+            return "stats_new_stats_disabled"
 
         // In-App Updates
         case .inAppUpdateShown:

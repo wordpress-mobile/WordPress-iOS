@@ -84,14 +84,14 @@ struct TopListCard: View {
                     itemTypePicker
                 } label: {
                     InlineValuePickerTitle(title: viewModel.selection.item.localizedTitle)
-                        .padding(.top, Constants.step0_5)
-                        .padding(.vertical, Constants.step1 / 2) // Increase tap area
+                        .padding(.top, 6)
+                        .padding(.vertical, Constants.step0_5) // Increase tap area
                 }
                 .fixedSize()
             } else {
                 Text(viewModel.selection.item.localizedTitle)
-                    .padding(.top, Constants.step0_5)
-                    .padding(.vertical, Constants.step1 / 2)
+                    .padding(.top, 6)
+                    .padding(.vertical, Constants.step0_5)
                     .font(.subheadline)
                     .fontWeight(.medium)
             }
@@ -104,14 +104,14 @@ struct TopListCard: View {
                     makeMetricPicker(with: metrics)
                 } label: {
                     InlineValuePickerTitle(title: viewModel.selection.metric.localizedTitle)
-                        .padding(.top, Constants.step0_5)
-                        .padding(.vertical, Constants.step1 / 2)
+                        .padding(.top, 6)
+                        .padding(.vertical, Constants.step0_5)
                 }
                 .fixedSize()
             } else {
                 Text(viewModel.selection.metric.localizedTitle)
-                    .padding(.top, Constants.step0_5)
-                    .padding(.vertical, Constants.step1 / 2)
+                    .padding(.top, 6)
+                    .padding(.vertical, Constants.step0_5)
                     .font(.subheadline)
                     .fontWeight(.medium)
             }
