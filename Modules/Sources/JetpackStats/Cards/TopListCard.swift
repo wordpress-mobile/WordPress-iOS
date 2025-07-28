@@ -275,9 +275,7 @@ struct TopListCard: View {
 }
 
 #Preview {
-    NavigationView {
-        TopListCardPreview(item: .authors)
-    }
+    TopListCardPreview(item: .authors)
 }
 
 private struct TopListCardPreview: View {
@@ -293,13 +291,13 @@ private struct TopListCardPreview: View {
                 metric: item == .fileDownloads ? .downloads : .views
             ),
             dateRange: Calendar.demo.makeDateRange(for: .last28Days),
-            service: MockStatsService()
+            service: MockStatsService(),
+            fetchLimit: 3
         ))
     }
 
     var body: some View {
         TopListCard(viewModel: viewModel)
-            .cardStyle()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Constants.Colors.background)
     }
