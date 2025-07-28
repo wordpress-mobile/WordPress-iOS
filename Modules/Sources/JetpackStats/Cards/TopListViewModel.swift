@@ -27,6 +27,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     @Published private(set) var loadingError: Error?
     @Published private(set) var isStale = false
     @Published private(set) var cachedCountriesMapData: CountriesMapData?
+
     @Published var isEditing = false
 
     weak var configurationDelegate: CardConfigurationDelegate?
