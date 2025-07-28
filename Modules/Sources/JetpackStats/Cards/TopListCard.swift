@@ -291,8 +291,7 @@ private struct TopListCardPreview: View {
                 metric: item == .fileDownloads ? .downloads : .views
             ),
             dateRange: Calendar.demo.makeDateRange(for: .last28Days),
-            service: MockStatsService(),
-            fetchLimit: 3
+            service: MockStatsService()
         ))
     }
 
