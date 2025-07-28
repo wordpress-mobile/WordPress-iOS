@@ -128,8 +128,7 @@ struct LineChartView: View {
 
     @ChartContentBuilder
     private var significantPointAnnotations: some ChartContent {
-        if selectedDate == nil,
-           let maxPoint = data.significantPoints.currentMax,
+        if let maxPoint = data.significantPoints.currentMax,
            data.currentData.count > 0 {
             PointMark(
                 x: .value("Date", maxPoint.date),
@@ -143,6 +142,7 @@ struct LineChartView: View {
                     metric: data.metric
                 )
             }
+            .opacity(selectedDate == nil ? 1 : 0)
         }
     }
 
