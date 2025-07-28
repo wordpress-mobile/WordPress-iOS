@@ -122,7 +122,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
             Task {
                 try? await Task.sleep(for: .milliseconds(500))
                 scrollToCardSubject.send(viewModel.id)
-                try? await Task.sleep(for: .milliseconds(750))
+                try? await Task.sleep(for: .milliseconds(500))
                 viewModel.isEditing = true
             }
         }
