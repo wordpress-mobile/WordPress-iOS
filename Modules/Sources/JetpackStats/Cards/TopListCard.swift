@@ -47,8 +47,20 @@ struct TopListCard: View {
         }
         .cardStyle()
         .grayscale(viewModel.isStale ? 1 : 0)
+        .opacity(viewModel.isEditing ? 0.6 : 1)
+        .scaleEffect(viewModel.isEditing ? 0.95 : 1)
         .animation(.smooth, value: viewModel.isStale)
+        .animation(.spring, value: viewModel.isEditing)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init)) // placing is important
+        .sheet(isPresented: $viewModel.isEditing) {
+            NavigationStack {
+                TopListCardCustomizationView(topListViewModel: viewModel)
+                    .navigationTitle(Strings.AddChart.selectMetric)
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+            .presentationDetents([.medium, .large])
+            .presentationDragIndicator(.visible)
+        }
         .background(
             Color.clear
                 .contentShape(Rectangle())
