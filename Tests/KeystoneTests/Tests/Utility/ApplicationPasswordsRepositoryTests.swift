@@ -94,11 +94,7 @@ private extension ApplicationPasswordsRepositoryTests {
         user.username = "testuser"
         user.email = "testuser@example.com"
         let service = AccountService(coreDataStack: coreDataStack)
-        let objectID = service.createOrUpdateAccount(withUserDetails: user, authToken: "token")
-        try await coreDataStack.performAndSave { context in
-            let account = try #require(try context.existingObject(with: objectID) as? WPAccount)
-            service.setDefaultWordPressComAccount(account)
-        }
+        service.createOrUpdateAccount(withUsername: "testuser", authToken: "token")
     }
 
     func createSimpleSite() async throws -> TaggedManagedObjectID<Blog> {
