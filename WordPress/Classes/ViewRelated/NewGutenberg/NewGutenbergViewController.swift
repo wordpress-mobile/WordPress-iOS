@@ -864,9 +864,9 @@ extension EditorConfiguration {
         var siteApiNamespace: [String] = []
         if isWPComSite {
             if let siteId {
-                siteApiNamespace.append("sites/\(siteId)")
+                siteApiNamespace.append("sites/\(siteId)/")
             }
-            siteApiNamespace.append("sites/\(siteDomain)")
+            siteApiNamespace.append("sites/\(siteDomain)/")
         }
 
         self = EditorConfiguration()
