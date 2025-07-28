@@ -157,7 +157,13 @@ private extension ApplicationPasswordRepository {
                 return try? blog.getApplicationToken()
             }
 
-            if let saved, !validPasswords.map(\.password).contains(saved), let newPassword = validPasswords.first {
+            var shouldUpdate = saved == nil
+
+            if let saved, !validPasswords.map(\.password).contains(saved) {
+                shouldUpdate = true
+            }
+
+            if shouldUpdate, let newPassword = validPasswords.first {
                 try await assign(newPassword, apiRootURL: apiRootURL, to: blogId)
             }
         }

@@ -17,7 +17,7 @@ struct ApplicationTokenItemView: View {
                 detailItem(title: Self.name, value: token.name)
             }
 
-            Section(Self.security) {
+            Section {
                 detailItem(title: Self.creationDate, value: token.createdAt.formatted())
 
                 if let lastUsed = token.lastUsed {
@@ -26,6 +26,18 @@ struct ApplicationTokenItemView: View {
 
                 if let lastIpAddress = token.lastIpAddress {
                     detailItem(title: Self.lastUsedIp, value: lastIpAddress)
+                }
+            } header: {
+                Text(Self.security)
+            } footer: {
+                if token.isCurrent {
+                    HStack(alignment: .firstTextBaseline) {
+                        Circle()
+                            .fill(Color.accentColor)
+                            .frame(width: 8, height: 8)
+
+                        Text(Self.currentlyInUse)
+                    }
                 }
             }
         }
@@ -62,6 +74,8 @@ private extension ApplicationTokenItemView {
     static var lastUsed: String { NSLocalizedString("applicationPassword.item.lastUsed", value: "Last Used", comment: "Title of row for displaying an application password's last used date") }
 
     static var lastUsedIp: String { NSLocalizedString("applicationPassword.item.lastUsed", value: "Last IP Address", comment: "Title of row for displaying an application password's last used IP address") }
+
+    static var currentlyInUse: String { NSLocalizedString("applicationPassword.item.currentlyInUse", value: "This application password is currently being used by the app.", comment: "Footer message indicating that this application password is currently active and being used by the app") }
 }
 
 // MARK: - SwiftUI Preview

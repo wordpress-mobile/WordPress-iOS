@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 import BuildSettingsKit
 import WordPressData
@@ -135,6 +136,14 @@ public class MeViewController: UITableViewController {
             action: presentGravatarAboutEditorAction(),
             accessibilityIdentifier: "myProfile")
 
+        let applicationPassword = NavigationItemRow(
+            title: RowTitles.applicationPasswords,
+            icon: UIImage(systemName: "key")?.withRenderingMode(.alwaysTemplate),
+            tintColor: .label,
+            accessoryType: accessoryType,
+            action: presentApplicationPasswordsAction(),
+            accessibilityIdentifier: "applicationPasswords")
+
         let qrLogin = NavigationItemRow(
             title: RowTitles.qrLogin,
             icon: UIImage(named: "wpl-capture-photo")?.withRenderingMode(.alwaysTemplate),
@@ -183,6 +192,7 @@ public class MeViewController: UITableViewController {
         let wordPressComAccount = HeaderTitles.wpAccount
 
         let shouldShowQRLoginRow = FeatureFlag.qrCodeLogin.enabled && !(account?.settings?.twoStepEnabled ?? false)
+        let shouldShowApplicationPasswords = FeatureFlag.allowApplicationPasswords.enabled
 
         var sections: [ImmuTableSection] = []
 
@@ -195,7 +205,14 @@ public class MeViewController: UITableViewController {
             ImmuTableSection(rows: {
                 var rows: [ImmuTableRow] = [appSettingsRow]
                 if loggedIn {
-                    var loggedInRows = [myProfile, accountSettings]
+                    var loggedInRows = [myProfile]
+
+                    if shouldShowApplicationPasswords {
+                        loggedInRows.append(applicationPassword)
+                    }
+
+                    loggedInRows.append(accountSettings)
+
                     if shouldShowQRLoginRow {
                         loggedInRows.append(qrLogin)
                     }
@@ -253,6 +270,19 @@ public class MeViewController: UITableViewController {
     fileprivate func presentGravatarAboutEditorAction() -> ImmuTableAction {
         return { [unowned self] row in
             presentGravatarQuickEditor(initialPage: .aboutEditor)
+        }
+    }
+
+    private func presentApplicationPasswordsAction() -> ImmuTableAction {
+        return { [unowned self] row in
+            guard let blog = RootViewCoordinator.sharedPresenter.currentOrLastBlog() else {
+                return
+            }
+            let feature = NSLocalizedString("applicationPasswordRequired.feature.users", value: "Application Passwords Management", comment: "Feature name for managing application passwords in the app")
+            let view = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, presentingViewController: self) {
+                ApplicationTokenListView(dataProvider: ApplicationPasswordService(api: $0))
+            }
+            self.navigationController?.pushViewController(UIHostingController(rootView: view), animated: true)
         }
     }
 
@@ -557,6 +587,7 @@ extension MeViewController {
     enum RowTitles {
         static let appSettings = NSLocalizedString("App Settings", comment: "Link to App Settings section")
         static let myProfile = NSLocalizedString("My Profile", comment: "Link to My Profile section")
+        static let applicationPasswords = NSLocalizedString("Application Passwords", comment: "Link to Application Passwords section")
         static let accountSettings = NSLocalizedString("Account Settings", comment: "Link to Account Settings section")
         static let qrLogin = NSLocalizedString("Scan Login Code", comment: "Link to opening the QR login scanner")
         static let support = NSLocalizedString("Help & Support", comment: "Link to Help section")

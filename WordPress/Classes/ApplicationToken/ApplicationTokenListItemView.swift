@@ -13,15 +13,25 @@ public struct ApplicationTokenListItemView: View {
         NavigationLink(destination: {
             ApplicationTokenItemView(token: item)
         }, label: {
-            VStack(alignment: .leading) {
-                Text(item.name)
-                    .font(.headline)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(2)
-                    .truncationMode(.middle)
-                Text(lastUsedText)
-                    .font(.callout)
-                    .lineLimit(1)
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(item.name)
+                        .font(.headline)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(2)
+                        .truncationMode(.middle)
+                    Text(lastUsedText)
+                        .font(.callout)
+                        .lineLimit(1)
+                }
+
+                Spacer()
+
+                if item.isCurrent {
+                    Circle()
+                        .fill(Color.accentColor)
+                        .frame(width: 8, height: 8)
+                }
             }
         })
     }

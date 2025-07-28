@@ -8,6 +8,8 @@ struct ApplicationTokenListView: View {
     @StateObject
     private var viewModel: ApplicationTokenListViewModel
 
+    @State private var isShowingInfo = false
+
     fileprivate init(tokens: [ApplicationTokenItem]) {
         let dataProvider = StaticTokenProvider(tokens: .success(tokens))
         self.init(dataProvider: dataProvider)
@@ -42,6 +44,20 @@ struct ApplicationTokenListView: View {
         }
         .navigationTitle(Self.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    isShowingInfo = true
+                } label: {
+                    Image(systemName: "info.circle")
+                }
+            }
+        }
+        .sheet(isPresented: $isShowingInfo) {
+            NavigationView {
+                ApplicationPasswordsInfoView()
+            }
+        }
         .onAppear {
             if viewModel.applicationTokens.isEmpty {
                 Task {
@@ -78,11 +94,14 @@ class ApplicationTokenListViewModel: ObservableObject {
         }
 
         do {
-            let tokens = try await self.dataProvider.loadApplicationTokens()
+            var tokens = try await self.dataProvider.loadApplicationTokens()
                 .sorted { lhs, rhs in
                     // The most recently used/created is placed at the top.
                     (lhs.lastUsed ?? .distantPast, lhs.createdAt) > (rhs.lastUsed ?? .distantPast, rhs.createdAt)
                 }
+            if let current = tokens.firstIndex(where: { $0.isCurrent }) {
+                tokens.move(fromOffsets: IndexSet(integer: current), toOffset: 0)
+            }
             self.applicationTokens = tokens
         } catch {
             self.errorMessage = error.localizedDescription
