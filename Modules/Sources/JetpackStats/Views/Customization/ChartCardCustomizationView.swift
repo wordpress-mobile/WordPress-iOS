@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ChartCardCustomizationView: View {
     @ObservedObject var viewModel: StatsViewModel
+    var chartViewModel: ChartCardViewModel? = nil
 
     @State private var selectedMetrics: Set<SiteMetric> = []
     @State private var metrics: [SiteMetric] = []
@@ -10,6 +11,8 @@ struct ChartCardCustomizationView: View {
     @ScaledMetric private var iconWidth = 26
 
     @Environment(\.dismiss) var dismiss
+    
+    private var isEditingExisting: Bool { chartViewModel != nil }
 
     var body: some View {
         List {
@@ -23,12 +26,31 @@ struct ChartCardCustomizationView: View {
         .listStyle(.plain)
         .environment(\.editMode, $editMode)
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                if isEditingExisting {
+                    Button(Strings.Buttons.cancel) {
+                        chartViewModel?.isEditing = false
+                        dismiss()
+                    }
+                }
+            }
+            
             ToolbarItem(placement: .navigationBarTrailing) {
                 if !selectedMetrics.isEmpty {
                     Button(Strings.Buttons.done) {
                         // Convert selected metrics to array in the order they appear in metrics
                         let orderedSelectedMetrics = metrics.filter { selectedMetrics.contains($0) }
-                        viewModel.addChartWithMetrics(orderedSelectedMetrics)
+                        
+                        if let chartViewModel {
+                            // Update existing chart configuration
+                            var updatedConfig = chartViewModel.configuration
+                            updatedConfig.metrics = orderedSelectedMetrics
+                            chartViewModel.updateConfiguration(updatedConfig)
+                            chartViewModel.isEditing = false
+                        } else {
+                            // Add new chart
+                            viewModel.addChartWithMetrics(orderedSelectedMetrics)
+                        }
                         dismiss()
                     }
                     .fontWeight(.semibold)
@@ -37,6 +59,16 @@ struct ChartCardCustomizationView: View {
         }
         .onAppear {
             metrics = viewModel.context.service.supportedMetrics
+            
+            // If editing existing chart, pre-select its current metrics
+            if let chartViewModel {
+                selectedMetrics = Set(chartViewModel.metrics)
+                
+                // Reorder metrics to put selected ones first in their current order
+                let currentMetrics = chartViewModel.metrics
+                let otherMetrics = metrics.filter { !currentMetrics.contains($0) }
+                metrics = currentMetrics + otherMetrics
+            }
         }
     }
     

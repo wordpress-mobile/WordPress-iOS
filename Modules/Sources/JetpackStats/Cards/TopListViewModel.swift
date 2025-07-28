@@ -2,12 +2,19 @@ import SwiftUI
 
 @MainActor
 final class TopListViewModel: ObservableObject, TrafficCardViewModel {
-    let id: UUID
+    var id: UUID { configuration.id }
     let items: [TopListItemType]
     let groupedItems: [[TopListItemType]]
 
     var title: String {
         selection.item.getTitle(for: selection.metric)
+    }
+    
+    @Published private(set) var configuration: TopListCardConfiguration {
+        didSet {
+            configurationDelegate?.saveConfiguration(for: self)
+            updateSelection()
+        }
     }
 
     @Published var selection: Selection {
@@ -20,6 +27,9 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     @Published private(set) var loadingError: Error?
     @Published private(set) var isStale = false
     @Published private(set) var cachedCountriesMapData: CountriesMapData?
+    @Published var isEditing = false
+    
+    weak var configurationDelegate: CardConfigurationDelegate?
 
     private let service: any StatsServiceProtocol
     private let fetchLimit: Int?
@@ -47,8 +57,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     private var isFirstAppear = true
 
     init(
-        id: UUID = UUID(),
-        selection: Selection,
+        configuration: TopListCardConfiguration,
         dateRange: StatsDateRange,
         service: any StatsServiceProtocol,
         items: [TopListItemType]? = nil,
@@ -56,9 +65,9 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         filter: Filter? = nil,
         initialData: TopListData? = nil
     ) {
-        self.id = id
+        self.configuration = configuration
+        self.selection = Selection(item: configuration.item, metric: configuration.metric)
         self.items = items ?? service.supportedItems
-        self.selection = selection
         self.dateRange = dateRange
         self.service = service
         self.fetchLimit = fetchLimit
@@ -75,6 +84,14 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             }
             return [primary, secondary]
         }()
+    }
+    
+    func updateConfiguration(_ newConfiguration: TopListCardConfiguration) {
+        self.configuration = newConfiguration
+    }
+    
+    private func updateSelection() {
+        selection = Selection(item: configuration.item, metric: configuration.metric)
     }
 
     func onAppear() {

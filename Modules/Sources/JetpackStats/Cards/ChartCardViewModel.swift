@@ -2,13 +2,23 @@ import SwiftUI
 
 @MainActor
 final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
-    let id: UUID
-    let metrics: [SiteMetric]
+    var id: UUID { configuration.id }
+    var metrics: [SiteMetric] { configuration.metrics }
+    
+    @Published private(set) var configuration: ChartCardConfiguration {
+        didSet {
+            configurationDelegate?.saveConfiguration(for: self)
+            loadData(for: dateRange)
+        }
+    }
 
     @Published private(set) var chartData: [SiteMetric: ChartData] = [:]
     @Published private(set) var isLoading = true
     @Published private(set) var loadingError: Error?
     @Published private(set) var isStale = false
+    @Published var isEditing = false
+    
+    weak var configurationDelegate: CardConfigurationDelegate?
 
     var dateRange: StatsDateRange {
         didSet {
@@ -25,11 +35,14 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
 
     var isFirstLoad: Bool { isLoading && chartData.isEmpty }
 
-    init(id: UUID = UUID(), metrics: [SiteMetric], dateRange: StatsDateRange, service: any StatsServiceProtocol) {
-        self.id = id
-        self.metrics = metrics
+    init(configuration: ChartCardConfiguration, dateRange: StatsDateRange, service: any StatsServiceProtocol) {
+        self.configuration = configuration
         self.dateRange = dateRange
         self.service = service
+    }
+    
+    func updateConfiguration(_ newConfiguration: ChartCardConfiguration) {
+        self.configuration = newConfiguration
     }
 
     func onAppear() {

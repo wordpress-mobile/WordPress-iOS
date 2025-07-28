@@ -54,6 +54,20 @@ struct ChartCard: View {
         }
         .grayscale(viewModel.isStale ? 1 : 0)
         .animation(.smooth, value: viewModel.isStale)
+        .sheet(isPresented: $viewModel.isEditing) {
+            if let statsViewModel {
+                NavigationStack {
+                    ChartCardCustomizationView(
+                        viewModel: statsViewModel,
+                        chartViewModel: viewModel
+                    )
+                    .navigationTitle(Strings.AddChart.selectMetric)
+                    .navigationBarTitleDisplayMode(.inline)
+                }
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+            }
+        }
     }
 
     private func headerView(for metric: SiteMetric) -> some View {
@@ -196,7 +210,7 @@ struct ChartCard: View {
                 Label(Strings.Buttons.learnMore, systemImage: "info.circle")
             }
         }
-        EditCardMenuContent(viewModel: statsViewModel, cardViewModel: viewModel)
+        EditCardMenuContent(cardViewModel: viewModel)
     }
 
     // MARK: - Chart View
@@ -245,7 +259,9 @@ enum ChartType: String, CaseIterable {
 
 private struct ChartCardPreview: View {
     @StateObject var viewModel = ChartCardViewModel(
-        metrics: [.views, .visitors, .likes, .comments],
+        configuration: ChartCardConfiguration(
+            metrics: [.views, .visitors, .likes, .comments]
+        ),
         dateRange: Calendar.demo.makeDateRange(for: .today),
         service: MockStatsService()
     )

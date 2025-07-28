@@ -191,7 +191,7 @@ struct TopListCard: View {
                 }
             }
         }
-        EditCardMenuContent(viewModel: statsViewModel, cardViewModel: viewModel)
+        EditCardMenuContent(cardViewModel: viewModel)
     }
 
     @ViewBuilder
@@ -280,7 +280,7 @@ private struct TopListCardPreview: View {
     init(item: TopListItemType) {
         self.item = item
         self._viewModel = StateObject(wrappedValue: TopListViewModel(
-            selection: .init(
+            configuration: TopListCardConfiguration(
                 item: item,
                 metric: item == .fileDownloads ? .downloads : .views
             ),

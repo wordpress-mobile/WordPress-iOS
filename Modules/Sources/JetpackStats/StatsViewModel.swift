@@ -1,7 +1,7 @@
 import SwiftUI
 
 @MainActor
-final class StatsViewModel: ObservableObject {
+final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     @Published var trafficCardConfiguration: TrafficCardConfiguration
     @Published var dateRange: StatsDateRange {
         didSet {
@@ -49,10 +49,10 @@ final class StatsViewModel: ObservableObject {
         let availableMetrics = context.service.supportedMetrics
         
         return TrafficCardConfiguration(cards: [
-            .chart(TrafficCardConfiguration.ChartParameters(metrics: availableMetrics)),
-            .topList(TrafficCardConfiguration.TopListParameters(item: .postsAndPages, metric: .views)),
-            .topList(TrafficCardConfiguration.TopListParameters(item: .referrers, metric: .views)),
-            .topList(TrafficCardConfiguration.TopListParameters(item: .locations, metric: .views))
+            .chart(ChartCardConfiguration(metrics: availableMetrics)),
+            .topList(TopListCardConfiguration(item: .postsAndPages, metric: .views)),
+            .topList(TopListCardConfiguration(item: .referrers, metric: .views)),
+            .topList(TopListCardConfiguration(item: .locations, metric: .views))
         ])
     }
     
@@ -67,22 +67,25 @@ final class StatsViewModel: ObservableObject {
     }
     
     private func createViewModel(for card: TrafficCardConfiguration.Card) -> TrafficCardViewModel? {
+        let viewModel: TrafficCardViewModel?
+        
         switch card {
-        case .chart(let parameters):
-            return ChartCardViewModel(
-                id: parameters.id,
-                metrics: parameters.metrics,
+        case .chart(let configuration):
+            viewModel = ChartCardViewModel(
+                configuration: configuration,
                 dateRange: dateRange,
                 service: context.service
             )
-        case .topList(let parameters):
-            return TopListViewModel(
-                id: parameters.id,
-                selection: .init(item: parameters.item, metric: parameters.metric),
+        case .topList(let configuration):
+            viewModel = TopListViewModel(
+                configuration: configuration,
                 dateRange: dateRange,
                 service: context.service
             )
         }
+        
+        viewModel?.configurationDelegate = self
+        return viewModel
     }
 
     private func updateViewModelsDateRange() {
@@ -100,8 +103,8 @@ final class StatsViewModel: ObservableObject {
     }
     
     func addChartWithMetrics(_ metrics: [SiteMetric]) {
-        let parameters = TrafficCardConfiguration.ChartParameters(metrics: metrics)
-        let card = TrafficCardConfiguration.Card.chart(parameters)
+        let configuration = ChartCardConfiguration(metrics: metrics)
+        let card = TrafficCardConfiguration.Card.chart(configuration)
         trafficCardConfiguration.cards.append(card)
         
         // Create and append the view model using shared logic
@@ -113,8 +116,8 @@ final class StatsViewModel: ObservableObject {
     }
     
     func addTopList(item: TopListItemType, metric: SiteMetric) {
-        let parameters = TrafficCardConfiguration.TopListParameters(item: item, metric: metric)
-        let card = TrafficCardConfiguration.Card.topList(parameters)
+        let configuration = TopListCardConfiguration(item: item, metric: metric)
+        let card = TrafficCardConfiguration.Card.topList(configuration)
         trafficCardConfiguration.cards.append(card)
         
         // Create and append the view model using shared logic
@@ -125,14 +128,31 @@ final class StatsViewModel: ObservableObject {
         saveConfiguration()
     }
     
-    // MARK: - Deleting Cards
+    // MARK: - CardConfigurationDelegate
     
-    func deleteCard(_ cardViewModel: TrafficCardViewModel) {
+    func saveConfiguration(for card: any TrafficCardViewModel) {
+        // Find the index of the card in configuration
+        guard let index = trafficCardConfiguration.cards.firstIndex(where: { $0.id == card.id }) else { return }
+        
+        // Update the configuration based on the card type
+        switch card {
+        case let chartViewModel as ChartCardViewModel:
+            trafficCardConfiguration.cards[index] = .chart(chartViewModel.configuration)
+        case let topListViewModel as TopListViewModel:
+            trafficCardConfiguration.cards[index] = .topList(topListViewModel.configuration)
+        default:
+            assertionFailure("Unknown card type")
+        }
+        
+        saveConfiguration()
+    }
+    
+    func deleteCard(_ card: any TrafficCardViewModel) {
         // Find and remove the card from configuration using the protocol's id property
-        trafficCardConfiguration.cards.removeAll { $0.id == cardViewModel.id }
+        trafficCardConfiguration.cards.removeAll { $0.id == card.id }
         
         // Remove the card from the view models array
-        cards.removeAll { $0.id == cardViewModel.id }
+        cards.removeAll { $0.id == card.id }
         
         saveConfiguration()
     }
