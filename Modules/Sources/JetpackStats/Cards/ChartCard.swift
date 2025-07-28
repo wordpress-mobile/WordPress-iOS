@@ -31,7 +31,7 @@ struct ChartCard: View {
 
             if metrics.count > 1 {
                 Divider()
-                footerView
+                cardFooterView
             }
         }
         .background(
@@ -63,47 +63,62 @@ struct ChartCard: View {
 
     @ViewBuilder
     private var contentView: some View {
-        VStack(spacing: Constants.step1 / 2) {
-            // Showing currently selected (not loaded period) by design
-            HStack(alignment: .firstTextBaseline, spacing: 0) {
-                ChartLegendView(
-                    metric: selectedMetric,
-                    currentPeriod: dateRange.dateInterval,
-                    previousPeriod: dateRange.effectiveComparisonInterval
-                )
-
-                Spacer(minLength: 8)
-
-                if let data = viewModel.chartData[selectedMetric] {
-                    ChartValuesSummaryView(
-                        trend: TrendViewModel.make(data, context: .regular),
-                        style: metrics.count > 1 ? .compact : .standard
-                    )
-                }
-            }
-
-            if viewModel.isFirstLoad {
-                mainChartView(metric: selectedMetric, data: mockChartData)
-                    .redacted(reason: .placeholder)
-                    .opacity(0.2)
-                    .pulsating()
-            } else if let data = viewModel.chartData[selectedMetric] {
-                if data.isEmpty, data.granularity == .hour {
-                    loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
-                } else {
-                    mainChartView(metric: selectedMetric, data: data)
-                        .transition(.opacity.combined(with: .scale(scale: 0.97)))
-                }
-            } else {
-                loadingErrorView(with: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
-            }
+        VStack(spacing: Constants.step0_5) {
+            chartHeaderView
+                .padding(.trailing, -Constants.step0_5)
+            chartContentView
         }
         .animation(.spring, value: selectedMetric)
         .animation(.spring, value: selectedChartType)
         .animation(.easeInOut, value: viewModel.isFirstLoad)
     }
 
-    private var footerView: some View {
+    private var chartHeaderView: some View {
+        // Showing currently selected (not loaded period) by design
+        HStack(alignment: .firstTextBaseline, spacing: 0) {
+            if let data = viewModel.chartData[selectedMetric] {
+                ChartValuesSummaryView(
+                    trend: .make(data, context: .regular),
+                    style: .compact
+                )
+            } else if viewModel.isFirstLoad {
+                ChartValuesSummaryView(
+                    trend: .init(currentValue: 100, previousValue: 10, metric: .views),
+                    style: .compact
+                )
+                .redacted(reason: .placeholder)
+            }
+
+            Spacer(minLength: 8)
+
+            ChartLegendView(
+                metric: selectedMetric,
+                currentPeriod: dateRange.dateInterval,
+                previousPeriod: dateRange.effectiveComparisonInterval
+            )
+        }
+    }
+
+    @ViewBuilder
+    private var chartContentView: some View {
+        if viewModel.isFirstLoad {
+            mainChartView(metric: selectedMetric, data: mockChartData)
+                .redacted(reason: .placeholder)
+                .opacity(0.2)
+                .pulsating()
+        } else if let data = viewModel.chartData[selectedMetric] {
+            if data.isEmpty, data.granularity == .hour {
+                loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
+            } else {
+                mainChartView(metric: selectedMetric, data: data)
+                    .transition(.opacity.combined(with: .scale(scale: 0.97)))
+            }
+        } else {
+            loadingErrorView(with: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
+        }
+    }
+
+    private var cardFooterView: some View {
         MetricsOverviewTabView(
             data: viewModel.isFirstLoad ? viewModel.placeholderTabViewData : viewModel.tabViewData,
             selectedMetric: $selectedMetric

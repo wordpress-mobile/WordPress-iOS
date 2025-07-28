@@ -21,11 +21,7 @@ struct TopListCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.step2) {
-            HStack {
-                StatsCardTitleView(title: viewModel.selection.item == .locations ? "Countries" : viewModel.title)
-                Spacer(minLength: 44)
-            }
-            .padding(.horizontal, Constants.step3)
+            cardHeaderView
 
             VStack(spacing: Constants.step1) {
                 if viewModel.selection.item == .locations {
@@ -36,6 +32,7 @@ struct TopListCard: View {
                     .padding(.vertical, Constants.step1)
                     .padding(.horizontal, Constants.step2)
                 }
+
                 listHeaderView
                     .padding(.horizontal, Constants.step3)
 
@@ -61,6 +58,14 @@ struct TopListCard: View {
         )
     }
 
+    private var cardHeaderView: some View {
+        HStack {
+            StatsCardTitleView(title: viewModel.selection.item == .locations ? "Countries" : viewModel.title)
+            Spacer(minLength: 44)
+        }
+        .padding(.horizontal, Constants.step3)
+    }
+
     private var listHeaderView: some View {
         HStack {
             if viewModel.items.count > 1 {
@@ -68,6 +73,7 @@ struct TopListCard: View {
                     itemTypePicker
                 } label: {
                     InlineValuePickerTitle(title: viewModel.selection.item.localizedTitle)
+                        .border(Color.red, width: 1)
                 }
                 .fixedSize()
             } else {
@@ -84,6 +90,7 @@ struct TopListCard: View {
                     makeMetricPicker(with: metrics)
                 } label: {
                     InlineValuePickerTitle(title: viewModel.selection.metric.localizedTitle)
+                        .border(Color.red, width: 1)
                 }
                 .fixedSize()
             } else {

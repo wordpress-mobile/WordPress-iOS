@@ -31,23 +31,16 @@ struct ChartValuesSummaryView: View {
     }
 
     private var compact: some View {
-        HStack(alignment: .center, spacing: 9) {
+        VStack(alignment: .leading, spacing: 1) {
             Text(trend.formattedCurrentValue)
-                .font(.system(.subheadline, design: .rounded, weight: .medium))
+                .font(.system(.headline, design: .rounded, weight: .semibold))
                 .foregroundColor(.primary)
                 .contentTransition(.numericText())
 
-            Group {
-                Text(trend.formattedChange)
-                HStack(spacing: 2) {
-                    Image(systemName: trend.systemImage)
-                        .font(.caption2.weight(.medium))
-                    Text(trend.formattedPercentage)
-                }
-            }
-            .contentTransition(.numericText())
-            .font(.system(.subheadline, design: .rounded, weight: .medium))
-            .foregroundColor(trend.sentiment.foregroundColor)
+            Text(trend.formattedTrendShort2)
+                .contentTransition(.numericText())
+                .font(.system(.footnote, design: .rounded, weight: .medium)).tracking(-0.33)
+                .foregroundColor(trend.sentiment.foregroundColor)
         }
     }
 }
