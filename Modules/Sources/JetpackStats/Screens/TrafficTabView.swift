@@ -16,8 +16,6 @@ struct TrafficTabView: View {
                 ForEach(viewModel.cards, id: \.id) { card in
                     makeItem(for: card)
                 }
-
-                // Timezone info at the bottom with inset
                 TimezoneInfoView()
                     .padding(.horizontal, Constants.step4)
                     .padding(.top, Constants.step2)
@@ -101,12 +99,6 @@ struct TrafficTabView: View {
                 .fontWeight(.medium)
         }
         .padding(.horizontal, 10)
-    }
-
-    private var comparisonRangeText: String {
-        let range = viewModel.dateRange.effectiveComparisonInterval
-        let localizedText = context.formatters.dateRange.string(from: range)
-        return localizedText
     }
 }
 
