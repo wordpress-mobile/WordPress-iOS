@@ -16,6 +16,7 @@ struct MetricsOverviewTabView: View {
     @Binding var selectedMetric: SiteMetric
 
     @ScaledMetric(relativeTo: .title) private var minTabWidth: CGFloat = 96
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -33,7 +34,7 @@ struct MetricsOverviewTabView: View {
 
     private func makeItemView(for item: MetricData, onTap: @escaping () -> Void) -> some View {
         MetricItemView(data: item, isSelected: selectedMetric == item.metric, onTap: onTap)
-            .frame(minWidth: minTabWidth)
+            .frame(minWidth: minTabWidth + (horizontalSizeClass == .compact ? 0 : 8))
             .id(item.metric)
     }
 
