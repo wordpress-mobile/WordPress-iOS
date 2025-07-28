@@ -2,7 +2,7 @@ import Foundation
 
 /// Represents predefined date range options for stats filtering.
 /// Each preset defines a specific time period relative to the current date.
-enum DateIntervalPreset: CaseIterable, Identifiable {
+enum DateIntervalPreset: String, CaseIterable, Identifiable {
     /// The current calendar day
     case today
     /// The current calendar week

@@ -149,9 +149,7 @@ struct TrafficTabView: View {
 
 #Preview {
     NavigationView {
-        TrafficTabView(
-            viewModel: StatsViewModel(context: .demo, initialDateRange: Calendar.demo.makeDateRange(for: .today))
-        )
+        TrafficTabView(viewModel: StatsViewModel(context: .demo))
     }
     .environment(\.context, .demo)
     .environment(\.router, StatsRouter(viewController: UINavigationController(), factory: MockStatsRouterScreenFactory()))

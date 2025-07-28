@@ -130,18 +130,18 @@ struct ChartDataListView: View {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: Date())
-        
+
         let metricName = data.metric.localizedTitle
             .replacingOccurrences(of: " ", with: "_")
-        
+
         let dateRangeString = context.formatters.dateRange.string(from: dateRange.dateInterval)
             .replacingOccurrences(of: "/", with: "-")
             .replacingOccurrences(of: ",", with: "")
             .replacingOccurrences(of: " ", with: "_")
-        
+
         return "\(metricName)_\(dateRangeString)_\(dateString).csv"
     }
-    
+
     private func dataItemsView(for chartData: ChartData, metric: SiteMetric) -> some View {
         let formatter = StatsValueFormatter(metric: metric)
         return VStack(alignment: .leading, spacing: Constants.step1) {
