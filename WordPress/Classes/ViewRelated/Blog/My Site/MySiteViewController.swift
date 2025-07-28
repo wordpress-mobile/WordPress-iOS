@@ -646,7 +646,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
         blogDetailsViewController.showInitialDetailsForBlog()
 
-        if FeatureFlag.authenticateUsingApplicationPassword.enabled {
+        if FeatureFlag.allowApplicationPasswords.enabled {
             Task {
                 do {
                     try await ApplicationPasswordRepository.shared.createPasswordIfNeeded(for: TaggedManagedObjectID(blog))
