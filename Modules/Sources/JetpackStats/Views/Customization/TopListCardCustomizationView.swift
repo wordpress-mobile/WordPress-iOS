@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TopListCardCustomizationView: View {
-    let topListViewModel: TopListViewModel
+    let viewModel: TopListViewModel
 
     @State private var selectedItem: TopListItemType?
     @State private var searchText = ""
@@ -12,12 +12,19 @@ struct TopListCardCustomizationView: View {
     @Environment(\.context) var context
     @Environment(\.dismiss) var dismiss
 
+    init(viewModel: TopListViewModel) {
+        self.viewModel = viewModel
+        self._selectedItem = State(initialValue: viewModel.configuration.item)
+    }
+
     var body: some View {
         List {
             if !searchText.isEmpty {
                 filteredItemsList
             } else {
-                groupedItemsList
+                ForEach(viewModel.items) { item in
+                    itemRow(item: item)
+                }
             }
         }
         .listStyle(.plain)
@@ -26,13 +33,10 @@ struct TopListCardCustomizationView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(Strings.Buttons.cancel) {
-                    topListViewModel.isEditing = false
+                    viewModel.isEditing = false
                     dismiss()
                 }
             }
-        }
-        .onAppear {
-            selectedItem = topListViewModel.configuration.item
         }
         .onChange(of: selectedItem) { newValue in
             if let newValue {
@@ -42,19 +46,8 @@ struct TopListCardCustomizationView: View {
     }
     
     @ViewBuilder
-    private var groupedItemsList: some View {
-        ForEach(Array(topListViewModel.groupedItems.enumerated()), id: \.offset) { _, items in
-            Section {
-                ForEach(items) { item in
-                    itemRow(item: item)
-                }
-            }
-        }
-    }
-    
-    @ViewBuilder
     private var filteredItemsList: some View {
-        let filteredItems = topListViewModel.items.filter { item in
+        let filteredItems = viewModel.items.filter { item in
             item.localizedTitle.localizedCaseInsensitiveContains(searchText)
         }
         
@@ -70,11 +63,6 @@ struct TopListCardCustomizationView: View {
             }
         }) {
             HStack(spacing: Constants.step0_5) {
-                Image(systemName: selectedItem == item ? "checkmark.circle.fill" : "circle")
-                    .font(.title3)
-                    .foregroundColor(selectedItem == item ? .accentColor : Color(.tertiaryLabel))
-                    .padding(.trailing, 8)
-
                 Image(systemName: item.systemImage)
                     .font(.subheadline)
                     .frame(width: iconWidth)
@@ -84,6 +72,12 @@ struct TopListCardCustomizationView: View {
                     .foregroundColor(.primary)
 
                 Spacer()
+
+                Image(systemName: selectedItem == item ? "checkmark.circle.fill" : "circle")
+                    .font(.title3)
+                    .foregroundColor(selectedItem == item ? .accentColor : Color(.tertiaryLabel))
+                    .padding(.trailing, 8)
+                    .opacity(selectedItem == item ? 1 : 0) // Reserve space
             }
             .contentShape(Rectangle())
         }
@@ -91,7 +85,7 @@ struct TopListCardCustomizationView: View {
     }
     
     private func updateConfiguration(with item: TopListItemType) {
-        var updatedConfig = topListViewModel.configuration
+        var updatedConfig = viewModel.configuration
         updatedConfig.item = item
         
         // Adjust metric if current metric is not supported for the new item
@@ -101,8 +95,8 @@ struct TopListCardCustomizationView: View {
             updatedConfig.metric = firstMetric
         }
         
-        topListViewModel.updateConfiguration(updatedConfig)
-        topListViewModel.isEditing = false
+        viewModel.updateConfiguration(updatedConfig)
+        viewModel.isEditing = false
         
         dismiss()
     }

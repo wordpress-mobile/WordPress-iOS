@@ -54,8 +54,8 @@ struct TopListCard: View {
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init)) // placing is important
         .sheet(isPresented: $viewModel.isEditing) {
             NavigationStack {
-                TopListCardCustomizationView(topListViewModel: viewModel)
-                    .navigationTitle(Strings.AddChart.selectMetric)
+                TopListCardCustomizationView(viewModel: viewModel)
+                    .navigationTitle(Strings.AddChart.selectDataType)
                     .navigationBarTitleDisplayMode(.inline)
             }
             .presentationDetents([.medium, .large])
