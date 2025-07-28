@@ -64,7 +64,7 @@ private struct TagsSearchView: View {
     @ObservedObject var viewModel: TagsViewModel
 
     var body: some View {
-        Button("Add a new tag: \(viewModel.searchText)", systemImage: "plus") {
+        Button(Strings.addTag(viewModel.searchText), systemImage: "plus") {
             viewModel.addNewTag(named: viewModel.searchText.trim())
         }
         .padding([.horizontal, .top])
@@ -247,6 +247,15 @@ private enum Strings {
         value: "No tags are selected",
         comment: "Message shown when no tags are selected"
     )
+
+    static func addTag(_ tagName: String) -> String {
+        let template = NSLocalizedString(
+            "tags.add.button",
+            value: "Add tag: %1$@",
+            comment: "Button to add a new tag. %1$@ is the tag name."
+        )
+        return String.localizedStringWithFormat(template, tagName)
+    }
 }
 
 class TagsViewController: UIHostingController<TagsView> {
