@@ -10,8 +10,12 @@ struct TrafficTabView: View {
 
     @Environment(\.context) var context
 
-    init(viewModel: StatsViewModel) {
+    // Temporary workaround while we are still showing this in the existing UIKit screens.
+    private let topPadding: CGFloat
+
+    init(viewModel: StatsViewModel, topPadding: CGFloat = 0) {
         self.viewModel = viewModel
+        self.topPadding = topPadding
     }
 
     var body: some View {
@@ -30,6 +34,7 @@ struct TrafficTabView: View {
                     timeZoneInfo
                 }
                 .padding(.vertical, Constants.step2)
+                .padding(.top, topPadding)
                 .frame(maxWidth: maxWidth, alignment: .center)
                 .frame(maxWidth: .infinity)
                 .onReceive(viewModel.scrollToCardSubject) { cardID in

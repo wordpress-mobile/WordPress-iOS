@@ -35,7 +35,7 @@ public struct StatsMainView: View {
                 .environment(\.router, router)
         } else {
             // When tabs are hidden, show only traffic tab without the tab bar
-            TrafficTabView(viewModel: viewModel)
+            TrafficTabView(viewModel: viewModel, topPadding: Constants.step1)
                 .background(Constants.Colors.background)
                 .environment(\.context, context)
                 .environment(\.router, router)
