@@ -100,6 +100,18 @@ class TagsViewModel: ObservableObject {
         }
     }
 
+    func addNewTag(named name: String) {
+        guard !selectedTagsSet.contains(name) else { return }
+
+        selectedTagsSet.insert(name)
+        selectedTags.append(name)
+
+        // Create a new tag in the background, which is consistent with the web editor.
+        Task {
+            _ = try await tagsService.createTag(named: name)
+        }
+    }
+
     func isSelected(_ tag: RemotePostTag) -> Bool {
         guard let tagName = tag.name else { return false }
         return selectedTagsSet.contains(tagName)

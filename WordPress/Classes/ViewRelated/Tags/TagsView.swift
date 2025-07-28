@@ -64,6 +64,10 @@ private struct TagsSearchView: View {
     @ObservedObject var viewModel: TagsViewModel
 
     var body: some View {
+        Button("Add a new tag: \(viewModel.searchText)", systemImage: "plus") {
+            viewModel.addNewTag(named: viewModel.searchText.trim())
+        }
+        .padding([.horizontal, .top])
         DataViewSearchView(
             searchText: viewModel.searchText,
             search: viewModel.search
