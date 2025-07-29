@@ -14,8 +14,9 @@ final class Blog_RestAPITests: CoreDataTestCase {
 
     private var blog: Blog!
 
+    @MainActor
     override func setUp() async throws {
-        _ = try await Blog.createRestApiBlog(
+        let blogId = try await Blog.createRestApiBlog(
             with: loginDetails,
             restApiRootURL: URL(string: "https://example.com/wp-json")!,
             xmlrpcEndpointURL: URL(string: "https://example.com/dir/xmlrpc.php")!,
@@ -23,7 +24,7 @@ final class Blog_RestAPITests: CoreDataTestCase {
             in: contextManager,
             using: testKeychain
         )
-        self.blog = try XCTUnwrap(contextManager.mainContext.fetch(NSFetchRequest<Blog>(entityName: "Blog")).first)
+        self.blog = try XCTUnwrap(contextManager.mainContext.existingObject(with: blogId))
         try blog.setPassword(to: "account-password", using: testKeychain)
     }
 
