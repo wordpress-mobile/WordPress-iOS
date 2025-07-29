@@ -171,7 +171,7 @@ struct ChartDataListView: View {
             VStack(spacing: Constants.step1 / 2) {
                 ForEach(chartData.currentData.reversed()) { point in
                     DataItemRow(
-                        date: context.formatters.date.formatDate(point.date, granularity: chartData.granularity),
+                        date: context.formatters.date.formatDate(point.date, granularity: chartData.granularity, context: .regular),
                         value: point.value,
                         maxValue: chartData.maxValue,
                         formatter: formatter,
