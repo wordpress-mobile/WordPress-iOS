@@ -12,15 +12,18 @@ import SVProgressHUD
 
 struct SelfHostedSiteAuthenticator {
 
-    static var wordPressAppId: String {
-        switch BuildSettings.current.brand {
+    static var wordPressAppId: WpUuid {
+        // The following UUIDs must be UUID v4.
+        let uuid = switch BuildSettings.current.brand {
         case .wordpress:
-            return "a9cb72ed-311b-4f01-a0ac-a7af563d103e"
+            "a9cb72ed-311b-4f01-a0ac-a7af563d103e"
         case .jetpack:
-            return "7088f42d-34e9-4402-ab50-b506b819f3e4"
+            "7088f42d-34e9-4402-ab50-b506b819f3e4"
         case .reader:
-            return "d7753a1f-ec90-4fb5-80db-951929239796"
+            "d7753a1f-ec90-4fb5-80db-951929239796"
         }
+
+        return try! WpUuid.parse(input: uuid)
     }
 
     static var wordPressAppName: String {
@@ -143,7 +146,7 @@ struct SelfHostedSiteAuthenticator {
 
     @MainActor
     private func authenticate(details: AutoDiscoveryAttemptSuccess, from viewController: UIViewController) async throws(SignInError) -> (apiRootURL: URL, credentials: WpApiApplicationPasswordDetails) {
-        let appId = try! WpUuid.parse(input: Self.wordPressAppId)
+        let appId = Self.wordPressAppId
         let appName = Self.wordPressAppName
 
         do {

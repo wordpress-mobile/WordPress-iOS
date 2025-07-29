@@ -181,7 +181,7 @@ private extension ApplicationPasswordRepository {
         }
 
         let parameters: [String: AnyHashable] = [
-            "app_id": SelfHostedSiteAuthenticator.wordPressAppId,
+            "app_id": SelfHostedSiteAuthenticator.wordPressAppId.uuidString(),
             "name": SelfHostedSiteAuthenticator.wordPressAppName
         ]
 
