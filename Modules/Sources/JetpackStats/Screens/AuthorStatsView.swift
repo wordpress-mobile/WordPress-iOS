@@ -43,7 +43,6 @@ struct AuthorStatsView: View {
                     itemLimit: 6,
                     reserveSpace: false
                 )
-                .cardStyle()
             }
             .padding(.vertical, Constants.step1)
         }
