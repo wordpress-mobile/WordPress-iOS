@@ -195,6 +195,141 @@
     }
   },
   {
+    "title": "Apple Finally Invented USB-C (They're Calling It Revolutionary)",
+    "postID": "13",
+    "type": "post",
+    "author": "Quinn Anderson",
+    "date": "2024-10-20T00:00:00Z",
+    "metrics": {
+      "views": 3200,
+      "comments": 156,
+      "likes": 580,
+      "visitors": 2240,
+      "bounceRate": 30,
+      "timeOnSite": 285
+    }
+  },
+  {
+    "title": "This Smart Toaster Has DRM and I'm Not Even Surprised Anymore",
+    "postID": "14",
+    "type": "post",
+    "author": "Jamie Lee",
+    "date": "2024-10-18T00:00:00Z",
+    "metrics": {
+      "views": 2100,
+      "comments": 102,
+      "likes": 420,
+      "visitors": 1470,
+      "bounceRate": 33,
+      "timeOnSite": 260
+    }
+  },
+  {
+    "title": "ChatGPT Convinced Me It Was Sentient (It Was Lying)",
+    "postID": "15",
+    "type": "post",
+    "author": "Emma Thompson",
+    "date": "2024-10-15T00:00:00Z",
+    "metrics": {
+      "views": 4500,
+      "comments": 225,
+      "likes": 890,
+      "visitors": 3150,
+      "bounceRate": 28,
+      "timeOnSite": 340
+    }
+  },
+  {
+    "title": "The $2000 Dyson Hair Dryer: A Scientific Analysis of My Poor Life Choices",
+    "postID": "16",
+    "type": "post",
+    "author": "Chloe Zhang",
+    "date": "2024-10-12T00:00:00Z",
+    "metrics": {
+      "views": 1800,
+      "comments": 89,
+      "likes": 340,
+      "visitors": 1260,
+      "bounceRate": 36,
+      "timeOnSite": 230
+    }
+  },
+  {
+    "title": "I Tried to Return a Smart TV That Shows Ads. Best Buy Laughed at Me",
+    "postID": "18",
+    "type": "post",
+    "author": "Avery Taylor",
+    "date": "2024-10-08T00:00:00Z",
+    "metrics": {
+      "views": 2800,
+      "comments": 142,
+      "likes": 560,
+      "visitors": 1960,
+      "bounceRate": 31,
+      "timeOnSite": 295
+    }
+  },
+  {
+    "title": "Sony's New $200 Controller Has a Screen Nobody Asked For",
+    "postID": "19",
+    "type": "post",
+    "author": "Riley Martinez",
+    "date": "2024-10-05T00:00:00Z",
+    "metrics": {
+      "views": 1500,
+      "comments": 75,
+      "likes": 290,
+      "visitors": 1050,
+      "bounceRate": 39,
+      "timeOnSite": 205
+    }
+  },
+  {
+    "title": "The M3 MacBook Air Is Faster Than My Personality",
+    "postID": "20",
+    "type": "post",
+    "author": "Alex Johnson",
+    "date": "2024-10-02T00:00:00Z",
+    "metrics": {
+      "views": 3800,
+      "comments": 189,
+      "likes": 760,
+      "visitors": 2660,
+      "bounceRate": 26,
+      "timeOnSite": 320
+    }
+  },
+  {
+    "title": "Netflix Password Sharing Crackdown: A Love Story",
+    "postID": "21",
+    "type": "post",
+    "author": "Jordan Davis",
+    "date": "2024-09-30T00:00:00Z",
+    "metrics": {
+      "views": 5200,
+      "comments": 260,
+      "likes": 1040,
+      "visitors": 3640,
+      "bounceRate": 24,
+      "timeOnSite": 360
+    }
+  },
+  {
+    "title": "The Rabbit R1 Is Just an Android App in a Tiny Orange Box",
+    "postID": "22",
+    "type": "post",
+    "author": "Sofia Rodriguez",
+    "date": "2024-09-28T00:00:00Z",
+    "metrics": {
+      "views": 2300,
+      "comments": 115,
+      "likes": 460,
+      "visitors": 1610,
+      "bounceRate": 34,
+      "timeOnSite": 250
+    }
+  },
+  {
     "title": "Contact Us",
     "postID": "9992",
     "type": "page",
@@ -252,6 +387,36 @@
       "visitors": 144,
       "bounceRate": 72,
       "timeOnSite": 55
+    }
+  },
+  {
+    "title": "Careers",
+    "postID": "9996",
+    "type": "page",
+    "author": "Emma Thompson",
+    "date": null,
+    "metrics": {
+      "views": 320,
+      "comments": 0,
+      "likes": 8,
+      "visitors": 256,
+      "bounceRate": 58,
+      "timeOnSite": 95
+    }
+  },
+  {
+    "title": "Advertise With Us",
+    "postID": "9997",
+    "type": "page",
+    "author": "Quinn Anderson",
+    "date": null,
+    "metrics": {
+      "views": 220,
+      "comments": 0,
+      "likes": 5,
+      "visitors": 176,
+      "bounceRate": 62,
+      "timeOnSite": 85
     }
   }
 ]
