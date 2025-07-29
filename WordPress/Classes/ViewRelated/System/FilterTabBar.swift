@@ -234,8 +234,8 @@ public class FilterTabBar: UIControl {
         // Apply modern tab appearance with larger fonts and padding
         tabsFont = UIFont.preferredFont(forTextStyle: .headline).withWeight(.regular)
         tabsSelectedFont = UIFont.preferredFont(forTextStyle: .headline)
-        tabButtonInsets = UIEdgeInsets(top: 16, left: 32, bottom: 16, right: 32)
-        tabBarHeight = 56.0
+        // tabButtonInsets = UIEdgeInsets(top: 16, left: 32, bottom: 16, right: 32)
+        tabBarHeight = 54
 
         // Configure selection indicator for modern style
         selectionIndicator.layer.cornerRadius = 2.0

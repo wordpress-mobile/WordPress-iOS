@@ -188,9 +188,12 @@ public class SiteStatsDashboardViewController: UIViewController {
     }
 
     private func createStatsMenu() -> UIMenu {
-        var actions: [UIMenuElement] = []
+        var menuElements: [UIMenuElement] = []
 
         if FeatureFlag.newStats.enabled {
+            // Main actions
+            var mainActions: [UIMenuElement] = []
+
             // Add "Switch to Classic Stats" option when new stats is enabled
             let switchToClassicAction = UIAction(
                 title: Strings.switchToClassic,
@@ -198,7 +201,7 @@ public class SiteStatsDashboardViewController: UIViewController {
             ) { [weak self] _ in
                 self?.disableNewStats()
             }
-            actions.append(switchToClassicAction)
+            mainActions.append(switchToClassicAction)
 
             // Add "Send Feedback" option
             let sendFeedbackAction = UIAction(
@@ -207,9 +210,11 @@ public class SiteStatsDashboardViewController: UIViewController {
             ) { [weak self] _ in
                 self?.showFeedbackView()
             }
-            actions.append(sendFeedbackAction)
+            mainActions.append(sendFeedbackAction)
 
-            // Toggle data source (only in debug builds)
+            menuElements.append(contentsOf: mainActions)
+
+            // Debug section (only in debug builds)
             if BuildConfiguration.current == .debug {
                 let toggleDataSource = UIAction(
                     title: isUsingMockData ? "Use Real Data" : "Use Mock Data",
@@ -217,7 +222,9 @@ public class SiteStatsDashboardViewController: UIViewController {
                 ) { [weak self] _ in
                     self?.toggleDataSource()
                 }
-                actions.append(toggleDataSource)
+
+                let debugMenu = UIMenu(title: "Debug", options: .displayInline, children: [toggleDataSource])
+                menuElements.append(debugMenu)
             }
         } else {
             // Add "Try New Stats" option if feature is available but not enabled
@@ -227,10 +234,10 @@ public class SiteStatsDashboardViewController: UIViewController {
             ) { [weak self] _ in
                 self?.enableNewStats()
             }
-            actions.append(tryNewStatsAction)
+            menuElements.append(tryNewStatsAction)
         }
 
-        return UIMenu(children: actions)
+        return UIMenu(children: menuElements)
     }
 
     private func enableNewStats() {
@@ -354,15 +361,13 @@ private extension SiteStatsDashboardViewController {
     func setupFilterBar() {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
 
-        // Always use modern style for stats dashboard
         filterTabBar.configureModernStyle()
-        filterTabBar.tabSizingStyle = .equalWidths
         filterTabBar.tintColor = UIColor.label
         filterTabBar.selectedTitleColor = UIColor.label
         filterTabBar.deselectedTabColor = UIColor.secondaryLabel
         filterTabBar.backgroundColor = .systemBackground
 
-        filterTabBar.isAutomaticTabSizingStyleEnabled = true
+        filterTabBar.tabSizingStyle = .equalWidths
         filterTabBar.items = displayedTabs
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         filterTabBar.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
