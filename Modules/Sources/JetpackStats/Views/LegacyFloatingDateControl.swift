@@ -76,7 +76,11 @@ struct LegacyFloatingDateControl: View {
     }
 
     private var currentRangeText: String {
-        context.formatters.dateRange.string(from: dateRange.dateInterval)
+        if let preset = dateRange.preset, !preset.prefersDateIntervalFormatting {
+            return preset.localizedString
+        }
+        return context.formatters.dateRange
+            .string(from: dateRange.dateInterval)
     }
 
     // MARK: - Navigation Controls

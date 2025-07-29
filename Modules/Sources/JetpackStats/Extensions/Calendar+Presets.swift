@@ -50,6 +50,15 @@ enum DateIntervalPreset: String, CaseIterable, Identifiable {
         }
     }
 
+    var prefersDateIntervalFormatting: Bool {
+        switch self {
+        case .today, .last7Days, .last28Days, .last30Days, .last90Days, .last6Months, .last12Months, .thisWeek:
+            return false
+        case .thisMonth, .thisYear, .thisQuarter, .last5Years, .last10Years:
+            return true
+        }
+    }
+
     /// Returns a calendar component for navigation behavior
     var component: Calendar.Component {
         switch self {
