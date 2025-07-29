@@ -123,7 +123,8 @@ struct TopListCard: View {
             selection: viewModel.selection,
             dateRange: viewModel.dateRange,
             service: context.service,
-            initialData: viewModel.data
+            initialData: viewModel.data,
+            filter: viewModel.filter
         )
         .environment(\.context, context)
         .environment(\.router, router)

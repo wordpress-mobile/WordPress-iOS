@@ -32,9 +32,10 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
 
     weak var configurationDelegate: CardConfigurationDelegate?
 
+    let filter: Filter?
+
     private let service: any StatsServiceProtocol
     private let fetchLimit: Int?
-    private let filter: Filter?
 
     private var loadingTask: Task<Void, Never>?
     private var loadRequestCount = 0

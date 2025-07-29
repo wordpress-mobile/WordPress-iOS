@@ -12,7 +12,8 @@ struct TopListScreenView: View {
         selection: TopListViewModel.Selection,
         dateRange: StatsDateRange,
         service: any StatsServiceProtocol,
-        initialData: TopListData? = nil
+        initialData: TopListData? = nil,
+        filter: TopListViewModel.Filter? = nil,
     ) {
         let configuration = TopListCardConfiguration(
             item: selection.item,
@@ -23,6 +24,7 @@ struct TopListScreenView: View {
             dateRange: dateRange,
             service: service,
             fetchLimit: nil, // Get all items
+            filter: filter,
             initialData: initialData
         ))
     }
