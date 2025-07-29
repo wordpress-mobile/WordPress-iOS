@@ -69,6 +69,8 @@ enum Strings {
         static let done = AppLocalizedString("jetpackStats.button.done", value: "Done", comment: "Done button")
         static let share = AppLocalizedString("jetpackStats.button.share", value: "Share", comment: "Share chart menu item")
         static let showAll = AppLocalizedString("jetpackStats.button.showAll", value: "Show All", comment: "Button title")
+        static let showMore = AppLocalizedString("jetpackStats.button.showMore", value: "Show More", comment: "Button to expand and show more items")
+        static let showLess = AppLocalizedString("jetpackStats.button.showLess", value: "Show Less", comment: "Button to collapse and show fewer items")
         static let ok = AppLocalizedString("jetpackStats.button.ok", value: "OK", comment: "OK button")
         static let downloadCSV = AppLocalizedString("jetpackStats.button.downloadCSV", value: "Download CSV", comment: "Button to download data as CSV file")
         static let learnMore = AppLocalizedString("jetpackStats.button.learnMore", value: "Learn More", comment: "Learn more about stats button")

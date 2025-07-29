@@ -41,7 +41,8 @@ struct AuthorStatsView: View {
                 TopListCard(
                     viewModel: viewModel,
                     itemLimit: 6,
-                    reserveSpace: false
+                    reserveSpace: false,
+                    showMoreInline: true
                 )
             }
             .padding(.vertical, Constants.step1)

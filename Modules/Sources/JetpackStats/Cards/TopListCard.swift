@@ -5,6 +5,9 @@ struct TopListCard: View {
 
     private let itemLimit: Int
     private let reserveSpace: Bool
+    private let showMoreInline: Bool
+
+    @State private var isExpanded = false
 
     @Environment(\.context) var context
     @Environment(\.router) var router
@@ -12,11 +15,13 @@ struct TopListCard: View {
     init(
         viewModel: TopListViewModel,
         itemLimit: Int = 5,
-        reserveSpace: Bool = true
+        reserveSpace: Bool = true,
+        showMoreInline: Bool = false
     ) {
         self.viewModel = viewModel
         self.itemLimit = itemLimit
         self.reserveSpace = reserveSpace
+        self.showMoreInline = showMoreInline
     }
 
     var body: some View {
@@ -44,7 +49,9 @@ struct TopListCard: View {
         }
         .cardStyle()
         .onTapGesture {
-            navigateToTopListScreen()
+            if !showMoreInline {
+                navigateToTopListScreen()
+            }
         }
         .grayscale(viewModel.isStale ? 1 : 0)
         .opacity(viewModel.isEditing ? 0.6 : 1)
@@ -218,13 +225,19 @@ struct TopListCard: View {
         VStack(spacing: 0) {
             TopListItemsView(
                 data: data,
-                itemLimit: itemLimit,
+                itemLimit: showMoreInline && isExpanded ? data.items.count : itemLimit,
                 dateRange: viewModel.dateRange,
                 reserveSpace: reserveSpace
             )
-            showMoreButton
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, Constants.step3)
+            if showMoreInline && data.items.count > itemLimit {
+                showMoreInlineButton
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, Constants.step3)
+            } else if !showMoreInline {
+                showMoreButton
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, Constants.step3)
+            }
         }
     }
 
@@ -237,11 +250,33 @@ struct TopListCard: View {
                     .padding(.trailing, 4)
                     .font(.callout)
                     .foregroundColor(.primary)
-                Image(systemName: "chevron.right")
+                Image(systemName: "chevron.forward")
                     .font(.caption.weight(.semibold))
                     .foregroundColor(.secondary)
             }
             .font(.body)
+        }
+        .padding(.top, 16)
+        .tint(Color.secondary.opacity(0.8))
+    }
+
+    private var showMoreInlineButton: some View {
+        Button {
+            withAnimation(.spring) {
+                isExpanded.toggle()
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Text(isExpanded ? Strings.Buttons.showLess : Strings.Buttons.showMore)
+                    .padding(.trailing, 4)
+                    .font(.callout)
+                    .foregroundColor(.primary)
+                Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                    .font(.caption.weight(.semibold))
+                    .foregroundColor(.secondary)
+            }
+            .font(.body)
+            .frame(maxWidth: .infinity, alignment: .center) // Expand tap area
         }
         .padding(.top, 16)
         .tint(Color.secondary.opacity(0.8))
