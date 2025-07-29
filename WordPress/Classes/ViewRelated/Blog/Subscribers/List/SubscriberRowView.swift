@@ -9,8 +9,8 @@ struct SubscriberRowView: View {
     @State private var isShowingDeleteConfirmation = false
 
     var body: some View {
-        HStack(alignment: .center) {
-            avatar.frame(width: 24, height: 24)
+        HStack(alignment: .center, spacing: 16) {
+            avatar.frame(width: 28, height: 28)
             Text(viewModel.title)
             Spacer()
             if viewModel.isDeleting {
@@ -46,7 +46,7 @@ struct SubscriberRowView: View {
     private var avatar: some View {
         switch viewModel.avatar {
         case .remote(let url):
-            AvatarView(style: .single(url), diameter: 24, placeholderImage: Image("gravatar").resizable())
+            AvatarView(style: .single(url), diameter: 28, placeholderImage: Image("gravatar").resizable())
         case .email:
             Image(systemName: "envelope")
                 .foregroundStyle(.tertiary)
