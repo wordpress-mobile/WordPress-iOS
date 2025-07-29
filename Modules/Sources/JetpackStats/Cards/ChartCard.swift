@@ -134,16 +134,7 @@ struct ChartCard: View {
         )
         .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
         .pulsating(viewModel.isFirstLoad)
-        .background(
-            LinearGradient(
-                colors: [
-                    selectedMetric.primaryColor.opacity(0.03),
-                    Constants.Colors.secondaryBackground
-                ],
-                startPoint: .top,
-                endPoint: .center
-            )
-        )
+        .background(CardGradientBackground(metric: selectedMetric))
     }
 
     private func loadingErrorView(with message: String) -> some View {
@@ -220,6 +211,23 @@ struct ChartCard: View {
         case .columns:
             BarChartView(data: data)
         }
+    }
+}
+
+private struct CardGradientBackground: View {
+    let metric: SiteMetric
+
+    @Environment(\.colorScheme) var colorScheme
+
+    var body: some View {
+        LinearGradient(
+            colors: [
+                metric.primaryColor.opacity(colorScheme == .light ? 0.03 : 0.04),
+                Constants.Colors.secondaryBackground
+            ],
+            startPoint: .top,
+            endPoint: .center
+        )
     }
 }
 
