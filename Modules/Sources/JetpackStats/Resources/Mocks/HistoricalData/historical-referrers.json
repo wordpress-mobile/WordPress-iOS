@@ -185,20 +185,6 @@
     }
   },
   {
-    "name": "TechCrunch",
-    "domain": "techcrunch.com",
-    "iconURL": "https://techcrunch.com/favicon.ico",
-    "children": [],
-    "metrics": {
-      "views": 2400,
-      "visitors": 1920,
-      "bounceRate": 22,
-      "timeOnSite": 360,
-      "comments": 96,
-      "likes": 216
-    }
-  },
-  {
     "name": "LinkedIn",
     "domain": "linkedin.com",
     "iconURL": "https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca",
