@@ -169,7 +169,7 @@ struct ChartDataListView: View {
             .padding(.horizontal)
 
             VStack(spacing: Constants.step1 / 2) {
-                ForEach(chartData.currentData) { point in
+                ForEach(chartData.currentData.reversed()) { point in
                     DataItemRow(
                         date: context.formatters.date.formatDate(point.date, granularity: chartData.granularity),
                         value: point.value,
