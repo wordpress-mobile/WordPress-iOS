@@ -1,5 +1,5 @@
 {
-  "originHash" : "42f8ac89b366ace35f0f0a03b37756e9686dfff9077324712b71128995463b67",
+  "originHash" : "263e7363d2683fd188c4f3ecfdf373ab3e61e771ce355f796cdc66b5ff8f1954",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -381,7 +381,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/WordPressKit-iOS",
       "state" : {
-        "revision" : "67db92e3ea5ad8574911df592a838b4729ab9ca5"
+        "revision" : "c78d1f2a182d1ca48cb08752f77cc56719621b5a"
       }
     },
     {

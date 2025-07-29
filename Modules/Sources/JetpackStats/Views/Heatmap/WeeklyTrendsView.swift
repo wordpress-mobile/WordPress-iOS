@@ -388,8 +388,13 @@ private struct WeeklyTrendsTooltipView: View {
 
 // MARK: - Mock Data
 
+extension WeeklyTrendsViewModel {
+    @MainActor
+    static let mock = WeeklyTrendsViewModel(dataPoints: mockDataPoints(), calendar: .demo)
+}
+
 private func mockDataPoints(weeks: Int = 4) -> [DataPoint] {
-    let calendar = Calendar.current
+    let calendar = Calendar.demo
     let today = Date()
     var dataPoints: [DataPoint] = []
 

@@ -286,6 +286,10 @@ actor StatsService: StatsServiceProtocol {
         return result
     }
 
+    func getEmailOpens(for postID: Int) async throws -> StatsEmailOpensData {
+        try await service.getEmailOpens(for: postID)
+    }
+
     func toggleSpamState(for referrerDomain: String, currentValue: Bool) async throws {
         try await service.toggleSpamState(for: referrerDomain, currentValue: currentValue)
     }
@@ -521,6 +525,18 @@ private extension WordPressKit.StatsServiceRemoteV2 {
                     continuation.resume(returning: data)
                 case .failure(let error):
                     continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    func getEmailOpens(for postID: Int) async throws -> StatsEmailOpensData {
+        try await withCheckedThrowingContinuation { continuation in
+            getEmailOpens(for: postID) { (data, error) in
+                if let data {
+                    continuation.resume(returning: data)
+                } else {
+                    continuation.resume(throwing: error ?? StatsServiceError.unknown)
                 }
             }
         }

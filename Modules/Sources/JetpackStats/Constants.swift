@@ -52,6 +52,8 @@ enum Constants {
     static let step3: CGFloat = 24
     static let step4: CGFloat = 32
 
+    static let cardPadding = EdgeInsets(top: step2, leading: step3, bottom: step2, trailing: step3)
+
     static func heatmapColor(baseColor: Color, intensity: Double) -> Color {
         if intensity == 0 {
             return Color(UIColor(

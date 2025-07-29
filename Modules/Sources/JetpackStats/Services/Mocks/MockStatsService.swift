@@ -313,6 +313,24 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         }
     }
 
+    func getEmailOpens(for postID: Int) async throws -> StatsEmailOpensData {
+        // Simulate network delay
+        try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+
+        // Generate realistic random data
+        let totalSends = Int.random(in: 500...5000)
+        let uniqueOpens = Int.random(in: 100...min(totalSends, 2000))
+        let totalOpens = Int.random(in: uniqueOpens...min(totalSends * 2, uniqueOpens * 3))
+        let opensRate = Double(uniqueOpens) / Double(totalSends)
+
+        return StatsEmailOpensData(
+            totalSends: totalSends,
+            uniqueOpens: uniqueOpens,
+            totalOpens: totalOpens,
+            opensRate: opensRate
+        )
+    }
+
     // MARK: - Data Loading
 
     /// Loads historical items from JSON files based on the data type

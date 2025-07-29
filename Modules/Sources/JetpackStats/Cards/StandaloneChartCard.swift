@@ -41,16 +41,18 @@ struct StandaloneChartCard: View {
         dataPoints: [DataPoint],
         metric: SiteMetric,
         initialDateRange: StatsDateRange,
+        chartType: ChartType = .line,
         configuration: Configuration = .init()
     ) {
         self.dataPoints = dataPoints
         self.metric = metric
         self._dateRange = State(initialValue: initialDateRange)
+        self._selectedChartType = State(initialValue: chartType)
         self.configuration = configuration
     }
 
     var body: some View {
-        VStack(spacing: Constants.step2) {
+        VStack(spacing: Constants.step1) {
             StatsCardTitleView(title: metric.localizedTitle)
                 .frame(maxWidth: .infinity, alignment: .leading)
             chartHeaderView

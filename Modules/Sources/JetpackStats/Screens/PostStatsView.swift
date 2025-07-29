@@ -29,8 +29,10 @@ public struct PostStatsView: View {
 
     @State private var data: PostDetailsData?
     @State private var likes: PostLikesData?
+    @State private var emailData: StatsEmailOpensData?
     @State private var isLoadingDetails = true
     @State private var isLoadingLikes = true
+    @State private var isLoadingEmailData = true
     @State private var error: Error?
 
     @Environment(\.context) private var context
@@ -75,13 +77,14 @@ public struct PostStatsView: View {
         headerView
             .cardStyle()
 
-        // Views Over Time Chart
         if let data {
             makeChartView(dataPoints: data.dataPoints)
         } else if isLoadingDetails {
             makeChartView(dataPoints: mockDataPoints)
                 .redacted(reason: .placeholder)
         }
+
+        emailsMetricsView
 
         if let data {
             // Weekly Trends Chart
@@ -91,7 +94,9 @@ public struct PostStatsView: View {
             }
             .padding(Constants.step2)
             .cardStyle()
+        }
 
+        if let data {
             // Yearly Summary
             VStack(alignment: .leading, spacing: Constants.step2) {
                 StatsCardTitleView(title: Strings.PostDetails.monthlyActivity)
@@ -107,6 +112,7 @@ public struct PostStatsView: View {
             dataPoints: dataPoints,
             metric: .views,
             initialDateRange: dateRange,
+            chartType: .columns,
             configuration: .init(minimumGranularity: .day)
         )
         .cardStyle()
@@ -145,6 +151,32 @@ public struct PostStatsView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(EdgeInsets(top: Constants.step2, leading: Constants.step2, bottom: Constants.step1, trailing: Constants.step2))
+    }
+
+    @ViewBuilder
+    private var emailsMetricsView: some View {
+        // Email Metrics Card
+        if let emailData {
+            VStack(alignment: .leading, spacing: Constants.step2) {
+                StatsCardTitleView(title: Strings.PostDetails.emailMetrics)
+                PostStatsEmailMetricsView(emailData: emailData)
+            }
+            .padding(Constants.cardPadding)
+            .cardStyle()
+        } else if isLoadingEmailData {
+            VStack(alignment: .leading, spacing: Constants.step2) {
+                StatsCardTitleView(title: Strings.PostDetails.emailMetrics)
+                PostStatsEmailMetricsView(emailData: StatsEmailOpensData(
+                    totalSends: 1000,
+                    uniqueOpens: 500,
+                    totalOpens: 750,
+                    opensRate: 0.5
+                ))
+            }
+            .padding(Constants.cardPadding)
+            .cardStyle()
+            .redacted(reason: .placeholder)
+        }
     }
 
     private var postDetailsView: some View {
@@ -213,6 +245,16 @@ public struct PostStatsView: View {
                 // Do nothing
             }
             self.isLoadingLikes = false
+        }
+
+        // Load email data in parallel and ignore errors
+        Task {
+            do {
+                self.emailData = try await context.service.getEmailOpens(for: postID)
+            } catch {
+                // Do nothing
+            }
+            self.isLoadingEmailData = false
         }
 
         do {
@@ -292,20 +334,22 @@ private struct PostStatsMetricsStripView: View {
     let onCommentsTapped: (() -> Void)?
 
     var body: some View {
-        HStack(spacing: Constants.step2) {
-            ForEach([SiteMetric.views, .likes, .comments]) { metric in
-                MetricView(metric: metric, value: metrics[metric])
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        switch metric {
-                        case .likes:
-                            onLikesTapped?()
-                        case .comments:
-                            onCommentsTapped?()
-                        default:
-                            break
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: Constants.step2) {
+                ForEach([SiteMetric.views, .likes, .comments]) { metric in
+                    MetricView(metric: metric, value: metrics[metric])
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            switch metric {
+                            case .likes:
+                                onLikesTapped?()
+                            case .comments:
+                                onCommentsTapped?()
+                            default:
+                                break
+                            }
                         }
-                    }
+                }
             }
         }
     }
@@ -351,6 +395,102 @@ private struct PostStatsMetricsStripView: View {
                 return "–"
             }
             return StatsValueFormatter(metric: metric).format(value: value)
+        }
+    }
+}
+
+private struct PostStatsEmailMetricsView: View {
+    let emailData: StatsEmailOpensData
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Constants.step1) {
+            HStack(spacing: Constants.step2) {
+                ForEach(emailMetrics.prefix(2)) { metric in
+                    MetricView(metric: metric)
+                }
+            }
+            HStack(spacing: Constants.step2) {
+                ForEach(emailMetrics.suffix(2)) { metric in
+                    MetricView(metric: metric)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private var emailMetrics: [EmailMetric] {
+        [
+            EmailMetric(
+                id: "sends",
+                title: Strings.PostDetails.emailsSent.uppercased(),
+                value: emailData.totalSends ?? 0,
+                icon: "envelope"
+            ),
+            EmailMetric(
+                id: "rate",
+                title: Strings.PostDetails.openRate.uppercased(),
+                value: nil,
+                rate: emailData.opensRate,
+                icon: "percent"
+            ),
+            EmailMetric(
+                id: "unique",
+                title: Strings.PostDetails.uniqueOpens.uppercased(),
+                value: emailData.uniqueOpens ?? 0,
+                icon: "envelope.open"
+            ),
+            EmailMetric(
+                id: "total",
+                title: Strings.PostDetails.totalOpens.uppercased(),
+                value: emailData.totalOpens ?? 0,
+                icon: "envelope.open.fill"
+            )
+        ]
+    }
+
+    struct EmailMetric: Identifiable {
+        let id: String
+        let title: String
+        let value: Int?
+        var rate: Double?
+        let icon: String
+    }
+
+    struct MetricView: View {
+        let metric: EmailMetric
+
+        @ScaledMetric private var prererredWidth = 128
+
+        var body: some View {
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(alignment: .center, spacing: 2) {
+                    Image(systemName: metric.icon)
+                        .font(.caption2.weight(.medium))
+                        .foregroundColor(.secondary)
+
+                    Text(metric.title)
+                        .font(.caption.weight(.medium))
+                        .foregroundColor(.secondary)
+                }
+                HStack {
+                    Text(formattedValue)
+                        .contentTransition(.numericText())
+                        .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
+                        .foregroundColor(.primary)
+                }
+            }
+            .lineLimit(1)
+            .frame(minWidth: prererredWidth, alignment: .leading)
+        }
+
+        var formattedValue: String {
+            if let rate = metric.rate {
+                return "\(Int(rate * 100))%"
+            } else if let value = metric.value {
+                return value.formatted(.number.notation(.compactName))
+            } else {
+                return "–"
+            }
         }
     }
 }
