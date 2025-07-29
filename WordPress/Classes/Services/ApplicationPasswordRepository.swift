@@ -69,7 +69,7 @@ actor ApplicationPasswordRepository {
             return
         }
 
-        // `createPasswordIfNeeded` can be called by mutiple callers at the same time. We want to avoid
+        // `createPasswordIfNeeded` can be called by multiple callers at the same time. We want to avoid
         // creating multiple application passwords on one site.
         if let subject = ongoing[blogId] {
             let publisher = subject

@@ -12,7 +12,7 @@ struct ApplicationPasswordsRepositoryTests {
     let keychain = TestKeychain()
 
     @Test
-    func simplSite() async throws {
+    func simpleSite() async throws {
         try await signInWPComAccount()
         let blog = try await createSimpleSite()
 
