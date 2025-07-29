@@ -359,15 +359,8 @@ private extension SiteStatsDashboardViewController {
 private extension SiteStatsDashboardViewController {
 
     func setupFilterBar() {
-        WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
-
+        WPStyleGuide.configureFilterTabBar(filterTabBar)
         filterTabBar.configureModernStyle()
-        filterTabBar.tintColor = UIColor.label
-        filterTabBar.selectedTitleColor = UIColor.label
-        filterTabBar.deselectedTabColor = UIColor.secondaryLabel
-        filterTabBar.backgroundColor = .systemBackground
-
-        filterTabBar.tabSizingStyle = .equalWidths
         filterTabBar.items = displayedTabs
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         filterTabBar.accessibilityIdentifier = "site-stats-dashboard-filter-bar"

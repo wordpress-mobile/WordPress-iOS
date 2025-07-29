@@ -231,11 +231,18 @@ public class FilterTabBar: UIControl {
     // MARK: - Modern Style Configuration
 
     func configureModernStyle() {
+        isAutomaticTabSizingStyleEnabled = true
+
         // Apply modern tab appearance with larger fonts and padding
         tabsFont = UIFont.preferredFont(forTextStyle: .headline).withWeight(.regular)
         tabsSelectedFont = UIFont.preferredFont(forTextStyle: .headline)
-        // tabButtonInsets = UIEdgeInsets(top: 16, left: 32, bottom: 16, right: 32)
+        tabButtonInsets = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
         tabBarHeight = 54
+
+        tintColor = UIColor.label
+        selectedTitleColor = UIColor.label
+        deselectedTabColor = UIColor.secondaryLabel
+        backgroundColor = .systemBackground
 
         // Configure selection indicator for modern style
         selectionIndicator.layer.cornerRadius = 2.0
