@@ -167,17 +167,6 @@ struct ChartCard: View {
     @ViewBuilder
     private var moreMenuContent: some View {
         Section {
-            ControlGroup {
-                ForEach(ChartType.allCases, id: \.self) { type in
-                    Button {
-                        viewModel.selectedChartType = type
-                    } label: {
-                        Label(type.localizedTitle, systemImage: type.systemImage)
-                    }
-                }
-            }
-        }
-        Section {
             Button {
                 isShowingRawData = true
             } label: {
@@ -188,6 +177,17 @@ struct ChartCard: View {
             }
         }
         EditCardMenuContent(cardViewModel: viewModel)
+        Section {
+            ControlGroup {
+                ForEach(ChartType.allCases, id: \.self) { type in
+                    Button {
+                        viewModel.selectedChartType = type
+                    } label: {
+                        Label(type.localizedTitle, systemImage: type.systemImage)
+                    }
+                }
+            }
+        }
     }
 
     // MARK: - Chart View
