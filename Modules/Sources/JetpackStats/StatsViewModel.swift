@@ -1,5 +1,6 @@
 import SwiftUI
 import Combine
+import UIKit
 
 @MainActor
 final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
@@ -61,12 +62,28 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         // Get available metrics from service, excluding downloads
         let availableMetrics = context.service.supportedMetrics
 
-        return TrafficCardConfiguration(cards: [
-            .chart(ChartCardConfiguration(metrics: availableMetrics)),
-            .topList(TopListCardConfiguration(item: .postsAndPages, metric: .views)),
-            .topList(TopListCardConfiguration(item: .referrers, metric: .views)),
-            .topList(TopListCardConfiguration(item: .locations, metric: .views))
-        ])
+        var cards: [TrafficCardConfiguration.Card] = [
+            .chart(ChartCardConfiguration(metrics: availableMetrics))
+        ]
+
+        if UIDevice.current.userInterfaceIdiom == .pad { // Has more space
+            cards += [
+                .topList(TopListCardConfiguration(item: .postsAndPages, metric: .views)),
+                .topList(TopListCardConfiguration(item: .referrers, metric: .views)),
+                .topList(TopListCardConfiguration(item: .searchTerms, metric: .views)),
+                .topList(TopListCardConfiguration(item: .locations, metric: .views)),
+                .topList(TopListCardConfiguration(item: .externalLinks, metric: .views)),
+                .topList(TopListCardConfiguration(item: .authors, metric: .views)),
+            ]
+        } else {
+            cards += [
+                .topList(TopListCardConfiguration(item: .postsAndPages, metric: .views)),
+                .topList(TopListCardConfiguration(item: .referrers, metric: .views)),
+                .topList(TopListCardConfiguration(item: .locations, metric: .views))
+            ]
+        }
+
+        return TrafficCardConfiguration(cards: cards)
     }
 
     private func makeDefaultConfiguration() -> TrafficCardConfiguration {
