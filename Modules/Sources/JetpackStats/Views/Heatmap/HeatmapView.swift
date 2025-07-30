@@ -10,6 +10,8 @@ struct HeatmapCellView: View {
     let color: Color
     let intensity: Double
 
+    @Environment(\.colorScheme) var colorScheme
+
     /// Creates a heatmap cell with automatic formatting and color calculation based on metric
     init(
         value: Int,
@@ -19,29 +21,15 @@ struct HeatmapCellView: View {
         let intensity = maxValue > 0 ? min(1.0, Double(value) / Double(maxValue)) : 0
         let formatter = StatsValueFormatter(metric: metric)
 
-        self.init(
-            value: value,
-            formattedValue: formatter.format(value: value, context: .compact),
-            color: Constants.heatmapColor(baseColor: metric.primaryColor, intensity: intensity),
-            intensity: intensity
-        )
-    }
-
-    init(
-        value: Int,
-        formattedValue: String,
-        color: Color,
-        intensity: Double
-    ) {
         self.value = value
-        self.formattedValue = formattedValue
-        self.color = color
+        self.formattedValue = formatter.format(value: value, context: .compact)
+        self.color = metric.primaryColor
         self.intensity = intensity
     }
 
     var body: some View {
         RoundedRectangle(cornerRadius: Constants.step1)
-            .fill(color)
+            .fill(Constants.heatmapColor(baseColor: color, intensity: intensity, colorScheme: colorScheme))
             .overlay {
                 if value > 0 {
                     Text(formattedValue)
@@ -49,6 +37,7 @@ struct HeatmapCellView: View {
                         .foregroundStyle(.primary)
                         .minimumScaleFactor(0.5)
                         .lineLimit(1)
+                        .dynamicTypeSize(...DynamicTypeSize.xLarge)
                 }
             }
     }
@@ -60,6 +49,8 @@ struct HeatmapCellView: View {
 struct HeatmapLegendView: View {
     let metric: SiteMetric
     let labelWidth: CGFloat?
+
+    @Environment(\.colorScheme) var colorScheme
 
     init(metric: SiteMetric, labelWidth: CGFloat? = nil) {
         self.metric = metric
@@ -98,6 +89,6 @@ struct HeatmapLegendView: View {
     }
 
     private func heatmapColor(for intensity: Double) -> Color {
-        Constants.heatmapColor(baseColor: metric.primaryColor, intensity: intensity)
+        Constants.heatmapColor(baseColor: metric.primaryColor, intensity: intensity, colorScheme: colorScheme)
     }
 }

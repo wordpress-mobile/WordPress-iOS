@@ -234,6 +234,97 @@ enum Strings {
         static let selectDataType = AppLocalizedString("jetpackStats.addChart.selectDataType", value: "Select Data Type", comment: "Title for data type selection")
     }
 
+    enum Accessibility {
+        // Tab Bar
+        static let statsTabBar = AppLocalizedString("jetpackStats.accessibility.statsTabBar", value: "Stats navigation tabs", comment: "Accessibility label for stats tab bar")
+        static func tabSelected(_ tabName: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.accessibility.tabSelected", value: "%1$@ tab selected", comment: "Accessibility announcement when a tab is selected. %1$@ is the tab name."),
+                tabName
+            )
+        }
+        static func selectTab(_ tabName: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.accessibility.selectTab", value: "Select %1$@ tab", comment: "Accessibility hint for tab selection. %1$@ is the tab name."),
+                tabName
+            )
+        }
+
+        // Charts
+        static let chartContainer = AppLocalizedString("jetpackStats.accessibility.chartContainer", value: "Stats chart", comment: "Accessibility label for chart container")
+        static func chartValue(metric: String, value: String, date: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.accessibility.chartValue", value: "%1$@: %2$@ on %3$@", comment: "Chart data point accessibility label. %1$@ is metric name, %2$@ is value, %3$@ is date."),
+                metric, value, date
+            )
+        }
+        static func chartTrend(metric: String, trend: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.accessibility.chartTrend", value: "%1$@ %2$@", comment: "Chart trend accessibility label. %1$@ is metric name, %2$@ is trend description."),
+                metric, trend
+            )
+        }
+        static let viewChartData = AppLocalizedString("jetpackStats.accessibility.viewChartData", value: "View detailed chart data", comment: "Accessibility hint for viewing chart data")
+
+        // Top Lists
+        static func topListItem(rank: Int, title: String, value: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.accessibility.topListItem", value: "Rank %1$d: %2$@, %3$@", comment: "Top list item accessibility label. %1$d is rank, %2$@ is title, %3$@ is value."),
+                rank, title, value
+            )
+        }
+        static let viewMoreDetails = AppLocalizedString("jetpackStats.accessibility.viewMoreDetails", value: "Double tap to view more details", comment: "Accessibility hint for items that can show more details")
+
+        // Date Range
+        static func dateRangeSelected(_ range: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.accessibility.dateRangeSelected", value: "Date range: %1$@", comment: "Selected date range accessibility label. %1$@ is the range."),
+                range
+            )
+        }
+        static let selectDateRange = AppLocalizedString("jetpackStats.accessibility.selectDateRange", value: "Select date range", comment: "Accessibility hint for date range selection")
+        static let nextPeriod = AppLocalizedString("jetpackStats.accessibility.nextPeriod", value: "Next period", comment: "Accessibility label for next period navigation button")
+        static let previousPeriod = AppLocalizedString("jetpackStats.accessibility.previousPeriod", value: "Previous period", comment: "Accessibility label for previous period navigation button")
+        static let navigateToNextDateRange = AppLocalizedString("jetpackStats.accessibility.navigateToNextDateRange", value: "Navigate to next date range", comment: "Accessibility hint for next period navigation")
+        static let navigateToPreviousDateRange = AppLocalizedString("jetpackStats.accessibility.navigateToPreviousDateRange", value: "Navigate to previous date range", comment: "Accessibility hint for previous period navigation")
+
+        // Cards
+        static let addCardButton = AppLocalizedString("jetpackStats.accessibility.addCardButton", value: "Add new stats card", comment: "Accessibility label for add card button")
+        static let editCardButton = AppLocalizedString("jetpackStats.accessibility.editCardButton", value: "Edit card options", comment: "Accessibility label for edit card button")
+        static let deleteCardButton = AppLocalizedString("jetpackStats.accessibility.deleteCardButton", value: "Delete this card", comment: "Accessibility label for delete card button")
+        static func cardTitle(_ title: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.accessibility.cardTitle", value: "%1$@ card", comment: "Card title accessibility label. %1$@ is the card title."),
+                title
+            )
+        }
+
+        // Loading States
+        static let loadingStats = AppLocalizedString("jetpackStats.accessibility.loadingStats", value: "Loading statistics", comment: "Accessibility label for loading state")
+        static let statsLoaded = AppLocalizedString("jetpackStats.accessibility.statsLoaded", value: "Statistics loaded", comment: "Accessibility announcement when stats finish loading")
+
+        // Error States
+        static let errorLoadingStats = AppLocalizedString("jetpackStats.accessibility.errorLoadingStats", value: "Error loading statistics", comment: "Accessibility label for error state")
+        static let retryLoadingStats = AppLocalizedString("jetpackStats.accessibility.retryLoadingStats", value: "Double tap to retry loading statistics", comment: "Accessibility hint for retry action")
+
+        // Navigation
+        static let backToStats = AppLocalizedString("jetpackStats.accessibility.backToStats", value: "Back to stats", comment: "Accessibility label for back navigation")
+        static let openInBrowser = AppLocalizedString("jetpackStats.accessibility.openInBrowser", value: "Open in browser", comment: "Accessibility label for opening link in browser")
+        static let moreOptions = AppLocalizedString("jetpackStats.accessibility.moreOptions", value: "More options", comment: "Accessibility label for more options menu")
+
+        // Empty States
+        static let noDataAvailable = AppLocalizedString("jetpackStats.accessibility.noDataAvailable", value: "No data available for this period", comment: "Accessibility label for empty data state")
+
+        // Realtime
+        static let realtimeVisitorCount = AppLocalizedString("jetpackStats.accessibility.realtimeVisitorCount", value: "Current visitors online", comment: "Accessibility label for realtime visitor count")
+        static func visitorsNow(_ count: Int) -> String {
+            let format = count == 1
+                ? AppLocalizedString("jetpackStats.accessibility.visitorNow", value: "%1$d visitor online now", comment: "Singular visitor count. %1$d is the number.")
+                : AppLocalizedString("jetpackStats.accessibility.visitorsNow", value: "%1$d visitors online now", comment: "Plural visitors count. %1$d is the number.")
+            return String.localizedStringWithFormat(format, count)
+        }
+    }
+
     enum ChartData {
         static let title = AppLocalizedString("jetpackStats.chartData.title", value: "Chart Data", comment: "Title for chart data screen")
         static let total = AppLocalizedString("jetpackStats.chartData.total", value: "Total", comment: "Label for total value")

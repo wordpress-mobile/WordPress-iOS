@@ -126,6 +126,8 @@ struct TrafficTabView: View {
             .foregroundColor(.secondary)
             .padding(3)
         }
+        .accessibilityLabel(Strings.Accessibility.addCardButton)
+        .dynamicTypeSize(...DynamicTypeSize.xLarge)
         .buttonStyle(.bordered)
         .buttonBorderShape(.capsule)
         .scaleEffect(isShowingAddCardSheet ? 0.95 : 1.0)
@@ -134,6 +136,7 @@ struct TrafficTabView: View {
             AddCardSheet { cardType in
                 viewModel.addCard(type: cardType)
             }
+            .dynamicTypeSize(...DynamicTypeSize.xLarge)
             .modifier(PopoverPresentationModifier())
         }
     }
@@ -143,6 +146,7 @@ struct TrafficTabView: View {
             .padding(.horizontal, Constants.step4)
             .padding(.top, Constants.step2)
             .padding(.bottom, Constants.step1)
+            .dynamicTypeSize(...DynamicTypeSize.xLarge)
     }
 }
 

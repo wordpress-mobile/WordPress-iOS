@@ -44,6 +44,7 @@ struct WeeklyTrendsView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
     }
 
     private var header: some View {
@@ -74,6 +75,7 @@ struct WeeklyTrendsView: View {
                         .font(.caption2)
                         .foregroundColor(.secondary)
                         .frame(width: weekLabelWidth, alignment: .trailing)
+                        .dynamicTypeSize(...DynamicTypeSize.large)
 
                     HStack(spacing: cellSpacing) {
                         // Days in the week
@@ -208,10 +210,6 @@ final class WeeklyTrendsViewModel: ObservableObject {
 
     func formatValue(_ value: Int) -> String {
         valueFormatter.format(value: value, context: .compact)
-    }
-
-    func heatmapColor(for intensity: Double) -> Color {
-        Constants.heatmapColor(baseColor: metric.primaryColor, intensity: intensity)
     }
 
     func previousWeek(for week: WeeklyTrendsView.Week) -> WeeklyTrendsView.Week? {

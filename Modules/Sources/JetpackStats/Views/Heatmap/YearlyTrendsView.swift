@@ -17,6 +17,7 @@ struct YearlyTrendsView: View {
             legend
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
     }
 
     private var yearlyHeatmap: some View {
@@ -36,6 +37,7 @@ struct YearlyTrendsView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
                 .frame(width: yearLabelWidth, alignment: .trailing)
+                .dynamicTypeSize(...DynamicTypeSize.xLarge)
             VStack(spacing: cellSpacing) {
                 // First row: Jul-Dec (top)
                 HStack(spacing: cellSpacing) {

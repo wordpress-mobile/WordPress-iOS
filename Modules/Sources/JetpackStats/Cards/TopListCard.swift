@@ -37,9 +37,11 @@ struct TopListCard: View {
 
             listHeaderView
                 .padding(.horizontal, Constants.step3)
+                .dynamicTypeSize(...DynamicTypeSize.xxLarge)
 
             listContentView
         }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .onAppear {
             viewModel.onAppear()
         }
@@ -58,6 +60,7 @@ struct TopListCard: View {
         .scaleEffect(viewModel.isEditing ? 0.95 : 1)
         .animation(.smooth, value: viewModel.isStale)
         .animation(.spring, value: viewModel.isEditing)
+        .accessibilityElement(children: .contain)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init)) // placing is important
         .sheet(isPresented: $viewModel.isEditing) {
             NavigationStack {
@@ -75,6 +78,8 @@ struct TopListCard: View {
             StatsCardTitleView(title: viewModel.selection.item == .locations ? "Countries" : viewModel.title)
             Spacer(minLength: 44)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Strings.Accessibility.cardTitle(viewModel.selection.item == .locations ? "Countries" : viewModel.title))
     }
 
     private var mapView: some View {
@@ -183,7 +188,7 @@ struct TopListCard: View {
             moreMenuContent
         } label: {
             Image(systemName: "ellipsis")
-                .font(.body)
+                .font(.system(size: 17))
                 .foregroundColor(.secondary)
                 .frame(width: 56, height: 50)
         }
@@ -259,6 +264,7 @@ struct TopListCard: View {
         }
         .padding(.top, 16)
         .tint(Color.secondary.opacity(0.8))
+        .dynamicTypeSize(...DynamicTypeSize.xLarge)
     }
 
     private var showMoreInlineButton: some View {
@@ -281,6 +287,7 @@ struct TopListCard: View {
         }
         .padding(.top, 16)
         .tint(Color.secondary.opacity(0.8))
+        .dynamicTypeSize(...DynamicTypeSize.xLarge)
     }
 
     private func makeEmptyStateView(message: String) -> some View {

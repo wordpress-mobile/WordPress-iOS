@@ -18,6 +18,7 @@ struct ChartDataListView: View {
                     .background(Constants.Colors.background.opacity(0.66))
                     .cardStyle()
                     .padding(.top, Constants.step2)
+                    .dynamicTypeSize(...DynamicTypeSize.xLarge)
 
                 dataItemsView(for: data, metric: data.metric)
                     .padding(.horizontal, Constants.step1)
@@ -25,6 +26,7 @@ struct ChartDataListView: View {
             .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
             .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
             .frame(maxWidth: .infinity)
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         }
         .background(Constants.Colors.secondaryBackground)
         .navigationTitle(Strings.ChartData.title)
@@ -53,6 +55,7 @@ struct ChartDataListView: View {
                 } label: {
                     Image(systemName: "square.and.arrow.up")
                 }
+                .accessibilityLabel(Strings.Buttons.share)
             }
         }
     }

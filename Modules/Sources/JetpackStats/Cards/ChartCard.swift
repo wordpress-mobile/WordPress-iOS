@@ -11,7 +11,7 @@ struct ChartCard: View {
 
     @State private var isShowingRawData = false
 
-    @ScaledMetric(relativeTo: .body) private var chartHeight = 180
+    @ScaledMetric(relativeTo: .largeTitle) private var chartHeight = 180
 
     init(viewModel: ChartCardViewModel) {
         self.viewModel = viewModel
@@ -32,6 +32,7 @@ struct ChartCard: View {
                 cardFooterView
             }
         }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .onAppear {
             viewModel.onAppear()
         }
@@ -44,6 +45,8 @@ struct ChartCard: View {
         .scaleEffect(viewModel.isEditing ? 0.95 : 1)
         .animation(.smooth, value: viewModel.isStale)
         .animation(.spring, value: viewModel.isEditing)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(Strings.Accessibility.chartContainer)
         .sheet(isPresented: $viewModel.isEditing) {
             NavigationStack {
                 ChartCardCustomizationView(chartViewModel: viewModel)
@@ -67,6 +70,8 @@ struct ChartCard: View {
             StatsCardTitleView(title: metric.localizedTitle, showChevron: false)
             Spacer(minLength: 44)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Strings.Accessibility.cardTitle(metric.localizedTitle))
     }
 
     @ViewBuilder
@@ -105,6 +110,7 @@ struct ChartCard: View {
                 previousPeriod: dateRange.effectiveComparisonInterval
             )
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
     }
 
     @ViewBuilder
@@ -162,7 +168,7 @@ struct ChartCard: View {
             moreMenuContent
         } label: {
             Image(systemName: "ellipsis")
-                .font(.body)
+                .font(.system(size: 17))
                 .foregroundColor(.secondary)
                 .frame(width: 56, height: 50)
         }

@@ -39,15 +39,19 @@ struct TopListScreenView: View {
                     .background(Color(.secondarySystemBackground).opacity(0.7))
                     .cardStyle()
                     .padding(.horizontal, Constants.step1)
+                    .dynamicTypeSize(...DynamicTypeSize.xLarge)
+                    .accessibilityElement(children: .contain)
 
                 VStack {
                     listHeaderView
                         .padding(.horizontal, Constants.step3)
+                        .dynamicTypeSize(...DynamicTypeSize.xLarge)
                     listContentView
                         .grayscale(viewModel.isStale ? 1 : 0)
                         .animation(.smooth, value: viewModel.isStale)
                 }
             }
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
             .padding(.vertical, Constants.step2)
             .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
             .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidthPlainLists : .infinity)
@@ -86,6 +90,7 @@ struct TopListScreenView: View {
                 } label: {
                     Image(systemName: "ellipsis")
                 }
+                .accessibilityLabel(Strings.Accessibility.moreOptions)
             }
         }
         .onAppear {

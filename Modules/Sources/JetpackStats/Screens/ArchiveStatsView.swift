@@ -19,6 +19,7 @@ struct ArchiveStatsView: View {
             }
             .padding(.vertical, Constants.step1)
             .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         }
         .background(Constants.Colors.background)
         .onAppear {

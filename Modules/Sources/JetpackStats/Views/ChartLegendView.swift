@@ -6,6 +6,7 @@ struct ChartLegendView: View {
     let previousPeriod: DateInterval
 
     @Environment(\.context) var context
+    @ScaledMetric(relativeTo: .footnote) private var circleSize: CGFloat = 6
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 1) {
@@ -15,7 +16,7 @@ struct ChartLegendView: View {
                     .foregroundColor(.primary)
                 Circle()
                     .fill(metric.primaryColor)
-                    .frame(width: 6, height: 6)
+                    .frame(width: circleSize, height: circleSize)
             }
 
             // Previous period
@@ -25,11 +26,12 @@ struct ChartLegendView: View {
                     .font(.footnote)
                 Circle()
                     .fill(Color.secondary.opacity(0.75))
-                    .frame(width: 6, height: 6)
+                    .frame(width: circleSize, height: circleSize)
             }
         }
         .font(.footnote.weight(.medium))
         .allowsTightening(true)
         .lineLimit(1)
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 }

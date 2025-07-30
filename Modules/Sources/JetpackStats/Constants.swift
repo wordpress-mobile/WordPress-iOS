@@ -73,7 +73,7 @@ enum Constants {
         sizeClass == .regular ? cardHorizontalInsetRegular : cardHorizontalInsetCompact
     }
 
-    static func heatmapColor(baseColor: Color, intensity: Double) -> Color {
+    static func heatmapColor(baseColor: Color, intensity: Double, colorScheme: ColorScheme) -> Color {
         if intensity == 0 {
             return Color(UIColor(
                 light: UIColor.secondarySystemBackground,
@@ -85,11 +85,11 @@ enum Constants {
         if intensity <= 0.25 {
             return baseColor.opacity(0.07)
         } else if intensity <= 0.5 {
-            return baseColor.opacity(0.14)
+            return baseColor.opacity(colorScheme == .light ? 0.14 : 0.2)
         } else if intensity <= 0.75 {
-            return baseColor.opacity(0.25)
+            return baseColor.opacity(colorScheme == .light ? 0.25 : 0.32)
         } else {
-            return baseColor.opacity(0.38)
+            return baseColor.opacity(colorScheme == .light ? 0.38 : 0.60)
         }
     }
 }

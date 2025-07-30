@@ -39,6 +39,7 @@ struct CountriesMapView: View {
 
                 Spacer()
             }
+            .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
         .overlay(alignment: .top) {
             // Tooltip positioned near the top center

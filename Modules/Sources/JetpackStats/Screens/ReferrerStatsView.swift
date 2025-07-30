@@ -20,6 +20,7 @@ struct ReferrerStatsView: View {
         ScrollView {
             VStack(spacing: Constants.step3) {
                 headerCard
+                    .dynamicTypeSize(...DynamicTypeSize.xLarge)
                 if !referrer.children.isEmpty {
                     childrenCard
                 }
@@ -28,6 +29,7 @@ struct ReferrerStatsView: View {
             .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
             .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
             .frame(maxWidth: .infinity)
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         }
         .background(Constants.Colors.background)
         .onAppear {

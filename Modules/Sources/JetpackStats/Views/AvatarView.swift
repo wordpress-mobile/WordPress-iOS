@@ -9,11 +9,14 @@ struct AvatarView: View {
     var backgroundColor = Color(.systemBackground)
 
     @Environment(\.context) private var context
+    @ScaledMetric(relativeTo: .body) private var scaledSize: CGFloat = 36
 
     var body: some View {
+        let avatarSize = min(scaledSize * (size / 36), 72)
+
         Group {
             if let imageURL {
-                let processedURL = context.preprocessAvatar?(imageURL, size) ?? imageURL
+                let processedURL = context.preprocessAvatar?(imageURL, avatarSize) ?? imageURL
                 CachedAsyncImage(url: processedURL) { image in
                     image
                         .resizable()
@@ -21,25 +24,27 @@ struct AvatarView: View {
                 } placeholder: {
                     Constants.Colors.background
                 }
-                .frame(width: size, height: size)
+                .frame(width: avatarSize, height: avatarSize)
                 .clipShape(Circle())
             } else {
                 placeholderView
             }
         }
         .overlay(
-              RoundedRectangle(cornerRadius: size / 2)
+              RoundedRectangle(cornerRadius: avatarSize / 2)
                 .stroke(Color(.opaqueSeparator).opacity(0.66), lineWidth: 0.5)
           )
     }
 
+    @ViewBuilder
     private var placeholderView: some View {
+        let avatarSize = min(scaledSize * (size / 36), 72)
         Circle()
             .fill(backgroundColor)
-            .frame(width: size, height: size)
+            .frame(width: avatarSize, height: avatarSize)
             .overlay(
                 Text(initials)
-                    .font(.system(size: size * 0.4, weight: .medium))
+                    .font(.system(size: avatarSize * 0.4, weight: .medium))
                     .foregroundColor(Color.primary.opacity(0.9))
             )
     }

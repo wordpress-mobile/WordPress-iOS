@@ -12,8 +12,9 @@ struct TopListItemView: View {
 
     @State private var isTapped = false
 
-    @ScaledMetric(relativeTo: .callout) private var cellHeight = TopListItemView.defaultCellHeight
-    @ScaledMetric(relativeTo: .subheadline) private var minTrailingWidth = 74
+    /// .title scales the bets in this scenario
+    @ScaledMetric(relativeTo: .title) private var cellHeight = TopListItemView.defaultCellHeight
+    @ScaledMetric(relativeTo: .title) private var minTrailingWidth = 74
 
     @Environment(\.router) var router
     @Environment(\.context) var context
@@ -46,6 +47,7 @@ struct TopListItemView: View {
                     .opacity(isTapped ? 0.85 : 1.0)
             }
             .buttonStyle(.plain)
+            .accessibilityHint(Strings.Accessibility.viewMoreDetails)
         } else {
             content
         }
@@ -91,10 +93,13 @@ struct TopListItemView: View {
             )
             .frame(minWidth: previousValue == nil ? 20 : minTrailingWidth, alignment: .trailing)
             .padding(.trailing, -3)
+            .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .padding(.horizontal, Constants.step1)
         .frame(height: cellHeight)
         .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
         .contextMenu {
             contextMenuContent
         }

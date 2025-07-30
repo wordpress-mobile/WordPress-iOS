@@ -18,7 +18,7 @@ struct LegacyFloatingDateControl: View {
             Spacer(minLength: 8)
             navigationControls
         }
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+        .dynamicTypeSize(...DynamicTypeSize.xLarge)
         .padding(.horizontal, 24)
         .background {
             LinearGradient(

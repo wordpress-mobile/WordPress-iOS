@@ -22,7 +22,7 @@ struct StandaloneChartCard: View {
     @State private var isShowingDatePicker = false
     @State private var chartData: ChartData?
 
-    @ScaledMetric private var chartHeight = 180
+    @ScaledMetric(relativeTo: .largeTitle) private var chartHeight = 180
 
     @Environment(\.context) private var context
 
@@ -61,9 +61,11 @@ struct StandaloneChartCard: View {
             chartContentView
                 .padding(.horizontal, -Constants.step1)
             dateRangeControls
+                .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
         .padding(.vertical, Constants.step2)
         .padding(.horizontal, Constants.step3)
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .overlay(alignment: .topTrailing) {
             moreMenu
         }

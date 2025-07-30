@@ -15,6 +15,7 @@ struct StatsCardTitleView: View {
         }
         .tint(Color.primary)
         .lineLimit(1)
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     @ViewBuilder

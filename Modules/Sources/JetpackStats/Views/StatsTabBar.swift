@@ -39,8 +39,11 @@ struct StatsTabBar: View {
                 }
                 .padding(.horizontal, Constants.step4)
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(Strings.Accessibility.statsTabBar)
             Divider()
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .padding(.top, 8)
         .background {
             backgroundView
@@ -52,6 +55,7 @@ struct StatsTabBar: View {
         Button(action: {
             selectedTab = tab
             UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            UIAccessibility.post(notification: .announcement, argument: Strings.Accessibility.tabSelected(tab.localizedTitle))
         }) {
             VStack(spacing: 8) {
                 ZStack {
@@ -74,6 +78,9 @@ struct StatsTabBar: View {
             }
             .animation(.smooth, value: selectedTab)
         }
+        .accessibilityLabel(tab.localizedTitle)
+        .accessibilityHint(Strings.Accessibility.selectTab(tab.localizedTitle))
+        .accessibilityAddTraits(selectedTab == tab ? [.isSelected] : [])
     }
 
     private var backgroundView: some View {
