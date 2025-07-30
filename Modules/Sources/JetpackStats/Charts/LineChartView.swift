@@ -125,8 +125,7 @@ struct LineChartView: View {
 
     @ChartContentBuilder
     private var significantPointAnnotations: some ChartContent {
-        if let maxPoint = data.significantPoints.currentMax,
-           data.currentData.count > 0 {
+        if let maxPoint = data.significantPoints.currentMax, data.currentData.count > 0 {
             PointMark(
                 x: .value("Date", maxPoint.date),
                 y: .value("Value", maxPoint.value)
@@ -140,13 +139,12 @@ struct LineChartView: View {
             .opacity(selectedDate == nil ? 1 : 0)
         }
     }
-
+    
     @ChartContentBuilder
     private var selectionIndicatorMarks: some ChartContent {
         if #available(iOS 17.0, *),
-           let selectedDate,
-           let selectedPoints = selectedDataPoints {
-
+           let selectedDate, let selectedPoints = selectedDataPoints {
+            
             RuleMark(x: .value("Selected", selectedDate))
                 .foregroundStyle(Color.secondary.opacity(0.33))
                 .lineStyle(StrokeStyle(lineWidth: 1))
@@ -159,7 +157,7 @@ struct LineChartView: View {
                 ) {
                     tooltipView
                 }
-
+            
             if let currentPoint = selectedPoints.current {
                 PointMark(
                     x: .value("Date", currentPoint.date),
@@ -168,7 +166,7 @@ struct LineChartView: View {
                 .foregroundStyle(data.metric.primaryColor)
                 .symbolSize(80)
             }
-
+            
             if let previousPoint = selectedPoints.previous {
                 PointMark(
                     x: .value("Date", previousPoint.date),
