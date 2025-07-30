@@ -91,6 +91,7 @@ struct TopListItemView: View {
         }
         .padding(.horizontal, Constants.step1)
         .frame(height: cellHeight)
+        .contentShape(Rectangle())
         .contextMenu {
             contextMenuContent
         }

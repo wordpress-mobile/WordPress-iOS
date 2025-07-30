@@ -31,13 +31,16 @@ struct RealtimeTopListCard: View {
                     .unredacted()
                 Spacer()
             }
+            .padding(.horizontal, Constants.step2)
+
             VStack(spacing: 12) {
                 headerView
+                    .padding(.horizontal, Constants.step2)
                     .unredacted()
                 contentView
             }
         }
-        .padding()
+        .padding(.vertical, Constants.step3)
         .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
         .onChange(of: selectedItem) { newValue in
             viewModel.loadData(for: newValue)

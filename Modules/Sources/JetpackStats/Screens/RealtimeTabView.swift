@@ -17,11 +17,12 @@ struct RealtimeTabView: View {
                 realtimeTopReferrers
                 realtimeTopLocations
             }
-            .padding(.vertical, Constants.step2)
             .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
+            .padding(.vertical, Constants.step2)
             .frame(maxWidth: maxWidth, alignment: .center)
             .frame(maxWidth: maxWidth)
         }
+        .background(Constants.Colors.background)
     }
 
     private var realtimeStatsCard: some View {
