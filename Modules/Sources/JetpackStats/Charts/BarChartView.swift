@@ -47,7 +47,7 @@ struct BarChartView: View {
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component),
                 y: .value("Value", point.value),
-                width: .ratio(0.75)
+                width: .automatic
             )
             .foregroundStyle(
                 LinearGradient(
@@ -59,7 +59,7 @@ struct BarChartView: View {
                     endPoint: .bottom
                 )
             )
-            .cornerRadius(4)
+            .cornerRadius(6)
             .opacity(getOpacityForCurrentPeriodBar(for: point))
         }
     }
@@ -78,11 +78,11 @@ struct BarChartView: View {
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component),
                 y: .value("Value", point.value),
-                width: .ratio(0.75),
+                width: .automatic,
                 stacking: .unstacked
             )
             .foregroundStyle(Color.secondary)
-            .cornerRadius(4)
+            .cornerRadius(6)
             .opacity(shouldHighlightPreviousDataPoint(point) ? 0.5 : 0.2)
         }
     }
