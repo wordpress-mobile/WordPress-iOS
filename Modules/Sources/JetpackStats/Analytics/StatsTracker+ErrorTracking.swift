@@ -40,26 +40,16 @@ extension StatsTracker {
     /// Determine specific network error type
     private func urlErrorType(_ error: URLError) -> String {
         switch error.code {
-        case .notConnectedToInternet:
-            return "network_offline"
-        case .timedOut:
-            return "network_timeout"
-        case .cannotFindHost, .cannotConnectToHost:
-            return "network_host_unreachable"
-        case .networkConnectionLost:
-            return "network_connection_lost"
-        case .dnsLookupFailed:
-            return "network_dns_failed"
-        case .httpTooManyRedirects:
-            return "network_too_many_redirects"
-        case .resourceUnavailable:
-            return "network_resource_unavailable"
-        case .dataNotAllowed:
-            return "network_data_not_allowed"
-        case .secureConnectionFailed:
-            return "network_ssl_failed"
-        default:
-            return "network"
+        case .notConnectedToInternet: "network_offline"
+        case .timedOut: "network_timeout"
+        case .cannotFindHost, .cannotConnectToHost: "network_host_unreachable"
+        case .networkConnectionLost: "network_connection_lost"
+        case .dnsLookupFailed: "network_dns_failed"
+        case .httpTooManyRedirects: "network_too_many_redirects"
+        case .resourceUnavailable: "network_resource_unavailable"
+        case .dataNotAllowed: "network_data_not_allowed"
+        case .secureConnectionFailed: "network_ssl_failed"
+        default: "other"
         }
     }
 }
