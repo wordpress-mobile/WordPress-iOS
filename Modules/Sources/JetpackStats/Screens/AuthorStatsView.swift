@@ -1,6 +1,6 @@
 import SwiftUI
-@preconcurrency import WordPressKit
 import DesignSystem
+@preconcurrency import WordPressKit
 
 struct AuthorStatsView: View {
     let author: TopListItem.Author
@@ -35,7 +35,7 @@ struct AuthorStatsView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: Constants.step2) {
+            VStack(spacing: Constants.step3) {
                 headerView
                     .cardStyle()
 
@@ -48,6 +48,8 @@ struct AuthorStatsView: View {
             }
             .padding(.vertical, Constants.step1)
             .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
+            .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
+            .frame(maxWidth: .infinity)
         }
         .background(Constants.Colors.background)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
