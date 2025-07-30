@@ -55,6 +55,7 @@ struct ChartDataListView: View {
                 } label: {
                     Image(systemName: "square.and.arrow.up")
                 }
+                .accessibilityLabel(Strings.Buttons.share)
             }
         }
     }

@@ -44,6 +44,8 @@ struct StatsDatePickerToolbarItem: View {
         }
         .labelStyle(.titleAndIcon)
         .menuOrder(.fixed)
+        .accessibilityLabel(Strings.Accessibility.dateRangeSelected(context.formatters.dateRange.string(from: dateRange.dateInterval)))
+        .accessibilityHint(Strings.Accessibility.selectDateRange)
     }
 }
 
@@ -64,6 +66,8 @@ struct StatsNavigationButton: View {
             dateRange = dateRange.navigate(direction)
         }
         .disabled(!dateRange.canNavigate(in: direction))
+        .accessibilityLabel(direction == .forward ? Strings.Accessibility.nextPeriod : Strings.Accessibility.previousPeriod)
+        .accessibilityHint(direction == .forward ? Strings.Accessibility.navigateToNextDateRange : Strings.Accessibility.navigateToPreviousDateRange)
     }
 }
 

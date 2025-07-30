@@ -19,5 +19,7 @@ struct SimpleErrorView: View {
             .foregroundStyle(.secondary)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .dynamicTypeSize(...DynamicTypeSize.xxLarge)
+            .accessibilityLabel(Strings.Accessibility.errorLoadingStats)
+            .accessibilityValue(message)
     }
 }

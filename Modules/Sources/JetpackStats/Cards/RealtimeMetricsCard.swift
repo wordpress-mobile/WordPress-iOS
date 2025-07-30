@@ -5,7 +5,7 @@ struct RealtimeMetricsCard: View {
     @State private var visitorsLast30Min = 1280
     @State private var viewsLast30Min = 3720
     @State private var isPulsing = false
-    
+
     @ScaledMetric(relativeTo: .caption) private var pulseCircleSize: CGFloat = 6
 
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
@@ -39,18 +39,24 @@ struct RealtimeMetricsCard: View {
                     label: SiteMetric.views.localizedTitle,
                     value: viewsLast30Min.formatted(.number.notation(.compactName))
                 )
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("\(SiteMetric.views.localizedTitle), \(viewsLast30Min.formatted())")
 
                 realtimeStatRow(
                     systemImage: SiteMetric.visitors.systemImage,
                     label: SiteMetric.visitors.localizedTitle,
                     value: visitorsLast30Min.formatted(.number.notation(.compactName))
                 )
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("\(SiteMetric.visitors.localizedTitle), \(visitorsLast30Min.formatted())")
 
                 realtimeStatRow(
                     systemImage: SiteMetric.visitors.systemImage,
                     label: Strings.SiteMetrics.visitorsNow,
                     value: activeVisitors.formatted(.number.notation(.compactName))
                 )
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(Strings.Accessibility.visitorsNow(activeVisitors))
             }
         }
         .padding()
@@ -68,6 +74,7 @@ struct RealtimeMetricsCard: View {
                 Image(systemName: systemImage)
                     .font(.caption2.weight(.medium))
                     .foregroundColor(.secondary)
+                    .accessibilityHidden(true)
 
                 Text(label.uppercased())
                     .font(.caption.weight(.medium))

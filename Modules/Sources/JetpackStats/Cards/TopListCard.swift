@@ -60,6 +60,7 @@ struct TopListCard: View {
         .scaleEffect(viewModel.isEditing ? 0.95 : 1)
         .animation(.smooth, value: viewModel.isStale)
         .animation(.spring, value: viewModel.isEditing)
+        .accessibilityElement(children: .contain)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init)) // placing is important
         .sheet(isPresented: $viewModel.isEditing) {
             NavigationStack {
@@ -77,6 +78,8 @@ struct TopListCard: View {
             StatsCardTitleView(title: viewModel.selection.item == .locations ? "Countries" : viewModel.title)
             Spacer(minLength: 44)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Strings.Accessibility.cardTitle(viewModel.selection.item == .locations ? "Countries" : viewModel.title))
     }
 
     private var mapView: some View {

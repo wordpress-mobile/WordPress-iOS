@@ -38,6 +38,9 @@ struct LineChartView: View {
             selectedDataPoints = SelectedDataPoints.compute(for: $0, data: data)
         }
         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+        .accessibilityElement()
+        .accessibilityLabel(Strings.Accessibility.chartContainer)
+        .accessibilityHint(Strings.Accessibility.viewChartData)
     }
 
     // MARK: - Chart Marks

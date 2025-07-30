@@ -29,7 +29,7 @@ struct HeatmapCellView: View {
 
     var body: some View {
         RoundedRectangle(cornerRadius: Constants.step1)
-            .fill(Constants.heatmapColor(baseColor: color, intensity: intensity, colorScheme:  colorScheme))
+            .fill(Constants.heatmapColor(baseColor: color, intensity: intensity, colorScheme: colorScheme))
             .overlay {
                 if value > 0 {
                     Text(formattedValue)

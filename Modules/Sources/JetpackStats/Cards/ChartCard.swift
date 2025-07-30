@@ -45,6 +45,8 @@ struct ChartCard: View {
         .scaleEffect(viewModel.isEditing ? 0.95 : 1)
         .animation(.smooth, value: viewModel.isStale)
         .animation(.spring, value: viewModel.isEditing)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(Strings.Accessibility.chartContainer)
         .sheet(isPresented: $viewModel.isEditing) {
             NavigationStack {
                 ChartCardCustomizationView(chartViewModel: viewModel)
@@ -68,6 +70,8 @@ struct ChartCard: View {
             StatsCardTitleView(title: metric.localizedTitle, showChevron: false)
             Spacer(minLength: 44)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Strings.Accessibility.cardTitle(metric.localizedTitle))
     }
 
     @ViewBuilder

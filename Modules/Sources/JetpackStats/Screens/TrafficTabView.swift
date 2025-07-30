@@ -126,6 +126,7 @@ struct TrafficTabView: View {
             .foregroundColor(.secondary)
             .padding(3)
         }
+        .accessibilityLabel(Strings.Accessibility.addCardButton)
         .dynamicTypeSize(...DynamicTypeSize.xLarge)
         .buttonStyle(.bordered)
         .buttonBorderShape(.capsule)

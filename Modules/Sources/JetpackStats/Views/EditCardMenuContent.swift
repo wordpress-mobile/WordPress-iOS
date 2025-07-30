@@ -41,12 +41,14 @@ struct EditCardMenuContent: View {
             } label: {
                 Label(Strings.Buttons.customize, systemImage: "widget.small")
             }
+            .accessibilityLabel(Strings.Accessibility.editCardButton)
             Button(role: .destructive) {
                 cardViewModel.configurationDelegate?.deleteCard(cardViewModel)
             } label: {
                 Label(Strings.Buttons.deleteWidget, systemImage: "trash")
                     .tint(Color.red)
             }
+            .accessibilityLabel(Strings.Accessibility.deleteCardButton)
         }
     }
 }

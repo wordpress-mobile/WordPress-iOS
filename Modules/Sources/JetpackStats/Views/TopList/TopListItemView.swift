@@ -47,6 +47,7 @@ struct TopListItemView: View {
                     .opacity(isTapped ? 0.85 : 1.0)
             }
             .buttonStyle(.plain)
+            .accessibilityHint(Strings.Accessibility.viewMoreDetails)
         } else {
             content
         }
@@ -98,6 +99,7 @@ struct TopListItemView: View {
         .padding(.horizontal, Constants.step1)
         .frame(height: cellHeight)
         .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
         .contextMenu {
             contextMenuContent
         }

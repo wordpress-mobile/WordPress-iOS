@@ -86,6 +86,7 @@ public struct PostStatsView: View {
         headerView
             .cardStyle()
             .dynamicTypeSize(...DynamicTypeSize.xxLarge)
+            .accessibilityElement(children: .contain)
 
         if let data {
             makeChartView(dataPoints: data.dataPoints)
@@ -117,6 +118,8 @@ public struct PostStatsView: View {
                 StatsCardTitleView(title: Strings.PostDetails.recentWeeks)
                 WeeklyTrendsView(viewModel: data.weeklyTrends)
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(Strings.Accessibility.cardTitle(Strings.PostDetails.recentWeeks))
             .padding(Constants.step2)
             .cardStyle()
         }

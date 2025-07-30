@@ -13,7 +13,7 @@ struct AvatarView: View {
 
     var body: some View {
         let avatarSize = min(scaledSize * (size / 36), 72)
-        
+
         Group {
             if let imageURL {
                 let processedURL = context.preprocessAvatar?(imageURL, avatarSize) ?? imageURL

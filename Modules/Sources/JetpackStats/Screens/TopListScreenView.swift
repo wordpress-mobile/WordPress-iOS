@@ -40,6 +40,7 @@ struct TopListScreenView: View {
                     .cardStyle()
                     .padding(.horizontal, Constants.step1)
                     .dynamicTypeSize(...DynamicTypeSize.xLarge)
+                    .accessibilityElement(children: .contain)
 
                 VStack {
                     listHeaderView
@@ -89,6 +90,7 @@ struct TopListScreenView: View {
                 } label: {
                     Image(systemName: "ellipsis")
                 }
+                .accessibilityLabel(Strings.Accessibility.moreOptions)
             }
         }
         .onAppear {
