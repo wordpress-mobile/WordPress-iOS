@@ -7,6 +7,7 @@ struct ChartDataListView: View {
 
     @Environment(\.context) var context
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     var body: some View {
         ScrollView {
@@ -21,6 +22,9 @@ struct ChartDataListView: View {
                 dataItemsView(for: data, metric: data.metric)
                     .padding(.horizontal, Constants.step1)
             }
+            .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
+            .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
+            .frame(maxWidth: .infinity)
         }
         .background(Constants.Colors.secondaryBackground)
         .navigationTitle(Strings.ChartData.title)
@@ -64,7 +68,7 @@ struct ChartDataListView: View {
             // Header section
             VStack(alignment: .leading, spacing: 2) {
                 Text(metric.localizedTitle)
-                    .font(.title3.weight(.semibold))
+                    .font(.title3.weight(.medium))
                 Text(context.formatters.dateRange.string(from: dateRange.dateInterval))
                     .font(.subheadline)
                     .foregroundColor(.secondary)
@@ -98,7 +102,7 @@ struct ChartDataListView: View {
                             .font(.body.weight(.medium))
 
                         Text(formatter.format(value: abs(trendViewModel.currentValue - trendViewModel.previousValue), context: .compact))
-                            .font(.title2.weight(.semibold))
+                            .font(.title3.weight(.medium))
                             .padding(.trailing, 8)
 
                         Image(systemName: trendViewModel.systemImage)
@@ -106,7 +110,7 @@ struct ChartDataListView: View {
                             .padding(.bottom, 1)
 
                         Text(trendViewModel.formattedPercentage)
-                            .font(.title2.weight(.semibold))
+                            .font(.title3.weight(.medium))
                     }
                     .foregroundStyle(trendViewModel.sentiment.foregroundColor)
                 }
@@ -122,7 +126,7 @@ struct ChartDataListView: View {
                 .foregroundColor(.secondary)
 
             Text(value)
-                .font(.title2.weight(.semibold))
+                .font(.title3.weight(.medium))
         }
     }
 

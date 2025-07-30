@@ -18,7 +18,7 @@ struct CalendarDateRangePresetTests {
         (.last90Days, Date("2024-10-17T00:00:00-03:00"), Date("2025-01-15T00:00:00-03:00")),
         (.last6Months, Date("2024-08-01T00:00:00-03:00"), Date("2025-02-01T00:00:00-03:00")),
         (.last12Months, Date("2024-02-01T00:00:00-03:00"), Date("2025-02-01T00:00:00-03:00")),
-        (.last5Years, Date("2021-01-01T00:00:00-03:00"), Date("2026-01-01T00:00:00-03:00")),
+        (.last3Years, Date("2023-01-01T00:00:00-03:00"), Date("2026-01-01T00:00:00-03:00")),
         (.last10Years, Date("2016-01-01T00:00:00-03:00"), Date("2026-01-01T00:00:00-03:00"))
     ])
     func dateRangePresets(preset: DateIntervalPreset, expectedStart: Date, expectedEnd: Date) {
@@ -118,7 +118,7 @@ struct CalendarDateRangePresetTests {
         (.last90Days, Date("2024-11-02T00:00:00-03:00"), Date("2025-01-31T00:00:00-03:00")),
         (.last6Months, Date("2024-08-01T00:00:00-03:00"), Date("2025-02-01T00:00:00-03:00")),
         (.last12Months, Date("2024-02-01T00:00:00-03:00"), Date("2025-02-01T00:00:00-03:00")),
-        (.last5Years, Date("2021-01-01T00:00:00-03:00"), Date("2026-01-01T00:00:00-03:00")),
+        (.last3Years, Date("2023-01-01T00:00:00-03:00"), Date("2026-01-01T00:00:00-03:00")),
         (.last10Years, Date("2016-01-01T00:00:00-03:00"), Date("2026-01-01T00:00:00-03:00"))
     ])
     func allPresetsMonthBoundaries(preset: DateIntervalPreset, expectedStart: Date, expectedEnd: Date) {
@@ -145,7 +145,7 @@ struct CalendarDateRangePresetTests {
         (.last90Days, Date("2024-10-03T00:00:00-03:00"), Date("2025-01-01T00:00:00-03:00")),
         (.last6Months, Date("2024-08-01T00:00:00-03:00"), Date("2025-02-01T00:00:00-03:00")),
         (.last12Months, Date("2024-02-01T00:00:00-03:00"), Date("2025-02-01T00:00:00-03:00")),
-        (.last5Years, Date("2021-01-01T00:00:00-03:00"), Date("2026-01-01T00:00:00-03:00")),
+        (.last3Years, Date("2023-01-01T00:00:00-03:00"), Date("2026-01-01T00:00:00-03:00")),
         (.last10Years, Date("2016-01-01T00:00:00-03:00"), Date("2026-01-01T00:00:00-03:00"))
     ])
     func allPresetsYearBoundaries(preset: DateIntervalPreset, expectedStart: Date, expectedEnd: Date) {
@@ -230,10 +230,10 @@ struct CalendarDateRangePresetTests {
         let oldDate = Date("2000-06-15T14:30:00-03:00")
 
         // WHEN
-        let fiveYears = calendar.makeDateInterval(for: .last5Years, now: oldDate)
+        let threeYears = calendar.makeDateInterval(for: .last3Years, now: oldDate)
 
         // THEN
-        #expect(fiveYears.start == Date("1996-01-01T00:00:00-03:00"))
-        #expect(fiveYears.end == Date("2001-01-01T00:00:00-03:00"))
+        #expect(threeYears.start == Date("1998-01-01T00:00:00-03:00"))
+        #expect(threeYears.end == Date("2001-01-01T00:00:00-03:00"))
     }
 }

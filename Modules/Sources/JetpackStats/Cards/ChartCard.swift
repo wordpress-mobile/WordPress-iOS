@@ -75,7 +75,6 @@ struct ChartCard: View {
             chartHeaderView
                 .padding(.trailing, -Constants.step0_5)
             chartContentView
-                .padding(.bottom, 4)
         }
         .animation(.spring, value: selectedMetric)
         .animation(.spring, value: selectedChartType)
@@ -84,7 +83,7 @@ struct ChartCard: View {
 
     private var chartHeaderView: some View {
         // Showing currently selected (not loaded period) by design
-        HStack(alignment: .firstTextBaseline, spacing: 0) {
+        HStack(alignment: .center, spacing: 0) {
             if let data = viewModel.chartData[selectedMetric] {
                 ChartValuesSummaryView(
                     trend: .make(data, context: .regular),

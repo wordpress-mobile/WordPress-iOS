@@ -1,6 +1,6 @@
 import SwiftUI
-@preconcurrency import WordPressKit
 import DesignSystem
+@preconcurrency import WordPressKit
 
 struct AuthorStatsView: View {
     let author: TopListItem.Author
@@ -10,6 +10,7 @@ struct AuthorStatsView: View {
     @StateObject private var viewModel: TopListViewModel
 
     @Environment(\.context) private var context
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     @ScaledMetric private var avatarSize = 60
 
@@ -34,7 +35,7 @@ struct AuthorStatsView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: Constants.step2) {
+            VStack(spacing: Constants.step3) {
                 headerView
                     .cardStyle()
 
@@ -46,6 +47,9 @@ struct AuthorStatsView: View {
                 )
             }
             .padding(.vertical, Constants.step1)
+            .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
+            .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
+            .frame(maxWidth: .infinity)
         }
         .background(Constants.Colors.background)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
@@ -54,8 +58,17 @@ struct AuthorStatsView: View {
         }
         .navigationTitle(Strings.AuthorDetails.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if horizontalSizeClass == .regular {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    StatsDateRangeButtons(dateRange: $dateRange)
+                }
+            }
+        }
         .safeAreaInset(edge: .bottom) {
-            LegacyFloatingDateControl(dateRange: $dateRange)
+            if horizontalSizeClass == .compact {
+                LegacyFloatingDateControl(dateRange: $dateRange)
+            }
         }
     }
 

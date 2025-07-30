@@ -6,9 +6,8 @@ struct TrafficTabView: View {
     @State private var isShowingCustomRangePicker = false
     @State private var isShowingAddCardSheet = false
 
-    @ScaledMetric private var maxWidth = 720
-
     @Environment(\.context) var context
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     // Temporary workaround while we are still showing this in the existing UIKit screens.
     private let topPadding: CGFloat
@@ -22,21 +21,13 @@ struct TrafficTabView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(spacing: Constants.step3) {
-                    ForEach(viewModel.cards, id: \.id) { card in
-                        makeItem(for: card)
-                            .id(card.id)
-                            .transition(.asymmetric(
-                                insertion: .push(from: .bottom).combined(with: .opacity),
-                                removal: .scale.combined(with: .opacity)
-                            ))
-                    }
+                    cards
                     buttonAddChart
                     timeZoneInfo
                 }
                 .padding(.vertical, Constants.step2)
+                .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
                 .padding(.top, topPadding)
-                .frame(maxWidth: maxWidth, alignment: .center)
-                .frame(maxWidth: .infinity)
                 .onReceive(viewModel.scrollToCardSubject) { cardID in
                     // Use a more elegant spring animation for scrolling
                     withAnimation(.spring) {
@@ -49,13 +40,50 @@ struct TrafficTabView: View {
             .listStyle(.plain)
         }
         .toolbar {
-//          normalModeToolbarContent
+            if horizontalSizeClass == .regular {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    StatsDateRangeButtons(dateRange: $viewModel.dateRange)
+                }
+            }
         }
         .safeAreaInset(edge: .bottom) {
-            LegacyFloatingDateControl(dateRange: $viewModel.dateRange)
+            if horizontalSizeClass == .compact {
+                LegacyFloatingDateControl(dateRange: $viewModel.dateRange)
+            }
         }
         .sheet(isPresented: $isShowingCustomRangePicker) {
             CustomDateRangePicker(dateRange: $viewModel.dateRange)
+        }
+    }
+
+    @ViewBuilder
+    private var cards: some View {
+        if horizontalSizeClass == .regular {
+            var cards = viewModel.cards
+            if let first = cards.first as? ChartCardViewModel {
+                let _ = cards.removeFirst()
+                cardView(for: first)
+            }
+            HStack(alignment: .top, spacing: Constants.step3) {
+                VStack(spacing: Constants.step3) {
+                    ForEach(Array(cards.enumerated()), id: \.element.id) { index, card in
+                        if index % 2 == 0 {
+                            cardView(for: card)
+                        }
+                    }
+                }
+                VStack(spacing: Constants.step3) {
+                    ForEach(Array(cards.enumerated()), id: \.element.id) { index, card in
+                        if index % 2 == 1 {
+                            cardView(for: card)
+                        }
+                    }
+                }
+            }
+        } else {
+            ForEach(viewModel.cards, id: \.id) { card in
+                cardView(for: card)
+            }
         }
     }
 
@@ -71,6 +99,18 @@ struct TrafficTabView: View {
             EmptyView()
         }
     }
+
+    @ViewBuilder
+    private func cardView(for card: TrafficCardViewModel) -> some View {
+        makeItem(for: card)
+            .id(card.id)
+            .transition(.asymmetric(
+                insertion: .push(from: .bottom).combined(with: .opacity),
+                removal: .scale.combined(with: .opacity)
+            ))
+    }
+
+    // MARK: - Misc
 
     private var buttonAddChart: some View {
         // Add Chart Button
@@ -103,56 +143,6 @@ struct TrafficTabView: View {
             .padding(.horizontal, Constants.step4)
             .padding(.top, Constants.step2)
             .padding(.bottom, Constants.step1)
-    }
-
-    // MARK: - Toolbar
-
-    @ToolbarContentBuilder
-    private var normalModeToolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .bottomBar) {
-            datePickerToolbarItem
-            Spacer()
-            makeNavigationButton(direction: .backward)
-            makeNavigationButton(direction: .forward)
-        }
-    }
-
-    private func makeNavigationButton(direction: Calendar.NavigationDirection) -> some View {
-        Menu {
-            ForEach(viewModel.dateRange.availableAdjacentPeriods(in: direction)) { period in
-                Button(period.displayText) {
-                    viewModel.dateRange = period.range
-                }
-            }
-        } label: {
-            Image(systemName: direction.systemImage)
-        } primaryAction: {
-            viewModel.dateRange = viewModel.dateRange.navigate(direction)
-        }
-        .disabled(!viewModel.dateRange.canNavigate(in: direction))
-        .tint(.primary)
-    }
-
-    // MARK: - Date Picker
-
-    private var datePickerToolbarItem: some View {
-        Menu {
-            StatsDateRangePickerMenu(selection: $viewModel.dateRange, isShowingCustomRangePicker: $isShowingCustomRangePicker)
-        } label: {
-            datePickerLabel
-        }
-        .menuOrder(.fixed)
-        .tint(.primary)
-    }
-
-    private var datePickerLabel: some View {
-        HStack {
-            Image(systemName: "calendar")
-                .font(.subheadline)
-            Text(context.formatters.dateRange.string(from: viewModel.dateRange.dateInterval))
-                .fontWeight(.medium)
-        }
-        .padding(.horizontal, 10)
     }
 }
 

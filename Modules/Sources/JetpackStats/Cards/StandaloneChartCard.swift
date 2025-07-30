@@ -18,7 +18,7 @@ struct StandaloneChartCard: View {
     private let configuration: Configuration
 
     @State private var dateRange: StatsDateRange
-    @State private var selectedChartType: ChartType = .line
+    @Binding var chartType: ChartType
     @State private var isShowingDatePicker = false
     @State private var chartData: ChartData?
 
@@ -37,17 +37,18 @@ struct StandaloneChartCard: View {
     ///   - dataPoints: The array of data points to display
     ///   - metric: The metric type for proper formatting and colors
     ///   - initialDateRange: The initial date range to display
+    ///   - chartType: Binding to the chart type
     init(
         dataPoints: [DataPoint],
         metric: SiteMetric,
         initialDateRange: StatsDateRange,
-        chartType: ChartType = .line,
+        chartType: Binding<ChartType>,
         configuration: Configuration = .init()
     ) {
         self.dataPoints = dataPoints
         self.metric = metric
         self._dateRange = State(initialValue: initialDateRange)
-        self._selectedChartType = State(initialValue: chartType)
+        self._chartType = chartType
         self.configuration = configuration
     }
 
@@ -105,8 +106,12 @@ struct StandaloneChartCard: View {
             if dateRange.dateInterval.preferredGranularity < configuration.minimumGranularity {
                 loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
             } else if let chartData {
-                chartContent(chartData: chartData)
-                    .opacity(redactionReasons.contains(.placeholder) ? 0.2 : 1.0)
+                if chartData.isEmptyOrZero {
+                    loadingErrorView(with: Strings.Chart.empty)
+                } else {
+                    chartContent(chartData: chartData)
+                        .opacity(redactionReasons.contains(.placeholder) ? 0.2 : 1.0)
+                }
             } else {
                 chartContent(chartData: mockData)
                     .redacted(reason: .placeholder)
@@ -118,7 +123,7 @@ struct StandaloneChartCard: View {
 
     @ViewBuilder
     private func chartContent(chartData: ChartData) -> some View {
-        switch selectedChartType {
+        switch chartType {
         case .line:
             LineChartView(data: chartData)
         case .columns:
@@ -173,7 +178,7 @@ struct StandaloneChartCard: View {
                 ControlGroup {
                     ForEach(ChartType.allCases, id: \.self) { type in
                         Button {
-                            selectedChartType = type
+                            chartType = type
                         } label: {
                             Label(type.localizedTitle, systemImage: type.systemImage)
                         }
@@ -295,18 +300,25 @@ private func generateChartData(
 // MARK: - Preview
 
 #Preview {
-    let dateRange = Calendar.demo.makeDateRange(for: .last7Days)
+    struct PreviewWrapper: View {
+        @State private var chartType: ChartType = .line
 
-    return StandaloneChartCard(
-        dataPoints: generateMockDataPoints(days: 365),
-        metric: .views,
-        initialDateRange: dateRange
-    )
-    .cardStyle()
-    .padding(8)
-    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-    .background(Color(.systemGroupedBackground))
-    .environment(\.context, StatsContext.demo)
+        var body: some View {
+            StandaloneChartCard(
+                dataPoints: generateMockDataPoints(days: 365),
+                metric: .views,
+                initialDateRange: Calendar.demo.makeDateRange(for: .last7Days),
+                chartType: $chartType
+            )
+        }
+    }
+
+    return PreviewWrapper()
+        .cardStyle()
+        .padding(8)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        .background(Color(.systemGroupedBackground))
+        .environment(\.context, StatsContext.demo)
 }
 
 // Helper function to generate mock data

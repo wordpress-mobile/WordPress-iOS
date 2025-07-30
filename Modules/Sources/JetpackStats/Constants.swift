@@ -38,6 +38,7 @@ enum Constants {
         static let red = Color(palette: CSColor.Red.self)
         static let green = Color(palette: CSColor.Green.self)
         static let orange = Color(palette: CSColor.Orange.self)
+        static let yellow = Color(palette: CSColor.Yellow.self)
         static let pink = Color(palette: CSColor.Pink.self)
         static let celadon = Color(palette: CSColor.Celadon.self)
 
@@ -52,7 +53,20 @@ enum Constants {
     static let step3: CGFloat = 24
     static let step4: CGFloat = 32
 
+    /// For raw lists like TopListScreenView etc.
+    static let maxHortizontalWidthPlainLists: CGFloat = 660
+    static let maxHortizontalWidth: CGFloat = 760
+
     static let cardPadding = EdgeInsets(top: step2, leading: step3, bottom: step2, trailing: step3)
+
+    /// Horizontal insets for screens containing cards
+    static let cardHorizontalInsetRegular: CGFloat = step3
+    static let cardHorizontalInsetCompact: CGFloat = step1
+
+    /// Returns the appropriate horizontal card inset for the given size class
+    static func cardHorizontalInset(for sizeClass: UserInterfaceSizeClass?) -> CGFloat {
+        sizeClass == .regular ? cardHorizontalInsetRegular : cardHorizontalInsetCompact
+    }
 
     static func heatmapColor(baseColor: Color, intensity: Double) -> Color {
         if intensity == 0 {

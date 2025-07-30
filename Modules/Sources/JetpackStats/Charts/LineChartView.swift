@@ -14,20 +14,16 @@ struct LineChartView: View {
         StatsValueFormatter(metric: data.metric)
     }
 
-    private var shouldShowCurrentTimeBoundary: Bool {
-        guard let lastDataPoint = data.currentData.last,
-              let firstDataPoint = data.currentData.first,
-              let lastDate = data.currentData.last?.date else {
-            return false
-        }
-        return context.calendar.isDateInToday(lastDate) || (firstDataPoint.date...lastDataPoint.date).contains(.now)
+    private var currentAverage: Double {
+        guard !data.currentData.isEmpty else { return 0 }
+        return Double(data.currentTotal) / Double(data.currentData.count)
     }
 
     var body: some View {
         Chart {
             currentPeriodMarks
             previousPeriodMarks
-            currentTimeBoundaryMark
+            averageLine
             significantPointAnnotations
             selectionIndicatorMarks
         }
@@ -109,20 +105,18 @@ struct LineChartView: View {
     }
 
     @ChartContentBuilder
-    private var currentTimeBoundaryMark: some ChartContent {
-        if shouldShowCurrentTimeBoundary,
-           let lastDataPoint = data.currentData.last {
-            RuleMark(
-                x: .value("Now", lastDataPoint.date),
-                yStart: .value("Start", 0),
-                yEnd: .value("End", lastDataPoint.value)
-            )
-            .foregroundStyle(data.metric.primaryColor.opacity(0.33))
-            .lineStyle(StrokeStyle(
-                lineWidth: 2,
-                lineCap: .round,
-                dash: [5, 5]
-            ))
+    private var averageLine: some ChartContent {
+        if currentAverage > 0 {
+            RuleMark(y: .value("Average", currentAverage))
+                .foregroundStyle(Color.secondary.opacity(0.33))
+                .lineStyle(StrokeStyle(lineWidth: 1, dash: [6, 6]))
+                .annotation(position: .trailing, alignment: .trailing) {
+                    Text(valueFormatter.format(value: Int(currentAverage), context: .compact))
+                        .font(.caption2.weight(.medium)).tracking(-0.1)
+                        .foregroundStyle(Color.secondary)
+                        .background(Color(.systemBackground).opacity(0.9))
+                        .clipShape(RoundedRectangle(cornerRadius: 4))
+                }
         }
     }
 
@@ -206,7 +200,7 @@ struct LineChartView: View {
 
                 AxisValueLabel {
                     Text(valueFormatter.format(value: value, context: .compact))
-                        .font(.caption2.weight(.medium))
+                        .font(.caption2.weight(.medium)).tracking(-0.1)
                         .foregroundColor(.secondary)
                 }
             }
@@ -232,8 +226,7 @@ struct LineChartView: View {
     private var tooltipView: some View {
         if let selectedPoints = selectedDataPoints {
             ChartValueTooltipView(
-                currentPoint: selectedPoints.current,
-                previousPoint: selectedPoints.previous,
+                selectedPoints: selectedPoints,
                 metric: data.metric,
                 granularity: data.granularity
             )

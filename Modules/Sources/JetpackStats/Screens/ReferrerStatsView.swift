@@ -10,6 +10,7 @@ struct ReferrerStatsView: View {
 
     @Environment(\.context) private var context
     @Environment(\.router) private var router
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State private var isMarkingAsSpam = false
     @State private var showErrorAlert = false
     @State private var errorMessage = ""
@@ -24,6 +25,9 @@ struct ReferrerStatsView: View {
                 }
             }
             .padding(.vertical, Constants.step1)
+            .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
+            .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
+            .frame(maxWidth: .infinity)
         }
         .background(Constants.Colors.background)
         .navigationTitle(Strings.ReferrerDetails.title)
@@ -183,6 +187,7 @@ struct ReferrerStatsView: View {
             dateRange: Calendar.demo.makeDateRange(for: .thisYear)
         )
     }
+    .navigationViewStyle(.stack)
     .tint(Constants.Colors.jetpack)
 }
 

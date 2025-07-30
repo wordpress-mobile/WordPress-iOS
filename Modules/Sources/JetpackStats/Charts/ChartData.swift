@@ -10,6 +10,7 @@ final class ChartData: Sendable {
     let mappedPreviousData: [DataPoint]
     let maxValue: Int
     let significantPoints: SignificantPoints
+    let isEmptyOrZero: Bool
 
     var isEmpty: Bool {
         currentData.isEmpty && previousData.isEmpty
@@ -65,6 +66,9 @@ final class ChartData: Sendable {
             previousMax: previousMaxPoint,
             previousMin: previousMinPoint
         )
+
+        // Check if all data points are zero
+        self.isEmptyOrZero = currentData.allSatisfy { $0.value == 0 } && previousData.allSatisfy { $0.value == 0 }
     }
 }
 

@@ -23,7 +23,7 @@ enum Strings {
         static let last90Days = AppLocalizedString("jetpackStats.calendar.last90Days", value: "Last 90 Days", comment: "Last 90 days date range")
         static let last6Months = AppLocalizedString("jetpackStats.calendar.last6Months", value: "Last 6 Months", comment: "Last 6 months date range")
         static let last12Months = AppLocalizedString("jetpackStats.calendar.last12Months", value: "Last 12 Months", comment: "Last 12 months date range")
-        static let last5Years = AppLocalizedString("jetpackStats.calendar.last5Years", value: "Last 5 Years", comment: "Last 5 years date range")
+        static let last3Years = AppLocalizedString("jetpackStats.calendar.last3Years", value: "Last 3 Years", comment: "Last 3 years date range")
         static let last10Years = AppLocalizedString("jetpackStats.calendar.last10Years", value: "Last 10 Years", comment: "Last 10 years date range")
         static let week = AppLocalizedString("jetpackStats.calendar.week", value: "Week", comment: "Week time period")
         static let month = AppLocalizedString("jetpackStats.calendar.month", value: "Month", comment: "Month time period")
@@ -105,7 +105,7 @@ enum Strings {
         static let barChart = AppLocalizedString("jetpackStats.chart.barChart", value: "Bars", comment: "Bar chart type")
         static let incompleteData = AppLocalizedString("jetpackStats.chart.incompleteData", value: "Might show incomplete data", comment: "Shown when current period data might be incomplete")
         static let hourlyDataUnavailable = AppLocalizedString("jetpackStats.chart.hourlyDataNotAvailable", value: "Hourly data not available", comment: "Shown for metrics that don't support hourly data")
-        static let empty = AppLocalizedString("jetpackStats.chart.dataEmpty", value: "No data available", comment: "Shown for empty states")
+        static let empty = AppLocalizedString("jetpackStats.chart.dataEmpty", value: "No data for period", comment: "Shown for empty states")
     }
 
     enum TopListTitles {
@@ -147,7 +147,7 @@ enum Strings {
         // Weekly Activity
         static let recentWeeks = AppLocalizedString("jetpackStats.postDetails.recentWeeks", value: "Recent Weeks", comment: "Title for recent weeks activity heatmap")
         static let weeklyActivity = AppLocalizedString("jetpackStats.postDetails.weeklyActivity", value: "Weekly Activity", comment: "Title for weekly activity heatmap")
-        
+
         // Email Metrics
         static let emailMetrics = AppLocalizedString("jetpackStats.postDetails.emailMetrics", value: "Emails", comment: "Title for email metrics card")
         static let emailsSent = AppLocalizedString("jetpackStats.postDetails.emailsSent", value: "Emails Sent", comment: "Must be short!Label for emails sent metric")

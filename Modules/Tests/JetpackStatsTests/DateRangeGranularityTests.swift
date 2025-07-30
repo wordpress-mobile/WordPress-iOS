@@ -99,14 +99,14 @@ struct DateRangeGranularityTests {
             start: Date("2024-01-01T00:00:00-03:00"),
             end: Date("2026-02-02T00:00:00-03:00")
         )
-        #expect(twentyFiveMonths.preferredGranularity == .year)
+        #expect(twentyFiveMonths.preferredGranularity == .month)
 
         // 3 years
         let threeYears = DateInterval(
             start: Date("2024-01-01T00:00:00-03:00"),
             end: Date("2027-01-02T00:00:00-03:00")
         )
-        #expect(threeYears.preferredGranularity == .year)
+        #expect(threeYears.preferredGranularity == .month)
 
         // 5 years
         let fiveYears = DateInterval(

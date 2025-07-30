@@ -31,7 +31,7 @@ enum SiteMetric: String, CaseIterable, Identifiable, Sendable, Codable {
         case .visitors: "person"
         case .likes: "star"
         case .comments: "bubble.left"
-        case .posts: "paragraphsign"
+        case .posts: "text.page"
         case .timeOnSite: "clock"
         case .bounceRate: "rectangle.portrait.and.arrow.right"
         case .downloads: "arrow.down.circle"
@@ -42,7 +42,7 @@ enum SiteMetric: String, CaseIterable, Identifiable, Sendable, Codable {
         switch self {
         case .views: Constants.Colors.blue
         case .visitors: Constants.Colors.purple
-        case .likes: Constants.Colors.red
+        case .likes: Constants.Colors.pink
         case .comments: Constants.Colors.green
         case .posts: Constants.Colors.celadon
         case .timeOnSite: Constants.Colors.orange

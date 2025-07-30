@@ -27,7 +27,7 @@ struct StatsDateRangePickerMenu: View {
                         .last28Days,
                         .last90Days,
                         .last6Months,
-                        .last5Years,
+                        .last3Years,
                         .last10Years
                     ])
                 }

@@ -10,6 +10,7 @@ struct ExternalLinkStatsView: View {
 
     @Environment(\.context) private var context
     @Environment(\.router) private var router
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     var body: some View {
         ScrollView {
@@ -20,6 +21,9 @@ struct ExternalLinkStatsView: View {
                 }
             }
             .padding(.vertical, Constants.step1)
+            .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
+            .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
+            .frame(maxWidth: .infinity)
         }
         .background(Constants.Colors.background)
         .navigationTitle(Strings.ExternalLinkDetails.title)
@@ -139,6 +143,7 @@ struct ExternalLinkStatsView: View {
             dateRange: Calendar.demo.makeDateRange(for: .thisYear)
         )
     }
+    .navigationViewStyle(.stack)
     .tint(Constants.Colors.jetpack)
 }
 

@@ -13,10 +13,17 @@ struct BarChartView: View {
         StatsValueFormatter(metric: data.metric)
     }
 
+    private var currentAverage: Double {
+        guard !data.currentData.isEmpty else { return 0 }
+        let sum = data.currentData.reduce(0) { $0 + $1.value }
+        return Double(sum) / Double(data.currentData.count)
+    }
+
     var body: some View {
         Chart {
             previousPeriodBars
             currentPeriodBars
+            averageLine
             significantPointAnnotations
             selectionIndicatorMarks
         }
@@ -40,7 +47,7 @@ struct BarChartView: View {
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component),
                 y: .value("Value", point.value),
-                width: .ratio(0.75)
+                width: .automatic
             )
             .foregroundStyle(
                 LinearGradient(
@@ -52,7 +59,7 @@ struct BarChartView: View {
                     endPoint: .bottom
                 )
             )
-            .cornerRadius(4)
+            .cornerRadius(6)
             .opacity(getOpacityForCurrentPeriodBar(for: point))
         }
     }
@@ -71,11 +78,11 @@ struct BarChartView: View {
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component),
                 y: .value("Value", point.value),
-                width: .ratio(0.75),
+                width: .automatic,
                 stacking: .unstacked
             )
             .foregroundStyle(Color.secondary)
-            .cornerRadius(4)
+            .cornerRadius(6)
             .opacity(shouldHighlightPreviousDataPoint(point) ? 0.5 : 0.2)
         }
     }
@@ -85,6 +92,22 @@ struct BarChartView: View {
             return false
         }
         return selectedDataPoints.current == nil && selectedDataPoints.previous?.id == dataPoint.id
+    }
+
+    @ChartContentBuilder
+    private var averageLine: some ChartContent {
+        if currentAverage > 0 {
+            RuleMark(y: .value("Average", currentAverage))
+                .foregroundStyle(Color.secondary.opacity(0.33))
+                .lineStyle(StrokeStyle(lineWidth: 1, dash: [6, 6]))
+                .annotation(position: .trailing, alignment: .trailing) {
+                    Text(valueFormatter.format(value: Int(currentAverage), context: .compact))
+                        .font(.caption2.weight(.medium)).tracking(-0.1)
+                        .foregroundStyle(Color.secondary)
+                        .background(Color(.systemBackground).opacity(0.9))
+                        .clipShape(RoundedRectangle(cornerRadius: 4))
+                }
+        }
     }
 
     @ChartContentBuilder
@@ -176,8 +199,7 @@ struct BarChartView: View {
     private var tooltipView: some View {
         if let selectedPoints = selectedDataPoints {
             ChartValueTooltipView(
-                currentPoint: selectedPoints.current,
-                previousPoint: selectedPoints.previous,
+                selectedPoints: selectedPoints,
                 metric: data.metric,
                 granularity: data.granularity
             )

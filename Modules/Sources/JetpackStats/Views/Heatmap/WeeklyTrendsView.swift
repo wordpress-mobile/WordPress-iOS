@@ -88,7 +88,7 @@ struct WeeklyTrendsView: View {
                                 calendar: viewModel.calendar
                             )
                             .frame(maxWidth: .infinity)
-                            .aspectRatio(1, contentMode: .fit)
+                            .aspectRatio(1, contentMode: .fill)
                         }
                     }
                 }

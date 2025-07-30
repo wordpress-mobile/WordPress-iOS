@@ -35,8 +35,11 @@ public struct PostStatsView: View {
     @State private var isLoadingEmailData = true
     @State private var error: Error?
 
+    @AppStorage("JetpackStatsPostDetailsChartType") private var chartType: ChartType = .columns
+
     @Environment(\.context) private var context
     @Environment(\.router) private var router
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     init(post: TopListItem.Post, dateRange: StatsDateRange) {
         self.post = PostInfo(from: post)
@@ -59,10 +62,13 @@ public struct PostStatsView: View {
 
     public var body: some View {
         ScrollView {
-            VStack(spacing: Constants.step2) {
+            VStack(spacing: Constants.step3) {
                 contents
             }
             .padding(.vertical, Constants.step1)
+            .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
+            .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
+            .frame(maxWidth: .infinity)
         }
         .background(Constants.Colors.background)
         .navigationTitle(Strings.PostDetails.title)
@@ -86,8 +92,22 @@ public struct PostStatsView: View {
 
         emailsMetricsView
 
+        if horizontalSizeClass == .regular {
+            HStack(alignment: .top, spacing: Constants.step3) {
+                weeklyTrendsCard
+                    .frame(maxWidth: .infinity)
+                yearlyTrendsCard
+                    .frame(maxWidth: .infinity)
+            }
+        } else {
+            weeklyTrendsCard
+            yearlyTrendsCard
+        }
+    }
+
+    @ViewBuilder
+    private var weeklyTrendsCard: some View {
         if let data {
-            // Weekly Trends Chart
             VStack(alignment: .leading, spacing: Constants.step2) {
                 StatsCardTitleView(title: Strings.PostDetails.recentWeeks)
                 WeeklyTrendsView(viewModel: data.weeklyTrends)
@@ -95,9 +115,11 @@ public struct PostStatsView: View {
             .padding(Constants.step2)
             .cardStyle()
         }
+    }
 
+    @ViewBuilder
+    private var yearlyTrendsCard: some View {
         if let data {
-            // Yearly Summary
             VStack(alignment: .leading, spacing: Constants.step2) {
                 StatsCardTitleView(title: Strings.PostDetails.monthlyActivity)
                 YearlyTrendsView(viewModel: data.yearlyTrends)
@@ -112,7 +134,7 @@ public struct PostStatsView: View {
             dataPoints: dataPoints,
             metric: .views,
             initialDateRange: dateRange,
-            chartType: .columns,
+            chartType: $chartType,
             configuration: .init(minimumGranularity: .day)
         )
         .cardStyle()
@@ -402,19 +424,30 @@ private struct PostStatsMetricsStripView: View {
 private struct PostStatsEmailMetricsView: View {
     let emailData: StatsEmailOpensData
 
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+
     var body: some View {
-        VStack(alignment: .leading, spacing: Constants.step1) {
-            HStack(spacing: Constants.step2) {
-                ForEach(emailMetrics.prefix(2)) { metric in
+        if horizontalSizeClass == .regular {
+            HStack(spacing: Constants.step4) {
+                ForEach(emailMetrics) { metric in
                     MetricView(metric: metric)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            HStack(spacing: Constants.step2) {
-                ForEach(emailMetrics.suffix(2)) { metric in
-                    MetricView(metric: metric)
+        } else {
+            VStack(alignment: .leading, spacing: Constants.step2) {
+                HStack(spacing: Constants.step2) {
+                    ForEach(emailMetrics.prefix(2)) { metric in
+                        MetricView(metric: metric)
+                    }
                 }
+                HStack(spacing: Constants.step2) {
+                    ForEach(emailMetrics.suffix(2)) { metric in
+                        MetricView(metric: metric)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 

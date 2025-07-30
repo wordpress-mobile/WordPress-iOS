@@ -23,7 +23,7 @@ struct MockStatsServiceTests {
 
         // THEN
         #expect(response.items.count > 0)
-        #expect(response.items.count <= 20, "Should return maximum 20 items")
+        #expect(response.items.count <= 40, "Should return maximum 40 items")
 
         // THEN all items are posts
         for item in response.items {

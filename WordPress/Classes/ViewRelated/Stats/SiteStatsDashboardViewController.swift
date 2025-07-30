@@ -60,6 +60,7 @@ public class SiteStatsDashboardViewController: UIViewController {
     private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
     private var tipObserver: TipObserver?
     private var isUsingMockData = false
+    private var navigationItemObserver: NSKeyValueObservation?
 
     @objc public lazy var manageInsightsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -132,6 +133,10 @@ public class SiteStatsDashboardViewController: UIViewController {
 
     // MARK: - View
 
+    deinit {
+        navigationItemObserver?.invalidate()
+    }
+
     public override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -153,13 +158,31 @@ public class SiteStatsDashboardViewController: UIViewController {
     }
 
     func configureNavBar() {
+        // Clean up previous observer
+        navigationItemObserver?.invalidate()
+        navigationItemObserver = nil
+
         switch currentSelectedTab {
         case .insights:
             parent?.navigationItem.rightBarButtonItem = manageInsightsButton
         case .traffic:
             // Always show the menu for switching between stats experiences
             statsMenuButton.menu = createStatsMenu()
-            parent?.navigationItem.rightBarButtonItem = statsMenuButton
+
+            if traitCollection.horizontalSizeClass == .regular {
+                parent?.navigationItem.leftBarButtonItem = statsMenuButton
+            } else {
+                parent?.navigationItem.rightBarButtonItem = statsMenuButton
+            }
+
+            // Set up observer for navigation item changes
+            navigationItemObserver = trafficTableViewController.navigationItem.observe(\.trailingItemGroups, options: [.initial, .new]) { [weak self] navigationItem, _ in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                    self.updateParentNavigationItems(with: self.trafficTableViewController)
+                }
+            }
+
             // Show tip for new stats if available and not enabled
             if #available(iOS 17, *), !FeatureFlag.newStats.enabled {
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
@@ -169,6 +192,10 @@ public class SiteStatsDashboardViewController: UIViewController {
         default:
             parent?.navigationItem.rightBarButtonItem = nil
         }
+    }
+
+    private func updateParentNavigationItems(with childVC: UIViewController) {
+        parent?.navigationItem.trailingItemGroups = childVC.navigationItem.trailingItemGroups
     }
 
     func configureJetpackBanner() {

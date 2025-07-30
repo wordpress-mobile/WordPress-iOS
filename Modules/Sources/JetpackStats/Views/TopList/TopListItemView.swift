@@ -13,7 +13,7 @@ struct TopListItemView: View {
     @State private var isTapped = false
 
     @ScaledMetric(relativeTo: .callout) private var cellHeight = TopListItemView.defaultCellHeight
-    @ScaledMetric(relativeTo: .subheadline) private var minTrailingWidth = 84
+    @ScaledMetric(relativeTo: .subheadline) private var minTrailingWidth = 74
 
     @Environment(\.router) var router
     @Environment(\.context) var context
@@ -91,6 +91,7 @@ struct TopListItemView: View {
         }
         .padding(.horizontal, Constants.step1)
         .frame(height: cellHeight)
+        .contentShape(Rectangle())
         .contextMenu {
             contextMenuContent
         }
@@ -170,7 +171,7 @@ private extension TopListItemView {
         VStack(spacing: 24) {
             makePreviewItems()
         }
-        .padding()
+        .padding(Constants.step1)
     }
 }
 
@@ -399,5 +400,4 @@ private func makePreviewItem(_ item: any TopListItemProtocol, previousValue: Int
         maxValue: 50000,
         dateRange: Calendar.demo.makeDateRange(for: .last7Days)
     )
-    .padding(.horizontal)
 }
