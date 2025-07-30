@@ -75,7 +75,6 @@ struct ChartCard: View {
             chartHeaderView
                 .padding(.trailing, -Constants.step0_5)
             chartContentView
-                .padding(.bottom, 4)
         }
         .animation(.spring, value: selectedMetric)
         .animation(.spring, value: selectedChartType)

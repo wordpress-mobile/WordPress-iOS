@@ -31,11 +31,18 @@ struct ChartValuesSummaryView: View {
     }
 
     private var compact: some View {
-        VStack(alignment: .leading, spacing: 1) {
-            Text(trend.formattedCurrentValue)
-                .font(.system(.headline, design: .rounded, weight: .semibold))
-                .foregroundColor(.primary)
-                .contentTransition(.numericText())
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .lastTextBaseline, spacing: 6) {
+                Text(trend.formattedCurrentValue)
+                    .font(.system(.headline, design: .rounded, weight: .semibold))
+                    .foregroundColor(.primary)
+                    .contentTransition(.numericText())
+
+                Text(trend.formattedPreviousValue)
+                    .font(.system(.footnote, design: .rounded))
+                    .foregroundColor(.secondary.opacity(0.75)).tracking(-0.2)
+                    .contentTransition(.numericText())
+            }
 
             Text(trend.formattedTrendShort2)
                 .contentTransition(.numericText())

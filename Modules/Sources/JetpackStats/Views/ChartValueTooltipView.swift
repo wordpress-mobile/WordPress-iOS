@@ -1,12 +1,23 @@
 import SwiftUI
 
 struct ChartValueTooltipView: View {
-    let currentPoint: DataPoint?
-    let previousPoint: DataPoint?
+    let selectedPoints: SelectedDataPoints
     let metric: SiteMetric
     let granularity: DateRangeGranularity
 
     @Environment(\.context) var context
+
+    private var currentPoint: DataPoint? {
+        selectedPoints.current
+    }
+
+    private var previousPoint: DataPoint? {
+        selectedPoints.previous
+    }
+
+    private var unmappedPreviousPoint: DataPoint? {
+        selectedPoints.unmappedPrevious
+    }
 
     private var formattedDate: String? {
         guard let date = currentPoint?.date ?? previousPoint?.date else { return nil }
@@ -34,33 +45,35 @@ struct ChartValueTooltipView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            // Use the date from whichever point is available
-            if let formattedDate {
-                Text(formattedDate)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
+        VStack(alignment: .leading, spacing: Constants.step1) {
+            // Legend-style period indicators
+            VStack(alignment: .leading, spacing: 2) {
+                if let currentPoint {
+                    HStack(spacing: 8) {
+                        Circle()
+                            .fill(metric.primaryColor)
+                            .frame(width: 8, height: 8)
+                        Text(formattedDate(currentPoint.date))
+                            .font(.footnote)
+                            .foregroundColor(.primary)
+                    }
+                }
+
+                if let unmappedPreviousPoint {
+                    HStack(spacing: 8) {
+                        Circle()
+                            .fill(Color.secondary.opacity(0.75))
+                            .frame(width: 8, height: 8)
+                        Text(formattedDate(unmappedPreviousPoint.date))
+                            .font(.footnote)
+                            .foregroundColor(.secondary.opacity(0.8))
+                    }
+                }
             }
 
-            ChartTooltipRow(
-                color: metric.primaryColor,
-                value: currentPoint?.value,
-                isPrimary: true,
-                metric: metric
-            )
-
-            ChartTooltipRow(
-                color: Color.secondary,
-                value: previousPoint?.value,
-                isPrimary: false,
-                metric: metric
-            )
-
+            // Summary view
             if let trend {
-                Text(trend.formattedTrend)
-                    .contentTransition(.numericText())
-                    .font(.subheadline.weight(.medium)).tracking(-0.33)
-                    .foregroundColor(trend.sentiment.foregroundColor)
+                ChartValuesSummaryView(trend: trend, style: .compact)
             }
 
             if isIncompleteData {
@@ -70,36 +83,9 @@ struct ChartValueTooltipView: View {
             }
         }
         .fixedSize()
-        .padding(8)
+        .padding(12)
         .background(Color(.systemBackground))
         .cornerRadius(8)
         .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
-    }
-}
-
-private struct ChartTooltipRow: View {
-    let color: Color
-    let value: Int?
-    let isPrimary: Bool
-    let metric: SiteMetric
-
-    var body: some View {
-        HStack(spacing: 6) {
-            Circle()
-                .fill(color)
-                .frame(width: 8, height: 8)
-            Text(formattedValue)
-                .font(.subheadline)
-                .fontWeight(isPrimary ? .medium : .regular)
-                .foregroundColor(isPrimary ? .primary : .secondary)
-        }
-    }
-
-    private var formattedValue: String {
-        guard let value else {
-            return "–"
-        }
-        return StatsValueFormatter(metric: metric)
-            .format(value: value)
     }
 }

@@ -232,8 +232,7 @@ struct LineChartView: View {
     private var tooltipView: some View {
         if let selectedPoints = selectedDataPoints {
             ChartValueTooltipView(
-                currentPoint: selectedPoints.current,
-                previousPoint: selectedPoints.previous,
+                selectedPoints: selectedPoints,
                 metric: data.metric,
                 granularity: data.granularity
             )

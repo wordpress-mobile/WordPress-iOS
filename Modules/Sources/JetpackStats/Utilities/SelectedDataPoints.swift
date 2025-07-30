@@ -3,12 +3,14 @@ import Foundation
 struct SelectedDataPoints {
     let current: DataPoint?
     let previous: DataPoint?
+    let unmappedPrevious: DataPoint?
 
     // Static method to compute selected data points from a date
     static func compute(
         for date: Date?,
         currentSeries: [DataPoint],
-        previousSeries: [DataPoint]
+        previousSeries: [DataPoint],
+        mappedPreviousSeries: [DataPoint]
     ) -> SelectedDataPoints? {
         guard let date else { return nil }
 
@@ -17,7 +19,7 @@ struct SelectedDataPoints {
         guard !currentSeries.isEmpty else { return nil }
 
         // Find the closest data point in the current series
-        guard let closestPoint = findClosestDataPoint(to: date, in: currentSeries + previousSeries) else {
+        guard let closestPoint = findClosestDataPoint(to: date, in: currentSeries + mappedPreviousSeries) else {
             return nil
         }
 
@@ -26,13 +28,26 @@ struct SelectedDataPoints {
 
         // Find points with this exact date in both series
         let currentPoint = currentSeries.first { $0.date == closestDate }
-        let previousPoint = previousSeries.first { $0.date == closestDate }
-
-        return SelectedDataPoints(current: currentPoint, previous: previousPoint)
+        let previousPointIndex = mappedPreviousSeries.firstIndex { $0.date == closestDate }
+        var previousPoint: DataPoint? {
+            guard let previousPointIndex, mappedPreviousSeries.indices.contains(previousPointIndex) else { return nil }
+            return mappedPreviousSeries[previousPointIndex]
+        }
+        // We need this just to display the data in the tooltip.
+        var unmappedPrevious: DataPoint? {
+            guard let previousPointIndex, previousSeries.indices.contains(previousPointIndex) else { return nil }
+            return previousSeries[previousPointIndex]
+        }
+        return SelectedDataPoints(current: currentPoint, previous: previousPoint, unmappedPrevious: unmappedPrevious)
     }
 
     static func compute(for date: Date?, data: ChartData) -> SelectedDataPoints? {
-        compute(for: date, currentSeries: data.currentData, previousSeries: data.mappedPreviousData)
+        compute(
+            for: date,
+            currentSeries: data.currentData,
+            previousSeries: data.previousData,
+            mappedPreviousSeries: data.mappedPreviousData
+        )
     }
 
     // Helper method to find the closest data point to a given date
