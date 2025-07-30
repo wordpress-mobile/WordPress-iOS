@@ -18,7 +18,7 @@ struct ArchiveStatsView: View {
                 }
             }
             .padding(.vertical, Constants.step1)
-            .padding(.horizontal, horizontalSizeClass == .regular ? Constants.step3 : Constants.step1)
+            .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
         }
         .background(Constants.Colors.background)
         .navigationTitle(archiveSection.displayName)

@@ -18,7 +18,7 @@ struct RealtimeTabView: View {
                 realtimeTopLocations
             }
             .padding(.vertical, Constants.step2)
-            .padding(.horizontal, horizontalSizeClass == .regular ? Constants.step3 : Constants.step1)
+            .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
             .frame(maxWidth: maxWidth, alignment: .center)
             .frame(maxWidth: maxWidth)
         }
