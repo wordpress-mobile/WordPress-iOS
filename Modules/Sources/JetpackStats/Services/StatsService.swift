@@ -163,8 +163,6 @@ actor StatsService: StatsServiceProtocol {
                     TopListItem.Post($0, dateFormatter: dateFormatter)
                 }
                 return TopListResponse(items: sortItems(items))
-            case .comments:
-                fatalError()
             default:
                 throw StatsServiceError.unavailable
             }
