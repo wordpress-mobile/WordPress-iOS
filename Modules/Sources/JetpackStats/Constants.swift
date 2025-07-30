@@ -52,6 +52,8 @@ enum Constants {
     static let step3: CGFloat = 24
     static let step4: CGFloat = 32
 
+    /// For raw lists like TopListScreenView etc.
+    static let maxHortizontalWidthPlainLists: CGFloat = 660
     static let maxHortizontalWidth: CGFloat = 760
 
     static let cardPadding = EdgeInsets(top: step2, leading: step3, bottom: step2, trailing: step3)

@@ -48,7 +48,7 @@ struct TopListScreenView: View {
             }
             .padding(.vertical, Constants.step2)
             .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
-            .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
+            .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidthPlainLists : .infinity)
             .frame(maxWidth: .infinity)
             .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
         }
