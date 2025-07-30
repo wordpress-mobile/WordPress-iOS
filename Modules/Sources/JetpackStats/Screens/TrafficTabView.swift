@@ -22,9 +22,7 @@ struct TrafficTabView: View {
             ScrollView {
                 VStack(spacing: Constants.step3) {
                     cards
-                    if horizontalSizeClass != .regular {
-                        buttonAddChart
-                    }
+                    buttonAddChart
                     timeZoneInfo
                 }
                 .padding(.vertical, Constants.step2)
@@ -45,7 +43,6 @@ struct TrafficTabView: View {
             if horizontalSizeClass == .regular {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     StatsDateRangeButtons(dateRange: $viewModel.dateRange)
-                    toolbarButtonAddChart
                 }
             }
         }
@@ -133,21 +130,6 @@ struct TrafficTabView: View {
         .buttonBorderShape(.capsule)
         .scaleEffect(isShowingAddCardSheet ? 0.95 : 1.0)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isShowingAddCardSheet)
-        .popover(isPresented: $isShowingAddCardSheet) {
-            AddCardSheet { cardType in
-                viewModel.addCard(type: cardType)
-            }
-            .modifier(PopoverPresentationModifier())
-        }
-    }
-
-    private var toolbarButtonAddChart: some View {
-        Button(action: {
-            isShowingAddCardSheet = true
-        }) {
-            Label(Strings.Buttons.addCard, systemImage: "plus")
-        }
-        .tint(Color.primary)
         .popover(isPresented: $isShowingAddCardSheet) {
             AddCardSheet { cardType in
                 viewModel.addCard(type: cardType)
