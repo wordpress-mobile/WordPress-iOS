@@ -59,3 +59,7 @@ extension StatsEvent {
         }
     }
 }
+
+extension WPAnalyticsEvent {
+    static let isNewStatsKey = "new_stats"
+}

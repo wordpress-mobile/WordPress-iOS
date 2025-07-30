@@ -122,7 +122,14 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
     }
 
     private func trackQuickActionsEvent(_ event: WPAnalyticsStat, blog: Blog) {
-        WPAppAnalytics.track(event, properties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "quick_actions"], blog: blog)
+        var properties: [String: Any] = [
+            WPAppAnalyticsKeyTabSource: "dashboard",
+            WPAppAnalyticsKeyTapSource: "quick_actions"
+        ]
+        if event == .statsAccessed, FeatureFlag.newStats.enabled {
+            properties[WPAnalyticsEvent.isNewStatsKey] = "1"
+        }
+        WPAppAnalytics.track(event, properties: properties, blog: blog)
     }
 }
 
