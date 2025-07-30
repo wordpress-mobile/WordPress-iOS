@@ -147,7 +147,7 @@ enum Strings {
         // Weekly Activity
         static let recentWeeks = AppLocalizedString("jetpackStats.postDetails.recentWeeks", value: "Recent Weeks", comment: "Title for recent weeks activity heatmap")
         static let weeklyActivity = AppLocalizedString("jetpackStats.postDetails.weeklyActivity", value: "Weekly Activity", comment: "Title for weekly activity heatmap")
-        
+
         // Email Metrics
         static let emailMetrics = AppLocalizedString("jetpackStats.postDetails.emailMetrics", value: "Emails", comment: "Title for email metrics card")
         static let emailsSent = AppLocalizedString("jetpackStats.postDetails.emailsSent", value: "Emails Sent", comment: "Must be short!Label for emails sent metric")

@@ -89,7 +89,7 @@ struct TrafficTabView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private func makeItem(for viewModel: TrafficCardViewModel) -> some View {
         switch viewModel {
@@ -102,7 +102,7 @@ struct TrafficTabView: View {
             EmptyView()
         }
     }
-    
+
     @ViewBuilder
     private func cardView(for card: TrafficCardViewModel) -> some View {
         makeItem(for: card)

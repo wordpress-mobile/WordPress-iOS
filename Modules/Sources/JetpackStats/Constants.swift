@@ -53,11 +53,11 @@ enum Constants {
     static let step4: CGFloat = 32
 
     static let cardPadding = EdgeInsets(top: step2, leading: step3, bottom: step2, trailing: step3)
-    
+
     /// Horizontal insets for screens containing cards
     static let cardHorizontalInsetRegular: CGFloat = step3
     static let cardHorizontalInsetCompact: CGFloat = step1
-    
+
     /// Returns the appropriate horizontal card inset for the given size class
     static func cardHorizontalInset(for sizeClass: UserInterfaceSizeClass?) -> CGFloat {
         sizeClass == .regular ? cardHorizontalInsetRegular : cardHorizontalInsetCompact

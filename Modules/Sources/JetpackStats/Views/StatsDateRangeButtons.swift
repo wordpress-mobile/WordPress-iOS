@@ -27,9 +27,9 @@ struct StatsDateRangeButtons: View {
 struct StatsDatePickerToolbarItem: View {
     @Binding var dateRange: StatsDateRange
     @Binding var isShowingCustomRangePicker: Bool
-    
+
     @Environment(\.context) var context
-    
+
     var body: some View {
         Menu {
             StatsDateRangePickerMenu(
@@ -50,7 +50,7 @@ struct StatsDatePickerToolbarItem: View {
 struct StatsNavigationButton: View {
     @Binding var dateRange: StatsDateRange
     let direction: Calendar.NavigationDirection
-    
+
     var body: some View {
         Menu {
             ForEach(dateRange.availableAdjacentPeriods(in: direction)) { period in
