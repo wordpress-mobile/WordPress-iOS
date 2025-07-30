@@ -28,13 +28,14 @@ struct MetricsOverviewTabView: View {
                         }
                     }
                 }
+                .padding(.trailing, Constants.step1) // A bit extra after the last item
             }
         }
     }
 
     private func makeItemView(for item: MetricData, onTap: @escaping () -> Void) -> some View {
         MetricItemView(data: item, isSelected: selectedMetric == item.metric, onTap: onTap)
-            .frame(minWidth: minTabWidth + (horizontalSizeClass == .compact ? 0 : 8))
+            .frame(minWidth: minTabWidth + (horizontalSizeClass == .compact ? 0 : 20))
             .id(item.metric)
     }
 
@@ -96,6 +97,7 @@ private struct MetricItemView: View {
         HStack(spacing: 2) {
             Image(systemName: data.metric.systemImage)
                 .font(.caption2.weight(.medium))
+                .scaleEffect(x: 0.9, y: 0.9)
             Text(data.metric.localizedTitle.uppercased())
                 .font(.caption.weight(.medium))
         }
