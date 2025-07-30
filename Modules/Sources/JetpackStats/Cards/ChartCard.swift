@@ -167,17 +167,6 @@ struct ChartCard: View {
     @ViewBuilder
     private var moreMenuContent: some View {
         Section {
-            Button {
-                isShowingRawData = true
-            } label: {
-                Label(Strings.Chart.showData, systemImage: "tablecells")
-            }
-            Link(destination: URL(string: "https://wordpress.com/support/stats/understand-your-sites-traffic/")!) {
-                Label(Strings.Buttons.learnMore, systemImage: "info.circle")
-            }
-        }
-        EditCardMenuContent(cardViewModel: viewModel)
-        Section {
             ControlGroup {
                 ForEach(ChartType.allCases, id: \.self) { type in
                     Button {
@@ -188,6 +177,17 @@ struct ChartCard: View {
                 }
             }
         }
+        Section {
+            Button {
+                isShowingRawData = true
+            } label: {
+                Label(Strings.Chart.showData, systemImage: "tablecells")
+            }
+            Link(destination: URL(string: "https://wordpress.com/support/stats/understand-your-sites-traffic/")!) {
+                Label(Strings.Buttons.learnMore, systemImage: "info.circle")
+            }
+        }
+        EditCardMenuContent(cardViewModel: viewModel)
     }
 
     // MARK: - Chart View
