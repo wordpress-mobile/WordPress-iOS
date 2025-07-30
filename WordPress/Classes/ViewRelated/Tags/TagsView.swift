@@ -35,6 +35,7 @@ struct TagsView: View {
                 Button(action: addTag) {
                     Image(systemName: "plus")
                 }
+                .accessibilityLabel(Strings.addTag(viewModel.searchText.trim()))
             }
         }
         .padding(.horizontal, 12)
@@ -239,6 +240,7 @@ private struct SelectedTag: View {
                     .foregroundColor(.secondary)
                     .font(.subheadline)
             }
+            .accessibilityLabel(Strings.removeTag(tagName))
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
@@ -303,6 +305,15 @@ private enum Strings {
         value: "Search or add tags",
         comment: "Placeholder text for the tag search field"
     )
+
+    static func removeTag(_ tagName: String) -> String {
+        let template = NSLocalizedString(
+            "tags.remove.button",
+            value: "Remove %1$@",
+            comment: "Button to remove a selected tag. %1$@ is the tag name."
+        )
+        return String.localizedStringWithFormat(template, tagName)
+    }
 
     static func addTag(_ tagName: String) -> String {
         let template = NSLocalizedString(
