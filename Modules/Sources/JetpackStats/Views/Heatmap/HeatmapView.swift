@@ -37,6 +37,7 @@ struct HeatmapCellView: View {
                         .foregroundStyle(.primary)
                         .minimumScaleFactor(0.5)
                         .lineLimit(1)
+                        .dynamicTypeSize(...DynamicTypeSize.xLarge)
                 }
             }
     }

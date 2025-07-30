@@ -85,6 +85,7 @@ public struct PostStatsView: View {
     private var contents: some View {
         headerView
             .cardStyle()
+            .dynamicTypeSize(...DynamicTypeSize.xxLarge)
 
         if let data {
             makeChartView(dataPoints: data.dataPoints)
@@ -94,6 +95,7 @@ public struct PostStatsView: View {
         }
 
         emailsMetricsView
+            .dynamicTypeSize(...DynamicTypeSize.xxLarge)
 
         if horizontalSizeClass == .regular {
             HStack(alignment: .top, spacing: Constants.step3) {

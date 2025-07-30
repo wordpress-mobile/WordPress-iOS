@@ -37,9 +37,11 @@ struct TopListCard: View {
 
             listHeaderView
                 .padding(.horizontal, Constants.step3)
+                .dynamicTypeSize(...DynamicTypeSize.xxLarge)
 
             listContentView
         }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .onAppear {
             viewModel.onAppear()
         }
@@ -183,7 +185,7 @@ struct TopListCard: View {
             moreMenuContent
         } label: {
             Image(systemName: "ellipsis")
-                .font(.body)
+                .font(.system(size: 17))
                 .foregroundColor(.secondary)
                 .frame(width: 56, height: 50)
         }
@@ -259,6 +261,7 @@ struct TopListCard: View {
         }
         .padding(.top, 16)
         .tint(Color.secondary.opacity(0.8))
+        .dynamicTypeSize(...DynamicTypeSize.xLarge)
     }
 
     private var showMoreInlineButton: some View {
@@ -281,6 +284,7 @@ struct TopListCard: View {
         }
         .padding(.top, 16)
         .tint(Color.secondary.opacity(0.8))
+        .dynamicTypeSize(...DynamicTypeSize.xLarge)
     }
 
     private func makeEmptyStateView(message: String) -> some View {

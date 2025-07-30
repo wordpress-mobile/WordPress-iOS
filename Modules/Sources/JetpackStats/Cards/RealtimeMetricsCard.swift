@@ -5,6 +5,8 @@ struct RealtimeMetricsCard: View {
     @State private var visitorsLast30Min = 1280
     @State private var viewsLast30Min = 3720
     @State private var isPulsing = false
+    
+    @ScaledMetric(relativeTo: .caption) private var pulseCircleSize: CGFloat = 6
 
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
 
@@ -17,7 +19,7 @@ struct RealtimeMetricsCard: View {
                         .foregroundColor(.primary)
                     Circle()
                         .fill(Color.green)
-                        .frame(width: 6, height: 6)
+                        .frame(width: pulseCircleSize, height: pulseCircleSize)
                         .scaleEffect(isPulsing ? 1.2 : 0.8)
                         .opacity(isPulsing ? 0.4 : 0.8)
                         .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: isPulsing)
@@ -78,7 +80,7 @@ struct RealtimeMetricsCard: View {
                 .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
                 .foregroundColor(.primary)
         }
-        .frame(minWidth: 100, alignment: .leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private func updateRealtimeStats() {

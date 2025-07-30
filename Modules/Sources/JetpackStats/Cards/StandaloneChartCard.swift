@@ -61,9 +61,11 @@ struct StandaloneChartCard: View {
             chartContentView
                 .padding(.horizontal, -Constants.step1)
             dateRangeControls
+                .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
         .padding(.vertical, Constants.step2)
         .padding(.horizontal, Constants.step3)
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .overlay(alignment: .topTrailing) {
             moreMenu
         }

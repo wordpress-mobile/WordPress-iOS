@@ -36,6 +36,7 @@ struct BarChartView: View {
         .onChange(of: selectedDate) {
             selectedDataPoints = SelectedDataPoints.compute(for: $0, data: data)
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     // MARK: - Chart Marks

@@ -41,6 +41,7 @@ struct StatsTabBar: View {
             }
             Divider()
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .padding(.top, 8)
         .background {
             backgroundView

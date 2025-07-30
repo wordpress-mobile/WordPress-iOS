@@ -16,6 +16,7 @@ struct ExternalLinkStatsView: View {
         ScrollView {
             VStack(spacing: Constants.step3) {
                 headerCard
+                    .dynamicTypeSize(...DynamicTypeSize.xLarge)
                 if !externalLink.children.isEmpty {
                     childrenCard
                 }
@@ -24,6 +25,7 @@ struct ExternalLinkStatsView: View {
             .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
             .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
             .frame(maxWidth: .infinity)
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         }
         .background(Constants.Colors.background)
         .onAppear {

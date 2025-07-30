@@ -32,6 +32,7 @@ struct ChartCard: View {
                 cardFooterView
             }
         }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .onAppear {
             viewModel.onAppear()
         }
@@ -105,6 +106,7 @@ struct ChartCard: View {
                 previousPeriod: dateRange.effectiveComparisonInterval
             )
         }
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
     }
 
     @ViewBuilder
@@ -162,7 +164,7 @@ struct ChartCard: View {
             moreMenuContent
         } label: {
             Image(systemName: "ellipsis")
-                .font(.body)
+                .font(.system(size: 17))
                 .foregroundColor(.secondary)
                 .frame(width: 56, height: 50)
         }

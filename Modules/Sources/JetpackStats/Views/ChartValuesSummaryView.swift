@@ -17,6 +17,7 @@ struct ChartValuesSummaryView: View {
             }
         }
         .animation(.default, value: trend)
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
     private var standard: some View {

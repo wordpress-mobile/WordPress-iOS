@@ -62,6 +62,7 @@ struct CustomDateRangePicker: View {
                 .padding()
         }
         .padding(.top, 16)
+        .dynamicTypeSize(...DynamicTypeSize.xLarge)
     }
 
     // MARK: - Actions

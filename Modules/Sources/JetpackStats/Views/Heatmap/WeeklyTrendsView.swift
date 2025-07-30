@@ -44,6 +44,7 @@ struct WeeklyTrendsView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
     }
 
     private var header: some View {
@@ -74,6 +75,7 @@ struct WeeklyTrendsView: View {
                         .font(.caption2)
                         .foregroundColor(.secondary)
                         .frame(width: weekLabelWidth, alignment: .trailing)
+                        .dynamicTypeSize(...DynamicTypeSize.large)
 
                     HStack(spacing: cellSpacing) {
                         // Days in the week

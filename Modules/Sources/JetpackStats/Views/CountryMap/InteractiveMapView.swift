@@ -417,4 +417,5 @@ private struct SVGWebView: UIViewRepresentable {
     .frame(height: 230)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Constants.Colors.secondaryBackground)
+    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 }

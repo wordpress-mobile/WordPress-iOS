@@ -30,6 +30,7 @@ struct MetricsOverviewTabView: View {
                     }
                 }
                 .padding(.trailing, Constants.step1) // A bit extra after the last item
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
             }
         }
     }

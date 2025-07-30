@@ -51,6 +51,7 @@ struct AuthorStatsView: View {
             .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
             .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
             .frame(maxWidth: .infinity)
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         }
         .background(Constants.Colors.background)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))

@@ -13,7 +13,7 @@ struct StatsDateRangeButtons: View {
             .modifier(ProminentMenuModifier())
             .popover(isPresented: $isShowingCustomRangePicker) {
                 CustomDateRangePicker(dateRange: $dateRange)
-                    .frame(width: 360)
+                    .frame(idealWidth: 360)
             }
             StatsNavigationButton(dateRange: $dateRange, direction: .backward)
                 .modifier(ProminentMenuModifier())
