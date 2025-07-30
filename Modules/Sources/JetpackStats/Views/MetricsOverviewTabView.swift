@@ -73,8 +73,8 @@ private struct MetricItemView: View {
                     .padding(.leading, Constants.step3)
                     .padding(.trailing, Constants.step1)
                 tabContent
-                    .padding(.top, Constants.step1)
-                    .padding(.bottom, Constants.step2)
+                    .padding(.top, Constants.step1 + 3)
+                    .padding(.bottom, Constants.step2 + 2)
                     .padding(.leading, Constants.step3)
 
             }
