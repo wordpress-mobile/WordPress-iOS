@@ -100,14 +100,7 @@ struct BarChartView: View {
                 .foregroundStyle(Color.secondary.opacity(0.33))
                 .lineStyle(StrokeStyle(lineWidth: 1, dash: [6, 6]))
                 .annotation(position: .trailing, alignment: .trailing) {
-                    Text(valueFormatter.format(value: Int(currentAverage), context: .compact))
-                        .font(.caption2.weight(.medium)).tracking(-0.1)
-                        .foregroundStyle(Color.secondary)
-                        .padding(.horizontal, 5)
-                        .padding(.vertical, 2)
-                        .background(Constants.Colors.background)
-                        .clipShape(.capsule)
-                        .padding(.leading, -5)
+                    ChartAverageAnnotation(value: Int(currentAverage), formatter: valueFormatter)
                 }
         }
     }
