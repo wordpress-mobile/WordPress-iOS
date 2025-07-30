@@ -35,6 +35,8 @@ public struct PostStatsView: View {
     @State private var isLoadingEmailData = true
     @State private var error: Error?
 
+    @AppStorage("JetpackStatsPostDetailsChartType") private var chartType: ChartType = .columns
+
     @Environment(\.context) private var context
     @Environment(\.router) private var router
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -132,7 +134,7 @@ public struct PostStatsView: View {
             dataPoints: dataPoints,
             metric: .views,
             initialDateRange: dateRange,
-            chartType: .columns,
+            chartType: $chartType,
             configuration: .init(minimumGranularity: .day)
         )
         .cardStyle()
@@ -352,7 +354,7 @@ private struct PostStatsMetricsStripView: View {
     let metrics: SiteMetricsSet
     let onLikesTapped: (() -> Void)?
     let onCommentsTapped: (() -> Void)?
-    
+
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: Constants.step2) {
