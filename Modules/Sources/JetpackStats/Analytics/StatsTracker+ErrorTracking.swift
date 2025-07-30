@@ -16,7 +16,7 @@ extension StatsTracker {
         case is DecodingError:
             errorType = "parsing"
         case is CancellationError:
-            errorType = "cancelled"
+            return
         default:
             // Check for common error domains
             let nsError = error as NSError
