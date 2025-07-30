@@ -6,9 +6,8 @@ struct TrafficTabView: View {
     @State private var isShowingCustomRangePicker = false
     @State private var isShowingAddCardSheet = false
 
-    @ScaledMetric private var maxWidth = 720
-
     @Environment(\.context) var context
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     // Temporary workaround while we are still showing this in the existing UIKit screens.
     private let topPadding: CGFloat
@@ -22,21 +21,12 @@ struct TrafficTabView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(spacing: Constants.step3) {
-                    ForEach(viewModel.cards, id: \.id) { card in
-                        makeItem(for: card)
-                            .id(card.id)
-                            .transition(.asymmetric(
-                                insertion: .push(from: .bottom).combined(with: .opacity),
-                                removal: .scale.combined(with: .opacity)
-                            ))
-                    }
+                    cards
                     buttonAddChart
                     timeZoneInfo
                 }
                 .padding(.vertical, Constants.step2)
                 .padding(.top, topPadding)
-                .frame(maxWidth: maxWidth, alignment: .center)
-                .frame(maxWidth: .infinity)
                 .onReceive(viewModel.scrollToCardSubject) { cardID in
                     // Use a more elegant spring animation for scrolling
                     withAnimation(.spring) {
@@ -60,6 +50,32 @@ struct TrafficTabView: View {
     }
 
     @ViewBuilder
+    private var cards: some View {
+        if shouldUseGridLayout {
+            HStack(alignment: .top, spacing: Constants.step3) {
+                VStack(spacing: Constants.step3) {
+                    ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
+                        if index % 2 == 0 {
+                            cardView(for: card)
+                        }
+                    }
+                }
+                VStack(spacing: Constants.step3) {
+                    ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
+                        if index % 2 == 1 {
+                            cardView(for: card)
+                        }
+                    }
+                }
+            }
+        } else {
+            ForEach(viewModel.cards, id: \.id) { card in
+                cardView(for: card)
+            }
+        }
+    }
+    
+    @ViewBuilder
     private func makeItem(for viewModel: TrafficCardViewModel) -> some View {
         switch viewModel {
         case let viewModel as ChartCardViewModel:
@@ -70,6 +86,16 @@ struct TrafficTabView: View {
             let _ = assertionFailure("Unsupported type: \(viewModel)")
             EmptyView()
         }
+    }
+    
+    @ViewBuilder
+    private func cardView(for card: TrafficCardViewModel) -> some View {
+        makeItem(for: card)
+            .id(card.id)
+            .transition(.asymmetric(
+                insertion: .push(from: .bottom).combined(with: .opacity),
+                removal: .scale.combined(with: .opacity)
+            ))
     }
 
     private var buttonAddChart: some View {
@@ -103,6 +129,13 @@ struct TrafficTabView: View {
             .padding(.horizontal, Constants.step4)
             .padding(.top, Constants.step2)
             .padding(.bottom, Constants.step1)
+    }
+
+    // MARK: - Grid Layout
+
+    private var shouldUseGridLayout: Bool {
+        // Use grid layout on iPad or when we have regular horizontal size class
+        horizontalSizeClass == .regular
     }
 
     // MARK: - Toolbar
