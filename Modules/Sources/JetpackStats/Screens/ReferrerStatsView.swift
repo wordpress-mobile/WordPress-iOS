@@ -10,6 +10,7 @@ struct ReferrerStatsView: View {
 
     @Environment(\.context) private var context
     @Environment(\.router) private var router
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State private var isMarkingAsSpam = false
     @State private var showErrorAlert = false
     @State private var errorMessage = ""
@@ -24,6 +25,7 @@ struct ReferrerStatsView: View {
                 }
             }
             .padding(.vertical, Constants.step1)
+            .padding(.horizontal, horizontalSizeClass == .regular ? Constants.step3 : Constants.step1)
         }
         .background(Constants.Colors.background)
         .navigationTitle(Strings.ReferrerDetails.title)

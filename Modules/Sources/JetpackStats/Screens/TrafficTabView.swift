@@ -26,6 +26,7 @@ struct TrafficTabView: View {
                     timeZoneInfo
                 }
                 .padding(.vertical, Constants.step2)
+                .padding(.horizontal, horizontalSizeClass == .regular ? Constants.step3 : Constants.step1)
                 .padding(.top, topPadding)
                 .onReceive(viewModel.scrollToCardSubject) { cardID in
                     // Use a more elegant spring animation for scrolling

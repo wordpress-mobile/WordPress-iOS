@@ -37,6 +37,7 @@ public struct PostStatsView: View {
 
     @Environment(\.context) private var context
     @Environment(\.router) private var router
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     init(post: TopListItem.Post, dateRange: StatsDateRange) {
         self.post = PostInfo(from: post)
@@ -59,10 +60,11 @@ public struct PostStatsView: View {
 
     public var body: some View {
         ScrollView {
-            VStack(spacing: Constants.step2) {
+            VStack(spacing: Constants.step3) {
                 contents
             }
             .padding(.vertical, Constants.step1)
+            .padding(.horizontal, horizontalSizeClass == .regular ? Constants.step3 : Constants.step1)
         }
         .background(Constants.Colors.background)
         .navigationTitle(Strings.PostDetails.title)

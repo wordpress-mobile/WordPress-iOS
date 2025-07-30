@@ -7,6 +7,7 @@ struct ArchiveStatsView: View {
 
     @Environment(\.context) private var context
     @Environment(\.router) private var router
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     var body: some View {
         ScrollView {
@@ -17,6 +18,7 @@ struct ArchiveStatsView: View {
                 }
             }
             .padding(.vertical, Constants.step1)
+            .padding(.horizontal, horizontalSizeClass == .regular ? Constants.step3 : Constants.step1)
         }
         .background(Constants.Colors.background)
         .navigationTitle(archiveSection.displayName)

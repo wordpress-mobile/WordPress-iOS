@@ -35,6 +35,7 @@ struct TopListScreenView: View {
                 headerView
                     .background(Color(.secondarySystemBackground).opacity(0.7))
                     .cardStyle()
+                    .padding(.horizontal, Constants.step1)
 
                 VStack {
                     listHeaderView

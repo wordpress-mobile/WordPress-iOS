@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RealtimeTabView: View {
     @Environment(\.context) var context
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @ScaledMetric private var maxWidth = 720
 
     var body: some View {
@@ -17,6 +18,7 @@ struct RealtimeTabView: View {
                 realtimeTopLocations
             }
             .padding(.vertical, Constants.step2)
+            .padding(.horizontal, horizontalSizeClass == .regular ? Constants.step3 : Constants.step1)
             .frame(maxWidth: maxWidth, alignment: .center)
             .frame(maxWidth: maxWidth)
         }

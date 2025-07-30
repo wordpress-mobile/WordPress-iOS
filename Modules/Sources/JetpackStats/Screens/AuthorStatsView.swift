@@ -10,6 +10,7 @@ struct AuthorStatsView: View {
     @StateObject private var viewModel: TopListViewModel
 
     @Environment(\.context) private var context
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     @ScaledMetric private var avatarSize = 60
 
@@ -46,6 +47,7 @@ struct AuthorStatsView: View {
                 )
             }
             .padding(.vertical, Constants.step1)
+            .padding(.horizontal, horizontalSizeClass == .regular ? Constants.step3 : Constants.step1)
         }
         .background(Constants.Colors.background)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
