@@ -44,21 +44,8 @@ struct TrafficTabView: View {
         .toolbar {
             if horizontalSizeClass == .regular {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Group {
-                        StatsDateRangeButtons(dateRange: $viewModel.dateRange)
-                        Button(action: {
-                            isShowingAddCardSheet = true
-                        }) {
-                            Label(Strings.Buttons.addCard, systemImage: "plus")
-                        }
-                        .tint(Color.primary)
-                        .popover(isPresented: $isShowingAddCardSheet) {
-                            AddCardSheet { cardType in
-                                viewModel.addCard(type: cardType)
-                            }
-                            .modifier(PopoverPresentationModifier())
-                        }
-                    }
+                    StatsDateRangeButtons(dateRange: $viewModel.dateRange)
+                    toolbarButtonAddChart
                 }
             }
         }
@@ -75,16 +62,21 @@ struct TrafficTabView: View {
     @ViewBuilder
     private var cards: some View {
         if horizontalSizeClass == .regular {
-            HStack(alignment: .top, spacing: Constants.step4) {
+            var cards = viewModel.cards
+            if let first = cards.first as? ChartCardViewModel {
+                let _ = cards.removeFirst()
+                cardView(for: first)
+            }
+            HStack(alignment: .top, spacing: Constants.step3) {
                 VStack(spacing: Constants.step3) {
-                    ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
+                    ForEach(Array(cards.enumerated()), id: \.element.id) { index, card in
                         if index % 2 == 0 {
                             cardView(for: card)
                         }
                     }
                 }
                 VStack(spacing: Constants.step3) {
-                    ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
+                    ForEach(Array(cards.enumerated()), id: \.element.id) { index, card in
                         if index % 2 == 1 {
                             cardView(for: card)
                         }
@@ -121,6 +113,8 @@ struct TrafficTabView: View {
             ))
     }
 
+    // MARK: - Misc
+
     private var buttonAddChart: some View {
         // Add Chart Button
         Button(action: {
@@ -139,6 +133,21 @@ struct TrafficTabView: View {
         .buttonBorderShape(.capsule)
         .scaleEffect(isShowingAddCardSheet ? 0.95 : 1.0)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isShowingAddCardSheet)
+        .popover(isPresented: $isShowingAddCardSheet) {
+            AddCardSheet { cardType in
+                viewModel.addCard(type: cardType)
+            }
+            .modifier(PopoverPresentationModifier())
+        }
+    }
+
+    private var toolbarButtonAddChart: some View {
+        Button(action: {
+            isShowingAddCardSheet = true
+        }) {
+            Label(Strings.Buttons.addCard, systemImage: "plus")
+        }
+        .tint(Color.primary)
         .popover(isPresented: $isShowingAddCardSheet) {
             AddCardSheet { cardType in
                 viewModel.addCard(type: cardType)

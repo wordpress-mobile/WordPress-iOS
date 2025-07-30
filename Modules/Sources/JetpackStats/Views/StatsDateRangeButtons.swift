@@ -70,8 +70,8 @@ struct StatsNavigationButton: View {
 private struct ProminentMenuModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
+            .tint(Color(.tertiaryLabel))
             .foregroundStyle(.primary)
-            .backgroundStyle(.tertiary)
             .menuStyle(.button)
             .buttonStyle(.bordered)
             .buttonBorderShape(.capsule)
