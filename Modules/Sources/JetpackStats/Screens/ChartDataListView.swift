@@ -7,6 +7,7 @@ struct ChartDataListView: View {
 
     @Environment(\.context) var context
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     var body: some View {
         ScrollView {
@@ -21,6 +22,9 @@ struct ChartDataListView: View {
                 dataItemsView(for: data, metric: data.metric)
                     .padding(.horizontal, Constants.step1)
             }
+            .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
+            .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
+            .frame(maxWidth: .infinity)
         }
         .background(Constants.Colors.secondaryBackground)
         .navigationTitle(Strings.ChartData.title)
