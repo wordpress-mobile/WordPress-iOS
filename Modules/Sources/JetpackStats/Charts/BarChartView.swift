@@ -15,8 +15,7 @@ struct BarChartView: View {
 
     private var currentAverage: Double {
         guard !data.currentData.isEmpty else { return 0 }
-        let sum = data.currentData.reduce(0) { $0 + $1.value }
-        return Double(sum) / Double(data.currentData.count)
+        return Double(data.currentTotal) / Double(data.currentData.count)
     }
 
     var body: some View {
@@ -137,7 +136,8 @@ struct BarChartView: View {
         if #available(iOS 17.0, *),
            let selectedDate,
            let _ = selectedDataPoints {
-            RuleMark(x: .value("Selected", selectedDate))
+            let clampedDate = data.clampDateToDataRange(selectedDate)
+            RuleMark(x: .value("Selected", clampedDate))
                 .foregroundStyle(Color.clear)
                 .lineStyle(StrokeStyle(lineWidth: 1))
                 .offset(yStart: 32)

@@ -134,4 +134,19 @@ extension ChartData {
         case .downloads: 100...250
         }
     }
+
+    /// Clamps the given date to be within the range of current data points
+    func clampDateToDataRange(_ date: Date) -> Date {
+        guard let firstDate = currentData.first?.date,
+              let lastDate = currentData.last?.date else {
+            return date
+        }
+
+        if date < firstDate {
+            return firstDate
+        } else if date > lastDate {
+            return lastDate
+        }
+        return date
+    }
 }

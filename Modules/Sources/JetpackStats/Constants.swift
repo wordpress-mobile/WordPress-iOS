@@ -45,7 +45,7 @@ enum Constants {
         static let uiColorBlue = UIColor(palette: CSColor.Blue.self)
 
         static let jetpack = Color(palette: CSColor.JetpackGreen.self)
-        
+
         static let shadowColor = Color(UIColor(
             light: UIColor.black.withAlphaComponent(0.1),
             dark: UIColor.white.withAlphaComponent(0.1)
