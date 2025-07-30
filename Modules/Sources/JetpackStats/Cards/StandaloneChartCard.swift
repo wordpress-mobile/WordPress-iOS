@@ -22,7 +22,7 @@ struct StandaloneChartCard: View {
     @State private var isShowingDatePicker = false
     @State private var chartData: ChartData?
 
-    @ScaledMetric private var chartHeight = 180
+    @ScaledMetric(relativeTo: .largeTitle) private var chartHeight = 180
 
     @Environment(\.context) private var context
 
