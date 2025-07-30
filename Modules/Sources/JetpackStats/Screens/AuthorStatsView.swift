@@ -58,8 +58,17 @@ struct AuthorStatsView: View {
         }
         .navigationTitle(Strings.AuthorDetails.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if horizontalSizeClass == .regular {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    StatsDateRangeButtons(dateRange: $dateRange)
+                }
+            }
+        }
         .safeAreaInset(edge: .bottom) {
-            LegacyFloatingDateControl(dateRange: $dateRange)
+            if horizontalSizeClass == .compact {
+                LegacyFloatingDateControl(dateRange: $dateRange)
+            }
         }
     }
 
