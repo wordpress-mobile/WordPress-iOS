@@ -5,25 +5,60 @@ import WordPressData
 
 struct TagsView: View {
     @ObservedObject var viewModel: TagsViewModel
+    @FocusState private var isTextFieldFocused: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             SelectedTagsView(viewModel: viewModel)
 
+            searchField
+
             if !viewModel.searchText.isEmpty {
-                TagsSearchView(viewModel: viewModel)
+                TagsSearchView(viewModel: viewModel, isTextFieldFocused: $isTextFieldFocused)
             } else {
-                TagsListView(viewModel: viewModel)
+                TagsListView(viewModel: viewModel, isTextFieldFocused: $isTextFieldFocused)
             }
         }
         .navigationTitle(Strings.title)
-        .searchable(text: $viewModel.searchText)
-        .textInputAutocapitalization(.never)
+    }
+
+    @ViewBuilder
+    private var searchField: some View {
+        HStack {
+            TextField(Strings.searchPlaceholder, text: $viewModel.searchText)
+                .focused($isTextFieldFocused)
+                .textInputAutocapitalization(.never)
+                .submitLabel(.return)
+                .onSubmit(addTag)
+
+            if !viewModel.searchText.trim().isEmpty {
+                Button(action: addTag) {
+                    Image(systemName: "plus")
+                }
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(Color(UIColor.tertiarySystemFill))
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .padding(.horizontal)
+        .padding(.top, 8)
+    }
+
+    private func addTag() {
+        let trimmedText = viewModel.searchText.trim()
+        if !trimmedText.isEmpty {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                viewModel.addNewTag(named: trimmedText)
+            }
+            viewModel.searchText = ""
+        }
     }
 }
 
 private struct TagsListView: View {
     @ObservedObject var viewModel: TagsViewModel
+    @FocusState.Binding var isTextFieldFocused: Bool
 
     var body: some View {
         List {
@@ -34,6 +69,12 @@ private struct TagsListView: View {
             }
         }
         .listStyle(.plain)
+        .simultaneousGesture(
+            DragGesture()
+                .onChanged { _ in
+                    isTextFieldFocused = false
+                }
+        )
         .overlay {
             if let response = viewModel.response {
                 if response.isEmpty {
@@ -62,12 +103,9 @@ private struct TagsListView: View {
 
 private struct TagsSearchView: View {
     @ObservedObject var viewModel: TagsViewModel
+    @FocusState.Binding var isTextFieldFocused: Bool
 
     var body: some View {
-        Button(Strings.addTag(viewModel.searchText), systemImage: "plus") {
-            viewModel.addNewTag(named: viewModel.searchText.trim())
-        }
-        .padding([.horizontal, .top])
         DataViewSearchView(
             searchText: viewModel.searchText,
             search: viewModel.search
@@ -76,6 +114,13 @@ private struct TagsSearchView: View {
                 TagRowView(tag: tag, viewModel: viewModel)
             }
         }
+        .simultaneousGesture(
+            DragGesture()
+                .onChanged { _ in
+                    isTextFieldFocused = false
+                }
+        )
+        .padding(.top, 16)
     }
 }
 
@@ -159,14 +204,16 @@ private struct SelectedTagsView: View {
                 FlowLayout(spacing: 8) {
                     ForEach(viewModel.selectedTags, id: \.self) { tagName in
                         SelectedTag(tagName: tagName) {
-                            viewModel.removeSelectedTag(tagName)
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                viewModel.removeSelectedTag(tagName)
+                            }
                         }
                     }
                 }
                 .padding(.horizontal)
             } else {
                 Text(Strings.noTagsSelected)
-                    .font(.body)
+                    .font(.callout)
                     .foregroundColor(.secondary)
                     .padding(.horizontal)
             }
@@ -183,19 +230,19 @@ private struct SelectedTag: View {
     var body: some View {
         HStack(spacing: 4) {
             Text(tagName)
-                .font(.caption)
+                .font(.subheadline)
                 .foregroundColor(.primary)
                 .lineLimit(1)
 
             Button(action: onRemove) {
                 Image(systemName: "xmark.circle.fill")
                     .foregroundColor(.secondary)
-                    .font(.caption)
+                    .font(.subheadline)
             }
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
-        .background(Color(UIColor.systemGray5))
+        .background(Color(UIColor.tertiarySystemFill))
         .clipShape(Capsule())
     }
 }
@@ -218,7 +265,10 @@ private struct TagRowView: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            viewModel.toggleSelection(for: tag)
+            withAnimation(.easeInOut(duration: 0.2)) {
+                viewModel.toggleSelection(for: tag)
+            }
+            viewModel.searchText = ""
         }
     }
 }
@@ -246,6 +296,12 @@ private enum Strings {
         "tags.selected.empty",
         value: "No tags are selected",
         comment: "Message shown when no tags are selected"
+    )
+
+    static let searchPlaceholder = NSLocalizedString(
+        "tags.search.placeholder",
+        value: "Search or add tags",
+        comment: "Placeholder text for the tag search field"
     )
 
     static func addTag(_ tagName: String) -> String {
