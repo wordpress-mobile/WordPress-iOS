@@ -59,38 +59,21 @@ public enum StatsEvent {
 
     // MARK: - Card Events
 
-    /// Card added to dashboard
-    /// - Parameters:
-    ///   - "card_type": Type of card (e.g., "chart", "top_list", "realtime_metrics")
-    ///   - "configuration": Card configuration details
-    case cardAdded
-
-    /// Card removed from dashboard
-    /// - Parameters:
-    ///   - "card_type": Type of card
-    case cardRemoved
-
-    /// Card customization initiated
-    /// - Parameters:
-    ///   - "card_type": Type of card
-    case cardCustomizationOpened
-
-    /// Card configuration saved
-    /// - Parameters:
-    ///   - "card_type": Type of card
-    ///   - "changes": Summary of changes made
-    case cardConfigurationSaved
-
     /// Card shown on screen
     /// - Parameters:
     ///   - "card_type": Type of card (e.g., "chart", "top_list")
     ///   - "configuration": Card configuration details (e.g., metrics, item type)
     case cardShown
 
-    /// Card edit menu opened
+    /// Card added to dashboard
+    /// - Parameters:
+    ///   - "card_type": Type of card (e.g., "chart", "top_list")
+    case cardAdded
+
+    /// Card removed from dashboard
     /// - Parameters:
     ///   - "card_type": Type of card
-    case cardEditMenuOpened
+    case cardRemoved
 
     // MARK: - Chart Events
 
@@ -105,13 +88,6 @@ public enum StatsEvent {
     ///   - "metric": The metric selected (e.g., "visitors", "views", "likes")
     case chartMetricSelected
 
-    /// Chart data point selected
-    /// - Parameters:
-    ///   - "metric": The metric being viewed
-    ///   - "date": The date of the data point
-    ///   - "value": The value at that point
-    case chartDataPointSelected
-
     // MARK: - List Events
 
     /// Top list item tapped
@@ -119,42 +95,6 @@ public enum StatsEvent {
     ///   - "item_type": Type of item (e.g., "posts_and_pages", "authors", "locations", "referrers")
     ///   - "metric": The metric being sorted by
     case topListItemTapped
-
-    /// Top list filter applied
-    /// - Parameters:
-    ///   - "filter_type": Type of filter applied
-    ///   - "filter_value": Value of the filter
-    ///   - "list_type": Type of list being filtered
-    case topListFilterApplied
-
-    /// Top list sorted
-    /// - Parameters:
-    ///   - "sort_by": Metric used for sorting
-    ///   - "list_type": Type of list being sorted
-    case topListSorted
-
-    // MARK: - Export Events
-
-    /// Export completed
-    /// - Parameters:
-    ///   - "export_type": Type of export
-    ///   - "data_type": What was exported
-    ///   - "row_count": Number of rows exported
-    case exportCompleted
-
-    /// Export failed
-    /// - Parameters:
-    ///   - "export_type": Type of export
-    ///   - "error_type": Type of error encountered
-    case exportFailed
-
-    // MARK: - Map Events
-
-    /// Map interaction
-    /// - Parameters:
-    ///   - "interaction_type": Type of interaction (e.g., "tap", "zoom", "pan")
-    ///   - "country_code": Country code if a country was selected
-    case mapInteraction
 
     // MARK: - Navigation Events
 
@@ -164,29 +104,6 @@ public enum StatsEvent {
     ///   - "previous_tab": Name of the previous tab
     case statsTabSelected
 
-    /// Back navigation
-    /// - Parameters:
-    ///   - "from_screen": Screen navigating from
-    ///   - "to_screen": Screen navigating to
-    case backNavigationTapped
-
-    // MARK: - Action Events
-
-    /// Refresh initiated
-    case refreshInitiated
-
-    /// Share action
-    /// - Parameters:
-    ///   - "content_type": What's being shared (e.g., "chart", "stats_summary")
-    ///   - "share_method": How it's being shared (e.g., "copy", "email", "social")
-    case shareActionPerformed
-
-    /// Help accessed
-    /// - Parameters:
-    ///   - "help_topic": Topic of help accessed
-    ///   - "source_screen": Where help was accessed from
-    case helpAccessed
-
     // MARK: - Error Events
 
     /// Error encountered
@@ -195,12 +112,6 @@ public enum StatsEvent {
     ///   - "error_code": Specific error code if available
     ///   - "screen": Where the error occurred
     case errorEncountered
-
-    /// Error retry attempted
-    /// - Parameters:
-    ///   - "error_type": Type of error being retried
-    ///   - "retry_count": Number of retry attempts
-    case errorRetryAttempted
 }
 
 // MARK: - StatsTracker Protocol

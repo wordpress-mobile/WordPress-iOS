@@ -133,6 +133,9 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         trafficCardConfiguration.cards.append(card)
         saveConfiguration()
 
+        // Track card added event
+        context.tracker?.send(.cardAdded, properties: ["card_type": cardType(for: card)])
+
         // Create and append the view model
         if let viewModel = createViewModel(for: card) {
             cards.append(viewModel)
@@ -178,6 +181,9 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     }
 
     func deleteCard(_ card: any TrafficCardViewModel) {
+        // Track card removed event
+        context.tracker?.send(.cardRemoved, properties: ["card_type": cardType(for: card)])
+
         // Find and remove the card from configuration using the protocol's id property
         trafficCardConfiguration.cards.removeAll { $0.id == card.id }
 
@@ -258,5 +264,22 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
         // Reset date range to default
         dateRange = context.calendar.makeDateRange(for: .last7Days)
+    }
+
+    // MARK: - Helper Methods
+
+    private func cardType(for card: TrafficCardConfiguration.Card) -> String {
+        switch card {
+        case .chart: return "chart"
+        case .topList: return "top_list"
+        }
+    }
+
+    private func cardType(for viewModel: any TrafficCardViewModel) -> String {
+        switch viewModel {
+        case is ChartCardViewModel: return "chart"
+        case is TopListViewModel: return "top_list"
+        default: return "unknown"
+        }
     }
 }
