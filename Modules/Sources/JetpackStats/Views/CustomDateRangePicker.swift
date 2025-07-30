@@ -56,6 +56,7 @@ struct CustomDateRangePicker: View {
             }
             .padding()
             .cardStyle()
+            .padding(.horizontal, Constants.step1)
 
             quickPeriodPicker
                 .padding()

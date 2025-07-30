@@ -22,7 +22,9 @@ struct TrafficTabView: View {
             ScrollView {
                 VStack(spacing: Constants.step3) {
                     cards
-                    buttonAddChart
+                    if horizontalSizeClass != .regular {
+                        buttonAddChart
+                    }
                     timeZoneInfo
                 }
                 .padding(.vertical, Constants.step2)
@@ -40,10 +42,30 @@ struct TrafficTabView: View {
             .listStyle(.plain)
         }
         .toolbar {
-//          normalModeToolbarContent
+            if horizontalSizeClass == .regular {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Group {
+                        StatsDateRangeButtons(dateRange: $viewModel.dateRange)
+                        Button(action: {
+                            isShowingAddCardSheet = true
+                        }) {
+                            Label(Strings.Buttons.addCard, systemImage: "plus")
+                        }
+                        .tint(Color.primary)
+                        .popover(isPresented: $isShowingAddCardSheet) {
+                            AddCardSheet { cardType in
+                                viewModel.addCard(type: cardType)
+                            }
+                            .modifier(PopoverPresentationModifier())
+                        }
+                    }
+                }
+            }
         }
         .safeAreaInset(edge: .bottom) {
-            LegacyFloatingDateControl(dateRange: $viewModel.dateRange)
+            if horizontalSizeClass == .compact {
+                LegacyFloatingDateControl(dateRange: $viewModel.dateRange)
+            }
         }
         .sheet(isPresented: $isShowingCustomRangePicker) {
             CustomDateRangePicker(dateRange: $viewModel.dateRange)
@@ -52,8 +74,8 @@ struct TrafficTabView: View {
 
     @ViewBuilder
     private var cards: some View {
-        if shouldUseGridLayout {
-            HStack(alignment: .top, spacing: Constants.step3) {
+        if horizontalSizeClass == .regular {
+            HStack(alignment: .top, spacing: Constants.step4) {
                 VStack(spacing: Constants.step3) {
                     ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
                         if index % 2 == 0 {
@@ -130,63 +152,6 @@ struct TrafficTabView: View {
             .padding(.horizontal, Constants.step4)
             .padding(.top, Constants.step2)
             .padding(.bottom, Constants.step1)
-    }
-
-    // MARK: - Grid Layout
-
-    private var shouldUseGridLayout: Bool {
-        // Use grid layout on iPad or when we have regular horizontal size class
-        horizontalSizeClass == .regular
-    }
-
-    // MARK: - Toolbar
-
-    @ToolbarContentBuilder
-    private var normalModeToolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .bottomBar) {
-            datePickerToolbarItem
-            Spacer()
-            makeNavigationButton(direction: .backward)
-            makeNavigationButton(direction: .forward)
-        }
-    }
-
-    private func makeNavigationButton(direction: Calendar.NavigationDirection) -> some View {
-        Menu {
-            ForEach(viewModel.dateRange.availableAdjacentPeriods(in: direction)) { period in
-                Button(period.displayText) {
-                    viewModel.dateRange = period.range
-                }
-            }
-        } label: {
-            Image(systemName: direction.systemImage)
-        } primaryAction: {
-            viewModel.dateRange = viewModel.dateRange.navigate(direction)
-        }
-        .disabled(!viewModel.dateRange.canNavigate(in: direction))
-        .tint(.primary)
-    }
-
-    // MARK: - Date Picker
-
-    private var datePickerToolbarItem: some View {
-        Menu {
-            StatsDateRangePickerMenu(selection: $viewModel.dateRange, isShowingCustomRangePicker: $isShowingCustomRangePicker)
-        } label: {
-            datePickerLabel
-        }
-        .menuOrder(.fixed)
-        .tint(.primary)
-    }
-
-    private var datePickerLabel: some View {
-        HStack {
-            Image(systemName: "calendar")
-                .font(.subheadline)
-            Text(context.formatters.dateRange.string(from: viewModel.dateRange.dateInterval))
-                .fontWeight(.medium)
-        }
-        .padding(.horizontal, 10)
     }
 }
 
