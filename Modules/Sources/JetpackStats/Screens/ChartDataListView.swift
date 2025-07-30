@@ -68,7 +68,7 @@ struct ChartDataListView: View {
             // Header section
             VStack(alignment: .leading, spacing: 2) {
                 Text(metric.localizedTitle)
-                    .font(.title3.weight(.semibold))
+                    .font(.title3.weight(.medium))
                 Text(context.formatters.dateRange.string(from: dateRange.dateInterval))
                     .font(.subheadline)
                     .foregroundColor(.secondary)
@@ -102,7 +102,7 @@ struct ChartDataListView: View {
                             .font(.body.weight(.medium))
 
                         Text(formatter.format(value: abs(trendViewModel.currentValue - trendViewModel.previousValue), context: .compact))
-                            .font(.title2.weight(.semibold))
+                            .font(.title3.weight(.medium))
                             .padding(.trailing, 8)
 
                         Image(systemName: trendViewModel.systemImage)
@@ -110,7 +110,7 @@ struct ChartDataListView: View {
                             .padding(.bottom, 1)
 
                         Text(trendViewModel.formattedPercentage)
-                            .font(.title2.weight(.semibold))
+                            .font(.title3.weight(.medium))
                     }
                     .foregroundStyle(trendViewModel.sentiment.foregroundColor)
                 }
@@ -126,7 +126,7 @@ struct ChartDataListView: View {
                 .foregroundColor(.secondary)
 
             Text(value)
-                .font(.title2.weight(.semibold))
+                .font(.title3.weight(.medium))
         }
     }
 
