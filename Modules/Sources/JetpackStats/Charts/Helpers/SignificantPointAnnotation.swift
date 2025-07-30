@@ -5,6 +5,8 @@ struct SignificantPointAnnotation: View {
     let metric: SiteMetric
     let valueFormatter: StatsValueFormatter
 
+    @Environment(\.colorScheme) private var colorScheme
+
     init(value: Int, metric: SiteMetric) {
         self.value = value
         self.metric = metric
@@ -23,7 +25,7 @@ struct SignificantPointAnnotation: View {
                     Capsule()
                         .fill(Color(.systemBackground).opacity(0.75))
                     Capsule()
-                        .fill(metric.primaryColor.opacity(0.1))
+                        .fill(metric.primaryColor.opacity(colorScheme == .light ? 0.1 : 0.25))
                 }
             }
     }
