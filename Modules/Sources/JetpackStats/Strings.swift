@@ -23,7 +23,7 @@ enum Strings {
         static let last90Days = AppLocalizedString("jetpackStats.calendar.last90Days", value: "Last 90 Days", comment: "Last 90 days date range")
         static let last6Months = AppLocalizedString("jetpackStats.calendar.last6Months", value: "Last 6 Months", comment: "Last 6 months date range")
         static let last12Months = AppLocalizedString("jetpackStats.calendar.last12Months", value: "Last 12 Months", comment: "Last 12 months date range")
-        static let last5Years = AppLocalizedString("jetpackStats.calendar.last5Years", value: "Last 5 Years", comment: "Last 5 years date range")
+        static let last3Years = AppLocalizedString("jetpackStats.calendar.last3Years", value: "Last 3 Years", comment: "Last 3 years date range")
         static let last10Years = AppLocalizedString("jetpackStats.calendar.last10Years", value: "Last 10 Years", comment: "Last 10 years date range")
         static let week = AppLocalizedString("jetpackStats.calendar.week", value: "Week", comment: "Week time period")
         static let month = AppLocalizedString("jetpackStats.calendar.month", value: "Month", comment: "Month time period")

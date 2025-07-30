@@ -25,8 +25,8 @@ enum DateIntervalPreset: String, CaseIterable, Identifiable {
     case last6Months
     /// The last 12 months, including the current month
     case last12Months
-    /// The last 5 complete years, including the current year
-    case last5Years
+    /// The last 3 complete years, including the current year
+    case last3Years
     /// The last 10 complete years, including the current year
     case last10Years
 
@@ -45,7 +45,7 @@ enum DateIntervalPreset: String, CaseIterable, Identifiable {
         case .last90Days: Strings.Calendar.last90Days
         case .last6Months: Strings.Calendar.last6Months
         case .last12Months: Strings.Calendar.last12Months
-        case .last5Years: Strings.Calendar.last5Years
+        case .last3Years: Strings.Calendar.last3Years
         case .last10Years: Strings.Calendar.last10Years
         }
     }
@@ -54,7 +54,7 @@ enum DateIntervalPreset: String, CaseIterable, Identifiable {
         switch self {
         case .today, .last7Days, .last28Days, .last30Days, .last90Days, .last6Months, .last12Months, .thisWeek:
             return false
-        case .thisMonth, .thisYear, .thisQuarter, .last5Years, .last10Years:
+        case .thisMonth, .thisYear, .thisQuarter, .last3Years, .last10Years:
             return true
         }
     }
@@ -70,7 +70,7 @@ enum DateIntervalPreset: String, CaseIterable, Identifiable {
             return .month
         case .thisQuarter:
             return .quarter
-        case .thisYear, .last5Years, .last10Years:
+        case .thisYear, .last3Years, .last10Years:
             return .year
         case .last7Days, .last28Days, .last30Days, .last90Days:
             return .day
@@ -113,7 +113,7 @@ extension Calendar {
         case .last90Days: makeDateInterval(offset: -90, component: .day, for: now)
         case .last6Months: makeDateInterval(offset: -6, component: .month, for: now)
         case .last12Months: makeDateInterval(offset: -12, component: .month, for: now)
-        case .last5Years: makeDateInterval(offset: -5, component: .year, for: now)
+        case .last3Years: makeDateInterval(offset: -3, component: .year, for: now)
         case .last10Years: makeDateInterval(offset: -10, component: .year, for: now)
         }
     }
