@@ -7,6 +7,7 @@ struct TopListScreenView: View {
 
     @Environment(\.router) var router
     @Environment(\.context) var context
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     init(
         selection: TopListViewModel.Selection,
@@ -46,13 +47,19 @@ struct TopListScreenView: View {
                 }
             }
             .padding(.vertical, Constants.step2)
+            .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
+            .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
+            .frame(maxWidth: .infinity)
             .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
         }
         .background(Color(.systemBackground))
         .navigationTitle(viewModel.selection.item.localizedTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                if horizontalSizeClass == .regular {
+                    StatsDateRangeButtons(dateRange: $viewModel.dateRange)
+                }
                 Menu {
                     if let data = viewModel.data, !data.items.isEmpty {
                         ShareLink(
@@ -83,7 +90,9 @@ struct TopListScreenView: View {
             viewModel.onAppear()
         }
         .safeAreaInset(edge: .bottom) {
-            LegacyFloatingDateControl(dateRange: $viewModel.dateRange)
+            if horizontalSizeClass == .compact {
+                LegacyFloatingDateControl(dateRange: $viewModel.dateRange)
+            }
         }
     }
 
