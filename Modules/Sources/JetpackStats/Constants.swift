@@ -38,6 +38,7 @@ enum Constants {
         static let red = Color(palette: CSColor.Red.self)
         static let green = Color(palette: CSColor.Green.self)
         static let orange = Color(palette: CSColor.Orange.self)
+        static let yellow = Color(palette: CSColor.Yellow.self)
         static let pink = Color(palette: CSColor.Pink.self)
         static let celadon = Color(palette: CSColor.Celadon.self)
 

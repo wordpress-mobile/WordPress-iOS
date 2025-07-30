@@ -42,7 +42,7 @@ enum SiteMetric: String, CaseIterable, Identifiable, Sendable, Codable {
         switch self {
         case .views: Constants.Colors.blue
         case .visitors: Constants.Colors.purple
-        case .likes: Constants.Colors.red
+        case .likes: Constants.Colors.pink
         case .comments: Constants.Colors.green
         case .posts: Constants.Colors.celadon
         case .timeOnSite: Constants.Colors.orange
