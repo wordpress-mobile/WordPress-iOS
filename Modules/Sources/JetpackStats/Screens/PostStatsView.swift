@@ -65,6 +65,8 @@ public struct PostStatsView: View {
             }
             .padding(.vertical, Constants.step1)
             .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
+            .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidth : .infinity)
+            .frame(maxWidth: .infinity)
         }
         .background(Constants.Colors.background)
         .navigationTitle(Strings.PostDetails.title)
@@ -88,8 +90,22 @@ public struct PostStatsView: View {
 
         emailsMetricsView
 
+        if horizontalSizeClass == .regular {
+            HStack(alignment: .top, spacing: Constants.step3) {
+                weeklyTrendsCard
+                    .frame(maxWidth: .infinity)
+                yearlyTrendsCard
+                    .frame(maxWidth: .infinity)
+            }
+        } else {
+            weeklyTrendsCard
+            yearlyTrendsCard
+        }
+    }
+
+    @ViewBuilder
+    private var weeklyTrendsCard: some View {
         if let data {
-            // Weekly Trends Chart
             VStack(alignment: .leading, spacing: Constants.step2) {
                 StatsCardTitleView(title: Strings.PostDetails.recentWeeks)
                 WeeklyTrendsView(viewModel: data.weeklyTrends)
@@ -97,9 +113,11 @@ public struct PostStatsView: View {
             .padding(Constants.step2)
             .cardStyle()
         }
+    }
 
+    @ViewBuilder
+    private var yearlyTrendsCard: some View {
         if let data {
-            // Yearly Summary
             VStack(alignment: .leading, spacing: Constants.step2) {
                 StatsCardTitleView(title: Strings.PostDetails.monthlyActivity)
                 YearlyTrendsView(viewModel: data.yearlyTrends)
@@ -334,7 +352,7 @@ private struct PostStatsMetricsStripView: View {
     let metrics: SiteMetricsSet
     let onLikesTapped: (() -> Void)?
     let onCommentsTapped: (() -> Void)?
-
+    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: Constants.step2) {
@@ -404,19 +422,30 @@ private struct PostStatsMetricsStripView: View {
 private struct PostStatsEmailMetricsView: View {
     let emailData: StatsEmailOpensData
 
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+
     var body: some View {
-        VStack(alignment: .leading, spacing: Constants.step1) {
-            HStack(spacing: Constants.step2) {
-                ForEach(emailMetrics.prefix(2)) { metric in
+        if horizontalSizeClass == .regular {
+            HStack(spacing: Constants.step4) {
+                ForEach(emailMetrics) { metric in
                     MetricView(metric: metric)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            HStack(spacing: Constants.step2) {
-                ForEach(emailMetrics.suffix(2)) { metric in
-                    MetricView(metric: metric)
+        } else {
+            VStack(alignment: .leading, spacing: Constants.step2) {
+                HStack(spacing: Constants.step2) {
+                    ForEach(emailMetrics.prefix(2)) { metric in
+                        MetricView(metric: metric)
+                    }
                 }
+                HStack(spacing: Constants.step2) {
+                    ForEach(emailMetrics.suffix(2)) { metric in
+                        MetricView(metric: metric)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
