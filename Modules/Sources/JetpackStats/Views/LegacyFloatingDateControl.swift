@@ -133,8 +133,8 @@ private struct FloatingStyle: ViewModifier {
                     .stroke(Color(.separator).opacity(0.2), lineWidth: 1)
             }
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
-            .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
+            .shadow(color: Constants.Colors.shadowColor, radius: 8, x: 0, y: 4)
+            .shadow(color: Constants.Colors.shadowColor.opacity(0.5), radius: 4, x: 0, y: 2)
     }
 }
 

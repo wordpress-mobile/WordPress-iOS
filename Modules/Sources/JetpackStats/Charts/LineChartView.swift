@@ -114,8 +114,11 @@ struct LineChartView: View {
                     Text(valueFormatter.format(value: Int(currentAverage), context: .compact))
                         .font(.caption2.weight(.medium)).tracking(-0.1)
                         .foregroundStyle(Color.secondary)
-                        .background(Color(.systemBackground).opacity(0.9))
-                        .clipShape(RoundedRectangle(cornerRadius: 4))
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 2)
+                        .background(Constants.Colors.background)
+                        .clipShape(.capsule)
+                        .padding(.leading, -5)
                 }
         }
     }
@@ -131,11 +134,8 @@ struct LineChartView: View {
             .foregroundStyle(data.metric.primaryColor)
             .symbolSize(60)
             .annotation(position: .top, spacing: 4) {
-                SignificantPointAnnotation(
-                    value: maxPoint.value,
-                    metric: data.metric
-                )
-                .opacity(selectedDate == nil ? 1 : 0)
+                SignificantPointAnnotation(value: maxPoint.value, metric: data.metric)
+                    .opacity(selectedDate == nil ? 1 : 0)
             }
             .opacity(selectedDate == nil ? 1 : 0)
         }

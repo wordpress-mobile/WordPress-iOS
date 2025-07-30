@@ -89,7 +89,7 @@ struct CountryTooltip: View {
         .padding(8)
         .background(Color(.systemBackground))
         .cornerRadius(8)
-        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+        .shadow(color: Constants.Colors.shadowColor, radius: 4, x: 0, y: 2)
     }
 }
 
