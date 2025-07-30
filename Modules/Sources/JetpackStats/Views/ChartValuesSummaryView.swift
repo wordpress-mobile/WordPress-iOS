@@ -31,7 +31,7 @@ struct ChartValuesSummaryView: View {
     }
 
     private var compact: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 2) {
             HStack(alignment: .lastTextBaseline, spacing: 6) {
                 Text(trend.formattedCurrentValue)
                     .font(.system(.headline, design: .rounded, weight: .semibold))

@@ -35,7 +35,8 @@ struct ChartValueTooltipView: View {
         return TrendViewModel(
             currentValue: currentPoint.value,
             previousValue: previousPoint.value,
-            metric: metric
+            metric: metric,
+            context: .regular
         )
     }
 
@@ -74,18 +75,22 @@ struct ChartValueTooltipView: View {
             // Summary view
             if let trend {
                 ChartValuesSummaryView(trend: trend, style: .compact)
+            } else if let previousValue = previousPoint?.value {
+                Text(StatsValueFormatter(metric: metric).format(value: previousValue, context: .regular))
+                    .font(.subheadline.weight(.medium))
             }
 
             if isIncompleteData {
                 Text(Strings.Chart.incompleteData)
                     .font(.caption)
                     .foregroundColor(.secondary)
+                    .padding(.top, -6)
             }
         }
         .fixedSize()
         .padding(12)
         .background(Color(.systemBackground))
-        .cornerRadius(8)
+        .cornerRadius(12)
         .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
     }
 }

@@ -15,7 +15,7 @@ struct MetricsOverviewTabView: View {
     let data: [MetricData]
     @Binding var selectedMetric: SiteMetric
 
-    @ScaledMetric(relativeTo: .title) private var minTabWidth: CGFloat = 96
+    @ScaledMetric(relativeTo: .title) private var minTabWidth: CGFloat = 100
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     var body: some View {

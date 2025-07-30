@@ -83,7 +83,7 @@ struct ChartCard: View {
 
     private var chartHeaderView: some View {
         // Showing currently selected (not loaded period) by design
-        HStack(alignment: .firstTextBaseline, spacing: 0) {
+        HStack(alignment: .center, spacing: 0) {
             if let data = viewModel.chartData[selectedMetric] {
                 ChartValuesSummaryView(
                     trend: .make(data, context: .regular),
