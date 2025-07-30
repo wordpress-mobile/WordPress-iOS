@@ -35,6 +35,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     let filter: Filter?
 
     private let service: any StatsServiceProtocol
+    let tracker: (any StatsTracker)?
     private let fetchLimit: Int?
 
     private var loadingTask: Task<Void, Never>?
@@ -62,6 +63,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         configuration: TopListCardConfiguration,
         dateRange: StatsDateRange,
         service: any StatsServiceProtocol,
+        tracker: (any StatsTracker)? = nil,
         items: [TopListItemType]? = nil,
         fetchLimit: Int? = 100,
         filter: Filter? = nil,
@@ -72,6 +74,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         self.items = items ?? service.supportedItems
         self.dateRange = dateRange
         self.service = service
+        self.tracker = tracker
         self.fetchLimit = fetchLimit
         self.filter = filter
         self.data = initialData
@@ -99,6 +102,15 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     func onAppear() {
         guard isFirstAppear else { return }
         isFirstAppear = false
+
+        // Track card shown event
+        tracker?.send(.cardShown, properties: [
+            "card_type": "top_list",
+            "configuration": "\(selection.item.analyticsName)_\(selection.metric.analyticsName)",
+            "item_type": selection.item.analyticsName,
+            "metric": selection.metric.analyticsName
+        ])
+
         loadData()
     }
 
@@ -163,6 +175,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         } catch {
             loadingError = error
             data = nil
+            tracker?.trackError(error, screen: "top_list_card")
         }
 
         loadRequestCount = 0

@@ -28,6 +28,7 @@ struct AuthorStatsView: View {
             configuration: configuration,
             dateRange: range,
             service: context.service,
+            tracker: context.tracker,
             items: [.postsAndPages],
             filter: .author(userId: author.userId)
         ))
@@ -55,6 +56,9 @@ struct AuthorStatsView: View {
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
         .onChange(of: dateRange) { newRange in
             viewModel.dateRange = newRange
+        }
+        .onAppear {
+            context.tracker?.send(.authorStatsScreenShown)
         }
         .navigationTitle(Strings.AuthorDetails.title)
         .navigationBarTitleDisplayMode(.inline)

@@ -26,6 +26,9 @@ struct ExternalLinkStatsView: View {
             .frame(maxWidth: .infinity)
         }
         .background(Constants.Colors.background)
+        .onAppear {
+            context.tracker?.send(.externalLinkStatsScreenShown)
+        }
         .navigationTitle(Strings.ExternalLinkDetails.title)
         .navigationBarTitleDisplayMode(.inline)
     }

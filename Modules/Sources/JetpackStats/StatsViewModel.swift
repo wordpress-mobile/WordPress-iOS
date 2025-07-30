@@ -104,13 +104,15 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
             viewModel = ChartCardViewModel(
                 configuration: configuration,
                 dateRange: dateRange,
-                service: context.service
+                service: context.service,
+                tracker: context.tracker
             )
         case .topList(let configuration):
             viewModel = TopListViewModel(
                 configuration: configuration,
                 dateRange: dateRange,
-                service: context.service
+                service: context.service,
+                tracker: context.tracker
             )
         }
 

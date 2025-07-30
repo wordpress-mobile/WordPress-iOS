@@ -14,6 +14,15 @@ enum StatsTab: CaseIterable {
         case .subscribers: return Strings.Tabs.subscribers
         }
     }
+
+    var analyticsName: String {
+        switch self {
+        case .traffic: return "traffic"
+        case .realtime: return "realtime"
+        case .insights: return "insights"
+        case .subscribers: return "subscribers"
+        }
+    }
 }
 
 struct StatsTabBar: View {

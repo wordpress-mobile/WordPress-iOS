@@ -129,7 +129,12 @@ struct ChartCard: View {
     private var cardFooterView: some View {
         MetricsOverviewTabView(
             data: viewModel.isFirstLoad ? viewModel.placeholderTabViewData : viewModel.tabViewData,
-            selectedMetric: $viewModel.selectedMetric
+            selectedMetric: $viewModel.selectedMetric,
+            onMetricSelected: { metric in
+                viewModel.tracker?.send(.chartMetricSelected, properties: [
+                    "metric": metric.analyticsName
+                ])
+            }
         )
         .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
         .pulsating(viewModel.isFirstLoad)
@@ -170,7 +175,14 @@ struct ChartCard: View {
             ControlGroup {
                 ForEach(ChartType.allCases, id: \.self) { type in
                     Button {
+                        let previousType = viewModel.selectedChartType
                         viewModel.selectedChartType = type
+
+                        // Track chart type change
+                        viewModel.tracker?.send(.chartTypeChanged, properties: [
+                            "from_type": previousType.rawValue,
+                            "to_type": type.rawValue
+                        ])
                     } label: {
                         Label(type.localizedTitle, systemImage: type.systemImage)
                     }
@@ -257,7 +269,8 @@ private struct ChartCardPreview: View {
             metrics: [.views, .visitors, .likes, .comments]
         ),
         dateRange: Calendar.demo.makeDateRange(for: .today),
-        service: MockStatsService()
+        service: MockStatsService(),
+        tracker: MockStatsTracker.shared
     )
 
     var body: some View {

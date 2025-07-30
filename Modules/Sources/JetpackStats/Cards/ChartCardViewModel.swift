@@ -30,6 +30,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
     }
 
     private let service: any StatsServiceProtocol
+    let tracker: (any StatsTracker)?
 
     private var loadingTask: Task<Void, Never>?
     private var loadRequestCount = 0
@@ -38,12 +39,18 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
 
     var isFirstLoad: Bool { isLoading && chartData.isEmpty }
 
-    init(configuration: ChartCardConfiguration, dateRange: StatsDateRange, service: any StatsServiceProtocol) {
+    init(
+        configuration: ChartCardConfiguration,
+        dateRange: StatsDateRange,
+        service: any StatsServiceProtocol,
+        tracker: (any StatsTracker)? = nil
+    ) {
         self.configuration = configuration
         self.selectedMetric = configuration.metrics.first ?? .views
         self.selectedChartType = configuration.chartType
         self.dateRange = dateRange
         self.service = service
+        self.tracker = tracker
     }
 
     func updateConfiguration(_ newConfiguration: ChartCardConfiguration) {
@@ -65,6 +72,14 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
     func onAppear() {
         guard isFirstAppear else { return }
         isFirstAppear = false
+
+        // Track card shown event
+        tracker?.send(.cardShown, properties: [
+            "card_type": "chart",
+            "configuration": metrics.map { $0.analyticsName }.joined(separator: "_"),
+            "chart_type": selectedChartType.rawValue
+        ])
+
         loadData(for: dateRange)
     }
 
@@ -121,6 +136,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
             return
         } catch {
             loadingError = error
+            tracker?.trackError(error, screen: "chart_card")
         }
 
         loadRequestCount = 0

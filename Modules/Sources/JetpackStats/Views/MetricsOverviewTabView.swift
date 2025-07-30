@@ -14,6 +14,7 @@ struct MetricsOverviewTabView: View {
 
     let data: [MetricData]
     @Binding var selectedMetric: SiteMetric
+    var onMetricSelected: ((SiteMetric) -> Void)?
 
     @ScaledMetric(relativeTo: .title) private var minTabWidth: CGFloat = 100
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -45,6 +46,7 @@ struct MetricsOverviewTabView: View {
             proxy.scrollTo(type, anchor: .center)
         }
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        onMetricSelected?(type)
     }
 }
 

@@ -73,6 +73,9 @@ public struct PostStatsView: View {
         .background(Constants.Colors.background)
         .navigationTitle(Strings.PostDetails.title)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            context.tracker?.send(.postDetailsScreenShown)
+        }
         .task {
             await loadPostDetails()
         }

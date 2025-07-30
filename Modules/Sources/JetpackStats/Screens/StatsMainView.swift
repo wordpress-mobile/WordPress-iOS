@@ -33,12 +33,21 @@ public struct StatsMainView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .environment(\.context, context)
                 .environment(\.router, router)
+                .onAppear {
+                    context.tracker?.send(.statsMainScreenShown)
+                }
+                .onChange(of: selectedTab) { newValue in
+                    trackTabChange(from: selectedTab, to: newValue)
+                }
         } else {
             // When tabs are hidden, show only traffic tab without the tab bar
             TrafficTabView(viewModel: viewModel, topPadding: Constants.step1)
                 .background(Constants.Colors.background)
                 .environment(\.context, context)
                 .environment(\.router, router)
+                .onAppear {
+                    context.tracker?.send(.statsMainScreenShown)
+                }
         }
     }
 
@@ -47,13 +56,29 @@ public struct StatsMainView: View {
         switch selectedTab {
         case .traffic:
             TrafficTabView(viewModel: viewModel)
+                .onAppear {
+                    context.tracker?.send(.trafficTabShown)
+                }
         case .realtime:
             RealtimeTabView()
+                .onAppear {
+                    context.tracker?.send(.realtimeTabShown)
+                }
         case .insights:
             InsightsTabView()
         case .subscribers:
             SubscribersTabView()
+                .onAppear {
+                    context.tracker?.send(.subscribersTabShown)
+                }
         }
+    }
+
+    private func trackTabChange(from oldTab: StatsTab, to newTab: StatsTab) {
+        context.tracker?.send(.statsTabSelected, properties: [
+            "tab_name": newTab.analyticsName,
+            "previous_tab": oldTab.analyticsName
+        ])
     }
 }
 
