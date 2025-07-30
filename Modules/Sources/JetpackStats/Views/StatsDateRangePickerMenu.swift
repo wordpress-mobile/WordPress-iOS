@@ -50,6 +50,11 @@ struct StatsDateRangePickerMenu: View {
             Button(preset.localizedString) {
                 selection.update(preset: preset)
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
+
+                // Track preset selection
+                context.tracker?.send(.dateRangePresetSelected, properties: [
+                    "selected_preset": preset.analyticsName
+                ])
             }
         }
     }

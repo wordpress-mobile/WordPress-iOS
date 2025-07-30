@@ -30,6 +30,9 @@ struct ReferrerStatsView: View {
             .frame(maxWidth: .infinity)
         }
         .background(Constants.Colors.background)
+        .onAppear {
+            context.tracker?.send(.referrerStatsScreenShown)
+        }
         .navigationTitle(Strings.ReferrerDetails.title)
         .navigationBarTitleDisplayMode(.inline)
         .alert(Strings.ReferrerDetails.errorAlertTitle, isPresented: $showErrorAlert) {

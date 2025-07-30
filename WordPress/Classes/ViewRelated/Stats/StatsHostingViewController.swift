@@ -60,6 +60,9 @@ extension StatsContext {
             let options = AvatarQueryOptions(preferredSize: .points(size))
             return avatarURL.replacing(options: options)?.url ?? url
         }
+
+        // Configure analytics tracker
+        self.tracker = WPAnalyticsStatsTracker()
     }
 }
 
@@ -129,5 +132,19 @@ private class SafeAreaHostingController<Content: View>: UIHostingController<Cont
         if additionalSafeAreaInsets.bottom != bottomInset {
             additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: min(20, bottomInset), right: 0)
         }
+    }
+}
+
+// MARK: - WPAnalyticsStatsTracker
+
+/// A StatsTracker implementation that bridges JetpackStats analytics to WPAnalytics
+private final class WPAnalyticsStatsTracker: StatsTracker {
+    func send(_ event: StatsEvent, properties: [String: String]) {
+        // Convert String properties to [AnyHashable: Any]
+        let wpProperties: [AnyHashable: Any] = properties.reduce(into: [:]) { result, pair in
+            result[pair.key] = pair.value
+        }
+
+        WPAnalytics.track(event.wpEvent, properties: wpProperties)
     }
 }

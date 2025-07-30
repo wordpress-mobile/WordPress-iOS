@@ -21,6 +21,9 @@ struct TopListItemView: View {
     var body: some View {
         if hasDetails {
             Button {
+                // Track item tap
+                trackItemTap()
+
                 // Trigger animation
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                     isTapped = true
@@ -125,6 +128,13 @@ private extension TopListItemView {
         default:
             return false
         }
+    }
+
+    func trackItemTap() {
+        context.tracker?.send(.topListItemTapped, properties: [
+            "item_type": item.id.type.analyticsName,
+            "metric": metric.analyticsName
+        ])
     }
 
     func navigateToDetails() {

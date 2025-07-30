@@ -130,6 +130,7 @@ struct TopListCard: View {
             selection: viewModel.selection,
             dateRange: viewModel.dateRange,
             service: context.service,
+            context: context,
             initialData: viewModel.data,
             filter: viewModel.filter
         )
@@ -318,7 +319,8 @@ private struct TopListCardPreview: View {
                 metric: item == .fileDownloads ? .downloads : .views
             ),
             dateRange: Calendar.demo.makeDateRange(for: .last28Days),
-            service: MockStatsService()
+            service: MockStatsService(),
+            tracker: MockStatsTracker.shared
         ))
     }
 

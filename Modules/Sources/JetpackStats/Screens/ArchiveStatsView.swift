@@ -21,6 +21,9 @@ struct ArchiveStatsView: View {
             .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
         }
         .background(Constants.Colors.background)
+        .onAppear {
+            context.tracker?.send(.archiveStatsScreenShown)
+        }
         .navigationTitle(archiveSection.displayName)
         .navigationBarTitleDisplayMode(.inline)
     }

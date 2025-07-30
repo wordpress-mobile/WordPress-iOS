@@ -74,6 +74,15 @@ struct CustomDateRangePicker: View {
         let component = calendar.determineNavigationComponent(for: interval) ?? .day
         dateRange = StatsDateRange(interval: interval, component: component, comparison: dateRange.comparison, calendar: calendar)
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
+
+        // Track custom date range selection
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withFullDate]
+        context.tracker?.send(.customDateRangeSelected, properties: [
+            "start_date": dateFormatter.string(from: startDate),
+            "end_date": dateFormatter.string(from: endDate)
+        ])
+
         dismiss()
     }
 

@@ -13,6 +13,7 @@ struct TopListScreenView: View {
         selection: TopListViewModel.Selection,
         dateRange: StatsDateRange,
         service: any StatsServiceProtocol,
+        context: StatsContext,
         initialData: TopListData? = nil,
         filter: TopListViewModel.Filter? = nil,
     ) {
@@ -24,6 +25,7 @@ struct TopListScreenView: View {
             configuration: configuration,
             dateRange: dateRange,
             service: service,
+            tracker: context.tracker,
             fetchLimit: nil, // Get all items
             filter: filter,
             initialData: initialData
@@ -233,7 +235,8 @@ struct TopListScreenView: View {
         TopListScreenView(
             selection: .init(item: .postsAndPages, metric: .views),
             dateRange: Calendar.demo.makeDateRange(for: .last28Days),
-            service: MockStatsService()
+            service: MockStatsService(),
+            context: .demo
         )
     }
 }
