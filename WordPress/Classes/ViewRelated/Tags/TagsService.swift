@@ -29,6 +29,8 @@ class TagsService {
         let paging = RemoteTaxonomyPaging()
         paging.number = NSNumber(value: number)
         paging.offset = NSNumber(value: offset)
+        paging.orderBy = .byCount
+        paging.order = .orderDescending
 
         return try await withCheckedThrowingContinuation { continuation in
             remote.getTagsWith(paging, success: { remoteTags in
