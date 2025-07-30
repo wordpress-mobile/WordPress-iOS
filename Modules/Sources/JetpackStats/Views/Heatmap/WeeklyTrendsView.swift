@@ -210,10 +210,6 @@ final class WeeklyTrendsViewModel: ObservableObject {
         valueFormatter.format(value: value, context: .compact)
     }
 
-    func heatmapColor(for intensity: Double) -> Color {
-        Constants.heatmapColor(baseColor: metric.primaryColor, intensity: intensity)
-    }
-
     func previousWeek(for week: WeeklyTrendsView.Week) -> WeeklyTrendsView.Week? {
         guard let weekIndex = weeks.firstIndex(where: { $0.startDate == week.startDate }),
               weekIndex < weeks.count - 1 else {
