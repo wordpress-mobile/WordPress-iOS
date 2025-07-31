@@ -42,7 +42,7 @@ struct MetricsOverviewTabView: View {
     }
 
     private func selectDataType(_ type: SiteMetric, proxy: ScrollViewProxy) {
-        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+        withAnimation(.spring) {
             selectedMetric = type
             proxy.scrollTo(type, anchor: .center)
         }
@@ -74,13 +74,13 @@ private struct MetricItemView: View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 0) {
                 selectionIndicator
+                    .padding(.leading, Constants.step2)
                     .padding(.trailing, Constants.step1)
-                    .padding(.horizontal, Constants.step2)
                 tabContent
                     .padding(.top, Constants.step1 + 3)
                     .padding(.bottom, Constants.step2 + 2)
                     .padding(.leading, Constants.step3)
-                    .animation(.spring(response: 0.3, dampingFraction: 0.9), value: isSelected)
+                    .animation(.spring, value: isSelected)
             }
         }
         .buttonStyle(.plain)
@@ -138,7 +138,7 @@ private struct MetricItemView: View {
             .frame(height: 3)
             .cornerRadius(1.5)
             .opacity(isSelected ? 1 : 0)
-            .scaleEffect(x: isSelected ? 1 : 0.8, anchor: .center)
+            .scaleEffect(x: isSelected ? 1 : 0.75, anchor: .center)
             .animation(.spring, value: isSelected)
     }
 }
