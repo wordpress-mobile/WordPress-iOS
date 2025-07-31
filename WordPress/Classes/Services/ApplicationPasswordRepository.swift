@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 import WordPressData
 import WordPressShared
 import WordPressKit
@@ -35,7 +34,6 @@ actor ApplicationPasswordRepository {
 
     private let coreDataStack: CoreDataStackSwift
     private let storage: ApplicationPasswordStorage
-    private var ongoing: [TaggedManagedObjectID<Blog>: CurrentValueSubject<ApplicationPassword?, Error>] = [:]
     private var inflightTasks: [TaggedManagedObjectID<Blog>: Task<ApplicationPassword, Error>] = [:]
 
     static func forTesting(coreDataStack: CoreDataStackSwift, keychain: KeychainAccessible) -> ApplicationPasswordRepository {
@@ -72,94 +70,61 @@ actor ApplicationPasswordRepository {
 
         // `createPasswordIfNeeded` can be called by multiple callers at the same time. We want to avoid
         // creating multiple application passwords on one site.
-
-//        _ = try await withCombine(for: blogId)
-        _ = try await withTask(for: blogId)
+        _ = try await waitForInflightTaskIfNeeded(blogId: blogId)
     }
 
-    private func withCombine(for blogId: TaggedManagedObjectID<Blog>) async throws -> ApplicationPassword {
-        if let subject = ongoing[blogId] {
-            let publisher = subject
-                .compactMap { $0 }
-                .first()
-                .eraseToAnyPublisher()
-            // This sequence can only results in an error or a one element array. See the `subject.send` calls below.
-            let outputs: [ApplicationPassword]
-            do {
-                outputs = try await AsyncThrowingPublisher(publisher).reduce(into: []) { $0.append($1) }
-            } catch {
-                if error.isCancellationError() {
-                    return try await self.withCombine(for: blogId)
-                }
-
-                throw error
-            }
-
-            // when cancelling the `await` call on waiting the async sequence to produce output, the `await` call
-            // does not thrown an cancellation error.
-            if let result = outputs.first {
-                return result
-            } else {
-                throw CancellationError()
-            }
-        }
-
-        let subject: CurrentValueSubject<ApplicationPassword?, Error> = CurrentValueSubject(nil)
-        ongoing[blogId] = subject
-        defer {
-            ongoing[blogId] = nil
-        }
-
-        do {
-            let password = try await createPassword(for: blogId)
-            subject.value = password
-            return password
-        } catch {
-            subject.send(completion: .failure(error))
-            throw error
-        }
-    }
-
-    private func withTask(for blogId: TaggedManagedObjectID<Blog>) async throws -> ApplicationPassword {
+    private func waitForInflightTaskIfNeeded(blogId: TaggedManagedObjectID<Blog>) async throws -> ApplicationPassword {
         if let task = inflightTasks[blogId] {
-            // If the current task, which is waiting for the inflight task result, is cancelled, the function should
-            // throw a `CancellationError`.
-            var cancelled = false
-            let result = await withTaskCancellationHandler {
-                await task.result
-            } onCancel: {
-                cancelled = true
-            }
-
-            if cancelled {
-                throw CancellationError()
-            }
-
-            do {
-                return try result.get()
-            } catch {
-                // If the inflight task is cancelled, the current Task should start a new call to create an application
-                // password.
-                if error.isCancellationError() {
-                    return try await self.withTask(for: blogId)
-                }
-
-                // For other errors, we can still retry, but I don't see the need to do that.
+            switch await waitForInflightTask(task, blogId: blogId) {
+            case let .success(value):
+                return value
+            case let .failure(error):
                 throw error
+            case .restart:
+                // We'll make another attempt to create an application password.
+                return try await waitForInflightTaskIfNeeded(blogId: blogId)
             }
         }
 
-        let task = Task { try await createPassword(for: blogId) }
+        let task = Task {
+            try await createPassword(for: blogId)
+        }
         inflightTasks[blogId] = task
         defer {
             inflightTasks[blogId] = nil
         }
 
+        // We need to explicitly cancel the created `Task` above.
+        // https://forums.swift.org/t/understanding-task-cancellation/75329/2
         return try await withTaskCancellationHandler {
             try await task.value
         } onCancel: {
             task.cancel()
         }
+    }
+
+    private func waitForInflightTask(_ inflight: Task<ApplicationPassword, Error>, blogId: TaggedManagedObjectID<Blog>) async -> WaitResult {
+        let result = await inflight.result
+
+        // If the current task, which is waiting for the inflight task result, is cancelled, the function should
+        // throw a `CancellationError`.
+        if Task.isCancelled {
+            return .failure(CancellationError())
+        }
+
+        return switch result {
+            case let .success(value):
+                .success(value)
+            case let .failure(error):
+                // If the inflight task is cancelled, the current Task should start a new call to create an application
+                // password.
+                if error.isCancellationError() {
+                    .restart
+                } else {
+                    // For other errors, we can still retry, but I don't see the need to do that.
+                    .failure(error)
+                }
+            }
     }
 }
 
@@ -485,4 +450,10 @@ private struct ApplicationPassword: Codable {
 private enum ApplicationPasswordOwner: Codable, Hashable {
     case dotCom(username: String, siteId: Int)
     case selfHosted(username: String, site: String)
+}
+
+private enum WaitResult {
+    case success(ApplicationPassword)
+    case failure(Error)
+    case restart
 }
