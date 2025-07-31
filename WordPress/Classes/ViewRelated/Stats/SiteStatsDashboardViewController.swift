@@ -169,12 +169,6 @@ public class SiteStatsDashboardViewController: UIViewController {
             // Always show the menu for switching between stats experiences
             statsMenuButton.menu = createStatsMenu()
 
-            if traitCollection.horizontalSizeClass == .regular {
-                parent?.navigationItem.leftBarButtonItem = statsMenuButton
-            } else {
-                parent?.navigationItem.rightBarButtonItem = statsMenuButton
-            }
-
             // Set up observer for navigation item changes
             navigationItemObserver = trafficTableViewController.navigationItem.observe(\.trailingItemGroups, options: [.initial, .new]) { [weak self] navigationItem, _ in
                 guard let self else { return }
@@ -195,7 +189,9 @@ public class SiteStatsDashboardViewController: UIViewController {
     }
 
     private func updateParentNavigationItems(with childVC: UIViewController) {
-        parent?.navigationItem.trailingItemGroups = childVC.navigationItem.trailingItemGroups
+        parent?.navigationItem.trailingItemGroups = childVC.navigationItem.trailingItemGroups + [
+            UIBarButtonItemGroup.fixedGroup(items: [statsMenuButton])
+        ]
     }
 
     func configureJetpackBanner() {
