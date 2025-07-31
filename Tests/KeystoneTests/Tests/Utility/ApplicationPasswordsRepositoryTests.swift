@@ -193,7 +193,7 @@ class ApplicationPasswordsRepositoryTests {
         #expect(password == uuid)
     }
 
-    @Test(arguments: [1, 2, 3, 4])
+    @Test(arguments: [0, 1, 2, 3, 4])
     func cancelConcurrentCall(nthTaskToBeCancelled: Int) async throws {
         defer { HTTPStubs.removeAllStubs()}
 
@@ -226,7 +226,13 @@ class ApplicationPasswordsRepositoryTests {
             }
         }
 
-        #expect(monitor.numberOfRequests == 1)
+        // If the first call is cancelled, then another password creation attempt should be made by one of the
+        // waiting callers. And the rest of the callers should wait on the second attempt.
+        if nthTaskToBeCancelled == 0 {
+            #expect(monitor.numberOfRequests == 2)
+        } else {
+            #expect(monitor.numberOfRequests == 1)
+        }
 
         let password = await password(of: blog)
         #expect(password == uuid)
