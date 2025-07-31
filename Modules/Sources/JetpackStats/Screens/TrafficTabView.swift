@@ -130,8 +130,6 @@ struct TrafficTabView: View {
         .dynamicTypeSize(...DynamicTypeSize.xLarge)
         .buttonStyle(.bordered)
         .buttonBorderShape(.capsule)
-        .scaleEffect(isShowingAddCardSheet ? 0.95 : 1.0)
-        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isShowingAddCardSheet)
         .popover(isPresented: $isShowingAddCardSheet) {
             AddCardSheet { cardType in
                 viewModel.addCard(type: cardType)

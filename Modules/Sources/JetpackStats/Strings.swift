@@ -290,8 +290,6 @@ enum Strings {
 
         // Cards
         static let addCardButton = AppLocalizedString("jetpackStats.accessibility.addCardButton", value: "Add new stats card", comment: "Accessibility label for add card button")
-        static let editCardButton = AppLocalizedString("jetpackStats.accessibility.editCardButton", value: "Edit card options", comment: "Accessibility label for edit card button")
-        static let deleteCardButton = AppLocalizedString("jetpackStats.accessibility.deleteCardButton", value: "Delete this card", comment: "Accessibility label for delete card button")
         static func cardTitle(_ title: String) -> String {
             String.localizedStringWithFormat(
                 AppLocalizedString("jetpackStats.accessibility.cardTitle", value: "%1$@ card", comment: "Card title accessibility label. %1$@ is the card title."),
