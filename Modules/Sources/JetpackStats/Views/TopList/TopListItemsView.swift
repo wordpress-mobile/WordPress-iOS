@@ -48,7 +48,7 @@ struct PlaceholderRowView: View {
             .background(
                 LinearGradient(
                     colors: [
-                        Color.secondary.opacity(0.08),
+                        Color.secondary.opacity(0.05),
                         Color.secondary.opacity(0.02)
                     ],
                     startPoint: .leading,
