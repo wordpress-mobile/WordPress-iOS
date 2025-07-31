@@ -17,7 +17,7 @@ extension Error {
             return true
         }
 
-        if let error = wrapped as? WordPressAPIError<WordPressOrgRestApiError>, error.urlError?.code == .cancelled {
+        if let error = wrapped as? WordPressAPIError<WordPressComRestApiEndpointError>, error.urlError?.code == .cancelled {
             return true
         }
 
