@@ -64,7 +64,7 @@ struct TrafficTabView: View {
                 let _ = cards.removeFirst()
                 cardView(for: first)
             }
-            HStack(alignment: .top, spacing: Constants.step3) {
+            HStack(alignment: .top, spacing: Constants.step2) {
                 VStack(spacing: Constants.step3) {
                     ForEach(Array(cards.enumerated()), id: \.element.id) { index, card in
                         if index % 2 == 0 {
