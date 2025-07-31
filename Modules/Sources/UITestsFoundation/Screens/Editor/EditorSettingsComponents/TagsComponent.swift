@@ -4,7 +4,7 @@ import XCTest
 public class TagsComponent: ScreenObject {
 
     private let tagsFieldGetter: (XCUIApplication) -> XCUIElement = {
-        $0.textViews["add-tags"]
+        $0.textFields["add-tags"]
     }
 
     var tagsField: XCUIElement { tagsFieldGetter(app) }

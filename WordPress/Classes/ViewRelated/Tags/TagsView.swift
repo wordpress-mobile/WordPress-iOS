@@ -33,6 +33,7 @@ struct TagsView: View {
                 .textInputAutocapitalization(.never)
                 .submitLabel(.return)
                 .onSubmit(addTag)
+                .accessibilityIdentifier("add-tags")
 
             if !viewModel.searchText.trim().isEmpty {
                 Button(action: addTag) {
