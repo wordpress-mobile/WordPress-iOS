@@ -54,6 +54,8 @@ struct StatsNavigationButton: View {
     let direction: Calendar.NavigationDirection
 
     var body: some View {
+        let isDisabled = !dateRange.canNavigate(in: direction)
+
         Menu {
             ForEach(dateRange.availableAdjacentPeriods(in: direction)) { period in
                 Button(period.displayText) {
@@ -62,10 +64,12 @@ struct StatsNavigationButton: View {
             }
         } label: {
             Image(systemName: direction.systemImage)
+                .foregroundStyle(isDisabled ? Color(.tertiaryLabel) : Color.primary)
         } primaryAction: {
             dateRange = dateRange.navigate(direction)
         }
-        .disabled(!dateRange.canNavigate(in: direction))
+        .opacity(isDisabled ? 0.5 : 1.0)
+        .disabled(isDisabled)
         .accessibilityLabel(direction == .forward ? Strings.Accessibility.nextPeriod : Strings.Accessibility.previousPeriod)
         .accessibilityHint(direction == .forward ? Strings.Accessibility.navigateToNextDateRange : Strings.Accessibility.navigateToPreviousDateRange)
     }
