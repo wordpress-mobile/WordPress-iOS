@@ -38,22 +38,22 @@ struct TopListScreenView: View {
                 headerView
                     .background(Color(.secondarySystemBackground).opacity(0.7))
                     .cardStyle()
-                    .padding(.horizontal, Constants.step1)
                     .dynamicTypeSize(...DynamicTypeSize.xLarge)
                     .accessibilityElement(children: .contain)
+                    .padding(.horizontal, Constants.step1)
 
                 VStack {
                     listHeaderView
-                        .padding(.horizontal, Constants.step3)
+                        .padding(.horizontal, Constants.step1)
                         .dynamicTypeSize(...DynamicTypeSize.xLarge)
                     listContentView
                         .grayscale(viewModel.isStale ? 1 : 0)
                         .animation(.smooth, value: viewModel.isStale)
                 }
+                .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
             }
             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
             .padding(.vertical, Constants.step2)
-            .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
             .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidthPlainLists : .infinity)
             .frame(maxWidth: .infinity)
             .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
@@ -196,7 +196,6 @@ struct TopListScreenView: View {
                 .frame(height: TopListItemView.defaultCellHeight)
             }
         }
-        .padding(.horizontal, Constants.step1)
     }
 
     private func makeEmptyStateView(message: String) -> some View {
