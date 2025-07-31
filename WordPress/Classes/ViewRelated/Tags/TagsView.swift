@@ -19,6 +19,9 @@ struct TagsView: View {
                 TagsListView(viewModel: viewModel, isTextFieldFocused: $isTextFieldFocused)
             }
         }
+        .onAppear {
+            isTextFieldFocused = true
+        }
         .navigationTitle(Strings.title)
     }
 
