@@ -36,6 +36,7 @@ actor ApplicationPasswordRepository {
     private let coreDataStack: CoreDataStackSwift
     private let storage: ApplicationPasswordStorage
     private var ongoing: [TaggedManagedObjectID<Blog>: CurrentValueSubject<ApplicationPassword?, Error>] = [:]
+    private var inflightTasks: [TaggedManagedObjectID<Blog>: Task<ApplicationPassword, Error>] = [:]
 
     static func forTesting(coreDataStack: CoreDataStackSwift, keychain: KeychainAccessible) -> ApplicationPasswordRepository {
         ApplicationPasswordRepository(coreDataStack: coreDataStack, keychain: keychain)
@@ -71,18 +72,36 @@ actor ApplicationPasswordRepository {
 
         // `createPasswordIfNeeded` can be called by multiple callers at the same time. We want to avoid
         // creating multiple application passwords on one site.
+
+//        _ = try await withCombine(for: blogId)
+        _ = try await withTask(for: blogId)
+    }
+
+    private func withCombine(for blogId: TaggedManagedObjectID<Blog>) async throws -> ApplicationPassword {
         if let subject = ongoing[blogId] {
             let publisher = subject
                 .compactMap { $0 }
                 .first()
                 .eraseToAnyPublisher()
             // This sequence can only results in an error or a one element array. See the `subject.send` calls below.
-            let outputs = try await AsyncThrowingPublisher(publisher).reduce(into: []) { $0.append($1) }
-            if outputs.isEmpty {
-                throw ApplicationPasswordRepositoryError.unknown
+            let outputs: [ApplicationPassword]
+            do {
+                outputs = try await AsyncThrowingPublisher(publisher).reduce(into: []) { $0.append($1) }
+            } catch {
+                if error.isCancellationError() {
+                    return try await self.withCombine(for: blogId)
+                }
+
+                throw error
             }
 
-            return
+            // when cancelling the `await` call on waiting the async sequence to produce output, the `await` call
+            // does not thrown an cancellation error.
+            if let result = outputs.first {
+                return result
+            } else {
+                throw CancellationError()
+            }
         }
 
         let subject: CurrentValueSubject<ApplicationPassword?, Error> = CurrentValueSubject(nil)
@@ -94,11 +113,52 @@ actor ApplicationPasswordRepository {
         do {
             let password = try await createPassword(for: blogId)
             subject.value = password
-            subject.send(completion: .finished)
-            return
+            return password
         } catch {
             subject.send(completion: .failure(error))
             throw error
+        }
+    }
+
+    private func withTask(for blogId: TaggedManagedObjectID<Blog>) async throws -> ApplicationPassword {
+        if let task = inflightTasks[blogId] {
+            // If the current task, which is waiting for the inflight task result, is cancelled, the function should
+            // throw a `CancellationError`.
+            var cancelled = false
+            let result = await withTaskCancellationHandler {
+                await task.result
+            } onCancel: {
+                cancelled = true
+            }
+
+            if cancelled {
+                throw CancellationError()
+            }
+
+            do {
+                return try result.get()
+            } catch {
+                // If the inflight task is cancelled, the current Task should start a new call to create an application
+                // password.
+                if error.isCancellationError() {
+                    return try await self.withTask(for: blogId)
+                }
+
+                // For other errors, we can still retry, but I don't see the need to do that.
+                throw error
+            }
+        }
+
+        let task = Task { try await createPassword(for: blogId) }
+        inflightTasks[blogId] = task
+        defer {
+            inflightTasks[blogId] = nil
+        }
+
+        return try await withTaskCancellationHandler {
+            try await task.value
+        } onCancel: {
+            task.cancel()
         }
     }
 }
