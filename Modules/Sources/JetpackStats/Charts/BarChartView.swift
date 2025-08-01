@@ -132,23 +132,41 @@ struct BarChartView: View {
     private var selectionIndicatorMarks: some ChartContent {
         if #available(iOS 17.0, *),
            let selectedDate,
-           let _ = selectedDataPoints {
-            let clampedDate = data.clampDateToDataRange(selectedDate)
-            RuleMark(x: .value("Selected", clampedDate))
-                .foregroundStyle(Color.clear)
-                .lineStyle(StrokeStyle(lineWidth: 1))
-                .offset(yStart: 32)
-                .zIndex(3)
-                .annotation(
-                    position: .top,
-                    spacing: 0,
-                    overflowResolution: .init(
-                        x: .fit(to: .chart),
-                        y: .disabled
-                    )
-                ) {
-                    tooltipView
-                }
+           let selectedDataPoints {
+
+            if let currentPoint = selectedDataPoints.current {
+                RuleMark(x: .value("Selected", currentPoint.date))
+                    .foregroundStyle(Color.clear)
+                    .lineStyle(StrokeStyle(lineWidth: 1))
+                    .offset(yStart: 32)
+                    .zIndex(3)
+                    .annotation(
+                        position: .top,
+                        spacing: 0,
+                        overflowResolution: .init(
+                            x: .fit(to: .chart),
+                            y: .disabled
+                        )
+                    ) {
+                        tooltipView
+                    }
+            } else if let previousPoint = selectedDataPoints.previous {
+                RuleMark(x: .value("Selected", previousPoint.date))
+                    .foregroundStyle(Color.clear)
+                    .lineStyle(StrokeStyle(lineWidth: 1))
+                    .offset(yStart: 32)
+                    .zIndex(3)
+                    .annotation(
+                        position: .top,
+                        spacing: 0,
+                        overflowResolution: .init(
+                            x: .fit(to: .chart),
+                            y: .disabled
+                        )
+                    ) {
+                        tooltipView
+                    }
+            }
         }
     }
 

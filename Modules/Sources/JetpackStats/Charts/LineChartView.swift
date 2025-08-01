@@ -142,30 +142,40 @@ struct LineChartView: View {
         if #available(iOS 17.0, *),
            let selectedDate, let selectedPoints = selectedDataPoints {
 
-            let clampedDate = data.clampDateToDataRange(selectedDate)
-            RuleMark(x: .value("Selected", clampedDate))
-                .foregroundStyle(Color.secondary.opacity(0.33))
-                .lineStyle(StrokeStyle(lineWidth: 1))
-                .offset(yStart: 28)
-                .zIndex(1)
-                .annotation(
-                    position: .top,
-                    spacing: 0,
-                    overflowResolution: .init(x: .fit(to: .chart), y: .disabled)
-                ) {
-                    tooltipView
-                }
-
             if let currentPoint = selectedPoints.current {
+                RuleMark(x: .value("Selected", currentPoint.date))
+                    .foregroundStyle(Color.secondary.opacity(0.33))
+                    .lineStyle(StrokeStyle(lineWidth: 1))
+                    .offset(yStart: 28)
+                    .zIndex(1)
+                    .annotation(
+                        position: .top,
+                        spacing: 0,
+                        overflowResolution: .init(x: .fit(to: .chart), y: .disabled)
+                    ) {
+                        tooltipView
+                    }
+
                 PointMark(
                     x: .value("Date", currentPoint.date),
                     y: .value("Value", currentPoint.value)
                 )
                 .foregroundStyle(data.metric.primaryColor)
                 .symbolSize(80)
-            }
+            } else if let previousPoint = selectedPoints.previous {
+                RuleMark(x: .value("Selected", previousPoint.date))
+                    .foregroundStyle(Color.secondary.opacity(0.33))
+                    .lineStyle(StrokeStyle(lineWidth: 1))
+                    .offset(yStart: 28)
+                    .zIndex(1)
+                    .annotation(
+                        position: .top,
+                        spacing: 0,
+                        overflowResolution: .init(x: .fit(to: .chart), y: .disabled)
+                    ) {
+                        tooltipView
+                    }
 
-            if let previousPoint = selectedPoints.previous {
                 PointMark(
                     x: .value("Date", previousPoint.date),
                     y: .value("Value", previousPoint.value)
