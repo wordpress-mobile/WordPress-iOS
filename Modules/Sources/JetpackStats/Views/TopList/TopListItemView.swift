@@ -35,11 +35,8 @@ struct TopListItemView: View {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                         isTapped = false
                     }
-                    // Navigate after animation starts
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                        navigateToDetails()
-                    }
                 }
+                navigateToDetails()
             } label: {
                 content
                     .contentShape(Rectangle()) // Make the entire view tappable
