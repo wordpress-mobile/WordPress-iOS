@@ -34,12 +34,15 @@ struct CustomDateRangePicker: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(Strings.Buttons.cancel) { dismiss() }
+                        .tint(Color.primary)
                 }
+
                 ToolbarItem(placement: .confirmationAction) {
                     Button(Strings.Buttons.apply) { buttonApplyTapped() }
                         .fontWeight(.semibold)
                         .buttonStyle(.borderedProminent)
                         .buttonBorderShape(.capsule)
+                        .tint(Color.primary)
                 }
             }
         }
