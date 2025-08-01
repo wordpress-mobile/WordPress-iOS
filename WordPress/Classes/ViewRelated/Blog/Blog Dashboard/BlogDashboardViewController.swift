@@ -106,10 +106,6 @@ final class BlogDashboardViewController: UIViewController {
     ///
     func stopLoading() { }
 
-    func loadingFailure() {
-        displayActionableNotice(title: Strings.failureTitle, actionTitle: Strings.dismiss)
-    }
-
     func update(blog: Blog) {
         guard self.blog.dotComID != blog.dotComID else {
             return

@@ -1,6 +1,6 @@
 26.1
 -----
-
+* [*] Remove global error popups from the site dashboard [#24707]
 
 26.0
 -----
