@@ -1,6 +1,7 @@
 import UIKit
 import WordPressUI
 import AsyncImageKit
+import BuildSettingsKit
 import AutomatticTracks
 import GutenbergKit
 import SafariServices
@@ -8,6 +9,7 @@ import WordPressData
 import WordPressShared
 import WebKit
 import CocoaLumberjackSwift
+import Photos
 
 class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
@@ -180,8 +182,13 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenbergKit, post: post)
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
+        EditorLocalization.localize = getLocalizedString
+
         let editorConfiguration = EditorConfiguration(blog: post.blog)
-        self.editorViewController = GutenbergKit.EditorViewController(configuration: editorConfiguration)
+        self.editorViewController = GutenbergKit.EditorViewController(
+            configuration: editorConfiguration,
+            mediaPicker: MediaPickerController(blog: post.blog)
+        )
 
         self.blockEditorSettingsService = RawBlockEditorSettingsService(blog: post.blog)
 
@@ -397,6 +404,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             .apply(settings) { $0.setEditorSettings($1) }
             .setTitle(post.postTitle ?? "")
             .setContent(post.content ?? "")
+            .setNativeInserterEnabled(FeatureFlag.nativeBlockInserter.enabled)
             .build()
 
         self.editorViewController.updateConfiguration(updatedConfiguration)
@@ -568,6 +576,8 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
     func editor(_ viewController: GutenbergKit.EditorViewController, didLogMessage message: String, level: GutenbergKit.LogLevel) {
         // Do nothing
     }
+
+    // MARK: - Media Picker Helpers
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction) {
         let flags = mediaFilterFlags(using: config.allowedTypes ?? [])
@@ -1099,3 +1109,18 @@ private extension NewGutenbergViewController {
 // Extend Gutenberg JavaScript exception struct to conform the protocol defined in the Crash Logging service
 extension GutenbergJSException.StacktraceLine: @retroactive AutomatticTracks.JSStacktraceLine {}
 extension GutenbergJSException: @retroactive AutomatticTracks.JSException {}
+
+private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString) -> String {
+    switch value {
+    case .showMore: NSLocalizedString("editor.blockInserter.showMore", value: "Show More", comment: "Button title to expand and show more blocks")
+    case .showLess: NSLocalizedString("editor.blockInserter.showLess", value: "Show Less", comment: "Button title to collapse and show fewer blocks")
+    case .search: NSLocalizedString("editor.blockInserter.search", value: "Search", comment: "Placeholder text for block search field")
+    case .insertBlock: NSLocalizedString("editor.blockInserter.insertBlock", value: "Insert Block", comment: "Context menu action to insert a block")
+    case .failedToInsertMedia: NSLocalizedString("editor.media.failedToInsert", value: "Failed to insert media", comment: "Error message when media insertion fails")
+    case .patterns: NSLocalizedString("editor.patterns.title", value: "Patterns", comment: "Navigation title for patterns view")
+    case .noPatternsFound: NSLocalizedString("editor.patterns.noPatternsFound", value: "No Patterns Found", comment: "Title shown when no patterns match the search")
+    case .insertPattern: NSLocalizedString("editor.patterns.insertPattern", value: "Insert Pattern", comment: "Context menu action to insert a pattern")
+    case .patternsCategoryUncategorized: NSLocalizedString("editor.patterns.uncategorized", value: "Uncategorized", comment: "Category name for patterns without a category")
+    case .patternsCategoryAll: NSLocalizedString("editor.patterns.all", value: "All", comment: "Category name for section showing all patterns")
+    }
+}

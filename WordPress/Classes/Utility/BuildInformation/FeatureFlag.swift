@@ -27,6 +27,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case mediaQuotaView
     case intelligence
     case newSupport
+    case nativeBlockInserter
 
     /// Returns a boolean indicating if the feature is enabled.
     ///
@@ -86,6 +87,8 @@ public enum FeatureFlag: Int, CaseIterable {
             return (languageCode ?? "en").hasPrefix("en")
         case .newSupport:
             return false
+        case .nativeBlockInserter:
+            return false
         }
     }
 
@@ -130,6 +133,7 @@ extension FeatureFlag {
         case .mediaQuotaView: "Media Quota"
         case .intelligence: "Intelligence"
         case .newSupport: "New Support"
+        case .nativeBlockInserter: "Native Block Inserter"
         }
     }
 }

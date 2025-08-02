@@ -53,3 +53,12 @@ extension MediaPickerMenu.MediaFilter {
         }
     }
 }
+
+enum MediaPickerID: String {
+    case applePhotos = "apple_photos"
+    case camera = "camera"
+    case siteMedia = "site_media"
+    case imagePlayground = "image_playground"
+    case freeGIFs = "free_gifs"
+    case freePhotos = "free_photos"
+}

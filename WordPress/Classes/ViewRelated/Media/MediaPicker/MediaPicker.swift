@@ -101,7 +101,7 @@ enum MediaPickerSource {
 
 struct MediaPickerSelection {
     var items: [MediaPickerItem]
-    var source: String
+    var source: MediaPickerID
 }
 
 enum MediaPickerItem {
