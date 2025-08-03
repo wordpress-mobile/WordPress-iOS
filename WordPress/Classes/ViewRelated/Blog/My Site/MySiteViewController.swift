@@ -645,16 +645,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         stackView.sendSubviewToBack(blogDetailsViewController.view)
 
         blogDetailsViewController.showInitialDetailsForBlog()
-
-        if FeatureFlag.allowApplicationPasswords.enabled {
-            Task {
-                do {
-                    try await ApplicationPasswordRepository.shared.createPasswordIfNeeded(for: TaggedManagedObjectID(blog))
-                } catch {
-                    DDLogError("Failed to create an application password. \(error)")
-                }
-            }
-        }
     }
 
     private func blogDetailsViewController(for blog: Blog) -> BlogDetailsViewController {
