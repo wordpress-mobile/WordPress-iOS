@@ -352,7 +352,8 @@ actor StatsService: StatsServiceProtocol {
                 return nil
             }
             let date: Date = {
-                let components = calendar.dateComponents(in: TimeZone.current, from: data.date)
+                var components = calendar.dateComponents(in: TimeZone.current, from: data.date)
+                components.timeZone = siteTimeZone
                 guard let output = calendar.date(from: components) else {
                     wpAssertionFailure("failed to convert date to site time zone", userInfo: ["date": data.date])
                     return data.date
