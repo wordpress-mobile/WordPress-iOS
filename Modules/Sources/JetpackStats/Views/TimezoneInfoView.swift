@@ -32,19 +32,21 @@ struct TimezoneInfoView: View {
 
     @ViewBuilder
     private var timezoneInfoContent: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 4) {
             Text(Strings.DatePicker.siteTimeZone)
                 .font(.headline)
                 .foregroundStyle(.primary)
+
+            Text("\(formattedTimeZone) (\(context.formatters.date.formattedTimeOffset))")
+                .font(.footnote)
+                .foregroundColor(.secondary)
 
             Text(Strings.DatePicker.siteTimeZoneDescription)
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 12)
 
-            Text("\(formattedTimeZone) (\(context.formatters.date.formattedTimeOffset))")
-                .font(.footnote)
-                .foregroundColor(.primary)
         }
         .padding()
         .frame(idealWidth: 280, maxWidth: 320)
