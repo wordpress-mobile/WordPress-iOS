@@ -239,17 +239,15 @@ private struct SelectedTag: View {
                 .foregroundColor(.primary)
                 .lineLimit(1)
 
-            Button(action: onRemove) {
-                Image(systemName: "xmark.circle.fill")
-                    .foregroundColor(.secondary)
-                    .font(.subheadline)
-            }
-            .accessibilityLabel(Strings.removeTag(tagName))
+            Image(systemName: "xmark.circle.fill")
+                .foregroundColor(.secondary)
+                .font(.subheadline)
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
         .background(Color(UIColor.tertiarySystemFill))
         .clipShape(Capsule())
+        .onTapGesture(perform: onRemove)
     }
 }
 
