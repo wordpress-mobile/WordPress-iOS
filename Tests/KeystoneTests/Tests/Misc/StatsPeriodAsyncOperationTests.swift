@@ -28,11 +28,16 @@ class StatsPeriodAsyncOperationTests: XCTestCase {
 
 private extension StatsPeriodAsyncOperationTests {
     class MockStatsServiceRemoteV2: StatsServiceRemoteV2 {
-        override func getData<TimeStatsType: StatsTimeIntervalData>(for period: StatsPeriodUnit,
-                                                                    unit: StatsPeriodUnit?,
-                                                                    endingOn: Date,
-                                                                    limit: Int = 10,
-                                                                    completion: @escaping ((TimeStatsType?, Error?) -> Void)) {
+        override func getData<TimeStatsType>(
+            for period: StatsPeriodUnit,
+            unit: StatsPeriodUnit? = nil,
+            startDate: Date? = nil,
+            endingOn: Date,
+            limit: Int = 10,
+            summarize: Bool? = nil,
+            parameters: [String: String]? = nil,
+            completion: @escaping (TimeStatsType?, (any Error)?) -> Void
+        ) where TimeStatsType: StatsTimeIntervalData {
             let mockType = TimeStatsType(date: endingOn,
                                          period: period,
                                          unit: unit,

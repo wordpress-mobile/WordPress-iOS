@@ -265,12 +265,7 @@ extension BlogDetailsViewController {
         guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
             return MovedToJetpackViewController(source: .stats)
         }
-
-        let statsVC = StatsViewController()
-        statsVC.blog = blog
-        statsVC.hidesBottomBarWhenPushed = true
-        statsVC.navigationItem.largeTitleDisplayMode = .never
-        return statsVC
+        return StatsHostingViewController.makeStatsViewController(for: blog)
     }
 
     @objc(showDomainsFromSource:)
@@ -423,10 +418,14 @@ extension BlogDetailsViewController {
 
 extension BlogDetailsViewController {
     @objc public func trackEvent(_ event: WPAnalyticsStat, from source: BlogDetailsNavigationSource) {
-        WPAppAnalytics.track(event, properties: [
+        var properties: [String: Any] = [
             WPAppAnalyticsKeyTapSource: source.string,
             WPAppAnalyticsKeyTabSource: "site_menu"
-        ], blog: blog)
+        ]
+        if event == .statsAccessed, FeatureFlag.newStats.enabled {
+            properties[WPAnalyticsEvent.isNewStatsKey] = "1"
+        }
+        WPAppAnalytics.track(event, properties: properties, blog: blog)
     }
 }
 

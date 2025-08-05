@@ -14,5 +14,4 @@ extension StatsViewController {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.pinEdges()
     }
-
 }

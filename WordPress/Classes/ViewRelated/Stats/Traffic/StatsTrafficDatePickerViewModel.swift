@@ -73,6 +73,9 @@ private extension StatsPeriodUnit {
     var dateFormatter: DateFormatter {
         let format: String
         switch self {
+        case .hour:
+            wpAssertionFailure("unsupported")
+            format = "MMMM d, yyyy"
         case .day:
             format = "MMMM d, yyyy"
         case .week:
@@ -89,6 +92,9 @@ private extension StatsPeriodUnit {
 
     var event: WPAnalyticsStat {
         switch self {
+        case .hour:
+            wpAssertionFailure("unsupported")
+            return .statsPeriodDaysAccessed
         case .day:
             return .statsPeriodDaysAccessed
         case .week:

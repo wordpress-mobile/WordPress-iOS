@@ -1,6 +1,10 @@
 import UIKit
 import WordPressKit
 import WordPressShared
+import WordPressData
+import Combine
+import TipKit
+import BuildSettingsKit
 
 enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
     case insights = 0
@@ -54,6 +58,9 @@ public class SiteStatsDashboardViewController: UIViewController {
 
     private var pageViewController: UIPageViewController?
     private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
+    private var tipObserver: TipObserver?
+    private var isUsingMockData = false
+    private var navigationItemObserver: NSKeyValueObservation?
 
     @objc public lazy var manageInsightsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -62,6 +69,14 @@ public class SiteStatsDashboardViewController: UIViewController {
                 target: self,
                 action: #selector(manageInsightsButtonTapped))
         button.accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint to customize insights")
+        return button
+    }()
+
+    private lazy var statsMenuButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+            image: UIImage(systemName: "ellipsis"),
+            menu: createStatsMenu()
+        )
         return button
     }()
 
@@ -74,7 +89,29 @@ public class SiteStatsDashboardViewController: UIViewController {
         return viewController
     }()
 
-    private lazy var trafficTableViewController = {
+    private lazy var trafficTableViewController: UIViewController = {
+        // If new stats is enabled, show StatsHostingViewController instead
+        if FeatureFlag.newStats.enabled {
+            return createNewTrafficViewController() ?? createClassicTrafficViewController()
+        } else {
+            return createClassicTrafficViewController()
+        }
+    }()
+
+    private func createNewTrafficViewController() -> UIViewController? {
+        if isUsingMockData {
+            // Create with demo context for mock data
+            return StatsHostingViewController.makeNewTrafficViewController(blog: nil, parentViewController: self, isDemo: true)
+        } else {
+            guard let siteID = SiteStatsInformation.sharedInstance.siteID,
+                  let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
+                return nil
+            }
+            return StatsHostingViewController.makeNewTrafficViewController(blog: blog, parentViewController: self, isDemo: false)
+        }
+    }
+
+    private func createClassicTrafficViewController() -> UIViewController {
         let date: Date
         if let selectedDate = SiteStatsDashboardPreferences.getLastSelectedDateFromUserDefaults() {
             date = selectedDate
@@ -87,7 +124,7 @@ public class SiteStatsDashboardViewController: UIViewController {
         let viewController = SiteStatsPeriodTableViewController(date: date, period: currentPeriod)
         viewController.bannerView = jetpackBannerView
         return viewController
-    }()
+    }
 
     private lazy var subscribersViewController = {
         let viewModel = StatsSubscribersViewModel()
@@ -95,6 +132,10 @@ public class SiteStatsDashboardViewController: UIViewController {
     }()
 
     // MARK: - View
+
+    deinit {
+        navigationItemObserver?.invalidate()
+    }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,7 +158,40 @@ public class SiteStatsDashboardViewController: UIViewController {
     }
 
     func configureNavBar() {
-        parent?.navigationItem.rightBarButtonItem = currentSelectedTab == .insights ? manageInsightsButton : nil
+        // Clean up previous observer
+        navigationItemObserver?.invalidate()
+        navigationItemObserver = nil
+
+        switch currentSelectedTab {
+        case .insights:
+            parent?.navigationItem.rightBarButtonItem = manageInsightsButton
+        case .traffic:
+            // Always show the menu for switching between stats experiences
+            statsMenuButton.menu = createStatsMenu()
+
+            // Set up observer for navigation item changes
+            navigationItemObserver = trafficTableViewController.navigationItem.observe(\.trailingItemGroups, options: [.initial, .new]) { [weak self] navigationItem, _ in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                    self.updateParentNavigationItems(with: self.trafficTableViewController)
+                }
+            }
+
+            // Show tip for new stats if available and not enabled
+            if #available(iOS 17, *), !FeatureFlag.newStats.enabled {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                    self.showNewStatsTip()
+                }
+            }
+        default:
+            parent?.navigationItem.rightBarButtonItem = nil
+        }
+    }
+
+    private func updateParentNavigationItems(with childVC: UIViewController) {
+        parent?.navigationItem.trailingItemGroups = childVC.navigationItem.trailingItemGroups + [
+            UIBarButtonItemGroup.fixedGroup(items: [statsMenuButton])
+        ]
     }
 
     func configureJetpackBanner() {
@@ -134,6 +208,127 @@ public class SiteStatsDashboardViewController: UIViewController {
 
     @objc public func manageInsightsButtonTapped() {
         insightsTableViewController.showAddInsightView(source: "nav_bar")
+    }
+
+    private func createStatsMenu() -> UIMenu {
+        var menuElements: [UIMenuElement] = []
+
+        if FeatureFlag.newStats.enabled {
+            // Main actions
+            var mainActions: [UIMenuElement] = []
+
+            // Add "Switch to Classic Stats" option when new stats is enabled
+            let switchToClassicAction = UIAction(
+                title: Strings.switchToClassic,
+                image: UIImage(systemName: "arrow.uturn.backward")
+            ) { [weak self] _ in
+                self?.disableNewStats()
+            }
+            mainActions.append(switchToClassicAction)
+
+            // Add "Send Feedback" option
+            let sendFeedbackAction = UIAction(
+                title: Strings.sendFeedback,
+                image: UIImage(systemName: "envelope")
+            ) { [weak self] _ in
+                self?.showFeedbackView()
+            }
+            mainActions.append(sendFeedbackAction)
+
+            menuElements.append(contentsOf: mainActions)
+
+            // Debug section (only in debug builds)
+            if BuildConfiguration.current == .debug {
+                let toggleDataSource = UIAction(
+                    title: isUsingMockData ? "Use Real Data" : "Use Mock Data",
+                    image: UIImage(systemName: "arrow.triangle.2.circlepath")
+                ) { [weak self] _ in
+                    self?.toggleDataSource()
+                }
+
+                let debugMenu = UIMenu(title: "Debug", options: .displayInline, children: [toggleDataSource])
+                menuElements.append(debugMenu)
+            }
+        } else {
+            // Add "Try New Stats" option if feature is available but not enabled
+            let tryNewStatsAction = UIAction(
+                title: Strings.tryNewStats,
+                image: UIImage(systemName: "sparkles")
+            ) { [weak self] _ in
+                self?.enableNewStats()
+            }
+            menuElements.append(tryNewStatsAction)
+        }
+
+        return UIMenu(children: menuElements)
+    }
+
+    private func enableNewStats() {
+        WPAnalytics.track(.statsNewStatsEnabled)
+
+        FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: true)
+
+        // Update the traffic view controller to show new stats
+        guard let trafficVC = createNewTrafficViewController() else {
+            return
+        }
+
+        trafficTableViewController = trafficVC
+        pageViewController?.setViewControllers([trafficTableViewController], direction: .forward, animated: false)
+        configureNavBar()
+    }
+
+    private func disableNewStats() {
+        WPAnalytics.track(.statsNewStatsDisabled)
+
+        FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: false)
+
+        trafficTableViewController = createClassicTrafficViewController()
+        pageViewController?.setViewControllers([trafficTableViewController], direction: .forward, animated: false)
+        configureNavBar()
+    }
+
+    private func toggleDataSource() {
+        isUsingMockData.toggle()
+
+        // Update the traffic view controller with new data source
+        guard let trafficVC = createNewTrafficViewController() else {
+            return
+        }
+
+        trafficTableViewController = trafficVC
+        pageViewController?.setViewControllers([trafficTableViewController], direction: .forward, animated: false)
+
+        // Update menu to reflect new state
+        statsMenuButton.menu = createStatsMenu()
+
+        // Show notice indicating the change
+        let message = isUsingMockData ? "Using mock data" : "Using real data"
+        Notice(title: message).post()
+    }
+
+    @available(iOS 17, *)
+    private func showNewStatsTip() {
+        guard let button = parent?.navigationItem.rightBarButtonItem else { return }
+
+        tipObserver?.cancel()
+        tipObserver = registerTipPopover(
+            AppTips.NewStatsTip(),
+            sourceItem: button,
+            arrowDirection: .up
+        ) { [weak self] action in
+            guard let self else { return }
+            if action.id == "try-new-stats" {
+                self.enableNewStats()
+                if self.presentedViewController is TipUIPopoverViewController {
+                    self.dismiss(animated: true)
+                }
+            }
+        }
+    }
+
+    private func showFeedbackView() {
+        present(SubmitFeedbackViewController(source: "new_stats", feedbackPrefix: "Stats"), animated: true)
     }
 
     public override func viewWillDisappear(_ animated: Bool) {
@@ -187,17 +382,16 @@ private extension SiteStatsDashboardViewController {
 private extension SiteStatsDashboardViewController {
 
     func setupFilterBar() {
-        WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
-        filterTabBar.isAutomaticTabSizingStyleEnabled = true
+        WPStyleGuide.configureFilterTabBar(filterTabBar)
+        filterTabBar.configureModernStyle()
         filterTabBar.items = displayedTabs
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         filterTabBar.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
-        filterTabBar.backgroundColor = .systemBackground
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         currentSelectedTab = displayedTabs[filterBar.selectedIndex]
-
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         configureNavBar()
     }
 }
@@ -255,7 +449,9 @@ private extension SiteStatsDashboardViewController {
                                                        direction: .forward,
                                                        animated: false)
             } else {
-                trafficTableViewController.refreshData()
+                if let periodVC = trafficTableViewController as? SiteStatsPeriodTableViewController {
+                    periodVC.refreshData()
+                }
             }
         case .subscribers:
             if oldSelectedTab != .subscribers || pageViewControllerIsEmpty {
@@ -344,4 +540,26 @@ struct SiteStatsDashboardPreferences {
     }
 
     private static let lastSelectedStatsDateKey = "LastSelectedStatsDate"
+}
+
+// MARK: - Strings
+
+private enum Strings {
+    static let sendFeedback = NSLocalizedString(
+        "stats.menu.sendFeedback",
+        value: "Send Feedback",
+        comment: "Menu item to send feedback about new stats experience"
+    )
+
+    static let switchToClassic = NSLocalizedString(
+        "stats.menu.switchToClassic",
+        value: "Switch to Classic Stats",
+        comment: "Menu item to switch back to classic stats experience"
+    )
+
+    static let tryNewStats = NSLocalizedString(
+        "stats.menu.tryNewStats",
+        value: "Try New Stats",
+        comment: "Menu item to enable new stats experience"
+    )
 }

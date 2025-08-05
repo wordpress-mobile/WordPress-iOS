@@ -26,6 +26,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case pluginManagementOverhaul
     case nativeJetpackConnection
     case newsletterSubscribers
+    case newStats
 
     /// Returns a boolean indicating if the feature is enabled.
     ///
@@ -82,6 +83,8 @@ public enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .debug
         case .newsletterSubscribers:
             return true
+        case .newStats:
+            return false
         }
     }
 
@@ -125,6 +128,7 @@ extension FeatureFlag {
         case .readerGutenbergCommentComposer: "Gutenberg Comment Composer"
         case .nativeJetpackConnection: "Native Jetpack Connection"
         case .newsletterSubscribers: "Newsletter Subscribers"
+        case .newStats: "New Stats"
         }
     }
 }

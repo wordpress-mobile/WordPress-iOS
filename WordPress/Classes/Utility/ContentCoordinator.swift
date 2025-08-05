@@ -65,9 +65,8 @@ struct DefaultContentCoordinator: ContentCoordinator {
             setTimePeriodForStatsURLIfPossible(url)
         }
 
-        let statsViewController = StatsViewController()
-        statsViewController.blog = blog
-        controller?.navigationController?.pushViewController(statsViewController, animated: true)
+        let statsVC = StatsHostingViewController.makeStatsViewController(for: blog)
+        controller?.navigationController?.pushViewController(statsVC, animated: true)
     }
 
     private func setTimePeriodForStatsURLIfPossible(_ url: URL) {
