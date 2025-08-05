@@ -1,0 +1,392 @@
+[
+  {
+    "country": "United States",
+    "countryCode": "US",
+    "flag": "🇺🇸",
+    "metrics": {
+      "views": 18000,
+      "visitors": 12600,
+      "bounceRate": 28,
+      "timeOnSite": 320,
+      "comments": 810,
+      "likes": 1764
+    }
+  },
+  {
+    "country": "United Kingdom",
+    "countryCode": "GB",
+    "flag": "🇬🇧",
+    "metrics": {
+      "views": 6800,
+      "visitors": 4760,
+      "bounceRate": 32,
+      "timeOnSite": 290,
+      "comments": 306,
+      "likes": 666
+    }
+  },
+  {
+    "country": "Canada",
+    "countryCode": "CA",
+    "flag": "🇨🇦",
+    "metrics": {
+      "views": 4200,
+      "visitors": 2940,
+      "bounceRate": 35,
+      "timeOnSite": 270,
+      "comments": 189,
+      "likes": 412
+    }
+  },
+  {
+    "country": "Germany",
+    "countryCode": "DE",
+    "flag": "🇩🇪",
+    "metrics": {
+      "views": 3600,
+      "visitors": 2520,
+      "bounceRate": 34,
+      "timeOnSite": 280,
+      "comments": 162,
+      "likes": 353
+    }
+  },
+  {
+    "country": "Japan",
+    "countryCode": "JP",
+    "flag": "🇯🇵",
+    "metrics": {
+      "views": 3200,
+      "visitors": 2240,
+      "bounceRate": 38,
+      "timeOnSite": 250,
+      "comments": 144,
+      "likes": 314
+    }
+  },
+  {
+    "country": "Australia",
+    "countryCode": "AU",
+    "flag": "🇦🇺",
+    "metrics": {
+      "views": 2800,
+      "visitors": 1960,
+      "bounceRate": 36,
+      "timeOnSite": 260,
+      "comments": 126,
+      "likes": 274
+    }
+  },
+  {
+    "country": "France",
+    "countryCode": "FR",
+    "flag": "🇫🇷",
+    "metrics": {
+      "views": 2400,
+      "visitors": 1680,
+      "bounceRate": 37,
+      "timeOnSite": 255,
+      "comments": 108,
+      "likes": 235
+    }
+  },
+  {
+    "country": "India",
+    "countryCode": "IN",
+    "flag": "🇮🇳",
+    "metrics": {
+      "views": 2200,
+      "visitors": 1540,
+      "bounceRate": 42,
+      "timeOnSite": 220,
+      "comments": 99,
+      "likes": 216
+    }
+  },
+  {
+    "country": "Netherlands",
+    "countryCode": "NL",
+    "flag": "🇳🇱",
+    "metrics": {
+      "views": 1800,
+      "visitors": 1260,
+      "bounceRate": 30,
+      "timeOnSite": 300,
+      "comments": 81,
+      "likes": 176
+    }
+  },
+  {
+    "country": "Sweden",
+    "countryCode": "SE",
+    "flag": "🇸🇪",
+    "metrics": {
+      "views": 1600,
+      "visitors": 1120,
+      "bounceRate": 29,
+      "timeOnSite": 310,
+      "comments": 72,
+      "likes": 157
+    }
+  },
+  {
+    "country": "Italy",
+    "countryCode": "IT",
+    "flag": "🇮🇹",
+    "metrics": {
+      "views": 1500,
+      "visitors": 1050,
+      "bounceRate": 40,
+      "timeOnSite": 240,
+      "comments": 68,
+      "likes": 147
+    }
+  },
+  {
+    "country": "South Korea",
+    "countryCode": "KR",
+    "flag": "🇰🇷",
+    "metrics": {
+      "views": 1400,
+      "visitors": 980,
+      "bounceRate": 33,
+      "timeOnSite": 285,
+      "comments": 63,
+      "likes": 137
+    }
+  },
+  {
+    "country": "Spain",
+    "countryCode": "ES",
+    "flag": "🇪🇸",
+    "metrics": {
+      "views": 1300,
+      "visitors": 910,
+      "bounceRate": 41,
+      "timeOnSite": 235,
+      "comments": 59,
+      "likes": 127
+    }
+  },
+  {
+    "country": "Brazil",
+    "countryCode": "BR",
+    "flag": "🇧🇷",
+    "metrics": {
+      "views": 1200,
+      "visitors": 840,
+      "bounceRate": 43,
+      "timeOnSite": 215,
+      "comments": 54,
+      "likes": 118
+    }
+  },
+  {
+    "country": "Switzerland",
+    "countryCode": "CH",
+    "flag": "🇨🇭",
+    "metrics": {
+      "views": 1100,
+      "visitors": 770,
+      "bounceRate": 31,
+      "timeOnSite": 295,
+      "comments": 50,
+      "likes": 108
+    }
+  },
+  {
+    "country": "Norway",
+    "countryCode": "NO",
+    "flag": "🇳🇴",
+    "metrics": {
+      "views": 1000,
+      "visitors": 700,
+      "bounceRate": 32,
+      "timeOnSite": 290,
+      "comments": 45,
+      "likes": 98
+    }
+  },
+  {
+    "country": "Denmark",
+    "countryCode": "DK",
+    "flag": "🇩🇰",
+    "metrics": {
+      "views": 900,
+      "visitors": 630,
+      "bounceRate": 33,
+      "timeOnSite": 285,
+      "comments": 41,
+      "likes": 88
+    }
+  },
+  {
+    "country": "Belgium",
+    "countryCode": "BE",
+    "flag": "🇧🇪",
+    "metrics": {
+      "views": 850,
+      "visitors": 595,
+      "bounceRate": 35,
+      "timeOnSite": 275,
+      "comments": 38,
+      "likes": 83
+    }
+  },
+  {
+    "country": "Poland",
+    "countryCode": "PL",
+    "flag": "🇵🇱",
+    "metrics": {
+      "views": 800,
+      "visitors": 560,
+      "bounceRate": 39,
+      "timeOnSite": 245,
+      "comments": 36,
+      "likes": 78
+    }
+  },
+  {
+    "country": "Finland",
+    "countryCode": "FI",
+    "flag": "🇫🇮",
+    "metrics": {
+      "views": 750,
+      "visitors": 525,
+      "bounceRate": 30,
+      "timeOnSite": 305,
+      "comments": 34,
+      "likes": 74
+    }
+  },
+  {
+    "country": "Austria",
+    "countryCode": "AT",
+    "flag": "🇦🇹",
+    "metrics": {
+      "views": 700,
+      "visitors": 490,
+      "bounceRate": 36,
+      "timeOnSite": 265,
+      "comments": 32,
+      "likes": 69
+    }
+  },
+  {
+    "country": "Singapore",
+    "countryCode": "SG",
+    "flag": "🇸🇬",
+    "metrics": {
+      "views": 650,
+      "visitors": 455,
+      "bounceRate": 28,
+      "timeOnSite": 315,
+      "comments": 29,
+      "likes": 64
+    }
+  },
+  {
+    "country": "Ireland",
+    "countryCode": "IE",
+    "flag": "🇮🇪",
+    "metrics": {
+      "views": 600,
+      "visitors": 420,
+      "bounceRate": 34,
+      "timeOnSite": 280,
+      "comments": 27,
+      "likes": 59
+    }
+  },
+  {
+    "country": "New Zealand",
+    "countryCode": "NZ",
+    "flag": "🇳🇿",
+    "metrics": {
+      "views": 550,
+      "visitors": 385,
+      "bounceRate": 37,
+      "timeOnSite": 255,
+      "comments": 25,
+      "likes": 54
+    }
+  },
+  {
+    "country": "Hong Kong",
+    "countryCode": "HK",
+    "flag": "🇭🇰",
+    "metrics": {
+      "views": 500,
+      "visitors": 350,
+      "bounceRate": 31,
+      "timeOnSite": 295,
+      "comments": 23,
+      "likes": 49
+    }
+  },
+  {
+    "country": "Israel",
+    "countryCode": "IL",
+    "flag": "🇮🇱",
+    "metrics": {
+      "views": 450,
+      "visitors": 315,
+      "bounceRate": 33,
+      "timeOnSite": 285,
+      "comments": 20,
+      "likes": 44
+    }
+  },
+  {
+    "country": "Mexico",
+    "countryCode": "MX",
+    "flag": "🇲🇽",
+    "metrics": {
+      "views": 400,
+      "visitors": 280,
+      "bounceRate": 44,
+      "timeOnSite": 210,
+      "comments": 18,
+      "likes": 39
+    }
+  },
+  {
+    "country": "Czech Republic",
+    "countryCode": "CZ",
+    "flag": "🇨🇿",
+    "metrics": {
+      "views": 350,
+      "visitors": 245,
+      "bounceRate": 38,
+      "timeOnSite": 250,
+      "comments": 16,
+      "likes": 34
+    }
+  },
+  {
+    "country": "Portugal",
+    "countryCode": "PT",
+    "flag": "🇵🇹",
+    "metrics": {
+      "views": 300,
+      "visitors": 210,
+      "bounceRate": 40,
+      "timeOnSite": 240,
+      "comments": 14,
+      "likes": 29
+    }
+  },
+  {
+    "country": "Taiwan",
+    "countryCode": "TW",
+    "flag": "🇹🇼",
+    "metrics": {
+      "views": 250,
+      "visitors": 175,
+      "bounceRate": 35,
+      "timeOnSite": 270,
+      "comments": 11,
+      "likes": 25
+    }
+  }
+]

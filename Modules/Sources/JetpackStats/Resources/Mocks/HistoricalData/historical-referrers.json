@@ -1,0 +1,370 @@
+[
+  {
+    "name": "Google Search",
+    "domain": "google.com",
+    "iconURL": "https://www.google.com/favicon.ico",
+    "children": [
+      {
+        "name": "best laptop 2024",
+        "domain": "google.com",
+        "iconURL": "https://www.google.com/favicon.ico",
+        "children": [],
+        "metrics": {
+          "views": 1800,
+          "visitors": 1440,
+          "bounceRate": 18,
+          "timeOnSite": 380,
+          "comments": 72,
+          "likes": 165
+        }
+      },
+      {
+        "name": "cybertruck problems",
+        "domain": "google.com",
+        "iconURL": "https://www.google.com/favicon.ico",
+        "children": [],
+        "metrics": {
+          "views": 1500,
+          "visitors": 1200,
+          "bounceRate": 22,
+          "timeOnSite": 340,
+          "comments": 58,
+          "likes": 132
+        }
+      },
+      {
+        "name": "apple vision pro review",
+        "domain": "google.com",
+        "iconURL": "https://www.google.com/favicon.ico",
+        "children": [],
+        "metrics": {
+          "views": 1200,
+          "visitors": 960,
+          "bounceRate": 25,
+          "timeOnSite": 310,
+          "comments": 48,
+          "likes": 108
+        }
+      }
+    ],
+    "metrics": {
+      "views": 8500,
+      "visitors": 6800,
+      "bounceRate": 20,
+      "timeOnSite": 350,
+      "comments": 340,
+      "likes": 780
+    }
+  },
+  {
+    "name": "Twitter/X",
+    "domain": "twitter.com",
+    "iconURL": "https://abs.twimg.com/favicons/twitter.3.ico",
+    "children": [
+      {
+        "name": "@mkbhd shared your article",
+        "domain": "twitter.com",
+        "iconURL": "https://abs.twimg.com/favicons/twitter.3.ico",
+        "children": [],
+        "metrics": {
+          "views": 2200,
+          "visitors": 1760,
+          "bounceRate": 28,
+          "timeOnSite": 260,
+          "comments": 88,
+          "likes": 198
+        }
+      },
+      {
+        "name": "@verge tweet thread",
+        "domain": "twitter.com",
+        "iconURL": "https://abs.twimg.com/favicons/twitter.3.ico",
+        "children": [],
+        "metrics": {
+          "views": 1850,
+          "visitors": 1480,
+          "bounceRate": 30,
+          "timeOnSite": 240,
+          "comments": 74,
+          "likes": 167
+        }
+      },
+      {
+        "name": "#TechTwitter discussion",
+        "domain": "twitter.com",
+        "iconURL": "https://abs.twimg.com/favicons/twitter.3.ico",
+        "children": [],
+        "metrics": {
+          "views": 950,
+          "visitors": 760,
+          "bounceRate": 35,
+          "timeOnSite": 200,
+          "comments": 38,
+          "likes": 86
+        }
+      }
+    ],
+    "metrics": {
+      "views": 6200,
+      "visitors": 4960,
+      "bounceRate": 32,
+      "timeOnSite": 230,
+      "comments": 248,
+      "likes": 558
+    }
+  },
+  {
+    "name": "Reddit",
+    "domain": "reddit.com",
+    "iconURL": "https://www.redditstatic.com/desktop2x/img/favicon/favicon-32x32.png",
+    "children": [
+      {
+        "name": "r/technology",
+        "domain": "reddit.com",
+        "iconURL": "https://www.redditstatic.com/desktop2x/img/favicon/favicon-32x32.png",
+        "children": [],
+        "metrics": {
+          "views": 1600,
+          "visitors": 1280,
+          "bounceRate": 26,
+          "timeOnSite": 320,
+          "comments": 96,
+          "likes": 224
+        }
+      },
+      {
+        "name": "r/gadgets",
+        "domain": "reddit.com",
+        "iconURL": "https://www.redditstatic.com/desktop2x/img/favicon/favicon-32x32.png",
+        "children": [],
+        "metrics": {
+          "views": 1200,
+          "visitors": 960,
+          "bounceRate": 28,
+          "timeOnSite": 290,
+          "comments": 72,
+          "likes": 168
+        }
+      },
+      {
+        "name": "r/apple",
+        "domain": "reddit.com",
+        "iconURL": "https://www.redditstatic.com/desktop2x/img/favicon/favicon-32x32.png",
+        "children": [],
+        "metrics": {
+          "views": 800,
+          "visitors": 640,
+          "bounceRate": 24,
+          "timeOnSite": 340,
+          "comments": 48,
+          "likes": 112
+        }
+      }
+    ],
+    "metrics": {
+      "views": 4800,
+      "visitors": 3840,
+      "bounceRate": 27,
+      "timeOnSite": 310,
+      "comments": 288,
+      "likes": 672
+    }
+  },
+  {
+    "name": "Hacker News",
+    "domain": "news.ycombinator.com",
+    "iconURL": "https://news.ycombinator.com/favicon.ico",
+    "children": [],
+    "metrics": {
+      "views": 3200,
+      "visitors": 2560,
+      "bounceRate": 15,
+      "timeOnSite": 420,
+      "comments": 192,
+      "likes": 448
+    }
+  },
+  {
+    "name": "LinkedIn",
+    "domain": "linkedin.com",
+    "iconURL": "https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca",
+    "children": [],
+    "metrics": {
+      "views": 1800,
+      "visitors": 1440,
+      "bounceRate": 35,
+      "timeOnSite": 250,
+      "comments": 72,
+      "likes": 162
+    }
+  },
+  {
+    "name": "YouTube",
+    "domain": "youtube.com",
+    "iconURL": "https://www.youtube.com/s/desktop/8a0c81e8/img/favicon_32x32.png",
+    "children": [
+      {
+        "name": "Tech review channels",
+        "domain": "youtube.com",
+        "iconURL": "https://www.youtube.com/s/desktop/8a0c81e8/img/favicon_32x32.png",
+        "children": [],
+        "metrics": {
+          "views": 850,
+          "visitors": 680,
+          "bounceRate": 40,
+          "timeOnSite": 180,
+          "comments": 34,
+          "likes": 77
+        }
+      }
+    ],
+    "metrics": {
+      "views": 1600,
+      "visitors": 1280,
+      "bounceRate": 42,
+      "timeOnSite": 170,
+      "comments": 64,
+      "likes": 144
+    }
+  },
+  {
+    "name": "Ars Technica",
+    "domain": "arstechnica.com",
+    "iconURL": "https://arstechnica.com/favicon.ico",
+    "children": [],
+    "metrics": {
+      "views": 1400,
+      "visitors": 1120,
+      "bounceRate": 20,
+      "timeOnSite": 380,
+      "comments": 84,
+      "likes": 196
+    }
+  },
+  {
+    "name": "The Register",
+    "domain": "theregister.com",
+    "iconURL": "https://www.theregister.com/favicon.ico",
+    "children": [],
+    "metrics": {
+      "views": 1200,
+      "visitors": 960,
+      "bounceRate": 18,
+      "timeOnSite": 390,
+      "comments": 72,
+      "likes": 168
+    }
+  },
+  {
+    "name": "Facebook",
+    "domain": "facebook.com",
+    "iconURL": "https://static.xx.fbcdn.net/rsrc.php/yD/r/d4ZIVX-5C-b.ico",
+    "children": [],
+    "metrics": {
+      "views": 1100,
+      "visitors": 880,
+      "bounceRate": 45,
+      "timeOnSite": 150,
+      "comments": 44,
+      "likes": 99
+    }
+  },
+  {
+    "name": "Mastodon",
+    "domain": "mastodon.social",
+    "iconURL": "https://mastodon.social/favicon.ico",
+    "children": [],
+    "metrics": {
+      "views": 900,
+      "visitors": 720,
+      "bounceRate": 25,
+      "timeOnSite": 280,
+      "comments": 54,
+      "likes": 126
+    }
+  },
+  {
+    "name": "GitHub",
+    "domain": "github.com",
+    "iconURL": "https://github.githubassets.com/favicons/favicon.svg",
+    "children": [],
+    "metrics": {
+      "views": 800,
+      "visitors": 640,
+      "bounceRate": 30,
+      "timeOnSite": 300,
+      "comments": 48,
+      "likes": 112
+    }
+  },
+  {
+    "name": "Lobsters",
+    "domain": "lobste.rs",
+    "iconURL": "https://lobste.rs/favicon.ico",
+    "children": [],
+    "metrics": {
+      "views": 600,
+      "visitors": 480,
+      "bounceRate": 22,
+      "timeOnSite": 360,
+      "comments": 36,
+      "likes": 84
+    }
+  },
+  {
+    "name": "Discord",
+    "domain": "discord.com",
+    "iconURL": "https://discord.com/assets/favicon.ico",
+    "children": [],
+    "metrics": {
+      "views": 500,
+      "visitors": 400,
+      "bounceRate": 38,
+      "timeOnSite": 200,
+      "comments": 20,
+      "likes": 45
+    }
+  },
+  {
+    "name": "Slack",
+    "domain": "slack.com",
+    "iconURL": "https://a.slack-edge.com/80588/marketing/img/meta/favicon-32.png",
+    "children": [],
+    "metrics": {
+      "views": 400,
+      "visitors": 320,
+      "bounceRate": 35,
+      "timeOnSite": 220,
+      "comments": 16,
+      "likes": 36
+    }
+  },
+  {
+    "name": "Direct/Bookmarks",
+    "domain": "direct",
+    "iconURL": null,
+    "children": [],
+    "metrics": {
+      "views": 3500,
+      "visitors": 2800,
+      "bounceRate": 15,
+      "timeOnSite": 400,
+      "comments": 140,
+      "likes": 315
+    }
+  },
+  {
+    "name": "Email Newsletter",
+    "domain": "email",
+    "iconURL": null,
+    "children": [],
+    "metrics": {
+      "views": 2800,
+      "visitors": 2240,
+      "bounceRate": 12,
+      "timeOnSite": 440,
+      "comments": 112,
+      "likes": 252
+    }
+  }
+]

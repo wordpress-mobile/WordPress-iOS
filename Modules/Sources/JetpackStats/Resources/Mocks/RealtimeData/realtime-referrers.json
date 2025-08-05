@@ -1,0 +1,134 @@
+[
+  {
+    "name": "Google Search",
+    "domain": "google.com",
+    "iconURL": "https://www.google.com/favicon.ico",
+    "isSpam": false,
+    "children": [
+      {
+        "name": "wordpress development tutorial",
+        "domain": "google.com",
+        "iconURL": "https://www.google.com/favicon.ico",
+        "isSpam": false,
+        "children": [],
+        "metrics": {
+          "views": 85
+        }
+      },
+      {
+        "name": "swift programming blog",
+        "domain": "google.com",
+        "iconURL": "https://www.google.com/favicon.ico",
+        "isSpam": false,
+        "children": [],
+        "metrics": {
+          "views": 75
+        }
+      },
+      {
+        "name": "ios app development",
+        "domain": "google.com",
+        "iconURL": "https://www.google.com/favicon.ico",
+        "isSpam": false,
+        "children": [],
+        "metrics": {
+          "views": 60
+        }
+      }
+    ],
+    "metrics": {
+      "views": 220
+    }
+  },
+  {
+    "name": "Twitter/X",
+    "domain": "twitter.com",
+    "iconURL": "https://abs.twimg.com/favicons/twitter.3.ico",
+    "isSpam": false,
+    "children": [
+      {
+        "name": "@wordpress shared your post",
+        "domain": "twitter.com",
+        "iconURL": "https://abs.twimg.com/favicons/twitter.3.ico",
+        "isSpam": false,
+        "children": [],
+        "metrics": {
+          "views": 100
+        }
+      },
+      {
+        "name": "@techblogger mentioned you",
+        "domain": "twitter.com",
+        "iconURL": "https://abs.twimg.com/favicons/twitter.3.ico",
+        "isSpam": false,
+        "children": [],
+        "metrics": {
+          "views": 60
+        }
+      }
+    ],
+    "metrics": {
+      "views": 160
+    }
+  },
+  {
+    "name": "Reddit",
+    "domain": "reddit.com",
+    "iconURL": "https://www.redditstatic.com/desktop2x/img/favicon/favicon-32x32.png",
+    "isSpam": false,
+    "children": [],
+    "metrics": {
+      "views": 130
+    }
+  },
+  {
+    "name": "Hacker News",
+    "domain": "news.ycombinator.com",
+    "iconURL": "https://news.ycombinator.com/favicon.ico",
+    "isSpam": false,
+    "children": [],
+    "metrics": {
+      "views": 100
+    }
+  },
+  {
+    "name": "Direct Traffic",
+    "domain": "direct",
+    "iconURL": null,
+    "isSpam": false,
+    "children": [],
+    "metrics": {
+      "views": 85
+    }
+  },
+  {
+    "name": "LinkedIn",
+    "domain": "linkedin.com",
+    "iconURL": "https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca",
+    "isSpam": false,
+    "children": [],
+    "metrics": {
+      "views": 70
+    }
+  },
+  {
+    "name": "Facebook",
+    "domain": "facebook.com",
+    "iconURL": "https://static.xx.fbcdn.net/rsrc.php/yD/r/d4ZIVX-5C-b.ico",
+    "isSpam": false,
+    "children": [],
+    "metrics": {
+      "views": 60
+    }
+  },
+  {
+    "name": "YouTube",
+    "domain": "youtube.com",
+    "iconURL": "https://www.youtube.com/s/desktop/8a0c81e8/img/favicon_32x32.png",
+    "isSpam": false,
+    "children": [],
+    "metrics": {
+      "views": 50
+    }
+  }
+]

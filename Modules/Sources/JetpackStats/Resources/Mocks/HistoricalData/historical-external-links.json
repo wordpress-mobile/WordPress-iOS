@@ -1,0 +1,307 @@
+[
+  {
+    "url": "https://apple.com",
+    "title": "Apple",
+    "children": [
+      {
+        "url": "https://apple.com/iphone-15-pro",
+        "title": "iPhone 15 Pro",
+        "children": [],
+        "metrics": {
+          "views": 2800,
+          "visitors": 2240
+        }
+      },
+      {
+        "url": "https://apple.com/vision-pro",
+        "title": "Apple Vision Pro",
+        "children": [],
+        "metrics": {
+          "views": 2200,
+          "visitors": 1760
+        }
+      },
+      {
+        "url": "https://apple.com/macbook-pro",
+        "title": "MacBook Pro",
+        "children": [],
+        "metrics": {
+          "views": 1600,
+          "visitors": 1280
+        }
+      }
+    ],
+    "metrics": {
+      "views": 8500,
+      "visitors": 6800
+    }
+  },
+  {
+    "url": "https://tesla.com",
+    "title": "Tesla",
+    "children": [
+      {
+        "url": "https://tesla.com/cybertruck",
+        "title": "Cybertruck",
+        "children": [],
+        "metrics": {
+          "views": 1800,
+          "visitors": 1440
+        }
+      },
+      {
+        "url": "https://tesla.com/model-s",
+        "title": "Model S",
+        "children": [],
+        "metrics": {
+          "views": 1200,
+          "visitors": 960
+        }
+      }
+    ],
+    "metrics": {
+      "views": 4200,
+      "visitors": 3360
+    }
+  },
+  {
+    "url": "https://amazon.com",
+    "title": "Amazon",
+    "children": [
+      {
+        "url": "https://amazon.com/dp/B09G9CJM1Z",
+        "title": "Brother Laser Printer",
+        "children": [],
+        "metrics": {
+          "views": 1500,
+          "visitors": 1200
+        }
+      }
+    ],
+    "metrics": {
+      "views": 3800,
+      "visitors": 3040
+    }
+  },
+  {
+    "url": "https://github.com",
+    "title": "GitHub",
+    "children": [
+      {
+        "url": "https://github.com/openai/chatgpt",
+        "title": "ChatGPT Repository",
+        "children": [],
+        "metrics": {
+          "views": 1100,
+          "visitors": 880
+        }
+      },
+      {
+        "url": "https://github.com/vercel/next.js",
+        "title": "Next.js",
+        "children": [],
+        "metrics": {
+          "views": 900,
+          "visitors": 720
+        }
+      }
+    ],
+    "metrics": {
+      "views": 3200,
+      "visitors": 2560
+    }
+  },
+  {
+    "url": "https://microsoft.com",
+    "title": "Microsoft",
+    "children": [
+      {
+        "url": "https://microsoft.com/en-us/microsoft-365",
+        "title": "Microsoft 365",
+        "children": [],
+        "metrics": {
+          "views": 800,
+          "visitors": 640
+        }
+      },
+      {
+        "url": "https://microsoft.com/surface",
+        "title": "Surface",
+        "children": [],
+        "metrics": {
+          "views": 600,
+          "visitors": 480
+        }
+      }
+    ],
+    "metrics": {
+      "views": 2800,
+      "visitors": 2240
+    }
+  },
+  {
+    "url": "https://google.com",
+    "title": "Google",
+    "children": [
+      {
+        "url": "https://store.google.com/product/pixel_8_pro",
+        "title": "Pixel 8 Pro",
+        "children": [],
+        "metrics": {
+          "views": 1000,
+          "visitors": 800
+        }
+      }
+    ],
+    "metrics": {
+      "views": 2600,
+      "visitors": 2080
+    }
+  },
+  {
+    "url": "https://samsung.com",
+    "title": "Samsung",
+    "children": [
+      {
+        "url": "https://samsung.com/smartphones/galaxy-s24-ultra",
+        "title": "Galaxy S24 Ultra",
+        "children": [],
+        "metrics": {
+          "views": 700,
+          "visitors": 560
+        }
+      }
+    ],
+    "metrics": {
+      "views": 2200,
+      "visitors": 1760
+    }
+  },
+  {
+    "url": "https://frame.work",
+    "title": "Framework",
+    "children": [],
+    "metrics": {
+      "views": 1800,
+      "visitors": 1440
+    }
+  },
+  {
+    "url": "https://nothing.tech",
+    "title": "Nothing",
+    "children": [],
+    "metrics": {
+      "views": 1600,
+      "visitors": 1280
+    }
+  },
+  {
+    "url": "https://store.steampowered.com",
+    "title": "Steam",
+    "children": [
+      {
+        "url": "https://store.steampowered.com/steamdeck",
+        "title": "Steam Deck",
+        "children": [],
+        "metrics": {
+          "views": 500,
+          "visitors": 400
+        }
+      }
+    ],
+    "metrics": {
+      "views": 1400,
+      "visitors": 1120
+    }
+  },
+  {
+    "url": "https://netflix.com",
+    "title": "Netflix",
+    "children": [],
+    "metrics": {
+      "views": 1200,
+      "visitors": 960
+    }
+  },
+  {
+    "url": "https://openai.com",
+    "title": "OpenAI",
+    "children": [],
+    "metrics": {
+      "views": 1100,
+      "visitors": 880
+    }
+  },
+  {
+    "url": "https://anthropic.com",
+    "title": "Anthropic",
+    "children": [],
+    "metrics": {
+      "views": 900,
+      "visitors": 720
+    }
+  },
+  {
+    "url": "https://meta.com",
+    "title": "Meta",
+    "children": [],
+    "metrics": {
+      "views": 800,
+      "visitors": 640
+    }
+  },
+  {
+    "url": "https://sony.com",
+    "title": "Sony",
+    "children": [],
+    "metrics": {
+      "views": 700,
+      "visitors": 560
+    }
+  },
+  {
+    "url": "https://dyson.com",
+    "title": "Dyson",
+    "children": [],
+    "metrics": {
+      "views": 600,
+      "visitors": 480
+    }
+  },
+  {
+    "url": "https://bestbuy.com",
+    "title": "Best Buy",
+    "children": [],
+    "metrics": {
+      "views": 500,
+      "visitors": 400
+    }
+  },
+  {
+    "url": "https://rabbit.tech",
+    "title": "Rabbit",
+    "children": [],
+    "metrics": {
+      "views": 400,
+      "visitors": 320
+    }
+  },
+  {
+    "url": "https://arc.net",
+    "title": "Arc Browser",
+    "children": [],
+    "metrics": {
+      "views": 350,
+      "visitors": 280
+    }
+  },
+  {
+    "url": "https://raspberrypi.com",
+    "title": "Raspberry Pi",
+    "children": [],
+    "metrics": {
+      "views": 300,
+      "visitors": 240
+    }
+  }
+]

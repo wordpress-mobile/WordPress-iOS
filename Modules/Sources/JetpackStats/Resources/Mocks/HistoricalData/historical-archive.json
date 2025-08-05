@@ -1,0 +1,344 @@
+[
+  {
+    "sectionName": "homepage",
+    "items": [
+      {
+        "href": "https://example.com/",
+        "value": "/",
+        "metrics": {
+          "views": 8500
+        }
+      }
+    ],
+    "metrics": {
+      "views": 8500
+    }
+  },
+  {
+    "sectionName": "categories",
+    "items": [
+      {
+        "href": "https://example.com/category/tech-news/",
+        "value": "tech-news",
+        "metrics": {
+          "views": 4200
+        }
+      },
+      {
+        "href": "https://example.com/category/reviews/",
+        "value": "reviews",
+        "metrics": {
+          "views": 3800
+        }
+      },
+      {
+        "href": "https://example.com/category/transportation/",
+        "value": "transportation",
+        "metrics": {
+          "views": 2800
+        }
+      },
+      {
+        "href": "https://example.com/category/ai/",
+        "value": "artificial-intelligence",
+        "metrics": {
+          "views": 2600
+        }
+      },
+      {
+        "href": "https://example.com/category/gaming/",
+        "value": "gaming",
+        "metrics": {
+          "views": 2200
+        }
+      },
+      {
+        "href": "https://example.com/category/apple/",
+        "value": "apple",
+        "metrics": {
+          "views": 2000
+        }
+      },
+      {
+        "href": "https://example.com/category/google/",
+        "value": "google",
+        "metrics": {
+          "views": 1600
+        }
+      },
+      {
+        "href": "https://example.com/category/microsoft/",
+        "value": "microsoft",
+        "metrics": {
+          "views": 1400
+        }
+      },
+      {
+        "href": "https://example.com/category/entertainment/",
+        "value": "entertainment",
+        "metrics": {
+          "views": 1200
+        }
+      },
+      {
+        "href": "https://example.com/category/science/",
+        "value": "science",
+        "metrics": {
+          "views": 800
+        }
+      }
+    ],
+    "metrics": {
+      "views": 22600
+    }
+  },
+  {
+    "sectionName": "tags",
+    "items": [
+      {
+        "href": "https://example.com/tag/iphone/",
+        "value": "iphone",
+        "metrics": {
+          "views": 1800
+        }
+      },
+      {
+        "href": "https://example.com/tag/android/",
+        "value": "android",
+        "metrics": {
+          "views": 1600
+        }
+      },
+      {
+        "href": "https://example.com/tag/tesla/",
+        "value": "tesla",
+        "metrics": {
+          "views": 1400
+        }
+      },
+      {
+        "href": "https://example.com/tag/cybertruck/",
+        "value": "cybertruck",
+        "metrics": {
+          "views": 1200
+        }
+      },
+      {
+        "href": "https://example.com/tag/vr/",
+        "value": "virtual-reality",
+        "metrics": {
+          "views": 1000
+        }
+      },
+      {
+        "href": "https://example.com/tag/laptops/",
+        "value": "laptops",
+        "metrics": {
+          "views": 900
+        }
+      },
+      {
+        "href": "https://example.com/tag/ai/",
+        "value": "ai",
+        "metrics": {
+          "views": 850
+        }
+      },
+      {
+        "href": "https://example.com/tag/chatgpt/",
+        "value": "chatgpt",
+        "metrics": {
+          "views": 800
+        }
+      },
+      {
+        "href": "https://example.com/tag/streaming/",
+        "value": "streaming",
+        "metrics": {
+          "views": 600
+        }
+      },
+      {
+        "href": "https://example.com/tag/privacy/",
+        "value": "privacy",
+        "metrics": {
+          "views": 500
+        }
+      }
+    ],
+    "metrics": {
+      "views": 10650
+    }
+  },
+  {
+    "sectionName": "archives",
+    "items": [
+      {
+        "href": "https://example.com/2024/11/",
+        "value": "November 2024",
+        "metrics": {
+          "views": 3200
+        }
+      },
+      {
+        "href": "https://example.com/2024/10/",
+        "value": "October 2024",
+        "metrics": {
+          "views": 4800
+        }
+      },
+      {
+        "href": "https://example.com/2024/09/",
+        "value": "September 2024",
+        "metrics": {
+          "views": 3600
+        }
+      },
+      {
+        "href": "https://example.com/2024/08/",
+        "value": "August 2024",
+        "metrics": {
+          "views": 2800
+        }
+      },
+      {
+        "href": "https://example.com/2024/07/",
+        "value": "July 2024",
+        "metrics": {
+          "views": 2400
+        }
+      },
+      {
+        "href": "https://example.com/2024/06/",
+        "value": "June 2024",
+        "metrics": {
+          "views": 2000
+        }
+      }
+    ],
+    "metrics": {
+      "views": 18800
+    }
+  },
+  {
+    "sectionName": "author",
+    "items": [
+      {
+        "href": "https://example.com/author/alex-johnson/",
+        "value": "alex-johnson",
+        "metrics": {
+          "views": 2800
+        }
+      },
+      {
+        "href": "https://example.com/author/chloe-zhang/",
+        "value": "chloe-zhang",
+        "metrics": {
+          "views": 1800
+        }
+      },
+      {
+        "href": "https://example.com/author/jordan-davis/",
+        "value": "jordan-davis",
+        "metrics": {
+          "views": 1600
+        }
+      },
+      {
+        "href": "https://example.com/author/sofia-rodriguez/",
+        "value": "sofia-rodriguez",
+        "metrics": {
+          "views": 1400
+        }
+      },
+      {
+        "href": "https://example.com/author/morgan-smith/",
+        "value": "morgan-smith",
+        "metrics": {
+          "views": 1200
+        }
+      },
+      {
+        "href": "https://example.com/author/emma-thompson/",
+        "value": "emma-thompson",
+        "metrics": {
+          "views": 1000
+        }
+      },
+      {
+        "href": "https://example.com/author/riley-martinez/",
+        "value": "riley-martinez",
+        "metrics": {
+          "views": 900
+        }
+      },
+      {
+        "href": "https://example.com/author/jamie-lee/",
+        "value": "jamie-lee",
+        "metrics": {
+          "views": 800
+        }
+      },
+      {
+        "href": "https://example.com/author/avery-taylor/",
+        "value": "avery-taylor",
+        "metrics": {
+          "views": 700
+        }
+      },
+      {
+        "href": "https://example.com/author/quinn-anderson/",
+        "value": "quinn-anderson",
+        "metrics": {
+          "views": 600
+        }
+      }
+    ],
+    "metrics": {
+      "views": 12800
+    }
+  },
+  {
+    "sectionName": "other",
+    "items": [
+      {
+        "href": "https://example.com/search/",
+        "value": "/search/",
+        "metrics": {
+          "views": 1500
+        }
+      },
+      {
+        "href": "https://example.com/rss/",
+        "value": "/rss/",
+        "metrics": {
+          "views": 800
+        }
+      },
+      {
+        "href": "https://example.com/sitemap.xml",
+        "value": "/sitemap.xml",
+        "metrics": {
+          "views": 400
+        }
+      },
+      {
+        "href": "https://example.com/wp-admin/",
+        "value": "/wp-admin/",
+        "metrics": {
+          "views": 200
+        }
+      },
+      {
+        "href": "https://example.com/robots.txt",
+        "value": "/robots.txt",
+        "metrics": {
+          "views": 100
+        }
+      }
+    ],
+    "metrics": {
+      "views": 3000
+    }
+  }
+]
