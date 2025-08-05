@@ -5,7 +5,6 @@
 - (NSMutableDictionary *)dictionaryFromQueryString;
 - (NSString *)stringByReplacingHTMLEmoticonsWithEmoji;
 - (NSString *)stringByStrippingHTML;
-- (NSString *)stringByEllipsizingWithMaxLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords;
 - (BOOL)isWordPressComPath;
 
 /**

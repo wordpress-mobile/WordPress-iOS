@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import CocoaLumberjackSwift
+import WordPressShared
 
 @objc(Post)
 public class Post: AbstractPost {
@@ -223,7 +224,7 @@ public class Post: AbstractPost {
             if let preview = PostPreviewCache.shared.content[content] {
                 return preview
             }
-            let preview = content.summarized().withCollapsedNewlines()
+            let preview = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 200).withCollapsedNewlines()
             PostPreviewCache.shared.content[content] = preview
             return preview
         } else {
@@ -237,7 +238,7 @@ public class Post: AbstractPost {
             .stringByDecodingXMLCharacters()
             .strippingHTML()
 
-        if title.count == 0 && contentPreviewForDisplay().count == 0 && !hasRemote() {
+        if title.count == 0 && !hasRemote() && contentPreviewForDisplay().count == 0 {
             title = NSLocalizedString("(no title)", comment: "Lets a user know that a local draft does not have a title.")
         }
 
