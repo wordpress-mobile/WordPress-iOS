@@ -247,14 +247,14 @@ class PostTests: CoreDataTestCase {
     func testThatContentPreviewForDisplayWorks() {
         let post = newTestPost()
 
-        post.content = "<HTML>some contents&nbsp;go here</HTML>"
+        post.content = "<p>some contents&nbsp;go here</p>"
         XCTAssertEqual(post.contentPreviewForDisplay(), "some contents\u{A0}go here")
     }
 
     func testThatContentPreviewForDisplayWorksWithExcerpt() {
         let post = newTestPost()
 
-        post.mt_excerpt = "<HTML>some contents&nbsp;go here</HTML>"
+        post.mt_excerpt = "<p>some contents&nbsp;go here</p>"
         post.content = "blah blah"
         XCTAssertEqual(post.contentPreviewForDisplay(), "some contents\u{A0}go here")
     }
