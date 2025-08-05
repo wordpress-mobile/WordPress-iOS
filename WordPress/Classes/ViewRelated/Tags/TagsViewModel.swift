@@ -11,13 +11,23 @@ class TagsViewModel: ObservableObject {
     @Published var response: TagsPaginatedResponse?
     @Published var isLoading = false
     @Published var error: Error?
+    @Published private(set) var selectedTags: [String] = [] {
+        didSet {
+            onSelectedTagsChanged?(selectedTags.joined(separator: ", "))
+        }
+    }
+    private var selectedTagsSet: Set<String> = []
 
-    let blog: Blog
     private let tagsService: TagsService
+    var onSelectedTagsChanged: ((String) -> Void)?
 
-    init(blog: Blog) {
-        self.blog = blog
+    init(blog: Blog, selectedTags: String? = nil, onSelectedTagsChanged: ((String) -> Void)? = nil) {
         self.tagsService = TagsService(blog: blog)
+        self.selectedTags = selectedTags?.split(separator: ",").map {
+            $0.trimmingCharacters(in: .whitespacesAndNewlines)
+        } ?? []
+        self.selectedTagsSet = Set(self.selectedTags.map { $0.lowercased() })
+        self.onSelectedTagsChanged = onSelectedTagsChanged
     }
 
     func onAppear() {
@@ -77,5 +87,45 @@ class TagsViewModel: ObservableObject {
                 nextPage: nil
             )
         }
+    }
+
+    func toggleSelection(for tag: RemotePostTag) {
+        guard let tagName = tag.name else { return }
+        let lowercasedTagName = tagName.lowercased()
+        if selectedTagsSet.contains(lowercasedTagName) {
+            selectedTagsSet.remove(lowercasedTagName)
+            selectedTags.removeAll { $0.lowercased() == lowercasedTagName }
+        } else {
+            selectedTagsSet.insert(lowercasedTagName)
+            selectedTags.append(tagName)
+        }
+    }
+
+    func addNewTag(named name: String) {
+        let lowercasedName = name.lowercased()
+        guard !selectedTagsSet.contains(lowercasedName) else { return }
+
+        selectedTagsSet.insert(lowercasedName)
+        selectedTags.append(name)
+
+        // Create a new tag in the background, which is consistent with the web editor.
+        Task {
+            do {
+                _ = try await tagsService.createTag(named: name)
+            } catch {
+                removeSelectedTag(name)
+            }
+        }
+    }
+
+    func isSelected(_ tag: RemotePostTag) -> Bool {
+        guard let tagName = tag.name else { return false }
+        return selectedTagsSet.contains(tagName.lowercased())
+    }
+
+    func removeSelectedTag(_ tagName: String) {
+        let lowercasedTagName = tagName.lowercased()
+        selectedTagsSet.remove(lowercasedTagName)
+        selectedTags.removeAll { $0.lowercased() == lowercasedTagName }
     }
 }

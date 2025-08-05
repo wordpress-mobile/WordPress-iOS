@@ -33,7 +33,7 @@ struct AddSiteController {
     }
 
     func showSelfHostedSiteLoginScreen() {
-        guard FeatureFlag.authenticateUsingApplicationPassword.enabled else {
+        guard FeatureFlag.allowApplicationPasswords.enabled else {
             WordPressAuthenticator.showLoginForSelfHostedSite(viewController)
             return
         }

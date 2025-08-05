@@ -155,7 +155,6 @@ final class BlogDashboardViewModel {
             completion?(cards)
         }, failure: { [weak self] cards in
             self?.viewController?.stopLoading()
-            self?.loadingFailure()
             self?.updateCurrentCards(cards: cards)
 
             completion?(cards)
@@ -244,15 +243,6 @@ private extension BlogDashboardViewModel {
 }
 
 // MARK: - Ghost/Skeleton cards and failures
-
-private extension BlogDashboardViewModel {
-
-    func loadingFailure() {
-        if blog.dashboardState.hasCachedData {
-            viewController?.loadingFailure()
-        }
-    }
-}
 
 private extension Collection where Element == DashboardCardModel {
     var hasDrafts: Bool {

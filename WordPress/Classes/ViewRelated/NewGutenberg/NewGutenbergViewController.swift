@@ -6,6 +6,7 @@ import GutenbergKit
 import SafariServices
 import WordPressData
 import WordPressShared
+import WebKit
 
 class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
@@ -157,11 +158,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         configureNavigationBar()
         refreshInterface()
 
-        // Show activity indicator while fetching settings
-        showActivityIndicator()
-
-        // Fetch block editor settings
-        fetchBlockEditorSettings()
+        setupEditor()
 
         // TODO: reimplement
 //        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
@@ -299,14 +296,12 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         activityIndicator = nil
     }
 
-    // MARK: - Block Editor Settings
+    // MARK: - Editor Setup
 
-    private func fetchBlockEditorSettings() {
-        let service = RawBlockEditorSettingsService.getService(forBlog: post.blog)
-        service.refreshSettings()
+    private func setupEditor() {
+        showActivityIndicator()
 
         Task { @MainActor in
-            // Start the editor with default settings after 3 seconds
             let timeoutTask = Task {
                 try await Task.sleep(nanoseconds: 3_000_000_000) // 3 seconds
                 if !Task.isCancelled {
@@ -314,14 +309,55 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
                 }
             }
 
-            do {
-                let settings = try await service.getSettings()
-                timeoutTask.cancel()
-                startEditor(with: settings)
-            } catch {
-                timeoutTask.cancel()
-                DDLogError("Error fetching block editor settings: \(error)")
-                startEditor()
+            async let settingsResult = fetchBlockEditorSettings()
+            async let cookiesResult = loadAuthenticationCookiesAsync()
+
+            let settings = await settingsResult
+            let cookiesLoaded = await cookiesResult
+
+            timeoutTask.cancel()
+
+            if settings == nil {
+                DDLogError("Failed fetching block editor settings")
+            }
+            if !cookiesLoaded {
+                DDLogWarn("Failed loading Authentication cookies")
+            }
+
+            startEditor(with: settings)
+        }
+    }
+
+    private func fetchBlockEditorSettings() async -> [String: Any]? {
+        let service = RawBlockEditorSettingsService.getService(forBlog: post.blog)
+        service.refreshSettings()
+
+        do {
+            let settings = try await service.getSettings()
+            return settings
+        } catch {
+            return nil
+        }
+    }
+
+    private func loadAuthenticationCookiesAsync() async -> Bool {
+        guard post.blog.isPrivate() else {
+            return true
+        }
+
+        guard let authenticator = RequestAuthenticator(blog: post.blog),
+            let blogURL = post.blog.url,
+            let authURL = URL(string: blogURL) else {
+            return false
+        }
+
+        let cookieJar = WKWebsiteDataStore.default().httpCookieStore
+
+        return await withCheckedContinuation { continuation in
+            // Always call authenticator.request() to ensure cookies are properly loaded into WKWebView
+            authenticator.request(url: authURL, cookieJar: cookieJar) { _ in
+                DDLogInfo("Authentication cookies loaded into shared cookie store for GutenbergKit")
+                continuation.resume(returning: true)
             }
         }
     }
@@ -819,27 +855,6 @@ private extension NewGutenbergViewController {
     }
 }
 
-// Block Editor Settings
-extension NewGutenbergViewController {
-
-    private func fetchBlockSettings() {
-        guard let service = editorSettingsService else {
-            return // TODO: when can it happen?
-        }
-        service.fetchSettings({ [weak self] result in
-            switch result {
-            case .success(let response):
-                if response.hasChanges {
-                    // TODO: inject in hte editor
-                    // self.gutenberg.updateEditorSettings(response.blockEditorSettings)
-                }
-            case .failure(let err):
-                DDLogError("Error fetching settings: \(err)")
-            }
-        })
-    }
-}
-
 extension EditorConfiguration {
     init(blog: Blog) {
         let selfHostedApiUrl = blog.restApiRootURL ?? blog.url(withPath: "wp-json/")
@@ -864,9 +879,9 @@ extension EditorConfiguration {
         var siteApiNamespace: [String] = []
         if isWPComSite {
             if let siteId {
-                siteApiNamespace.append("sites/\(siteId)")
+                siteApiNamespace.append("sites/\(siteId)/")
             }
-            siteApiNamespace.append("sites/\(siteDomain)")
+            siteApiNamespace.append("sites/\(siteDomain)/")
         }
 
         self = EditorConfiguration()

@@ -1,38 +1,22 @@
 {
   "request": {
     "method": "GET",
-    "urlPath": "/rest/v1.1/sites/106707880/taxonomies/post_tag/terms/",
-    "queryParameters": {
-      "number": {
-        "equalTo": "1000"
-      },
-      "locale": {
-        "matches": "(.*)"
-      }
-    }
+    "urlPath": "/wp/v2/sites/106707880/tags"
   },
   "response": {
     "status": 200,
-    "jsonBody": {
-      "found": 1,
-      "terms": [
-        {
-          "ID": 2500,
-          "name": "tag",
-          "slug": "tag",
-          "description": "",
-          "post_count": 1,
-          "feed_url": "https://tricountyrealestate.wordpress.com/tag/tag/feed/",
-          "meta": {
-            "links": {
-              "self": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/tags/slug:tag",
-              "help": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880/tags/slug:tag/help",
-              "site": "{{request.requestLine.baseUrl}}/rest/v1.1/sites/106707880"
-            }
-          }
-        }
-      ]
-    },
+    "jsonBody": [
+      {
+        "id": 2500,
+        "count": 1,
+        "description": "",
+        "link": "https://tricountyrealestate.wordpress.com/tag/tag/",
+        "name": "tag",
+        "slug": "tag",
+        "taxonomy": "post_tag",
+        "meta": []
+      }
+    ],
     "headers": {
       "Content-Type": "application/json",
       "Connection": "keep-alive",

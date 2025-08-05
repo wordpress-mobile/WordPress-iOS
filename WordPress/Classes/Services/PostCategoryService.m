@@ -180,6 +180,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog {
+    TaxonomyServiceRemoteCoreREST *instance = [[TaxonomyServiceRemoteCoreREST alloc] initWithBlog:blog];
+    if (instance != nil) {
+        return instance;
+    }
+
     if ([blog supports:BlogFeatureWPComRESTAPI]) {
         if (blog.wordPressComRestApi) {
             return [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];

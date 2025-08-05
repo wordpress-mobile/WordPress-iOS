@@ -7,9 +7,41 @@ import WordPressData
 import WordPressKit
 import WordPressAuthenticator
 import WordPressShared
+import BuildSettingsKit
 import SVProgressHUD
 
 struct SelfHostedSiteAuthenticator {
+
+    static var wordPressAppId: WpUuid {
+        // The following UUIDs must be UUID v4.
+        let uuid = switch BuildSettings.current.brand {
+        case .wordpress:
+            "a9cb72ed-311b-4f01-a0ac-a7af563d103e"
+        case .jetpack:
+            "7088f42d-34e9-4402-ab50-b506b819f3e4"
+        case .reader:
+            "d7753a1f-ec90-4fb5-80db-951929239796"
+        }
+
+        return try! WpUuid.parse(input: uuid)
+    }
+
+    static var wordPressAppName: String {
+        let appName: String
+        switch BuildSettings.current.brand {
+        case .wordpress:
+            appName = "WordPress"
+        case .jetpack:
+            appName = "Jetpack"
+        case .reader:
+            appName = "WordPress Reader"
+        }
+
+        let deviceName = UIDevice.current.name
+        let timestamp = ISO8601DateFormatter.string(from: .now, timeZone: .current, formatOptions: .withInternetDateTime)
+
+        return "\(appName) iOS app on \(deviceName) (\(timestamp))"
+    }
 
     static let applicationPasswordUpdated = Foundation.Notification.Name(rawValue: "SelfHostedSiteAuthenticator.applicationPasswordUpdated")
 
@@ -114,23 +146,11 @@ struct SelfHostedSiteAuthenticator {
 
     @MainActor
     private func authenticate(details: AutoDiscoveryAttemptSuccess, from viewController: UIViewController) async throws(SignInError) -> (apiRootURL: URL, credentials: WpApiApplicationPasswordDetails) {
-        let appId: WpUuid
-        let appName: String
-
-        if AppConfiguration.isJetpack {
-            appId = try! WpUuid.parse(input: "7088f42d-34e9-4402-ab50-b506b819f3e4")
-            appName = "Jetpack iOS"
-        } else {
-            appId = try! WpUuid.parse(input: "a9cb72ed-311b-4f01-a0ac-a7af563d103e")
-            appName = "WordPress iOS"
-        }
-
-        let deviceName = UIDevice.current.name
-        let timestamp = ISO8601DateFormatter.string(from: .now, timeZone: .current, formatOptions: .withInternetDateTime)
-        let appNameValue = "\(appName) - \(deviceName) (\(timestamp))"
+        let appId = Self.wordPressAppId
+        let appName = Self.wordPressAppName
 
         do {
-            let loginURL = details.loginURL(for: .init(id: appId, name: appNameValue, callbackUrl: SelfHostedSiteAuthenticator.callbackURL.absoluteString))
+            let loginURL = details.loginURL(for: .init(id: appId, name: appName, callbackUrl: SelfHostedSiteAuthenticator.callbackURL.absoluteString))
             let callback = try await authorize(url: loginURL, callbackURL: SelfHostedSiteAuthenticator.callbackURL, from: viewController)
             return (details.apiRootUrl.asURL(), try internalClient.credentials(from: callback))
         } catch {
@@ -187,6 +207,8 @@ struct SelfHostedSiteAuthenticator {
                 blogID: context.blogID,
                 in: ContextManager.shared
             )
+
+            try await ApplicationPasswordRepository.shared.saveApplicationPassword(of: blog)
         } catch {
             throw .savingSiteFailure
         }

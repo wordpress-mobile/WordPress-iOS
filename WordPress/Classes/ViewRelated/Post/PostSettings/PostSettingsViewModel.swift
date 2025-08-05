@@ -248,11 +248,7 @@ final class PostSettingsViewModel: ObservableObject {
     }
 
     func showTagsPicker() {
-        let tagsVC = PostTagPickerViewController(
-            tags: settings.tags,
-            blog: post.blog
-        )
-        tagsVC.onValueChanged = { [weak self] newTagsString in
+        let tagsVC = TagsViewController(blog: post.blog, selectedTags: settings.tags) { [weak self] newTagsString in
             self?.settings.tags = newTagsString
         }
         viewController?.navigationController?.pushViewController(tagsVC, animated: true)
