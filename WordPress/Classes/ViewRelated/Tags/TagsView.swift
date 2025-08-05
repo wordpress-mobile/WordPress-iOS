@@ -34,6 +34,9 @@ struct TagsView: View {
                 .submitLabel(.return)
                 .onSubmit(addTag)
                 .accessibilityIdentifier("add-tags")
+                .onChange(of: viewModel.searchText) { newValue in
+                    handleTextChange(newValue)
+                }
 
             if !viewModel.searchText.trim().isEmpty {
                 Button(action: addTag) {
@@ -48,6 +51,25 @@ struct TagsView: View {
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .padding(.horizontal)
         .padding(.top, 8)
+    }
+
+    private func handleTextChange(_ newValue: String) {
+        let components = newValue.components(separatedBy: ",")
+        guard components.count >= 2 else { return }
+
+        // Add all text before a comma as new tags.
+        for index in 0..<components.count - 1 {
+            let tagToAdd = components[index].trim()
+            if !tagToAdd.isEmpty {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    viewModel.addNewTag(named: tagToAdd)
+                }
+            }
+        }
+
+        // Keep the last component as the remaining text in the field
+        let remainingText = components.last?.trim() ?? ""
+        viewModel.searchText = remainingText
     }
 
     private func addTag() {
