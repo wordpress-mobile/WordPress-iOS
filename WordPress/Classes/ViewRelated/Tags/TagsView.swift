@@ -9,6 +9,13 @@ struct TagsView: View {
 
     @State private var showingAddTagModal = false
 
+    var allowAddingTagsFromTextField: Bool {
+        if case .selection = viewModel.mode {
+            return true
+        }
+        return false
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if case .selection = viewModel.mode {
@@ -55,17 +62,24 @@ struct TagsView: View {
     @ViewBuilder
     private var searchField: some View {
         HStack {
-            TextField(Strings.searchPlaceholder, text: $viewModel.searchText)
+            let placeholder = allowAddingTagsFromTextField ? Strings.searchOrAddTagsPlaceholder : Strings.searchPlaceholder
+            let textField = TextField(placeholder, text: $viewModel.searchText)
                 .focused($isTextFieldFocused)
                 .textInputAutocapitalization(.never)
                 .submitLabel(.return)
-                .onSubmit(addTag)
                 .accessibilityIdentifier("add-tags")
-                .onChange(of: viewModel.searchText) { newValue in
-                    handleTextChange(newValue)
-                }
 
-            if !viewModel.searchText.trim().isEmpty {
+            if allowAddingTagsFromTextField {
+                textField
+                    .onSubmit(addTag)
+                    .onChange(of: viewModel.searchText) { newValue in
+                        handleTextChange(newValue)
+                    }
+            } else {
+                textField
+            }
+
+            if allowAddingTagsFromTextField, !viewModel.searchText.trim().isEmpty {
                 Button(action: addTag) {
                     Image(systemName: "plus")
                 }
@@ -408,6 +422,12 @@ private enum Strings {
     )
 
     static let searchPlaceholder = NSLocalizedString(
+        "tags.search.placeholder",
+        value: "Search tags",
+        comment: "Placeholder text for the tag search field"
+    )
+
+    static let searchOrAddTagsPlaceholder = NSLocalizedString(
         "tags.search.placeholder",
         value: "Search or add tags",
         comment: "Placeholder text for the tag search field"
