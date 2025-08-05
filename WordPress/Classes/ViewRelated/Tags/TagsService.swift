@@ -65,10 +65,6 @@ class TagsService {
     }
 
     func createTag(named name: String) async throws -> RemotePostTag {
-        guard let remote else {
-            throw TagsServiceError.noRemoteService
-        }
-
         // Do not create a new tag if a tag with the same name already exists.
         let existing = try await searchTags(with: name)
             .first { $0.name.compare(name, options: .caseInsensitive) == .orderedSame }
