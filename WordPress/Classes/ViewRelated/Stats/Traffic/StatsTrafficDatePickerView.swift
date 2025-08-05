@@ -91,7 +91,7 @@ private extension StatsPeriodUnit {
     var label: String {
         switch self {
         case .hour:
-            fatalError("unsupported")
+            return NSLocalizedString("stats.traffic.hours", value: "Hours", comment: "The label for the option to show Stats Traffic chart for Days.")
         case .day:
             return NSLocalizedString("stats.traffic.days", value: "Days", comment: "The label for the option to show Stats Traffic chart for Days.")
         case .week:

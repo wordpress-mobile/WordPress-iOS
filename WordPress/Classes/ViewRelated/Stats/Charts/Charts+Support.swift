@@ -1,6 +1,7 @@
 import UIKit
 import DGCharts
 import WordPressKit
+import WordPressShared
 
 // MARK: - Charts extensions
 
@@ -117,7 +118,8 @@ extension StatsPeriodUnit {
     var analyticsGranularity: BarChartAnalyticsPropertyGranularityValue {
         switch self {
         case .hour:
-            fatalError("unsupported")
+            wpAssertionFailure("StatsPeriodHelper.hour period is unsupported in the legacy stats")
+            return .days
         case .day:
             return .days
         case .week:
@@ -132,7 +134,8 @@ extension StatsPeriodUnit {
     var analyticsGranularityLine: LineChartAnalyticsPropertyGranularityValue {
         switch self {
         case .hour:
-            fatalError("unsupported")
+            wpAssertionFailure("StatsPeriodHelper.hour period is unsupported in the legacy stats")
+            return .days
         case .day:
             return .days
         case .week:

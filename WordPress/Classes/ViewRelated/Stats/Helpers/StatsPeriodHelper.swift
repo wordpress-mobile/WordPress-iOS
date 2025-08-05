@@ -1,5 +1,6 @@
 import Foundation
 import WordPressKit
+import WordPressShared
 
 class StatsPeriodHelper {
     private lazy var calendar: Calendar = {
@@ -21,7 +22,8 @@ class StatsPeriodHelper {
 
         switch period {
         case .hour:
-            fatalError("unsupported")
+            wpAssertionFailure("StatsPeriodHelper.hour period is unsupported in the legacy stats")
+            return date > oldestDate
         case .day:
             return date > oldestDate
         case .week:
@@ -50,7 +52,8 @@ class StatsPeriodHelper {
 
         switch period {
         case .hour:
-            fatalError("unsupported")
+            wpAssertionFailure("StatsPeriodHelper.hour period is unsupported in the legacy stats")
+            return date < currentDate.normalizedDate()
         case .day:
             return date < currentDate.normalizedDate()
         case .week:
@@ -75,7 +78,8 @@ class StatsPeriodHelper {
     func endDate(from intervalStartDate: Date, period: StatsPeriodUnit) -> Date {
         switch period {
         case .hour:
-            fatalError("unsupported")
+            wpAssertionFailure("StatsPeriodHelper.hour period is unsupported in the legacy stats")
+            return intervalStartDate.normalizedDate()
         case .day:
             return intervalStartDate.normalizedDate()
         case .week:
@@ -110,7 +114,8 @@ class StatsPeriodHelper {
 
         switch unit {
         case .hour:
-            fatalError("unsupported")
+            wpAssertionFailure("StatsPeriodHelper.hour period is unsupported in the legacy stats")
+            return adjustedDate.normalizedDate()
 
         case .day:
             return adjustedDate.normalizedDate()

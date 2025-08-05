@@ -203,7 +203,8 @@ private extension SiteStatsTableHeaderView {
 
         switch period {
         case .hour:
-            fatalError("unsupported")
+            wpAssertionFailure("StatsPeriodHelper.hour period is unsupported in the legacy stats")
+            return (dateFormatter.string(from: date), nil)
         case .day, .month, .year:
             return (dateFormatter.string(from: date), nil)
         case .week:
