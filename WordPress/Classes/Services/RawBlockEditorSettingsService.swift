@@ -35,10 +35,9 @@ final class RawBlockEditorSettingsService {
             guard let dictionary = response as? [String: Any] else {
                 throw NSError(domain: "RawBlockEditorSettingsService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
             }
-            let objectID = TaggedManagedObjectID(blog)
-            try? await ContextManager.shared.performAndSave { context in
-                let blog = try context.existingObject(with: objectID)
-                blog.setBlockEditorSettings(dictionary)
+            let blogID = TaggedManagedObjectID(blog)
+            Task {
+                await saveSettingsInBackground(dictionary, for: blogID)
             }
             return dictionary
         case .failure(let error):
@@ -76,9 +75,18 @@ final class RawBlockEditorSettingsService {
     @MainActor
     func getSettings() async throws -> [String: Any] {
         // Return cached settings if available
-        if let cachedSettings = blog.getBlockEditorSettings() {
+        let blogID = TaggedManagedObjectID(blog)
+        if let cachedSettings = await loadSettingsInBackground(for: blogID) {
             return cachedSettings
         }
         return try await fetchSettings()
     }
+}
+
+private func saveSettingsInBackground(_ settings: [String: Any], for blogID: TaggedManagedObjectID<Blog>) async {
+    BlockEditorCache.shared.saveBlockSettings(settings, for: blogID)
+}
+
+private func loadSettingsInBackground(for blogID: TaggedManagedObjectID<Blog>) async -> [String: Any]? {
+    BlockEditorCache.shared.getBlockSettings(for: blogID)
 }
