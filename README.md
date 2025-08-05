@@ -2,6 +2,8 @@
 
 ## Build Instructions
 
+Hello
+
 Please refer to the sections below for more detailed information. The instructions assume the work is performed from a command line inside the repository.
 
 ### Getting Started
