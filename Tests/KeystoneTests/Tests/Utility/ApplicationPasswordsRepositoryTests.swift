@@ -58,6 +58,23 @@ struct ApplicationPasswordsRepositoryTests {
     }
 
     @Test
+    func selfHostedSiteSonarQubeTest() async throws {
+        let blog = try await createSelfHostedSite()
+
+        stubApiDiscovery(siteHost: "www.example.com")
+        stubSelfHostedSiteWpV2GetUser()
+        stubSelfHostedSiteCreateApplicationPassword(host: "www.example.com", password: "1234 5678")
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        try await repository.createPasswordIfNeeded(for: blog)
+
+        let password = try await coreDataStack.performQuery { context in
+            try context.existingObject(with: blog).getApplicationToken(using: keychain)
+        }
+        #expect(password == "1234 5678")
+    }
+
+    @Test
     func selfHostedSiteWithInaccessibleRestApi() async throws {
         let blog = try await createSelfHostedSite()
 
