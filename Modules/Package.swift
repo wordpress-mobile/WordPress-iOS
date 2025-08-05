@@ -11,6 +11,7 @@ let package = Package(
         .library(name: "AsyncImageKit", targets: ["AsyncImageKit"]),
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
         .library(name: "FormattableContentKit", targets: ["FormattableContentKit"]),
+        .library(name: "JetpackStats", targets: ["JetpackStats"]),
         .library(name: "JetpackStatsWidgetsCore", targets: ["JetpackStatsWidgetsCore"]),
         .library(name: "NotificationServiceExtensionCore", targets: ["NotificationServiceExtensionCore"]),
         .library(name: "ShareExtensionCore", targets: ["ShareExtensionCore"]),
@@ -49,7 +50,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"),
         .package(
             url: "https://github.com/wordpress-mobile/WordPressKit-iOS",
-            revision: "ae3961ce89ac0c43a90e88d4963a04aa92008443" // see wpios-edition branch
+            revision: "440d94e3a3d6f9f39035a371984e088a2fb42a32" // see wpios-edition branch
         ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
@@ -92,6 +93,14 @@ let package = Package(
             ],
             // Set to v5 to avoid @Sendable warnings and errors
             swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .target(
+            name: "JetpackStats",
+            dependencies: [
+                "WordPressUI",
+                .product(name: "WordPressKit", package: "WordPressKit-iOS"),
+            ],
+            resources: [.process("Resources")]
         ),
         .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(
@@ -171,6 +180,7 @@ let package = Package(
             dependencies: ["AsyncImageKit", "WordPressUI", "WordPressShared"],
             resources: [.process("Resources")]
         ),
+        .testTarget(name: "JetpackStatsTests", dependencies: ["JetpackStats"]),
         .testTarget(name: "JetpackStatsWidgetsCoreTests", dependencies: [.target(name: "JetpackStatsWidgetsCore")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "DesignSystemTests", dependencies: [.target(name: "DesignSystem")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(
@@ -276,6 +286,7 @@ enum XcodeSupport {
             "DesignSystem",
             "BuildSettingsKit",
             "FormattableContentKit",
+            "JetpackStats",
             "JetpackStatsWidgetsCore",
             "NotificationServiceExtensionCore",
             "SFHFKeychainUtils",
