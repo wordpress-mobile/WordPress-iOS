@@ -378,16 +378,9 @@ private struct TagRowContent: View {
             Spacer()
 
             if showPostCount, let postCount = tag.postCount?.intValue, postCount > 0 {
-                Text("\(tag.postCount ?? 0)")
-                    .font(.caption)
-                    .foregroundColor(.accentColor)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 3)
-                    .frame(minWidth: 20, minHeight: 20)
-                    .overlay(
-                        Capsule()
-                            .stroke(Color.accentColor, lineWidth: 1)
-                    )
+                Text("\(postCount)")
+                    .font(.callout)
+                    .foregroundColor(.secondary)
             } else if isSelected {
                 Image(systemName: "checkmark")
                     .foregroundColor(.accentColor)
