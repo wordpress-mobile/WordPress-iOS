@@ -520,24 +520,22 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
             switch type {
             case "at-symbol":
                 self?.showSuggestions(type: .mention) { result in
-                    // Handle the result - we'll need to implement sending it back to the editor
                     switch result {
                     case .success(let suggestion):
-                        // TODO: Send suggestion back to editor via JavaScript
-                        // For now, we'll just log it. The editor will need a method to accept the suggestion.
-                        print("Selected mention: \(suggestion)")
+                        // Append empty string to suggestion tocomplete GutenbergKit's autocomplete session,
+                        // otherwise it will immediately restart
+                        self?.editorViewController.appendTextAtCursor(suggestion + " ")
                     case .failure(let error):
                         print("Mention selection cancelled or failed: \(error)")
                     }
                 }
             case "plus-symbol":
                 self?.showSuggestions(type: .xpost) { result in
-                    // Handle the result - we'll need to implement sending it back to the editor
                     switch result {
                     case .success(let suggestion):
-                        // TODO: Send suggestion back to editor via JavaScript
-                        // For now, we'll just log it. The editor will need a method to accept the suggestion.
-                        print("Selected xpost: \(suggestion)")
+                        // Append empty string to suggestion to complete GutenbergKit's autocomplete session,
+                        // otherwise it will immediately restart
+                        self?.editorViewController.appendTextAtCursor(suggestion + " ")
                     case .failure(let error):
                         print("Xpost selection cancelled or failed: \(error)")
                     }
