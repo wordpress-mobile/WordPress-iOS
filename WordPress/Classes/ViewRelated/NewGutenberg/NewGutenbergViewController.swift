@@ -85,6 +85,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private var keyboardHideObserver: Any?
     private var keyboardFrame = CGRect.zero
     private var suggestionViewBottomConstraint: NSLayoutConstraint?
+    private var currentSuggestionsController: GutenbergSuggestionsViewController?
     private var previousFirstResponder: UIResponder?
 
     // TODO: remove (none of these APIs are needed for the new editor)
@@ -615,6 +616,10 @@ extension NewGutenbergViewController {
 extension NewGutenbergViewController {
 
     private func showSuggestions(type: SuggestionType, callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+        // Prevent multiple suggestions UI instances - simply ignore if already showing
+        guard currentSuggestionsController == nil else {
+            return
+        }
         guard let siteID = post.blog.dotComID else {
             callback(.failure(GutenbergSuggestionsViewController.SuggestionError.notAvailable as NSError))
             return
@@ -629,8 +634,13 @@ extension NewGutenbergViewController {
 
         previousFirstResponder = view.findFirstResponder()
         let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
+        currentSuggestionsController = suggestionsController
         suggestionsController.onCompletion = { (result) in
             callback(result)
+            // Clear the current controller reference
+            self.currentSuggestionsController = nil
+            self.suggestionViewBottomConstraint = nil
+            // Clean up the UI
             suggestionsController.view.removeFromSuperview()
             suggestionsController.removeFromParent()
             if let previousFirstResponder = self.previousFirstResponder {
