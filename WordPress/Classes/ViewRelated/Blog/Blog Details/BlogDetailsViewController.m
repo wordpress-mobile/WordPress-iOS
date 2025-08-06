@@ -24,7 +24,6 @@ static NSString *const BlogDetailsMigrationSuccessCellIdentifier = @"BlogDetails
 static NSString *const BlogDetailsJetpackBrandingCardCellIdentifier = @"BlogDetailsJetpackBrandingCardCellIdentifier";
 static NSString *const BlogDetailsJetpackInstallCardCellIdentifier = @"BlogDetailsJetpackInstallCardCellIdentifier";
 static NSString *const BlogDetailsSotWCardCellIdentifier = @"BlogDetailsSotWCardCellIdentifier";
-static NSString *const BlogDetailsApplicationPasswordAuthenticationCardCellIdentifier = @"BlogDetailsApplicationPasswordAuthenticationCardCellIdentifier";
 
 CGFloat const BlogDetailGridiconSize = 24.0;
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
@@ -304,7 +303,6 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
     [self.tableView registerClass:[JetpackBrandingMenuCardCell class] forCellReuseIdentifier:BlogDetailsJetpackBrandingCardCellIdentifier];
     [self.tableView registerClass:[JetpackRemoteInstallTableViewCell class] forCellReuseIdentifier:BlogDetailsJetpackInstallCardCellIdentifier];
     [self.tableView registerClass:[SotWTableViewCell class] forCellReuseIdentifier:BlogDetailsSotWCardCellIdentifier];
-    [self.tableView registerClass:[ApplicationPasswordAuthenticationCardCell class] forCellReuseIdentifier:BlogDetailsApplicationPasswordAuthenticationCardCellIdentifier];
 
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
 
@@ -343,7 +341,6 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
 
     [self reloadTableViewPreservingSelection];
     [self preloadBlogData];
-    [self checkApplicationPasswordEligibility];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -986,10 +983,6 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
         [marr addNullableObject:[self homeSectionViewModel]];
     }
 
-    if (self.applicationPasswordAuthenticationInfo != nil) {
-        [marr addNullableObject:[self applicationPasswordAuthenticationSectionViewModel]];
-    }
-
     if (ObjCBridge.isWordPress) {
         if ([self shouldAddJetpackSection]) {
             [marr addNullableObject:[self jetpackSectionViewModel]];
@@ -1477,15 +1470,6 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
     }
 }
 
-- (void)setApplicationPasswordAuthenticationInfo:(ApplicationPasswordAuthenticationInfo *)applicationPasswordAuthenticationInfo {
-    if (_applicationPasswordAuthenticationInfo != applicationPasswordAuthenticationInfo) {
-        _applicationPasswordAuthenticationInfo = applicationPasswordAuthenticationInfo;
-
-        [self configureTableViewData];
-        [self reloadTableViewPreservingSelection];
-    }
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -1547,10 +1531,6 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
         JetpackBrandingMenuCardCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsJetpackBrandingCardCellIdentifier];
         [cell configureWithViewController:self];
         return cell;
-    }
-
-    if (section.category == BlogDetailsSectionCategoryApplicationPasswordAuthentication) {
-        return [tableView dequeueReusableCellWithIdentifier:BlogDetailsApplicationPasswordAuthenticationCardCellIdentifier];
     }
 
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];

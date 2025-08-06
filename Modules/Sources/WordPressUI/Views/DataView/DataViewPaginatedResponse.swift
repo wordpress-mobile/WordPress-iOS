@@ -119,4 +119,18 @@ public final class DataViewPaginatedResponse<Element: Identifiable, PageIndex>: 
             self.total = total - 1
         }
     }
+
+    public func replace(_ item: Element) {
+        guard let index = items.firstIndex(where: { $0.id == item.id }) else {
+            return
+        }
+        items[index] = item
+    }
+
+    public func prepend(_ newItems: [Element]) {
+        self.items = newItems + self.items
+        if let total {
+            self.total = total + newItems.count
+        }
+    }
 }

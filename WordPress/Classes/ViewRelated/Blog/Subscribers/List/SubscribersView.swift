@@ -28,6 +28,7 @@ private struct SubscribersView: View {
                 SubscribersListView(viewModel: viewModel)
             }
         }
+        .environment(\.defaultMinListRowHeight, 50)
         .searchable(text: $viewModel.searchText)
     }
 }
@@ -117,6 +118,7 @@ private struct SubscribersPaginatedForEach: View {
                     EmptyView()
                 }.opacity(0)
             }
+            .listRowInsets(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
     }
 
     private func subscriberDeleted(userInfo: [AnyHashable: Any]?) {

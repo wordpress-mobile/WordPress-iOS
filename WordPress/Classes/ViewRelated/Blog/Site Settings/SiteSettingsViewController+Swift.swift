@@ -48,7 +48,7 @@ extension SiteSettingsViewController {
     }
 
     @objc public func showTagList() {
-        let tagsVC = SiteTagsViewController(blog: blog)
+        let tagsVC = TagsViewController(blog: blog)
         navigationController?.pushViewController(tagsVC, animated: true)
     }
 

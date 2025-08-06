@@ -47,39 +47,4 @@ extension Blog {
     @objc public var isGutenbergEnabled: Bool {
         return editor == .gutenberg
     }
-
-    /// - warning: Decoding can take a non-trivial amount of time.
-    func getBlockEditorSettings() -> [String: Any]? {
-        guard let data = rawBlockEditorSettings?.data else {
-            return nil
-        }
-        do {
-            let object = try JSONSerialization.jsonObject(with: data, options: [])
-            guard let settings = object as? [String: Any] else {
-                wpAssertionFailure("invalid block editor settings object")
-                return nil
-            }
-            return settings
-        } catch {
-            wpAssertionFailure("failed to decode block editor settings", userInfo: ["error": "\(error)"])
-        }
-        return nil
-    }
-
-    func setBlockEditorSettings(_ settings: [String: Any]) {
-        guard JSONSerialization.isValidJSONObject(settings) else {
-            return wpAssertionFailure("invalid block editor settings object")
-        }
-        guard let context = managedObjectContext else {
-            return wpAssertionFailure("missing managed object context")
-        }
-        do {
-            let data = try JSONSerialization.data(withJSONObject: settings, options: [])
-            let blob = NSEntityDescription.insertNewObject(forEntityName: "BlobEntity", into: context) as! BlobEntity
-            blob.data = data
-            self.rawBlockEditorSettings = blob
-        } catch {
-            wpAssertionFailure("failed to encode block editor settings", userInfo: ["error": "\(error)"])
-        }
-    }
 }

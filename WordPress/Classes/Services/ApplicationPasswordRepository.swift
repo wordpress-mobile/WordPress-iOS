@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 import WordPressData
 import WordPressShared
 import WordPressKit
@@ -35,7 +34,7 @@ actor ApplicationPasswordRepository {
 
     private let coreDataStack: CoreDataStackSwift
     private let storage: ApplicationPasswordStorage
-    private var ongoing: [TaggedManagedObjectID<Blog>: CurrentValueSubject<ApplicationPassword?, Error>] = [:]
+    private var inflightTasks: [TaggedManagedObjectID<Blog>: Task<ApplicationPassword, Error>] = [:]
 
     static func forTesting(coreDataStack: CoreDataStackSwift, keychain: KeychainAccessible) -> ApplicationPasswordRepository {
         ApplicationPasswordRepository(coreDataStack: coreDataStack, keychain: keychain)
@@ -71,35 +70,61 @@ actor ApplicationPasswordRepository {
 
         // `createPasswordIfNeeded` can be called by multiple callers at the same time. We want to avoid
         // creating multiple application passwords on one site.
-        if let subject = ongoing[blogId] {
-            let publisher = subject
-                .compactMap { $0 }
-                .first()
-                .eraseToAnyPublisher()
-            // This sequence can only results in an error or a one element array. See the `subject.send` calls below.
-            let outputs = try await AsyncThrowingPublisher(publisher).reduce(into: []) { $0.append($1) }
-            if outputs.isEmpty {
-                throw ApplicationPasswordRepositoryError.unknown
+        _ = try await waitForInflightTaskIfNeeded(blogId: blogId)
+    }
+
+    private func waitForInflightTaskIfNeeded(blogId: TaggedManagedObjectID<Blog>) async throws -> ApplicationPassword {
+        if let task = inflightTasks[blogId] {
+            switch await waitForInflightTask(task, blogId: blogId) {
+            case let .success(value):
+                return value
+            case let .failure(error):
+                throw error
+            case .restart:
+                // We'll make another attempt to create an application password.
+                return try await waitForInflightTaskIfNeeded(blogId: blogId)
             }
-
-            return
         }
 
-        let subject: CurrentValueSubject<ApplicationPassword?, Error> = CurrentValueSubject(nil)
-        ongoing[blogId] = subject
+        let task = Task {
+            try await createPassword(for: blogId)
+        }
+        inflightTasks[blogId] = task
         defer {
-            ongoing[blogId] = nil
+            inflightTasks[blogId] = nil
         }
 
-        do {
-            let password = try await createPassword(for: blogId)
-            subject.value = password
-            subject.send(completion: .finished)
-            return
-        } catch {
-            subject.send(completion: .failure(error))
-            throw error
+        // We need to explicitly cancel the created `Task` above.
+        // https://forums.swift.org/t/understanding-task-cancellation/75329/2
+        return try await withTaskCancellationHandler {
+            try await task.value
+        } onCancel: {
+            task.cancel()
         }
+    }
+
+    private func waitForInflightTask(_ inflight: Task<ApplicationPassword, Error>, blogId: TaggedManagedObjectID<Blog>) async -> WaitResult {
+        let result = await inflight.result
+
+        // If the current task, which is waiting for the inflight task result, is cancelled, the function should
+        // throw a `CancellationError`.
+        if Task.isCancelled {
+            return .failure(CancellationError())
+        }
+
+        return switch result {
+            case let .success(value):
+                .success(value)
+            case let .failure(error):
+                // If the inflight task is cancelled, the current Task should start a new call to create an application
+                // password.
+                if error.isCancellationError() {
+                    .restart
+                } else {
+                    // For other errors, we can still retry, but I don't see the need to do that.
+                    .failure(error)
+                }
+            }
     }
 }
 
@@ -425,4 +450,10 @@ private struct ApplicationPassword: Codable {
 private enum ApplicationPasswordOwner: Codable, Hashable {
     case dotCom(username: String, siteId: Int)
     case selfHosted(username: String, site: String)
+}
+
+private enum WaitResult {
+    case success(ApplicationPassword)
+    case failure(Error)
+    case restart
 }

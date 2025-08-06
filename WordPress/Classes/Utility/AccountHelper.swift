@@ -106,5 +106,8 @@ import WordPressData
 
         // Delete all the logs after logging out
         WPLogger.shared().deleteAllLogs()
+
+        // Delete all cached block editor settings
+        BlockEditorCache.shared.deleteAll()
     }
 }

@@ -7,12 +7,21 @@ import OHHTTPStubsSwift
 
 @testable import WordPress
 
-struct ApplicationPasswordsRepositoryTests {
+@Suite(.serialized)
+class ApplicationPasswordsRepositoryTests {
     let coreDataStack = ContextManager.forTesting()
     let keychain = TestKeychain()
 
+    func password(of blog: TaggedManagedObjectID<Blog>) async -> String? {
+        await coreDataStack.performQuery { [keychain] context in
+            try? context.existingObject(with: blog).getApplicationToken(using: keychain)
+        }
+    }
+
     @Test
     func simpleSite() async throws {
+        defer { HTTPStubs.removeAllStubs()}
+
         try await signInWPComAccount()
         let blog = try await createSimpleSite()
 
@@ -24,6 +33,8 @@ struct ApplicationPasswordsRepositoryTests {
 
     @Test
     func atomicSite() async throws {
+        defer { HTTPStubs.removeAllStubs()}
+
         try await signInWPComAccount()
         let blog = try await createAtomicSite()
 
@@ -34,45 +45,48 @@ struct ApplicationPasswordsRepositoryTests {
         let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
         try await repository.createPasswordIfNeeded(for: blog)
 
-        let password = try await coreDataStack.performQuery { context in
-            try context.existingObject(with: blog).getApplicationToken(using: keychain)
-        }
+        let password = await password(of: blog)
         #expect(password == "abcd efgh")
     }
 
     @Test
     func selfHostedSite() async throws {
-        let blog = try await createSelfHostedSite()
+        defer { HTTPStubs.removeAllStubs()}
 
-        stubApiDiscovery(siteHost: "www.example.com")
+        let uuid = UUID().uuidString.lowercased()
+        let host = "\(uuid).example.com"
+        let blog = try await createSelfHostedSite(host: host)
+
+        stubApiDiscovery(siteHost: host)
         stubSelfHostedSiteWpV2GetUser()
-        stubSelfHostedSiteCreateApplicationPassword(host: "www.example.com", password: "1234 5678")
+        stubSelfHostedSiteCreateApplicationPassword(host: host, password: uuid)
 
         let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
         try await repository.createPasswordIfNeeded(for: blog)
 
-        let password = try await coreDataStack.performQuery { context in
-            try context.existingObject(with: blog).getApplicationToken(using: keychain)
-        }
-        #expect(password == "1234 5678")
+        let password = await password(of: blog)
+        #expect(password == uuid)
     }
 
     @Test
     func selfHostedSiteWithInaccessibleRestApi() async throws {
-        let blog = try await createSelfHostedSite()
+        defer { HTTPStubs.removeAllStubs()}
 
-        stubApiDiscovery(siteHost: "www.example.com")
+        let host = "2.example.com"
+        let blog = try await createSelfHostedSite(host: host)
 
-        stub(condition: isHost("www.example.com") && isPath("/wp-login.php")) { _ in
+        stubApiDiscovery(siteHost: host)
+
+        stub(condition: isHost(host) && isPath("/wp-login.php")) { _ in
             HTTPStubsResponse(data: "<html>Logged in</html>".data(using: .utf8)!, statusCode: 200, headers: nil)
         }
-        stub(condition: isHost("www.example.com") && isPath("/wp-admin/admin-ajax.php") && containsQueryParams(["action": "rest-nonce"])) { _ in
+        stub(condition: isHost(host) && isPath("/wp-admin/admin-ajax.php") && containsQueryParams(["action": "rest-nonce"])) { _ in
             HTTPStubsResponse(data: "<html>not allowed</html>".data(using: .utf8)!, statusCode: 400, headers: nil)
         }
-        stub(condition: isHost("www.example.com") && isPath("/wp-admin/post-new.php")) { _ in
+        stub(condition: isHost(host) && isPath("/wp-admin/post-new.php")) { _ in
             HTTPStubsResponse(data: "<html>not allowed</html>".data(using: .utf8)!, statusCode: 400, headers: nil)
         }
-        stub(condition: isHost("www.example.com") && isPath("/wp-json/wp/v2/users/me")) { _ in
+        stub(condition: isHost(host) && isPath("/wp-json/wp/v2/users/me")) { _ in
             let json = #"{"code":"rest_not_logged_in","message":"You are not currently logged in.","data":{"status":401}}"#
             return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 401, headers: nil)
         }
@@ -82,6 +96,146 @@ struct ApplicationPasswordsRepositoryTests {
         await #expect(throws: ApplicationPasswordRepositoryError.restApiInaccessible) {
             try await repository.createPasswordIfNeeded(for: blog)
         }
+    }
+
+    @Test
+    func concurrentCalls() async throws {
+        defer { HTTPStubs.removeAllStubs()}
+
+        let host = "3.example.com"
+        let blog = try await createSelfHostedSite(host: host)
+
+        let monitor = Monitor(delay: 0.1)
+        stubApiDiscovery(siteHost: host)
+        stubSelfHostedSiteWpV2GetUser()
+        stubSelfHostedSiteCreateApplicationPassword(host: host, password: "1234 5678", monitor: monitor)
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+
+        await withThrowingTaskGroup(of: Void.self) { group in
+            for index in 1...5 {
+                group.addTask {
+                    try await Task.sleep(for: .milliseconds(10))
+
+                    do {
+                        try await repository.createPasswordIfNeeded(for: blog)
+                    } catch {
+                        Issue.record("Task \(index) receives an unexpected error: \(error)")
+                    }
+                }
+            }
+        }
+
+        #expect(monitor.numberOfRequests == 1)
+
+        let password = await password(of: blog)
+        #expect(password == "1234 5678")
+    }
+
+    @Test
+    func cancel() async throws {
+        defer { HTTPStubs.removeAllStubs()}
+
+        let uuid = UUID().uuidString.lowercased()
+        let host = "\(uuid).example.com"
+        let blog = try await createSelfHostedSite(host: host)
+
+        let monitor = Monitor(delay: 0.1)
+        stubApiDiscovery(siteHost: host)
+        stubSelfHostedSiteWpV2GetUser()
+        stubSelfHostedSiteCreateApplicationPassword(host: host, password: uuid, monitor: monitor)
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        let task = Task {
+            try await repository.createPasswordIfNeeded(for: blog)
+        }
+
+        try await Task.sleep(for: .milliseconds(50))
+        task.cancel()
+
+        let result = await task.result
+        #expect(result.isCancellationError())
+
+        let password = await password(of: blog)
+        #expect(password == nil)
+    }
+
+    @Test
+    func cancelFirstCall() async throws {
+        defer { HTTPStubs.removeAllStubs()}
+
+        let uuid = UUID().uuidString.lowercased()
+        let host = "\(uuid).example.com"
+        let blog = try await createSelfHostedSite(host: host)
+
+        let monitor = Monitor(delay: 0.1)
+        stubApiDiscovery(siteHost: host)
+        stubSelfHostedSiteWpV2GetUser()
+        stubSelfHostedSiteCreateApplicationPassword(host: host, password: uuid, monitor: monitor)
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+
+        let first = Task { try await repository.createPasswordIfNeeded(for: blog) }
+        try await Task.sleep(for: .milliseconds(10))
+        let second = Task { try await repository.createPasswordIfNeeded(for: blog) }
+
+        first.cancel()
+
+        let firstResult = await first.result
+        let secondResult = await second.result
+
+        #expect(firstResult.isCancellationError())
+        #expect(secondResult.isSuccess())
+
+        #expect(monitor.numberOfRequests == 2)
+
+        let password = await password(of: blog)
+        #expect(password == uuid)
+    }
+
+    @Test(arguments: [0, 1, 2, 3, 4])
+    func cancelConcurrentCall(nthTaskToBeCancelled: Int) async throws {
+        defer { HTTPStubs.removeAllStubs()}
+
+        let uuid = UUID().uuidString.lowercased()
+        let host = "\(uuid).example.com"
+        let blog = try await createSelfHostedSite(host: host)
+
+        let monitor = Monitor(delay: 0.1)
+        stubApiDiscovery(siteHost: host)
+        stubSelfHostedSiteWpV2GetUser()
+        stubSelfHostedSiteCreateApplicationPassword(host: host, password: uuid, monitor: monitor)
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+
+        let numberOfTasks = 5
+        var tasks: [Task<Void, Error>] = []
+        for _ in 0..<numberOfTasks {
+            tasks.append(Task { try await repository.createPasswordIfNeeded(for: blog) })
+            try await Task.sleep(for: .milliseconds(10))
+        }
+
+        tasks[nthTaskToBeCancelled].cancel()
+
+        for (index, task) in tasks.enumerated() {
+            let result = await task.result
+            if index == nthTaskToBeCancelled {
+                #expect(result.isCancellationError())
+            } else {
+                #expect(result.isSuccess())
+            }
+        }
+
+        // If the first call is cancelled, then another password creation attempt should be made by one of the
+        // waiting callers. And the rest of the callers should wait on the second attempt.
+        if nthTaskToBeCancelled == 0 {
+            #expect(monitor.numberOfRequests == 2)
+        } else {
+            #expect(monitor.numberOfRequests == 1)
+        }
+
+        let password = await password(of: blog)
+        #expect(password == uuid)
     }
 }
 
@@ -125,17 +279,19 @@ private extension ApplicationPasswordsRepositoryTests {
         }
     }
 
-    func createSelfHostedSite() async throws -> TaggedManagedObjectID<Blog> {
+    func createSelfHostedSite(host: String) async throws -> TaggedManagedObjectID<Blog> {
         try await coreDataStack.performAndSave { context in
-            let blog = BlogBuilder(context, dotComID: nil)
-                .with(username: "demo")
-                .with(password: "pass")
-                .build()
+            let blog = Blog(context: context)
+            blog.url = "https://\(host)"
+            blog.xmlrpc = "https://\(host)/xmlrpc.php"
+            blog.setValue("admin_url", forOption: "https://\(host)/wp-admin")
+            blog.username = "demo"
+            blog.password = "pass"
             return TaggedManagedObjectID(blog)
         }
     }
 
-    func stubSelfHostedSiteCreateApplicationPassword(host: String, password: String) {
+    func stubSelfHostedSiteCreateApplicationPassword(host: String, password: String, monitor: Monitor? = nil) {
         stub(condition: isHost(host) && isPath("/wp-login.php")) { _ in
             HTTPStubsResponse(data: "<html>Logged in</html>".data(using: .utf8)!, statusCode: 200, headers: nil)
         }
@@ -143,6 +299,8 @@ private extension ApplicationPasswordsRepositoryTests {
             HTTPStubsResponse(data: "abcd".data(using: .utf8)!, statusCode: 200, headers: nil)
         }
         stub(condition: isHost(host) && isPath("/wp-json/wp/v2/users/me/application-passwords")) { _ in
+            monitor?.requestReceived()
+
             let json = """
                 {
                     "uuid": "56cadaa8-e810-4752-abf9-cc39e120ea97",
@@ -164,7 +322,11 @@ private extension ApplicationPasswordsRepositoryTests {
                     }
                 }
                 """
-            return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 200, headers: nil)
+            let response = HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 200, headers: nil)
+            if let delay = monitor?.delay {
+                response.responseTime = delay
+            }
+            return response
         }
     }
 
@@ -392,5 +554,43 @@ private extension ApplicationPasswordsRepositoryTests {
         stub(condition: isHost(siteHost) && isPath("/wp-json")) { _ in
             HTTPStubsResponse(data: "<html>page not found</html>".data(using: .utf8)!, statusCode: 404, headers: nil)
         }
+    }
+}
+
+private class Monitor {
+    let delay: TimeInterval?
+    private(set) var numberOfRequests: Int = 0
+
+    private let lock = NSLock()
+
+    init(delay: TimeInterval? = nil) {
+        self.delay = delay
+    }
+
+    func requestReceived() {
+        lock.lock()
+        defer { lock.unlock() }
+
+        numberOfRequests += 1
+    }
+}
+
+@globalActor
+private final actor BackgroundActor: GlobalActor {
+    static let shared = BackgroundActor()
+}
+
+private extension Result {
+    func isSuccess() -> Bool {
+        if case .success = self {
+            return true
+        }
+        return false
+    }
+    func isCancellationError() -> Bool {
+        if case let .failure(error) = self {
+            return error.isCancellationError()
+        }
+        return false
     }
 }

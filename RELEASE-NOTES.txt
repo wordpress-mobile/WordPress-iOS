@@ -1,6 +1,8 @@
 26.1
 -----
 * [*] Remove global error popups from the site dashboard [#24707]
+* [*] Fix crash when saving raw block editor settings [#24711]
+* [*] Fix app hang when opening Posts or Pages [#24728]
 
 26.0
 -----

@@ -319,7 +319,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private func didTapTagCell() {
         let post = post as! Post
-        let tagPickerViewController = TagsViewController(blog: post.blog, selectedTags: post.tags) {[weak self] tags in
+        let tagPickerViewController = TagsViewController(blog: post.blog, selectedTags: post.tags) { [weak self] tags in
             guard let self else { return }
             WPAnalytics.track(.editorPostTagsChanged, properties: Constants.analyticsDefaultProperty)
 

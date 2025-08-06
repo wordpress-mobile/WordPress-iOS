@@ -7,9 +7,20 @@ struct TagsView: View {
     @ObservedObject var viewModel: TagsViewModel
     @FocusState private var isTextFieldFocused: Bool
 
+    @State private var showingAddTagModal = false
+
+    var allowAddingTagsFromTextField: Bool {
+        if case .selection = viewModel.mode {
+            return true
+        }
+        return false
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            SelectedTagsView(viewModel: viewModel)
+            if case .selection = viewModel.mode {
+                SelectedTagsView(viewModel: viewModel)
+            }
 
             searchField
 
@@ -23,22 +34,52 @@ struct TagsView: View {
             isTextFieldFocused = true
         }
         .navigationTitle(Strings.title)
+        .toolbar {
+            if case .browse = viewModel.mode {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showingAddTagModal = true
+                    }) {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showingAddTagModal) {
+            NavigationView {
+                EditTagView(tag: nil, tagsService: viewModel.tagsService)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button(SharedStrings.Button.cancel) {
+                                showingAddTagModal = false
+                            }
+                        }
+                    }
+            }
+        }
     }
 
     @ViewBuilder
     private var searchField: some View {
         HStack {
-            TextField(Strings.searchPlaceholder, text: $viewModel.searchText)
+            let placeholder = allowAddingTagsFromTextField ? Strings.searchOrAddTagsPlaceholder : Strings.searchPlaceholder
+            let textField = TextField(placeholder, text: $viewModel.searchText)
                 .focused($isTextFieldFocused)
                 .textInputAutocapitalization(.never)
                 .submitLabel(.return)
-                .onSubmit(addTag)
                 .accessibilityIdentifier("add-tags")
-                .onChange(of: viewModel.searchText) { newValue in
-                    handleTextChange(newValue)
-                }
 
-            if !viewModel.searchText.trim().isEmpty {
+            if allowAddingTagsFromTextField {
+                textField
+                    .onSubmit(addTag)
+                    .onChange(of: viewModel.searchText) { newValue in
+                        handleTextChange(newValue)
+                    }
+            } else {
+                textField
+            }
+
+            if allowAddingTagsFromTextField, !viewModel.searchText.trim().isEmpty {
                 Button(action: addTag) {
                     Image(systemName: "plus")
                 }
@@ -90,9 +131,7 @@ private struct TagsListView: View {
     var body: some View {
         List {
             if let response = viewModel.response {
-                DataViewPaginatedForEach(response: response) { tag in
-                    TagRowView(tag: tag, viewModel: viewModel)
-                }
+                TagsPaginatedForEach(response: response, viewModel: viewModel)
             }
         }
         .listStyle(.plain)
@@ -137,9 +176,7 @@ private struct TagsSearchView: View {
             searchText: viewModel.searchText,
             search: viewModel.search
         ) { response in
-            DataViewPaginatedForEach(response: response) { tag in
-                TagRowView(tag: tag, viewModel: viewModel)
-            }
+            TagsPaginatedForEach(response: response, viewModel: viewModel)
         }
         .simultaneousGesture(
             DragGesture()
@@ -158,6 +195,33 @@ private struct TagsPaginatedForEach: View {
     var body: some View {
         DataViewPaginatedForEach(response: response) { tag in
             TagRowView(tag: tag, viewModel: viewModel)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .tagDeleted)) { notification in
+            tagDeleted(userInfo: notification.userInfo)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .tagCreated)) { notification in
+            tagCreated(userInfo: notification.userInfo)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .tagUpdated)) { notification in
+            tagUpdated(userInfo: notification.userInfo)
+        }
+    }
+
+    private func tagDeleted(userInfo: [AnyHashable: Any]?) {
+        if let tagID = userInfo?[TagNotificationUserInfoKeys.tagID] as? NSNumber {
+            response.deleteItem(withID: tagID.intValue)
+        }
+    }
+
+    private func tagCreated(userInfo: [AnyHashable: Any]?) {
+        if let tag = userInfo?[TagNotificationUserInfoKeys.tag] as? RemotePostTag {
+            response.prepend([tag])
+        }
+    }
+
+    private func tagUpdated(userInfo: [AnyHashable: Any]?) {
+        if let tag = userInfo?[TagNotificationUserInfoKeys.tag] as? RemotePostTag {
+            response.replace(tag)
         }
     }
 }
@@ -278,23 +342,49 @@ private struct TagRowView: View {
     @ObservedObject var viewModel: TagsViewModel
 
     var body: some View {
+        Group {
+            if case .browse = viewModel.mode {
+                NavigationLink(destination: EditTagView(tag: tag, tagsService: viewModel.tagsService)) {
+                    TagRowContent(tag: tag, showPostCount: true, isSelected: false)
+                }
+            } else {
+                TagRowContent(tag: tag, showPostCount: false, isSelected: viewModel.isSelected(tag))
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        switch viewModel.mode {
+                        case .selection:
+                            viewModel.toggleSelection(for: tag)
+                        case .pickOne(let onTagTapped):
+                            onTagTapped(tag)
+                        case .browse:
+                            break
+                        }
+                    }
+            }
+        }
+    }
+}
+
+private struct TagRowContent: View {
+    let tag: RemotePostTag
+    let showPostCount: Bool
+    let isSelected: Bool
+
+    var body: some View {
         HStack {
             Text(tag.name ?? "")
                 .font(.body)
 
             Spacer()
 
-            if viewModel.isSelected(tag) {
+            if showPostCount, let postCount = tag.postCount?.intValue, postCount > 0 {
+                Text("\(postCount)")
+                    .font(.callout)
+                    .foregroundColor(.secondary)
+            } else if isSelected {
                 Image(systemName: "checkmark")
                     .foregroundColor(.accentColor)
             }
-        }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                viewModel.toggleSelection(for: tag)
-            }
-            viewModel.searchText = ""
         }
     }
 }
@@ -326,6 +416,12 @@ private enum Strings {
 
     static let searchPlaceholder = NSLocalizedString(
         "tags.search.placeholder",
+        value: "Search tags",
+        comment: "Placeholder text for the tag search field"
+    )
+
+    static let searchOrAddTagsPlaceholder = NSLocalizedString(
+        "tags.search.placeholder",
         value: "Search or add tags",
         comment: "Placeholder text for the tag search field"
     )
@@ -352,9 +448,21 @@ private enum Strings {
 class TagsViewController: UIHostingController<TagsView> {
     let viewModel: TagsViewModel
 
-    init(blog: Blog, selectedTags: String? = nil, onSelectedTagsChanged: ((String) -> Void)? = nil) {
-        viewModel = TagsViewModel(blog: blog, selectedTags: selectedTags, onSelectedTagsChanged: onSelectedTagsChanged)
+    init(blog: Blog, selectedTags: String? = nil, mode: TagsViewMode) {
+        viewModel = TagsViewModel(blog: blog, selectedTags: selectedTags, mode: mode)
         super.init(rootView: .init(viewModel: viewModel))
+    }
+
+    convenience init(blog: Blog, selectedTags: String? = nil, onSelectedTagsChanged: ((String) -> Void)? = nil) {
+        self.init(blog: blog, selectedTags: selectedTags, mode: .selection(onSelectedTagsChanged: onSelectedTagsChanged))
+    }
+
+    convenience init(blog: Blog, onTagTapped: @escaping (RemotePostTag) -> Void) {
+        self.init(blog: blog, mode: .pickOne(onTagTapped: onTagTapped))
+    }
+
+    convenience init(blog: Blog) {
+        self.init(blog: blog, mode: .browse)
     }
 
     @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
