@@ -81,6 +81,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // MARK: - Private Properties
 
+    private var keyboardShowObserver: Any?
+    private var keyboardHideObserver: Any?
+    private var keyboardFrame = CGRect.zero
+    private var suggestionViewBottomConstraint: NSLayoutConstraint?
     private var previousFirstResponder: UIResponder?
 
     // TODO: remove (none of these APIs are needed for the new editor)
@@ -150,10 +154,15 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         fatalError()
     }
 
+    deinit {
+        tearDownKeyboardObservers()
+    }
+
     // MARK: - Lifecycle methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupKeyboardObservers()
 
         view.backgroundColor = .systemBackground
 
@@ -274,6 +283,49 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     func logException(_ exception: GutenbergJSException, with callback: @escaping () -> Void) {
         DispatchQueue.main.async {
             WordPressAppDelegate.crashLogging?.logJavaScriptException(exception, callback: callback)
+        }
+    }
+
+    // MARK: - Keyboard Observers
+
+    private func setupKeyboardObservers() {
+        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
+            if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                self.keyboardFrame = keyboardRect
+                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
+            }
+        }
+        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification, object: nil, queue: .main) { [weak self] (notification) in
+            if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                self.keyboardFrame = keyboardRect
+                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
+            }
+        }
+    }
+
+    private func tearDownKeyboardObservers() {
+        if let keyboardShowObserver {
+            NotificationCenter.default.removeObserver(keyboardShowObserver)
+        }
+        if let keyboardHideObserver {
+            NotificationCenter.default.removeObserver(keyboardHideObserver)
+        }
+    }
+
+    private func updateConstraintsToAvoidKeyboard(frame: CGRect) {
+        keyboardFrame = frame
+        let minimumKeyboardHeight = CGFloat(50)
+        guard let suggestionViewBottomConstraint else {
+            return
+        }
+
+        // There are cases where the keyboard is not visible, but the system instead of returning zero, returns a low number, for example: 0, 3, 69.
+        // So in those scenarios, we just need to take in account the safe area and ignore the keyboard all together.
+        if keyboardFrame.height < minimumKeyboardHeight {
+            suggestionViewBottomConstraint.constant = -self.view.safeAreaInsets.bottom
+        }
+        else {
+            suggestionViewBottomConstraint.constant = -self.keyboardFrame.height
         }
     }
 
@@ -609,13 +661,15 @@ extension NewGutenbergViewController {
         }
         addChild(suggestionsController)
         view.addSubview(suggestionsController.view)
-        suggestionsController.view.translatesAutoresizingMaskIntoConstraints = false
+        let suggestionsBottomConstraint = suggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         NSLayoutConstraint.activate([
-            suggestionsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            suggestionsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            suggestionsController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            suggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            suggestionsController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
+            suggestionsController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
+            suggestionsBottomConstraint,
+            suggestionsController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
+        self.suggestionViewBottomConstraint = suggestionsBottomConstraint
+        updateConstraintsToAvoidKeyboard(frame: keyboardFrame)
         suggestionsController.didMove(toParent: self)
     }
 }
