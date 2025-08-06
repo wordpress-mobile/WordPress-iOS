@@ -79,6 +79,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.performAutoSave()
     }
 
+    // MARK: - Private Properties
+
+    private var previousFirstResponder: UIResponder?
+
     // TODO: remove (none of these APIs are needed for the new editor)
     func prepopulateMediaItems(_ media: [Media]) {}
     var debouncer = WordPressShared.Debouncer(delay: 10)
@@ -459,6 +463,39 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
     }
 
+    func editor(_ viewController: GutenbergKit.EditorViewController, didTriggerAutocompleter type: String) {
+        DispatchQueue.main.async { [weak self] in
+            switch type {
+            case "at-symbol":
+                self?.showSuggestions(type: .mention) { result in
+                    // Handle the result - we'll need to implement sending it back to the editor
+                    switch result {
+                    case .success(let suggestion):
+                        // TODO: Send suggestion back to editor via JavaScript
+                        // For now, we'll just log it. The editor will need a method to accept the suggestion.
+                        print("Selected mention: \(suggestion)")
+                    case .failure(let error):
+                        print("Mention selection cancelled or failed: \(error)")
+                    }
+                }
+            case "plus-symbol":
+                self?.showSuggestions(type: .xpost) { result in
+                    // Handle the result - we'll need to implement sending it back to the editor
+                    switch result {
+                    case .success(let suggestion):
+                        // TODO: Send suggestion back to editor via JavaScript
+                        // For now, we'll just log it. The editor will need a method to accept the suggestion.
+                        print("Selected xpost: \(suggestion)")
+                    case .failure(let error):
+                        print("Xpost selection cancelled or failed: \(error)")
+                    }
+                }
+            default:
+                print("Unknown autocompleter type: \(type)")
+            }
+        }
+    }
+
     private func convertMediaInfoArrayToJSONString(_ mediaInfoArray: [MediaInfo]) -> String? {
         do {
             let jsonData = try JSONEncoder().encode(mediaInfoArray)
@@ -521,18 +558,66 @@ extension NewGutenbergViewController {
         present(lightboxVC, animated: true)
     }
 
-    // TODO: reimplement
-//    func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
-//        DispatchQueue.main.async(execute: { [weak self] in
-//            self?.showSuggestions(type: .mention, callback: callback)
-//        })
-//    }
-//
-//    func gutenbergDidRequestXpost(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
-//        DispatchQueue.main.async(execute: { [weak self] in
-//            self?.showSuggestions(type: .xpost, callback: callback)
-//        })
-//    }
+}
+
+// MARK: - Suggestions implementation
+
+extension NewGutenbergViewController {
+
+    private func showSuggestions(type: SuggestionType, callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+        guard let siteID = post.blog.dotComID else {
+            callback(.failure(GutenbergSuggestionsViewController.SuggestionError.notAvailable as NSError))
+            return
+        }
+
+        switch type {
+        case .mention:
+            guard SuggestionService.shared.shouldShowSuggestions(for: post.blog) else { return }
+        case .xpost:
+            guard SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog) else { return }
+        }
+
+        previousFirstResponder = view.findFirstResponder()
+        let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
+        suggestionsController.onCompletion = { (result) in
+            callback(result)
+            suggestionsController.view.removeFromSuperview()
+            suggestionsController.removeFromParent()
+            if let previousFirstResponder = self.previousFirstResponder {
+                previousFirstResponder.becomeFirstResponder()
+            }
+
+            var analyticsName: String
+            switch type {
+            case .mention:
+                analyticsName = "user"
+            case .xpost:
+                analyticsName = "xpost"
+            }
+
+            var didSelectSuggestion = false
+            if case let .success(text) = result, !text.isEmpty {
+                didSelectSuggestion = true
+            }
+
+            let analyticsProperties: [String: Any] = [
+                "suggestion_type": analyticsName,
+                "did_select_suggestion": didSelectSuggestion
+            ]
+
+            WPAnalytics.track(.gutenbergSuggestionSessionFinished, properties: analyticsProperties)
+        }
+        addChild(suggestionsController)
+        view.addSubview(suggestionsController.view)
+        suggestionsController.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            suggestionsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            suggestionsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            suggestionsController.view.topAnchor.constraint(equalTo: view.topAnchor),
+            suggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        suggestionsController.didMove(toParent: self)
+    }
 }
 
 // MARK: - GutenbergBridgeDataSource
