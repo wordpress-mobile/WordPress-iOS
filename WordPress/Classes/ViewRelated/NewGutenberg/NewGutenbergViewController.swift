@@ -232,10 +232,9 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         setTitle(post.postTitle ?? "")
         editorViewController.setContent(content)
 
-        // TODO: reimplement
-//        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) { [weak self] in
-//            self?.gutenberg.updateCapabilities()
-//        }
+        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) {
+            // Do nothing
+        }
     }
 
     private func refreshInterface() {
