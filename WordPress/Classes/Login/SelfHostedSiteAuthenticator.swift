@@ -38,9 +38,7 @@ struct SelfHostedSiteAuthenticator {
         }
 
         let deviceName = UIDevice.current.name
-        let timestamp = ISO8601DateFormatter.string(from: .now, timeZone: .current, formatOptions: .withInternetDateTime)
-
-        return "\(appName) iOS app on \(deviceName) (\(timestamp))"
+        return "\(appName) iOS app on \(deviceName)"
     }
 
     static let applicationPasswordUpdated = Foundation.Notification.Name(rawValue: "SelfHostedSiteAuthenticator.applicationPasswordUpdated")
