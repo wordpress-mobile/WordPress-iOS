@@ -10,7 +10,7 @@
       "Bash(tail:*)",
       "Bash(wc:*)",
       "Bash(tree:*)",
-      "Bash(git:log,status,diff,branch)",
+      "Bash(git:log,status,diff,branch)"
     ],
     "deny": []
   }
