@@ -881,6 +881,19 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
     return row;
 }
 
+- (BlogDetailsRow *)applicationPasswordRow
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Application Passwords", comment: @"Link to Application Passwords section")
+                                                     identifier:BlogDetailsSettingsCellIdentifier
+                                        accessibilityIdentifier:@"Application Passwords Row"
+                                                          image:[UIImage systemImageNamed:@"key"]
+                                                       callback:^{
+        [weakSelf showApplicationPasswords];
+    }];
+    return row;
+}
+
 - (BlogDetailsRow *)siteSettingsRow
 {
     __weak __typeof(self) weakSelf = self;
@@ -1121,6 +1134,10 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
     if ([self shouldAddDomainRegistrationRow]) {
         [secondSectionRows addObject:[self domainsRow]];
     }
+    if ([Feature enabled:FeatureFlagAllowApplicationPasswords]) {
+        [secondSectionRows addObject:[self applicationPasswordRow]];
+    }
+
     [secondSectionRows addObject:[self siteSettingsRow]];
 
     // Third section
