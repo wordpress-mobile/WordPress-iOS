@@ -151,6 +151,7 @@ private enum JetpackConnectionError: LocalizedError {
 }
 
 class JetpackConnectionService {
+    private let blogId: TaggedManagedObjectID<Blog>
     private let client: WordPressClient
     private let jetpackConnectionClient: JetpackConnectionClient
 
@@ -174,6 +175,7 @@ class JetpackConnectionService {
             return nil
         }
 
+        self.blogId = TaggedManagedObjectID(blog)
         self.client = .init(site: site)
         self.jetpackConnectionClient = .init(
             apiRootUrl: apiRootURL,
@@ -246,6 +248,26 @@ class JetpackConnectionService {
                     isJetpackLogin: true,
                     onSuccess: { _ in continuation.resume(returning: ()) },
                     onFailure: { continuation.resume(throwing: $0) }
+                )
+            }
+        }
+
+        // Refresh the blog options, so that we can get the latest Jetpack related statues.
+        try await withCheckedThrowingContinuation { [blogId] (continuation: CheckedContinuation<Void, Error>) in
+            DispatchQueue.main.async {
+                let blog: Blog
+                do {
+                    blog = try ContextManager.shared.mainContext.existingObject(with: blogId)
+                } catch {
+                    continuation.resume(throwing: error)
+                    return
+                }
+
+                let service = BlogService(coreDataStack: ContextManager.shared)
+                service.syncBlog(
+                    blog,
+                    success: { continuation.resume(returning: ()) },
+                    failure: { continuation.resume(throwing: $0) }
                 )
             }
         }
