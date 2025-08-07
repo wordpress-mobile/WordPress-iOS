@@ -659,6 +659,16 @@ import WordPressShared
     // Error Events
     case jetpackStatsErrorEncountered
 
+    // Jetpack Connection Flow
+    case jetpackConnectStarted
+    case jetpackConnectLogin
+    case jetpackConnectInstall
+    case jetpackConnectSiteConnection
+    case jetpackConnectUserConnection
+    case jetpackConnectFinalize
+    case jetpackConnectCompleted
+    case jetpackConnectStepRetried
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1780,6 +1790,24 @@ import WordPressShared
         // Error Events
         case .jetpackStatsErrorEncountered:
             return "jetpack_stats_error_encountered"
+
+        // Jetpack Connection Flow
+        case .jetpackConnectStarted:
+            return "jetpack_connect_started"
+        case .jetpackConnectLogin:
+            return "jetpack_connect_login"
+        case .jetpackConnectInstall:
+            return "jetpack_connect_install"
+        case .jetpackConnectSiteConnection:
+            return "jetpack_connect_site_connection"
+        case .jetpackConnectUserConnection:
+            return "jetpack_connect_user_connection"
+        case .jetpackConnectFinalize:
+            return "jetpack_connect_finalize"
+        case .jetpackConnectCompleted:
+            return "jetpack_connect_completed"
+        case .jetpackConnectStepRetried:
+            return "jetpack_connect_step_retried"
         } // END OF SWITCH
     }
 
