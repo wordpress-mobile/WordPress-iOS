@@ -609,6 +609,10 @@ import WordPressShared
     case statsEmailsViewMoreTapped
     case statsSubscribersChartTapped
 
+    // New Stats
+    case statsNewStatsEnabled
+    case statsNewStatsDisabled
+
     // In-App Updates
     case inAppUpdateShown
     case inAppUpdateDismissed
@@ -618,6 +622,42 @@ import WordPressShared
     case applicationPasswordLogin
 
     case wpcomWebSignIn
+
+    // MARK: - Jetpack Stats
+
+    // Screen View Events
+    case jetpackStatsMainScreenShown
+    case jetpackStatsTrafficTabShown
+    case jetpackStatsRealtimeTabShown
+    case jetpackStatsSubscribersTabShown
+    case jetpackStatsPostDetailsScreenShown
+    case jetpackStatsAuthorStatsScreenShown
+    case jetpackStatsArchiveStatsScreenShown
+    case jetpackStatsExternalLinkStatsScreenShown
+    case jetpackStatsReferrerStatsScreenShown
+
+    // Date Range Events
+    case jetpackStatsDateRangePresetSelected
+    case jetpackStatsCustomDateRangeSelected
+
+    // Card Events
+    case jetpackStatsCardShown
+    case jetpackStatsCardAdded
+    case jetpackStatsCardRemoved
+    case jetpackStatsCardEditMenuOpened
+
+    // Chart Events
+    case jetpackStatsChartTypeChanged
+    case jetpackStatsChartMetricSelected
+
+    // List Events
+    case jetpackStatsTopListItemTapped
+
+    // Navigation Events
+    case jetpackStatsTabSelected
+
+    // Error Events
+    case jetpackStatsErrorEncountered
 
     /// A String that represents the event
     var value: String {
@@ -1664,6 +1704,12 @@ import WordPressShared
         case .statsSubscribersChartTapped:
             return "stats_subscribers_chart_tapped"
 
+        // New Stats
+        case .statsNewStatsEnabled:
+            return "stats_new_stats_enabled"
+        case .statsNewStatsDisabled:
+            return "stats_new_stats_disabled"
+
         // In-App Updates
         case .inAppUpdateShown:
             return "in_app_update_shown"
@@ -1678,6 +1724,62 @@ import WordPressShared
 
         case .wpcomWebSignIn:
             return "wpcom_web_sign_in"
+
+        // MARK: - Jetpack Stats
+
+        // Screen View Events
+        case .jetpackStatsMainScreenShown:
+            return "jetpack_stats_main_screen_shown"
+        case .jetpackStatsTrafficTabShown:
+            return "jetpack_stats_traffic_tab_shown"
+        case .jetpackStatsRealtimeTabShown:
+            return "jetpack_stats_realtime_tab_shown"
+        case .jetpackStatsSubscribersTabShown:
+            return "jetpack_stats_subscribers_tab_shown"
+        case .jetpackStatsPostDetailsScreenShown:
+            return "jetpack_stats_post_details_screen_shown"
+        case .jetpackStatsAuthorStatsScreenShown:
+            return "jetpack_stats_author_stats_screen_shown"
+        case .jetpackStatsArchiveStatsScreenShown:
+            return "jetpack_stats_archive_stats_screen_shown"
+        case .jetpackStatsExternalLinkStatsScreenShown:
+            return "jetpack_stats_external_link_stats_screen_shown"
+        case .jetpackStatsReferrerStatsScreenShown:
+            return "jetpack_stats_referrer_stats_screen_shown"
+
+        // Date Range Events
+        case .jetpackStatsDateRangePresetSelected:
+            return "jetpack_stats_date_range_preset_selected"
+        case .jetpackStatsCustomDateRangeSelected:
+            return "jetpack_stats_custom_date_range_selected"
+
+        // Card Events
+        case .jetpackStatsCardShown:
+            return "jetpack_stats_card_shown"
+        case .jetpackStatsCardAdded:
+            return "jetpack_stats_card_added"
+        case .jetpackStatsCardRemoved:
+            return "jetpack_stats_card_removed"
+        case .jetpackStatsCardEditMenuOpened:
+            return "jetpack_stats_card_edit_menu_opened"
+
+        // Chart Events
+        case .jetpackStatsChartTypeChanged:
+            return "jetpack_stats_chart_type_changed"
+        case .jetpackStatsChartMetricSelected:
+            return "jetpack_stats_chart_metric_selected"
+
+        // List Events
+        case .jetpackStatsTopListItemTapped:
+            return "jetpack_stats_top_list_item_tapped"
+
+        // Navigation Events
+        case .jetpackStatsTabSelected:
+            return "jetpack_stats_tab_selected"
+
+        // Error Events
+        case .jetpackStatsErrorEncountered:
+            return "jetpack_stats_error_encountered"
         } // END OF SWITCH
     }
 

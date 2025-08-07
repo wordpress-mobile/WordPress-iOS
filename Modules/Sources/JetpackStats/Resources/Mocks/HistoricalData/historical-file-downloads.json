@@ -1,0 +1,177 @@
+[
+  {
+    "fileName": "cybertruck-safety-report-2024.pdf",
+    "filePath": "/downloads/reports/cybertruck-safety-report-2024.pdf",
+    "metrics": {
+      "downloads": 4200
+    }
+  },
+  {
+    "fileName": "best-tech-products-2024.pdf",
+    "filePath": "/downloads/guides/best-tech-products-2024.pdf",
+    "metrics": {
+      "downloads": 3800
+    }
+  },
+  {
+    "fileName": "apple-vision-pro-specs.pdf",
+    "filePath": "/downloads/specs/apple-vision-pro-specs.pdf",
+    "metrics": {
+      "downloads": 3500
+    }
+  },
+  {
+    "fileName": "printer-buying-guide-2024.pdf",
+    "filePath": "/downloads/guides/printer-buying-guide-2024.pdf",
+    "metrics": {
+      "downloads": 3200
+    }
+  },
+  {
+    "fileName": "twitter-x-rebrand-timeline.pdf",
+    "filePath": "/downloads/infographics/twitter-x-rebrand-timeline.pdf",
+    "metrics": {
+      "downloads": 2800
+    }
+  },
+  {
+    "fileName": "framework-laptop-repair-guide.pdf",
+    "filePath": "/downloads/manuals/framework-laptop-repair-guide.pdf",
+    "metrics": {
+      "downloads": 2600
+    }
+  },
+  {
+    "fileName": "steam-deck-oled-comparison.xlsx",
+    "filePath": "/downloads/data/steam-deck-oled-comparison.xlsx",
+    "metrics": {
+      "downloads": 2400
+    }
+  },
+  {
+    "fileName": "ai-tools-comparison-2024.pdf",
+    "filePath": "/downloads/reports/ai-tools-comparison-2024.pdf",
+    "metrics": {
+      "downloads": 2200
+    }
+  },
+  {
+    "fileName": "smart-home-setup-guide.pdf",
+    "filePath": "/downloads/guides/smart-home-setup-guide.pdf",
+    "metrics": {
+      "downloads": 2000
+    }
+  },
+  {
+    "fileName": "pixel-camera-samples.zip",
+    "filePath": "/downloads/media/pixel-camera-samples.zip",
+    "metrics": {
+      "downloads": 1800
+    }
+  },
+  {
+    "fileName": "m3-macbook-benchmarks.xlsx",
+    "filePath": "/downloads/data/m3-macbook-benchmarks.xlsx",
+    "metrics": {
+      "downloads": 1600
+    }
+  },
+  {
+    "fileName": "netflix-sharing-workarounds.pdf",
+    "filePath": "/downloads/guides/netflix-sharing-workarounds.pdf",
+    "metrics": {
+      "downloads": 1500
+    }
+  },
+  {
+    "fileName": "browser-privacy-comparison.pdf",
+    "filePath": "/downloads/reports/browser-privacy-comparison.pdf",
+    "metrics": {
+      "downloads": 1400
+    }
+  },
+  {
+    "fileName": "raspberry-pi-5-pinout.pdf",
+    "filePath": "/downloads/docs/raspberry-pi-5-pinout.pdf",
+    "metrics": {
+      "downloads": 1200
+    }
+  },
+  {
+    "fileName": "windows-11-debloat-script.ps1",
+    "filePath": "/downloads/scripts/windows-11-debloat-script.ps1",
+    "metrics": {
+      "downloads": 1100
+    }
+  },
+  {
+    "fileName": "ev-comparison-chart-2024.pdf",
+    "filePath": "/downloads/infographics/ev-comparison-chart-2024.pdf",
+    "metrics": {
+      "downloads": 1000
+    }
+  },
+  {
+    "fileName": "vr-headset-specs-comparison.xlsx",
+    "filePath": "/downloads/data/vr-headset-specs-comparison.xlsx",
+    "metrics": {
+      "downloads": 900
+    }
+  },
+  {
+    "fileName": "smart-tv-ad-blocking-guide.pdf",
+    "filePath": "/downloads/guides/smart-tv-ad-blocking-guide.pdf",
+    "metrics": {
+      "downloads": 850
+    }
+  },
+  {
+    "fileName": "tech-company-revenue-2024.csv",
+    "filePath": "/downloads/data/tech-company-revenue-2024.csv",
+    "metrics": {
+      "downloads": 800
+    }
+  },
+  {
+    "fileName": "password-manager-comparison.pdf",
+    "filePath": "/downloads/reports/password-manager-comparison.pdf",
+    "metrics": {
+      "downloads": 750
+    }
+  },
+  {
+    "fileName": "arc-browser-shortcuts.pdf",
+    "filePath": "/downloads/cheatsheets/arc-browser-shortcuts.pdf",
+    "metrics": {
+      "downloads": 700
+    }
+  },
+  {
+    "fileName": "github-copilot-alternatives.pdf",
+    "filePath": "/downloads/guides/github-copilot-alternatives.pdf",
+    "metrics": {
+      "downloads": 650
+    }
+  },
+  {
+    "fileName": "mastodon-migration-guide.pdf",
+    "filePath": "/downloads/guides/mastodon-migration-guide.pdf",
+    "metrics": {
+      "downloads": 600
+    }
+  },
+  {
+    "fileName": "dall-e-prompts-collection.txt",
+    "filePath": "/downloads/resources/dall-e-prompts-collection.txt",
+    "metrics": {
+      "downloads": 550
+    }
+  },
+  {
+    "fileName": "tech-glossary-2024.pdf",
+    "filePath": "/downloads/references/tech-glossary-2024.pdf",
+    "metrics": {
+      "downloads": 500
+    }
+  }
+]

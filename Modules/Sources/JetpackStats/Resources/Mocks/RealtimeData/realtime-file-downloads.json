@@ -1,0 +1,44 @@
+[
+  {
+    "fileName": "annual-report-2024.pdf",
+    "filePath": "/downloads/reports/annual-report-2024.pdf",
+    "metrics": {
+      "downloads": 25
+    }
+  },
+  {
+    "fileName": "swift-cheatsheet.pdf",
+    "filePath": "/downloads/docs/swift-cheatsheet.pdf",
+    "metrics": {
+      "downloads": 21
+    }
+  },
+  {
+    "fileName": "app-screenshots.zip",
+    "filePath": "/downloads/media/app-screenshots.zip",
+    "metrics": {
+      "downloads": 18
+    }
+  },
+  {
+    "fileName": "tutorial-video.mp4",
+    "filePath": "/downloads/videos/tutorial-video.mp4",
+    "metrics": {
+      "downloads": 15
+    }
+  },
+  {
+    "fileName": "code-samples.zip",
+    "filePath": "/downloads/code/code-samples.zip",
+    "metrics": {
+      "downloads": 12
+    }
+  },
+  {
+    "fileName": "whitepaper.pdf",
+    "filePath": "/downloads/docs/whitepaper.pdf",
+    "metrics": {
+      "downloads": 9
+    }
+  }
+]

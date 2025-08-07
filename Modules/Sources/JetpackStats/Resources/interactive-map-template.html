@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        svg {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+        }
+        path {
+            transition: opacity 0.2s ease;
+        }
+        path.selected {
+            stroke-width: 3;
+            stroke: #007AFF;
+        }
+    </style>
+    <script>
+        let selectedCountry = null;
+
+        function selectCountry(element) {
+            if (selectedCountry && selectedCountry !== element) {
+                selectedCountry.classList.remove('selected');
+            }
+            if (element && element.id) {
+                element.classList.add('selected');
+                selectedCountry = element;
+                window.webkit.messageHandlers.countrySelected.postMessage(element.id);
+            }
+        }
+        
+        function deselectCountry() {
+            if (selectedCountry) {
+                selectedCountry.classList.remove('selected');
+                selectedCountry = null;
+                window.webkit.messageHandlers.countrySelected.postMessage(null);
+            }
+        }
+        
+        function setupCountryInteractions() {
+            const svg = document.querySelector('svg');
+            
+            // Single click handler for all interactions
+            svg.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Check if the clicked element is a path with an ID (country)
+                if (e.target.tagName === 'path' && e.target.id) {
+                    selectCountry(e.target);
+                } else {
+                    // Clicked outside any country or on a path without ID
+                    deselectCountry();
+                }
+            });
+        }
+        
+        // Setup interactions when DOM is loaded
+        document.addEventListener('DOMContentLoaded', setupCountryInteractions);
+    </script>
+</head>
+<body>
+    <!-- SVG_CONTENT_PLACEHOLDER -->
+</body>
+</html>

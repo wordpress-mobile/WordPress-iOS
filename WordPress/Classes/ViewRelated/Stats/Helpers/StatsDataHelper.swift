@@ -247,6 +247,9 @@ extension StatsPeriodUnit {
 
     var dateFormatTemplate: String {
         switch self {
+        case .hour:
+            wpAssertionFailure("StatsPeriodHelper.hour period is unsupported in the legacy stats")
+            return "MMM d, yyyy"
         case .day:
             return "MMM d, yyyy"
         case .week:
@@ -260,6 +263,8 @@ extension StatsPeriodUnit {
 
     var calendarComponent: Calendar.Component {
         switch self {
+        case .hour:
+            return .hour
         case .day:
             return .day
         case .week:
@@ -273,6 +278,7 @@ extension StatsPeriodUnit {
 
     var description: String {
         switch self {
+        case .hour: return "hour"
         case .day: return "day"
         case .week: return "week"
         case .month: return "month"

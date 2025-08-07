@@ -1,0 +1,66 @@
+[
+  {
+    "country": "United States",
+    "countryCode": "US",
+    "flag": "🇺🇸",
+    "metrics": {
+      "views": 350
+    }
+  },
+  {
+    "country": "United Kingdom",
+    "countryCode": "GB",
+    "flag": "🇬🇧",
+    "metrics": {
+      "views": 150
+    }
+  },
+  {
+    "country": "Canada",
+    "countryCode": "CA",
+    "flag": "🇨🇦",
+    "metrics": {
+      "views": 120
+    }
+  },
+  {
+    "country": "Germany",
+    "countryCode": "DE",
+    "flag": "🇩🇪",
+    "metrics": {
+      "views": 95
+    }
+  },
+  {
+    "country": "Australia",
+    "countryCode": "AU",
+    "flag": "🇦🇺",
+    "metrics": {
+      "views": 80
+    }
+  },
+  {
+    "country": "France",
+    "countryCode": "FR",
+    "flag": "🇫🇷",
+    "metrics": {
+      "views": 65
+    }
+  },
+  {
+    "country": "Japan",
+    "countryCode": "JP",
+    "flag": "🇯🇵",
+    "metrics": {
+      "views": 55
+    }
+  },
+  {
+    "country": "Netherlands",
+    "countryCode": "NL",
+    "flag": "🇳🇱",
+    "metrics": {
+      "views": 45
+    }
+  }
+]

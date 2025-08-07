@@ -136,6 +136,10 @@ private extension PostStatsTableViewController {
             properties["post_id"] = postIdentifier
         }
 
+        if FeatureFlag.newStats.enabled {
+            properties[WPAnalyticsEvent.isNewStatsKey] = "1"
+        }
+
         WPAppAnalytics.track(.statsAccessed, withProperties: properties)
     }
 

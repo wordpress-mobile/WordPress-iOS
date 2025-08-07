@@ -54,6 +54,35 @@ enum AppTips {
             MaxDisplayCount(1)
         }
     }
+
+    @available(iOS 17, *)
+    struct NewStatsTip: Tip {
+        let id = "new_stats_tip"
+
+        var title: Text {
+            Text(NSLocalizedString("tips.newStats.title", value: "Try New Stats", comment: "Tip for new stats feature"))
+        }
+
+        var message: Text? {
+            Text(NSLocalizedString("tips.newStats.message", value: "Experience new sleek and powerful stats. Switch back whenever you like.", comment: "Tip for new stats feature"))
+        }
+
+        var image: Image? {
+            Image(systemName: "wand.and.sparkles.inverse")
+        }
+
+        var actions: [Action] {
+            Action(id: "try-new-stats", title: NSLocalizedString(
+                "tips.newStats.action",
+                value: "Enable Now",
+                comment: "Action button title to enable new stats from tip"
+            ))
+        }
+
+        var options: [any TipOption] {
+            MaxDisplayCount(1)
+        }
+    }
 }
 
 extension UIViewController {

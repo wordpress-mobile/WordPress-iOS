@@ -1,0 +1,407 @@
+[
+  {
+    "title": "Best printer 2025: just buy a Brother laser printer, the winner is clear, middle finger in the air",
+    "postID": "1",
+    "type": "post",
+    "author": "Alex Johnson",
+    "date": "2024-11-20T00:00:00Z",
+    "metrics": {
+      "views": 5800,
+      "comments": 289,
+      "likes": 1200,
+      "visitors": 4060,
+      "bounceRate": 25,
+      "timeOnSite": 420
+    }
+  },
+  {
+    "title": "I Replaced Every Component in My Framework Laptop Until It Became a Desktop",
+    "postID": "2",
+    "type": "post",
+    "author": "Alex Johnson",
+    "date": "2024-11-18T00:00:00Z",
+    "metrics": {
+      "views": 2500,
+      "comments": 125,
+      "likes": 450,
+      "visitors": 1750,
+      "bounceRate": 35,
+      "timeOnSite": 240
+    }
+  },
+  {
+    "title": "The Cybertruck's Frunk Won't Stop Eating Fingers",
+    "postID": "3",
+    "type": "post",
+    "author": "Chloe Zhang",
+    "date": "2024-11-15T00:00:00Z",
+    "metrics": {
+      "views": 2000,
+      "comments": 98,
+      "likes": 380,
+      "visitors": 1400,
+      "bounceRate": 40,
+      "timeOnSite": 210
+    }
+  },
+  {
+    "title": "Matter Smart Home Protocol Still Doesn't Matter: A Year Later",
+    "postID": "4",
+    "type": "post",
+    "author": "Jordan Davis",
+    "date": "2024-11-12T00:00:00Z",
+    "metrics": {
+      "views": 1800,
+      "comments": 85,
+      "likes": 320,
+      "visitors": 1260,
+      "bounceRate": 38,
+      "timeOnSite": 225
+    }
+  },
+  {
+    "title": "Trackpad Alignment on the New MacBook Pro: A 10,000 Word Investigation",
+    "postID": "5",
+    "type": "post",
+    "author": "Sofia Rodriguez",
+    "date": "2024-11-10T00:00:00Z",
+    "metrics": {
+      "views": 1600,
+      "comments": 72,
+      "likes": 280,
+      "visitors": 1120,
+      "bounceRate": 42,
+      "timeOnSite": 195
+    }
+  },
+  {
+    "title": "Nothing Phone (2a): Now With 50% More Nothing",
+    "postID": "6",
+    "type": "post",
+    "author": "Morgan Smith",
+    "date": "2024-11-08T00:00:00Z",
+    "metrics": {
+      "views": 1400,
+      "comments": 65,
+      "likes": 245,
+      "visitors": 980,
+      "bounceRate": 45,
+      "timeOnSite": 180
+    }
+  },
+  {
+    "title": "Samsung's Moon Photography Is Real* (*Terms and Conditions Apply)",
+    "postID": "7",
+    "type": "post",
+    "author": "Emma Thompson",
+    "date": "2024-11-05T00:00:00Z",
+    "metrics": {
+      "views": 1200,
+      "comments": 58,
+      "likes": 210,
+      "visitors": 840,
+      "bounceRate": 48,
+      "timeOnSite": 165
+    }
+  },
+  {
+    "title": "The Steam Deck OLED Screen Is So Good I Licked It",
+    "postID": "8",
+    "type": "post",
+    "author": "Riley Martinez",
+    "date": "2024-11-03T00:00:00Z",
+    "metrics": {
+      "views": 1100,
+      "comments": 52,
+      "likes": 195,
+      "visitors": 770,
+      "bounceRate": 43,
+      "timeOnSite": 190
+    }
+  },
+  {
+    "title": "Meta's VR Legs Update: They're Still Not Real",
+    "postID": "9",
+    "type": "post",
+    "author": "Riley Martinez",
+    "date": "2024-10-30T00:00:00Z",
+    "metrics": {
+      "views": 1000,
+      "comments": 48,
+      "likes": 175,
+      "visitors": 700,
+      "bounceRate": 46,
+      "timeOnSite": 175
+    }
+  },
+  {
+    "title": "About The Verge",
+    "postID": "9991",
+    "type": "page",
+    "author": "Alex Johnson",
+    "date": null,
+    "metrics": {
+      "views": 900,
+      "comments": 0,
+      "likes": 25,
+      "visitors": 720,
+      "bounceRate": 60,
+      "timeOnSite": 90
+    }
+  },
+  {
+    "title": "Microsoft's New AI Can Predict When You'll Rage Quit Excel",
+    "postID": "10",
+    "type": "post",
+    "author": "Jamie Lee",
+    "date": "2024-10-28T00:00:00Z",
+    "metrics": {
+      "views": 900,
+      "comments": 42,
+      "likes": 160,
+      "visitors": 630,
+      "bounceRate": 50,
+      "timeOnSite": 155
+    }
+  },
+  {
+    "title": "I Shattered the Apple Vision Pro's Front Glass and It Only Cost Me $799 to Fix",
+    "postID": "11",
+    "type": "post",
+    "author": "Sofia Rodriguez",
+    "date": "2024-10-25T00:00:00Z",
+    "metrics": {
+      "views": 850,
+      "comments": 38,
+      "likes": 150,
+      "visitors": 595,
+      "bounceRate": 44,
+      "timeOnSite": 185
+    }
+  },
+  {
+    "title": "Google's Pixel 8 Pro Has Too Many Cameras (I Counted)",
+    "postID": "12",
+    "type": "post",
+    "author": "Avery Taylor",
+    "date": "2024-10-22T00:00:00Z",
+    "metrics": {
+      "views": 750,
+      "comments": 32,
+      "likes": 130,
+      "visitors": 525,
+      "bounceRate": 52,
+      "timeOnSite": 145
+    }
+  },
+  {
+    "title": "This Smart Toaster Has DRM and I'm Not Even Surprised Anymore",
+    "postID": "14",
+    "type": "post",
+    "author": "Jamie Lee",
+    "date": "2024-10-18T00:00:00Z",
+    "metrics": {
+      "views": 2100,
+      "comments": 102,
+      "likes": 420,
+      "visitors": 1470,
+      "bounceRate": 33,
+      "timeOnSite": 260
+    }
+  },
+  {
+    "title": "ChatGPT Convinced Me It Was Sentient (It Was Lying)",
+    "postID": "15",
+    "type": "post",
+    "author": "Emma Thompson",
+    "date": "2024-10-15T00:00:00Z",
+    "metrics": {
+      "views": 4500,
+      "comments": 225,
+      "likes": 890,
+      "visitors": 3150,
+      "bounceRate": 28,
+      "timeOnSite": 340
+    }
+  },
+  {
+    "title": "The $2000 Dyson Hair Dryer: A Scientific Analysis of My Poor Life Choices",
+    "postID": "16",
+    "type": "post",
+    "author": "Chloe Zhang",
+    "date": "2024-10-12T00:00:00Z",
+    "metrics": {
+      "views": 1800,
+      "comments": 89,
+      "likes": 340,
+      "visitors": 1260,
+      "bounceRate": 36,
+      "timeOnSite": 230
+    }
+  },
+  {
+    "title": "I Tried to Return a Smart TV That Shows Ads. Best Buy Laughed at Me",
+    "postID": "18",
+    "type": "post",
+    "author": "Avery Taylor",
+    "date": "2024-10-08T00:00:00Z",
+    "metrics": {
+      "views": 2800,
+      "comments": 142,
+      "likes": 560,
+      "visitors": 1960,
+      "bounceRate": 31,
+      "timeOnSite": 295
+    }
+  },
+  {
+    "title": "Sony's New $200 Controller Has a Screen Nobody Asked For",
+    "postID": "19",
+    "type": "post",
+    "author": "Riley Martinez",
+    "date": "2024-10-05T00:00:00Z",
+    "metrics": {
+      "views": 1500,
+      "comments": 75,
+      "likes": 290,
+      "visitors": 1050,
+      "bounceRate": 39,
+      "timeOnSite": 205
+    }
+  },
+  {
+    "title": "The M3 MacBook Air Is Faster Than My Personality",
+    "postID": "20",
+    "type": "post",
+    "author": "Alex Johnson",
+    "date": "2024-10-02T00:00:00Z",
+    "metrics": {
+      "views": 3800,
+      "comments": 189,
+      "likes": 760,
+      "visitors": 2660,
+      "bounceRate": 26,
+      "timeOnSite": 320
+    }
+  },
+  {
+    "title": "Netflix Password Sharing Crackdown: A Love Story",
+    "postID": "21",
+    "type": "post",
+    "author": "Jordan Davis",
+    "date": "2024-09-30T00:00:00Z",
+    "metrics": {
+      "views": 5200,
+      "comments": 260,
+      "likes": 1040,
+      "visitors": 3640,
+      "bounceRate": 24,
+      "timeOnSite": 360
+    }
+  },
+  {
+    "title": "The Rabbit R1 Is Just an Android App in a Tiny Orange Box",
+    "postID": "22",
+    "type": "post",
+    "author": "Sofia Rodriguez",
+    "date": "2024-09-28T00:00:00Z",
+    "metrics": {
+      "views": 2300,
+      "comments": 115,
+      "likes": 460,
+      "visitors": 1610,
+      "bounceRate": 34,
+      "timeOnSite": 250
+    }
+  },
+  {
+    "title": "Contact Us",
+    "postID": "9992",
+    "type": "page",
+    "author": "Chloe Zhang",
+    "date": null,
+    "metrics": {
+      "views": 500,
+      "comments": 0,
+      "likes": 10,
+      "visitors": 400,
+      "bounceRate": 65,
+      "timeOnSite": 75
+    }
+  },
+  {
+    "title": "Newsletter Signup",
+    "postID": "9993",
+    "type": "page",
+    "author": "Jordan Davis",
+    "date": null,
+    "metrics": {
+      "views": 400,
+      "comments": 0,
+      "likes": 15,
+      "visitors": 320,
+      "bounceRate": 55,
+      "timeOnSite": 120
+    }
+  },
+  {
+    "title": "Privacy Policy",
+    "postID": "9994",
+    "type": "page",
+    "author": "Sofia Rodriguez",
+    "date": null,
+    "metrics": {
+      "views": 250,
+      "comments": 0,
+      "likes": 0,
+      "visitors": 200,
+      "bounceRate": 70,
+      "timeOnSite": 60
+    }
+  },
+  {
+    "title": "Terms of Service",
+    "postID": "9995",
+    "type": "page",
+    "author": "Morgan Smith",
+    "date": null,
+    "metrics": {
+      "views": 180,
+      "comments": 0,
+      "likes": 0,
+      "visitors": 144,
+      "bounceRate": 72,
+      "timeOnSite": 55
+    }
+  },
+  {
+    "title": "Careers",
+    "postID": "9996",
+    "type": "page",
+    "author": "Emma Thompson",
+    "date": null,
+    "metrics": {
+      "views": 320,
+      "comments": 0,
+      "likes": 8,
+      "visitors": 256,
+      "bounceRate": 58,
+      "timeOnSite": 95
+    }
+  },
+  {
+    "title": "Advertise With Us",
+    "postID": "9997",
+    "type": "page",
+    "author": "Quinn Anderson",
+    "date": null,
+    "metrics": {
+      "views": 220,
+      "comments": 0,
+      "likes": 5,
+      "visitors": 176,
+      "bounceRate": 62,
+      "timeOnSite": 85
+    }
+  }
+]

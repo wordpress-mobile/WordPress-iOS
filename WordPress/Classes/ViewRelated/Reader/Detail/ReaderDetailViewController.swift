@@ -212,6 +212,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         return true
     }
 
+    override func contentScrollView(for edge: NSDirectionalRectEdge) -> UIScrollView? {
+        scrollView
+    }
+
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
 
@@ -230,8 +234,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         if post.content?.hasSuffix("[…]") == true {
             let viewMoreView = ReaderReadMoreView(post: post)
-            webView.addSubview(viewMoreView)
-            viewMoreView.pinEdges([.horizontal, .bottom])
+            // Add to the scroll view's parent view instead of directly to webView
+            if let containerView = webView.superview {
+                containerView.addSubview(viewMoreView)
+                viewMoreView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    viewMoreView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
+                    viewMoreView.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
+                    viewMoreView.bottomAnchor.constraint(equalTo: webView.bottomAnchor)
+                ])
+            }
         }
 
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
@@ -543,7 +555,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         featuredImageView.delegate = coordinator
 
-        view.insertSubview(featuredImageView, belowSubview: webView)
+        view.insertSubview(featuredImageView, belowSubview: scrollView)
 
         NSLayoutConstraint.activate([
             featuredImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),

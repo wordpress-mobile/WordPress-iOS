@@ -9,6 +9,7 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
         FeatureFlag.allowApplicationPasswords,
         RemoteFeatureFlag.newGutenberg,
         FeatureFlag.newGutenbergThemeStyles,
+        FeatureFlag.newStats,
     ]
 
     private let flagStore = FeatureFlagOverrideStore()

@@ -1,0 +1,394 @@
+[
+  {
+    "name": "Alex Johnson",
+    "userId": "1",
+    "role": "Editor-in-Chief",
+    "metrics": {
+      "views": 12000,
+      "comments": 580,
+      "likes": 2100,
+      "visitors": 8400,
+      "bounceRate": 25,
+      "timeOnSite": 320
+    },
+    "posts": [
+      {
+        "title": "Best printer 2025: just buy a Brother laser printer, the winner is clear, middle finger in the air",
+        "postID": "1",
+        "postURL": "https://example.com/best-printer-2025",
+        "date": "2024-11-20T00:00:00Z",
+        "type": "post",
+        "author": "Alex Johnson",
+        "metrics": {
+          "views": 5800
+        }
+      },
+      {
+        "title": "I Replaced Every Component in My Framework Laptop Until It Became a Desktop",
+        "postID": "2",
+        "postURL": "https://example.com/framework-laptop-desktop",
+        "date": "2024-11-18T00:00:00Z",
+        "type": "post",
+        "author": "Alex Johnson",
+        "metrics": {
+          "views": 2500
+        }
+      },
+      {
+        "title": "The M3 MacBook Air Is Faster Than My Personality",
+        "postID": "20",
+        "postURL": "https://example.com/m3-macbook-air-review",
+        "date": "2024-10-02T00:00:00Z",
+        "type": "post",
+        "author": "Alex Johnson",
+        "metrics": {
+          "views": 3800
+        }
+      }
+    ]
+  },
+  {
+    "name": "Chloe Zhang",
+    "userId": "2",
+    "role": "Executive Editor",
+    "metrics": {
+      "views": 7800,
+      "comments": 380,
+      "likes": 1420,
+      "visitors": 5460,
+      "bounceRate": 32,
+      "timeOnSite": 270
+    },
+    "posts": [
+      {
+        "title": "The Cybertruck's Frunk Won't Stop Eating Fingers",
+        "postID": "3",
+        "postURL": "https://example.com/cybertruck-frunk-safety",
+        "date": "2024-11-15T00:00:00Z",
+        "type": "post",
+        "author": "Chloe Zhang",
+        "metrics": {
+          "views": 2000
+        }
+      },
+      {
+        "title": "The $2000 Dyson Hair Dryer: A Scientific Analysis of My Poor Life Choices",
+        "postID": "16",
+        "postURL": "https://example.com/dyson-hair-dryer-review",
+        "date": "2024-10-12T00:00:00Z",
+        "type": "post",
+        "author": "Chloe Zhang",
+        "metrics": {
+          "views": 1800
+        }
+      }
+    ]
+  },
+  {
+    "name": "Jordan Davis",
+    "userId": "3",
+    "role": "Senior Writer",
+    "metrics": {
+      "views": 9200,
+      "comments": 450,
+      "likes": 1680,
+      "visitors": 6440,
+      "bounceRate": 30,
+      "timeOnSite": 310
+    },
+    "posts": [
+      {
+        "title": "Matter Smart Home Protocol Still Doesn't Matter: A Year Later",
+        "postID": "4",
+        "postURL": "https://example.com/matter-smart-home-fail",
+        "date": "2024-11-12T00:00:00Z",
+        "type": "post",
+        "author": "Jordan Davis",
+        "metrics": {
+          "views": 1800
+        }
+      },
+      {
+        "title": "Netflix Password Sharing Crackdown: A Love Story",
+        "postID": "21",
+        "postURL": "https://example.com/netflix-password-sharing",
+        "date": "2024-09-30T00:00:00Z",
+        "type": "post",
+        "author": "Jordan Davis",
+        "metrics": {
+          "views": 5200
+        }
+      }
+    ]
+  },
+  {
+    "name": "Sofia Rodriguez",
+    "userId": "4",
+    "role": "Editor-at-Large",
+    "metrics": {
+      "views": 5650,
+      "comments": 275,
+      "likes": 1030,
+      "visitors": 3955,
+      "bounceRate": 34,
+      "timeOnSite": 285
+    },
+    "posts": [
+      {
+        "title": "Trackpad Alignment on the New MacBook Pro: A 10,000 Word Investigation",
+        "postID": "5",
+        "postURL": "https://example.com/macbook-trackpad-investigation",
+        "date": "2024-11-10T00:00:00Z",
+        "type": "post",
+        "author": "Sofia Rodriguez",
+        "metrics": {
+          "views": 1600
+        }
+      },
+      {
+        "title": "I Shattered the Apple Vision Pro's Front Glass and It Only Cost Me $799 to Fix",
+        "postID": "11",
+        "postURL": "https://example.com/vision-pro-repair",
+        "date": "2024-10-25T00:00:00Z",
+        "type": "post",
+        "author": "Sofia Rodriguez",
+        "metrics": {
+          "views": 850
+        }
+      },
+      {
+        "title": "The Rabbit R1 Is Just an Android App in a Tiny Orange Box",
+        "postID": "22",
+        "postURL": "https://example.com/rabbit-r1-android",
+        "date": "2024-09-28T00:00:00Z",
+        "type": "post",
+        "author": "Sofia Rodriguez",
+        "metrics": {
+          "views": 2300
+        }
+      }
+    ]
+  },
+  {
+    "name": "Morgan Smith",
+    "userId": "5",
+    "role": "Senior Editor",
+    "metrics": {
+      "views": 8800,
+      "comments": 420,
+      "likes": 1560,
+      "visitors": 6160,
+      "bounceRate": 28,
+      "timeOnSite": 295
+    },
+    "posts": [
+      {
+        "title": "Nothing Phone (2a): Now With 50% More Nothing",
+        "postID": "6",
+        "postURL": "https://example.com/nothing-phone-2a",
+        "date": "2024-11-08T00:00:00Z",
+        "type": "post",
+        "author": "Morgan Smith",
+        "metrics": {
+          "views": 1400
+        }
+      },
+      {
+        "title": "Twitter's New Logo Is Just the Letter X and Everyone Is Very Normal About It",
+        "postID": "17",
+        "postURL": "https://example.com/twitter-x-logo",
+        "date": "2024-10-10T00:00:00Z",
+        "type": "post",
+        "author": "Morgan Smith",
+        "metrics": {
+          "views": 6200
+        }
+      }
+    ]
+  },
+  {
+    "name": "Emma Thompson",
+    "userId": "6",
+    "role": "Managing Editor",
+    "metrics": {
+      "views": 6900,
+      "comments": 335,
+      "likes": 1255,
+      "visitors": 4830,
+      "bounceRate": 31,
+      "timeOnSite": 300
+    },
+    "posts": [
+      {
+        "title": "Samsung's Moon Photography Is Real* (*Terms and Conditions Apply)",
+        "postID": "7",
+        "postURL": "https://example.com/samsung-moon-photography",
+        "date": "2024-11-05T00:00:00Z",
+        "type": "post",
+        "author": "Emma Thompson",
+        "metrics": {
+          "views": 1200
+        }
+      },
+      {
+        "title": "ChatGPT Convinced Me It Was Sentient (It Was Lying)",
+        "postID": "15",
+        "postURL": "https://example.com/chatgpt-sentient",
+        "date": "2024-10-15T00:00:00Z",
+        "type": "post",
+        "author": "Emma Thompson",
+        "metrics": {
+          "views": 4500
+        }
+      }
+    ]
+  },
+  {
+    "name": "Riley Martinez",
+    "userId": "7",
+    "role": "Senior Reporter",
+    "metrics": {
+      "views": 4600,
+      "comments": 225,
+      "likes": 840,
+      "visitors": 3220,
+      "bounceRate": 37,
+      "timeOnSite": 260
+    },
+    "posts": [
+      {
+        "title": "The Steam Deck OLED Screen Is So Good I Licked It",
+        "postID": "8",
+        "postURL": "https://example.com/steam-deck-oled",
+        "date": "2024-11-03T00:00:00Z",
+        "type": "post",
+        "author": "Riley Martinez",
+        "metrics": {
+          "views": 1100
+        }
+      },
+      {
+        "title": "Meta's VR Legs Update: They're Still Not Real",
+        "postID": "9",
+        "postURL": "https://example.com/meta-vr-legs",
+        "date": "2024-10-30T00:00:00Z",
+        "type": "post",
+        "author": "Riley Martinez",
+        "metrics": {
+          "views": 1000
+        }
+      },
+      {
+        "title": "Sony's New $200 Controller Has a Screen Nobody Asked For",
+        "postID": "19",
+        "postURL": "https://example.com/sony-controller-screen",
+        "date": "2024-10-05T00:00:00Z",
+        "type": "post",
+        "author": "Riley Martinez",
+        "metrics": {
+          "views": 1500
+        }
+      }
+    ]
+  },
+  {
+    "name": "Jamie Lee",
+    "userId": "8",
+    "role": "News Writer",
+    "metrics": {
+      "views": 3900,
+      "comments": 190,
+      "likes": 710,
+      "visitors": 2730,
+      "bounceRate": 40,
+      "timeOnSite": 245
+    },
+    "posts": [
+      {
+        "title": "Microsoft's New AI Can Predict When You'll Rage Quit Excel",
+        "postID": "10",
+        "postURL": "https://example.com/microsoft-ai-excel",
+        "date": "2024-10-28T00:00:00Z",
+        "type": "post",
+        "author": "Jamie Lee",
+        "metrics": {
+          "views": 900
+        }
+      },
+      {
+        "title": "This Smart Toaster Has DRM and I'm Not Even Surprised Anymore",
+        "postID": "14",
+        "postURL": "https://example.com/smart-toaster-drm",
+        "date": "2024-10-18T00:00:00Z",
+        "type": "post",
+        "author": "Jamie Lee",
+        "metrics": {
+          "views": 2100
+        }
+      }
+    ]
+  },
+  {
+    "name": "Avery Taylor",
+    "userId": "9",
+    "role": "News Writer",
+    "metrics": {
+      "views": 4350,
+      "comments": 215,
+      "likes": 790,
+      "visitors": 3045,
+      "bounceRate": 42,
+      "timeOnSite": 235
+    },
+    "posts": [
+      {
+        "title": "Google's Pixel 8 Pro Has Too Many Cameras (I Counted)",
+        "postID": "12",
+        "postURL": "https://example.com/pixel-8-pro-cameras",
+        "date": "2024-10-22T00:00:00Z",
+        "type": "post",
+        "author": "Avery Taylor",
+        "metrics": {
+          "views": 750
+        }
+      },
+      {
+        "title": "I Tried to Return a Smart TV That Shows Ads. Best Buy Laughed at Me",
+        "postID": "18",
+        "postURL": "https://example.com/smart-tv-ads-return",
+        "date": "2024-10-08T00:00:00Z",
+        "type": "post",
+        "author": "Avery Taylor",
+        "metrics": {
+          "views": 2800
+        }
+      }
+    ]
+  },
+  {
+    "name": "Quinn Anderson",
+    "userId": "10",
+    "role": "Weekend Editor",
+    "metrics": {
+      "views": 3420,
+      "comments": 170,
+      "likes": 625,
+      "visitors": 2394,
+      "bounceRate": 36,
+      "timeOnSite": 270
+    },
+    "posts": [
+      {
+        "title": "Apple Finally Invented USB-C (They're Calling It Revolutionary)",
+        "postID": "13",
+        "postURL": "https://example.com/apple-usb-c",
+        "date": "2024-10-20T00:00:00Z",
+        "type": "post",
+        "author": "Quinn Anderson",
+        "metrics": {
+          "views": 3200
+        }
+      }
+    ]
+  }
+]

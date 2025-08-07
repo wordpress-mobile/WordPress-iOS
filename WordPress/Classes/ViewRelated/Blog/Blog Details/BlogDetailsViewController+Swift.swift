@@ -266,12 +266,7 @@ extension BlogDetailsViewController {
         guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() else {
             return MovedToJetpackViewController(source: .stats)
         }
-
-        let statsVC = StatsViewController()
-        statsVC.blog = blog
-        statsVC.hidesBottomBarWhenPushed = true
-        statsVC.navigationItem.largeTitleDisplayMode = .never
-        return statsVC
+        return StatsHostingViewController.makeStatsViewController(for: blog)
     }
 
     @objc(showDomainsFromSource:)
@@ -351,74 +346,6 @@ extension BlogDetailsViewController {
         presentationDelegate?.presentBlogDetailsViewController(controller)
     }
 
-    @objc public func checkApplicationPasswordEligibility() {
-        guard FeatureFlag.allowApplicationPasswords.enabled else { return }
-
-        // We have already got an application token for this site, no need to ask for another one.
-        guard (try? blog.getApplicationToken()) == nil, let url = blog.url else { return }
-
-        Task { @MainActor in
-            // If the auto disocvery process is successful, we consider the site supports application password.
-            let siteDetails = try await WordPressLoginClient(urlSession: URLSession(configuration: .ephemeral)).details(ofSite: url)
-
-            // Since the site is already added to the app, we need to find the current user/account in the site itself,
-            // not the one in WP.com.
-            //
-            // The "site username" could be
-            // - When the site is added via the signed in WP.com account, the username of the self-hosted user that
-            //   connected the site to the signed in WP.com account. Or,
-            // - When the site is added as a self-hosted site, the username of the logged in site: `blog.username`.
-            let siteUsername: String
-            if let site = WordPressSite.throughDotCom(blog: blog) {
-                // For sites that are added to the app via a WP.com account, we can find out the user using the core
-                // REST API via WP.com: https://public-api.wordpress.com/wp/v2/sites/$site_id/users/me
-                let client = WordPressClient(site: site)
-                siteUsername = try await client.api.users.retrieveMeWithEditContext().data.username
-            } else if let username = blog.username {
-                // For sites that are added as self-hosted sites, the `username` is what we need.
-                siteUsername = username
-            } else {
-                return
-            }
-
-            self.applicationPasswordAuthenticationInfo = .init(siteAddress: url, siteDetails: siteDetails, siteUsername: siteUsername)
-        }
-    }
-
-    @objc public func applicationPasswordAuthenticationSectionViewModel() -> BlogDetailsSection {
-        let row = BlogDetailsRow()
-        row.callback = { [weak self] in
-            Task {
-                await self?.startApplicationPasswordAuthenticationFlow()
-            }
-        }
-        return BlogDetailsSection(
-            title: nil,
-            rows: [row],
-            footerTitle: nil,
-            category: .applicationPasswordAuthentication
-        )
-    }
-
-    @MainActor
-    private func startApplicationPasswordAuthenticationFlow() async {
-        guard let info = self.applicationPasswordAuthenticationInfo else {
-            return
-        }
-
-        let authenticator = SelfHostedSiteAuthenticator()
-        do {
-            let _ = try await authenticator.signIn(
-                details: info.siteDetails,
-                from: self,
-                context: .reauthentication(TaggedManagedObjectID(blog), username: info.siteUsername)
-            )
-            self.applicationPasswordAuthenticationInfo = nil
-        } catch {
-            DDLogError("Application password authentication failed: \(error)")
-        }
-    }
-
     @objc public func showApplicationPasswords() {
         let feature = NSLocalizedString("applicationPasswordRequired.feature.users", value: "Application Passwords Management", comment: "Feature name for managing application passwords in the app")
         let view = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, presentingViewController: self) {
@@ -432,10 +359,14 @@ extension BlogDetailsViewController {
 
 extension BlogDetailsViewController {
     @objc public func trackEvent(_ event: WPAnalyticsStat, from source: BlogDetailsNavigationSource) {
-        WPAppAnalytics.track(event, properties: [
+        var properties: [String: Any] = [
             WPAppAnalyticsKeyTapSource: source.string,
             WPAppAnalyticsKeyTabSource: "site_menu"
-        ], blog: blog)
+        ]
+        if event == .statsAccessed, FeatureFlag.newStats.enabled {
+            properties[WPAnalyticsEvent.isNewStatsKey] = "1"
+        }
+        WPAppAnalytics.track(event, properties: properties, blog: blog)
     }
 }
 

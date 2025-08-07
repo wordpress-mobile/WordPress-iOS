@@ -21,7 +21,12 @@ class TagsService {
         return nil
     }
 
-    func getTags(number: Int = 100, offset: Int = 0) async throws -> [RemotePostTag] {
+    func getTags(
+        number: Int = 100,
+        offset: Int = 0,
+        orderBy: RemoteTaxonomyPagingResultsOrdering = .byName,
+        order: RemoteTaxonomyPagingResultsOrder = .orderAscending
+    ) async throws -> [RemotePostTag] {
         guard let remote else {
             throw TagsServiceError.noRemoteService
         }
@@ -60,10 +65,6 @@ class TagsService {
     }
 
     func createTag(named name: String) async throws -> RemotePostTag {
-        guard let remote else {
-            throw TagsServiceError.noRemoteService
-        }
-
         // Do not create a new tag if a tag with the same name already exists.
         let existing = try await searchTags(with: name)
             .first { $0.name.compare(name, options: .caseInsensitive) == .orderedSame }
@@ -71,13 +72,47 @@ class TagsService {
             return existing
         }
 
+        let tag = RemotePostTag()
+        tag.name = name
+        return try await saveTag(tag)
+    }
+
+    func deleteTag(_ tag: RemotePostTag) async throws {
+        guard let remote else {
+            throw TagsServiceError.noRemoteService
+        }
+
+        guard tag.tagID != nil else {
+            throw TagsServiceError.invalidTag
+        }
+
         return try await withCheckedThrowingContinuation { continuation in
-            let tag = RemotePostTag()
-            tag.name = name
-            remote.createTag(tag) {
-                continuation.resume(returning: $0)
-            } failure: {
-                continuation.resume(throwing: $0)
+            remote.delete(tag, success: {
+                continuation.resume()
+            }, failure: { error in
+                continuation.resume(throwing: error)
+            })
+        }
+    }
+
+    func saveTag(_ tag: RemotePostTag) async throws -> RemotePostTag {
+        guard let remote else {
+            throw TagsServiceError.noRemoteService
+        }
+
+        return try await withCheckedThrowingContinuation { continuation in
+            if tag.tagID == nil {
+                remote.createTag(tag, success: { savedTag in
+                    continuation.resume(returning: savedTag)
+                }, failure: { error in
+                    continuation.resume(throwing: error)
+                })
+            } else {
+                remote.update(tag, success: { savedTag in
+                    continuation.resume(returning: savedTag)
+                }, failure: { error in
+                    continuation.resume(throwing: error)
+                })
             }
         }
     }
@@ -85,4 +120,24 @@ class TagsService {
 
 enum TagsServiceError: Error {
     case noRemoteService
+    case invalidTag
+}
+
+extension TagsServiceError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .noRemoteService:
+            return NSLocalizedString(
+                "tags.error.no_remote_service",
+                value: "Unable to connect to your site. Please check your connection and try again.",
+                comment: "Error message when the tags service cannot connect to the remote site"
+            )
+        case .invalidTag:
+            return NSLocalizedString(
+                "tags.error.invalid_tag",
+                value: "The tag information is invalid. Please try again.",
+                comment: "Error message when tag data is invalid"
+            )
+        }
+    }
 }
