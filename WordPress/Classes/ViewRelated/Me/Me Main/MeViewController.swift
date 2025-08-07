@@ -1,4 +1,3 @@
-import SwiftUI
 import UIKit
 import BuildSettingsKit
 import WordPressData
@@ -184,7 +183,6 @@ public class MeViewController: UITableViewController {
         let wordPressComAccount = HeaderTitles.wpAccount
 
         let shouldShowQRLoginRow = FeatureFlag.qrCodeLogin.enabled && !(account?.settings?.twoStepEnabled ?? false)
-        let shouldShowApplicationPasswords = FeatureFlag.allowApplicationPasswords.enabled
 
         var sections: [ImmuTableSection] = []
 
