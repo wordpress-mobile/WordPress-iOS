@@ -1793,21 +1793,21 @@ import WordPressShared
 
         // Jetpack Connection Flow
         case .jetpackConnectStarted:
-            return "jetpack_connect_started"
+            return "jetpack_rest_connect_started"
         case .jetpackConnectLogin:
-            return "jetpack_connect_login"
+            return "jetpack_rest_connect_login"
         case .jetpackConnectInstall:
-            return "jetpack_connect_install"
+            return "jetpack_rest_connect_install"
         case .jetpackConnectSiteConnection:
-            return "jetpack_connect_site_connection"
+            return "jetpack_rest_connect_site_connection"
         case .jetpackConnectUserConnection:
-            return "jetpack_connect_user_connection"
+            return "jetpack_rest_connect_user_connection"
         case .jetpackConnectFinalize:
-            return "jetpack_connect_finalize"
+            return "jetpack_rest_connect_finalize"
         case .jetpackConnectCompleted:
-            return "jetpack_connect_completed"
+            return "jetpack_rest_connect_completed"
         case .jetpackConnectStepRetried:
-            return "jetpack_connect_step_retried"
+            return "jetpack_rest_connect_step_retried"
         } // END OF SWITCH
     }
 
