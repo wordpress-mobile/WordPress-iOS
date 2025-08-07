@@ -55,7 +55,7 @@ let package = Package(
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20250715"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "3225cfa2a724eb333cd3e16cea2e9a76d2aeed50"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "4dc75c11a8f32423c990ee3d9c9d972b1015c228"),
         .package(
             url: "https://github.com/Automattic/color-studio",
             revision: "bf141adc75e2769eb469a3e095bdc93dc30be8de"
