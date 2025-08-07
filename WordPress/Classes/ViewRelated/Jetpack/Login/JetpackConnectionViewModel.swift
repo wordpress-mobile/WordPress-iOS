@@ -252,7 +252,7 @@ class JetpackConnectionService {
             }
         }
 
-        // Refresh the blog options, so that we can get the latest Jetpack related statues.
+        // Refresh the blog options, so that we can get the latest Jetpack related status.
         try await withCheckedThrowingContinuation { [blogId] (continuation: CheckedContinuation<Void, Error>) in
             DispatchQueue.main.async {
                 let blog: Blog
