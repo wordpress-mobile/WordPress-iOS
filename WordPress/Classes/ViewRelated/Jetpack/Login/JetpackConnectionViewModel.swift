@@ -81,7 +81,7 @@ class JetpackConnectionViewModel: ObservableObject {
             WPAnalytics.track(currentStep.event, properties: [
                 "state": "failed",
                 "error_domain": (error as NSError).domain,
-                "error_code":  (error as NSError).code
+                "error_code": (error as NSError).code
             ])
         }
     }
