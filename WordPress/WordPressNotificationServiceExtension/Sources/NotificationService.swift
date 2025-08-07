@@ -16,7 +16,7 @@ class NotificationService: UNNotificationServiceExtension {
     // MARK: Properties
 
     /// Manages analytics calls via Tracks
-    private let tracks = Tracks()
+    private let tracks: Tracks
 
     /// The content handler received from the extension
     private var contentHandler: ((UNNotificationContent) -> Void)?
@@ -27,14 +27,16 @@ class NotificationService: UNNotificationServiceExtension {
     /// The service used to retrieve remote notifications
     private var notificationService: NotificationSyncServiceRemote?
 
-    private let configuration = BuildSettings.current.notificationServiceExtensionConfiguration
+    private let configuration: NotificationServiceExtensionConfiguration
 
-    private let appKeychainAccessGroup = BuildSettings.current.appKeychainAccessGroup
+    private let appKeychainAccessGroup: String
 
     override init() {
-        super.init()
-
         BuildSettings.configure(secrets: ApiCredentials.toSecrets())
+        tracks = Tracks()
+        configuration = BuildSettings.current.notificationServiceExtensionConfiguration
+        appKeychainAccessGroup = BuildSettings.current.appKeychainAccessGroup
+        super.init()
     }
 
     // MARK: UNNotificationServiceExtension
