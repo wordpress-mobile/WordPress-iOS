@@ -7,6 +7,7 @@ import SafariServices
 import WordPressData
 import WordPressShared
 import WebKit
+import CocoaLumberjackSwift
 
 class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
@@ -258,7 +259,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         let startTime = CFAbsoluteTimeGetCurrent()
         let editorData = try? await editorViewController.getTitleAndContent()
         let duration = CFAbsoluteTimeGetCurrent() - startTime
-        print("gutenbergkit-measure_get-latest-content:", duration)
+        DDLogDebug("gutenbergkit-measure_get-latest-content: \(duration)")
 
         if let title = editorData?.title,
            let content = editorData?.content,
@@ -525,7 +526,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                         // Appended space completes the autocomplete session
                         self?.editorViewController.appendTextAtCursor(suggestion + " ")
                     case .failure(let error):
-                        print("Mention selection cancelled or failed: \(error)")
+                        DDLogError("Mention selection cancelled or failed: \(error)")
                     }
                 }
             case "plus-symbol":
@@ -535,11 +536,11 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                         // Appended space completes the autocomplete session
                         self?.editorViewController.appendTextAtCursor(suggestion + " ")
                     case .failure(let error):
-                        print("Xpost selection cancelled or failed: \(error)")
+                        DDLogError("Xpost selection cancelled or failed: \(error)")
                     }
                 }
             default:
-                print("Unknown autocompleter type: \(type)")
+                DDLogError("Unknown autocompleter type: \(type)")
             }
         }
     }
@@ -551,7 +552,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                 return jsonString
             }
         } catch {
-            print("Error encoding MediaInfo array: \(error)")
+            DDLogError("Error encoding MediaInfo array: \(error)")
         }
         return nil
     }
