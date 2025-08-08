@@ -522,8 +522,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                 self?.showSuggestions(type: .mention) { result in
                     switch result {
                     case .success(let suggestion):
-                        // Append empty string to suggestion tocomplete GutenbergKit's autocomplete session,
-                        // otherwise it will immediately restart
+                        // Appended space completes the autocomplete session
                         self?.editorViewController.appendTextAtCursor(suggestion + " ")
                     case .failure(let error):
                         print("Mention selection cancelled or failed: \(error)")
@@ -533,8 +532,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                 self?.showSuggestions(type: .xpost) { result in
                     switch result {
                     case .success(let suggestion):
-                        // Append empty string to suggestion to complete GutenbergKit's autocomplete session,
-                        // otherwise it will immediately restart
+                        // Appended space completes the autocomplete session
                         self?.editorViewController.appendTextAtCursor(suggestion + " ")
                     case .failure(let error):
                         print("Xpost selection cancelled or failed: \(error)")
