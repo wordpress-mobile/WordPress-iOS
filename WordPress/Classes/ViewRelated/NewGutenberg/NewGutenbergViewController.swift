@@ -858,14 +858,16 @@ private extension NewGutenbergViewController {
 extension EditorConfiguration {
     init(blog: Blog) {
         let selfHostedApiUrl = blog.restApiRootURL ?? blog.url(withPath: "wp-json/")
-        let isWPComSite = blog.isHostedAtWPcom || blog.isAtomic()
         let applicationPassword = try? blog.getApplicationToken()
+        let shouldUseWPComRestApi = applicationPassword == nil &&
+            blog.isAccessibleThroughWPCom() &&
+            (blog.isHostedAtWPcom || blog.isAtomic())
 
         let siteApiRoot: String?
         if applicationPassword != nil {
             siteApiRoot = selfHostedApiUrl
         } else {
-            siteApiRoot = blog.isAccessibleThroughWPCom() && isWPComSite ? blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
+            siteApiRoot = shouldUseWPComRestApi ? blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
         }
 
         let siteId = blog.dotComID?.stringValue
@@ -883,7 +885,7 @@ extension EditorConfiguration {
 
         // Must provide both namespace forms to detect usages of both forms in third-party code
         var siteApiNamespace: [String] = []
-        if isWPComSite && applicationPassword == nil {
+        if shouldUseWPComRestApi {
             if let siteId {
                 siteApiNamespace.append("sites/\(siteId)/")
             }
