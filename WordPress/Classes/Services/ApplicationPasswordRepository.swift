@@ -57,8 +57,15 @@ actor ApplicationPasswordRepository {
             return
         }
 
+        let alreadyStored = await storage
+            .passwords(belongTo: owners)
+            .contains { $0.password == authToken }
+        guard !alreadyStored else { return }
+
+        // No need to propagate the API request error.
         let api = WordPressAPI(urlSession: URLSession(configuration: .ephemeral), apiRootUrl: apiRootURL, authentication: .init(username: username, password: authToken))
-        let uuid = try await api.applicationPasswords.retrieveCurrentWithViewContext().data.uuid.uuid
+        guard let uuid = try? await api.applicationPasswords.retrieveCurrentWithViewContext().data.uuid.uuid else { return }
+
         try await storage.save(.init(password: .init(uuid: uuid, password: authToken), owners: owners))
     }
 
@@ -139,14 +146,7 @@ private extension ApplicationPasswordRepository {
                 blog.getUrlString(),
             )
         }
-        let passwords = await storage.getAll()
-            .filter {
-                // This nested loop should not have too much negative impact on performance, since `owners` is a short list (2 elements).
-                $0.owners.contains { owners.contains($0) }
-            }
-            .map {
-                $0.password
-            }
+        let passwords = await storage.passwords(belongTo: owners)
 
         let apiRootURL = try await updateRestAPIURLIfNeeded(blogId)
         let siteUsername = try await updateSiteUsernameIfNeeded(blogId)
@@ -404,6 +404,15 @@ private actor ApplicationPasswordStorage {
     private func saveAll(_ entries: [Entry]) throws {
         let data = try JSONEncoder().encode(entries)
         try keychain.setPassword(for: username, to: String(data: data, encoding: .utf8), serviceName: service)
+    }
+}
+
+extension ApplicationPasswordStorage {
+    func passwords(belongTo owners: [ApplicationPasswordOwner]) -> [ApplicationPassword] {
+        getAll()
+            // This nested loop should not have too much negative impact on performance, since `owners` is a short list (2 elements).
+            .filter { $0.owners.contains { owners.contains($0) } }
+            .map { $0.password }
     }
 }
 

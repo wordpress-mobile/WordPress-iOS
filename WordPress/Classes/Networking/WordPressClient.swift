@@ -84,31 +84,19 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
         }
     }
 
-    func update() {
+    @discardableResult
+    func update() -> WpAuthentication {
+        // This line does not require `self.lock`. Putting it behind the `self.lock` may lead to dead lock, because
+        // `coreDataStack.performQuery` also aquire locks.
+        let authentication = coreDataStack.performQuery(site.authentication(in:))
+
         self.lock.lock()
         defer {
             self.lock.unlock()
         }
 
-        self.authentication = coreDataStack.performQuery { [site] context in
-            switch site {
-            case let .dotCom(siteId, _):
-                guard let blog = try? Blog.lookup(withID: siteId, in: context),
-                      let token = blog.authToken else {
-                    return WpAuthentication.none
-                }
-                return WpAuthentication.bearer(token: token)
-            case let .selfHosted(blogId, _, _, _):
-                guard let blog = try? context.existingObject(with: blogId),
-                      let username = try? blog.getUsername(),
-                      let password = try? blog.getApplicationToken()
-                else {
-                    return WpAuthentication.none
-                }
-
-                return WpAuthentication(username: username, password: password)
-            }
-        }
+        self.authentication = authentication
+        return authentication
     }
 
     func auth() -> WordPressAPIInternal.WpAuthentication {
@@ -119,6 +107,33 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
 
         return self.authentication
     }
+
+    func refresh() async -> Bool {
+        let blogId: TaggedManagedObjectID<Blog>?
+        switch site {
+        case let .dotCom(siteId, _):
+            blogId = await coreDataStack.performQuery { context in
+                guard let blog = try? Blog.lookup(withID: siteId, in: context) else { return nil }
+                return TaggedManagedObjectID(blog)
+            }
+        case let .selfHosted(id, _, _, _):
+            blogId = id
+        }
+
+        guard let blogId else { return false }
+
+        do {
+            DDLogInfo("Create a new application password")
+            try await ApplicationPasswordRepository.shared.createPasswordIfNeeded(for: blogId)
+        } catch {
+            DDLogInfo("Failed to create a new application password: \(error)")
+            return false
+        }
+
+        let current = auth()
+        let newAuth = update()
+        return newAuth != .none && newAuth != current
+    }
 }
 
 private class AppNotifier: @unchecked Sendable, WpAppNotifier {
@@ -126,5 +141,27 @@ private class AppNotifier: @unchecked Sendable, WpAppNotifier {
 
     func requestedWithInvalidAuthentication() async {
         NotificationCenter.default.post(name: WordPressClient.requestedWithInvalidAuthenticationNotification, object: api)
+    }
+}
+
+private extension WordPressSite {
+    func authentication(in context: NSManagedObjectContext) -> WpAuthentication {
+        switch self {
+        case let .dotCom(siteId, _):
+            guard let blog = try? Blog.lookup(withID: siteId, in: context),
+                  let token = blog.authToken else {
+                return WpAuthentication.none
+            }
+            return WpAuthentication.bearer(token: token)
+        case let .selfHosted(blogId, _, _, _):
+            guard let blog = try? context.existingObject(with: blogId),
+                  let username = try? blog.getUsername(),
+                  let password = try? blog.getApplicationToken()
+            else {
+                return WpAuthentication.none
+            }
+
+            return WpAuthentication(username: username, password: password)
+        }
     }
 }
