@@ -633,16 +633,21 @@ extension NewGutenbergViewController {
         previousFirstResponder = view.findFirstResponder()
         let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
         currentSuggestionsController = suggestionsController
-        suggestionsController.onCompletion = { (result) in
+        suggestionsController.onCompletion = { [weak self] (result) in
             callback(result)
-            // Clear the current controller reference
-            self.currentSuggestionsController = nil
-            self.suggestionViewBottomConstraint = nil
-            // Clean up the UI
-            suggestionsController.view.removeFromSuperview()
-            suggestionsController.removeFromParent()
-            if let previousFirstResponder = self.previousFirstResponder {
-                previousFirstResponder.becomeFirstResponder()
+
+            if let self {
+                // Clear the current controller reference
+                self.currentSuggestionsController = nil
+                self.suggestionViewBottomConstraint = nil
+
+                // Clean up the UI (should only happen if parent still exists)
+                suggestionsController.view.removeFromSuperview()
+                suggestionsController.removeFromParent()
+
+                if let previousFirstResponder = self.previousFirstResponder {
+                    previousFirstResponder.becomeFirstResponder()
+                }
             }
 
             var analyticsName: String
