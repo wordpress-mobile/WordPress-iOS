@@ -87,7 +87,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private var keyboardFrame = CGRect.zero
     private var suggestionViewBottomConstraint: NSLayoutConstraint?
     private var currentSuggestionsController: GutenbergSuggestionsViewController?
-    private var previousFirstResponder: UIResponder?
 
     // TODO: remove (none of these APIs are needed for the new editor)
     func prepopulateMediaItems(_ media: [Media]) {}
@@ -628,7 +627,7 @@ extension NewGutenbergViewController {
             guard SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog) else { return }
         }
 
-        previousFirstResponder = view.findFirstResponder()
+        let previousFirstResponder = view.findFirstResponder()
         let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
         currentSuggestionsController = suggestionsController
         suggestionsController.onCompletion = { [weak self] (result) in
@@ -643,9 +642,7 @@ extension NewGutenbergViewController {
                 suggestionsController.view.removeFromSuperview()
                 suggestionsController.removeFromParent()
 
-                if let previousFirstResponder = self.previousFirstResponder {
-                    previousFirstResponder.becomeFirstResponder()
-                }
+                previousFirstResponder?.becomeFirstResponder()
             }
 
             var analyticsName: String
