@@ -517,31 +517,29 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didTriggerAutocompleter type: String) {
-        DispatchQueue.main.async { [weak self] in
-            switch type {
-            case "at-symbol":
-                self?.showSuggestions(type: .mention) { result in
-                    switch result {
-                    case .success(let suggestion):
-                        // Appended space completes the autocomplete session
-                        self?.editorViewController.appendTextAtCursor(suggestion + " ")
-                    case .failure(let error):
-                        DDLogError("Mention selection cancelled or failed: \(error)")
-                    }
+        switch type {
+        case "at-symbol":
+            showSuggestions(type: .mention) { [weak self] result in
+                switch result {
+                case .success(let suggestion):
+                    // Appended space completes the autocomplete session
+                    self?.editorViewController.appendTextAtCursor(suggestion + " ")
+                case .failure(let error):
+                    DDLogError("Mention selection cancelled or failed: \(error)")
                 }
-            case "plus-symbol":
-                self?.showSuggestions(type: .xpost) { result in
-                    switch result {
-                    case .success(let suggestion):
-                        // Appended space completes the autocomplete session
-                        self?.editorViewController.appendTextAtCursor(suggestion + " ")
-                    case .failure(let error):
-                        DDLogError("Xpost selection cancelled or failed: \(error)")
-                    }
-                }
-            default:
-                DDLogError("Unknown autocompleter type: \(type)")
             }
+        case "plus-symbol":
+            showSuggestions(type: .xpost) { [weak self] result in
+                switch result {
+                case .success(let suggestion):
+                    // Appended space completes the autocomplete session
+                    self?.editorViewController.appendTextAtCursor(suggestion + " ")
+                case .failure(let error):
+                    DDLogError("Xpost selection cancelled or failed: \(error)")
+                }
+            }
+        default:
+            DDLogError("Unknown autocompleter type: \(type)")
         }
     }
 
