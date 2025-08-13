@@ -146,10 +146,13 @@ private extension RemoteComment {
         self.status = comment.status.commentStatusType?.description
         self.type = comment.commentType.type
 
+        if let ext = try? comment.additionalFields.parseWpcomCommentsExtension() {
+            self.postTitle = ext.post?.title
+            self.isLiked = ext.iLike
+            self.likeCount = NSNumber(value: ext.likeCount)
+        }
+
         // The following properties are not available in .org REST API.
-        self.postTitle = nil
-        self.isLiked = false
-        self.likeCount = 0
         self.canModerate = false
     }
 
