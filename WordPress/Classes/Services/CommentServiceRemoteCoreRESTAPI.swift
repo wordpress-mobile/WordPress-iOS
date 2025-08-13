@@ -20,11 +20,16 @@ final class CommentServiceRemoteCoreRESTAPI: NSObject, CommentServiceRemote {
     func getCommentsWithMaximumCount(_ maximumComments: Int, options: [AnyHashable: Any]? = [:], success: (([Any]?) -> Void)?, failure: (((any Error)?) -> Void)?) {
         Task { @MainActor in
             do {
-                let sequence = await client.api.comments.sequenceWithEditContext(params: .init(options: options))
+                let params = CommentListParams(options: options, perPage: min(100, UInt32(maximumComments)))
+                let sequence = await client.api.comments.sequenceWithEditContext(params: params)
                 var all = [RemoteComment]()
                 for try await page in sequence where maximumComments > all.count {
                     let comments = page.prefix(maximumComments - all.count).map { RemoteComment(comment: $0) }
                     all.append(contentsOf: comments)
+
+                    if comments.isEmpty {
+                        break
+                    }
                 }
 
                 success?(all)
@@ -235,7 +240,7 @@ extension CommentCreateParams {
 }
 
 private extension CommentListParams {
-    init(options: [AnyHashable: Any]?) {
+    init(options: [AnyHashable: Any]?, perPage: UInt32) {
         guard var options else {
             self = .init()
             return
@@ -259,7 +264,7 @@ private extension CommentListParams {
             case CommentStatusFilterSpam:
                 status = .spam
             default:
-                status = nil
+                status = .custom("all")
             }
         }
 
@@ -272,10 +277,13 @@ private extension CommentListParams {
             }
         }
 
-        var order: WpApiParamOrder?
-        if let value = options.removeValue(forKey: "order") as? String, value == "desc" {
-            order = .desc
-        }
+        let orderBy = WpApiParamCommentsOrderBy.dateGmt
+        let order: WpApiParamOrder =
+            if let value = options.removeValue(forKey: "order") as? String, value == "asc" {
+                .asc
+            } else {
+                .desc
+            }
 
         var offset: UInt32?
         if let value = options.removeValue(forKey: "offset") as? NSNumber {
@@ -285,10 +293,13 @@ private extension CommentListParams {
         wpAssert(options.isEmpty)
 
         self = .init(
+            perPage: perPage,
             before: before,
             offset: offset,
             order: order,
+            orderby: orderBy,
             status: status,
+            commentType: .custom("all")
         )
     }
 }
