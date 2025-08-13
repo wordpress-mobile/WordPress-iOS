@@ -94,6 +94,25 @@ struct EditorConfigurationTests {
         #expect(config.siteApiNamespace.isEmpty, "Should not have WP.com API namespace")
     }
 
+    @Test("Self-hosted site with Jetpack connection uses WP.com REST API")
+    func selfHostedSiteWithJetpackUsesWPcomRestApi() async throws {
+        let context = self.context
+
+        let blog = BlogBuilder(context, dotComID: 12345)
+            .with(atomic: false)
+            .isNotHostedAtWPcom()
+            .withAnAccount(username: "selfhosteduser", authToken: "self-hosted-bearer-token")
+            .with(username: "selfhosteduser")
+            .with(url: "https://self-hosted.org")
+            .build()
+
+        let config = EditorConfiguration(blog: blog, keychain: keychain)
+
+        #expect(config.siteApiRoot == "https://public-api.wordpress.com/", "Should use WP.com API root")
+        #expect(config.authHeader == "Bearer self-hosted-bearer-token", "Should use Bearer authentication")
+        #expect(config.siteApiNamespace.contains("sites/12345/"), "Should include site ID namespace")
+    }
+
     @Test("Self-hosted site with Jetpack connection and application password uses self-hosted REST API")
     func selfHostedSiteWithJetpackAndAppPasswordUsesWPcomRestApi() async throws {
         let context = self.context
