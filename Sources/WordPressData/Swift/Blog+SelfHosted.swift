@@ -226,4 +226,16 @@ public enum WordPressSite {
             return try context.existingObject(with: blogId)
         }
     }
+
+    public func blogId(in coreDataStack: CoreDataStack) -> TaggedManagedObjectID<Blog>? {
+        switch self {
+        case let .dotCom(siteId, _):
+            return coreDataStack.performQuery { context in
+                guard let blog = try? Blog.lookup(withID: siteId, in: context) else { return nil }
+                return TaggedManagedObjectID(blog)
+            }
+        case let .selfHosted(id, _, _, _):
+            return id
+        }
+    }
 }

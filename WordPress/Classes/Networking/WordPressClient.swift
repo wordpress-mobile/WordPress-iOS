@@ -22,7 +22,7 @@ extension WordPressClient {
         // rather than using the shared one on disk).
         let session = URLSession(configuration: .ephemeral)
 
-        let notifier = AppNotifier()
+        let notifier = AppNotifier(site: site, coreDataStack: ContextManager.shared)
         let provider = WpAuthenticationProvider.dynamic(
             dynamicAuthenticationProvider: AutoUpdateAuthenticationProvider(site: site, coreDataStack: ContextManager.shared)
         )
@@ -42,7 +42,6 @@ extension WordPressClient {
             authenticationProvider: provider,
             appNotifier: notifier
         )
-        notifier.api = api
         self.init(api: api, rootUrl: apiRootURL)
     }
 
@@ -109,18 +108,7 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
     }
 
     func refresh() async -> Bool {
-        let blogId: TaggedManagedObjectID<Blog>?
-        switch site {
-        case let .dotCom(siteId, _):
-            blogId = await coreDataStack.performQuery { context in
-                guard let blog = try? Blog.lookup(withID: siteId, in: context) else { return nil }
-                return TaggedManagedObjectID(blog)
-            }
-        case let .selfHosted(id, _, _, _):
-            blogId = id
-        }
-
-        guard let blogId else { return false }
+        guard let blogId = site.blogId(in: coreDataStack) else { return false }
 
         do {
             DDLogInfo("Create a new application password")
@@ -137,10 +125,17 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
 }
 
 private class AppNotifier: @unchecked Sendable, WpAppNotifier {
-    weak var api: WordPressAPI?
+    let site: WordPressSite
+    let coreDataStack: CoreDataStack
+
+    init(site: WordPressSite, coreDataStack: CoreDataStack) {
+        self.site = site
+        self.coreDataStack = coreDataStack
+    }
 
     func requestedWithInvalidAuthentication() async {
-        NotificationCenter.default.post(name: WordPressClient.requestedWithInvalidAuthenticationNotification, object: api)
+        let blogId = site.blogId(in: coreDataStack)
+        NotificationCenter.default.post(name: WordPressClient.requestedWithInvalidAuthenticationNotification, object: blogId)
     }
 }
 
