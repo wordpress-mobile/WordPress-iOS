@@ -1001,12 +1001,10 @@ private extension NewGutenbergViewController {
 }
 
 extension EditorConfiguration {
-    init(blog: Blog) {
+    init(blog: Blog, keychain: KeychainAccessible = KeychainUtils()) {
         let selfHostedApiUrl = blog.restApiRootURL ?? blog.url(withPath: "wp-json/")
-        let applicationPassword = try? blog.getApplicationToken()
-        let shouldUseWPComRestApi = applicationPassword == nil &&
-            blog.isAccessibleThroughWPCom() &&
-            (blog.isHostedAtWPcom || blog.isAtomic())
+        let applicationPassword = try? blog.getApplicationToken(using: keychain)
+        let shouldUseWPComRestApi = applicationPassword == nil && blog.isAccessibleThroughWPCom()
 
         let siteApiRoot: String?
         if applicationPassword != nil {
