@@ -1,11 +1,9 @@
-We added a new Subscribers screen that shows all of your email and Reader subscribers. Now you know who’s reading (and loving) your content.
+We made improvements to how you manage your content and work with media. You'll find a completely redesigned Post Settings screen that makes configuring your posts smoother and more intuitive.
 
-We made improvements to the TimeZone Picker so you’ll see more accurate suggestions for your local timezone.
+We also enhanced our experimental editor with better VideoPress integration and improved authentication for private sites. Your media will display properly now, no matter your site's privacy settings.
 
-We gave a small facelift to the Post List, like streamlining labels, making images smaller and removing extra space, and moving loading indicators so they’re more visible.
-
-Finally, we squashed a number of bugs.
-- You’ll no longer see HTML encoded characters on various screens, so all your ampersands look exactly as they should. Rock on.
-- The “Restore” and “Download Backup” flows don’t cover the navigation bar anymore.
-- Domains are now correctly sorted on the Domain Search screen. Finding what you’re looking for is easier than ever.
-- We fixed a tag where “WordPress” was incorrectly capitalized in the Reader. (That one was keeping us awake at night.)
+Finally, we squashed several bugs and made things more reliable.
+- The app won't hang anymore when you open your Posts or Pages. (We know how frustrating that was.)
+- We fixed a crash that happened when saving certain editor settings.
+- Those annoying error popups on your dashboard? Gone.
+- Application passwords now work more smoothly behind the scenes.
