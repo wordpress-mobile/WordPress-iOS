@@ -1,13 +1,9 @@
-We added a new Subscribers screen that shows all of your email and Reader subscribers. Now you know who’s reading (and loving) your content.
+We rebuilt Stats from the ground up, and it's absolutely stunning. This new experience features buttery-smooth 120fps animations, interactive charts you can tap and explore, hourly data views, and a completely customizable dashboard. You can rearrange everything, export your data, and even see your post analytics with email campaign metrics. It feels incredible to use—we keep opening it just to watch those beautiful animations. (Look for "Try New Stats" when you open Stats, or enable it anytime in Me > App Settings > Experimental Features.)
 
-We made improvements to the TimeZone Picker so you’ll see more accurate suggestions for your local timezone.
+We also made improvements to how you manage your content. You'll find a completely redesigned Post Settings screen that makes configuring your posts smoother and more intuitive, plus better VideoPress integration and improved authentication for private sites in our experimental editor.
 
-We added a search feature to the Jetpack activity list, complete with dates and users for each activity. In this same area, you can also see when your downloadable backup expires. Knowledge is power.
-
-We gave a small facelift to the Post List, like streamlining labels, making images smaller and removing extra space, and moving loading indicators so they’re more visible.
-
-Finally, we squashed a number of bugs.
-- You’ll no longer see HTML encoded characters on various screens, so all your ampersands look exactly as they should. Rock on.
-- The “Restore” and “Download Backup” flows don’t cover the navigation bar anymore.
-- Domains are now correctly sorted on the Domain Search screen. Finding what you’re looking for is easier than ever.
-- We fixed a tag where “WordPress” was incorrectly capitalized in the Reader. (That one was keeping us awake at night.)
+Finally, we squashed several bugs and made things more reliable.
+- The app won't hang anymore when you open your Posts or Pages. (We know how frustrating that was.)
+- We fixed a crash that happened when saving certain editor settings.
+- Those annoying error popups on your dashboard? Gone.
+- Application passwords now work more smoothly behind the scenes, and the Jetpack connection flow is more reliable.

@@ -1,13 +1,9 @@
-Kami telah menambahkan layar Pelanggan baru yang menampilkan semua pelanggan email dan Pembaca Anda. Anda sekarang tahu siapa yang membaca (dan menyukai) konten Anda.
+Kami membangun kembali Statistik dari nol, dan hasilnya benar-benar menakjubkan. Pengalaman baru ini menampilkan animasi 120 fps yang sangat halus, grafik interaktif yang dapat diketuk dan dijelajahi, penayangan data per jam, dan dasbor yang sepenuhnya dapat disesuaikan. Anda dapat menyusun ulang semuanya, mengekspor data, dan bahkan melihat analitik pos dengan metrik kampanye email. Rasanya luar biasa saat digunakan—kami jadi terus-terusan membuka Statistik hanya untuk melihat animasi indahnya. (Cari "Coba Statistik Baru" saat membuka Statistik, atau aktifkan kapan saja lewat Saya > Pengaturan Aplikasi > Fitur Eksperimental.)
 
-Kami telah meningkatkan Pemilih Zona Waktu, maka Anda akan melihat saran yang lebih akurat untuk zona waktu lokal Anda.
+Kami juga menyempurnakan cara mengelola konten. Layar Pengaturan Pos sepenuhnya didesain ulang sehingga proses pengaturan pos menjadi lebih mulus dan intuitif. Selain itu, ada perbaikan integrasi VideoPress serta penyempurnaan autentikasi untuk situs pribadi di editor eksperimental kami.
 
-Kami telah menambahkan fitur pencarian ke daftar aktivitas Jetpack, lengkap dengan tanggal dan pengguna untuk setiap aktivitas. Di area yang sama, Anda juga dapat melihat kapan cadangan yang dapat diunduh kedaluwarsa. Pengetahuan adalah kekuatan.
-
-Kami telah sedikit memoles Daftar Pos, seperti menyederhanakan label, memperkecil gambar dan menghilangkan ruang kosong, serta memindahkan indikator agar lebih terlihat.
-
-Terakhir, kami sudah mengatasi sejumlah bug.
-- Anda tidak akan lagi melihat karakter berkode HTML di berbagai layar, jadi semua ampersand terlihat seperti seharusnya. Selamat mencoba.
-- Alur "Pulihkan" dan "Unduh Cadangan" tidak lagi menghalangi bilah navigasi.
-- Domain kini diurutkan dengan benar di layar Pencarian Domain. Sekarang, jauh lebih mudah untuk menemukan apa yang ingin Anda cari.
-- Kami telah memperbaiki tag yang salah mengapitalisasi ejaan "WordPress" di Pembaca. (Gara-gara ini, kami tidak bisa tidur nyenyak.)
+Terakhir, kami mengatasi beberapa bug dan membuat berbagai fitur jadi lebih andal.
+- Aplikasi tidak akan macet lagi ketika Anda membuka Pos atau Halaman. (Kami tahu betapa menjengkelkanya hal itu.)
+- Kami memperbaiki crash yang terjadi saat menyimpan pengaturan editor tertentu.
+- Pop up eror yang mengganggu di dasbor Anda? Hilang.
+- Kata sandi aplikasi kini bekerja dengan lebih lancar di latar belakang, dan alur koneksi Jetpack jadi lebih andal.
