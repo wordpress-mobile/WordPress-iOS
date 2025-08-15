@@ -1,11 +1,9 @@
-Es gibt nun eine neue Abonnenten-Ansicht, die alle deine E-Mail- und Reader-Abonnenten anzeigt. Jetzt weißt du ganz genau, wer deine Inhalte liest (und liebt).
+Wir haben die Verwaltung deiner Inhalte und die Arbeit mit Medien verbessert. Du wirst einen komplett neu gestalteten Bildschirm für Beitragseinstellungen vorfinden, der die Konfiguration deiner Beiträge reibungslos und intuitiver macht.
 
-Wir haben den TimeZone Picker verbessert, damit du bessere Vorschläge für deine lokale Zeitzone erhältst.
+Wir haben zudem unseren experimentellen Editor mit einer optimierten VideoPress-Integration und einer verbesserten Authentifizierung für private Websites verbessert. Deine Medien werden jetzt unabhängig von den Privatsphäre-Einstellungen deiner Website korrekt angezeigt.
 
-Wir haben der Beitragsliste ein kleines Facelifting verpasst: Beschriftungen sehen jetzt noch besser aus, weil wir Bilder verkleinert und unnötigen Leerraum entfernt haben. Darüber hinaus haben wir die Ladeanzeigen verschoben, damit sie besser sichtbar sind.
-
-Zu guter Letzt haben wir noch ein paar andere Fehler behoben.
-- Es gab auf verschiedenen Bildschirmen ein Problem mit der Anzeige von HTML-kodierten Zeichen. Nun sehen alle kaufmännischen Und-Zeichen genau so aus, wie sie sollen. Ist das nicht großartig?
-- Die Flows „Wiederherstellen“ und „Backup herunterladen“ verdecken nicht mehr die Navigationsleiste.
-- Domains in der Domain-Suche sind jetzt richtig sortiert. Das zu finden, was du suchst, war noch nie einfacher.
-- Wir haben ein Problem mit einem Schlagwort behoben, bei dem „WordPress“ im Reader falsch geschrieben wurde. (Und dieses Problem hat uns wirklich den Schlaf geraubt.)
+Zu guter Letzt haben wir auch mehrere Fehler beseitigt und die Zuverlässigkeit verbessert.
+- Die App hängt nicht mehr, wenn du deine Beiträge oder Seiten öffnest. (Wir wissen, wie frustrierend das war.)
+- Wir haben eine Absturzursache behoben, die beim Speichern bestimmter Editoreinstellungen aufgetreten ist.
+- Diese nervigen Fehler-Pop-ups in deinem Dashboard? Die sind verschwunden.
+- Anwendungspasswörter funktionieren jetzt reibungslos im Hintergrund.

@@ -1,11 +1,9 @@
-Hemos añadido una nueva pantalla de suscriptores que muestra todos tus suscriptores de correo electrónico y de nuestro lector. Ahora sabes quién está leyendo (y disfrutando) tu contenido.
+Hemos mejorado la forma en que gestionas tus contenidos y trabajas con los medios. Encontrarás una pantalla de «Ajustes de entrada» completamente rediseñada que hace que la configuración de tus entradas sea más fluida e intuitiva.
 
-Hemos mejorado el selector de zona horaria para que veas sugerencias más precisas para tu zona horaria local.
+También hemos mejorado nuestro editor experimental con una mejor integración de VideoPress y una autenticación mejorada para sitios privados. Ahora tus contenidos multimedia se mostrarán correctamente, independientemente de los ajustes de privacidad de tu sitio.
 
-Hemos dado un pequeño lavado de cara a la lista de entradas, por ejemplo, simplificando las etiquetas, haciendo las imágenes más pequeñas y eliminando el espacio extra, y moviendo los indicadores de carga para que sean más visibles.
-
-Por último, hemos eliminado una serie de errores.
-- Ya no verás caracteres codificados en HTML en algunas pantallas, por lo que todos tus signos de & se ven exactamente como deberían. ¡A por ellos!
-- Los textos «Restaurar» y «Descargar copia de seguridad» ya no cubren la barra de navegación.
-- Los dominios están ahora correctamente ordenados en la pantalla de búsqueda de dominios. Encontrar lo que buscas es más fácil que nunca.
-- Hemos corregido una etiqueta en la que «WordPress» se escribía incorrectamente en mayúsculas en el lector. (Eso nos quitaba el sueño).
+Por último, hemos eliminado varios errores y hemos hecho las cosas más fiables.
+- La aplicación no se volverá a colgar cuando abras tus Entradas o Páginas. (Sabemos lo frustrante que era).
+- Hemos corregido un fallo que se producía al guardar ciertos ajustes del editor.
+- ¿Esas molestas ventanas emergentes de error en tu panel de control? Se han ido.
+- Las contraseñas de las aplicaciones ahora funcionan mejor entre bastidores.

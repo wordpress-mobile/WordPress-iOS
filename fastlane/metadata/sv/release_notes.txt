@@ -1,11 +1,9 @@
-Vi har lagt till en ny prenumerantskärm som visar alla dina e-post- och läsarprenumeranter. Nu vet du vem som läser (och älskar) ditt innehåll.
+Vi har förbättrat hur du hanterar ditt innehåll och arbetar med media. Du hittar en helt omdesignad skärm för inläggsinställningar som gör det smidigare och mer intuitivt att konfigurera dina inlägg.
 
-Vi har förbättrat tidszonsväljaren så att du kan se mer exakta förslag för din lokala tidszon.
+Vi har också förbättrat vår experimentella redigerare med bättre VideoPress-integration och förbättrad autentisering för privata webbplatser. Dina media kommer att visas korrekt nu, oavsett vilka integritetsinställningar du har på din webbplats.
 
-Vi har gett inläggslistan en liten ansiktslyftning genom att t.ex. effektivisera etiketter, göra bilder mindre och ta bort extra utrymme samt flytta inläsningsindikatorerna så att de är mer synliga.
-
-Slutligen har vi även åtgärdat ett antal buggar.
-- Du kommer inte längre att se HTML-kodade tecken på olika skärmar, så alla dina et-tecken ser ut precis som de ska. Rocka på.
-- Flödena ”Återställ” och ”Ladda ner säkerhetskopia” täcker inte längre navigeringsfältet.
-- Domäner är nu korrekt sorterade på skärmen Domänsökning. Att hitta det du letar efter är enklare än någonsin.
-- Vi har åtgärdat en etikett där ”WordPress” hade fel versaler i läsaren. (Det höll oss vakna om nätterna.)
+Slutligen har vi fixat flera buggar och gjort appen mer tillförlitlig.
+– Appen låser sig inte längre när du öppnar dina inlägg eller sidor. (Vi vet hur frustrerande det var.)
+– Vi har åtgärdat en krasch som inträffade när vissa redigeringsinställningar sparades.
+– De där irriterande popupfönstren om fel som dök upp på din adminpanel? Borta.
+Applikationslösenord fungerar nu smidigare bakom kulisserna.
