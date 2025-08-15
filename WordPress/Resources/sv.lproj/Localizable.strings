@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-07-07 12:54:07+0000 */
+/* Translation-Revision-Date: 2025-08-11 15:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sv_SE */
@@ -314,9 +314,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "En fil innehåller ett skadligt kodmönster";
 
-/* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
-"A tag named '%@' already exists." = "Det finns redan en etikett med namnet ”%@”.";
-
 /* Placeholder text for the title of a site */
 "A title for the site" = "En rubrik för webbplatsen";
 
@@ -470,9 +467,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Screen reader text for button that adds a menu item */
 "Add new menu item" = "Lägg till nytt menyval";
-
-/* Voiceover accessibility label for the tags field in blog post settings. */
-"Add new tags, separated by commas." = "Lägg till nya etiketter, separerade med kommatecken.";
 
 /* No comment provided by engineer. */
 "Add paragraph block" = "Lägg till ett block med ett textstycke";
@@ -695,6 +689,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Autentisering via Apple-ID misslyckades.\nSe till att du är inloggad till iCloud med ett Apple-ID som använder tvåfaktorsautentisering.";
 
+/* Link to Application Passwords section */
+"Application Passwords" = "Applikationslösenord";
+
 /* No comment provided by engineer. */
 "Applies the setting" = "Tillämpar inställningen";
 
@@ -725,9 +722,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "Är det säkert att du vill ta bort menyn?";
-
-/* Message asking for confirmation on tag deletion */
-"Are you sure you want to delete this tag?" = "Är du säker på att du vill ta bort etiketten?";
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Är du säker på att du vill koppla bort Jetpack från webbplatsen?";
@@ -788,9 +782,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Autentisering krävs för server: %@";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Författare";
 
@@ -1132,9 +1124,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Cast the movie of your life.";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "Kategorier";
 
 /* Category menu item in share extension. */
 "Category" = "Kategori";
@@ -1494,9 +1483,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Message to show when Publicize connect failed */
 "Connection failed" = "Anslutning misslyckades";
 
-/* Title of a prompt saying the app needs an internet connection before it can load post formats */
-"Connection not available" = "Anslutning är inte tillgänglig";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -1635,9 +1621,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Couldn't load data. Please refresh again later." = "Det gick inte att ladda data. Uppdatera igen senare.";
 
 /* Error message when tag loading failed */
-"Couldn't load tags." = "Det gick inte att ladda etiketterna.";
-
-/* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Det gick inte att läsa in etiketter. Tryck för att försöka igen.";
 
 /* Indicating that referrer couldn't be marked as spam */
@@ -1691,9 +1674,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Navigates to a new flow for site creation. */
 "Create a Site" = "Skapa en webbplats";
-
-/* Title of the button in the placeholder for an empty list of blog tags. */
-"Create a Tag" = "Skapa en etikett";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Skapa en ikon för webbplats";
@@ -1762,12 +1742,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Customize blocks" = "Anpassa block";
 
-/* Title for the edition of the share message. */
-"Customize the message" = "Anpassa meddelandet";
-
-/* Hint displayed when the user is customizing the share message. */
-"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Anpassa meddelandet du vill dela.\nOm du inte lägger in egen text här kommer inläggets rubrik att användas som meddelandetext.";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Anpassa din webbplats inställningar för Gillar, Kommentarer, Följare och mer";
 
@@ -1821,8 +1795,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Standard för nya inlägg";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Kasta i papperskorgen";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1842,9 +1815,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Ta bort meny";
 
-/* Delete Tag confirmation action title */
-"Delete this tag" = "Ta bort etiketten";
-
 /* Text displayed in HUD after successfully deleting a media item */
 "Deleted!" = "Raderat!";
 
@@ -1861,7 +1831,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Describe the purpose of the image. Leave empty if decorative." = "Beskriv syftet med bilden. Lämna tomt om det är dekorativt.";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Beskrivning";
 
@@ -2398,14 +2367,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "Varje dag kl. %@";
 
-/* Label for the excerpt field. Should be the same as WP core. */
-"Excerpt" = "Utdrag";
-
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "Utdragets längd (antal ord)";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
-"Excerpts are optional hand-crafted summaries of your content." = "Utdrag är valfria summeringar av innehåll som du skriver själv.";
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Exklusive teman, tillägg och uppladdade filer";
@@ -2482,9 +2445,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Utvalda";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "Utvald bild";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Hämtar teman …";
@@ -3133,9 +3093,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack-inställningar";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core. */
-"Jetpack Social" = "Jetpack Social";
-
 /* Insights 'Jetpack Social Connections' header
    Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Jetpack Social-anslutningar";
@@ -3500,9 +3457,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Marks comment as spam */
 "Mark as Spam" = "Markera som skräp";
 
-/* Label for the Mark as Sticky option in post settings. */
-"Mark as Sticky" = "Klistra inlägg";
-
 /* Action title for unmarking referrer as spam */
 "Mark as not spam" = "Markera som ej skräppost";
 
@@ -3595,8 +3549,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menyer";
 
-/* Invite Message Editor's Title
-   Label for the share message field on the post settings. */
+/* Invite Message Editor's Title */
 "Message" = "Meddelande";
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
@@ -3619,8 +3572,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Action button to display more available options */
 "More" = "Mer";
 
-/* Action button to display more available options
-   Label for the More Options area in post settings. Should use the same translation as core WP. */
+/* Action button to display more available options */
 "More Options" = "Fler alternativ";
 
 /* Label for the posting activity legend. */
@@ -3709,9 +3661,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "Namn";
-
-/* Error to be displayed when a tag is empty */
-"Name Required" = "Ett namn krävs";
 
 /* No comment provided by engineer. */
 "Navigate Up" = "Navigera upp";
@@ -4058,8 +4007,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -4228,8 +4176,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Sida";
 
-/* Name of the button to open the page settings
-   The title of the Page Settings screen. */
+/* Name of the button to open the page settings */
 "Page Settings" = "Sidinställningar";
 
 /* translators: accessibility text. %s: Page break text. */
@@ -4475,11 +4422,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Inläggskategorier";
 
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Inläggsformat";
-
-/* Name of the button to open the post settings
-   The title of the Post Settings screen. */
+/* Name of the button to open the post settings */
 "Post Settings" = "Inläggsinställningar";
 
 /* Window title for Post Stats view. */
@@ -4616,9 +4559,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Publicera";
-
-/* Label for the publish date button. */
-"Publish Date" = "Publiceringsdatum";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Publicera sidan på:";
@@ -5383,9 +5323,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Resultat från ”snedstrecksinfogaren”";
 
-/* Label for the slug field. Should be the same as WP core. */
-"Slug" = "Permalänk";
-
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no fixed threats on your site." = "Hittills finns det inga åtgärdade hot på din webbplats.";
 
@@ -5499,7 +5436,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sports site intent topic */
 "Sports" = "Idrott";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "Standard";
 
 /* Label for selecting the Start Over Settings item
@@ -5529,9 +5467,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle giving the user more context about why to enable notifications. */
 "Stay in touch with like and comment notifications." = "Håll kontakten med hjälp av notiser för gilla-markeringar och kommentarer.";
-
-/* This is the cell title. */
-"Stick post to the front page" = "Klistra inlägget på startsidan";
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Klistrat";
@@ -5631,31 +5566,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tablet web preview */
 "Tablet" = "Surfplatta";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "Etikett";
-
-/* Title of the alert indicating that a tag with that name already exists. */
-"Tag already exists" = "Etiketten finns redan";
-
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "Slogan";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "Etiketter";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "Etiketter och kategorier";
-
-/* Displayed when the user views tags in blog settings and there are no tags */
-"Tags created here can be quickly added to new posts" = "Etiketter skapade här kan snabbt läggas till nya inlägg";
-
-/* Label explaining why users might want to add tags. */
-"Tags help tell readers what a post is about. Separate different tags with commas." = "Etiketter hjälper till att berätta för läsarna vad ett inlägg handlar om. Dela upp med kommatecken om du anger flera etiketter.";
 
 /* No comment provided by engineer. */
 "Take a Photo" = "Ta en bild";
@@ -5747,9 +5667,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "Tryck för att besöka webbplatsen för Gravatar i en extern webbläsare";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "Taxonomi";
 
 /* Technology site intent topic */
 "Technology" = "Teknologi";
@@ -5895,9 +5812,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Webbplatsen kunde inte exporteras.";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
-"The slug is the URL-friendly version of the post title." = "Denna permalänk är en URL-anpassad version av inläggsrubriken.";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "Den angivna användaren kan inte hittas. Kontrollera stavningen.";
@@ -6393,9 +6307,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Godkänner ej kommentaren.";
 
-/* Message to show in the post-format cell when the post format is not available */
-"Unavailable" = "Inte tillgänglig";
-
 /* When the App can't figure out what language a blog is configured to use. */
 "Undefined" = "Ej definierat";
 
@@ -6663,9 +6574,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights views and visitors header */
 "Views & Visitors" = "Visningar och besökare";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "Synlighet";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "Besök %@";
@@ -7106,9 +7014,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views scheduled posts in the posts list and there are no posts */
 "You don't have any scheduled posts" = "Du har inga schemalagda inlägg";
 
-/* Empty state. Tags management (Settings > Writing > Tags) */
-"You don't have any tags" = "Du har inga etiketter";
-
 /* Displayed when the user views trashed in the pages list and there are no pages */
 "You don't have any trashed pages" = "Du har inga sidor i papperskorgen";
 
@@ -7422,27 +7327,35 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The list item of experimental features that users can choose to enable */
 "application-settings.experimental-features" = "Experimentella funktioner";
 
-/* Button label to authorize application passwords */
-"application.password.authorize" = "Auktorisera";
+/* Complete information about application passwords with security benefits, creation process, management instructions, and revocation warning */
+"applicationPassword.info.content" = "Applikationslösenord är ett säkrare sätt för den här appen att komma åt ditt webbplatsinnehåll utan att använda ditt faktiska kontolösenord.\n\nNär du lägger till webbplatser i appen skapas applikationslösenord automatiskt efter behov.\n\nDu kan visa och hantera dessa lösenord i din användarprofil i adminpanelen på din WordPress-webbplats.\n\nObservera att om applikationslösenord som används av appen återkallas kommer appens åtkomst till din webbplats att upphöra. Var försiktig när du återkallar applikationslösenord som har skapats av appen.";
 
-/* Description for the application passwords feature */
-"application.password.description" = "Nu kan du ge appen behörighet att använda lösenord för applikationer för snabb och säker åtkomst till innehållet på din webbplats.";
+/* Button to dismiss the application password information view */
+"applicationPassword.info.gotIt.button" = "Uppfattat";
 
-/* Title for the new application passwords feature */
-"application.password.new.title" = "Nytt: Applikationslösenord";
+/* Title for the application passwords information view */
+"applicationPassword.info.title" = "Om applikationslösenord";
 
 /* Title of row for displaying an application password's creation date */
 "applicationPassword.item.creationDate" = "Skapat datum";
 
-/* Title of row for displaying an application password's last used date
-   Title of row for displaying an application password's last used IP address */
+/* Footer message indicating that this application password is currently active and being used by the app */
+"applicationPassword.item.currentlyInUse" = "Detta applikationslösenord används för närvarande av appen.";
+
+/* Title of row for displaying an application password's last used date */
 "applicationPassword.item.lastUsed" = "Senast använd";
+
+/* Title of row for displaying an application password's last used IP address */
+"applicationPassword.item.lastUsedIp" = "Senaste IP-adress";
 
 /* Title of row for displaying an application password name */
 "applicationPassword.item.name" = "Namn";
 
 /* Title of section for displaying application password details */
 "applicationPassword.item.section.security" = "Säkerhet";
+
+/* String format of creation date of an application password. There is one argument: the creation date relative to now (i.e. 5 days ago). */
+"applicationPassword.list.item.created-date-format" = "Skapades %@";
 
 /* String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago). */
 "applicationPassword.list.item.last-used-format" = "Senast använd %@";
@@ -7456,8 +7369,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Det gick inte att hitta den aktuella webbplatsens URL";
 
+/* Error message shown when the site doesn't support Application Passwords feature */
+"applicationPasswordMigration.error.unsupported" = "Denna webbplats stöder inte applikationslösenord.";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "Du måste logga in med användare ”%@”";
+
+/* Error message when the site's REST API is not accessible for application password creation */
+"applicationPasswordRepository.error.restApiInaccessible" = "Det gick inte att komma åt webbplatsens REST API";
+
+/* Error message when application password creation fails for unknown reasons */
+"applicationPasswordRepository.error.unknown" = "Kan inte skapa applikationslösenord";
+
+/* Error message when the username cannot be found for application password creation */
+"applicationPasswordRepository.error.usernameNotFound" = "Kan inte hitta användarnamn för webbplatsen";
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Applikationslösenord är ett säkrare sätt att ansluta till din webbplats som drivs på egen server och möjliggör stöd för funktioner som %@.";
@@ -7465,7 +7390,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Hantering av tillägg";
 
-/* Feature name for managing users in the app */
+/* Feature name for managing application passwords in the app
+   Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Användarhantering";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -8092,6 +8018,27 @@ Example: Reply to Pamela Nguyen */
 /* No comment provided by engineer. */
 "double-tap to change unit" = "dubbeltryck för att ändra enhet";
 
+/* Message for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.message" = "Är du säker på att du vill ta bort den här etiketten?";
+
+/* Title for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.title" = "Ta bort etikett";
+
+/* Placeholder text for tag description field */
+"edit.tag.description.placeholder" = "Lägg till en beskrivning …";
+
+/* Placeholder text for tag name field */
+"edit.tag.name.placeholder" = "Etikettnamn";
+
+/* Navigation title for new tag creation */
+"edit.tag.new.title" = "Ny etikett";
+
+/* Section header for tag description in edit tag view */
+"edit.tag.section.description" = "Beskrivning";
+
+/* Section header for tag name in edit tag view */
+"edit.tag.section.tag" = "Etikett";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "till exempel 1122334455";
 
@@ -8603,6 +8550,558 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Du behöver logga in med %@ för att använda statistik och aviseringar.";
 
+/* Accessibility label for add card button */
+"jetpackStats.accessibility.addCardButton" = "Lägg till nytt kort med statistik";
+
+/* Accessibility label for back navigation */
+"jetpackStats.accessibility.backToStats" = "Tillbaka till statistik";
+
+/* Card title accessibility label. %1$@ is the card title. */
+"jetpackStats.accessibility.cardTitle" = "%1$@ kort";
+
+/* Accessibility label for chart container */
+"jetpackStats.accessibility.chartContainer" = "Statistikdiagram";
+
+/* Chart trend accessibility label. %1$@ is metric name, %2$@ is trend description. */
+"jetpackStats.accessibility.chartTrend" = "%1$@ %2$@";
+
+/* Chart data point accessibility label. %1$@ is metric name, %2$@ is value, %3$@ is date. */
+"jetpackStats.accessibility.chartValue" = "%1$@: %2$@ på %3$@";
+
+/* Selected date range accessibility label. %1$@ is the range. */
+"jetpackStats.accessibility.dateRangeSelected" = "Datumintervall: %1$@";
+
+/* Accessibility label for error state */
+"jetpackStats.accessibility.errorLoadingStats" = "Det gick inte att läsa in statistiken";
+
+/* Accessibility label for loading state */
+"jetpackStats.accessibility.loadingStats" = "Läser in statistik";
+
+/* Accessibility label for more options menu */
+"jetpackStats.accessibility.moreOptions" = "Fler alternativ";
+
+/* Accessibility hint for next period navigation */
+"jetpackStats.accessibility.navigateToNextDateRange" = "Navigera till nästa datumintervall";
+
+/* Accessibility hint for previous period navigation */
+"jetpackStats.accessibility.navigateToPreviousDateRange" = "Navigera till föregående datumintervall";
+
+/* Accessibility label for next period navigation button */
+"jetpackStats.accessibility.nextPeriod" = "Nästa period";
+
+/* Accessibility label for empty data state */
+"jetpackStats.accessibility.noDataAvailable" = "Inga data tillgängliga för denna period";
+
+/* Accessibility label for opening link in browser */
+"jetpackStats.accessibility.openInBrowser" = "Öppna i webbläsare";
+
+/* Accessibility label for previous period navigation button */
+"jetpackStats.accessibility.previousPeriod" = "Föregående period";
+
+/* Accessibility label for realtime visitor count */
+"jetpackStats.accessibility.realtimeVisitorCount" = "Nuvarande besökare online";
+
+/* Accessibility hint for retry action */
+"jetpackStats.accessibility.retryLoadingStats" = "Dubbeltryck för att försöka läsa in statistik igen";
+
+/* Accessibility hint for date range selection */
+"jetpackStats.accessibility.selectDateRange" = "Välj ett datumintervall";
+
+/* Accessibility hint for tab selection. %1$@ is the tab name. */
+"jetpackStats.accessibility.selectTab" = "Välj fliken %1$@";
+
+/* Accessibility announcement when stats finish loading */
+"jetpackStats.accessibility.statsLoaded" = "Statistik inläst";
+
+/* Accessibility label for stats tab bar */
+"jetpackStats.accessibility.statsTabBar" = "Navigeringsflikar i Statistik";
+
+/* Accessibility announcement when a tab is selected. %1$@ is the tab name. */
+"jetpackStats.accessibility.tabSelected" = "Fliken %1$@ har valts";
+
+/* Top list item accessibility label. %1$d is rank, %2$@ is title, %3$@ is value. */
+"jetpackStats.accessibility.topListItem" = "Rankning %1$d: %2$@, %3$@";
+
+/* Accessibility hint for viewing chart data */
+"jetpackStats.accessibility.viewChartData" = "Visa detaljerade diagramdata";
+
+/* Accessibility hint for items that can show more details */
+"jetpackStats.accessibility.viewMoreDetails" = "Dubbeltryck för att visa mer information";
+
+/* Singular visitor count. %1$d is the number. */
+"jetpackStats.accessibility.visitorNow" = "%1$d besökare online nu";
+
+/* Plural visitors count. %1$d is the number. */
+"jetpackStats.accessibility.visitorsNow" = "%1$d besökare online nu";
+
+/* Chart option description */
+"jetpackStats.addChart.chartDescription" = "Visualisera trender över tid";
+
+/* Chart option title */
+"jetpackStats.addChart.chartOption" = "Diagram";
+
+/* Title for data type selection */
+"jetpackStats.addChart.selectDataType" = "Välj datatyp";
+
+/* Title for metric selection */
+"jetpackStats.addChart.selectMetric" = "Välj mätvärden";
+
+/* Top list option description */
+"jetpackStats.addChart.topListDescription" = "Se ditt bäst presterande innehåll";
+
+/* Top list option title */
+"jetpackStats.addChart.topListOption" = "Topplista";
+
+/* Archive section for authors */
+"jetpackStats.archiveSections.author" = "Författare";
+
+/* Plural item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.plural" = "%1$d objekt";
+
+/* Singular item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.singular" = "%1$d objekt";
+
+/* Archive section for other items */
+"jetpackStats.archiveSections.other" = "Annat";
+
+/* Title for the author details screen */
+"jetpackStats.authorDetails.title" = "Författare";
+
+/* Button to add a new chart */
+"jetpackStats.button.addCard" = "Lägg tll kort";
+
+/* Apply button */
+"jetpackStats.button.apply" = "Tillämpa";
+
+/* Cancel button */
+"jetpackStats.button.cancel" = "Avbryt";
+
+/* Button to customize a chart or widget */
+"jetpackStats.button.customize" = "Redigera kort";
+
+/* Button to delete a chart or widget */
+"jetpackStats.button.deleteWidget" = "Ta bort kort";
+
+/* Done button */
+"jetpackStats.button.done" = "Klar";
+
+/* Button to download data as CSV file */
+"jetpackStats.button.downloadCSV" = "Ladda ner CSV";
+
+/* Learn more about stats button */
+"jetpackStats.button.learnMore" = "Lär dig mer";
+
+/* Button to move a card */
+"jetpackStats.button.moveCard" = "Flytta kort";
+
+/* Button to move card down */
+"jetpackStats.button.moveDown" = "Flytta ner";
+
+/* Button to move card to the bottom */
+"jetpackStats.button.moveToBottom" = "Flytta till botten";
+
+/* Button to move card to the top */
+"jetpackStats.button.moveToTop" = "Flytta till toppen";
+
+/* Button to move card up */
+"jetpackStats.button.moveUp" = "Flytta upp";
+
+/* OK button */
+"jetpackStats.button.ok" = "OK";
+
+/* Button to reset chart settings to default */
+"jetpackStats.button.resetSettings" = "Återställ inställningar";
+
+/* Share chart menu item */
+"jetpackStats.button.share" = "Dela";
+
+/* Button title */
+"jetpackStats.button.showAll" = "Visa alla";
+
+/* Button to collapse and show fewer items */
+"jetpackStats.button.showLess" = "Visa mindre";
+
+/* Button to expand and show more items */
+"jetpackStats.button.showMore" = "Visa mer";
+
+/* Last 10 years date range */
+"jetpackStats.calendar.last10Years" = "Senaste 10 åren";
+
+/* Last 12 months date range */
+"jetpackStats.calendar.last12Months" = "Senaste 12 månaderna";
+
+/* Last 28 days date range */
+"jetpackStats.calendar.last28Days" = "Senaste 28 dagarna";
+
+/* Last 30 days date range */
+"jetpackStats.calendar.last30Days" = "Senaste 30 dagarna";
+
+/* Last 3 years date range */
+"jetpackStats.calendar.last3Years" = "Senaste 3 åren";
+
+/* Last 6 months date range */
+"jetpackStats.calendar.last6Months" = "Senaste 6 månaderna";
+
+/* Last 7 days date range */
+"jetpackStats.calendar.last7Days" = "Senaste 7 dagarna";
+
+/* Last 90 days date range */
+"jetpackStats.calendar.last90Days" = "Senaste 90 dagarna";
+
+/* Month time period */
+"jetpackStats.calendar.month" = "Månad";
+
+/* Quarter time period */
+"jetpackStats.calendar.quarter" = "Kvartal";
+
+/* This month date range */
+"jetpackStats.calendar.thisMonth" = "Denna månad";
+
+/* This quarter date range */
+"jetpackStats.calendar.thisQuarter" = "Detta kvartal";
+
+/* This week date range */
+"jetpackStats.calendar.thisWeek" = "Denna vecka";
+
+/* This year date range */
+"jetpackStats.calendar.thisYear" = "Detta år";
+
+/* Today date range */
+"jetpackStats.calendar.today" = "Idag";
+
+/* Week time period */
+"jetpackStats.calendar.week" = "Vecka";
+
+/* Year time period */
+"jetpackStats.calendar.year" = "År";
+
+/* Bar chart type */
+"jetpackStats.chart.barChart" = "Staplar";
+
+/* Shown for empty states */
+"jetpackStats.chart.dataEmpty" = "Inga data för period";
+
+/* Genertic error message */
+"jetpackStats.chart.generitcError" = "Något gick fel";
+
+/* Shown for metrics that don't support hourly data */
+"jetpackStats.chart.hourlyDataNotAvailable" = "Inga timdata är tillgängliga";
+
+/* Shown when current period data might be incomplete */
+"jetpackStats.chart.incompleteData" = "Kan visa ofullständiga data";
+
+/* Line chart type */
+"jetpackStats.chart.lineChart" = "Rader";
+
+/* Show chart data menu item */
+"jetpackStats.chart.showData" = "Visa data";
+
+/* Label for change value */
+"jetpackStats.chartData.change" = "Ändra";
+
+/* Column header for date */
+"jetpackStats.chartData.date" = "DATUM";
+
+/* Section title for detailed data */
+"jetpackStats.chartData.detailedData" = "Detaljerade data";
+
+/* Label for previous value */
+"jetpackStats.chartData.previous" = "Föregående";
+
+/* Title for chart data screen */
+"jetpackStats.chartData.title" = "Diagramdata";
+
+/* Label for total value */
+"jetpackStats.chartData.total" = "Totalt";
+
+/* Column header for value */
+"jetpackStats.chartData.value" = "VÄRDE";
+
+/* Context menu action to copy country name */
+"jetpackStats.contextMenu.copyCountryName" = "Kopiera landsnamn";
+
+/* Context menu action to copy domain */
+"jetpackStats.contextMenu.copyDomain" = "Kopiera domän";
+
+/* Context menu action to copy file name */
+"jetpackStats.contextMenu.copyFileName" = "Kopiera filnamn";
+
+/* Context menu action to copy file path */
+"jetpackStats.contextMenu.copyFilePath" = "Kopiera filsökväg";
+
+/* Context menu action to copy name */
+"jetpackStats.contextMenu.copyName" = "Kopiera namn";
+
+/* Context menu action to copy search term */
+"jetpackStats.contextMenu.copySearchTerm" = "Kopiera sökord";
+
+/* Context menu action to copy title */
+"jetpackStats.contextMenu.copyTitle" = "Kopiera rubrik";
+
+/* Context menu action to copy URL */
+"jetpackStats.contextMenu.copyURL" = "Kopiera URL";
+
+/* Context menu action to copy video URL */
+"jetpackStats.contextMenu.copyVideoURL" = "Kopiera video-URL";
+
+/* Context menu action to open link in browser */
+"jetpackStats.contextMenu.openInBrowser" = "Öppna i webbläsare";
+
+/* Context menu action to search term in Google */
+"jetpackStats.contextMenu.searchInGoogle" = "Sök i Google";
+
+/* Message shown when a country has no views */
+"jetpackStats.countries.noViews" = "Inga visningar";
+
+/* CSV header for country column */
+"jetpackStats.csv.country" = "Land";
+
+/* CSV header for country code column */
+"jetpackStats.csv.countryCode" = "Landskod";
+
+/* CSV header for date column */
+"jetpackStats.csv.date" = "Datum";
+
+/* CSV header for domain column */
+"jetpackStats.csv.domain" = "Domän";
+
+/* CSV header for file name column */
+"jetpackStats.csv.fileName" = "Filnamn";
+
+/* CSV header for file path column */
+"jetpackStats.csv.filePath" = "Filsökväg";
+
+/* CSV header for name column */
+"jetpackStats.csv.name" = "Namn";
+
+/* CSV header for role column */
+"jetpackStats.csv.role" = "Roll";
+
+/* CSV header for search term column */
+"jetpackStats.csv.searchTerm" = "Sökord";
+
+/* CSV header for section column */
+"jetpackStats.csv.section" = "Sektion";
+
+/* CSV header for title column */
+"jetpackStats.csv.title" = "Rubrik";
+
+/* CSV header for type column */
+"jetpackStats.csv.type" = "Typ";
+
+/* CSV header for URL column */
+"jetpackStats.csv.url" = "URL";
+
+/* CSV header for video URL column */
+"jetpackStats.csv.videoURL" = "Video-URL";
+
+/* Title for comparison menu */
+"jetpackStats.datePicker.compareWith" = "Jämför med …";
+
+/* Title for custom date range picker */
+"jetpackStats.datePicker.customRange" = "Anpassat intervall";
+
+/* Menu item for custom date range picker */
+"jetpackStats.datePicker.customRangeMenu" = "Anpassat intervall …";
+
+/* From date label */
+"jetpackStats.datePicker.from" = "Från";
+
+/* Compare with same period last year option */
+"jetpackStats.datePicker.lastYear" = "Förra året";
+
+/* Menu item for more date period options */
+"jetpackStats.datePicker.morePeriods" = "Fler perioder …";
+
+/* Compare with preceding period option */
+"jetpackStats.datePicker.precedingPeriod" = "Föregående period";
+
+/* Label for quick period selection */
+"jetpackStats.datePicker.quickPeriodsForStartDate" = "Snabbperioder för startdatum";
+
+/* Site time zone header */
+"jetpackStats.datePicker.siteTimeZone" = "Webbplatsens tidszon";
+
+/* Explanation of how stats are reported in site time zone */
+"jetpackStats.datePicker.siteTimeZoneDescription" = "Statistik rapporteras och visas i tidszonen för din webbplats. Om en besökare besöker din webbplats på en tisdag i sin tidszon, men det är måndag i tidszonen för din webbplats, registreras besöket som måndag.";
+
+/* To date label */
+"jetpackStats.datePicker.to" = "Till";
+
+/* Section title for the list of child links */
+"jetpackStats.externalLinkDetails.childLinks" = "Underlänkar";
+
+/* Button to open the external link in browser */
+"jetpackStats.externalLinkDetails.openLink" = "Öppna länk";
+
+/* Title for the external link details screen */
+"jetpackStats.externalLinkDetails.title" = "Extern länk";
+
+/* Label for daily average in tooltip */
+"jetpackStats.postDetails.dailyAverage" = "Dagligt genomsnitt";
+
+/* Title for email metrics card */
+"jetpackStats.postDetails.emailMetrics" = "E-post";
+
+/* Must be short!Label for emails sent metric */
+"jetpackStats.postDetails.emailsSent" = "E-post skickad";
+
+/* Legend label for lower activity */
+"jetpackStats.postDetails.less" = "Mindre";
+
+/* Singular like count. %1$d is the number. */
+"jetpackStats.postDetails.like" = "%1$d gilla-markering";
+
+/* Plural likes count. %1$d is the number. */
+"jetpackStats.postDetails.likes" = "%1$d gilla-markeringar";
+
+/* Title for monthly activity heatmap */
+"jetpackStats.postDetails.monthsAndYears" = "Senaste månaderna";
+
+/* Legend label for higher activity */
+"jetpackStats.postDetails.more" = "Mer";
+
+/* Label */
+"jetpackStats.postDetails.noLikesYet" = "Inga gilla-markeringar än";
+
+/* Must be short! Label for email open rate metric */
+"jetpackStats.postDetails.openRate" = "Öppningsfrekvens";
+
+/* Shows when the post was published. %1$@ is the formatted date. */
+"jetpackStats.postDetails.published" = "Publicerades %1$@";
+
+/* Title for recent weeks activity heatmap */
+"jetpackStats.postDetails.recentWeeks" = "Senaste veckorna";
+
+/* Navigation title */
+"jetpackStats.postDetails.title" = "Inläggsstatus";
+
+/* Must be short!Label for total email opens metric */
+"jetpackStats.postDetails.totalOpens" = "Totalt antal öppningar";
+
+/* Must be short!Label for unique email opens metric */
+"jetpackStats.postDetails.uniqueOpens" = "Unika öppningar";
+
+/* Label for week-over-week comparison in tooltip */
+"jetpackStats.postDetails.weekOverWeek" = "Vecka för vecka";
+
+/* Label for weekly total in tooltip */
+"jetpackStats.postDetails.weekTotal" = "Totalt per vecka";
+
+/* Title for weekly activity heatmap */
+"jetpackStats.postDetails.weeklyActivity" = "Veckoaktivitet";
+
+/* Title for error alert when marking referrer as spam fails */
+"jetpackStats.referrerDetails.errorAlertTitle" = "Fel";
+
+/* Button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpam" = "Markera som skräppost";
+
+/* Error message when marking a referrer as spam fails */
+"jetpackStats.referrerDetails.markAsSpamError" = "Det gick inte att markera som skräppost";
+
+/* Label shown when a referrer is already marked as spam */
+"jetpackStats.referrerDetails.markedAsSpam" = "Markerad som skräppost";
+
+/* Section title for the list of referral sources */
+"jetpackStats.referrerDetails.referralSources" = "Hänvisningskällor";
+
+/* Title for the referrer details screen */
+"jetpackStats.referrerDetails.title" = "Hänvisning";
+
+/* Archive data type */
+"jetpackStats.siteDataTypes.archive" = "Arkivera";
+
+/* Authors data type */
+"jetpackStats.siteDataTypes.authors" = "Författare";
+
+/* External links data type */
+"jetpackStats.siteDataTypes.externalLinks" = "Externa länkar";
+
+/* File downloads data type */
+"jetpackStats.siteDataTypes.fileDownloads" = "Filnedladdningar";
+
+/* Locations data type */
+"jetpackStats.siteDataTypes.locations" = "Platser";
+
+/* Posts and pages data type */
+"jetpackStats.siteDataTypes.postsAndPages" = "Inlägg och sidor";
+
+/* Referrers data type */
+"jetpackStats.siteDataTypes.referrers" = "Hänvisningar";
+
+/* Search terms data type */
+"jetpackStats.siteDataTypes.searchTerms" = "Söktermer";
+
+/* Videos data type */
+"jetpackStats.siteDataTypes.videos" = "Videoklipp";
+
+/* Bounce rate metric */
+"jetpackStats.siteMetrics.bounceRate" = "Avvisningsfrekvens";
+
+/* Site comments metric */
+"jetpackStats.siteMetrics.comments" = "Kommentarer";
+
+/* Download count */
+"jetpackStats.siteMetrics.downloads" = "Nedladdningar";
+
+/* Site likes metric */
+"jetpackStats.siteMetrics.likes" = "Gilla-markeringar";
+
+/* Site posts metric */
+"jetpackStats.siteMetrics.posts" = "Inlägg";
+
+/* Time on site metric */
+"jetpackStats.siteMetrics.timeOnSite" = "Tid på webbplatsen";
+
+/* Site views metric */
+"jetpackStats.siteMetrics.views" = "Visningar";
+
+/* Site visitors metric */
+"jetpackStats.siteMetrics.visitors" = "Besökare";
+
+/* Current active visitors metric */
+"jetpackStats.siteMetrics.visitorsNow" = "Besökare nu";
+
+/* Insights tab */
+"jetpackStats.tabs.insights" = "Insikter";
+
+/* Realtime tab */
+"jetpackStats.tabs.realtime" = "Realtid";
+
+/* Subscribers tab */
+"jetpackStats.tabs.subscribers" = "Prenumeranter";
+
+/* Traffic tab */
+"jetpackStats.tabs.traffic" = "Trafik";
+
+/* Stats screen title */
+"jetpackStats.title" = "Statistik";
+
+/* Title for items with highest bounce rate */
+"jetpackStats.topList.highestBounceRate" = "Högsta avvisningsfrekvens";
+
+/* Title for items with longest time on site */
+"jetpackStats.topList.longestTimeOnSite" = "Längsta tid på webbplatsen";
+
+/* Title for most commented items */
+"jetpackStats.topList.mostCommented" = "Mest kommenterade";
+
+/* Title for chart */
+"jetpackStats.topList.mostDownloads" = "Mest nedladdat";
+
+/* Title for most liked items */
+"jetpackStats.topList.mostLiked" = "Mest gillat";
+
+/* Title for most posts (per author) */
+"jetpackStats.topList.mostPosts" = "Flest inlägg";
+
+/* Title for most viewed items */
+"jetpackStats.topList.mostViewed" = "Mest visat";
+
+/* Title for items with most visitors */
+"jetpackStats.topList.mostVisitors" = "Flest besökare";
+
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Lär dig mer";
 
@@ -9107,6 +9606,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Sidor av mig";
 
+/* Title for the parent page picker screen */
+"parentPagePicker.title" = "Överordnad sida";
+
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "Överordnad sida";
 
@@ -9260,6 +9762,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to view plugin on WordPress.org */
 "pluginDetails.viewOnWordPressOrg.button" = "Visa på WordPress.org";
 
+/* Title for the post author selection screen */
+"postAuthorPicker.title" = "Författare";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Kasta ändringar";
 
@@ -9334,6 +9839,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Sparar utkast …";
+
+/* Empty state description when no post formats are available */
+"postFormatPicker.emptyState.description" = "Inläggsformat har inte konfigurerats för denna webbplats.";
+
+/* Empty state title when no post formats are available */
+"postFormatPicker.emptyState.title" = "Inga inläggsformat är tillgängliga";
+
+/* Navigation bar title for the Post Format picker */
+"postFormatPicker.navigationTitle" = "Inläggsformat";
+
+/* Error message when post formats refresh fails */
+"postFormatPicker.refreshErrorMessage" = "Det gick inte att uppdatera inläggsformat";
 
 /* Button title */
 "postFromAudio.beginRecording" = "Starta inspelning";
@@ -9479,8 +9996,42 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Utan rubrik";
 
+/* Label for the author field in Post Settings */
+"postSettings.author.label" = "Författare";
+
+/* Label for the add category button field. Should be the same as WP core. */
+"postSettings.categories.addCategoryButton" = "Lägg till kategori";
+
+/* Label for the categories field. Should be the same as WP core.
+   Label for the category field. Should be the same as WP core. */
+"postSettings.categories.label" = "Kategorier";
+
+/* Button to confirm discarding changes */
+"postSettings.discardChanges.button" = "Ignorera ändringarna";
+
+/* Message for the discard changes confirmation dialog */
+"postSettings.discardChanges.message" = "Du har ändringar som inte har sparats. Är du säker på att du vill åsidosätta dem?";
+
+/* Title for the discard changes confirmation dialog */
+"postSettings.discardChanges.title" = "Kasta ändringar?";
+
+/* Character count for excerpt. %1$d is the number of characters. */
+"postSettings.excerpt.characterCount" = "%1$d tecken";
+
+/* Section header for Excerpt in Post Settings */
+"postSettings.excerpt.header" = "Utdrag";
+
+/* Placeholder text for the excerpt field in Post Settings */
+"postSettings.excerpt.placeholder" = "Skriv en kort sammanfattning av ditt inlägg som ska visas i bloggindex, arkiv och sökresultat.";
+
+/* Word count for excerpt. %1$d is the number of words. */
+"postSettings.excerpt.wordCount" = "%1$d ord";
+
 /* Cancel upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.cancelUpload" = "Avbryt uppladdning";
+
+/* Section header for Featured Image in Post Settings */
+"postSettings.featuredImage.header" = "Utvald bild";
 
 /* Replace image upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.replaceImage" = "Byt ut";
@@ -9494,20 +10045,80 @@ Example: Reply to Pamela Nguyen */
 /* Post Settings */
 "postSettings.featuredImage.uploading" = "Laddar upp …";
 
-/* The 'Parent Page' setting of the post */
-"postSettings.parentPage" = "Överordnad sida";
+/* Label for the last edited field in Post Settings */
+"postSettings.lastEdited.label" = "Senast redigerad";
 
-/* The 'Pending Review' setting of the post */
-"postSettings.pendingReview" = "Inväntar granskning";
+/* Section header for Info in Post Settings */
+"postSettings.metadata.header" = "Info";
 
-/* Section title for the disabled Twitter service in the Post Settings screen */
-"postSettings.section.disabledTwitter.header" = "Automatisk delning på Twitter är inte längre tillgängligt";
+/* Section header for More Options in Post Settings. Should use the same translation as core WP. */
+"postSettings.moreOptions.header" = "Fler alternativ";
 
-/* Section title for Page Attributes */
-"postSettings.section.pageAttributes" = "Sidattribut";
+/* The title of the Page Settings screen. */
+"postSettings.navigationTitle.page" = "Sidinställningar";
 
-/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
-"postSettings.warningPostWillBePublishedAlertMessage" = "Om synligheten ändras till \"Privat\" kommer inlägget att publiceras omedelbart";
+/* The title of the Post Settings screen. */
+"postSettings.navigationTitle.post" = "Inläggsinställningar";
+
+/* Label for the Organization area (categories, keywords, ...) in post settings. */
+"postSettings.organization.header" = "Organisation";
+
+/* Message when trying to save a deleted page */
+"postSettings.pageDeleted.message" = "Den här sidan har tagits bort och kan inte längre sparas.";
+
+/* Title of alert when trying to save a deleted page */
+"postSettings.pageDeleted.title" = "Sida borttagen";
+
+/* Label for the parent page field */
+"postSettings.parentPage.label" = "Överordnad sida";
+
+/* Cell title for the Top Level option case */
+"postSettings.parentPage.topLevel" = "Toppnivå";
+
+/* Label for the pending review toggle in Post Settings */
+"postSettings.pendingReview.label" = "Inväntar granskning";
+
+/* Label for the permalink field in Post Settings */
+"postSettings.permalink.label" = "Permalänk";
+
+/* Message when trying to save a deleted post */
+"postSettings.postDeleted.message" = "Det här inlägget har tagits bort och kan inte längre sparas.";
+
+/* Title of alert when trying to save a deleted post */
+"postSettings.postDeleted.title" = "Inlägg borttaget";
+
+/* Label for the post format field. Should be the same as WP core. */
+"postSettings.postFormat.label" = "Inläggsformat";
+
+/* Label for the post ID field in Post Settings */
+"postSettings.postID.label" = "ID";
+
+/* Label for the publish date field in Post Settings */
+"postSettings.publishDate.label" = "Datum";
+
+/* Section header for General settings in Post Settings */
+"postSettings.section.general" = "Allmänt";
+
+/* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
+"postSettings.slug.hint" = "En slug är den URL-vänliga versionen av inläggets titel.";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.label" = "Slug";
+
+/* Placeholder for the slug field */
+"postSettings.slug.placeholder" = "Ange slug";
+
+/* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
+"postSettings.stickyPost.label" = "Klistrat";
+
+/* Label for the add tags button field. Should be the same as WP core. */
+"postSettings.tags.addTagsButton" = "Lägg till etiketter";
+
+/* Label for the tags field. Should be the same as WP core. */
+"postSettings.tags.label" = "Etiketter";
+
+/* Label for the visibility field in Post Settings */
+"postSettings.visibility.label" = "Synlighet";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Avbryt";
@@ -10900,6 +11511,15 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "Totalt antal prenumeranter";
 
+/* Menu item to send feedback about new stats experience */
+"stats.menu.sendFeedback" = "Skicka feedback";
+
+/* Menu item to switch back to classic stats experience */
+"stats.menu.switchToClassic" = "Växla till klassiska Statistik";
+
+/* Menu item to enable new stats experience */
+"stats.menu.tryNewStats" = "Prova nya Statistik";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
@@ -10938,6 +11558,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The label for the option to show Stats Traffic chart for Days. */
 "stats.traffic.days" = "Dagar";
+
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.hours" = "Timmar";
 
 /* The label for the option to show Stats Traffic chart for Months. */
 "stats.traffic.months" = "Månader";
@@ -11275,6 +11898,33 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Läsare för iOS-support";
 
+/* Button to add a new tag. %1$@ is the tag name. */
+"tags.add.button" = "Lägg till etikett: %1$@";
+
+/* Description for empty state when there are no tags */
+"tags.empty.description" = "Etiketter hjälper till att organisera ditt innehåll och gör det lättare för läsare att hitta relaterade inlägg.";
+
+/* Title for empty state when there are no tags */
+"tags.empty.title" = "Inga etiketter";
+
+/* Error message when tag data is invalid */
+"tags.error.invalid_tag" = "Etikettinformationen är ogiltig. Försök igen.";
+
+/* Error message when the tags service cannot connect to the remote site */
+"tags.error.no_remote_service" = "Det gick inte att ansluta till din webbplats. Kontrollera din anslutning och försök igen.";
+
+/* Button to remove a selected tag. %1$@ is the tag name. */
+"tags.remove.button" = "Ta bort %1$@";
+
+/* Placeholder text for the tag search field */
+"tags.search.placeholder" = "Sök etiketter";
+
+/* Message shown when no tags are selected */
+"tags.selected.empty" = "Inga etiketter har valts";
+
+/* Title for the tags screen */
+"tags.title" = "Etiketter";
+
 /* Title for placeholder in Tenor picker */
 "tenor.welcomeMessage" = "Leta efter GIF-filer att lägga till i ditt mediabibliotek!";
 
@@ -11286,6 +11936,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Tidszon";
+
+/* Action button title to enable new stats from tip */
+"tips.newStats.action" = "Aktivera nu";
+
+/* Tip for new stats feature */
+"tips.newStats.message" = "Upplev ny elegant och kraftfull statistik. Växla tillbaka när du vill.";
+
+/* Tip for new stats feature */
+"tips.newStats.title" = "Prova nya Statistik";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Svep åt höger för att komma till dina webbplatser, läsaren, aviseringar och din profil";

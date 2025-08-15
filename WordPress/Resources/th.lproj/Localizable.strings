@@ -106,9 +106,7 @@
 /* No comment provided by engineer. */
 "Authenticating" = "กำลังตรวจสอบ";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "ผู้เขียน";
 
@@ -205,9 +203,6 @@
 
 /* Alert title. */
 "Careful!" = "ควรระวัง";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "หมวดหมู่";
 
 /* Center alignment for an image. Should be the same as in core WP. */
 "Center" = "ตรงกลาง";
@@ -330,15 +325,13 @@
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "ค่าเริ่มต้นสำหรับเรื่องใหม่";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "ลบ";
 
 /* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "ลบอย่างถาวร";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "คำขยายความ";
 
@@ -442,9 +435,6 @@
 
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "อธิบายว่าเว็บนี้เกี่ยวกับอะไร";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "รูปภาพพิเศษ";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "กำลังดึงธีม...";
@@ -769,8 +759,7 @@
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "ตกลง";
 
 /* Disabled */
@@ -894,9 +883,6 @@
 
 /* Title for selecting categories for a post */
 "Post Categories" = "หมวดหมู่เรื่อง";
-
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "รูปแบบเรื่อง";
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
@@ -1149,7 +1135,8 @@
    Title of spam Comments filter. */
 "Spam" = "สแปม";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "มาตรฐาน";
 
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
@@ -1177,10 +1164,7 @@
 "Tagline" = "คำอธิบาย";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "ป้ายกำกับ";
 
 /* This is a status indicator on the editor */
@@ -1188,9 +1172,6 @@
 
 /* Label for a button to retry loading posts */
 "Tap to retry" = "แตะเพื่อเลิกใหม่";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "ลำดับขั้น";
 
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "เงื่อนไขการใช้บริการ";
@@ -1420,9 +1401,6 @@
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "การดู";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "การมองเห็นได้";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "เยี่ยมชม %@";

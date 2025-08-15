@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-07-09 09:54:07+0000 */
+/* Translation-Revision-Date: 2025-08-12 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: tr */
@@ -314,9 +314,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Bir dosyada kötü amaçlı bir kod modeli var";
 
-/* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
-"A tag named '%@' already exists." = "'%@' adında bir etiket zaten var.";
-
 /* Placeholder text for the title of a site */
 "A title for the site" = "Sitenin başlığı";
 
@@ -467,9 +464,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Screen reader text for button that adds a menu item */
 "Add new menu item" = "Yeni menü ögesi ekle";
-
-/* Voiceover accessibility label for the tags field in blog post settings. */
-"Add new tags, separated by commas." = "Virgül ile ayırarak yeni etiketler ekleyebilirsiniz.";
 
 /* No comment provided by engineer. */
 "Add paragraph block" = "Paragraf bloğu ekle";
@@ -692,6 +686,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple ID doğrulanamadı.\nLütfen iCloud oturumunuzu iki adımlı doğrulama kullanan bir Apple ID ile açtığınızdan emin olun.";
 
+/* Link to Application Passwords section */
+"Application Passwords" = "Uygulama Şifreleri";
+
 /* No comment provided by engineer. */
 "Applies the setting" = "Ayarı uygular";
 
@@ -722,9 +719,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "Bu menüyü silmek istediğinize emin misiniz?";
-
-/* Message asking for confirmation on tag deletion */
-"Are you sure you want to delete this tag?" = "Bu etiketi silmek istediğinize emin misiniz?";
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Jetpack ile site bağlantısını kesmek istediğinize emin misiniz?";
@@ -785,9 +779,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Şu sunucu için doğrulama gerekli: %@";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Yazar";
 
@@ -1129,9 +1121,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Hayatınızın filmini oynayın.";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "Kategoriler";
 
 /* Category menu item in share extension. */
 "Category" = "Kategori";
@@ -1491,9 +1480,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Message to show when Publicize connect failed */
 "Connection failed" = "Bağlantı kurulamadı";
 
-/* Title of a prompt saying the app needs an internet connection before it can load post formats */
-"Connection not available" = "Bağlantı kullanılamıyor";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -1632,9 +1618,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Couldn't load data. Please refresh again later." = "Veri yüklenemedi. Lütfen daha sonra tekrar yenileyin.";
 
 /* Error message when tag loading failed */
-"Couldn't load tags." = "Etiketler yüklenemedi.";
-
-/* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Etiketler yüklenemedi. Yeniden denemek için dokunun.";
 
 /* Indicating that referrer couldn't be marked as spam */
@@ -1688,9 +1671,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Navigates to a new flow for site creation. */
 "Create a Site" = "Bir site oluştur";
-
-/* Title of the button in the placeholder for an empty list of blog tags. */
-"Create a Tag" = "Bir etiket oluştur";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Bir site simgesi oluştur";
@@ -1759,12 +1739,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Customize blocks" = "Blokları özelleştir";
 
-/* Title for the edition of the share message. */
-"Customize the message" = "İletiyi özelleştir";
-
-/* Hint displayed when the user is customizing the share message. */
-"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Paylaşmak istediğiniz iletiyi özelleştirin.\nBuraya bir metin yazmazsanız, ileti olarak yazının başlığını kullanacağız.";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Beğeniler, yorumlar, takipler ve diğerleri için site ayarlarınızı özelleştirin.";
 
@@ -1818,8 +1792,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Yeni yazı varsayılanları";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Sil";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1839,9 +1812,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Menüyü sil";
 
-/* Delete Tag confirmation action title */
-"Delete this tag" = "Bu etiketi sil";
-
 /* Text displayed in HUD after successfully deleting a media item */
 "Deleted!" = "Silindi!";
 
@@ -1858,7 +1828,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Describe the purpose of the image. Leave empty if decorative." = "Görselin amacını açıklayın. Süs amaçlıysa boş bırakın.";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Açıklama";
 
@@ -2395,14 +2364,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "Her gün saat %@";
 
-/* Label for the excerpt field. Should be the same as WP core. */
-"Excerpt" = "Alıntı";
-
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "Alıntı uzunluğu (sözcük)";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
-"Excerpts are optional hand-crafted summaries of your content." = "Alıntılar, içeriğinizden özel olarak el ile hazırlanmış özetlerdir.";
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Temalar, eklentiler ve yüklemeler katılmaz";
@@ -2479,9 +2442,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Öne çıkarılmış";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "Öne çıkarılmış görsel";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Temalar alınıyor...";
@@ -3130,9 +3090,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack ayarları";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core. */
-"Jetpack Social" = "Jetpack Social";
-
 /* Insights 'Jetpack Social Connections' header
    Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Jetpack Social bağlantıları";
@@ -3497,9 +3454,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Marks comment as spam */
 "Mark as Spam" = "İstenmeyen olarak işaretle";
 
-/* Label for the Mark as Sticky option in post settings. */
-"Mark as Sticky" = "Sabit olarak işaretle";
-
 /* Action title for unmarking referrer as spam */
 "Mark as not spam" = "İstenmeyen değil olarak işaretle";
 
@@ -3592,8 +3546,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menüler";
 
-/* Invite Message Editor's Title
-   Label for the share message field on the post settings. */
+/* Invite Message Editor's Title */
 "Message" = "İleti";
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
@@ -3616,8 +3569,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Action button to display more available options */
 "More" = "Diğer";
 
-/* Action button to display more available options
-   Label for the More Options area in post settings. Should use the same translation as core WP. */
+/* Action button to display more available options */
 "More Options" = "Diğer seçenekler";
 
 /* Label for the posting activity legend. */
@@ -3706,9 +3658,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "Ad";
-
-/* Error to be displayed when a tag is empty */
-"Name Required" = "Ad gereklidir";
 
 /* No comment provided by engineer. */
 "Navigate Up" = "Yukarı git";
@@ -4055,8 +4004,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "Tamam";
 
 /* No comment provided by engineer. */
@@ -4225,8 +4173,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Sayfa";
 
-/* Name of the button to open the page settings
-   The title of the Page Settings screen. */
+/* Name of the button to open the page settings */
 "Page Settings" = "Sayfa ayarları";
 
 /* translators: accessibility text. %s: Page break text. */
@@ -4472,11 +4419,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Yazı kategorileri";
 
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Yazı biçimi";
-
-/* Name of the button to open the post settings
-   The title of the Post Settings screen. */
+/* Name of the button to open the post settings */
 "Post Settings" = "Yazı ayarları";
 
 /* Window title for Post Stats view. */
@@ -4613,9 +4556,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Yayınla";
-
-/* Label for the publish date button. */
-"Publish Date" = "Yayınlanma Tarihi";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Sayfayı şurada yayınla:";
@@ -5380,9 +5320,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Bölü ekleyici sonuçları";
 
-/* Label for the slug field. Should be the same as WP core. */
-"Slug" = "Kısaltma";
-
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no fixed threats on your site." = "Şimdiye kadar sitenizde düzeltilmiş bir tehdit yok.";
 
@@ -5496,7 +5433,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sports site intent topic */
 "Sports" = "Spor";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "Standart";
 
 /* Label for selecting the Start Over Settings item
@@ -5526,9 +5464,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle giving the user more context about why to enable notifications. */
 "Stay in touch with like and comment notifications." = "Beğeni ve yorum bildirimlerini kullanarak iletişimi koruyun.";
-
-/* This is the cell title. */
-"Stick post to the front page" = "Yazıyı ön sayfaya sabitle";
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Sabit";
@@ -5628,31 +5563,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tablet web preview */
 "Tablet" = "Tablet";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "Etiket";
-
-/* Title of the alert indicating that a tag with that name already exists. */
-"Tag already exists" = "Etiket zaten var";
-
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "Slogan";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "Etiketler";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "Etiketler ve kategoriler";
-
-/* Displayed when the user views tags in blog settings and there are no tags */
-"Tags created here can be quickly added to new posts" = "Burada oluşturulan etiketler kolayca yeni yazılara eklenebilir";
-
-/* Label explaining why users might want to add tags. */
-"Tags help tell readers what a post is about. Separate different tags with commas." = "Etiketler okuyuculara bir yazının ne hakkında olduğunu anlatmaya yardımcı olur. Farklı etiketleri virgül ile ayırın.";
 
 /* No comment provided by engineer. */
 "Take a Photo" = "Fotoğraf çek";
@@ -5744,9 +5664,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "Gravatar sitesini bir dış tarayıcı ile açmak için dokunun";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "Sınıflandırma";
 
 /* Technology site intent topic */
 "Technology" = "Teknoloji";
@@ -5892,9 +5809,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Site dışa aktarılamadı.";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
-"The slug is the URL-friendly version of the post title." = "Kısaltma, yazı başlığının site adresinin sonuna eklenmeye uygun şeklidir.";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "Belirtilen kullanıcı bulunamadı. Lütfen doğru yazdığınızdan emin olun.";
@@ -6390,9 +6304,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Yorum onayını kaldırır.";
 
-/* Message to show in the post-format cell when the post format is not available */
-"Unavailable" = "Kullanılamaz";
-
 /* When the App can't figure out what language a blog is configured to use. */
 "Undefined" = "Tanımlanmamış";
 
@@ -6660,9 +6571,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights views and visitors header */
 "Views & Visitors" = "Görüntülemeler ve ziyaretçiler";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "Görünürlük";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "%@ sitesine git";
@@ -7103,9 +7011,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views scheduled posts in the posts list and there are no posts */
 "You don't have any scheduled posts" = "Zamanlanmış bir yazınız yok";
 
-/* Empty state. Tags management (Settings > Writing > Tags) */
-"You don't have any tags" = "Herhangi bir etiketiniz yok";
-
 /* Displayed when the user views trashed in the pages list and there are no pages */
 "You don't have any trashed pages" = "Çöpe atılmış bir sayfanız yok";
 
@@ -7419,27 +7324,35 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The list item of experimental features that users can choose to enable */
 "application-settings.experimental-features" = "Deneysel İşlevler";
 
-/* Button label to authorize application passwords */
-"application.password.authorize" = "Yetkilendir";
+/* Complete information about application passwords with security benefits, creation process, management instructions, and revocation warning */
+"applicationPassword.info.content" = "Uygulama şifreleri, bu uygulamanın sitenizin içeriğine gerçek hesap şifresini kullanmadan erişmesinin daha güvenli bir yoludur.\n\nUygulamaya site eklediğinizde, uygulama şifreleri gerektiğinde otomatik olarak oluşturulur.\n\nBu şifreleri kullanıcı profilinizde WordPress sitenizin yönetim panelinden görüntüleyebilir ve yönetebilirsiniz.\n\nUygulama tarafından kullanılan uygulama şifrelerini iptal ettiğinizde uygulamanın sitenize erişiminin sonlandırılacağını lütfen unutmayın. Uygulama tarafından oluşturulan uygulama şifrelerini iptal ederken dikkatli olun.";
 
-/* Description for the application passwords feature */
-"application.password.description" = "Artık site içeriğinize hızlı ve güvenli bir şekilde erişmek için uygulama şifrelerini kullanma izni verebilirsiniz.";
+/* Button to dismiss the application password information view */
+"applicationPassword.info.gotIt.button" = "Anladım";
 
-/* Title for the new application passwords feature */
-"application.password.new.title" = "Yeni: Uygulama Şifreleri";
+/* Title for the application passwords information view */
+"applicationPassword.info.title" = "Uygulama Şifreleri Hakkında";
 
 /* Title of row for displaying an application password's creation date */
 "applicationPassword.item.creationDate" = "Oluşturma Tarihi";
 
-/* Title of row for displaying an application password's last used date
-   Title of row for displaying an application password's last used IP address */
+/* Footer message indicating that this application password is currently active and being used by the app */
+"applicationPassword.item.currentlyInUse" = "Bu uygulama şifresi şu anda uygulama tarafından kullanılıyor.";
+
+/* Title of row for displaying an application password's last used date */
 "applicationPassword.item.lastUsed" = "Son Kullanılma";
+
+/* Title of row for displaying an application password's last used IP address */
+"applicationPassword.item.lastUsedIp" = "Son IP Adresi";
 
 /* Title of row for displaying an application password name */
 "applicationPassword.item.name" = "Ad";
 
 /* Title of section for displaying application password details */
 "applicationPassword.item.section.security" = "Güvenlik";
+
+/* String format of creation date of an application password. There is one argument: the creation date relative to now (i.e. 5 days ago). */
+"applicationPassword.list.item.created-date-format" = "Oluşturma tarihi: %@";
 
 /* String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago). */
 "applicationPassword.list.item.last-used-format" = "Son kullanılma: %@";
@@ -7453,8 +7366,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Mevcut site URL'si bulunamıyor";
 
+/* Error message shown when the site doesn't support Application Passwords feature */
+"applicationPasswordMigration.error.unsupported" = "Bu site Uygulama Şifrelerini desteklemiyor.";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "\"%@\" adlı kullanıcı olarak oturum açmanız gerekir";
+
+/* Error message when the site's REST API is not accessible for application password creation */
+"applicationPasswordRepository.error.restApiInaccessible" = "Sitenin REST API'sine erişilemiyor";
+
+/* Error message when application password creation fails for unknown reasons */
+"applicationPasswordRepository.error.unknown" = "Uygulama şifresi oluşturulamıyor";
+
+/* Error message when the username cannot be found for application password creation */
+"applicationPasswordRepository.error.usernameNotFound" = "Site için kullanıcı adı bulunamadı";
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Uygulama şifreleri, kullanıcı tarafından barındırılan sitelerinizi bağlamanız ve %@ gibi özellikler için destek sağlamanın daha güvenli bir yoludur.";
@@ -7462,7 +7387,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Eklenti Yönetimi";
 
-/* Feature name for managing users in the app */
+/* Feature name for managing application passwords in the app
+   Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Kullanıcı Yönetimi";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -8089,6 +8015,27 @@ Example: Reply to Pamela Nguyen */
 /* No comment provided by engineer. */
 "double-tap to change unit" = "birimi değiştirmek için çift dokunun";
 
+/* Message for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.message" = "Bu etiketi silmek istediğinizden emin misiniz?";
+
+/* Title for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.title" = "Etiketi Silin";
+
+/* Placeholder text for tag description field */
+"edit.tag.description.placeholder" = "Açıklama ekleyin...";
+
+/* Placeholder text for tag name field */
+"edit.tag.name.placeholder" = "Etiket adı";
+
+/* Navigation title for new tag creation */
+"edit.tag.new.title" = "Yeni Etiket";
+
+/* Section header for tag description in edit tag view */
+"edit.tag.section.description" = "Açıklama";
+
+/* Section header for tag name in edit tag view */
+"edit.tag.section.tag" = "Etiket";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "Örnek: 1122334455";
 
@@ -8600,6 +8547,546 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "İstatistikler ve Bildirimler'i kullanmak için %@ ile oturum açmanız gerekir.";
 
+/* Accessibility label for add card button */
+"jetpackStats.accessibility.addCardButton" = "Yeni istatistik kartı ekle";
+
+/* Accessibility label for back navigation */
+"jetpackStats.accessibility.backToStats" = "İstatistiklere dön";
+
+/* Card title accessibility label. %1$@ is the card title. */
+"jetpackStats.accessibility.cardTitle" = "%1$@ kartı";
+
+/* Accessibility label for chart container */
+"jetpackStats.accessibility.chartContainer" = "İstatistik çizelgesi";
+
+/* Chart data point accessibility label. %1$@ is metric name, %2$@ is value, %3$@ is date. */
+"jetpackStats.accessibility.chartValue" = "%1$@: %3$@ tarihinde %2$@";
+
+/* Selected date range accessibility label. %1$@ is the range. */
+"jetpackStats.accessibility.dateRangeSelected" = "Tarih aralığı: %1$@";
+
+/* Accessibility label for error state */
+"jetpackStats.accessibility.errorLoadingStats" = "İstatistikler yüklenirken hata oluştu";
+
+/* Accessibility label for loading state */
+"jetpackStats.accessibility.loadingStats" = "İstatistikler yükleniyor";
+
+/* Accessibility label for more options menu */
+"jetpackStats.accessibility.moreOptions" = "Daha fazla seçenek";
+
+/* Accessibility hint for next period navigation */
+"jetpackStats.accessibility.navigateToNextDateRange" = "Sonraki tarih aralığına git";
+
+/* Accessibility hint for previous period navigation */
+"jetpackStats.accessibility.navigateToPreviousDateRange" = "Önceki tarih aralığına git";
+
+/* Accessibility label for next period navigation button */
+"jetpackStats.accessibility.nextPeriod" = "Sonraki dönem";
+
+/* Accessibility label for empty data state */
+"jetpackStats.accessibility.noDataAvailable" = "Bu dönem için veri mevcut değil";
+
+/* Accessibility label for opening link in browser */
+"jetpackStats.accessibility.openInBrowser" = "Tarayıcıda aç";
+
+/* Accessibility label for previous period navigation button */
+"jetpackStats.accessibility.previousPeriod" = "Önceki dönem";
+
+/* Accessibility label for realtime visitor count */
+"jetpackStats.accessibility.realtimeVisitorCount" = "Mevcut ziyaretçiler çevrimiçi";
+
+/* Accessibility hint for retry action */
+"jetpackStats.accessibility.retryLoadingStats" = "İstatistikleri yüklemeyi yeniden denemek için çift dokunun";
+
+/* Accessibility hint for date range selection */
+"jetpackStats.accessibility.selectDateRange" = "Tarih aralığı seçin";
+
+/* Accessibility hint for tab selection. %1$@ is the tab name. */
+"jetpackStats.accessibility.selectTab" = "%1$@ sekmesini seçin";
+
+/* Accessibility announcement when stats finish loading */
+"jetpackStats.accessibility.statsLoaded" = "İstatistikler yüklendi";
+
+/* Accessibility label for stats tab bar */
+"jetpackStats.accessibility.statsTabBar" = "İstatistikler gezinme sekmeleri";
+
+/* Accessibility announcement when a tab is selected. %1$@ is the tab name. */
+"jetpackStats.accessibility.tabSelected" = "%1$@ sekmesi seçildi";
+
+/* Top list item accessibility label. %1$d is rank, %2$@ is title, %3$@ is value. */
+"jetpackStats.accessibility.topListItem" = "Derecelendirme %1$d: %2$@, %3$@";
+
+/* Accessibility hint for viewing chart data */
+"jetpackStats.accessibility.viewChartData" = "Ayrıntılı grafik verilerini görüntüle";
+
+/* Accessibility hint for items that can show more details */
+"jetpackStats.accessibility.viewMoreDetails" = "Daha fazla ayrıntı görüntülemek için çift dokunun";
+
+/* Singular visitor count. %1$d is the number. */
+"jetpackStats.accessibility.visitorNow" = "Şu anda %1$d ziyaretçi çevrimiçi";
+
+/* Plural visitors count. %1$d is the number. */
+"jetpackStats.accessibility.visitorsNow" = "Şu anda %1$d ziyaretçi çevrimiçi";
+
+/* Chart option description */
+"jetpackStats.addChart.chartDescription" = "Zaman içindeki eğilimleri görselleştirin";
+
+/* Chart option title */
+"jetpackStats.addChart.chartOption" = "Grafik";
+
+/* Title for data type selection */
+"jetpackStats.addChart.selectDataType" = "Veri Türü Seç";
+
+/* Title for metric selection */
+"jetpackStats.addChart.selectMetric" = "Ölçümleri Seç";
+
+/* Top list option description */
+"jetpackStats.addChart.topListDescription" = "En iyi performans gösteren içeriğinizi görün";
+
+/* Top list option title */
+"jetpackStats.addChart.topListOption" = "En İyi Liste";
+
+/* Archive section for authors */
+"jetpackStats.archiveSections.author" = "Yazarlar";
+
+/* Plural item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.plural" = "%1$d öğe";
+
+/* Singular item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.singular" = "%1$d öğe";
+
+/* Archive section for other items */
+"jetpackStats.archiveSections.other" = "Diğer";
+
+/* Title for the author details screen */
+"jetpackStats.authorDetails.title" = "Yazar";
+
+/* Button to add a new chart */
+"jetpackStats.button.addCard" = "Kart Ekle";
+
+/* Apply button */
+"jetpackStats.button.apply" = "Uygula";
+
+/* Cancel button */
+"jetpackStats.button.cancel" = "İptal Et";
+
+/* Button to customize a chart or widget */
+"jetpackStats.button.customize" = "Kart Düzenle";
+
+/* Button to delete a chart or widget */
+"jetpackStats.button.deleteWidget" = "Kart Sil";
+
+/* Done button */
+"jetpackStats.button.done" = "Tamam";
+
+/* Button to download data as CSV file */
+"jetpackStats.button.downloadCSV" = "CSV'yi indir";
+
+/* Learn more about stats button */
+"jetpackStats.button.learnMore" = "Daha Fazla Bilgi Edinin";
+
+/* Button to move a card */
+"jetpackStats.button.moveCard" = "Kartı Taşı";
+
+/* Button to move card down */
+"jetpackStats.button.moveDown" = "Aşağı Taşı";
+
+/* Button to move card to the bottom */
+"jetpackStats.button.moveToBottom" = "En Alta Taşı";
+
+/* Button to move card to the top */
+"jetpackStats.button.moveToTop" = "En Üste Taşı";
+
+/* Button to move card up */
+"jetpackStats.button.moveUp" = "Yukarı Taşı";
+
+/* OK button */
+"jetpackStats.button.ok" = "Tamam";
+
+/* Button to reset chart settings to default */
+"jetpackStats.button.resetSettings" = "Ayarları Sıfırla";
+
+/* Share chart menu item */
+"jetpackStats.button.share" = "Paylaş";
+
+/* Button title */
+"jetpackStats.button.showAll" = "Tümünü Göster";
+
+/* Button to collapse and show fewer items */
+"jetpackStats.button.showLess" = "Daha Az Göster";
+
+/* Button to expand and show more items */
+"jetpackStats.button.showMore" = "Daha Fazla Göster";
+
+/* Last 10 years date range */
+"jetpackStats.calendar.last10Years" = "Son 10 Yıl";
+
+/* Last 12 months date range */
+"jetpackStats.calendar.last12Months" = "Son 12 Ay";
+
+/* Last 28 days date range */
+"jetpackStats.calendar.last28Days" = "Son 28 Gün";
+
+/* Last 30 days date range */
+"jetpackStats.calendar.last30Days" = "Son 30 Gün";
+
+/* Last 3 years date range */
+"jetpackStats.calendar.last3Years" = "Son 3 Yıl";
+
+/* Last 6 months date range */
+"jetpackStats.calendar.last6Months" = "Son 6 Ay";
+
+/* Last 7 days date range */
+"jetpackStats.calendar.last7Days" = "Son 7 Gün";
+
+/* Last 90 days date range */
+"jetpackStats.calendar.last90Days" = "Son 90 Gün";
+
+/* Month time period */
+"jetpackStats.calendar.month" = "Ay";
+
+/* Quarter time period */
+"jetpackStats.calendar.quarter" = "Çeyrek";
+
+/* This month date range */
+"jetpackStats.calendar.thisMonth" = "Bu Ay";
+
+/* This quarter date range */
+"jetpackStats.calendar.thisQuarter" = "Bu Çeyrek";
+
+/* This week date range */
+"jetpackStats.calendar.thisWeek" = "Bu Hafta";
+
+/* This year date range */
+"jetpackStats.calendar.thisYear" = "Bu Yıl";
+
+/* Today date range */
+"jetpackStats.calendar.today" = "Bugün";
+
+/* Week time period */
+"jetpackStats.calendar.week" = "Hafta";
+
+/* Year time period */
+"jetpackStats.calendar.year" = "Yıl";
+
+/* Bar chart type */
+"jetpackStats.chart.barChart" = "Barlar";
+
+/* Shown for empty states */
+"jetpackStats.chart.dataEmpty" = "Dönem için veri yok";
+
+/* Genertic error message */
+"jetpackStats.chart.generitcError" = "Bir sorun oluştu";
+
+/* Shown for metrics that don't support hourly data */
+"jetpackStats.chart.hourlyDataNotAvailable" = "Kullanılabilir saatlik veri yok";
+
+/* Shown when current period data might be incomplete */
+"jetpackStats.chart.incompleteData" = "Eksik veri gösterebilir";
+
+/* Line chart type */
+"jetpackStats.chart.lineChart" = "Satırlar";
+
+/* Show chart data menu item */
+"jetpackStats.chart.showData" = "Verileri Göster";
+
+/* Label for change value */
+"jetpackStats.chartData.change" = "Değiştir";
+
+/* Column header for date */
+"jetpackStats.chartData.date" = "TARİH";
+
+/* Section title for detailed data */
+"jetpackStats.chartData.detailedData" = "Ayrıntılı Veriler";
+
+/* Label for previous value */
+"jetpackStats.chartData.previous" = "Önceki";
+
+/* Title for chart data screen */
+"jetpackStats.chartData.title" = "Grafik Verileri";
+
+/* Label for total value */
+"jetpackStats.chartData.total" = "Toplam";
+
+/* Column header for value */
+"jetpackStats.chartData.value" = "DEĞER";
+
+/* Context menu action to copy country name */
+"jetpackStats.contextMenu.copyCountryName" = "Ülke Adını Kopyala";
+
+/* Context menu action to copy domain */
+"jetpackStats.contextMenu.copyDomain" = "Alan Adını Kopyala";
+
+/* Context menu action to copy file name */
+"jetpackStats.contextMenu.copyFileName" = "Dosya Adını Kopyala";
+
+/* Context menu action to copy file path */
+"jetpackStats.contextMenu.copyFilePath" = "Dosya Yolunu Kopyala";
+
+/* Context menu action to copy name */
+"jetpackStats.contextMenu.copyName" = "Adı Kopyala";
+
+/* Context menu action to copy search term */
+"jetpackStats.contextMenu.copySearchTerm" = "Arama Terimini Kopyala";
+
+/* Context menu action to copy title */
+"jetpackStats.contextMenu.copyTitle" = "Başlığı Kopyala";
+
+/* Context menu action to copy URL */
+"jetpackStats.contextMenu.copyURL" = "URL'yi Kopyala";
+
+/* Context menu action to copy video URL */
+"jetpackStats.contextMenu.copyVideoURL" = "Video URL'sini Kopyala";
+
+/* Context menu action to open link in browser */
+"jetpackStats.contextMenu.openInBrowser" = "Tarayıcıda Aç";
+
+/* Context menu action to search term in Google */
+"jetpackStats.contextMenu.searchInGoogle" = "Google'da Ara";
+
+/* Message shown when a country has no views */
+"jetpackStats.countries.noViews" = "Görüntüleme yok";
+
+/* CSV header for country column */
+"jetpackStats.csv.country" = "Ülke";
+
+/* CSV header for country code column */
+"jetpackStats.csv.countryCode" = "Ülke Kodu";
+
+/* CSV header for date column */
+"jetpackStats.csv.date" = "Tarih";
+
+/* CSV header for domain column */
+"jetpackStats.csv.domain" = "Alan Adı";
+
+/* CSV header for file name column */
+"jetpackStats.csv.fileName" = "Dosya Adı";
+
+/* CSV header for file path column */
+"jetpackStats.csv.filePath" = "Dosya Yolu";
+
+/* CSV header for name column */
+"jetpackStats.csv.name" = "Ad";
+
+/* CSV header for role column */
+"jetpackStats.csv.role" = "Rol";
+
+/* CSV header for search term column */
+"jetpackStats.csv.searchTerm" = "Arama terimi";
+
+/* CSV header for section column */
+"jetpackStats.csv.section" = "Bölüm";
+
+/* CSV header for title column */
+"jetpackStats.csv.title" = "Başlık";
+
+/* CSV header for video URL column */
+"jetpackStats.csv.videoURL" = "Video URL'si";
+
+/* Title for comparison menu */
+"jetpackStats.datePicker.compareWith" = "Şununla Karşılaştır...";
+
+/* Title for custom date range picker */
+"jetpackStats.datePicker.customRange" = "Özel Aralık";
+
+/* Menu item for custom date range picker */
+"jetpackStats.datePicker.customRangeMenu" = "Özel Aralık…";
+
+/* From date label */
+"jetpackStats.datePicker.from" = "Bitiş";
+
+/* Compare with same period last year option */
+"jetpackStats.datePicker.lastYear" = "Geçen Yıl";
+
+/* Menu item for more date period options */
+"jetpackStats.datePicker.morePeriods" = "Diğer Dönemler…";
+
+/* Compare with preceding period option */
+"jetpackStats.datePicker.precedingPeriod" = "Önceki Dönem";
+
+/* Label for quick period selection */
+"jetpackStats.datePicker.quickPeriodsForStartDate" = "Başlangıç tarihi için hızlı dönemler";
+
+/* Site time zone header */
+"jetpackStats.datePicker.siteTimeZone" = "Site Saat Dilimi";
+
+/* Explanation of how stats are reported in site time zone */
+"jetpackStats.datePicker.siteTimeZoneDescription" = "İstatistikler raporlanır ve sitenizin saat diliminde gösterilir. Sitenize bir ziyaretçi kendi saat diliminde salı günü gelirse ancak sitenizin saat diliminde o gün pazartesiyse ziyaret pazartesi olarak kaydedilir.";
+
+/* To date label */
+"jetpackStats.datePicker.to" = "Başlangıç";
+
+/* Section title for the list of child links */
+"jetpackStats.externalLinkDetails.childLinks" = "Alt bağlantılar";
+
+/* Button to open the external link in browser */
+"jetpackStats.externalLinkDetails.openLink" = "Bağlantıyı Aç";
+
+/* Title for the external link details screen */
+"jetpackStats.externalLinkDetails.title" = "Harici Bağlantı";
+
+/* Label for daily average in tooltip */
+"jetpackStats.postDetails.dailyAverage" = "Günlük Ortalama";
+
+/* Title for email metrics card */
+"jetpackStats.postDetails.emailMetrics" = "E-postalar";
+
+/* Must be short!Label for emails sent metric */
+"jetpackStats.postDetails.emailsSent" = "Gönderilen E-postalar";
+
+/* Legend label for lower activity */
+"jetpackStats.postDetails.less" = "Daha Az";
+
+/* Singular like count. %1$d is the number. */
+"jetpackStats.postDetails.like" = "%1$d beğeni";
+
+/* Plural likes count. %1$d is the number. */
+"jetpackStats.postDetails.likes" = "%1$d beğeni";
+
+/* Title for monthly activity heatmap */
+"jetpackStats.postDetails.monthsAndYears" = "Son Aylar";
+
+/* Legend label for higher activity */
+"jetpackStats.postDetails.more" = "Daha Fazla";
+
+/* Label */
+"jetpackStats.postDetails.noLikesYet" = "Henüz beğenilen yok";
+
+/* Must be short! Label for email open rate metric */
+"jetpackStats.postDetails.openRate" = "Açma Oranı";
+
+/* Title for recent weeks activity heatmap */
+"jetpackStats.postDetails.recentWeeks" = "Son Haftalar";
+
+/* Navigation title */
+"jetpackStats.postDetails.title" = "Gönderi İstatistikleri";
+
+/* Must be short!Label for total email opens metric */
+"jetpackStats.postDetails.totalOpens" = "Toplam Açılış";
+
+/* Must be short!Label for unique email opens metric */
+"jetpackStats.postDetails.uniqueOpens" = "Benzersiz Açma Sayısı";
+
+/* Label for week-over-week comparison in tooltip */
+"jetpackStats.postDetails.weekOverWeek" = "Haftadan Haftaya";
+
+/* Label for weekly total in tooltip */
+"jetpackStats.postDetails.weekTotal" = "Haftalık Toplam";
+
+/* Title for weekly activity heatmap */
+"jetpackStats.postDetails.weeklyActivity" = "Haftalık Aktivite";
+
+/* Title for error alert when marking referrer as spam fails */
+"jetpackStats.referrerDetails.errorAlertTitle" = "Hata";
+
+/* Button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpam" = "İstenmeyen olarak işaretle";
+
+/* Error message when marking a referrer as spam fails */
+"jetpackStats.referrerDetails.markAsSpamError" = "İstenmeyen olarak işaretlenemedi";
+
+/* Label shown when a referrer is already marked as spam */
+"jetpackStats.referrerDetails.markedAsSpam" = "İstenmeyen Olarak İşaretlendi";
+
+/* Section title for the list of referral sources */
+"jetpackStats.referrerDetails.referralSources" = "Yönlendirme Kaynakları";
+
+/* Title for the referrer details screen */
+"jetpackStats.referrerDetails.title" = "Yönlendiren";
+
+/* Archive data type */
+"jetpackStats.siteDataTypes.archive" = "Arşiv";
+
+/* Authors data type */
+"jetpackStats.siteDataTypes.authors" = "Yazarlar";
+
+/* External links data type */
+"jetpackStats.siteDataTypes.externalLinks" = "Harici Bağlantılar";
+
+/* File downloads data type */
+"jetpackStats.siteDataTypes.fileDownloads" = "Dosya İndirmeleri";
+
+/* Locations data type */
+"jetpackStats.siteDataTypes.locations" = "Konumlar";
+
+/* Posts and pages data type */
+"jetpackStats.siteDataTypes.postsAndPages" = "Gönderiler ve Sayfalar";
+
+/* Referrers data type */
+"jetpackStats.siteDataTypes.referrers" = "Yönlendirenler";
+
+/* Search terms data type */
+"jetpackStats.siteDataTypes.searchTerms" = "Arama Terimleri";
+
+/* Videos data type */
+"jetpackStats.siteDataTypes.videos" = "Videolar";
+
+/* Bounce rate metric */
+"jetpackStats.siteMetrics.bounceRate" = "Siteden Hemen Çıkma Oranı";
+
+/* Site comments metric */
+"jetpackStats.siteMetrics.comments" = "Yorumlar";
+
+/* Download count */
+"jetpackStats.siteMetrics.downloads" = "İndirmeler";
+
+/* Site likes metric */
+"jetpackStats.siteMetrics.likes" = "Beğeniler";
+
+/* Site posts metric */
+"jetpackStats.siteMetrics.posts" = "Gönderiler";
+
+/* Time on site metric */
+"jetpackStats.siteMetrics.timeOnSite" = "Sitede Zaman";
+
+/* Site views metric */
+"jetpackStats.siteMetrics.views" = "Görüntülemeler";
+
+/* Site visitors metric */
+"jetpackStats.siteMetrics.visitors" = "Ziyaretçiler";
+
+/* Current active visitors metric */
+"jetpackStats.siteMetrics.visitorsNow" = "Şu Anki Ziyaretçiler";
+
+/* Insights tab */
+"jetpackStats.tabs.insights" = "İçgörüler";
+
+/* Realtime tab */
+"jetpackStats.tabs.realtime" = "Gerçek Zamanlı";
+
+/* Subscribers tab */
+"jetpackStats.tabs.subscribers" = "Aboneler";
+
+/* Traffic tab */
+"jetpackStats.tabs.traffic" = "Trafik";
+
+/* Stats screen title */
+"jetpackStats.title" = "İstatistikler";
+
+/* Title for items with highest bounce rate */
+"jetpackStats.topList.highestBounceRate" = "En Yüksek Siteden Hemen Çıkma Oranı";
+
+/* Title for items with longest time on site */
+"jetpackStats.topList.longestTimeOnSite" = "Sitede En Uzun Süre";
+
+/* Title for most commented items */
+"jetpackStats.topList.mostCommented" = "En Çok Yorumlanan";
+
+/* Title for chart */
+"jetpackStats.topList.mostDownloads" = "En Çok İndirilen";
+
+/* Title for most liked items */
+"jetpackStats.topList.mostLiked" = "En Çok Beğenilen";
+
+/* Title for most posts (per author) */
+"jetpackStats.topList.mostPosts" = "En Çok Gönderi";
+
+/* Title for most viewed items */
+"jetpackStats.topList.mostViewed" = "En Çok Görüntülenen";
+
+/* Title for items with most visitors */
+"jetpackStats.topList.mostVisitors" = "En Çok Ziyaretçi";
+
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Ayrıntılı bilgi alın";
 
@@ -9104,6 +9591,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Benim sayfalarım";
 
+/* Title for the parent page picker screen */
+"parentPagePicker.title" = "Üst Sayfa";
+
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "Üst Sayfa";
 
@@ -9257,6 +9747,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to view plugin on WordPress.org */
 "pluginDetails.viewOnWordPressOrg.button" = "WordPress.org'da görüntüle";
 
+/* Title for the post author selection screen */
+"postAuthorPicker.title" = "Yazar";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Değişiklikleri İptal Et";
 
@@ -9331,6 +9824,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Taslak kaydediliyor...";
+
+/* Empty state description when no post formats are available */
+"postFormatPicker.emptyState.description" = "Gönderi biçimleri bu site için yapılandırılmamış.";
+
+/* Empty state title when no post formats are available */
+"postFormatPicker.emptyState.title" = "Kullanılabilir Gönderi Biçimi Yok";
+
+/* Navigation bar title for the Post Format picker */
+"postFormatPicker.navigationTitle" = "Gönderi Biçimi";
+
+/* Error message when post formats refresh fails */
+"postFormatPicker.refreshErrorMessage" = "Gönderi biçimleri yenilenemedi";
 
 /* Button title */
 "postFromAudio.beginRecording" = "Kayda başla";
@@ -9476,8 +9981,42 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Başlıksız";
 
+/* Label for the author field in Post Settings */
+"postSettings.author.label" = "Yazar";
+
+/* Label for the add category button field. Should be the same as WP core. */
+"postSettings.categories.addCategoryButton" = "Kategori Ekle";
+
+/* Label for the categories field. Should be the same as WP core.
+   Label for the category field. Should be the same as WP core. */
+"postSettings.categories.label" = "Kategoriler";
+
+/* Button to confirm discarding changes */
+"postSettings.discardChanges.button" = "Değişiklikleri İptal Et";
+
+/* Message for the discard changes confirmation dialog */
+"postSettings.discardChanges.message" = "Kaydedilmemiş değişiklikleriniz var. Bunları atmak istediğinizden emin misiniz?";
+
+/* Title for the discard changes confirmation dialog */
+"postSettings.discardChanges.title" = "Değişiklikler İptal Edilsin Mi?";
+
+/* Character count for excerpt. %1$d is the number of characters. */
+"postSettings.excerpt.characterCount" = "%1$d karakter";
+
+/* Section header for Excerpt in Post Settings */
+"postSettings.excerpt.header" = "Alıntı";
+
+/* Placeholder text for the excerpt field in Post Settings */
+"postSettings.excerpt.placeholder" = "Blog dizininde, arşivlerde ve arama sonuçlarında görünmek için gönderinizin kısa bir özetini yazın.";
+
+/* Word count for excerpt. %1$d is the number of words. */
+"postSettings.excerpt.wordCount" = "%1$d sözcük";
+
 /* Cancel upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.cancelUpload" = "Yüklemeyi İptal Et";
+
+/* Section header for Featured Image in Post Settings */
+"postSettings.featuredImage.header" = "Öne Çıkan Görsel";
 
 /* Replace image upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.replaceImage" = "Değiştir";
@@ -9491,20 +10030,80 @@ Example: Reply to Pamela Nguyen */
 /* Post Settings */
 "postSettings.featuredImage.uploading" = "Yükleniyor…";
 
-/* The 'Parent Page' setting of the post */
-"postSettings.parentPage" = "Üst sayfa";
+/* Label for the last edited field in Post Settings */
+"postSettings.lastEdited.label" = "Son Düzenleme";
 
-/* The 'Pending Review' setting of the post */
-"postSettings.pendingReview" = "İnceleme bekliyor";
+/* Section header for Info in Post Settings */
+"postSettings.metadata.header" = "Bilgi";
 
-/* Section title for the disabled Twitter service in the Post Settings screen */
-"postSettings.section.disabledTwitter.header" = "X otomatik paylaşım özelliği artık kullanılamıyor";
+/* Section header for More Options in Post Settings. Should use the same translation as core WP. */
+"postSettings.moreOptions.header" = "Daha Fazla Seçenek";
 
-/* Section title for Page Attributes */
-"postSettings.section.pageAttributes" = "Sayfa Nitelikleri";
+/* The title of the Page Settings screen. */
+"postSettings.navigationTitle.page" = "Sayfa Ayarları";
 
-/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
-"postSettings.warningPostWillBePublishedAlertMessage" = "Görünürlüğü \"Özel\" olarak değiştirdiğinizde gönderi hemen yayımlanır";
+/* The title of the Post Settings screen. */
+"postSettings.navigationTitle.post" = "Gönderi Ayarları";
+
+/* Label for the Organization area (categories, keywords, ...) in post settings. */
+"postSettings.organization.header" = "Kuruluş";
+
+/* Message when trying to save a deleted page */
+"postSettings.pageDeleted.message" = "Bu sayfa silinmiş ve artık kaydedilemez.";
+
+/* Title of alert when trying to save a deleted page */
+"postSettings.pageDeleted.title" = "Sayfa Silindi";
+
+/* Label for the parent page field */
+"postSettings.parentPage.label" = "Üst Sayfa";
+
+/* Cell title for the Top Level option case */
+"postSettings.parentPage.topLevel" = "Üst seviye";
+
+/* Label for the pending review toggle in Post Settings */
+"postSettings.pendingReview.label" = "İnceleme Bekliyor";
+
+/* Label for the permalink field in Post Settings */
+"postSettings.permalink.label" = "Kalıcı Bağlantı";
+
+/* Message when trying to save a deleted post */
+"postSettings.postDeleted.message" = "Bu gönderi silinmiş ve artık kaydedilemez.";
+
+/* Title of alert when trying to save a deleted post */
+"postSettings.postDeleted.title" = "Yazı Silindi";
+
+/* Label for the post format field. Should be the same as WP core. */
+"postSettings.postFormat.label" = "Gönderi Biçimi";
+
+/* Label for the post ID field in Post Settings */
+"postSettings.postID.label" = "Kimlik";
+
+/* Label for the publish date field in Post Settings */
+"postSettings.publishDate.label" = "Tarih";
+
+/* Section header for General settings in Post Settings */
+"postSettings.section.general" = "Genel";
+
+/* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
+"postSettings.slug.hint" = "Kısaltma, gönderi başlığının URL dostu versiyonudur.";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.label" = "Kısaltma";
+
+/* Placeholder for the slug field */
+"postSettings.slug.placeholder" = "Kısaltma gir";
+
+/* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
+"postSettings.stickyPost.label" = "Yapışkan";
+
+/* Label for the add tags button field. Should be the same as WP core. */
+"postSettings.tags.addTagsButton" = "Etiketleri ekle";
+
+/* Label for the tags field. Should be the same as WP core. */
+"postSettings.tags.label" = "Etiketler";
+
+/* Label for the visibility field in Post Settings */
+"postSettings.visibility.label" = "Görünürlük";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "İptal Et";
@@ -10894,6 +11493,15 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "Toplam Abone";
 
+/* Menu item to send feedback about new stats experience */
+"stats.menu.sendFeedback" = "Geri Bildirim Gönder";
+
+/* Menu item to switch back to classic stats experience */
+"stats.menu.switchToClassic" = "Klasik İstatistiklere geç";
+
+/* Menu item to enable new stats experience */
+"stats.menu.tryNewStats" = "Yeni İstatistikleri Deneyin";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
@@ -10932,6 +11540,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The label for the option to show Stats Traffic chart for Days. */
 "stats.traffic.days" = "Gün";
+
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.hours" = "Saat";
 
 /* The label for the option to show Stats Traffic chart for Months. */
 "stats.traffic.months" = "Ay";
@@ -11266,6 +11877,33 @@ Feel free to replace it with other bracket types that you think looks better for
 /* View title for Help & Support page. */
 "support.title" = "Yardım";
 
+/* Button to add a new tag. %1$@ is the tag name. */
+"tags.add.button" = "Etiket ekle: %1$@";
+
+/* Description for empty state when there are no tags */
+"tags.empty.description" = "Etiketler içeriğinizi düzenlemenize ve okurların ilgili gönderileri bulmasını kolaylaştırmanıza yardımcı olur.";
+
+/* Title for empty state when there are no tags */
+"tags.empty.title" = "Etiket Yok";
+
+/* Error message when tag data is invalid */
+"tags.error.invalid_tag" = "Etiket bilgileri geçersiz. Lütfen tekrar deneyin.";
+
+/* Error message when the tags service cannot connect to the remote site */
+"tags.error.no_remote_service" = "Sitenize bağlanılamadı. Lütfen bağlantınızı kontrol edip tekrar deneyin.";
+
+/* Button to remove a selected tag. %1$@ is the tag name. */
+"tags.remove.button" = "%1$@ öğesini kaldır";
+
+/* Placeholder text for the tag search field */
+"tags.search.placeholder" = "Etiketleri ara";
+
+/* Message shown when no tags are selected */
+"tags.selected.empty" = "Etiket seçilmedi";
+
+/* Title for the tags screen */
+"tags.title" = "Etiketler";
+
 /* Title for placeholder in Tenor picker */
 "tenor.welcomeMessage" = "Ortam kitaplığınıza eklemek için GIF arayın!";
 
@@ -11277,6 +11915,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Saat Dilimi";
+
+/* Action button title to enable new stats from tip */
+"tips.newStats.action" = "Şimdi Etkinleştir";
+
+/* Tip for new stats feature */
+"tips.newStats.message" = "Yeni, şık ve güçlü istatistikler deneyimleyin. İstediğiniz zaman tekrar değiştirin.";
+
+/* Tip for new stats feature */
+"tips.newStats.title" = "Yeni İstatistikleri Deneyin";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Sitelerinize, Okuyucunuza, bildirimlerinize ve profilinize erişmek için sağa kaydırın";
