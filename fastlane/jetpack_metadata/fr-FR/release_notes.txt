@@ -1,13 +1,9 @@
-Nous avons ajouté un nouvel écran Abonnés qui affiche tous vos abonnés par e-mail et via le Lecteur. Désormais, vous savez qui lit (et aime) votre contenu.
+Nous avons repris les Stats de zéro, et c’est absolument stupéfiant. Cette nouvelle expérience comprend des animations fluides en 120 i/s, des graphiques interactifs sur lesquels vous pouvez appuyer et que vous pouvez explorer, des vues de données heure par heure et un tableau de bord entièrement personnalisable. Vous pouvez tout réorganiser, exporter vos données et même voir les statistiques de vos articles grâce aux indicateurs de campagne par e-mail. C’est incroyable à utiliser, on ne cesse de l’ouvrir rien que pour regarder ces magnifiques animations. (Recherchez « Essayer les nouvelles statistiques » lorsque vous ouvrez Stats ou activez-les à tout moment dans Moi > Réglages de l’app > Fonctionnalités expérimentales.)
 
-Nous avons amélioré le sélecteur de fuseau horaire, les suggestions pour votre fuseau horaire local seront ainsi plus précises.
+Nous avons également amélioré la façon dont vous gérez votre contenu. L’écran des réglages des articles a été entièrement repensé. Il rend la configuration de vos articles plus fluide et plus intuitive, sans compter qu’il améliore l’intégration de VideoPress et l’authentification des sites privés dans notre éditeur expérimental.
 
-Nous avons ajouté une fonctionnalité de recherche à la liste des activités Jetpack, avec les dates et les utilisateurs de chaque activité. Dans cette même zone, vous pouvez également voir la date d’expiration de votre sauvegarde téléchargeable. Le savoir, c’est le pouvoir !
-
-Nous avons légèrement remanié la liste des articles, notamment en rationalisant les étiquettes, en réduisant la taille des images et en retirant l’espace supplémentaire, ainsi qu’en déplaçant les indicateurs de chargement pour les rendre plus visibles.
-
-Enfin, nous avons corrigé un certain nombre de bugs.
-- Vous ne verrez plus de caractères codés en HTML sur divers écrans, toutes vos esperluettes apparaissent exactement comme elles le doivent. Cool.
-- Les flux « Rétablir » et « Télécharger la sauvegarde » ne couvrent plus la barre de navigation.
-- Les domaines sont désormais correctement triés sur l’écran de recherche de domaine. Trouver ce que vous cherchez est plus facile que jamais.
-- Nous avons corrigé une étiquette dans laquelle « WordPress » n’était pas bien mis en majuscule dans le Lecteur. (Celle-là nous gardait éveillés la nuit.)
+Enfin, nous avons éliminé plusieurs bugs et amélioré la fiabilité.
+- L’application ne sera plus ralentie lorsque vous ouvrirez vos articles ou pages. (Nous savons à quel point cela pouvait être frustrant.)
+- Nous avons résolu un incident qui se produisait lors de l’enregistrement de certains réglages de l’éditeur.
+- Les fenêtres contextuelles d’erreur agaçantes sur votre tableau de bord ? Disparues.
+- Les mots de passe d’application fonctionnent désormais avec plus de fluidité en arrière-plan et le flux de connexion Jetpack est plus fiable.

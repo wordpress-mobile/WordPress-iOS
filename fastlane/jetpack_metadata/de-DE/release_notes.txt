@@ -1,13 +1,9 @@
-Es gibt nun eine neue Abonnenten-Ansicht, die alle deine E-Mail- und Reader-Abonnenten anzeigt. Jetzt weißt du ganz genau, wer deine Inhalte liest (und liebt).
+Wir haben Statistiken von Grund auf neu erstellt und das Ergebnis ist absolut atemberaubend. Dieses neue Erlebnis bietet geschmeidige Animationen mit 120 fps, interaktive Diagramme, die du antippen und erkunden kannst, stündliche Datenansichten und ein vollständig anpassbares Dashboard. Mit den Metriken für E-Mail-Kampagnen kannst du alles neu anordnen, deine Daten exportieren und sogar deine Beitragsanalysen anzeigen. Die Verwendung ist einfach unglaublich – wir öffnen es immer wieder, nur um diese wunderschönen Animationen anzusehen. (Suche nach „Try New Stats“ (Neue Statistiken ausprobieren), wenn du Statistiken öffnest, oder aktiviere sie jederzeit unter „Ich > App-Einstellungen > Experimentelle Funktionen“.)
 
-Wir haben den TimeZone Picker verbessert, damit du bessere Vorschläge für deine lokale Zeitzone erhältst.
+Wir haben im Übrigen die Verwaltung deiner Inhalte verbessert. In unserem experimentellen Editor findest du einen komplett neu gestalteten Bildschirm für Beitragseinstellungen, der die Konfiguration deiner Beiträge reibungslos und intuitiver macht und neben einer besseren VideoPress-Integration auch eine optimierte Authentifizierung für private Websites bietet.
 
-Wir haben eine Suchfunktion für die Jetpack-Aktivitätsliste hinzugefügt. Außerdem erhältst du zu jeder Aktivität genaue Daten und Angaben zum Benutzer. In diesem Bereich kannst du auch sehen, wann dein herunterladbares Backup abläuft. Wissen ist Macht.
-
-Wir haben der Beitragsliste ein kleines Facelifting verpasst: Beschriftungen sehen jetzt noch besser aus, weil wir Bilder verkleinert und unnötigen Leerraum entfernt haben. Darüber hinaus haben wir die Ladeanzeigen verschoben, damit sie besser sichtbar sind.
-
-Zu guter Letzt haben wir noch ein paar andere Fehler behoben.
-- Es gab auf verschiedenen Bildschirmen ein Problem mit der Anzeige von HTML-kodierten Zeichen. Nun sehen alle kaufmännischen Und-Zeichen genau so aus, wie sie sollen. Ist das nicht großartig?
-- Die Flows „Wiederherstellen“ und „Backup herunterladen“ verdecken nicht mehr die Navigationsleiste.
-- Domains in der Domain-Suche sind jetzt richtig sortiert. Das zu finden, was du suchst, war noch nie einfacher.
-- Wir haben ein Problem mit einem Schlagwort behoben, bei dem „WordPress“ im Reader falsch geschrieben wurde. (Und dieses Problem hat uns wirklich den Schlaf geraubt.)
+Zu guter Letzt haben wir auch mehrere Fehler beseitigt und die Zuverlässigkeit verbessert.
+- Die App hängt nicht mehr, wenn du deine Beiträge oder Seiten öffnest. (Wir wissen, wie frustrierend das war.)
+- Wir haben eine Absturzursache behoben, die beim Speichern bestimmter Editoreinstellungen aufgetreten ist.
+- Diese nervigen Fehler-Pop-ups in deinem Dashboard? Die sind verschwunden.
+- Anwendungspasswörter funktionieren jetzt im Hintergrund reibungslos und der Jetpack-Verbindungsaufbau ist zuverlässiger.

@@ -1,13 +1,9 @@
-Hemos añadido una nueva pantalla de suscriptores que muestra todas las personas suscritas por correo electrónico y a través del Lector. Ahora ya sabes quién está leyendo tu contenido (y a quién le está gustando).
+Hemos reconstruido las estadísticas desde cero y es absolutamente impresionante. Esta nueva experiencia incluye animaciones fluidas de 120 fps, gráficos interactivos que puedes tocar y explorar, vistas de datos por hora y un escritorio completamente personalizable. Puedes reorganizarlo todo, exportar tus datos e incluso ver el análisis de tus entradas con las métricas de las campañas por correo electrónico. Usarlo es una experiencia increíble: no paramos de abrirlo solo para ver esas animaciones. (Busca «Probar nuevas estadísticas» al abrir Estadísticas o actívalo en cualquier momento en Yo > Ajustes de la aplicación > Funciones experimentales).
 
-Hemos mejorado el selector de zona horaria para que puedas ver sugerencias más precisas para tu zona horaria local.
+También hemos mejorado la forma en que gestionas tu contenido. Encontrarás una pantalla de ajustes de entradas completamente rediseñada que hace que la configuración de tus entradas sea más fluida e intuitiva, además de una mejor integración con VideoPress y una autenticación mejorada para sitios privados en nuestro editor experimental.
 
-Hemos añadido una función de búsqueda a la lista de actividades de Jetpack, con fechas y usuarios para cada actividad. En esta misma zona, también puedes ver cuándo caduca la copia de seguridad descargable. El conocimiento es poder.
-
-Le hemos hecho un pequeño lavado de cara a la lista de entradas: hemos optimizado las etiquetas, hemos hecho que las imágenes sean más pequeñas, hemos eliminado el espacio adicional y hemos movido los indicadores de carga para estén más visibles.
-
-Por último, hemos eliminado algunos errores.
-- Ya no verás caracteres codificados en HTML en varias pantallas, por lo que todos tus signos «&» se verán tal como deben verse. ¡Por fin!
-- Los flujos «Restaurar» y «Descargar copia de seguridad» ya no cubren la barra de navegación.
-- Los dominios ahora están ordenados correctamente en la pantalla de búsqueda de dominios. Encontrar lo que buscas es más fácil que nunca.
-- Hemos corregido una etiqueta en la que «WordPress» se escribía en mayúsculas de forma incorrecta en el Lector. (Este error no nos dejaba dormir por la noche).
+Por último, hemos corregido varios errores y mejorado la fiabilidad.
+- La aplicación ya no se queda colgada cuando abres tus entradas o páginas (sabemos lo frustrante que era eso).
+- Hemos corregido un error que se producía al guardar ciertos ajustes del editor.
+- ¿Esas molestas ventanas emergentes de error en tu escritorio? Eliminadas.
+- Las contraseñas de aplicación ahora funcionan mejor en segundo plano, y el flujo de conexión con Jetpack es más fiable.

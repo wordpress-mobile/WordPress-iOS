@@ -1,13 +1,9 @@
-We hebben een nieuw scherm Abonnees toegevoegd dat al je e-mail- en Reader-abonnees toont. Nu weet je wie je content leest (en waardeert).
+We hebben Statistieken van begin af aan opnieuw opgebouwd, en het is echt prachtig. Deze nieuwe ervaring bevat vloeiende 120fps-animaties, interactieve grafieken die je kan aantikken en verkennen, gegevensweergaven voor elk uur en een volledig aanpasbaar dashboard. Je kan alles herschikken, je gegevens exporteren en zelfs je berichtanalyses bekijken met statistieken van e-mailcampagnes. We blijven het openen, alleen al om die mooie animaties. (Zoek naar 'Probeer nieuwe statistieken' wanneer je Statistieken opent, of schakel het op elk gewenst moment in via Ik > App-instellingen > Experimentele functies.)
 
-We hebben verbeteringen aangebracht aan de TimeZone-kiezer, zodat je nauwkeurigere suggesties voor je lokale tijdzone ziet.
+We hebben ook verbeteringen aangebracht aan de manier waarop je je content beheert. In onze experimentele editor vind je een volledig opnieuw ontworpen scherm voor berichtinstellingen, waarmee het configureren van je berichten soepeler en intuïtiever wordt, plus een betere VideoPress-integratie en verbeterde authenticatie voor privésites.
 
-We hebben een zoekfunctie toegevoegd aan de Jetpack-activiteitenlijst, compleet met data en gebruikers voor elke activiteit. In dit zelfde gebied kun je ook zien wanneer je downloadbare back-up verloopt. Kennis is macht.
-
-We hebben een kleine facelift gegeven aan de berichtenlijst, zoals het stroomlijnen van labels, het kleiner maken van afbeeldingen en het verwijderen van extra ruimte en het verplaatsen van laad-indicatoren, zodat ze zichtbaarder zijn.
-
-Tot slot hebben we een paar bugs geplet.
-- Je ziet niet langer HTML gecodeerde tekens op verschillende schermen, zodat al je ampersands er precies zo uitzien als ze zouden moeten. Rock on.
-- De stromen 'Herstellen' en 'Back-up downloaden' bedekken de navigatiebalk niet meer.
-- Domeinen zijn nu correct gesorteerd in het scherm Domein zoeken. Het vinden van wat je zoekt is makkelijker dan ooit.
-- We hebben een tag opgelost waarbij 'WordPress' een verkeerde hoofdletter had in de Reader. (Die hield ons 's nachts wakker.)
+Tot slot hebben we verschillende bugs verholpen en de boel betrouwbaarder gemaakt.
+- De app blijft niet meer hangen wanneer je je Berichten of Pagina's opent. (We weten hoe frustrerend dat was.)
+- We hebben een crash opgelost die optrad bij het opslaan van bepaalde editorinstellingen.
+- Die vervelende pop-upfoutmeldingen op je dashboard? Verdwenen.
+- Applicatiewachtwoorden werken nu soepeler achter de schermen, en de Jetpack-verbindingsflow is betrouwbaarder.
