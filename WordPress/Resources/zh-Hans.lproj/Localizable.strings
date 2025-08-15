@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-07-09 10:54:08+0000 */
+/* Translation-Revision-Date: 2025-08-15 08:37:12+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -314,9 +314,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "一个包含恶意代码模式的文件";
 
-/* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
-"A tag named '%@' already exists." = "名为“%@”的标签已存在。";
-
 /* Placeholder text for the title of a site */
 "A title for the site" = "站点标题";
 
@@ -470,9 +467,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Screen reader text for button that adds a menu item */
 "Add new menu item" = "添加新菜单项";
-
-/* Voiceover accessibility label for the tags field in blog post settings. */
-"Add new tags, separated by commas." = "添加新标签（以逗号分隔）。";
 
 /* No comment provided by engineer. */
 "Add paragraph block" = "添加段落区块";
@@ -695,6 +689,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple 验证失败。\n请确保通过使用双因素验证的 Apple ID 登录 iCloud。";
 
+/* Link to Application Passwords section */
+"Application Passwords" = "应用程序密码";
+
 /* No comment provided by engineer. */
 "Applies the setting" = "使用此设置";
 
@@ -725,9 +722,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "是否确定要删除该菜单？";
-
-/* Message asking for confirmation on tag deletion */
-"Are you sure you want to delete this tag?" = "是否确定要删除此标签？";
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "确定要断开 Jetpack 与该站点的连接吗？";
@@ -788,9 +782,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "需要对主机进行验证：%@";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "作者";
 
@@ -1132,9 +1124,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "将您的生活拍成电影。";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "分类目录";
 
 /* Category menu item in share extension. */
 "Category" = "分类";
@@ -1494,9 +1483,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Message to show when Publicize connect failed */
 "Connection failed" = "连接失败";
 
-/* Title of a prompt saying the app needs an internet connection before it can load post formats */
-"Connection not available" = "连接不可用";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -1635,9 +1621,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Couldn't load data. Please refresh again later." = "无法加载数据。 请稍后再次刷新。";
 
 /* Error message when tag loading failed */
-"Couldn't load tags." = "无法加载标签。";
-
-/* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "无法加载标签，请轻点以重试。";
 
 /* Indicating that referrer couldn't be marked as spam */
@@ -1691,9 +1674,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Navigates to a new flow for site creation. */
 "Create a Site" = "创建站点";
-
-/* Title of the button in the placeholder for an empty list of blog tags. */
-"Create a Tag" = "创建标签";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "创建站点图标";
@@ -1762,12 +1742,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Customize blocks" = "自定义区块";
 
-/* Title for the edition of the share message. */
-"Customize the message" = "定制消息";
-
-/* Hint displayed when the user is customizing the share message. */
-"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "自定义要分享的消息。\n如果您未在此处添加自己的文字，我们将使用文章的标题作为消息。";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "针对赞、评论、关注等项目自定义您的站点设置。";
 
@@ -1821,8 +1795,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "新文章的默认设置";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "删除";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1842,9 +1815,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "删除菜单";
 
-/* Delete Tag confirmation action title */
-"Delete this tag" = "删除此标签";
-
 /* Text displayed in HUD after successfully deleting a media item */
 "Deleted!" = "已删除！";
 
@@ -1861,7 +1831,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Describe the purpose of the image. Leave empty if decorative." = "描述图像的用途。 如果作装饰用，请留空。";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "描述";
 
@@ -2398,14 +2367,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "每天%@";
 
-/* Label for the excerpt field. Should be the same as WP core. */
-"Excerpt" = "摘录";
-
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "摘录长度（字数）";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
-"Excerpts are optional hand-crafted summaries of your content." = "摘录是为您的内容手动生成的可选摘要。";
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "排除主题、插件和上传项目";
@@ -2482,9 +2445,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "精选插件";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "特色图片";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "正在提取主题...";
@@ -3133,9 +3093,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack设置";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core. */
-"Jetpack Social" = "Jetpack Social";
-
 /* Insights 'Jetpack Social Connections' header
    Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Jetpack Social 连接";
@@ -3500,9 +3457,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Marks comment as spam */
 "Mark as Spam" = "标记为垃圾信息";
 
-/* Label for the Mark as Sticky option in post settings. */
-"Mark as Sticky" = "标记为置顶";
-
 /* Action title for unmarking referrer as spam */
 "Mark as not spam" = "标记为非垃圾内容";
 
@@ -3595,8 +3549,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for screen that allows configuration of your site's menus */
 "Menus" = "菜单";
 
-/* Invite Message Editor's Title
-   Label for the share message field on the post settings. */
+/* Invite Message Editor's Title */
 "Message" = "邮件";
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
@@ -3619,8 +3572,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Action button to display more available options */
 "More" = "更多";
 
-/* Action button to display more available options
-   Label for the More Options area in post settings. Should use the same translation as core WP. */
+/* Action button to display more available options */
 "More Options" = "更多选项";
 
 /* Label for the posting activity legend. */
@@ -3709,9 +3661,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "名称";
-
-/* Error to be displayed when a tag is empty */
-"Name Required" = "必须填写名称";
 
 /* No comment provided by engineer. */
 "Navigate Up" = "向上导航";
@@ -4058,8 +4007,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "好";
 
 /* No comment provided by engineer. */
@@ -4228,8 +4176,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "页面";
 
-/* Name of the button to open the page settings
-   The title of the Page Settings screen. */
+/* Name of the button to open the page settings */
 "Page Settings" = "页面设置";
 
 /* translators: accessibility text. %s: Page break text. */
@@ -4475,11 +4422,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "文章类别";
 
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "文章格式";
-
-/* Name of the button to open the post settings
-   The title of the Post Settings screen. */
+/* Name of the button to open the post settings */
 "Post Settings" = "文章设置";
 
 /* Window title for Post Stats view. */
@@ -4616,9 +4559,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "发布";
-
-/* Label for the publish date button. */
-"Publish Date" = "发布日期";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "在以下网站发布页面：";
@@ -5383,9 +5323,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "斜杠插入器结果";
 
-/* Label for the slug field. Should be the same as WP core. */
-"Slug" = "Slug";
-
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no fixed threats on your site." = "到目前为止，您的站点上没有固定的威胁。";
 
@@ -5499,7 +5436,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sports site intent topic */
 "Sports" = "体育";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "标准";
 
 /* Label for selecting the Start Over Settings item
@@ -5529,9 +5467,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle giving the user more context about why to enable notifications. */
 "Stay in touch with like and comment notifications." = "通过点赞通知和评论通知保持联系。";
-
-/* This is the cell title. */
-"Stick post to the front page" = "将文章固定到首页";
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "置顶";
@@ -5631,31 +5566,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tablet web preview */
 "Tablet" = "平板电脑";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "标签";
-
-/* Title of the alert indicating that a tag with that name already exists. */
-"Tag already exists" = "标签已存在";
-
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "标语";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "标签";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "标签和类别";
-
-/* Displayed when the user views tags in blog settings and there are no tags */
-"Tags created here can be quickly added to new posts" = "在此处创建的标签可快速添加到新文章中";
-
-/* Label explaining why users might want to add tags. */
-"Tags help tell readers what a post is about. Separate different tags with commas." = "标签有助于读者了解文章内容。使用英文逗号分隔不同的标签。";
 
 /* No comment provided by engineer. */
 "Take a Photo" = "拍照";
@@ -5747,9 +5667,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "轻点以在外部浏览器中访问 Gravatar 网站";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "分类";
 
 /* Technology site intent topic */
 "Technology" = "科技";
@@ -5895,9 +5812,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "该站点无法导出。";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
-"The slug is the URL-friendly version of the post title." = "Slug 是文章标题的 URL 友好型版本。";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "找不到指定的用户。请确认拼写是否正确。";
@@ -6393,9 +6307,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "不赞成评论。";
 
-/* Message to show in the post-format cell when the post format is not available */
-"Unavailable" = "不可用";
-
 /* When the App can't figure out what language a blog is configured to use. */
 "Undefined" = "未定义";
 
@@ -6663,9 +6574,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights views and visitors header */
 "Views & Visitors" = "浏览次数和访客人数";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "可见性";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "访问 %@";
@@ -7106,9 +7014,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views scheduled posts in the posts list and there are no posts */
 "You don't have any scheduled posts" = "您没有任何预发布的文章";
 
-/* Empty state. Tags management (Settings > Writing > Tags) */
-"You don't have any tags" = "您没有任何标签";
-
 /* Displayed when the user views trashed in the pages list and there are no pages */
 "You don't have any trashed pages" = "您没有任何放入回收站的页面";
 
@@ -7422,27 +7327,35 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The list item of experimental features that users can choose to enable */
 "application-settings.experimental-features" = "实验性功能";
 
-/* Button label to authorize application passwords */
-"application.password.authorize" = "授权";
+/* Complete information about application passwords with security benefits, creation process, management instructions, and revocation warning */
+"applicationPassword.info.content" = "应用程序密码是一种比较安全的验证方式，允许此应用程序在不使用您实际账户密码的情况下访问您的站点内容。\n\n在您将站点添加到应用程序后，系统将根据需要自动创建应用程序密码。\n\n您可以在 WordPress 站点管理面板的用户个人资料中查看和管理这些密码。\n\n请注意，撤销应用程序使用的应用程序密码将导致该应用程序无法继续访问您的站点。 请谨慎撤销应用程序创建的应用程序密码。";
 
-/* Description for the application passwords feature */
-"application.password.description" = "您现在可以授权该应用程序使用应用程序密码，以便快速、安全地访问您的站点内容。";
+/* Button to dismiss the application password information view */
+"applicationPassword.info.gotIt.button" = "知道了";
 
-/* Title for the new application passwords feature */
-"application.password.new.title" = "新功能：应用程序密码";
+/* Title for the application passwords information view */
+"applicationPassword.info.title" = "关于应用程序密码";
 
 /* Title of row for displaying an application password's creation date */
 "applicationPassword.item.creationDate" = "创建日期";
 
-/* Title of row for displaying an application password's last used date
-   Title of row for displaying an application password's last used IP address */
+/* Footer message indicating that this application password is currently active and being used by the app */
+"applicationPassword.item.currentlyInUse" = "应用程序当前正在使用此应用程序密码。";
+
+/* Title of row for displaying an application password's last used date */
 "applicationPassword.item.lastUsed" = "上次使用时间";
+
+/* Title of row for displaying an application password's last used IP address */
+"applicationPassword.item.lastUsedIp" = "最后登录 IP 地址";
 
 /* Title of row for displaying an application password name */
 "applicationPassword.item.name" = "名称";
 
 /* Title of section for displaying application password details */
 "applicationPassword.item.section.security" = "安全性";
+
+/* String format of creation date of an application password. There is one argument: the creation date relative to now (i.e. 5 days ago). */
+"applicationPassword.list.item.created-date-format" = "已创建 %@";
 
 /* String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago). */
 "applicationPassword.list.item.last-used-format" = "上次使用时间：%@";
@@ -7456,8 +7369,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "无法找到当前站点的 URL";
 
+/* Error message shown when the site doesn't support Application Passwords feature */
+"applicationPasswordMigration.error.unsupported" = "此站点不支持应用程序密码。";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "您需要以用户“%@”的身份登录";
+
+/* Error message when the site's REST API is not accessible for application password creation */
+"applicationPasswordRepository.error.restApiInaccessible" = "无法访问站点的 REST API";
+
+/* Error message when application password creation fails for unknown reasons */
+"applicationPasswordRepository.error.unknown" = "无法创建应用程序密码";
+
+/* Error message when the username cannot be found for application password creation */
+"applicationPasswordRepository.error.usernameNotFound" = "找不到站点的用户名";
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "应用程序密码能让您更安全地连接到您的自托管站点，并且支持 %@ 等功能。";
@@ -7465,7 +7390,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "插件管理";
 
-/* Feature name for managing users in the app */
+/* Feature name for managing application passwords in the app
+   Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "用户管理";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -8092,6 +8018,27 @@ Example: Reply to Pamela Nguyen */
 /* No comment provided by engineer. */
 "double-tap to change unit" = "双击更改单位";
 
+/* Message for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.message" = "是否确定要删除此标签？";
+
+/* Title for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.title" = "删除标签";
+
+/* Placeholder text for tag description field */
+"edit.tag.description.placeholder" = "添加描述...";
+
+/* Placeholder text for tag name field */
+"edit.tag.name.placeholder" = "标签名称";
+
+/* Navigation title for new tag creation */
+"edit.tag.new.title" = "新标签";
+
+/* Section header for tag description in edit tag view */
+"edit.tag.section.description" = "描述";
+
+/* Section header for tag name in edit tag view */
+"edit.tag.section.tag" = "标签";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "例如 1122334455";
 
@@ -8603,6 +8550,558 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "您需要通过 %@ 登录才能使用统计信息和通知功能。";
 
+/* Accessibility label for add card button */
+"jetpackStats.accessibility.addCardButton" = "添加新统计信息卡片";
+
+/* Accessibility label for back navigation */
+"jetpackStats.accessibility.backToStats" = "返回统计信息";
+
+/* Card title accessibility label. %1$@ is the card title. */
+"jetpackStats.accessibility.cardTitle" = "%1$@ 卡片";
+
+/* Accessibility label for chart container */
+"jetpackStats.accessibility.chartContainer" = "统计信息图表";
+
+/* Chart trend accessibility label. %1$@ is metric name, %2$@ is trend description. */
+"jetpackStats.accessibility.chartTrend" = "%1$@ %2$@";
+
+/* Chart data point accessibility label. %1$@ is metric name, %2$@ is value, %3$@ is date. */
+"jetpackStats.accessibility.chartValue" = "%1$@：%3$@ 为 %2$@";
+
+/* Selected date range accessibility label. %1$@ is the range. */
+"jetpackStats.accessibility.dateRangeSelected" = "日期范围：%1$@";
+
+/* Accessibility label for error state */
+"jetpackStats.accessibility.errorLoadingStats" = "加载统计信息时出错";
+
+/* Accessibility label for loading state */
+"jetpackStats.accessibility.loadingStats" = "正在加载统计信息";
+
+/* Accessibility label for more options menu */
+"jetpackStats.accessibility.moreOptions" = "更多选项";
+
+/* Accessibility hint for next period navigation */
+"jetpackStats.accessibility.navigateToNextDateRange" = "导航至后一个日期范围";
+
+/* Accessibility hint for previous period navigation */
+"jetpackStats.accessibility.navigateToPreviousDateRange" = "导航至前一个日期范围";
+
+/* Accessibility label for next period navigation button */
+"jetpackStats.accessibility.nextPeriod" = "后一个时段";
+
+/* Accessibility label for empty data state */
+"jetpackStats.accessibility.noDataAvailable" = "此时段无可用数据";
+
+/* Accessibility label for opening link in browser */
+"jetpackStats.accessibility.openInBrowser" = "在浏览器中打开";
+
+/* Accessibility label for previous period navigation button */
+"jetpackStats.accessibility.previousPeriod" = "前一个时段";
+
+/* Accessibility label for realtime visitor count */
+"jetpackStats.accessibility.realtimeVisitorCount" = "当前在线访客";
+
+/* Accessibility hint for retry action */
+"jetpackStats.accessibility.retryLoadingStats" = "双击可重新加载统计信息";
+
+/* Accessibility hint for date range selection */
+"jetpackStats.accessibility.selectDateRange" = "选择日期范围";
+
+/* Accessibility hint for tab selection. %1$@ is the tab name. */
+"jetpackStats.accessibility.selectTab" = "选择 %1$@ 选项卡";
+
+/* Accessibility announcement when stats finish loading */
+"jetpackStats.accessibility.statsLoaded" = "统计信息已加载";
+
+/* Accessibility label for stats tab bar */
+"jetpackStats.accessibility.statsTabBar" = "统计信息导航选项卡";
+
+/* Accessibility announcement when a tab is selected. %1$@ is the tab name. */
+"jetpackStats.accessibility.tabSelected" = "已选择 %1$@ 选项卡";
+
+/* Top list item accessibility label. %1$d is rank, %2$@ is title, %3$@ is value. */
+"jetpackStats.accessibility.topListItem" = "第 %1$d 名：%2$@，%3$@";
+
+/* Accessibility hint for viewing chart data */
+"jetpackStats.accessibility.viewChartData" = "查看详细图表数据";
+
+/* Accessibility hint for items that can show more details */
+"jetpackStats.accessibility.viewMoreDetails" = "双击可查看更多详细信息";
+
+/* Singular visitor count. %1$d is the number. */
+"jetpackStats.accessibility.visitorNow" = "%1$d 位访客在线";
+
+/* Plural visitors count. %1$d is the number. */
+"jetpackStats.accessibility.visitorsNow" = "%1$d 位访客在线";
+
+/* Chart option description */
+"jetpackStats.addChart.chartDescription" = "可视化历史趋势";
+
+/* Chart option title */
+"jetpackStats.addChart.chartOption" = "图表";
+
+/* Title for data type selection */
+"jetpackStats.addChart.selectDataType" = "选择数据类型";
+
+/* Title for metric selection */
+"jetpackStats.addChart.selectMetric" = "选择指标";
+
+/* Top list option description */
+"jetpackStats.addChart.topListDescription" = "查看您最受关注的内容";
+
+/* Top list option title */
+"jetpackStats.addChart.topListOption" = "热门列表";
+
+/* Archive section for authors */
+"jetpackStats.archiveSections.author" = "作者";
+
+/* Plural item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.plural" = "%1$d 个项目";
+
+/* Singular item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.singular" = "%1$d 个项目";
+
+/* Archive section for other items */
+"jetpackStats.archiveSections.other" = "其他";
+
+/* Title for the author details screen */
+"jetpackStats.authorDetails.title" = "作者";
+
+/* Button to add a new chart */
+"jetpackStats.button.addCard" = "添加卡片";
+
+/* Apply button */
+"jetpackStats.button.apply" = "应用";
+
+/* Cancel button */
+"jetpackStats.button.cancel" = "取消";
+
+/* Button to customize a chart or widget */
+"jetpackStats.button.customize" = "编辑卡片";
+
+/* Button to delete a chart or widget */
+"jetpackStats.button.deleteWidget" = "删除卡片";
+
+/* Done button */
+"jetpackStats.button.done" = "完成";
+
+/* Button to download data as CSV file */
+"jetpackStats.button.downloadCSV" = "下载 CSV";
+
+/* Learn more about stats button */
+"jetpackStats.button.learnMore" = "了解更多";
+
+/* Button to move a card */
+"jetpackStats.button.moveCard" = "移动卡片";
+
+/* Button to move card down */
+"jetpackStats.button.moveDown" = "下移";
+
+/* Button to move card to the bottom */
+"jetpackStats.button.moveToBottom" = "移到底部";
+
+/* Button to move card to the top */
+"jetpackStats.button.moveToTop" = "移到顶部";
+
+/* Button to move card up */
+"jetpackStats.button.moveUp" = "上移";
+
+/* OK button */
+"jetpackStats.button.ok" = "确定";
+
+/* Button to reset chart settings to default */
+"jetpackStats.button.resetSettings" = "重置设置";
+
+/* Share chart menu item */
+"jetpackStats.button.share" = "共享";
+
+/* Button title */
+"jetpackStats.button.showAll" = "显示全部";
+
+/* Button to collapse and show fewer items */
+"jetpackStats.button.showLess" = "显示更少";
+
+/* Button to expand and show more items */
+"jetpackStats.button.showMore" = "显示更多";
+
+/* Last 10 years date range */
+"jetpackStats.calendar.last10Years" = "过去 10 年";
+
+/* Last 12 months date range */
+"jetpackStats.calendar.last12Months" = "过去 12 个月";
+
+/* Last 28 days date range */
+"jetpackStats.calendar.last28Days" = "过去 28 天";
+
+/* Last 30 days date range */
+"jetpackStats.calendar.last30Days" = "过去 30 天";
+
+/* Last 3 years date range */
+"jetpackStats.calendar.last3Years" = "过去 3 年";
+
+/* Last 6 months date range */
+"jetpackStats.calendar.last6Months" = "过去 6 个月";
+
+/* Last 7 days date range */
+"jetpackStats.calendar.last7Days" = "过去 7 天";
+
+/* Last 90 days date range */
+"jetpackStats.calendar.last90Days" = "过去 90 天";
+
+/* Month time period */
+"jetpackStats.calendar.month" = "月";
+
+/* Quarter time period */
+"jetpackStats.calendar.quarter" = "季度";
+
+/* This month date range */
+"jetpackStats.calendar.thisMonth" = "本月";
+
+/* This quarter date range */
+"jetpackStats.calendar.thisQuarter" = "本季度";
+
+/* This week date range */
+"jetpackStats.calendar.thisWeek" = "本周";
+
+/* This year date range */
+"jetpackStats.calendar.thisYear" = "今年";
+
+/* Today date range */
+"jetpackStats.calendar.today" = "今天";
+
+/* Week time period */
+"jetpackStats.calendar.week" = "周";
+
+/* Year time period */
+"jetpackStats.calendar.year" = "年";
+
+/* Bar chart type */
+"jetpackStats.chart.barChart" = "条形图";
+
+/* Shown for empty states */
+"jetpackStats.chart.dataEmpty" = "此时段无数据";
+
+/* Genertic error message */
+"jetpackStats.chart.generitcError" = "出错了";
+
+/* Shown for metrics that don't support hourly data */
+"jetpackStats.chart.hourlyDataNotAvailable" = "每小时数据不可用";
+
+/* Shown when current period data might be incomplete */
+"jetpackStats.chart.incompleteData" = "可能显示不完整数据";
+
+/* Line chart type */
+"jetpackStats.chart.lineChart" = "折线图";
+
+/* Show chart data menu item */
+"jetpackStats.chart.showData" = "显示数据";
+
+/* Label for change value */
+"jetpackStats.chartData.change" = "更改";
+
+/* Column header for date */
+"jetpackStats.chartData.date" = "日期";
+
+/* Section title for detailed data */
+"jetpackStats.chartData.detailedData" = "详细数据";
+
+/* Label for previous value */
+"jetpackStats.chartData.previous" = "上一个";
+
+/* Title for chart data screen */
+"jetpackStats.chartData.title" = "图表数据";
+
+/* Label for total value */
+"jetpackStats.chartData.total" = "总计";
+
+/* Column header for value */
+"jetpackStats.chartData.value" = "值";
+
+/* Context menu action to copy country name */
+"jetpackStats.contextMenu.copyCountryName" = "复制国家\/地区名称";
+
+/* Context menu action to copy domain */
+"jetpackStats.contextMenu.copyDomain" = "复制域名";
+
+/* Context menu action to copy file name */
+"jetpackStats.contextMenu.copyFileName" = "复制文件名";
+
+/* Context menu action to copy file path */
+"jetpackStats.contextMenu.copyFilePath" = "复制文件路径";
+
+/* Context menu action to copy name */
+"jetpackStats.contextMenu.copyName" = "复制名称";
+
+/* Context menu action to copy search term */
+"jetpackStats.contextMenu.copySearchTerm" = "复制搜索字词";
+
+/* Context menu action to copy title */
+"jetpackStats.contextMenu.copyTitle" = "复制标题";
+
+/* Context menu action to copy URL */
+"jetpackStats.contextMenu.copyURL" = "复制 URL";
+
+/* Context menu action to copy video URL */
+"jetpackStats.contextMenu.copyVideoURL" = "复制视频 URL";
+
+/* Context menu action to open link in browser */
+"jetpackStats.contextMenu.openInBrowser" = "在浏览器中打开";
+
+/* Context menu action to search term in Google */
+"jetpackStats.contextMenu.searchInGoogle" = "在 Google 中搜索";
+
+/* Message shown when a country has no views */
+"jetpackStats.countries.noViews" = "无浏览记录";
+
+/* CSV header for country column */
+"jetpackStats.csv.country" = "国家\/地区";
+
+/* CSV header for country code column */
+"jetpackStats.csv.countryCode" = "国家\/地区代码";
+
+/* CSV header for date column */
+"jetpackStats.csv.date" = "日期";
+
+/* CSV header for domain column */
+"jetpackStats.csv.domain" = "域名";
+
+/* CSV header for file name column */
+"jetpackStats.csv.fileName" = "文件名";
+
+/* CSV header for file path column */
+"jetpackStats.csv.filePath" = "文件路径";
+
+/* CSV header for name column */
+"jetpackStats.csv.name" = "名称";
+
+/* CSV header for role column */
+"jetpackStats.csv.role" = "角色";
+
+/* CSV header for search term column */
+"jetpackStats.csv.searchTerm" = "搜索字词";
+
+/* CSV header for section column */
+"jetpackStats.csv.section" = "章节";
+
+/* CSV header for title column */
+"jetpackStats.csv.title" = "标题";
+
+/* CSV header for type column */
+"jetpackStats.csv.type" = "类型";
+
+/* CSV header for URL column */
+"jetpackStats.csv.url" = "URL";
+
+/* CSV header for video URL column */
+"jetpackStats.csv.videoURL" = "视频 URL";
+
+/* Title for comparison menu */
+"jetpackStats.datePicker.compareWith" = "比较...";
+
+/* Title for custom date range picker */
+"jetpackStats.datePicker.customRange" = "自定义范围";
+
+/* Menu item for custom date range picker */
+"jetpackStats.datePicker.customRangeMenu" = "自定义范围...";
+
+/* From date label */
+"jetpackStats.datePicker.from" = "从";
+
+/* Compare with same period last year option */
+"jetpackStats.datePicker.lastYear" = "去年";
+
+/* Menu item for more date period options */
+"jetpackStats.datePicker.morePeriods" = "更多时段...";
+
+/* Compare with preceding period option */
+"jetpackStats.datePicker.precedingPeriod" = "前一个时段";
+
+/* Label for quick period selection */
+"jetpackStats.datePicker.quickPeriodsForStartDate" = "快速选择起始时段";
+
+/* Site time zone header */
+"jetpackStats.datePicker.siteTimeZone" = "站点时区";
+
+/* Explanation of how stats are reported in site time zone */
+"jetpackStats.datePicker.siteTimeZoneDescription" = "统计信息将按照您站点所在时区报告和显示。 如果访客在其所在时区的周二访问您的站点，而您站点所在的时区处于周一，则此次访问将被记录为周一。";
+
+/* To date label */
+"jetpackStats.datePicker.to" = "至";
+
+/* Section title for the list of child links */
+"jetpackStats.externalLinkDetails.childLinks" = "子链接";
+
+/* Button to open the external link in browser */
+"jetpackStats.externalLinkDetails.openLink" = "打开链接";
+
+/* Title for the external link details screen */
+"jetpackStats.externalLinkDetails.title" = "外部链接";
+
+/* Label for daily average in tooltip */
+"jetpackStats.postDetails.dailyAverage" = "每日平均";
+
+/* Title for email metrics card */
+"jetpackStats.postDetails.emailMetrics" = "电子邮件";
+
+/* Must be short!Label for emails sent metric */
+"jetpackStats.postDetails.emailsSent" = "电子邮件已发送";
+
+/* Legend label for lower activity */
+"jetpackStats.postDetails.less" = "更少";
+
+/* Singular like count. %1$d is the number. */
+"jetpackStats.postDetails.like" = "%1$d 个赞";
+
+/* Plural likes count. %1$d is the number. */
+"jetpackStats.postDetails.likes" = "%1$d 个赞";
+
+/* Title for monthly activity heatmap */
+"jetpackStats.postDetails.monthsAndYears" = "最近几个月";
+
+/* Legend label for higher activity */
+"jetpackStats.postDetails.more" = "更多";
+
+/* Label */
+"jetpackStats.postDetails.noLikesYet" = "尚未收到点赞";
+
+/* Must be short! Label for email open rate metric */
+"jetpackStats.postDetails.openRate" = "打开率";
+
+/* Shows when the post was published. %1$@ is the formatted date. */
+"jetpackStats.postDetails.published" = "发布于 %1$@";
+
+/* Title for recent weeks activity heatmap */
+"jetpackStats.postDetails.recentWeeks" = "最近几周";
+
+/* Navigation title */
+"jetpackStats.postDetails.title" = "文章统计信息";
+
+/* Must be short!Label for total email opens metric */
+"jetpackStats.postDetails.totalOpens" = "总打开次数";
+
+/* Must be short!Label for unique email opens metric */
+"jetpackStats.postDetails.uniqueOpens" = "净打开次数";
+
+/* Label for week-over-week comparison in tooltip */
+"jetpackStats.postDetails.weekOverWeek" = "周环比";
+
+/* Label for weekly total in tooltip */
+"jetpackStats.postDetails.weekTotal" = "周总计";
+
+/* Title for weekly activity heatmap */
+"jetpackStats.postDetails.weeklyActivity" = "每周活动";
+
+/* Title for error alert when marking referrer as spam fails */
+"jetpackStats.referrerDetails.errorAlertTitle" = "错误";
+
+/* Button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpam" = "标记为垃圾内容";
+
+/* Error message when marking a referrer as spam fails */
+"jetpackStats.referrerDetails.markAsSpamError" = "垃圾内容标记失败";
+
+/* Label shown when a referrer is already marked as spam */
+"jetpackStats.referrerDetails.markedAsSpam" = "已标记为垃圾内容";
+
+/* Section title for the list of referral sources */
+"jetpackStats.referrerDetails.referralSources" = "推荐来源";
+
+/* Title for the referrer details screen */
+"jetpackStats.referrerDetails.title" = "推荐来源";
+
+/* Archive data type */
+"jetpackStats.siteDataTypes.archive" = "存档";
+
+/* Authors data type */
+"jetpackStats.siteDataTypes.authors" = "作者";
+
+/* External links data type */
+"jetpackStats.siteDataTypes.externalLinks" = "外部链接";
+
+/* File downloads data type */
+"jetpackStats.siteDataTypes.fileDownloads" = "文件下载";
+
+/* Locations data type */
+"jetpackStats.siteDataTypes.locations" = "位置";
+
+/* Posts and pages data type */
+"jetpackStats.siteDataTypes.postsAndPages" = "文章和页面";
+
+/* Referrers data type */
+"jetpackStats.siteDataTypes.referrers" = "推荐来源";
+
+/* Search terms data type */
+"jetpackStats.siteDataTypes.searchTerms" = "搜索字词";
+
+/* Videos data type */
+"jetpackStats.siteDataTypes.videos" = "视频";
+
+/* Bounce rate metric */
+"jetpackStats.siteMetrics.bounceRate" = "跳出率";
+
+/* Site comments metric */
+"jetpackStats.siteMetrics.comments" = "评论数";
+
+/* Download count */
+"jetpackStats.siteMetrics.downloads" = "下载次数";
+
+/* Site likes metric */
+"jetpackStats.siteMetrics.likes" = "点赞数";
+
+/* Site posts metric */
+"jetpackStats.siteMetrics.posts" = "文章数";
+
+/* Time on site metric */
+"jetpackStats.siteMetrics.timeOnSite" = "站点驻留时间";
+
+/* Site views metric */
+"jetpackStats.siteMetrics.views" = "浏览次数";
+
+/* Site visitors metric */
+"jetpackStats.siteMetrics.visitors" = "访客人数";
+
+/* Current active visitors metric */
+"jetpackStats.siteMetrics.visitorsNow" = "当前访客人数";
+
+/* Insights tab */
+"jetpackStats.tabs.insights" = "数据分析";
+
+/* Realtime tab */
+"jetpackStats.tabs.realtime" = "实时";
+
+/* Subscribers tab */
+"jetpackStats.tabs.subscribers" = "订阅者";
+
+/* Traffic tab */
+"jetpackStats.tabs.traffic" = "流量";
+
+/* Stats screen title */
+"jetpackStats.title" = "统计信息";
+
+/* Title for items with highest bounce rate */
+"jetpackStats.topList.highestBounceRate" = "最高跳出率";
+
+/* Title for items with longest time on site */
+"jetpackStats.topList.longestTimeOnSite" = "最长站点驻留时间";
+
+/* Title for most commented items */
+"jetpackStats.topList.mostCommented" = "最多评论";
+
+/* Title for chart */
+"jetpackStats.topList.mostDownloads" = "最多下载";
+
+/* Title for most liked items */
+"jetpackStats.topList.mostLiked" = "最多点赞";
+
+/* Title for most posts (per author) */
+"jetpackStats.topList.mostPosts" = "最多文章";
+
+/* Title for most viewed items */
+"jetpackStats.topList.mostViewed" = "最多浏览";
+
+/* Title for items with most visitors */
+"jetpackStats.topList.mostVisitors" = "最多访客";
+
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "详细了解";
 
@@ -9107,6 +9606,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "我的页面";
 
+/* Title for the parent page picker screen */
+"parentPagePicker.title" = "父页面";
+
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "父页面";
 
@@ -9260,6 +9762,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to view plugin on WordPress.org */
 "pluginDetails.viewOnWordPressOrg.button" = "在 WordPress.org 上查看";
 
+/* Title for the post author selection screen */
+"postAuthorPicker.title" = "作者";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "放弃更改";
 
@@ -9334,6 +9839,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "正在保存草稿……";
+
+/* Empty state description when no post formats are available */
+"postFormatPicker.emptyState.description" = "此站点尚未配置文章格式。";
+
+/* Empty state title when no post formats are available */
+"postFormatPicker.emptyState.title" = "无可用文章格式";
+
+/* Navigation bar title for the Post Format picker */
+"postFormatPicker.navigationTitle" = "文章格式";
+
+/* Error message when post formats refresh fails */
+"postFormatPicker.refreshErrorMessage" = "文章格式刷新失败";
 
 /* Button title */
 "postFromAudio.beginRecording" = "开始录制";
@@ -9479,8 +9996,42 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "无标题";
 
+/* Label for the author field in Post Settings */
+"postSettings.author.label" = "作者";
+
+/* Label for the add category button field. Should be the same as WP core. */
+"postSettings.categories.addCategoryButton" = "添加分类";
+
+/* Label for the categories field. Should be the same as WP core.
+   Label for the category field. Should be the same as WP core. */
+"postSettings.categories.label" = "分类";
+
+/* Button to confirm discarding changes */
+"postSettings.discardChanges.button" = "放弃更改";
+
+/* Message for the discard changes confirmation dialog */
+"postSettings.discardChanges.message" = "您有未保存的更改。 是否确定要放弃这些更改？";
+
+/* Title for the discard changes confirmation dialog */
+"postSettings.discardChanges.title" = "放弃更改？";
+
+/* Character count for excerpt. %1$d is the number of characters. */
+"postSettings.excerpt.characterCount" = "%1$d 个字符";
+
+/* Section header for Excerpt in Post Settings */
+"postSettings.excerpt.header" = "摘要";
+
+/* Placeholder text for the excerpt field in Post Settings */
+"postSettings.excerpt.placeholder" = "为您的文章撰写简短摘要，在博客索引、存档和搜索结果中显示。";
+
+/* Word count for excerpt. %1$d is the number of words. */
+"postSettings.excerpt.wordCount" = "%1$d 个字";
+
 /* Cancel upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.cancelUpload" = "取消上传";
+
+/* Section header for Featured Image in Post Settings */
+"postSettings.featuredImage.header" = "特色图片";
 
 /* Replace image upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.replaceImage" = "替换";
@@ -9494,20 +10045,74 @@ Example: Reply to Pamela Nguyen */
 /* Post Settings */
 "postSettings.featuredImage.uploading" = "正在上传…";
 
-/* The 'Parent Page' setting of the post */
-"postSettings.parentPage" = "父页面";
+/* Label for the last edited field in Post Settings */
+"postSettings.lastEdited.label" = "上次编辑时间";
 
-/* The 'Pending Review' setting of the post */
-"postSettings.pendingReview" = "待审核";
+/* Section header for Info in Post Settings */
+"postSettings.metadata.header" = "信息";
 
-/* Section title for the disabled Twitter service in the Post Settings screen */
-"postSettings.section.disabledTwitter.header" = "Twitter 自动共享功能已无法使用";
+/* Section header for More Options in Post Settings. Should use the same translation as core WP. */
+"postSettings.moreOptions.header" = "更多选项";
 
-/* Section title for Page Attributes */
-"postSettings.section.pageAttributes" = "页面属性";
+/* The title of the Page Settings screen. */
+"postSettings.navigationTitle.page" = "页面设置";
 
-/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
-"postSettings.warningPostWillBePublishedAlertMessage" = "将可见性更改为“私人”即会立即发布此文章";
+/* The title of the Post Settings screen. */
+"postSettings.navigationTitle.post" = "文章设置";
+
+/* Label for the Organization area (categories, keywords, ...) in post settings. */
+"postSettings.organization.header" = "组织";
+
+/* Message when trying to save a deleted page */
+"postSettings.pageDeleted.message" = "此页面已删除，无法再保存。";
+
+/* Title of alert when trying to save a deleted page */
+"postSettings.pageDeleted.title" = "已删除页面";
+
+/* Cell title for the Top Level option case */
+"postSettings.parentPage.topLevel" = "顶级";
+
+/* Label for the permalink field in Post Settings */
+"postSettings.permalink.label" = "固定链接";
+
+/* Message when trying to save a deleted post */
+"postSettings.postDeleted.message" = "此文章已删除，无法再保存。";
+
+/* Title of alert when trying to save a deleted post */
+"postSettings.postDeleted.title" = "已删除文章";
+
+/* Label for the post format field. Should be the same as WP core. */
+"postSettings.postFormat.label" = "文章格式";
+
+/* Label for the post ID field in Post Settings */
+"postSettings.postID.label" = "ID";
+
+/* Label for the publish date field in Post Settings */
+"postSettings.publishDate.label" = "日期";
+
+/* Section header for General settings in Post Settings */
+"postSettings.section.general" = "常规";
+
+/* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
+"postSettings.slug.hint" = "别名是适合在 URL 中使用的文章标题版本。";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.label" = "别名";
+
+/* Placeholder for the slug field */
+"postSettings.slug.placeholder" = "输入别名";
+
+/* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
+"postSettings.stickyPost.label" = "置顶";
+
+/* Label for the add tags button field. Should be the same as WP core. */
+"postSettings.tags.addTagsButton" = "添加标签";
+
+/* Label for the tags field. Should be the same as WP core. */
+"postSettings.tags.label" = "标签";
+
+/* Label for the visibility field in Post Settings */
+"postSettings.visibility.label" = "可见性";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "取消";
@@ -10897,6 +11502,15 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "订阅者总数";
 
+/* Menu item to send feedback about new stats experience */
+"stats.menu.sendFeedback" = "发送反馈";
+
+/* Menu item to switch back to classic stats experience */
+"stats.menu.switchToClassic" = "切换到经典统计信息";
+
+/* Menu item to enable new stats experience */
+"stats.menu.tryNewStats" = "试用新版统计信息";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
@@ -10935,6 +11549,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The label for the option to show Stats Traffic chart for Days. */
 "stats.traffic.days" = "日";
+
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.hours" = "小时";
 
 /* The label for the option to show Stats Traffic chart for Months. */
 "stats.traffic.months" = "月";
@@ -11269,6 +11886,33 @@ Feel free to replace it with other bracket types that you think looks better for
 /* View title for Help & Support page. */
 "support.title" = "帮助";
 
+/* Button to add a new tag. %1$@ is the tag name. */
+"tags.add.button" = "添加标签：%1$@";
+
+/* Description for empty state when there are no tags */
+"tags.empty.description" = "标签可以帮助您整理内容，让读者更容易找到相关文章。";
+
+/* Title for empty state when there are no tags */
+"tags.empty.title" = "无标签";
+
+/* Error message when tag data is invalid */
+"tags.error.invalid_tag" = "标签信息无效。 请重试。";
+
+/* Error message when the tags service cannot connect to the remote site */
+"tags.error.no_remote_service" = "无法连接到您的站点。 请检查您的连接，然后重试。";
+
+/* Button to remove a selected tag. %1$@ is the tag name. */
+"tags.remove.button" = "移除 %1$@";
+
+/* Placeholder text for the tag search field */
+"tags.search.placeholder" = "搜索标签";
+
+/* Message shown when no tags are selected */
+"tags.selected.empty" = "未选择标签";
+
+/* Title for the tags screen */
+"tags.title" = "标签";
+
 /* Title for placeholder in Tenor picker */
 "tenor.welcomeMessage" = "搜索查找要添加到您的媒体库中的 GIF！";
 
@@ -11280,6 +11924,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "时区";
+
+/* Action button title to enable new stats from tip */
+"tips.newStats.action" = "立即启用";
+
+/* Tip for new stats feature */
+"tips.newStats.message" = "体验流畅且强大的全新统计信息功能。 您可以随时切换回来。";
+
+/* Tip for new stats feature */
+"tips.newStats.title" = "试用新版统计信息";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "向右滑动即可访问您的站点、阅读器、通知和个人资料";

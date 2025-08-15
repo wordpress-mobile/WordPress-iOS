@@ -195,9 +195,7 @@
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Mae angen dilysiad ar gyfer gwesteiwr: %@";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Awdur";
 
@@ -317,9 +315,6 @@
 
 /* Alert title. */
 "Careful!" = "Gofal!";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "Categorïau";
 
 /* Category menu item in share extension. */
 "Category" = "Categori";
@@ -448,9 +443,6 @@
    Message to show when Publicize connect failed */
 "Connection failed" = "Methodd y cysylltiad";
 
-/* Title of a prompt saying the app needs an internet connection before it can load post formats */
-"Connection not available" = "Nid oes cysylltiad ar gael";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -528,8 +520,7 @@
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Rhagosodiadau Gwefannau Newydd";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Dileu";
 
 /* Menus confirmation button for deleting a menu. */
@@ -698,9 +689,6 @@
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Methwyd cyfresu cais i'r API REST.";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "Delwedd Enghreifftiol";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Estyn Themâu...";
@@ -992,8 +980,7 @@
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Dewislenni";
 
-/* Invite Message Editor's Title
-   Label for the share message field on the post settings. */
+/* Invite Message Editor's Title */
 "Message" = "Neges";
 
 /* Post Stats months and years header. */
@@ -1128,8 +1115,7 @@
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "Iawn";
 
 /* Disabled */
@@ -1279,9 +1265,6 @@
 
 /* Title for selecting categories for a post */
 "Post Categories" = "Categoriau Cofnodion";
-
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Fformat Cofnod";
 
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
@@ -1568,9 +1551,6 @@
    Continue without making a selection. */
 "Skip" = "Hepgor";
 
-/* Label for the slug field. Should be the same as WP core. */
-"Slug" = "Bonyn";
-
 /* Invite Validation Alert
    Update User Failed Title */
 "Sorry!" = "Ymddiheuriadau!";
@@ -1632,7 +1612,8 @@
    Title of spam Comments filter. */
 "Spam" = "Sbam";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "Safonol";
 
 /* Label for selecting the Start Over Settings item
@@ -1662,25 +1643,16 @@
    Theme Support action title */
 "Support" = "Cefnogaeth";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "Tag";
-
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "Llinell Tag";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "Tagiau";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Tapiwch i ddiddymu'r llwytho.";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "Tacsonomi";
 
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Amodau Gwasanaeth";
@@ -1738,9 +1710,6 @@
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Nid oes modd allforio'r wefan hon.";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
-"The slug is the URL-friendly version of the post title." = "Fersiwn cyfeillgar URL o deitl cofnod yw'r bonyn.";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "Doedd dim modd canfod y defnyddiwr penodedig. Gwiriwch ei fod wedi ei sillafu'n gywir";
@@ -1872,9 +1841,6 @@
    Unapproves a comment */
 "Unapprove" = "Anghymeradwyo";
 
-/* Message to show in the post-format cell when the post format is not available */
-"Unavailable" = "Ddim ar gael";
-
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Tanlinellu";
@@ -1990,9 +1956,6 @@
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Golwg";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "Gwelededd";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "Ewch i %@";

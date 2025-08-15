@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-07-08 10:54:08+0000 */
+/* Translation-Revision-Date: 2025-08-14 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: id */
@@ -314,9 +314,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Sebuah file mengandung pola kode berbahaya";
 
-/* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
-"A tag named '%@' already exists." = "Tag dengan nama '%@' sudah ada.";
-
 /* Placeholder text for the title of a site */
 "A title for the site" = "Judul untuk situs";
 
@@ -470,9 +467,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Screen reader text for button that adds a menu item */
 "Add new menu item" = "Tambahkan item menu baru";
-
-/* Voiceover accessibility label for the tags field in blog post settings. */
-"Add new tags, separated by commas." = "Tambahkan tag baru, yang dipisahkan dengan koma.";
 
 /* No comment provided by engineer. */
 "Add paragraph block" = "Tambahkan blok paragraf";
@@ -695,6 +689,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Autentikasi Apple gagal.\nPastikan Anda masuk ke iCloud dengan ID Apple yang menggunakan autentikasi dua faktor.";
 
+/* Link to Application Passwords section */
+"Application Passwords" = "Kata Sandi Aplikasi";
+
 /* No comment provided by engineer. */
 "Applies the setting" = "Menerapkan pengaturan";
 
@@ -725,9 +722,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "Anda yakin ingin menghapus menu?";
-
-/* Message asking for confirmation on tag deletion */
-"Are you sure you want to delete this tag?" = "Anda yakin ingin menghapus tag ini?";
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Apakah Anda yakin ingin memutuskan sambungan Jetpack dari situs?";
@@ -788,9 +782,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Autentikasi diperlukan untuk host: %@";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Penulis";
 
@@ -1132,9 +1124,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Berperanlah dalam film kehidupan Anda.";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "Kategori-kategori";
 
 /* Category menu item in share extension. */
 "Category" = "Kategori";
@@ -1494,9 +1483,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Message to show when Publicize connect failed */
 "Connection failed" = "Koneksi gagal";
 
-/* Title of a prompt saying the app needs an internet connection before it can load post formats */
-"Connection not available" = "Koneksi tidak tersedia";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -1635,9 +1621,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Couldn't load data. Please refresh again later." = "Tidak dapat memuat data. Muat ulang lagi nanti.";
 
 /* Error message when tag loading failed */
-"Couldn't load tags." = "Tidak bisa memuat tag.";
-
-/* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Tidak bisa memuat tag. Ketuk untuk mencoba lagi.";
 
 /* Indicating that referrer couldn't be marked as spam */
@@ -1691,9 +1674,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Navigates to a new flow for site creation. */
 "Create a Site" = "Buat Situs";
-
-/* Title of the button in the placeholder for an empty list of blog tags. */
-"Create a Tag" = "Buat Tag";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Buat favicon";
@@ -1762,12 +1742,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Customize blocks" = "Sesuaikan blok";
 
-/* Title for the edition of the share message. */
-"Customize the message" = "Sesuaikan pesan";
-
-/* Hint displayed when the user is customizing the share message. */
-"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Sesuaikan pesan yang ingin Anda bagikan.\nJika Anda tidak menambahkan teks Anda sendiri di sini, kami akan menggunakan judul tulisan sebagai pesan.";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Kustomisasi pengaturan situs Anda, seperti Suka, Komentar, Mengikuti, dan lainnya.";
 
@@ -1821,8 +1795,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Default untuk Pos Baru";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Hapus";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1842,9 +1815,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Hapus menu";
 
-/* Delete Tag confirmation action title */
-"Delete this tag" = "Hapus tag ini";
-
 /* Text displayed in HUD after successfully deleting a media item */
 "Deleted!" = "Dihapus!";
 
@@ -1861,7 +1831,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Describe the purpose of the image. Leave empty if decorative." = "Jelaskan maksud gambar tersebut. Biarkan kosong jika gambar hanya hiasan.";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Deskripsi";
 
@@ -2398,14 +2367,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "Setiap hari pada %@";
 
-/* Label for the excerpt field. Should be the same as WP core. */
-"Excerpt" = "Kutipan";
-
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "Panjang kutipan (kata)";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
-"Excerpts are optional hand-crafted summaries of your content." = "Kutipan merupakan ringkasan pilihan opsional dari konten Anda.";
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Kecuali tema, plugin, dan unggahan";
@@ -2482,9 +2445,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Unggulan";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "Gambar Terfitur";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Mengambil Tema...";
@@ -3133,9 +3093,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Pengaturan Jetpack";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core. */
-"Jetpack Social" = "Jetpack Social";
-
 /* Insights 'Jetpack Social Connections' header
    Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Koneksi Jetpack Social";
@@ -3500,9 +3457,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Marks comment as spam */
 "Mark as Spam" = "Tandai sebagai Spam";
 
-/* Label for the Mark as Sticky option in post settings. */
-"Mark as Sticky" = "Tandai sebagai Lekat";
-
 /* Action title for unmarking referrer as spam */
 "Mark as not spam" = "Tandai bukan spam";
 
@@ -3595,8 +3549,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menu";
 
-/* Invite Message Editor's Title
-   Label for the share message field on the post settings. */
+/* Invite Message Editor's Title */
 "Message" = "Pesan";
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
@@ -3619,8 +3572,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Action button to display more available options */
 "More" = "Lainnya";
 
-/* Action button to display more available options
-   Label for the More Options area in post settings. Should use the same translation as core WP. */
+/* Action button to display more available options */
 "More Options" = "Opsi Lainnya";
 
 /* Label for the posting activity legend. */
@@ -3709,9 +3661,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "Nama";
-
-/* Error to be displayed when a tag is empty */
-"Name Required" = "Nama Wajib Diisi";
 
 /* No comment provided by engineer. */
 "Navigate Up" = "Arahkan ke Atas";
@@ -4058,8 +4007,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -4228,8 +4176,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Halaman";
 
-/* Name of the button to open the page settings
-   The title of the Page Settings screen. */
+/* Name of the button to open the page settings */
 "Page Settings" = "Pengaturan Halaman";
 
 /* translators: accessibility text. %s: Page break text. */
@@ -4475,11 +4422,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Kategori Pos";
 
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Format Tulisan";
-
-/* Name of the button to open the post settings
-   The title of the Post Settings screen. */
+/* Name of the button to open the post settings */
 "Post Settings" = "Pengaturan Pos";
 
 /* Window title for Post Stats view. */
@@ -4616,9 +4559,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Terbitkan";
-
-/* Label for the publish date button. */
-"Publish Date" = "Tanggal Publikasi";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Menerbitkan halaman pada:";
@@ -5383,9 +5323,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Hasil penyisip garis miring";
 
-/* Label for the slug field. Should be the same as WP core. */
-"Slug" = "Slug";
-
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no fixed threats on your site." = "Sejauh ini, tidak ditemukan ancaman yang telah diperbaiki pada situs Anda.";
 
@@ -5499,7 +5436,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sports site intent topic */
 "Sports" = "Olahraga";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "Standar";
 
 /* Label for selecting the Start Over Settings item
@@ -5529,9 +5467,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle giving the user more context about why to enable notifications. */
 "Stay in touch with like and comment notifications." = "Selalu dapatkan pemberitahuan suka dan komentar.";
-
-/* This is the cell title. */
-"Stick post to the front page" = "Lekatkan pos ke halaman depan";
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Lekat";
@@ -5631,31 +5566,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tablet web preview */
 "Tablet" = "Tablet";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "Tag";
-
-/* Title of the alert indicating that a tag with that name already exists. */
-"Tag already exists" = "Tag sudah ada";
-
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "Tagline";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "Tag";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "Tag dan Kategori";
-
-/* Displayed when the user views tags in blog settings and there are no tags */
-"Tags created here can be quickly added to new posts" = "Tag yang dibuat di sini dapat ditambahkan ke pos baru dengan cepat";
-
-/* Label explaining why users might want to add tags. */
-"Tags help tell readers what a post is about. Separate different tags with commas." = "Tag membantu memberi tahu para pembaca tentang isi sebuah pos. Pisahkan tag yang berbeda dengan koma.";
 
 /* No comment provided by engineer. */
 "Take a Photo" = "Ambil Foto";
@@ -5747,9 +5667,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "Ketuk di sini untuk membuka situs Gravatar di browser di luar aplikasi";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "Taksonomi";
 
 /* Technology site intent topic */
 "Technology" = "Teknologi";
@@ -5895,9 +5812,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Situs tidak dapat diekspor.";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
-"The slug is the URL-friendly version of the post title." = "Slug adalah versi judul pos yang ramah URL.";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "Pengguna yang disebutkan tidak dapat ditemukan. Pastikan ejaannya benar.";
@@ -6393,9 +6307,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Tidak menyetujui Komentar.";
 
-/* Message to show in the post-format cell when the post format is not available */
-"Unavailable" = "Tidak tersedia";
-
 /* When the App can't figure out what language a blog is configured to use. */
 "Undefined" = "Tidak Terdefinisi";
 
@@ -6663,9 +6574,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights views and visitors header */
 "Views & Visitors" = "Tayangan & Pengunjung";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "Penampakan";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "Kunjungi %@";
@@ -7106,9 +7014,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views scheduled posts in the posts list and there are no posts */
 "You don't have any scheduled posts" = "Anda belum memiliki pos terjadwal";
 
-/* Empty state. Tags management (Settings > Writing > Tags) */
-"You don't have any tags" = "Anda tidak memiliki tag apa pun";
-
 /* Displayed when the user views trashed in the pages list and there are no pages */
 "You don't have any trashed pages" = "Anda tidak punya halaman yang dibuang";
 
@@ -7422,27 +7327,35 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The list item of experimental features that users can choose to enable */
 "application-settings.experimental-features" = "Fitur Eksperimental";
 
-/* Button label to authorize application passwords */
-"application.password.authorize" = "Berikan Otorisasi";
+/* Complete information about application passwords with security benefits, creation process, management instructions, and revocation warning */
+"applicationPassword.info.content" = "Kata sandi aplikasi adalah cara yang lebih aman agar aplikasi ini dapat mengakses konten situs tanpa menggunakan kata sandi akun aktual Anda.\n\nSetelah Anda menambahkan situs ke aplikasi, kata sandi aplikasi akan dibuat secara otomatis sesuai kebutuhan.\n\nAnda dapat melihat dan mengelola kata sandi ini di profil pengguna dalam panel admin situs WordPress.\n\nPerhatikan bahwa mencabut kata sandi aplikasi yang digunakan oleh aplikasi akan mengakhiri akses aplikasi ke situs Anda. Berhati-hatilah saat mencabut kata sandi aplikasi yang dibuat oleh aplikasi.";
 
-/* Description for the application passwords feature */
-"application.password.description" = "Anda sekarang dapat memberikan izin pada aplikasi untuk menggunakan kata sandi aplikasi demi akses cepat dan aman ke konten situs Anda.";
+/* Button to dismiss the application password information view */
+"applicationPassword.info.gotIt.button" = "Saya paham";
 
-/* Title for the new application passwords feature */
-"application.password.new.title" = "Baru: Kata Sandi Aplikasi";
+/* Title for the application passwords information view */
+"applicationPassword.info.title" = "Tentang Kata Sandi Aplikasi";
 
 /* Title of row for displaying an application password's creation date */
 "applicationPassword.item.creationDate" = "Tanggal Pembuatan";
 
-/* Title of row for displaying an application password's last used date
-   Title of row for displaying an application password's last used IP address */
+/* Footer message indicating that this application password is currently active and being used by the app */
+"applicationPassword.item.currentlyInUse" = "Kata sandi aplikasi ini sedang digunakan oleh aplikasi.";
+
+/* Title of row for displaying an application password's last used date */
 "applicationPassword.item.lastUsed" = "Terakhir Digunakan";
+
+/* Title of row for displaying an application password's last used IP address */
+"applicationPassword.item.lastUsedIp" = "Alamat IP Terakhir";
 
 /* Title of row for displaying an application password name */
 "applicationPassword.item.name" = "Nama";
 
 /* Title of section for displaying application password details */
 "applicationPassword.item.section.security" = "Keamanan";
+
+/* String format of creation date of an application password. There is one argument: the creation date relative to now (i.e. 5 days ago). */
+"applicationPassword.list.item.created-date-format" = "Dibuat %@";
 
 /* String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago). */
 "applicationPassword.list.item.last-used-format" = "Terakhir digunakan %@";
@@ -7456,8 +7369,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Tidak dapat menemukan url situs saat ini";
 
+/* Error message shown when the site doesn't support Application Passwords feature */
+"applicationPasswordMigration.error.unsupported" = "Situs ini tidak mendukung Kata Sandi Aplikasi.";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "Anda perlu login dengan pengguna \"%@\"";
+
+/* Error message when the site's REST API is not accessible for application password creation */
+"applicationPasswordRepository.error.restApiInaccessible" = "Tidak dapat mengakses REST API situs";
+
+/* Error message when application password creation fails for unknown reasons */
+"applicationPasswordRepository.error.unknown" = "Tidak dapat membuat kata sandi aplikasi";
+
+/* Error message when the username cannot be found for application password creation */
+"applicationPasswordRepository.error.usernameNotFound" = "Tidak dapat menemukan nama pengguna untuk situs tersebut";
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Agar lebih aman, gunakan kata sandi aplikasi untuk terhubung dengan situs Anda yang dihosting sendiri sehingga Anda mendapatkan dukungan bagi fitur seperti %@.";
@@ -7465,7 +7390,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Pengelolaan Plugin";
 
-/* Feature name for managing users in the app */
+/* Feature name for managing application passwords in the app
+   Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Pengelolaan Pengguna";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -8092,6 +8018,24 @@ Example: Reply to Pamela Nguyen */
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ketuk dua kali untuk mengubah unit";
 
+/* Message for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.message" = "Anda yakin ingin menghapus tag ini?";
+
+/* Title for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.title" = "Hapus Tag";
+
+/* Placeholder text for tag description field */
+"edit.tag.description.placeholder" = "Tambahkan deskripsi...";
+
+/* Placeholder text for tag name field */
+"edit.tag.name.placeholder" = "Nama tag";
+
+/* Navigation title for new tag creation */
+"edit.tag.new.title" = "Tag Baru";
+
+/* Section header for tag description in edit tag view */
+"edit.tag.section.description" = "Deskripsi";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "misalnya 1122334455";
 
@@ -8600,6 +8544,543 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Anda perlu login dengan %@ untuk menggunakan Statistik dan Pemberitahuan.";
 
+/* Accessibility label for add card button */
+"jetpackStats.accessibility.addCardButton" = "Tambahkan kartu statistik baru";
+
+/* Accessibility label for back navigation */
+"jetpackStats.accessibility.backToStats" = "Kembali ke statistik";
+
+/* Card title accessibility label. %1$@ is the card title. */
+"jetpackStats.accessibility.cardTitle" = "Kartu %1$@";
+
+/* Accessibility label for chart container */
+"jetpackStats.accessibility.chartContainer" = "Diagram statistik";
+
+/* Chart data point accessibility label. %1$@ is metric name, %2$@ is value, %3$@ is date. */
+"jetpackStats.accessibility.chartValue" = "%1$@: %2$@ pada %3$@";
+
+/* Selected date range accessibility label. %1$@ is the range. */
+"jetpackStats.accessibility.dateRangeSelected" = "Rentang tanggal: %1$@";
+
+/* Accessibility label for error state */
+"jetpackStats.accessibility.errorLoadingStats" = "Error saat memuat statistik";
+
+/* Accessibility label for loading state */
+"jetpackStats.accessibility.loadingStats" = "Memuat statistik";
+
+/* Accessibility label for more options menu */
+"jetpackStats.accessibility.moreOptions" = "Pilihan lainnya";
+
+/* Accessibility hint for next period navigation */
+"jetpackStats.accessibility.navigateToNextDateRange" = "Arahkan ke rentang tanggal berikutnya";
+
+/* Accessibility hint for previous period navigation */
+"jetpackStats.accessibility.navigateToPreviousDateRange" = "Arahkan ke rentang tanggal sebelumnya";
+
+/* Accessibility label for next period navigation button */
+"jetpackStats.accessibility.nextPeriod" = "Periode selanjutnya";
+
+/* Accessibility label for empty data state */
+"jetpackStats.accessibility.noDataAvailable" = "Tidak ada data untuk periode ini";
+
+/* Accessibility label for opening link in browser */
+"jetpackStats.accessibility.openInBrowser" = "Buka di browser";
+
+/* Accessibility label for previous period navigation button */
+"jetpackStats.accessibility.previousPeriod" = "Periode sebelumnya";
+
+/* Accessibility label for realtime visitor count */
+"jetpackStats.accessibility.realtimeVisitorCount" = "Pengunjung online saat ini";
+
+/* Accessibility hint for retry action */
+"jetpackStats.accessibility.retryLoadingStats" = "Ketuk dua kali untuk mencoba memuat statistik lagi";
+
+/* Accessibility hint for date range selection */
+"jetpackStats.accessibility.selectDateRange" = "Pilih rentang tanggal";
+
+/* Accessibility hint for tab selection. %1$@ is the tab name. */
+"jetpackStats.accessibility.selectTab" = "Pilih tab %1$@";
+
+/* Accessibility announcement when stats finish loading */
+"jetpackStats.accessibility.statsLoaded" = "Statistik dimuat";
+
+/* Accessibility label for stats tab bar */
+"jetpackStats.accessibility.statsTabBar" = "Tab navigasi statistik";
+
+/* Accessibility announcement when a tab is selected. %1$@ is the tab name. */
+"jetpackStats.accessibility.tabSelected" = "Tab %1$@ dipilih";
+
+/* Top list item accessibility label. %1$d is rank, %2$@ is title, %3$@ is value. */
+"jetpackStats.accessibility.topListItem" = "Peringkat %1$d: %2$@, %3$@";
+
+/* Accessibility hint for viewing chart data */
+"jetpackStats.accessibility.viewChartData" = "Lihat data diagram terperinci";
+
+/* Accessibility hint for items that can show more details */
+"jetpackStats.accessibility.viewMoreDetails" = "Ketuk dua kali untuk melihat selengkapnya";
+
+/* Singular visitor count. %1$d is the number. */
+"jetpackStats.accessibility.visitorNow" = "%1$d pengunjung online sekarang";
+
+/* Plural visitors count. %1$d is the number. */
+"jetpackStats.accessibility.visitorsNow" = "%1$d pengunjung online sekarang";
+
+/* Chart option description */
+"jetpackStats.addChart.chartDescription" = "Visualisasikan tren seiring waktu";
+
+/* Chart option title */
+"jetpackStats.addChart.chartOption" = "Diagram";
+
+/* Title for data type selection */
+"jetpackStats.addChart.selectDataType" = "Pilih Tipe Data";
+
+/* Title for metric selection */
+"jetpackStats.addChart.selectMetric" = "Pilih Metrik";
+
+/* Top list option description */
+"jetpackStats.addChart.topListDescription" = "Lihat konten dengan performa terbaik";
+
+/* Top list option title */
+"jetpackStats.addChart.topListOption" = "Daftar Teratas";
+
+/* Archive section for authors */
+"jetpackStats.archiveSections.author" = "Penulis";
+
+/* Plural item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.plural" = "%1$d item";
+
+/* Singular item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.singular" = "%1$d barang";
+
+/* Archive section for other items */
+"jetpackStats.archiveSections.other" = "Lainnya";
+
+/* Title for the author details screen */
+"jetpackStats.authorDetails.title" = "Penulis";
+
+/* Button to add a new chart */
+"jetpackStats.button.addCard" = "Tambahkan Kartu";
+
+/* Apply button */
+"jetpackStats.button.apply" = "Terapkan";
+
+/* Cancel button */
+"jetpackStats.button.cancel" = "Batalkan";
+
+/* Button to customize a chart or widget */
+"jetpackStats.button.customize" = "Edit Kartu";
+
+/* Button to delete a chart or widget */
+"jetpackStats.button.deleteWidget" = "Hapus Kartu";
+
+/* Done button */
+"jetpackStats.button.done" = "Selesai";
+
+/* Button to download data as CSV file */
+"jetpackStats.button.downloadCSV" = "Unduh CSV";
+
+/* Learn more about stats button */
+"jetpackStats.button.learnMore" = "Baca Selengkapnya";
+
+/* Button to move a card */
+"jetpackStats.button.moveCard" = "Geser Kartu";
+
+/* Button to move card down */
+"jetpackStats.button.moveDown" = "Geser ke Bawah";
+
+/* Button to move card to the bottom */
+"jetpackStats.button.moveToBottom" = "Geser ke Paling Bawah";
+
+/* Button to move card to the top */
+"jetpackStats.button.moveToTop" = "Geser ke Paling Atas";
+
+/* Button to move card up */
+"jetpackStats.button.moveUp" = "Geser ke Atas";
+
+/* OK button */
+"jetpackStats.button.ok" = "Oke";
+
+/* Button to reset chart settings to default */
+"jetpackStats.button.resetSettings" = "Reset Pengaturan";
+
+/* Share chart menu item */
+"jetpackStats.button.share" = "Bagikan";
+
+/* Button title */
+"jetpackStats.button.showAll" = "Tampilkan Semua";
+
+/* Button to collapse and show fewer items */
+"jetpackStats.button.showLess" = "Tampilkan Sedikit";
+
+/* Button to expand and show more items */
+"jetpackStats.button.showMore" = "Tampilkan Lebih Banyak";
+
+/* Last 10 years date range */
+"jetpackStats.calendar.last10Years" = "10 Tahun Terakhir";
+
+/* Last 12 months date range */
+"jetpackStats.calendar.last12Months" = "12 Bulan Terakhir";
+
+/* Last 28 days date range */
+"jetpackStats.calendar.last28Days" = "28 Hari Terakhir";
+
+/* Last 30 days date range */
+"jetpackStats.calendar.last30Days" = "30 Hari Terakhir";
+
+/* Last 3 years date range */
+"jetpackStats.calendar.last3Years" = "3 Tahun Terakhir";
+
+/* Last 6 months date range */
+"jetpackStats.calendar.last6Months" = "6 Bulan Terakhir";
+
+/* Last 7 days date range */
+"jetpackStats.calendar.last7Days" = "7 Hari Terakhir";
+
+/* Last 90 days date range */
+"jetpackStats.calendar.last90Days" = "90 Hari Terakhir";
+
+/* Month time period */
+"jetpackStats.calendar.month" = "Bulan";
+
+/* Quarter time period */
+"jetpackStats.calendar.quarter" = "Kuartal";
+
+/* This month date range */
+"jetpackStats.calendar.thisMonth" = "Bulan Ini";
+
+/* This quarter date range */
+"jetpackStats.calendar.thisQuarter" = "Kuartal Ini";
+
+/* This week date range */
+"jetpackStats.calendar.thisWeek" = "Minggu Ini";
+
+/* This year date range */
+"jetpackStats.calendar.thisYear" = "Tahun Ini";
+
+/* Today date range */
+"jetpackStats.calendar.today" = "Hari Ini";
+
+/* Week time period */
+"jetpackStats.calendar.week" = "Minggu";
+
+/* Year time period */
+"jetpackStats.calendar.year" = "Tahun";
+
+/* Bar chart type */
+"jetpackStats.chart.barChart" = "Batang";
+
+/* Shown for empty states */
+"jetpackStats.chart.dataEmpty" = "Tidak ada data periode";
+
+/* Genertic error message */
+"jetpackStats.chart.generitcError" = "Terjadi kesalahan";
+
+/* Shown for metrics that don't support hourly data */
+"jetpackStats.chart.hourlyDataNotAvailable" = "Data per jam tidak tersedia";
+
+/* Shown when current period data might be incomplete */
+"jetpackStats.chart.incompleteData" = "Mungkin menampilkan data yang tidak lengkap";
+
+/* Line chart type */
+"jetpackStats.chart.lineChart" = "Garis";
+
+/* Show chart data menu item */
+"jetpackStats.chart.showData" = "Tampilkan Data";
+
+/* Label for change value */
+"jetpackStats.chartData.change" = "Ubah";
+
+/* Column header for date */
+"jetpackStats.chartData.date" = "TANGGAL";
+
+/* Section title for detailed data */
+"jetpackStats.chartData.detailedData" = "Data Terperinci";
+
+/* Label for previous value */
+"jetpackStats.chartData.previous" = "Sebelumnya";
+
+/* Title for chart data screen */
+"jetpackStats.chartData.title" = "Data Diagram";
+
+/* Column header for value */
+"jetpackStats.chartData.value" = "NILAI";
+
+/* Context menu action to copy country name */
+"jetpackStats.contextMenu.copyCountryName" = "Salin Nama Negara";
+
+/* Context menu action to copy domain */
+"jetpackStats.contextMenu.copyDomain" = "Salin Domain";
+
+/* Context menu action to copy file name */
+"jetpackStats.contextMenu.copyFileName" = "Salin Nama File";
+
+/* Context menu action to copy file path */
+"jetpackStats.contextMenu.copyFilePath" = "Salin Jalur File";
+
+/* Context menu action to copy name */
+"jetpackStats.contextMenu.copyName" = "Salin Nama";
+
+/* Context menu action to copy search term */
+"jetpackStats.contextMenu.copySearchTerm" = "Salin Istilah Pencarian";
+
+/* Context menu action to copy title */
+"jetpackStats.contextMenu.copyTitle" = "Salin Judul";
+
+/* Context menu action to copy URL */
+"jetpackStats.contextMenu.copyURL" = "Salin URL";
+
+/* Context menu action to copy video URL */
+"jetpackStats.contextMenu.copyVideoURL" = "Salin URL Video";
+
+/* Context menu action to open link in browser */
+"jetpackStats.contextMenu.openInBrowser" = "Buka di Browser";
+
+/* Context menu action to search term in Google */
+"jetpackStats.contextMenu.searchInGoogle" = "Cari di Google";
+
+/* Message shown when a country has no views */
+"jetpackStats.countries.noViews" = "Tidak ada penayangan";
+
+/* CSV header for country column */
+"jetpackStats.csv.country" = "Negara";
+
+/* CSV header for country code column */
+"jetpackStats.csv.countryCode" = "Kode Negara";
+
+/* CSV header for date column */
+"jetpackStats.csv.date" = "Tanggal";
+
+/* CSV header for file name column */
+"jetpackStats.csv.fileName" = "Nama File";
+
+/* CSV header for file path column */
+"jetpackStats.csv.filePath" = "Jalur File";
+
+/* CSV header for name column */
+"jetpackStats.csv.name" = "Nama";
+
+/* CSV header for role column */
+"jetpackStats.csv.role" = "Peran";
+
+/* CSV header for search term column */
+"jetpackStats.csv.searchTerm" = "Istilah Pencarian";
+
+/* CSV header for section column */
+"jetpackStats.csv.section" = "Bagian";
+
+/* CSV header for title column */
+"jetpackStats.csv.title" = "Judul";
+
+/* CSV header for type column */
+"jetpackStats.csv.type" = "Ketik";
+
+/* CSV header for video URL column */
+"jetpackStats.csv.videoURL" = "URL Video";
+
+/* Title for comparison menu */
+"jetpackStats.datePicker.compareWith" = "Bandingkan dengan...";
+
+/* Title for custom date range picker */
+"jetpackStats.datePicker.customRange" = "Rentang Kustom";
+
+/* Menu item for custom date range picker */
+"jetpackStats.datePicker.customRangeMenu" = "Rentang Kustom...";
+
+/* From date label */
+"jetpackStats.datePicker.from" = "Dari";
+
+/* Compare with same period last year option */
+"jetpackStats.datePicker.lastYear" = "Tahun Lalu";
+
+/* Menu item for more date period options */
+"jetpackStats.datePicker.morePeriods" = "Periode Lainnya...";
+
+/* Compare with preceding period option */
+"jetpackStats.datePicker.precedingPeriod" = "Periode Sebelumnya";
+
+/* Label for quick period selection */
+"jetpackStats.datePicker.quickPeriodsForStartDate" = "Periode cepat untuk tanggal mulai";
+
+/* Site time zone header */
+"jetpackStats.datePicker.siteTimeZone" = "Zona Waktu Situs";
+
+/* Explanation of how stats are reported in site time zone */
+"jetpackStats.datePicker.siteTimeZoneDescription" = "Statistik dilaporkan dan ditampilkan di zona waktu situs Anda. Jika pengunjung datang ke situs Anda pada hari Selasa di zona waktu mereka, tetapi hari Senin di zona waktu situs Anda, kunjungan dicatat sebagai hari Senin.";
+
+/* To date label */
+"jetpackStats.datePicker.to" = "Hingga";
+
+/* Section title for the list of child links */
+"jetpackStats.externalLinkDetails.childLinks" = "Sub-tautan";
+
+/* Button to open the external link in browser */
+"jetpackStats.externalLinkDetails.openLink" = "Buka Tautan";
+
+/* Title for the external link details screen */
+"jetpackStats.externalLinkDetails.title" = "Tautan Eksternal";
+
+/* Label for daily average in tooltip */
+"jetpackStats.postDetails.dailyAverage" = "Rata-Rata Harian";
+
+/* Title for email metrics card */
+"jetpackStats.postDetails.emailMetrics" = "Email";
+
+/* Must be short!Label for emails sent metric */
+"jetpackStats.postDetails.emailsSent" = "Email Terkirim";
+
+/* Legend label for lower activity */
+"jetpackStats.postDetails.less" = "Kurang";
+
+/* Singular like count. %1$d is the number. */
+"jetpackStats.postDetails.like" = "%1$d suka";
+
+/* Plural likes count. %1$d is the number. */
+"jetpackStats.postDetails.likes" = "%1$d suka";
+
+/* Title for monthly activity heatmap */
+"jetpackStats.postDetails.monthsAndYears" = "Bulan-Bulan Terakhir";
+
+/* Legend label for higher activity */
+"jetpackStats.postDetails.more" = "Lainnya";
+
+/* Label */
+"jetpackStats.postDetails.noLikesYet" = "Belum ada suka";
+
+/* Must be short! Label for email open rate metric */
+"jetpackStats.postDetails.openRate" = "Rasio Buka";
+
+/* Shows when the post was published. %1$@ is the formatted date. */
+"jetpackStats.postDetails.published" = "Dipublikasikan %1$@";
+
+/* Title for recent weeks activity heatmap */
+"jetpackStats.postDetails.recentWeeks" = "Minggu-Minggu Terakhir";
+
+/* Navigation title */
+"jetpackStats.postDetails.title" = "Statistik Pos";
+
+/* Must be short!Label for total email opens metric */
+"jetpackStats.postDetails.totalOpens" = "Total Buka";
+
+/* Must be short!Label for unique email opens metric */
+"jetpackStats.postDetails.uniqueOpens" = "Buka Unik";
+
+/* Label for week-over-week comparison in tooltip */
+"jetpackStats.postDetails.weekOverWeek" = "Minggu ke Minggu";
+
+/* Label for weekly total in tooltip */
+"jetpackStats.postDetails.weekTotal" = "Total Mingguan";
+
+/* Title for weekly activity heatmap */
+"jetpackStats.postDetails.weeklyActivity" = "Aktivitas Mingguan";
+
+/* Button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpam" = "Tandai sebagai Spam";
+
+/* Error message when marking a referrer as spam fails */
+"jetpackStats.referrerDetails.markAsSpamError" = "Gagal menandai sebagai spam";
+
+/* Label shown when a referrer is already marked as spam */
+"jetpackStats.referrerDetails.markedAsSpam" = "Ditandai sebagai Spam";
+
+/* Section title for the list of referral sources */
+"jetpackStats.referrerDetails.referralSources" = "Sumber Referral";
+
+/* Title for the referrer details screen */
+"jetpackStats.referrerDetails.title" = "Pengarah";
+
+/* Archive data type */
+"jetpackStats.siteDataTypes.archive" = "Arsip";
+
+/* Authors data type */
+"jetpackStats.siteDataTypes.authors" = "Penulis";
+
+/* External links data type */
+"jetpackStats.siteDataTypes.externalLinks" = "Tautan Eksternal";
+
+/* File downloads data type */
+"jetpackStats.siteDataTypes.fileDownloads" = "Unduhan Berkas";
+
+/* Locations data type */
+"jetpackStats.siteDataTypes.locations" = "Lokasi";
+
+/* Posts and pages data type */
+"jetpackStats.siteDataTypes.postsAndPages" = "Pos & Halaman";
+
+/* Referrers data type */
+"jetpackStats.siteDataTypes.referrers" = "Pengarah";
+
+/* Search terms data type */
+"jetpackStats.siteDataTypes.searchTerms" = "Istilah Pencarian";
+
+/* Videos data type */
+"jetpackStats.siteDataTypes.videos" = "Video";
+
+/* Bounce rate metric */
+"jetpackStats.siteMetrics.bounceRate" = "Rasio Bounce";
+
+/* Site comments metric */
+"jetpackStats.siteMetrics.comments" = "Komentar";
+
+/* Download count */
+"jetpackStats.siteMetrics.downloads" = "Unduhan";
+
+/* Site likes metric */
+"jetpackStats.siteMetrics.likes" = "Suka";
+
+/* Site posts metric */
+"jetpackStats.siteMetrics.posts" = "Pos";
+
+/* Time on site metric */
+"jetpackStats.siteMetrics.timeOnSite" = "Waktu di Situs";
+
+/* Site views metric */
+"jetpackStats.siteMetrics.views" = "Jumlah Tayang";
+
+/* Site visitors metric */
+"jetpackStats.siteMetrics.visitors" = "Pengunjung";
+
+/* Current active visitors metric */
+"jetpackStats.siteMetrics.visitorsNow" = "Pengunjung Sekarang";
+
+/* Insights tab */
+"jetpackStats.tabs.insights" = "Wawasan";
+
+/* Realtime tab */
+"jetpackStats.tabs.realtime" = "Real-time";
+
+/* Subscribers tab */
+"jetpackStats.tabs.subscribers" = "Pelanggan";
+
+/* Traffic tab */
+"jetpackStats.tabs.traffic" = "Lalu Lintas";
+
+/* Stats screen title */
+"jetpackStats.title" = "Statistik";
+
+/* Title for items with highest bounce rate */
+"jetpackStats.topList.highestBounceRate" = "Rasio Bounce Tertinggi";
+
+/* Title for items with longest time on site */
+"jetpackStats.topList.longestTimeOnSite" = "Waktu Terpanjang di Situs";
+
+/* Title for most commented items */
+"jetpackStats.topList.mostCommented" = "Paling Banyak Dikomentari";
+
+/* Title for chart */
+"jetpackStats.topList.mostDownloads" = "Paling Banyak Diunduh";
+
+/* Title for most liked items */
+"jetpackStats.topList.mostLiked" = "Paling Banyak Disukai";
+
+/* Title for most posts (per author) */
+"jetpackStats.topList.mostPosts" = "Pos Terbanyak";
+
+/* Title for most viewed items */
+"jetpackStats.topList.mostViewed" = "Paling Banyak Dilihat";
+
+/* Title for items with most visitors */
+"jetpackStats.topList.mostVisitors" = "Paling Banyak Dikunjungi";
+
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Pelajari lebih lanjut";
 
@@ -9104,6 +9585,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Halaman oleh saya";
 
+/* Title for the parent page picker screen */
+"parentPagePicker.title" = "Halaman Induk";
+
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "Halaman Induk";
 
@@ -9254,6 +9738,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to view plugin on WordPress.org */
 "pluginDetails.viewOnWordPressOrg.button" = "Lihat di WordPress.org";
 
+/* Title for the post author selection screen */
+"postAuthorPicker.title" = "Penulis";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Buang Perubahan";
 
@@ -9328,6 +9815,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Menyimpan draf...";
+
+/* Empty state description when no post formats are available */
+"postFormatPicker.emptyState.description" = "Format pos belum dikonfigurasi untuk situs ini.";
+
+/* Empty state title when no post formats are available */
+"postFormatPicker.emptyState.title" = "Tidak Ada Format Pos Tersedia";
+
+/* Navigation bar title for the Post Format picker */
+"postFormatPicker.navigationTitle" = "Format Pos";
+
+/* Error message when post formats refresh fails */
+"postFormatPicker.refreshErrorMessage" = "Gagal menyegarkan format pos";
 
 /* Button title */
 "postFromAudio.beginRecording" = "Mulai merekam";
@@ -9473,8 +9972,42 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Tanpa Judul";
 
+/* Label for the author field in Post Settings */
+"postSettings.author.label" = "Penulis";
+
+/* Label for the add category button field. Should be the same as WP core. */
+"postSettings.categories.addCategoryButton" = "Tambahkan Kategori";
+
+/* Label for the categories field. Should be the same as WP core.
+   Label for the category field. Should be the same as WP core. */
+"postSettings.categories.label" = "Kategori";
+
+/* Button to confirm discarding changes */
+"postSettings.discardChanges.button" = "Buang Perubahan";
+
+/* Message for the discard changes confirmation dialog */
+"postSettings.discardChanges.message" = "Anda membatalkan penyimpanan perubahan. Anda yakin ingin membuang perubahan ini?";
+
+/* Title for the discard changes confirmation dialog */
+"postSettings.discardChanges.title" = "Buang Perubahan?";
+
+/* Character count for excerpt. %1$d is the number of characters. */
+"postSettings.excerpt.characterCount" = "%1$d karakter";
+
+/* Section header for Excerpt in Post Settings */
+"postSettings.excerpt.header" = "Kutipan";
+
+/* Placeholder text for the excerpt field in Post Settings */
+"postSettings.excerpt.placeholder" = "Tulis ringkasan singkat pos Anda untuk ditampilkan di indeks blog, arsip, dan hasil pencarian.";
+
+/* Word count for excerpt. %1$d is the number of words. */
+"postSettings.excerpt.wordCount" = "%1$d kata";
+
 /* Cancel upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.cancelUpload" = "Batalkan Unggahan";
+
+/* Section header for Featured Image in Post Settings */
+"postSettings.featuredImage.header" = "Gambar Andalan";
 
 /* Replace image upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.replaceImage" = "Ganti";
@@ -9488,20 +10021,68 @@ Example: Reply to Pamela Nguyen */
 /* Post Settings */
 "postSettings.featuredImage.uploading" = "Mengunggah ...";
 
-/* The 'Parent Page' setting of the post */
-"postSettings.parentPage" = "Halaman induk";
+/* Label for the last edited field in Post Settings */
+"postSettings.lastEdited.label" = "Terakhir Diedit";
 
-/* The 'Pending Review' setting of the post */
-"postSettings.pendingReview" = "Menunggu peninjauan";
+/* Section header for More Options in Post Settings. Should use the same translation as core WP. */
+"postSettings.moreOptions.header" = "Pilihan Lainnya";
 
-/* Section title for the disabled Twitter service in the Post Settings screen */
-"postSettings.section.disabledTwitter.header" = "Fitur Berbagi Otomatis ke Twitter Tidak Lagi Tersedia";
+/* The title of the Page Settings screen. */
+"postSettings.navigationTitle.page" = "Pengaturan Halaman";
 
-/* Section title for Page Attributes */
-"postSettings.section.pageAttributes" = "Atribut Halaman";
+/* The title of the Post Settings screen. */
+"postSettings.navigationTitle.post" = "Pengaturan Pos";
 
-/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
-"postSettings.warningPostWillBePublishedAlertMessage" = "Dengan mengubah visibilitas ke \"Pribadi\", pos Anda akan segera diterbitkan.";
+/* Label for the Organization area (categories, keywords, ...) in post settings. */
+"postSettings.organization.header" = "Organisasi";
+
+/* Message when trying to save a deleted page */
+"postSettings.pageDeleted.message" = "Halaman telah dihapus dan tidak dapat disimpan lagi.";
+
+/* Title of alert when trying to save a deleted page */
+"postSettings.pageDeleted.title" = "Halaman Dihapus";
+
+/* Label for the parent page field */
+"postSettings.parentPage.label" = "Halaman Induk";
+
+/* Cell title for the Top Level option case */
+"postSettings.parentPage.topLevel" = "Tingkat teratas";
+
+/* Label for the pending review toggle in Post Settings */
+"postSettings.pendingReview.label" = "Menunggu Peninjauan";
+
+/* Message when trying to save a deleted post */
+"postSettings.postDeleted.message" = "Pos telah dihapus dan tidak dapat disimpan lagi.";
+
+/* Title of alert when trying to save a deleted post */
+"postSettings.postDeleted.title" = "Pos Dihapus";
+
+/* Label for the post format field. Should be the same as WP core. */
+"postSettings.postFormat.label" = "Format Pos";
+
+/* Label for the publish date field in Post Settings */
+"postSettings.publishDate.label" = "Tanggal";
+
+/* Section header for General settings in Post Settings */
+"postSettings.section.general" = "Umum";
+
+/* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
+"postSettings.slug.hint" = "Slug adalah judul pos versi ramah URL.";
+
+/* Placeholder for the slug field */
+"postSettings.slug.placeholder" = "Masukkan slug";
+
+/* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
+"postSettings.stickyPost.label" = "Melekat";
+
+/* Label for the add tags button field. Should be the same as WP core. */
+"postSettings.tags.addTagsButton" = "Tambahkan Tag";
+
+/* Label for the tags field. Should be the same as WP core. */
+"postSettings.tags.label" = "Tag";
+
+/* Label for the visibility field in Post Settings */
+"postSettings.visibility.label" = "Visibilitas";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Batal";
@@ -10885,6 +11466,15 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "Total Pengikut";
 
+/* Menu item to send feedback about new stats experience */
+"stats.menu.sendFeedback" = "Kirim Feedback";
+
+/* Menu item to switch back to classic stats experience */
+"stats.menu.switchToClassic" = "Beralih ke Statistik Klasik";
+
+/* Menu item to enable new stats experience */
+"stats.menu.tryNewStats" = "Coba Statistik Baru";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
@@ -10923,6 +11513,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The label for the option to show Stats Traffic chart for Days. */
 "stats.traffic.days" = "Hari";
+
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.hours" = "Jam";
 
 /* The label for the option to show Stats Traffic chart for Months. */
 "stats.traffic.months" = "Bulan";
@@ -11254,6 +11847,33 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Pembaca untuk Dukungan iOS";
 
+/* Button to add a new tag. %1$@ is the tag name. */
+"tags.add.button" = "Tambahkan tag: %1$@";
+
+/* Description for empty state when there are no tags */
+"tags.empty.description" = "Tag membantu mengatur konten Anda dan memudahkan pembaca menemukan pos terkait.";
+
+/* Title for empty state when there are no tags */
+"tags.empty.title" = "Tidak Ada Tag";
+
+/* Error message when tag data is invalid */
+"tags.error.invalid_tag" = "Informasi tag tidak valid. Coba lagi.";
+
+/* Error message when the tags service cannot connect to the remote site */
+"tags.error.no_remote_service" = "Tidak dapat terhubung ke situs Anda. Periksa koneksi Anda dan coba lagi.";
+
+/* Button to remove a selected tag. %1$@ is the tag name. */
+"tags.remove.button" = "Hapus %1$@";
+
+/* Placeholder text for the tag search field */
+"tags.search.placeholder" = "Cari tag";
+
+/* Message shown when no tags are selected */
+"tags.selected.empty" = "Tidak ada tag yang dipilih";
+
+/* Title for the tags screen */
+"tags.title" = "Tag";
+
 /* Title for placeholder in Tenor picker */
 "tenor.welcomeMessage" = "Cari GIF untuk ditambahkan ke Pustaka Media Anda!";
 
@@ -11265,6 +11885,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Zona Waktu";
+
+/* Action button title to enable new stats from tip */
+"tips.newStats.action" = "Aktifkan Sekarang";
+
+/* Tip for new stats feature */
+"tips.newStats.message" = "Rasakan statistik baru yang elegan dan andal. Kembali ke statistik lama kapan saja Anda mau.";
+
+/* Tip for new stats feature */
+"tips.newStats.title" = "Coba Statistik Baru";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Geser ke kanan untuk mengakses situs, Pembaca, pemberitahuan, dan profil Anda";

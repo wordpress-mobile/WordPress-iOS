@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-07-08 15:54:09+0000 */
+/* Translation-Revision-Date: 2025-08-15 15:40:47+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: he_IL */
@@ -314,9 +314,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "קובץ שמכיל תבנית של קוד זדוני";
 
-/* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
-"A tag named '%@' already exists." = "תגית בשם '%@' כבר קיימת.";
-
 /* Placeholder text for the title of a site */
 "A title for the site" = "כותרת אתר";
 
@@ -470,9 +467,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Screen reader text for button that adds a menu item */
 "Add new menu item" = "להוסיף פריט תפריט חדש";
-
-/* Voiceover accessibility label for the tags field in blog post settings. */
-"Add new tags, separated by commas." = "הוספה של תגיות חדשות, מופרדות באמצעות פסיקים.";
 
 /* No comment provided by engineer. */
 "Add paragraph block" = "להוסיף בלוק פסקה רגילה";
@@ -695,6 +689,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "אימות אפל נכשל.\nבבקשה תוודא שאתה רשום לiCloud עם Apple ID שמשתמש באימות דו שלבי.";
 
+/* Link to Application Passwords section */
+"Application Passwords" = "סיסמאות אפליקציה";
+
 /* No comment provided by engineer. */
 "Applies the setting" = "הפעולה מחילה את ההגדרות";
 
@@ -725,9 +722,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "ביקשת למחוק את התפריט - האם ההחלטה סופית?";
-
-/* Message asking for confirmation on tag deletion */
-"Are you sure you want to delete this tag?" = "אתה בטוח שאתה רוצה למחוק את הדף הזה?";
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "האם ברצונך לנתק את Jetpack מהאתר?";
@@ -788,9 +782,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "נדרש אימות עבור חברת האחסון: ‎%@";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "מחבר";
 
@@ -1132,9 +1124,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "לשדר את הסרט של חייך.";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "קטגוריות";
 
 /* Category menu item in share extension. */
 "Category" = "קטגוריה";
@@ -1494,9 +1483,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Message to show when Publicize connect failed */
 "Connection failed" = "החיבור נכשל";
 
-/* Title of a prompt saying the app needs an internet connection before it can load post formats */
-"Connection not available" = "חיבור לא זמין";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -1635,9 +1621,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Couldn't load data. Please refresh again later." = "לא ניתן היה לטעון את הנתונים. יש לרענן שוב מאוחר יותר.";
 
 /* Error message when tag loading failed */
-"Couldn't load tags." = "לא ניתן לטעון את התגיות.";
-
-/* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "לא ניתן לטעון את התגיות. יש להקיש כדי לנסות שוב.";
 
 /* Indicating that referrer couldn't be marked as spam */
@@ -1691,9 +1674,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Navigates to a new flow for site creation. */
 "Create a Site" = "ליצור אתר";
-
-/* Title of the button in the placeholder for an empty list of blog tags. */
-"Create a Tag" = "יצירת תגית";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "ליצור את סמל האתר";
@@ -1762,12 +1742,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Customize blocks" = "להתאים בלוקים אישית";
 
-/* Title for the edition of the share message. */
-"Customize the message" = "התאמה אישית של ההודעה";
-
-/* Hint displayed when the user is customizing the share message. */
-"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "להתאים אישית את ההודעה שברצונך לשתף.\nאם הטקסט שלך לא יירשם כאן, אנחנו נשתמש בכותרת של הפוסט להודעה.";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "התאמה אישית של הגדרות האתר שלך עבור לייקים, תגובות, עוקבים ועוד.";
 
@@ -1821,8 +1795,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "ברירות מחדל עבור פוסטים חדשים";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "מחק";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1842,9 +1815,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "מחיקת תפריט";
 
-/* Delete Tag confirmation action title */
-"Delete this tag" = "מחיקת תגית זו";
-
 /* Text displayed in HUD after successfully deleting a media item */
 "Deleted!" = "הפריט נמחק!";
 
@@ -1861,7 +1831,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Describe the purpose of the image. Leave empty if decorative." = "לתאר את מטרת התמונה. אם התמונה נועדה לקישוט בלבד, יש להשאיר את השדה ריק.";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "תיאור";
 
@@ -2398,14 +2367,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "בכל יום בשעה %@";
 
-/* Label for the excerpt field. Should be the same as WP core. */
-"Excerpt" = "תקציר";
-
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "אורך התקציר (מילים)";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
-"Excerpts are optional hand-crafted summaries of your content." = "תקצירים הם סיכומים אופציונליים, \"בעבודת יד\", של התוכן שלך.";
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "לא כולל ערכות עיצוב, תוספים והעלאות";
@@ -2482,9 +2445,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "מרכזיים";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "תמונה ראשית";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "טוען תבניות";
@@ -3133,9 +3093,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "הגדרות Jetpack";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core. */
-"Jetpack Social" = "Jetpack Social";
-
 /* Insights 'Jetpack Social Connections' header
    Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "החיבורים של Jetpack Social";
@@ -3500,9 +3457,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Marks comment as spam */
 "Mark as Spam" = "לסמן כתגובת זבל";
 
-/* Label for the Mark as Sticky option in post settings. */
-"Mark as Sticky" = "סימון כ'דביק'";
-
 /* Action title for unmarking referrer as spam */
 "Mark as not spam" = "לסמל כ'לא זבל'";
 
@@ -3595,8 +3549,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for screen that allows configuration of your site's menus */
 "Menus" = "תפריטים";
 
-/* Invite Message Editor's Title
-   Label for the share message field on the post settings. */
+/* Invite Message Editor's Title */
 "Message" = "הודעה";
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
@@ -3619,8 +3572,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Action button to display more available options */
 "More" = "עוד";
 
-/* Action button to display more available options
-   Label for the More Options area in post settings. Should use the same translation as core WP. */
+/* Action button to display more available options */
 "More Options" = "עוד אפשרויות";
 
 /* Label for the posting activity legend. */
@@ -3709,9 +3661,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "שם";
-
-/* Error to be displayed when a tag is empty */
-"Name Required" = "נדרש שם";
 
 /* No comment provided by engineer. */
 "Navigate Up" = "לנווט למעלה";
@@ -4058,8 +4007,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "אוקיי";
 
 /* No comment provided by engineer. */
@@ -4228,8 +4176,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "עמוד";
 
-/* Name of the button to open the page settings
-   The title of the Page Settings screen. */
+/* Name of the button to open the page settings */
 "Page Settings" = "הגדרות עמוד";
 
 /* translators: accessibility text. %s: Page break text. */
@@ -4472,11 +4419,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "קטגוריות";
 
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "פורמט";
-
-/* Name of the button to open the post settings
-   The title of the Post Settings screen. */
+/* Name of the button to open the post settings */
 "Post Settings" = "הגדרות פוסט";
 
 /* Window title for Post Stats view. */
@@ -4613,9 +4556,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "פרסם";
-
-/* Label for the publish date button. */
-"Publish Date" = "תאריך פרסום";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "לפרסם את העמוד במיקום:";
@@ -5380,9 +5320,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "תוצאות להוספה של קו נטוי";
 
-/* Label for the slug field. Should be the same as WP core. */
-"Slug" = "מזהה לכתובת";
-
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no fixed threats on your site." = "בינתיים אין איומים שתיקנת באתר.";
 
@@ -5496,7 +5433,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sports site intent topic */
 "Sports" = "ספורט";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "רגיל";
 
 /* Label for selecting the Start Over Settings item
@@ -5526,9 +5464,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle giving the user more context about why to enable notifications. */
 "Stay in touch with like and comment notifications." = "לשמור על קשר באמצעות הודעות על לייקים ותגובות.";
-
-/* This is the cell title. */
-"Stick post to the front page" = "הדבקת פוסט לעמוד הראשי";
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "דביק";
@@ -5628,31 +5563,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tablet web preview */
 "Tablet" = "טאבלט";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "תגית";
-
-/* Title of the alert indicating that a tag with that name already exists. */
-"Tag already exists" = "התגית כבר קיימת";
-
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "תיאור האתר";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "תגיות";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "תגיות וקטגוריות";
-
-/* Displayed when the user views tags in blog settings and there are no tags */
-"Tags created here can be quickly added to new posts" = "את התגיות שנוצרות כאן ניתן להוסיף בקלות לפוסטים חדשים";
-
-/* Label explaining why users might want to add tags. */
-"Tags help tell readers what a post is about. Separate different tags with commas." = "התגיות יעזרו לקוראים להבין מה הנושא של הפוסט. להפריד תגיות שונות באמצעות פסיקים.";
 
 /* No comment provided by engineer. */
 "Take a Photo" = "לצלם תמונה";
@@ -5744,9 +5664,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "יש להקיש כדי לעבור לאתר של Gravatar בדפדפן חיצוני";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "טקסונומיה";
 
 /* Technology site intent topic */
 "Technology" = "טכנולוגיה";
@@ -5892,9 +5809,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "לא ניתן היה לייצא את האתר.";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
-"The slug is the URL-friendly version of the post title." = "המזהה לכתובת היא גרסה ידידותית לכתובת URL של כותרת הפוסט.";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "לא ניתן למצוא את המשתמש שצוין. יש לוודא שהאיות נכון.";
@@ -6390,9 +6304,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "דחיית התגובה.";
 
-/* Message to show in the post-format cell when the post format is not available */
-"Unavailable" = "לא זמין";
-
 /* When the App can't figure out what language a blog is configured to use. */
 "Undefined" = "לא מוגדר";
 
@@ -6660,9 +6571,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights views and visitors header */
 "Views & Visitors" = "צפיות ומבקרים";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "נראות";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "בקר ב%@";
@@ -7100,9 +7008,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views scheduled posts in the posts list and there are no posts */
 "You don't have any scheduled posts" = "אין לך אף פוסט מתוזמן לפרסום";
 
-/* Empty state. Tags management (Settings > Writing > Tags) */
-"You don't have any tags" = "אין לך תגיות";
-
 /* Displayed when the user views trashed in the pages list and there are no pages */
 "You don't have any trashed pages" = "אין לך עמודים שהועברו לפח";
 
@@ -7416,27 +7321,35 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The list item of experimental features that users can choose to enable */
 "application-settings.experimental-features" = "תכונות ניסיוניות";
 
-/* Button label to authorize application passwords */
-"application.password.authorize" = "לאשר";
+/* Complete information about application passwords with security benefits, creation process, management instructions, and revocation warning */
+"applicationPassword.info.content" = "סיסמאות של אפליקציות הן דרך מאובטחת יותר המאפשרת לאפליקציה הזאת לגשת לתוכן האתר שלך ללא שימוש בסיסמת החשבון.\n\nבעת הוספה של אתרים לאפליקציה, סיסמאות של אפליקציות ייווצרו אוטומטית לפי הצורך.\n\nאפשר להציג ולנהל את הסיסמאות האלו בפרופיל המשתמש שלך בלוח הניהול של האתר שלך ב-WordPress.\n\nלתשומת ליבך, ביטול סיסמאות של אפליקציות שמשמשות את האפליקציה יגרום לביטול הגישה של האפליקציה לאתר שלך. יש לנקוט זהירות כשמבטלים סיסמאות של אפליקציות שנוצרו על ידי האפליקציה.";
 
-/* Description for the application passwords feature */
-"application.password.description" = "כעת אפשר להעניק לאפליקציה הרשאה להשתמש בסיסמאות אפליקציה כדי לקבל גישה מהירה ומאובטחת לתוכן האתר.";
+/* Button to dismiss the application password information view */
+"applicationPassword.info.gotIt.button" = "הבנתי";
 
-/* Title for the new application passwords feature */
-"application.password.new.title" = "חדש: סיסמאות אפליקציה";
+/* Title for the application passwords information view */
+"applicationPassword.info.title" = "מידע על סיסמאות אפליקציה";
 
 /* Title of row for displaying an application password's creation date */
 "applicationPassword.item.creationDate" = "תאריך יצירה";
 
-/* Title of row for displaying an application password's last used date
-   Title of row for displaying an application password's last used IP address */
+/* Footer message indicating that this application password is currently active and being used by the app */
+"applicationPassword.item.currentlyInUse" = "סיסמת אפליקציה זו נמצאת כעת בשימוש האפליקציה.";
+
+/* Title of row for displaying an application password's last used date */
 "applicationPassword.item.lastUsed" = "השימוש האחרון";
+
+/* Title of row for displaying an application password's last used IP address */
+"applicationPassword.item.lastUsedIp" = "כתובת ה-IP האחרונה";
 
 /* Title of row for displaying an application password name */
 "applicationPassword.item.name" = "שם";
 
 /* Title of section for displaying application password details */
 "applicationPassword.item.section.security" = "אבטחה";
+
+/* String format of creation date of an application password. There is one argument: the creation date relative to now (i.e. 5 days ago). */
+"applicationPassword.list.item.created-date-format" = "נוצר בתאריך %@";
 
 /* String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago). */
 "applicationPassword.list.item.last-used-format" = "השימוש האחרון: %@";
@@ -7450,8 +7363,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "לא ניתן היה למצור את כתובת ה-URL של האתר הנוכחי";
 
+/* Error message shown when the site doesn't support Application Passwords feature */
+"applicationPasswordMigration.error.unsupported" = "האתר שצוין לא תומך בסיסמאות אפליקציה.";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "עליך להתחבר באמצעות המשתמש \"%@\"";
+
+/* Error message when the site's REST API is not accessible for application password creation */
+"applicationPasswordRepository.error.restApiInaccessible" = "לא ניתן לגשת ל-REST API של האתר";
+
+/* Error message when application password creation fails for unknown reasons */
+"applicationPasswordRepository.error.unknown" = "אין אפשרות ליצור סיסמת אפליקציה";
+
+/* Error message when the username cannot be found for application password creation */
+"applicationPasswordRepository.error.usernameNotFound" = "לא ניתן למצוא את שם המשתמש עבור האתר";
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "סיסמאות אפליקציה הן דרך מאובטחת יותר להתחבר לאתר באחסון עצמי, והן מאפשרות תמיכה באפשרויות כמו %@.";
@@ -7459,7 +7384,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "ניהול תוספים";
 
-/* Feature name for managing users in the app */
+/* Feature name for managing application passwords in the app
+   Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "ניהול משתמשים";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -8080,6 +8006,27 @@ Example: Reply to Pamela Nguyen */
 /* No comment provided by engineer. */
 "double-tap to change unit" = "יש להקיש פעמיים כדי לשנות את היחידה";
 
+/* Message for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.message" = "האם ברצונך למחוק את התגית הזאת?";
+
+/* Title for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.title" = "למחוק תגית";
+
+/* Placeholder text for tag description field */
+"edit.tag.description.placeholder" = "להוסיף תיאור...";
+
+/* Placeholder text for tag name field */
+"edit.tag.name.placeholder" = "שם התג";
+
+/* Navigation title for new tag creation */
+"edit.tag.new.title" = "תגית חדשה";
+
+/* Section header for tag description in edit tag view */
+"edit.tag.section.description" = "תיאור";
+
+/* Section header for tag name in edit tag view */
+"edit.tag.section.tag" = "תגית";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "לדוגמה 1122334455";
 
@@ -8591,6 +8538,558 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "עליך להתחבר באמצעות %@ כדי להשתמש ב'נתונים סטטיסטיים' וב'הודעות'.";
 
+/* Accessibility label for add card button */
+"jetpackStats.accessibility.addCardButton" = "להוסיף כרטיס חדש של נתונים סטטיסטיים";
+
+/* Accessibility label for back navigation */
+"jetpackStats.accessibility.backToStats" = "בחזרה לנתונים הסטטיסטיים";
+
+/* Card title accessibility label. %1$@ is the card title. */
+"jetpackStats.accessibility.cardTitle" = "כרטיס %1$@";
+
+/* Accessibility label for chart container */
+"jetpackStats.accessibility.chartContainer" = "תרשים נתונים סטטיסטיים";
+
+/* Chart trend accessibility label. %1$@ is metric name, %2$@ is trend description. */
+"jetpackStats.accessibility.chartTrend" = "%1$@ %2$@";
+
+/* Chart data point accessibility label. %1$@ is metric name, %2$@ is value, %3$@ is date. */
+"jetpackStats.accessibility.chartValue" = "%1$@:‏ %2$@ בתאריך %3$@";
+
+/* Selected date range accessibility label. %1$@ is the range. */
+"jetpackStats.accessibility.dateRangeSelected" = "טווח תאריכים: %1$@";
+
+/* Accessibility label for error state */
+"jetpackStats.accessibility.errorLoadingStats" = "שגיאת בטעינת הנתונים הסטטיסטיים";
+
+/* Accessibility label for loading state */
+"jetpackStats.accessibility.loadingStats" = "טוען נתונים סטטיסטיים";
+
+/* Accessibility label for more options menu */
+"jetpackStats.accessibility.moreOptions" = "אפשרויות נוספות";
+
+/* Accessibility hint for next period navigation */
+"jetpackStats.accessibility.navigateToNextDateRange" = "לנווט לטווח התאריכים הבא";
+
+/* Accessibility hint for previous period navigation */
+"jetpackStats.accessibility.navigateToPreviousDateRange" = "לנווט לטווח התאריכים הקודם";
+
+/* Accessibility label for next period navigation button */
+"jetpackStats.accessibility.nextPeriod" = "התקופה הבאה";
+
+/* Accessibility label for empty data state */
+"jetpackStats.accessibility.noDataAvailable" = "אין נתונים זמינים לתקופה זו";
+
+/* Accessibility label for opening link in browser */
+"jetpackStats.accessibility.openInBrowser" = "לפתוח בדפדפן";
+
+/* Accessibility label for previous period navigation button */
+"jetpackStats.accessibility.previousPeriod" = "התקופה הקודמת";
+
+/* Accessibility label for realtime visitor count */
+"jetpackStats.accessibility.realtimeVisitorCount" = "מבקרים במצב מחובר כעת";
+
+/* Accessibility hint for retry action */
+"jetpackStats.accessibility.retryLoadingStats" = "יש להקיש פעמיים כדי לנסות לטעון את הנתונים הסטטיסטיים שוב";
+
+/* Accessibility hint for date range selection */
+"jetpackStats.accessibility.selectDateRange" = "יש לבחור טווח תאריכים";
+
+/* Accessibility hint for tab selection. %1$@ is the tab name. */
+"jetpackStats.accessibility.selectTab" = "יש לבחור את הלשונית '%1$@'";
+
+/* Accessibility announcement when stats finish loading */
+"jetpackStats.accessibility.statsLoaded" = "הנתונים הסטטיסטיים נטענו";
+
+/* Accessibility label for stats tab bar */
+"jetpackStats.accessibility.statsTabBar" = "לשוניות לניווט ב'נתונים סטטיסטיים'";
+
+/* Accessibility announcement when a tab is selected. %1$@ is the tab name. */
+"jetpackStats.accessibility.tabSelected" = "הלשונית '%1$@' נבחרה";
+
+/* Top list item accessibility label. %1$d is rank, %2$@ is title, %3$@ is value. */
+"jetpackStats.accessibility.topListItem" = "דירוג ⁦%1$d⁩: %2$@,‏ %3$@";
+
+/* Accessibility hint for viewing chart data */
+"jetpackStats.accessibility.viewChartData" = "להציג נתוני תרשים מפורטים";
+
+/* Accessibility hint for items that can show more details */
+"jetpackStats.accessibility.viewMoreDetails" = "יש להקיש פעמיים כדי להציג פרטים נוספים";
+
+/* Singular visitor count. %1$d is the number. */
+"jetpackStats.accessibility.visitorNow" = "מבקר ⁦%1$d⁩ באתר עכשיו";
+
+/* Plural visitors count. %1$d is the number. */
+"jetpackStats.accessibility.visitorsNow" = "⁦%1$d⁩ מבקרים באתר עכשיו";
+
+/* Chart option description */
+"jetpackStats.addChart.chartDescription" = "להציג תצוגה חזותית של המגמות לאורך זמן";
+
+/* Chart option title */
+"jetpackStats.addChart.chartOption" = "תרשים";
+
+/* Title for data type selection */
+"jetpackStats.addChart.selectDataType" = "לבחור את סוג הנתונים";
+
+/* Title for metric selection */
+"jetpackStats.addChart.selectMetric" = "לבחור מדדים";
+
+/* Top list option description */
+"jetpackStats.addChart.topListDescription" = "להציג תוכן עם ביצועים מובילים";
+
+/* Top list option title */
+"jetpackStats.addChart.topListOption" = "רשימת פוסטים";
+
+/* Archive section for authors */
+"jetpackStats.archiveSections.author" = "מחברים";
+
+/* Plural item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.plural" = "⁦%1$d⁩ פריטים";
+
+/* Singular item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.singular" = "פריט ⁦%1$d⁩";
+
+/* Archive section for other items */
+"jetpackStats.archiveSections.other" = "אחר";
+
+/* Title for the author details screen */
+"jetpackStats.authorDetails.title" = "מחבר";
+
+/* Button to add a new chart */
+"jetpackStats.button.addCard" = "להוסיף כרטיס";
+
+/* Apply button */
+"jetpackStats.button.apply" = "להחיל";
+
+/* Cancel button */
+"jetpackStats.button.cancel" = "לבטל";
+
+/* Button to customize a chart or widget */
+"jetpackStats.button.customize" = "לערוך כרטיס";
+
+/* Button to delete a chart or widget */
+"jetpackStats.button.deleteWidget" = "למחוק כרטיס";
+
+/* Done button */
+"jetpackStats.button.done" = "בוצע";
+
+/* Button to download data as CSV file */
+"jetpackStats.button.downloadCSV" = "להוריד CSV";
+
+/* Learn more about stats button */
+"jetpackStats.button.learnMore" = "למידע נוסף";
+
+/* Button to move a card */
+"jetpackStats.button.moveCard" = "להעביר כרטיס";
+
+/* Button to move card down */
+"jetpackStats.button.moveDown" = "להעביר למטה";
+
+/* Button to move card to the bottom */
+"jetpackStats.button.moveToBottom" = "להעביר לתחתית";
+
+/* Button to move card to the top */
+"jetpackStats.button.moveToTop" = "להעביר לחלק העליון";
+
+/* Button to move card up */
+"jetpackStats.button.moveUp" = "להעביר למעלה";
+
+/* OK button */
+"jetpackStats.button.ok" = "אישור";
+
+/* Button to reset chart settings to default */
+"jetpackStats.button.resetSettings" = "לאפס את ההגדרות";
+
+/* Share chart menu item */
+"jetpackStats.button.share" = "לשתף";
+
+/* Button title */
+"jetpackStats.button.showAll" = "להציג הכול";
+
+/* Button to collapse and show fewer items */
+"jetpackStats.button.showLess" = "להציג פחות";
+
+/* Button to expand and show more items */
+"jetpackStats.button.showMore" = "להציג עוד";
+
+/* Last 10 years date range */
+"jetpackStats.calendar.last10Years" = "10 הימים האחרונים";
+
+/* Last 12 months date range */
+"jetpackStats.calendar.last12Months" = "12 החודשים האחרונים";
+
+/* Last 28 days date range */
+"jetpackStats.calendar.last28Days" = "28 הימים האחרונים";
+
+/* Last 30 days date range */
+"jetpackStats.calendar.last30Days" = "30 הימים האחרונים";
+
+/* Last 3 years date range */
+"jetpackStats.calendar.last3Years" = "שלוש השנים האחרונות";
+
+/* Last 6 months date range */
+"jetpackStats.calendar.last6Months" = "ששת החודשים האחרונים";
+
+/* Last 7 days date range */
+"jetpackStats.calendar.last7Days" = "שבעת הימים האחרונים";
+
+/* Last 90 days date range */
+"jetpackStats.calendar.last90Days" = "90 הימים האחרונים";
+
+/* Month time period */
+"jetpackStats.calendar.month" = "חודש";
+
+/* Quarter time period */
+"jetpackStats.calendar.quarter" = "רבעון";
+
+/* This month date range */
+"jetpackStats.calendar.thisMonth" = "החודש";
+
+/* This quarter date range */
+"jetpackStats.calendar.thisQuarter" = "הרבעון הזה";
+
+/* This week date range */
+"jetpackStats.calendar.thisWeek" = "השבוע";
+
+/* This year date range */
+"jetpackStats.calendar.thisYear" = "השנה";
+
+/* Today date range */
+"jetpackStats.calendar.today" = "היום";
+
+/* Week time period */
+"jetpackStats.calendar.week" = "שבוע";
+
+/* Year time period */
+"jetpackStats.calendar.year" = "שנה";
+
+/* Bar chart type */
+"jetpackStats.chart.barChart" = "עמודות";
+
+/* Shown for empty states */
+"jetpackStats.chart.dataEmpty" = "אין נתונים לתקופה";
+
+/* Genertic error message */
+"jetpackStats.chart.generitcError" = "משהו השתבש";
+
+/* Shown for metrics that don't support hourly data */
+"jetpackStats.chart.hourlyDataNotAvailable" = "הנתונים השעתיים לא זמינים";
+
+/* Shown when current period data might be incomplete */
+"jetpackStats.chart.incompleteData" = "ייתכן שיוצגו נתונים חסרים";
+
+/* Line chart type */
+"jetpackStats.chart.lineChart" = "שורות";
+
+/* Show chart data menu item */
+"jetpackStats.chart.showData" = "להציג נתונים";
+
+/* Label for change value */
+"jetpackStats.chartData.change" = "לשנות";
+
+/* Column header for date */
+"jetpackStats.chartData.date" = "תאריך";
+
+/* Section title for detailed data */
+"jetpackStats.chartData.detailedData" = "נתונים מפורטים";
+
+/* Label for previous value */
+"jetpackStats.chartData.previous" = "הקודם";
+
+/* Title for chart data screen */
+"jetpackStats.chartData.title" = "נתוני תרשים";
+
+/* Label for total value */
+"jetpackStats.chartData.total" = "סכום כולל";
+
+/* Column header for value */
+"jetpackStats.chartData.value" = "ערך";
+
+/* Context menu action to copy country name */
+"jetpackStats.contextMenu.copyCountryName" = "להעתיק שם ארץ";
+
+/* Context menu action to copy domain */
+"jetpackStats.contextMenu.copyDomain" = "להעתיק דומיין";
+
+/* Context menu action to copy file name */
+"jetpackStats.contextMenu.copyFileName" = "להעתיק את שם הקובץ";
+
+/* Context menu action to copy file path */
+"jetpackStats.contextMenu.copyFilePath" = "להעתיק את הנתיב של הקובץ";
+
+/* Context menu action to copy name */
+"jetpackStats.contextMenu.copyName" = "להעתיק שם";
+
+/* Context menu action to copy search term */
+"jetpackStats.contextMenu.copySearchTerm" = "להעתיק מונח חיפוש";
+
+/* Context menu action to copy title */
+"jetpackStats.contextMenu.copyTitle" = "להעתיק כותרת";
+
+/* Context menu action to copy URL */
+"jetpackStats.contextMenu.copyURL" = "להעתיק כתובת URL";
+
+/* Context menu action to copy video URL */
+"jetpackStats.contextMenu.copyVideoURL" = "להעתיק את כתובת ה-URL של הווידאו";
+
+/* Context menu action to open link in browser */
+"jetpackStats.contextMenu.openInBrowser" = "לפתוח בדפדפן";
+
+/* Context menu action to search term in Google */
+"jetpackStats.contextMenu.searchInGoogle" = "לחפש ב-Google";
+
+/* Message shown when a country has no views */
+"jetpackStats.countries.noViews" = "אין צפיות";
+
+/* CSV header for country column */
+"jetpackStats.csv.country" = "ארץ";
+
+/* CSV header for country code column */
+"jetpackStats.csv.countryCode" = "קוד ארץ";
+
+/* CSV header for date column */
+"jetpackStats.csv.date" = "תאריך";
+
+/* CSV header for domain column */
+"jetpackStats.csv.domain" = "דומיין";
+
+/* CSV header for file name column */
+"jetpackStats.csv.fileName" = "שם הקובץ";
+
+/* CSV header for file path column */
+"jetpackStats.csv.filePath" = "נתיב הקובץ";
+
+/* CSV header for name column */
+"jetpackStats.csv.name" = "שם";
+
+/* CSV header for role column */
+"jetpackStats.csv.role" = "תפקיד";
+
+/* CSV header for search term column */
+"jetpackStats.csv.searchTerm" = "מונח חיפוש";
+
+/* CSV header for section column */
+"jetpackStats.csv.section" = "מקטע";
+
+/* CSV header for title column */
+"jetpackStats.csv.title" = "כותרת";
+
+/* CSV header for type column */
+"jetpackStats.csv.type" = "סוג";
+
+/* CSV header for URL column */
+"jetpackStats.csv.url" = "כתובת URL";
+
+/* CSV header for video URL column */
+"jetpackStats.csv.videoURL" = "כתובת ה-URL של הווידאו";
+
+/* Title for comparison menu */
+"jetpackStats.datePicker.compareWith" = "להשוות מול...";
+
+/* Title for custom date range picker */
+"jetpackStats.datePicker.customRange" = "טווח מותאם";
+
+/* Menu item for custom date range picker */
+"jetpackStats.datePicker.customRangeMenu" = "טווח מותאם...";
+
+/* From date label */
+"jetpackStats.datePicker.from" = "מאת";
+
+/* Compare with same period last year option */
+"jetpackStats.datePicker.lastYear" = "השנה הקודמת";
+
+/* Menu item for more date period options */
+"jetpackStats.datePicker.morePeriods" = "תקופות נוספות...";
+
+/* Compare with preceding period option */
+"jetpackStats.datePicker.precedingPeriod" = "התקופה הקודמת";
+
+/* Label for quick period selection */
+"jetpackStats.datePicker.quickPeriodsForStartDate" = "תקופות קצרות לתאריך ההתחלה";
+
+/* Site time zone header */
+"jetpackStats.datePicker.siteTimeZone" = "אזור הזמן של האתר";
+
+/* Explanation of how stats are reported in site time zone */
+"jetpackStats.datePicker.siteTimeZoneDescription" = "הנתונים הסטטיסטיים מדווחים ומוצגים לפי אזור הזמן של האתר שלך. אם מבקר מגיע לאתר שלך ביום שלישי באזור הזמן שלו, אך התאריך הוא יום שני לפי אזור הזמן של האתר, הביקור מתועד ליום שני.";
+
+/* To date label */
+"jetpackStats.datePicker.to" = "אל";
+
+/* Section title for the list of child links */
+"jetpackStats.externalLinkDetails.childLinks" = "קישורי משנה";
+
+/* Button to open the external link in browser */
+"jetpackStats.externalLinkDetails.openLink" = "פתיחת קישור";
+
+/* Title for the external link details screen */
+"jetpackStats.externalLinkDetails.title" = "קישור חיצוני";
+
+/* Label for daily average in tooltip */
+"jetpackStats.postDetails.dailyAverage" = "ממוצע יומי";
+
+/* Title for email metrics card */
+"jetpackStats.postDetails.emailMetrics" = "הודעות אימייל";
+
+/* Must be short!Label for emails sent metric */
+"jetpackStats.postDetails.emailsSent" = "הודעות אימייל שנשלחו";
+
+/* Legend label for lower activity */
+"jetpackStats.postDetails.less" = "פחות";
+
+/* Singular like count. %1$d is the number. */
+"jetpackStats.postDetails.like" = "לייק ⁦%1$d⁩";
+
+/* Plural likes count. %1$d is the number. */
+"jetpackStats.postDetails.likes" = "⁦%1$d⁩ לייקים";
+
+/* Title for monthly activity heatmap */
+"jetpackStats.postDetails.monthsAndYears" = "החודשים האחרונים";
+
+/* Legend label for higher activity */
+"jetpackStats.postDetails.more" = "עוד";
+
+/* Label */
+"jetpackStats.postDetails.noLikesYet" = "עדיין אין לייקים";
+
+/* Must be short! Label for email open rate metric */
+"jetpackStats.postDetails.openRate" = "שיעור אירועי פתיחה";
+
+/* Shows when the post was published. %1$@ is the formatted date. */
+"jetpackStats.postDetails.published" = "פורסם %1$@";
+
+/* Title for recent weeks activity heatmap */
+"jetpackStats.postDetails.recentWeeks" = "שבועות אחרונים";
+
+/* Navigation title */
+"jetpackStats.postDetails.title" = "נתונים סטטיסטיים של הפוסט";
+
+/* Must be short!Label for total email opens metric */
+"jetpackStats.postDetails.totalOpens" = "סך כל אירועי הפתיחה";
+
+/* Must be short!Label for unique email opens metric */
+"jetpackStats.postDetails.uniqueOpens" = "אירועי פתיחה ייחודיים";
+
+/* Label for week-over-week comparison in tooltip */
+"jetpackStats.postDetails.weekOverWeek" = "שבוע מול שבוע";
+
+/* Label for weekly total in tooltip */
+"jetpackStats.postDetails.weekTotal" = "סך הכול לשבוע";
+
+/* Title for weekly activity heatmap */
+"jetpackStats.postDetails.weeklyActivity" = "פעילות שבועית";
+
+/* Title for error alert when marking referrer as spam fails */
+"jetpackStats.referrerDetails.errorAlertTitle" = "שגיאה";
+
+/* Button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpam" = "לסמן כ'תגובת זבל'";
+
+/* Error message when marking a referrer as spam fails */
+"jetpackStats.referrerDetails.markAsSpamError" = "הסימון כ'תגובת זבל' נכשל";
+
+/* Label shown when a referrer is already marked as spam */
+"jetpackStats.referrerDetails.markedAsSpam" = "סומן כ'תגובת זבל'";
+
+/* Section title for the list of referral sources */
+"jetpackStats.referrerDetails.referralSources" = "מקורות הפניה";
+
+/* Title for the referrer details screen */
+"jetpackStats.referrerDetails.title" = "מקור הפנייה";
+
+/* Archive data type */
+"jetpackStats.siteDataTypes.archive" = "לאחסן בארכיון";
+
+/* Authors data type */
+"jetpackStats.siteDataTypes.authors" = "מחברים";
+
+/* External links data type */
+"jetpackStats.siteDataTypes.externalLinks" = "קישורים חיצוניים";
+
+/* File downloads data type */
+"jetpackStats.siteDataTypes.fileDownloads" = "הורדות קבצים";
+
+/* Locations data type */
+"jetpackStats.siteDataTypes.locations" = "מיקומים";
+
+/* Posts and pages data type */
+"jetpackStats.siteDataTypes.postsAndPages" = "פוסטים ועמודים";
+
+/* Referrers data type */
+"jetpackStats.siteDataTypes.referrers" = "מקורות הפניה";
+
+/* Search terms data type */
+"jetpackStats.siteDataTypes.searchTerms" = "מונחי חיפוש";
+
+/* Videos data type */
+"jetpackStats.siteDataTypes.videos" = "סרטוני וידאו";
+
+/* Bounce rate metric */
+"jetpackStats.siteMetrics.bounceRate" = "שיעור נטישה";
+
+/* Site comments metric */
+"jetpackStats.siteMetrics.comments" = "תגובות";
+
+/* Download count */
+"jetpackStats.siteMetrics.downloads" = "הורדות";
+
+/* Site likes metric */
+"jetpackStats.siteMetrics.likes" = "לייקים";
+
+/* Site posts metric */
+"jetpackStats.siteMetrics.posts" = "פוסטים";
+
+/* Time on site metric */
+"jetpackStats.siteMetrics.timeOnSite" = "זמן באתר";
+
+/* Site views metric */
+"jetpackStats.siteMetrics.views" = "צפיות";
+
+/* Site visitors metric */
+"jetpackStats.siteMetrics.visitors" = "מבקרים";
+
+/* Current active visitors metric */
+"jetpackStats.siteMetrics.visitorsNow" = "מבקרים עכשיו";
+
+/* Insights tab */
+"jetpackStats.tabs.insights" = "תובנות";
+
+/* Realtime tab */
+"jetpackStats.tabs.realtime" = "בזמן אמת";
+
+/* Subscribers tab */
+"jetpackStats.tabs.subscribers" = "מנויים";
+
+/* Traffic tab */
+"jetpackStats.tabs.traffic" = "תעבורה";
+
+/* Stats screen title */
+"jetpackStats.title" = "נתונים סטטיסטיים";
+
+/* Title for items with highest bounce rate */
+"jetpackStats.topList.highestBounceRate" = "שיעור הנטישה הגבוה ביותר";
+
+/* Title for items with longest time on site */
+"jetpackStats.topList.longestTimeOnSite" = "הכי הרבה זמן באתר";
+
+/* Title for most commented items */
+"jetpackStats.topList.mostCommented" = "התוכן עם הכי הרבה תגובות";
+
+/* Title for chart */
+"jetpackStats.topList.mostDownloads" = "התוכן עם הכי הרבה הורדות";
+
+/* Title for most liked items */
+"jetpackStats.topList.mostLiked" = "התוכן עם הכי הרבה לייקים";
+
+/* Title for most posts (per author) */
+"jetpackStats.topList.mostPosts" = "כמות הפוסטים הגבוהה ביותר";
+
+/* Title for most viewed items */
+"jetpackStats.topList.mostViewed" = "התוכן הנצפה ביותר";
+
+/* Title for items with most visitors */
+"jetpackStats.topList.mostVisitors" = "כמות המבקרים הגבוהה ביותר";
+
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "למידע נוסף";
 
@@ -9095,6 +9594,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Pages by me";
 
+/* Title for the parent page picker screen */
+"parentPagePicker.title" = "עמוד הורה";
+
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "עמוד הורה";
 
@@ -9248,6 +9750,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to view plugin on WordPress.org */
 "pluginDetails.viewOnWordPressOrg.button" = "להציג ב-WordPress.org";
 
+/* Title for the post author selection screen */
+"postAuthorPicker.title" = "מחבר";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "לבטל את השינויים";
 
@@ -9322,6 +9827,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "שומר טיוטה...";
+
+/* Empty state description when no post formats are available */
+"postFormatPicker.emptyState.description" = "סוגי הפוסטים לא הוגדרו עבור אתר זה.";
+
+/* Empty state title when no post formats are available */
+"postFormatPicker.emptyState.title" = "לא נמצאו סוגי פוסטים";
+
+/* Navigation bar title for the Post Format picker */
+"postFormatPicker.navigationTitle" = "סוג פוסט";
+
+/* Error message when post formats refresh fails */
+"postFormatPicker.refreshErrorMessage" = "הרענון של סוגי הפוסטים נכשל";
 
 /* Button title */
 "postFromAudio.beginRecording" = "להתחיל הקלטה";
@@ -9467,8 +9984,42 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "ללא כותרת";
 
+/* Label for the author field in Post Settings */
+"postSettings.author.label" = "מחבר";
+
+/* Label for the add category button field. Should be the same as WP core. */
+"postSettings.categories.addCategoryButton" = "להוסיף קטגוריה";
+
+/* Label for the categories field. Should be the same as WP core.
+   Label for the category field. Should be the same as WP core. */
+"postSettings.categories.label" = "קטגוריות";
+
+/* Button to confirm discarding changes */
+"postSettings.discardChanges.button" = "לבטל את השינויים";
+
+/* Message for the discard changes confirmation dialog */
+"postSettings.discardChanges.message" = "ביצעת שינויים שלא נשמרו. האם ברצונך לבטל אותם?";
+
+/* Title for the discard changes confirmation dialog */
+"postSettings.discardChanges.title" = "האם לבטל את השינויים?";
+
+/* Character count for excerpt. %1$d is the number of characters. */
+"postSettings.excerpt.characterCount" = "⁦%1$d⁩ תווים";
+
+/* Section header for Excerpt in Post Settings */
+"postSettings.excerpt.header" = "תקציר";
+
+/* Placeholder text for the excerpt field in Post Settings */
+"postSettings.excerpt.placeholder" = "יש לכתוב סיכום קצר של הפוסט שלך כדי שיופיע באינדקס של הבלוג, בארכיונים ובתוצאות חיפוש.";
+
+/* Word count for excerpt. %1$d is the number of words. */
+"postSettings.excerpt.wordCount" = "⁦%1$d⁩ מילים";
+
 /* Cancel upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.cancelUpload" = "לבטל את ההעלאה";
+
+/* Section header for Featured Image in Post Settings */
+"postSettings.featuredImage.header" = "תמונה ראשית";
 
 /* Replace image upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.replaceImage" = "להחליף";
@@ -9482,20 +10033,77 @@ Example: Reply to Pamela Nguyen */
 /* Post Settings */
 "postSettings.featuredImage.uploading" = "מעלה…";
 
-/* The 'Parent Page' setting of the post */
-"postSettings.parentPage" = "עמוד הורה";
+/* Label for the last edited field in Post Settings */
+"postSettings.lastEdited.label" = "עריכה אחרונה";
 
-/* The 'Pending Review' setting of the post */
-"postSettings.pendingReview" = "בהמתנה לבדיקה";
+/* Section header for Info in Post Settings */
+"postSettings.metadata.header" = "מידע";
 
-/* Section title for the disabled Twitter service in the Post Settings screen */
-"postSettings.section.disabledTwitter.header" = "האפשרות לשיתוף אוטומטי בטוויטר כבר לא זמינה";
+/* Section header for More Options in Post Settings. Should use the same translation as core WP. */
+"postSettings.moreOptions.header" = "אפשרויות נוספות";
 
-/* Section title for Page Attributes */
-"postSettings.section.pageAttributes" = "מאפייני עמוד";
+/* The title of the Page Settings screen. */
+"postSettings.navigationTitle.page" = "הגדרות עמוד";
 
-/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
-"postSettings.warningPostWillBePublishedAlertMessage" = "על ידי שינוי הנראות ל'פרטי', הפוסט יפורסם באופן מיידי";
+/* The title of the Post Settings screen. */
+"postSettings.navigationTitle.post" = "הגדרות פוסט";
+
+/* Label for the Organization area (categories, keywords, ...) in post settings. */
+"postSettings.organization.header" = "ארגון";
+
+/* Message when trying to save a deleted page */
+"postSettings.pageDeleted.message" = "העמוד נמחק וכבר לא ניתן לשמור אותו.";
+
+/* Title of alert when trying to save a deleted page */
+"postSettings.pageDeleted.title" = "העמוד נמחק";
+
+/* Cell title for the Top Level option case */
+"postSettings.parentPage.topLevel" = "עליון";
+
+/* Label for the pending review toggle in Post Settings */
+"postSettings.pendingReview.label" = "ביקורת ממתינה לאישור";
+
+/* Label for the permalink field in Post Settings */
+"postSettings.permalink.label" = "קישור קבוע";
+
+/* Message when trying to save a deleted post */
+"postSettings.postDeleted.message" = "הפוסט נמחק וכבר לא ניתן לשמור אותו.";
+
+/* Title of alert when trying to save a deleted post */
+"postSettings.postDeleted.title" = "הפוסט נמחק";
+
+/* Label for the post format field. Should be the same as WP core. */
+"postSettings.postFormat.label" = "סוג פוסט";
+
+/* Label for the post ID field in Post Settings */
+"postSettings.postID.label" = "מזהה";
+
+/* Label for the publish date field in Post Settings */
+"postSettings.publishDate.label" = "תאריך";
+
+/* Section header for General settings in Post Settings */
+"postSettings.section.general" = "כללי";
+
+/* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
+"postSettings.slug.hint" = "המזהה לכתובת היא גרסה ידידותית לכתובת URL של כותרת הפוסט.";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.label" = "מזהה לכתובת";
+
+/* Placeholder for the slug field */
+"postSettings.slug.placeholder" = "הזנת מזהה לכתובת";
+
+/* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
+"postSettings.stickyPost.label" = "דביק";
+
+/* Label for the add tags button field. Should be the same as WP core. */
+"postSettings.tags.addTagsButton" = "להוסיף תגיות";
+
+/* Label for the tags field. Should be the same as WP core. */
+"postSettings.tags.label" = "תגיות";
+
+/* Label for the visibility field in Post Settings */
+"postSettings.visibility.label" = "נראות";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "ביטול";
@@ -10870,6 +11478,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "סך כל המנויים";
 
+/* Menu item to send feedback about new stats experience */
+"stats.menu.sendFeedback" = "לשלוח משוב";
+
+/* Menu item to switch back to classic stats experience */
+"stats.menu.switchToClassic" = "מעבר לנתונים סטטיסטייים קלאסיים";
+
+/* Menu item to enable new stats experience */
+"stats.menu.tryNewStats" = "לנסות את הנתונים הסטטיסטיים החדשים";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
@@ -10905,6 +11522,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The label for the option to show Stats Traffic chart for Days. */
 "stats.traffic.days" = "ימים";
+
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.hours" = "שעות";
 
 /* The label for the option to show Stats Traffic chart for Months. */
 "stats.traffic.months" = "חודשים";
@@ -11242,6 +11862,33 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Reader לתמיכה ב-iOS";
 
+/* Button to add a new tag. %1$@ is the tag name. */
+"tags.add.button" = "להוסיף תגית: %1$@";
+
+/* Description for empty state when there are no tags */
+"tags.empty.description" = "תגיות עוזרות לארגן את התוכן שלך ולעזור לקוראים למצוא פוסטים קשורים בקלות.";
+
+/* Title for empty state when there are no tags */
+"tags.empty.title" = "ללא תגיות";
+
+/* Error message when tag data is invalid */
+"tags.error.invalid_tag" = "פרטי התגית לא תקינים. יש לנסות שוב.";
+
+/* Error message when the tags service cannot connect to the remote site */
+"tags.error.no_remote_service" = "לא הצלחנו להתחבר לאתר שלך. יש לבדוק את החיבור ולנסות שוב.";
+
+/* Button to remove a selected tag. %1$@ is the tag name. */
+"tags.remove.button" = "להסיר את %1$@";
+
+/* Placeholder text for the tag search field */
+"tags.search.placeholder" = "לחפש תגיות";
+
+/* Message shown when no tags are selected */
+"tags.selected.empty" = "לא נבחרה אף תגית";
+
+/* Title for the tags screen */
+"tags.title" = "תגיות";
+
 /* Title for placeholder in Tenor picker */
 "tenor.welcomeMessage" = "אפשר לחפש קובצי GIF ולהוסיף אותם לספריית המדיה שלך!";
 
@@ -11253,6 +11900,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "אזור זמן";
+
+/* Action button title to enable new stats from tip */
+"tips.newStats.action" = "להפעיל עכשיו";
+
+/* Tip for new stats feature */
+"tips.newStats.message" = "חוויה חדשה, מלוטשת ועוצמתית יותר עם הנתונים הסטטיסטיים. אפשר לחזור למצב הישן מתי שרוצים.";
+
+/* Tip for new stats feature */
+"tips.newStats.title" = "לנסות את הנתונים הסטטיסטיים החדשים";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "יש להחליק לימין כדי לגשת לאתר, ל-Reader, להודעות ולפרופיל שלך";

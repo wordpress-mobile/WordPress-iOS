@@ -45,9 +45,7 @@
 /* Approves a Comment */
 "Approve Comment" = "Odobri Komentar";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Autor";
 
@@ -111,9 +109,6 @@
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Otkaži";
 
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "Kategorije";
-
 /* Label for number of clicks.
    Period Stats 'Clicks' header */
 "Clicks" = "Klikovi";
@@ -168,15 +163,13 @@
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Nadzorna ploča";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Obriši";
 
 /* Text displayed in HUD while a media item is being deleted. */
 "Deleting..." = "Brišem...";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Opis";
 
@@ -249,9 +242,6 @@
 
 /* Generic error alert title */
 "Error" = "Greška";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "Istaknuta Slika";
 
 /* Example post title used in the login prologue screens. */
 "Getting Inspired" = "Inspiriran";
@@ -408,8 +398,7 @@
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "OK";
 
 /* Disabled */
@@ -457,9 +446,6 @@
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
 "Popular" = "Popularno";
-
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Post Format";
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
@@ -582,14 +568,8 @@
    Theme Support action title */
 "Support" = "Podrška";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "Tag";
-
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "Tagovi";
 
 /* Title of button that displays the App's terms of service */
@@ -709,9 +689,6 @@
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Pregledi";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "Vidljivost";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label

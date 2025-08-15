@@ -308,9 +308,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Soubor obsahuje vzor škodlivého kódu";
 
-/* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
-"A tag named '%@' already exists." = "Značka s názvem '%@' již existuje.";
-
 /* Placeholder text for the title of a site */
 "A title for the site" = "Přidat název pro tento web";
 
@@ -452,9 +449,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Screen reader text for button that adds a menu item */
 "Add new menu item" = "Přidat novou položku nabídky";
-
-/* Voiceover accessibility label for the tags field in blog post settings. */
-"Add new tags, separated by commas." = "Přidejte nové značky oddělené čárkami.";
 
 /* No comment provided by engineer. */
 "Add paragraph block" = "Přidat blok odstavců";
@@ -693,9 +687,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "Jste si jistý, že chcete smazat toto menu?";
 
-/* Message asking for confirmation on tag deletion */
-"Are you sure you want to delete this tag?" = "Opravdu chcete odstranit tento štítek?";
-
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Opravdu chcete odpojit Jetpack od webové stránky?";
 
@@ -755,9 +746,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Ověření potřebné pro hostitele: %@";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Autor";
 
@@ -1069,9 +1058,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Obsaďte film svého života.";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "Rubriky";
 
 /* Category menu item in share extension. */
 "Category" = "Rubrika";
@@ -1428,9 +1414,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Message to show when Publicize connect failed */
 "Connection failed" = "Připojování selhalo";
 
-/* Title of a prompt saying the app needs an internet connection before it can load post formats */
-"Connection not available" = "Připojení není povolené";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -1557,9 +1540,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Nepodařilo se připojit. Váš hostitel blokuje požadavky POST a aplikace je potřebuje, aby mohla komunikovat s vaším webem. Obraťte se na poskytovatele hostingu, aby tento problém vyřešil.";
 
 /* Error message when tag loading failed */
-"Couldn't load tags." = "Značky se nepodařilo načíst.";
-
-/* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Značky se nepodařilo načíst. Zmáčkni pro opakování.";
 
 /* Indicating that referrer couldn't be marked as spam */
@@ -1613,9 +1593,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Navigates to a new flow for site creation. */
 "Create a Site" = "Vytvořit web";
-
-/* Title of the button in the placeholder for an empty list of blog tags. */
-"Create a Tag" = "Vytvořit štítek";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Vytvořte ikonu webu";
@@ -1684,12 +1661,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Customize blocks" = "Přizpůsobte bloky";
 
-/* Title for the edition of the share message. */
-"Customize the message" = "Upravit zprávu";
-
-/* Hint displayed when the user is customizing the share message. */
-"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Přizpůsobte si zprávu, kterou chcete sdílet.\nPokud sem nepřidáte vlastní text, použijeme jako zprávu název příspěvku.";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Přizpůsobte si nastavení pro To se mi líbí, Komentáře, Sledování a další.";
 
@@ -1740,8 +1711,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Výchozí pro nové příspěvky";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Smazat";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1761,9 +1731,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Smazat menu";
 
-/* Delete Tag confirmation action title */
-"Delete this tag" = "Odstranit tento štítek";
-
 /* Text displayed in HUD after successfully deleting a media item */
 "Deleted!" = "Smazáno!";
 
@@ -1777,7 +1744,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Deny" = "Odmítnout";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Popis";
 
@@ -2299,14 +2265,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "Každý den v %@";
 
-/* Label for the excerpt field. Should be the same as WP core. */
-"Excerpt" = "Výpisek";
-
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "Délka výňatku (slova)";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
-"Excerpts are optional hand-crafted summaries of your content." = "Výpisky jsou volitelná shrnutí vašeho obsahu.";
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Nezahrnuje šablony, pluginy a obrázky";
@@ -2380,9 +2340,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Doporučené";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "Náhledový obrázek";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Načítám šablony...";
@@ -3001,9 +2958,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Nastavení Jetpack";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core. */
-"Jetpack Social" = "Jetpack sociální sítě";
-
 /* Insights 'Jetpack Social Connections' header
    Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Jetpack sociální připojení";
@@ -3362,9 +3316,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Marks comment as spam */
 "Mark as Spam" = "Označit jako spam";
 
-/* Label for the Mark as Sticky option in post settings. */
-"Mark as Sticky" = "Označit jako připnutý";
-
 /* Action title for unmarking referrer as spam */
 "Mark as not spam" = "Označit jako není spam";
 
@@ -3457,8 +3408,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menu";
 
-/* Invite Message Editor's Title
-   Label for the share message field on the post settings. */
+/* Invite Message Editor's Title */
 "Message" = "Zpráva";
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
@@ -3481,8 +3431,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Action button to display more available options */
 "More" = "Více";
 
-/* Action button to display more available options
-   Label for the More Options area in post settings. Should use the same translation as core WP. */
+/* Action button to display more available options */
 "More Options" = "Více nastavení";
 
 /* Label for the posting activity legend. */
@@ -3571,9 +3520,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "Jméno";
-
-/* Error to be displayed when a tag is empty */
-"Name Required" = "Jméno (vyžadováno)";
 
 /* No comment provided by engineer. */
 "Navigate Up" = "Přejděte nahoru";
@@ -3908,8 +3854,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -4075,8 +4020,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Stránka";
 
-/* Name of the button to open the page settings
-   The title of the Page Settings screen. */
+/* Name of the button to open the page settings */
 "Page Settings" = "Nastavení stránky";
 
 /* translators: accessibility text. %s: Page break text. */
@@ -4313,11 +4257,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Rubriky příspěvku";
 
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Formát příspěvku";
-
-/* Name of the button to open the post settings
-   The title of the Post Settings screen. */
+/* Name of the button to open the post settings */
 "Post Settings" = "Nastavení příspěvku";
 
 /* Window title for Post Stats view. */
@@ -4451,9 +4391,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Publikováno";
-
-/* Label for the publish date button. */
-"Publish Date" = "Datum publikování";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Publikovat stránku na:";
@@ -5203,9 +5140,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Výsledky lomítka";
 
-/* Label for the slug field. Should be the same as WP core. */
-"Slug" = "Slug";
-
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no fixed threats on your site." = "Na webu nejsou žádné opravené hrozby.";
 
@@ -5319,7 +5253,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sports site intent topic */
 "Sports" = "Sporty";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "Standardní";
 
 /* Label for selecting the Start Over Settings item
@@ -5349,9 +5284,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle giving the user more context about why to enable notifications. */
 "Stay in touch with like and comment notifications." = "Zůstaňte v kontaktu s upozorněním na lajky a komentáře.";
-
-/* This is the cell title. */
-"Stick post to the front page" = "Připnutý příspěvek na úvodní stránce";
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Zvýrazněný";
@@ -5448,31 +5380,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tablet web preview */
 "Tablet" = "Tablet";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "Štítek";
-
-/* Title of the alert indicating that a tag with that name already exists. */
-"Tag already exists" = "Značka již existuje";
-
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "Popis webu";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "Štítky";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "Štítky a Rubriky";
-
-/* Displayed when the user views tags in blog settings and there are no tags */
-"Tags created here can be quickly added to new posts" = "Zde vytvořené štítky mohou být rychle přidány do nových příspěvků";
-
-/* Label explaining why users might want to add tags. */
-"Tags help tell readers what a post is about. Separate different tags with commas." = "Štítky pomáhají čtenářům říct, o čem je příspěvek. Jednotlivé značky oddělte čárkami.";
 
 /* No comment provided by engineer. */
 "Take a Photo" = "Udělat fotku";
@@ -5552,9 +5469,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Klepnutím zobrazíte svůj web";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "Taxonomie";
 
 /* Technology site intent topic */
 "Technology" = "Technologie";
@@ -5694,9 +5608,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Web nemohl být exportován.";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
-"The slug is the URL-friendly version of the post title." = "Slug je název stránky (článku) v URL.";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "Zadaný uživatel nebyl nalezen. Zkontrolujte, jestli je to správně napsaný.";
@@ -6183,9 +6094,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Zruší schválení komentáře.";
 
-/* Message to show in the post-format cell when the post format is not available */
-"Unavailable" = "Nedostupné";
-
 /* When the App can't figure out what language a blog is configured to use. */
 "Undefined" = "Neurčeno";
 
@@ -6438,9 +6346,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights views and visitors header */
 "Views & Visitors" = "Zobrazení a návštěvníci";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "Viditelnost";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "Zobrazit %@";
@@ -6849,9 +6754,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views scheduled posts in the posts list and there are no posts */
 "You don't have any scheduled posts" = "Zatím nemáte žádné naplánované příspěvky";
-
-/* Empty state. Tags management (Settings > Writing > Tags) */
-"You don't have any tags" = "Zatím nemáte žádné štítky.";
 
 /* Displayed when the user views trashed in the pages list and there are no pages */
 "You don't have any trashed pages" = "Nemáte žádné stránky v koši";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-07-08 10:54:09+0000 */
+/* Translation-Revision-Date: 2025-08-14 10:54:11+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ja_JP */
@@ -314,9 +314,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "ファイルには、悪意のあるコードが含まれています";
 
-/* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
-"A tag named '%@' already exists." = "「%@」という名前のタグはすでに存在しています。";
-
 /* Placeholder text for the title of a site */
 "A title for the site" = "サイトのタイトル";
 
@@ -470,9 +467,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Screen reader text for button that adds a menu item */
 "Add new menu item" = "新しいメニュー項目を追加";
-
-/* Voiceover accessibility label for the tags field in blog post settings. */
-"Add new tags, separated by commas." = "カンマで区切って新しいタグを追加します。";
 
 /* No comment provided by engineer. */
 "Add paragraph block" = "段落ブロックを追加";
@@ -695,6 +689,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple の認証に失敗しました。\n二要素認証を使用している Apple ID で iCloud にログイン中かどうか確認してください。";
 
+/* Link to Application Passwords section */
+"Application Passwords" = "アプリケーションパスワード";
+
 /* No comment provided by engineer. */
 "Applies the setting" = "設定を適用";
 
@@ -725,9 +722,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "本当にメニューを削除してもよいですか ?";
-
-/* Message asking for confirmation on tag deletion */
-"Are you sure you want to delete this tag?" = "本当にこのタグを削除しますか ?";
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "このサイトから Jetpack の連携を解除してもよいですか ?";
@@ -788,9 +782,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "ホストに必要な認証:%@";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "投稿者";
 
@@ -1132,9 +1124,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "あなたの人生の映画をキャスティングしましょう。";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "カテゴリー";
 
 /* Category menu item in share extension. */
 "Category" = "カテゴリー";
@@ -1494,9 +1483,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Message to show when Publicize connect failed */
 "Connection failed" = "連携に失敗しました";
 
-/* Title of a prompt saying the app needs an internet connection before it can load post formats */
-"Connection not available" = "接続が利用できません";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -1635,9 +1621,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Couldn't load data. Please refresh again later." = "データを読み込めませんでした。 後ほど、再読み込みしてください。";
 
 /* Error message when tag loading failed */
-"Couldn't load tags." = "タグを読み込めませんでした。";
-
-/* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "タグを読み込めませんでした。タップして再試行します。";
 
 /* Indicating that referrer couldn't be marked as spam */
@@ -1691,9 +1674,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Navigates to a new flow for site creation. */
 "Create a Site" = "サイトを作成";
-
-/* Title of the button in the placeholder for an empty list of blog tags. */
-"Create a Tag" = "タグの作成";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "絵文字アイコンを作成";
@@ -1762,12 +1742,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Customize blocks" = "ブロックをカスタマイズ";
 
-/* Title for the edition of the share message. */
-"Customize the message" = "メッセージをカスタマイズ";
-
-/* Hint displayed when the user is customizing the share message. */
-"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "共有したいメッセージをカスタマイズできます。\nここに独自のテキストを追加しない場合は、投稿のタイトルをメッセージとして使います。";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "「いいね」、コメント、フォローなどのサイト設定をカスタマイズ。";
 
@@ -1821,8 +1795,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "新しい投稿のデフォルト";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "削除";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1842,9 +1815,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "メニューを削除";
 
-/* Delete Tag confirmation action title */
-"Delete this tag" = "このタグを削除";
-
 /* Text displayed in HUD after successfully deleting a media item */
 "Deleted!" = "削除しました。";
 
@@ -1861,7 +1831,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Describe the purpose of the image. Leave empty if decorative." = "画像の目的を説明します。 デザインである場合は、空欄のままにします。";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "説明";
 
@@ -2398,14 +2367,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "毎日%@時";
 
-/* Label for the excerpt field. Should be the same as WP core. */
-"Excerpt" = "抜粋";
-
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "抜粋の長さ (単語数)";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
-"Excerpts are optional hand-crafted summaries of your content." = "抜粋は、手動で書かれたコンテンツの要約です (オプション)。";
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "テーマ、プラグイン、アップロードを除く";
@@ -2482,9 +2445,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "おすすめ";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "アイキャッチ画像";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "テーマを取得中…";
@@ -3133,9 +3093,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack 設定";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core. */
-"Jetpack Social" = "Jetpack ソーシャル";
-
 /* Insights 'Jetpack Social Connections' header
    Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Jetpack ソーシャル連携";
@@ -3500,9 +3457,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Marks comment as spam */
 "Mark as Spam" = "スパムとしてマーク";
 
-/* Label for the Mark as Sticky option in post settings. */
-"Mark as Sticky" = "先頭固定表示にする";
-
 /* Action title for unmarking referrer as spam */
 "Mark as not spam" = "非スパムとしてマーク";
 
@@ -3595,8 +3549,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for screen that allows configuration of your site's menus */
 "Menus" = "メニュー";
 
-/* Invite Message Editor's Title
-   Label for the share message field on the post settings. */
+/* Invite Message Editor's Title */
 "Message" = "メッセージ";
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
@@ -3619,8 +3572,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Action button to display more available options */
 "More" = "続き";
 
-/* Action button to display more available options
-   Label for the More Options area in post settings. Should use the same translation as core WP. */
+/* Action button to display more available options */
 "More Options" = "追加設定";
 
 /* Label for the posting activity legend. */
@@ -3709,9 +3661,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "名前";
-
-/* Error to be displayed when a tag is empty */
-"Name Required" = "名前は必須項目です";
 
 /* No comment provided by engineer. */
 "Navigate Up" = "上に移動";
@@ -4058,8 +4007,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -4228,8 +4176,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "ページ";
 
-/* Name of the button to open the page settings
-   The title of the Page Settings screen. */
+/* Name of the button to open the page settings */
 "Page Settings" = "ページ設定";
 
 /* translators: accessibility text. %s: Page break text. */
@@ -4472,11 +4419,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "投稿カテゴリー";
 
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "投稿フォーマット";
-
-/* Name of the button to open the post settings
-   The title of the Post Settings screen. */
+/* Name of the button to open the post settings */
 "Post Settings" = "投稿設定";
 
 /* Window title for Post Stats view. */
@@ -4613,9 +4556,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "公開";
-
-/* Label for the publish date button. */
-"Publish Date" = "公開日";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "次にページを公開:";
@@ -5380,9 +5320,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "スラッシュインサーターの結果";
 
-/* Label for the slug field. Should be the same as WP core. */
-"Slug" = "スラッグ";
-
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no fixed threats on your site." = "これまでのところ、サイトで修正された脅威は見つかりませんでした。";
 
@@ -5496,7 +5433,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sports site intent topic */
 "Sports" = "スポーツ";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "標準";
 
 /* Label for selecting the Start Over Settings item
@@ -5526,9 +5464,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle giving the user more context about why to enable notifications. */
 "Stay in touch with like and comment notifications." = "いいねやコメントの通知で状況をリアルタイムで把握できます。";
-
-/* This is the cell title. */
-"Stick post to the front page" = "フロントページに投稿を固定表示";
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "先頭固定表示";
@@ -5628,31 +5563,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tablet web preview */
 "Tablet" = "タブレット";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "タグ";
-
-/* Title of the alert indicating that a tag with that name already exists. */
-"Tag already exists" = "タグはすでに存在します";
-
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "キャッチフレーズ";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "タグ";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "タグとカテゴリー";
-
-/* Displayed when the user views tags in blog settings and there are no tags */
-"Tags created here can be quickly added to new posts" = "ここで作成されたタグはすぐに新しい投稿に追加できます";
-
-/* Label explaining why users might want to add tags. */
-"Tags help tell readers what a post is about. Separate different tags with commas." = "タグは、投稿の内容を読者に伝えるのに役立ちます。異なるタグはコンマで区切ってください。";
 
 /* No comment provided by engineer. */
 "Take a Photo" = "写真を撮影する";
@@ -5744,9 +5664,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "タップして外部ブラウザーで Gravatar のサイトにアクセス";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "投稿カテゴリー・タグ";
 
 /* Technology site intent topic */
 "Technology" = "テクノロジー";
@@ -5892,9 +5809,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "このサイトはエクスポートできません。";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
-"The slug is the URL-friendly version of the post title." = "スラッグは、URL に適した形式の投稿タイトルです。";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "指定したユーザーが見つかりません。入力内容をご確認ください。";
@@ -6390,9 +6304,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "コメントを承認しません。";
 
-/* Message to show in the post-format cell when the post format is not available */
-"Unavailable" = "利用できません";
-
 /* When the App can't figure out what language a blog is configured to use. */
 "Undefined" = "未定義";
 
@@ -6660,9 +6571,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights views and visitors header */
 "Views & Visitors" = "表示数と訪問者数";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "表示状態";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "%@ へ移動";
@@ -7100,9 +7008,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views scheduled posts in the posts list and there are no posts */
 "You don't have any scheduled posts" = "予約済み投稿はありません";
 
-/* Empty state. Tags management (Settings > Writing > Tags) */
-"You don't have any tags" = "タグがありません";
-
 /* Displayed when the user views trashed in the pages list and there are no pages */
 "You don't have any trashed pages" = "ゴミ箱に移動したページはありません";
 
@@ -7416,27 +7321,35 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The list item of experimental features that users can choose to enable */
 "application-settings.experimental-features" = "試験用の機能";
 
-/* Button label to authorize application passwords */
-"application.password.authorize" = "認証";
+/* Complete information about application passwords with security benefits, creation process, management instructions, and revocation warning */
+"applicationPassword.info.content" = "アプリケーションパスワードは、このアプリが実際のアカウントパスワードを使用せずにサイトコンテンツにアクセスするための、より安全な方法です。\n\nサイトをアプリに追加すると、必要に応じてアプリケーションパスワードが自動的に作成されます。\n\nこれらのパスワードは、WordPress サイトの管理パネルにあるユーザープロフィールで表示および管理できます。\n\nアプリで使用しているアプリケーションパスワードを取り消すと、そのアプリによるサイトへのアクセスが終了します。 アプリによって作成されたアプリケーションパスワードを取り消すときは注意してください。";
 
-/* Description for the application passwords feature */
-"application.password.description" = "アプリケーションパスワードを使用してサイトのコンテンツにすばやく安全にアクセスする権限を、アプリに付与できるようになりました。";
+/* Button to dismiss the application password information view */
+"applicationPassword.info.gotIt.button" = "OK";
 
-/* Title for the new application passwords feature */
-"application.password.new.title" = "新規: アプリケーションパスワード";
+/* Title for the application passwords information view */
+"applicationPassword.info.title" = "アプリケーションパスワードについて";
 
 /* Title of row for displaying an application password's creation date */
 "applicationPassword.item.creationDate" = "作成日";
 
-/* Title of row for displaying an application password's last used date
-   Title of row for displaying an application password's last used IP address */
+/* Footer message indicating that this application password is currently active and being used by the app */
+"applicationPassword.item.currentlyInUse" = "このアプリケーションパスワードは現在アプリで使用されています。";
+
+/* Title of row for displaying an application password's last used date */
 "applicationPassword.item.lastUsed" = "最終使用日";
+
+/* Title of row for displaying an application password's last used IP address */
+"applicationPassword.item.lastUsedIp" = "前回の IP アドレス";
 
 /* Title of row for displaying an application password name */
 "applicationPassword.item.name" = "名前";
 
 /* Title of section for displaying application password details */
 "applicationPassword.item.section.security" = "セキュリティ";
+
+/* String format of creation date of an application password. There is one argument: the creation date relative to now (i.e. 5 days ago). */
+"applicationPassword.list.item.created-date-format" = "%@に作成済み";
 
 /* String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago). */
 "applicationPassword.list.item.last-used-format" = "最終使用日: %@";
@@ -7450,8 +7363,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "現在のサイトの URL を見つけることができません";
 
+/* Error message shown when the site doesn't support Application Passwords feature */
+"applicationPasswordMigration.error.unsupported" = "このサイトはアプリケーションパスワードをサポートしていません。";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "ユーザー「%@」でログインする必要があります";
+
+/* Error message when the site's REST API is not accessible for application password creation */
+"applicationPasswordRepository.error.restApiInaccessible" = "サイトの REST API にアクセスできません";
+
+/* Error message when application password creation fails for unknown reasons */
+"applicationPasswordRepository.error.unknown" = "アプリケーションパスワードを作成できません";
+
+/* Error message when the username cannot be found for application password creation */
+"applicationPasswordRepository.error.usernameNotFound" = "サイトのユーザー名が見つかりません";
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "アプリケーションパスワードを使用するとインストール型のサイトにより安全に接続でき、%@ などの機能がサポートされます。";
@@ -7459,7 +7384,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "プラグイン管理";
 
-/* Feature name for managing users in the app */
+/* Feature name for managing application passwords in the app
+   Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "ユーザー管理";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -8074,6 +8000,27 @@ Example: Reply to Pamela Nguyen */
 /* No comment provided by engineer. */
 "double-tap to change unit" = "ダブルタップして単位を変更";
 
+/* Message for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.message" = "このタグを削除してもよいですか ?";
+
+/* Title for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.title" = "タグを削除";
+
+/* Placeholder text for tag description field */
+"edit.tag.description.placeholder" = "説明を追加…";
+
+/* Placeholder text for tag name field */
+"edit.tag.name.placeholder" = "タグ名";
+
+/* Navigation title for new tag creation */
+"edit.tag.new.title" = "新規タグ";
+
+/* Section header for tag description in edit tag view */
+"edit.tag.section.description" = "説明";
+
+/* Section header for tag name in edit tag view */
+"edit.tag.section.tag" = "タグ";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "例「1122334455」";
 
@@ -8585,6 +8532,540 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "「統計と通知」を使用するには、%@ でログインする必要があります。";
 
+/* Accessibility label for add card button */
+"jetpackStats.accessibility.addCardButton" = "新しい統計カードを追加";
+
+/* Accessibility label for back navigation */
+"jetpackStats.accessibility.backToStats" = "統計に戻る";
+
+/* Card title accessibility label. %1$@ is the card title. */
+"jetpackStats.accessibility.cardTitle" = "%1$@カード";
+
+/* Accessibility label for chart container */
+"jetpackStats.accessibility.chartContainer" = "統計チャート";
+
+/* Chart data point accessibility label. %1$@ is metric name, %2$@ is value, %3$@ is date. */
+"jetpackStats.accessibility.chartValue" = "%1$@: %2$@ (%3$@)";
+
+/* Selected date range accessibility label. %1$@ is the range. */
+"jetpackStats.accessibility.dateRangeSelected" = "日付の範囲: %1$@";
+
+/* Accessibility label for error state */
+"jetpackStats.accessibility.errorLoadingStats" = "統計情報の読み込み中にエラーが発生しました";
+
+/* Accessibility label for loading state */
+"jetpackStats.accessibility.loadingStats" = "統計情報を読み込み中";
+
+/* Accessibility label for more options menu */
+"jetpackStats.accessibility.moreOptions" = "追加オプション";
+
+/* Accessibility hint for next period navigation */
+"jetpackStats.accessibility.navigateToNextDateRange" = "次の日付範囲に移動";
+
+/* Accessibility hint for previous period navigation */
+"jetpackStats.accessibility.navigateToPreviousDateRange" = "前の日付範囲に移動";
+
+/* Accessibility label for next period navigation button */
+"jetpackStats.accessibility.nextPeriod" = "次の期間";
+
+/* Accessibility label for empty data state */
+"jetpackStats.accessibility.noDataAvailable" = "この期間のデータがありません";
+
+/* Accessibility label for opening link in browser */
+"jetpackStats.accessibility.openInBrowser" = "ブラウザーで開く";
+
+/* Accessibility label for previous period navigation button */
+"jetpackStats.accessibility.previousPeriod" = "前の期間";
+
+/* Accessibility label for realtime visitor count */
+"jetpackStats.accessibility.realtimeVisitorCount" = "現在のオンライン訪問者数";
+
+/* Accessibility hint for retry action */
+"jetpackStats.accessibility.retryLoadingStats" = "ダブルタップして統計情報の読み込みを再試行します";
+
+/* Accessibility hint for date range selection */
+"jetpackStats.accessibility.selectDateRange" = "日付範囲を選択";
+
+/* Accessibility hint for tab selection. %1$@ is the tab name. */
+"jetpackStats.accessibility.selectTab" = "%1$@タブを選択";
+
+/* Accessibility announcement when stats finish loading */
+"jetpackStats.accessibility.statsLoaded" = "統計情報が読み込まれました";
+
+/* Accessibility label for stats tab bar */
+"jetpackStats.accessibility.statsTabBar" = "統計ナビゲーションタブ";
+
+/* Accessibility announcement when a tab is selected. %1$@ is the tab name. */
+"jetpackStats.accessibility.tabSelected" = "%1$@タブを選択済み";
+
+/* Top list item accessibility label. %1$d is rank, %2$@ is title, %3$@ is value. */
+"jetpackStats.accessibility.topListItem" = "順位%1$d: %2$@、%3$@";
+
+/* Accessibility hint for viewing chart data */
+"jetpackStats.accessibility.viewChartData" = "詳細なチャートデータを表示します";
+
+/* Accessibility hint for items that can show more details */
+"jetpackStats.accessibility.viewMoreDetails" = "ダブルタップして詳細を表示します";
+
+/* Singular visitor count. %1$d is the number. */
+"jetpackStats.accessibility.visitorNow" = "現在%1$d人の訪問者がオンライン";
+
+/* Plural visitors count. %1$d is the number. */
+"jetpackStats.accessibility.visitorsNow" = "現在%1$d人の訪問者がオンライン";
+
+/* Chart option description */
+"jetpackStats.addChart.chartDescription" = "トレンドの推移を可視化";
+
+/* Chart option title */
+"jetpackStats.addChart.chartOption" = "チャート";
+
+/* Title for data type selection */
+"jetpackStats.addChart.selectDataType" = "データタイプを選択";
+
+/* Title for metric selection */
+"jetpackStats.addChart.selectMetric" = "メトリクスを選択";
+
+/* Top list option description */
+"jetpackStats.addChart.topListDescription" = "パフォーマンス上位のコンテンツを見る";
+
+/* Top list option title */
+"jetpackStats.addChart.topListOption" = "トップリスト";
+
+/* Archive section for authors */
+"jetpackStats.archiveSections.author" = "投稿者";
+
+/* Plural item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.plural" = "%1$d個のアイテム";
+
+/* Singular item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.singular" = "%1$d個のアイテム";
+
+/* Archive section for other items */
+"jetpackStats.archiveSections.other" = "その他";
+
+/* Title for the author details screen */
+"jetpackStats.authorDetails.title" = "投稿者";
+
+/* Button to add a new chart */
+"jetpackStats.button.addCard" = "カードを追加";
+
+/* Apply button */
+"jetpackStats.button.apply" = "適用";
+
+/* Cancel button */
+"jetpackStats.button.cancel" = "キャンセル";
+
+/* Button to customize a chart or widget */
+"jetpackStats.button.customize" = "カードを編集";
+
+/* Button to delete a chart or widget */
+"jetpackStats.button.deleteWidget" = "カードを削除";
+
+/* Done button */
+"jetpackStats.button.done" = "完了";
+
+/* Button to download data as CSV file */
+"jetpackStats.button.downloadCSV" = "CSV をダウンロード";
+
+/* Learn more about stats button */
+"jetpackStats.button.learnMore" = "さらに詳しく";
+
+/* Button to move a card */
+"jetpackStats.button.moveCard" = "カードを移動";
+
+/* Button to move card down */
+"jetpackStats.button.moveDown" = "下に移動";
+
+/* Button to move card to the bottom */
+"jetpackStats.button.moveToBottom" = "一番下に移動";
+
+/* Button to move card to the top */
+"jetpackStats.button.moveToTop" = "一番上に移動";
+
+/* Button to move card up */
+"jetpackStats.button.moveUp" = "上に移動";
+
+/* Button to reset chart settings to default */
+"jetpackStats.button.resetSettings" = "設定をリセット";
+
+/* Share chart menu item */
+"jetpackStats.button.share" = "共有";
+
+/* Button title */
+"jetpackStats.button.showAll" = "すべて表示";
+
+/* Button to collapse and show fewer items */
+"jetpackStats.button.showLess" = "簡易表示";
+
+/* Button to expand and show more items */
+"jetpackStats.button.showMore" = "さらに表示";
+
+/* Last 10 years date range */
+"jetpackStats.calendar.last10Years" = "過去10年間";
+
+/* Last 12 months date range */
+"jetpackStats.calendar.last12Months" = "過去12か月";
+
+/* Last 28 days date range */
+"jetpackStats.calendar.last28Days" = "過去28日間";
+
+/* Last 30 days date range */
+"jetpackStats.calendar.last30Days" = "過去30日間";
+
+/* Last 3 years date range */
+"jetpackStats.calendar.last3Years" = "過去3年間";
+
+/* Last 6 months date range */
+"jetpackStats.calendar.last6Months" = "過去6か月";
+
+/* Last 7 days date range */
+"jetpackStats.calendar.last7Days" = "過去7日間";
+
+/* Last 90 days date range */
+"jetpackStats.calendar.last90Days" = "過去90日間";
+
+/* Month time period */
+"jetpackStats.calendar.month" = "月";
+
+/* Quarter time period */
+"jetpackStats.calendar.quarter" = "四半期";
+
+/* This month date range */
+"jetpackStats.calendar.thisMonth" = "今月";
+
+/* This quarter date range */
+"jetpackStats.calendar.thisQuarter" = "今四半期";
+
+/* This week date range */
+"jetpackStats.calendar.thisWeek" = "今週";
+
+/* This year date range */
+"jetpackStats.calendar.thisYear" = "今年";
+
+/* Today date range */
+"jetpackStats.calendar.today" = "今日";
+
+/* Week time period */
+"jetpackStats.calendar.week" = "週";
+
+/* Year time period */
+"jetpackStats.calendar.year" = "年";
+
+/* Bar chart type */
+"jetpackStats.chart.barChart" = "棒";
+
+/* Shown for empty states */
+"jetpackStats.chart.dataEmpty" = "期間のデータがありません";
+
+/* Genertic error message */
+"jetpackStats.chart.generitcError" = "エラーが発生しました";
+
+/* Shown for metrics that don't support hourly data */
+"jetpackStats.chart.hourlyDataNotAvailable" = "時間別データは利用できません";
+
+/* Shown when current period data might be incomplete */
+"jetpackStats.chart.incompleteData" = "不完全なデータが表示される可能性があります";
+
+/* Line chart type */
+"jetpackStats.chart.lineChart" = "折れ線";
+
+/* Show chart data menu item */
+"jetpackStats.chart.showData" = "データを表示";
+
+/* Label for change value */
+"jetpackStats.chartData.change" = "変更";
+
+/* Column header for date */
+"jetpackStats.chartData.date" = "日付";
+
+/* Section title for detailed data */
+"jetpackStats.chartData.detailedData" = "詳細データ";
+
+/* Label for previous value */
+"jetpackStats.chartData.previous" = "前";
+
+/* Title for chart data screen */
+"jetpackStats.chartData.title" = "チャートのデータ";
+
+/* Label for total value */
+"jetpackStats.chartData.total" = "合計";
+
+/* Column header for value */
+"jetpackStats.chartData.value" = "値";
+
+/* Context menu action to copy country name */
+"jetpackStats.contextMenu.copyCountryName" = "国名をコピー";
+
+/* Context menu action to copy domain */
+"jetpackStats.contextMenu.copyDomain" = "ドメインをコピー";
+
+/* Context menu action to copy file name */
+"jetpackStats.contextMenu.copyFileName" = "ファイル名をコピー";
+
+/* Context menu action to copy file path */
+"jetpackStats.contextMenu.copyFilePath" = "ファイルパスをコピー";
+
+/* Context menu action to copy name */
+"jetpackStats.contextMenu.copyName" = "名前をコピー";
+
+/* Context menu action to copy search term */
+"jetpackStats.contextMenu.copySearchTerm" = "検索キーワードをコピー";
+
+/* Context menu action to copy title */
+"jetpackStats.contextMenu.copyTitle" = "タイトルをコピー";
+
+/* Context menu action to copy URL */
+"jetpackStats.contextMenu.copyURL" = "URL をコピー";
+
+/* Context menu action to copy video URL */
+"jetpackStats.contextMenu.copyVideoURL" = "動画 URL をコピー";
+
+/* Context menu action to open link in browser */
+"jetpackStats.contextMenu.openInBrowser" = "ブラウザーで開く";
+
+/* Context menu action to search term in Google */
+"jetpackStats.contextMenu.searchInGoogle" = "Google で検索";
+
+/* Message shown when a country has no views */
+"jetpackStats.countries.noViews" = "表示なし";
+
+/* CSV header for country column */
+"jetpackStats.csv.country" = "国";
+
+/* CSV header for country code column */
+"jetpackStats.csv.countryCode" = "国コード";
+
+/* CSV header for date column */
+"jetpackStats.csv.date" = "日付";
+
+/* CSV header for domain column */
+"jetpackStats.csv.domain" = "ドメイン";
+
+/* CSV header for file name column */
+"jetpackStats.csv.fileName" = "ファイル名";
+
+/* CSV header for file path column */
+"jetpackStats.csv.filePath" = "ファイルパス";
+
+/* CSV header for name column */
+"jetpackStats.csv.name" = "名前";
+
+/* CSV header for role column */
+"jetpackStats.csv.role" = "権限グループ";
+
+/* CSV header for search term column */
+"jetpackStats.csv.searchTerm" = "検索キーワード";
+
+/* CSV header for section column */
+"jetpackStats.csv.section" = "セクション";
+
+/* CSV header for title column */
+"jetpackStats.csv.title" = "タイトル";
+
+/* CSV header for type column */
+"jetpackStats.csv.type" = "タイプ";
+
+/* CSV header for video URL column */
+"jetpackStats.csv.videoURL" = "動画 URL";
+
+/* Title for comparison menu */
+"jetpackStats.datePicker.compareWith" = "比較…";
+
+/* Title for custom date range picker */
+"jetpackStats.datePicker.customRange" = "カスタム範囲";
+
+/* Menu item for custom date range picker */
+"jetpackStats.datePicker.customRangeMenu" = "カスタム範囲...";
+
+/* Compare with same period last year option */
+"jetpackStats.datePicker.lastYear" = "去年";
+
+/* Menu item for more date period options */
+"jetpackStats.datePicker.morePeriods" = "その他の期間...";
+
+/* Compare with preceding period option */
+"jetpackStats.datePicker.precedingPeriod" = "前の期間";
+
+/* Label for quick period selection */
+"jetpackStats.datePicker.quickPeriodsForStartDate" = "開始日のクイック期間";
+
+/* Site time zone header */
+"jetpackStats.datePicker.siteTimeZone" = "サイトのタイムゾーン";
+
+/* Explanation of how stats are reported in site time zone */
+"jetpackStats.datePicker.siteTimeZoneDescription" = "統計はサイトのタイムゾーンで報告および表示されます。 訪問者が自身のタイムゾーンで火曜日にサイトを訪れても、サイトのタイムゾーンでは月曜日であれば、その訪問は月曜日として記録されます。";
+
+/* Section title for the list of child links */
+"jetpackStats.externalLinkDetails.childLinks" = "サブリンク";
+
+/* Button to open the external link in browser */
+"jetpackStats.externalLinkDetails.openLink" = "リンクを開く";
+
+/* Title for the external link details screen */
+"jetpackStats.externalLinkDetails.title" = "外部リンク";
+
+/* Label for daily average in tooltip */
+"jetpackStats.postDetails.dailyAverage" = "1日あたりの平均";
+
+/* Title for email metrics card */
+"jetpackStats.postDetails.emailMetrics" = "メールアドレス";
+
+/* Must be short!Label for emails sent metric */
+"jetpackStats.postDetails.emailsSent" = "送信済みメール";
+
+/* Legend label for lower activity */
+"jetpackStats.postDetails.less" = "少ない";
+
+/* Singular like count. %1$d is the number. */
+"jetpackStats.postDetails.like" = "%1$d件のいいね";
+
+/* Plural likes count. %1$d is the number. */
+"jetpackStats.postDetails.likes" = "%1$d件のいいね";
+
+/* Title for monthly activity heatmap */
+"jetpackStats.postDetails.monthsAndYears" = "最近の月";
+
+/* Legend label for higher activity */
+"jetpackStats.postDetails.more" = "詳細";
+
+/* Label */
+"jetpackStats.postDetails.noLikesYet" = "まだ「いいね」はありません";
+
+/* Must be short! Label for email open rate metric */
+"jetpackStats.postDetails.openRate" = "開封率";
+
+/* Title for recent weeks activity heatmap */
+"jetpackStats.postDetails.recentWeeks" = "最近の週";
+
+/* Navigation title */
+"jetpackStats.postDetails.title" = "投稿統計情報";
+
+/* Must be short!Label for total email opens metric */
+"jetpackStats.postDetails.totalOpens" = "合計開封数";
+
+/* Must be short!Label for unique email opens metric */
+"jetpackStats.postDetails.uniqueOpens" = "ユニーク開封数";
+
+/* Label for week-over-week comparison in tooltip */
+"jetpackStats.postDetails.weekOverWeek" = "週ごとの比較";
+
+/* Label for weekly total in tooltip */
+"jetpackStats.postDetails.weekTotal" = "週の合計";
+
+/* Title for weekly activity heatmap */
+"jetpackStats.postDetails.weeklyActivity" = "週ごとのアクティビティ";
+
+/* Title for error alert when marking referrer as spam fails */
+"jetpackStats.referrerDetails.errorAlertTitle" = "エラー";
+
+/* Button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpam" = "スパムとしてマーク";
+
+/* Error message when marking a referrer as spam fails */
+"jetpackStats.referrerDetails.markAsSpamError" = "スパムとしてマークできませんでした";
+
+/* Label shown when a referrer is already marked as spam */
+"jetpackStats.referrerDetails.markedAsSpam" = "スパムとしてマーク";
+
+/* Section title for the list of referral sources */
+"jetpackStats.referrerDetails.referralSources" = "リファラーソース";
+
+/* Title for the referrer details screen */
+"jetpackStats.referrerDetails.title" = "リファラー";
+
+/* Archive data type */
+"jetpackStats.siteDataTypes.archive" = "アーカイブ";
+
+/* Authors data type */
+"jetpackStats.siteDataTypes.authors" = "投稿者";
+
+/* External links data type */
+"jetpackStats.siteDataTypes.externalLinks" = "外部リンク";
+
+/* File downloads data type */
+"jetpackStats.siteDataTypes.fileDownloads" = "ファイルのダウンロード";
+
+/* Locations data type */
+"jetpackStats.siteDataTypes.locations" = "場所";
+
+/* Posts and pages data type */
+"jetpackStats.siteDataTypes.postsAndPages" = "投稿とページ";
+
+/* Referrers data type */
+"jetpackStats.siteDataTypes.referrers" = "リファラー";
+
+/* Search terms data type */
+"jetpackStats.siteDataTypes.searchTerms" = "検索キーワード";
+
+/* Videos data type */
+"jetpackStats.siteDataTypes.videos" = "動画";
+
+/* Bounce rate metric */
+"jetpackStats.siteMetrics.bounceRate" = "バウンスレート";
+
+/* Site comments metric */
+"jetpackStats.siteMetrics.comments" = "コメント";
+
+/* Download count */
+"jetpackStats.siteMetrics.downloads" = "ダウンロード";
+
+/* Site likes metric */
+"jetpackStats.siteMetrics.likes" = "いいね";
+
+/* Site posts metric */
+"jetpackStats.siteMetrics.posts" = "投稿";
+
+/* Time on site metric */
+"jetpackStats.siteMetrics.timeOnSite" = "サイトでの時間";
+
+/* Site views metric */
+"jetpackStats.siteMetrics.views" = "表示回数";
+
+/* Site visitors metric */
+"jetpackStats.siteMetrics.visitors" = "訪問者";
+
+/* Current active visitors metric */
+"jetpackStats.siteMetrics.visitorsNow" = "現在の訪問者";
+
+/* Insights tab */
+"jetpackStats.tabs.insights" = "統計概要";
+
+/* Realtime tab */
+"jetpackStats.tabs.realtime" = "リアルタイム";
+
+/* Subscribers tab */
+"jetpackStats.tabs.subscribers" = "購読者";
+
+/* Traffic tab */
+"jetpackStats.tabs.traffic" = "トラフィック";
+
+/* Stats screen title */
+"jetpackStats.title" = "統計";
+
+/* Title for items with highest bounce rate */
+"jetpackStats.topList.highestBounceRate" = "バウンスレートが最高";
+
+/* Title for items with longest time on site */
+"jetpackStats.topList.longestTimeOnSite" = "サイトで時間が最長";
+
+/* Title for most commented items */
+"jetpackStats.topList.mostCommented" = "コメントが最も多い";
+
+/* Title for chart */
+"jetpackStats.topList.mostDownloads" = "ダウンロードが最も多い";
+
+/* Title for most liked items */
+"jetpackStats.topList.mostLiked" = "いいねが最も多い";
+
+/* Title for most posts (per author) */
+"jetpackStats.topList.mostPosts" = "投稿が最も多い";
+
+/* Title for most viewed items */
+"jetpackStats.topList.mostViewed" = "表示数が最も多い";
+
+/* Title for items with most visitors */
+"jetpackStats.topList.mostVisitors" = "訪問者が最も多い";
+
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "さらに詳しく";
 
@@ -9086,6 +9567,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "自分のページ";
 
+/* Title for the parent page picker screen */
+"parentPagePicker.title" = "親ページ";
+
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "親ページ";
 
@@ -9239,6 +9723,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to view plugin on WordPress.org */
 "pluginDetails.viewOnWordPressOrg.button" = "WordPress.org で表示";
 
+/* Title for the post author selection screen */
+"postAuthorPicker.title" = "投稿者";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "変更を破棄";
 
@@ -9313,6 +9800,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "下書きを保存中...";
+
+/* Empty state description when no post formats are available */
+"postFormatPicker.emptyState.description" = "このサイトには投稿フォーマットが設定されていません。";
+
+/* Empty state title when no post formats are available */
+"postFormatPicker.emptyState.title" = "利用できる投稿フォーマットがありません";
+
+/* Navigation bar title for the Post Format picker */
+"postFormatPicker.navigationTitle" = "投稿フォーマット";
+
+/* Error message when post formats refresh fails */
+"postFormatPicker.refreshErrorMessage" = "投稿フォーマットの再読み込みに失敗しました";
 
 /* Button title */
 "postFromAudio.beginRecording" = "録音を開始";
@@ -9458,8 +9957,42 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "無題";
 
+/* Label for the author field in Post Settings */
+"postSettings.author.label" = "投稿者";
+
+/* Label for the add category button field. Should be the same as WP core. */
+"postSettings.categories.addCategoryButton" = "カテゴリーを追加";
+
+/* Label for the categories field. Should be the same as WP core.
+   Label for the category field. Should be the same as WP core. */
+"postSettings.categories.label" = "カテゴリー";
+
+/* Button to confirm discarding changes */
+"postSettings.discardChanges.button" = "変更を破棄";
+
+/* Message for the discard changes confirmation dialog */
+"postSettings.discardChanges.message" = "変更をまだ保存していません。 これらを破棄してもよいですか ?";
+
+/* Title for the discard changes confirmation dialog */
+"postSettings.discardChanges.title" = "変更を破棄しますか ?";
+
+/* Character count for excerpt. %1$d is the number of characters. */
+"postSettings.excerpt.characterCount" = "%1$d文字";
+
+/* Section header for Excerpt in Post Settings */
+"postSettings.excerpt.header" = "抜粋";
+
+/* Placeholder text for the excerpt field in Post Settings */
+"postSettings.excerpt.placeholder" = "ブログのインデックス、アーカイブ、検索結果に表示される投稿の短い要約を入力してください。";
+
+/* Word count for excerpt. %1$d is the number of words. */
+"postSettings.excerpt.wordCount" = "%1$d語";
+
 /* Cancel upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.cancelUpload" = "アップロードをキャンセル";
+
+/* Section header for Featured Image in Post Settings */
+"postSettings.featuredImage.header" = "アイキャッチ画像";
 
 /* Replace image upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.replaceImage" = "置換";
@@ -9473,20 +10006,71 @@ Example: Reply to Pamela Nguyen */
 /* Post Settings */
 "postSettings.featuredImage.uploading" = "アップロード中…";
 
-/* The 'Parent Page' setting of the post */
-"postSettings.parentPage" = "親ページ";
+/* Label for the last edited field in Post Settings */
+"postSettings.lastEdited.label" = "最終編集日";
 
-/* The 'Pending Review' setting of the post */
-"postSettings.pendingReview" = "レビュー待ち";
+/* Section header for Info in Post Settings */
+"postSettings.metadata.header" = "情報";
 
-/* Section title for the disabled Twitter service in the Post Settings screen */
-"postSettings.section.disabledTwitter.header" = "Twitter の自動共有機能は利用できなくなりました";
+/* Section header for More Options in Post Settings. Should use the same translation as core WP. */
+"postSettings.moreOptions.header" = "追加オプション";
 
-/* Section title for Page Attributes */
-"postSettings.section.pageAttributes" = "ページ属性";
+/* The title of the Page Settings screen. */
+"postSettings.navigationTitle.page" = "ページ設定";
 
-/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
-"postSettings.warningPostWillBePublishedAlertMessage" = "表示状態を「非公開」に変更すると、投稿はすぐに投稿されます";
+/* The title of the Post Settings screen. */
+"postSettings.navigationTitle.post" = "投稿設定";
+
+/* Label for the Organization area (categories, keywords, ...) in post settings. */
+"postSettings.organization.header" = "整理";
+
+/* Message when trying to save a deleted page */
+"postSettings.pageDeleted.message" = "このページは削除されたため保存できません。";
+
+/* Title of alert when trying to save a deleted page */
+"postSettings.pageDeleted.title" = "ページを削除しました";
+
+/* Cell title for the Top Level option case */
+"postSettings.parentPage.topLevel" = "トップレベル";
+
+/* Label for the permalink field in Post Settings */
+"postSettings.permalink.label" = "パーマリンク";
+
+/* Message when trying to save a deleted post */
+"postSettings.postDeleted.message" = "この投稿は削除されたため保存できません。";
+
+/* Title of alert when trying to save a deleted post */
+"postSettings.postDeleted.title" = "投稿を削除しました";
+
+/* Label for the post format field. Should be the same as WP core. */
+"postSettings.postFormat.label" = "投稿フォーマット";
+
+/* Label for the publish date field in Post Settings */
+"postSettings.publishDate.label" = "日付";
+
+/* Section header for General settings in Post Settings */
+"postSettings.section.general" = "一般";
+
+/* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
+"postSettings.slug.hint" = "スラッグは URL に適した形式の投稿タイトルです。";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.label" = "スラッグ";
+
+/* Placeholder for the slug field */
+"postSettings.slug.placeholder" = "スラッグを入力";
+
+/* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
+"postSettings.stickyPost.label" = "先頭固定表示";
+
+/* Label for the add tags button field. Should be the same as WP core. */
+"postSettings.tags.addTagsButton" = "タグを追加";
+
+/* Label for the tags field. Should be the same as WP core. */
+"postSettings.tags.label" = "タグ";
+
+/* Label for the visibility field in Post Settings */
+"postSettings.visibility.label" = "表示設定";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "キャンセル";
@@ -10855,6 +11439,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "購読者総数";
 
+/* Menu item to send feedback about new stats experience */
+"stats.menu.sendFeedback" = "フィードバックを送る";
+
+/* Menu item to switch back to classic stats experience */
+"stats.menu.switchToClassic" = "クラシック統計に切り替える";
+
+/* Menu item to enable new stats experience */
+"stats.menu.tryNewStats" = "新しい統計を試す";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
@@ -10890,6 +11483,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The label for the option to show Stats Traffic chart for Days. */
 "stats.traffic.days" = "日";
+
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.hours" = "時間";
 
 /* The label for the option to show Stats Traffic chart for Months. */
 "stats.traffic.months" = "月";
@@ -11224,6 +11820,33 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Reader for iOS のサポート";
 
+/* Button to add a new tag. %1$@ is the tag name. */
+"tags.add.button" = "タグを追加: %1$@";
+
+/* Description for empty state when there are no tags */
+"tags.empty.description" = "タグを使用するとコンテンツを整理でき、読者が関連記事を探しやすくなります。";
+
+/* Title for empty state when there are no tags */
+"tags.empty.title" = "タグがありません";
+
+/* Error message when tag data is invalid */
+"tags.error.invalid_tag" = "タグ情報が無効です。 もう一度お試しください。";
+
+/* Error message when the tags service cannot connect to the remote site */
+"tags.error.no_remote_service" = "サイトに接続できません。 接続を確認して、もう一度お試しください。";
+
+/* Button to remove a selected tag. %1$@ is the tag name. */
+"tags.remove.button" = "%1$@を削除";
+
+/* Placeholder text for the tag search field */
+"tags.search.placeholder" = "タグを検索";
+
+/* Message shown when no tags are selected */
+"tags.selected.empty" = "タグが選択されていません";
+
+/* Title for the tags screen */
+"tags.title" = "タグ";
+
 /* Title for placeholder in Tenor picker */
 "tenor.welcomeMessage" = "GIF を検索して、メディアライブラリに追加してください。";
 
@@ -11235,6 +11858,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "タイムゾーン";
+
+/* Action button title to enable new stats from tip */
+"tips.newStats.action" = "すぐに有効化";
+
+/* Tip for new stats feature */
+"tips.newStats.message" = "新しく洗練された高機能な統計をお試しください。 いつでも元に戻せます。";
+
+/* Tip for new stats feature */
+"tips.newStats.title" = "新しい統計を試す";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "右にスワイプしてサイト、Reader、通知、プロフィールにアクセス";
