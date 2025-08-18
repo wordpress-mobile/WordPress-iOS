@@ -1,11 +1,9 @@
-Tüm e-posta ve Okuyucu abonelerinizi gösteren yeni bir Aboneler ekranı eklendi. Artık içeriğinizi kimin okuduğunu (ve sevdiğini) bilirsiniz.
+İçeriğinizi yönetme ve ortamla çalışma şeklinizi iyileştirdik. Gönderilerinizin yapılandırılmasını daha kolay ve sezgisel hale getiren, tamamen yeniden tasarlanmış bir Gönderi Ayarları ekranı bulacaksınız.
 
-Yerel saat diliminiz için daha doğru öneriler görmeniz için Saat Dilimi Seçici'de iyileştirmeler yapıldı.
+Ayrıca deneysel düzenleyicimizi daha iyi VideoPress entegrasyonu ve özel siteler için iyileştirilmiş kimlik doğrulamayla geliştirdik. Sitenizin gizlilik ayarları ne olursa olsun ortamınız şimdi doğru şekilde görünecektir.
 
-Gönderi Listesinde küçük estetik değişiklikler yapıldı; örneğin etiketlerin düzene sokulması, görsellerin küçültülmesi ve ekstra alanın kaldırılması, yükleme göstergelerinin taşınması gibi.
-
-Son olarak birkaç hatayı giderdik.
-- Artık çeşitli ekranlarda HTML kodlu karakterler görmeyeceksiniz, bu nedenle tüm ve işaretleriniz tam olarak görünmesi gerektiği gibi görünür. İşte bu!
-- "Geri Yükle" ve "Yedeklemeyi İndir" akışları artık gezinme çubuğunu kapsamıyor.
-- Alan adları artık Alan Adı Arama ekranında doğru şekilde sıralanıyor. Aradığınız şeyi bulmak her zamankinden daha kolay.
-- "WordPress"in Okuyucu'da yanlış büyük harfle başladığı bir etiketi düzelttik. (Bu bizi geceleri uyanık tutuyordu).
+Sonunda birkaç hatayı giderdik ve her şeyi daha güvenilir hale getirdik.
+- Gönderiler veya Sayfalar'ınızı açtığınızda uygulama artık kapanmayacak. (Bunun ne kadar sinir bozucu olduğunu biliyoruz).
+- Belirli düzenleyici ayarları kaydedilirken meydana gelen bir çökme sorununu düzelttik.
+- Peki ya panonuzdaki o can sıkıcı hata açılır pencerelerine ne oldu? Gittiler.
+- Uygulama şifreleri artık arka planda daha sorunsuz çalışıyor.

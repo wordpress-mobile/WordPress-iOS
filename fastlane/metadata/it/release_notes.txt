@@ -1,11 +1,9 @@
-Abbiamo aggiunto una nuova schermata Abbonati che mostra tutti gli abbonati alle e-mail e al Reader. Ora puoi sapere chi legge (e apprezza) i tuoi contenuti.
+Abbiamo migliorato la gestione dei contenuti e dei file multimediali. Troverai una schermata delle Impostazioni articolo completamente riprogettata, che rende la configurazione dei tuoi articoli più fluida e intuitiva.
 
-Abbiamo migliorato il selezionatore fuso orario per darti suggerimenti più accurati per il tuo fuso orario locale.
+Abbiamo anche potenziato il nostro editor sperimentale con una migliore integrazione di VideoPress e un'autenticazione ottimizzata per i siti privati. I tuoi contenuti multimediali ora verranno visualizzati correttamente, indipendentemente dalle impostazioni sulla privacy del tuo sito.
 
-Abbiamo apportato alcuni piccoli cambiamenti all'elenco degli articoli, ad esempio, semplificando le etichette, rimpicciolendo le immagini, rimuovendo lo spazio in eccesso e spostando gli indicatori di caricamento in modo che siano più visibili.
-
-Infine, abbiamo risolto diversi bug.
-- Non vedrai più caratteri codificati HTML su varie schermate, quindi tutte le e commerciali avranno esattamente l'aspetto che dovrebbero avere. Questo è solo l'inizio.
-- I flussi di "Ripristina" e "Scarica il backup" non coprono più la barra di navigazione.
-- I domini sono ora ordinati correttamente nella schermata Ricerca dominio. Trovare quello che cerchi è più facile che mai.
-- Abbiamo corretto un tag che causava un utilizzo errato delle maiuscole della parola "WordPress" nel Reader (questo problema non ci faceva dormire la notte).
+Infine, abbiamo eliminato diversi bug e reso l'app più affidabile.
+- L'app non si bloccherà più quando apri Articoli o Pagine.  (Sappiamo quanto fosse frustrante.)
+- Abbiamo risolto un crash che si verificava durante il salvataggio di alcune impostazioni dell'editor.
+- Quei fastidiosi popup di errore sulla dashboard? Spariti.
+- Le password per le applicazioni ora funzionano in modo più fluido dietro le quinte.

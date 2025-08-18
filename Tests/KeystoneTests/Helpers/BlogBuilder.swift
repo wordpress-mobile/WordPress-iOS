@@ -2,6 +2,7 @@ import CoreData
 import Foundation
 import XCTest
 import WordPressData
+import WordPressShared
 
 @testable import WordPress
 
@@ -99,12 +100,12 @@ final class BlogBuilder {
         return self
     }
 
-    func withAnAccount(username: String = "test_user") -> Self {
+    func withAnAccount(username: String = "test_user", authToken: String = "authtoken") -> Self {
         // Add Account
         let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
         account.displayName = "displayName"
         account.username = username
-        account.authToken = "authtoken"
+        account.authToken = authToken
         blog.account = account
 
         return self
@@ -221,6 +222,21 @@ final class BlogBuilder {
 
     func with(postFormats: [String: String]) -> Self {
         blog.postFormats = postFormats
+
+        return self
+    }
+
+    func withApplicationPassword(_ password: String, using keychain: KeychainAccessible = KeychainUtils()) -> Self {
+        do {
+            try blog.setApplicationToken(password, using: keychain)
+        } catch {
+            XCTFail("Failed to set application password: \(error)")
+        }
+        return self
+    }
+
+    func with(restApiRootURL: String) -> Self {
+        blog.restApiRootURL = restApiRootURL
 
         return self
     }

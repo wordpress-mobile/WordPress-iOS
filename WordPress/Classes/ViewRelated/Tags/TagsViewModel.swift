@@ -7,7 +7,6 @@ typealias TagsPaginatedResponse = DataViewPaginatedResponse<RemotePostTag, Int>
 
 enum TagsViewMode {
     case selection(onSelectedTagsChanged: ((String) -> Void)?)
-    case pickOne(onTagTapped: (RemotePostTag) -> Void)
     case browse
 }
 

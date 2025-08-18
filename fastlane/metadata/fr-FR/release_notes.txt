@@ -1,11 +1,9 @@
-Nous avons ajouté un nouvel écran Abonnés qui affiche tous vos abonnés par e-mail et via le Lecteur. Désormais, vous savez qui lit (et aime) votre contenu.
+Nous avons amélioré la façon dont vous gérez votre contenu et travaillez avec les médias. L’écran des réglages des articles a été entièrement repensé. Il rend la configuration des articles plus fluide et plus intuitive.
 
-Nous avons amélioré le sélecteur de fuseau horaire, les suggestions pour votre fuseau horaire local seront ainsi plus précises.
+Nous avons également amélioré notre éditeur expérimental avec une meilleure intégration de VideoPress et une authentification améliorée pour les sites privés. Vos médias s’afficheront désormais correctement, quels que soient les réglages de confidentialité de votre site.
 
-Nous avons légèrement remanié la liste des articles, notamment en rationalisant les étiquettes, en réduisant la taille des images et en retirant l’espace supplémentaire, ainsi qu’en déplaçant les indicateurs de chargement pour les rendre plus visibles.
-
-Enfin, nous avons corrigé un certain nombre de bugs.
-- Vous ne verrez plus de caractères codés en HTML sur divers écrans, toutes vos esperluettes apparaissent exactement comme elles le doivent. Cool.
-- Les flux « Rétablir » et « Télécharger la sauvegarde » ne couvrent plus la barre de navigation.
-- Les domaines sont désormais correctement triés sur l’écran de recherche de domaine. Trouver ce que vous cherchez est plus facile que jamais.
-- Nous avons corrigé une étiquette dans laquelle « WordPress » n’était pas bien mis en majuscule dans le Lecteur. (Celle-là nous gardait éveillés la nuit.)
+Enfin, nous avons éliminé plusieurs bugs et amélioré la fiabilité.
+- L’application ne sera plus ralentie lorsque vous ouvrirez vos articles ou pages. (Nous savons à quel point cela pouvait être frustrant.)
+- Nous avons résolu un incident qui se produisait lors de l’enregistrement de certains réglages de l’éditeur.
+- Les fenêtres contextuelles d’erreur agaçantes sur votre tableau de bord ? Disparues.
+- Les mots de passe d’application fonctionnent désormais de manière plus fluide en arrière-plan.

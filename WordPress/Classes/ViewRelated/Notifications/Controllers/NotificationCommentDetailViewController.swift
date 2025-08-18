@@ -185,10 +185,6 @@ private extension NotificationCommentDetailViewController {
             }
 
             self.fetchParentCommentIfNeeded(completion: {
-                if let comment = self.loadCommentFromCache(self.commentID) {
-                    self.comment = comment
-                    return
-                }
                 self.fetchComment(self.commentID, completion: { comment in
                     guard let comment else {
                         self.showErrorView(title: NoResults.errorTitle, subtitle: NoResults.errorSubtitle)

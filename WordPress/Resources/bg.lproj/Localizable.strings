@@ -224,9 +224,7 @@
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Изисква се автентикация за хост: %@";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Автор";
 
@@ -349,9 +347,6 @@
 
 /* Alert title. */
 "Careful!" = "Внимание!";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "Категории";
 
 /* Category menu item in share extension. */
 "Category" = "Категория";
@@ -483,9 +478,6 @@
    Message to show when Publicize connect failed */
 "Connection failed" = "Свързването се провали";
 
-/* Title of a prompt saying the app needs an internet connection before it can load post formats */
-"Connection not available" = "Връзката не е налична";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -576,8 +568,7 @@
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "По подразбиране за нови публикации";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Изтриване";
 
 /* Menus confirmation button for deleting a menu. */
@@ -604,7 +595,6 @@
 "Deleting..." = "Изтриване...";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Описание";
 
@@ -775,9 +765,6 @@
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Грешка при сериализацията на данните към REST API.";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "Основно изображение";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Изтегляне на темите...";
@@ -1168,8 +1155,7 @@
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Менюта";
 
-/* Invite Message Editor's Title
-   Label for the share message field on the post settings. */
+/* Invite Message Editor's Title */
 "Message" = "Съобщение";
 
 /* Post Stats months and years header. */
@@ -1318,8 +1304,7 @@
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "ОК";
 
 /* Disabled */
@@ -1483,9 +1468,6 @@
 
 /* Title for selecting categories for a post */
 "Post Categories" = "Категории";
-
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Формат";
 
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
@@ -1842,7 +1824,8 @@
    Title of spam Comments filter. */
 "Spam" = "Спам";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "Стандартна";
 
 /* Label for selecting the Start Over Settings item
@@ -1896,25 +1879,16 @@
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "Превключва размера на шрифта на този по подразбиране";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "Етикет";
-
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "Кратко описание";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "Етикети";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Натиснете, за да отмените качването.";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "Категоризация";
 
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Условия за ползване";
@@ -2103,9 +2077,6 @@
    Unapproves a comment */
 "Unapprove" = "Неодобрение";
 
-/* Message to show in the post-format cell when the post format is not available */
-"Unavailable" = "Не е наличен";
-
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Подчертаване";
@@ -2227,9 +2198,6 @@
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Преглеждания";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "Достъпност";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "Преглед %@";

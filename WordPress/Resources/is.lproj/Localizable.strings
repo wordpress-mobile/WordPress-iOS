@@ -201,9 +201,7 @@
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Auðkenningar krafist fyrir netþjóninn: %@";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Höfundur";
 
@@ -323,9 +321,6 @@
 
 /* Alert title. */
 "Careful!" = "Varlega!";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "Flokkar";
 
 /* Category menu item in share extension. */
 "Category" = "Flokkur";
@@ -457,9 +452,6 @@
    Message to show when Publicize connect failed */
 "Connection failed" = "Tenging mistókst";
 
-/* Title of a prompt saying the app needs an internet connection before it can load post formats */
-"Connection not available" = "Tenging ekki tiltæk";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -523,9 +515,6 @@
    Theme Customize action title */
 "Customize" = "Sérsníða";
 
-/* Title for the edition of the share message. */
-"Customize the message" = "Sérsníddu skilaboðin";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Breyttu stillingum vefsins þíns fyrir að líka við, athugasemdir, fylgjendur og fleira.";
 
@@ -543,8 +532,7 @@
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Sjálfgildi fyrir nýjar færslur";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Eyða";
 
 /* Menus confirmation button for deleting a menu. */
@@ -571,7 +559,6 @@
 "Deleting..." = "Eyði...";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Lýsing";
 
@@ -716,12 +703,6 @@
 /* Title of error dialog when removing a site owner fails. */
 "Error removing %@" = "Villa við að fjarlægja %@";
 
-/* Label for the excerpt field. Should be the same as WP core. */
-"Excerpt" = "Útdráttur";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
-"Excerpts are optional hand-crafted summaries of your content." = "Útdrættir eru valkvæmar handgerðar samantektir úr textanum þínum.";
-
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "Útskýrðu um hvað þessi vefur er.";
 
@@ -746,9 +727,6 @@
 
 /* Error message to show when wrong URL format is used to access the REST API */
 "Failed to serialize request to the REST API." = "Gat ekki breytt fyrirspurn á REST API í strengjaform.";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "Sérkennis Mynd";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Sæki þemu...";
@@ -1105,8 +1083,7 @@
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Valmyndir";
 
-/* Invite Message Editor's Title
-   Label for the share message field on the post settings. */
+/* Invite Message Editor's Title */
 "Message" = "Skilaboð";
 
 /* Post Stats months and years header. */
@@ -1117,8 +1094,7 @@
    Action button to display more available options */
 "More" = "Meira";
 
-/* Action button to display more available options
-   Label for the More Options area in post settings. Should use the same translation as core WP. */
+/* Action button to display more available options */
 "More Options" = "Fleiri stillingar";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
@@ -1251,8 +1227,7 @@
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "Í lagi";
 
 /* Disabled */
@@ -1405,9 +1380,6 @@
 
 /* Title for selecting categories for a post */
 "Post Categories" = "Færsluflokkar";
-
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Færslusnið";
 
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
@@ -1703,9 +1675,6 @@
    Continue without making a selection. */
 "Skip" = "Sleppa";
 
-/* Label for the slug field. Should be the same as WP core. */
-"Slug" = "Fangamark";
-
 /* Error message shown when a media upload fails for a general network issue and the user should try again in a moment.
    Error message shown when the app fails to save user selected interests
    Error message shown when user tries to share the app with others, but failed due to unknown errors. */
@@ -1775,7 +1744,8 @@
    Title of spam Comments filter. */
 "Spam" = "Amapóstur";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "Staðlað";
 
 /* Label for selecting the Start Over Settings item
@@ -1808,25 +1778,16 @@
    Theme Support action title */
 "Support" = "Aðstoð";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "Efnisorð";
-
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "Kjörorð";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "Efnisorð";
 
 /* This is a status indicator on the editor */
 "Tap to cancel uploading." = "Ýttu til þess að hætta við upphleðslu.";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "Flokkun";
 
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Notendaskilmálar";
@@ -1884,9 +1845,6 @@
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Ekki var unnt að flytja út þennan vef.";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
-"The slug is the URL-friendly version of the post title." = "Stuttslóðin er vefvæn útgáfa af titli færslu.";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "Þessi notandi fannst ekki. Vinsamlegast gakktu úr skugga um að nafnið sé rétt stafsett.";
@@ -2033,9 +1991,6 @@
    Unapproves a comment */
 "Unapprove" = "Hafna";
 
-/* Message to show in the post-format cell when the post format is not available */
-"Unavailable" = "Ótiltækt";
-
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Undirstrika";
@@ -2154,9 +2109,6 @@
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Flettingar";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "Sýnileiki";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "Skoða %@";

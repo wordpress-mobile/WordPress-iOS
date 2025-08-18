@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-07-14 16:53:53+0000 */
+/* Translation-Revision-Date: 2025-08-09 07:47:42+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: nl */
@@ -314,9 +314,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Een bestand bevat een kwaadaardig codepatroon";
 
-/* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
-"A tag named '%@' already exists." = "Een tag genaamd '%@' bestaat al.";
-
 /* Placeholder text for the title of a site */
 "A title for the site" = "Een titel voor de site";
 
@@ -470,9 +467,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Screen reader text for button that adds a menu item */
 "Add new menu item" = "Voeg een nieuw menu-item toe";
-
-/* Voiceover accessibility label for the tags field in blog post settings. */
-"Add new tags, separated by commas." = "Voeg nieuwe tags toe, gescheiden door komma's.";
 
 /* No comment provided by engineer. */
 "Add paragraph block" = "Paragraafblok toevoegen";
@@ -695,6 +689,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple authenticatie mislukt.\nZorg dat je ingelogd bent bij iCloud met een Apple ID die twee-factor-authenticatie gebruikt.";
 
+/* Link to Application Passwords section */
+"Application Passwords" = "Applicatie wachtwoorden";
+
 /* No comment provided by engineer. */
 "Applies the setting" = "Past de instelling toe";
 
@@ -725,9 +722,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "Weet je zeker dat je het menu wilt verwijderen?";
-
-/* Message asking for confirmation on tag deletion */
-"Are you sure you want to delete this tag?" = "Weet je zeker dat je deze tag wilt verwijderen?";
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Weet je zeker dat je Jetpack wilt loskoppelen van jouw site?";
@@ -788,9 +782,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Authenticatie vereist voor host: %@";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Auteur";
 
@@ -1132,9 +1124,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Maak een film van je leven.";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "Categorieën";
 
 /* Category menu item in share extension. */
 "Category" = "Categorie";
@@ -1494,9 +1483,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Message to show when Publicize connect failed */
 "Connection failed" = "Verbinding maken mislukt";
 
-/* Title of a prompt saying the app needs an internet connection before it can load post formats */
-"Connection not available" = "Verbinding niet beschikbaar";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -1635,9 +1621,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Couldn't load data. Please refresh again later." = "Kon gegevens niet laden. Later opnieuw verversen.";
 
 /* Error message when tag loading failed */
-"Couldn't load tags." = "Kon tags niet laden.";
-
-/* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Tags niet geladen. Tik om opnieuw te proberen.";
 
 /* Indicating that referrer couldn't be marked as spam */
@@ -1691,9 +1674,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Navigates to a new flow for site creation. */
 "Create a Site" = "Een site maken";
-
-/* Title of the button in the placeholder for an empty list of blog tags. */
-"Create a Tag" = "Maak een tag";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Maak een site icoon";
@@ -1762,12 +1742,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Customize blocks" = "Blokken aanpassen";
 
-/* Title for the edition of the share message. */
-"Customize the message" = "Het bericht aanpassen";
-
-/* Hint displayed when the user is customizing the share message. */
-"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Pas het bericht aan dat je wilt delen.\nAls je je eigen tekst hier niet wilt toevoegen, gebruiken we de bericht titel als bericht.";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Je site-instellingen aanpassen voor Vind-ik-leuks, Reacties, Volgt en meer.";
 
@@ -1821,8 +1795,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Standaardinstellingen voor nieuwe berichten";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Verwijderen";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1842,9 +1815,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Menu verwijderen";
 
-/* Delete Tag confirmation action title */
-"Delete this tag" = "Verwijder deze tag";
-
 /* Text displayed in HUD after successfully deleting a media item */
 "Deleted!" = "Verwijderd!";
 
@@ -1861,7 +1831,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Describe the purpose of the image. Leave empty if decorative." = "Beschrijf het doel van de afbeelding. Laat dit veld leeg als de afbeelding decoratief is.";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Beschrijving";
 
@@ -2398,14 +2367,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "Elke dag om %@";
 
-/* Label for the excerpt field. Should be the same as WP core. */
-"Excerpt" = "Samenvatting";
-
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "Lengte samenvatting (woorden)";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
-"Excerpts are optional hand-crafted summaries of your content." = "Samenvattingen zijn optionele uittreksels van je inhoud.";
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Exclusief thema's, plugins en uploads";
@@ -2482,9 +2445,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Uitgelicht";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "Uitgelichte afbeelding";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Thema's ophalen...";
@@ -3133,9 +3093,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack-instellingen";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core. */
-"Jetpack Social" = "Jetpack Social";
-
 /* Insights 'Jetpack Social Connections' header
    Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Jetpack Social-verbindingen";
@@ -3500,9 +3457,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Marks comment as spam */
 "Mark as Spam" = "Markeer als spam";
 
-/* Label for the Mark as Sticky option in post settings. */
-"Mark as Sticky" = "Markeer als sticky";
-
 /* Action title for unmarking referrer as spam */
 "Mark as not spam" = "Markeren als geen spam";
 
@@ -3595,8 +3549,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menu's";
 
-/* Invite Message Editor's Title
-   Label for the share message field on the post settings. */
+/* Invite Message Editor's Title */
 "Message" = "Bericht";
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
@@ -3619,8 +3572,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Action button to display more available options */
 "More" = "Meer";
 
-/* Action button to display more available options
-   Label for the More Options area in post settings. Should use the same translation as core WP. */
+/* Action button to display more available options */
 "More Options" = "Meer opties";
 
 /* Label for the posting activity legend. */
@@ -3709,9 +3661,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "Naam";
-
-/* Error to be displayed when a tag is empty */
-"Name Required" = "Naam vereist";
 
 /* No comment provided by engineer. */
 "Navigate Up" = "Navigeer omhoog";
@@ -4058,8 +4007,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -4228,8 +4176,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Pagina";
 
-/* Name of the button to open the page settings
-   The title of the Page Settings screen. */
+/* Name of the button to open the page settings */
 "Page Settings" = "Pagina-instellingen";
 
 /* translators: accessibility text. %s: Page break text. */
@@ -4475,11 +4422,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Berichtcategorieën";
 
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Bericht format";
-
-/* Name of the button to open the post settings
-   The title of the Post Settings screen. */
+/* Name of the button to open the post settings */
 "Post Settings" = "Bericht instellingen";
 
 /* Window title for Post Stats view. */
@@ -4616,9 +4559,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Publiceren";
-
-/* Label for the publish date button. */
-"Publish Date" = "Publicatiedatum";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Publiceer pagina op:";
@@ -5383,9 +5323,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Slash inserter resultaten";
 
-/* Label for the slug field. Should be the same as WP core. */
-"Slug" = "Slug";
-
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no fixed threats on your site." = "Tot nut toe zijn er geen opgeloste bedreigingen op je site.";
 
@@ -5499,7 +5436,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sports site intent topic */
 "Sports" = "Sport";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "Standaard";
 
 /* Label for selecting the Start Over Settings item
@@ -5529,9 +5467,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle giving the user more context about why to enable notifications. */
 "Stay in touch with like and comment notifications." = "Blijf in contact met meldingen van vind-ik-leuks en reacties.";
-
-/* This is the cell title. */
-"Stick post to the front page" = "Bericht vastmaken op voorpagina";
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Sticky";
@@ -5631,31 +5566,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tablet web preview */
 "Tablet" = "Tablet";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "Tag";
-
-/* Title of the alert indicating that a tag with that name already exists. */
-"Tag already exists" = "Tag bestaat al";
-
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "Slogan";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "Tags";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "Tags en categorieën";
-
-/* Displayed when the user views tags in blog settings and there are no tags */
-"Tags created here can be quickly added to new posts" = "Tags hier gemaakt kunnen snel toegevoegd worden aan nieuwe berichten";
-
-/* Label explaining why users might want to add tags. */
-"Tags help tell readers what a post is about. Separate different tags with commas." = "Tags vertellen een bezoeker waar een bericht over gaat. Scheid verschillende tags met komma's.";
 
 /* No comment provided by engineer. */
 "Take a Photo" = "Neem een foto";
@@ -5747,9 +5667,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "Tikken om de site van Gravatar in een externe browser te openen";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "Taxonomie";
 
 /* Technology site intent topic */
 "Technology" = "Technologie";
@@ -5895,9 +5812,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "De site kon niet geëxporteerd worden.";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
-"The slug is the URL-friendly version of the post title." = "De 'slug' is de URL-vriendelijke versie van de berichttitel.";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "De opgegeven gebruiker kan niet worden gevonden. Controleer of de naam juist is gespeld.";
@@ -6393,9 +6307,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Wordt gebruikt om de reactie af te keuren.";
 
-/* Message to show in the post-format cell when the post format is not available */
-"Unavailable" = "Niet beschikbaar";
-
 /* When the App can't figure out what language a blog is configured to use. */
 "Undefined" = "Ongedefinieerd";
 
@@ -6663,9 +6574,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights views and visitors header */
 "Views & Visitors" = "Weergaven en bezoekers";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "Zichtbaarheid";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "Bezoek %@";
@@ -7106,9 +7014,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views scheduled posts in the posts list and there are no posts */
 "You don't have any scheduled posts" = "Je hebt nog geen geplande berichten";
 
-/* Empty state. Tags management (Settings > Writing > Tags) */
-"You don't have any tags" = "Je hebt nog geen tags";
-
 /* Displayed when the user views trashed in the pages list and there are no pages */
 "You don't have any trashed pages" = "Je hebt geen verwijderde pagina's";
 
@@ -7422,27 +7327,35 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The list item of experimental features that users can choose to enable */
 "application-settings.experimental-features" = "Experimentele functies";
 
-/* Button label to authorize application passwords */
-"application.password.authorize" = "Autoriseren";
+/* Complete information about application passwords with security benefits, creation process, management instructions, and revocation warning */
+"applicationPassword.info.content" = "Applicatie wachtwoorden zijn een veiligere manier voor deze app om toegang te krijgen tot de inhoud van je site zonder je daadwerkelijke accountwachtwoord te gebruiken.\n\nWanneer je sites toevoegt aan de app, worden applicatie wachtwoorden automatisch aangemaakt indien nodig.\n\nJe kunt deze wachtwoorden bekijken en beheren in je gebruikersprofiel binnen het beheer van je WordPress site.\n\nLet op dat het intrekken van applicatie wachtwoorden die door de app worden gebruikt, de toegang van de app tot je site beëindigt. Wees voorzichtig bij het intrekken van applicatie wachtwoorden die door de app zijn aangemaakt.";
 
-/* Description for the application passwords feature */
-"application.password.description" = "Je kunt de app nu toestemming geven om applicatiewachtwoorden te gebruiken voor snelle en veilige toegang tot je site inhoud.";
+/* Button to dismiss the application password information view */
+"applicationPassword.info.gotIt.button" = "Begrepen";
 
-/* Title for the new application passwords feature */
-"application.password.new.title" = "Nieuw: wachtwoorden voor toepassingen";
+/* Title for the application passwords information view */
+"applicationPassword.info.title" = "Over applicatie wachtwoorden";
 
 /* Title of row for displaying an application password's creation date */
 "applicationPassword.item.creationDate" = "Aanmaakdatum";
 
-/* Title of row for displaying an application password's last used date
-   Title of row for displaying an application password's last used IP address */
+/* Footer message indicating that this application password is currently active and being used by the app */
+"applicationPassword.item.currentlyInUse" = "Dit applicatie wachtwoord wordt momenteel gebruikt door de app.";
+
+/* Title of row for displaying an application password's last used date */
 "applicationPassword.item.lastUsed" = "Laatste gebruik";
+
+/* Title of row for displaying an application password's last used IP address */
+"applicationPassword.item.lastUsedIp" = "Laatste IP-adres";
 
 /* Title of row for displaying an application password name */
 "applicationPassword.item.name" = "Naam";
 
 /* Title of section for displaying application password details */
 "applicationPassword.item.section.security" = "Veiligheid";
+
+/* String format of creation date of an application password. There is one argument: the creation date relative to now (i.e. 5 days ago). */
+"applicationPassword.list.item.created-date-format" = "Gemaakt %@";
 
 /* String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago). */
 "applicationPassword.list.item.last-used-format" = "Laatste gebruikt %@";
@@ -7456,8 +7369,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Kan de url van de huidige site niet vinden";
 
+/* Error message shown when the site doesn't support Application Passwords feature */
+"applicationPasswordMigration.error.unsupported" = "Deze site ondersteunt geen applicatie wachtwoorden.";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "Je moet je aanmelden met gebruiker \"%@\"";
+
+/* Error message when the site's REST API is not accessible for application password creation */
+"applicationPasswordRepository.error.restApiInaccessible" = "Kan geen toegang krijgen tot de REST API van de site";
+
+/* Error message when application password creation fails for unknown reasons */
+"applicationPasswordRepository.error.unknown" = "Kan applicatie wachtwoord niet aanmaken";
+
+/* Error message when the username cannot be found for application password creation */
+"applicationPasswordRepository.error.usernameNotFound" = "Kan gebruikersnaam voor de site niet vinden";
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Applicatie wachtwoorden zijn een veiligere manier om verbinding te maken met je zelf-gehoste site, en inschakelen ondersteuning voor functies zoals %@.";
@@ -7465,7 +7390,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Pluginbeheer";
 
-/* Feature name for managing users in the app */
+/* Feature name for managing application passwords in the app
+   Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Gebruikersbeheer";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -8092,6 +8018,27 @@ Example: Reply to Pamela Nguyen */
 /* No comment provided by engineer. */
 "double-tap to change unit" = "twee keer tikken om de eenheid te wijzigen";
 
+/* Message for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.message" = "Weet je het zeker dat je deze tag wil verwijderen?";
+
+/* Title for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.title" = "Tag verwijderen";
+
+/* Placeholder text for tag description field */
+"edit.tag.description.placeholder" = "Een beschrijving toevoegen...";
+
+/* Placeholder text for tag name field */
+"edit.tag.name.placeholder" = "Tag naam";
+
+/* Navigation title for new tag creation */
+"edit.tag.new.title" = "Nieuwe tag";
+
+/* Section header for tag description in edit tag view */
+"edit.tag.section.description" = "Beschrijving";
+
+/* Section header for tag name in edit tag view */
+"edit.tag.section.tag" = "Tag";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "bijv. 1122334455";
 
@@ -8603,6 +8550,558 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Je moet inloggen met %@ om statistieken en meldingen te gebruiken.";
 
+/* Accessibility label for add card button */
+"jetpackStats.accessibility.addCardButton" = "Nieuwe statistiekenkaart toevoegen";
+
+/* Accessibility label for back navigation */
+"jetpackStats.accessibility.backToStats" = "Terug naar statistieken";
+
+/* Card title accessibility label. %1$@ is the card title. */
+"jetpackStats.accessibility.cardTitle" = "%1$@ kaart";
+
+/* Accessibility label for chart container */
+"jetpackStats.accessibility.chartContainer" = "Statistieken grafiek";
+
+/* Chart trend accessibility label. %1$@ is metric name, %2$@ is trend description. */
+"jetpackStats.accessibility.chartTrend" = "%1$@ %2$@";
+
+/* Chart data point accessibility label. %1$@ is metric name, %2$@ is value, %3$@ is date. */
+"jetpackStats.accessibility.chartValue" = "%1$@: %2$@ op %3$@";
+
+/* Selected date range accessibility label. %1$@ is the range. */
+"jetpackStats.accessibility.dateRangeSelected" = "Datumbereik: %1$@";
+
+/* Accessibility label for error state */
+"jetpackStats.accessibility.errorLoadingStats" = "Fout bij het laden van statistieken";
+
+/* Accessibility label for loading state */
+"jetpackStats.accessibility.loadingStats" = "Statistieken laden";
+
+/* Accessibility label for more options menu */
+"jetpackStats.accessibility.moreOptions" = "Meer opties";
+
+/* Accessibility hint for next period navigation */
+"jetpackStats.accessibility.navigateToNextDateRange" = "Ga naar het volgende datumbereik";
+
+/* Accessibility hint for previous period navigation */
+"jetpackStats.accessibility.navigateToPreviousDateRange" = "Navigeer naar vorige datumbereik";
+
+/* Accessibility label for next period navigation button */
+"jetpackStats.accessibility.nextPeriod" = "Volgende periode";
+
+/* Accessibility label for empty data state */
+"jetpackStats.accessibility.noDataAvailable" = "Geen gegevens beschikbaar voor deze periode";
+
+/* Accessibility label for opening link in browser */
+"jetpackStats.accessibility.openInBrowser" = "Open in browser";
+
+/* Accessibility label for previous period navigation button */
+"jetpackStats.accessibility.previousPeriod" = "Vorige periode";
+
+/* Accessibility label for realtime visitor count */
+"jetpackStats.accessibility.realtimeVisitorCount" = "Huidige bezoekers online";
+
+/* Accessibility hint for retry action */
+"jetpackStats.accessibility.retryLoadingStats" = "Dubbel tikken om het laden van statistieken opnieuw te proberen";
+
+/* Accessibility hint for date range selection */
+"jetpackStats.accessibility.selectDateRange" = "Selecteer datumbereik";
+
+/* Accessibility hint for tab selection. %1$@ is the tab name. */
+"jetpackStats.accessibility.selectTab" = "Selecteer %1$@ tab";
+
+/* Accessibility announcement when stats finish loading */
+"jetpackStats.accessibility.statsLoaded" = "Statistieken geladen";
+
+/* Accessibility label for stats tab bar */
+"jetpackStats.accessibility.statsTabBar" = "Statistieken navigatie tabs";
+
+/* Accessibility announcement when a tab is selected. %1$@ is the tab name. */
+"jetpackStats.accessibility.tabSelected" = "%1$@ tab geselecteerd";
+
+/* Top list item accessibility label. %1$d is rank, %2$@ is title, %3$@ is value. */
+"jetpackStats.accessibility.topListItem" = "Rang %1$d: %2$@, %3$@";
+
+/* Accessibility hint for viewing chart data */
+"jetpackStats.accessibility.viewChartData" = "Bekijk gedetailleerde grafiekgegevens";
+
+/* Accessibility hint for items that can show more details */
+"jetpackStats.accessibility.viewMoreDetails" = "Dubbel tikken om meer details te bekijken";
+
+/* Singular visitor count. %1$d is the number. */
+"jetpackStats.accessibility.visitorNow" = "%1$d bezoeker nu online";
+
+/* Plural visitors count. %1$d is the number. */
+"jetpackStats.accessibility.visitorsNow" = "%1$d bezoekers nu online";
+
+/* Chart option description */
+"jetpackStats.addChart.chartDescription" = "Visualiseer trends in de loop van de tijd";
+
+/* Chart option title */
+"jetpackStats.addChart.chartOption" = "Grafiek";
+
+/* Title for data type selection */
+"jetpackStats.addChart.selectDataType" = "Selecteer gegevenstype";
+
+/* Title for metric selection */
+"jetpackStats.addChart.selectMetric" = "Selecteer statistieken";
+
+/* Top list option description */
+"jetpackStats.addChart.topListDescription" = "Bekijk je best presterende content";
+
+/* Top list option title */
+"jetpackStats.addChart.topListOption" = "Toplijst";
+
+/* Archive section for authors */
+"jetpackStats.archiveSections.author" = "Auteurs";
+
+/* Plural item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.plural" = "%1$d items";
+
+/* Singular item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.singular" = "%1$d item";
+
+/* Archive section for other items */
+"jetpackStats.archiveSections.other" = "Andere";
+
+/* Title for the author details screen */
+"jetpackStats.authorDetails.title" = "Auteur";
+
+/* Button to add a new chart */
+"jetpackStats.button.addCard" = "Kaart toevoegen";
+
+/* Apply button */
+"jetpackStats.button.apply" = "Toepassen";
+
+/* Cancel button */
+"jetpackStats.button.cancel" = "Annuleren";
+
+/* Button to customize a chart or widget */
+"jetpackStats.button.customize" = "Kaart bewerken";
+
+/* Button to delete a chart or widget */
+"jetpackStats.button.deleteWidget" = "Kaart verwijderen";
+
+/* Done button */
+"jetpackStats.button.done" = "Gereed";
+
+/* Button to download data as CSV file */
+"jetpackStats.button.downloadCSV" = "Download CSV";
+
+/* Learn more about stats button */
+"jetpackStats.button.learnMore" = "Lees verder";
+
+/* Button to move a card */
+"jetpackStats.button.moveCard" = "Verplaats kaartje";
+
+/* Button to move card down */
+"jetpackStats.button.moveDown" = "Naar beneden verplaatsen";
+
+/* Button to move card to the bottom */
+"jetpackStats.button.moveToBottom" = "Verplaats naar onderkant";
+
+/* Button to move card to the top */
+"jetpackStats.button.moveToTop" = "Naar boven verplaatsen";
+
+/* Button to move card up */
+"jetpackStats.button.moveUp" = "Omhoog verplaatsen";
+
+/* OK button */
+"jetpackStats.button.ok" = "OK";
+
+/* Button to reset chart settings to default */
+"jetpackStats.button.resetSettings" = "Reset instellingen";
+
+/* Share chart menu item */
+"jetpackStats.button.share" = "Delen";
+
+/* Button title */
+"jetpackStats.button.showAll" = "Toon alles";
+
+/* Button to collapse and show fewer items */
+"jetpackStats.button.showLess" = "Toon minder";
+
+/* Button to expand and show more items */
+"jetpackStats.button.showMore" = "Toon meer";
+
+/* Last 10 years date range */
+"jetpackStats.calendar.last10Years" = "Laatste 10 jaar";
+
+/* Last 12 months date range */
+"jetpackStats.calendar.last12Months" = "Laatste 12 maanden";
+
+/* Last 28 days date range */
+"jetpackStats.calendar.last28Days" = "Laatste 28 dagen";
+
+/* Last 30 days date range */
+"jetpackStats.calendar.last30Days" = "Laatste 30 dagen";
+
+/* Last 3 years date range */
+"jetpackStats.calendar.last3Years" = "Laatste 3 jaar";
+
+/* Last 6 months date range */
+"jetpackStats.calendar.last6Months" = "Laatste 6 maanden";
+
+/* Last 7 days date range */
+"jetpackStats.calendar.last7Days" = "Laatste 7 dagen";
+
+/* Last 90 days date range */
+"jetpackStats.calendar.last90Days" = "Laatste 90 dagen";
+
+/* Month time period */
+"jetpackStats.calendar.month" = "Maand";
+
+/* Quarter time period */
+"jetpackStats.calendar.quarter" = "Kwartaal";
+
+/* This month date range */
+"jetpackStats.calendar.thisMonth" = "Deze maand";
+
+/* This quarter date range */
+"jetpackStats.calendar.thisQuarter" = "Dit kwartaal";
+
+/* This week date range */
+"jetpackStats.calendar.thisWeek" = "Deze week";
+
+/* This year date range */
+"jetpackStats.calendar.thisYear" = "Dit jaar";
+
+/* Today date range */
+"jetpackStats.calendar.today" = "Vandaag";
+
+/* Week time period */
+"jetpackStats.calendar.week" = "Week";
+
+/* Year time period */
+"jetpackStats.calendar.year" = "Jaar";
+
+/* Bar chart type */
+"jetpackStats.chart.barChart" = "Balken";
+
+/* Shown for empty states */
+"jetpackStats.chart.dataEmpty" = "Geen gegevens voor periode";
+
+/* Genertic error message */
+"jetpackStats.chart.generitcError" = "Er is iets misgegaan";
+
+/* Shown for metrics that don't support hourly data */
+"jetpackStats.chart.hourlyDataNotAvailable" = "Uurgegevens niet beschikbaar";
+
+/* Shown when current period data might be incomplete */
+"jetpackStats.chart.incompleteData" = "Kan onvolledige gegevens tonen";
+
+/* Line chart type */
+"jetpackStats.chart.lineChart" = "Regels";
+
+/* Show chart data menu item */
+"jetpackStats.chart.showData" = "Toon gegevens";
+
+/* Label for change value */
+"jetpackStats.chartData.change" = "Wijzigen";
+
+/* Column header for date */
+"jetpackStats.chartData.date" = "DATUM";
+
+/* Section title for detailed data */
+"jetpackStats.chartData.detailedData" = "Gedetailleerde gegevens";
+
+/* Label for previous value */
+"jetpackStats.chartData.previous" = "Vorige";
+
+/* Title for chart data screen */
+"jetpackStats.chartData.title" = "Grafiekgegevens";
+
+/* Label for total value */
+"jetpackStats.chartData.total" = "Totaal";
+
+/* Column header for value */
+"jetpackStats.chartData.value" = "WAARDE";
+
+/* Context menu action to copy country name */
+"jetpackStats.contextMenu.copyCountryName" = "Landnaam kopiëren";
+
+/* Context menu action to copy domain */
+"jetpackStats.contextMenu.copyDomain" = "Domein kopiëren";
+
+/* Context menu action to copy file name */
+"jetpackStats.contextMenu.copyFileName" = "Bestandsnaam kopiëren";
+
+/* Context menu action to copy file path */
+"jetpackStats.contextMenu.copyFilePath" = "Bestandspad kopiëren";
+
+/* Context menu action to copy name */
+"jetpackStats.contextMenu.copyName" = "Naam kopiëren";
+
+/* Context menu action to copy search term */
+"jetpackStats.contextMenu.copySearchTerm" = "Zoekterm kopiëren";
+
+/* Context menu action to copy title */
+"jetpackStats.contextMenu.copyTitle" = "Titel kopiëren";
+
+/* Context menu action to copy URL */
+"jetpackStats.contextMenu.copyURL" = "Kopieer URL";
+
+/* Context menu action to copy video URL */
+"jetpackStats.contextMenu.copyVideoURL" = "Video URL kopiëren";
+
+/* Context menu action to open link in browser */
+"jetpackStats.contextMenu.openInBrowser" = "Open in browser";
+
+/* Context menu action to search term in Google */
+"jetpackStats.contextMenu.searchInGoogle" = "Zoek in Google";
+
+/* Message shown when a country has no views */
+"jetpackStats.countries.noViews" = "Geen weergaven";
+
+/* CSV header for country column */
+"jetpackStats.csv.country" = "Land";
+
+/* CSV header for country code column */
+"jetpackStats.csv.countryCode" = "Landcode";
+
+/* CSV header for date column */
+"jetpackStats.csv.date" = "Datum";
+
+/* CSV header for domain column */
+"jetpackStats.csv.domain" = "Domein";
+
+/* CSV header for file name column */
+"jetpackStats.csv.fileName" = "Bestandsnaam";
+
+/* CSV header for file path column */
+"jetpackStats.csv.filePath" = "Bestandspad";
+
+/* CSV header for name column */
+"jetpackStats.csv.name" = "Naam";
+
+/* CSV header for role column */
+"jetpackStats.csv.role" = "Rol";
+
+/* CSV header for search term column */
+"jetpackStats.csv.searchTerm" = "Zoekterm";
+
+/* CSV header for section column */
+"jetpackStats.csv.section" = "Sectie";
+
+/* CSV header for title column */
+"jetpackStats.csv.title" = "Titel";
+
+/* CSV header for type column */
+"jetpackStats.csv.type" = "Type";
+
+/* CSV header for URL column */
+"jetpackStats.csv.url" = "URL";
+
+/* CSV header for video URL column */
+"jetpackStats.csv.videoURL" = "Video URL";
+
+/* Title for comparison menu */
+"jetpackStats.datePicker.compareWith" = "Vergelijk met…";
+
+/* Title for custom date range picker */
+"jetpackStats.datePicker.customRange" = "Aangepast bereik";
+
+/* Menu item for custom date range picker */
+"jetpackStats.datePicker.customRangeMenu" = "Aangepast bereik…";
+
+/* From date label */
+"jetpackStats.datePicker.from" = "Van";
+
+/* Compare with same period last year option */
+"jetpackStats.datePicker.lastYear" = "Vorig jaar";
+
+/* Menu item for more date period options */
+"jetpackStats.datePicker.morePeriods" = "Meer periodes…";
+
+/* Compare with preceding period option */
+"jetpackStats.datePicker.precedingPeriod" = "Vorige periode";
+
+/* Label for quick period selection */
+"jetpackStats.datePicker.quickPeriodsForStartDate" = "Korte periodes voor startdatum";
+
+/* Site time zone header */
+"jetpackStats.datePicker.siteTimeZone" = "Site tijdzone";
+
+/* Explanation of how stats are reported in site time zone */
+"jetpackStats.datePicker.siteTimeZoneDescription" = "Statistieken worden gerapporteerd en weergegeven in de tijdzone van je site. Als een bezoeker op dinsdag in hun tijdzone naar je site komt, maar het is maandag in de tijdzone van je site, dan wordt het bezoek als maandag geregistreerd.";
+
+/* To date label */
+"jetpackStats.datePicker.to" = "To";
+
+/* Section title for the list of child links */
+"jetpackStats.externalLinkDetails.childLinks" = "Sub links";
+
+/* Button to open the external link in browser */
+"jetpackStats.externalLinkDetails.openLink" = "Link openen";
+
+/* Title for the external link details screen */
+"jetpackStats.externalLinkDetails.title" = "Externe link";
+
+/* Label for daily average in tooltip */
+"jetpackStats.postDetails.dailyAverage" = "Dagelijks gemiddelde";
+
+/* Title for email metrics card */
+"jetpackStats.postDetails.emailMetrics" = "E-mails";
+
+/* Must be short!Label for emails sent metric */
+"jetpackStats.postDetails.emailsSent" = "E-mails verzonden";
+
+/* Legend label for lower activity */
+"jetpackStats.postDetails.less" = "Minder";
+
+/* Singular like count. %1$d is the number. */
+"jetpackStats.postDetails.like" = "%1$d vind-ik-leuks";
+
+/* Plural likes count. %1$d is the number. */
+"jetpackStats.postDetails.likes" = "%1$d vind-ik-leuks";
+
+/* Title for monthly activity heatmap */
+"jetpackStats.postDetails.monthsAndYears" = "Recente maanden";
+
+/* Legend label for higher activity */
+"jetpackStats.postDetails.more" = "Meer";
+
+/* Label */
+"jetpackStats.postDetails.noLikesYet" = "Nog geen vind-ik-leuks";
+
+/* Must be short! Label for email open rate metric */
+"jetpackStats.postDetails.openRate" = "Percentage geopend";
+
+/* Shows when the post was published. %1$@ is the formatted date. */
+"jetpackStats.postDetails.published" = "Gepubliceerd %1$@";
+
+/* Title for recent weeks activity heatmap */
+"jetpackStats.postDetails.recentWeeks" = "Recente weken";
+
+/* Navigation title */
+"jetpackStats.postDetails.title" = "Berichtstatistieken";
+
+/* Must be short!Label for total email opens metric */
+"jetpackStats.postDetails.totalOpens" = "Totaal aantal geopend";
+
+/* Must be short!Label for unique email opens metric */
+"jetpackStats.postDetails.uniqueOpens" = "Unieke opens";
+
+/* Label for week-over-week comparison in tooltip */
+"jetpackStats.postDetails.weekOverWeek" = "Week na week";
+
+/* Label for weekly total in tooltip */
+"jetpackStats.postDetails.weekTotal" = "Weektotaal";
+
+/* Title for weekly activity heatmap */
+"jetpackStats.postDetails.weeklyActivity" = "Wekelijkse activiteit";
+
+/* Title for error alert when marking referrer as spam fails */
+"jetpackStats.referrerDetails.errorAlertTitle" = "Fout";
+
+/* Button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpam" = "Markeren als spam";
+
+/* Error message when marking a referrer as spam fails */
+"jetpackStats.referrerDetails.markAsSpamError" = "Niet gelukt om als spam te markeren";
+
+/* Label shown when a referrer is already marked as spam */
+"jetpackStats.referrerDetails.markedAsSpam" = "Gemarkeerd als spam";
+
+/* Section title for the list of referral sources */
+"jetpackStats.referrerDetails.referralSources" = "Verwijzingsbronnen";
+
+/* Title for the referrer details screen */
+"jetpackStats.referrerDetails.title" = "Verwijzer";
+
+/* Archive data type */
+"jetpackStats.siteDataTypes.archive" = "Archief";
+
+/* Authors data type */
+"jetpackStats.siteDataTypes.authors" = "Auteurs";
+
+/* External links data type */
+"jetpackStats.siteDataTypes.externalLinks" = "Externe links";
+
+/* File downloads data type */
+"jetpackStats.siteDataTypes.fileDownloads" = "Bestand downloads";
+
+/* Locations data type */
+"jetpackStats.siteDataTypes.locations" = "Locaties";
+
+/* Posts and pages data type */
+"jetpackStats.siteDataTypes.postsAndPages" = "Berichten & pagina's";
+
+/* Referrers data type */
+"jetpackStats.siteDataTypes.referrers" = "Verwijzers";
+
+/* Search terms data type */
+"jetpackStats.siteDataTypes.searchTerms" = "Zoektermen";
+
+/* Videos data type */
+"jetpackStats.siteDataTypes.videos" = "Video's";
+
+/* Bounce rate metric */
+"jetpackStats.siteMetrics.bounceRate" = "Bouncepercentage";
+
+/* Site comments metric */
+"jetpackStats.siteMetrics.comments" = "Reacties";
+
+/* Download count */
+"jetpackStats.siteMetrics.downloads" = "Downloads";
+
+/* Site likes metric */
+"jetpackStats.siteMetrics.likes" = "Vind-ik-leuks";
+
+/* Site posts metric */
+"jetpackStats.siteMetrics.posts" = "Berichten";
+
+/* Time on site metric */
+"jetpackStats.siteMetrics.timeOnSite" = "Tijd op site";
+
+/* Site views metric */
+"jetpackStats.siteMetrics.views" = "Weergaven";
+
+/* Site visitors metric */
+"jetpackStats.siteMetrics.visitors" = "Bezoekers";
+
+/* Current active visitors metric */
+"jetpackStats.siteMetrics.visitorsNow" = "Bezoekers nu";
+
+/* Insights tab */
+"jetpackStats.tabs.insights" = "Inzichten";
+
+/* Realtime tab */
+"jetpackStats.tabs.realtime" = "Realtime";
+
+/* Subscribers tab */
+"jetpackStats.tabs.subscribers" = "Abonnees";
+
+/* Traffic tab */
+"jetpackStats.tabs.traffic" = "Verkeer";
+
+/* Stats screen title */
+"jetpackStats.title" = "Statistieken";
+
+/* Title for items with highest bounce rate */
+"jetpackStats.topList.highestBounceRate" = "Hoogste bouncepercentage";
+
+/* Title for items with longest time on site */
+"jetpackStats.topList.longestTimeOnSite" = "Langste tijd op site";
+
+/* Title for most commented items */
+"jetpackStats.topList.mostCommented" = "Meest gereageerd";
+
+/* Title for chart */
+"jetpackStats.topList.mostDownloads" = "Meest gedownload";
+
+/* Title for most liked items */
+"jetpackStats.topList.mostLiked" = "Meest leuk gevonden";
+
+/* Title for most posts (per author) */
+"jetpackStats.topList.mostPosts" = "Meeste berichten";
+
+/* Title for most viewed items */
+"jetpackStats.topList.mostViewed" = "Meest bekeken";
+
+/* Title for items with most visitors */
+"jetpackStats.topList.mostVisitors" = "Meeste bezoekers";
+
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Meer informatie";
 
@@ -9107,6 +9606,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Pagina's gemaakt door mij";
 
+/* Title for the parent page picker screen */
+"parentPagePicker.title" = "Hoofdpagina";
+
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "Hoofdpagina";
 
@@ -9260,6 +9762,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to view plugin on WordPress.org */
 "pluginDetails.viewOnWordPressOrg.button" = "Bekijken op WordPress.org";
 
+/* Title for the post author selection screen */
+"postAuthorPicker.title" = "Auteur";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Wijzigingen negeren";
 
@@ -9334,6 +9839,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Concept aan het opslaan...";
+
+/* Empty state description when no post formats are available */
+"postFormatPicker.emptyState.description" = "Bericht formats zijn niet geconfigureerd voor deze site.";
+
+/* Empty state title when no post formats are available */
+"postFormatPicker.emptyState.title" = "Geen berichtformaten beschikbaar";
+
+/* Navigation bar title for the Post Format picker */
+"postFormatPicker.navigationTitle" = "Bericht format";
+
+/* Error message when post formats refresh fails */
+"postFormatPicker.refreshErrorMessage" = "Niet gelukt om berichtformaten te verversen";
 
 /* Button title */
 "postFromAudio.beginRecording" = "Begin met opnemen";
@@ -9479,8 +9996,42 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Zonder titel";
 
+/* Label for the author field in Post Settings */
+"postSettings.author.label" = "Auteur";
+
+/* Label for the add category button field. Should be the same as WP core. */
+"postSettings.categories.addCategoryButton" = "Categorie toevoegen";
+
+/* Label for the categories field. Should be the same as WP core.
+   Label for the category field. Should be the same as WP core. */
+"postSettings.categories.label" = "Categorieën";
+
+/* Button to confirm discarding changes */
+"postSettings.discardChanges.button" = "Wijzigingen verwijderen";
+
+/* Message for the discard changes confirmation dialog */
+"postSettings.discardChanges.message" = "Je hebt niet-opgeslagen wijzigingen. Weet je het zeker dat je ze wil verwijderen?";
+
+/* Title for the discard changes confirmation dialog */
+"postSettings.discardChanges.title" = "Wijzigingen verwijderen?";
+
+/* Character count for excerpt. %1$d is the number of characters. */
+"postSettings.excerpt.characterCount" = "%1$d karakters";
+
+/* Section header for Excerpt in Post Settings */
+"postSettings.excerpt.header" = "Samenvatting";
+
+/* Placeholder text for the excerpt field in Post Settings */
+"postSettings.excerpt.placeholder" = "Schrijf een korte samenvatting van je bericht die verschijnt op de blogindex, archieven en zoekresultaten.";
+
+/* Word count for excerpt. %1$d is the number of words. */
+"postSettings.excerpt.wordCount" = "%1$d woorden";
+
 /* Cancel upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.cancelUpload" = "Uploaden annuleren";
+
+/* Section header for Featured Image in Post Settings */
+"postSettings.featuredImage.header" = "Uitgelichte afbeelding";
 
 /* Replace image upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.replaceImage" = "Vervang";
@@ -9494,20 +10045,80 @@ Example: Reply to Pamela Nguyen */
 /* Post Settings */
 "postSettings.featuredImage.uploading" = "Aan het uploaden…";
 
-/* The 'Parent Page' setting of the post */
-"postSettings.parentPage" = "Hoofdpagina";
+/* Label for the last edited field in Post Settings */
+"postSettings.lastEdited.label" = "Laatst bewerkt";
 
-/* The 'Pending Review' setting of the post */
-"postSettings.pendingReview" = "In afwachting van beoordeling";
+/* Section header for Info in Post Settings */
+"postSettings.metadata.header" = "Info";
 
-/* Section title for the disabled Twitter service in the Post Settings screen */
-"postSettings.section.disabledTwitter.header" = "Automatisch delen op Twitter is niet meer beschikbaar";
+/* Section header for More Options in Post Settings. Should use the same translation as core WP. */
+"postSettings.moreOptions.header" = "Meer opties";
 
-/* Section title for Page Attributes */
-"postSettings.section.pageAttributes" = "Pagina attributen";
+/* The title of the Page Settings screen. */
+"postSettings.navigationTitle.page" = "Pagina instellingen";
 
-/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
-"postSettings.warningPostWillBePublishedAlertMessage" = "Door de zichtbaarheid te wijzigen naar 'Privé', wordt het bericht onmiddellijk gepubliceerd.";
+/* The title of the Post Settings screen. */
+"postSettings.navigationTitle.post" = "Berichtinstellingen";
+
+/* Label for the Organization area (categories, keywords, ...) in post settings. */
+"postSettings.organization.header" = "Organisatie";
+
+/* Message when trying to save a deleted page */
+"postSettings.pageDeleted.message" = "Deze pagina is verwijderd en kan niet meer worden opgeslagen.";
+
+/* Title of alert when trying to save a deleted page */
+"postSettings.pageDeleted.title" = "Pagina verwijderd";
+
+/* Label for the parent page field */
+"postSettings.parentPage.label" = "Hoofdpagina";
+
+/* Cell title for the Top Level option case */
+"postSettings.parentPage.topLevel" = "Topniveau";
+
+/* Label for the pending review toggle in Post Settings */
+"postSettings.pendingReview.label" = "In afwachting van beoordeling";
+
+/* Label for the permalink field in Post Settings */
+"postSettings.permalink.label" = "Permalink";
+
+/* Message when trying to save a deleted post */
+"postSettings.postDeleted.message" = "Deze bericht is verwijderd en kan niet meer worden opgeslagen.";
+
+/* Title of alert when trying to save a deleted post */
+"postSettings.postDeleted.title" = "Bericht verwijderd";
+
+/* Label for the post format field. Should be the same as WP core. */
+"postSettings.postFormat.label" = "Bericht format";
+
+/* Label for the post ID field in Post Settings */
+"postSettings.postID.label" = "ID";
+
+/* Label for the publish date field in Post Settings */
+"postSettings.publishDate.label" = "Datum";
+
+/* Section header for General settings in Post Settings */
+"postSettings.section.general" = "Algemeen";
+
+/* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
+"postSettings.slug.hint" = "De slug is de URL-vriendelijke versie van de berichttitel.";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.label" = "Slug";
+
+/* Placeholder for the slug field */
+"postSettings.slug.placeholder" = "Slug invoeren";
+
+/* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
+"postSettings.stickyPost.label" = "Sticky";
+
+/* Label for the add tags button field. Should be the same as WP core. */
+"postSettings.tags.addTagsButton" = "Tags toevoegen";
+
+/* Label for the tags field. Should be the same as WP core. */
+"postSettings.tags.label" = "Tags";
+
+/* Label for the visibility field in Post Settings */
+"postSettings.visibility.label" = "Zichtbaarheid";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Annuleren";
@@ -10900,6 +11511,15 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "Totaal aantal abonnees";
 
+/* Menu item to send feedback about new stats experience */
+"stats.menu.sendFeedback" = "Verzend feedback";
+
+/* Menu item to switch back to classic stats experience */
+"stats.menu.switchToClassic" = "Overschakelen naar klassieke statistieken";
+
+/* Menu item to enable new stats experience */
+"stats.menu.tryNewStats" = "Probeer nieuwe statistieken";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
@@ -10938,6 +11558,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The label for the option to show Stats Traffic chart for Days. */
 "stats.traffic.days" = "Dagen";
+
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.hours" = "Uren";
 
 /* The label for the option to show Stats Traffic chart for Months. */
 "stats.traffic.months" = "Maanden";
@@ -11275,6 +11898,33 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Reader voor iOS ondersteuning";
 
+/* Button to add a new tag. %1$@ is the tag name. */
+"tags.add.button" = "Tag toevoegen: %1$@";
+
+/* Description for empty state when there are no tags */
+"tags.empty.description" = "Tags helpen je inhoud te organiseren en maken het makkelijker voor lezers om gerelateerde berichten te vinden.";
+
+/* Title for empty state when there are no tags */
+"tags.empty.title" = "Geen tags";
+
+/* Error message when tag data is invalid */
+"tags.error.invalid_tag" = "De tag informatie is ongeldig. Probeer het opnieuw.";
+
+/* Error message when the tags service cannot connect to the remote site */
+"tags.error.no_remote_service" = "Kan geen verbinding maken met je site. Controleer je verbinding en probeer het opnieuw.";
+
+/* Button to remove a selected tag. %1$@ is the tag name. */
+"tags.remove.button" = "Verwijder %1$@";
+
+/* Placeholder text for the tag search field */
+"tags.search.placeholder" = "Zoek tags";
+
+/* Message shown when no tags are selected */
+"tags.selected.empty" = "Geen tags geselecteerd";
+
+/* Title for the tags screen */
+"tags.title" = "Tags";
+
 /* Title for placeholder in Tenor picker */
 "tenor.welcomeMessage" = "Zoek gratis GIF's om toe te voegen aan je mediabibliotheek!";
 
@@ -11286,6 +11936,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Tijdzone";
+
+/* Action button title to enable new stats from tip */
+"tips.newStats.action" = "Nu inschakelen";
+
+/* Tip for new stats feature */
+"tips.newStats.message" = "Ervaar nieuwe strakke en krachtige statistieken. Schakel terug wanneer je wil.";
+
+/* Tip for new stats feature */
+"tips.newStats.title" = "Probeer nieuwe statistieken";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Veeg naar rechts om toegang te krijgen tot je sites, reader, meldingen en profiel";

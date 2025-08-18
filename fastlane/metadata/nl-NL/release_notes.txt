@@ -1,11 +1,9 @@
-We hebben een nieuw scherm met abonnees toegevoegd dat al je e-mail en Reader abonnees weergeeft. Nu weet je wie je inhoud leest (en ervan houdt).
+We hebben verbeteringen aangebracht in hoe je je inhoud beheert en met media werkt. Je vindt een volledig opnieuw ontworpen scherm voor Berichtinstellingen dat het configureren van je berichten soepeler en intuïtiever maakt.
 
-We hebben verbeteringen aangebracht in de tijd kiezer picker, zodat je nauwkeurigere suggesties ziet voor je lokale tijdzone.
+We hebben ook onze experimentele editor verbeterd met betere VideoPress integratie en verbeterde authenticatie voor privé sites. Je media wordt nu correct weergegeven, ongeacht de privacy-instellingen van je site.
 
-We hebben de berichtlijst een kleine facelift gegeven, zoals het stroomlijnen van labels, het kleiner maken van afbeeldingen en het verwijderen van extra ruimte, en het verplaatsen van laadindicatoren zodat ze beter zichtbaar zijn.
-
-Eindelijk hebben we een aantal bugs geplet.
-- Je ziet geen HTML gecodeerde tekens meer op verschillende schermen, dus alle je ampersands zien er precies uit zoals het hoort. Rock on.
-- De flows "Terugzetten" en "Back-up downloaden" bedekken de navigatiebalk niet meer.
-- Domeinen worden nu correct gesorteerd op het scherm Domeinen zoeken. Vinden wat je zoekt, is eenvoudiger dan ooit.
-- We hebben een Tag opgelost waarbij "WordPress" een verkeerd hoofdlettergebruik had in de Reader. (Daar lagen we 's nachts wakker van.)
+Ten slotte hebben we verschillende bugs verholpen en dingen betrouwbaarder gemaakt.
+- De app blijft niet meer hangen wanneer je je berichten of pagina's opent. (We weten hoe frustrerend dat was.)
+- We hebben een crash opgelost die optrad bij het opslaan van bepaalde editorinstellingen.
+- Die vervelende fout pop-ups op je dashboard? Weg.
+- Applicatie wachtwoorden werken nu soepeler achter de schermen.

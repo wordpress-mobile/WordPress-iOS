@@ -1,13 +1,9 @@
-Adicionamos uma nova tela, Assinantes, que mostra todos os seus assinantes por e-mail e do Leitor. Agora você saberá quem está lendo (e amando) seu conteúdo.
+Refizemos as estatísticas do zero, e o resultado é impressionante. Essa nova experiência oferece animações suaves a 120 fps, gráficos interativos para você explorar, visualizações de dados por hora e um painel totalmente personalizável. Reorganize tudo, exporte seus dados e veja a análise dos seus posts com métricas de campanhas por e-mail. A experiência é tão incrível que dá vontade de abrir só para curtir as animações. Procure "Experimentar novas estatísticas" ao abrir as Estatísticas ou ative-as a qualquer momento em Meu perfil > Configurações do aplicativo > Funcionalidades experimentais.
 
-Fizemos melhorias no seletor de fuso horário para que você veja sugestões mais precisas para o seu fuso horário local.
+Também fizemos melhorias no gerenciamento de conteúdo. A nova tela de configurações de post foi completamente repaginada para oferecer uma experiência mais fluida e intuitiva, com integração aprimorada ao VideoPress e compatibilidade avançada com a autenticação de sites privados no editor experimental.
 
-Adicionamos uma funcionalidade de pesquisa à lista de atividades do Jetpack, com datas e usuários para cada atividade. Nessa mesma área, você também pode ver a data de expiração de backups para download. Conhecimento é poder.
-
-Demos uma pequena repaginada na lista de posts: simplificamos as etiquetas, diminuímos as imagens, removemos espaços extras e movemos os indicadores de carregamento para que fiquem mais visíveis.
-
-Por fim, fizemos várias melhorias.
-- Você não verá mais caracteres codificados em HTML em várias telas, então o sinal "&" aparecerá exatamente como deveria. Aproveite!
-- Os fluxos "Restaurar" e "Fazer download do backup" não cobrem mais a barra de navegação.
-- Agora os domínios estão ordenados corretamente na tela Pesquisa de domínio. Encontrar o que você procura está mais fácil do que nunca.
-- Aprimoramos a capitalização de "WordPress" no Leitor para maior consistência.
+Por fim, vários bugs foram corrigidos, garantindo uma experiência mais confiável.
+- O aplicativo não será mais suspenso quando você abrir seus posts ou páginas. (Sabemos o quanto isso era frustrante.)
+- Corrigimos uma falha que ocorria ao salvar determinadas configurações do editor.
+- Aqueles pop-ups de erro irritantes no seu painel? Sumiram.
+- Agora, as senhas de aplicativos funcionam de forma mais estável em segundo plano, e o fluxo de conexão do Jetpack está mais confiável.

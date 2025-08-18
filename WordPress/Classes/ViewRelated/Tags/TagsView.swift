@@ -354,8 +354,6 @@ private struct TagRowView: View {
                         switch viewModel.mode {
                         case .selection:
                             viewModel.toggleSelection(for: tag)
-                        case .pickOne(let onTagTapped):
-                            onTagTapped(tag)
                         case .browse:
                             break
                         }
@@ -455,10 +453,6 @@ class TagsViewController: UIHostingController<TagsView> {
 
     convenience init(blog: Blog, selectedTags: String? = nil, onSelectedTagsChanged: ((String) -> Void)? = nil) {
         self.init(blog: blog, selectedTags: selectedTags, mode: .selection(onSelectedTagsChanged: onSelectedTagsChanged))
-    }
-
-    convenience init(blog: Blog, onTagTapped: @escaping (RemotePostTag) -> Void) {
-        self.init(blog: blog, mode: .pickOne(onTagTapped: onTagTapped))
     }
 
     convenience init(blog: Blog) {

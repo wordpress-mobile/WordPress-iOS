@@ -71,9 +71,6 @@
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Mégse";
 
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "Kategóriák";
-
 /* Label for number of clicks.
    Period Stats 'Clicks' header */
 "Clicks" = "Kattintások";
@@ -118,8 +115,7 @@
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Vezérlőpult";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Törlés";
 
 /* Text displayed in HUD while a media item is being deleted. */
@@ -190,9 +186,6 @@
 
 /* Generic error alert title */
 "Error" = "Hiba";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "Kiemelt kép";
 
 /* Label for number of followers. */
 "Followers" = "Követők";
@@ -351,8 +344,7 @@
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "OK";
 
 /* Disabled */
@@ -408,9 +400,6 @@
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Adjuk meg újra a bejelentkezési adatainkat.";
-
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Bejegyzés formátum";
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
@@ -684,9 +673,6 @@
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
 "Views" = "Megtekintések";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "Nyilvánosság";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Visitors' label

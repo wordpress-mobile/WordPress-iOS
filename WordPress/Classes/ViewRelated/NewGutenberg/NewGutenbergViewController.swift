@@ -7,6 +7,7 @@ import SafariServices
 import WordPressData
 import WordPressShared
 import WebKit
+import CocoaLumberjackSwift
 
 class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
@@ -79,6 +80,14 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.performAutoSave()
     }
 
+    // MARK: - Private Properties
+
+    private var keyboardShowObserver: Any?
+    private var keyboardHideObserver: Any?
+    private var keyboardFrame = CGRect.zero
+    private var suggestionViewBottomConstraint: NSLayoutConstraint?
+    private var currentSuggestionsController: GutenbergSuggestionsViewController?
+
     // TODO: remove (none of these APIs are needed for the new editor)
     func prepopulateMediaItems(_ media: [Media]) {}
     var debouncer = WordPressShared.Debouncer(delay: 10)
@@ -146,10 +155,15 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         fatalError()
     }
 
+    deinit {
+        tearDownKeyboardObservers()
+    }
+
     // MARK: - Lifecycle methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupKeyboardObservers()
 
         view.backgroundColor = .systemBackground
 
@@ -218,10 +232,9 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         setTitle(post.postTitle ?? "")
         editorViewController.setContent(content)
 
-        // TODO: reimplement
-//        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) { [weak self] in
-//            self?.gutenberg.updateCapabilities()
-//        }
+        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) {
+            // Do nothing
+        }
     }
 
     private func refreshInterface() {
@@ -245,7 +258,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         let startTime = CFAbsoluteTimeGetCurrent()
         let editorData = try? await editorViewController.getTitleAndContent()
         let duration = CFAbsoluteTimeGetCurrent() - startTime
-        print("gutenbergkit-measure_get-latest-content:", duration)
+        DDLogDebug("gutenbergkit-measure_get-latest-content: \(duration)")
 
         if let title = editorData?.title,
            let content = editorData?.content,
@@ -270,6 +283,49 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     func logException(_ exception: GutenbergJSException, with callback: @escaping () -> Void) {
         DispatchQueue.main.async {
             WordPressAppDelegate.crashLogging?.logJavaScriptException(exception, callback: callback)
+        }
+    }
+
+    // MARK: - Keyboard Observers
+
+    private func setupKeyboardObservers() {
+        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
+            if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                self.keyboardFrame = keyboardRect
+                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
+            }
+        }
+        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification, object: nil, queue: .main) { [weak self] (notification) in
+            if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                self.keyboardFrame = keyboardRect
+                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
+            }
+        }
+    }
+
+    private func tearDownKeyboardObservers() {
+        if let keyboardShowObserver {
+            NotificationCenter.default.removeObserver(keyboardShowObserver)
+        }
+        if let keyboardHideObserver {
+            NotificationCenter.default.removeObserver(keyboardHideObserver)
+        }
+    }
+
+    private func updateConstraintsToAvoidKeyboard(frame: CGRect) {
+        keyboardFrame = frame
+        let minimumKeyboardHeight = CGFloat(50)
+        guard let suggestionViewBottomConstraint else {
+            return
+        }
+
+        // There are cases where the keyboard is not visible, but the system instead of returning zero, returns a low number, for example: 0, 3, 69.
+        // So in those scenarios, we just need to take in account the safe area and ignore the keyboard all together.
+        if keyboardFrame.height < minimumKeyboardHeight {
+            suggestionViewBottomConstraint.constant = -self.view.safeAreaInsets.bottom
+        }
+        else {
+            suggestionViewBottomConstraint.constant = -self.keyboardFrame.height
         }
     }
 
@@ -459,6 +515,33 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
     }
 
+    func editor(_ viewController: GutenbergKit.EditorViewController, didTriggerAutocompleter type: String) {
+        switch type {
+        case "at-symbol":
+            showSuggestions(type: .mention) { [weak self] result in
+                switch result {
+                case .success(let suggestion):
+                    // Appended space completes the autocomplete session
+                    self?.editorViewController.appendTextAtCursor(suggestion + " ")
+                case .failure(let error):
+                    DDLogError("Mention selection cancelled or failed: \(error)")
+                }
+            }
+        case "plus-symbol":
+            showSuggestions(type: .xpost) { [weak self] result in
+                switch result {
+                case .success(let suggestion):
+                    // Appended space completes the autocomplete session
+                    self?.editorViewController.appendTextAtCursor(suggestion + " ")
+                case .failure(let error):
+                    DDLogError("Xpost selection cancelled or failed: \(error)")
+                }
+            }
+        default:
+            DDLogError("Unknown autocompleter type: \(type)")
+        }
+    }
+
     private func convertMediaInfoArrayToJSONString(_ mediaInfoArray: [MediaInfo]) -> String? {
         do {
             let jsonData = try JSONEncoder().encode(mediaInfoArray)
@@ -466,7 +549,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                 return jsonString
             }
         } catch {
-            print("Error encoding MediaInfo array: \(error)")
+            DDLogError("Error encoding MediaInfo array: \(error)")
         }
         return nil
     }
@@ -521,18 +604,80 @@ extension NewGutenbergViewController {
         present(lightboxVC, animated: true)
     }
 
-    // TODO: reimplement
-//    func gutenbergDidRequestMention(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
-//        DispatchQueue.main.async(execute: { [weak self] in
-//            self?.showSuggestions(type: .mention, callback: callback)
-//        })
-//    }
-//
-//    func gutenbergDidRequestXpost(callback: @escaping (Swift.Result<String, NSError>) -> Void) {
-//        DispatchQueue.main.async(execute: { [weak self] in
-//            self?.showSuggestions(type: .xpost, callback: callback)
-//        })
-//    }
+}
+
+// MARK: - Suggestions implementation
+
+extension NewGutenbergViewController {
+
+    private func showSuggestions(type: SuggestionType, callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+        // Prevent multiple suggestions UI instances - simply ignore if already showing
+        guard currentSuggestionsController == nil else {
+            return
+        }
+        guard let siteID = post.blog.dotComID else {
+            callback(.failure(GutenbergSuggestionsViewController.SuggestionError.notAvailable as NSError))
+            return
+        }
+
+        switch type {
+        case .mention:
+            guard SuggestionService.shared.shouldShowSuggestions(for: post.blog) else { return }
+        case .xpost:
+            guard SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog) else { return }
+        }
+
+        let previousFirstResponder = view.findFirstResponder()
+        let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
+        currentSuggestionsController = suggestionsController
+        suggestionsController.onCompletion = { [weak self] (result) in
+            callback(result)
+
+            if let self {
+                // Clear the current controller reference
+                self.currentSuggestionsController = nil
+                self.suggestionViewBottomConstraint = nil
+
+                // Clean up the UI (should only happen if parent still exists)
+                suggestionsController.view.removeFromSuperview()
+                suggestionsController.removeFromParent()
+
+                previousFirstResponder?.becomeFirstResponder()
+            }
+
+            var analyticsName: String
+            switch type {
+            case .mention:
+                analyticsName = "user"
+            case .xpost:
+                analyticsName = "xpost"
+            }
+
+            var didSelectSuggestion = false
+            if case let .success(text) = result, !text.isEmpty {
+                didSelectSuggestion = true
+            }
+
+            let analyticsProperties: [String: Any] = [
+                "suggestion_type": analyticsName,
+                "did_select_suggestion": didSelectSuggestion
+            ]
+
+            WPAnalytics.track(.gutenbergSuggestionSessionFinished, properties: analyticsProperties)
+        }
+        addChild(suggestionsController)
+        view.addSubview(suggestionsController.view)
+        let suggestionsBottomConstraint = suggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        NSLayoutConstraint.activate([
+            suggestionsController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
+            suggestionsController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
+            suggestionsBottomConstraint,
+            suggestionsController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
+        self.suggestionViewBottomConstraint = suggestionsBottomConstraint
+        updateConstraintsToAvoidKeyboard(frame: keyboardFrame)
+        suggestionsController.didMove(toParent: self)
+    }
 }
 
 // MARK: - GutenbergBridgeDataSource
@@ -856,16 +1001,22 @@ private extension NewGutenbergViewController {
 }
 
 extension EditorConfiguration {
-    init(blog: Blog) {
+    init(blog: Blog, keychain: KeychainAccessible = KeychainUtils()) {
         let selfHostedApiUrl = blog.restApiRootURL ?? blog.url(withPath: "wp-json/")
-        let isWPComSite = blog.isHostedAtWPcom || blog.isAtomic()
-        let siteApiRoot = blog.isAccessibleThroughWPCom() && isWPComSite ? blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
+        let applicationPassword = try? blog.getApplicationToken(using: keychain)
+        let shouldUseWPComRestApi = applicationPassword == nil && blog.isAccessibleThroughWPCom()
+
+        let siteApiRoot: String?
+        if applicationPassword != nil {
+            siteApiRoot = selfHostedApiUrl
+        } else {
+            siteApiRoot = shouldUseWPComRestApi ? blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
+        }
+
         let siteId = blog.dotComID?.stringValue
         let siteDomain = blog.primaryDomainAddress
         let authToken = blog.authToken ?? ""
         var authHeader = "Bearer \(authToken)"
-
-        let applicationPassword = try? blog.getApplicationToken()
 
         if let appPassword = applicationPassword, let username = blog.username {
             let credentials = "\(username):\(appPassword)"
@@ -877,7 +1028,7 @@ extension EditorConfiguration {
 
         // Must provide both namespace forms to detect usages of both forms in third-party code
         var siteApiNamespace: [String] = []
-        if isWPComSite {
+        if shouldUseWPComRestApi {
             if let siteId {
                 siteApiNamespace.append("sites/\(siteId)/")
             }

@@ -91,4 +91,8 @@ extension CommentGutenbergEditorViewController: GutenbergKit.EditorViewControlle
     func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: GutenbergKit.OpenMediaLibraryAction) {
         // Do nothing
     }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didTriggerAutocompleter type: String) {
+        // Do nothing
+    }
 }

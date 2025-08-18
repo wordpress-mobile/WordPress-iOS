@@ -314,9 +314,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "A file contains a malicious code pattern";
 
-/* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
-"A tag named '%@' already exists." = "A tag named '%@' already exists.";
-
 /* Placeholder text for the title of a site */
 "A title for the site" = "A title for the site";
 
@@ -467,9 +464,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Screen reader text for button that adds a menu item */
 "Add new menu item" = "Add new menu item";
-
-/* Voiceover accessibility label for the tags field in blog post settings. */
-"Add new tags, separated by commas." = "Add new tags, separated by commas.";
 
 /* No comment provided by engineer. */
 "Add paragraph block" = "Add Paragraph Block";
@@ -723,9 +717,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "Are you sure you want to delete the menu?";
 
-/* Message asking for confirmation on tag deletion */
-"Are you sure you want to delete this tag?" = "Are you sure you want to delete this tag?";
-
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Are you sure you want to disconnect Jetpack from the site?";
 
@@ -785,9 +776,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Authentication required for host: %@";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "Author";
 
@@ -1120,9 +1109,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Cast the movie of your life.";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "Categories";
 
 /* Category menu item in share extension. */
 "Category" = "Category";
@@ -1479,9 +1465,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Message to show when Publicize connect failed */
 "Connection failed" = "Connection failed";
 
-/* Title of a prompt saying the app needs an internet connection before it can load post formats */
-"Connection not available" = "Connection not available";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -1611,9 +1594,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem.";
 
 /* Error message when tag loading failed */
-"Couldn't load tags." = "Couldn't load tags.";
-
-/* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Couldn't load tags. Tap to retry.";
 
 /* Indicating that referrer couldn't be marked as spam */
@@ -1667,9 +1647,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Navigates to a new flow for site creation. */
 "Create a Site" = "Create a Site";
-
-/* Title of the button in the placeholder for an empty list of blog tags. */
-"Create a Tag" = "Create a Tag";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Create a site icon";
@@ -1738,12 +1715,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Customize blocks" = "Customise blocks";
 
-/* Title for the edition of the share message. */
-"Customize the message" = "Customise the message";
-
-/* Hint displayed when the user is customizing the share message. */
-"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Customise the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message.";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Customise your site settings for Likes, Comments, Follows, and more.";
 
@@ -1797,8 +1768,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Defaults for New Posts";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "Delete";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1818,9 +1788,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Delete menu";
 
-/* Delete Tag confirmation action title */
-"Delete this tag" = "Delete this tag";
-
 /* Text displayed in HUD after successfully deleting a media item */
 "Deleted!" = "Deleted!";
 
@@ -1837,7 +1804,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Describe the purpose of the image. Leave empty if decorative." = "Describe the purpose of the image. Leave empty if decorative.";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "Description";
 
@@ -2371,14 +2337,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "Every day at %@";
 
-/* Label for the excerpt field. Should be the same as WP core. */
-"Excerpt" = "Excerpt";
-
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "Excerpt length (words)";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
-"Excerpts are optional hand-crafted summaries of your content." = "Excerpts are optional hand-crafted summaries of your content.";
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "Excludes themes, plugins, and uploads";
@@ -2452,9 +2412,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Featured";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "Featured Image";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Fetching Themes...";
@@ -3103,9 +3060,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack Settings";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core. */
-"Jetpack Social" = "Jetpack Social";
-
 /* Insights 'Jetpack Social Connections' header
    Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Jetpack Social Connections";
@@ -3464,9 +3418,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Marks comment as spam */
 "Mark as Spam" = "Mark as Spam";
 
-/* Label for the Mark as Sticky option in post settings. */
-"Mark as Sticky" = "Mark as Sticky";
-
 /* Action title for unmarking referrer as spam */
 "Mark as not spam" = "Mark as not spam";
 
@@ -3559,8 +3510,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menus";
 
-/* Invite Message Editor's Title
-   Label for the share message field on the post settings. */
+/* Invite Message Editor's Title */
 "Message" = "Message";
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
@@ -3583,8 +3533,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Action button to display more available options */
 "More" = "More";
 
-/* Action button to display more available options
-   Label for the More Options area in post settings. Should use the same translation as core WP. */
+/* Action button to display more available options */
 "More Options" = "More Options";
 
 /* Label for the posting activity legend. */
@@ -3673,9 +3622,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "Name";
-
-/* Error to be displayed when a tag is empty */
-"Name Required" = "Name Required";
 
 /* No comment provided by engineer. */
 "Navigate Up" = "Navigate Up";
@@ -4022,8 +3968,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -4192,8 +4137,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Page";
 
-/* Name of the button to open the page settings
-   The title of the Page Settings screen. */
+/* Name of the button to open the page settings */
 "Page Settings" = "Page Settings";
 
 /* translators: accessibility text. %s: Page break text. */
@@ -4436,11 +4380,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Post Categories";
 
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "Post Format";
-
-/* Name of the button to open the post settings
-   The title of the Post Settings screen. */
+/* Name of the button to open the post settings */
 "Post Settings" = "Post Settings";
 
 /* Window title for Post Stats view. */
@@ -4577,9 +4517,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Publish";
-
-/* Label for the publish date button. */
-"Publish Date" = "Publish Date";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Publish page on:";
@@ -5338,9 +5275,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "Slash inserter results";
 
-/* Label for the slug field. Should be the same as WP core. */
-"Slug" = "Slug";
-
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no fixed threats on your site." = "So far, there are no fixed threats on your site.";
 
@@ -5454,7 +5388,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sports site intent topic */
 "Sports" = "Sports";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "Standard";
 
 /* Label for selecting the Start Over Settings item
@@ -5484,9 +5419,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle giving the user more context about why to enable notifications. */
 "Stay in touch with like and comment notifications." = "Stay in touch with like and comment notifications.";
-
-/* This is the cell title. */
-"Stick post to the front page" = "Stick post to the front page";
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Sticky";
@@ -5586,31 +5518,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tablet web preview */
 "Tablet" = "Tablet";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "Tag";
-
-/* Title of the alert indicating that a tag with that name already exists. */
-"Tag already exists" = "Tag already exists";
-
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "Tagline";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "Tags";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "Tags and Categories";
-
-/* Displayed when the user views tags in blog settings and there are no tags */
-"Tags created here can be quickly added to new posts" = "Tags created here can be quickly added to new posts";
-
-/* Label explaining why users might want to add tags. */
-"Tags help tell readers what a post is about. Separate different tags with commas." = "Tags help tell readers what a post is about. Separate different tags with commas.";
 
 /* No comment provided by engineer. */
 "Take a Photo" = "Take a Photo";
@@ -5693,9 +5610,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Tap to view your site";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "Taxonomy";
 
 /* Technology site intent topic */
 "Technology" = "Technology";
@@ -5838,9 +5752,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "The site could not be exported.";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
-"The slug is the URL-friendly version of the post title." = "The slug is the URL-friendly version of the post title.";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "The specified user cannot be found. Please, verify if it's correctly spelt.";
@@ -6336,9 +6247,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "Unapproves the Comment.";
 
-/* Message to show in the post-format cell when the post format is not available */
-"Unavailable" = "Unavailable";
-
 /* When the App can't figure out what language a blog is configured to use. */
 "Undefined" = "Undefined";
 
@@ -6600,9 +6508,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights views and visitors header */
 "Views & Visitors" = "Views & Visitors";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "Visibility";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "Visit %@";
@@ -7033,9 +6938,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views scheduled posts in the posts list and there are no posts */
 "You don't have any scheduled posts" = "You don't have any scheduled posts";
-
-/* Empty state. Tags management (Settings > Writing > Tags) */
-"You don't have any tags" = "You don't have any tags";
 
 /* Displayed when the user views trashed in the pages list and there are no pages */
 "You don't have any trashed pages" = "You don't have any trashed pages";
@@ -8539,9 +8441,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "View";
-
-/* Section title for the disabled Twitter service in the Post Settings screen */
-"postSettings.section.disabledTwitter.header" = "Twitter Auto-Sharing Is No Longer Available";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promote with Blaze";

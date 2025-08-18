@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-07-08 13:54:08+0000 */
+/* Translation-Revision-Date: 2025-08-14 15:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -314,9 +314,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for a threat */
 "A file contains a malicious code pattern" = "檔案包含惡意程式碼模式";
 
-/* Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag */
-"A tag named '%@' already exists." = "已有名稱為「%@」的標籤。";
-
 /* Placeholder text for the title of a site */
 "A title for the site" = "網站標題";
 
@@ -470,9 +467,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Screen reader text for button that adds a menu item */
 "Add new menu item" = "新增選單項目";
-
-/* Voiceover accessibility label for the tags field in blog post settings. */
-"Add new tags, separated by commas." = "新增標籤，並以逗號作為分隔。";
 
 /* No comment provided by engineer. */
 "Add paragraph block" = "新增段落區塊";
@@ -695,6 +689,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message shown when Apple authentication fails. */
 "Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "Apple 驗證失敗。\n請確認你已透過 Apple ID 使用兩步驟驗證登入 iCloud。";
 
+/* Link to Application Passwords section */
+"Application Passwords" = "應用程式密碼";
+
 /* No comment provided by engineer. */
 "Applies the setting" = "套用此設定";
 
@@ -725,9 +722,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Menus confirmation text for confirming if a user wants to delete a menu. */
 "Are you sure you want to delete the menu?" = "確定要刪除此選單嗎？";
-
-/* Message asking for confirmation on tag deletion */
-"Are you sure you want to delete this tag?" = "確定要刪除這個標籤嗎？";
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "你確定要中斷Jetpack？";
@@ -788,9 +782,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "主機需要的驗證：%@";
 
-/* Author label.
-   Label for list of stats by content author.
-   The author of the post or page.
+/* Label for list of stats by content author.
    Title for a badge displayed beside the comment writer's name. Shown when the comment is written by the post author. */
 "Author" = "作者";
 
@@ -1132,9 +1124,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "投放你的人生電影。";
-
-/* Label for the categories field. Should be the same as WP core. */
-"Categories" = "分類";
 
 /* Category menu item in share extension. */
 "Category" = "分類";
@@ -1494,9 +1483,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Message to show when Publicize connect failed */
 "Connection failed" = "連結失敗";
 
-/* Title of a prompt saying the app needs an internet connection before it can load post formats */
-"Connection not available" = "無法連結";
-
 /* Button label for contacting support
    Button title that opens the support page
    Button to contact support on Start Over settings page
@@ -1635,9 +1621,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Couldn't load data. Please refresh again later." = "無法載入資料。 請稍後再重新整理。";
 
 /* Error message when tag loading failed */
-"Couldn't load tags." = "無法載入標籤。";
-
-/* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "無法載入標籤。點選以重試。";
 
 /* Indicating that referrer couldn't be marked as spam */
@@ -1691,9 +1674,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Navigates to a new flow for site creation. */
 "Create a Site" = "建立網站";
-
-/* Title of the button in the placeholder for an empty list of blog tags. */
-"Create a Tag" = "建立標籤";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "建立網站圖示";
@@ -1762,12 +1742,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Customize blocks" = "自訂區塊";
 
-/* Title for the edition of the share message. */
-"Customize the message" = "自訂訊息";
-
-/* Hint displayed when the user is customizing the share message. */
-"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "自訂你希望分享的訊息。\n若你不在此新增文字，我們會使用文章標題做為訊息內容。";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "自訂按讚、留言、關注等功能的網站設定。";
 
@@ -1821,8 +1795,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "新文章預設值";
 
-/* Delete
-   Title for button that permanently deletes a media item (photo / video) */
+/* Title for button that permanently deletes a media item (photo / video) */
 "Delete" = "刪除";
 
 /* Menus confirmation button for deleting a menu. */
@@ -1842,9 +1815,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "刪除選單";
 
-/* Delete Tag confirmation action title */
-"Delete this tag" = "刪除此標籤";
-
 /* Text displayed in HUD after successfully deleting a media item */
 "Deleted!" = "已刪除！";
 
@@ -1861,7 +1831,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Describe the purpose of the image. Leave empty if decorative." = "請說明圖片用途。 如果是為了裝飾，請保留空白。";
 
 /* Label for the description for a media asset (image / video)
-   Section header for tag name in Tag Details View.
    Title of section that contains plugins' description */
 "Description" = "敘述";
 
@@ -2395,14 +2364,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Short title telling the user they will receive a blogging reminder every day of the week. */
 "Every day at %@" = "每天 %@";
 
-/* Label for the excerpt field. Should be the same as WP core. */
-"Excerpt" = "文章摘要";
-
 /* No comment provided by engineer. */
 "Excerpt length (words)" = "摘要長度 (字數)";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Calypso. */
-"Excerpts are optional hand-crafted summaries of your content." = "文章摘要是指選擇性手動摘錄的內容。";
 
 /* Downloadable/Restorable items: content section footer text */
 "Excludes themes, plugins, and uploads" = "排除佈景主題、外掛程式和上傳內容";
@@ -2479,9 +2442,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "精選";
-
-/* Label for the Featured Image area in post settings. */
-"Featured Image" = "精選圖片";
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "正在擷取佈景主題...";
@@ -3130,9 +3090,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Links to the blog's Settings screen. */
 "Jetpack Settings" = "Jetpack 設定";
 
-/* Label for the Sharing section in post Settings. Should be the same as WP core. */
-"Jetpack Social" = "Jetpack Social";
-
 /* Insights 'Jetpack Social Connections' header
    Section title for Publicize services in Sharing screen */
 "Jetpack Social Connections" = "Jetpack Social 連結";
@@ -3497,9 +3454,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Marks comment as spam */
 "Mark as Spam" = "標記為垃圾";
 
-/* Label for the Mark as Sticky option in post settings. */
-"Mark as Sticky" = "標記為置頂";
-
 /* Action title for unmarking referrer as spam */
 "Mark as not spam" = "標示為非垃圾訊息";
 
@@ -3592,8 +3546,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for screen that allows configuration of your site's menus */
 "Menus" = "選單";
 
-/* Invite Message Editor's Title
-   Label for the share message field on the post settings. */
+/* Invite Message Editor's Title */
 "Message" = "訊息";
 
 /* Option to select the Microsft Outlook app when logging in with magic links */
@@ -3616,8 +3569,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Action button to display more available options */
 "More" = "更多";
 
-/* Action button to display more available options
-   Label for the More Options area in post settings. Should use the same translation as core WP. */
+/* Action button to display more available options */
 "More Options" = "更多選項";
 
 /* Label for the posting activity legend. */
@@ -3706,9 +3658,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
 "Name" = "名稱";
-
-/* Error to be displayed when a tag is empty */
-"Name Required" = "名稱為必填";
 
 /* No comment provided by engineer. */
 "Navigate Up" = "瀏覽";
@@ -4055,8 +4004,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
    Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature.
-   Title of a button that dismisses a prompt */
+   OK Button title shown in alert informing users about the Reader Save for Later feature. */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -4225,8 +4173,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "網頁";
 
-/* Name of the button to open the page settings
-   The title of the Page Settings screen. */
+/* Name of the button to open the page settings */
 "Page Settings" = "頁面設定";
 
 /* translators: accessibility text. %s: Page break text. */
@@ -4469,11 +4416,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "文章類別";
 
-/* The post formats available for the post. Should be the same as in core WP. */
-"Post Format" = "文章格式";
-
-/* Name of the button to open the post settings
-   The title of the Post Settings screen. */
+/* Name of the button to open the post settings */
 "Post Settings" = "文章設定";
 
 /* Window title for Post Stats view. */
@@ -4610,9 +4553,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "發佈";
-
-/* Label for the publish date button. */
-"Publish Date" = "發表日期";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "將頁面張貼在以下位置：";
@@ -5377,9 +5317,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: Slash inserter autocomplete results */
 "Slash inserter results" = "斜線插入工具結果";
 
-/* Label for the slug field. Should be the same as WP core. */
-"Slug" = "代稱";
-
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no fixed threats on your site." = "目前你的網站沒有任何資安威脅修復記錄。";
 
@@ -5493,7 +5430,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Sports site intent topic */
 "Sports" = "運動";
 
-/* Standard post format label */
+/* Default post format
+   Standard post format label */
 "Standard" = "標準";
 
 /* Label for selecting the Start Over Settings item
@@ -5523,9 +5461,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle giving the user more context about why to enable notifications. */
 "Stay in touch with like and comment notifications." = "按讚和留言通知有助於保持互動。";
-
-/* This is the cell title. */
-"Stick post to the front page" = "將文章置於首頁";
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "置頂";
@@ -5625,31 +5560,16 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tablet web preview */
 "Tablet" = "平板電腦";
 
-/* Section header for tag name in Tag Details View. */
-"Tag" = "標籤";
-
-/* Title of the alert indicating that a tag with that name already exists. */
-"Tag already exists" = "標籤已經存在";
-
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "標語";
 
 /* Label for selecting the blogs tags
-   Label for the tags field. Should be the same as WP core.
-   Label for the Tags Section in the Blog Settings
-   Tags menu item in share extension.
-   Title for the tag selector view */
+   Tags menu item in share extension. */
 "Tags" = "標籤";
 
 /* Insights 'Tags and Categories' header */
 "Tags and Categories" = "標籤和類別";
-
-/* Displayed when the user views tags in blog settings and there are no tags */
-"Tags created here can be quickly added to new posts" = "在此處建立的標籤可快速地加入新文章中";
-
-/* Label explaining why users might want to add tags. */
-"Tags help tell readers what a post is about. Separate different tags with commas." = "標籤可協助讀者瞭解文章內容。以逗號分隔不同標籤。";
 
 /* No comment provided by engineer. */
 "Take a Photo" = "拍攝照片";
@@ -5741,9 +5661,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "點選即可透過外部瀏覽器造訪 Gravatar 網站";
-
-/* Label for the Taxonomy area (categories, keywords, ...) in post settings. */
-"Taxonomy" = "分類法";
 
 /* Technology site intent topic */
 "Technology" = "科技";
@@ -5889,9 +5806,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "無法匯出此網站。";
-
-/* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
-"The slug is the URL-friendly version of the post title." = "代稱是使 URL 更易讀好記的文章標題版本。";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "找不到指定的使用者。請確認拼字是否正確。";
@@ -6387,9 +6301,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment */
 "Unapproves the Comment." = "駁回此留言。";
 
-/* Message to show in the post-format cell when the post format is not available */
-"Unavailable" = "無法使用";
-
 /* When the App can't figure out what language a blog is configured to use. */
 "Undefined" = "未定義";
 
@@ -6657,9 +6568,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights views and visitors header */
 "Views & Visitors" = "瀏覽次數與訪客";
-
-/* The visibility settings of the post. Should be the same as in core WP. */
-"Visibility" = "可見度";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
 "Visit %@" = "造訪 %@";
@@ -7097,9 +7005,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views scheduled posts in the posts list and there are no posts */
 "You don't have any scheduled posts" = "你沒有任何已排程文章";
 
-/* Empty state. Tags management (Settings > Writing > Tags) */
-"You don't have any tags" = "你沒有任何標籤";
-
 /* Displayed when the user views trashed in the pages list and there are no pages */
 "You don't have any trashed pages" = "你沒有任何移至垃圾桶的頁面";
 
@@ -7296,7 +7201,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "activityLogs.activityTypes.empty" = "沒有可用的活動類型";
 
 /* Select all button */
-"activityLogs.activityTypes.selectAll" = "選取全部";
+"activityLogs.activityTypes.selectAll" = "全部選取";
 
 /* Activity type selection screen title */
 "activityLogs.activityTypes.title" = "活動類型";
@@ -7413,27 +7318,35 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The list item of experimental features that users can choose to enable */
 "application-settings.experimental-features" = "實驗性功能";
 
-/* Button label to authorize application passwords */
-"application.password.authorize" = "授權";
+/* Complete information about application passwords with security benefits, creation process, management instructions, and revocation warning */
+"applicationPassword.info.content" = "「應用程式密碼」提供更安全的方式，因為應用程式不必使用你實際的帳號密碼，即可存取你的網站內容。\n\n新增應用程式至網站時，系統會視需要自動建立應用程式密碼。\n\n你可在 WordPress 網站儀表板中的使用者個人檔案，檢視並管理這些密碼。\n\n請注意，撤銷應用程式使用的應用程式密碼時，應用程式會停止存取你的網站。 撤銷應用程式建立的應用程式密碼前，請三思而行。";
 
-/* Description for the application passwords feature */
-"application.password.description" = "你現在可以授與應用程式權限來使用應用程式密碼，以便快速安全地存取網站內容。";
+/* Button to dismiss the application password information view */
+"applicationPassword.info.gotIt.button" = "知道了";
 
-/* Title for the new application passwords feature */
-"application.password.new.title" = "新功能：應用程式密碼";
+/* Title for the application passwords information view */
+"applicationPassword.info.title" = "關於「應用程式密碼」";
 
 /* Title of row for displaying an application password's creation date */
 "applicationPassword.item.creationDate" = "建立日期";
 
-/* Title of row for displaying an application password's last used date
-   Title of row for displaying an application password's last used IP address */
+/* Footer message indicating that this application password is currently active and being used by the app */
+"applicationPassword.item.currentlyInUse" = "應用程式正在使用這組應用程式密碼。";
+
+/* Title of row for displaying an application password's last used date */
 "applicationPassword.item.lastUsed" = "最後使用時間";
+
+/* Title of row for displaying an application password's last used IP address */
+"applicationPassword.item.lastUsedIp" = "上一個 IP 位址";
 
 /* Title of row for displaying an application password name */
 "applicationPassword.item.name" = "名稱";
 
 /* Title of section for displaying application password details */
 "applicationPassword.item.section.security" = "安全性";
+
+/* String format of creation date of an application password. There is one argument: the creation date relative to now (i.e. 5 days ago). */
+"applicationPassword.list.item.created-date-format" = "建立時間：%@";
 
 /* String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago). */
 "applicationPassword.list.item.last-used-format" = "最後使用時間：%@";
@@ -7447,8 +7360,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "找不到目前的網站 URL";
 
+/* Error message shown when the site doesn't support Application Passwords feature */
+"applicationPasswordMigration.error.unsupported" = "網站不支援「應用程式密碼」。";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "請以使用者「%@」登入";
+
+/* Error message when the site's REST API is not accessible for application password creation */
+"applicationPasswordRepository.error.restApiInaccessible" = "無法存取網站的 REST API";
+
+/* Error message when application password creation fails for unknown reasons */
+"applicationPasswordRepository.error.unknown" = "無法建立應用程式密碼";
+
+/* Error message when the username cannot be found for application password creation */
+"applicationPasswordRepository.error.usernameNotFound" = "找不到網站的使用者名稱";
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "應用程式密碼可提供更安全的自助託管網站連結方式，還支援「%@」等功能。";
@@ -7456,7 +7381,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "外掛程式管理";
 
-/* Feature name for managing users in the app */
+/* Feature name for managing application passwords in the app
+   Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "使用者管理";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -8077,6 +8003,27 @@ Example: Reply to Pamela Nguyen */
 /* No comment provided by engineer. */
 "double-tap to change unit" = "點兩下即可變更單位";
 
+/* Message for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.message" = "你確定要刪除這個標籤嗎？";
+
+/* Title for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.title" = "刪除標籤";
+
+/* Placeholder text for tag description field */
+"edit.tag.description.placeholder" = "新增說明...";
+
+/* Placeholder text for tag name field */
+"edit.tag.name.placeholder" = "標籤名稱";
+
+/* Navigation title for new tag creation */
+"edit.tag.new.title" = "新標籤";
+
+/* Section header for tag description in edit tag view */
+"edit.tag.section.description" = "說明";
+
+/* Section header for tag name in edit tag view */
+"edit.tag.section.tag" = "標籤";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "例如：1122334455";
 
@@ -8585,6 +8532,558 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "如需使用統計與通知，請以 %@ 登入。";
 
+/* Accessibility label for add card button */
+"jetpackStats.accessibility.addCardButton" = "新增新的統計卡片";
+
+/* Accessibility label for back navigation */
+"jetpackStats.accessibility.backToStats" = "返回統計";
+
+/* Card title accessibility label. %1$@ is the card title. */
+"jetpackStats.accessibility.cardTitle" = "「%1$@」卡片";
+
+/* Accessibility label for chart container */
+"jetpackStats.accessibility.chartContainer" = "統計圖表";
+
+/* Chart trend accessibility label. %1$@ is metric name, %2$@ is trend description. */
+"jetpackStats.accessibility.chartTrend" = "%2$@ %1$@";
+
+/* Chart data point accessibility label. %1$@ is metric name, %2$@ is value, %3$@ is date. */
+"jetpackStats.accessibility.chartValue" = "%1$@：%2$@ (%3$@)";
+
+/* Selected date range accessibility label. %1$@ is the range. */
+"jetpackStats.accessibility.dateRangeSelected" = "日期範圍：%1$@";
+
+/* Accessibility label for error state */
+"jetpackStats.accessibility.errorLoadingStats" = "載入統計資料時發生錯誤";
+
+/* Accessibility label for loading state */
+"jetpackStats.accessibility.loadingStats" = "載入統計資料";
+
+/* Accessibility label for more options menu */
+"jetpackStats.accessibility.moreOptions" = "更多選項";
+
+/* Accessibility hint for next period navigation */
+"jetpackStats.accessibility.navigateToNextDateRange" = "前往下一個日期範圍";
+
+/* Accessibility hint for previous period navigation */
+"jetpackStats.accessibility.navigateToPreviousDateRange" = "前往上一個日期範圍";
+
+/* Accessibility label for next period navigation button */
+"jetpackStats.accessibility.nextPeriod" = "下個期間";
+
+/* Accessibility label for empty data state */
+"jetpackStats.accessibility.noDataAvailable" = "這段期間沒有可用資料";
+
+/* Accessibility label for opening link in browser */
+"jetpackStats.accessibility.openInBrowser" = "在瀏覽器中開啟";
+
+/* Accessibility label for previous period navigation button */
+"jetpackStats.accessibility.previousPeriod" = "上個期間";
+
+/* Accessibility label for realtime visitor count */
+"jetpackStats.accessibility.realtimeVisitorCount" = "目前線上訪客人數";
+
+/* Accessibility hint for retry action */
+"jetpackStats.accessibility.retryLoadingStats" = "點兩下，重新嘗試載入統計資料";
+
+/* Accessibility hint for date range selection */
+"jetpackStats.accessibility.selectDateRange" = "選取日期範圍";
+
+/* Accessibility hint for tab selection. %1$@ is the tab name. */
+"jetpackStats.accessibility.selectTab" = "選取「%1$@」分頁";
+
+/* Accessibility announcement when stats finish loading */
+"jetpackStats.accessibility.statsLoaded" = "統計資料已載入";
+
+/* Accessibility label for stats tab bar */
+"jetpackStats.accessibility.statsTabBar" = "統計資料導覽分頁";
+
+/* Accessibility announcement when a tab is selected. %1$@ is the tab name. */
+"jetpackStats.accessibility.tabSelected" = "已選取「%1$@」分頁";
+
+/* Top list item accessibility label. %1$d is rank, %2$@ is title, %3$@ is value. */
+"jetpackStats.accessibility.topListItem" = "排第 %1$d 名：%2$@，%3$@";
+
+/* Accessibility hint for viewing chart data */
+"jetpackStats.accessibility.viewChartData" = "檢視詳細的圖表資料";
+
+/* Accessibility hint for items that can show more details */
+"jetpackStats.accessibility.viewMoreDetails" = "點兩下檢視更多詳細資料";
+
+/* Singular visitor count. %1$d is the number. */
+"jetpackStats.accessibility.visitorNow" = "%1$d 位訪客目前在線上";
+
+/* Plural visitors count. %1$d is the number. */
+"jetpackStats.accessibility.visitorsNow" = "%1$d 位訪客目前在線上";
+
+/* Chart option description */
+"jetpackStats.addChart.chartDescription" = "將長期趨勢視覺化";
+
+/* Chart option title */
+"jetpackStats.addChart.chartOption" = "圖表";
+
+/* Title for data type selection */
+"jetpackStats.addChart.selectDataType" = "選取資料類型";
+
+/* Title for metric selection */
+"jetpackStats.addChart.selectMetric" = "選取指標";
+
+/* Top list option description */
+"jetpackStats.addChart.topListDescription" = "查看成效最佳的內容";
+
+/* Top list option title */
+"jetpackStats.addChart.topListOption" = "佳績清單";
+
+/* Archive section for authors */
+"jetpackStats.archiveSections.author" = "作者";
+
+/* Plural item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.plural" = "%1$d 個項目";
+
+/* Singular item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.singular" = "%1$d 個項目";
+
+/* Archive section for other items */
+"jetpackStats.archiveSections.other" = "其他";
+
+/* Title for the author details screen */
+"jetpackStats.authorDetails.title" = "作者";
+
+/* Button to add a new chart */
+"jetpackStats.button.addCard" = "新增卡片";
+
+/* Apply button */
+"jetpackStats.button.apply" = "套用";
+
+/* Cancel button */
+"jetpackStats.button.cancel" = "取消";
+
+/* Button to customize a chart or widget */
+"jetpackStats.button.customize" = "編輯卡片";
+
+/* Button to delete a chart or widget */
+"jetpackStats.button.deleteWidget" = "刪除卡片";
+
+/* Done button */
+"jetpackStats.button.done" = "完成";
+
+/* Button to download data as CSV file */
+"jetpackStats.button.downloadCSV" = "下載 CSV";
+
+/* Learn more about stats button */
+"jetpackStats.button.learnMore" = "深入了解";
+
+/* Button to move a card */
+"jetpackStats.button.moveCard" = "移動卡片";
+
+/* Button to move card down */
+"jetpackStats.button.moveDown" = "下移";
+
+/* Button to move card to the bottom */
+"jetpackStats.button.moveToBottom" = "移至底部";
+
+/* Button to move card to the top */
+"jetpackStats.button.moveToTop" = "移至頂端";
+
+/* Button to move card up */
+"jetpackStats.button.moveUp" = "上移";
+
+/* OK button */
+"jetpackStats.button.ok" = "確定";
+
+/* Button to reset chart settings to default */
+"jetpackStats.button.resetSettings" = "重設設定";
+
+/* Share chart menu item */
+"jetpackStats.button.share" = "分享";
+
+/* Button title */
+"jetpackStats.button.showAll" = "顯示全部";
+
+/* Button to collapse and show fewer items */
+"jetpackStats.button.showLess" = "顯示較少項目";
+
+/* Button to expand and show more items */
+"jetpackStats.button.showMore" = "顯示更多項目";
+
+/* Last 10 years date range */
+"jetpackStats.calendar.last10Years" = "過去 10 年";
+
+/* Last 12 months date range */
+"jetpackStats.calendar.last12Months" = "過去 12 個月";
+
+/* Last 28 days date range */
+"jetpackStats.calendar.last28Days" = "過去 28 天";
+
+/* Last 30 days date range */
+"jetpackStats.calendar.last30Days" = "過去 30 天";
+
+/* Last 3 years date range */
+"jetpackStats.calendar.last3Years" = "過去 3 年";
+
+/* Last 6 months date range */
+"jetpackStats.calendar.last6Months" = "過去 6 個月";
+
+/* Last 7 days date range */
+"jetpackStats.calendar.last7Days" = "過去 7 天";
+
+/* Last 90 days date range */
+"jetpackStats.calendar.last90Days" = "過去 90 天";
+
+/* Month time period */
+"jetpackStats.calendar.month" = "月";
+
+/* Quarter time period */
+"jetpackStats.calendar.quarter" = "季";
+
+/* This month date range */
+"jetpackStats.calendar.thisMonth" = "本月";
+
+/* This quarter date range */
+"jetpackStats.calendar.thisQuarter" = "本季度";
+
+/* This week date range */
+"jetpackStats.calendar.thisWeek" = "本週";
+
+/* This year date range */
+"jetpackStats.calendar.thisYear" = "今年";
+
+/* Today date range */
+"jetpackStats.calendar.today" = "今天";
+
+/* Week time period */
+"jetpackStats.calendar.week" = "週";
+
+/* Year time period */
+"jetpackStats.calendar.year" = "年";
+
+/* Bar chart type */
+"jetpackStats.chart.barChart" = "長條圖";
+
+/* Shown for empty states */
+"jetpackStats.chart.dataEmpty" = "期間沒有資料";
+
+/* Genertic error message */
+"jetpackStats.chart.generitcError" = "發生錯誤";
+
+/* Shown for metrics that don't support hourly data */
+"jetpackStats.chart.hourlyDataNotAvailable" = "無法使用每小時資料";
+
+/* Shown when current period data might be incomplete */
+"jetpackStats.chart.incompleteData" = "可能會顯示不完整的資料";
+
+/* Line chart type */
+"jetpackStats.chart.lineChart" = "折線圖";
+
+/* Show chart data menu item */
+"jetpackStats.chart.showData" = "顯示資料";
+
+/* Label for change value */
+"jetpackStats.chartData.change" = "變更";
+
+/* Column header for date */
+"jetpackStats.chartData.date" = "日期";
+
+/* Section title for detailed data */
+"jetpackStats.chartData.detailedData" = "詳細資料";
+
+/* Label for previous value */
+"jetpackStats.chartData.previous" = "上一個";
+
+/* Title for chart data screen */
+"jetpackStats.chartData.title" = "圖表資料";
+
+/* Label for total value */
+"jetpackStats.chartData.total" = "總計";
+
+/* Column header for value */
+"jetpackStats.chartData.value" = "值";
+
+/* Context menu action to copy country name */
+"jetpackStats.contextMenu.copyCountryName" = "複製國家\/地區名稱";
+
+/* Context menu action to copy domain */
+"jetpackStats.contextMenu.copyDomain" = "複製網域";
+
+/* Context menu action to copy file name */
+"jetpackStats.contextMenu.copyFileName" = "複製檔案名稱";
+
+/* Context menu action to copy file path */
+"jetpackStats.contextMenu.copyFilePath" = "複製檔案路徑";
+
+/* Context menu action to copy name */
+"jetpackStats.contextMenu.copyName" = "複製名稱";
+
+/* Context menu action to copy search term */
+"jetpackStats.contextMenu.copySearchTerm" = "複製搜尋字詞";
+
+/* Context menu action to copy title */
+"jetpackStats.contextMenu.copyTitle" = "複製標題";
+
+/* Context menu action to copy URL */
+"jetpackStats.contextMenu.copyURL" = "複製 URL";
+
+/* Context menu action to copy video URL */
+"jetpackStats.contextMenu.copyVideoURL" = "複製影片 URL";
+
+/* Context menu action to open link in browser */
+"jetpackStats.contextMenu.openInBrowser" = "在瀏覽器中開啟";
+
+/* Context menu action to search term in Google */
+"jetpackStats.contextMenu.searchInGoogle" = "在 Google 搜尋";
+
+/* Message shown when a country has no views */
+"jetpackStats.countries.noViews" = "沒有瀏覽數";
+
+/* CSV header for country column */
+"jetpackStats.csv.country" = "國家\/地區";
+
+/* CSV header for country code column */
+"jetpackStats.csv.countryCode" = "國家\/地區代碼";
+
+/* CSV header for date column */
+"jetpackStats.csv.date" = "日期";
+
+/* CSV header for domain column */
+"jetpackStats.csv.domain" = "網域";
+
+/* CSV header for file name column */
+"jetpackStats.csv.fileName" = "檔案名稱";
+
+/* CSV header for file path column */
+"jetpackStats.csv.filePath" = "檔案路徑";
+
+/* CSV header for name column */
+"jetpackStats.csv.name" = "名稱";
+
+/* CSV header for role column */
+"jetpackStats.csv.role" = "角色";
+
+/* CSV header for search term column */
+"jetpackStats.csv.searchTerm" = "搜尋字詞";
+
+/* CSV header for section column */
+"jetpackStats.csv.section" = "區段";
+
+/* CSV header for title column */
+"jetpackStats.csv.title" = "標題";
+
+/* CSV header for type column */
+"jetpackStats.csv.type" = "類型";
+
+/* CSV header for URL column */
+"jetpackStats.csv.url" = "URL";
+
+/* CSV header for video URL column */
+"jetpackStats.csv.videoURL" = "影片 URL";
+
+/* Title for comparison menu */
+"jetpackStats.datePicker.compareWith" = "比較...";
+
+/* Title for custom date range picker */
+"jetpackStats.datePicker.customRange" = "自訂範圍";
+
+/* Menu item for custom date range picker */
+"jetpackStats.datePicker.customRangeMenu" = "自訂範圍...";
+
+/* From date label */
+"jetpackStats.datePicker.from" = "開始日期";
+
+/* Compare with same period last year option */
+"jetpackStats.datePicker.lastYear" = "去年";
+
+/* Menu item for more date period options */
+"jetpackStats.datePicker.morePeriods" = "更多期間...";
+
+/* Compare with preceding period option */
+"jetpackStats.datePicker.precedingPeriod" = "前一個期間";
+
+/* Label for quick period selection */
+"jetpackStats.datePicker.quickPeriodsForStartDate" = "開始日的快速期間";
+
+/* Site time zone header */
+"jetpackStats.datePicker.siteTimeZone" = "網站時區";
+
+/* Explanation of how stats are reported in site time zone */
+"jetpackStats.datePicker.siteTimeZoneDescription" = "統計功能會根據網站的時區進行彙報和顯示。 即使根據訪客所在時區，訪客是週二造訪你的網站，但只要網站的時區是週一，系統紀錄就會是週一。";
+
+/* To date label */
+"jetpackStats.datePicker.to" = "結束日期";
+
+/* Section title for the list of child links */
+"jetpackStats.externalLinkDetails.childLinks" = "子連結";
+
+/* Button to open the external link in browser */
+"jetpackStats.externalLinkDetails.openLink" = "開啟連結";
+
+/* Title for the external link details screen */
+"jetpackStats.externalLinkDetails.title" = "外部連結";
+
+/* Label for daily average in tooltip */
+"jetpackStats.postDetails.dailyAverage" = "每日平均";
+
+/* Title for email metrics card */
+"jetpackStats.postDetails.emailMetrics" = "電子郵件數";
+
+/* Must be short!Label for emails sent metric */
+"jetpackStats.postDetails.emailsSent" = "電子郵件已傳送";
+
+/* Legend label for lower activity */
+"jetpackStats.postDetails.less" = "較少";
+
+/* Singular like count. %1$d is the number. */
+"jetpackStats.postDetails.like" = "%1$d 個讚";
+
+/* Plural likes count. %1$d is the number. */
+"jetpackStats.postDetails.likes" = "%1$d 個讚";
+
+/* Title for monthly activity heatmap */
+"jetpackStats.postDetails.monthsAndYears" = "最近幾個月";
+
+/* Legend label for higher activity */
+"jetpackStats.postDetails.more" = "更多";
+
+/* Label */
+"jetpackStats.postDetails.noLikesYet" = "目前沒人按讚";
+
+/* Must be short! Label for email open rate metric */
+"jetpackStats.postDetails.openRate" = "開啟率";
+
+/* Shows when the post was published. %1$@ is the formatted date. */
+"jetpackStats.postDetails.published" = "發表時間：%1$@";
+
+/* Title for recent weeks activity heatmap */
+"jetpackStats.postDetails.recentWeeks" = "最近幾週";
+
+/* Navigation title */
+"jetpackStats.postDetails.title" = "文章統計資料";
+
+/* Must be short!Label for total email opens metric */
+"jetpackStats.postDetails.totalOpens" = "總開啟數";
+
+/* Must be short!Label for unique email opens metric */
+"jetpackStats.postDetails.uniqueOpens" = "不重複開啟數";
+
+/* Label for week-over-week comparison in tooltip */
+"jetpackStats.postDetails.weekOverWeek" = "與上週相比";
+
+/* Label for weekly total in tooltip */
+"jetpackStats.postDetails.weekTotal" = "本週總計";
+
+/* Title for weekly activity heatmap */
+"jetpackStats.postDetails.weeklyActivity" = "每週活動";
+
+/* Title for error alert when marking referrer as spam fails */
+"jetpackStats.referrerDetails.errorAlertTitle" = "錯誤";
+
+/* Button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpam" = "標記為垃圾訊息";
+
+/* Error message when marking a referrer as spam fails */
+"jetpackStats.referrerDetails.markAsSpamError" = "無法標記為垃圾訊息";
+
+/* Label shown when a referrer is already marked as spam */
+"jetpackStats.referrerDetails.markedAsSpam" = "已標記為垃圾訊息";
+
+/* Section title for the list of referral sources */
+"jetpackStats.referrerDetails.referralSources" = "推薦來源";
+
+/* Title for the referrer details screen */
+"jetpackStats.referrerDetails.title" = "推薦連結";
+
+/* Archive data type */
+"jetpackStats.siteDataTypes.archive" = "封存";
+
+/* Authors data type */
+"jetpackStats.siteDataTypes.authors" = "作者";
+
+/* External links data type */
+"jetpackStats.siteDataTypes.externalLinks" = "外部連結";
+
+/* File downloads data type */
+"jetpackStats.siteDataTypes.fileDownloads" = "檔案下載";
+
+/* Locations data type */
+"jetpackStats.siteDataTypes.locations" = "位置";
+
+/* Posts and pages data type */
+"jetpackStats.siteDataTypes.postsAndPages" = "文章與頁面";
+
+/* Referrers data type */
+"jetpackStats.siteDataTypes.referrers" = "推薦連結";
+
+/* Search terms data type */
+"jetpackStats.siteDataTypes.searchTerms" = "搜尋字詞";
+
+/* Videos data type */
+"jetpackStats.siteDataTypes.videos" = "影片";
+
+/* Bounce rate metric */
+"jetpackStats.siteMetrics.bounceRate" = "跳出率";
+
+/* Site comments metric */
+"jetpackStats.siteMetrics.comments" = "留言數";
+
+/* Download count */
+"jetpackStats.siteMetrics.downloads" = "下載數";
+
+/* Site likes metric */
+"jetpackStats.siteMetrics.likes" = "讚數";
+
+/* Site posts metric */
+"jetpackStats.siteMetrics.posts" = "文章數";
+
+/* Time on site metric */
+"jetpackStats.siteMetrics.timeOnSite" = "網站停留時間";
+
+/* Site views metric */
+"jetpackStats.siteMetrics.views" = "點閱數";
+
+/* Site visitors metric */
+"jetpackStats.siteMetrics.visitors" = "訪客數";
+
+/* Current active visitors metric */
+"jetpackStats.siteMetrics.visitorsNow" = "目前訪客數";
+
+/* Insights tab */
+"jetpackStats.tabs.insights" = "洞察報告";
+
+/* Realtime tab */
+"jetpackStats.tabs.realtime" = "即時";
+
+/* Subscribers tab */
+"jetpackStats.tabs.subscribers" = "訂閱者";
+
+/* Traffic tab */
+"jetpackStats.tabs.traffic" = "流量";
+
+/* Stats screen title */
+"jetpackStats.title" = "統計資料";
+
+/* Title for items with highest bounce rate */
+"jetpackStats.topList.highestBounceRate" = "最高跳出率";
+
+/* Title for items with longest time on site */
+"jetpackStats.topList.longestTimeOnSite" = "最長網站停留時間";
+
+/* Title for most commented items */
+"jetpackStats.topList.mostCommented" = "最多回應的文章";
+
+/* Title for chart */
+"jetpackStats.topList.mostDownloads" = "最多下載次數";
+
+/* Title for most liked items */
+"jetpackStats.topList.mostLiked" = "最多讚";
+
+/* Title for most posts (per author) */
+"jetpackStats.topList.mostPosts" = "常見文章標題";
+
+/* Title for most viewed items */
+"jetpackStats.topList.mostViewed" = "最高瀏覽數";
+
+/* Title for items with most visitors */
+"jetpackStats.topList.mostVisitors" = "最多訪客";
+
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "深入瞭解";
 
@@ -9089,6 +9588,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "我的頁面";
 
+/* Title for the parent page picker screen */
+"parentPagePicker.title" = "上層頁面";
+
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "上層頁面";
 
@@ -9242,6 +9744,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to view plugin on WordPress.org */
 "pluginDetails.viewOnWordPressOrg.button" = "從 WordPress.org 檢視";
 
+/* Title for the post author selection screen */
+"postAuthorPicker.title" = "作者";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "捨棄變更";
 
@@ -9316,6 +9821,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "正在儲存草稿...";
+
+/* Empty state description when no post formats are available */
+"postFormatPicker.emptyState.description" = "網站未設定文章格式。";
+
+/* Empty state title when no post formats are available */
+"postFormatPicker.emptyState.title" = "沒有可用的文章格式";
+
+/* Navigation bar title for the Post Format picker */
+"postFormatPicker.navigationTitle" = "文章格式";
+
+/* Error message when post formats refresh fails */
+"postFormatPicker.refreshErrorMessage" = "無法重新整理文章格式";
 
 /* Button title */
 "postFromAudio.beginRecording" = "開始錄製";
@@ -9461,8 +9978,42 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "無標題";
 
+/* Label for the author field in Post Settings */
+"postSettings.author.label" = "作者";
+
+/* Label for the add category button field. Should be the same as WP core. */
+"postSettings.categories.addCategoryButton" = "新增分類";
+
+/* Label for the categories field. Should be the same as WP core.
+   Label for the category field. Should be the same as WP core. */
+"postSettings.categories.label" = "類別";
+
+/* Button to confirm discarding changes */
+"postSettings.discardChanges.button" = "捨棄變更";
+
+/* Message for the discard changes confirmation dialog */
+"postSettings.discardChanges.message" = "你有未儲存的變更。 你確定要捨棄這些變更？";
+
+/* Title for the discard changes confirmation dialog */
+"postSettings.discardChanges.title" = "要捨棄變更嗎？";
+
+/* Character count for excerpt. %1$d is the number of characters. */
+"postSettings.excerpt.characterCount" = "%1$d 個字元";
+
+/* Section header for Excerpt in Post Settings */
+"postSettings.excerpt.header" = "文章摘要";
+
+/* Placeholder text for the excerpt field in Post Settings */
+"postSettings.excerpt.placeholder" = "撰寫簡短的文章摘要，並顯示於部落格索引、封存和搜尋結果。";
+
+/* Word count for excerpt. %1$d is the number of words. */
+"postSettings.excerpt.wordCount" = "%1$d 字";
+
 /* Cancel upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.cancelUpload" = "取消上傳";
+
+/* Section header for Featured Image in Post Settings */
+"postSettings.featuredImage.header" = "精選圖片";
 
 /* Replace image upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.replaceImage" = "取代";
@@ -9476,20 +10027,74 @@ Example: Reply to Pamela Nguyen */
 /* Post Settings */
 "postSettings.featuredImage.uploading" = "上傳中...";
 
-/* The 'Parent Page' setting of the post */
-"postSettings.parentPage" = "上層頁面";
+/* Label for the last edited field in Post Settings */
+"postSettings.lastEdited.label" = "上次編輯";
 
-/* The 'Pending Review' setting of the post */
-"postSettings.pendingReview" = "待審中";
+/* Section header for Info in Post Settings */
+"postSettings.metadata.header" = "資訊";
 
-/* Section title for the disabled Twitter service in the Post Settings screen */
-"postSettings.section.disabledTwitter.header" = "Twitter 自動分享功能已無法使用";
+/* Section header for More Options in Post Settings. Should use the same translation as core WP. */
+"postSettings.moreOptions.header" = "更多選項";
 
-/* Section title for Page Attributes */
-"postSettings.section.pageAttributes" = "頁面屬性";
+/* The title of the Page Settings screen. */
+"postSettings.navigationTitle.page" = "頁面設定";
 
-/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
-"postSettings.warningPostWillBePublishedAlertMessage" = "在你將可見度變更為「私密」後，系統就會立刻發表文章";
+/* The title of the Post Settings screen. */
+"postSettings.navigationTitle.post" = "文章設定";
+
+/* Label for the Organization area (categories, keywords, ...) in post settings. */
+"postSettings.organization.header" = "組織";
+
+/* Message when trying to save a deleted page */
+"postSettings.pageDeleted.message" = "頁面已刪除，無法儲存。";
+
+/* Title of alert when trying to save a deleted page */
+"postSettings.pageDeleted.title" = "頁面已刪除";
+
+/* Cell title for the Top Level option case */
+"postSettings.parentPage.topLevel" = "最上層";
+
+/* Label for the permalink field in Post Settings */
+"postSettings.permalink.label" = "永久連結";
+
+/* Message when trying to save a deleted post */
+"postSettings.postDeleted.message" = "文章已刪除，無法儲存。";
+
+/* Title of alert when trying to save a deleted post */
+"postSettings.postDeleted.title" = "文章已刪除";
+
+/* Label for the post format field. Should be the same as WP core. */
+"postSettings.postFormat.label" = "文章格式";
+
+/* Label for the post ID field in Post Settings */
+"postSettings.postID.label" = "ID";
+
+/* Label for the publish date field in Post Settings */
+"postSettings.publishDate.label" = "日期";
+
+/* Section header for General settings in Post Settings */
+"postSettings.section.general" = "一般";
+
+/* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
+"postSettings.slug.hint" = "代稱是使 URL 更易讀好記的文章標題版本。";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.label" = "代稱";
+
+/* Placeholder for the slug field */
+"postSettings.slug.placeholder" = "輸入代稱";
+
+/* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
+"postSettings.stickyPost.label" = "置頂";
+
+/* Label for the add tags button field. Should be the same as WP core. */
+"postSettings.tags.addTagsButton" = "新增標籤";
+
+/* Label for the tags field. Should be the same as WP core. */
+"postSettings.tags.label" = "標籤";
+
+/* Label for the visibility field in Post Settings */
+"postSettings.visibility.label" = "可見度";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "取消";
@@ -10858,6 +11463,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "訂閱者總人數";
 
+/* Menu item to send feedback about new stats experience */
+"stats.menu.sendFeedback" = "傳送意見回饋";
+
+/* Menu item to switch back to classic stats experience */
+"stats.menu.switchToClassic" = "切換至傳統版統計功能";
+
+/* Menu item to enable new stats experience */
+"stats.menu.tryNewStats" = "試用新版統計功能";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
@@ -10893,6 +11507,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The label for the option to show Stats Traffic chart for Days. */
 "stats.traffic.days" = "天";
+
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.hours" = "小時";
 
 /* The label for the option to show Stats Traffic chart for Months. */
 "stats.traffic.months" = "月";
@@ -11227,6 +11844,33 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* View title for Help & Support page. */
 "support.title" = "說明";
 
+/* Button to add a new tag. %1$@ is the tag name. */
+"tags.add.button" = "新增標籤：%1$@";
+
+/* Description for empty state when there are no tags */
+"tags.empty.description" = "可運用標籤整理內容，方便讀者尋找相關文章。";
+
+/* Title for empty state when there are no tags */
+"tags.empty.title" = "無標籤";
+
+/* Error message when tag data is invalid */
+"tags.error.invalid_tag" = "標籤資訊無效。 請再試一次。";
+
+/* Error message when the tags service cannot connect to the remote site */
+"tags.error.no_remote_service" = "無法連線至你的網站。 請檢查你的連線並再試一次。";
+
+/* Button to remove a selected tag. %1$@ is the tag name. */
+"tags.remove.button" = "移除「%1$@」";
+
+/* Placeholder text for the tag search field */
+"tags.search.placeholder" = "搜尋標籤";
+
+/* Message shown when no tags are selected */
+"tags.selected.empty" = "未選取標籤";
+
+/* Title for the tags screen */
+"tags.title" = "標籤";
+
 /* Title for placeholder in Tenor picker */
 "tenor.welcomeMessage" = "搜尋 GIF 以新增至你的媒體庫！";
 
@@ -11238,6 +11882,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "時區";
+
+/* Action button title to enable new stats from tip */
+"tips.newStats.action" = "立即啟用";
+
+/* Tip for new stats feature */
+"tips.newStats.message" = "體驗外觀時尚且效能強大的統計功能新面貌。 隨時可以切換回原本的介面。";
+
+/* Tip for new stats feature */
+"tips.newStats.title" = "試用新版統計功能";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "向右滑動即可存取網站、閱讀器、通知和個人檔案。";
