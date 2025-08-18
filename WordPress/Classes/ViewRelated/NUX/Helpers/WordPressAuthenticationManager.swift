@@ -92,8 +92,13 @@ extension WordPressAuthenticationManager {
 
         notificationCenter.publisher(for: WordPressClient.requestedWithInvalidAuthenticationNotification)
             .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
-            .sink { _ in
-                WordPressAuthenticationManager.showSigninForSelfHostedSiteFixingApplicationPassword()
+            .sink {
+                guard let blogId = $0.object as? TaggedManagedObjectID<Blog> else {
+                    wpAssertionFailure("No blog ID found in the requestedWithInvalidAuthenticationNotification notification")
+                    return
+                }
+
+                WordPressAuthenticationManager.showSigninForSelfHostedSiteFixingApplicationPassword(blogId: blogId)
             }
             .store(in: &cancellables)
     }
@@ -301,14 +306,15 @@ extension WordPressAuthenticationManager {
         }
     }
 
-    static func showSigninForSelfHostedSiteFixingApplicationPassword(showNotice: Bool = true) {
+    static func showSigninForSelfHostedSiteFixingApplicationPassword(blogId: TaggedManagedObjectID<Blog>, showNotice: Bool = true) {
         guard let presenter = UIViewController.topViewController,
               !presenter.isApplicationReauthentication else {
             assertionFailure()
             return
         }
 
-        guard let currentBlog = RootViewCoordinator.sharedPresenter.currentlyVisibleBlog() else {
+        guard let currentBlog = RootViewCoordinator.sharedPresenter.currentlyVisibleBlog(), currentBlog.objectID == blogId.objectID else {
+            DDLogWarn("Requested sign in to a site that is not the currently visible one")
             return
         }
 
