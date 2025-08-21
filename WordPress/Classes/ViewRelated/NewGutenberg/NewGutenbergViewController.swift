@@ -496,8 +496,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
 
         mediaPickerHelper.presentSiteMediaPicker(filter: flags, allowMultipleSelection: config.multiple, initialSelection: initialSelectionArray) { [weak self] assets in
-            guard let self, let media = assets as? [Media] else {
-                self?.editorViewController.setMediaUploadAttachment("[]")
+            guard let self, let media = assets as? [Media], !media.isEmpty else {
                 return
             }
             let mediaInfos = media.map { item in
