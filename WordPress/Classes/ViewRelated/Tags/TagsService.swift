@@ -100,6 +100,8 @@ class TagsService {
             throw TagsServiceError.noRemoteService
         }
 
+        tag.tagDescription = tag.tagDescription ?? ""
+
         return try await withCheckedThrowingContinuation { continuation in
             if tag.tagID == nil {
                 remote.createTag(tag, success: { savedTag in
