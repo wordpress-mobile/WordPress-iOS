@@ -1057,18 +1057,6 @@ extension EditorConfiguration {
             }
         }
         self.locale = WordPressComLanguageDatabase().deviceLanguage.slug
-
-        if !blog.isSelfHosted {
-            let siteType: String = blog.isHostedAtWPcom ? "simple" : "atomic"
-            do {
-                self.webViewGlobals = [
-                    try WebViewGlobal(name: "_currentSiteType", value: .string(siteType))
-                ]
-            } catch {
-                wpAssertionFailure("Failed to create WebViewGlobal", userInfo: ["error": "\(error)"])
-                self.webViewGlobals = []
-            }
-        }
     }
 
     /// Returns true if the plugins should be enabled for the given blog.
