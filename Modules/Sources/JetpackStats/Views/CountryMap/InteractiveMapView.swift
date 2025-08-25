@@ -114,6 +114,8 @@ struct InteractiveMapView: View {
         // Get the style for the current color scheme
         let baseStyle = parameters.colorScheme == .dark ? configuration.darkStyle : configuration.lightStyle
 
+        // note: Should be refactored using JS and DOM selectors.
+
         // Resolve colors in the current trait collection
         let traitCollection = UITraitCollection(userInterfaceStyle: parameters.colorScheme == .dark ? .dark : .light)
         let resolvedStyle = MapStyle(
