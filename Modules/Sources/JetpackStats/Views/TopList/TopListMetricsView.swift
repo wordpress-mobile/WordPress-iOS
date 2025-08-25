@@ -22,7 +22,7 @@ struct TopListMetricsView: View {
                 }
             }
             if let trend {
-                Text(trend.formattedTrend)
+                Text(trend.formattedTrendShort)
                     .foregroundColor(trend.sentiment.foregroundColor)
                     .contentTransition(.numericText())
                     .font(.system(.caption, design: .rounded, weight: .medium)).tracking(-0.33)

@@ -44,7 +44,7 @@ struct ChartValuesSummaryView: View {
                     .contentTransition(.numericText())
             }
 
-            Text(trend.formattedTrendShort2)
+            Text(trend.formattedTrend)
                 .contentTransition(.numericText())
                 .font(.system(.footnote, design: .rounded, weight: .medium)).tracking(-0.33)
                 .foregroundColor(trend.sentiment.foregroundColor)

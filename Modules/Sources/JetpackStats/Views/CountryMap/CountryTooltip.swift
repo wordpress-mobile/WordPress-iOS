@@ -73,7 +73,7 @@ struct CountryTooltip: View {
 
                 // Trend
                 if let trend {
-                    Text(trend.formattedTrend)
+                    Text(trend.formattedTrendShort)
                         .contentTransition(.numericText())
                         .font(.subheadline.weight(.medium)).tracking(-0.33)
                         .foregroundColor(trend.sentiment.foregroundColor)

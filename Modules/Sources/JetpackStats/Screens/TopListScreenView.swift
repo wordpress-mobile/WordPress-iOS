@@ -159,7 +159,7 @@ struct TopListScreenView: View {
                 .lineLimit(1)
                 .animation(.spring, value: formattedValue)
 
-            Text(trend.formattedTrendShort2)
+            Text(trend.formattedTrend)
                 .font(.system(.subheadline, design: .rounded, weight: .medium)).tracking(-0.2)
                 .foregroundStyle(trend.sentiment.foregroundColor)
                 .padding(.top, -4)

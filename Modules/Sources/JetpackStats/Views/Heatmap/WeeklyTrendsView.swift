@@ -365,7 +365,7 @@ private struct WeeklyTrendsTooltipView: View {
                         Text(Strings.PostDetails.weekOverWeek)
                             .font(.caption)
                             .foregroundColor(.secondary)
-                        Text(trendViewModel.formattedTrendShort)
+                        Text(trendViewModel.tooltipFormattedTrend)
                             .font(.caption)
                             .fontWeight(.medium)
                             .foregroundColor(trendViewModel.sentiment.foregroundColor)
@@ -381,6 +381,13 @@ private struct WeeklyTrendsTooltipView: View {
         dateFormatter.dateFormat = "MMM d, yyyy"
         dateFormatter.calendar = calendar
         return dateFormatter.string(from: day.date)
+    }
+}
+
+private extension TrendViewModel {
+    /// A completed formatted trend with the absolute change and the percentage change.
+    var tooltipFormattedTrend: String {
+        "\(iconSign) \(formattedPercentage)  \(formattedChange)"
     }
 }
 
