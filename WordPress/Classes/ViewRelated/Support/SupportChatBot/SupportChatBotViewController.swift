@@ -90,7 +90,7 @@ final class SupportChatBotViewController: UIViewController {
                 options: {
                     color: "#9dd977",
                     supportLink: "#",
-                    questions: \(encodedQuestions()),
+                    questions: [],
                     labels: {
                         inputPlaceholder: "\(Strings.inputPlaceholder)",
                         firstMessage: "\(Strings.firstMessage)",
