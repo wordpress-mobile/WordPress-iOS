@@ -18,16 +18,7 @@ extension StatsTracker {
         case is CancellationError:
             return
         default:
-            // Check for common error domains
-            let nsError = error as NSError
-            switch nsError.domain {
-            case NSCocoaErrorDomain:
-                errorType = "cocoa_\(errorCode)"
-            case NSURLErrorDomain:
-                errorType = "url_\(errorCode)"
-            default:
-                errorType = "unknown"
-            }
+            errorType = (error as NSError).domain
         }
 
         send(.errorEncountered, properties: [
