@@ -134,11 +134,7 @@ extension TopListItem {
         }
 
         var displayName: String {
-            switch sectionName.lowercased() {
-            case "author": Strings.ArchiveSections.author
-            case "other": Strings.ArchiveSections.other
-            default: sectionName.capitalized
-            }
+            sectionName.capitalized
         }
     }
 }

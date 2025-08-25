@@ -43,14 +43,7 @@ extension Calendar {
     /// Calculates the number of units of the given component in the interval
     private func calculateOffset(for interval: DateInterval, component: Calendar.Component) -> Int {
         let components = dateComponents([component], from: interval.start, to: interval.end)
-        return switch component {
-        case .day: components.day ?? 1
-        case .weekOfYear: components.weekOfYear ?? 1
-        case .month: components.month ?? 1
-        case .quarter: components.quarter ?? 1
-        case .year: components.year ?? 1
-        default: 1
-        }
+        return components.value(for: component) ?? 1
     }
 
     /// Determines if navigation is allowed in the specified direction

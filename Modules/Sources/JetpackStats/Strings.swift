@@ -124,9 +124,6 @@ enum Strings {
     }
 
     enum ArchiveSections {
-        static let author = AppLocalizedString("jetpackStats.archiveSections.author", value: "Authors", comment: "Archive section for authors")
-        static let other = AppLocalizedString("jetpackStats.archiveSections.other", value: "Other", comment: "Archive section for other items")
-
         static func itemCount(_ count: Int) -> String {
             let format = count == 1
                 ? AppLocalizedString("jetpackStats.archiveSections.itemCount.singular", value: "%1$d item", comment: "Singular item count for archive sections. %1$d is the number.")

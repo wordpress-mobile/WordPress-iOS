@@ -71,14 +71,7 @@ struct ArchiveStatsView: View {
     }
 
     private var itemsTitle: String {
-        switch archiveSection.sectionName.lowercased() {
-        case "author":
-            return Strings.ArchiveSections.author
-        case "other":
-            return Strings.ArchiveSections.other
-        default:
-            return archiveSection.displayName
-        }
+        archiveSection.displayName
     }
 
     private var itemsChartData: TopListData {
