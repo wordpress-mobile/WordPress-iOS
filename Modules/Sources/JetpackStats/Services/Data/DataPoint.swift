@@ -1,6 +1,6 @@
 import Foundation
 
-struct DataPoint: Identifiable, Hashable, Sendable {
+struct DataPoint: Identifiable, Sendable {
     let id = UUID()
     let date: Date
     let value: Int
