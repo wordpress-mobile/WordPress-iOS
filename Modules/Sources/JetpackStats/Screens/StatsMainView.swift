@@ -23,7 +23,7 @@ public struct StatsMainView: View {
         if showTabs {
             tabContent
                 .id(selectedTab)
-                .trackScrollOffset(isScrolling: $isTabBarBackgroundShown)
+                .trackScrollOffset(isScrolled: $isTabBarBackgroundShown)
                 .toolbarBackground(.hidden, for: .navigationBar)
                 .safeAreaInset(edge: .top) {
                     StatsTabBar(selectedTab: $selectedTab, showBackground: isTabBarBackgroundShown)

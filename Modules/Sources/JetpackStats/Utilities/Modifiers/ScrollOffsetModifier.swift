@@ -18,9 +18,9 @@ struct ScrollOffsetModifier: ViewModifier {
 
 extension View {
     @ViewBuilder
-    func trackScrollOffset(isScrolling: Binding<Bool>) -> some View {
+    func trackScrollOffset(isScrolled: Binding<Bool>) -> some View {
         if #available(iOS 18.0, *) {
-            modifier(ScrollOffsetModifier(isScrolled: isScrolling))
+            modifier(ScrollOffsetModifier(isScrolled: isScrolled))
         } else {
             self
         }
