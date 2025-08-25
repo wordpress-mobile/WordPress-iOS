@@ -410,6 +410,23 @@ struct CalendarNavigationTests {
         #expect(component == .month)
     }
 
+    @Test("Determine navigation component for complete quarter", arguments: [
+        (Date("2025-01-01T00:00:00-03:00"), Date("2025-04-01T00:00:00-03:00")),  // Q1
+        (Date("2025-04-01T00:00:00-03:00"), Date("2025-07-01T00:00:00-03:00")),  // Q2
+        (Date("2025-07-01T00:00:00-03:00"), Date("2025-10-01T00:00:00-03:00")),  // Q3
+        (Date("2025-10-01T00:00:00-03:00"), Date("2026-01-01T00:00:00-03:00"))   // Q4
+    ])
+    func determineNavigationComponentQuarter(startDate: Date, endDate: Date) {
+        // GIVEN
+        let interval = DateInterval(start: startDate, end: endDate)
+        
+        // WHEN
+        let component = calendar.determineNavigationComponent(for: interval)
+        
+        // THEN
+        #expect(component == .quarter)
+    }
+
     @Test("Determine navigation component for complete year", arguments: [
         (Date("2025-01-01T00:00:00-03:00"), Date("2026-01-01T00:00:00-03:00")),  // Regular year
         (Date("2024-01-01T00:00:00-03:00"), Date("2025-01-01T00:00:00-03:00")),  // Leap year
