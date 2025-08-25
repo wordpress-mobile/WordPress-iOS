@@ -153,7 +153,7 @@ struct LineChartView: View {
                     ) {
                         tooltipView
                     }
-                
+
                 PointMark(
                     x: .value("Date", currentPoint.date),
                     y: .value("Value", currentPoint.value)
@@ -173,7 +173,7 @@ struct LineChartView: View {
                     ) {
                         tooltipView
                     }
-                
+
                 PointMark(
                     x: .value("Date", previousPoint.date),
                     y: .value("Value", previousPoint.value)

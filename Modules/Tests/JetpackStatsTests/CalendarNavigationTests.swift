@@ -419,10 +419,10 @@ struct CalendarNavigationTests {
     func determineNavigationComponentQuarter(startDate: Date, endDate: Date) {
         // GIVEN
         let interval = DateInterval(start: startDate, end: endDate)
-        
+
         // WHEN
         let component = calendar.determineNavigationComponent(for: interval)
-        
+
         // THEN
         #expect(component == .quarter)
     }
