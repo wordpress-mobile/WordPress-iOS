@@ -4,6 +4,7 @@ import WordPressData
 import WordPressShared
 import SwiftUI
 import WordPressAPI
+import WordPressUI
 
 final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITableViewDataSource, UITableViewDelegate {
 
@@ -14,7 +15,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         tableView.isScrollEnabled = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.clipsToBounds = true
-        tableView.layer.cornerRadius = 10
+        tableView.layer.cornerRadius = DesignConstants.radius(.large)
         tableView.backgroundColor = .secondarySystemGroupedBackground
         tableView.register(DashboardQuickActionCell.self, forCellReuseIdentifier: Constants.cellReuseID)
         return tableView

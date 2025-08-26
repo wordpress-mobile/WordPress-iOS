@@ -208,7 +208,7 @@ extension BlogDashboardViewController {
         let horizontalInset = Constants.horizontalSectionInset
         let isLast = (sectionIndex == collectionView.numberOfSections - 1)
         // More on .compact to match the FAB.
-        let bottomInset = (isLast && traitCollection.horizontalSizeClass == .compact) ? 86 : 20
+        let bottomInset = (isLast && traitCollection.horizontalSizeClass == .compact) ? 86 : 0
         section.contentInsets = NSDirectionalEdgeInsets(
             top: Constants.verticalSectionInset,
             leading: horizontalInset,
