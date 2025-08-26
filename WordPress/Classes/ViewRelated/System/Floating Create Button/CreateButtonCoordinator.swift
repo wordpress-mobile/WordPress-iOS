@@ -4,7 +4,7 @@ import WordPressFlux
 import WordPressShared
 import WordPressUI
 
-@objc class CreateButtonCoordinator: NSObject {
+final class CreateButtonCoordinator: NSObject {
 
     private enum Constants {
         static let padding: CGFloat = -16 // Bottom and trailing padding to position the button along the bottom right corner
@@ -56,7 +56,7 @@ import WordPressUI
     /// Should be called any time the `viewController`'s trait collections will change. Dismisses when horizontal class changes to transition from .popover -> .custom
     /// - Parameter previousTraitCollection: The previous trait collection
     /// - Parameter newTraitCollection: The new trait collection
-    @objc func presentingTraitCollectionWillChange(_ previousTraitCollection: UITraitCollection, newTraitCollection: UITraitCollection) {
+    func presentingTraitCollectionWillChange(_ previousTraitCollection: UITraitCollection, newTraitCollection: UITraitCollection) {
         if let actionSheetController = viewController?.presentedViewController as? ActionSheetViewController {
             if previousTraitCollection.horizontalSizeClass != newTraitCollection.horizontalSizeClass {
                 viewController?.dismiss(animated: false, completion: { [weak self] in
@@ -71,7 +71,7 @@ import WordPressUI
     }
 
     /// Button must be manually shown _after_ adding using `showCreateButton`
-    @objc func add(to view: UIView, trailingAnchor: NSLayoutXAxisAnchor, bottomAnchor: NSLayoutYAxisAnchor) {
+    func add(to view: UIView, trailingAnchor: NSLayoutXAxisAnchor, bottomAnchor: NSLayoutYAxisAnchor) {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isHidden = true
 
@@ -121,7 +121,7 @@ import WordPressUI
         viewController.transitioningDelegate = self
     }
 
-    @objc func hideCreateButton() {
+    func hideCreateButton() {
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = true
         } else {
@@ -133,7 +133,7 @@ import WordPressUI
         button.removeFromSuperview()
     }
 
-    @objc func showCreateButton(for blog: Blog) {
+    func showCreateButton(for blog: Blog) {
         button.accessibilityHint = Strings.createPostHint
         showCreateButton()
     }
