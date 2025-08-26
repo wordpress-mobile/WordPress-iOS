@@ -39,10 +39,13 @@ class BlogDashboardCardFrameView: UIView {
     /// Ellipsis Button displayed on the top right corner of the view.
     /// Displayed only when an associated action is set
     private(set) lazy var ellipsisButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "more-horizontal-mobile"), for: .normal)
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = UIImage(systemName: "ellipsis")
+        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 13))
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8)
+
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.tintColor = UIColor.secondaryLabel
-        button.contentEdgeInsets = Constants.ellipsisButtonPadding
         button.isAccessibilityElement = true
         button.accessibilityLabel = Strings.ellipsisButtonAccessibilityLabel
         button.accessibilityTraits = .button
@@ -256,7 +259,6 @@ class BlogDashboardCardFrameView: UIView {
         static let headerPaddingWithEllipsisButtonShown = UIEdgeInsets(top: 12, left: 16, bottom: 8, right: 8)
         static let headerHorizontalSpacing: CGFloat = 5
         static let cornerRadius: CGFloat = 10
-        static let ellipsisButtonPadding = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         static let buttonContainerStackViewPadding: CGFloat = 8
         static let mainStackViewTrailingPadding: CGFloat = 32
     }
