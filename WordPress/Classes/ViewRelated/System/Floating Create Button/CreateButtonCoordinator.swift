@@ -24,7 +24,7 @@ final class CreateButtonCoordinator: NSObject {
                 font: .systemFont(ofSize: 20, weight: .semibold)
             )
             configuration.baseForegroundColor = .systemBackground
-            configuration.baseBackgroundColor = .secondaryLabel
+            configuration.baseBackgroundColor = .label.withAlphaComponent(0.8)
 
             button = UIButton(configuration: configuration, primaryAction: nil)
         } else {
