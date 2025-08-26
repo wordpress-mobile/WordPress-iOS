@@ -26,9 +26,9 @@ import WordPressUI
 }
 
 extension WPTabBarController {
-    @objc public func onViewDidLoad() {
+    @objc public func didSelectViewController(_ viewController: UIViewController) {
         if #available(iOS 26.0, *) {
-            tabBarMinimizeBehavior = .onScrollDown
+            tabBarMinimizeBehavior = viewController == self.readerNavigationController ? .onScrollDown : .never
         }
     }
 
