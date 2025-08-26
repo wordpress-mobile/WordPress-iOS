@@ -24,6 +24,12 @@ import WordPressShared
 }
 
 extension WPTabBarController {
+    @objc public func onViewDidLoad() {
+        if #available(iOS 26.0, *) {
+            tabBarMinimizeBehavior = .onScrollDown
+        }
+    }
+
     @objc public class func readerLocalizedTitle() -> String {
         SharedStrings.Reader.title
     }

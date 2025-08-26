@@ -432,6 +432,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
     self.view.accessibilityIdentifier = @"root_vc";
     [self startObserversForTabAccessTracking];
+    [self onViewDidLoad];
 }
 
 - (void)viewDidAppear:(BOOL)animated
