@@ -50,7 +50,7 @@ struct BarChartView: View {
     private var currentPeriodBars: some ChartContent {
         ForEach(data.currentData) { point in
             BarMark(
-                x: .value("Date", point.date, unit: data.granularity.component),
+                x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
                 width: .automatic
             )
@@ -81,7 +81,7 @@ struct BarChartView: View {
     private var previousPeriodBars: some ChartContent {
         ForEach(data.mappedPreviousData) { point in
             BarMark(
-                x: .value("Date", point.date, unit: data.granularity.component),
+                x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
                 width: .automatic,
                 stacking: .unstacked
@@ -115,7 +115,7 @@ struct BarChartView: View {
     private var significantPointAnnotations: some ChartContent {
         if let maxPoint = data.significantPoints.currentMax, data.currentData.count > 0 {
             PointMark(
-                x: .value("Date", maxPoint.date, unit: data.granularity.component),
+                x: .value("Date", maxPoint.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", maxPoint.value)
             )
             .opacity(0)
