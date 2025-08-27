@@ -3,6 +3,7 @@ import Foundation
 enum DateRangeGranularity: Comparable {
     case hour
     case day
+    case week
     case month
     case year
 }
@@ -21,8 +22,11 @@ extension DateInterval {
             return .hour
         }
         // For ranges 2-90 days: show daily data (2-90 points)
-        else if totalDays <= 90 {
+        else if totalDays <= 31 {
             return .day
+        }
+        else if totalDays <= 90 {
+            return .week
         }
         // For ranges under about 4 years, show months
         else if totalDays <= 365 * 4 {
@@ -41,6 +45,7 @@ extension DateRangeGranularity {
         switch self {
         case .hour: [.year, .month, .day, .hour]
         case .day: [.year, .month, .day]
+        case .week: [.year, .month, .day]
         case .month: [.year, .month]
         case .year: [.year]
         }
@@ -51,6 +56,7 @@ extension DateRangeGranularity {
         switch self {
         case .hour: .hour
         case .day: .day
+        case .week: .weekOfYear
         case .month: .month
         case .year: .year
         }

@@ -1,6 +1,6 @@
 26.2
 -----
-
+* [*] New Stats: Add support for "weeks" granularity [#24767]
 
 26.1
 -----
