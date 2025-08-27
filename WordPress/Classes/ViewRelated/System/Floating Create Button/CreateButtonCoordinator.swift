@@ -16,6 +16,7 @@ final class CreateButtonCoordinator: NSObject {
 
     var button: UIButton = {
         let button: UIButton
+#if swift(>=6.2)
         if #available(iOS 26, *) {
             var configuration = UIButton.Configuration.prominentClearGlass()
             configuration.image = UIImage(systemName: "plus")
@@ -30,6 +31,9 @@ final class CreateButtonCoordinator: NSObject {
         } else {
             button = FloatingActionButton(image: .gridicon(.plus))
         }
+#else
+        button = FloatingActionButton(image: .gridicon(.plus))
+#endif
         button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.accessibilityIdentifier = "floatingCreateButton"
         return button
