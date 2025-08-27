@@ -88,6 +88,13 @@ public enum StatsEvent {
     ///   - "metric": The metric selected (e.g., "visitors", "views", "likes")
     case chartMetricSelected
 
+    /// Chart bar selected for drill-down
+    /// - Parameters:
+    ///   - "from_granularity": The current granularity (e.g., "day", "month")
+    ///   - "metric": The metric being viewed
+    ///   - "value": The value of the selected bar
+    case chartBarSelected
+
     // MARK: - List Events
 
     /// Top list item tapped

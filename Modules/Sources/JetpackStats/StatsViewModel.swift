@@ -5,13 +5,20 @@ import UIKit
 @MainActor
 final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     @Published var trafficCardConfiguration: TrafficCardConfiguration
+
     @Published var dateRange: StatsDateRange {
         didSet {
             updateViewModelsDateRange()
             saveSelectedDateRangePreset()
+            if !dateRange.isAdjacent(to: oldValue) {
+                clearNavigationStack()
+            }
         }
     }
+
+    private var isNavigationStackLocked = false
     @Published private(set) var cards: [any TrafficCardViewModel] = []
+    @Published private(set) var dateRangeNavigationStack: [StatsDateRange] = []
 
     let scrollToCardSubject = PassthroughSubject<UUID, Never>()
 
@@ -124,6 +131,32 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         for card in cards {
             card.dateRange = dateRange
         }
+    }
+
+    // MARK: - Date Range Navigation
+
+    /// Navigates to a new date range with drill-down, pushing current range to stack
+    func pushDateRange(_ newDateRange: StatsDateRange) {
+        isNavigationStackLocked = true
+        dateRangeNavigationStack.append(dateRange)
+        dateRange = newDateRange
+        isNavigationStackLocked = false
+    }
+
+    /// Pops the previous date range from the navigation stack
+    func popDateRange() {
+        guard let previousRange = dateRangeNavigationStack.popLast() else {
+            return
+        }
+        isNavigationStackLocked = true
+        dateRange = previousRange
+        isNavigationStackLocked = false
+    }
+
+    /// Clears the navigation stack
+    private func clearNavigationStack() {
+        guard !isNavigationStackLocked else { return }
+        dateRangeNavigationStack.removeAll()
     }
 
     // MARK: - Adding Cards

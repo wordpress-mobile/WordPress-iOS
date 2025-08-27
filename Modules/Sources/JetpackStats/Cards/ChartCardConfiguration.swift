@@ -5,7 +5,7 @@ struct ChartCardConfiguration: Codable {
     var metrics: [SiteMetric]
     var chartType: ChartType
 
-    init(id: UUID = UUID(), metrics: [SiteMetric], chartType: ChartType = .line) {
+    init(id: UUID = UUID(), metrics: [SiteMetric], chartType: ChartType = .columns) {
         self.id = id
         self.metrics = metrics
         self.chartType = chartType

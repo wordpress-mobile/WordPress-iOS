@@ -88,6 +88,11 @@ struct StatsDateRange: Equatable, Sendable {
         }
         return periods
     }
+
+    func isAdjacent(to dateRange: StatsDateRange) -> Bool {
+        dateInterval == dateRange.navigate(.backward).dateInterval ||
+        dateInterval == dateRange.navigate(.forward).dateInterval
+    }
 }
 
 /// Represents an adjacent period for navigation

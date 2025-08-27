@@ -3,9 +3,12 @@ import Charts
 
 struct BarChartView: View {
     let data: ChartData
+    var onDateSelected: ((DataPoint) -> Void)? = nil
 
-    @State private var selectedDate: Date?
     @State private var selectedDataPoints: SelectedDataPoints?
+    @State private var isDragging = false
+    @State private var isLongPressing = false
+    @State private var longPressLocation: CGPoint?
 
     @Environment(\.context) var context
 
@@ -31,10 +34,9 @@ struct BarChartView: View {
         .chartYScale(domain: yAxisDomain)
         .chartLegend(.hidden)
         .environment(\.timeZone, context.timeZone)
-        .modifier(ChartSelectionModifier(selection: $selectedDate))
         .animation(.spring, value: ObjectIdentifier(data))
-        .onChange(of: selectedDate) {
-            selectedDataPoints = SelectedDataPoints.compute(for: $0, data: data)
+        .chartOverlay { proxy in
+            makeGesturesOverlayView(proxy: proxy)
         }
         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .accessibilityElement()
@@ -123,7 +125,7 @@ struct BarChartView: View {
                     metric: data.metric
                 )
                 // Important for drag selection to work correctly.
-                .opacity(selectedDate == nil ? 1 : 0)
+                .opacity(selectedDataPoints == nil ? 1 : 0)
             }
         }
     }
@@ -219,6 +221,97 @@ struct BarChartView: View {
                 granularity: data.granularity
             )
         }
+    }
+
+    // MARK: - Gestures
+
+    private func makeGesturesOverlayView(proxy: ChartProxy) -> some View {
+        GeometryReader { geometry in
+            Rectangle()
+                .fill(.clear)
+                .contentShape(Rectangle())
+                .onTapGesture { location in
+                    handleTapGesture(at: location, proxy: proxy)
+                }
+                .onLongPressGesture(minimumDuration: 0.3) {
+                    // Long press completed - keep showing annotation
+                } onPressingChanged: { isPressing in
+                    if isPressing {
+                        // Long press started - show annotation at current location
+                        if let location = longPressLocation {
+                            isLongPressing = true
+                            handleLongPressGesture(at: location, proxy: proxy)
+                            // Haptic feedback for long press
+                            let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+                            impactFeedback.prepare()
+                            impactFeedback.impactOccurred()
+                        }
+                    } else {
+                        // Long press ended - clear annotation
+                        isLongPressing = false
+                        longPressLocation = nil
+                        if !isDragging {
+                            selectedDataPoints = nil
+                        }
+                    }
+                }
+                .simultaneousGesture(
+                    DragGesture(minimumDistance: 0)
+                        .onChanged { value in
+                            // Store location for long press
+                            longPressLocation = value.location
+
+                            // Handle drag if moved enough
+                            if value.translation.width.magnitude > 8 || value.translation.height.magnitude > 8 {
+                                isDragging = true
+                                handleDragGesture(at: value.location, proxy: proxy)
+                            }
+                        }
+                        .onEnded { _ in
+                            isDragging = false
+                            longPressLocation = nil
+                            if !isLongPressing {
+                                selectedDataPoints = nil
+                            }
+                        }
+                )
+        }
+    }
+
+    private func handleDragGesture(at location: CGPoint, proxy: ChartProxy) {
+        selectedDataPoints = getSelectedDataPoints(at: location, proxy: proxy)
+    }
+
+    private func handleLongPressGesture(at location: CGPoint, proxy: ChartProxy) {
+        selectedDataPoints = getSelectedDataPoints(at: location, proxy: proxy)
+    }
+
+    private func handleTapGesture(at location: CGPoint, proxy: ChartProxy) {
+        // Only handle tap if not dragging or long pressing
+        guard !isDragging && !isLongPressing else { return }
+
+        if let dataPoint = getSelectedDataPoints(at: location, proxy: proxy)?.current {
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            onDateSelected?(dataPoint)
+        }
+    }
+
+    private func getSelectedDataPoints(at location: CGPoint, proxy: ChartProxy) -> SelectedDataPoints? {
+        guard let date: Date = proxy.value(atX: location.x) else {
+            return nil
+        }
+        // Calling `proxy.value(atX: location.x)` returns dates with a second
+        // precision. But the data points are represented using the start of the
+        // period. The chart needs to offset the selection so that
+        // `SelectedDataPoints.compute` correctly finds the closest one.
+        let interval: TimeInterval = {
+            let now = Date()
+            let interval = context.calendar.date(byAdding: data.granularity.component, value: 1, to: now)
+            return (interval ?? now).timeIntervalSince(now)
+        }()
+        let offsetDate = date.addingTimeInterval(-(interval / 2))
+
+        return SelectedDataPoints.compute(for: offsetDate, data: data)
     }
 }
 
