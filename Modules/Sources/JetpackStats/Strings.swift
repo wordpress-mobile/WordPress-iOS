@@ -99,6 +99,11 @@ enum Strings {
         static let samePeriodLastYear = AppLocalizedString("jetpackStats.datePicker.lastYear", value: "Last Year", comment: "Compare with same period last year option")
     }
 
+    enum DateRangeTips {
+        static let title = AppLocalizedString("jetpackStats.dateRangeTip.title", value: "Navigate Through Time", comment: "Title for stats date range control tip")
+        static let message = AppLocalizedString("jetpackStats.dateRangeTip.message", value: "View recent days, weeks, months, years, or select custom date ranges.", comment: "Message explaining how to use the date range control")
+    }
+
     enum Chart {
         static let showData = AppLocalizedString("jetpackStats.chart.showData", value: "Show Data", comment: "Show chart data menu item")
         static let lineChart = AppLocalizedString("jetpackStats.chart.lineChart", value: "Lines", comment: "Line chart type")
