@@ -93,9 +93,11 @@ struct TrafficTabView: View {
         case let viewModel as ChartCardViewModel:
             ChartCard(viewModel: viewModel)
                 .onDateRangeSelected { dateRange in
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                     self.viewModel.pushDateRange(dateRange)
                 }
                 .backButton(title: getBackButtonTitle()) {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                     self.viewModel.popDateRange()
                 }
         case let viewModel as TopListViewModel:

@@ -231,7 +231,7 @@ struct BarChartView: View {
                 .fill(.clear)
                 .contentShape(Rectangle())
                 .onTapGesture { location in
-                    handleTapGesture(at: location, proxy: proxy)
+                    handleTapGesture(at: location, proxy: proxy, geometry: geometry)
                 }
                 .onLongPressGesture(minimumDuration: 0.3) {
                     // Long press completed - keep showing annotation
@@ -240,11 +240,7 @@ struct BarChartView: View {
                         // Long press started - show annotation at current location
                         if let location = longPressLocation {
                             isLongPressing = true
-                            handleLongPressGesture(at: location, proxy: proxy)
-                            // Haptic feedback for long press
-                            let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
-                            impactFeedback.prepare()
-                            impactFeedback.impactOccurred()
+                            selectedDataPoints = getSelectedDataPoints(at: location, proxy: proxy, geometry: geometry)
                         }
                     } else {
                         // Long press ended - clear annotation
@@ -264,7 +260,7 @@ struct BarChartView: View {
                             // Handle drag if moved enough
                             if value.translation.width.magnitude > 8 || value.translation.height.magnitude > 8 {
                                 isDragging = true
-                                handleDragGesture(at: value.location, proxy: proxy)
+                                selectedDataPoints = getSelectedDataPoints(at: value.location, proxy: proxy, geometry: geometry)
                             }
                         }
                         .onEnded { _ in
@@ -278,25 +274,21 @@ struct BarChartView: View {
         }
     }
 
-    private func handleDragGesture(at location: CGPoint, proxy: ChartProxy) {
-        selectedDataPoints = getSelectedDataPoints(at: location, proxy: proxy)
-    }
-
-    private func handleLongPressGesture(at location: CGPoint, proxy: ChartProxy) {
-        selectedDataPoints = getSelectedDataPoints(at: location, proxy: proxy)
-    }
-
-    private func handleTapGesture(at location: CGPoint, proxy: ChartProxy) {
+    private func handleTapGesture(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) {
         // Only handle tap if not dragging or long pressing
         guard !isDragging && !isLongPressing else { return }
 
-        if let dataPoint = getSelectedDataPoints(at: location, proxy: proxy)?.current {
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        if let dataPoint = getSelectedDataPoints(at: location, proxy: proxy, geometry: geometry)?.current {
             onDateSelected?(dataPoint)
         }
     }
 
-    private func getSelectedDataPoints(at location: CGPoint, proxy: ChartProxy) -> SelectedDataPoints? {
+    private func getSelectedDataPoints(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) -> SelectedDataPoints? {
+        let origin = geometry[proxy.plotAreaFrame].origin
+        let location = CGPoint(
+            x: location.x - origin.x,
+            y: location.y - origin.y
+        )
         guard let date: Date = proxy.value(atX: location.x) else {
             return nil
         }
@@ -309,8 +301,8 @@ struct BarChartView: View {
             let interval = context.calendar.date(byAdding: data.granularity.component, value: 1, to: now)
             return (interval ?? now).timeIntervalSince(now)
         }()
-        let offsetDate = date.addingTimeInterval(-(interval / 2))
 
+        let offsetDate = date.addingTimeInterval(-(interval / 4))
         return SelectedDataPoints.compute(for: offsetDate, data: data)
     }
 }
