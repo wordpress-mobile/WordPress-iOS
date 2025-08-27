@@ -1,6 +1,6 @@
 26.2
 -----
-
+ * [*] New Stats: Fix dark mode support in custom range picker [#24770]
 
 26.1
 -----
