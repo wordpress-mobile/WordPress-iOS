@@ -6,7 +6,7 @@ struct LegacyFloatingDateControl: View {
     @State private var isShowingCustomRangePicker = false
 
     private var buttonHeight: CGFloat { min(_buttonHeight, 60) }
-    @ScaledMetric private var _buttonHeight = 50
+    @ScaledMetric private var _buttonHeight = 46
 
     @Environment(\.context) var context
 

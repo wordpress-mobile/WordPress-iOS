@@ -184,10 +184,11 @@ struct BarChartView: View {
     // MARK: - Axis Configuration
 
     private var xAxis: some AxisContent {
-        AxisMarks(preset: .aligned) { value in
+        AxisMarks { value in
             if let date = value.as(Date.self) {
                 AxisValueLabel {
                     ChartAxisDateLabel(date: date, granularity: data.granularity)
+                        .offset(x: -2) // Align it better with bars
                 }
             }
         }
