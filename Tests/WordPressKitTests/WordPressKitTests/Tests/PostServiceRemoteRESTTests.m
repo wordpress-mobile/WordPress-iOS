@@ -47,8 +47,8 @@
              failure:[OCMArg isNotNil]]);
 
     [service getPostWithID:postID
-                   success:^(RemotePost *post) {}
-                   failure:^(NSError *error) {}];
+                   success:^(RemotePost * __unused post) {}
+                   failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatGetPostWithIDThrowsExceptionWithoutPostID
@@ -57,8 +57,8 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service getPostWithID:nil
-                                   success:^(RemotePost *post) {}
-                                   failure:^(NSError *error) {}]);
+                                   success:^(RemotePost * __unused post) {}
+                                   failure:^(NSError * __unused error) {}]);
 }
 
 #pragma mark - Getting posts by type
@@ -90,8 +90,8 @@
     
 
     [service getPostsOfType:postType
-                    success:^(NSArray<RemotePost *> *remotePosts) {}
-                    failure:^(NSError *error) {}];
+                    success:^(NSArray<RemotePost *> * __unused remotePosts) {}
+                    failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatGetPostsOfTypeWithOptionsWorks
@@ -126,8 +126,8 @@
 
     [service getPostsOfType:postType
                     options:options
-                    success:^(NSArray<RemotePost *> *remotePosts) {}
-                    failure:^(NSError *error) {}];
+                    success:^(NSArray<RemotePost *> * __unused remotePosts) {}
+                    failure:^(NSError * __unused error) {}];
 }
 
 #pragma mark - Creating posts
@@ -160,8 +160,8 @@
               failure:[OCMArg isNotNil]]);
 
     [service createPost:post
-                success:^(RemotePost *posts) {}
-                failure:^(NSError *error) {}];
+                success:^(RemotePost * __unused posts) {}
+                failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatCreatePostThrowsExceptionWithoutPost
@@ -170,8 +170,8 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service createPost:nil
-                                success:^(RemotePost *posts) {}
-                                failure:^(NSError *error) {}]);
+                                success:^(RemotePost * __unused posts) {}
+                                failure:^(NSError * __unused error) {}]);
 }
 
 #pragma mark - Updating posts
@@ -205,8 +205,8 @@
               failure:[OCMArg isNotNil]]);
 
     [service updatePost:post
-                success:^(RemotePost *posts) {}
-                failure:^(NSError *error) {}];
+                success:^(RemotePost * __unused posts) {}
+                failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatUpdatePostThrowsExceptionWithoutPost
@@ -215,8 +215,8 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service updatePost:nil
-                                success:^(RemotePost *posts) {}
-                                failure:^(NSError *error) {}]);
+                                success:^(RemotePost * __unused posts) {}
+                                failure:^(NSError * __unused error) {}]);
 }
 
 #pragma mark - Autosaving posts
@@ -250,8 +250,8 @@
               failure:[OCMArg isNotNil]]);
     
     [service autoSave:post
-                success:^(RemotePost *post, NSString *previewURL) {}
-                failure:^(NSError *error) {}];
+                success:^(RemotePost * __unused post, NSString * __unused previewURL) {}
+                failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatGetAutoSaveForPostWorks
@@ -283,8 +283,8 @@
              failure:[OCMArg isNotNil]]);
     
     [service getAutoSaveForPost:post
-                        success:^(RemotePost *post) {}
-                        failure:^(NSError *error) {}];
+                        success:^(RemotePost * __unused post) {}
+                        failure:^(NSError * __unused error) {}];
 }
 
 
@@ -312,7 +312,7 @@
 
     [service deletePost:post
                 success:^() {}
-                failure:^(NSError *error) {}];
+                failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatDeletePostThrowsExceptionWithoutPost
@@ -322,7 +322,7 @@
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service deletePost:nil
                                 success:^() {}
-                                failure:^(NSError *error) {}]);
+                                failure:^(NSError * __unused error) {}]);
 }
 
 #pragma mark - Trashing posts
@@ -348,8 +348,8 @@
               failure:[OCMArg isNotNil]]);
 
     [service trashPost:post
-               success:^(RemotePost *posts) {}
-               failure:^(NSError *error) {}];
+               success:^(RemotePost * __unused posts) {}
+               failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatTashPostThrowsExceptionWithoutPost
@@ -358,8 +358,8 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service trashPost:nil
-                               success:^(RemotePost *posts) {}
-                               failure:^(NSError *error) {}]);
+                               success:^(RemotePost * __unused posts) {}
+                               failure:^(NSError * __unused error) {}]);
 }
 
 #pragma mark - Trashing posts
@@ -385,8 +385,8 @@
               failure:[OCMArg isNotNil]]);
 
     [service restorePost:post
-                 success:^(RemotePost *posts) {}
-                 failure:^(NSError *error) {}];
+                 success:^(RemotePost * __unused posts) {}
+                 failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatRestorePostThrowsExceptionWithoutPost
@@ -395,8 +395,8 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service restorePost:nil
-                                 success:^(RemotePost *posts) {}
-                                 failure:^(NSError *error) {}]);
+                                 success:^(RemotePost * __unused posts) {}
+                                 failure:^(NSError * __unused error) {}]);
 }
 
 @end

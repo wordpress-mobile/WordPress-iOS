@@ -63,8 +63,8 @@
               failure:[OCMArg isNotNil]]);
     
     [self.service createCategory:category
-                         success:^(RemotePostCategory * _Nonnull category) {}
-                         failure:^(NSError * _Nonnull error) {}];
+                         success:^(RemotePostCategory * __unused category) {}
+                         failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatGetCategoriesWorks
@@ -81,8 +81,8 @@
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    [self.service getCategoriesWithSuccess:^(NSArray<RemotePostCategory *> * _Nonnull categories) {}
-                                   failure:^(NSError * _Nonnull error) {}];
+    [self.service getCategoriesWithSuccess:^(NSArray<RemotePostCategory *> * __unused categories) {}
+                                   failure:^(NSError * __unused error) {}];
 }
 
 /// Verify `RemotePostCategory.parent` is `@0` instead of `nil` when the corresponding JSON response is `"parent": null`.
@@ -125,7 +125,7 @@
         }
     };
     [self.service getCategoriesWithSuccess:success
-                                   failure:^(NSError * _Nonnull error) {}];
+                                   failure:^(NSError * __unused error) {}];
 
     [self waitForExpectations:@[parentIsZero] timeout:0.1];
 }
@@ -170,8 +170,8 @@
              failure:[OCMArg isNotNil]]);
     
     [self.service getCategoriesWithPaging:paging
-                                  success:^(NSArray<RemotePostCategory *> * _Nonnull categories) {}
-                                  failure:^(NSError * _Nonnull error) {}];
+                                  success:^(NSArray<RemotePostCategory *> * __unused categories) {}
+                                  failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatSearchCategoriesWithNameWorks
@@ -196,8 +196,8 @@
              failure:[OCMArg isNotNil]]);
     
     [self.service searchCategoriesWithName:searchName
-                                   success:^(NSArray<RemotePostCategory *> * _Nonnull categories) {}
-                                   failure:^(NSError * _Nonnull error) {}];
+                                   success:^(NSArray<RemotePostCategory *> * __unused categories) {}
+                                   failure:^(NSError * __unused error) {}];
 }
 
 #pragma mark - Tags
@@ -223,8 +223,8 @@
               failure:[OCMArg isNotNil]]);
     
     [self.service createTag:tag
-                    success:^(RemotePostTag * _Nonnull tag) {}
-                    failure:^(NSError * _Nonnull error) {}];
+                    success:^(RemotePostTag * __unused tag) {}
+                    failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatGetTagsWorks
@@ -241,8 +241,8 @@
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    [self.service getTagsWithSuccess:^(NSArray<RemotePostTag *> * _Nonnull tags) {}
-                             failure:^(NSError * _Nonnull error) {}];
+    [self.service getTagsWithSuccess:^(NSArray<RemotePostTag *> * __unused tags) {}
+                             failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatGetTagsWithPagingWorks
@@ -285,8 +285,8 @@
              failure:[OCMArg isNotNil]]);
     
     [self.service getTagsWithPaging:paging
-                            success:^(NSArray<RemotePostTag *> * _Nonnull tags) {}
-                            failure:^(NSError * _Nonnull error) {}];
+                            success:^(NSArray<RemotePostTag *> * __unused tags) {}
+                            failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatSearchTagsWithNameWorks
@@ -311,8 +311,8 @@
              failure:[OCMArg isNotNil]]);
     
     [self.service searchTagsWithName:searchName
-                             success:^(NSArray<RemotePostTag *> * _Nonnull tags) {}
-                             failure:^(NSError * _Nonnull error) {}];
+                             success:^(NSArray<RemotePostTag *> * __unused tags) {}
+                             failure:^(NSError * __unused error) {}];
 }
 
 @end

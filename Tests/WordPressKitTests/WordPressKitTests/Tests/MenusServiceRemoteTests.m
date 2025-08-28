@@ -41,8 +41,8 @@
 
     [service createMenuWithName:name
                          siteID:dotComID
-                        success:^(RemoteMenu *menu) {}
-                        failure:^(NSError *error) {}];
+                        success:^(RemoteMenu * __unused menu) {}
+                        failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatUpdateMenuWorks
@@ -71,8 +71,8 @@
                     withName:menu.name
                withLocations:nil
                    withItems:nil
-                     success:^(RemoteMenu *menu) {}
-                     failure:^(NSError *error) {}];
+                     success:^(RemoteMenu * __unused menu) {}
+                     failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatDeleteMenuWorks
@@ -99,7 +99,7 @@
     [service deleteMenuForID:menu.menuID
                       siteID:dotComID
                     success:^{}
-                    failure:^(NSError *error) {}];
+                    failure:^(NSError * __unused error) {}];
 }
 
 - (void)testThatGetMenusWorks
@@ -121,8 +121,8 @@
     
 
     [service getMenusForSiteID:dotComID
-                       success:^(NSArray<RemoteMenu *> *menus, NSArray<RemoteMenuLocation *> *locations) {}
-                       failure:^(NSError *error) {}];
+                       success:^(NSArray<RemoteMenu *> * __unused menus, NSArray<RemoteMenuLocation *> * __unused locations) {}
+                       failure:^(NSError * __unused error) {}];
 }
 
 @end

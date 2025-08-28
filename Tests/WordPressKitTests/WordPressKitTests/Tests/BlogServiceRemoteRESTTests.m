@@ -43,8 +43,8 @@ static NSTimeInterval const TestExpectationTimeout = 5;
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
 
-    [service getAllAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {}
-                              failure:^(NSError *error) {}];
+    [service getAllAuthorsWithSuccess:^(NSArray<RemoteUser *> * __unused users) {}
+                              failure:^(NSError * __unused error) {}];
 }
 
 #pragma mark - Synchronizing site details for a blog
@@ -68,8 +68,8 @@ static NSTimeInterval const TestExpectationTimeout = 5;
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
 
-    [service syncBlogWithSuccess:^(RemoteBlog *remoteBlog) {}
-                         failure:^(NSError *error) {}];
+    [service syncBlogWithSuccess:^(RemoteBlog * __unused remoteBlog) {}
+                         failure:^(NSError * __unused error) {}];
 }
 
 #pragma mark - Synchronizing post types for a blog
@@ -94,8 +94,8 @@ static NSTimeInterval const TestExpectationTimeout = 5;
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
 
-    [service syncPostTypesWithSuccess:^(NSArray<RemotePostType *> *postTypes) {}
-                              failure:^(NSError *error) {}];
+    [service syncPostTypesWithSuccess:^(NSArray<RemotePostType *> * __unused postTypes) {}
+                              failure:^(NSError * __unused error) {}];
 }
 
 #pragma mark - Synchronizing post formats for a blog
@@ -119,8 +119,8 @@ static NSTimeInterval const TestExpectationTimeout = 5;
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
         
-    [service syncPostFormatsWithSuccess:^(NSDictionary *options) {}
-                                failure:^(NSError *error) {}];
+    [service syncPostFormatsWithSuccess:^(NSDictionary * __unused options) {}
+                                failure:^(NSError * __unused error) {}];
 }
 
 
@@ -138,7 +138,7 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
     [HTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [[request.URL absoluteString] containsString:endpoint];
-    } withStubResponse:^HTTPStubsResponse *(NSURLRequest *request) {
+    } withStubResponse:^HTTPStubsResponse *(NSURLRequest * __unused request) {
         return [HTTPStubsResponse responseWithFileAtPath:responsePath
                                                 statusCode:200
                                                    headers:@{@"Content-Type":@"application/json"}];

@@ -198,7 +198,7 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     NSString *url = [service pathForEndpoint:@"themes"
                                  withVersion:WordPressComRESTAPIVersion_2_0];
 
-    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray<RemoteTheme *> *themes, BOOL hasMore, NSInteger totalThemeCount) {
+    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray<RemoteTheme *> *themes, BOOL __unused hasMore, NSInteger totalThemeCount) {
         NSCAssert([themes count] == expectedThemes, @"Expected %ld themes to be returned", expectedThemes);
         NSCAssert(totalThemeCount == expectedThemes, @"Expected %ld themes to be found", expectedThemes);
     };
@@ -234,7 +234,7 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
 {
     NSNumber *blogId = @124;
 
-    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray<RemoteTheme *> *themes, BOOL hasMore, NSInteger totalThemeCount) {
+    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray<RemoteTheme *> *themes, BOOL __unused hasMore, NSInteger totalThemeCount) {
         NSCAssert([themes count] > 0, @"Expected themes to be returned");
         NSCAssert(totalThemeCount > 0, @"Expected total themes count to be > 0");
     };
