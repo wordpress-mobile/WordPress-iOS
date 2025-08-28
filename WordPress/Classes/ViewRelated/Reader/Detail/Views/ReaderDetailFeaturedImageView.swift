@@ -53,14 +53,6 @@ final class ReaderDetailFeaturedImageView: UIView {
     /// Keeps track of if we've loaded the image before
     private(set) var isLoaded: Bool = false
 
-    /// Temporary work around until white headers are shipped app-wide,
-    /// allowing Reader Detail to use a blue navbar.
-    var useCompatibilityMode: Bool = false {
-        didSet {
-            updateIfNotLoading()
-        }
-    }
-
     var displaySetting: ReaderDisplaySettings = .standard {
         didSet {
             style = .init(displaySetting: displaySetting)
@@ -116,7 +108,7 @@ final class ReaderDetailFeaturedImageView: UIView {
             return navigationBar?.tintColor
         }
         set(newValue) {
-            self.navigationItem?.setTintColor(useCompatibilityMode ? .invertedLabel : newValue)
+            self.navigationItem?.setTintColor(newValue)
         }
     }
 
@@ -201,7 +193,6 @@ final class ReaderDetailFeaturedImageView: UIView {
 
     public func load(completion: @escaping () -> Void) {
         guard
-            !useCompatibilityMode,
             !isLoading,
             let post = self.post,
             let imageURL = URL(string: post.featuredImage),
@@ -263,10 +254,6 @@ final class ReaderDetailFeaturedImageView: UIView {
     // MARK: - Public: Helpers
 
     public func deviceDidRotate() {
-        guard !useCompatibilityMode else {
-            return
-        }
-
         updateInitialHeight(resetContentOffset: false)
     }
 
@@ -321,7 +308,6 @@ final class ReaderDetailFeaturedImageView: UIView {
 
     private func update() {
         guard
-            !useCompatibilityMode,
             imageSize != nil,
             let scrollView = self.scrollView
         else {
@@ -366,12 +352,9 @@ final class ReaderDetailFeaturedImageView: UIView {
     }
 
     private func applyTransparentNavigationBarAppearance() {
-        guard !useCompatibilityMode else { return }
-
         if isLoaded, imageView.image == nil {
             navBarTintColor = style.endTintColor
         }
-
         updateIfNotLoading()
     }
 
@@ -419,7 +402,7 @@ final class ReaderDetailFeaturedImageView: UIView {
     }
 
     private func resetNavigationBarTintColor() {
-        navigationItem?.setTintColor(useCompatibilityMode ? UIAppColor.appBarTint : style.endTintColor)
+        navigationItem?.setTintColor(style.endTintColor)
     }
 
     // MARK: - Private: Calculations

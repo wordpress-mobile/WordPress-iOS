@@ -122,17 +122,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Tracks whether the webview has called -didFinish:navigation
     var isLoadingWebView = true
 
-    /// Temporary work around until white headers are shipped app-wide,
-    /// allowing Reader Detail to use a blue navbar.
-    var useCompatibilityMode: Bool {
-        // This enables ALL Reader Detail screens to use a transparent navigation bar style,
-        // so that the display settings can be applied correctly.
-        //
-        // Plus, it looks like we don't have screens with a blue (legacy) navigation bar anymore,
-        // so it may be a good chance to clean up and remove `useCompatibilityMode`.
-        !ReaderDisplaySettings.customizationEnabled
-    }
-
     /// Used to disable ineffective buttons when a Related post fails to load.
     var enableRightBarButtons = true
 
@@ -550,8 +539,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         if ReaderDisplaySettings.customizationEnabled {
             featuredImageView.displaySetting = displaySetting
         }
-
-        featuredImageView.useCompatibilityMode = useCompatibilityMode
 
         featuredImageView.delegate = coordinator
 
