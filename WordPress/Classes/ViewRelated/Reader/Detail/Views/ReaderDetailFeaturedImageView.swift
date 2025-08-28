@@ -336,6 +336,8 @@ final class ReaderDetailFeaturedImageView: UIView {
     }
 
     private func updateNavigationBar(in scrollView: UIScrollView) {
+        guard #unavailable(iOS 26) else { return }
+
         /// Navigation bar is only updated in light color themes, so that the tint color can be reverted
         /// to the original color after scrolling past the featured image.
         ///
@@ -352,7 +354,7 @@ final class ReaderDetailFeaturedImageView: UIView {
     }
 
     private func applyTransparentNavigationBarAppearance() {
-        if isLoaded, imageView.image == nil {
+        if #unavailable(iOS 26), isLoaded, imageView.image == nil {
             navBarTintColor = style.endTintColor
         }
         updateIfNotLoading()
@@ -391,6 +393,7 @@ final class ReaderDetailFeaturedImageView: UIView {
     }
 
     private func resetStatusBarStyle() {
+        guard #unavailable(iOS 26) else { return }
         let isDark = {
             if displaySetting.color == .system {
                 return traitCollection.userInterfaceStyle == .dark
@@ -402,6 +405,7 @@ final class ReaderDetailFeaturedImageView: UIView {
     }
 
     private func resetNavigationBarTintColor() {
+        guard #unavailable(iOS 26) else { return }
         navigationItem?.setTintColor(style.endTintColor)
     }
 
