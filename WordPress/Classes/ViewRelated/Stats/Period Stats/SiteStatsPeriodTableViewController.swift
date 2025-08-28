@@ -18,8 +18,6 @@ protocol SiteStatsReferrerDelegate: AnyObject {
 }
 
 final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController {
-    static var defaultStoryboardName: String = "SiteStatsDashboard"
-
     weak var bannerView: JetpackBannerView?
 
     // MARK: - Properties

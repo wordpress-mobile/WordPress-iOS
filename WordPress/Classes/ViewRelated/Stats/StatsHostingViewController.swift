@@ -24,9 +24,7 @@ class StatsHostingViewController: UIViewController {
             router: StatsRouter(viewController: parentViewController),
             showTabs: false
         )
-        let hostingController = SafeAreaHostingController(rootView: statsView)
-
-        return hostingController
+        return UIHostingController(rootView: statsView)
     }
 
     static func makeStatsViewController(for blog: Blog) -> UIViewController {
@@ -91,47 +89,6 @@ private final class JetpackAppStatsRouterScreenFactory: StatsRouterScreenFactory
             postID: NSNumber(value: postID),
             siteID: siteID as NSNumber
         )
-    }
-}
-
-/// A custom UIHostingController that properly handles safe area insets when embedded in containers like UIPageViewController
-private class SafeAreaHostingController<Content: View>: UIHostingController<Content> {
-    private var safeAreaObservation: NSKeyValueObservation?
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        setupSafeAreaObservation()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        safeAreaObservation?.invalidate()
-        safeAreaObservation = nil
-    }
-
-    private func setupSafeAreaObservation() {
-        // Find the root view controller (should be SiteStatsDashboardViewController or its parent)
-        var rootViewController: UIViewController? = self
-        while let parent = rootViewController?.parent {
-            rootViewController = parent
-        }
-
-        guard let rootView = rootViewController?.view else { return }
-
-        // Observe changes to the root view's safe area insets
-        safeAreaObservation = rootView.observe(\.safeAreaInsets, options: [.initial, .new]) { [weak self] view, _ in
-            self?.updateSafeAreaInsets(from: view)
-        }
-    }
-
-    private func updateSafeAreaInsets(from rootView: UIView) {
-        // Apply the root view's bottom safe area inset
-        let bottomInset = rootView.safeAreaInsets.bottom
-        if additionalSafeAreaInsets.bottom != bottomInset {
-            additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: min(20, bottomInset), right: 0)
-        }
     }
 }
 

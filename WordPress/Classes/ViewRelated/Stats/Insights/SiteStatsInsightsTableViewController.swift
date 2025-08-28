@@ -4,9 +4,7 @@ import WordPressKit
 import WordPressFlux
 import WordPressUI
 
-class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, StoryboardLoadable {
-    static var defaultStoryboardName: String = "SiteStatsDashboard"
-
+class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController {
     weak var bannerView: JetpackBannerView?
 
     var isGrowAudienceShowing: Bool {
@@ -53,6 +51,17 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
     private lazy var tableHandler: ImmuTableDiffableViewHandler = {
         return ImmuTableDiffableViewHandler(takeOver: self, with: analyticsTracker)
     }()
+
+    // MARK: - Initialization
+
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        tableStyle = .insetGrouped
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - View
 

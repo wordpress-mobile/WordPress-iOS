@@ -19,6 +19,7 @@ struct LegacyFloatingDateControl: View {
             Spacer(minLength: 8)
             navigationControls
         }
+        .modifier(MinimumBottomSafeArea(minPadding: 16))
         .dynamicTypeSize(...DynamicTypeSize.xLarge)
         .padding(.horizontal, 24)
         .background {
@@ -156,6 +157,24 @@ private struct StatsDateRangeTip: Tip {
 
     var options: [any TipOption] {
         [Tips.MaxDisplayCount(1)]
+    }
+}
+
+private struct MinimumBottomSafeArea: ViewModifier {
+    let minPadding: CGFloat
+
+    @State private var bottomInset: CGFloat = 0
+
+    func body(content: Content) -> some View {
+        content
+            .padding(.bottom, bottomInset == 0 ? minPadding : 0)
+            .overlay(
+                GeometryReader { geometry in
+                    Color.clear.onAppear {
+                        self.bottomInset = geometry.safeAreaInsets.bottom
+                    }
+                }
+            )
     }
 }
 

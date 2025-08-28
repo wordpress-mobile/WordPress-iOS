@@ -2,6 +2,7 @@
 -----
 * [*] New Stats: Add support for "weeks" granularity [#24767]
 * [*] New Stats: Fix dark mode support in custom range picker [#24770]
+* [*] New Stats: Fix an issue with date controls clipped on Touch ID devices [#24773]
 
 26.1
 -----
