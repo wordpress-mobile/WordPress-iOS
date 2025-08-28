@@ -66,6 +66,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Attribution view for Discovery posts
     @IBOutlet weak var attributionView: ReaderCardDiscoverAttributionView!
 
+    @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
+
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     /// The actual header
@@ -520,6 +522,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         guard isNewFeaturedImageEnabled else {
             return setupLegacyFeaturedImage()
         }
+
+        scrollViewTopConstraint.isActive = false
+        scrollView.pinEdges(.top)
 
         // TODO: setup new featured image
     }
