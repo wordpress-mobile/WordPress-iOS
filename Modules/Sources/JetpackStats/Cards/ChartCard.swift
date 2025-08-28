@@ -257,13 +257,13 @@ struct ChartCard: View {
         }
     }
 
-    private func handleDateSelection(_ selection: DataPoint, data: ChartData) {
+    private func handleDateSelection(_ selection: Date, data: ChartData) {
         let calendar = viewModel.dateRange.calendar
         let component = data.granularity.component
         guard component != .hour else {
             return // Nowhere else to drill down
         }
-        guard let interval = calendar.dateInterval(of: component, for: selection.date) else {
+        guard let interval = calendar.dateInterval(of: component, for: selection) else {
             return assertionFailure("invalid component or date")
         }
         let newDateRange = StatsDateRange(

@@ -3,7 +3,7 @@ import Charts
 
 struct BarChartView: View {
     let data: ChartData
-    var onDateSelected: ((DataPoint) -> Void)? = nil
+    var onDateSelected: ((Date) -> Void)? = nil
 
     @State private var selectedDataPoints: SelectedDataPoints?
     @State private var isDragging = false
@@ -278,9 +278,12 @@ struct BarChartView: View {
         // Only handle tap if not dragging or long pressing
         guard !isDragging && !isLongPressing else { return }
 
-        if let dataPoint = getSelectedDataPoints(at: location, proxy: proxy, geometry: geometry)?.current {
-            onDateSelected?(dataPoint)
+        guard let selection = getSelectedDataPoints(at: location, proxy: proxy, geometry: geometry),
+              selection.current?.value != 0 || selection.previous?.value != 0,
+              let date = (selection.current ?? selection.previous)?.date else {
+            return
         }
+        onDateSelected?(date)
     }
 
     private func getSelectedDataPoints(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) -> SelectedDataPoints? {
