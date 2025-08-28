@@ -19,7 +19,7 @@ class RemoteConfigStore {
     // MARK: Initializer
 
     init(queue: DispatchQueue = .remoteConfigStoreQueue,
-         remote: RemoteConfigRemote = RemoteConfigRemote(wordPressComRestApi: .defaultApi()),
+         remote: RemoteConfigRemote = RemoteConfigRemote(wordPressComRestApi: WordPressComRestApi.defaultApi()),
          persistenceStore: UserPersistentRepository = UserDefaults.standard) {
         self.queue = queue
         self.remote = remote
