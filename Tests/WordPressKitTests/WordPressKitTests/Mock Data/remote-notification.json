@@ -1,0 +1,149 @@
+{
+    "id": 2671944253,
+    "type": "yosemite",
+    "read": 1,
+    "noticon": "",
+    "timestamp": "2016-10-25T17:47:45+00:00",
+    "icon": "https://0.gravatar.com/avatar/",
+    "url": "https://yosemite.blog",
+    "subject": [
+                {
+                "text": "Someone mentioned you on Notifications Hangout Oct 25, 2016",
+                "ranges": [
+                           {
+                           "type": "user",
+                           "indices": [
+                                       0,
+                                       9
+                                       ],
+                           "url": "https://someone.com",
+                           "site_id": 45384558,
+                           "email": "yosemite@blog",
+                           "id": 31459725
+                           },
+                           {
+                           "type": "post",
+                           "indices": [
+                                       27,
+                                       61
+                                       ],
+                           "url": "https://yosemite.blog/some-cool-url",
+                           "site_id": 105284648,
+                           "id": 10306
+                           }
+                           ]
+                },
+                {
+                "text": "cc @daniloercoli @lanteanar @mariozorz @drw158 @dmsnell"
+                }
+                ],
+    "body": [
+             {
+             "text": "Some other text here perhaps",
+             "ranges": [
+                        {
+                        "type": "list",
+                        "indices": [
+                                    255,
+                                    407
+                                    ]
+                        },
+                        {
+                        "type": "list",
+                        "indices": [
+                                    34,
+                                    408
+                                    ]
+                        },
+                        {
+                        "type": "match",
+                        "indices": [
+                                    427,
+                                    437
+                                    ]
+                        },
+                        {
+                        "type": "list",
+                        "indices": [
+                                    56,
+                                    228
+                                    ]
+                        }
+                        ],
+             "actions": {
+             "replyto-comment": true,
+             "like-post": true
+             },
+             "meta": {
+             "ids": {
+             "post": 10306,
+             "site": 105284648
+             },
+             "links": {
+             "post": "https://public-api.wordpress.com/rest/v1/posts/10306",
+             "site": "https://public-api.wordpress.com/rest/v1/sites/105284648"
+             }
+             },
+             "type": "post"
+             }
+             ],
+    "meta": {
+        "ids": {
+            "site": 105284648,
+            "post": 10306,
+            "user": 31459725
+        },
+        "links": {
+            "site": "https://public-api.wordpress.com/rest/v1/sites/105284648",
+            "post": "https://public-api.wordpress.com/rest/v1/posts/10306",
+            "user": "https://public-api.wordpress.com/rest/v1/users/31459725"
+        }
+    },
+    "title": "Mention",
+    "header": [
+               {
+               "text": "Lord Yosemite",
+               "ranges": [
+                          {
+                          "type": "user",
+                          "indices": [
+                                      0,
+                                      9
+                                      ],
+                          "url": "https://yosemite.blog",
+                          "site_id": 45384558,
+                          "email": "yosemite@blog",
+                          "id": 31459725
+                          }
+                          ],
+               "media": [
+                         {
+                         "type": "image",
+                         "indices": [
+                                     0,
+                                     0
+                                     ],
+                         "height": "256",
+                         "width": "256",
+                         "url": "https://0.gravatar.com/avatar/"
+                         }
+                         ]
+               },
+               {
+               "text": "Notifications Hangout",
+               "ranges": [
+                          {
+                          "type": "post",
+                          "indices": [
+                                      0,
+                                      34
+                                      ],
+                          "url": "https://yosemite.blog",
+                          "site_id": 105284648,
+                          "id": 10306
+                          }
+                          ]
+               }
+               ],
+    "note_hash": 235848772
+}

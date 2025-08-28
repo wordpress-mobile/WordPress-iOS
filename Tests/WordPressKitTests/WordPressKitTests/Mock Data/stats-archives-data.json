@@ -1,0 +1,70 @@
+{
+    "date": "2025-07-21",
+    "period": "day",
+    "summary": {
+        "other": [
+            {
+                "href": "http://example.com/wp-admin/admin.php?page=stats",
+                "value": "/wp-admin/admin.php?page=stats",
+                "views": 10
+            },
+            {
+                "href": "http://example.com/wp-admin/",
+                "value": "/wp-admin/",
+                "views": 4
+            },
+            {
+                "href": "http://example.com/wp-admin/edit.php",
+                "value": "/wp-admin/edit.php",
+                "views": 4
+            },
+            {
+                "href": "http://example.com/wp-admin/index.php",
+                "value": "/wp-admin/index.php",
+                "views": 2
+            },
+            {
+                "href": "http://example.com/wp-admin/revision.php?revision=12345",
+                "value": "/wp-admin/revision.php?revision=12345",
+                "views": 2
+            },
+            {
+                "href": "http://example.com/wp-admin/admin.php?page=settings",
+                "value": "/wp-admin/admin.php?page=settings",
+                "views": 1
+            },
+            {
+                "href": "http://example.com/wp-admin/post.php?post=67890&amp;action=edit",
+                "value": "/wp-admin/post.php?post=67890&amp;action=edit",
+                "views": 1
+            },
+            {
+                "href": "http://example.com/wp-admin/profile.php",
+                "value": "/wp-admin/profile.php",
+                "views": 1
+            }
+        ],
+        "author": [
+            {
+                "href": "http://example.com/author/johndoe/",
+                "value": "johndoe",
+                "views": 31
+            },
+            {
+                "href": "http://example.com/author/janedoe/",
+                "value": "janedoe",
+                "views": 5
+            },
+            {
+                "href": "http://example.com/author/testuser/",
+                "value": "testuser",
+                "views": 2
+            },
+            {
+                "href": "http://example.com/author//",
+                "value": "",
+                "views": 2
+            }
+        ]
+    }
+}

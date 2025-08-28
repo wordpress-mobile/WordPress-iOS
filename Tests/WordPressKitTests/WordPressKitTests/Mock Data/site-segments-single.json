@@ -1,0 +1,9 @@
+{
+    "icon_URL" : "https://s.wp.com/i/mobile_segmentation_icons/monochrome/ic_blogger.png",
+    "icon_color" : "#0087be",
+    "id" : 1,
+    "mobile" : true,
+    "segment_type_subtitle" : "Share and discuss ideas, updates, or creations.",
+    "segment_type_title" : "Blog",
+    "slug" : "blog"
+}

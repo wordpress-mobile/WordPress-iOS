@@ -1,0 +1,43 @@
+{
+    "user_id": 123,
+    "subscription_id": 123,
+    "email_address": "test@example.com",
+    "date_subscribed": "2025-04-17T14:40:00+00:00",
+    "is_email_subscriber": false,
+    "subscription_status": "Subscribed",
+    "avatar": "https://example.com/avatar",
+    "display_name": "Alex",
+    "url": "http://example.wordpress.com",
+    "country": {
+        "code": "US",
+        "name": "United States"
+    },
+    "plans": [
+        {
+            "is_gift": false,
+            "gift_id": null,
+            "paid_subscription_id": "12422686",
+            "status": "active",
+            "title": "Newsletter Tier",
+            "currency": "USD",
+            "renew_interval": "1 month",
+            "inactive_renew_interval": null,
+            "renewal_price": 0.5,
+            "start_date": "2025-01-13T18:51:55+00:00",
+            "end_date": "2025-02-13T18:51:55+00:00"
+        },
+        {
+            "is_gift": true,
+            "gift_id": 31,
+            "paid_subscription_id": null,
+            "status": "active",
+            "title": "Newsletter Tier 3",
+            "currency": "USD",
+            "renew_interval": "one-time",
+            "inactive_renew_interval": null,
+            "renewal_price": 0,
+            "start_date": "2025-05-08T14:50:28+00:00",
+            "end_date": "2025-06-07T14:50:28+00:00"
+        }
+    ]
+}

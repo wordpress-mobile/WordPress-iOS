@@ -1,0 +1,455 @@
+{
+    "date": "2018-12-31",
+        "days": {
+            "2018-01-01": {
+                "authors": [
+                {
+                    "name": "George Hotelling",
+                    "avatar": "https://0.gravatar.com/avatar/9c9aa771f98b781c3fea988f6d925c9f?s=64&amp;d=https%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+                    "views": 57,
+                    "posts": [
+                    {
+                        "id": 132,
+                        "title": "Josepha's Prospect ",
+                        "url": "http://bagomattic.wordpress.com/2016/09/20/josephas-prospect/",
+                        "views": 7,
+                        "video": false
+                    },
+                    {
+                        "id": 122,
+                        "title": "Stef's Magic Box",
+                        "url": "http://bagomattic.wordpress.com/2016/09/18/stefs-magic-box/",
+                        "views": 7,
+                        "video": false
+                    },
+                    {
+                        "id": 138,
+                        "title": "Kelly's Mini Prospect ",
+                        "url": "http://bagomattic.wordpress.com/2016/09/21/kellys-mini-prospect/",
+                        "views": 5,
+                        "video": false
+                    },
+                    {
+                        "id": 114,
+                        "title": "James' Alcatraz ",
+                        "url": "http://bagomattic.wordpress.com/2016/09/17/james-alcatraz/",
+                        "views": 5,
+                        "video": false
+                    },
+                    {
+                        "id": 100,
+                        "title": "Rodrigo's Prospect",
+                        "url": "http://bagomattic.wordpress.com/2016/09/17/rodrigos-prospect/",
+                        "views": 5,
+                        "video": false
+                    },
+                    {
+                        "id": 124,
+                        "title": "Sirin's Prospect",
+                        "url": "http://bagomattic.wordpress.com/2016/09/19/sirins-prospect/",
+                        "views": 5,
+                        "video": false
+                    },
+                    {
+                        "id": 135,
+                        "title": "Chrissie's Prospect",
+                        "url": "http://bagomattic.wordpress.com/2016/09/21/chrissies-prospect/",
+                        "views": 4,
+                        "video": false
+                    },
+                    {
+                        "id": 119,
+                        "title": "Michelle's Classic Backpack ",
+                        "url": "http://bagomattic.wordpress.com/2016/09/17/michelles-classic-backpack/",
+                        "views": 3,
+                        "video": false
+                    },
+                    {
+                        "id": 94,
+                        "title": "Hari's Alcatraz",
+                        "url": "http://bagomattic.wordpress.com/2016/09/16/haris-alcatraz/",
+                        "views": 3,
+                        "video": false
+                    },
+                    {
+                        "id": 109,
+                        "title": "Ingrid's Messenger ",
+                        "url": "http://bagomattic.wordpress.com/2016/09/17/ingrids-messenger/",
+                        "views": 2,
+                        "video": false
+                    }
+                    ],
+                    "follow_data": {
+                        "params": {
+                            "stat-source": "stats_author",
+                            "follow-text": "Follow",
+                            "following-text": "Following",
+                            "following-hover-text": "Unfollow",
+                            "blog_domain": "g13gblog.wordpress.com",
+                            "blog_url": "http://g13gblog.wordpress.com",
+                            "blog_id": 153485459,
+                            "site_id": 153485459,
+                            "blog_title": "g13g",
+                            "is_following": false
+                        },
+                        "type": "follow"
+                    }
+                },
+                {
+                    "name": "Steph Yiu",
+                    "avatar": "https://0.gravatar.com/avatar/c5f0f64e51d3117184032db715963b39?s=64&amp;d=https%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+                    "views": 28,
+                    "posts": [
+                    {
+                        "id": 9,
+                        "title": "Not quite newdash blue",
+                        "url": "http://bagomattic.wordpress.com/2014/09/15/not-quite-newdash-blue/",
+                        "views": 5,
+                        "video": false
+                    },
+                    {
+                        "id": 18,
+                        "title": "Incognito",
+                        "url": "http://bagomattic.wordpress.com/2014/09/16/incognito/",
+                        "views": 4,
+                        "video": false
+                    },
+                    {
+                        "id": 51,
+                        "title": "Excellent beer bottle opener",
+                        "url": "http://bagomattic.wordpress.com/2014/09/23/excellent-beer-bottle-opener/",
+                        "views": 4,
+                        "video": false
+                    },
+                    {
+                        "id": 42,
+                        "title": "Out and about",
+                        "url": "http://bagomattic.wordpress.com/2014/09/18/out-and-about/",
+                        "views": 3,
+                        "video": false
+                    },
+                    {
+                        "id": 39,
+                        "title": "It's solid blue",
+                        "url": "http://bagomattic.wordpress.com/2014/09/18/its-solid-blue/",
+                        "views": 2,
+                        "video": false
+                    },
+                    {
+                        "id": 73,
+                        "title": "Jose's bag",
+                        "url": "http://bagomattic.wordpress.com/2015/05/13/joses-bag/",
+                        "views": 2,
+                        "video": false
+                    },
+                    {
+                        "id": 36,
+                        "title": "Tweedledee",
+                        "url": "http://bagomattic.wordpress.com/2014/09/18/tweedledee/",
+                        "views": 2,
+                        "video": false
+                    },
+                    {
+                        "id": 5,
+                        "title": "Orange is the new black",
+                        "url": "http://bagomattic.wordpress.com/2014/09/15/orange-is-the-new-black/",
+                        "views": 1,
+                        "video": false
+                    },
+                    {
+                        "id": 15,
+                        "title": "It ain't easy being green",
+                        "url": "http://bagomattic.wordpress.com/2014/09/15/it-aint-easy-being-green/",
+                        "views": 1,
+                        "video": false
+                    },
+                    {
+                        "id": 69,
+                        "title": "Michael's bag",
+                        "url": "http://bagomattic.wordpress.com/2015/05/13/michaels-bag/",
+                        "views": 1,
+                        "video": false
+                    }
+                    ],
+                    "follow_data": {
+                        "params": {
+                            "stat-source": "stats_author",
+                            "follow-text": "Follow",
+                            "following-text": "Following",
+                            "following-hover-text": "Unfollow",
+                            "blog_domain": "automattic.wordpress.com",
+                            "blog_url": "http://automattic.wordpress.com",
+                            "blog_id": 54117,
+                            "site_id": 54117,
+                            "blog_title": "Automattic",
+                            "is_following": false
+                        },
+                        "type": "follow"
+                    }
+                },
+                {
+                    "name": "Eric Gunawan",
+                    "avatar": "https://1.gravatar.com/avatar/a2e61952c5e6787763903f88e180ce2e?s=64&amp;d=https%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+                    "views": 25,
+                    "posts": [
+                    {
+                        "id": 254,
+                        "title": "Eric's Indonesian-Themed Prospect",
+                        "url": "http://bagomattic.wordpress.com/2018/03/16/erics-indonesian-themed-prospect/",
+                        "views": 23,
+                        "video": false
+                    },
+                    {
+                        "id": 255,
+                        "title": "EricProspect1",
+                        "url": "http://bagomattic.wordpress.com/2018/03/16/erics-indonesian-themed-prospect/ericprospect1/",
+                        "views": 1,
+                        "video": false
+                    },
+                    {
+                        "id": 256,
+                        "title": "EricProspect2",
+                        "url": "http://bagomattic.wordpress.com/2018/03/16/erics-indonesian-themed-prospect/ericprospect2/",
+                        "views": 1,
+                        "video": false
+                    }
+                    ],
+                    "follow_data": {
+                        "params": {
+                            "stat-source": "stats_author",
+                            "follow-text": "Follow",
+                            "following-text": "Following",
+                            "following-hover-text": "Unfollow",
+                            "blog_domain": "erricgunawan.com",
+                            "blog_url": "http://erricgunawan.com/blog",
+                            "blog_id": 31459430,
+                            "site_id": 31459430,
+                            "blog_title": "Eric Gunawan in Blue",
+                            "is_following": false
+                        },
+                        "type": "follow"
+                    }
+                },
+                {
+                    "name": "Cesar Tardaguila",
+                    "avatar": "https://2.gravatar.com/avatar/b371b7de1e58a5dcc3fc3aa236784081?s=64&amp;d=https%3A%2F%2F2.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+                    "views": 20,
+                    "posts": [
+                    {
+                        "id": 246,
+                        "title": "Cesar's new division pack",
+                        "url": "http://bagomattic.wordpress.com/2018/03/13/cesars-new-division-pack/",
+                        "views": 20,
+                        "video": false
+                    }
+                    ],
+                    "follow_data": {
+                        "params": {
+                            "stat-source": "stats_author",
+                            "follow-text": "Follow",
+                            "following-text": "Following",
+                            "following-hover-text": "Unfollow",
+                            "blog_domain": "ctarda.com",
+                            "blog_url": "http://ctarda.com",
+                            "blog_id": 88556049,
+                            "site_id": 88556049,
+                            "blog_title": "The Amazing Adventures of a Sexy Software Engineer",
+                            "is_following": false
+                        },
+                        "type": "follow"
+                    }
+                },
+                {
+                    "name": "Pete Schiebel",
+                    "avatar": "https://0.gravatar.com/avatar/6b764339c0e5580d28a45c3476bdd9d9?s=64&amp;d=https%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+                    "views": 16,
+                    "posts": [
+                    {
+                        "id": 203,
+                        "title": "Pete's Prospect",
+                        "url": "http://bagomattic.wordpress.com/2017/08/21/petes-prospect/",
+                        "views": 13,
+                        "video": false
+                    },
+                    {
+                        "id": 205,
+                        "title": "IMG_3437",
+                        "url": "http://bagomattic.wordpress.com/2017/08/21/petes-prospect/img_3437/",
+                        "views": 2,
+                        "video": false
+                    },
+                    {
+                        "id": 204,
+                        "title": "IMG_8124",
+                        "url": "http://bagomattic.wordpress.com/2017/08/21/petes-prospect/img_8124/",
+                        "views": 1,
+                        "video": false
+                    }
+                    ],
+                    "follow_data": {
+                        "params": {
+                            "stat-source": "stats_author",
+                            "follow-text": "Follow",
+                            "following-text": "Following",
+                            "following-hover-text": "Unfollow",
+                            "blog_domain": "peterschiebelblog.wordpress.com",
+                            "blog_url": "http://peterschiebelblog.wordpress.com",
+                            "blog_id": 136017937,
+                            "site_id": 136017937,
+                            "blog_title": "Paul&#039;s Painting &amp; Pressure Washing",
+                            "is_following": false
+                        },
+                        "type": "follow"
+                    }
+                },
+                {
+                    "name": "Jaco",
+                    "avatar": "https://0.gravatar.com/avatar/0b79f6ec1d8ca34b3307f17845791297?s=64&amp;d=https%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+                    "views": 15,
+                    "posts": [
+                    {
+                        "id": 352,
+                        "title": "Jaco's Aer Fit Pack 2",
+                        "url": "http://bagomattic.wordpress.com/2018/11/29/jacos-aer-fit-pack-2/",
+                        "views": 6,
+                        "video": false
+                    },
+                    {
+                        "id": 353,
+                        "title": "Jaco's Aer Fit Pack 2",
+                        "url": "http://bagomattic.wordpress.com/2018/11/29/jacos-aer-fit-pack-2/img_20181129_140741/",
+                        "views": 3,
+                        "video": false
+                    },
+                    {
+                        "id": 354,
+                        "title": "Jaco's Aer Fit Pack 2",
+                        "url": "http://bagomattic.wordpress.com/2018/11/29/jacos-aer-fit-pack-2/img_20181129_140819/",
+                        "views": 2,
+                        "video": false
+                    },
+                    {
+                        "id": 355,
+                        "title": "Jaco's Aer Fit Pack 2",
+                        "url": "http://bagomattic.wordpress.com/2018/11/29/jacos-aer-fit-pack-2/img_20181129_140918/",
+                        "views": 2,
+                        "video": false
+                    },
+                    {
+                        "id": 361,
+                        "title": "Field Tested",
+                        "url": "http://bagomattic.wordpress.com/2018/11/29/jacos-aer-fit-pack-2/field-tested-aer-fit-bag/",
+                        "views": 2,
+                        "video": false
+                    }
+                    ],
+                    "follow_data": {
+                        "params": {
+                            "stat-source": "stats_author",
+                            "follow-text": "Follow",
+                            "following-text": "Following",
+                            "following-hover-text": "Unfollow",
+                            "blog_domain": "domainsuniversity.wordpress.com",
+                            "blog_url": "http://domainsuniversity.wordpress.com",
+                            "blog_id": 102996235,
+                            "site_id": 102996235,
+                            "blog_title": "Domains University",
+                            "is_following": false
+                        },
+                        "type": "follow"
+                    }
+                },
+                {
+                    "name": "Ivan Ottinger",
+                    "avatar": "https://1.gravatar.com/avatar/dcf30f3f3a3a09d40aa7c76e5bb35f3c?s=64&amp;d=https%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+                    "views": 15,
+                    "posts": [
+                    {
+                        "id": 240,
+                        "title": "Ivan's new Timbuk2",
+                        "url": "http://bagomattic.wordpress.com/2018/02/21/ivans-new-timbuk2/",
+                        "views": 15,
+                        "video": false
+                    }
+                    ],
+                    "follow_data": false
+                },
+                {
+                    "name": "Paulo",
+                    "avatar": "https://1.gravatar.com/avatar/da029fa4d07f05dace95562631d6e66c?s=64&amp;d=https%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+                    "views": 14,
+                    "posts": [
+                    {
+                        "id": 284,
+                        "title": "Paulo's Grey Aer Fit Pack 2",
+                        "url": "http://bagomattic.wordpress.com/2018/04/07/paulos-grey-aer-fit-pack-2/",
+                        "views": 14,
+                        "video": false
+                    }
+                    ],
+                    "follow_data": {
+                        "params": {
+                            "stat-source": "stats_author",
+                            "follow-text": "Follow",
+                            "following-text": "Following",
+                            "following-hover-text": "Unfollow",
+                            "blog_domain": "peaeb.wordpress.com",
+                            "blog_url": "https://peaeb.me",
+                            "blog_id": 125791165,
+                            "site_id": 125791165,
+                            "blog_title": "Everything Builds",
+                            "is_following": false
+                        },
+                        "type": "follow"
+                    }
+                },
+                {
+                    "name": "Khyati Gala",
+                    "avatar": "https://0.gravatar.com/avatar/34d3d0f93dda307e270fc7515d50914a?s=64&amp;d=https%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+                    "views": 14,
+                    "posts": [
+                    {
+                        "id": 215,
+                        "title": "Khyati's Timbuk2 bagpack",
+                        "url": "http://bagomattic.wordpress.com/2017/11/02/khyatis-timbuk2-bagpack/",
+                        "views": 14,
+                        "video": false
+                    }
+                    ],
+                    "follow_data": {
+                        "params": {
+                            "stat-source": "stats_author",
+                            "follow-text": "Follow",
+                            "following-text": "Following",
+                            "following-hover-text": "Unfollow",
+                            "blog_domain": "wptest451.wordpress.com",
+                            "blog_url": "https://mywptest.blog",
+                            "blog_id": 131325209,
+                            "site_id": 131325209,
+                            "blog_title": "My WordPress Test site",
+                            "is_following": false
+                        },
+                        "type": "follow"
+                    }
+                },
+                {
+                    "name": "Liz Swafford",
+                    "avatar": "https://2.gravatar.com/avatar/84cd07b56d9cf864ce9f818720ef1062?s=64&amp;d=https%3A%2F%2F2.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+                    "views": 14,
+                    "posts": [
+                    {
+                        "id": 229,
+                        "title": "Liz's Alcatraz in Grey and Black",
+                        "url": "http://bagomattic.wordpress.com/2018/02/16/alcatraz-in-grey-and-black/",
+                        "views": 14,
+                        "video": false
+                    }
+                    ],
+                    "follow_data": false
+                }
+                ],
+                "other_views": 207
+            }
+        },
+        "period": "year"
+}

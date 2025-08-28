@@ -1,0 +1,138 @@
+{
+    "page": 2,
+    "pages": 1,
+    "total": 15,
+    "total_email": 2156000,
+    "total_wpcom": 12,
+    "subscribers": [
+        {
+            "avatar": "https://0.gravatar.com/avatar/abcd1234abcd1234abcd1234abcd1234?s=64&d=https%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64",
+            "label": "asdasd",
+            "login": "asdasdasd",
+            "ID": 789123456,
+            "url": "http://jd12123.wordpress.com",
+            "follow_data": {
+                "params": {
+                    "stat-source": "stats_comments",
+                    "follow-text": "Follow",
+                    "following-text": "Following",
+                    "following-hover-text": "Unfollow",
+                    "blog_domain": "janedoe2024.wordpress.com",
+                    "blog_url": "http://janedoe2024.wordpress.com",
+                    "blog_id": 789123,
+                    "site_id": 789123,
+                    "blog_title": "Jane's World",
+                    "is_following": true
+                },
+                "type": "follow"
+            },
+            "date_subscribed": "2024-03-26T08:15:00+00:00"
+        },
+        {
+            "avatar": "https://1.gravatar.com/avatar/56785678567856785678567856785678?s=64&d=https%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64",
+            "label": "alexthegreat",
+            "login": "alexthegreat",
+            "ID": 987654321,
+            "url": null,
+            "follow_data": null,
+            "date_subscribed": "2024-03-26T07:45:20+00:00"
+        },
+        {
+            "avatar": "https://2.gravatar.com/avatar/23452345234523452345234523452345?s=64&d=https%3A%2F%2F2.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64",
+            "label": "techwizard",
+            "login": "techwizard",
+            "ID": 456789123,
+            "url": "https://techwizard.dailyh.shop",
+            "follow_data": {
+                "params": {
+                    "stat-source": "stats_comments",
+                    "follow-text": "Follow",
+                    "following-text": "Following",
+                    "following-hover-text": "Unfollow",
+                    "blog_domain": "techwizard.dailyh.shop",
+                    "blog_url": "https://techwizard.dailyh.shop",
+                    "blog_id": 456789,
+                    "site_id": 456789,
+                    "blog_title": "Tech Wizardry",
+                    "is_following": false
+                },
+                "type": "follow"
+            },
+            "date_subscribed": "2024-03-26T09:30:45+00:00"
+        },
+        {
+            "avatar": "https://3.gravatar.com/avatar/dfghdfghdfghdfghdfghdfghdfghdfgh?s=64&d=https%3A%2F%2F3.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64",
+            "label": "creative_mind",
+            "login": "creative_mind",
+            "ID": 123456789,
+            "url": null,
+            "follow_data": null,
+            "date_subscribed": "2024-03-26T10:02:17+00:00"
+        },
+        {
+            "avatar": "https://0.gravatar.com/avatar/09f8d2c10abfde456789abcd1234efab?s=64&d=https%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64",
+            "label": "nature_lover",
+            "login": "nature_lover",
+            "ID": 987654789,
+            "url": "http://naturelover.wordpress.com",
+            "follow_data": {
+                "params": {
+                    "stat-source": "stats_comments",
+                    "follow-text": "Follow",
+                    "following-text": "Following",
+                    "following-hover-text": "Unfollow",
+                    "blog_domain": "naturelover.wordpress.com",
+                    "blog_url": "http://naturelover.wordpress.com",
+                    "blog_id": 987654,
+                    "site_id": 987654,
+                    "blog_title": "Love For Nature",
+                    "is_following": false
+                },
+                "type": "follow"
+            },
+            "date_subscribed": "2024-03-26T11:55:00+00:00"
+        },
+        {
+            "avatar": "https://1.gravatar.com/avatar/abcdefabcdefabcdefabcdefabcdefab?s=64&d=https%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64",
+            "label": "world_traveler",
+            "login": "world_traveler",
+            "ID": 123123123,
+            "url": null,
+            "follow_data": null,
+            "date_subscribed": "2024-03-26T12:30:25+00:00"
+        },
+        {
+            "avatar": "https://2.gravatar.com/avatar/bc12bc12bc12bc12bc12bc12bc12bc12?s=64&d=https%3A%2F%2F2.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64",
+            "label": "foodie_adventures",
+            "login": "foodie_adventures",
+            "ID": 321321321,
+            "url": "https://foodieadventures.dailyh.shop",
+            "follow_data": {
+                "params": {
+                    "stat-source": "stats_comments",
+                    "follow-text": "Follow",
+                    "following-text": "Following",
+                    "following-hover-text": "Unfollow",
+                    "blog_domain": "foodieadventures.dailyh.shop",
+                    "blog_url": "https://foodieadventures.dailyh.shop",
+                    "blog_id": 321321,
+                    "site_id": 321321,
+                    "blog_title": "Adventures in Food",
+                    "is_following": true
+                },
+                "type": "follow"
+            },
+            "date_subscribed": "2024-03-26T13:47:31+00:00"
+        },
+        {
+            "avatar": "https://3.gravatar.com/avatar/1234abcd5678efgh9101112i13141516?s=64&d=https%3A%2F%2F3.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64",
+            "label": "bookworm_betty",
+            "login": "bookworm_betty",
+            "ID": 456456456,
+            "url": null,
+            "follow_data": null,
+            "date_subscribed": "2024-03-26T14:59:02+00:00"
+        }
+    ],
+    "is_owner_subscribing": false
+}

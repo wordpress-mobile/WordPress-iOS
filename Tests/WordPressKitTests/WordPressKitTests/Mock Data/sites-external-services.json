@@ -1,0 +1,37 @@
+{
+    "services": {
+        "facebook": {
+            "ID": "facebook",
+            "label": "Facebook",
+            "type": "publicize",
+            "description": "Publish your posts to your Facebook timeline or page.",
+            "genericon": {
+                "class": "facebook-alt",
+                "unicode": "\\f203"
+            },
+            "icon": "http:\/\/i.wordpress.com\/wp-content\/admin-plugins\/publicize\/assets\/publicize-fb-2x.png",
+            "connect_URL": "https:\/\/public-api.wordpress.com\/connect\/?action=request&kr_nonce=9b9bc62d36&nonce=a14cc808a1&for=connect&service=facebook&blog=193189927&kr_blog_nonce=e12bbe845e&magic=keyring",
+            "multiple_external_user_ID_support": true,
+            "external_users_only": true,
+            "jetpack_support": true,
+            "jetpack_module_required": "publicize"
+        },
+        "twitter": {
+            "ID": "twitter",
+            "label": "Twitter",
+            "type": "publicize",
+            "description": "Publish your posts to your Twitter account.",
+            "genericon": {
+                "class": "twitter",
+                "unicode": "\\f202"
+            },
+            "icon": "http:\/\/i.wordpress.com\/wp-content\/admin-plugins\/publicize\/assets\/publicize-twitter-2x.png",
+            "connect_URL": "https:\/\/public-api.wordpress.com\/connect\/?action=request&kr_nonce=9b9bc62d36&nonce=7aa41a23e8&for=connect&service=twitter&blog=193189927&kr_blog_nonce=e12bbe845e&magic=keyring",
+            "multiple_external_user_ID_support": false,
+            "external_users_only": false,
+            "jetpack_support": true,
+            "jetpack_module_required": "publicize",
+            "status": "unsupported"
+        }
+    }
+}

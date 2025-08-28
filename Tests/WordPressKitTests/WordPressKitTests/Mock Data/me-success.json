@@ -1,0 +1,34 @@
+{
+    "ID": 55511,
+    "display_name": "Jim Tester",
+    "username": "jimthetester",
+    "email": "jim@wptestaccounts.com",
+    "primary_blog": 55555551,
+    "primary_blog_url": "https:\/\/test1.wordpress.com",
+    "language": "en",
+    "locale_variant": "",
+    "token_site_id": false,
+    "token_scope": [
+                    "global"
+                    ],
+    "avatar_URL": "https:\/\/2.gravatar.com\/avatar\/5c11d333444b9c98765ed8ff0e574259?s=96&d=identicon",
+    "profile_URL": "http:\/\/en.gravatar.com\/jimthetester",
+    "verified": true,
+    "email_verified": true,
+    "date": "2009-10-12T21:00:06+00:00",
+    "site_count": 2,
+    "visible_site_count": 1,
+    "has_unseen_notes": false,
+    "phone_account": false,
+    "meta": {
+        "links": {
+            "self": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/me",
+            "help": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/me\/help",
+            "site": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/sites\/55555551",
+            "flags": "https:\/\/public-api.wordpress.com\/rest\/v1.1\/me\/flags"
+        }
+    },
+    "is_valid_google_apps_country": true,
+    "logout_URL": "https:\/\/wordpress.com\/wp-login.php?action=logout&_wpnonce=1111ab2ff9&redirect_to=https%3A%2F%2Fwordpress.com%2F",
+    "is_new_reader": false
+}

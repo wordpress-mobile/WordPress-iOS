@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" class="wp-toolbar"
+	lang="es"	>
+<head>
+<script src='https://example.com/wp-content/plugins/gutenberg/build/api-fetch/index.js?ver=3d6e2825dd5ae14d757da181b879fafe'></script>
+<script>
+wp.apiFetch.use( wp.apiFetch.createRootURLMiddleware( "https://example.com/wp-json/" ) );
+wp.apiFetch.nonceMiddleware = wp.apiFetch.createNonceMiddleware( "2012ec76fa" );
+wp.apiFetch.use( wp.apiFetch.nonceMiddleware );
+wp.apiFetch.use( wp.apiFetch.mediaUploadMiddleware );
+wp.apiFetch.nonceEndpoint = "https://example.com/wp-admin/admin-ajax.php?action=rest-nonce";
+wp.apiFetch.nonceMiddleware = wp.apiFetch.createNonceMiddleware( "2012ec76fa" );wp.apiFetch.use( wp.apiFetch.nonceMiddleware );wp.apiFetch.nonceEndpoint = "https://example.com/wp-admin/admin-ajax.php?action=gutenberg_rest_nonce";wp.apiFetch.use( wp.apiFetch.mediaUploadMiddleware );
+</script>
+	</head>
+<body class="wp-admin wp-core-ui no-js jetpack-masterbar jetpack-connected  post-new-php admin-bar post-type-post branch-5-3 version-5-3 admin-color-midnight locale-es-es no-customize-support no-svg block-editor-page is-fullscreen-mode wp-embed-responsive">
+</body>
+</html>
+

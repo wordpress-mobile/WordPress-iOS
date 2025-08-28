@@ -1,0 +1,113 @@
+{
+    "date": "2018-12-31",
+    "days": {
+        "2018-01-01": {
+            "views": [
+                {
+                    "country_code": "US",
+                    "views": 937
+                },
+                {
+                    "country_code": "GB",
+                    "views": 165
+                },
+                {
+                    "country_code": "IN",
+                    "views": 159
+                },
+                {
+                    "country_code": "AU",
+                    "views": 107
+                },
+                {
+                    "country_code": "ES",
+                    "views": 63
+                },
+                {
+                    "country_code": "CA",
+                    "views": 47
+                },
+                {
+                    "country_code": "GR",
+                    "views": 45
+                },
+                {
+                    "country_code": "HK",
+                    "views": 42
+                },
+                {
+                    "country_code": "SG",
+                    "views": 40
+                },
+                {
+                    "country_code": "NL",
+                    "views": 37
+                }
+            ],
+            "other_views": 242,
+            "total_views": 1884
+        }
+    },
+    "country-info": {
+        "US": {
+            "flag_icon": "https://secure.gravatar.com/blavatar/5a83891a81b057fed56930a6aaaf7b3c?s=48",
+            "flat_flag_icon": "https://secure.gravatar.com/blavatar/9f4faa5ad0c723474f7a6d810172447c?s=48",
+            "country_full": "United States",
+            "map_region": "021"
+        },
+        "GB": {
+            "flag_icon": "https://secure.gravatar.com/blavatar/45d1fd3f398678452fd02153f569ce01?s=48",
+            "flat_flag_icon": "https://secure.gravatar.com/blavatar/85ac446c6eefc7e959e15a6877046da3?s=48",
+            "country_full": "United Kingdom",
+            "map_region": "154"
+        },
+        "IN": {
+            "flag_icon": "https://secure.gravatar.com/blavatar/217b6ac82c316e3a176351cef1d2d0b6?s=48",
+            "flat_flag_icon": "https://secure.gravatar.com/blavatar/d449a857f065ec5ddf1e7a086001a541?s=48",
+            "country_full": "India",
+            "map_region": "034"
+        },
+        "AU": {
+            "flag_icon": "https://secure.gravatar.com/blavatar/652b8d886abb355153e7486c43f7d3d4?s=48",
+            "flat_flag_icon": "https://secure.gravatar.com/blavatar/aae10060ced491841b196f526a8e9d1b?s=48",
+            "country_full": "Australia",
+            "map_region": "053"
+        },
+        "ES": {
+            "flag_icon": "https://secure.gravatar.com/blavatar/3b0fec88bde4fc30fd3e23e4ccd99f82?s=48",
+            "flat_flag_icon": "https://secure.gravatar.com/blavatar/365c1d4da35ae303b9c5b2456fb83783?s=48",
+            "country_full": "Spain",
+            "map_region": "039"
+        },
+        "CA": {
+            "flag_icon": "https://secure.gravatar.com/blavatar/7f3085b2665ac78346be5923724ba4c6?s=48",
+            "flat_flag_icon": "https://secure.gravatar.com/blavatar/685ac009247bf3378158ee41c3f8f250?s=48",
+            "country_full": "Canada",
+            "map_region": "021"
+        },
+        "GR": {
+            "flag_icon": "https://secure.gravatar.com/blavatar/b6b7e68f84a52ab815467a6fbec1f3c0?s=48",
+            "flat_flag_icon": "https://secure.gravatar.com/blavatar/9b9c3f808361ec2e84526c44eb42944c?s=48",
+            "country_full": "Greece",
+            "map_region": "039"
+        },
+        "HK": {
+            "flag_icon": "https://secure.gravatar.com/blavatar/1a989835b3db99915802fcba781dded1?s=48",
+            "flat_flag_icon": "https://secure.gravatar.com/blavatar/50afdd95210bdca099002a4d64eedb44?s=48",
+            "country_full": "Hong Kong SAR China",
+            "map_region": "030"
+        },
+        "SG": {
+            "flag_icon": "https://secure.gravatar.com/blavatar/2e92f433832ac16cdbace58dd80237fd?s=48",
+            "flat_flag_icon": "https://secure.gravatar.com/blavatar/7bf576be119dfc4b569c068db84f56a5?s=48",
+            "country_full": "Singapore",
+            "map_region": "035"
+        },
+        "NL": {
+            "flag_icon": "https://secure.gravatar.com/blavatar/a7c9a0e4e9006eadb21ca448f54d990e?s=48",
+            "flat_flag_icon": "https://secure.gravatar.com/blavatar/646cb56a79f9aee2e85999232ad7db45?s=48",
+            "country_full": "Netherlands",
+            "map_region": "155"
+        }
+    }
+}

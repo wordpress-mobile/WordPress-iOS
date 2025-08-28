@@ -1,0 +1,15 @@
+{
+    "slug": "code-snippets",
+    "active": false,
+    "name": "code-snippets/code-snippets",
+    "display_name": "Code Snippets",
+    "plugin_url": "https://github.com/sheabunge/code-snippets",
+    "version": "2.14.0",
+    "description": "An easy, clean and simple way to run code snippets on your site. No need to edit to your theme's functions.php file again!",
+    "author": "Code Snippets Pro",
+    "author_url": "https://codesnippets.pro",
+    "network": false,
+    "autoupdate": false,
+    "autoupdate_translation": false,
+    "uninstallable": true
+}

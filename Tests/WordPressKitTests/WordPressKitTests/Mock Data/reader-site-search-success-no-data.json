@@ -1,0 +1,29 @@
+{
+  "feeds": [
+    {
+      "URL": "https://dailypost.wordpress.com",
+      "subscribe_URL": "http://dailypost.wordpress.com",
+      "blog_ID": "489937",
+      "title": "The Daily Post",
+      "railcar": {
+        "railcar": "*dPbMa8*fdh#",
+        "fetch_algo": "reader/manage/search:0",
+        "fetch_position": 0,
+        "rec_blog_id": 489937,
+        "fetch_lang": "en",
+        "fetch_query": "dailypost.wordpress.com"
+      },
+      "meta": {
+        "links": {
+          "feed": "https://public-api.wordpress.com/rest/v1.1/read/feed/27030",
+          "site": "https://public-api.wordpress.com/rest/v1.1/read/sites/489937"
+        }
+      },
+      "feed_ID": "27030",
+      "subscribers_count": 37418087
+    }
+  ],
+  "total": 1,
+  "algorithm": "reader/manage/search:0",
+  "next_page": "offset=10&algorithm=reader/manage/search:0"
+}
