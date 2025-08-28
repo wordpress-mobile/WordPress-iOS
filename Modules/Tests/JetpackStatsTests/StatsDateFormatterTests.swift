@@ -68,4 +68,26 @@ struct StatsDateFormatterTests {
         let result = formatter.formatDate(date, granularity: .year, context: .regular)
         #expect(result == "2025")
     }
+
+    @Test func weekFormatting() {
+        let date = Date("2025-03-9T14:00:00-03:00")
+        let result = formatter.formatDate(date, granularity: .week, context: .regular)
+        #expect(result == "Mar 9 – 15")
+
+        let mondayDate = Date("2025-03-10T14:00:00-03:00")
+        let mondayResult = formatter.formatDate(mondayDate, granularity: .week, context: .regular)
+        #expect(mondayResult == "Mar 9 – 15")
+
+        let yearBoundary = Date("2025-01-01T14:00:00-03:00")
+        let yearBoundaryResult = formatter.formatDate(yearBoundary, granularity: .week, context: .regular)
+        #expect(yearBoundaryResult == "Dec 29, 2024 – Jan 4, 2025")
+
+        let previousYear = Date("2024-03-15T14:00:00-03:00")
+        let previousYearResult = formatter.formatDate(previousYear, granularity: .week, context: .regular)
+        #expect(previousYearResult == "Mar 10 – 16, 2024")
+
+        let crossYear = Date("2024-12-30T14:00:00-03:00")
+        let crossYearResult = formatter.formatDate(crossYear, granularity: .week, context: .regular)
+        #expect(crossYearResult == "Dec 29, 2024 – Jan 4, 2025")
+    }
 }
