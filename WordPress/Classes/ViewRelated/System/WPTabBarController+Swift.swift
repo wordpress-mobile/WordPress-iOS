@@ -1,5 +1,7 @@
+import UIKit
 import WordPressData
 import WordPressShared
+import WordPressUI
 
 // MARK: - Tab Access Tracking
 
@@ -24,6 +26,14 @@ import WordPressShared
 }
 
 extension WPTabBarController {
+    @objc public func didSelectViewController(_ viewController: UIViewController) {
+#if swift(>=6.2)
+        if #available(iOS 26.0, *) {
+            tabBarMinimizeBehavior = viewController == self.readerNavigationController ? .onScrollDown : .never
+        }
+#endif
+    }
+
     @objc public class func readerLocalizedTitle() -> String {
         SharedStrings.Reader.title
     }

@@ -2,7 +2,6 @@
 
 @class Blog;
 @class BlogDetailHeaderView;
-@class CreateButtonCoordinator;
 @class IntrinsicTableView;
 @class MeViewController;
 @class ApplicationPasswordAuthenticationInfo;
@@ -119,7 +118,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
 @interface BlogDetailsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIViewControllerTransitioningDelegate, UIAdaptivePresentationControllerDelegate>
 
 @property (nonatomic, strong, nonnull) Blog * blog;
-@property (nonatomic, strong, readonly) CreateButtonCoordinator * _Nullable createButtonCoordinator;
 @property (nonatomic, strong, readwrite) UITableView * _Nonnull tableView;
 @property (nonatomic) BOOL isScrollEnabled;
 @property (nonatomic, weak, nullable) id<BlogDetailsPresentationDelegate> presentationDelegate;

@@ -10,7 +10,7 @@ final class SiteMediaSelectionTitleView: UIView {
 
         addSubview(textLabel)
         textLabel.translatesAutoresizingMaskIntoConstraints = false
-        pinSubviewToAllEdges(textLabel)
+        textLabel.pinEdges(insets: UIEdgeInsets(.horizontal, 8))
 
         textLabel.font = WPStyleGuide.fontForTextStyle(.headline)
         textLabel.textAlignment = .center

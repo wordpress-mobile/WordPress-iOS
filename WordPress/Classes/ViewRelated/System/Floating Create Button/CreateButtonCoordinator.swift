@@ -1,10 +1,11 @@
+import UIKit
 import Gridicons
 import WordPressData
 import WordPressFlux
 import WordPressShared
 import WordPressUI
 
-@objc class CreateButtonCoordinator: NSObject {
+final class CreateButtonCoordinator: NSObject {
 
     private enum Constants {
         static let padding: CGFloat = -16 // Bottom and trailing padding to position the button along the bottom right corner
@@ -13,8 +14,26 @@ import WordPressUI
         static let skippedPromptsUDKey = "wp_skipped_blogging_prompts"
     }
 
-    var button: FloatingActionButton = {
-        let button = FloatingActionButton(image: .gridicon(.plus))
+    var button: UIButton = {
+        let button: UIButton
+#if swift(>=6.2)
+        if #available(iOS 26, *) {
+            var configuration = UIButton.Configuration.prominentClearGlass()
+            configuration.image = UIImage(systemName: "plus")
+            configuration.contentInsets = .init(top: 12, leading: 12, bottom: 12, trailing: 12)
+            configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(
+                font: .systemFont(ofSize: 20, weight: .semibold)
+            )
+            configuration.baseForegroundColor = .systemBackground
+            configuration.baseBackgroundColor = .label.withAlphaComponent(0.8)
+
+            button = UIButton(configuration: configuration, primaryAction: nil)
+        } else {
+            button = FloatingActionButton(image: .gridicon(.plus))
+        }
+#else
+        button = FloatingActionButton(image: .gridicon(.plus))
+#endif
         button.accessibilityLabel = NSLocalizedString("Create", comment: "Accessibility label for create floating action button")
         button.accessibilityIdentifier = "floatingCreateButton"
         return button
@@ -56,7 +75,7 @@ import WordPressUI
     /// Should be called any time the `viewController`'s trait collections will change. Dismisses when horizontal class changes to transition from .popover -> .custom
     /// - Parameter previousTraitCollection: The previous trait collection
     /// - Parameter newTraitCollection: The new trait collection
-    @objc func presentingTraitCollectionWillChange(_ previousTraitCollection: UITraitCollection, newTraitCollection: UITraitCollection) {
+    func presentingTraitCollectionWillChange(_ previousTraitCollection: UITraitCollection, newTraitCollection: UITraitCollection) {
         if let actionSheetController = viewController?.presentedViewController as? ActionSheetViewController {
             if previousTraitCollection.horizontalSizeClass != newTraitCollection.horizontalSizeClass {
                 viewController?.dismiss(animated: false, completion: { [weak self] in
@@ -71,7 +90,7 @@ import WordPressUI
     }
 
     /// Button must be manually shown _after_ adding using `showCreateButton`
-    @objc func add(to view: UIView, trailingAnchor: NSLayoutXAxisAnchor, bottomAnchor: NSLayoutYAxisAnchor) {
+    func add(to view: UIView, trailingAnchor: NSLayoutXAxisAnchor, bottomAnchor: NSLayoutYAxisAnchor) {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isHidden = true
 
@@ -79,10 +98,15 @@ import WordPressUI
 
         NSLayoutConstraint.activate([
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.padding),
-            button.heightAnchor.constraint(equalToConstant: Constants.heightWidth),
-            button.widthAnchor.constraint(equalToConstant: Constants.heightWidth),
             button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Constants.padding)
         ])
+
+        if #unavailable(iOS 26) {
+            NSLayoutConstraint.activate([
+                button.heightAnchor.constraint(equalToConstant: Constants.heightWidth),
+                button.widthAnchor.constraint(equalToConstant: Constants.heightWidth),
+            ])
+        }
 
         button.addTarget(self, action: #selector(showCreateSheet), for: .touchUpInside)
     }
@@ -121,7 +145,7 @@ import WordPressUI
         viewController.transitioningDelegate = self
     }
 
-    @objc func hideCreateButton() {
+    func hideCreateButton() {
         if UIAccessibility.isReduceMotionEnabled {
             button.isHidden = true
         } else {
@@ -133,7 +157,7 @@ import WordPressUI
         button.removeFromSuperview()
     }
 
-    @objc func showCreateButton(for blog: Blog) {
+    func showCreateButton(for blog: Blog) {
         button.accessibilityHint = Strings.createPostHint
         showCreateButton()
     }
@@ -235,7 +259,73 @@ private extension CreateButtonCoordinator {
 
         return !matchingPrompts.isEmpty
     }
+}
 
+private extension UIButton {
+
+    private enum Constants {
+        enum Maximize {
+            static let damping: CGFloat = 0.7
+            static let duration: TimeInterval = 0.5
+            static let initialScale: CGFloat = 0.0
+            static let finalScale: CGFloat = 1.0
+        }
+        enum Minimize {
+            static let damping: CGFloat = 0.9
+            static let duration: TimeInterval = 0.25
+            static let initialScale: CGFloat = 1.0
+            static let finalScale: CGFloat = 0.001
+        }
+    }
+
+    /// Animates the showing and hiding of a view using a spring animation
+    /// - Parameter toShow: Whether to show the view
+    func springAnimation(toShow: Bool) {
+        if toShow {
+            guard isHidden == true else { return }
+            maximizeSpringAnimation()
+        } else {
+            guard isHidden == false else { return }
+            minimizeSpringAnimation()
+        }
+    }
+
+    /// Applies a spring animation, from size 1 to 0
+    private func minimizeSpringAnimation() {
+        let damping = Constants.Minimize.damping
+        let scaleInitial = Constants.Minimize.initialScale
+        let scaleFinal = Constants.Minimize.finalScale
+        let duration = Constants.Minimize.duration
+
+        scaleAnimation(duration: duration, damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal) { [weak self] success in
+            self?.transform = .identity
+            self?.isHidden = true
+        }
+    }
+
+    /// Applies a spring animation, from size 0 to 1
+    private func maximizeSpringAnimation() {
+        let damping = Constants.Maximize.damping
+        let scaleInitial = Constants.Maximize.initialScale
+        let scaleFinal = Constants.Maximize.finalScale
+        let duration = Constants.Maximize.duration
+
+        scaleAnimation(duration: duration, damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal)
+    }
+
+    private func scaleAnimation(duration: TimeInterval, damping: CGFloat, scaleInitial: CGFloat, scaleFinal: CGFloat, completion: ((Bool) -> Void)? = nil) {
+        setNeedsDisplay() // Make sure we redraw so that corners are rounded
+        transform = CGAffineTransform(scaleX: scaleInitial, y: scaleInitial)
+        isHidden = false
+
+        let animator = UIViewPropertyAnimator(duration: duration, dampingRatio: damping) {
+            self.transform = CGAffineTransform(scaleX: scaleFinal, y: scaleFinal)
+        }
+        animator.addCompletion { (position) in
+            completion?(true)
+        }
+        animator.startAnimation()
+    }
 }
 
 private enum Strings {

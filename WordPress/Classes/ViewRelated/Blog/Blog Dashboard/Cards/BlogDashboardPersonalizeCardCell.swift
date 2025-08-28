@@ -2,6 +2,7 @@ import UIKit
 import SwiftUI
 import WordPressData
 import WordPressShared
+import WordPressUI
 
 final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
     private var blog: Blog?
@@ -31,12 +32,7 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
         let imageView = UIImageView(image: UIImage(named: "personalize")?.withRenderingMode(.alwaysTemplate))
         imageView.tintColor = .label
 
-        let spacer = UIView()
-        spacer.translatesAutoresizingMaskIntoConstraints = false
-        spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: 8).isActive = true
-
-        let contents = UIStackView(arrangedSubviews: [titleLabel, spacer, imageView])
-        contents.alignment = .center
+        let contents = UIStackView(alignment: .center, spacing: 8, [titleLabel, imageView])
         contents.isUserInteractionEnabled = false
 
         personalizeButton.accessibilityLabel = Strings.buttonTitle
@@ -44,25 +40,22 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
         personalizeButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 
         let container = UIView()
-        container.layer.cornerRadius = 10
+        container.layer.cornerRadius = DesignConstants.radius(.large)
         container.addSubview(personalizeButton)
         container.addSubview(contents)
-
-        personalizeButton.translatesAutoresizingMaskIntoConstraints = false
-        container.pinSubviewToAllEdges(personalizeButton)
-
-        contents.translatesAutoresizingMaskIntoConstraints = false
-        container.pinSubviewToAllEdges(contents, insets: UIEdgeInsets(.all, 16))
+        personalizeButton.pinEdges()
+        contents.pinEdges(insets: UIEdgeInsets(.all, 16))
 
         contentView.addSubview(container)
-        container.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(container)
+        container.pinEdges(.horizontal, relation: .lessThanOrEqual)
+        container.pinEdges(.vertical)
+        container.pinCenter()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        personalizeButton.setBackgroundImage(.renderBackgroundImage(fill: .tertiarySystemFill), for: .normal)
+        personalizeButton.setBackgroundImage(.renderBackgroundImage(fill: .tertiarySystemFill, cornerRadius: DesignConstants.radius(.large)), for: .normal)
     }
 
     // MARK: - BlogDashboardCardConfigurable

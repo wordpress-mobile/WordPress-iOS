@@ -1,6 +1,7 @@
 26.2
 -----
 * [*] New Stats: Add support for "weeks" granularity [#24767]
+* [*] New Stats: Fix dark mode support in custom range picker [#24770]
 
 26.1
 -----

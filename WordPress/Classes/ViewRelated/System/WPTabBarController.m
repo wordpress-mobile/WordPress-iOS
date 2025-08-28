@@ -304,6 +304,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         }
     }
 
+    [self didSelectViewController:viewController];
+
     return YES;
 }
 

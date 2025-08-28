@@ -66,10 +66,6 @@ import AutomatticTracks
         return refreshControl
     }()
 
-    private lazy var buttonScrollToTop = ReaderButtonScrollToTop.make { [weak self] in
-        self?.tableView.scrollToTop(animated: true)
-    }
-
     let titleView = ReaderNavigationCustomTitleView()
 
     private let loadMoreThreashold = 5
@@ -309,7 +305,6 @@ import AutomatticTracks
         setupTableView()
         setupFooterView()
         setupContentHandler()
-        setupButtonScrollToTop()
 
         observeNetworkStatus()
 
@@ -479,13 +474,6 @@ import AutomatticTracks
         assert(tableView != nil, "A tableView must be assigned before configuring a handler")
 
         content.initializeContent(tableView: tableView, delegate: self)
-    }
-
-    private func setupButtonScrollToTop() {
-        guard !isStandaloneAppModeEnabled else { return }
-
-        view.addSubview(buttonScrollToTop)
-        buttonScrollToTop.pinEdges([.leading, .bottom], to: view.safeAreaLayoutGuide, insets: isCompact ? UIEdgeInsets(horizontal: 8, vertical: 16) : UIEdgeInsets(.all, 20))
     }
 
     private func setupFooterView() {
@@ -1646,7 +1634,6 @@ extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate 
         layoutEmptyStateView()
         processJetpackBannerVisibility(scrollView)
         titleView.updateAlpha(in: scrollView)
-        buttonScrollToTop.setButtonHidden(scrollView.contentOffset.y < view.bounds.height / 3, animated: true)
     }
 }
 
