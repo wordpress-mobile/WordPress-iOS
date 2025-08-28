@@ -12,7 +12,7 @@ class AnnouncementServiceRemoteTests: XCTestCase {
             HTTPStubsResponse(jsonObject: ["announcements": [String]()], statusCode: 200, headers: nil)
         }
 
-        let remote = AnnouncementServiceRemote(wordPressComRestApi: .init(oAuthToken: "fake"))
+        let remote = AnnouncementServiceRemote(wordPressComRestApi: WordPressComRestApi(oAuthToken: "fake"))
         var result: Result<[Announcement], Error>? = nil
         let completed = expectation(description: "API call completed")
         remote.getAnnouncements(appId: "test-app", appVersion: "2.0", locale: "en") {

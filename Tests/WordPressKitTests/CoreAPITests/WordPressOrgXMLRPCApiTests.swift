@@ -33,7 +33,7 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
 
         let expect = self.expectation(description: "One callback should be invoked")
         let api = WordPressOrgXMLRPCApi(endpoint: URL(string: xmlrpcEndpoint)! as URL)
-        api.callMethod("wp.getPost", parameters: nil, success: { (responseObject: AnyObject, _: HTTPURLResponse?) in
+        api.callMethod("wp.getPost", parameters: nil, success: { (responseObject, _) in
             expect.fulfill()
             XCTAssert(responseObject is [String: AnyObject], "The response should be a dictionary")
             }, failure: { (_, _) in
@@ -54,7 +54,7 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
         api.callMethod(
             "wp.getPost",
             parameters: nil,
-            success: { (responseObject: AnyObject, _: HTTPURLResponse?) in
+            success: { (responseObject, _) in
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
@@ -66,6 +66,8 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
 #else
                 XCTAssertEqual(error.domain, WordPressOrgXMLRPCApiErrorDomain)
 #endif
+
+                let error = error as NSError
                 XCTAssertEqual(error.code, WordPressOrgXMLRPCApiError.httpErrorStatusCode.rawValue)
                 XCTAssertEqual(error.localizedFailureReason, "An HTTP error code 404 was returned.")
                 XCTAssertNotNil(error.userInfo[WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyData as String])
@@ -85,7 +87,7 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
         api.callMethod(
             "wp.getPost",
             parameters: nil,
-            success: { (responseObject: AnyObject, _: HTTPURLResponse?) in
+            success: { (responseObject, _) in
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
@@ -99,6 +101,8 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
 #else
                 XCTAssertEqual(error.domain, WordPressOrgXMLRPCApiErrorDomain)
 #endif
+
+                let error = error as NSError
                 XCTAssertEqual(error.code, 403)
                 XCTAssertEqual(error.localizedFailureReason, "An HTTP error code 403 was returned.")
                 XCTAssertNotNil(error.userInfo[WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyData as String])
@@ -118,7 +122,7 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
         api.callMethod(
             "wp.getPost",
             parameters: nil,
-            success: { (responseObject: AnyObject, _: HTTPURLResponse?) in
+            success: { (responseObject, _) in
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
@@ -132,6 +136,8 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
 #else
                 XCTAssertEqual(error.domain, WordPressOrgXMLRPCApiErrorDomain)
 #endif
+
+                let error = error as NSError
                 XCTAssertEqual(error.code, WordPressOrgXMLRPCApiError.unknown.rawValue)
                 XCTAssertEqual(error.localizedFailureReason, WordPressOrgXMLRPCApiError.unknown.failureReason)
                 XCTAssertNotNil(error.userInfo[WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyData as String])
@@ -151,7 +157,7 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
         api.callMethod(
             "wp.getPost",
             parameters: nil,
-            success: { (responseObject: AnyObject, _: HTTPURLResponse?) in
+            success: { (responseObject, _) in
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
@@ -159,6 +165,8 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
                 expect.fulfill()
 
                 XCTAssertTrue(error is URLError)
+
+                let error = error as NSError
                 XCTAssertEqual(error.domain, URLError.errorDomain)
                 XCTAssertEqual(error.code, URLError.Code.timedOut.rawValue)
             }
@@ -177,13 +185,14 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
         api.callMethod(
             "wp.getPost",
             parameters: nil,
-            success: { (responseObject: AnyObject, _: HTTPURLResponse?) in
+            success: { (responseObject, _) in
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
             failure: { (error, _) in
                 expect.fulfill()
 
+                let error = error as NSError
                 XCTAssertEqual(error.domain, WPXMLRPCFaultErrorDomain)
                 // 403 is the 'faultCode' in the HTTP response xml.
                 XCTAssertEqual(error.code, 403)
@@ -205,12 +214,14 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
         api.callMethod(
             "wp.getPost",
             parameters: nil,
-            success: { (responseObject: AnyObject, _: HTTPURLResponse?) in
+            success: { (responseObject, _) in
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
             failure: { (error, _) in
                 expect.fulfill()
+
+                let error = error as NSError
 
                 XCTAssertEqual(error.domain, WPXMLRPCFaultErrorDomain)
                 // 403 is the 'faultCode' in the HTTP response xml.
@@ -236,12 +247,14 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
         api.callMethod(
             "wp.getPost",
             parameters: nil,
-            success: { (responseObject: AnyObject, _: HTTPURLResponse?) in
+            success: { (responseObject, _) in
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
             failure: { (error, _) in
                 expect.fulfill()
+
+                let error = error as NSError
 
                 XCTAssertEqual(error.domain, XMLParser.errorDomain)
                 XCTAssertNotNil(error.userInfo[WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyData as String])
@@ -262,12 +275,14 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
         api.callMethod(
             "wp.getPost",
             parameters: nil,
-            success: { (responseObject: AnyObject, _: HTTPURLResponse?) in
+            success: { (responseObject, _) in
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
             failure: { (error, _) in
                 expect.fulfill()
+
+                let error = error as NSError
 
                 XCTAssertEqual(error.domain, WPXMLRPCErrorDomain)
                 XCTAssertEqual(error.code, WPXMLRPCError.invalidInputError.rawValue)
@@ -295,15 +310,15 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
 
         let observerCalled = expectation(description: "Progress observer is called")
         observerCalled.assertForOverFulfill = false
-        let observer = progress?.observe(\.fractionCompleted, options: .new, changeHandler: { _, _ in
+        let observer = progress.observe(\.fractionCompleted, options: .new, changeHandler: { _, _ in
             XCTAssertTrue(Thread.isMainThread)
             observerCalled.fulfill()
         })
 
         wait(for: [success, observerCalled], timeout: 0.3)
-        observer?.invalidate()
+        observer.invalidate()
 
-        XCTAssertEqual(progress?.fractionCompleted, 1)
+        XCTAssertEqual(progress.fractionCompleted, 1)
     }
 
     func testProgressUpdateFailure() throws {
@@ -323,15 +338,15 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
 
         let observerCalled = expectation(description: "Progress observer is called")
         observerCalled.assertForOverFulfill = false
-        let observer = progress?.observe(\.fractionCompleted, options: .new, changeHandler: { _, _ in
+        let observer = progress.observe(\.fractionCompleted, options: .new, changeHandler: { _, _ in
             XCTAssertTrue(Thread.isMainThread)
             observerCalled.fulfill()
         })
 
         wait(for: [failure, observerCalled], timeout: 0.3)
-        observer?.invalidate()
+        observer.invalidate()
 
-        XCTAssertEqual(progress?.fractionCompleted, 1)
+        XCTAssertEqual(progress.fractionCompleted, 1)
     }
 
     func testProgressUpdateStreamAPI() throws {
@@ -351,15 +366,15 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
 
         let observerCalled = expectation(description: "Progress observer is called")
         observerCalled.assertForOverFulfill = false
-        let observer = progress?.observe(\.fractionCompleted, options: .new, changeHandler: { _, _ in
+        let observer = progress.observe(\.fractionCompleted, options: .new, changeHandler: { _, _ in
             XCTAssertTrue(Thread.isMainThread)
             observerCalled.fulfill()
         })
 
         wait(for: [success, observerCalled], timeout: 0.3)
-        observer?.invalidate()
+        observer.invalidate()
 
-        XCTAssertEqual(progress?.fractionCompleted, 1)
+        XCTAssertEqual(progress.fractionCompleted, 1)
     }
 
     func testProgressUpdateStreamAPIFailure() throws {
@@ -379,15 +394,15 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
 
         let observerCalled = expectation(description: "Progress observer is called")
         observerCalled.assertForOverFulfill = false
-        let observer = progress?.observe(\.fractionCompleted, options: .new, changeHandler: { _, _ in
+        let observer = progress.observe(\.fractionCompleted, options: .new, changeHandler: { _, _ in
             XCTAssertTrue(Thread.isMainThread)
             observerCalled.fulfill()
         })
 
         wait(for: [failure, observerCalled], timeout: 0.3)
-        observer?.invalidate()
+        observer.invalidate()
 
-        XCTAssertEqual(progress?.fractionCompleted, 1)
+        XCTAssertEqual(progress.fractionCompleted, 1)
     }
 
 }

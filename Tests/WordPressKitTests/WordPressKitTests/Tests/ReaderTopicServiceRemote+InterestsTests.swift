@@ -73,11 +73,11 @@ class ReaderTopicServiceRemoteInterestsTests: RemoteTestCase, RESTTestable {
         let urlWithTrailingSlash = URL(string: "https://public-api.wordpress.com/")!
 
         XCTAssertEqual(
-            ReaderTopicServiceRemote(wordPressComRestApi: .init(baseURL: urlWithoutTrailingSlash)).pathForTopic(slug: "foo"),
+            ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi(baseURL: urlWithoutTrailingSlash)).pathForTopic(slug: "foo"),
             "https://public-api.wordpress.com/rest/v1.2/read/tags/foo/posts"
         )
         XCTAssertEqual(
-            ReaderTopicServiceRemote(wordPressComRestApi: .init(baseURL: urlWithTrailingSlash)).pathForTopic(slug: "foo"),
+            ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi(baseURL: urlWithTrailingSlash)).pathForTopic(slug: "foo"),
             "https://public-api.wordpress.com/rest/v1.2/read/tags/foo/posts"
         )
     }
