@@ -1,4 +1,5 @@
 @testable import WordPressKit
+@testable import WordPressKitModels
 import XCTest
 
 // This is an incomplete test for implementing RFC 3339.

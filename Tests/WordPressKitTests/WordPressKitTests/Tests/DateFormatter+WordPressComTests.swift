@@ -1,4 +1,5 @@
 @testable import WordPressKit
+@testable import WordPressKitModels
 import XCTest
 
 class DateFormatterWordPressComTests: XCTestCase {

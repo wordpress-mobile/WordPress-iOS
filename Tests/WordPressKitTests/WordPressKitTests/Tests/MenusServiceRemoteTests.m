@@ -1,7 +1,9 @@
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "MenusServiceRemote.h"
-#import "WPKit-Swift.h"
+
+@import WordPressKit;
+@import WordPressKitModels;
 
 @interface MenusServicRemoteTests : XCTestCase
 

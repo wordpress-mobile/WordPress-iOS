@@ -4,6 +4,7 @@
 #import "BlogServiceRemoteREST.h"
 @import OHHTTPStubs;
 @import WordPressKit;
+@import WordPressKitModels;
 
 static NSTimeInterval const TestExpectationTimeout = 5;
 
