@@ -11,6 +11,7 @@ protocol UpdatableStatusBarStyle: UIViewController {
     func updateStatusBarStyle(to style: UIStatusBarStyle)
 }
 
+// Pre iOS 26.
 final class ReaderDetailFeaturedImageView: UIView {
 
     // MARK: - Constants
@@ -191,7 +192,7 @@ final class ReaderDetailFeaturedImageView: UIView {
 
     // MARK: - Public: Fetching Featured Image
 
-    public func load(completion: @escaping () -> Void) {
+    public func load() {
         guard
             !isLoading,
             let post = self.post,
@@ -200,7 +201,6 @@ final class ReaderDetailFeaturedImageView: UIView {
         else {
             reset()
             isLoaded = true
-            completion()
             return
         }
 
@@ -215,14 +215,11 @@ final class ReaderDetailFeaturedImageView: UIView {
             self.imageSize = size
             self.didFinishLoading()
             self.isLoading = false
-
-            completion()
         }
 
         let failureHandler: () -> Void = { [weak self] in
             self?.reset()
             self?.isLoading = false
-            completion()
         }
 
         // TODO: refactor.

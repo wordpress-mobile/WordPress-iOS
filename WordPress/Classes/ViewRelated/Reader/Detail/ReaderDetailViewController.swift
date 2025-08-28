@@ -71,6 +71,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// The actual header
     private let featuredImageView = ReaderDetailFeaturedImageView()
 
+    private var isNewFeaturedImageEnabled: Bool {
+        if #available(iOS 26, *) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     /// The actual header
     private lazy var header: ReaderDetailHeaderHostingView = {
         return .init()
@@ -184,16 +192,20 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             return
         }
 
-        featuredImageView.viewWillDisappear()
+        if !isNewFeaturedImageEnabled {
+            featuredImageView.viewWillDisappear()
+        }
         toolbar.viewWillDisappear()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        coordinator.animate(alongsideTransition: { _ in
-            self.featuredImageView.deviceDidRotate()
-        })
+        if !isNewFeaturedImageEnabled {
+            coordinator.animate(alongsideTransition: { _ in
+                self.featuredImageView.deviceDidRotate()
+            })
+        }
     }
 
     override func accessibilityPerformEscape() -> Bool {
@@ -239,16 +251,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             self?.webView.loadHTMLString(post.contentForDisplay())
         }
 
-        guard !featuredImageView.isLoaded else {
-            return
-        }
-
-        // Load the image
-        featuredImageView.load { [weak self] in
-            self?.hideLoading()
-        }
-
         navigateToCommentIfNecessary()
+
+        if !isNewFeaturedImageEnabled && !featuredImageView.isLoaded {
+            featuredImageView.load()
+        }
     }
 
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) {
@@ -306,7 +313,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func hideLoading() {
-        guard !featuredImageView.isLoading, !isLoadingWebView else {
+        guard !isLoadingWebView else {
             return
         }
 
@@ -510,6 +517,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func setupFeaturedImage() {
+        guard isNewFeaturedImageEnabled else {
+            return setupLegacyFeaturedImage()
+        }
+
+        // TODO: setup new featured image
+    }
+
+    private func setupLegacyFeaturedImage() {
         configureFeaturedImage()
 
         featuredImageView.configure(
@@ -518,16 +533,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             navigationItem: navigationItem
         )
 
-        guard !featuredImageView.isLoaded else {
-            return
-        }
-
-        // Load the image
-        featuredImageView.load { [weak self] in
-            guard let self else {
-                return
-            }
-            self.hideLoading()
+        if !featuredImageView.isLoaded {
+            featuredImageView.load()
         }
     }
 
