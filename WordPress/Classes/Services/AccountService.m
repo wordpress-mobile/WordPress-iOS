@@ -3,6 +3,7 @@
 
 @import WordPressData;
 @import WordPressKit;
+@import WordPressKitModels;
 @import WordPressShared;
 
 #import "WordPress-Swift.h"
