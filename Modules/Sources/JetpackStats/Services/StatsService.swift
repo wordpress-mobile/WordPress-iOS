@@ -425,6 +425,7 @@ private extension WordPressKit.StatsPeriodUnit {
         switch granularity {
         case .hour: self = .hour
         case .day: self = .day
+        case .week: self = .week
         case .month: self = .month
         case .year: self = .year
         }

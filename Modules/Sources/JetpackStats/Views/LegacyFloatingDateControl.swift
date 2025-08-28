@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 /// A pre-Liquid Glass version.
 struct LegacyFloatingDateControl: View {
@@ -56,6 +57,7 @@ struct LegacyFloatingDateControl: View {
         .tint(Color.primary)
         .menuOrder(.fixed)
         .buttonStyle(.plain)
+        .modifier(DateRangeTipModifier())
     }
 
     private var dateRangeButtonContent: some View {
@@ -138,8 +140,38 @@ private struct FloatingStyle: ViewModifier {
     }
 }
 
+@available(iOS 17, *)
+private struct StatsDateRangeTip: Tip {
+    var title: Text {
+        Text(Strings.DateRangeTips.title)
+    }
+
+    var message: Text? {
+        Text(Strings.DateRangeTips.message)
+    }
+
+    var image: Image? {
+        Image(systemName: "calendar")
+    }
+
+    var options: [any TipOption] {
+        [Tips.MaxDisplayCount(1)]
+    }
+}
+
 private extension View {
     func floatingStyle(cornerRadius: CGFloat = 40) -> some View {
         modifier(FloatingStyle(cornerRadius: cornerRadius))
+    }
+}
+
+private struct DateRangeTipModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 17, *) {
+            content
+                .popoverTip(StatsDateRangeTip(), arrowEdge: .bottom)
+        } else {
+            content
+        }
     }
 }

@@ -6,17 +6,9 @@ struct StatsDateFormatter: Sendable {
         case regular
     }
 
-    var locale: Locale {
-        didSet {
-            updateFormatters()
-        }
-    }
-
-    var timeZone: TimeZone {
-        didSet {
-            updateFormatters()
-        }
-    }
+    private let formatters: CachedFormatters
+    private let calendar: Calendar
+    private let now: @Sendable () -> Date
 
     final class CachedFormatters: Sendable {
         let hour: DateFormatter
@@ -28,6 +20,7 @@ struct StatsDateFormatter: Sendable {
         let regularMonth: DateFormatter
 
         let year: DateFormatter
+        let week: StatsDateRangeFormatter
 
         let timeOffset: DateFormatter
 
@@ -51,6 +44,8 @@ struct StatsDateFormatter: Sendable {
             year = makeFormatter("yyyy")
 
             timeOffset = makeFormatter("ZZZZ")
+
+            week = StatsDateRangeFormatter(locale: locale, timeZone: timeZone)
         }
 
         func formatter(granularity: DateRangeGranularity, context: Context) -> DateFormatter {
@@ -59,6 +54,7 @@ struct StatsDateFormatter: Sendable {
                 switch granularity {
                 case .hour: hour
                 case .day: compactDay
+                case .week: compactDay
                 case .month: compactMonth
                 case .year: year
                 }
@@ -66,6 +62,7 @@ struct StatsDateFormatter: Sendable {
                 switch granularity {
                 case .hour: hour
                 case .day: regularDay
+                case .week: regularDay
                 case .month: regularMonth
                 case .year: year
                 }
@@ -73,21 +70,34 @@ struct StatsDateFormatter: Sendable {
         }
     }
 
-    private var formatters: CachedFormatters
-
-    private mutating func updateFormatters() {
-        formatters = CachedFormatters(locale: locale, timeZone: timeZone)
-    }
-
-    init(locale: Locale = .current, timeZone: TimeZone = .current) {
-        self.locale = locale
-        self.timeZone = timeZone
+    init(
+        locale: Locale = .current,
+        timeZone: TimeZone = .current,
+        now: @Sendable @escaping () -> Date = { Date() }
+    ) {
         self.formatters = CachedFormatters(locale: locale, timeZone: timeZone)
+        self.calendar = {
+            var calendar = Calendar.current
+            calendar.timeZone = timeZone
+            return calendar
+        }()
+        self.now = now
     }
 
     func formatDate(_ date: Date, granularity: DateRangeGranularity, context: Context = .compact) -> String {
+        if granularity == .week && context == .regular {
+            return formatWeekRange(containing: date)
+        }
         let formatter = formatters.formatter(granularity: granularity, context: context)
         return formatter.string(from: date)
+    }
+
+    private func formatWeekRange(containing date: Date) -> String {
+        guard var weekInterval = calendar.dateInterval(of: .weekOfYear, for: date) else {
+            return formatters.formatter(granularity: .day, context: .compact).string(from: date)
+        }
+        weekInterval.end = weekInterval.end.addingTimeInterval(-1)
+        return formatters.week.string(from: weekInterval, now: now())
     }
 
     var formattedTimeOffset: String {

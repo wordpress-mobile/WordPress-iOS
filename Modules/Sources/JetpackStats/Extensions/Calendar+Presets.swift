@@ -19,8 +19,8 @@ enum DateIntervalPreset: String, CaseIterable, Identifiable {
     case last28Days
     /// The previous 30 days, not including today
     case last30Days
-    /// The previous 90 days, not including today
-    case last90Days
+    /// The previous 12 weeks (84 days), not including today
+    case last12Weeks
     /// The last 6 months, including the current month
     case last6Months
     /// The last 12 months, including the current month
@@ -42,7 +42,7 @@ enum DateIntervalPreset: String, CaseIterable, Identifiable {
         case .last7Days: Strings.Calendar.last7Days
         case .last28Days: Strings.Calendar.last28Days
         case .last30Days: Strings.Calendar.last30Days
-        case .last90Days: Strings.Calendar.last90Days
+        case .last12Weeks: Strings.Calendar.last12Weeks
         case .last6Months: Strings.Calendar.last6Months
         case .last12Months: Strings.Calendar.last12Months
         case .last3Years: Strings.Calendar.last3Years
@@ -52,7 +52,7 @@ enum DateIntervalPreset: String, CaseIterable, Identifiable {
 
     var prefersDateIntervalFormatting: Bool {
         switch self {
-        case .today, .last7Days, .last28Days, .last30Days, .last90Days, .last6Months, .last12Months, .thisWeek:
+        case .today, .last7Days, .last28Days, .last30Days, .last12Weeks, .last6Months, .last12Months, .thisWeek:
             return false
         case .thisMonth, .thisYear, .thisQuarter, .last3Years, .last10Years:
             return true
@@ -72,7 +72,7 @@ enum DateIntervalPreset: String, CaseIterable, Identifiable {
             return .quarter
         case .thisYear, .last3Years, .last10Years:
             return .year
-        case .last7Days, .last28Days, .last30Days, .last90Days:
+        case .last7Days, .last28Days, .last30Days, .last12Weeks:
             return .day
         }
     }
@@ -110,7 +110,7 @@ extension Calendar {
         case .last7Days: makeDateInterval(offset: -7, component: .day, for: now)
         case .last28Days: makeDateInterval(offset: -28, component: .day, for: now)
         case .last30Days: makeDateInterval(offset: -30, component: .day, for: now)
-        case .last90Days: makeDateInterval(offset: -90, component: .day, for: now)
+        case .last12Weeks: makeDateInterval(offset: -84, component: .day, for: now)
         case .last6Months: makeDateInterval(offset: -6, component: .month, for: now)
         case .last12Months: makeDateInterval(offset: -12, component: .month, for: now)
         case .last3Years: makeDateInterval(offset: -3, component: .year, for: now)
