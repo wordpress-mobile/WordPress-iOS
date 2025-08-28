@@ -60,12 +60,8 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
             },
             failure: { (error, _) in
                 expect.fulfill()
-                // When building for SPM, the compiler doesn't generate the domain constant.
-#if SWIFT_PACKAGE
-                XCTAssertEqual(error.domain, "CoreAPI.WordPressOrgXMLRPCApiError")
-#else
-                XCTAssertEqual(error.domain, WordPressOrgXMLRPCApiErrorDomain)
-#endif
+
+                XCTAssertTrue(error is WordPressOrgXMLRPCApiError)
 
                 let error = error as NSError
                 XCTAssertEqual(error.code, WordPressOrgXMLRPCApiError.httpErrorStatusCode.rawValue)
@@ -95,12 +91,6 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
                 expect.fulfill()
 
                 XCTAssertFalse(error is WordPressOrgXMLRPCApiError)
-                // When building for SPM, the compiler doesn't generate the domain constant.
-#if SWIFT_PACKAGE
-                XCTAssertEqual(error.domain, "CoreAPI.WordPressOrgXMLRPCApiError")
-#else
-                XCTAssertEqual(error.domain, WordPressOrgXMLRPCApiErrorDomain)
-#endif
 
                 let error = error as NSError
                 XCTAssertEqual(error.code, 403)
@@ -130,12 +120,6 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
                 expect.fulfill()
 
                 XCTAssertTrue(error is WordPressOrgXMLRPCApiError)
-                // When building for SPM, the compiler doesn't generate the domain constant.
-#if SWIFT_PACKAGE
-                XCTAssertEqual(error.domain, "CoreAPI.WordPressOrgXMLRPCApiError")
-#else
-                XCTAssertEqual(error.domain, WordPressOrgXMLRPCApiErrorDomain)
-#endif
 
                 let error = error as NSError
                 XCTAssertEqual(error.code, WordPressOrgXMLRPCApiError.unknown.rawValue)
