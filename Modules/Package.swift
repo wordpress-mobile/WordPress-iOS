@@ -50,7 +50,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"),
         .package(
             url: "https://github.com/wordpress-mobile/WordPressKit-iOS",
-            revision: "440d94e3a3d6f9f39035a371984e088a2fb42a32"
+            branch: "rework-spm"
         ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
@@ -273,6 +273,7 @@ enum XcodeSupport {
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             .product(name: "Aztec", package: "AztecEditor-iOS"),
             .product(name: "WordPressEditor", package: "AztecEditor-iOS"),
+            .product(name: "WordPressKit", package: "WordPressKit-iOS"),
         ]
 
         let testDependencies: [Target.Dependency] = [
@@ -392,6 +393,7 @@ enum XcodeSupport {
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
+                .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             ]),
             .xcodeTarget("XcodeTarget_Intents", dependencies: [
                 "BuildSettingsKit",
