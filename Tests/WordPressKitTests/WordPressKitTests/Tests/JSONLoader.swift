@@ -6,8 +6,6 @@ import Foundation
     /**
     *  @brief      Loads the specified json file name and returns a dictionary representing it.
     *
-    *  @param      path    The path of the json file to load.
-    *
     *  @returns    A dictionary representing the contents of the json file.
     */
     @objc open func loadFile(_ name: String, type: String) -> JSONDictionary? {
