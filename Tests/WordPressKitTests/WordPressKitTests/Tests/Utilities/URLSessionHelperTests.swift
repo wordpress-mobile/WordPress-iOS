@@ -3,6 +3,7 @@ import CryptoKit
 import XCTest
 import OHHTTPStubs
 import OHHTTPStubsSwift
+import os
 
 @testable import WordPressKit
 
@@ -399,9 +400,19 @@ class BackgroundURLSessionHelperTests: URLSessionHelperTests {
 
 }
 
-private class TestBackgroundURLSessionDelegate: BackgroundURLSessionDelegate {
-    var startedReceivingResponse = false
-    var completionCalled = false
+private final class TestBackgroundURLSessionDelegate: BackgroundURLSessionDelegate {
+
+    private let _startedReceivingResponse = OSAllocatedUnfairLock(initialState: false)
+    var startedReceivingResponse: Bool {
+        get { _startedReceivingResponse.withLock { $0 } }
+        set { _startedReceivingResponse.withLock { $0 = newValue } }
+    }
+
+    private let _completionCalled = OSAllocatedUnfairLock(initialState: false)
+    var completionCalled: Bool {
+        get { _completionCalled.withLock { $0 } }
+        set { _completionCalled.withLock { $0 = newValue } }
+    }
 
     override func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         startedReceivingResponse = true
