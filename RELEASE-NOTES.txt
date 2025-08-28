@@ -2,6 +2,7 @@
 -----
 * [*] New Stats: Add support for "weeks" granularity [#24767]
 * [*] New Stats: Fix dark mode support in custom range picker [#24770]
+* [*] New Stats: Fix edit card menu shown in the wrong places [#24774]
 
 26.1
 -----
