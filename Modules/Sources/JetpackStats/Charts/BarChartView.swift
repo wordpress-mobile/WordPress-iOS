@@ -9,6 +9,7 @@ struct BarChartView: View {
     @State private var isDragging = false
     @State private var isLongPressing = false
     @State private var longPressLocation: CGPoint?
+    @State private var tappedDataPoint: DataPoint?
 
     @Environment(\.context) var context
 
@@ -42,6 +43,9 @@ struct BarChartView: View {
         .accessibilityElement()
         .accessibilityLabel(Strings.Accessibility.chartContainer)
         .accessibilityHint(Strings.Accessibility.viewChartData)
+        .onChange(of: ObjectIdentifier(data)) { _ in
+            tappedDataPoint = nil
+        }
     }
 
     // MARK: - Chart Marks
@@ -70,7 +74,15 @@ struct BarChartView: View {
     }
 
     private func getOpacityForCurrentPeriodBar(for point: DataPoint) -> CGFloat {
+        if let tappedDataPoint, tappedDataPoint.id == point.id {
+            return 1.0
+        }
         guard let selectedDataPoints else {
+            // If there's a tapped point, dim other bars
+            if tappedDataPoint != nil {
+                return 0.5
+            }
+            // If no selection and not tapped, check if data is incomplete
             let isIncomplete = context.calendar.isIncompleteDataPeriod(for: point.date, granularity: data.granularity)
             return isIncomplete ? 0.5 : 1
         }
@@ -172,7 +184,7 @@ struct BarChartView: View {
     // MARK: - Axis Configuration
 
     private var xAxis: some AxisContent {
-        AxisMarks { value in
+        AxisMarks(preset: .aligned) { value in
             if let date = value.as(Date.self) {
                 AxisValueLabel {
                     ChartAxisDateLabel(date: date, granularity: data.granularity)
@@ -249,6 +261,7 @@ struct BarChartView: View {
                         if !isDragging {
                             selectedDataPoints = nil
                         }
+                        tappedDataPoint = nil
                     }
                 }
                 .simultaneousGesture(
@@ -269,6 +282,7 @@ struct BarChartView: View {
                             if !isLongPressing {
                                 selectedDataPoints = nil
                             }
+                            tappedDataPoint = nil
                         }
                 )
         }
@@ -278,12 +292,18 @@ struct BarChartView: View {
         // Only handle tap if not dragging or long pressing
         guard !isDragging && !isLongPressing else { return }
 
-        guard let selection = getSelectedDataPoints(at: location, proxy: proxy, geometry: geometry),
-              selection.current?.value != 0 || selection.previous?.value != 0,
-              let date = (selection.current ?? selection.previous)?.date else {
+        guard let onDateSelected,
+              data.granularity != .hour,
+              let selection = getSelectedDataPoints(at: location, proxy: proxy, geometry: geometry),
+              selection.current?.value != 0 || selection.previous?.value != 0 else {
+            // Clear selection if tapping on empty area
+            tappedDataPoint = nil
             return
         }
-        onDateSelected?(date)
+        tappedDataPoint = selection.current ?? selection.previous
+        if let date = tappedDataPoint?.date {
+            onDateSelected(date)
+        }
     }
 
     private func getSelectedDataPoints(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) -> SelectedDataPoints? {
