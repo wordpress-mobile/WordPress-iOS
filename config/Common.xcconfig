@@ -2,3 +2,8 @@ GCC_WARN_UNUSED_PARAMETER = YES
 WARNING_CFLAGS = -Wno-nullability-completeness
 IPHONEOS_DEPLOYMENT_TARGET = 16.0
 CODE_SIGN_STYLE = Manual
+
+// See https://forums.swift.org/t/swift-cant-see-objc-methods-that-include-package-symbols/65732/9
+// Without this flag, Objective-C APIs that contains Swift types in WordPressKit will not be available
+// to Swift code in the app target.
+OTHER_SWIFT_FLAGS = $(inherited) -Xcc "-fmodule-map-file=${OBJROOT}/GeneratedModuleMaps-${PLATFORM_NAME}/WordPressKit.modulemap" -Xcc "-fmodule-map-file=${OBJROOT}/GeneratedModuleMaps-${PLATFORM_NAME}/WordPressKitModels.modulemap" -Xcc "-fmodule-map-file=${OBJROOT}/GeneratedModuleMaps-${PLATFORM_NAME}/WordPressKitObjC.modulemap" -Xcc "-fmodule-map-file=${OBJROOT}/GeneratedModuleMaps-${PLATFORM_NAME}/WordPressKitObjCUtils.modulemap"
