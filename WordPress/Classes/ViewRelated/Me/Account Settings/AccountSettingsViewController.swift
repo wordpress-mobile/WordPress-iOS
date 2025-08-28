@@ -5,6 +5,7 @@ import WordPressData
 import WordPressShared
 import WordPressFlux
 import WordPressUI
+import WordPressKit
 
 func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewController? {
     guard let api = account.wordPressComRestApi, let userID = account.userID else {

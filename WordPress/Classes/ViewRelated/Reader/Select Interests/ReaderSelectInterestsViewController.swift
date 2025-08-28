@@ -2,6 +2,7 @@ import UIKit
 import AutomatticTracks
 import WordPressData
 import WordPressUI
+import WordPressKit
 
 protocol ReaderDiscoverFlowDelegate: AnyObject {
     func didCompleteReaderDiscoverFlow()

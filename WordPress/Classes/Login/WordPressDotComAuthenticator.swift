@@ -5,6 +5,7 @@ import UIKit
 import SVProgressHUD
 import WordPressData
 import WordPressShared
+import WordPressKit
 import BuildSettingsKit
 @preconcurrency import Combine
 

@@ -3,6 +3,7 @@ import WordPressData
 import WordPressFlux
 import WordPressShared
 import WordPressUI
+import WordPressKit
 
 class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
 

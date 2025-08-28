@@ -2,6 +2,7 @@ import UIKit
 import SwiftUI
 import WordPressData
 import WordPressShared
+import WordPressKit
 
 final class DashboardActivityLogCardCell: DashboardCollectionViewCell {
 

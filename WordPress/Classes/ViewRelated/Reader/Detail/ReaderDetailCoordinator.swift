@@ -3,6 +3,7 @@ import WordPressData
 import WordPressReader
 import WordPressShared
 import WordPressUI
+import WordPressKit
 import Combine
 import WebKit
 

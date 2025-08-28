@@ -6,6 +6,7 @@
 #import "WordPress-Swift.h"
 @import WordPressData;
 @import WordPressKit;
+@import WordPressKitModels;
 @import WordPressShared;
 
 @class Comment;

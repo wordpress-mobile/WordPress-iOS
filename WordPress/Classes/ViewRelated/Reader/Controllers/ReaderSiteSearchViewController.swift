@@ -3,6 +3,7 @@ import Combine
 import SwiftUI
 import WordPressData
 import WordPressUI
+import WordPressKit
 
 /// Displays search results from a reader site search.
 ///

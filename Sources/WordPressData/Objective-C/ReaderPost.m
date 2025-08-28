@@ -4,6 +4,7 @@
 #import "WordPressData-Swift.h"
 
 @import WordPressKit;
+@import WordPressKitModels;
 @import WordPressShared;
 
 // These keys are used in the getStoredComment method

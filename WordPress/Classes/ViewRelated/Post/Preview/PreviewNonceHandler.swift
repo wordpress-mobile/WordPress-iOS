@@ -1,5 +1,6 @@
 import Foundation
 import WordPressData
+import WordPressKit
 
 struct PreviewNonceHandler {
     static func nonceURL(post: AbstractPost, previewURL: URL?) -> URL? {

@@ -4,6 +4,7 @@ import WordPressData
 import WordPressFlux
 import WordPressUI
 import WordPressShared
+import WordPressKit
 
 protocol PublishingEditor where Self: UIViewController {
     var post: AbstractPost { get set }

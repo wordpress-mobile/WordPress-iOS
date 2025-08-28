@@ -2,6 +2,7 @@ import UIKit
 import WordPressData
 import WordPressFlux
 import WordPressUI
+import WordPressKit
 
 protocol JetpackScanThreatDetailsViewControllerDelegate: AnyObject {
     func willFixThreat(_ threat: JetpackScanThreat, controller: JetpackScanThreatDetailsViewController)

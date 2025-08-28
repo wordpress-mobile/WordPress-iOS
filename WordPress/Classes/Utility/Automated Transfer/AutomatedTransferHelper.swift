@@ -3,6 +3,7 @@ import SVProgressHUD
 import WordPressData
 import WordPressFlux
 import WordPressShared
+import WordPressKit
 
 class AutomatedTransferHelper {
 

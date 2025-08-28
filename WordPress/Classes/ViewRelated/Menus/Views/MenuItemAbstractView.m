@@ -1,5 +1,6 @@
 #import "MenuItemAbstractView.h"
 #import "MenuItem+ViewDesign.h"
+#import "Menu+ViewDesign.h"
 #import "WordPress-Swift.h"
 @import WordPressUI;
 @import WordPressShared;

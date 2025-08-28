@@ -4,7 +4,10 @@ import BuildSettingsKit
 import CocoaLumberjackSwift
 import CoreData
 import TracksMini
+import WordPressShared
 import WordPressKit
+import WordPressKitModels
+import WordPressKitObjC
 import ShareExtensionCore
 
 /// Provides site fetching and post/media uploading functionality to app extensions.

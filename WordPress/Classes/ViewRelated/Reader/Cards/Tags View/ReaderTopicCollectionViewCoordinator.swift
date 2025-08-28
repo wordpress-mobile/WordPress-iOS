@@ -1,6 +1,7 @@
 import UIKit
 import WordPressReader
 import WordPressShared
+import WordPressKit
 
 enum ReaderTopicCollectionViewState {
     case collapsed

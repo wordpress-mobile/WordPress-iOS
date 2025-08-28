@@ -2,6 +2,7 @@ import UIKit
 import SwiftUI
 import WordPressUI
 import WordPressKit
+import WordPressData
 
 final class ActivityLogsViewController: UIHostingController<ActivityLogsView> {
     private let viewModel: ActivityLogsViewModel

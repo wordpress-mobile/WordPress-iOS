@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressKit
 
 public class Role: NSManagedObject {
     @NSManaged public var name: String!

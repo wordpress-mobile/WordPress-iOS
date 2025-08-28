@@ -2,6 +2,7 @@ import SwiftUI
 import WordPressUI
 import WordPressKit
 import WordPressShared
+import WordPressData
 
 struct ActivityLogsView: View {
     @ObservedObject var viewModel: ActivityLogsViewModel

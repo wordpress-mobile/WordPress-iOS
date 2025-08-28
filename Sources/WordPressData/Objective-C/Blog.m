@@ -7,6 +7,7 @@
 @import WordPressShared;
 @import NSObject_SafeExpectations;
 @import NSURL_IDN;
+@import WordPressKit;
 
 @class Comment;
 

@@ -1,6 +1,7 @@
 import Foundation
 import WordPressData
 import WordPressShared
+import WordPressKit
 
 /// Site Creation Notification
 ///

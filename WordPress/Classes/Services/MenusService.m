@@ -2,6 +2,8 @@
 #import "WordPress-Swift.h"
 @import WordPressData;
 @import WordPressKit;
+@import WordPressKitObjC;
+@import WordPressKitModels;
 
 @implementation MenusService
 

@@ -3,6 +3,7 @@ import SwiftUI
 import JetpackStats
 import WordPressKit
 import WordPressShared
+import WordPressData
 import Gravatar
 import BuildSettingsKit
 

@@ -2,6 +2,8 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <CoreData/CoreData.h>
 
+@import WordPressKit;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class AbstractPost;

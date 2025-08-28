@@ -1,6 +1,7 @@
 import Foundation
 import WordPressData
 import WordPressShared
+import WordPressKit
 
 protocol JetpackScanView {
     func render()

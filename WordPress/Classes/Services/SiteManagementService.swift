@@ -1,6 +1,7 @@
 import CoreData
 import WordPressData
 import WordPressShared
+import WordPressKit
 
 /// Site Deletion Notification
 ///

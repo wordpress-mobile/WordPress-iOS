@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressKit
 
 struct SubscribersFiltersMenu: View {
     @ObservedObject var viewModel: SubscribersViewModel

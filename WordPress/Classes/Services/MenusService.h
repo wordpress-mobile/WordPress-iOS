@@ -1,6 +1,11 @@
 #import <CoreData/CoreData.h>
 @import WordPressData;
 
+@class Blog;
+@class Menu;
+@class MenuItem;
+@class MenuLocation;
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void(^MenusServiceSuccessBlock)(void);

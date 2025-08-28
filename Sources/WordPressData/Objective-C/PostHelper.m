@@ -3,6 +3,7 @@
 #import "WordPressData-Swift.h"
 
 @import WordPressKit;
+@import WordPressKitModels;
 @import WordPressShared;
 @import NSObject_SafeExpectations;
 

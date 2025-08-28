@@ -2,6 +2,7 @@
 #import <Photos/Photos.h>
 @import WordPressData;
 
+@class Blog;
 @class Media;
 @class RemoteVideoPressVideo;
 @protocol ExportableAsset;

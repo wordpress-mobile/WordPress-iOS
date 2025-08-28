@@ -3,6 +3,7 @@ import UIKit
 import WordPressData
 import WordPressShared
 import WordPressUI
+import WordPressKit
 import Gravatar
 
 /// Displays a Blog's User Details

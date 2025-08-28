@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@import WordPressKitModels;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class WPAccount;

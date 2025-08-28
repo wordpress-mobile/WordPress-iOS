@@ -1,4 +1,5 @@
 import UIKit
+import WordPressKit
 
 /// Site Creation: Domains
 final class WebAddressStep: WizardStep {

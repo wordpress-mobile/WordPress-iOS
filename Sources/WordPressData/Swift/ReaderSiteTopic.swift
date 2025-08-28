@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 @objc(ReaderSiteTopic)
 open class ReaderSiteTopic: ReaderAbstractTopic {

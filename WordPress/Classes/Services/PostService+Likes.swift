@@ -1,4 +1,5 @@
 import WordPressData
+import WordPressKit
 
 extension PostService {
 

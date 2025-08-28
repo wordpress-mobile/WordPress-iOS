@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import WordPressKit
+import WordPressData
 
 /// Coordinator to handle navigation from SwiftUI ActivityLogDetailsView to UIKit view controllers
 enum ActivityLogDetailsCoordinator {

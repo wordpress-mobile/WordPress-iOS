@@ -4,6 +4,7 @@ import BuildSettingsKit
 import SFHFKeychainUtils
 import WidgetKit
 import WordPressData
+import WordPressKit
 
 class StatsWidgetsStore {
     private let coreDataStack: CoreDataStack

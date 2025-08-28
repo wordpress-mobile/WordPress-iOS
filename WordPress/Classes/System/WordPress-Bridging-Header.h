@@ -1,5 +1,8 @@
 // WordPress Module
 
+@import WordPressKit;
+@import WordPressData;
+
 #import "AccountService.h"
 
 #import "BlogService.h"

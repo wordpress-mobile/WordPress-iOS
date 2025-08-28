@@ -1,5 +1,6 @@
 import FormattableContentKit
 import WordPressData
+import WordPressKit
 
 extension WordPressData.Notification {
 

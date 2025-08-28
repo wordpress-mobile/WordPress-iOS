@@ -1,4 +1,5 @@
 import WordPressData
+import WordPressKit
 
 /// Plugin management service through the Jetpack Proxy.
 ///
