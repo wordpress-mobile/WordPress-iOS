@@ -16,7 +16,7 @@ final class CreateButtonCoordinator: NSObject {
 
     var button: UIButton = {
         let button: UIButton
-#if swift(>=6.2)
+#if compiler(>=6.2)
         if #available(iOS 26, *) {
             var configuration = UIButton.Configuration.prominentClearGlass()
             configuration.image = UIImage(systemName: "plus")
