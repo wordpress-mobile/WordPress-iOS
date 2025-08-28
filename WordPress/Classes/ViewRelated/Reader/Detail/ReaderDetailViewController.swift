@@ -73,6 +73,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// The actual header
     private let featuredImageView = ReaderDetailFeaturedImageView()
 
+    private var heroImageView: ReaderHeroImageView?
+
     private var isNewFeaturedImageEnabled: Bool {
         if #available(iOS 26, *) {
             return true
@@ -158,7 +160,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureNavigationBar()
         applyStyles()
         configureWebView()
-        configureFeaturedImage()
+        configureLegacyFeaturedImage()
         configureHeader()
         configureRelatedPosts()
         configureToolbar()
@@ -185,6 +187,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         setupFeaturedImage()
         updateFollowButtonState()
         toolbar.viewWillAppear()
+
+        if #available(iOS 26, *) {
+            scrollViewTopConstraint.isActive = false
+            scrollView.pinEdges(.top)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -519,18 +526,58 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func setupFeaturedImage() {
-        guard isNewFeaturedImageEnabled else {
-            return setupLegacyFeaturedImage()
+        if isNewFeaturedImageEnabled {
+            setupHeroImageView()
+        } else {
+            setupLegacyFeaturedImage()
+        }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        updateHeroImageView()
+    }
+
+    private func setupHeroImageView() {
+        guard let post, let imageURL = URL(string: post.featuredImage),
+              !post.contentIncludesFeaturedImage() else {
+            return
         }
 
-        scrollViewTopConstraint.isActive = false
-        scrollView.pinEdges(.top)
+        let imageView = ReaderHeroImageView()
 
-        // TODO: setup new featured image
+        view.insertSubview(imageView, belowSubview: scrollView)
+        imageView.pinEdges([.horizontal])
+        imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: -ReaderHeroImageView.topPadding).isActive = true
+
+        heroImageView = imageView
+
+        imageView.imageView.setImage(with: ImageRequest(url: imageURL, host: MediaHost(post)))
+
+        updateHeroImageView()
+    }
+
+    private func updateHeroImageView() {
+        guard let heroImageView else {
+            return
+        }
+
+        let contentInsetTop = (heroImageView.contentView.frame.height - view.safeAreaInsets.top).rounded()
+        if contentInsetTop != scrollView.contentInset.top {
+            scrollView.contentInset.top = contentInsetTop
+            print(scrollView.contentInset.top)
+        }
+
+        let offsetY = -scrollView.contentOffset.y - heroImageView.contentView.frame.height
+        heroImageView.transform = CGAffineTransform(translationX: 0, y: offsetY)
+
+        // Add a subtle parallax effect with resistance
+         heroImageView.imageView.transform = CGAffineTransform(translationX: 0, y: -(offsetY / 3))
     }
 
     private func setupLegacyFeaturedImage() {
-        configureFeaturedImage()
+        configureLegacyFeaturedImage()
 
         featuredImageView.configure(
             scrollView: scrollView,
@@ -543,7 +590,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
     }
 
-    private func configureFeaturedImage() {
+    private func configureLegacyFeaturedImage() {
         guard featuredImageView.superview == nil else {
             return
         }
@@ -838,6 +885,7 @@ extension ReaderDetailViewController: UIScrollViewDelegate {
             setToolbarHidden(false, animated: false) // Scrolling up
         }
         lastContentOffset = currentOffset
+        updateHeroImageView()
     }
 
     private func setToolbarHidden(_ isHidden: Bool, animated: Bool) {
