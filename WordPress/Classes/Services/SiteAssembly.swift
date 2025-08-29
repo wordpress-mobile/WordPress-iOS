@@ -1,7 +1,6 @@
 import Foundation
 import WordPressData
 import WordPressKit
-import WordPressKit
 
 // MARK: - SiteAssembly
 
