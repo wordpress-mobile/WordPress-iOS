@@ -45,7 +45,6 @@ struct ReaderSubscriptionsView: View {
             }
         }
         .navigationTitle(SharedStrings.Reader.subscriptions)
-        .tint(Color(UIAppColor.primary))
     }
 
     @ViewBuilder
