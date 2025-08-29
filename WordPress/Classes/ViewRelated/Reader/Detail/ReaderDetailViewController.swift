@@ -73,7 +73,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// The actual header
     private let featuredImageView = ReaderDetailFeaturedImageView()
 
-    private var heroImageView: ReaderHeroImageView?
+    private var heroView: ReaderHeroView?
 
     private var isNewFeaturedImageEnabled: Bool {
         if #available(iOS 26, *) {
@@ -545,35 +545,27 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             return
         }
 
-        let imageView = ReaderHeroImageView()
+        let heroView = ReaderHeroView()
+        view.insertSubview(heroView, belowSubview: scrollView)
+        self.heroView = heroView
 
-        view.insertSubview(imageView, belowSubview: scrollView)
-        imageView.pinEdges([.horizontal])
-        imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: -ReaderHeroImageView.topPadding).isActive = true
-
-        heroImageView = imageView
-
-        imageView.imageView.setImage(with: ImageRequest(url: imageURL, host: MediaHost(post)))
+        heroView.imageView.setImage(with: ImageRequest(url: imageURL, host: MediaHost(post)))
 
         updateHeroImageView()
     }
 
     private func updateHeroImageView() {
-        guard let heroImageView else {
+        guard let heroView else {
             return
         }
-
-        let contentInsetTop = (heroImageView.contentView.frame.height - view.safeAreaInsets.top).rounded()
+        let contentInsetTop = (heroView.imageView.frame.height - view.safeAreaInsets.top).rounded()
         if contentInsetTop != scrollView.contentInset.top {
             scrollView.contentInset.top = contentInsetTop
-            print(scrollView.contentInset.top)
         }
-
-        let offsetY = -scrollView.contentOffset.y - heroImageView.contentView.frame.height
-        heroImageView.transform = CGAffineTransform(translationX: 0, y: offsetY)
-
-        // Add a subtle parallax effect with resistance
-         heroImageView.imageView.transform = CGAffineTransform(translationX: 0, y: -(offsetY / 3))
+        let heroViewFrame = CGRect(x: 0, y: 0, width: view.bounds.width, height: max(0, -scrollView.contentOffset.y))
+        if heroViewFrame != heroView.frame {
+            heroView.frame = heroViewFrame
+        }
     }
 
     private func setupLegacyFeaturedImage() {
