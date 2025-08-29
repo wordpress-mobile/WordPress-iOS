@@ -229,7 +229,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 // wp.koke.me
 @property (weak, readonly, nullable) NSString *hostname;
 
-@property (weak, readonly, nullable) NSString *defaultPostFormatText;
 // Used to check if the blog has an icon set up
 @property (readonly) BOOL hasIcon;
 

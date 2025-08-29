@@ -269,7 +269,7 @@ private extension DashboardJetpackSocialCardCell {
     static func showNoSharesView(for blog: Blog) -> Bool {
         guard let sharingLimit = blog.sharingLimit,
               let dotComID = blog.dotComID?.stringValue,
-              let connections = blog.connections as? Set<PublicizeConnection> else {
+              let connections = blog.connections else {
             return false
         }
         let repository = UserPersistentStoreFactory.instance()
