@@ -12,6 +12,10 @@ final class ReaderHeroView: UIView {
 
     static let bottomExtensionHeight = DesignConstants.radius(.large)
 
+    var imageURL: URL?
+
+    private var onTap: ((AsyncImageView) -> Void)?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -31,6 +35,10 @@ final class ReaderHeroView: UIView {
 #endif
 
         clipsToBounds = true
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func layoutSubviews() {
@@ -55,7 +63,26 @@ final class ReaderHeroView: UIView {
         }
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func configureTapGesture(in scrollView: UIScrollView, _ closure: @escaping (AsyncImageView) -> Void) {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTap))
+        tap.cancelsTouchesInView = false
+        tap.delegate = self
+        scrollView.addGestureRecognizer(tap)
+
+        self.onTap = closure
+    }
+
+    @objc private func didTap() {
+        onTap?(imageView)
+    }
+}
+
+extension ReaderHeroView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let touchPoint = touch.location(in: self)
+        let isOutsideView = !imageView.frame.contains(touchPoint)
+
+        /// Do not accept the touch if outside the featured image view
+        return isOutsideView == false
     }
 }

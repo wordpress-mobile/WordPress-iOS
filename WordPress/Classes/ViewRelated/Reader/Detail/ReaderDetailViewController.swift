@@ -165,6 +165,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         startObservingPost()
 
+        if #available(iOS 26, *) {
+            scrollViewTopConstraint?.isActive = false
+            scrollView.pinEdges(.top)
+
+            headerContainerView.clipsToBounds = true
+            headerContainerView.backgroundColor = .systemBackground
+            headerContainerView.layer.cornerRadius = DesignConstants.radius(.large)
+            headerContainerView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        }
+
         // Fixes swipe to go back not working when leftBarButtonItem is set
         navigationController?.interactivePopGestureRecognizer?.delegate = self
 
@@ -180,16 +190,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         updateFollowButtonState()
         toolbar.viewWillAppear()
         navigationController?.setToolbarHidden(false, animated: animated)
-
-        if #available(iOS 26, *) {
-            scrollViewTopConstraint.isActive = false
-            scrollView.pinEdges(.top)
-
-            headerContainerView.clipsToBounds = true
-            headerContainerView.backgroundColor = .systemBackground
-            headerContainerView.layer.cornerRadius = DesignConstants.radius(.large)
-            headerContainerView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -228,6 +228,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
 
+        setupHeroView()
         featuredImageView.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
         updateToolbarItems()
@@ -524,7 +525,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func setupFeaturedImage() {
         if isNewFeaturedImageEnabled {
-            setupHeroImageView()
+            setupHeroView()
         } else {
             setupLegacyFeaturedImage()
         }
@@ -533,25 +534,33 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        updateHeroImageView()
+        layoutHeroView()
     }
 
-    private func setupHeroImageView() {
+    private func setupHeroView() {
+        guard isNewFeaturedImageEnabled else {
+            return
+        }
         guard let post, let imageURL = URL(string: post.featuredImage),
               !post.contentIncludesFeaturedImage() else {
             return
         }
-
-        let heroView = ReaderHeroView()
-        view.insertSubview(heroView, belowSubview: scrollView)
-        self.heroView = heroView
-
-        heroView.imageView.setImage(with: ImageRequest(url: imageURL, host: MediaHost(post)))
-
-        updateHeroImageView()
+        if heroView == nil {
+            let heroView = ReaderHeroView()
+            heroView.configureTapGesture(in: scrollView) { [weak self] in
+                self?.coordinator?.didTapFeaturedImage($0)
+            }
+            view.insertSubview(heroView, belowSubview: scrollView)
+            self.heroView = heroView
+        }
+        if heroView?.imageURL != imageURL {
+            heroView?.imageURL = imageURL
+            heroView?.imageView.setImage(with: ImageRequest(url: imageURL, host: MediaHost(post)))
+        }
+        layoutHeroView()
     }
 
-    private func updateHeroImageView() {
+    private func layoutHeroView() {
         guard let heroView else {
             return
         }
@@ -875,7 +884,7 @@ extension ReaderDetailViewController: UIScrollViewDelegate {
             setToolbarHidden(false, animated: true) // Scrolling up
         }
         lastContentOffset = currentOffset
-        updateHeroImageView()
+        layoutHeroView()
     }
 
     private func setToolbarHidden(_ isHidden: Bool, animated: Bool) {
