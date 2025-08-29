@@ -16,7 +16,7 @@ final class CreateButtonCoordinator: NSObject {
 
     var button: UIButton = {
         let button: UIButton
-#if swift(>=6.2)
+#if compiler(>=6.2)
         if #available(iOS 26, *) {
             var configuration = UIButton.Configuration.prominentClearGlass()
             configuration.image = UIImage(systemName: "plus")
@@ -138,9 +138,18 @@ final class CreateButtonCoordinator: NSObject {
         viewController.popoverPresentationController?.sourceView = button
         viewController.popoverPresentationController?.sourceRect = button.bounds.offsetBy(dx: 0, dy: Constants.popoverOffset)
 
+        // Pre-compute `preferredContentSize`
+        viewController.view.layoutIfNeeded()
+
         viewController.popoverPresentationController?.adaptiveSheetPresentationController.detents = [.custom { [weak viewController] context in
             viewController?.preferredContentSize.height ?? 320
         }]
+
+        if #available(iOS 18.0, *) {
+            viewController.preferredTransition = .zoom { [weak self] _ in
+                self?.button
+            }
+        }
     }
 
     func hideCreateButton() {
