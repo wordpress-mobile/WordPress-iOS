@@ -36,7 +36,7 @@ class ActionSheetViewController: UIViewController {
             static let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 35)
             static let imagePadding: CGFloat = 16
             static let imageTintColor: UIColor = UIAppColor.neutral(.shade30)
-            static let font: UIFont = .preferredFont(forTextStyle: .callout)
+            static let font: UIFont = .preferredFont(forTextStyle: .body)
             static let textColor: UIColor = .label
             static let badgeHorizontalPadding: CGFloat = 10
         }
@@ -203,6 +203,7 @@ class ActionSheetViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         updateScrollViewHeight()
         let compressedSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         let width = min(max(Constants.minimumWidth, compressedSize.width), Constants.maximumWidth)

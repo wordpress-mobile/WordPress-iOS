@@ -10,7 +10,7 @@ final class CreateButtonCoordinator: NSObject {
     private enum Constants {
         static let padding: CGFloat = -16 // Bottom and trailing padding to position the button along the bottom right corner
         static let heightWidth: CGFloat = 56 // Height and width of the button
-        static let popoverOffset: CGFloat = -10 // The vertical offset of the iPad popover
+        static let popoverOffset: CGFloat = -4 // The vertical offset of the iPad popover
         static let skippedPromptsUDKey = "wp_skipped_blogging_prompts"
     }
 
@@ -134,15 +134,13 @@ final class CreateButtonCoordinator: NSObject {
     }
 
     private func setupPresentation(on viewController: UIViewController, for traitCollection: UITraitCollection) {
-        if traitCollection.horizontalSizeClass == .regular && traitCollection.verticalSizeClass == .regular {
-            viewController.modalPresentationStyle = .popover
-        } else {
-            viewController.modalPresentationStyle = .custom
-        }
+        viewController.modalPresentationStyle = .popover
+        viewController.popoverPresentationController?.sourceView = button
+        viewController.popoverPresentationController?.sourceRect = button.bounds.offsetBy(dx: 0, dy: Constants.popoverOffset)
 
-        viewController.popoverPresentationController?.sourceView = self.button
-        viewController.popoverPresentationController?.sourceRect = self.button.bounds.offsetBy(dx: 0, dy: Constants.popoverOffset)
-        viewController.transitioningDelegate = self
+        viewController.popoverPresentationController?.adaptiveSheetPresentationController.detents = [.custom { [weak viewController] context in
+            viewController?.preferredContentSize.height ?? 320
+        }]
     }
 
     func hideCreateButton() {
@@ -168,27 +166,6 @@ final class CreateButtonCoordinator: NSObject {
         } else {
             button.springAnimation(toShow: true)
         }
-    }
-}
-
-// MARK: Tranisitioning Delegate
-
-extension CreateButtonCoordinator: UIViewControllerTransitioningDelegate {
-    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return BottomSheetAnimationController(transitionType: .presenting)
-    }
-
-    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return BottomSheetAnimationController(transitionType: .dismissing)
-    }
-
-    public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationController = BottomSheetPresentationController(presentedViewController: presented, presenting: presenting)
-        return presentationController
-    }
-
-    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return (viewController?.presentedViewController?.presentationController as? BottomSheetPresentationController)?.interactionController
     }
 }
 
