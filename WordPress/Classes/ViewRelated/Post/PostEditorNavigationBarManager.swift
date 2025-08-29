@@ -78,15 +78,9 @@ class PostEditorNavigationBarManager {
     }()
 
     /// Publish Button
-    private(set) lazy var publishButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.addTarget(self, action: #selector(publishButtonTapped(sender:)), for: .touchUpInside)
-        button.setTitle(delegate?.publishButtonText ?? "", for: .normal)
-        button.sizeToFit()
+    private(set) lazy var publishButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: delegate?.publishButtonText, style: .plain, target: self, action: #selector(publishButtonTapped))
         button.isEnabled = delegate?.isPublishButtonEnabled ?? false
-        button.setContentHuggingPriority(.required, for: .horizontal)
-        button.tintColor = UIColor(light: .black, dark: .white)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 17.0)
         return button
     }()
 
@@ -109,13 +103,6 @@ class PostEditorNavigationBarManager {
         let separator = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         separator.width = 16
         return separator
-    }()
-
-    /// Publish Button
-    private(set) lazy var publishBarButtonItem: UIBarButtonItem = {
-        let button = UIBarButtonItem(customView: self.publishButton)
-
-        return button
     }()
 
     /// NavigationBar's More Button
@@ -164,16 +151,15 @@ class PostEditorNavigationBarManager {
     var rightBarButtonItems: [UIBarButtonItem] {
         let undoButton = UIBarButtonItem(customView: self.undoButton)
         let redoButton = UIBarButtonItem(customView: self.redoButton)
-        return [publishBarButtonItem, separatorButtonItem, moreBarButtonItem, separatorButtonItem, redoButton, separatorButtonItem, undoButton]
+        return [publishButton, separatorButtonItem, moreBarButtonItem, separatorButtonItem, redoButton, separatorButtonItem, undoButton]
     }
 
     var rightBarButtonItemsAztec: [UIBarButtonItem] {
-        return [moreBarButtonItem, publishBarButtonItem, separatorButtonItem]
+        return [moreBarButtonItem, publishButton, separatorButtonItem]
     }
 
     func reloadPublishButton() {
-        publishButton.setTitle(delegate?.publishButtonText ?? "", for: .normal)
-        publishButton.sizeToFit()
+        publishButton.title = delegate?.publishButtonText
         publishButton.isEnabled = delegate?.isPublishButtonEnabled ?? true
     }
 }
