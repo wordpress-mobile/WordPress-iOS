@@ -8,6 +8,7 @@ class NotificationSyncServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     // MARK: - Constants
 
+    // swiftlint:disable operator_usage_whitespace
     let notificationsEndpoint       = "notifications/"
     let notificationsReadEndpoint   = "notifications/read"
     let notificationsSeenEndpoint   = "notifications/seen"
@@ -16,6 +17,7 @@ class NotificationSyncServiceRemoteTests: RemoteTestCase, RESTTestable {
     let notificationServiceLoadHashMockFilename     = "notifications-load-hash.json"
     let notificationServiceMarkReadMockFilename     = "notifications-mark-as-read.json"
     let notificationServiceLastSeenMockFilename     = "notifications-last-seen.json"
+    // swiftlint:enable operator_usage_whitespace
 
     // MARK: - Properties
 
@@ -41,7 +43,7 @@ class NotificationSyncServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Load all notifications success")
         stubRemoteResponse(notificationsEndpoint, filename: notificationServiceLoadAllMockFilename, contentType: .ApplicationJSON)
         remote.loadNotes { error, notes in
-            guard let notes = notes, let note = notes.first else {
+            guard let notes, let note = notes.first else {
                 XCTFail()
                 return
             }
@@ -89,7 +91,7 @@ class NotificationSyncServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Load notification hashes success")
         stubRemoteResponse(notificationsEndpoint, filename: notificationServiceLoadHashMockFilename, contentType: .ApplicationJSON)
         remote.loadHashes { error, notes in
-            guard let notes = notes else {
+            guard let notes else {
                 XCTFail()
                 return
             }

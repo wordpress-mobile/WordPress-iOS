@@ -5,6 +5,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
     // MARK: - Constants
 
+    // swiftlint:disable operator_usage_whitespace
     let siteID   = 321
     let username = "jimthetester"
     let email    = "jimthetester@thetestemail.org"
@@ -41,6 +42,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
     let requestLinkInvalidSecretFailureMockFilename = "auth-send-login-email-invalid-secret-failure.json"
     let requestVerificationEmailSuccessMockFilename = "auth-send-verification-email-success.json"
     let requestVerificationAlreadyVerifiedFailureMockFilename = "auth-send-verification-email-already-verified-failure.json"
+    // swiftlint:enable operator_usage_whitespace
 
     // MARK: - Properties
 

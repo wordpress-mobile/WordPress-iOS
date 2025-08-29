@@ -11,6 +11,7 @@ class DomainsServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
     let siteID = 12345
 
+    // swiftlint:disable operator_usage_whitespace
     let domainServiceAllDomainsMockFilename     = "domain-service-all-domain-types.json"
     let domainServiceAuthFailureMockFilename    = "site-export-auth-failure.json"
     let domainServiceBadJsonFailureMockFilename = "domain-service-bad-json.json"
@@ -22,6 +23,7 @@ class DomainsServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
     let getDomainContactInformationSuccess      = "domain-contact-information-response-success.json"
     let domainServiceInvalidQuery               = "domain-service-invalid-query.json"
     let allDomainsMockFilename                  = "get-all-domains-response.json"
+    // swiftlint:enable operator_usage_whitespace
 
     // MARK: - Properties
 

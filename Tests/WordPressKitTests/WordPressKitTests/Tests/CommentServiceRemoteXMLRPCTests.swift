@@ -72,7 +72,7 @@ class CommentServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
             remoteInstance.getCommentWithID(NSNumber(value: 1),
                                             success: { comment in
 
-                guard let comment = comment else {
+                guard let comment else {
                     XCTFail("Failed to retrieve mock site comment")
                     return
                 }

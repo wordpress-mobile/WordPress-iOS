@@ -98,7 +98,7 @@ private extension StatsDotComFollowersInsightTests {
     func getFollowerDictionary(id: String? = nil, name: String? = nil, subscribedDate: Date? = nil, avatarUrl: String? = nil) -> [String: AnyObject] {
         var dateString: String?
 
-        if let subscribedDate = subscribedDate {
+        if let subscribedDate {
             let dateFormatter = ISO8601DateFormatter()
             dateString = dateFormatter.string(from: subscribedDate)
         }

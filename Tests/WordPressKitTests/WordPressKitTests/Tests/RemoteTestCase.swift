@@ -13,11 +13,13 @@ class RemoteTestCase: XCTestCase {
     /// Response content types
     ///
     enum ResponseContentType: String {
+        // swiftlint:disable operator_usage_whitespace
         case ApplicationJSON = "application/json"
         case JavaScript      = "text/javascript;charset=utf-8"
         case ApplicationHTML = "application/html"
         case XML             = "text/xml"
         case NoContentType   = ""
+        // swiftlint:enable operator_usage_whitespace
     }
 
     // MARK: - Constants
@@ -187,7 +189,7 @@ extension RemoteTestCase {
     /// call is made instead of a cache hit.
     ///
     func clearDiskCache() {
-        let cacheDirectory =  FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first! as NSURL
+        let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first! as NSURL
 
         do {
             if let documentPath = cacheDirectory.path {

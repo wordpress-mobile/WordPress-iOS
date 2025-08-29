@@ -6,7 +6,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
 
     // MARK: - Constants
 
-    let siteID   = 321
+    let siteID = 321
 
     let getStreakMockFilename = "stats-streak-result.json"
     let getSearchDataFilename = "stats-search-term-result.json"

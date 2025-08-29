@@ -26,7 +26,7 @@ class PluginDirectoryTests: XCTestCase {
     }
 
     func testPluginDirectoryEntryDecodingRenameXmlrpc() {
-        let data =  try! MockPluginDirectoryProvider.getPluginDirectoryMockData(with: "plugin-directory-rename-xml-rpc", sender: type(of: self))
+        let data = try! MockPluginDirectoryProvider.getPluginDirectoryMockData(with: "plugin-directory-rename-xml-rpc", sender: type(of: self))
         let endpoint = PluginDirectoryGetInformationEndpoint(slug: "rename-xml-rpc")
 
         do {

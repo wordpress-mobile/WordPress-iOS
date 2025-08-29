@@ -5,6 +5,7 @@ class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
 
     // MARK: - Constants
 
+    // swiftlint:disable operator_usage_whitespace
     let siteID   = 321
     let username = "jimthetester"
     let email    = "jimthetester@thetestemail.org"
@@ -36,6 +37,7 @@ class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
     let updateSettingsChangeDisplayNameSuccessMockFilename         = "me-settings-change-display-name-success.json"
     let updateSettingsChangeDisplayNameBadJsonFailureMockFilename  = "me-settings-change-display-name-bad-json-failure.json"
     let updateSettingsInvalidInputFailureMockFilename              = "me-settings-change-invalid-input-failure.json"
+    // swiftlint:enable operator_usage_whitespace
 
     let closeAccountSuccessFilename = "me-settings-close-account-success.json"
     let closeAccountFailureFilename = "me-settings-close-account-failure.json"

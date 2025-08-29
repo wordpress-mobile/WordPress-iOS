@@ -6,6 +6,7 @@ class PlanServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     // MARK: - Constants
 
+    // swiftlint:disable operator_usage_whitespace
     let siteID   = 321
 
     let getPlansBadJsonFailureMockFilename               = "site-plans-bad-json-failure.json"
@@ -15,6 +16,7 @@ class PlanServiceRemoteTests: RemoteTestCase, RESTTestable {
     let getWpcomPlansSuccessMockFilename                 = "plans-mobile-success.json"
     let getPlansMeSitesSuccessMockFilename               = "plans-me-sites-success.json"
     let getZendeskMetadataSuccessMockFilename            = "site-zendesk-metadata-success.json"
+    // swiftlint:enable operator_usage_whitespace
 
     // MARK: - Properties
 

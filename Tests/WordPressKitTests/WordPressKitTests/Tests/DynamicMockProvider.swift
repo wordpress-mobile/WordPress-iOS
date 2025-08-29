@@ -21,19 +21,19 @@ internal extension DynamicMockProvider {
         let host = "https://"
         let tlds = [".com", ".org", ".blog", ".co.nz", ".co.uk", ".edu", ".gov"]
 
-        return host + randomString(length: length) + tlds[Int.random(in: 0 ..< (tlds.count-1))]
+        return host + randomString(length: length) + tlds[Int.random(in: 0 ..< (tlds.count - 1))]
     }
 
     static func randomURLAsString(withLength length: Int, subDirectories: [String]?, file: String?) -> String {
         var urlString = randomURLAsString(length: length)
 
-        if let subDirectories = subDirectories {
+        if let subDirectories {
             for directory in subDirectories {
                 urlString += "/\(directory)"
             }
         }
 
-        if let file = file {
+        if let file {
             urlString += "/\(file)"
         }
 

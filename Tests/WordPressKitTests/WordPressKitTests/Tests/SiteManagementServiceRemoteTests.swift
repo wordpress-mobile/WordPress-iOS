@@ -8,6 +8,7 @@ class SiteManagementServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     let siteID = 321
 
+    // swiftlint:disable operator_usage_whitespace
     let deleteSiteSuccessMockFilename                       = "site-delete-success.json"
     let deleteSiteAuthFailureMockFilename                   = "site-delete-auth-failure.json"
     let deleteSiteBadJsonFailureMockFilename                = "site-delete-bad-json-failure.json"
@@ -28,6 +29,7 @@ class SiteManagementServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     let markQuickStartAsCompletedSuccessMockFilename        = "site-quick-start-success.json"
     let markQuickStartAsCompletedFailureMockFilename        = "site-quick-start-failure.json"
+    // swiftlint:enable operator_usage_whitespace
 
     // MARK: - Properties
 

@@ -6,10 +6,12 @@ import OHHTTPStubsSwift
 
 class WordPressComRestApiTests: XCTestCase {
 
+    // swiftlint:disable operator_usage_whitespace
     let scheme                          = "https"
     let host                            = "public-api.wordpress.com"
     let wordPressMediaRoutePath         = "/rest/v1.1/sites/0/media/"
     let wordPressMediaNewEndpointPath   = "/rest/v1.1/sites/0/media/new"
+    // swiftlint:enable operator_usage_whitespace
 
     override func setUp() {
         super.setUp()

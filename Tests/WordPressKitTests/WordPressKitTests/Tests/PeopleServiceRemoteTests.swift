@@ -6,6 +6,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     // MARK: - Constants
 
+    // swiftlint:disable operator_usage_whitespace
     let siteID          = 321
     let userID          = 1111
     let validUsername   = "jimthetester"
@@ -58,6 +59,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     let emailFollowersAuthFailureMockFilename       = "site-email-followers-get-auth-failure.json"
     let emailFollowersFailureMockFilename           = "site-email-followers-get-failure.json"
+    // swiftlint:enable operator_usage_whitespace
 
     // MARK: - Properties
 

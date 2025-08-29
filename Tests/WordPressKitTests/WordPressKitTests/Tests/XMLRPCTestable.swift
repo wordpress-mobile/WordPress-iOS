@@ -1,6 +1,7 @@
 @testable import WordPressKit
 
 enum XMLRPCTestableConstants {
+    // swiftlint:disable operator_usage_whitespace
     static let xmlRpcUrl        = "http://test.com/xmlrpc.php"
     static let xmlRpcUserName   = "username"
     static let xmlRpcPassword   = "password"
@@ -12,6 +13,7 @@ enum XMLRPCTestableConstants {
 
     static let xmlRpcBadAuthFailureFilename               = "xmlrpc-bad-username-password-error.xml"
     static let xmlRpcMalformedRequestXMLFailureFilename   = "xmlrpc-malformed-request-xml-error.xml"
+    // swiftlint:enable operator_usage_whitespace
 }
 
 /// Protocol to be used when testing XMLRPC Remotes

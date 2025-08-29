@@ -12,6 +12,7 @@ class PostServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
     let postIsSticky: NSNumber = 1
     let postParentId: NSNumber = 2
 
+    // swiftlint:disable operator_usage_whitespace
     let getPostSuccessMockFilename              = "xmlrpc-wp-getpost-success.xml"
     let getPostBadXMLFailureFilename            = "xmlrpc-wp-getpost-bad-xml-failure.xml"
     let getPostBadPostIdFailureFilename         = "xmlrpc-wp-getpost-invalid-id-failure.xml"
@@ -22,6 +23,7 @@ class PostServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
     let updatePostBadResponseXMLMockFilename    = "xmlrpc-metaweblog-editpost-bad-xml-failure.xml"
     let updatePostBadFormatMockFilename         = "xmlrpc-metaweblog-editpost-change-format-failure.xml"
     let updatePostChangeTypeFailureFilename     = "xmlrpc-metaweblog-editpost-change-type-failure.xml"
+    // swiftlint:enable operator_usage_whitespace
 
     // MARK: - Properties
 

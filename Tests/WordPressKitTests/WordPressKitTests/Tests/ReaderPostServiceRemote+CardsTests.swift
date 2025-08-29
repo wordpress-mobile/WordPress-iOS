@@ -158,7 +158,7 @@ class ReaderPostServiceRemoteCardTests: RemoteTestCase, RESTTestable {
         readerPostServiceRemote.fetchCards(for: ["cats"], sortingOption: .date, success: { cards, _ in
             let posts = cards.filter { $0.type == .post }
             for i in 1..<posts.count {
-                guard let firstPostDate = posts[i-1].post?.sortDate,
+                guard let firstPostDate = posts[i - 1].post?.sortDate,
                       let secondPostDate = posts[i].post?.sortDate,
                       firstPostDate > secondPostDate else {
                     XCTFail("Posts should be sorted by date, starting with most recent post")
@@ -310,7 +310,7 @@ class ReaderPostServiceRemoteCardTests: RemoteTestCase, RESTTestable {
         readerPostServiceRemote.fetchStreamCards(for: ["cats"], sortingOption: .date, success: { cards, _ in
             let posts = cards.filter { $0.type == .post }
             for i in 1..<posts.count {
-                guard let firstPostDate = posts[i-1].post?.sortDate,
+                guard let firstPostDate = posts[i - 1].post?.sortDate,
                       let secondPostDate = posts[i].post?.sortDate,
                       firstPostDate > secondPostDate else {
                     XCTFail("Posts should be sorted by date, starting with most recent post")

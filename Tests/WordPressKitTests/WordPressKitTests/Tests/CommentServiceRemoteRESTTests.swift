@@ -81,7 +81,7 @@ final class CommentServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
         remote.getCommentWithID(NSNumber(value: commentId),
                                 success: { comment in
 
-            guard let comment = comment else {
+            guard let comment else {
                 XCTFail("Failed to retrieve mock site comment")
                 return
             }
