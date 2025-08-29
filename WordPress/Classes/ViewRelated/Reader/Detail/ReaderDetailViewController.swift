@@ -189,7 +189,15 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         setupFeaturedImage()
         updateFollowButtonState()
         toolbar.viewWillAppear()
-        navigationController?.setToolbarHidden(false, animated: animated)
+
+        if #unavailable(iOS 26) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                // Workaround for tab bar dismiss iteraction
+                self.navigationController?.setToolbarHidden(false, animated: animated)
+            }
+        } else {
+            navigationController?.setToolbarHidden(false, animated: animated)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {

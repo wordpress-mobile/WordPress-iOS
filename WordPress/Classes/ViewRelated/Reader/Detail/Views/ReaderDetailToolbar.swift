@@ -8,25 +8,13 @@ protocol ReaderDetailToolbarDelegate: AnyObject {
 }
 
 class ReaderDetailToolbar {
-    /// The reader post that the toolbar interacts with
     private var post: ReaderPost?
-
-    /// The VC where the toolbar is inserted
     private weak var viewController: UIViewController?
 
-    /// An observer of the number of likes of the post
     private var likeCountObserver: NSKeyValueObservation?
-
-    /// An observer of the number of comments of the post
     private var commentCountObserver: NSKeyValueObservation?
 
-    weak var delegate: ReaderDetailToolbarDelegate? = nil
-
-    // Bar button items
-    private var saveForLaterButton: UIBarButtonItem?
-    private var reblogButton: UIBarButtonItem?
-    private var commentButton: UIBarButtonItem?
-    private var likeButton: UIBarButtonItem?
+    weak var delegate: ReaderDetailToolbarDelegate?
 
     private var likeCount: Int {
         post?.likeCount?.intValue ?? 0
@@ -56,36 +44,38 @@ class ReaderDetailToolbar {
         self.post = post
         self.viewController = viewController
 
-        // Create buttons
-        saveForLaterButton = createSaveForLaterButton()
-        reblogButton = createReblogButton()
-        commentButton = createCommentButton()
-        likeButton = createLikeButton()
-
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-
         var items: [UIBarButtonItem] = []
 
-        // Add save for later button
-        if let saveButton = saveForLaterButton {
-            items.append(saveButton)
+        if #unavailable(iOS 26) {
+            items.append(.flexibleSpace())
         }
 
-        // Add reblog button
-        if let reblogBtn = reblogButton {
-            items.append(reblogBtn)
+        if let button = makeSaveForLaterButton() {
+            items.append(button)
         }
 
-        items.append(flexibleSpace)
-
-        // Add comment button
-        if let commentBtn = commentButton {
-            items.append(commentBtn)
+        if let button = makeReblogButton() {
+            if #unavailable(iOS 26) {
+                items.append(.flexibleSpace())
+            }
+            items.append(button)
         }
 
-        // Add like button
-        if let likeBtn = likeButton {
-            items.append(likeBtn)
+        items.append(.flexibleSpace())
+
+        if let button = makeCommentButton() {
+            items.append(button)
+        }
+
+        if let button = makeLikeButton() {
+            if #unavailable(iOS 26) {
+                items.append(.flexibleSpace())
+            }
+            items.append(button)
+        }
+
+        if #unavailable(iOS 26) {
+            items.append(.flexibleSpace())
         }
 
         return items
@@ -101,7 +91,7 @@ class ReaderDetailToolbar {
 
     // MARK: - Create Buttons
 
-    private func createSaveForLaterButton() -> UIBarButtonItem {
+    private func makeSaveForLaterButton() -> UIBarButtonItem? {
         let isSaved = post?.isSavedForLater ?? false
         let image = isSaved ? WPStyleGuide.ReaderDetail.saveSelectedToolbarIcon : WPStyleGuide.ReaderDetail.saveToolbarIcon
 
@@ -114,11 +104,12 @@ class ReaderDetailToolbar {
 
         button.accessibilityLabel = isSaved ? Constants.savedButtonAccessibilityLabel : Constants.saveButtonAccessibilityLabel
         button.accessibilityHint = isSaved ? Constants.savedButtonHint : Constants.saveButtonHint
+        button.tintColor = isSaved ? UIAppColor.primary : .label
 
         return button
     }
 
-    private func createReblogButton() -> UIBarButtonItem? {
+    private func makeReblogButton() -> UIBarButtonItem? {
         guard let post else { return nil }
 
         let button = UIBarButtonItem(
@@ -131,11 +122,12 @@ class ReaderDetailToolbar {
         button.isEnabled = ReaderHelpers.isLoggedIn() && !post.isBlogPrivate
         button.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
         button.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
+        button.tintColor = .label
 
         return button
     }
 
-    private func createCommentButton() -> UIBarButtonItem? {
+    private func makeCommentButton() -> UIBarButtonItem? {
         guard shouldShowCommentActionButton else { return nil }
 
         let count = post?.commentCount.intValue ?? 0
@@ -150,7 +142,7 @@ class ReaderDetailToolbar {
         return button
     }
 
-    private func createLikeButton() -> UIBarButtonItem? {
+    private func makeLikeButton() -> UIBarButtonItem? {
         guard let post else { return nil }
 
         let isLiked = post.isLiked
