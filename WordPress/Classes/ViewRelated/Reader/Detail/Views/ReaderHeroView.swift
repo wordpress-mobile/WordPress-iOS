@@ -7,6 +7,11 @@ final class ReaderHeroView: UIView {
 
     private var extensionView: UIView?
 
+    // Make sure the image doesn't go below the status bar
+    static let estimatedStatusBarOffset: CGFloat = 44
+
+    static let bottomExtensionHeight = DesignConstants.radius(.large)
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -39,7 +44,8 @@ final class ReaderHeroView: UIView {
         // Center the image in the container to achieve the parallax effect
         let imageViewFrame = CGRect(
             x: 0,
-            y: ((bounds.height - height) / 2).rounded(), // rounded is needed to avoid gaps in the extension view
+            // rounded is needed to avoid gaps in the extension view
+            y: ((bounds.height - height) / 2 + Self.estimatedStatusBarOffset - Self.bottomExtensionHeight).rounded(),
             width: bounds.width,
             height: height
         )

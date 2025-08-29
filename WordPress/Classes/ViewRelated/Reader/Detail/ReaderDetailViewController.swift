@@ -184,6 +184,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         if #available(iOS 26, *) {
             scrollViewTopConstraint.isActive = false
             scrollView.pinEdges(.top)
+
+            headerContainerView.clipsToBounds = true
+            headerContainerView.backgroundColor = .systemBackground
+            headerContainerView.layer.cornerRadius = DesignConstants.radius(.large)
+            headerContainerView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         }
     }
 
@@ -550,11 +555,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         guard let heroView else {
             return
         }
-        let contentInsetTop = (heroView.imageView.frame.height - view.safeAreaInsets.top).rounded()
+        let contentInsetTop = heroView.imageView.frame.height + ReaderHeroView.estimatedStatusBarOffset - view.safeAreaInsets.top
         if contentInsetTop != scrollView.contentInset.top {
+            // `contentInset` is automatically adjusted to include safeAreaInsets.top
             scrollView.contentInset.top = contentInsetTop
         }
-        let heroViewFrame = CGRect(x: 0, y: 0, width: view.bounds.width, height: max(0, -scrollView.contentOffset.y))
+        // DesignConstants.radius(.large) to extend a bit behind the header view
+        let heroViewFrame = CGRect(x: 0, y: 0, width: view.bounds.width, height: max(0, -scrollView.contentOffset.y + ReaderHeroView.bottomExtensionHeight))
         if heroViewFrame != heroView.frame {
             heroView.frame = heroViewFrame
         }
