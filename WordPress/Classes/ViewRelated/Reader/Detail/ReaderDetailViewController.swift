@@ -896,6 +896,7 @@ extension ReaderDetailViewController: UIScrollViewDelegate {
     }
 
     private func setToolbarHidden(_ isHidden: Bool, animated: Bool) {
+        guard navigationController?.isToolbarHidden != isHidden else { return } // Important
         navigationController?.setToolbarHidden(isHidden, animated: animated)
     }
 }
