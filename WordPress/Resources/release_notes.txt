@@ -1,9 +1,7 @@
-We made improvements to how you manage your content and work with media. You'll find a completely redesigned Post Settings screen that makes configuring your posts smoother and more intuitive.
-
-We also enhanced our experimental editor with better VideoPress integration and improved authentication for private sites. Your media will display properly now, no matter your site's privacy settings.
-
-Finally, we squashed several bugs and made things more reliable.
-- The app won't hang anymore when you open your Posts or Pages. (We know how frustrating that was.)
-- We fixed a crash that happened when saving certain editor settings.
-- Those annoying error popups on your dashboard? Gone.
-- Application passwords now work more smoothly behind the scenes.
+* [*] New Stats: Add support for selecting dates directly from the bar chart [#24768]
+* [*] New Stats: Add support for "weeks" granularity [#24767]
+* [*] New Stats: Fix an issue with bar chart showing incorrect labels depending on the site reporting time zone [#24768]
+* [*] New Stats: Fix an issue with date controls clipped on Touch ID devices [#24773]
+* [*] New Stats: Fix dark mode support in custom range picker [#24770]
+* [*] New Stats: Fix edit card menu shown in the wrong places [#24774]
+* [*] Fix Split View mode on iPad on some scenarios in portrait mode [#24705]
