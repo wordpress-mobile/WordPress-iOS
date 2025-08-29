@@ -30,7 +30,7 @@ class PostEditorNavigationBarManager {
         return button
     }()
 
-    lazy var undoButton: UIButton = {
+    private(set) lazy var undoButton: UIButton = {
         let isRTL = UIView.userInterfaceLayoutDirection(for: .unspecified) == .rightToLeft
         let undoImage = UIImage(named: "editor-undo")
         let button = UIButton(type: .system)
@@ -44,7 +44,7 @@ class PostEditorNavigationBarManager {
         return button
     }()
 
-    lazy var redoButton: UIButton = {
+    private(set)lazy var redoButton: UIButton = {
         let isRTL = UIView.userInterfaceLayoutDirection(for: .unspecified) == .rightToLeft
         let redoImage = UIImage(named: "editor-redo")
         let button = UIButton(type: .system)
@@ -58,7 +58,7 @@ class PostEditorNavigationBarManager {
         return button
     }()
 
-    lazy var moreButton: UIButton = {
+    private(set)lazy var moreButton: UIButton = {
         let image = UIImage(named: "editor-more")
         let button = UIButton(type: .system)
         button.setImage(image, for: .normal)
@@ -70,7 +70,7 @@ class PostEditorNavigationBarManager {
     }()
 
     /// Blog TitleView Label
-    lazy var blogTitleViewLabel: UILabel = {
+    private(set) lazy var blogTitleViewLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIAppColor.appBarText
         label.font = Fonts.blogTitle
@@ -151,7 +151,11 @@ class PostEditorNavigationBarManager {
     var rightBarButtonItems: [UIBarButtonItem] {
         let undoButton = UIBarButtonItem(customView: self.undoButton)
         let redoButton = UIBarButtonItem(customView: self.redoButton)
-        return [publishButton, separatorButtonItem, moreBarButtonItem, separatorButtonItem, redoButton, separatorButtonItem, undoButton]
+        if #available(iOS 26, *) {
+            return [publishButton, separatorButtonItem, moreBarButtonItem, redoButton, undoButton]
+        } else {
+            return [publishButton, separatorButtonItem, moreBarButtonItem, separatorButtonItem, redoButton, separatorButtonItem, undoButton]
+        }
     }
 
     var rightBarButtonItemsAztec: [UIBarButtonItem] {
