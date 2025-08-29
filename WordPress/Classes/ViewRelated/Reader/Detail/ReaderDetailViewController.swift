@@ -52,11 +52,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Header container
     @IBOutlet weak var headerContainerView: UIView!
 
-    /// Wrapper for the toolbar
-    @IBOutlet weak var toolbarContainerView: UIView!
-
-    private lazy var toolbarHidingConstraint = toolbarContainerView.heightAnchor.constraint(equalToConstant: 0)
-
     /// Wrapper for the Likes summary view
     @IBOutlet weak var likesContainerView: UIView!
 
@@ -84,13 +79,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     /// The actual header
-    private lazy var header: ReaderDetailHeaderHostingView = {
-        return .init()
-    }()
+    private lazy var header = ReaderDetailHeaderHostingView()
 
-    /// Bottom toolbar
-    private let toolbar: ReaderDetailToolbar = .loadFromNib()
-    private var isToolbarHidden = false
+    /// Bottom toolbar helper
+    private lazy var toolbar = ReaderDetailToolbar()
     private var lastContentOffset: CGFloat = 0
 
     /// Likes summary view
@@ -187,6 +179,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         setupFeaturedImage()
         updateFollowButtonState()
         toolbar.viewWillAppear()
+        navigationController?.setToolbarHidden(false, animated: animated)
 
         if #available(iOS 26, *) {
             scrollViewTopConstraint.isActive = false
@@ -205,6 +198,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             featuredImageView.viewWillDisappear()
         }
         toolbar.viewWillDisappear()
+        navigationController?.setToolbarHidden(true, animated: animated)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -231,6 +225,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         featuredImageView.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
+        updateToolbarItems()
         header.configure(for: post)
         fetchLikes()
         fetchComments()
@@ -463,9 +458,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
             // Header view
             header.displaySetting = displaySetting
-
-            // Toolbar
-            toolbar.displaySetting = displaySetting
         }
 
         // Featured image view
@@ -676,16 +668,15 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureToolbar() {
-        if ReaderDisplaySettings.customizationEnabled {
-            toolbar.displaySetting = displaySetting
-        }
         toolbar.delegate = coordinator
-        toolbarContainerView.addSubview(toolbar)
+        toolbar.configure(for: self)
+        updateToolbarItems()
+    }
 
-        // Unfortunately, this doesn't support self-sizing and dynamic type
-        toolbar.heightAnchor.constraint(equalToConstant: 58).isActive = true
-        toolbar.pinEdges([.top, .horizontal])
-        toolbar.pinEdges(.bottom, to: view.safeAreaLayoutGuide, priority: .init(749)) // Break on hiding
+    private func updateToolbarItems() {
+        guard let post else { return }
+        let items = toolbar.createToolbarItems(for: post, in: self)
+        setToolbarItems(items, animated: false)
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
@@ -874,20 +865,14 @@ extension ReaderDetailViewController: UIScrollViewDelegate {
         } else if currentOffset > lastContentOffset && currentOffset > 0 {
             setToolbarHidden(true, animated: true) // Scrolling down
         } else if currentOffset < lastContentOffset {
-            setToolbarHidden(false, animated: false) // Scrolling up
+            setToolbarHidden(false, animated: true) // Scrolling up
         }
         lastContentOffset = currentOffset
         updateHeroImageView()
     }
 
     private func setToolbarHidden(_ isHidden: Bool, animated: Bool) {
-        guard isToolbarHidden != isHidden else { return }
-        self.isToolbarHidden = isHidden
-
-        UIView.animate(withDuration: 0.33, delay: 0.0, options: [.beginFromCurrentState, .allowUserInteraction]) {
-            self.toolbarHidingConstraint.isActive = isHidden
-            self.view.layoutIfNeeded()
-        }
+        navigationController?.setToolbarHidden(isHidden, animated: animated)
     }
 }
 
