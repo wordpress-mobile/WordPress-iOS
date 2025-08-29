@@ -15,23 +15,6 @@ protocol PostEditorNavigationBarManagerDelegate: AnyObject {
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton)
 }
 
-class ExtendedTouchAreaButton: UIButton {
-    private var touchAreaPadding: CGFloat = 24.0
-
-    override var isHighlighted: Bool {
-        didSet {
-            UIView.animate(withDuration: 0.2) {
-                self.alpha = self.isHighlighted ? 0.5 : 1.0
-            }
-        }
-    }
-
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        let extendedArea = bounds.insetBy(dx: -touchAreaPadding, dy: -touchAreaPadding)
-        return extendedArea.contains(point)
-    }
-}
-
 // A class to share the navigation bar UI of the Post Editor.
 // Currenly shared between Aztec and Gutenberg
 //
@@ -40,52 +23,10 @@ class PostEditorNavigationBarManager {
 
     // MARK: - Buttons
 
-    /// Dismiss Button
-    ///
-    let siteIconView: SiteDetailsSiteIconView = {
-        let siteIconView = SiteDetailsSiteIconView(frame: .zero)
-        siteIconView.translatesAutoresizingMaskIntoConstraints = false
-        siteIconView.imageView.sizeToFit()
-
-        let widthConstraint = siteIconView.widthAnchor.constraint(equalToConstant: 28)
-        let heightConstraint = siteIconView.heightAnchor.constraint(equalToConstant: 28)
-        NSLayoutConstraint.activate([widthConstraint, heightConstraint])
-        siteIconView.isUserInteractionEnabled = false
-        siteIconView.removeButtonBorder()
-        return siteIconView
-    }()
-
-    lazy var closeButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
-        button.sizeToFit()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        button.isUserInteractionEnabled = false
-        return button
-    }()
-
-    lazy var closeButtonContainer: ExtendedTouchAreaButton = {
-        let button = ExtendedTouchAreaButton(type: .custom)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.accessibilityIdentifier = "editor-close-button"
+    private(set) lazy var closeButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeWasPressed))
         button.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close the editor")
-
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeWasPressed))
-        button.addGestureRecognizer(tapGesture)
-
-        button.addSubview(closeButton)
-        button.addSubview(siteIconView)
-
-        NSLayoutConstraint.activate([
-            closeButton.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: -8),
-            closeButton.centerYAnchor.constraint(equalTo: button.centerYAnchor),
-            siteIconView.leadingAnchor.constraint(equalTo: closeButton.trailingAnchor, constant: 0),
-            siteIconView.trailingAnchor.constraint(equalTo: button.trailingAnchor),
-            siteIconView.centerYAnchor.constraint(equalTo: button.centerYAnchor)
-        ])
-        button.isUserInteractionEnabled = true
-        button.frame = CGRect(x: 0, y: 0, width: 70, height: 28)
+        button.accessibilityIdentifier = "editor-close-button"
         return button
     }()
 
@@ -170,15 +111,6 @@ class PostEditorNavigationBarManager {
         return separator
     }()
 
-    /// NavigationBar's Close Button
-    ///
-    lazy var closeBarButtonItem: UIBarButtonItem = {
-        let cancelItem = UIBarButtonItem(customView: self.closeButtonContainer)
-        cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
-        cancelItem.accessibilityIdentifier = "Close"
-        return cancelItem
-    }()
-
     /// Publish Button
     private(set) lazy var publishBarButtonItem: UIBarButtonItem = {
         let button = UIBarButtonItem(customView: self.publishButton)
@@ -222,7 +154,7 @@ class PostEditorNavigationBarManager {
     // MARK: - Public
 
     var leftBarButtonItems: [UIBarButtonItem] {
-        return [closeBarButtonItem]
+        return [closeButton]
     }
 
     var uploadingMediaTitleView: UIView {

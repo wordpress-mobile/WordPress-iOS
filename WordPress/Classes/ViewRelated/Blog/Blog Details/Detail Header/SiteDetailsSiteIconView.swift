@@ -95,10 +95,6 @@ final class SiteDetailsSiteIconView: UIView {
     @objc func touchedButton() {
         tapped?()
     }
-
-    func removeButtonBorder() {
-        button.layer.borderWidth = 0
-    }
 }
 
 extension SiteDetailsSiteIconView: UIDropInteractionDelegate {

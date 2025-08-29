@@ -439,11 +439,6 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
     }
 
-    private func reloadBlogIconView() {
-        let viewModel = SiteIconViewModel(blog: post.blog, size: .small)
-        navigationBarManager.siteIconView.imageView.setIcon(with: viewModel)
-    }
-
     private func reloadEditorContents() {
         let content = post.content ?? String()
 
@@ -456,7 +451,6 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     }
 
     private func refreshInterface() {
-        reloadBlogIconView()
         reloadEditorContents()
         reloadPublishButton()
         navigationItem.rightBarButtonItems = post.status == .trash ? [] : navigationBarManager.rightBarButtonItems

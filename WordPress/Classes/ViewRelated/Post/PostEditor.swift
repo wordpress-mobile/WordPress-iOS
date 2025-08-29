@@ -90,7 +90,7 @@ extension PostEditor {
     }
 
     var alertBarButtonItem: UIBarButtonItem? {
-        return navigationBarManager.closeBarButtonItem
+        navigationBarManager.closeButton
     }
 }
 
