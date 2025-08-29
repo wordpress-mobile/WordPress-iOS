@@ -8,9 +8,11 @@ final class ReaderHeroView: UIView {
     private var extensionView: UIView?
 
     // Make sure the image doesn't go below the status bar
-    static let estimatedStatusBarOffset: CGFloat = 44
+    var estimatedStatusBarOffset: CGFloat {
+        traitCollection.horizontalSizeClass == .compact ? 40 : 20
+    }
 
-    static let bottomExtensionHeight = DesignConstants.radius(.large)
+    let bottomExtensionHeight = DesignConstants.radius(.large)
 
     var imageURL: URL?
 
@@ -47,13 +49,13 @@ final class ReaderHeroView: UIView {
         extensionView?.frame = bounds
 
         // Enforce the default aspect ratio
-        let height = min(320, bounds.width * ReaderPostCell.coverAspectRatio).rounded()
+        let height = min(280, bounds.width * ReaderPostCell.coverAspectRatio).rounded()
 
         // Center the image in the container to achieve the parallax effect
         let imageViewFrame = CGRect(
             x: 0,
             // rounded is needed to avoid gaps in the extension view
-            y: ((bounds.height - height) / 2 + Self.estimatedStatusBarOffset - Self.bottomExtensionHeight).rounded(),
+            y: ((bounds.height - height) / 2 + estimatedStatusBarOffset - bottomExtensionHeight).rounded(),
             width: bounds.width,
             height: height
         )

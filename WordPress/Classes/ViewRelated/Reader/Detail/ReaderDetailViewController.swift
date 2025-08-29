@@ -572,13 +572,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         guard let heroView else {
             return
         }
-        let contentInsetTop = heroView.imageView.frame.height + ReaderHeroView.estimatedStatusBarOffset - view.safeAreaInsets.top
+        let contentInsetTop = heroView.imageView.frame.height + heroView.estimatedStatusBarOffset - view.safeAreaInsets.top
         if contentInsetTop != scrollView.contentInset.top {
             // `contentInset` is automatically adjusted to include safeAreaInsets.top
             scrollView.contentInset.top = contentInsetTop
         }
         // DesignConstants.radius(.large) to extend a bit behind the header view
-        let heroViewFrame = CGRect(x: 0, y: 0, width: view.bounds.width, height: max(0, -scrollView.contentOffset.y + ReaderHeroView.bottomExtensionHeight))
+        let heroViewFrame = CGRect(x: 0, y: 0, width: view.bounds.width, height: max(0, -scrollView.contentOffset.y + heroView.bottomExtensionHeight))
         if heroViewFrame != heroView.frame {
             heroView.frame = heroViewFrame
         }
