@@ -1,6 +1,5 @@
 import Foundation
 import WordPressShared
-@preconcurrency import WordPressKitModels
 @preconcurrency import WordPressKit
 
 /// - warning: The dates in StatsServiceRemoteV2 are represented in TimeZone.local
