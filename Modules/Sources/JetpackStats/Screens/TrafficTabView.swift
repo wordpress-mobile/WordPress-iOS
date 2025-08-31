@@ -92,12 +92,28 @@ struct TrafficTabView: View {
         switch viewModel {
         case let viewModel as ChartCardViewModel:
             ChartCard(viewModel: viewModel)
+                .onDateRangeSelected { dateRange in
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    self.viewModel.pushDateRange(dateRange)
+                }
+                .backButton(title: getBackButtonTitle()) {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    self.viewModel.popDateRange()
+                }
         case let viewModel as TopListViewModel:
             TopListCard(viewModel: viewModel)
         default:
             let _ = assertionFailure("Unsupported type: \(viewModel)")
             EmptyView()
         }
+    }
+
+    private func getBackButtonTitle() -> String? {
+        guard let range = viewModel.dateRangeNavigationStack.last else {
+            return nil
+        }
+        let formatter = StatsDateRangeFormatter(timeZone: context.timeZone)
+        return formatter.string(from: range.dateInterval)
     }
 
     @ViewBuilder

@@ -31,10 +31,9 @@
 
     self.view.backgroundColor = [UIColor systemGroupedBackgroundColor];
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
-    
-    UINavigationController *statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStatsDashboard" bundle:NSBundle.keystone] instantiateInitialViewController];
-    self.siteStatsDashboardVC = statsNavVC.viewControllers.firstObject;
-    
+
+    self.siteStatsDashboardVC = [[SiteStatsDashboardViewController alloc] init];
+
     self.noResultsViewController = [NoResultsViewController controller];
     self.noResultsViewController.delegate = self;
 

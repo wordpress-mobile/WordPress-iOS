@@ -83,6 +83,27 @@ enum AppTips {
             MaxDisplayCount(1)
         }
     }
+
+    @available(iOS 17, *)
+    struct StatsDateRangeTip: Tip {
+        let id = "stats_date_range_tip"
+
+        var title: Text {
+            Text(NSLocalizedString("tips.statsDateRange.title", value: "Navigate Through Time", comment: "Title for stats date range control tip"))
+        }
+
+        var message: Text? {
+            Text(NSLocalizedString("tips.statsDateRange.message", value: "Use the calendar to select days, weeks, months, years, or choose custom date ranges to view your stats.", comment: "Message explaining how to use the date range control"))
+        }
+
+        var image: Image? {
+            Image(systemName: "calendar")
+        }
+
+        var options: [any TipOption] {
+            MaxDisplayCount(1)
+        }
+    }
 }
 
 extension UIViewController {

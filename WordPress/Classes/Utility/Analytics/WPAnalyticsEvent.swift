@@ -648,6 +648,7 @@ import WordPressShared
     // Chart Events
     case jetpackStatsChartTypeChanged
     case jetpackStatsChartMetricSelected
+    case jetpackStatsChartBarSelected
 
     // List Events
     case jetpackStatsTopListItemTapped
@@ -1775,6 +1776,8 @@ import WordPressShared
             return "jetpack_stats_chart_type_changed"
         case .jetpackStatsChartMetricSelected:
             return "jetpack_stats_chart_metric_selected"
+        case .jetpackStatsChartBarSelected:
+            return "jetpack_stats_chart_bar_selected"
 
         // List Events
         case .jetpackStatsTopListItemTapped:

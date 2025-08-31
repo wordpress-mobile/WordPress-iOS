@@ -20,7 +20,7 @@ enum Strings {
         static let last7Days = AppLocalizedString("jetpackStats.calendar.last7Days", value: "Last 7 Days", comment: "Last 7 days date range")
         static let last28Days = AppLocalizedString("jetpackStats.calendar.last28Days", value: "Last 28 Days", comment: "Last 28 days date range")
         static let last30Days = AppLocalizedString("jetpackStats.calendar.last30Days", value: "Last 30 Days", comment: "Last 30 days date range")
-        static let last90Days = AppLocalizedString("jetpackStats.calendar.last90Days", value: "Last 90 Days", comment: "Last 90 days date range")
+        static let last12Weeks = AppLocalizedString("jetpackStats.calendar.last12Weeks", value: "Last 12 Weeks", comment: "Last 12 weeks (84 days) date range")
         static let last6Months = AppLocalizedString("jetpackStats.calendar.last6Months", value: "Last 6 Months", comment: "Last 6 months date range")
         static let last12Months = AppLocalizedString("jetpackStats.calendar.last12Months", value: "Last 12 Months", comment: "Last 12 months date range")
         static let last3Years = AppLocalizedString("jetpackStats.calendar.last3Years", value: "Last 3 Years", comment: "Last 3 years date range")
@@ -88,7 +88,7 @@ enum Strings {
     enum DatePicker {
         static let customRange = AppLocalizedString("jetpackStats.datePicker.customRange", value: "Custom Range", comment: "Title for custom date range picker")
         static let customRangeMenu = AppLocalizedString("jetpackStats.datePicker.customRangeMenu", value: "Custom Range…", comment: "Menu item for custom date range picker")
-        static let morePeriods = AppLocalizedString("jetpackStats.datePicker.morePeriods", value: "More Periods…", comment: "Menu item for more date period options")
+        static let morePeriods = AppLocalizedString("jetpackStats.datePicker.more", value: "More…", comment: "Menu item for more date period options")
         static let from = AppLocalizedString("jetpackStats.datePicker.from", value: "From", comment: "From date label")
         static let to = AppLocalizedString("jetpackStats.datePicker.to", value: "To", comment: "To date label")
         static let quickPeriodsForStartDate = AppLocalizedString("jetpackStats.datePicker.quickPeriodsForStartDate", value: "Quick periods for start date", comment: "Label for quick period selection")
@@ -97,6 +97,11 @@ enum Strings {
         static let compareWith = AppLocalizedString("jetpackStats.datePicker.compareWith", value: "Compare With…", comment: "Title for comparison menu")
         static let precedingPeriod = AppLocalizedString("jetpackStats.datePicker.precedingPeriod", value: "Preceding Period", comment: "Compare with preceding period option")
         static let samePeriodLastYear = AppLocalizedString("jetpackStats.datePicker.lastYear", value: "Last Year", comment: "Compare with same period last year option")
+    }
+
+    enum DateRangeTips {
+        static let title = AppLocalizedString("jetpackStats.dateRangeTip.title", value: "Navigate Through Time", comment: "Title for stats date range control tip")
+        static let message = AppLocalizedString("jetpackStats.dateRangeTip.message", value: "View recent days, weeks, months, years, or select custom date ranges.", comment: "Message explaining how to use the date range control")
     }
 
     enum Chart {

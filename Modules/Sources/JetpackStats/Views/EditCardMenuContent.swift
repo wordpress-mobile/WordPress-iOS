@@ -4,49 +4,56 @@ struct EditCardMenuContent: View {
     let cardViewModel: TrafficCardViewModel
 
     var body: some View {
-        Section {
-            Menu {
-                ControlGroup {
-                    Button {
-                        cardViewModel.configurationDelegate?.moveCard(cardViewModel, direction: .up)
-                    } label: {
-                        Label(Strings.Buttons.moveUp, systemImage: "arrow.up")
-                    }
+        if cardViewModel.configurationDelegate != nil {
+            Section {
+                contents
+            }
+        }
+    }
 
-                    Button {
-                        cardViewModel.configurationDelegate?.moveCard(cardViewModel, direction: .top)
-                    } label: {
-                        Label(Strings.Buttons.moveToTop, systemImage: "arrow.up.to.line")
-                    }
+    @ViewBuilder
+    private var contents: some View {
+        Menu {
+            ControlGroup {
+                Button {
+                    cardViewModel.configurationDelegate?.moveCard(cardViewModel, direction: .up)
+                } label: {
+                    Label(Strings.Buttons.moveUp, systemImage: "arrow.up")
                 }
 
-                ControlGroup {
-                    Button {
-                        cardViewModel.configurationDelegate?.moveCard(cardViewModel, direction: .down)
-                    } label: {
-                        Label(Strings.Buttons.moveDown, systemImage: "arrow.down")
-                    }
-
-                    Button {
-                        cardViewModel.configurationDelegate?.moveCard(cardViewModel, direction: .bottom)
-                    } label: {
-                        Label(Strings.Buttons.moveToBottom, systemImage: "arrow.down.to.line")
-                    }
+                Button {
+                    cardViewModel.configurationDelegate?.moveCard(cardViewModel, direction: .top)
+                } label: {
+                    Label(Strings.Buttons.moveToTop, systemImage: "arrow.up.to.line")
                 }
-            } label: {
-                Label(Strings.Buttons.moveCard, systemImage: "arrow.up.arrow.down")
             }
-            Button {
-                cardViewModel.isEditing = true
-            } label: {
-                Label(Strings.Buttons.customize, systemImage: "widget.small")
+
+            ControlGroup {
+                Button {
+                    cardViewModel.configurationDelegate?.moveCard(cardViewModel, direction: .down)
+                } label: {
+                    Label(Strings.Buttons.moveDown, systemImage: "arrow.down")
+                }
+
+                Button {
+                    cardViewModel.configurationDelegate?.moveCard(cardViewModel, direction: .bottom)
+                } label: {
+                    Label(Strings.Buttons.moveToBottom, systemImage: "arrow.down.to.line")
+                }
             }
-            Button(role: .destructive) {
-                cardViewModel.configurationDelegate?.deleteCard(cardViewModel)
-            } label: {
-                Label(Strings.Buttons.deleteWidget, systemImage: "trash")
-                    .tint(Color.red)
-            }
+        } label: {
+            Label(Strings.Buttons.moveCard, systemImage: "arrow.up.arrow.down")
+        }
+        Button {
+            cardViewModel.isEditing = true
+        } label: {
+            Label(Strings.Buttons.customize, systemImage: "widget.small")
+        }
+        Button(role: .destructive) {
+            cardViewModel.configurationDelegate?.deleteCard(cardViewModel)
+        } label: {
+            Label(Strings.Buttons.deleteWidget, systemImage: "trash")
+                .tint(Color.red)
         }
     }
 }

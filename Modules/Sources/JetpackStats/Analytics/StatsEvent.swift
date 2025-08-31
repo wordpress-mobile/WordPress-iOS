@@ -48,7 +48,7 @@ public enum StatsEvent {
 
     /// Date range preset selected
     /// - Parameters:
-    ///   - "selected_preset": The preset selected (e.g., "last_7_days", "last_28_days", "last_90_days", "last_365_days")
+    ///   - "selected_preset": The preset selected (e.g., "last_7_days", "last_28_days", "last_12_weeks", "last_365_days")
     case dateRangePresetSelected
 
     /// Custom date range selected
@@ -87,6 +87,13 @@ public enum StatsEvent {
     /// - Parameters:
     ///   - "metric": The metric selected (e.g., "visitors", "views", "likes")
     case chartMetricSelected
+
+    /// Chart bar selected for drill-down
+    /// - Parameters:
+    ///   - "from_granularity": The current granularity (e.g., "day", "month")
+    ///   - "metric": The metric being viewed
+    ///   - "value": The value of the selected bar
+    case chartBarSelected
 
     // MARK: - List Events
 
@@ -148,7 +155,7 @@ extension DateIntervalPreset {
         case .last7Days: "last_7_days"
         case .last28Days: "last_28_days"
         case .last30Days: "last_30_days"
-        case .last90Days: "last_90_days"
+        case .last12Weeks: "last_12_weeks"
         case .last6Months: "last_6_months"
         case .last12Months: "last_12_months"
         case .last3Years: "last_3_years"

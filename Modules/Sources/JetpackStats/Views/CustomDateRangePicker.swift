@@ -43,6 +43,7 @@ struct CustomDateRangePicker: View {
                         .buttonStyle(.borderedProminent)
                         .buttonBorderShape(.capsule)
                         .tint(Color.primary)
+                        .foregroundStyle(Color(.systemBackground))
                 }
             }
         }

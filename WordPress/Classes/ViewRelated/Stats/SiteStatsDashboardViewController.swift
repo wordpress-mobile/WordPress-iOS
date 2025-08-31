@@ -53,10 +53,10 @@ public class SiteStatsDashboardViewController: UIViewController {
 
     // MARK: - Properties
 
-    @IBOutlet weak var filterTabBar: FilterTabBar!
-    @IBOutlet weak var jetpackBannerView: JetpackBannerView!
+    private let filterTabBar = FilterTabBar()
+    private let containerView = UIView()
 
-    private var pageViewController: UIPageViewController?
+    private var currentChildViewController: UIViewController?
     private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
     private var tipObserver: TipObserver?
     private var isUsingMockData = false
@@ -82,12 +82,7 @@ public class SiteStatsDashboardViewController: UIViewController {
 
     // MARK: - Stats View Controllers
 
-    private lazy var insightsTableViewController = {
-        let viewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
-        viewController.tableStyle = .insetGrouped
-        viewController.bannerView = jetpackBannerView
-        return viewController
-    }()
+    private lazy var insightsTableViewController = SiteStatsInsightsTableViewController()
 
     private lazy var trafficTableViewController: UIViewController = {
         // If new stats is enabled, show StatsHostingViewController instead
@@ -121,9 +116,7 @@ public class SiteStatsDashboardViewController: UIViewController {
 
         let currentPeriod = SiteStatsDashboardPreferences.getSelectedPeriodUnit() ?? .day
 
-        let viewController = SiteStatsPeriodTableViewController(date: date, period: currentPeriod)
-        viewController.bannerView = jetpackBannerView
-        return viewController
+        return SiteStatsPeriodTableViewController(date: date, period: currentPeriod)
     }
 
     private lazy var subscribersViewController = {
@@ -143,12 +136,19 @@ public class SiteStatsDashboardViewController: UIViewController {
         // Important to make navigation bar match the filter bar
         view.backgroundColor = .systemBackground
 
-        configureJetpackBanner()
+        setupViews()
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedTabFromUserDefaults()
         configureNavBar()
         view.accessibilityIdentifier = "stats-dashboard"
+    }
+
+    private func setupViews() {
+        let stackView = UIStackView(axis: .vertical, [filterTabBar, containerView])
+        view.addSubview(stackView)
+        stackView.pinEdges(.top, to: view.safeAreaLayoutGuide)
+        stackView.pinEdges([.horizontal, .bottom])
     }
 
     public override func viewWillAppear(_ animated: Bool) {
@@ -192,18 +192,6 @@ public class SiteStatsDashboardViewController: UIViewController {
         parent?.navigationItem.trailingItemGroups = childVC.navigationItem.trailingItemGroups + [
             UIBarButtonItemGroup.fixedGroup(items: [statsMenuButton])
         ]
-    }
-
-    func configureJetpackBanner() {
-        guard JetpackBrandingVisibility.all.enabled else {
-            jetpackBannerView.removeFromSuperview()
-            return
-        }
-        let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.stats)
-        jetpackBannerView.configure(title: textProvider.brandingText()) { [unowned self] in
-            JetpackBrandingCoordinator.presentOverlay(from: self)
-            JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .stats)
-        }
     }
 
     @objc public func manageInsightsButtonTapped() {
@@ -274,7 +262,7 @@ public class SiteStatsDashboardViewController: UIViewController {
         }
 
         trafficTableViewController = trafficVC
-        pageViewController?.setViewControllers([trafficTableViewController], direction: .forward, animated: false)
+        showChildViewController(trafficTableViewController)
         configureNavBar()
     }
 
@@ -284,7 +272,7 @@ public class SiteStatsDashboardViewController: UIViewController {
         FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: false)
 
         trafficTableViewController = createClassicTrafficViewController()
-        pageViewController?.setViewControllers([trafficTableViewController], direction: .forward, animated: false)
+        showChildViewController(trafficTableViewController)
         configureNavBar()
     }
 
@@ -297,7 +285,7 @@ public class SiteStatsDashboardViewController: UIViewController {
         }
 
         trafficTableViewController = trafficVC
-        pageViewController?.setViewControllers([trafficTableViewController], direction: .forward, animated: false)
+        showChildViewController(trafficTableViewController)
 
         // Update menu to reflect new state
         statsMenuButton.menu = createStatsMenu()
@@ -336,15 +324,6 @@ public class SiteStatsDashboardViewController: UIViewController {
         removeWillEnterForegroundObserver()
     }
 
-    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.destination {
-        case let pageViewController as UIPageViewController:
-            self.pageViewController = pageViewController
-        default:
-            break
-        }
-    }
-
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if traitCollection.verticalSizeClass == .regular, traitCollection.horizontalSizeClass == .compact {
             updatePeriodView(oldSelectedTab: currentSelectedTab)
@@ -363,12 +342,11 @@ extension SiteStatsDashboardViewController: StatsForegroundObservable {
 private extension SiteStatsDashboardViewController {
     var currentSelectedTab: StatsTabType {
         get {
-            let selectedIndex = filterTabBar?.selectedIndex ?? 0
-            return displayedTabs[selectedIndex]
+            return displayedTabs[filterTabBar.selectedIndex]
         }
         set {
             let index = displayedTabs.firstIndex(of: newValue) ?? 0
-            filterTabBar?.setSelectedIndex(index)
+            filterTabBar.setSelectedIndex(index)
             let oldSelectedPeriod = getSelectedTabFromUserDefaults()
             updatePeriodView(oldSelectedTab: oldSelectedPeriod)
             saveSelectedPeriodToUserDefaults()
@@ -431,39 +409,67 @@ private extension SiteStatsDashboardViewController {
 
     func updatePeriodView(oldSelectedTab: StatsTabType) {
         let selectedPeriodChanged = currentSelectedTab != oldSelectedTab
-        let pageViewControllerIsEmpty = pageViewController?.viewControllers?.isEmpty ?? true
+        let containerIsEmpty = currentChildViewController == nil
         let isGrowAudienceShowingOnInsights = insightsTableViewController.isGrowAudienceShowing
 
         switch currentSelectedTab {
         case .insights:
-            if selectedPeriodChanged || pageViewControllerIsEmpty || isGrowAudienceShowingOnInsights {
-                pageViewController?.setViewControllers([insightsTableViewController],
-                                                       direction: .forward,
-                                                       animated: false)
+            if selectedPeriodChanged || containerIsEmpty || isGrowAudienceShowingOnInsights {
+                showChildViewController(insightsTableViewController)
             } else {
                 insightsTableViewController.refreshInsights()
             }
         case .traffic:
-            if oldSelectedTab != .traffic || pageViewControllerIsEmpty {
-                pageViewController?.setViewControllers([trafficTableViewController],
-                                                       direction: .forward,
-                                                       animated: false)
+            if oldSelectedTab != .traffic || containerIsEmpty {
+                showChildViewController(trafficTableViewController)
             } else {
                 if let periodVC = trafficTableViewController as? SiteStatsPeriodTableViewController {
                     periodVC.refreshData()
                 }
             }
         case .subscribers:
-            if oldSelectedTab != .subscribers || pageViewControllerIsEmpty {
-                pageViewController?.setViewControllers([subscribersViewController],
-                                                       direction: .forward,
-                                                       animated: false)
+            if oldSelectedTab != .subscribers || containerIsEmpty {
+                showChildViewController(subscribersViewController)
             } else {
                 subscribersViewController.refreshData()
             }
         }
     }
 
+    // MARK: - Container Management
+
+    private func showChildViewController(_ childViewController: UIViewController) {
+        // Remove current child if exists
+        if let currentChild = currentChildViewController {
+            _removeChildViewController(currentChild)
+        }
+
+        // Add new child
+        _addChildViewController(childViewController)
+        currentChildViewController = childViewController
+    }
+
+    private func _addChildViewController(_ child: UIViewController) {
+        addChild(child)
+        containerView.addSubview(child.view)
+
+        // Configure constraints
+        child.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            child.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            child.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            child.view.topAnchor.constraint(equalTo: containerView.topAnchor),
+            child.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
+
+        child.didMove(toParent: self)
+    }
+
+    private func _removeChildViewController(_ child: UIViewController) {
+        child.willMove(toParent: nil)
+        child.view.removeFromSuperview()
+        child.removeFromParent()
+    }
 }
 
 // MARK: - Tracks Support

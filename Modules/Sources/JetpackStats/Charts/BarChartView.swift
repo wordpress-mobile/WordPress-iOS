@@ -3,9 +3,13 @@ import Charts
 
 struct BarChartView: View {
     let data: ChartData
+    var onDateSelected: ((Date) -> Void)? = nil
 
-    @State private var selectedDate: Date?
     @State private var selectedDataPoints: SelectedDataPoints?
+    @State private var isDragging = false
+    @State private var isLongPressing = false
+    @State private var longPressLocation: CGPoint?
+    @State private var tappedDataPoint: DataPoint?
 
     @Environment(\.context) var context
 
@@ -31,15 +35,17 @@ struct BarChartView: View {
         .chartYScale(domain: yAxisDomain)
         .chartLegend(.hidden)
         .environment(\.timeZone, context.timeZone)
-        .modifier(ChartSelectionModifier(selection: $selectedDate))
         .animation(.spring, value: ObjectIdentifier(data))
-        .onChange(of: selectedDate) {
-            selectedDataPoints = SelectedDataPoints.compute(for: $0, data: data)
+        .chartOverlay { proxy in
+            makeGesturesOverlayView(proxy: proxy)
         }
         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .accessibilityElement()
         .accessibilityLabel(Strings.Accessibility.chartContainer)
         .accessibilityHint(Strings.Accessibility.viewChartData)
+        .onChange(of: ObjectIdentifier(data)) { _ in
+            tappedDataPoint = nil
+        }
     }
 
     // MARK: - Chart Marks
@@ -48,7 +54,7 @@ struct BarChartView: View {
     private var currentPeriodBars: some ChartContent {
         ForEach(data.currentData) { point in
             BarMark(
-                x: .value("Date", point.date, unit: data.granularity.component),
+                x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
                 width: .automatic
             )
@@ -68,7 +74,15 @@ struct BarChartView: View {
     }
 
     private func getOpacityForCurrentPeriodBar(for point: DataPoint) -> CGFloat {
+        if let tappedDataPoint, tappedDataPoint.id == point.id {
+            return 1.0
+        }
         guard let selectedDataPoints else {
+            // If there's a tapped point, dim other bars
+            if tappedDataPoint != nil {
+                return 0.5
+            }
+            // If no selection and not tapped, check if data is incomplete
             let isIncomplete = context.calendar.isIncompleteDataPeriod(for: point.date, granularity: data.granularity)
             return isIncomplete ? 0.5 : 1
         }
@@ -79,7 +93,7 @@ struct BarChartView: View {
     private var previousPeriodBars: some ChartContent {
         ForEach(data.mappedPreviousData) { point in
             BarMark(
-                x: .value("Date", point.date, unit: data.granularity.component),
+                x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
                 width: .automatic,
                 stacking: .unstacked
@@ -113,7 +127,7 @@ struct BarChartView: View {
     private var significantPointAnnotations: some ChartContent {
         if let maxPoint = data.significantPoints.currentMax, data.currentData.count > 0 {
             PointMark(
-                x: .value("Date", maxPoint.date, unit: data.granularity.component),
+                x: .value("Date", maxPoint.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", maxPoint.value)
             )
             .opacity(0)
@@ -123,7 +137,7 @@ struct BarChartView: View {
                     metric: data.metric
                 )
                 // Important for drag selection to work correctly.
-                .opacity(selectedDate == nil ? 1 : 0)
+                .opacity(selectedDataPoints == nil ? 1 : 0)
             }
         }
     }
@@ -174,6 +188,7 @@ struct BarChartView: View {
             if let date = value.as(Date.self) {
                 AxisValueLabel {
                     ChartAxisDateLabel(date: date, granularity: data.granularity)
+                        .offset(x: -2) // Align it better with bars
                 }
             }
         }
@@ -219,6 +234,100 @@ struct BarChartView: View {
                 granularity: data.granularity
             )
         }
+    }
+
+    // MARK: - Gestures
+
+    private func makeGesturesOverlayView(proxy: ChartProxy) -> some View {
+        GeometryReader { geometry in
+            Rectangle()
+                .fill(.clear)
+                .contentShape(Rectangle())
+                .onTapGesture { location in
+                    handleTapGesture(at: location, proxy: proxy, geometry: geometry)
+                }
+                .onLongPressGesture(minimumDuration: 0.3) {
+                    // Long press completed - keep showing annotation
+                } onPressingChanged: { isPressing in
+                    if isPressing {
+                        // Long press started - show annotation at current location
+                        if let location = longPressLocation {
+                            isLongPressing = true
+                            selectedDataPoints = getSelectedDataPoints(at: location, proxy: proxy, geometry: geometry)
+                        }
+                    } else {
+                        // Long press ended - clear annotation
+                        isLongPressing = false
+                        longPressLocation = nil
+                        if !isDragging {
+                            selectedDataPoints = nil
+                        }
+                        tappedDataPoint = nil
+                    }
+                }
+                .simultaneousGesture(
+                    DragGesture(minimumDistance: 0)
+                        .onChanged { value in
+                            // Store location for long press
+                            longPressLocation = value.location
+
+                            // Handle drag if moved enough
+                            if value.translation.width.magnitude > 8 || value.translation.height.magnitude > 8 {
+                                isDragging = true
+                                selectedDataPoints = getSelectedDataPoints(at: value.location, proxy: proxy, geometry: geometry)
+                            }
+                        }
+                        .onEnded { _ in
+                            isDragging = false
+                            longPressLocation = nil
+                            if !isLongPressing {
+                                selectedDataPoints = nil
+                            }
+                            tappedDataPoint = nil
+                        }
+                )
+        }
+    }
+
+    private func handleTapGesture(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) {
+        // Only handle tap if not dragging or long pressing
+        guard !isDragging && !isLongPressing else { return }
+
+        guard let onDateSelected,
+              data.granularity != .hour,
+              let selection = getSelectedDataPoints(at: location, proxy: proxy, geometry: geometry),
+              selection.current?.value != 0 || selection.previous?.value != 0 else {
+            // Clear selection if tapping on empty area
+            tappedDataPoint = nil
+            return
+        }
+        tappedDataPoint = selection.current ?? selection.previous
+        if let date = tappedDataPoint?.date {
+            onDateSelected(date)
+        }
+    }
+
+    private func getSelectedDataPoints(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) -> SelectedDataPoints? {
+        let origin = geometry[proxy.plotAreaFrame].origin
+        let location = CGPoint(
+            x: location.x - origin.x,
+            y: location.y - origin.y
+        )
+        guard let date: Date = proxy.value(atX: location.x) else {
+            return nil
+        }
+        // Calling `proxy.value(atX: location.x)` returns dates with a second
+        // precision. But the data points are represented using the start of the
+        // period. The chart needs to offset the selection so that
+        // `SelectedDataPoints.compute` correctly finds the closest one.
+        let interval: TimeInterval = {
+            let now = Date()
+            let interval = context.calendar.date(byAdding: data.granularity.component, value: 1, to: now)
+            return (interval ?? now).timeIntervalSince(now)
+        }()
+
+        let offsetDate = date.addingTimeInterval(-(interval / 4))
+        return SelectedDataPoints.compute(for: offsetDate, data: data)
     }
 }
 

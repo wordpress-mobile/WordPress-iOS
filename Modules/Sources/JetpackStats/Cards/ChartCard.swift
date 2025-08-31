@@ -4,6 +4,10 @@ import Charts
 struct ChartCard: View {
     @ObservedObject private var viewModel: ChartCardViewModel
 
+    private var onDateRangeSelected: ((StatsDateRange) -> Void)?
+    private var backButtonTitle: String?
+    private var backButtonAction: (() -> Void)?
+
     private var dateRange: StatsDateRange { viewModel.dateRange }
     private var metrics: [SiteMetric] { viewModel.metrics }
     private var selectedMetric: SiteMetric { viewModel.selectedMetric }
@@ -37,7 +41,10 @@ struct ChartCard: View {
             viewModel.onAppear()
         }
         .overlay(alignment: .topTrailing) {
-            moreMenu
+            HStack(alignment: .center, spacing: 0) {
+                backButton
+                moreMenu
+            }
         }
         .cardStyle()
         .grayscale(viewModel.isStale ? 1 : 0)
@@ -66,12 +73,30 @@ struct ChartCard: View {
     }
 
     private func headerView(for metric: SiteMetric) -> some View {
-        HStack {
+        HStack(alignment: .center) {
             StatsCardTitleView(title: metric.localizedTitle, showChevron: false)
-            Spacer(minLength: 44)
+            Spacer(minLength: 0)
         }
+        .animation(.spring, value: backButtonTitle)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Strings.Accessibility.cardTitle(metric.localizedTitle))
+    }
+
+    @ViewBuilder
+    private var backButton: some View {
+        if let title = backButtonTitle, let action = backButtonAction {
+            Button(action: action) {
+                HStack(spacing: 4) {
+                    Image(systemName: "chevron.backward")
+                        .font(.system(size: 12, weight: .bold))
+                    Text(title)
+                        .font(.system(size: 14, weight: .medium))
+                }
+                .foregroundColor(Constants.Colors.blue)
+            }
+            .buttonStyle(.plain)
+            .transition(.scale(scale: 0.9).combined(with: .opacity))
+        }
     }
 
     @ViewBuilder
@@ -226,8 +251,41 @@ struct ChartCard: View {
         case .line:
             LineChartView(data: data)
         case .columns:
-            BarChartView(data: data)
+            BarChartView(data: data) { selection in
+                handleDateSelection(selection, data: data)
+            }
         }
+    }
+
+    private func handleDateSelection(_ selection: Date, data: ChartData) {
+        let calendar = viewModel.dateRange.calendar
+        let component = data.granularity.component
+        guard let interval = calendar.dateInterval(of: component, for: selection) else {
+            return assertionFailure("invalid component or date")
+        }
+        let newDateRange = StatsDateRange(
+            interval: interval,
+            component: component,
+            comparison: viewModel.dateRange.comparison,
+            calendar: calendar
+        )
+        onDateRangeSelected?(newDateRange)
+        viewModel.tracker?.send(.chartBarSelected)
+    }
+
+    /// Configures the back button for navigation history
+    func backButton(title: String?, action: (() -> Void)?) -> ChartCard {
+        var copy = self
+        copy.backButtonTitle = title
+        copy.backButtonAction = action
+        return copy
+    }
+
+    /// Configures the action when a bar is tapped for drill-down navigation
+    func onDateRangeSelected(_ action: @escaping (StatsDateRange) -> Void) -> ChartCard {
+        var copy = self
+        copy.onDateRangeSelected = action
+        return copy
     }
 }
 
@@ -266,8 +324,6 @@ enum ChartType: String, CaseIterable, Codable {
         }
     }
 }
-
-// MARK: - Preview
 
 private struct ChartCardPreview: View {
     @StateObject var viewModel = ChartCardViewModel(

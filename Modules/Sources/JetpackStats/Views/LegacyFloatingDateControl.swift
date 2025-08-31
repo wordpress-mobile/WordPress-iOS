@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 /// A pre-Liquid Glass version.
 struct LegacyFloatingDateControl: View {
@@ -6,7 +7,7 @@ struct LegacyFloatingDateControl: View {
     @State private var isShowingCustomRangePicker = false
 
     private var buttonHeight: CGFloat { min(_buttonHeight, 60) }
-    @ScaledMetric private var _buttonHeight = 50
+    @ScaledMetric private var _buttonHeight = 46
 
     @Environment(\.context) var context
 
@@ -18,6 +19,7 @@ struct LegacyFloatingDateControl: View {
             Spacer(minLength: 8)
             navigationControls
         }
+        .modifier(MinimumBottomSafeArea(minPadding: 16))
         .dynamicTypeSize(...DynamicTypeSize.xLarge)
         .padding(.horizontal, 24)
         .background {
@@ -56,6 +58,7 @@ struct LegacyFloatingDateControl: View {
         .tint(Color.primary)
         .menuOrder(.fixed)
         .buttonStyle(.plain)
+        .modifier(DateRangeTipModifier())
     }
 
     private var dateRangeButtonContent: some View {
@@ -138,8 +141,56 @@ private struct FloatingStyle: ViewModifier {
     }
 }
 
+@available(iOS 17, *)
+private struct StatsDateRangeTip: Tip {
+    var title: Text {
+        Text(Strings.DateRangeTips.title)
+    }
+
+    var message: Text? {
+        Text(Strings.DateRangeTips.message)
+    }
+
+    var image: Image? {
+        Image(systemName: "calendar")
+    }
+
+    var options: [any TipOption] {
+        [Tips.MaxDisplayCount(1)]
+    }
+}
+
+private struct MinimumBottomSafeArea: ViewModifier {
+    let minPadding: CGFloat
+
+    @State private var bottomInset: CGFloat = 0
+
+    func body(content: Content) -> some View {
+        content
+            .padding(.bottom, bottomInset == 0 ? minPadding : 0)
+            .overlay(
+                GeometryReader { geometry in
+                    Color.clear.onAppear {
+                        self.bottomInset = geometry.safeAreaInsets.bottom
+                    }
+                }
+            )
+    }
+}
+
 private extension View {
     func floatingStyle(cornerRadius: CGFloat = 40) -> some View {
         modifier(FloatingStyle(cornerRadius: cornerRadius))
+    }
+}
+
+private struct DateRangeTipModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 17, *) {
+            content
+                .popoverTip(StatsDateRangeTip(), arrowEdge: .bottom)
+        } else {
+            content
+        }
     }
 }

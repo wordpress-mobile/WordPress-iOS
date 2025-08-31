@@ -4587,17 +4587,11 @@ Please install the %3$@ to use the app with this site.";
 /* Top list option title */
 "jetpackStats.addChart.topListOption" = "Top List";
 
-/* Archive section for authors */
-"jetpackStats.archiveSections.author" = "Authors";
-
 /* Plural item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.plural" = "%1$d items";
 
 /* Singular item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.singular" = "%1$d item";
-
-/* Archive section for other items */
-"jetpackStats.archiveSections.other" = "Other";
 
 /* Title for the author details screen */
 "jetpackStats.authorDetails.title" = "Author";
@@ -4665,6 +4659,9 @@ Please install the %3$@ to use the app with this site.";
 /* Last 12 months date range */
 "jetpackStats.calendar.last12Months" = "Last 12 Months";
 
+/* Last 12 weeks (84 days) date range */
+"jetpackStats.calendar.last12Weeks" = "Last 12 Weeks";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Last 28 Days";
 
@@ -4679,9 +4676,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Last 7 days date range */
 "jetpackStats.calendar.last7Days" = "Last 7 Days";
-
-/* Last 90 days date range */
-"jetpackStats.calendar.last90Days" = "Last 90 Days";
 
 /* Month time period */
 "jetpackStats.calendar.month" = "Month";
@@ -4846,7 +4840,7 @@ Please install the %3$@ to use the app with this site.";
 "jetpackStats.datePicker.lastYear" = "Last Year";
 
 /* Menu item for more date period options */
-"jetpackStats.datePicker.morePeriods" = "More Periods…";
+"jetpackStats.datePicker.more" = "More…";
 
 /* Compare with preceding period option */
 "jetpackStats.datePicker.precedingPeriod" = "Preceding Period";
@@ -4862,6 +4856,12 @@ Please install the %3$@ to use the app with this site.";
 
 /* To date label */
 "jetpackStats.datePicker.to" = "To";
+
+/* Message explaining how to use the date range control */
+"jetpackStats.dateRangeTip.message" = "View recent days, weeks, months, years, or select custom date ranges.";
+
+/* Title for stats date range control tip */
+"jetpackStats.dateRangeTip.title" = "Navigate Through Time";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Sub-links";
@@ -10783,6 +10783,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "Your Sites";
+
+/* Message explaining how to use the date range control */
+"tips.statsDateRange.message" = "Use the calendar to select days, weeks, months, years, or choose custom date ranges to view your stats.";
+
+/* Title for stats date range control tip */
+"tips.statsDateRange.title" = "Navigate Through Time";
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
