@@ -197,11 +197,11 @@ public struct Product {
 
         returnDict["product_id"] = productID as AnyObject
 
-        if let meta = meta {
+        if let meta {
             returnDict["meta"] = meta as AnyObject
         }
 
-        if let extra = extra {
+        if let extra {
             returnDict["extra"] = extra as AnyObject
         }
 

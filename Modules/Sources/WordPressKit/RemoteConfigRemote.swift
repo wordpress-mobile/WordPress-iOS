@@ -27,7 +27,7 @@ open class RemoteConfigRemote: ServiceRemoteWordPressComREST {
             WPKitLogError("Error retrieving remote config values")
             WPKitLogError("\(error)")
 
-            if let response = response {
+            if let response {
                 WPKitLogDebug("Response Code: \(response.statusCode)")
             }
 

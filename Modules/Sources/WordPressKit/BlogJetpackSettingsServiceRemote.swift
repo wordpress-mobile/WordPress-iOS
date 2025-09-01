@@ -235,7 +235,7 @@ public extension BlogJetpackSettingsServiceRemote {
 
         // RemoteBlogJetpackSettings keys
         public static let monitorEnabled = "monitor"
-        public static let blockMaliciousLoginAttempts  = "protect"
+        public static let blockMaliciousLoginAttempts = "protect"
         public static let allowListedIPAddresses = "jetpack_protect_global_whitelist"
         public static let allowListedIPsLocal = "local"
         public static let ssoEnabled = "sso"
@@ -247,7 +247,7 @@ public extension BlogJetpackSettingsServiceRemote {
         static let monitorPushNotifications = "wp_note_notifications"
 
         // RemoteBlogJetpackModuleSettings keys
-        public static let serveImagesFromOurServers  = "photon"
+        public static let serveImagesFromOurServers = "photon"
 
     }
 

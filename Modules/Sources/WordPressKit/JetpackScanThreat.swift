@@ -28,7 +28,7 @@ public struct JetpackScanThreat: Decodable {
             if threat.diff != nil {
                 self = .core
             } else if threat.context != nil {
-                self =  .file
+                self = .file
             } else if let ext = threat.extension {
                 self = ThreatType(rawValue: ext.type.rawValue)
             } else if threat.rows != nil || threat.signature.contains(Constants.databaseSignature) {
@@ -220,7 +220,7 @@ public struct JetpackThreatContext {
         }
 
         // Since the dictionary keys are unsorted, resort by line number
-        self.lines =  lines.sorted { $0.lineNumber < $1.lineNumber }
+        self.lines = lines.sorted { $0.lineNumber < $1.lineNumber }
     }
 
     /// Parses the marks dictionary and converts them to an array of NSRange's

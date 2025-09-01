@@ -33,11 +33,11 @@ open class BloggingPromptsServiceRemote: ServiceRemoteWordPressComREST {
         let requestParameter: [String: AnyHashable] = {
             var params = [String: AnyHashable]()
 
-            if let number = number, number > 0 {
+            if let number, number > 0 {
                 params["number"] = number
             }
 
-            if let fromDate = fromDate {
+            if let fromDate {
                 // convert to yyyy-MM-dd format, excluding the timezone information.
                 // the date parameter doesn't need to be timezone-accurate since prompts are grouped by date.
                 params["from"] = Self.dateFormatter.string(from: fromDate)

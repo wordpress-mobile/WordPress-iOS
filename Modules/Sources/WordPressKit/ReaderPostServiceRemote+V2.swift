@@ -36,7 +36,7 @@ extension ReaderPostServiceRemote {
 
         path?.queryItems = topics.map { URLQueryItem(name: "tags[]", value: $0) }
 
-        if let page = page {
+        if let page {
             path?.queryItems?.append(URLQueryItem(name: "page_handle", value: page))
         }
 

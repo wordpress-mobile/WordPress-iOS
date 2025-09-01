@@ -152,7 +152,7 @@ public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
     private func scanPath(for siteID: Int, with path: String? = nil) -> String {
         var endpoint = "sites/\(siteID)/scan/"
 
-        if let path = path {
+        if let path {
             endpoint = endpoint.appending(path)
         }
 

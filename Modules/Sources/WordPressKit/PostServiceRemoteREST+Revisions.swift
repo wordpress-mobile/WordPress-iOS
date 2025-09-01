@@ -13,7 +13,7 @@ public extension PostServiceRemoteREST {
                                     do {
                                         let data = try JSONSerialization.data(withJSONObject: response, options: [])
                                         self.map(from: data) { (revisions, error) in
-                                            if let error = error {
+                                            if let error {
                                                 failure(error)
                                             } else {
                                                 success(revisions)

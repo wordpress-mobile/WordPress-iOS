@@ -27,7 +27,7 @@ import WordPressKitObjC
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_0)
         var parameters: [String: AnyObject] = [:]
 
-        if let types = types {
+        if let types {
             parameters["types"] = types.toDictionary() as AnyObject
         }
 

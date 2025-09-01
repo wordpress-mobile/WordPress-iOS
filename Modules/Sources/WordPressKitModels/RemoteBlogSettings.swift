@@ -192,7 +192,7 @@ public class RemoteBlogSettings: NSObject {
     ///
     @objc public var commentsSortOrderAscending: Bool {
         set {
-            commentsSortOrder = newValue ? RemoteBlogSettings.AscendingStringValue :  RemoteBlogSettings.DescendingStringValue
+            commentsSortOrder = newValue ? RemoteBlogSettings.AscendingStringValue : RemoteBlogSettings.DescendingStringValue
         }
         get {
             return commentsSortOrder == RemoteBlogSettings.AscendingStringValue
@@ -201,6 +201,6 @@ public class RemoteBlogSettings: NSObject {
 
     // MARK: - Private
 
-    private static let AscendingStringValue     = "asc"
-    private static let DescendingStringValue    = "desc"
+    private static let AscendingStringValue = "asc"
+    private static let DescendingStringValue = "desc"
 }

@@ -49,7 +49,7 @@ struct AppTransportSecuritySettings {
             return !allowsInsecureHTTPLoads
         }
 
-        guard let settings = settings else {
+        guard let settings else {
             return true
         }
 

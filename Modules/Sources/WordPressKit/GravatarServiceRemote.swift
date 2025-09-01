@@ -39,7 +39,7 @@ open class GravatarServiceRemote {
 
         let session = URLSession.shared
         let task = session.dataTask(with: targetURL) { (data: Data?, _: URLResponse?, error: Error?) in
-            guard error == nil, let data = data else {
+            guard error == nil, let data else {
                 failure(error)
                 return
             }
@@ -147,11 +147,13 @@ open class GravatarServiceRemote {
 
     // MARK: - Private Structs
     private struct UploadParameters {
+        // swiftlint:disable operator_usage_whitespace
         static let endpointURL          = "https://api.gravatar.com/v1/upload-image"
         static let HTTPMethod           = "POST"
         static let contentType          = "application/octet-stream"
         static let filename             = "profile.png"
         static let imageKey             = "filedata"
         static let accountKey           = "account"
+        // swiftlint:enable operator_usage_whitespace
     }
 }

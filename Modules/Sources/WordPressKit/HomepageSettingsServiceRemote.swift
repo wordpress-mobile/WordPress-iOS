@@ -19,11 +19,11 @@ public class HomepageSettingsServiceRemote: ServiceRemoteWordPressComREST {
 
         var parameters: [String: AnyObject] = [Keys.isPageOnFront: type.isPageOnFront as AnyObject]
 
-        if let homePageID = homePageID {
+        if let homePageID {
             parameters[Keys.pageOnFrontID] = homePageID as AnyObject
         }
 
-        if let postsPageID = postsPageID {
+        if let postsPageID {
             parameters[Keys.pageForPostsID] = postsPageID as AnyObject
         }
 

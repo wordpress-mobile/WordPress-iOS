@@ -163,7 +163,7 @@ private extension NotificationSyncServiceRemote {
             parameters["ids"] = (notificationIds as NSArray).componentsJoined(by: ",") as AnyObject?
         }
 
-        if let fields = fields {
+        if let fields {
             parameters["fields"] = fields as AnyObject?
         }
 
@@ -172,7 +172,7 @@ private extension NotificationSyncServiceRemote {
             let notes = document?["notes"] as? [[String: AnyObject]]
             let parsed = notes?.compactMap { RemoteNotification(document: $0) }
 
-            if let parsed = parsed {
+            if let parsed {
                 completion(nil, parsed)
             } else {
                 completion(SyncError.failed, nil)

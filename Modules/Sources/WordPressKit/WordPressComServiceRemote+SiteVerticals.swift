@@ -35,9 +35,11 @@ public struct SiteVertical: Decodable, Equatable {
     }
 
     private enum CodingKeys: String, CodingKey {
+        // swiftlint:disable operator_usage_whitespace
         case identifier = "vertical_id"
         case title      = "vertical_name"
         case isNew      = "is_user_input_vertical"
+        // swiftlint:enable operator_usage_whitespace
     }
 }
 
@@ -98,7 +100,7 @@ public extension WordPressComServiceRemote {
             success: { [weak self] responseObject, httpResponse in
                 WPKitLogInfo("\(responseObject) | \(String(describing: httpResponse))")
 
-                guard let self = self else {
+                guard let self else {
                     return
                 }
 

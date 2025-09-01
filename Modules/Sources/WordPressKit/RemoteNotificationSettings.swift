@@ -36,9 +36,11 @@ open class RemoteNotificationSettings {
         /// Enumerates all of the possible Stream Kinds
         ///
         public enum Kind: String {
+            // swiftlint:disable operator_usage_whitespace
             case Timeline       = "timeline"
             case Email          = "email"
             case Device         = "device"
+            // swiftlint:enable operator_usage_whitespace
 
             static let allValues = [ Timeline, Email, Device ]
         }
@@ -50,8 +52,10 @@ open class RemoteNotificationSettings {
         ///     - preferences: Raw remote preferences, retrieved from the backend
         ///
         fileprivate init(kind: Kind, preferences: NSDictionary?) {
+            // swiftlint:disable operator_usage_whitespace
             self.kind           = kind
             self.preferences    = filterNonBooleanEntries(preferences)
+            // swiftlint:enable operator_usage_whitespace
         }
 
         /// Helper method that will filter out non boolean entries, and return a native Swift collection.

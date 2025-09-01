@@ -18,7 +18,7 @@ open class QRLoginServiceRemote: ServiceRemoteWordPressComREST {
                 failure(nil, .invalidData)
             }
         }, failure: { (error, response) in
-            guard let response = response else {
+            guard let response else {
                 failure(error, .invalidData)
                 return
             }

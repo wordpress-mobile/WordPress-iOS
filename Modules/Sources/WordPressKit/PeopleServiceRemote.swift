@@ -229,7 +229,7 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         var parameters = [String: AnyObject]()
 
-        if let reassignID = reassignID {
+        if let reassignID {
             parameters["reassign"] = reassignID as AnyObject?
         }
 

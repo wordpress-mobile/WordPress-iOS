@@ -66,7 +66,7 @@ public struct SiteCreationRequest: Encodable {
         try container.encode(publicValue, forKey: .isPublic)
 
         let siteInfo: SiteInformation?
-        if let tagline = tagline {
+        if let tagline {
             siteInfo = SiteInformation(tagline: tagline)
         } else {
             siteInfo = nil
@@ -207,7 +207,7 @@ public extension WordPressComServiceRemote {
             success: { [weak self] responseObject, httpResponse in
                 WPKitLogInfo("\(responseObject) | \(String(describing: httpResponse))")
 
-                guard let self = self else {
+                guard let self else {
                     return
                 }
 

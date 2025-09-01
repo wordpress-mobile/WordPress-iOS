@@ -21,7 +21,7 @@ public struct ValidateDomainContactInformationResponse: Codable {
     /// Returns true if any of the properties within `messages` has a value.
     ///
     public var hasMessages: Bool {
-        if let messages = messages {
+        if let messages {
             let mirror = Mirror(reflecting: messages)
 
             for child in mirror.children {

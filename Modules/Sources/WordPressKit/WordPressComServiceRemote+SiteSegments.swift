@@ -100,7 +100,7 @@ public extension WordPressComServiceRemote {
             success: { [weak self] responseObject, httpResponse in
                 WPKitLogInfo("\(responseObject) | \(String(describing: httpResponse))")
 
-                guard let self = self else {
+                guard let self else {
                     return
                 }
 

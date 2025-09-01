@@ -68,6 +68,7 @@ open class WordPressComRestApi: NSObject {
 
     // MARK: Properties
 
+    // swiftlint:disable operator_usage_whitespace
     @objc public static let ErrorKeyErrorCode       = "WordPressComRestApiErrorCodeKey"
     @objc public static let ErrorKeyErrorMessage    = "WordPressComRestApiErrorMessageKey"
     @objc public static let ErrorKeyErrorData       = "WordPressComRestApiErrorDataKey"
@@ -75,6 +76,7 @@ open class WordPressComRestApi: NSObject {
 
     @objc public static let LocaleKeyDefault        = "locale"  // locale is specified with this for v1 endpoints
     @objc public static let LocaleKeyV2             = "_locale" // locale is prefixed with an underscore for v2
+    // swiftlint:enable operator_usage_whitespace
 
     public typealias RequestEnqueuedBlock = (_ taskID: NSNumber) -> Void
     public typealias SuccessResponseBlock = (_ responseObject: AnyObject, _ httpResponse: HTTPURLResponse?) -> Void

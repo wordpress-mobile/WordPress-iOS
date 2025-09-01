@@ -72,7 +72,7 @@ public struct PluginDirectoryGetInformationEndpoint {
         // plugins not in the directory: it will return `null` with an HTTP 200 OK.
         // This turns that case into a `.pluginNotFound` error.
         if response.statusCode == 200,
-            let data = data,
+            let data,
             data.count == 4,
             String(data: data, encoding: .utf8) == "null" {
                 throw Error.pluginNotFound

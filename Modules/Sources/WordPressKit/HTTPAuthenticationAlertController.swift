@@ -42,7 +42,7 @@ open class HTTPAuthenticationAlertController {
             comment: "Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API."
         )
         let message = String(format: localizedMessage, challenge.protectionSpace.host)
-        let controller =  UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel button label"),
                                          style: .default,
@@ -65,7 +65,7 @@ open class HTTPAuthenticationAlertController {
     private static func controllerForUserAuthenticationChallenge(_ challenge: URLAuthenticationChallenge) -> UIAlertController {
         let title = String(format: NSLocalizedString("Authentication required for host: %@", comment: "Popup title to ask for user credentials."), challenge.protectionSpace.host)
         let message = NSLocalizedString("Please enter your credentials", comment: "Popup message to ask for user credentials (fields shown below).")
-        let controller =  UIAlertController(title: title,
+        let controller = UIAlertController(title: title,
                                             message: message,
                                             preferredStyle: .alert)
 

@@ -4,6 +4,7 @@ extension Date {
     /// Private Date Formatters
     ///
     fileprivate struct DateFormatters {
+        // swiftlint:disable operator_usage_whitespace
         static let iso8601: DateFormatter = {
             let formatter           = DateFormatter()
             formatter.locale        = Locale(identifier: "en_US_POSIX")
@@ -27,6 +28,7 @@ extension Date {
             formatter.timeZone      = TimeZone(secondsFromGMT: 0)
             return formatter
         }()
+        // swiftlint:enable operator_usage_whitespace
 
         static let mediumDate: DateFormatter = {
             let formatter = DateFormatter()
@@ -84,6 +86,7 @@ extension Date {
     ///
     func normalizedDate() -> Date {
 
+        // swiftlint:disable operator_usage_whitespace
         var calendar        = Calendar.current
         calendar.timeZone   = TimeZone.autoupdatingCurrent
 
@@ -96,6 +99,7 @@ extension Date {
         normalized.month    = components.month
         normalized.weekday  = components.weekday
         normalized.day      = components.day
+        // swiftlint:enable operator_usage_whitespace
 
         return calendar.date(from: normalized) ?? self
     }
@@ -127,7 +131,7 @@ extension Date {
 
         let absoluteFormatter = DateFormatters.mediumDate
 
-        if let timeZone = timeZone {
+        if let timeZone {
             absoluteFormatter.timeZone = timeZone
         }
 
@@ -145,7 +149,7 @@ extension Date {
     /// - Parameter timeZone: An optional time zone used to adjust the date formatters.
     func mediumStringWithTime(timeZone: TimeZone? = nil) -> String {
         let formatter = DateFormatters.mediumDateTime
-        if let timeZone = timeZone {
+        if let timeZone {
             formatter.timeZone = timeZone
         }
         return formatter.string(from: self)

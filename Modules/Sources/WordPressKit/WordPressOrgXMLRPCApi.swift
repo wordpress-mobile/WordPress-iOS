@@ -209,14 +209,14 @@ open class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPCApiInterfacing {
 
     fileprivate static func convertError(_ error: NSError, data: Data?, statusCode: Int? = nil) -> NSError {
         let responseCode = statusCode == 403 ? 403 : error.code
-        if let data = data {
+        if let data {
             var userInfo: [String: Any] = error.userInfo
             userInfo[Self.WordPressOrgXMLRPCApiErrorKeyData as String] = data
             userInfo[Self.WordPressOrgXMLRPCApiErrorKeyDataString as String] = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
             userInfo[Self.WordPressOrgXMLRPCApiErrorKeyStatusCode as String] = statusCode
             userInfo[NSLocalizedFailureErrorKey] = error.localizedDescription
 
-            if let statusCode = statusCode, (400..<600).contains(statusCode) {
+            if let statusCode, (400..<600).contains(statusCode) {
                 let formatString = NSLocalizedString("An HTTP error code %i was returned.", comment: "A failure reason for when an error HTTP status code was returned from the site, with the specific error code.")
                 userInfo[NSLocalizedFailureReasonErrorKey] = String(format: formatString, statusCode)
             } else {

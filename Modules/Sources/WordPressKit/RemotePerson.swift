@@ -213,7 +213,7 @@ public struct EmailFollower: RemotePerson {
     }
 
     public init?(siteID: Int, statsFollower: StatsFollower?) {
-        guard let statsFollower = statsFollower,
+        guard let statsFollower,
         let stringId = statsFollower.id,
         let id = Int(stringId) else {
             return nil

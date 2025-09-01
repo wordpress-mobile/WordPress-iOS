@@ -241,7 +241,7 @@ internal func trimTags(_ htmlString: String?) -> String? {
 
     for tag in tagsToRemove {
         let openingTag = "<\(tag)"
-        let closingTag  = "/\(tag)>"
+        let closingTag = "/\(tag)>"
 
         if let openingRange = html.range(of: openingTag),
            let closingRange = html.range(of: closingTag) {

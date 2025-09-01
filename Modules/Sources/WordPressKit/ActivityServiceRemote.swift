@@ -51,7 +51,7 @@ open class ActivityServiceRemote: ServiceRemoteWordPressComREST {
         path?.queryItems?.append(URLQueryItem(name: "number", value: "\(count)"))
         path?.queryItems?.append(URLQueryItem(name: "page", value: "\(pageNumber)"))
 
-        if let after = after, let before = before,
+        if let after, let before,
            let lastSecondOfBeforeDay = before.endOfDay() {
             path?.queryItems?.append(URLQueryItem(name: "after", value: formatter.string(from: after)))
             path?.queryItems?.append(URLQueryItem(name: "before", value: formatter.string(from: lastSecondOfBeforeDay)))
@@ -106,7 +106,7 @@ open class ActivityServiceRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
         var parameters: [String: AnyObject] = [:]
 
-        if let after = after, let before = before,
+        if let after, let before,
            let lastSecondOfBeforeDay = before.endOfDay() {
             parameters["after"] = formatter.string(from: after) as AnyObject
             parameters["before"] = formatter.string(from: lastSecondOfBeforeDay) as AnyObject

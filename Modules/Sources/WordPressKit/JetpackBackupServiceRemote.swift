@@ -22,10 +22,10 @@ open class JetpackBackupServiceRemote: ServiceRemoteWordPressComREST {
         let path = backupPath(for: siteID)
         var parameters: [String: AnyObject] = [:]
 
-        if let rewindID = rewindID {
+        if let rewindID {
             parameters["rewindId"] = rewindID as AnyObject
         }
-        if let types = types {
+        if let types {
             parameters["types"] = types.toDictionary() as AnyObject
         }
 
@@ -103,7 +103,7 @@ open class JetpackBackupServiceRemote: ServiceRemoteWordPressComREST {
                               failure: @escaping (Error) -> Void) {
 
         let path: String
-        if let downloadID = downloadID {
+        if let downloadID {
             path = backupPath(for: siteID, with: "\(downloadID)")
         } else {
             path = backupPath(for: siteID)
@@ -126,7 +126,7 @@ open class JetpackBackupServiceRemote: ServiceRemoteWordPressComREST {
     private func backupPath(for siteID: Int, with path: String? = nil) -> String {
         var endpoint = "sites/\(siteID)/rewind/downloads/"
 
-        if let path = path {
+        if let path {
             endpoint = endpoint.appending(path)
         }
 

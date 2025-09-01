@@ -133,7 +133,7 @@ private extension StatsSummaryData {
         let likesCount: Int
         let commentsCount: Int
 
-        if let viewsIndex = viewsIndex {
+        if let viewsIndex {
             guard let count = dataArray[viewsIndex] as? Int else {
                 return nil
             }
@@ -142,7 +142,7 @@ private extension StatsSummaryData {
             viewsCount = 0
         }
 
-        if let visitorsIndex = visitorsIndex {
+        if let visitorsIndex {
             guard let count = dataArray[visitorsIndex] as? Int else {
                 return nil
             }
@@ -151,7 +151,7 @@ private extension StatsSummaryData {
             visitorsCount = 0
         }
 
-        if let likesIndex = likesIndex {
+        if let likesIndex {
             guard let count = dataArray[likesIndex] as? Int else {
                 return nil
             }
@@ -160,7 +160,7 @@ private extension StatsSummaryData {
             likesCount = 0
         }
 
-        if let commentsIndex = commentsIndex {
+        if let commentsIndex {
             guard let count = dataArray[commentsIndex] as? Int else {
                 return nil
             }

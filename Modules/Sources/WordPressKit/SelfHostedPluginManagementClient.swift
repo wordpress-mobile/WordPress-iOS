@@ -83,7 +83,7 @@ public class SelfHostedPluginManagementClient: PluginManagementClient {
     private func path(with slug: String? = nil) -> String {
         var returnPath = "wp/v2/plugins/"
 
-        if let slug = slug {
+        if let slug {
             returnPath = returnPath.appending(slug)
         }
 

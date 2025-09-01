@@ -233,7 +233,7 @@ extension StatsServiceRemoteV2 {
 
             self.getPostViews(for: postID) { (views, _) in
                 guard
-                    let views = views,
+                    let views,
                     let insight = StatsLastPostInsight(jsonDictionary: post, views: views) else {
                         completion(nil, ResponseError.decodingFailure)
                         return

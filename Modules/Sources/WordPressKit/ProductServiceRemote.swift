@@ -14,8 +14,8 @@ open class ProductServiceRemote {
         public let saleCost: Double?
 
         public func saleCostForDisplay() -> String? {
-            guard let currencyCode = currencyCode,
-                  let saleCost = saleCost else {
+            guard let currencyCode,
+                  let saleCost else {
                       return nil
             }
 

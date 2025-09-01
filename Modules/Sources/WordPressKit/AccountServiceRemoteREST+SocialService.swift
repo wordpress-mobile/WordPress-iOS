@@ -33,7 +33,7 @@ extension AccountServiceRemoteREST {
             "id_token": token
         ] as [String: AnyObject]
 
-        if let connectParameters = connectParameters {
+        if let connectParameters {
             params.merge(connectParameters, uniquingKeysWith: { (current, _) in current })
         }
 

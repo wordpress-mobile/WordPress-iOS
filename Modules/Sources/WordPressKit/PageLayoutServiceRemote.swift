@@ -5,7 +5,7 @@ public class PageLayoutServiceRemote {
     public typealias CompletionHandler = (Swift.Result<RemotePageLayouts, Error>) -> Void
     public static func fetchLayouts(_ api: WordPressComRestApi, forBlogID blogID: Int?, withParameters parameters: [String: AnyObject]?, completion: @escaping CompletionHandler) {
         let urlPath: String
-        if let blogID = blogID {
+        if let blogID {
             urlPath = "/wpcom/v2/sites/\(blogID)/block-layouts"
         } else {
             urlPath = "/wpcom/v2/common-block-layouts"

@@ -18,9 +18,11 @@ public struct SiteVerticalsPrompt: Decodable {
     }
 
     private enum CodingKeys: String, CodingKey {
+        // swiftlint:disable operator_usage_whitespace
         case title      = "site_topic_header"
         case subtitle   = "site_topic_subheader"
         case hint       = "site_topic_placeholder"
+        // swiftlint:enable operator_usage_whitespace
     }
 }
 
@@ -51,7 +53,7 @@ public extension WordPressComServiceRemote {
             success: { [weak self] responseObject, httpResponse in
                 WPKitLogInfo("\(responseObject) | \(String(describing: httpResponse))")
 
-                guard let self = self else {
+                guard let self else {
                     return
                 }
 

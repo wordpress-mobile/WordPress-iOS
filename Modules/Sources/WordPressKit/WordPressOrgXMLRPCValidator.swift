@@ -268,11 +268,11 @@ open class WordPressOrgXMLRPCValidator: NSObject {
         var isWpSite = false
         let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
         let dataTask = session.dataTask(with: htmlURL, completionHandler: { (data, _, error) in
-            if let error = error {
+            if let error {
                 failure(error as NSError)
                 return
             }
-            guard let data = data,
+            guard let data,
                   let responseString = String(data: data, encoding: String.Encoding.utf8),
                   let rsdURL = self.extractRSDURLFromHTML(responseString)
             else {
@@ -345,11 +345,11 @@ open class WordPressOrgXMLRPCValidator: NSObject {
         }
         let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
         let dataTask = session.dataTask(with: rsdURL, completionHandler: { (data, _, error) in
-            if let error = error {
+            if let error {
                 failure(error as NSError)
                 return
             }
-            guard let data = data,
+            guard let data,
                 let responseString = String(data: data, encoding: String.Encoding.utf8),
                 let parser = WordPressRSDParser(xmlString: responseString),
                 let xmlrpc = try? parser.parsedEndpoint(),
