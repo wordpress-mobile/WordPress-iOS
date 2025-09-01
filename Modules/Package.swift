@@ -49,10 +49,6 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/NSObject-SafeExpectations", from: "0.0.6"),
         .package(url: "https://github.com/wordpress-mobile/wpxmlrpc", from: "0.9.0"),
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"),
-        .package(
-            url: "https://github.com/wordpress-mobile/WordPressKit-iOS",
-            branch: "rework-spm"
-        ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20250813"),
@@ -88,9 +84,9 @@ let package = Package(
             dependencies: [
                 "WordPressShared",
                 "WordPressUI",
-                .product(name: "Gridicons", package: "Gridicons-iOS"),
                 // TODO: Remove — It's here just for a NSMutableParagraphStyle init helper
-                .product(name: "WordPressKit", package: "WordPressKit-iOS"),
+                "WordPressKit",
+                .product(name: "Gridicons", package: "Gridicons-iOS"),
             ],
             // Set to v5 to avoid @Sendable warnings and errors
             swiftSettings: [.swiftLanguageMode(.v5)]
@@ -99,7 +95,7 @@ let package = Package(
             name: "JetpackStats",
             dependencies: [
                 "WordPressUI",
-                .product(name: "WordPressKit", package: "WordPressKit-iOS"),
+                "WordPressKit",
             ],
             resources: [.process("Resources")]
         ),
@@ -110,6 +106,7 @@ let package = Package(
                 "BuildSettingsKit",
                 "SFHFKeychainUtils",
                 "WordPressShared",
+                "WordPressKit",
                 // Even though the extension is all in Swift, we need to include the Objective-C
                 // version of CocoaLumberjack to avoid linking issues with other dependencies that
                 // use it.
@@ -121,7 +118,6 @@ let package = Package(
                 //       in SharedCoreDataStack.o
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
-                .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             ],
             resources: [.process("Resources/Extensions.xcdatamodeld")]
         ),
@@ -174,6 +170,35 @@ let package = Package(
                 .product(name: "Reachability", package: "Reachability"),
             ],
             resources: [.process("Resources")],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .target(name: "WordPressKitObjCUtils"),
+        .target(
+            name: "WordPressKitModels",
+            dependencies: [
+                "NSObject-SafeExpectations",
+                "WordPressKitObjCUtils",
+            ]
+        ),
+        .target(
+            name: "WordPressKitObjC",
+            dependencies: [
+                "NSObject-SafeExpectations",
+                "wpxmlrpc",
+                "WordPressKitModels",
+                "WordPressKitObjCUtils",
+            ],
+            publicHeadersPath: "include"
+        ),
+        .target(
+            name: "WordPressKit",
+            dependencies: [
+                "WordPressKitObjC",
+                "WordPressKitModels",
+                "WordPressKitObjCUtils",
+                "NSObject-SafeExpectations",
+                "wpxmlrpc",
+            ],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(
@@ -240,10 +265,10 @@ enum XcodeSupport {
             "BuildSettingsKit",
             "WordPressShared",
             "WordPressUI",
+            "WordPressKit",
             .product(name: "Gridicons", package: "Gridicons-iOS"),
             .product(name: "NSURL-IDN", package: "NSURL-IDN"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
-            .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
             .product(name: "GravatarUI", package: "Gravatar-SDK-iOS"),
         ]
@@ -257,6 +282,7 @@ enum XcodeSupport {
             "WordPressUI",
             "TextBundle",
             "TracksMini",
+            "WordPressKit",
             // Even though the extensions are all in Swift, we need to include the Objective-C
             // version of CocoaLumberjack to avoid linking issues with other dependencies that
             // use it.
@@ -275,7 +301,6 @@ enum XcodeSupport {
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             .product(name: "Aztec", package: "AztecEditor-iOS"),
             .product(name: "WordPressEditor", package: "AztecEditor-iOS"),
-            .product(name: "WordPressKit", package: "WordPressKit-iOS"),
         ]
 
         let testDependencies: [Target.Dependency] = [
@@ -300,6 +325,7 @@ enum XcodeSupport {
             "WordPressReader",
             "WordPressUI",
             "WordPressCore",
+            "WordPressKit",
             .product(name: "Alamofire", package: "Alamofire"),
             .product(name: "AutomatticAbout", package: "AutomatticAbout-swift"),
             .product(name: "AutomatticTracks", package: "Automattic-Tracks-iOS"),
@@ -322,7 +348,6 @@ enum XcodeSupport {
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "SwiftSoup", package: "SwiftSoup"),
             .product(name: "UIDeviceIdentifier", package: "UIDeviceIdentifier"),
-            .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             .product(name: "ZendeskSupportSDK", package: "support_sdk_ios"),
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             .product(name: "WordPressAPI", package: "wordpress-rs"),
@@ -345,16 +370,16 @@ enum XcodeSupport {
                 "BuildSettingsKit",
                 "FormattableContentKit",
                 "SFHFKeychainUtils",
+                "WordPressKit",
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
                 .product(name: "NSURL-IDN", package: "NSURL-IDN"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
-                .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             ]),
             .xcodeTarget("XcodeTarget_WordPressKitTests", dependencies: testDependencies + [
                 "wpxmlrpc",
-                .product(name: "WordPressKit", package: "WordPressKit-iOS"),
+                "WordPressKit",
             ]),
             .xcodeTarget("XcodeTarget_WordPressAuthentificator", dependencies: wordPresAuthentificatorDependencies),
             .xcodeTarget("XcodeTarget_WordPressAuthentificatorTests", dependencies: wordPresAuthentificatorDependencies + testDependencies),
@@ -387,6 +412,7 @@ enum XcodeSupport {
                 "TracksMini",
                 "WordPressShared",
                 "WordPressUI",
+                "WordPressKit",
                 // Even though the extensions are all in Swift, we need to include the Objective-C
                 // version of CocoaLumberjack to avoid linking issues with other dependencies that
                 // use it.
@@ -399,7 +425,6 @@ enum XcodeSupport {
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
-                .product(name: "WordPressKit", package: "WordPressKit-iOS"),
             ]),
             .xcodeTarget("XcodeTarget_Intents", dependencies: [
                 "BuildSettingsKit",
@@ -427,13 +452,13 @@ enum XcodeSupport {
                     "FormattableContentKit",
                     "SFHFKeychainUtils",
                     "WordPressShared",
+                    "WordPressKit",
                     .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                     .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                     .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
                     .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
                     .product(name: "NSURL-IDN", package: "NSURL-IDN"),
                     .product(name: "WordPressAPI", package: "wordpress-rs"),
-                    .product(name: "WordPressKit", package: "WordPressKit-iOS"),
                 ]
             ),
         ]
