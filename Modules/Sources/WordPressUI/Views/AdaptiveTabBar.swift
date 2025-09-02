@@ -140,6 +140,7 @@ public class AdaptiveTabBar: UIControl {
             button.configuration = config
         }
 
+        button.accessibilityIdentifier = "\(item)"
         button.maximumContentSizeCategory = .extraLarge
 
         return button
