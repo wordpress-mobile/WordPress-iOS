@@ -2,6 +2,7 @@ import Foundation
 import WordPressKit
 import WordPressUI
 import WordPressShared
+import WordPressData
 
 typealias ActivityLogsPaginatedResponse = DataViewPaginatedResponse<ActivityLogRowViewModel, Int>
 

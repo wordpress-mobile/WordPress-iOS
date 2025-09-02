@@ -1,5 +1,6 @@
 import Foundation
 import WordPressData
+import WordPressShared
 
 extension BlogService {
     @objc public func unscheduleBloggingReminders(for blog: Blog) {
@@ -44,8 +45,13 @@ extension BlogService {
             }
 
             remoteUsers.forEach {
-                let blogAuthor = findBlogAuthor(with: $0.userID, and: blog, in: context)
-                blogAuthor.userID = $0.userID
+                guard let userID = $0.userID else {
+                    wpAssertionFailure("user id must not be nil")
+                    return
+                }
+
+                let blogAuthor = findBlogAuthor(with: userID, and: blog, in: context)
+                blogAuthor.userID = userID
                 blogAuthor.username = $0.username
                 blogAuthor.email = $0.email
                 blogAuthor.displayName = $0.displayName

@@ -1,5 +1,6 @@
 import WordPressAuthenticator
 import WordPressData
+import WordPressKit
 
 /// Controls the Jetpack Remote Install flow for Jetpack-connected self-hosted sites.
 ///

@@ -1,6 +1,5 @@
 import Foundation
 import CoreData
-import WordPressKit
 
 public class BloggingPrompt: NSManagedObject {
 

@@ -1,6 +1,7 @@
 import Foundation
 import WordPressData
 import WordPressShared
+import WordPressKit
 
 class JetpackScanHistoryCoordinator {
     private let service: JetpackScanService

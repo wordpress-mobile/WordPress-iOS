@@ -4,6 +4,7 @@ import SwiftUI
 import WordPressData
 import WordPressShared
 import WordPressUI
+import WordPressKit
 
 // Notification sent when a comment is moderated/edited to allow views that display Comments to update if necessary.
 // Specifically, the Comments snippet on ReaderDetailViewController.

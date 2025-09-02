@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 import WordPressUI
+import WordPressData
 import FormattableContentKit
 
 struct ActivityFormattableContentView: UIViewRepresentable {

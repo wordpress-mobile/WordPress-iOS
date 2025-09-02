@@ -1,6 +1,7 @@
 import Foundation
 import WordPressData
 import WordPressShared
+import WordPressKit
 
 /// Protocol representing a service that retrieves the users followed interests/tags
 protocol ReaderSiteInfoService: AnyObject {

@@ -1,4 +1,4 @@
-import WordPressKit.RemotePostCategory
+import WordPressKit
 
 public class CategoryTree {
     public var tree: CategoryTreeNode

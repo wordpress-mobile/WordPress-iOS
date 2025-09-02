@@ -1,4 +1,5 @@
 import WordPressData
+import WordPressKit
 
 /// Collection of convenience properties used in the Domains Dashboard
 extension Blog {

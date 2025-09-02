@@ -3,6 +3,7 @@ import UIKit
 import WordPressData
 import WordPressShared
 import WordPressUI
+import WordPressKit
 import Gravatar
 
 /// Displays a Blog's User Details
@@ -157,7 +158,7 @@ final class PersonViewController: UITableViewController {
             return
         }
 
-        roleViewController.roles = blog.sortedRoles.map({ $0.toUnmanaged() }) ?? []
+        roleViewController.roles = blog.sortedRoles.map({ $0.toUnmanaged() })
         roleViewController.selectedRole = person.role
         roleViewController.onChange = { [weak self] newRole in
             self?.updateUserRole(newRole)

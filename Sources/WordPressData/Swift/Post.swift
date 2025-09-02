@@ -77,9 +77,7 @@ public class Post: AbstractPost {
 
         for categoryName in categoryNames {
 
-            assert(blog.categories is Set<PostCategory>)
-            guard let blogCategories = blog.categories as? Set<PostCategory> else {
-                DDLogError("Expected blog.categories to be \(String(describing: Set<PostCategory>.self)).")
+            guard let blogCategories = blog.categories else {
                 return
             }
 

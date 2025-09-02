@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressKit
 
 @objc(ReaderSiteInfoSubscriptionPost)
 public class ReaderSiteInfoSubscriptionPost: NSManagedObject {

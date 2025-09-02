@@ -5,6 +5,7 @@ import UIKit
 import SVProgressHUD
 import WordPressData
 import WordPressShared
+import WordPressKit
 import BuildSettingsKit
 @preconcurrency import Combine
 
@@ -138,7 +139,7 @@ struct WordPressDotComAuthenticator {
         // Fetch WP.com account details
         let user: RemoteUser
         do {
-            let service = AccountServiceRemoteREST(wordPressComRestApi: .defaultApi(oAuthToken: token, userAgent: WPUserAgent.wordPress()))
+            let service = AccountServiceRemoteREST(wordPressComRestApi: WordPressComRestApi.defaultApi(oAuthToken: token, userAgent: WPUserAgent.wordPress()))
             user = try await withCheckedThrowingContinuation { continuation in
                 service.getAccountDetails(success: { continuation.resume(returning: $0!) }, failure: { continuation.resume(throwing: $0!) })
             }

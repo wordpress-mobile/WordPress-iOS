@@ -77,7 +77,6 @@ class BloggingRemindersStore {
             self.init(fileManager: fileManager, configuration: configuration, dataFileURL: url)
         } catch {
             throw Error.configurationDecodingFailed(error: error)
-            self.init(fileManager: fileManager, configuration: [:], dataFileURL: url)
         }
     }
 

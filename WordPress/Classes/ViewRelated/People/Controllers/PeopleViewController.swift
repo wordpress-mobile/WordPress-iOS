@@ -3,6 +3,7 @@ import Combine
 import WordPressData
 import WordPressShared
 import WordPressUI
+import WordPressKit
 
 // MARK: - PeopleViewController
 

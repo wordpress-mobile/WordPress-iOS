@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressKit
 
 @objc(ReaderTagTopic)
 open class ReaderTagTopic: ReaderAbstractTopic {

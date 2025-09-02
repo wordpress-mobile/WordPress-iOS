@@ -4,6 +4,7 @@ import BuildSettingsKit
 import CocoaLumberjackSwift
 import CoreData
 import TracksMini
+import WordPressShared
 import WordPressKit
 import ShareExtensionCore
 

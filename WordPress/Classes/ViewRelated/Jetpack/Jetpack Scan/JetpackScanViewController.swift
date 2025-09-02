@@ -2,6 +2,7 @@ import UIKit
 import WordPressData
 import WordPressFlux
 import WordPressUI
+import WordPressKit
 
 class JetpackScanViewController: UIViewController, JetpackScanView {
     private let blog: Blog

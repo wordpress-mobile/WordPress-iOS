@@ -2,6 +2,7 @@ import Foundation
 import WordPressUI
 import WordPressData
 import WordPressShared
+import WordPressKit
 
 struct JetpackRestoreStatusConfiguration {
     let title: String

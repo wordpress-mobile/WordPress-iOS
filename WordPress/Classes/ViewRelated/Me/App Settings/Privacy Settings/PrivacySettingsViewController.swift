@@ -3,6 +3,7 @@ import UIKit
 import AutomatticTracks
 import WordPressData
 import WordPressUI
+import WordPressKit
 
 class PrivacySettingsViewController: UITableViewController {
     fileprivate var handler: ImmuTableViewHandler!

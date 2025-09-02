@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import WordPressData
+import WordPressKit
 
 /// Protocol for cart response, empty because there are no external details.
 protocol CartResponseProtocol {}

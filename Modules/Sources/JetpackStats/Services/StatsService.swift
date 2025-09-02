@@ -266,8 +266,10 @@ actor StatsService: StatsServiceProtocol {
                 excludeUserIDs: nil,
                 success: { users, found in
                     let likeUsers = users.map { remoteLike in
-                        PostLikesData.PostLikeUser(
-                            id: remoteLike.userID.intValue,
+                        wpAssert(remoteLike.userID != nil, "user id must not be nil")
+
+                        return PostLikesData.PostLikeUser(
+                            id: remoteLike.userID?.intValue ?? 0,
                             name: remoteLike.displayName ?? remoteLike.username ?? "",
                             avatarURL: remoteLike.avatarURL.flatMap(URL.init)
                         )

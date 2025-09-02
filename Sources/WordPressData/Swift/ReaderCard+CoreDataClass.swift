@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressKit
 
 public class ReaderCard: NSManagedObject {
     public enum CardType {

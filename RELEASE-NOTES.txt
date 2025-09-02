@@ -1,3 +1,11 @@
+26.3
+-----
+
+
+26.3
+-----
+* [*] Fix an issue with Notification Settings button not working in the Reader Subscriptions context menus for subscriptions [#24778]
+
 26.2
 -----
 * [*] New Stats: Add support for selecting dates directly from the bar chart [#24768]

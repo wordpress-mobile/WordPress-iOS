@@ -270,11 +270,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
 
     var autoSaveStubbedBehavior = StubbedBehavior.success(nil)
 
-    // related to fetching likes
-    var fetchLikesShouldSucceed: Bool = true
-    var remoteUsersToReturnOnGetLikes = [RemoteLikeUser]()
-    var totalLikes: NSNumber = 1
-
     var deletePostResult: Result<Void, Error> = .success(())
     var trashPostResult: Result<RemotePost, Error> = .failure(NSError.testInstance())
     var restorePostResult: Result<RemotePost, Error> = .failure(NSError.testInstance())
@@ -322,19 +317,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
             failure(nil)
         case .success(let remotePost):
             success(remotePost, nil)
-        }
-    }
-
-    override func getLikesForPostID(_ postID: NSNumber,
-                                    count: NSNumber,
-                                    before: String?,
-                                    excludeUserIDs: [NSNumber]?,
-                                    success: (([RemoteLikeUser], NSNumber) -> Void)!,
-                                    failure: ((Error?) -> Void)!) {
-        if self.fetchLikesShouldSucceed {
-            success(self.remoteUsersToReturnOnGetLikes, self.totalLikes)
-        } else {
-            failure(nil)
         }
     }
 

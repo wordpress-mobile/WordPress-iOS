@@ -9,6 +9,7 @@ import WordPressShared
 import WordPressUI
 import WordPressCore
 import WordPressAPI
+import WordPressKit
 import Gridicons
 
 // MARK: - WordPressAuthenticationManager

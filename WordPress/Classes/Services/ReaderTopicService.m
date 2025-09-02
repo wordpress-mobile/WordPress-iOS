@@ -4,6 +4,7 @@
 #import "WordPress-Swift.h"
 @import WordPressData;
 @import WordPressKit;
+@import WordPressKitModels;
 @import WordPressShared;
 
 NSString * const ReaderTopicFreshlyPressedPathCommponent = @"freshly-pressed";

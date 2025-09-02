@@ -1,5 +1,6 @@
 import Foundation
 import WordPressData
+import WordPressKit
 
 /// Encapsulates a command to toggle subscribing to notifications for a site
 final class ReaderSubscribingNotificationAction {

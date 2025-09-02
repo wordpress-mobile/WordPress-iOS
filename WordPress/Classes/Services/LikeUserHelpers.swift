@@ -11,11 +11,11 @@ import WordPressKit
     @objc class func createOrUpdateFrom(remoteUser: RemoteLikeUser, context: NSManagedObjectContext) -> LikeUser {
         let liker = likeUser(for: remoteUser, context: context) ?? LikeUser(context: context)
 
-        liker.userID = remoteUser.userID.int64Value
-        liker.username = remoteUser.username
-        liker.displayName = remoteUser.displayName
+        liker.userID = remoteUser.userID?.int64Value ?? 0
+        liker.username = remoteUser.username ?? ""
+        liker.displayName = remoteUser.displayName ?? ""
         liker.primaryBlogID = remoteUser.primaryBlogID?.int64Value ?? 0
-        liker.avatarUrl = remoteUser.avatarURL
+        liker.avatarUrl = remoteUser.avatarURL ?? ""
         liker.bio = remoteUser.bio ?? ""
         liker.dateLikedString = remoteUser.dateLiked ?? ""
         liker.dateLiked = Date.dateFromServerDate(liker.dateLikedString) ?? .now

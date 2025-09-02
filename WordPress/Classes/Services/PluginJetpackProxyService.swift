@@ -1,4 +1,5 @@
 import WordPressData
+import WordPressKit
 
 /// Plugin management service through the Jetpack Proxy.
 ///
@@ -9,7 +10,7 @@ class PluginJetpackProxyService {
     private let remote: JetpackProxyServiceRemote
 
     init(remote: JetpackProxyServiceRemote? = nil) {
-        self.remote = remote ?? .init(wordPressComRestApi: .defaultApi(in: ContextManager.shared.mainContext))
+        self.remote = remote ?? .init(wordPressComRestApi: WordPressComRestApi.defaultApi(in: ContextManager.shared.mainContext))
     }
 
     // MARK: Methods

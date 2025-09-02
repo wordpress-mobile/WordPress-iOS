@@ -552,7 +552,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        configureDismissButton()
         startListeningToNotifications()
         verificationPromptHelper?.updateVerificationStatus()
     }
@@ -731,11 +730,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         navigationItem.titleView = navigationBarManager.blogTitleViewLabel
-    }
-
-    func configureDismissButton() {
-        let image = isModal() ? Assets.closeButtonModalImage : Assets.closeButtonRegularImage
-        navigationBarManager.closeButton.setImage(image, for: .normal)
     }
 
     func configureView() {
@@ -3089,8 +3083,6 @@ extension AztecPostViewController {
     }
 
     struct Assets {
-        static let closeButtonModalImage = UIImage.gridicon(.cross)
-        static let closeButtonRegularImage = UIImage(systemName: "chevron.backward")
         static let defaultMissingImage = UIImage.gridicon(.image)
         static let linkPlaceholderImage = UIImage.gridicon(.pages)
     }

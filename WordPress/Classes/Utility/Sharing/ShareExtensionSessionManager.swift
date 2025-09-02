@@ -6,6 +6,7 @@ import Foundation
 import ShareExtensionCore
 import WordPressData
 import WordPressFlux
+import WordPressKit
 
 /// Manages URLSessions initiated by the share extension
 ///

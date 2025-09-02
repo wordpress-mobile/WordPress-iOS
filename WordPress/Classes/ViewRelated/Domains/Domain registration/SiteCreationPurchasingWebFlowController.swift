@@ -3,6 +3,7 @@ import AutomatticTracks
 import Sentry
 import WordPressData
 import WordPressShared
+import WordPressKit
 import WebKit
 
 final class SiteCreationPurchasingWebFlowController {

@@ -2,6 +2,8 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <CoreData/CoreData.h>
 
+@import WordPressKit;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class AbstractPost;
@@ -229,7 +231,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 // wp.koke.me
 @property (weak, readonly, nullable) NSString *hostname;
 
-@property (weak, readonly, nullable) NSString *defaultPostFormatText;
 // Used to check if the blog has an icon set up
 @property (readonly) BOOL hasIcon;
 

@@ -1,5 +1,9 @@
 #import <Foundation/Foundation.h>
 
+// This is a strange hack to make the `-[LoginFacadeDelegate needsMultifactorCodeForUserID:andNonceInfo:]`
+// available in Objective-C runtime.
+@import WordPressKit;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class LoginFields;

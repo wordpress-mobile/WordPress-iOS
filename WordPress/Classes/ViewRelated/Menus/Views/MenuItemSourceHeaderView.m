@@ -1,5 +1,6 @@
 #import "MenuItemSourceHeaderView.h"
 #import "MenuItem+ViewDesign.h"
+#import "Menu+ViewDesign.h"
 #import "MenuItem.h"
 #import "WordPress-Swift.h"
 @import WordPressData;

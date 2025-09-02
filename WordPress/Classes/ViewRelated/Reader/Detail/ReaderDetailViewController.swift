@@ -2,6 +2,8 @@ import UIKit
 import WordPressUI
 import AutomatticTracks
 import WordPressReader
+import WordPressData
+import WordPressKit
 @preconcurrency import WebKit
 
 typealias RelatedPostsSection = (postType: RemoteReaderSimplePost.PostType, posts: [RemoteReaderSimplePost])

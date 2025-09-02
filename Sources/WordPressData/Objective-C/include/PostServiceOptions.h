@@ -1,4 +1,4 @@
-#import <WordPressKit/WordPressKit.h>
+@import WordPressKitObjC;
 
 /**
  @class PostServiceSyncOptions

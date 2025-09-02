@@ -1,6 +1,7 @@
 import Foundation
 import WordPressKit
 import WordPressShared
+import WordPressData
 import CocoaLumberjack
 
 /// Tracks backup download status for a WordPress site.

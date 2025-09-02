@@ -4,6 +4,7 @@ import DesignSystem
 import AsyncImageKit
 import WordPressData
 import WordPressShared
+import WordPressKit
 
 protocol LatestPostSummaryConfigurable {
     func configure(withInsightData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?)
