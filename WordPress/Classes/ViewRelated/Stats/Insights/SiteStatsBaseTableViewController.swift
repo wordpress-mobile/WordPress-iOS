@@ -23,6 +23,10 @@ class SiteStatsBaseTableViewController: UIViewController {
         initTableView()
     }
 
+    override func contentScrollView(for edge: NSDirectionalRectEdge) -> UIScrollView? {
+        tableView
+    }
+
     func initTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.cellLayoutMarginsFollowReadableWidth = true

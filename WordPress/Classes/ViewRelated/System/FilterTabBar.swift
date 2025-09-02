@@ -228,28 +228,6 @@ public class FilterTabBar: UIControl {
     var tabAttributedButtonInsets: UIEdgeInsets = AppearanceMetrics.buttonInsetsAttributedTitle
     var tabSeparatorPadding: CGFloat = AppearanceMetrics.buttonPadding
 
-    // MARK: - Modern Style Configuration
-
-    func configureModernStyle() {
-        isAutomaticTabSizingStyleEnabled = true
-
-        // Apply modern tab appearance with larger fonts and padding
-        tabsFont = UIFont.preferredFont(forTextStyle: .headline).withWeight(.regular)
-        tabsSelectedFont = UIFont.preferredFont(forTextStyle: .headline)
-        tabButtonInsets = UIEdgeInsets(top: 10, left: 20, bottom: 12, right: 20)
-        tabBarHeight = 44
-
-        tintColor = UIColor.label
-        selectedTitleColor = UIColor.label
-        deselectedTabColor = UIColor.secondaryLabel
-        backgroundColor = .systemBackground
-
-        // Configure selection indicator for modern style
-        selectionIndicator.layer.cornerRadius = 2.0
-
-        refreshTabs()
-    }
-
     // MARK: - Initialization
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

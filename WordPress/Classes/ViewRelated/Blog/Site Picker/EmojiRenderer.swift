@@ -40,3 +40,28 @@ struct EmojiRenderer {
         return img
     }
 }
+
+private extension UIFont {
+    /**
+     Provides the largest font which fits the text in the given bounds.
+     */
+    static func fontFittingText(_ text: String, in bounds: CGSize, fontDescriptor: UIFontDescriptor) -> UIFont? {
+        let properBounds = CGRect(origin: .zero, size: bounds)
+        let largestFontSize = Int(bounds.height)
+        let constrainingBounds = CGSize(width: properBounds.width, height: CGFloat.infinity)
+
+        let bestFittingFontSize: Int? = (1...largestFontSize).reversed().first(where: { fontSize in
+            let font = UIFont(descriptor: fontDescriptor, size: CGFloat(fontSize))
+            let currentFrame = text.boundingRect(with: constrainingBounds, options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [.font: font], context: nil)
+
+            if properBounds.contains(currentFrame) {
+                return true
+            }
+
+            return false
+        })
+
+        guard let fontSize = bestFittingFontSize else { return nil }
+        return UIFont(descriptor: fontDescriptor, size: CGFloat(fontSize))
+    }
+}
