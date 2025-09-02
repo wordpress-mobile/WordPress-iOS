@@ -149,13 +149,9 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> where Item
         // Only animate filter bar, not segmented control in navigation bar
         guard viewController?.traitCollection.horizontalSizeClass != .regular else { return }
 
-        UIView.animate(
-            withDuration: animated ? 0.25 : 0.0,
-            delay: 0.0,
-            options: [.beginFromCurrentState, .allowUserInteraction, .curveEaseInOut]
-        ) {
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: [.beginFromCurrentState, .allowUserInteraction, .curveEaseInOut]) {
+            self.filterBarContainer.transform = isHidden ? CGAffineTransform(translationX: 0, y: -44) : .identity
             self.filterBarContainer.alpha = isHidden ? 0 : 1
-            self.filterBarContainer.transform = isHidden ? CGAffineTransform(translationX: 0, y: -32) : .identity
         }
     }
 
