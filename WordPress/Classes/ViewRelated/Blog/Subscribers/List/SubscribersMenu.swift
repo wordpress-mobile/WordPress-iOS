@@ -15,7 +15,7 @@ struct SubscribersFiltersMenu: View {
                 Text("\(Strings.subscribers) \(count)")
             }
         } label: {
-            Image(systemName: "line.3.horizontal.decrease.circle")
+            Image(systemName: "line.3.horizontal.decrease")
         }
     }
 

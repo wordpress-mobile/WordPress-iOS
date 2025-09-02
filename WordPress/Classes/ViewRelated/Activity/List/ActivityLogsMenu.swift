@@ -21,7 +21,7 @@ struct ActivityLogsFiltersMenu: View {
                 }
             }
         } label: {
-            Image(systemName: "line.3.horizontal.decrease.circle")
+            Image(systemName: "line.3.horizontal.decrease")
         }
         .sheet(isPresented: $isShowingActivityTypePicker) {
             NavigationView {
