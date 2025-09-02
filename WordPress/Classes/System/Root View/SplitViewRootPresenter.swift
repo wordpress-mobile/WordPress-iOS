@@ -312,6 +312,11 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
 
     // TODO: refactor this
     func splitViewControllerDidCollapse(_ svc: UISplitViewController) {
+        // Make sure the tab bar controller (displayed in compact mode) shows the same blog as the one in split view.
+        if let blog = siteContent?.blog, tabBarVC.mySitesCoordinator.currentBlog != siteContent?.blog {
+            tabBarVC.mySitesCoordinator.showBlogDetails(for: blog)
+        }
+
         switch sidebarViewModel.selection {
         case .blog:
             break
@@ -338,6 +343,15 @@ extension SplitViewRootPresenter: UISplitViewControllerDelegate {
             tabBarVC.showNotificationsTab()
         default:
             break
+        }
+    }
+
+    func splitViewControllerDidExpand(_ svc: UISplitViewController) {
+        // Make sure the split view shows the same blog as the tab bar controller (displayed in the compact mode)
+        if let blog = tabBarVC.mySitesCoordinator.currentBlog,
+           case let .blog(blogID) = sidebarViewModel.selection,
+           blog.objectID != blogID.objectID {
+            sidebarViewModel.selection = .blog(TaggedManagedObjectID(blog))
         }
     }
 }
