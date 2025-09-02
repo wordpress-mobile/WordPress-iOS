@@ -83,6 +83,10 @@ public class AdaptiveTabBar: UIControl {
 
         widthConstraint = stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
 
+        let separator = SeparatorView.horizontal()
+        addSubview(separator)
+        separator.pinEdges([.horizontal, .bottom])
+
         addSubview(selectionIndicator)
         NSLayoutConstraint.activate([
             selectionIndicator.heightAnchor.constraint(equalToConstant: 2),
