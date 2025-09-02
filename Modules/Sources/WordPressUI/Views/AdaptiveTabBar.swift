@@ -119,7 +119,7 @@ public class AdaptiveTabBar: UIControl {
 
         var config = UIButton.Configuration.plain()
         config.title = item.localizedTitle
-        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 18, bottom: 8, trailing: 18)
+        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12)
 
         let button = UIButton(configuration: config, primaryAction: .init { [weak self] _ in
             self?.tabButtonTapped(at: index)
@@ -139,6 +139,8 @@ public class AdaptiveTabBar: UIControl {
             }
             button.configuration = config
         }
+
+        button.maximumContentSizeCategory = .extraLarge
 
         return button
     }
