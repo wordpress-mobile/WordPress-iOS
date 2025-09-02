@@ -47,7 +47,7 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> where Item
     }
 
     private func setupFilterBar() {
-        filterBarContainer.backgroundColor = .systemBackground
+        filterBarContainer.backgroundColor = .secondarySystemGroupedBackground
         filterBarContainer.addSubview(filterBar)
         filterBar.pinEdges(.top, to: filterBarContainer.safeAreaLayoutGuide, insets: UIEdgeInsets(.top, -filterBar.tabBarHeight))
         filterBar.pinEdges([.horizontal, .bottom])
