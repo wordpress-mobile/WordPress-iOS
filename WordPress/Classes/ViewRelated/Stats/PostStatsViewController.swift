@@ -53,8 +53,8 @@ final class PostStatsViewController: UIViewController {
 
     private func setupNavigationBar() {
         if presentingViewController != nil {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .done,
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .close,
                 target: self,
                 action: #selector(dismissViewController)
             )
