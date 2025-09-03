@@ -29,7 +29,7 @@ struct BooleanUserDefaultsDebugView: View {
             }
         }
         .navigationTitle(Strings.title)
-        .searchable(text: $viewModel.searchQuery, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(text: $viewModel.searchQuery)
         .onAppear {
             viewModel.load()
         }

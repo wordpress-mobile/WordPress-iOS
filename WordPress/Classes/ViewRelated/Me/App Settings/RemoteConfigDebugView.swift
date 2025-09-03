@@ -8,7 +8,7 @@ struct RemoteConfigDebugView: View {
             listContent
         }
         .listStyle(.plain)
-        .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(text: $viewModel.searchText)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(Strings.reset, action: viewModel.resetAll)
