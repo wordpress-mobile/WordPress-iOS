@@ -25,7 +25,7 @@ struct TimeZoneSelectorView: View {
             }
         }
         .listStyle(.plain)
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(text: $searchText)
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
         .overlay {
