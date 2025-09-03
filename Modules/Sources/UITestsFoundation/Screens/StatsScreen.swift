@@ -32,7 +32,12 @@ public class StatsScreen: ScreenObject {
 
     @discardableResult
     public func switchTo(mode: String) -> Self {
-        app.buttons[mode].tap()
+        let button = app.buttons.first(where: {
+            $0.identifier.compare(mode, options: [.caseInsensitive]) == .orderedSame ||
+            $0.label.compare(mode, options: [.caseInsensitive]) == .orderedSame
+        })?.firstMatch
+        XCTAssertNotNil(button)
+        button?.tap()
         return self
     }
 
