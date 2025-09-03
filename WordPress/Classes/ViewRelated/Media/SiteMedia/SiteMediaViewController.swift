@@ -12,15 +12,19 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     private lazy var collectionViewController = SiteMediaCollectionViewController(blog: blog)
     private lazy var buttonAddMedia = UIButton(type: .custom)
     private lazy var buttonAddMediaMenuController = SiteMediaAddMediaMenuController(blog: blog, coordinator: coordinator)
-    private var buttonFilter: UIButton?
 
     private lazy var toolbarItemDelete = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(buttonDeleteTapped))
     private lazy var toolbarItemTitle = SiteMediaSelectionTitleView()
     private lazy var toolbarItemShare = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(buttonShareTapped))
 
+    var searchBarButtonItem: UIBarButtonItem? {
+        didSet { refreshNavigationItems() }
+    }
+
     private var isPreparingToShare = false
     private var isFirstAppearance = true
     private var showPicker = false
+    private var selectedFilter: SiteMediaFilter?
 
     @objc init(blog: Blog, showPicker: Bool = false) {
         self.blog = blog
@@ -71,30 +75,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     // MARK: - Configuration
 
     private func configureNavigationTitle() {
-        let menu = UIMenu(children: [
-            UIMenu(options: [.displayInline], children: SiteMediaFilter.allFilters.map { filter in
-                UIAction(title: filter.title, image: filter.image) { [weak self] _ in
-                    self?.didUpdateFilter(filter)
-                }
-            }),
-            UIDeferredMenuElement.uncached { [weak self] in
-                let isAspect = UserDefaults.standard.isMediaAspectRatioModeEnabled
-                let action = UIAction(
-                    title: isAspect ? Strings.squareGrid : Strings.aspectRatioGrid,
-                    image: UIImage(systemName: isAspect ? "rectangle.arrowtriangle.2.outward" : "rectangle.arrowtriangle.2.inward")) { [weak self] _ in
-                        self?.collectionViewController.toggleAspectRatioMode()
-                    }
-                $0([action])
-            }
-        ])
-
-        let button = UIButton.makeMenu(title: Strings.title, menu: menu)
-        self.buttonFilter = button
-        if traitCollection.horizontalSizeClass == .regular {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
-        } else {
-            navigationItem.titleView = button
-        }
+        title = Strings.title
     }
 
     private func configureAddMediaButton() {
@@ -111,30 +92,65 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     private func refreshNavigationItems() {
         navigationItem.hidesBackButton = isEditing
 
-        navigationItem.rightBarButtonItems = {
-            var rightBarButtonItems: [UIBarButtonItem] = []
+        var groups: [UIBarButtonItemGroup] = []
+
+        if !isEditing {
+            let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
+            groups.append(UIBarButtonItemGroup(barButtonItems: [selectButton], representativeItem: nil))
+        }
+
+        groups.append(UIBarButtonItemGroup(barButtonItems: {
+            var items: [UIBarButtonItem] = []
+
+            if !isEditing {
+                items.append(makeFiltersBarButtonItem())
+            }
 
             if !isEditing, blog.userCanUploadMedia {
                 configureAddMediaButton()
-                rightBarButtonItems.append(UIBarButtonItem(customView: buttonAddMedia))
+
+                items.append(UIBarButtonItem(customView: buttonAddMedia))
             }
 
             if isEditing {
                 let doneButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonDoneTapped))
-                rightBarButtonItems.append(doneButton)
-            } else {
-                let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
-                rightBarButtonItems.append(selectButton)
+                items.append(doneButton)
             }
+            return items
+        }(), representativeItem: nil))
 
-            return rightBarButtonItems
-        }()
+        navigationItem.trailingItemGroups = groups
+    }
+
+    private func makeFiltersBarButtonItem() -> UIBarButtonItem {
+        let menu = UIMenu(children: [
+            UIMenu(options: [.displayInline], children: SiteMediaFilter.allFilters.map { filter in
+                let action = UIAction(title: filter.title, image: filter.image) { [weak self] _ in
+                    self?.didUpdateFilter(filter)
+                }
+                if selectedFilter?.mediaType == filter.mediaType {
+                    action.state = .on
+                }
+                return action
+            }),
+            UIDeferredMenuElement.uncached { [weak self] in
+                let isAspect = UserDefaults.standard.isMediaAspectRatioModeEnabled
+                let action = UIAction(
+                    title: isAspect ? Strings.squareGrid : Strings.aspectRatioGrid,
+                    image: UIImage(systemName: isAspect ? "rectangle.arrowtriangle.2.outward" : "rectangle.arrowtriangle.2.inward")) { [weak self] _ in
+                        self?.collectionViewController.toggleAspectRatioMode()
+                    }
+                $0([action])
+            }
+        ])
+
+        return UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease"), menu: menu)
     }
 
     private func didUpdateFilter(_ filter: SiteMediaFilter) {
-        buttonFilter?.setTitle(filter.title, for: .normal)
-        buttonFilter?.sizeToFit() // Important!
         collectionViewController.setMediaType(filter.mediaType)
+        selectedFilter = filter
+        refreshNavigationItems()
     }
 
     // MARK: - Actions

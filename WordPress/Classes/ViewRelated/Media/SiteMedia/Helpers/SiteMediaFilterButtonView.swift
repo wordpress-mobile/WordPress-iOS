@@ -1,7 +1,7 @@
 import UIKit
 import WordPressData
 
-struct SiteMediaFilter {
+struct SiteMediaFilter: Equatable {
     let mediaType: MediaType?
     let title: String
     let imageName: String?
@@ -18,7 +18,7 @@ struct SiteMediaFilter {
 }
 
 private enum Strings {
-    static let filterAll = NSLocalizedString("mediaLibrary.filterAll", value: "All", comment: "The name of the media filter")
+    static let filterAll = NSLocalizedString("mediaLibrary.filterDefault", value: "Default (All)", comment: "The name of the media filter")
     static let filterImages = NSLocalizedString("mediaLibrary.filterImages", value: "Images", comment: "The name of the media filter")
     static let filterVideos = NSLocalizedString("mediaLibrary.filterVideos", value: "Videos", comment: "The name of the media filter")
     static let filterDocuments = NSLocalizedString("mediaLibrary.filterDocuments", value: "Documents", comment: "The name of the media filter")
