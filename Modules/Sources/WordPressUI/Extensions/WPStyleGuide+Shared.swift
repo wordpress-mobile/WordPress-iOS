@@ -22,7 +22,6 @@ extension WPStyleGuide {
         }
 
         tableView.backgroundColor = .systemGroupedBackground
-        tableView.separatorColor = UIAppColor.neutral(.shade10)
     }
 
     @objc
