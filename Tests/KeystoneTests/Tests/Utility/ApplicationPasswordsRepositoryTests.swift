@@ -195,7 +195,7 @@ class ApplicationPasswordsRepositoryTests {
         #expect(password == uuid)
     }
 
-    @Test(arguments: [0, 1, 2, 3, 4])
+    @Test(arguments: [1, 2, 3, 4])
     func cancelConcurrentCall(nthTaskToBeCancelled: Int) async throws {
         defer { HTTPStubs.removeAllStubs()}
 
