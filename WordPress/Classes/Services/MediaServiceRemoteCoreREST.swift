@@ -144,7 +144,7 @@ private extension RemoteMedia {
 
         self.mediaID = NSNumber(value: media.id)
         self.url = URL(string: media.sourceUrl)
-        self.guid = URL(string: media.guid.raw)
+        self.guid = media.guid.raw.flatMap(URL.init(string:))
         self.date = media.dateGmt
         self.postID = media.postId.map { NSNumber(value: $0) }
         self.mimeType = media.mimeType

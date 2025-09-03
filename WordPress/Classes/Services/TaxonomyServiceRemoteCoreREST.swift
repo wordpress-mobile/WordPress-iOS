@@ -37,8 +37,11 @@ import WordPressAPIInternal
     public func getCategoriesWithSuccess(_ success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
-                let response = try await client.api.categories.listWithEditContext(params: CategoryListParams())
-                let categories = response.data.map(RemotePostCategory.init(category:))
+                let sequence = await client.api.categories.sequenceWithEditContext(params: CategoryListParams(perPage: 100))
+                let categories: [RemotePostCategory] = try await sequence.reduce(into: []) {
+                    let page = $1.map(RemotePostCategory.init(category:))
+                    $0.append(contentsOf: page)
+                }
                 success(categories)
             } catch {
                 failure?(error)
