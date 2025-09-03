@@ -169,7 +169,7 @@ class ApplicationPasswordsRepositoryTests {
         let host = "\(uuid).example.com"
         let blog = try await createSelfHostedSite(host: host)
 
-        let monitor = Monitor(delay: 0.1)
+        let monitor = Monitor(delay: 0.5)
         stubApiDiscovery(siteHost: host)
         stubSelfHostedSiteWpV2GetUser()
         stubSelfHostedSiteCreateApplicationPassword(host: host, password: uuid, monitor: monitor)
@@ -203,7 +203,7 @@ class ApplicationPasswordsRepositoryTests {
         let host = "\(uuid).example.com"
         let blog = try await createSelfHostedSite(host: host)
 
-        let monitor = Monitor(delay: 0.1)
+        let monitor = Monitor(delay: 0.5)
         stubApiDiscovery(siteHost: host)
         stubSelfHostedSiteWpV2GetUser()
         stubSelfHostedSiteCreateApplicationPassword(host: host, password: uuid, monitor: monitor)
