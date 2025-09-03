@@ -1,0 +1,13 @@
+{
+    "success": false,
+    "messages": {
+        "phone": ["Enter a valid country code followed by a dot (for example +1.6285550199)."],
+        "city": ["This field is required."],
+        "address_1": ["Enter your address."],
+        "last_name": ["Enter your last name."],
+        "email": ["The 'Email' field does not appear to be valid.", "“gmail” does not appear to be a valid domain."],
+        "country_code": ["This field is required."],
+        "postal_code": ["This field is required."],
+        "first_name": ["Enter your first name."]
+    }
+}

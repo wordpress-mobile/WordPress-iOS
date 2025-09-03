@@ -1,0 +1,72 @@
+{
+    "date": "2019-12-31",
+    "period": "year",
+    "days": {
+        "2019-01-01": {
+            "plays": [
+                {
+                    "post_id": 9001,
+                    "url": "http://wordpress.com/random_nonexisting_videos_1.mp4",
+                    "title": "you won't believe what's number two",
+                    "plays": 7774
+                },
+                {
+                    "post_id": 9002,
+                    "url": "http://wordpress.com/random_nonexisting_videos_2.mp4",
+                    "title": "10 wierd tricks for better tests coverage!!!!!!",
+                    "plays": 3416
+                },
+                {
+                    "post_id": 9003,
+                    "url": "http://wordpress.com/random_nonexisting_videos_3.mp4",
+                    "title": "is this anything",
+                    "plays": 1015
+                },
+                {
+                    "post_id": 9004,
+                    "url": "http://wordpress.com/random_nonexisting_videos_4.mp4",
+                    "title": "did this get funny yet",
+                    "plays": 450
+                },
+                {
+                    "post_id": 9005,
+                    "url": "http://wordpress.com/random_nonexisting_videos_5.mp4",
+                    "title": "please send help",
+                    "plays": 243
+                },
+                {
+                    "post_id": 9006,
+                    "url": "http://wordpress.com/random_nonexisting_videos_6.mp4",
+                    "title": "what's the deal with airplane food, am i right",
+                    "plays": 186
+                },
+                {
+                    "post_id": 9007,
+                    "url": "http://wordpress.com/random_nonexisting_videos_7.mp4",
+                    "title": "hey i just met you",
+                    "plays": 154
+                },
+                {
+                    "post_id": 9008,
+                    "url": "http://wordpress.com/random_nonexisting_videos_8.mp4",
+                    "title": "and this is crazy",
+                    "plays": 138
+                },
+                {
+                    "post_id": 9009,
+                    "url": "http://wordpress.com/random_nonexisting_videos_9.mp4",
+                    "title": "but here's my number",
+                    "plays": 126
+                },
+                {
+                    "post_id": 9010,
+                    "url": "http://wordpress.com/random_nonexisting_videos_10.mp4",
+                    "title": "so call me maybe?",
+                    "plays": 97
+                }
+            ],
+            "other_plays": 62,
+            "total_plays": 13661
+        }
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "code": "data_invalid",
+    "message": "QR code data expired",
+    "data": {
+        "status": 401
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "ID": 1,
+    "post": {
+        "ID": 1,
+        "title": "Post title",
+        "type": "post",
+        "link": "post URL"
+    },
+    "author": {
+        "ID": 12345,
+        "login": "",
+        "email": "author@email.com",
+        "name": "Comment Author",
+        "first_name": "",
+        "last_name": "",
+        "nice_name": "",
+        "URL": "author URL",
+        "avatar_URL": "avatar URL",
+        "profile_URL": "profile URL",
+        "ip_address": "000.0.00.000"
+    },
+    "date": "2021-08-04T07:58:49+00:00",
+    "URL": "comment URL",
+    "short_URL": "short URL",
+    "content": "I am comment content",
+    "raw_content": "I am comment raw content",
+    "status": "approved",
+    "parent": false,
+    "type": "comment",
+    "like_count": 0,
+    "i_like": false,
+    "meta": {
+        "links": {
+        }
+    },
+    "can_moderate": true,
+    "i_replied": false
+}

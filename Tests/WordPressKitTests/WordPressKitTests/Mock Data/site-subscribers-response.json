@@ -1,0 +1,20 @@
+{
+  "total": 1,
+  "pages": 1,
+  "page": 1,
+  "per_page": 100,
+  "subscribers": [
+    {
+      "user_id": 1,
+      "subscription_id": 2,
+      "email_address": "user@example.com",
+      "date_subscribed": "2025-02-28T19:36:36+00:00",
+      "is_email_subscriber": false,
+      "subscription_status": "Not subscribed",
+      "avatar": "https://0.gravatar.com/avatar/example.jpg",
+      "display_name": "Test",
+      "url": "http://example.wordpress.com"
+    }
+  ],
+  "is_owner_subscribed": true
+}

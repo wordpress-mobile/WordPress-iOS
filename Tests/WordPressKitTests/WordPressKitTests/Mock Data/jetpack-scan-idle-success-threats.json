@@ -1,0 +1,96 @@
+{
+    "state": "idle",
+    "threats": [{
+        "id": 35141702,
+        "signature": "EICAR.AV.Test",
+        "description": "This is the standard EICAR antivirus test code, and not a real infection. If your site contains this code when you don't expect it to, contact Jetpack support for some help. ",
+        "first_detected": "2020-11-13T01:03:53.000Z",
+        "status": "current",
+        "fixable": false,
+        "filename": "\/home\/customer\/www\/example\/public_html\/wordpress\/wp-content\/uploads\/jptt_eicar.php",
+        "context": {
+            "3": "echo <<<HTML",
+            "4": "X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*",
+            "5": "HTML;",
+            "marks": {
+                "4": [
+                    [0, 68]
+                ]
+            }
+        }
+    }, {
+        "id": 35141692,
+        "signature": "Core.File.Modification",
+        "description": "Core WordPress files are not normally changed. If you did not make these changes you should review the code.",
+        "first_detected": "2020-11-13T01:03:45.000Z",
+        "status": "current",
+        "fixable": {
+            "fixer": "replace",
+            "file": "\/home\/customer\/www\/example.com\/public_html\/wordpress\/wp-admin\/index.php"
+        },
+        "filename": "\/home\/customer\/www\/example.com\/public_html\/wordpress\/wp-admin\/index.php",
+        "diff": ""
+    }, {
+        "id": 35142156,
+        "signature": "URL.BlockList.1",
+        "description": "Jetpack has detected a link to a dangerous site. These sites are often related to dangerous or malicious code.",
+        "first_detected": "2020-11-13T01:13:42.000Z",
+        "status": "current",
+        "fixable": false,
+        "table": "cmJ4X3Bvc3Rz",
+        "rows": {},
+        "objectType": "post"
+    }, {
+        "id": 35431744,
+        "signature": "Vulnerable.WP.Extension",
+        "description": "The plugin Calendar (version 1.3.1) has a known vulnerability",
+        "first_detected": "2020-11-16T18:30:32.000Z",
+        "status": "current",
+        "fixable": {
+            "fixer": "update",
+            "target": "1.3.14"
+        },
+        "extension": {
+            "type": "plugin",
+            "slug": "calendar",
+            "name": "Calendar",
+            "version": "1.3.1",
+            "isPremium": false
+        }
+    }, {
+        "id": 35142552,
+        "signature": "Vulnerable.WP.Extension",
+        "description": "The theme 2020 (version 7.0.0) has a known vulnerability",
+        "first_detected": "2020-11-13T01:21:57.000Z",
+        "status": "current",
+        "fixable": {
+            "fixer": "delete",
+            "file": "{$THEMES}\/2020"
+        },
+        "extension": {
+            "type": "theme",
+            "slug": "twentytwenty",
+            "name": "2020",
+            "version": "7.0.0",
+            "isPremium": false
+        }
+    }],
+
+    "has_cloud": false,
+    "credentials": [{
+        "host": "example.com",
+        "port": 21,
+        "user": "example",
+        "path": "\/",
+        "type": "ftp",
+        "role": "main",
+        "still_valid": true
+    }],
+    "most_recent": {
+        "duration": 24,
+        "error": false,
+        "is_initial": false,
+        "progress": 100,
+        "timestamp": "2020-11-17T00:19:45+00:00"
+    }
+}

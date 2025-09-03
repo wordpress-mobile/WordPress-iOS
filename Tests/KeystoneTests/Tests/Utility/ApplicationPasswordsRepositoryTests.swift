@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import Testing
 import WordPressData
 import WordPressAPI
@@ -168,7 +169,7 @@ class ApplicationPasswordsRepositoryTests {
         let host = "\(uuid).example.com"
         let blog = try await createSelfHostedSite(host: host)
 
-        let monitor = Monitor(delay: 0.1)
+        let monitor = Monitor(delay: 0.5)
         stubApiDiscovery(siteHost: host)
         stubSelfHostedSiteWpV2GetUser()
         stubSelfHostedSiteCreateApplicationPassword(host: host, password: uuid, monitor: monitor)
@@ -176,7 +177,8 @@ class ApplicationPasswordsRepositoryTests {
         let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
 
         let first = Task { try await repository.createPasswordIfNeeded(for: blog) }
-        try await Task.sleep(for: .milliseconds(10))
+        await monitor.hasReceivedRequest()
+
         let second = Task { try await repository.createPasswordIfNeeded(for: blog) }
 
         first.cancel()
@@ -193,7 +195,7 @@ class ApplicationPasswordsRepositoryTests {
         #expect(password == uuid)
     }
 
-    @Test(arguments: [0, 1, 2, 3, 4])
+    @Test(arguments: [1, 2, 3, 4])
     func cancelConcurrentCall(nthTaskToBeCancelled: Int) async throws {
         defer { HTTPStubs.removeAllStubs()}
 
@@ -201,7 +203,7 @@ class ApplicationPasswordsRepositoryTests {
         let host = "\(uuid).example.com"
         let blog = try await createSelfHostedSite(host: host)
 
-        let monitor = Monitor(delay: 0.1)
+        let monitor = Monitor(delay: 0.5)
         stubApiDiscovery(siteHost: host)
         stubSelfHostedSiteWpV2GetUser()
         stubSelfHostedSiteCreateApplicationPassword(host: host, password: uuid, monitor: monitor)
@@ -210,10 +212,20 @@ class ApplicationPasswordsRepositoryTests {
 
         let numberOfTasks = 5
         var tasks: [Task<Void, Error>] = []
+        // Start a few tasks and ensure they all have started at the end of the for-loop
         for _ in 0..<numberOfTasks {
-            tasks.append(Task { try await repository.createPasswordIfNeeded(for: blog) })
+            let started = CurrentValueSubject<_, Never>(false)
+            let task = Task {
+                started.value = true
+                try await repository.createPasswordIfNeeded(for: blog)
+            }
+            tasks.append(task)
+
+            _ = await started.values.first(where: { $0 })
             try await Task.sleep(for: .milliseconds(10))
         }
+
+        _ = await monitor.hasReceivedRequest()
 
         tasks[nthTaskToBeCancelled].cancel()
 
@@ -559,7 +571,11 @@ private extension ApplicationPasswordsRepositoryTests {
 
 private class Monitor {
     let delay: TimeInterval?
-    private(set) var numberOfRequests: Int = 0
+    let numberOfRequestsSubject = CurrentValueSubject<_, Never>(0)
+
+    var numberOfRequests: Int {
+        numberOfRequestsSubject.value
+    }
 
     private let lock = NSLock()
 
@@ -571,7 +587,11 @@ private class Monitor {
         lock.lock()
         defer { lock.unlock() }
 
-        numberOfRequests += 1
+        numberOfRequestsSubject.value += 1
+    }
+
+    func hasReceivedRequest() async {
+        _ = await numberOfRequestsSubject.values.first(where: { $0 > 0 })
     }
 }
 

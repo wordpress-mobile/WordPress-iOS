@@ -1,0 +1,153 @@
+{
+	"subscriptions": [
+		{
+			"ID": "764146175",
+			"blog_ID": "3584907",
+			"feed_ID": "25823",
+			"URL": "http://en.blog.wordpress.com",
+			"date_subscribed": "2024-03-05T20:48:52+00:00",
+			"delivery_methods": {
+				"email": {
+					"send_posts": true,
+					"send_comments": false,
+					"post_delivery_frequency": "instantly",
+					"date_subscribed": "2024-03-05 20:48:53"
+				},
+				"notification": {
+					"send_posts": false
+				}
+			},
+			"name": "WordPress.com News",
+			"organization_id": 0,
+			"unseen_count": 0,
+			"last_updated": "2024-03-07T15:00:00+00:00",
+			"site_icon": "https://secure.gravatar.com/blavatar/4d5d4c4006d86ff465780ec0d2671c0231c8536cc2fa8167aca8a4dd76811795",
+			"is_owner": false,
+			"meta": {
+				"links": {
+					"site": "https://public-api.wordpress.com/rest/v1.2/read/sites/3584907",
+					"feed": "https://public-api.wordpress.com/rest/v1.1/read/feed/25823"
+				},
+				"data": {
+					"site": {
+						"ID": 3584907,
+						"name": "WordPress.com News",
+						"description": "The latest news on WordPress.com and the WordPress community.",
+						"URL": "http://en.blog.wordpress.com",
+						"jetpack": false,
+						"jetpack_connection": false,
+						"post_count": 1728,
+						"subscribers_count": 104372237,
+						"lang": "en",
+						"icon": {
+							"img": "https://secure.gravatar.com/blavatar/4d5d4c4006d86ff465780ec0d2671c0231c8536cc2fa8167aca8a4dd76811795",
+							"ico": "https://secure.gravatar.com/blavatar/4d5d4c4006d86ff465780ec0d2671c0231c8536cc2fa8167aca8a4dd76811795"
+						},
+						"logo": {
+							"id": 0,
+							"sizes": [],
+							"url": ""
+						},
+						"visible": true,
+						"is_private": false,
+						"is_coming_soon": false,
+						"is_following": true,
+						"organization_id": 0,
+						"meta": {
+							"links": {
+								"self": "https://public-api.wordpress.com/rest/v1.2/sites/3584907",
+								"help": "https://public-api.wordpress.com/rest/v1.2/sites/3584907/help",
+								"posts": "https://public-api.wordpress.com/rest/v1.2/sites/3584907/posts/",
+								"comments": "https://public-api.wordpress.com/rest/v1.1/sites/3584907/comments/",
+								"xmlrpc": "https://en.blog.wordpress.com/xmlrpc.php"
+							}
+						},
+						"launch_status": false,
+						"site_migration": null,
+						"is_fse_active": false,
+						"is_fse_eligible": false,
+						"is_core_site_editor_enabled": false,
+						"is_wpcom_atomic": false,
+						"is_wpcom_staging_site": false,
+						"capabilities": {
+							"edit_pages": false,
+							"edit_posts": false,
+							"edit_others_posts": false,
+							"edit_theme_options": false,
+							"list_users": false,
+							"manage_categories": false,
+							"manage_options": false,
+							"publish_posts": false,
+							"upload_files": false,
+							"view_stats": false
+						},
+						"is_multi_author": true,
+						"feed_ID": 25823,
+						"feed_URL": "http://en.blog.wordpress.com",
+						"header_image": false,
+						"owner": {
+							"ID": 26957695,
+							"login": "a8cuser",
+							"name": "Automattic",
+							"first_name": "Automattic",
+							"last_name": "",
+							"nice_name": "a8cuser",
+							"URL": "",
+							"avatar_URL": "https://1.gravatar.com/avatar/48e997e4a437d5002ae4c1eff741b37c2f4e1cad14d45f173ae78c25a0c41a38?s=96&d=retro",
+							"profile_URL": "https://gravatar.com/a8cuser",
+							"ip_address": false,
+							"site_visible": true,
+							"has_avatar": true
+						},
+						"subscription": {
+							"delivery_methods": {
+								"email": {
+									"send_posts": true,
+									"send_comments": false,
+									"post_delivery_frequency": "instantly",
+									"date_subscribed": "2024-03-05 20:48:53"
+								},
+								"notification": {
+									"send_posts": false
+								}
+							}
+						},
+						"is_blocked": false,
+						"unseen_count": 0
+					},
+					"feed": {
+						"blog_ID": "3584907",
+						"feed_ID": "25823",
+						"name": "WordPress.com News",
+						"URL": "http://en.blog.wordpress.com/",
+						"feed_URL": "http://en.blog.wordpress.com",
+						"subscribers_count": 104372237,
+						"is_following": true,
+						"last_update": "2024-03-07T15:00:00+00:00",
+						"last_checked": "2024-03-07T17:08:35+00:00",
+						"marked_for_refresh": false,
+						"next_refresh_time": null,
+						"organization_id": 0,
+						"unseen_count": 0,
+						"meta": {
+							"links": {
+								"self": "https://public-api.wordpress.com/rest/v1.1/read/feed/25823",
+								"site": "https://public-api.wordpress.com/rest/v1.1/read/sites/3584907"
+							}
+						},
+						"image": "http://0.gravatar.com/blavatar/4d5d4c4006d86ff465780ec0d2671c0231c8536cc2fa8167aca8a4dd76811795?s=96&amp;d=http%3A%2F%2Fs0.wp.com%2Fi%2Fbuttonw-com.png",
+						"description": "The latest news on WordPress.com and the WordPress community.",
+						"subscription_id": 764146175
+					}
+				}
+			},
+			"is_wpforteams_site": false,
+			"is_paid_subscription": false,
+			"is_rss": false,
+			"is_gift": false
+		}
+    ],
+	"page": 1,
+	"number": 1,
+	"total_subscriptions": 1
+}

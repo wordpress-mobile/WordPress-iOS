@@ -54,11 +54,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Header container
     @IBOutlet weak var headerContainerView: UIView!
 
-    /// Wrapper for the toolbar
-    @IBOutlet weak var toolbarContainerView: UIView!
-
-    private lazy var toolbarHidingConstraint = toolbarContainerView.heightAnchor.constraint(equalToConstant: 0)
-
     /// Wrapper for the Likes summary view
     @IBOutlet weak var likesContainerView: UIView!
 
@@ -68,19 +63,28 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Attribution view for Discovery posts
     @IBOutlet weak var attributionView: ReaderCardDiscoverAttributionView!
 
+    @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
+
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     /// The actual header
     private let featuredImageView = ReaderDetailFeaturedImageView()
 
-    /// The actual header
-    private lazy var header: ReaderDetailHeaderHostingView = {
-        return .init()
-    }()
+    private var heroView: ReaderHeroView?
 
-    /// Bottom toolbar
-    private let toolbar: ReaderDetailToolbar = .loadFromNib()
-    private var isToolbarHidden = false
+    private var isNewFeaturedImageEnabled: Bool {
+        if #available(iOS 26, *) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    /// The actual header
+    private lazy var header = ReaderDetailHeaderHostingView()
+
+    /// Bottom toolbar helper
+    private lazy var toolbar = ReaderDetailToolbar()
     private var lastContentOffset: CGFloat = 0
 
     /// Likes summary view
@@ -124,17 +128,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Tracks whether the webview has called -didFinish:navigation
     var isLoadingWebView = true
 
-    /// Temporary work around until white headers are shipped app-wide,
-    /// allowing Reader Detail to use a blue navbar.
-    var useCompatibilityMode: Bool {
-        // This enables ALL Reader Detail screens to use a transparent navigation bar style,
-        // so that the display settings can be applied correctly.
-        //
-        // Plus, it looks like we don't have screens with a blue (legacy) navigation bar anymore,
-        // so it may be a good chance to clean up and remove `useCompatibilityMode`.
-        !ReaderDisplaySettings.customizationEnabled
-    }
-
     /// Used to disable ineffective buttons when a Related post fails to load.
     var enableRightBarButtons = true
 
@@ -161,7 +154,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureNavigationBar()
         applyStyles()
         configureWebView()
-        configureFeaturedImage()
+        configureLegacyFeaturedImage()
         configureHeader()
         configureRelatedPosts()
         configureToolbar()
@@ -173,6 +166,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         coordinator?.start()
 
         startObservingPost()
+
+        if #available(iOS 26, *) {
+            scrollViewTopConstraint?.isActive = false
+            scrollView.pinEdges(.top)
+
+            headerContainerView.clipsToBounds = true
+            headerContainerView.backgroundColor = .systemBackground
+            headerContainerView.layer.cornerRadius = DesignConstants.radius(.large)
+            headerContainerView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        }
 
         // Fixes swipe to go back not working when leftBarButtonItem is set
         navigationController?.interactivePopGestureRecognizer?.delegate = self
@@ -188,6 +191,15 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         setupFeaturedImage()
         updateFollowButtonState()
         toolbar.viewWillAppear()
+
+        if #unavailable(iOS 26) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                // Workaround for tab bar dismiss iteraction
+                self.navigationController?.setToolbarHidden(false, animated: animated)
+            }
+        } else {
+            navigationController?.setToolbarHidden(false, animated: animated)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -197,16 +209,21 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             return
         }
 
-        featuredImageView.viewWillDisappear()
+        if !isNewFeaturedImageEnabled {
+            featuredImageView.viewWillDisappear()
+        }
         toolbar.viewWillDisappear()
+        navigationController?.setToolbarHidden(true, animated: animated)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        coordinator.animate(alongsideTransition: { _ in
-            self.featuredImageView.deviceDidRotate()
-        })
+        if !isNewFeaturedImageEnabled {
+            coordinator.animate(alongsideTransition: { _ in
+                self.featuredImageView.deviceDidRotate()
+            })
+        }
     }
 
     override func accessibilityPerformEscape() -> Bool {
@@ -221,8 +238,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
 
+        setupHeroView()
         featuredImageView.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
+        updateToolbarItems()
         header.configure(for: post)
         fetchLikes()
         fetchComments()
@@ -252,16 +271,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             self?.webView.loadHTMLString(post.contentForDisplay())
         }
 
-        guard !featuredImageView.isLoaded else {
-            return
-        }
-
-        // Load the image
-        featuredImageView.load { [weak self] in
-            self?.hideLoading()
-        }
-
         navigateToCommentIfNecessary()
+
+        if !isNewFeaturedImageEnabled && !featuredImageView.isLoaded {
+            featuredImageView.load()
+        }
     }
 
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) {
@@ -319,7 +333,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func hideLoading() {
-        guard !featuredImageView.isLoading, !isLoadingWebView else {
+        guard !isLoadingWebView else {
             return
         }
 
@@ -460,9 +474,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
             // Header view
             header.displaySetting = displaySetting
-
-            // Toolbar
-            toolbar.displaySetting = displaySetting
         }
 
         // Featured image view
@@ -523,7 +534,60 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func setupFeaturedImage() {
-        configureFeaturedImage()
+        if isNewFeaturedImageEnabled {
+            setupHeroView()
+        } else {
+            setupLegacyFeaturedImage()
+        }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        layoutHeroView()
+    }
+
+    private func setupHeroView() {
+        guard isNewFeaturedImageEnabled else {
+            return
+        }
+        guard let post, let imageURL = URL(string: post.featuredImage),
+              !post.contentIncludesFeaturedImage() else {
+            return
+        }
+        if heroView == nil {
+            let heroView = ReaderHeroView()
+            heroView.configureTapGesture(in: scrollView) { [weak self] in
+                self?.coordinator?.didTapFeaturedImage($0)
+            }
+            view.insertSubview(heroView, belowSubview: scrollView)
+            self.heroView = heroView
+        }
+        if heroView?.imageURL != imageURL {
+            heroView?.imageURL = imageURL
+            heroView?.imageView.setImage(with: ImageRequest(url: imageURL, host: MediaHost(post)))
+        }
+        layoutHeroView()
+    }
+
+    private func layoutHeroView() {
+        guard let heroView else {
+            return
+        }
+        let contentInsetTop = heroView.imageView.frame.height + heroView.estimatedStatusBarOffset - view.safeAreaInsets.top
+        if contentInsetTop != scrollView.contentInset.top {
+            // `contentInset` is automatically adjusted to include safeAreaInsets.top
+            scrollView.contentInset.top = contentInsetTop
+        }
+        // DesignConstants.radius(.large) to extend a bit behind the header view
+        let heroViewFrame = CGRect(x: 0, y: 0, width: view.bounds.width, height: max(0, -scrollView.contentOffset.y + heroView.bottomExtensionHeight))
+        if heroViewFrame != heroView.frame {
+            heroView.frame = heroViewFrame
+        }
+    }
+
+    private func setupLegacyFeaturedImage() {
+        configureLegacyFeaturedImage()
 
         featuredImageView.configure(
             scrollView: scrollView,
@@ -531,20 +595,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             navigationItem: navigationItem
         )
 
-        guard !featuredImageView.isLoaded else {
-            return
-        }
-
-        // Load the image
-        featuredImageView.load { [weak self] in
-            guard let self else {
-                return
-            }
-            self.hideLoading()
+        if !featuredImageView.isLoaded {
+            featuredImageView.load()
         }
     }
 
-    private func configureFeaturedImage() {
+    private func configureLegacyFeaturedImage() {
         guard featuredImageView.superview == nil else {
             return
         }
@@ -552,8 +608,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         if ReaderDisplaySettings.customizationEnabled {
             featuredImageView.displaySetting = displaySetting
         }
-
-        featuredImageView.useCompatibilityMode = useCompatibilityMode
 
         featuredImageView.delegate = coordinator
 
@@ -640,16 +694,15 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureToolbar() {
-        if ReaderDisplaySettings.customizationEnabled {
-            toolbar.displaySetting = displaySetting
-        }
         toolbar.delegate = coordinator
-        toolbarContainerView.addSubview(toolbar)
+        toolbar.configure(for: self)
+        updateToolbarItems()
+    }
 
-        // Unfortunately, this doesn't support self-sizing and dynamic type
-        toolbar.heightAnchor.constraint(equalToConstant: 58).isActive = true
-        toolbar.pinEdges([.top, .horizontal])
-        toolbar.pinEdges(.bottom, to: view.safeAreaLayoutGuide, priority: .init(749)) // Break on hiding
+    private func updateToolbarItems() {
+        guard let post else { return }
+        let items = toolbar.createToolbarItems(for: post, in: self)
+        setToolbarItems(items, animated: false)
     }
 
     private func configureDiscoverAttribution(_ post: ReaderPost) {
@@ -838,19 +891,15 @@ extension ReaderDetailViewController: UIScrollViewDelegate {
         } else if currentOffset > lastContentOffset && currentOffset > 0 {
             setToolbarHidden(true, animated: true) // Scrolling down
         } else if currentOffset < lastContentOffset {
-            setToolbarHidden(false, animated: false) // Scrolling up
+            setToolbarHidden(false, animated: true) // Scrolling up
         }
         lastContentOffset = currentOffset
+        layoutHeroView()
     }
 
     private func setToolbarHidden(_ isHidden: Bool, animated: Bool) {
-        guard isToolbarHidden != isHidden else { return }
-        self.isToolbarHidden = isHidden
-
-        UIView.animate(withDuration: 0.33, delay: 0.0, options: [.beginFromCurrentState, .allowUserInteraction]) {
-            self.toolbarHidingConstraint.isActive = isHidden
-            self.view.layoutIfNeeded()
-        }
+        guard navigationController?.isToolbarHidden != isHidden else { return } // Important
+        navigationController?.setToolbarHidden(isHidden, animated: animated)
     }
 }
 

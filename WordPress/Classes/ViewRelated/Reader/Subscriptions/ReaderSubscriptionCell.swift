@@ -52,6 +52,11 @@ struct ReaderSubscriptionCell: View {
         }, preview: {
             ReaderTopicPreviewView(topic: site)
         })
+        .sheet(isPresented: $isShowingSettings) {
+            ReaderSubscriptionNotificationSettingsView(siteID: site.siteID.intValue)
+                .presentationDetents([.medium, .large])
+                .edgesIgnoringSafeArea(.bottom)
+        }
     }
 
     private var buttonMore: some View {

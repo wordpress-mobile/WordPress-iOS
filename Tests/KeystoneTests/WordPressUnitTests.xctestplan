@@ -34,15 +34,8 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
-        "identifier" : "AsyncImageKitTests",
-        "name" : "AsyncImageKitTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:WordPress.xcodeproj",
-        "identifier" : "4AD953BA2C21451700D0EEFA",
-        "name" : "WordPressAuthenticatorTests"
+        "identifier" : "WordPressFluxTests",
+        "name" : "WordPressFluxTests"
       }
     },
     {
@@ -62,15 +55,15 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
-        "identifier" : "WordPressUIUnitTests",
-        "name" : "WordPressUIUnitTests"
+        "identifier" : "WordPressSharedTests",
+        "name" : "WordPressSharedTests"
       }
     },
     {
       "target" : {
-        "containerPath" : "container:..\/Modules",
-        "identifier" : "WordPressSharedTests",
-        "name" : "WordPressSharedTests"
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "4A8280FC2E5FE9B60037E180",
+        "name" : "WordPressKitTests"
       }
     },
     {
@@ -82,9 +75,16 @@
     },
     {
       "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "4AD953BA2C21451700D0EEFA",
+        "name" : "WordPressAuthenticatorTests"
+      }
+    },
+    {
+      "target" : {
         "containerPath" : "container:..\/Modules",
-        "identifier" : "WordPressFluxTests",
-        "name" : "WordPressFluxTests"
+        "identifier" : "WordPressUIUnitTests",
+        "name" : "WordPressUIUnitTests"
       }
     },
     {
@@ -92,6 +92,13 @@
         "containerPath" : "container:..\/Modules",
         "identifier" : "WordPressSharedObjCTests",
         "name" : "WordPressSharedObjCTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "AsyncImageKitTests",
+        "name" : "AsyncImageKitTests"
       }
     }
   ],

@@ -7,51 +7,17 @@ protocol ReaderDetailToolbarDelegate: AnyObject {
     var notificationID: String? { get }
 }
 
-class ReaderDetailToolbar: UIView, NibLoadable {
-    @IBOutlet weak var dividerView: UIView!
-    @IBOutlet weak var saveForLaterButton: UIButton!
-    @IBOutlet weak var reblogButton: UIButton!
-    @IBOutlet weak var commentButton: UIButton!
-    @IBOutlet weak var likeButton: UIButton!
-
-    /// The reader post that the toolbar interacts with
+class ReaderDetailToolbar {
     private var post: ReaderPost?
-
-    /// The VC where the toolbar is inserted
     private weak var viewController: UIViewController?
 
-    /// An observer of the number of likes of the post
     private var likeCountObserver: NSKeyValueObservation?
-
-    /// An observer of the number of likes of the post
     private var commentCountObserver: NSKeyValueObservation?
 
-    weak var delegate: ReaderDetailToolbarDelegate? = nil
-
-    var displaySetting: ReaderDisplaySettings = .standard {
-        didSet {
-            applyStyles()
-            configureActionButtons()
-        }
-    }
-
-    private func likeButtonTitle(likeCount: Int) -> String {
-        if likeCount > 0 {
-            return likeCount.formatted(.number.notation(.compactName))
-        }
-        return Constants.likeButtonTitle
-    }
+    weak var delegate: ReaderDetailToolbarDelegate?
 
     private var likeCount: Int {
         post?.likeCount?.intValue ?? 0
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        applyStyles()
-
-        prepareActionButtonsForVoiceOver()
     }
 
     func viewWillAppear() {
@@ -62,12 +28,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         unsubscribePostChanges()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            configureActionButtons()
-        }
-        configureButtonTitles()
+    func configure(for viewController: UIViewController) {
+        self.viewController = viewController
     }
 
     func configure(for post: ReaderPost, in viewController: UIViewController) {
@@ -75,14 +37,160 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         self.viewController = viewController
 
         subscribePostChanges()
-        configureActionButtons()
+        updateToolbarItems()
+    }
+
+    func createToolbarItems(for post: ReaderPost, in viewController: UIViewController) -> [UIBarButtonItem] {
+        self.post = post
+        self.viewController = viewController
+
+        var items: [UIBarButtonItem] = []
+
+        if #unavailable(iOS 26) {
+            items.append(.flexibleSpace())
+        }
+
+        if let button = makeSaveForLaterButton() {
+            items.append(button)
+        }
+
+        if let button = makeReblogButton() {
+            if #unavailable(iOS 26) {
+                items.append(.flexibleSpace())
+            }
+            items.append(button)
+        }
+
+        items.append(.flexibleSpace())
+
+        if let button = makeCommentButton() {
+            items.append(button)
+        }
+
+        if let button = makeLikeButton() {
+            if #unavailable(iOS 26) {
+                items.append(.flexibleSpace())
+            }
+            items.append(button)
+        }
+
+        if #unavailable(iOS 26) {
+            items.append(.flexibleSpace())
+        }
+
+        return items
+    }
+
+    private func updateToolbarItems() {
+        guard let viewController else { return }
+        if let post {
+            let items = createToolbarItems(for: post, in: viewController)
+            viewController.setToolbarItems(items, animated: false)
+        }
+    }
+
+    // MARK: - Create Buttons
+
+    private func makeSaveForLaterButton() -> UIBarButtonItem? {
+        let isSaved = post?.isSavedForLater ?? false
+        let image = isSaved ? WPStyleGuide.ReaderDetail.saveSelectedToolbarIcon : WPStyleGuide.ReaderDetail.saveToolbarIcon
+
+        let button = UIBarButtonItem(
+            image: image,
+            style: .plain,
+            target: self,
+            action: #selector(didTapSaveForLater)
+        )
+
+        button.accessibilityLabel = isSaved ? Constants.savedButtonAccessibilityLabel : Constants.saveButtonAccessibilityLabel
+        button.accessibilityHint = isSaved ? Constants.savedButtonHint : Constants.saveButtonHint
+        button.tintColor = isSaved ? UIAppColor.primary : .label
+
+        return button
+    }
+
+    private func makeReblogButton() -> UIBarButtonItem? {
+        guard let post else { return nil }
+
+        let button = UIBarButtonItem(
+            image: WPStyleGuide.ReaderDetail.reblogToolbarIcon,
+            style: .plain,
+            target: self,
+            action: #selector(didTapReblog)
+        )
+
+        button.isEnabled = ReaderHelpers.isLoggedIn() && !post.isBlogPrivate
+        button.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
+        button.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
+        button.tintColor = .label
+
+        return button
+    }
+
+    private func makeCommentButton() -> UIBarButtonItem? {
+        guard shouldShowCommentActionButton else { return nil }
+
+        let count = post?.commentCount.intValue ?? 0
+
+        let customButton = makeCustomButton(
+            image: WPStyleGuide.ReaderDetail.commentToolbarIcon,
+            title: count.formatted(.number.notation(.compactName)),
+            action: #selector(didTapComment)
+        )
+
+        let button = UIBarButtonItem(customView: customButton)
+        return button
+    }
+
+    private func makeLikeButton() -> UIBarButtonItem? {
+        guard let post else { return nil }
+
+        let isLiked = post.isLiked
+
+        let customButton = makeCustomButton(
+            image: isLiked ? WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon : WPStyleGuide.ReaderDetail.likeToolbarIcon,
+            title: likeCount.formatted(.number.notation(.compactName)),
+            isSelected: isLiked,
+            action: #selector(didTapLike)
+        )
+
+        customButton.isEnabled = (ReaderHelpers.isLoggedIn() || likeCount > 0) && !post.isExternal
+        customButton.alpha = customButton.isEnabled ? 1.0 : 0.5
+
+        let button = UIBarButtonItem(customView: customButton)
+        button.accessibilityHint = isLiked ? Constants.likedButtonHint : Constants.likeButtonHint
+
+        return button
+    }
+
+    private func makeCustomButton(image: UIImage?, title: String, isSelected: Bool = false, action: Selector) -> UIButton {
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = image
+        configuration.title = title
+
+        // Apply colors based on display settings and selection state
+        let tintColor = isSelected ? UIAppColor.primary : .label
+        configuration.baseForegroundColor = tintColor
+        configuration.imagePadding = 5
+
+        // Set font
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = .preferredFont(forTextStyle: .subheadline)
+            return outgoing
+        }
+
+        let button = UIButton(configuration: configuration, primaryAction: nil)
+        button.tintColor = tintColor
+        button.addTarget(self, action: action, for: .touchUpInside)
+        return button
     }
 
     // MARK: - Actions
 
-    @IBAction func didTapSaveForLater(_ sender: Any) {
+    @objc private func didTapSaveForLater(_ sender: Any) {
         guard let readerPost = post, let context = readerPost.managedObjectContext,
-            let viewController = viewController as? UIViewController & UIViewControllerTransitioningDelegate else {
+              let viewController = viewController as? UIViewController & UIViewControllerTransitioningDelegate else {
             return
         }
 
@@ -91,12 +199,11 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         }
 
         ReaderSaveForLaterAction().execute(with: readerPost, context: context, origin: .postDetail, viewController: viewController) { [weak self] in
-            self?.saveForLaterButton.isSelected = readerPost.isSavedForLater
-            self?.prepareActionButtonsForVoiceOver()
+            self?.updateToolbarItems()
         }
     }
 
-    @IBAction func didTapReblog(_ sender: Any) {
+    @objc private func didTapReblog(_ sender: Any) {
         guard let post, let viewController else {
             return
         }
@@ -104,7 +211,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         ReaderReblogAction().execute(readerPost: post, origin: viewController, reblogSource: .detail)
     }
 
-    @IBAction func didTapComment(_ sender: Any) {
+    @objc private func didTapComment(_ sender: Any) {
         guard let post, let viewController else {
             return
         }
@@ -112,20 +219,16 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         ReaderCommentAction().execute(post: post, origin: viewController, source: .postDetails)
     }
 
-    @IBAction func didTapLike(_ sender: Any) {
+    @objc private func didTapLike(_ sender: Any) {
         guard let post else {
             return
         }
+
         if !post.isLiked {
-            likeButton.setTitle(likeButtonTitle(likeCount: likeCount + 1), for: [])
-            likeButton.isSelected = true
             UINotificationFeedbackGenerator().notificationOccurred(.success)
-            likeButton.imageView?.fadeInWithRotationAnimation { _ in
-                self.toggleLike()
-            }
-        } else {
-            toggleLike()
         }
+
+        toggleLike()
     }
 
     private func toggleLike() {
@@ -138,6 +241,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
                 })
             }
             self?.trackArticleDetailsLikedOrUnliked()
+            self?.updateToolbarItems()
         }, failure: { [weak self] (error: Error?) in
             self?.trackArticleDetailsLikedOrUnliked()
             if let error {
@@ -145,148 +249,8 @@ class ReaderDetailToolbar: UIView, NibLoadable {
                 Notice(error: error).post()
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
             }
+            self?.updateToolbarItems()
         })
-    }
-
-    // MARK: - Styles
-
-    private func applyStyles() {
-        backgroundColor = displaySetting == .standard ? .secondarySystemGroupedBackground : displaySetting.color.background
-        dividerView.backgroundColor = displaySetting == .standard ? UIColor.separator : displaySetting.color.border
-    }
-
-    // MARK: - Configuration
-
-    private func configureActionButtons() {
-        resetActionButton(likeButton)
-        resetActionButton(commentButton)
-        resetActionButton(saveForLaterButton)
-        resetActionButton(reblogButton)
-
-        configureLikeActionButton()
-        configureCommentActionButton()
-        configureReblogButton()
-        configureSaveForLaterButton()
-        configureButtonTitles()
-    }
-
-    private func resetActionButton(_ button: UIButton) {
-        button.setTitle(nil, for: UIControl.State())
-        button.setTitle(nil, for: .highlighted)
-        button.setTitle(nil, for: .disabled)
-        button.setImage(nil, for: UIControl.State())
-        button.setImage(nil, for: .highlighted)
-        button.setImage(nil, for: .disabled)
-        button.isSelected = false
-        button.isEnabled = true
-    }
-
-    private func configureActionButton(_ button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected: Bool) {
-        button.setTitle(title, for: UIControl.State())
-        button.setTitle(title, for: .highlighted)
-        button.setTitle(title, for: .disabled)
-        button.setImage(image, for: UIControl.State())
-        button.setImage(highlightedImage, for: .highlighted)
-        button.setImage(highlightedImage, for: .selected)
-        button.setImage(highlightedImage, for: [.highlighted, .selected])
-        button.setImage(image, for: .disabled)
-        button.isSelected = selected
-
-        configureActionButtonStyle(button)
-    }
-
-    private func configureActionButtonStyle(_ button: UIButton) {
-        let standardDisabledColor = UIColor(light: UIAppColor.gray(.shade10), dark: .quaternaryLabel)
-        let disabledColor = displaySetting == .standard ? standardDisabledColor : displaySetting.color.border
-
-        WPStyleGuide.applyReaderActionButtonStyle(
-            button,
-            titleColor: displaySetting == .standard ? .secondaryLabel : displaySetting.color.secondaryForeground,
-            imageColor: displaySetting == .standard ? .secondaryLabel : displaySetting.color.secondaryForeground,
-            disabledColor: disabledColor
-        )
-
-        var configuration = UIButton.Configuration.plain()
-
-        // Vertically stack the button's image and title.
-        configuration.imagePlacement = .top
-        configuration.contentInsets = Constants.buttonContentInsets
-        configuration.imagePadding = Constants.buttonImagePadding
-
-        /// Override the button's title label font.
-        /// When the button's configuration exists, updating the font via `titleLabel` no longer works somehow.
-        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { [weak self] incoming in
-            guard let self else {
-                return incoming
-            }
-
-            var outgoing = incoming
-            outgoing.font = self.displaySetting == .standard ? WPStyleGuide.fontForTextStyle(.footnote) : self.displaySetting.font(with: .footnote)
-            return outgoing
-        }
-
-        // Don't allow the button title to wrap.
-        configuration.titleLineBreakMode = .byTruncatingTail
-
-        button.configuration = configuration
-
-        /// Remove default background styles. The `.plain()` configuration adds a gray background to selected state.
-        button.configurationUpdateHandler = { button in
-            switch button.state {
-            case .selected:
-                button.configuration?.background.backgroundColor = .clear
-            default:
-                return
-            }
-        }
-    }
-
-    private func configureLikeActionButton(_ animated: Bool = false) {
-        guard let post else {
-            return
-        }
-
-        let selected = post.isLiked
-        likeButton.isEnabled = (ReaderHelpers.isLoggedIn() || likeCount > 0) && !post.isExternal
-        likeButton.accessibilityHint = selected ? Constants.likedButtonHint : Constants.likeButtonHint
-
-        configureActionButton(
-            likeButton,
-            title: likeButtonTitle(likeCount: likeCount),
-            image: WPStyleGuide.ReaderDetail.likeToolbarIcon,
-            highlightedImage: WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon,
-            selected: selected
-        )
-    }
-
-    /// Uses the configuration in WPStyleGuide for the reblog button
-    private func configureReblogButton() {
-        guard let post else {
-            return
-        }
-
-        reblogButton.isEnabled = ReaderHelpers.isLoggedIn() && !post.isBlogPrivate
-        WPStyleGuide.applyReaderReblogActionButtonStyle(reblogButton, showTitle: false)
-
-        configureActionButtonStyle(reblogButton)
-        prepareReblogForVoiceOver()
-    }
-
-    private func configureCommentActionButton() {
-        commentButton.setTitle({
-            let count = post?.commentCount.intValue ?? 0
-            return count == 0 ? Constants.commentButtonTitle : count.formatted(.number.notation(.compactName))
-        }(), for: [])
-
-        commentButton.isEnabled = shouldShowCommentActionButton
-
-        commentButton.setImage(WPStyleGuide.ReaderDetail.commentToolbarIcon, for: .normal)
-        commentButton.setImage(WPStyleGuide.ReaderDetail.commentHighlightedToolbarIcon, for: .selected)
-        commentButton.setImage(WPStyleGuide.ReaderDetail.commentHighlightedToolbarIcon, for: .highlighted)
-        commentButton.setImage(WPStyleGuide.ReaderDetail.commentHighlightedToolbarIcon, for: [.highlighted, .selected])
-        commentButton.setImage(WPStyleGuide.ReaderDetail.commentToolbarIcon, for: .disabled)
-
-        configureActionButtonStyle(commentButton)
     }
 
     private var shouldShowCommentActionButton: Bool {
@@ -307,22 +271,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         return false
     }
 
-    private func configureSaveForLaterButton() {
-        WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
-        WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: false)
-
-        let isSaved = post?.isSavedForLater ?? false
-        saveForLaterButton.isSelected = isSaved
-        prepareActionButtonsForVoiceOver()
-
-        configureActionButtonStyle(saveForLaterButton)
-    }
-
-    fileprivate func configureButtonTitles() {
-        WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton, showTitle: true)
-        WPStyleGuide.applyReaderReblogActionButtonTitle(reblogButton, showTitle: true)
-    }
-
     // MARK: - Analytics
 
     private func trackArticleDetailsLikedOrUnliked() {
@@ -330,28 +278,12 @@ class ReaderDetailToolbar: UIView, NibLoadable {
             return
         }
 
-        let stat: WPAnalyticsStat = post.isLiked
-            ? .readerArticleDetailLiked
-            : .readerArticleDetailUnliked
+        let stat: WPAnalyticsStat = post.isLiked ? .readerArticleDetailLiked : .readerArticleDetailUnliked
 
         var properties = [AnyHashable: Any]()
         properties[WPAppAnalyticsKeyBlogID] = post.siteID
         properties[WPAppAnalyticsKeyPostID] = post.postID
         WPAnalytics.track(stat, withProperties: properties)
-    }
-
-    // MARK: - Voice Over
-
-    private func prepareActionButtonsForVoiceOver() {
-        let isSaved = post?.isSavedForLater ?? false
-        saveForLaterButton.accessibilityLabel = isSaved ? Constants.savedButtonAccessibilityLabel : Constants.saveButtonAccessibilityLabel
-        saveForLaterButton.accessibilityHint = isSaved ? Constants.savedButtonHint : Constants.saveButtonHint
-    }
-
-    private func prepareReblogForVoiceOver() {
-        reblogButton.accessibilityLabel = NSLocalizedString("Reblog post", comment: "Accessibility label for the reblog button.")
-        reblogButton.accessibilityHint = NSLocalizedString("Reblog this post", comment: "Accessibility hint for the reblog button.")
-        reblogButton.accessibilityTraits = UIAccessibilityTraits.button
     }
 }
 
@@ -360,9 +292,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 private extension ReaderDetailToolbar {
 
     struct Constants {
-        static let buttonContentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        static let buttonImagePadding: CGFloat = 0
-
         // MARK: Strings
 
         static let savedButtonAccessibilityLabel = NSLocalizedString(
@@ -450,7 +379,7 @@ private extension ReaderDetailToolbar {
                 return
             }
 
-            self?.configureLikeActionButton(true)
+            self?.updateToolbarItems()
         }
 
         commentCountObserver = post?.observe(\.commentCount, options: [.old, .new]) { [weak self] _, change in
@@ -461,7 +390,7 @@ private extension ReaderDetailToolbar {
                 return
             }
 
-            self?.configureCommentActionButton()
+            self?.updateToolbarItems()
         }
     }
 

@@ -11,6 +11,7 @@ protocol UpdatableStatusBarStyle: UIViewController {
     func updateStatusBarStyle(to style: UIStatusBarStyle)
 }
 
+// Pre iOS 26.
 final class ReaderDetailFeaturedImageView: UIView {
 
     // MARK: - Constants
@@ -52,14 +53,6 @@ final class ReaderDetailFeaturedImageView: UIView {
 
     /// Keeps track of if we've loaded the image before
     private(set) var isLoaded: Bool = false
-
-    /// Temporary work around until white headers are shipped app-wide,
-    /// allowing Reader Detail to use a blue navbar.
-    var useCompatibilityMode: Bool = false {
-        didSet {
-            updateIfNotLoading()
-        }
-    }
 
     var displaySetting: ReaderDisplaySettings = .standard {
         didSet {
@@ -116,7 +109,7 @@ final class ReaderDetailFeaturedImageView: UIView {
             return navigationBar?.tintColor
         }
         set(newValue) {
-            self.navigationItem?.setTintColor(useCompatibilityMode ? .invertedLabel : newValue)
+            self.navigationItem?.setTintColor(newValue)
         }
     }
 
@@ -199,9 +192,8 @@ final class ReaderDetailFeaturedImageView: UIView {
 
     // MARK: - Public: Fetching Featured Image
 
-    public func load(completion: @escaping () -> Void) {
+    public func load() {
         guard
-            !useCompatibilityMode,
             !isLoading,
             let post = self.post,
             let imageURL = URL(string: post.featuredImage),
@@ -209,7 +201,6 @@ final class ReaderDetailFeaturedImageView: UIView {
         else {
             reset()
             isLoaded = true
-            completion()
             return
         }
 
@@ -224,14 +215,11 @@ final class ReaderDetailFeaturedImageView: UIView {
             self.imageSize = size
             self.didFinishLoading()
             self.isLoading = false
-
-            completion()
         }
 
         let failureHandler: () -> Void = { [weak self] in
             self?.reset()
             self?.isLoading = false
-            completion()
         }
 
         // TODO: refactor.
@@ -263,10 +251,6 @@ final class ReaderDetailFeaturedImageView: UIView {
     // MARK: - Public: Helpers
 
     public func deviceDidRotate() {
-        guard !useCompatibilityMode else {
-            return
-        }
-
         updateInitialHeight(resetContentOffset: false)
     }
 
@@ -321,7 +305,6 @@ final class ReaderDetailFeaturedImageView: UIView {
 
     private func update() {
         guard
-            !useCompatibilityMode,
             imageSize != nil,
             let scrollView = self.scrollView
         else {
@@ -350,6 +333,8 @@ final class ReaderDetailFeaturedImageView: UIView {
     }
 
     private func updateNavigationBar(in scrollView: UIScrollView) {
+        guard #unavailable(iOS 26) else { return }
+
         /// Navigation bar is only updated in light color themes, so that the tint color can be reverted
         /// to the original color after scrolling past the featured image.
         ///
@@ -366,12 +351,9 @@ final class ReaderDetailFeaturedImageView: UIView {
     }
 
     private func applyTransparentNavigationBarAppearance() {
-        guard !useCompatibilityMode else { return }
-
-        if isLoaded, imageView.image == nil {
+        if #unavailable(iOS 26), isLoaded, imageView.image == nil {
             navBarTintColor = style.endTintColor
         }
-
         updateIfNotLoading()
     }
 
@@ -408,6 +390,7 @@ final class ReaderDetailFeaturedImageView: UIView {
     }
 
     private func resetStatusBarStyle() {
+        guard #unavailable(iOS 26) else { return }
         let isDark = {
             if displaySetting.color == .system {
                 return traitCollection.userInterfaceStyle == .dark
@@ -419,7 +402,8 @@ final class ReaderDetailFeaturedImageView: UIView {
     }
 
     private func resetNavigationBarTintColor() {
-        navigationItem?.setTintColor(useCompatibilityMode ? UIAppColor.appBarTint : style.endTintColor)
+        guard #unavailable(iOS 26) else { return }
+        navigationItem?.setTintColor(style.endTintColor)
     }
 
     // MARK: - Private: Calculations

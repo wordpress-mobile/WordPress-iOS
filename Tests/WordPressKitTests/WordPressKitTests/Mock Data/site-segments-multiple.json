@@ -1,0 +1,56 @@
+[
+{
+    "icon_URL" : "https://s.wp.com/i/mobile_segmentation_icons/monochrome/ic_blogger.png",
+    "icon_color" : "#0087be",
+    "id" : 1,
+    "mobile" : true,
+    "segment_type_subtitle" : "Share and discuss ideas, updates, or creations.",
+    "segment_type_title" : "Blog",
+    "slug" : "blog"
+},
+{
+    "icon_URL" : "https://s.wp.com/i/mobile_segmentation_icons/monochrome/ic_business.png",
+    "icon_color" : "#f0b849",
+    "id" : 2,
+    "mobile" : true,
+    "segment_type_subtitle" : "Promote products and services.",
+    "segment_type_title" : "Business",
+    "slug" : "business"
+},
+{
+    "icon_URL" : "https://s.wp.com/i/mobile_segmentation_icons/monochrome/ic_professional.png",
+    "icon_color" : "#f0b849",
+    "id" : 3,
+    "mobile" : true,
+    "segment_type_subtitle" : "Showcase your portfolio, skills or work.",
+    "segment_type_title" : "Professional",
+    "slug" : "professional"
+},
+{
+    "icon_URL" : "https://s.wp.com/i/mobile_segmentation_icons/monochrome/ic_educator.png",
+    "icon_color" : "#d94f4f",
+    "id" : 4,
+    "mobile" : true,
+    "segment_type_subtitle" : "Share school projects and class info.",
+    "segment_type_title" : "Education",
+    "slug" : "education"
+},
+{
+    "icon_URL" : "",
+    "icon_color" : "",
+    "id" : 5,
+    "mobile" : false,
+    "segment_type_subtitle" : "Sell your collection of products online.",
+    "segment_type_title" : "Online store",
+    "slug" : "online-store"
+},
+{
+    "icon_URL" : "https://s.wp.com/i/mobile_segmentation_icons/monochrome/ic_blank_canvas.png",
+    "icon_color" : "#87a6bc",
+    "id" : 6,
+    "mobile" : true,
+    "segment_type_subtitle" : "Start with a blank site.",
+    "segment_type_title" : "Blank Canvas",
+    "slug" : "blank-canvas"
+}
+]

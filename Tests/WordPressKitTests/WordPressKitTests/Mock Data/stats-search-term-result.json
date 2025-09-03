@@ -1,0 +1,49 @@
+{
+    "date": "2019-02-17",
+    "period": "week",
+    "days": {
+        "2019-02-11": {
+            "search_terms": [
+                {
+                    "term": "wordpress",
+                    "views": 16
+                },
+                {
+                    "term": "wordpress.com",
+                    "views": 5
+                },
+                {
+                    "term": "undefined",
+                    "views": 5
+                },
+                {
+                    "term": "i want to read blogs",
+                    "views": 3
+                },
+                {
+                    "term": "wordpress com twenty fourteen",
+                    "views": 3
+                },
+                {
+                    "term": "where to read blogs",
+                    "views": 3
+                },
+                {
+                    "term": "pensamiento la informacion por medios digitales",
+                    "views": 3
+                },
+                {
+                    "term": "read blogs",
+                    "views": 3
+                },
+                {
+                    "term": "wp me",
+                    "views": 2
+                }
+            ],
+            "encrypted_search_terms": 634,
+            "other_search_terms": 190,
+            "total_search_terms": 867
+        }
+    }
+}
