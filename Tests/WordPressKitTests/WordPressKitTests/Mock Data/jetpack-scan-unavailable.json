@@ -1,0 +1,14 @@
+{
+    "state": "unavailable",
+    "threats": [],
+    "has_cloud": false,
+    "credentials": [{
+        "host": "example.com",
+        "port": 21,
+        "user": "example",
+        "path": "\/",
+        "type": "ftp",
+        "role": "main",
+        "still_valid": true
+    }]
+}

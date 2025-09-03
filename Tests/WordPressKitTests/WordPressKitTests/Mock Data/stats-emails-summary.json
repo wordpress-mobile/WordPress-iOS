@@ -1,0 +1,38 @@
+{
+    "posts": [
+        {
+            "id": 53978,
+            "href": "https://www.test1.com",
+            "date": "2023-12-29 16:02:54",
+            "title": "A great testing post",
+            "type": "post",
+            "opens": 453192,
+            "clicks": 2202
+        },
+        {
+            "id": 52362,
+            "href": "http://www.test2.com",
+            "date": "2023-06-27 19:15:12",
+            "title": "Hot Off the Press: A new testing post",
+            "type": "post",
+            "opens": 450055,
+            "clicks": 5385
+        },
+        {
+            "id": 54733,
+            "href": "http://www.test3.com",
+            "date": "2024-03-06 21:06:28",
+            "title": "Case Study: A new testing post",
+            "type": "post",
+            "opens": 382335,
+            "clicks": 4063
+        },
+        {
+            "id": 53668,
+            "href": "http://www.test4.com",
+            "date": "2023-11-07 20:18:07",
+            "title": "Test without opens and clicks",
+            "type": "post"
+        }
+    ]
+}

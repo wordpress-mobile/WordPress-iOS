@@ -1,0 +1,4 @@
+{
+    "error": "no_such_user",
+    "message": "No user exists with that email."
+}

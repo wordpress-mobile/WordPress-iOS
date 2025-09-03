@@ -73,7 +73,7 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4A98A2FA2C22736F00A2CE58"
+               BlueprintIdentifier = "4A8280FC2E5FE9B60037E180"
                BuildableName = "WordPressKitTests.xctest"
                BlueprintName = "WordPressKitTests"
                ReferencedContainer = "container:WordPress.xcodeproj">

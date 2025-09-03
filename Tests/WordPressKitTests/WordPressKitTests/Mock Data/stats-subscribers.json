@@ -1,0 +1,921 @@
+{
+  "date": "2024-04-22",
+  "unit": "day",
+  "fields": [
+    "period",
+    "subscribers",
+    "subscribers_change"
+  ],
+  "data": [
+    [
+      "2024-04-22",
+      77,
+      0,
+      [
+        "2024-04-22"
+      ]
+    ],
+    [
+      "2024-04-21",
+      78,
+      0,
+      [
+        "2024-04-21"
+      ]
+    ],
+    [
+      "2024-04-20",
+      78,
+      0,
+      [
+        "2024-04-20"
+      ]
+    ],
+    [
+      "2024-04-19",
+      78,
+      0,
+      [
+        "2024-04-19"
+      ]
+    ],
+    [
+      "2024-04-18",
+      78,
+      0,
+      [
+        "2024-04-18"
+      ]
+    ],
+    [
+      "2024-04-17",
+      78,
+      0,
+      [
+        "2024-04-17"
+      ]
+    ],
+    [
+      "2024-04-16",
+      78,
+      0,
+      [
+        "2024-04-16"
+      ]
+    ],
+    [
+      "2024-04-15",
+      78,
+      0,
+      [
+        "2024-04-15"
+      ]
+    ],
+    [
+      "2024-04-14",
+      78,
+      0,
+      [
+        "2024-04-14"
+      ]
+    ],
+    [
+      "2024-04-13",
+      78,
+      0,
+      [
+        "2024-04-13"
+      ]
+    ],
+    [
+      "2024-04-12",
+      78,
+      0,
+      [
+        "2024-04-12"
+      ]
+    ],
+    [
+      "2024-04-11",
+      78,
+      0,
+      [
+        "2024-04-11"
+      ]
+    ],
+    [
+      "2024-04-10",
+      78,
+      0,
+      [
+        "2024-04-10"
+      ]
+    ],
+    [
+      "2024-04-09",
+      78,
+      0,
+      [
+        "2024-04-09"
+      ]
+    ],
+    [
+      "2024-04-08",
+      76,
+      0,
+      [
+        "2024-04-08"
+      ]
+    ],
+    [
+      "2024-04-07",
+      76,
+      0,
+      [
+        "2024-04-07"
+      ]
+    ],
+    [
+      "2024-04-06",
+      76,
+      0,
+      [
+        "2024-04-06"
+      ]
+    ],
+    [
+      "2024-04-05",
+      76,
+      0,
+      [
+        "2024-04-05"
+      ]
+    ],
+    [
+      "2024-04-04",
+      78,
+      0,
+      [
+        "2024-04-04"
+      ]
+    ],
+    [
+      "2024-04-03",
+      78,
+      0,
+      [
+        "2024-04-03"
+      ]
+    ],
+    [
+      "2024-04-02",
+      78,
+      0,
+      [
+        "2024-04-02"
+      ]
+    ],
+    [
+      "2024-04-01",
+      78,
+      0,
+      [
+        "2024-04-01"
+      ]
+    ],
+    [
+      "2024-03-31",
+      78,
+      0,
+      [
+        "2024-03-31"
+      ]
+    ],
+    [
+      "2024-03-30",
+      78,
+      0,
+      [
+        "2024-03-30"
+      ]
+    ],
+    [
+      "2024-03-29",
+      79,
+      0,
+      [
+        "2024-03-29"
+      ]
+    ],
+    [
+      "2024-03-28",
+      79,
+      0,
+      [
+        "2024-03-28"
+      ]
+    ],
+    [
+      "2024-03-27",
+      79,
+      0,
+      [
+        "2024-03-27"
+      ]
+    ],
+    [
+      "2024-03-26",
+      80,
+      0,
+      [
+        "2024-03-26"
+      ]
+    ],
+    [
+      "2024-03-25",
+      78,
+      0,
+      [
+        "2024-03-25"
+      ]
+    ],
+    [
+      "2024-03-24",
+      78,
+      0,
+      [
+        "2024-03-24"
+      ]
+    ]
+  ],
+  "periods": [
+    {
+      "label": "2024-03-24",
+      "dates": [
+        "2024-03-24"
+      ]
+    },
+    {
+      "label": "2024-03-25",
+      "dates": [
+        "2024-03-25"
+      ]
+    },
+    {
+      "label": "2024-03-26",
+      "dates": [
+        "2024-03-26"
+      ]
+    },
+    {
+      "label": "2024-03-27",
+      "dates": [
+        "2024-03-27"
+      ]
+    },
+    {
+      "label": "2024-03-28",
+      "dates": [
+        "2024-03-28"
+      ]
+    },
+    {
+      "label": "2024-03-29",
+      "dates": [
+        "2024-03-29"
+      ]
+    },
+    {
+      "label": "2024-03-30",
+      "dates": [
+        "2024-03-30"
+      ]
+    },
+    {
+      "label": "2024-03-31",
+      "dates": [
+        "2024-03-31"
+      ]
+    },
+    {
+      "label": "2024-04-01",
+      "dates": [
+        "2024-04-01"
+      ]
+    },
+    {
+      "label": "2024-04-02",
+      "dates": [
+        "2024-04-02"
+      ]
+    },
+    {
+      "label": "2024-04-03",
+      "dates": [
+        "2024-04-03"
+      ]
+    },
+    {
+      "label": "2024-04-04",
+      "dates": [
+        "2024-04-04"
+      ]
+    },
+    {
+      "label": "2024-04-05",
+      "dates": [
+        "2024-04-05"
+      ]
+    },
+    {
+      "label": "2024-04-06",
+      "dates": [
+        "2024-04-06"
+      ]
+    },
+    {
+      "label": "2024-04-07",
+      "dates": [
+        "2024-04-07"
+      ]
+    },
+    {
+      "label": "2024-04-08",
+      "dates": [
+        "2024-04-08"
+      ]
+    },
+    {
+      "label": "2024-04-09",
+      "dates": [
+        "2024-04-09"
+      ]
+    },
+    {
+      "label": "2024-04-10",
+      "dates": [
+        "2024-04-10"
+      ]
+    },
+    {
+      "label": "2024-04-11",
+      "dates": [
+        "2024-04-11"
+      ]
+    },
+    {
+      "label": "2024-04-12",
+      "dates": [
+        "2024-04-12"
+      ]
+    },
+    {
+      "label": "2024-04-13",
+      "dates": [
+        "2024-04-13"
+      ]
+    },
+    {
+      "label": "2024-04-14",
+      "dates": [
+        "2024-04-14"
+      ]
+    },
+    {
+      "label": "2024-04-15",
+      "dates": [
+        "2024-04-15"
+      ]
+    },
+    {
+      "label": "2024-04-16",
+      "dates": [
+        "2024-04-16"
+      ]
+    },
+    {
+      "label": "2024-04-17",
+      "dates": [
+        "2024-04-17"
+      ]
+    },
+    {
+      "label": "2024-04-18",
+      "dates": [
+        "2024-04-18"
+      ]
+    },
+    {
+      "label": "2024-04-19",
+      "dates": [
+        "2024-04-19"
+      ]
+    },
+    {
+      "label": "2024-04-20",
+      "dates": [
+        "2024-04-20"
+      ]
+    },
+    {
+      "label": "2024-04-21",
+      "dates": [
+        "2024-04-21"
+      ]
+    },
+    {
+      "label": "2024-04-22",
+      "dates": [
+        "2024-04-22"
+      ]
+    }
+  ],
+  "next_date_subscriber_total_before_change": 78,
+  "all_days": [
+    "2024-03-23",
+    "2024-03-24",
+    "2024-03-25",
+    "2024-03-26",
+    "2024-03-27",
+    "2024-03-28",
+    "2024-03-29",
+    "2024-03-30",
+    "2024-03-31",
+    "2024-04-01",
+    "2024-04-02",
+    "2024-04-03",
+    "2024-04-04",
+    "2024-04-05",
+    "2024-04-06",
+    "2024-04-07",
+    "2024-04-08",
+    "2024-04-09",
+    "2024-04-10",
+    "2024-04-11",
+    "2024-04-12",
+    "2024-04-13",
+    "2024-04-14",
+    "2024-04-15",
+    "2024-04-16",
+    "2024-04-17",
+    "2024-04-18",
+    "2024-04-19",
+    "2024-04-20",
+    "2024-04-21",
+    "2024-04-22",
+    "2024-04-23"
+  ],
+  "utc_all_dates_subscriber_total_before_change": {
+    "2024-04-23": null,
+    "2024-04-22": 77,
+    "2024-04-21": 78,
+    "2024-04-20": 78,
+    "2024-04-19": 78,
+    "2024-04-18": 78,
+    "2024-04-17": 78,
+    "2024-04-16": 78,
+    "2024-04-15": 78,
+    "2024-04-14": 78,
+    "2024-04-13": 78,
+    "2024-04-12": 78,
+    "2024-04-11": 78,
+    "2024-04-10": 78,
+    "2024-04-09": 76,
+    "2024-04-08": 76,
+    "2024-04-07": 76,
+    "2024-04-06": 76,
+    "2024-04-05": 76,
+    "2024-04-04": 78,
+    "2024-04-03": 78,
+    "2024-04-02": 78,
+    "2024-04-01": 78,
+    "2024-03-31": 78,
+    "2024-03-30": 78,
+    "2024-03-29": 79,
+    "2024-03-28": 79,
+    "2024-03-27": 79,
+    "2024-03-26": 78,
+    "2024-03-25": 78,
+    "2024-03-24": 78,
+    "2024-03-23": 78
+  },
+  "subscription_count": 77,
+  "utc_period_dates_data": {
+    "2024-04-22": {
+      "blog_id": "180619633",
+      "subscriber_type": "0",
+      "subscriber_total": "77",
+      "total": "0",
+      "hour_00": null,
+      "hour_01": null,
+      "hour_02": null,
+      "hour_03": null,
+      "hour_04": null,
+      "hour_05": null,
+      "hour_06": null,
+      "hour_07": "-1",
+      "hour_08": null,
+      "hour_09": null,
+      "hour_10": null,
+      "hour_11": null,
+      "hour_12": null,
+      "hour_13": "-1",
+      "hour_14": null,
+      "hour_15": "-1",
+      "hour_16": null,
+      "hour_17": null,
+      "hour_18": null,
+      "hour_19": null,
+      "hour_20": "-1",
+      "hour_21": null,
+      "hour_22": null,
+      "hour_23": null
+    },
+    "2024-04-21": {
+      "blog_id": "180619633",
+      "subscriber_type": "0",
+      "subscriber_total": "78",
+      "total": "0",
+      "hour_00": null,
+      "hour_01": null,
+      "hour_02": null,
+      "hour_03": null,
+      "hour_04": null,
+      "hour_05": null,
+      "hour_06": null,
+      "hour_07": null,
+      "hour_08": null,
+      "hour_09": "-1",
+      "hour_10": null,
+      "hour_11": null,
+      "hour_12": null,
+      "hour_13": null,
+      "hour_14": null,
+      "hour_15": "-2",
+      "hour_16": null,
+      "hour_17": null,
+      "hour_18": "-5",
+      "hour_19": "-3",
+      "hour_20": null,
+      "hour_21": null,
+      "hour_22": null,
+      "hour_23": "-2"
+    },
+    "2024-04-20": {
+      "blog_id": "180619633",
+      "subscriber_type": "0",
+      "subscriber_total": "78",
+      "total": "0",
+      "hour_00": null,
+      "hour_01": null,
+      "hour_02": null,
+      "hour_03": null,
+      "hour_04": null,
+      "hour_05": "-1",
+      "hour_06": null,
+      "hour_07": null,
+      "hour_08": null,
+      "hour_09": null,
+      "hour_10": null,
+      "hour_11": "-1",
+      "hour_12": null,
+      "hour_13": null,
+      "hour_14": null,
+      "hour_15": "-1",
+      "hour_16": null,
+      "hour_17": null,
+      "hour_18": null,
+      "hour_19": null,
+      "hour_20": null,
+      "hour_21": null,
+      "hour_22": null,
+      "hour_23": null
+    },
+    "2024-04-19": {
+      "blog_id": "180619633",
+      "subscriber_type": "0",
+      "subscriber_total": "78",
+      "total": "0",
+      "hour_00": null,
+      "hour_01": null,
+      "hour_02": null,
+      "hour_03": null,
+      "hour_04": null,
+      "hour_05": null,
+      "hour_06": "-1",
+      "hour_07": null,
+      "hour_08": null,
+      "hour_09": null,
+      "hour_10": "-2",
+      "hour_11": null,
+      "hour_12": null,
+      "hour_13": null,
+      "hour_14": "-1",
+      "hour_15": null,
+      "hour_16": "-1",
+      "hour_17": null,
+      "hour_18": null,
+      "hour_19": null,
+      "hour_20": null,
+      "hour_21": null,
+      "hour_22": null,
+      "hour_23": null
+    },
+    "2024-04-18": {
+      "blog_id": "180619633",
+      "subscriber_type": "0",
+      "subscriber_total": "78",
+      "total": "0",
+      "hour_00": null,
+      "hour_01": null,
+      "hour_02": null,
+      "hour_03": null,
+      "hour_04": null,
+      "hour_05": null,
+      "hour_06": "-1",
+      "hour_07": null,
+      "hour_08": null,
+      "hour_09": null,
+      "hour_10": "-1",
+      "hour_11": null,
+      "hour_12": "-1",
+      "hour_13": null,
+      "hour_14": null,
+      "hour_15": null,
+      "hour_16": "-1",
+      "hour_17": null,
+      "hour_18": null,
+      "hour_19": null,
+      "hour_20": null,
+      "hour_21": null,
+      "hour_22": null,
+      "hour_23": null
+    },
+    "2024-04-17": {
+      "blog_id": "180619633",
+      "subscriber_type": "0",
+      "subscriber_total": "78",
+      "total": "0",
+      "hour_00": null,
+      "hour_01": null,
+      "hour_02": null,
+      "hour_03": null,
+      "hour_04": null,
+      "hour_05": null,
+      "hour_06": null,
+      "hour_07": "-1",
+      "hour_08": null,
+      "hour_09": "-2",
+      "hour_10": null,
+      "hour_11": null,
+      "hour_12": null,
+      "hour_13": null,
+      "hour_14": "-2",
+      "hour_15": "-1",
+      "hour_16": null,
+      "hour_17": null,
+      "hour_18": null,
+      "hour_19": null,
+      "hour_20": null,
+      "hour_21": null,
+      "hour_22": null,
+      "hour_23": null
+    },
+    "2024-04-09": {
+      "blog_id": "180619633",
+      "subscriber_type": "0",
+      "subscriber_total": "78",
+      "total": "2",
+      "hour_00": null,
+      "hour_01": null,
+      "hour_02": null,
+      "hour_03": null,
+      "hour_04": null,
+      "hour_05": null,
+      "hour_06": null,
+      "hour_07": null,
+      "hour_08": null,
+      "hour_09": null,
+      "hour_10": null,
+      "hour_11": null,
+      "hour_12": null,
+      "hour_13": null,
+      "hour_14": null,
+      "hour_15": "0",
+      "hour_16": null,
+      "hour_17": null,
+      "hour_18": null,
+      "hour_19": null,
+      "hour_20": null,
+      "hour_21": null,
+      "hour_22": null,
+      "hour_23": null
+    },
+    "2024-04-04": {
+      "blog_id": "180619633",
+      "subscriber_type": "0",
+      "subscriber_total": "78",
+      "total": "0",
+      "hour_00": null,
+      "hour_01": null,
+      "hour_02": null,
+      "hour_03": null,
+      "hour_04": null,
+      "hour_05": null,
+      "hour_06": null,
+      "hour_07": null,
+      "hour_08": null,
+      "hour_09": null,
+      "hour_10": null,
+      "hour_11": null,
+      "hour_12": null,
+      "hour_13": null,
+      "hour_14": null,
+      "hour_15": null,
+      "hour_16": "-1",
+      "hour_17": null,
+      "hour_18": null,
+      "hour_19": null,
+      "hour_20": null,
+      "hour_21": null,
+      "hour_22": null,
+      "hour_23": null
+    },
+    "2024-04-01": {
+      "blog_id": "180619633",
+      "subscriber_type": "0",
+      "subscriber_total": "78",
+      "total": "0",
+      "hour_00": null,
+      "hour_01": null,
+      "hour_02": null,
+      "hour_03": null,
+      "hour_04": null,
+      "hour_05": null,
+      "hour_06": null,
+      "hour_07": null,
+      "hour_08": null,
+      "hour_09": null,
+      "hour_10": null,
+      "hour_11": null,
+      "hour_12": null,
+      "hour_13": null,
+      "hour_14": null,
+      "hour_15": null,
+      "hour_16": null,
+      "hour_17": null,
+      "hour_18": null,
+      "hour_19": "-1",
+      "hour_20": null,
+      "hour_21": null,
+      "hour_22": null,
+      "hour_23": null
+    },
+    "2024-03-31": {
+      "blog_id": "180619633",
+      "subscriber_type": "0",
+      "subscriber_total": "78",
+      "total": "0",
+      "hour_00": null,
+      "hour_01": null,
+      "hour_02": null,
+      "hour_03": null,
+      "hour_04": null,
+      "hour_05": null,
+      "hour_06": null,
+      "hour_07": null,
+      "hour_08": null,
+      "hour_09": null,
+      "hour_10": null,
+      "hour_11": null,
+      "hour_12": null,
+      "hour_13": null,
+      "hour_14": null,
+      "hour_15": "-2",
+      "hour_16": null,
+      "hour_17": null,
+      "hour_18": null,
+      "hour_19": null,
+      "hour_20": null,
+      "hour_21": null,
+      "hour_22": null,
+      "hour_23": null
+    },
+    "2024-03-29": {
+      "blog_id": "180619633",
+      "subscriber_type": "0",
+      "subscriber_total": "79",
+      "total": "0",
+      "hour_00": null,
+      "hour_01": null,
+      "hour_02": null,
+      "hour_03": null,
+      "hour_04": null,
+      "hour_05": null,
+      "hour_06": null,
+      "hour_07": null,
+      "hour_08": null,
+      "hour_09": null,
+      "hour_10": null,
+      "hour_11": null,
+      "hour_12": null,
+      "hour_13": null,
+      "hour_14": null,
+      "hour_15": null,
+      "hour_16": null,
+      "hour_17": null,
+      "hour_18": null,
+      "hour_19": null,
+      "hour_20": null,
+      "hour_21": null,
+      "hour_22": "-2",
+      "hour_23": null
+    },
+    "2024-03-26": {
+      "blog_id": "180619633",
+      "subscriber_type": "0",
+      "subscriber_total": "80",
+      "total": "2",
+      "hour_00": null,
+      "hour_01": null,
+      "hour_02": null,
+      "hour_03": null,
+      "hour_04": null,
+      "hour_05": null,
+      "hour_06": null,
+      "hour_07": null,
+      "hour_08": null,
+      "hour_09": null,
+      "hour_10": null,
+      "hour_11": null,
+      "hour_12": null,
+      "hour_13": null,
+      "hour_14": "2",
+      "hour_15": null,
+      "hour_16": null,
+      "hour_17": null,
+      "hour_18": null,
+      "hour_19": null,
+      "hour_20": null,
+      "hour_21": null,
+      "hour_22": null,
+      "hour_23": null
+    }
+  },
+  "utc_period_dates_subscriber_total": {
+    "2024-04-22": 77,
+    "2024-04-21": 78,
+    "2024-04-20": 78,
+    "2024-04-19": 78,
+    "2024-04-18": 78,
+    "2024-04-17": 78,
+    "2024-04-09": 78,
+    "2024-04-04": 78,
+    "2024-04-01": 78,
+    "2024-03-31": 78,
+    "2024-03-29": 79,
+    "2024-03-26": 80
+  },
+  "timezone_all_dates_subscriber_total": {
+    "2024-04-22": 77,
+    "2024-04-21": 78,
+    "2024-04-20": 78,
+    "2024-04-19": 78,
+    "2024-04-18": 78,
+    "2024-04-17": 78,
+    "2024-04-09": 78,
+    "2024-04-04": 78,
+    "2024-04-01": 78,
+    "2024-03-31": 78,
+    "2024-03-29": 79,
+    "2024-03-26": 80
+  },
+  "timezone": 0,
+  "gmt_offset": "0",
+  "detail": {
+    "blog_id": "123",
+    "domain": "example.wordpress.com",
+    "path": "/",
+    "site_id": "1",
+    "registered": "2020-07-23 14:06:59",
+    "last_updated": "2024-04-22 22:57:22",
+    "public": "-1",
+    "archived": "0",
+    "mature": "0",
+    "spam": "0",
+    "deleted": "0",
+    "lang_id": "1",
+    "ds_blog": "45",
+    "ds_stats": "0",
+    "blogname": "Example",
+    "siteurl": "http://example.wordpress.com",
+    "post_count": "1877",
+    "home": "http://example.wordpress.com"
+  },
+  "earliest_date": {
+    "date": "2024-03-24 00:00:00.000000",
+    "timezone_type": 1,
+    "timezone": "+00:00"
+  },
+  "end_date": "2024-04-22 00:00:00"
+}

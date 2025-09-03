@@ -1,0 +1,14 @@
+{
+    "address_1": null,
+    "address_2": null,
+    "city" : null,
+    "country_code" : null,
+    "email" : "pinar@yahoo.com",
+    "fax" : null,
+    "first_name" : "Pinar",
+    "last_name" : null,
+    "organization" : null,
+    "phone": null,
+    "postal_code" : "12345",
+    "state" : null
+}

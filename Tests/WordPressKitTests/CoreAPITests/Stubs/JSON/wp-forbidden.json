@@ -1,0 +1,7 @@
+{
+    "code": "rest_forbidden",
+    "data": {
+        "status": 401
+    },
+    "message": "Sorry, you are not allowed to do that."
+}

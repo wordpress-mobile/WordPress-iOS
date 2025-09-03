@@ -1,0 +1,12 @@
+{
+  "url": "https://someblog.wordpress.com",
+  "cookies": [
+    {
+      "expires": 1583364400,
+      "path": "/",
+      "domain": "someblog.wordpress.com",
+      "name": "name",
+      "value": "value"
+    }
+  ]
+}

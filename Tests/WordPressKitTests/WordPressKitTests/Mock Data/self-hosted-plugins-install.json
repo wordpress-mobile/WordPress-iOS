@@ -1,0 +1,25 @@
+{
+  "plugin": "google-site-kit/google-site-kit",
+  "status": "inactive",
+  "name": "Site Kit by Google",
+  "plugin_uri": "https://sitekit.withgoogle.com",
+  "author": "Google",
+  "author_uri": "https://opensource.google.com",
+  "description": {
+    "raw": "Site Kit is a one-stop solution for WordPress users to use everything Google has to offer to make them successful on the web.",
+    "rendered": "Site Kit is a one-stop solution for WordPress users to use everything Google has to offer to make them successful on the web. <cite>By <a href=\"https://opensource.google.com\">Google</a>.</cite>"
+  },
+  "version": "1.119.0",
+  "network_only": false,
+  "requires_wp": "5.2",
+  "requires_php": "5.6",
+  "textdomain": "google-site-kit",
+  "_links": {
+    "self": [
+      {
+        "href": "https://unlikely-student-crown.jurassic.ninja/wp-json/wp/v2/plugins/google-site-kit/google-site-kit"
+      }
+    ]
+  }
+}
+

@@ -1,0 +1,15 @@
+{
+    "user_id": 123,
+    "subscription_id": 123,
+    "email_address": "test@example.com",
+    "date_subscribed": "2025-04-17T14:40:00+00:00",
+    "is_email_subscriber": false,
+    "subscription_status": "Subscribed",
+    "avatar": "https://example.com/avatar",
+    "display_name": "Alex",
+    "url": "http://example.wordpress.com",
+    "country": {
+        "code": "",
+        "name": false
+    }
+}

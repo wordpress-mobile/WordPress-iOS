@@ -153,6 +153,7 @@
 		4A690C1F2BA796CD00A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C1D2BA796C500A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4A690C212BA7975500A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4A690C222BA7975800A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */; };
+		4A8284B02E5FECB00037E180 /* XcodeTarget_WordPressKitTests in Frameworks */ = {isa = PBXBuildFile; productRef = 4A8284AF2E5FECB00037E180 /* XcodeTarget_WordPressKitTests */; };
 		4ABC59742DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABC59732DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift */; };
 		4ABCAB2A2DE52E80005A6B84 /* Secrets-JetpackDraftActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */; };
 		4ABCAB2B2DE52E86005A6B84 /* Secrets-JetpackShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB282DE52E6B005A6B84 /* Secrets-JetpackShareExtension.swift */; };
@@ -426,6 +427,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = FFA8E22A1F94E3DE0002170F;
 			remoteInfo = SwiftLint;
+		};
+		4A8281012E5FE9B60037E180 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
+			remoteInfo = WordPress;
 		};
 		4AD953BD2C21451700D0EEFA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -861,6 +869,7 @@
 		4A690C1A2BA7958F00A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4A690C1D2BA796C500A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		4A8280FD2E5FE9B60037E180 /* WordPressKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordPressKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ABC59732DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-WordPressDraftActionExtension.swift"; path = "../Secrets/Secrets-WordPressDraftActionExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackDraftActionExtension.swift"; path = "../Secrets/Secrets-JetpackDraftActionExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ABCAB282DE52E6B005A6B84 /* Secrets-JetpackShareExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackShareExtension.swift"; path = "../Secrets/Secrets-JetpackShareExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1363,6 +1372,11 @@
 			path = WordPressDataTests;
 			sourceTree = "<group>";
 		};
+		4A8280FE2E5FE9B60037E180 /* WordPressKitTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = WordPressKitTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1492,6 +1506,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F7AE0BD2D9B30A200AB4892 /* WordPressData.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A8280FA2E5FE9B60037E180 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A8284B02E5FECB00037E180 /* XcodeTarget_WordPressKitTests in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1663,6 +1685,7 @@
 				0C3313C62E0439A9000C3760 /* MiniatureTests */,
 				0C5A1A042D9B080900C25301 /* WordPressAuthenticatorTests */,
 				3F7AE0C22D9B30A200AB4892 /* WordPressDataTests */,
+				4A8280FE2E5FE9B60037E180 /* WordPressKitTests */,
 			);
 			name = Tests;
 			path = ../Tests;
@@ -1710,6 +1733,7 @@
 				3F7AE0BC2D9B30A200AB4892 /* WordPressDataTests.xctest */,
 				0C3313B72E0439A8000C3760 /* Miniature.app */,
 				0C3313C32E0439A9000C3760 /* MiniatureTests.xctest */,
+				4A8280FD2E5FE9B60037E180 /* WordPressKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2392,6 +2416,30 @@
 			productReference = 3F7AE0BC2D9B30A200AB4892 /* WordPressDataTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		4A8280FC2E5FE9B60037E180 /* WordPressKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A8281062E5FE9B70037E180 /* Build configuration list for PBXNativeTarget "WordPressKitTests" */;
+			buildPhases = (
+				4A8280F92E5FE9B60037E180 /* Sources */,
+				4A8280FA2E5FE9B60037E180 /* Frameworks */,
+				4A8280FB2E5FE9B60037E180 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4A8281022E5FE9B60037E180 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				4A8280FE2E5FE9B60037E180 /* WordPressKitTests */,
+			);
+			name = WordPressKitTests;
+			packageProductDependencies = (
+				4A8284AF2E5FECB00037E180 /* XcodeTarget_WordPressKitTests */,
+			);
+			productName = WordPressKitTests;
+			productReference = 4A8280FD2E5FE9B60037E180 /* WordPressKitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		4AD953B32C21451700D0EEFA /* WordPressAuthenticator */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4AD953D22C21451800D0EEFA /* Build configuration list for PBXNativeTarget "WordPressAuthenticator" */;
@@ -2737,7 +2785,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1630;
+				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1540;
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
@@ -2783,6 +2831,10 @@
 					};
 					3F7AE0BB2D9B30A200AB4892 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					4A8280FC2E5FE9B60037E180 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
 					4AD953B32C21451700D0EEFA = {
 						CreatedOnToolsVersion = 15.4;
@@ -2929,6 +2981,7 @@
 				3F7AE0BB2D9B30A200AB4892 /* WordPressDataTests */,
 				0C3313B62E0439A8000C3760 /* Miniature */,
 				0C3313C22E0439A9000C3760 /* MiniatureTests */,
+				4A8280FC2E5FE9B60037E180 /* WordPressKitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -3008,6 +3061,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3F7AE0BA2D9B30A200AB4892 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A8280FB2E5FE9B60037E180 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3593,6 +3653,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4A8280F92E5FE9B60037E180 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4AD953B02C21451700D0EEFA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3850,6 +3917,11 @@
 			isa = PBXTargetDependency;
 			target = FFA8E22A1F94E3DE0002170F /* SwiftLint */;
 			targetProxy = 3FCFFAFF2994AB25002840C9 /* PBXContainerItemProxy */;
+		};
+		4A8281022E5FE9B60037E180 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
+			targetProxy = 4A8281012E5FE9B60037E180 /* PBXContainerItemProxy */;
 		};
 		4AD953BE2C21451700D0EEFA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5392,6 +5464,128 @@
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Release-Alpha";
+		};
+		4A8281032E5FE9B60037E180 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F70208E648200439554 /* WordPress.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "../Tests/WordPressKitTests/WordPressKitTests/WordPressKitTests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WordPress";
+			};
+			name = Debug;
+		};
+		4A8281042E5FE9B60037E180 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F71208E648200439554 /* WordPress.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "../Tests/WordPressKitTests/WordPressKitTests/WordPressKitTests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WordPress";
+			};
+			name = Release;
+		};
+		4A8281052E5FE9B60037E180 /* Release-Alpha */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F73208E648300439554 /* WordPress.alpha.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "../Tests/WordPressKitTests/WordPressKitTests/WordPressKitTests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WordPress";
 			};
 			name = "Release-Alpha";
 		};
@@ -7590,6 +7784,16 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		4A8281062E5FE9B70037E180 /* Build configuration list for PBXNativeTarget "WordPressKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A8281032E5FE9B60037E180 /* Debug */,
+				4A8281042E5FE9B60037E180 /* Release */,
+				4A8281052E5FE9B60037E180 /* Release-Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4AD953D22C21451800D0EEFA /* Build configuration list for PBXNativeTarget "WordPressAuthenticator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -7832,6 +8036,10 @@
 		3F0F25A52D9BDB5800CD05D6 /* XcodeTarget_WordPressData */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = XcodeTarget_WordPressData;
+		};
+		4A8284AF2E5FECB00037E180 /* XcodeTarget_WordPressKitTests */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = XcodeTarget_WordPressKitTests;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

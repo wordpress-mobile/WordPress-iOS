@@ -1,0 +1,14 @@
+{
+    "slug": "contact-form-7",
+    "active": true,
+    "name": "contact-form-7/wp-contact-form-7",
+    "display_name": "Contact Form 7",
+    "plugin_url": "https://contactform7.com/",
+    "version": "5.1.9",
+    "description": "Just another contact form plugin. Simple but flexible.",
+    "author": "Takayuki Miyoshi",
+    "author_url": "https://ideasilo.wordpress.com/",
+    "network": false,
+    "autoupdate": true,
+    "uninstallable": false
+}

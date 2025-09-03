@@ -1,0 +1,33 @@
+{
+    "slug": "gutenberg",
+    "active": true,
+    "update": {
+        "id": "w.org/plugins/gutenberg",
+        "slug": "gutenberg",
+        "plugin": "gutenberg/gutenberg.php",
+        "new_version": "8.3.0",
+        "url": "https://wordpress.org/plugins/gutenberg/",
+        "package": "https://downloads.wordpress.org/plugin/gutenberg.zip",
+        "tested": "5.4.2"
+    },
+    "name": "gutenberg/gutenberg",
+    "display_name": "Gutenberg",
+    "plugin_url": "https://github.com/WordPress/gutenberg",
+    "version": "7.2.1",
+    "description": "Printing since 1440. This is the development plugin for the new block editor in core.",
+    "author": "Gutenberg Team",
+    "author_url": "",
+    "network": false,
+    "autoupdate": false,
+    "autoupdate_translation": false,
+    "uninstallable": false,
+    "log": [
+        "Enabling Maintenance mode&#8230;",
+        "Downloading update from https://downloads.wordpress.org/plugin/gutenberg.7.2.1.zip&#8230;",
+        "Unpacking the update&#8230;",
+        "Installing the latest version&#8230;",
+        "Removing the old version of the plugin&#8230;",
+        "Plugin updated successfully."
+    ]
+}
+

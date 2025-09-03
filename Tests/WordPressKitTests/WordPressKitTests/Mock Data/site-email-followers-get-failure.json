@@ -1,0 +1,4 @@
+{
+  "error": "invalid_blog",
+  "message": "This blog does not have the Stats module enabled"
+}
