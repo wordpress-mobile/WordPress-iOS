@@ -171,7 +171,6 @@ class EditPostViewController: UIViewController {
 
         let hostingController = UIHostingController(rootView: applicationPasswordView)
 
-        // Add close button to navigation bar
         hostingController.navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .close,
             target: self,
