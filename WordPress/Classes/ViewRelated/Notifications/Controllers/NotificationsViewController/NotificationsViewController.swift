@@ -117,6 +117,8 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     var isSidebarModeEnabled = false
     var isReaderAppModeEnabled = false
 
+    private var isNavigationItemsConfigured = false
+
     // MARK: - View Lifecycle
 
     static func showInPopover(from presentingVC: UIViewController, sourceItem: UIPopoverPresentationControllerSourceItem) {
@@ -465,6 +467,9 @@ private extension NotificationsViewController {
     }
 
     func updateNavigationItems() {
+        guard !isNavigationItemsConfigured else { return }
+        isNavigationItemsConfigured = true
+
         let moreMenuItems = UIDeferredMenuElement.uncached { [weak self] completion in
             guard let self else {
                 completion([])
@@ -473,10 +478,10 @@ private extension NotificationsViewController {
             WPAnalytics.track(.notificationMenuTapped)
             completion(self.makeMoreMenuElements())
         }
-        self.navigationItem.rightBarButtonItem = {
+        navigationItem.rightBarButtonItem = {
             let menu = UIMenu(children: [moreMenuItems])
             let button = UIBarButtonItem(
-                image: UIImage.DS.icon(named: .ellipsisHorizontal),
+                image: UIImage(systemName: "ellipsis"),
                 menu: menu
             )
             button.accessibilityLabel = Strings.NavigationBar.menuButtonAccessibilityLabel
@@ -494,7 +499,7 @@ private extension NotificationsViewController {
             let attributes = isEnabled ? UIAction.Attributes(rawValue: 0) : .disabled
             return UIAction(
                 title: Strings.NavigationBar.markAllAsReadActionTitle,
-                image: .DS.icon(named: .checkmark),
+                image: UIImage(systemName: "checkmark.circle"),
                 attributes: attributes
             ) { [weak self] _ in
                 self?.showMarkAllAsReadConfirmation()
@@ -508,7 +513,7 @@ private extension NotificationsViewController {
             }
             return UIAction(
                 title: Strings.NavigationBar.notificationSettingsActionTitle,
-                image: .DS.icon(named: .gearshapeFill)
+                image: UIImage(systemName: "gearshape")
             ) { [weak self] _ in
                 self?.showNotificationSettings()
             }
