@@ -37,13 +37,13 @@ struct StatsDatePickerToolbarItem: View {
                 isShowingCustomRangePicker: $isShowingCustomRangePicker
             )
         } label: {
-            Label(
-                context.formatters.dateRange.string(from: dateRange.dateInterval),
-                systemImage: "calendar"
-            )
+            HStack {
+                Image(systemName: "calendar")
+                Text(context.formatters.dateRange.string(from: dateRange.dateInterval))
+            }
         }
-        .labelStyle(.titleAndIcon)
         .menuOrder(.fixed)
+        .menuStyle(.button)
         .accessibilityLabel(Strings.Accessibility.dateRangeSelected(context.formatters.dateRange.string(from: dateRange.dateInterval)))
         .accessibilityHint(Strings.Accessibility.selectDateRange)
     }
@@ -56,17 +56,11 @@ struct StatsNavigationButton: View {
     var body: some View {
         let isDisabled = !dateRange.canNavigate(in: direction)
 
-        Menu {
-            ForEach(dateRange.availableAdjacentPeriods(in: direction)) { period in
-                Button(period.displayText) {
-                    dateRange = period.range
-                }
-            }
+        Button {
+            dateRange = dateRange.navigate(direction)
         } label: {
             Image(systemName: direction.systemImage)
                 .foregroundStyle(isDisabled ? Color(.tertiaryLabel) : Color.primary)
-        } primaryAction: {
-            dateRange = dateRange.navigate(direction)
         }
         .opacity(isDisabled ? 0.5 : 1.0)
         .disabled(isDisabled)
@@ -77,11 +71,15 @@ struct StatsNavigationButton: View {
 
 private struct ProminentMenuModifier: ViewModifier {
     func body(content: Content) -> some View {
-        content
-            .tint(Color(.tertiaryLabel))
-            .foregroundStyle(.primary)
-            .menuStyle(.button)
-            .buttonStyle(.bordered)
-            .buttonBorderShape(.capsule)
+        if #unavailable(iOS 26) {
+            // Make these stand-out in a plain per-iOS 26 design
+            content
+                .tint(Color(.tertiaryLabel))
+                .foregroundStyle(.primary)
+                .buttonStyle(.bordered)
+                .buttonBorderShape(.capsule)
+        } else {
+            content
+        }
     }
 }

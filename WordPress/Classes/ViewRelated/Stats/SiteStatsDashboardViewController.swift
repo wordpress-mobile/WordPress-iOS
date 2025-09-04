@@ -2,17 +2,17 @@ import UIKit
 import WordPressKit
 import WordPressShared
 import WordPressData
+import WordPressUI
 import Combine
 import TipKit
 import BuildSettingsKit
 
-enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
+enum StatsTabType: Int, AdaptiveTabBarItem, CaseIterable {
     case insights = 0
     case traffic
     case subscribers
 
-    // This is public as it is needed by FilterTabBarItem.
-    var title: String {
+    var localizedTitle: String {
         switch self {
         case .insights: return NSLocalizedString("Insights", comment: "Title of Insights stats filter.")
         case .traffic: return NSLocalizedString("stats.dashboard.tab.traffic", value: "Traffic", comment: "Title of Traffic stats tab.")
@@ -53,7 +53,6 @@ public class SiteStatsDashboardViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let filterTabBar = FilterTabBar()
     private let containerView = UIView()
 
     private var currentChildViewController: UIViewController?
@@ -61,6 +60,7 @@ public class SiteStatsDashboardViewController: UIViewController {
     private var tipObserver: TipObserver?
     private var isUsingMockData = false
     private var navigationItemObserver: NSKeyValueObservation?
+    private let filterBarController = AdaptiveTabBarController<StatsTabType>()
 
     @objc public lazy var manageInsightsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -145,10 +145,8 @@ public class SiteStatsDashboardViewController: UIViewController {
     }
 
     private func setupViews() {
-        let stackView = UIStackView(axis: .vertical, [filterTabBar, containerView])
-        view.addSubview(stackView)
-        stackView.pinEdges(.top, to: view.safeAreaLayoutGuide)
-        stackView.pinEdges([.horizontal, .bottom])
+        view.addSubview(containerView)
+        containerView.pinEdges()
     }
 
     public override func viewWillAppear(_ animated: Bool) {
@@ -342,11 +340,10 @@ extension SiteStatsDashboardViewController: StatsForegroundObservable {
 private extension SiteStatsDashboardViewController {
     var currentSelectedTab: StatsTabType {
         get {
-            return displayedTabs[filterTabBar.selectedIndex]
+            filterBarController.selection ?? .traffic
         }
         set {
-            let index = displayedTabs.firstIndex(of: newValue) ?? 0
-            filterTabBar.setSelectedIndex(index)
+            filterBarController.selection = newValue
             let oldSelectedPeriod = getSelectedTabFromUserDefaults()
             updatePeriodView(oldSelectedTab: oldSelectedPeriod)
             saveSelectedPeriodToUserDefaults()
@@ -360,16 +357,16 @@ private extension SiteStatsDashboardViewController {
 private extension SiteStatsDashboardViewController {
 
     func setupFilterBar() {
-        WPStyleGuide.configureFilterTabBar(filterTabBar)
-        filterTabBar.configureModernStyle()
-        filterTabBar.items = displayedTabs
-        filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
-        filterTabBar.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
+        wpAssert(parent != nil)
+        filterBarController.navigationItem = parent?.navigationItem
+        filterBarController.configure(StatsTabType.displayedTabs, in: self) { [weak self] in
+            self?.selectedFilterDidChange($0)
+        }
+        filterBarController.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
     }
 
-    @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        currentSelectedTab = displayedTabs[filterBar.selectedIndex]
-        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+    private func selectedFilterDidChange(_ item: StatsTabType) {
+        currentSelectedTab = item
         configureNavBar()
     }
 }
@@ -463,6 +460,13 @@ private extension SiteStatsDashboardViewController {
         ])
 
         child.didMove(toParent: self)
+
+        // Delay for SwiftUI-based views that don't render immediatelly
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+            if let scrollView = child.contentScrollView(for: .top) {
+                self.filterBarController.enableAutomaticHiding(in: scrollView)
+            }
+        }
     }
 
     private func _removeChildViewController(_ child: UIViewController) {
