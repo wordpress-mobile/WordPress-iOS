@@ -22,6 +22,7 @@ final class PostStatsViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
+        title = Strings.title
 
         setupStatsView()
         setupNavigationBar()
@@ -53,8 +54,8 @@ final class PostStatsViewController: UIViewController {
 
     private func setupNavigationBar() {
         if presentingViewController != nil {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .done,
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .close,
                 target: self,
                 action: #selector(dismissViewController)
             )
@@ -64,4 +65,8 @@ final class PostStatsViewController: UIViewController {
     @objc private func dismissViewController() {
         presentingViewController?.dismiss(animated: true)
     }
+}
+
+private enum Strings {
+    static let title = NSLocalizedString("postStats.title", value: "Post Stats", comment: "Navigation bar title")
 }
