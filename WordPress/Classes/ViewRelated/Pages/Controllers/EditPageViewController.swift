@@ -111,7 +111,7 @@ class EditPageViewController: UIViewController {
 
         // Add close button to navigation bar
         hostingController.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .cancel,
+            barButtonSystemItem: .close,
             target: self,
             action: #selector(dismissApplicationPasswordView)
         )
