@@ -1,21 +1,25 @@
 import UIKit
 
 @MainActor
-public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> where Item: Equatable {
+public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
     private(set) public var items: [Item] = []
 
     public var selection: Item? {
         didSet {
-            guard oldValue != selection else { return }
-            if let index = items.firstIndex(where: { $0 == selection }) {
+            guard oldValue?.id != selection?.id else { return }
+            if let index = selectionIndex {
                 if filterBar.selectedIndex != index {
                     filterBar.setSelectedIndex(index)
                 }
-                if segmentedControl.selectedSegmentIndex != index {
+                if segmentedControl.selectedSegmentIndex != index, segmentedControl.numberOfSegments >= index {
                     segmentedControl.selectedSegmentIndex = index
                 }
             }
         }
+    }
+
+    public var selectionIndex: Int? {
+        items.firstIndex(where: { $0.id == selection?.id })
     }
 
     public var accessibilityIdentifier: String? {
@@ -25,10 +29,10 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> where Item
         }
     }
 
-    private let filterBar = AdaptiveTabBar()
+    public let filterBar = AdaptiveTabBar()
     private var filterBarContainer = UIView()
 
-    private let segmentedControl = UISegmentedControl()
+    public let segmentedControl = UISegmentedControl()
 
     private weak var viewController: UIViewController?
 

@@ -4,12 +4,12 @@ import WordPressShared
 
 /// `PostListFilterSettings` manages settings for filtering posts (by author or status)
 /// - Note: previously found within `AbstractPostListViewController`
-class PostListFilterSettings: NSObject {
+class PostListFilterSettings {
     fileprivate static let currentPostAuthorFilterKey = "CurrentPostAuthorFilterKey"
     fileprivate static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
 
-    @objc let blog: Blog
-    @objc let postType: PostServiceType
+    let blog: Blog
+    let postType: PostServiceType
     fileprivate var allPostListFilters: [PostListFilter]?
 
     enum AuthorFilter: UInt {
@@ -19,12 +19,12 @@ class PostListFilterSettings: NSObject {
     /// Initializes a new PostListFilterSettings instance
     /// - Parameter blog: the blog which owns the list of posts
     /// - Parameter postType: the type of post being listed
-    @objc init(blog: Blog, postType: PostServiceType) {
+    init(blog: Blog, postType: PostServiceType) {
         self.blog = blog
         self.postType = postType
     }
 
-    @objc func availablePostListFilters() -> [PostListFilter] {
+    func availablePostListFilters() -> [PostListFilter] {
 
         if allPostListFilters == nil {
             allPostListFilters = PostListFilter.postListFilters()
@@ -72,11 +72,11 @@ class PostListFilterSettings: NSObject {
     // MARK: - Current filter
 
     /// - returns: the last active PostListFilter
-    @objc func currentPostListFilter() -> PostListFilter {
+    func currentPostListFilter() -> PostListFilter {
         return availablePostListFilters()[currentFilterIndex()]
     }
 
-    @objc func keyForCurrentListStatusFilter() -> String {
+    func keyForCurrentListStatusFilter() -> String {
         switch postType {
         case .page:
             return type(of: self).currentPageListStatusFilterKey
@@ -88,7 +88,7 @@ class PostListFilterSettings: NSObject {
     }
 
     /// currentPostListFilter: returns the index of the last active PostListFilter
-    @objc func currentFilterIndex() -> Int {
+    func currentFilterIndex() -> Int {
 
         let userDefaults = UserPersistentStoreFactory.instance()
 
@@ -101,7 +101,7 @@ class PostListFilterSettings: NSObject {
     }
 
     /// setCurrentFilterIndex: stores the index of the last active PostListFilter
-    @objc func setCurrentFilterIndex(_ newIndex: Int) {
+    func setCurrentFilterIndex(_ newIndex: Int) {
         let index = self.currentFilterIndex()
 
         guard newIndex != index else {
@@ -156,7 +156,7 @@ class PostListFilterSettings: NSObject {
 
     // MARK: - Analytics
 
-    @objc func propertiesForAnalytics() -> [String: AnyObject] {
+    func propertiesForAnalytics() -> [String: AnyObject] {
         var properties = [String: AnyObject]()
 
         properties["type"] = postType.rawValue as AnyObject?

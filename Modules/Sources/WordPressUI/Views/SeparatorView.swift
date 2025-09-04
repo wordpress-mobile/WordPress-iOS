@@ -1,15 +1,15 @@
 import UIKit
 
 public final class SeparatorView: UIView {
-    public static func horizontal() -> SeparatorView {
+    public static func horizontal(height: CGFloat = 0.33) -> SeparatorView {
         let view = SeparatorView()
-        view.heightAnchor.constraint(equalToConstant: 0.33).isActive = true
+        view.heightAnchor.constraint(equalToConstant: height).isActive = true
         return view
     }
 
-    public static func vertical() -> SeparatorView {
+    public static func vertical(width: CGFloat = 0.33) -> SeparatorView {
         let view = SeparatorView()
-        view.widthAnchor.constraint(equalToConstant: 0.33).isActive = true
+        view.widthAnchor.constraint(equalToConstant: width).isActive = true
         return view
     }
 
