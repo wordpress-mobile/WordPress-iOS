@@ -168,11 +168,24 @@ class EditPostViewController: UIViewController {
         }
 
         let hostingController = UIHostingController(rootView: applicationPasswordView)
+
+        // Add close button to navigation bar
+        hostingController.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(dismissApplicationPasswordView)
+        )
+        hostingController.navigationItem.title = feature
+
         let navController = AztecNavigationController(rootViewController: hostingController)
         navController.modalPresentationStyle = .fullScreen
         navController.view.backgroundColor = .systemBackground
 
         present(navController, animated: !showImmediately)
+    }
+
+    @objc private func dismissApplicationPasswordView() {
+        dismiss(animated: true)
     }
 
     private func showEditor(_ editor: EditorViewController) {

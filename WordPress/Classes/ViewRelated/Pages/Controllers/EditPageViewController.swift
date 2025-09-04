@@ -106,11 +106,25 @@ class EditPageViewController: UIViewController {
         }
 
         let hostingController = UIHostingController(rootView: applicationPasswordView)
-        // Note: Pages use different presentation style than posts
-        hostingController.modalPresentationStyle = .overFullScreen
-        hostingController.modalTransitionStyle = .coverVertical
 
-        present(hostingController, animated: true)
+        // Add close button to navigation bar
+        hostingController.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(dismissApplicationPasswordView)
+        )
+        hostingController.navigationItem.title = feature
+
+        // Note: Pages use different presentation style than posts
+        let navController = UINavigationController(rootViewController: hostingController)
+        navController.modalPresentationStyle = .overFullScreen
+        navController.modalTransitionStyle = .coverVertical
+
+        present(navController, animated: true)
+    }
+
+    @objc private func dismissApplicationPasswordView() {
+        dismiss(animated: true)
     }
 
     private func show(_ editor: EditorViewController) {
