@@ -1,9 +1,3 @@
-We rebuilt Stats from the ground up, and it's absolutely stunning. This new experience features buttery-smooth 120fps animations, interactive charts you can tap and explore, hourly data views, and a completely customizable dashboard. You can rearrange everything, export your data, and even see your post analytics with email campaign metrics. It feels incredible to use—we keep opening it just to watch those beautiful animations. (Look for "Try New Stats" when you open Stats, or enable it anytime in Me > App Settings > Experimental Features.)
-
-We also made improvements to how you manage your content. You'll find a completely redesigned Post Settings screen that makes configuring your posts smoother and more intuitive, plus better VideoPress integration and improved authentication for private sites in our experimental editor.
-
-Finally, we squashed several bugs and made things more reliable.
-- The app won't hang anymore when you open your Posts or Pages. (We know how frustrating that was.)
-- We fixed a crash that happened when saving certain editor settings.
-- Those annoying error popups on your dashboard? Gone.
-- Application passwords now work more smoothly behind the scenes, and the Jetpack connection flow is more reliable.
+- Those gorgeous Stats charts just got even better—tap any bar for instant insights, explore weekly trends, and enjoy flawless dark mode. Your data deserves this level of elegance.
+- We've added mentions to the experimental editor—tag your collaborators and watch the magic happen.
+- iPad Split View now behaves beautifully in portrait mode. No more awkward layouts.

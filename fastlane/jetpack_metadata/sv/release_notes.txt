@@ -1,9 +1,3 @@
-Vi har byggt om Statistik från grunden, och det är helt fantastiskt. Den här nya upplevelsen har smidiga animationer med 120 fps, interaktiva diagram som du kan trycka på och utforska, vyer som visar data timme för timme och en helt anpassningsbar adminpanel. Du kan flytta runt allt, exportera dina data och till och med se en analys av dina inlägg med mätvärden för e-postkampanjer. Användarupplevelsen är otrolig – ibland öppnar vi bara appen för att titta på de vackra animationerna. (Titta efter ”Prova nya Statistik” när du öppnar Statistik, eller aktivera det när som helst under Jag > Appinställningar > Experimentella funktioner.)
-
-Vi har också förbättrat hur du hanterar ditt innehåll. Du hittar en helt omdesignad skärm med inläggsinställningar som gör det smidigare och mer intuitivt att konfigurera inlägg. Du får också bättre integration med VideoPress och förbättrad autentisering för privata webbplatser i vår experimentella redigerare.
-
-Slutligen har vi fixat flera buggar och gjort appen saker mer tillförlitlig.
-– Appen låser sig inte längre när du öppnar dina inlägg eller sidor. (Vi vet hur frustrerande det var.)
-– Vi har åtgärdat en krasch som inträffade när vissa redigeringsinställningar sparades.
-– De där irriterande popupfönstren om fel som dök upp på din adminpanel? Borta.
-– Applikationslösenord fungerar nu smidigare bakom kulisserna och flödet vid anslutning till Jetpack är mer tillförlitligt.
+- De vackra statistikdiagrammen har precis blivit ännu bättre – tryck på valfri stapel för omedelbara insikter, utforska veckovisa trender och njut av ett felfritt mörkt läge. Dina data förtjänar denna nivå av elegans.
+- Vi har lagt till omnämnanden till den experimentella redigeraren – nämn dina samarbetspartners och beskåda magin.
+- Delad vy för iPad fungerar nu perfekt i stående läge. Inga fler besvärliga layouter.
