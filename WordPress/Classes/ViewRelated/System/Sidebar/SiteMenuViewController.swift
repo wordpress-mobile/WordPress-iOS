@@ -1,5 +1,6 @@
 import UIKit
 import WordPressData
+import WordPressUI
 
 protocol SiteMenuViewControllerDelegate: AnyObject {
     func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController)
@@ -119,13 +120,12 @@ private final class SiteMenuListViewController: BlogDetailsViewController {
         cell.selectedBackgroundView = {
             let backgroundView = UIView()
             backgroundView.backgroundColor = .secondarySystemFill
-            backgroundView.layer.cornerRadius = 10
+            backgroundView.layer.cornerRadius = DesignConstants.radius(.large)
             backgroundView.layer.cornerCurve = .continuous
 
             let container = UIView()
             container.addSubview(backgroundView)
-            backgroundView.translatesAutoresizingMaskIntoConstraints = false
-            container.pinSubviewToAllEdges(backgroundView, insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
+            backgroundView.pinEdges(insets: UIEdgeInsets(.horizontal, 16))
             return container
         }()
         cell.focusStyle = .custom
