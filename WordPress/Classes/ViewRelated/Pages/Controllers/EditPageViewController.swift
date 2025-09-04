@@ -88,7 +88,7 @@ class EditPageViewController: UIViewController {
             localizedFeatureName: feature,
             presentingViewController: self
         ) { [weak self] client in
-            // Once authenticated, create and return the editor
+            // Once authenticated, dismiss the application password view and show editor
             guard let self else { return EmptyView() }
 
             let editorViewController = editorFactory.instantiateEditor(
@@ -97,9 +97,11 @@ class EditPageViewController: UIViewController {
                     self?.replaceEditor(editor: editor, replacement: replacement)
             })
 
-            // Present the editor within the authenticated context
+            // Dismiss application password view, then present the editor
             DispatchQueue.main.async {
-                self.show(editorViewController)
+                self.dismiss(animated: true) {
+                    self.show(editorViewController)
+                }
             }
 
             return EmptyView()

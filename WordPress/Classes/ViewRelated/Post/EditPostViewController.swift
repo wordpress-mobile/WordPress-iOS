@@ -148,7 +148,7 @@ class EditPostViewController: UIViewController {
             localizedFeatureName: feature,
             presentingViewController: self
         ) { [weak self] client in
-            // Once authenticated, create and return the editor
+            // Once authenticated, dismiss the application password view and show editor
             guard let self else { return EmptyView() }
 
             let editor = self.editorFactory.instantiateEditor(
@@ -159,9 +159,11 @@ class EditPostViewController: UIViewController {
             editor.postIsReblogged = self.postIsReblogged
             editor.entryPoint = self.entryPoint
 
-            // Present the editor within the authenticated context
+            // Dismiss application password view, then present the editor
             DispatchQueue.main.async {
-                self.showEditor(editor)
+                self.dismiss(animated: true) {
+                    self.showEditor(editor)
+                }
             }
 
             return EmptyView()
