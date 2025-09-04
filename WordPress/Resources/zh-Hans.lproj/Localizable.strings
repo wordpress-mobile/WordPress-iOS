@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-15 08:37:12+0000 */
+/* Translation-Revision-Date: 2025-09-04 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -8652,17 +8652,11 @@ Example: Reply to Pamela Nguyen */
 /* Top list option title */
 "jetpackStats.addChart.topListOption" = "热门列表";
 
-/* Archive section for authors */
-"jetpackStats.archiveSections.author" = "作者";
-
 /* Plural item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.plural" = "%1$d 个项目";
 
 /* Singular item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.singular" = "%1$d 个项目";
-
-/* Archive section for other items */
-"jetpackStats.archiveSections.other" = "其他";
 
 /* Title for the author details screen */
 "jetpackStats.authorDetails.title" = "作者";
@@ -8730,6 +8724,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 months date range */
 "jetpackStats.calendar.last12Months" = "过去 12 个月";
 
+/* Last 12 weeks (84 days) date range */
+"jetpackStats.calendar.last12Weeks" = "过去 12 周";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "过去 28 天";
 
@@ -8744,9 +8741,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 7 days date range */
 "jetpackStats.calendar.last7Days" = "过去 7 天";
-
-/* Last 90 days date range */
-"jetpackStats.calendar.last90Days" = "过去 90 天";
 
 /* Month time period */
 "jetpackStats.calendar.month" = "月";
@@ -8911,7 +8905,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.datePicker.lastYear" = "去年";
 
 /* Menu item for more date period options */
-"jetpackStats.datePicker.morePeriods" = "更多时段...";
+"jetpackStats.datePicker.more" = "更多...";
 
 /* Compare with preceding period option */
 "jetpackStats.datePicker.precedingPeriod" = "前一个时段";
@@ -8927,6 +8921,12 @@ Example: Reply to Pamela Nguyen */
 
 /* To date label */
 "jetpackStats.datePicker.to" = "至";
+
+/* Message explaining how to use the date range control */
+"jetpackStats.dateRangeTip.message" = "查看最近几天、几周、几个月或几年的数据，或选择自定义日期范围。";
+
+/* Title for stats date range control tip */
+"jetpackStats.dateRangeTip.title" = "浏览时间";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "子链接";
@@ -11945,6 +11945,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "您的站点";
+
+/* Message explaining how to use the date range control */
+"tips.statsDateRange.message" = "使用日历选择按天、周、月、年查看统计信息，或选择自定义日期范围进行查看。";
+
+/* Title for stats date range control tip */
+"tips.statsDateRange.title" = "浏览时间";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "重要提示";

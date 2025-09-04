@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-12 11:54:09+0000 */
+/* Translation-Revision-Date: 2025-09-01 13:54:09+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ar */
@@ -7330,6 +7330,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Complete information about application passwords with security benefits, creation process, management instructions, and revocation warning */
 "applicationPassword.info.content" = "تُعد كلمات مرور التطبيق طريقة أكثر أمانًا لهذا التطبيق للوصول إلى محتوى موقعك دون استخدام كلمة المرور الفعلية لحسابك.\n\nعندما تضيف المواقع إلى التطبيق، سيتم إنشاء كلمات مرور التطبيق تلقائيًا حسب الحاجة.\n\nيمكنك عرض كلمات المرور هذه وإدارتها في الملف الشخصي للمستخدم داخل لوحة مشرف موقع ووردبريس.\n\nيُرجى ملاحظة أن إلغاء كلمات مرور التطبيق التي يستخدمها التطبيق سيؤدي إلى إنهاء وصول التطبيق إلى موقعك. كن حذرًا عند إلغاء كلمات مرور التطبيق التي تم إنشاؤها بواسطة التطبيق.";
 
+/* Button to dismiss the application password information view */
+"applicationPassword.info.gotIt.button" = "فهمت";
+
 /* Title for the application passwords information view */
 "applicationPassword.info.title" = "نبذة حول كلمات مرور التطبيق";
 
@@ -7342,11 +7345,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of row for displaying an application password's last used date */
 "applicationPassword.item.lastUsed" = "آخر استخدام";
 
+/* Title of row for displaying an application password's last used IP address */
+"applicationPassword.item.lastUsedIp" = "عنوان IP الأخير";
+
 /* Title of row for displaying an application password name */
 "applicationPassword.item.name" = "الاسم";
 
 /* Title of section for displaying application password details */
 "applicationPassword.item.section.security" = "الأمان";
+
+/* String format of creation date of an application password. There is one argument: the creation date relative to now (i.e. 5 days ago). */
+"applicationPassword.list.item.created-date-format" = "%@ الذي تم إنشاؤه";
 
 /* String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago). */
 "applicationPassword.list.item.last-used-format" = "آخر استخدام %@";
@@ -7856,6 +7865,9 @@ Example: Reply to Pamela Nguyen */
 /* Debug Menu section title */
 "debugMenu.section.settings" = "الإعدادات";
 
+/* Debug Menu section title */
+"debugMenu.section.tipKit" = "طقم النصائح";
+
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "إظهار كل النصائح";
 
@@ -8005,6 +8017,21 @@ Example: Reply to Pamela Nguyen */
 
 /* Message for delete tag confirmation dialog */
 "edit.tag.delete.confirmation.message" = "هل أنت متأكد من رغبتك في حذف هذا الوسم؟";
+
+/* Title for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.title" = "حذف الوسم";
+
+/* Placeholder text for tag description field */
+"edit.tag.description.placeholder" = "إضافة وصف...";
+
+/* Placeholder text for tag name field */
+"edit.tag.name.placeholder" = "اسم الوسم";
+
+/* Navigation title for new tag creation */
+"edit.tag.new.title" = "وسم جديد";
+
+/* Section header for tag description in edit tag view */
+"edit.tag.section.description" = "الوصف";
 
 /* Section header for tag name in edit tag view */
 "edit.tag.section.tag" = "الوسم";
@@ -8511,14 +8538,26 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "يتعين عليك تسجيل الدخول باستخدام %@ لاستخدام الإحصاءات والتنبيهات.";
 
+/* Accessibility label for add card button */
+"jetpackStats.accessibility.addCardButton" = "إضافة بطاقة إحصاءات جديدة";
+
 /* Accessibility label for back navigation */
 "jetpackStats.accessibility.backToStats" = "الرجوع إلى الإحصاءات";
+
+/* Card title accessibility label. %1$@ is the card title. */
+"jetpackStats.accessibility.cardTitle" = "بطاقة %1$@";
 
 /* Accessibility label for chart container */
 "jetpackStats.accessibility.chartContainer" = "مخطط الإحصاءات";
 
+/* Chart trend accessibility label. %1$@ is metric name, %2$@ is trend description. */
+"jetpackStats.accessibility.chartTrend" = "%1$@ %2$@";
+
 /* Chart data point accessibility label. %1$@ is metric name, %2$@ is value, %3$@ is date. */
 "jetpackStats.accessibility.chartValue" = "%1$@: %2$@ في %3$@";
+
+/* Selected date range accessibility label. %1$@ is the range. */
+"jetpackStats.accessibility.dateRangeSelected" = "نطاق التاريخ: %1$@";
 
 /* Accessibility label for error state */
 "jetpackStats.accessibility.errorLoadingStats" = "خطأ في أثناء تحميل الإحصاءات";
@@ -8532,14 +8571,29 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility hint for next period navigation */
 "jetpackStats.accessibility.navigateToNextDateRange" = "الانتقال إلى نطاق التاريخ التالي";
 
+/* Accessibility hint for previous period navigation */
+"jetpackStats.accessibility.navigateToPreviousDateRange" = "الانتقال إلى نطاق التاريخ السابق";
+
+/* Accessibility label for next period navigation button */
+"jetpackStats.accessibility.nextPeriod" = "الفترة التالية";
+
 /* Accessibility label for empty data state */
 "jetpackStats.accessibility.noDataAvailable" = "لا توجد بيانات متاحة لهذه الفترة";
+
+/* Accessibility label for opening link in browser */
+"jetpackStats.accessibility.openInBrowser" = "فتح في متصفح";
+
+/* Accessibility label for previous period navigation button */
+"jetpackStats.accessibility.previousPeriod" = "الفترة السابقة";
 
 /* Accessibility label for realtime visitor count */
 "jetpackStats.accessibility.realtimeVisitorCount" = "الزوار المتصلون حاليًا";
 
 /* Accessibility hint for retry action */
 "jetpackStats.accessibility.retryLoadingStats" = "اضغط مرتين لإعادة محاولة تحميل الإحصاءات";
+
+/* Accessibility hint for date range selection */
+"jetpackStats.accessibility.selectDateRange" = "حدد نطاق التاريخ";
 
 /* Accessibility hint for tab selection. %1$@ is the tab name. */
 "jetpackStats.accessibility.selectTab" = "تحديد علامة التبويب %1$@";
@@ -8549,6 +8603,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for stats tab bar */
 "jetpackStats.accessibility.statsTabBar" = "علامات تبويب التنقل في الإحصاءات";
+
+/* Accessibility announcement when a tab is selected. %1$@ is the tab name. */
+"jetpackStats.accessibility.tabSelected" = "تم تحديد علامة التبويب %1$@";
 
 /* Top list item accessibility label. %1$d is rank, %2$@ is title, %3$@ is value. */
 "jetpackStats.accessibility.topListItem" = "الرتبة ⁦%1$d⁩: %2$@، %3$@";
@@ -8574,17 +8631,50 @@ Example: Reply to Pamela Nguyen */
 /* Title for data type selection */
 "jetpackStats.addChart.selectDataType" = "تحديد نوع البيانات";
 
+/* Title for metric selection */
+"jetpackStats.addChart.selectMetric" = "تحديد المقاييس";
+
 /* Top list option description */
 "jetpackStats.addChart.topListDescription" = "اطلع على المحتوى الأفضل أداءً لديك";
 
 /* Top list option title */
 "jetpackStats.addChart.topListOption" = "قائمة الأفضل";
 
+/* Plural item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.plural" = "⁦%1$d⁩ من العناصر";
+
 /* Singular item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.singular" = "⁦%1$d⁩ من العناصر";
 
+/* Title for the author details screen */
+"jetpackStats.authorDetails.title" = "المؤلف";
+
+/* Button to add a new chart */
+"jetpackStats.button.addCard" = "إضافة بطاقة";
+
+/* Apply button */
+"jetpackStats.button.apply" = "تطبيق";
+
+/* Cancel button */
+"jetpackStats.button.cancel" = "إلغاء";
+
+/* Button to customize a chart or widget */
+"jetpackStats.button.customize" = "تحرير البطاقة";
+
+/* Button to delete a chart or widget */
+"jetpackStats.button.deleteWidget" = "حذف البطاقة";
+
+/* Done button */
+"jetpackStats.button.done" = "تم";
+
+/* Button to download data as CSV file */
+"jetpackStats.button.downloadCSV" = "تنزيل CSV";
+
 /* Learn more about stats button */
 "jetpackStats.button.learnMore" = "التعرُّف على المزيد";
+
+/* Button to move a card */
+"jetpackStats.button.moveCard" = "نقل البطاقة";
 
 /* Button to move card down */
 "jetpackStats.button.moveDown" = "نقل إلى أسفل";
@@ -8595,11 +8685,20 @@ Example: Reply to Pamela Nguyen */
 /* Button to move card to the top */
 "jetpackStats.button.moveToTop" = "النقل إلى الجزء العلوي";
 
+/* Button to move card up */
+"jetpackStats.button.moveUp" = "نقل إلى أعلى";
+
 /* OK button */
 "jetpackStats.button.ok" = "موافق";
 
 /* Button to reset chart settings to default */
 "jetpackStats.button.resetSettings" = "إعادة تعيين الإعدادات";
+
+/* Share chart menu item */
+"jetpackStats.button.share" = "مشاركة";
+
+/* Button title */
+"jetpackStats.button.showAll" = "عرض الكل";
 
 /* Button to collapse and show fewer items */
 "jetpackStats.button.showLess" = "عرض الأقل";
@@ -8613,14 +8712,44 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 months date range */
 "jetpackStats.calendar.last12Months" = "آخر 12 شهرًا";
 
+/* Last 12 weeks (84 days) date range */
+"jetpackStats.calendar.last12Weeks" = "آخر 12 أسبوعًا";
+
+/* Last 28 days date range */
+"jetpackStats.calendar.last28Days" = "آخر 28 يومًا";
+
+/* Last 30 days date range */
+"jetpackStats.calendar.last30Days" = "آخر 30 يومًا";
+
 /* Last 3 years date range */
 "jetpackStats.calendar.last3Years" = "آخر 3 أعوام";
+
+/* Last 6 months date range */
+"jetpackStats.calendar.last6Months" = "آخر 6 أشهر";
+
+/* Last 7 days date range */
+"jetpackStats.calendar.last7Days" = "آخر 7 أيام";
 
 /* Month time period */
 "jetpackStats.calendar.month" = "الشهر";
 
 /* Quarter time period */
 "jetpackStats.calendar.quarter" = "الربع السنوي";
+
+/* This month date range */
+"jetpackStats.calendar.thisMonth" = "هذا الشهر";
+
+/* This quarter date range */
+"jetpackStats.calendar.thisQuarter" = "هذا الربع السنوي";
+
+/* This week date range */
+"jetpackStats.calendar.thisWeek" = "هذا الأسبوع";
+
+/* This year date range */
+"jetpackStats.calendar.thisYear" = "هذا العام";
+
+/* Today date range */
+"jetpackStats.calendar.today" = "اليوم";
 
 /* Week time period */
 "jetpackStats.calendar.week" = "الأسبوع";
@@ -8634,29 +8763,62 @@ Example: Reply to Pamela Nguyen */
 /* Shown for empty states */
 "jetpackStats.chart.dataEmpty" = "لا توجد بيانات للفترة";
 
+/* Genertic error message */
+"jetpackStats.chart.generitcError" = "حدث خطأ ما";
+
 /* Shown for metrics that don't support hourly data */
 "jetpackStats.chart.hourlyDataNotAvailable" = "البيانات بالساعة غير متوفرة";
 
 /* Shown when current period data might be incomplete */
 "jetpackStats.chart.incompleteData" = "قد تظهر بيانات غير مكتملة";
 
+/* Line chart type */
+"jetpackStats.chart.lineChart" = "خطوط";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "عرض البيانات";
+
+/* Label for change value */
+"jetpackStats.chartData.change" = "تغيير";
+
+/* Column header for date */
+"jetpackStats.chartData.date" = "التاريخ";
 
 /* Section title for detailed data */
 "jetpackStats.chartData.detailedData" = "بيانات تفصيلية";
 
+/* Label for previous value */
+"jetpackStats.chartData.previous" = "السابق";
+
 /* Title for chart data screen */
 "jetpackStats.chartData.title" = "بيانات المخطط";
+
+/* Label for total value */
+"jetpackStats.chartData.total" = "الإجمالي";
 
 /* Column header for value */
 "jetpackStats.chartData.value" = "القيمة";
 
+/* Context menu action to copy country name */
+"jetpackStats.contextMenu.copyCountryName" = "نسخ اسم البلد";
+
+/* Context menu action to copy domain */
+"jetpackStats.contextMenu.copyDomain" = "نسخ النطاق";
+
 /* Context menu action to copy file name */
 "jetpackStats.contextMenu.copyFileName" = "نسخ اسم الملف";
 
+/* Context menu action to copy file path */
+"jetpackStats.contextMenu.copyFilePath" = "نسخ مسار الملف";
+
+/* Context menu action to copy name */
+"jetpackStats.contextMenu.copyName" = "نسخ الاسم";
+
 /* Context menu action to copy search term */
 "jetpackStats.contextMenu.copySearchTerm" = "نسخ مصطلح البحث";
+
+/* Context menu action to copy title */
+"jetpackStats.contextMenu.copyTitle" = "نسخ العنوان";
 
 /* Context menu action to copy URL */
 "jetpackStats.contextMenu.copyURL" = "نسخ عنوان الموقع";
@@ -8670,6 +8832,9 @@ Example: Reply to Pamela Nguyen */
 /* Context menu action to search term in Google */
 "jetpackStats.contextMenu.searchInGoogle" = "البحث في Google";
 
+/* Message shown when a country has no views */
+"jetpackStats.countries.noViews" = "لا مشاهدات";
+
 /* CSV header for country column */
 "jetpackStats.csv.country" = "البلد";
 
@@ -8682,8 +8847,26 @@ Example: Reply to Pamela Nguyen */
 /* CSV header for domain column */
 "jetpackStats.csv.domain" = "النطاق";
 
+/* CSV header for file name column */
+"jetpackStats.csv.fileName" = "اسم الملف";
+
+/* CSV header for file path column */
+"jetpackStats.csv.filePath" = "مسار الملف";
+
+/* CSV header for name column */
+"jetpackStats.csv.name" = "الاسم";
+
 /* CSV header for role column */
 "jetpackStats.csv.role" = "الدور";
+
+/* CSV header for search term column */
+"jetpackStats.csv.searchTerm" = "مصطلح البحث";
+
+/* CSV header for section column */
+"jetpackStats.csv.section" = "القسم";
+
+/* CSV header for title column */
+"jetpackStats.csv.title" = "العنوان";
 
 /* CSV header for type column */
 "jetpackStats.csv.type" = "اكتب";
@@ -8697,20 +8880,44 @@ Example: Reply to Pamela Nguyen */
 /* Title for comparison menu */
 "jetpackStats.datePicker.compareWith" = "مقارنة مع...";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.customRange" = "نطاق مخصص";
+
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "نطاق مخصص...";
 
+/* From date label */
+"jetpackStats.datePicker.from" = "من";
+
+/* Compare with same period last year option */
+"jetpackStats.datePicker.lastYear" = "العام الماضي";
+
 /* Menu item for more date period options */
-"jetpackStats.datePicker.morePeriods" = "المزيد من الفترات...";
+"jetpackStats.datePicker.more" = "المزيد…";
+
+/* Site time zone header */
+"jetpackStats.datePicker.siteTimeZone" = "المنطقة الزمنية للموقع";
 
 /* Explanation of how stats are reported in site time zone */
 "jetpackStats.datePicker.siteTimeZoneDescription" = "يتم الإبلاغ عن الإحصاءات وإظهارها في المنطقة الزمنية لموقعك. إذا أتى زائر إلى موقعك يوم الثلاثاء حسب توقيت منطقته الزمنية، ولكنه يوم الاثنين حسب توقيت منطقتك الزمنية، فسيتم تسجيل الزيارة على أنها يوم الاثنين.";
+
+/* To date label */
+"jetpackStats.datePicker.to" = "إلى";
+
+/* Message explaining how to use the date range control */
+"jetpackStats.dateRangeTip.message" = "عرض الأيام أو الأسابيع أو الشهور أو الأعوام الأخيرة، أو تحديد نطاقات تاريخ مخصصة.";
+
+/* Title for stats date range control tip */
+"jetpackStats.dateRangeTip.title" = "التنقُّل عبر الزمن";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "روابط فرعية";
 
 /* Button to open the external link in browser */
 "jetpackStats.externalLinkDetails.openLink" = "فتح الرابط";
+
+/* Title for the external link details screen */
+"jetpackStats.externalLinkDetails.title" = "رابط خارجي";
 
 /* Label for daily average in tooltip */
 "jetpackStats.postDetails.dailyAverage" = "المعدل اليومي";
@@ -8721,17 +8928,32 @@ Example: Reply to Pamela Nguyen */
 /* Must be short!Label for emails sent metric */
 "jetpackStats.postDetails.emailsSent" = "رسائل البريد الإلكتروني التي تم إرسالها";
 
+/* Legend label for lower activity */
+"jetpackStats.postDetails.less" = "أقل";
+
 /* Singular like count. %1$d is the number. */
 "jetpackStats.postDetails.like" = "⁦%1$d⁩ من الإعجابات";
 
 /* Plural likes count. %1$d is the number. */
 "jetpackStats.postDetails.likes" = "⁦%1$d⁩ من الإعجابات";
 
+/* Title for monthly activity heatmap */
+"jetpackStats.postDetails.monthsAndYears" = "الأشهر الأخيرة";
+
+/* Legend label for higher activity */
+"jetpackStats.postDetails.more" = "المزيد";
+
 /* Label */
 "jetpackStats.postDetails.noLikesYet" = "لا إعجابات حتى الآن";
 
 /* Must be short! Label for email open rate metric */
 "jetpackStats.postDetails.openRate" = "معدل الفتح";
+
+/* Shows when the post was published. %1$@ is the formatted date. */
+"jetpackStats.postDetails.published" = "تم النشر %1$@";
+
+/* Title for recent weeks activity heatmap */
+"jetpackStats.postDetails.recentWeeks" = "الأسابيع الأخيرة";
 
 /* Navigation title */
 "jetpackStats.postDetails.title" = "إحصاءات التدوينات";
@@ -8748,6 +8970,12 @@ Example: Reply to Pamela Nguyen */
 /* Label for weekly total in tooltip */
 "jetpackStats.postDetails.weekTotal" = "الإجمالي أسبوعيًا";
 
+/* Title for weekly activity heatmap */
+"jetpackStats.postDetails.weeklyActivity" = "النشاط الأسبوعي";
+
+/* Title for error alert when marking referrer as spam fails */
+"jetpackStats.referrerDetails.errorAlertTitle" = "خطأ";
+
 /* Button to mark a referrer as spam */
 "jetpackStats.referrerDetails.markAsSpam" = "وضع علامة على أنه بريد مزعج";
 
@@ -8763,6 +8991,21 @@ Example: Reply to Pamela Nguyen */
 /* Title for the referrer details screen */
 "jetpackStats.referrerDetails.title" = "الموجه";
 
+/* Archive data type */
+"jetpackStats.siteDataTypes.archive" = "الأرشيف";
+
+/* Authors data type */
+"jetpackStats.siteDataTypes.authors" = "المؤلفون";
+
+/* External links data type */
+"jetpackStats.siteDataTypes.externalLinks" = "الروابط الخارجية";
+
+/* File downloads data type */
+"jetpackStats.siteDataTypes.fileDownloads" = "تنزيلات الملفات";
+
+/* Locations data type */
+"jetpackStats.siteDataTypes.locations" = "المواقع";
+
 /* Posts and pages data type */
 "jetpackStats.siteDataTypes.postsAndPages" = "التدوينات والصفحات";
 
@@ -8772,8 +9015,17 @@ Example: Reply to Pamela Nguyen */
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "مصطلحات البحث";
 
+/* Videos data type */
+"jetpackStats.siteDataTypes.videos" = "الفيديوهات";
+
+/* Bounce rate metric */
+"jetpackStats.siteMetrics.bounceRate" = "معدل الارتداد";
+
 /* Site comments metric */
 "jetpackStats.siteMetrics.comments" = "التعليقات";
+
+/* Download count */
+"jetpackStats.siteMetrics.downloads" = "التنزيلات";
 
 /* Site likes metric */
 "jetpackStats.siteMetrics.likes" = "الإعجابات";
@@ -8784,14 +9036,32 @@ Example: Reply to Pamela Nguyen */
 /* Time on site metric */
 "jetpackStats.siteMetrics.timeOnSite" = "الوقت على الموقع";
 
+/* Site views metric */
+"jetpackStats.siteMetrics.views" = "المشاهدات";
+
 /* Site visitors metric */
 "jetpackStats.siteMetrics.visitors" = "الزائرون";
 
 /* Current active visitors metric */
 "jetpackStats.siteMetrics.visitorsNow" = "الزائرون الآن";
 
+/* Insights tab */
+"jetpackStats.tabs.insights" = "الرؤى";
+
 /* Realtime tab */
 "jetpackStats.tabs.realtime" = "وقت التشغيل";
+
+/* Subscribers tab */
+"jetpackStats.tabs.subscribers" = "المشتركون";
+
+/* Traffic tab */
+"jetpackStats.tabs.traffic" = "حركة المرور";
+
+/* Stats screen title */
+"jetpackStats.title" = "الإحصاءات";
+
+/* Title for items with highest bounce rate */
+"jetpackStats.topList.highestBounceRate" = "أعلى معدل ارتداد";
 
 /* Title for items with longest time on site */
 "jetpackStats.topList.longestTimeOnSite" = "أطول وقت على الموقع";
@@ -8807,6 +9077,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for most posts (per author) */
 "jetpackStats.topList.mostPosts" = "معظم التدوينات";
+
+/* Title for most viewed items */
+"jetpackStats.topList.mostViewed" = "الأكثر مشاهدة";
 
 /* Title for items with most visitors */
 "jetpackStats.topList.mostVisitors" = "معظم الزائرين";
@@ -9315,6 +9588,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "الصفحات بواسطتي";
 
+/* Title for the parent page picker screen */
+"parentPagePicker.title" = "الصفحة الأصل";
+
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "الصفحة الأصل";
 
@@ -9464,6 +9740,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Button label to view plugin on WordPress.org */
 "pluginDetails.viewOnWordPressOrg.button" = "العرض على ووردبريس.أورج";
+
+/* Title for the post author selection screen */
+"postAuthorPicker.title" = "المؤلف";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "تجاهل التغييرات";
@@ -9696,11 +9975,30 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "من دون عنوان";
 
+/* Label for the author field in Post Settings */
+"postSettings.author.label" = "المؤلف";
+
+/* Label for the add category button field. Should be the same as WP core. */
+"postSettings.categories.addCategoryButton" = "إضافة تصنيف";
+
+/* Label for the categories field. Should be the same as WP core.
+   Label for the category field. Should be the same as WP core. */
+"postSettings.categories.label" = "التصنيفات";
+
+/* Button to confirm discarding changes */
+"postSettings.discardChanges.button" = "تجاهل التغييرات";
+
 /* Message for the discard changes confirmation dialog */
 "postSettings.discardChanges.message" = "لديك تغييرات غير محفوظة. هل أنت متأكد من رغبتك في تجاهل هذه التغييرات؟";
 
+/* Title for the discard changes confirmation dialog */
+"postSettings.discardChanges.title" = "تجاهل التغييرات؟";
+
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "⁦%1$d⁩ من الأحرف";
+
+/* Section header for Excerpt in Post Settings */
+"postSettings.excerpt.header" = "المقتطف";
 
 /* Placeholder text for the excerpt field in Post Settings */
 "postSettings.excerpt.placeholder" = "اكتب ملخصًا موجزًا لتدوينتك ليظهر في فهرس المدونة والأرشيفات ونتائج البحث.";
@@ -9726,8 +10024,17 @@ Example: Reply to Pamela Nguyen */
 /* Post Settings */
 "postSettings.featuredImage.uploading" = "جارٍ الرفع...";
 
+/* Label for the last edited field in Post Settings */
+"postSettings.lastEdited.label" = "آخر تحرير";
+
+/* Section header for Info in Post Settings */
+"postSettings.metadata.header" = "معلومات";
+
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "المزيد من الخيارات";
+
+/* The title of the Page Settings screen. */
+"postSettings.navigationTitle.page" = "إعدادات الصفحة";
 
 /* The title of the Post Settings screen. */
 "postSettings.navigationTitle.post" = "إعدادات التدوينة";
@@ -9737,6 +10044,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message when trying to save a deleted page */
 "postSettings.pageDeleted.message" = "تم حذف هذه الصفحة ولم يعد من الممكن حفظها.";
+
+/* Title of alert when trying to save a deleted page */
+"postSettings.pageDeleted.title" = "تم حذف الصفحة";
+
+/* Cell title for the Top Level option case */
+"postSettings.parentPage.topLevel" = "أعلى مستوى";
 
 /* Label for the permalink field in Post Settings */
 "postSettings.permalink.label" = "رابط دائم";
@@ -9750,11 +10063,35 @@ Example: Reply to Pamela Nguyen */
 /* Label for the post format field. Should be the same as WP core. */
 "postSettings.postFormat.label" = "تنسيق التدوينة";
 
+/* Label for the post ID field in Post Settings */
+"postSettings.postID.label" = "المعرف";
+
+/* Label for the publish date field in Post Settings */
+"postSettings.publishDate.label" = "التاريخ";
+
+/* Section header for General settings in Post Settings */
+"postSettings.section.general" = "عام";
+
 /* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "postSettings.slug.hint" = "الاسم اللطيف هو إصدار عنوان المقالة المألوف لعنوان الموقع.";
 
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.label" = "الاسم اللطيف";
+
+/* Placeholder for the slug field */
+"postSettings.slug.placeholder" = "أدخل اسمًا لطيفًا";
+
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "مثبّت";
+
+/* Label for the add tags button field. Should be the same as WP core. */
+"postSettings.tags.addTagsButton" = "إضافة وسوم";
+
+/* Label for the tags field. Should be the same as WP core. */
+"postSettings.tags.label" = "الوسوم";
+
+/* Label for the visibility field in Post Settings */
+"postSettings.visibility.label" = "إمكانية الرؤية";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "إلغاء";
@@ -11138,6 +11475,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "إجمالي المشتركين";
 
+/* Menu item to send feedback about new stats experience */
+"stats.menu.sendFeedback" = "إرسال الملاحظات";
+
 /* Menu item to switch back to classic stats experience */
 "stats.menu.switchToClassic" = "التبديل إلى عربة التسوق التقليدية";
 
@@ -11537,6 +11877,18 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Error message when the tags service cannot connect to the remote site */
 "tags.error.no_remote_service" = "تعذر الاتصال بموقعك. يُرجى التحقق من اتصالك وإعادة المحاولة.";
 
+/* Button to remove a selected tag. %1$@ is the tag name. */
+"tags.remove.button" = "إزالة %1$@";
+
+/* Placeholder text for the tag search field */
+"tags.search.placeholder" = "البحث عن الوسوم";
+
+/* Message shown when no tags are selected */
+"tags.selected.empty" = "لم يتم تحديد أي وسوم";
+
+/* Title for the tags screen */
+"tags.title" = "الوسوم";
+
 /* Title for placeholder in Tenor picker */
 "tenor.welcomeMessage" = "ابحث للعثور على صور بتنسيق GIF لإضافتها إلى مكتبة الوسائط الخاصة بك!";
 
@@ -11569,6 +11921,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "مواقعك";
+
+/* Message explaining how to use the date range control */
+"tips.statsDateRange.message" = "استخدم التقويم لتحديد الأيام أو الأسابيع أو الشهور أو الأعوام، أو اختر نطاقات تاريخ مخصصة لعرض الإحصائيات الخاصة بك.";
+
+/* Title for stats date range control tip */
+"tips.statsDateRange.title" = "التنقُّل عبر الزمن";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "أفضل النصائح";
