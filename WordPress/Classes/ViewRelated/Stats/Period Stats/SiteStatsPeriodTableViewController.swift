@@ -44,7 +44,6 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         datePickerViewModel = StatsTrafficDatePickerViewModel(period: period, date: date)
         datePickerView = StatsTrafficDatePickerView(viewModel: datePickerViewModel)
         super.init(nibName: nil, bundle: nil)
-        tableStyle = .insetGrouped
     }
 
     required init?(coder: NSCoder) {

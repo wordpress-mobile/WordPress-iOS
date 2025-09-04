@@ -58,7 +58,6 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
         self.selectedDate = selectedDate ?? StatsDataHelper.currentDateForSite()
         self.selectedPeriod = selectedPeriod
         self.postID = postID
-        tableStyle = .insetGrouped
         title = statSection.detailsTitle
         initViewModel()
         updateHeader()

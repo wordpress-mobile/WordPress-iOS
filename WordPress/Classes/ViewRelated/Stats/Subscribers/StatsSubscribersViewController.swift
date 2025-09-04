@@ -13,8 +13,6 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
     init(viewModel: StatsSubscribersViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-
-        tableStyle = .insetGrouped
     }
 
     required init?(coder: NSCoder) {
