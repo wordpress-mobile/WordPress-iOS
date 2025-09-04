@@ -9,20 +9,40 @@ public struct FAB: View {
         self.action = action
     }
 
+#if compiler(>=6.2)
     public var body: some View {
-        content
-            .dynamicTypeSize(...DynamicTypeSize.accessibility1) // important to be attached from the outside
+        if #available(iOS 26, *) {
+            Button(action: action ?? {}) {
+                Image(systemName: "plus")
+                    .font(.system(size: 24, weight: .semibold))
+                    .frame(width: 38, height: 38)
+                    .foregroundStyle(Color(.systemBackground))
+            }
+            .buttonStyle(.glassProminent)
+            .buttonBorderShape(.circle)
+            .tint(Color(.label).opacity(0.8))
+        } else {
+            legacy
+        }
     }
+#else
+    public var body: some View {
+        legacy
+    }
+#endif
 
     @ViewBuilder
-    private var content: some View {
-        if let action {
-            Button(action: action) {
+    private var legacy: some View {
+        Group {
+            if let action {
+                Button(action: action) {
+                    FABContentView(image: image)
+                }
+            } else {
                 FABContentView(image: image)
             }
-        } else {
-            FABContentView(image: image)
         }
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1) // important to be attached from the outside
     }
 }
 
