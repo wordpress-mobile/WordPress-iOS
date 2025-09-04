@@ -49,13 +49,18 @@ class EditorFactory {
     /// - Parameter post: The post to be edited
     /// - Returns: true if application password prompt should be shown
     func requiresApplicationPasswordForEditor(post: AbstractPost) -> Bool {
-        // Only check if we would actually use NewGutenbergViewController
         guard gutenbergSettings.mustUseGutenberg(for: post) &&
               RemoteFeatureFlag.newGutenberg.enabled() else {
             return false
         }
 
-        // Then check blog's application password requirement
-        return post.blog.requiresApplicationPasswordForEditor()
+        // Only require application password for non-WPCOM Simple sites (self-hosted sites)
+        let blog = post.blog
+        guard !blog.isHostedAtWPcom && !blog.isAtomic() else {
+            return false
+        }
+
+        let hasApplicationPassword = (try? blog.getApplicationToken()) != nil
+        return !hasApplicationPassword
     }
 }
