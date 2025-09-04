@@ -115,7 +115,6 @@ class EditPageViewController: UIViewController {
             target: self,
             action: #selector(dismissApplicationPasswordView)
         )
-        hostingController.navigationItem.title = feature
 
         // Note: Pages use different presentation style than posts
         let navController = UINavigationController(rootViewController: hostingController)

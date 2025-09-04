@@ -177,7 +177,6 @@ class EditPostViewController: UIViewController {
             target: self,
             action: #selector(dismissApplicationPasswordView)
         )
-        hostingController.navigationItem.title = feature
 
         let navController = AztecNavigationController(rootViewController: hostingController)
         navController.modalPresentationStyle = .fullScreen
