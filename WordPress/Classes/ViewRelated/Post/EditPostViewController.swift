@@ -120,8 +120,8 @@ class EditPostViewController: UIViewController {
     fileprivate func showEditor() {
         let post = postToEdit()
 
-        // Check if application password is required for this blog
-        if post.blog.requiresApplicationPasswordForEditor() {
+        // Check if application password is required for this post
+        if editorFactory.requiresApplicationPasswordForEditor(post: post) {
             showApplicationPasswordRequired(for: post)
         } else {
             // Proceed with normal editor instantiation

@@ -61,8 +61,8 @@ class EditPageViewController: UIViewController {
         let page = pageToEdit()
         let editorFactory = EditorFactory()
 
-        // Check if application password is required for this blog
-        if page.blog.requiresApplicationPasswordForEditor() {
+        // Check if application password is required for this page
+        if editorFactory.requiresApplicationPasswordForEditor(post: page) {
             showApplicationPasswordRequired(for: page, editorFactory: editorFactory)
         } else {
             // Proceed with normal editor instantiation
