@@ -91,6 +91,12 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         didMove(toParent: parentViewController)
 
         parentViewController.navigationItem.searchController = searchController
+
+#if compiler(>=6.2)
+        if #available(iOS 26, *) {
+            parentViewController.navigationItem.preferredSearchBarPlacement = traitCollection.horizontalSizeClass == .regular ? .integrated : .integratedButton
+        }
+#endif
     }
 
     override func viewDidLoad() {

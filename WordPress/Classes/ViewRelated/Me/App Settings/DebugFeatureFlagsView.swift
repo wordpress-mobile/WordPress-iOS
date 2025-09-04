@@ -10,7 +10,7 @@ struct DebugFeatureFlagsView: View {
         }
         .tint(Color(UIAppColor.jetpackGreen))
         .listStyle(.plain)
-        .searchable(text: $viewModel.filterTerm, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(text: $viewModel.filterTerm)
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarTitleMenu {

@@ -90,9 +90,17 @@ struct SiteSwitcherView: View {
                     SiteSwitcherToolbarView(viewModel: viewModel)
                 }
             }
-            .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
+            .searchable(text: $viewModel.searchText, placement: searchPlacemenet)
             .navigationTitle(Strings.navigationTitle)
             .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var searchPlacemenet: SearchFieldPlacement {
+        if #available(iOS 26, *) {
+            .automatic
+        } else {
+            .navigationBarDrawer(displayMode: .always)
+        }
     }
 }
 
@@ -108,10 +116,17 @@ private struct SiteSwitcherToolbarView: View {
                 Spacer()
                 button
                     .padding(.trailing, 20)
-                    .padding(.bottom, UIDevice.current.userInterfaceIdiom == .pad ? 20 : 0)
+                    .padding(.bottom, bottomOffset)
                     .accessibilityIdentifier("add-site-button")
             }
         }
+    }
+
+    private var bottomOffset: CGFloat {
+        if #available(iOS 26, *) {
+            return 20
+        }
+        return UIDevice.current.userInterfaceIdiom == .pad ? 20 : 0
     }
 
     @ViewBuilder

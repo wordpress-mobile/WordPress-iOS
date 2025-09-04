@@ -65,7 +65,7 @@ final class AuthorFilterButton: UIControl {
     private func commonInit() {
         addSubview(authorImageView)
         NSLayoutConstraint.activate([
-            authorImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.leadingPadding),
+            authorImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             authorImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             authorImageView.widthAnchor.constraint(equalToConstant: Metrics.gravatarSize.width),
             authorImageView.heightAnchor.constraint(equalToConstant: Metrics.gravatarSize.height),
@@ -82,7 +82,6 @@ final class AuthorFilterButton: UIControl {
     private enum Metrics {
         static let contentSize = CGSize(width: 44.0, height: 44.0)
         static let gravatarSize = CGSize(width: 28.0, height: 28.0)
-        static let leadingPadding: CGFloat = 12.0
     }
 }
 

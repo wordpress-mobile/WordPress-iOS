@@ -157,7 +157,7 @@ class AuthorFilterViewController: UITableViewController {
     }
 
     private enum Metrics {
-        static let rowHeight: CGFloat = 44.0
+        static let rowHeight: CGFloat = if #available(iOS 26, *) { 60.0 } else { 44.0 }
         static let preferredWidth: CGFloat = 220.0
         static let topinset: CGFloat = 13.0
     }
