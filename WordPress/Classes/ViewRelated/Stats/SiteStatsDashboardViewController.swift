@@ -12,6 +12,8 @@ enum StatsTabType: Int, AdaptiveTabBarItem, CaseIterable {
     case traffic
     case subscribers
 
+    var id: StatsTabType { self }
+
     var localizedTitle: String {
         switch self {
         case .insights: return NSLocalizedString("Insights", comment: "Title of Insights stats filter.")

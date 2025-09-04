@@ -66,9 +66,7 @@ class AbstractPostListViewController: UIViewController,
 
     lazy var noResultsViewController = NoResultsViewController.controller()
 
-    lazy var filterSettings: PostListFilterSettings = {
-        return PostListFilterSettings(blog: self.blog, postType: self.postTypeToSync())
-    }()
+    lazy var filterSettings = PostListFilterSettings(blog: blog, postType: postTypeToSync())
 
     let filterTabBar = FilterTabBar()
 
@@ -100,7 +98,6 @@ class AbstractPostListViewController: UIViewController,
         configureFetchResultsController()
         configureTableView()
         configureFilterBar()
-        configureTableView()
         configureSearchController()
         configureAuthorFilter()
 
@@ -156,7 +153,7 @@ class AbstractPostListViewController: UIViewController,
     func configureTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToAllEdges(tableView)
+        tableView.pinEdges()
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -452,6 +449,14 @@ class AbstractPostListViewController: UIViewController,
         }
     }
 
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 0 ? 1 : 0
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return section == 0 ? UIView() : nil
+    }
+
     // MARK: - Actions
 
     @objc private func refresh(_ sender: AnyObject) {
@@ -485,7 +490,7 @@ class AbstractPostListViewController: UIViewController,
         refreshResults()
     }
 
-    @objc func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], hasMore: Bool) {
+    func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], hasMore: Bool) {
         guard posts.count > 0 else {
             wpAssertionFailure("This method should not be called with no posts.")
             return

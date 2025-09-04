@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-public protocol AdaptiveTabBarItem {
+public protocol AdaptiveTabBarItem: Identifiable {
     var localizedTitle: String { get }
 }
 
@@ -38,7 +38,7 @@ public class AdaptiveTabBar: UIControl {
 
     // MARK: - Properties
 
-    var items: [AdaptiveTabBarItem] = [] {
+    var items: [any AdaptiveTabBarItem] = [] {
         didSet { refreshTabs() }
     }
 
@@ -51,9 +51,12 @@ public class AdaptiveTabBar: UIControl {
         }
     }
 
+    public var preferredFont = UIFont.preferredFont(forTextStyle: .body)
+
     private var widthConstraint: NSLayoutConstraint!
     private var indicatorWidthConstraint: NSLayoutConstraint?
     private var indicatorCenterXConstraint: NSLayoutConstraint?
+    private var previousWidth: CGFloat?
 
     public let tabBarHeight: CGFloat = 44
 
@@ -83,7 +86,7 @@ public class AdaptiveTabBar: UIControl {
 
         widthConstraint = stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
 
-        let separator = SeparatorView.horizontal()
+        let separator = SeparatorView.horizontal(height: separatorHeight)
         addSubview(separator)
         separator.pinEdges([.horizontal, .bottom])
 
@@ -94,10 +97,17 @@ public class AdaptiveTabBar: UIControl {
         ])
     }
 
+    private var separatorHeight: CGFloat {
+        if #available(iOS 26, *) { 1 } else { 0.33 }
+    }
+
     public override func layoutSubviews() {
         super.layoutSubviews()
 
-        updateDistribution()
+        if previousWidth != bounds.width {
+            previousWidth = bounds.width
+            updateDistribution()
+        }
     }
 
     // MARK: - Tab Management
@@ -116,10 +126,16 @@ public class AdaptiveTabBar: UIControl {
 
     private func createTab(at index: Int) -> UIButton {
         let item = items[index]
+        let font = preferredFont
 
         var config = UIButton.Configuration.plain()
         config.title = item.localizedTitle
-        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12)
+        config.contentInsets = NSDirectionalEdgeInsets(
+            top: 8,
+            leading: index == 0 ? 20 : 6,
+            bottom: 8,
+            trailing: 6
+        )
 
         let button = UIButton(configuration: config, primaryAction: .init { [weak self] _ in
             self?.tabButtonTapped(at: index)
@@ -133,8 +149,7 @@ public class AdaptiveTabBar: UIControl {
             config.baseForegroundColor = isSelected ? .label : .secondaryLabel
             config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
                 var outgoing = incoming
-                outgoing.font = UIFont.preferredFont(forTextStyle: .headline)
-                    .withWeight(isSelected ? .medium : .regular)
+                outgoing.font = font.withWeight(isSelected ? .medium : .regular)
                 return outgoing
             }
             button.configuration = config
@@ -143,18 +158,28 @@ public class AdaptiveTabBar: UIControl {
         button.accessibilityIdentifier = "\(item)"
         button.maximumContentSizeCategory = .extraLarge
 
+        button.titleLabel?.numberOfLines = 1
+
+        button.isSelected = true
+        let width = button.systemLayoutSizeFitting(CGSize(width: UIView.noIntrinsicMetric, height: tabBarHeight)).width
+        button.widthAnchor.constraint(greaterThanOrEqualToConstant: width + 2).isActive = true // just in case add more space
+        button.isSelected = false
+
         return button
     }
 
     private func updateDistribution() {
         guard !buttons.isEmpty else { return }
 
-        let totalPreferredWidth = buttons.reduce(0) { total, tab in
-            total + tab.sizeThatFits(CGSize(width: .greatestFiniteMagnitude, height: tabBarHeight)).width
-        }
+        let maxWidth = buttons.map {
+            $0.systemLayoutSizeFitting(CGSize(width: UIView.noIntrinsicMetric, height: tabBarHeight)).width
+        }.max() ?? 0
+
+        let totalPreferredWidth = maxWidth * CGFloat(buttons.count)
 
         // If the items don't fit, enable scrolling
-        let shouldFillWidth = totalPreferredWidth <= bounds.width
+        // Adding 2 just in case if there is some rounding error somewhere
+        let shouldFillWidth = (totalPreferredWidth + 2) <= safeAreaLayoutGuide.layoutFrame.width
         if shouldFillWidth {
             stackView.distribution = .fillEqually
             widthConstraint.isActive = true
@@ -224,6 +249,13 @@ public class AdaptiveTabBar: UIControl {
 
         let selectedTab = buttons[selectedIndex]
         let tabFrame = scrollView.convert(selectedTab.frame, from: stackView)
+        let visibleRect = scrollView.bounds
+
+        // Only scroll if the button is not fully visible
+        guard !visibleRect.contains(tabFrame) else {
+            return
+        }
+
         let targetRect = CGRect(
             x: max(0, tabFrame.midX - bounds.width / 2),
             y: 0,
@@ -234,7 +266,7 @@ public class AdaptiveTabBar: UIControl {
         scrollView.scrollRectToVisible(targetRect, animated: animated)
     }
 
-    var currentlySelectedItem: AdaptiveTabBarItem? {
+    var currentlySelectedItem: (any AdaptiveTabBarItem)? {
         return items[safe: selectedIndex]
     }
 }
