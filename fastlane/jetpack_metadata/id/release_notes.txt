@@ -1,9 +1,3 @@
-Kami membangun kembali Statistik dari nol, dan hasilnya benar-benar menakjubkan. Pengalaman baru ini menampilkan animasi 120 fps yang sangat halus, grafik interaktif yang dapat diketuk dan dijelajahi, penayangan data per jam, dan dasbor yang sepenuhnya dapat disesuaikan. Anda dapat menyusun ulang semuanya, mengekspor data, dan bahkan melihat analitik pos dengan metrik kampanye email. Rasanya luar biasa saat digunakan—kami jadi terus-terusan membuka Statistik hanya untuk melihat animasi indahnya. (Cari "Coba Statistik Baru" saat membuka Statistik, atau aktifkan kapan saja lewat Saya > Pengaturan Aplikasi > Fitur Eksperimental.)
-
-Kami juga menyempurnakan cara mengelola konten. Layar Pengaturan Pos sepenuhnya didesain ulang sehingga proses pengaturan pos menjadi lebih mulus dan intuitif. Selain itu, ada perbaikan integrasi VideoPress serta penyempurnaan autentikasi untuk situs pribadi di editor eksperimental kami.
-
-Terakhir, kami mengatasi beberapa bug dan membuat berbagai fitur jadi lebih andal.
-- Aplikasi tidak akan macet lagi ketika Anda membuka Pos atau Halaman. (Kami tahu betapa menjengkelkanya hal itu.)
-- Kami memperbaiki crash yang terjadi saat menyimpan pengaturan editor tertentu.
-- Pop up eror yang mengganggu di dasbor Anda? Hilang.
-- Kata sandi aplikasi kini bekerja dengan lebih lancar di latar belakang, dan alur koneksi Jetpack jadi lebih andal.
+- Bagan Statistik yang memukau kini jadi makin keren. Ketuk bilah mana saja untuk mendapatkan wawasan cepat, jelajahi tren mingguan, dan nikmati mode gelap yang sempurna. Data Anda layak mendapatkan visualisasi unggul seperti ini.
+- Kami telah menambahkan fitur penyebutan ke editor eksperimental. Tandai kolaborator Anda dan saksikan keajaibannya.
+- Split View iPad kini berfungsi dengan baik di mode malam. Tak ada lagi tata letak yang aneh.

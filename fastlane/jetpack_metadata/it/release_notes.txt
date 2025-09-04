@@ -1,9 +1,3 @@
-Abbiamo ricostruito le Statistiche da zero e sono una meraviglia. Questa nuova esperienza offre animazioni fluidissime a 120 fps, grafici interattivi da esplorare con un tocco, visualizzazioni dei dati su base oraria e una dashboard completamente personalizzabile. Puoi riorganizzare ogni elemento, esportare i dati e persino visualizzare le analisi dei tuoi articoli insieme alle metriche delle campagne email. L'esperienza d'uso è incredibile: continuiamo ad aprirla solo per ammirare quelle fantastiche animazioni. (Cerca l'opzione "Prova le nuove Statistiche" quando apri le Statistiche, oppure attivala in qualsiasi momento da Io > Impostazioni app > Funzionalità sperimentali).
-
-Abbiamo anche migliorato la gestione dei contenuti. Troverai una schermata delle Impostazioni articolo completamente riprogettata, che rende la configurazione dei tuoi articoli più fluida e intuitiva, oltre a una migliore integrazione con VideoPress e un'autenticazione ottimizzata per i siti privati nel nostro editor sperimentale.
-
-Infine, abbiamo eliminato diversi bug e reso l'app più affidabile.
-- L'app non si bloccherà più quando apri Articoli o Pagine.  (Sappiamo quanto fosse frustrante.)
-- Abbiamo risolto un crash che si verificava durante il salvataggio di alcune impostazioni dell'editor.
-- Quei fastidiosi popup di errore sulla dashboard? Spariti.
-- Le password per le applicazioni ora funzionano in modo più fluido e il processo di connessione a Jetpack è più affidabile.
+- Gli splendidi grafici delle statistiche sono stati ottimizzati: tocca qualsiasi barra per visualizzare panoramiche immediate, esplora le tendenze settimanali e goditi una modalità scura impeccabile. I tuoi dati meritano questo livello di eleganza.
+- Abbiamo aggiunto le menzioni all'editor sperimentale: tagga i tuoi collaboratori e assisti a una vera e propria magia.
+- Ora la funzionalità Split View di iPad funziona benissimo in modalità ritratto. Di' addio ai layout mediocri.

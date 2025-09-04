@@ -1,9 +1,3 @@
-İstatistikleri tepeden tırnağa yeniden oluşturduk, ve bu gerçekten göz alıcı oldu. Bu yeni deneyim; yağ gibi pürüzsüz 120 fps animasyonları, dokunup keşfedebileceğiniz etkileşimli grafikleri, saatlik veri görüntülemelerini ve tamamen özelleştirilebilir bir panoyu içerir. Her şeyi yeniden düzenleyebilir, verilerinizi dışa aktarabilir ve hatta e-posta kampanyası ölçümleriyle gönderi analizlerinizi görebilirsiniz. Kullanması inanılmaz derecede iyi hissettiriyor, sadece o güzel animasyonları izlemek için bile bunu açıyoruz. (İstatistikleri açtığınızda "Yeni İstatistikleri Dene" öğesini bulun veya Ben > Uygulama Ayarları > Deneysel Özellikler bölümünden istediğiniz zaman etkinleştirin).
-
-İçeriğinizi yönetme şeklinizi de iyileştirdik. Gönderilerinizi daha kolay ve sezgisel hale getiren ve deneysel düzenleyicimizde özel siteler için daha iyi VideoPress entegrasyonu ve iyileştirilmiş kimlik doğrulama sağlayan, tamamen yeniden tasarlanmış bir Gönderi Ayarları ekranı bulacaksınız.
-
-Sonunda birkaç hatayı giderdik ve her şeyi daha güvenilir hale getirdik.
-- Gönderiler veya Sayfalar bölümünüzü açtığınızda uygulama artık kapanmayacak. (Bunun ne kadar sinir bozucu olduğunu biliyoruz).
-- Belirli düzenleyici ayarları kaydedilirken meydana gelen bir çökme sorununu düzelttik.
-- Peki ya panonuzdaki o can sıkıcı hata açılır pencerelerine ne oldu? Gittiler.
-- Uygulama şifreleri artık arka planda daha sorunsuz çalışıyor ve Jetpack bağlantı akışı daha güvenilir.
+- Bu muhteşem İstatistik tabloları artık daha da iyi: Anlık içgörüler için herhangi bir çubuğa dokunun, haftalık trendleri keşfedin ve kusursuz karanlık modun keyfini çıkarın. Verileriniz bu düzeydeki zarafeti hak ediyor.
+- Deneysel düzenleyiciye bahsedilmeler ekledik: Çalışma arkadaşlarınızı etiketleyin ve sihrin gerçekleşmesini izleyin.
+- iPad Bölünmüş Görünüm artık portre modunda iyi davranıyor. Artık garip düzenler yok.
