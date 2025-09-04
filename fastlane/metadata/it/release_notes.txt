@@ -1,9 +1,2 @@
-Abbiamo migliorato la gestione dei contenuti e dei file multimediali. Troverai una schermata delle Impostazioni articolo completamente riprogettata, che rende la configurazione dei tuoi articoli più fluida e intuitiva.
-
-Abbiamo anche potenziato il nostro editor sperimentale con una migliore integrazione di VideoPress e un'autenticazione ottimizzata per i siti privati. I tuoi contenuti multimediali ora verranno visualizzati correttamente, indipendentemente dalle impostazioni sulla privacy del tuo sito.
-
-Infine, abbiamo eliminato diversi bug e reso l'app più affidabile.
-- L'app non si bloccherà più quando apri Articoli o Pagine.  (Sappiamo quanto fosse frustrante.)
-- Abbiamo risolto un crash che si verificava durante il salvataggio di alcune impostazioni dell'editor.
-- Quei fastidiosi popup di errore sulla dashboard? Spariti.
-- Le password per le applicazioni ora funzionano in modo più fluido dietro le quinte.
+- Abbiamo aggiunto le menzioni all'editor sperimentale: tagga i tuoi collaboratori e assisti a una vera e propria magia.
+- Ora la funzionalità Split View di iPad funziona benissimo in modalità ritratto. Di' addio ai layout mediocri.

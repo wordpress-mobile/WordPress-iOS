@@ -1,9 +1,2 @@
-We hebben verbeteringen aangebracht in hoe je je inhoud beheert en met media werkt. Je vindt een volledig opnieuw ontworpen scherm voor Berichtinstellingen dat het configureren van je berichten soepeler en intuïtiever maakt.
-
-We hebben ook onze experimentele editor verbeterd met betere VideoPress integratie en verbeterde authenticatie voor privé sites. Je media wordt nu correct weergegeven, ongeacht de privacy-instellingen van je site.
-
-Ten slotte hebben we verschillende bugs verholpen en dingen betrouwbaarder gemaakt.
-- De app blijft niet meer hangen wanneer je je berichten of pagina's opent. (We weten hoe frustrerend dat was.)
-- We hebben een crash opgelost die optrad bij het opslaan van bepaalde editorinstellingen.
-- Die vervelende fout pop-ups op je dashboard? Weg.
-- Applicatie wachtwoorden werken nu soepeler achter de schermen.
+- We hebben vermeldingen toegevoegd aan de experimentele editor—tag je medewerkers en zie de magie gebeuren.
+- iPad Split View werkt nu prachtig in portretmodus. Geen ongemakkelijke lay-outs meer

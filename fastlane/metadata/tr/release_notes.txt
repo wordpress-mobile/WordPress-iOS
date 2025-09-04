@@ -1,9 +1,2 @@
-İçeriğinizi yönetme ve ortamla çalışma şeklinizi iyileştirdik. Gönderilerinizin yapılandırılmasını daha kolay ve sezgisel hale getiren, tamamen yeniden tasarlanmış bir Gönderi Ayarları ekranı bulacaksınız.
-
-Ayrıca deneysel düzenleyicimizi daha iyi VideoPress entegrasyonu ve özel siteler için iyileştirilmiş kimlik doğrulamayla geliştirdik. Sitenizin gizlilik ayarları ne olursa olsun ortamınız şimdi doğru şekilde görünecektir.
-
-Sonunda birkaç hatayı giderdik ve her şeyi daha güvenilir hale getirdik.
-- Gönderiler veya Sayfalar'ınızı açtığınızda uygulama artık kapanmayacak. (Bunun ne kadar sinir bozucu olduğunu biliyoruz).
-- Belirli düzenleyici ayarları kaydedilirken meydana gelen bir çökme sorununu düzelttik.
-- Peki ya panonuzdaki o can sıkıcı hata açılır pencerelerine ne oldu? Gittiler.
-- Uygulama şifreleri artık arka planda daha sorunsuz çalışıyor.
+- Deneysel düzenleyiciye bahsedilmeler ekledik: Çalışma arkadaşlarınızı etiketleyin ve sihrin gerçekleşmesini izleyin.
+- iPad Bölünmüş Görünüm artık portre modunda iyi davranıyor. Artık garip düzenler yok.

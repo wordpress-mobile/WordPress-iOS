@@ -1,9 +1,2 @@
-Vi har förbättrat hur du hanterar ditt innehåll och arbetar med media. Du hittar en helt omdesignad skärm för inläggsinställningar som gör det smidigare och mer intuitivt att konfigurera dina inlägg.
-
-Vi har också förbättrat vår experimentella redigerare med bättre VideoPress-integration och förbättrad autentisering för privata webbplatser. Dina media kommer att visas korrekt nu, oavsett vilka integritetsinställningar du har på din webbplats.
-
-Slutligen har vi fixat flera buggar och gjort appen mer tillförlitlig.
-– Appen låser sig inte längre när du öppnar dina inlägg eller sidor. (Vi vet hur frustrerande det var.)
-– Vi har åtgärdat en krasch som inträffade när vissa redigeringsinställningar sparades.
-– De där irriterande popupfönstren om fel som dök upp på din adminpanel? Borta.
-Applikationslösenord fungerar nu smidigare bakom kulisserna.
+- Vi har lagt till omnämnanden till den experimentella redigeraren – nämn dina samarbetspartners och beskåda magin.
+- Delad vy för iPad fungerar nu perfekt i stående läge. Inga fler besvärliga layouter.
