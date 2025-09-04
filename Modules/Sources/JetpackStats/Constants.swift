@@ -1,7 +1,7 @@
 import SwiftUI
 import ColorStudio
 
-enum Constants {
+public enum Constants {
     enum Colors {
         static let positiveChangeForeground = Color(UIColor(
             light: UIColor(red: 0.2, green: 0.6, blue: 0.2, alpha: 1.0),
@@ -69,7 +69,7 @@ enum Constants {
     static let cardHorizontalInsetCompact: CGFloat = step1
 
     /// Returns the appropriate horizontal card inset for the given size class
-    static func cardHorizontalInset(for sizeClass: UserInterfaceSizeClass?) -> CGFloat {
+    public static func cardHorizontalInset(for sizeClass: UserInterfaceSizeClass?) -> CGFloat {
         sizeClass == .regular ? cardHorizontalInsetRegular : cardHorizontalInsetCompact
     }
 

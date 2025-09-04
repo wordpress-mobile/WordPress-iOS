@@ -1,5 +1,7 @@
 import UIKit
+import SwiftUI
 import WordPressUI
+import JetpackStats
 
 /// Base class for site stats table view controllers
 ///
@@ -22,17 +24,29 @@ class SiteStatsBaseTableViewController: UIViewController {
     }
 
     func initTableView() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.cellLayoutMarginsFollowReadableWidth = true
+
+        if #available(iOS 26, *) {
+            tableView.preservesSuperviewLayoutMargins = false
+        }
 
         view.addSubview(tableView)
         tableView.pinEdges()
 
         tableView.refreshControl = refreshControl
     }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if #available(iOS 26, *) {
+            let inset = JetpackStats.Constants.cardHorizontalInset(for: UserInterfaceSizeClass(traitCollection.horizontalSizeClass))
+            tableView.directionalLayoutMargins = .init(top: 0, leading: inset, bottom: 0, trailing: inset)
+        }
+    }
 }
 
-// MARK: - Tableview Datasource
+// MARK: - UITableViewDataSource
 
 // These methods aren't actually needed as the tableview is controlled by an instance of ImmuTableViewHandler.
 // However, ImmuTableViewHandler requires that the owner of the tableview is a data source and delegate.
@@ -47,14 +61,14 @@ extension SiteStatsBaseTableViewController: TableViewContainer, UITableViewDataS
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        UITableViewCell()
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 16
+        if #available(iOS 26, *) { 30 } else { 16 }
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0
+        0
     }
 }

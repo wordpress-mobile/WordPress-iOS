@@ -25,7 +25,7 @@ struct TrafficTabView: View {
                     buttonAddChart
                     timeZoneInfo
                 }
-                .padding(.vertical, Constants.step2 + (horizontalSizeClass == .regular ? Constants.step1 : 0))
+                .padding(.vertical, Constants.step2)
                 .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
                 .padding(.top, topPadding)
                 .onReceive(viewModel.scrollToCardSubject) { cardID in
