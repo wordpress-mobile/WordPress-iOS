@@ -139,19 +139,23 @@ struct PostSettingsFeaturedImageRow: View {
     private func makeWithProminentBackground<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
         ZStack {
             // System background that adapts to dark mode
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: cornerRadius)
                 .fill(Color(UIColor.secondarySystemGroupedBackground))
 
             // Very subtle accent tint
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: cornerRadius)
                 .fill(Color.accentColor.opacity(0.02))
 
             content()
 
             // Prominent border
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: cornerRadius)
                 .strokeBorder(Color.accentColor.opacity(0.3), lineWidth: 1)
         }
+    }
+
+    private var cornerRadius: CGFloat {
+        if #available(iOS 26, *) { 26 } else { 12 }
     }
 
     private func makeMediaPicker<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
