@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 import WordPressData
 
 class EditPageViewController: UIViewController {
@@ -57,15 +58,59 @@ class EditPageViewController: UIViewController {
     }
 
     fileprivate func showEditor() {
+        let page = pageToEdit()
         let editorFactory = EditorFactory()
 
-        let editorViewController = editorFactory.instantiateEditor(
-            for: self.pageToEdit(),
-            replaceEditor: { [weak self] (editor, replacement) in
-                self?.replaceEditor(editor: editor, replacement: replacement)
-        })
+        // Check if application password is required for this blog
+        if page.blog.requiresApplicationPasswordForEditor() {
+            showApplicationPasswordRequired(for: page, editorFactory: editorFactory)
+        } else {
+            // Proceed with normal editor instantiation
+            let editorViewController = editorFactory.instantiateEditor(
+                for: page,
+                replaceEditor: { [weak self] (editor, replacement) in
+                    self?.replaceEditor(editor: editor, replacement: replacement)
+            })
 
-        show(editorViewController)
+            show(editorViewController)
+        }
+    }
+
+    private func showApplicationPasswordRequired(for page: Page, editorFactory: EditorFactory) {
+        let feature = NSLocalizedString(
+            "applicationPasswordRequired.feature.blockEditor",
+            value: "Block Editor",
+            comment: "Feature name for the block editor in application password required prompt"
+        )
+
+        let applicationPasswordView = ApplicationPasswordRequiredView(
+            blog: page.blog,
+            localizedFeatureName: feature,
+            presentingViewController: self
+        ) { [weak self] client in
+            // Once authenticated, create and return the editor
+            guard let self else { return EmptyView() }
+
+            let editorViewController = editorFactory.instantiateEditor(
+                for: page,
+                replaceEditor: { [weak self] (editor, replacement) in
+                    self?.replaceEditor(editor: editor, replacement: replacement)
+            })
+
+            // Present the editor within the authenticated context
+            DispatchQueue.main.async {
+                self.show(editorViewController)
+            }
+
+            return EmptyView()
+        }
+
+        let hostingController = UIHostingController(rootView: applicationPasswordView)
+        // Note: Pages use different presentation style than posts
+        hostingController.modalPresentationStyle = .overFullScreen
+        hostingController.modalTransitionStyle = .coverVertical
+
+        present(hostingController, animated: true)
     }
 
     private func show(_ editor: EditorViewController) {
