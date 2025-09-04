@@ -8613,17 +8613,11 @@ Example: Reply to Pamela Nguyen */
 /* Top list option title */
 "jetpackStats.addChart.topListOption" = "Liste des premiers";
 
-/* Archive section for authors */
-"jetpackStats.archiveSections.author" = "Auteurs";
-
 /* Plural item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.plural" = "%1$d éléments";
 
 /* Singular item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.singular" = "%1$d élément";
-
-/* Archive section for other items */
-"jetpackStats.archiveSections.other" = "Autre";
 
 /* Title for the author details screen */
 "jetpackStats.authorDetails.title" = "Auteur";
@@ -8702,9 +8696,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 7 days date range */
 "jetpackStats.calendar.last7Days" = "7 derniers jours";
-
-/* Last 90 days date range */
-"jetpackStats.calendar.last90Days" = "90 derniers jours";
 
 /* Month time period */
 "jetpackStats.calendar.month" = "Mois";
@@ -8849,9 +8840,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Compare with same period last year option */
 "jetpackStats.datePicker.lastYear" = "Année dernière";
-
-/* Menu item for more date period options */
-"jetpackStats.datePicker.morePeriods" = "Plus de périodes…";
 
 /* Compare with preceding period option */
 "jetpackStats.datePicker.precedingPeriod" = "Période précédente";

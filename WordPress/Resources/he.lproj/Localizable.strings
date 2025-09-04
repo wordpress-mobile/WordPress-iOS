@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-15 15:40:47+0000 */
+/* Translation-Revision-Date: 2025-09-02 16:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: he_IL */
@@ -8640,17 +8640,11 @@ Example: Reply to Pamela Nguyen */
 /* Top list option title */
 "jetpackStats.addChart.topListOption" = "רשימת פוסטים";
 
-/* Archive section for authors */
-"jetpackStats.archiveSections.author" = "מחברים";
-
 /* Plural item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.plural" = "⁦%1$d⁩ פריטים";
 
 /* Singular item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.singular" = "פריט ⁦%1$d⁩";
-
-/* Archive section for other items */
-"jetpackStats.archiveSections.other" = "אחר";
 
 /* Title for the author details screen */
 "jetpackStats.authorDetails.title" = "מחבר";
@@ -8718,6 +8712,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 months date range */
 "jetpackStats.calendar.last12Months" = "12 החודשים האחרונים";
 
+/* Last 12 weeks (84 days) date range */
+"jetpackStats.calendar.last12Weeks" = "12 השבועות האחרונים";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "28 הימים האחרונים";
 
@@ -8732,9 +8729,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 7 days date range */
 "jetpackStats.calendar.last7Days" = "שבעת הימים האחרונים";
-
-/* Last 90 days date range */
-"jetpackStats.calendar.last90Days" = "90 הימים האחרונים";
 
 /* Month time period */
 "jetpackStats.calendar.month" = "חודש";
@@ -8899,7 +8893,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.datePicker.lastYear" = "השנה הקודמת";
 
 /* Menu item for more date period options */
-"jetpackStats.datePicker.morePeriods" = "תקופות נוספות...";
+"jetpackStats.datePicker.more" = "עוד…";
 
 /* Compare with preceding period option */
 "jetpackStats.datePicker.precedingPeriod" = "התקופה הקודמת";
@@ -8915,6 +8909,12 @@ Example: Reply to Pamela Nguyen */
 
 /* To date label */
 "jetpackStats.datePicker.to" = "אל";
+
+/* Message explaining how to use the date range control */
+"jetpackStats.dateRangeTip.message" = "ניתן להציג את הימים, השבועות, החודשים, השנים האחרונים או לבחור טווחי תאריכים מותאמים.";
+
+/* Title for stats date range control tip */
+"jetpackStats.dateRangeTip.title" = "לעבור בין תקופות שונות";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "קישורי משנה";
@@ -11921,6 +11921,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "האתרים שלך";
+
+/* Message explaining how to use the date range control */
+"tips.statsDateRange.message" = "ניתן להשתמש בלוח השנה כדי לבחור ימים, שבועות, חודשים, שנים או לבחור טווחי תאריכים מותאמים כדי להציג את הנתונים הסטטיסטיים.";
+
+/* Title for stats date range control tip */
+"tips.statsDateRange.title" = "לעבור בין תקופות שונות";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "עצות מובילות";

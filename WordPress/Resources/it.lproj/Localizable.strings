@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-13 12:54:10+0000 */
+/* Translation-Revision-Date: 2025-09-02 12:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: it */
@@ -8634,17 +8634,11 @@ Example: Reply to Pamela Nguyen */
 /* Top list option title */
 "jetpackStats.addChart.topListOption" = "Classifica";
 
-/* Archive section for authors */
-"jetpackStats.archiveSections.author" = "Autori";
-
 /* Plural item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.plural" = "%1$d articoli";
 
 /* Singular item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.singular" = "%1$d articolo";
-
-/* Archive section for other items */
-"jetpackStats.archiveSections.other" = "Altro";
 
 /* Title for the author details screen */
 "jetpackStats.authorDetails.title" = "Autore";
@@ -8709,6 +8703,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 months date range */
 "jetpackStats.calendar.last12Months" = "Ultimi 12 mesi";
 
+/* Last 12 weeks (84 days) date range */
+"jetpackStats.calendar.last12Weeks" = "Ultime 12 settimane";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Ultimi 28 giorni";
 
@@ -8723,9 +8720,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 7 days date range */
 "jetpackStats.calendar.last7Days" = "Ultimi 7 giorni";
-
-/* Last 90 days date range */
-"jetpackStats.calendar.last90Days" = "Ultimi 90 giorni";
 
 /* Month time period */
 "jetpackStats.calendar.month" = "Mese";
@@ -8887,7 +8881,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.datePicker.lastYear" = "Ultimo anno";
 
 /* Menu item for more date period options */
-"jetpackStats.datePicker.morePeriods" = "Altri periodi…";
+"jetpackStats.datePicker.more" = "Altro…";
 
 /* Compare with preceding period option */
 "jetpackStats.datePicker.precedingPeriod" = "Periodo precedente";
@@ -8903,6 +8897,12 @@ Example: Reply to Pamela Nguyen */
 
 /* To date label */
 "jetpackStats.datePicker.to" = "A";
+
+/* Message explaining how to use the date range control */
+"jetpackStats.dateRangeTip.message" = "Puoi visualizzare i giorni, le settimane, i mesi, gli anni più recenti o selezionare intervalli di date personalizzati.";
+
+/* Title for stats date range control tip */
+"jetpackStats.dateRangeTip.title" = "Viaggia nel tempo";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Sottolink";
@@ -11042,6 +11042,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Sidebar item on iPad */
 "sidebar.help" = "Aiuto e supporto";
 
+/* Sidebar item on iPad */
+"sidebar.me" = "Io";
+
 /* Sidebar section title on iPad */
 "sidebar.moreSectionTitle" = "Leggi tutto";
 
@@ -11888,6 +11891,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "I tuoi siti";
+
+/* Message explaining how to use the date range control */
+"tips.statsDateRange.message" = "Puoi usare il calendario per selezionare giorni, settimane, mesi, anni o scegliere intervalli di date personalizzati per la visualizzazione delle statistiche.";
+
+/* Title for stats date range control tip */
+"tips.statsDateRange.title" = "Viaggia nel tempo";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "Suggerimenti principali";

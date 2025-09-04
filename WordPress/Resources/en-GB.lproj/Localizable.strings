@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-06-09 13:26:28+0000 */
+/* Translation-Revision-Date: 2025-08-25 15:05:59+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: en_GB */
@@ -1616,6 +1616,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
 "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem.";
+
+/* Content show when the dashboard fails to load */
+"Couldn't load data. Please refresh again later." = "Couldn't load data. Please refresh again later.";
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Couldn't load tags. Tap to retry.";
@@ -7179,6 +7182,61 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title for the list of third-party software we use */
 "acknowledgements.title" = "Acknowledgements";
 
+/* Placeholder text shown when the activity actor's display name is empty */
+"activity.unknownUser" = "Unknown User";
+
+/* Label for the backup checkpoint date */
+"activityDetail.checkpointDate" = "Checkpoint Date";
+
+/* Button title for downloading a backup */
+"activityDetail.download.button" = "Download";
+
+/* Button title for restoring a backup */
+"activityDetail.restore.button" = "Restore";
+
+/* Section title for restore site actions */
+"activityDetail.section.restoreSite" = "Restore Site";
+
+/* Section title for user information */
+"activityDetail.section.user" = "User";
+
+/* Title for the activity detail view */
+"activityDetail.title" = "Event";
+
+/* Deselect all button */
+"activityLogs.activityTypes.deselectAll" = "Deselect All";
+
+/* Empty state message when no activity types are available */
+"activityLogs.activityTypes.empty" = "No activity types available";
+
+/* Select all button */
+"activityLogs.activityTypes.selectAll" = "Select All";
+
+/* Activity type selection screen title */
+"activityLogs.activityTypes.title" = "Activity Types";
+
+/* Empty state message for activity logs */
+"activityLogs.empty" = "No Activity";
+
+/* Activity types filter label */
+"activityLogs.filter.activityTypes" = "Activity Types";
+
+/* End date filter label */
+"activityLogs.filter.endDate" = "End Date";
+
+/* Reset filters button label */
+"activityLogs.filter.reset" = "Reset Filters";
+
+/* Start date filter label */
+"activityLogs.filter.startDate" = "Start Date";
+
+/* Notice shown to free plan users about limited activity log events */
+"activityLogs.freePlan.notice" = "Since you're on a free plan, you'll see limited events in your Activity Log.";
+
+/* Title for activity logs screen
+   Title for the activity logs screen */
+"activityLogs.title" = "Activity";
+
 /* Screen title */
 "addCategory.navigationTitle" = "Add Category";
 
@@ -7269,17 +7327,35 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The list item of experimental features that users can choose to enable */
 "application-settings.experimental-features" = "Experimental features";
 
+/* Complete information about application passwords with security benefits, creation process, management instructions, and revocation warning */
+"applicationPassword.info.content" = "Application passwords are a more secure way for this app to access your site content without using your actual account password.\n\nWhen you add sites to the app, application passwords will be created automatically as needed.\n\nYou can view and manage these passwords in your user profile within your WordPress site's admin panel.\n\nPlease note that revoking application passwords used by the app will terminate the app's access to your site. Be cautious when revoking application passwords created by the app.";
+
+/* Button to dismiss the application password information view */
+"applicationPassword.info.gotIt.button" = "Got it";
+
+/* Title for the application passwords information view */
+"applicationPassword.info.title" = "About Application Passwords";
+
 /* Title of row for displaying an application password's creation date */
 "applicationPassword.item.creationDate" = "Creation Date";
 
+/* Footer message indicating that this application password is currently active and being used by the app */
+"applicationPassword.item.currentlyInUse" = "This application password is currently being used by the app.";
+
 /* Title of row for displaying an application password's last used date */
 "applicationPassword.item.lastUsed" = "Last Used";
+
+/* Title of row for displaying an application password's last used IP address */
+"applicationPassword.item.lastUsedIp" = "Last IP Address";
 
 /* Title of row for displaying an application password name */
 "applicationPassword.item.name" = "Name";
 
 /* Title of section for displaying application password details */
 "applicationPassword.item.section.security" = "Security";
+
+/* String format of creation date of an application password. There is one argument: the creation date relative to now (i.e. 5 days ago). */
+"applicationPassword.list.item.created-date-format" = "Created %@";
 
 /* String format of last used time of an application password. There is one argument: the last used time relative to now (i.e. 5 days ago). */
 "applicationPassword.list.item.last-used-format" = "Last used %@";
@@ -7293,8 +7369,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when the current site's url cannot be found */
 "applicationPasswordMigration.error.siteUrlNotFound" = "Cannot find the current site's URL";
 
+/* Error message shown when the site doesn't support Application Passwords feature */
+"applicationPasswordMigration.error.unsupported" = "This site does not support Application Passwords.";
+
 /* Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name */
 "applicationPasswordMigration.error.usernameMismatch" = "You need to sign in with user \"%@\"";
+
+/* Error message when the site's REST API is not accessible for application password creation */
+"applicationPasswordRepository.error.restApiInaccessible" = "Unable to access the site's REST API";
+
+/* Error message when application password creation fails for unknown reasons */
+"applicationPasswordRepository.error.unknown" = "Unable to create application password";
+
+/* Error message when the username cannot be found for application password creation */
+"applicationPasswordRepository.error.usernameNotFound" = "Unable to find username for the site";
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Application passwords are a more secure way to connect to your self-hosted site, and enable support for features like %@.";
@@ -7338,6 +7426,34 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* User action to dismiss media options. */
 "aztecPost.mediaAttachmentActionSheet.dismiss" = "Dismiss";
+
+/* Download button title */
+"backup.download.header.download" = "Download";
+
+/* Shows when the download link will expire. %@ is the relative time (e.g., 'in 2 hours') */
+"backup.download.header.expiresIn" = "Expires %@";
+
+/* Message displayed when a backup has finished. %@ is the date and time. */
+"backup.download.header.message" = "Your backup from %@ is ready";
+
+/* Title shown when a backup is ready to download */
+"backup.download.header.title" = "Backup ready to download";
+
+/* Message shown when a downloadable backup is in progress */
+"backup.inProgress.message" = "Preparing your site backup for download";
+
+/* Title shown when a downloadable backup is being created */
+"backup.inProgress.title" = "Creating downloadable backup";
+
+/* Text displayed in the view when there aren't any Backups to display */
+"backups.empty.subtitle" = "Your first backup will appear here within 24 hours and you will receive a notification once the backup has been completed";
+
+/* Title for the view when there aren't any Backups to display */
+"backups.empty.title" = "Your first backup will be ready soon";
+
+/* Title for backups screen
+   Title for the backups screen */
+"backups.title" = "Backups";
 
 /* Button title for the button that shows the Blaze flow when tapped. */
 "blaze.campaigns.create.button.title" = "Create";
@@ -7902,6 +8018,27 @@ Example: Reply to Pamela Nguyen */
 /* No comment provided by engineer. */
 "double-tap to change unit" = "double tap to change unit";
 
+/* Message for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.message" = "Are you sure you want to delete this tag?";
+
+/* Title for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.title" = "Delete Tag";
+
+/* Placeholder text for tag description field */
+"edit.tag.description.placeholder" = "Add a description...";
+
+/* Placeholder text for tag name field */
+"edit.tag.name.placeholder" = "Tag name";
+
+/* Navigation title for new tag creation */
+"edit.tag.new.title" = "New Tag";
+
+/* Section header for tag description in edit tag view */
+"edit.tag.section.description" = "Description";
+
+/* Section header for tag name in edit tag view */
+"edit.tag.section.tag" = "Tag";
+
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "eg. 1122334455";
 
@@ -8097,6 +8234,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Cancel dialog confirmation title */
+"inviteSubscribers.cancelConfirmationTitle" = "Are you sure you want to discard the new subscribers?";
+
+/* Cancel dialog confirmation button */
+"inviteSubscribers.discardChanges" = "Discard Changes";
+
+/* A footer view (small text). The button title is inserted by the app via a parameter. */
+"inviteSubscribers.disclosure" = "By clicking \"%@,\" you represent that you've obtained the appropriate consent to email each person. Spam complaints or high bounce rate from your subscribers may lead to action against your account.";
+
+/* Field title (not shown, accessibility) */
+"inviteSubscribers.fieldTitleEmail" = "Email";
+
+/* Import success snackbar title */
+"inviteSubscribers.importSuccessMessage" = "It make take a few minutes before the import completes";
+
+/* Import success snackbar title */
+"inviteSubscribers.importSuccessTitle" = "Import Started";
+
+/* Screen title */
+"inviteSubscribers.title" = "Add Subscribers";
 
 /* Footer text for Invite Links section of the Invite People screen. */
 "invite_people_invite_link_footer" = "Use this link to onboard your team members without having to invite them one by one. Anybody visiting this URL will be able to sign up to your organisation, even if they received the link from somebody else, so make sure that you share it with trusted people.";
@@ -8391,6 +8549,546 @@ Example: Reply to Pamela Nguyen */
 
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "You need to sign in with %@ to use Stats and Notifications.";
+
+/* Accessibility label for add card button */
+"jetpackStats.accessibility.addCardButton" = "Add new stats card";
+
+/* Accessibility label for back navigation */
+"jetpackStats.accessibility.backToStats" = "Back to stats";
+
+/* Card title accessibility label. %1$@ is the card title. */
+"jetpackStats.accessibility.cardTitle" = "%1$@ card";
+
+/* Accessibility label for chart container */
+"jetpackStats.accessibility.chartContainer" = "Stats chart";
+
+/* Chart trend accessibility label. %1$@ is metric name, %2$@ is trend description. */
+"jetpackStats.accessibility.chartTrend" = "%1$@ %2$@";
+
+/* Chart data point accessibility label. %1$@ is metric name, %2$@ is value, %3$@ is date. */
+"jetpackStats.accessibility.chartValue" = "%1$@: %2$@ on %3$@";
+
+/* Selected date range accessibility label. %1$@ is the range. */
+"jetpackStats.accessibility.dateRangeSelected" = "Date range: %1$@";
+
+/* Accessibility label for error state */
+"jetpackStats.accessibility.errorLoadingStats" = "Error loading statistics";
+
+/* Accessibility label for loading state */
+"jetpackStats.accessibility.loadingStats" = "Loading statistics";
+
+/* Accessibility label for more options menu */
+"jetpackStats.accessibility.moreOptions" = "More options";
+
+/* Accessibility hint for next period navigation */
+"jetpackStats.accessibility.navigateToNextDateRange" = "Navigate to next date range";
+
+/* Accessibility hint for previous period navigation */
+"jetpackStats.accessibility.navigateToPreviousDateRange" = "Navigate to previous date range";
+
+/* Accessibility label for next period navigation button */
+"jetpackStats.accessibility.nextPeriod" = "Next period";
+
+/* Accessibility label for empty data state */
+"jetpackStats.accessibility.noDataAvailable" = "No data available for this period";
+
+/* Accessibility label for opening link in browser */
+"jetpackStats.accessibility.openInBrowser" = "Open in browser";
+
+/* Accessibility label for previous period navigation button */
+"jetpackStats.accessibility.previousPeriod" = "Previous period";
+
+/* Accessibility label for realtime visitor count */
+"jetpackStats.accessibility.realtimeVisitorCount" = "Current visitors online";
+
+/* Accessibility hint for retry action */
+"jetpackStats.accessibility.retryLoadingStats" = "Double-tap to retry loading statistics";
+
+/* Accessibility hint for date range selection */
+"jetpackStats.accessibility.selectDateRange" = "Select date range";
+
+/* Accessibility hint for tab selection. %1$@ is the tab name. */
+"jetpackStats.accessibility.selectTab" = "Select %1$@ tab";
+
+/* Accessibility announcement when stats finish loading */
+"jetpackStats.accessibility.statsLoaded" = "Statistics loaded";
+
+/* Accessibility label for stats tab bar */
+"jetpackStats.accessibility.statsTabBar" = "Stats navigation tabs";
+
+/* Accessibility announcement when a tab is selected. %1$@ is the tab name. */
+"jetpackStats.accessibility.tabSelected" = "%1$@ tab selected";
+
+/* Top list item accessibility label. %1$d is rank, %2$@ is title, %3$@ is value. */
+"jetpackStats.accessibility.topListItem" = "Rank %1$d: %2$@, %3$@";
+
+/* Accessibility hint for viewing chart data */
+"jetpackStats.accessibility.viewChartData" = "View detailed chart data";
+
+/* Accessibility hint for items that can show more details */
+"jetpackStats.accessibility.viewMoreDetails" = "Double-tap to view more details";
+
+/* Singular visitor count. %1$d is the number. */
+"jetpackStats.accessibility.visitorNow" = "%1$d visitor online now";
+
+/* Plural visitors count. %1$d is the number. */
+"jetpackStats.accessibility.visitorsNow" = "%1$d visitors online now";
+
+/* Chart option description */
+"jetpackStats.addChart.chartDescription" = "Visualise trends over time";
+
+/* Chart option title */
+"jetpackStats.addChart.chartOption" = "Chart";
+
+/* Title for data type selection */
+"jetpackStats.addChart.selectDataType" = "Select Data Type";
+
+/* Title for metric selection */
+"jetpackStats.addChart.selectMetric" = "Select Metrics";
+
+/* Top list option description */
+"jetpackStats.addChart.topListDescription" = "See your top performing content";
+
+/* Top list option title */
+"jetpackStats.addChart.topListOption" = "Top List";
+
+/* Plural item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.plural" = "%1$d items";
+
+/* Singular item count for archive sections. %1$d is the number. */
+"jetpackStats.archiveSections.itemCount.singular" = "%1$d item";
+
+/* Title for the author details screen */
+"jetpackStats.authorDetails.title" = "Author";
+
+/* Button to add a new chart */
+"jetpackStats.button.addCard" = "Add Card";
+
+/* Apply button */
+"jetpackStats.button.apply" = "Apply";
+
+/* Cancel button */
+"jetpackStats.button.cancel" = "Cancel";
+
+/* Button to customize a chart or widget */
+"jetpackStats.button.customize" = "Edit Card";
+
+/* Button to delete a chart or widget */
+"jetpackStats.button.deleteWidget" = "Delete Card";
+
+/* Done button */
+"jetpackStats.button.done" = "Done";
+
+/* Button to download data as CSV file */
+"jetpackStats.button.downloadCSV" = "Download CSV";
+
+/* Learn more about stats button */
+"jetpackStats.button.learnMore" = "Learn More";
+
+/* Button to move a card */
+"jetpackStats.button.moveCard" = "Move Card";
+
+/* Button to move card down */
+"jetpackStats.button.moveDown" = "Move Down";
+
+/* Button to move card to the bottom */
+"jetpackStats.button.moveToBottom" = "Move to Bottom";
+
+/* Button to move card to the top */
+"jetpackStats.button.moveToTop" = "Move to Top";
+
+/* Button to move card up */
+"jetpackStats.button.moveUp" = "Move Up";
+
+/* OK button */
+"jetpackStats.button.ok" = "OK";
+
+/* Button to reset chart settings to default */
+"jetpackStats.button.resetSettings" = "Reset Settings";
+
+/* Share chart menu item */
+"jetpackStats.button.share" = "Share";
+
+/* Button title */
+"jetpackStats.button.showAll" = "Show All";
+
+/* Button to collapse and show fewer items */
+"jetpackStats.button.showLess" = "Show Less";
+
+/* Button to expand and show more items */
+"jetpackStats.button.showMore" = "Show More";
+
+/* Last 10 years date range */
+"jetpackStats.calendar.last10Years" = "Last 10 Years";
+
+/* Last 12 months date range */
+"jetpackStats.calendar.last12Months" = "Last 12 Months";
+
+/* Last 28 days date range */
+"jetpackStats.calendar.last28Days" = "Last 28 Days";
+
+/* Last 30 days date range */
+"jetpackStats.calendar.last30Days" = "Last 30 Days";
+
+/* Last 3 years date range */
+"jetpackStats.calendar.last3Years" = "Last 3 Years";
+
+/* Last 6 months date range */
+"jetpackStats.calendar.last6Months" = "Last 6 Months";
+
+/* Last 7 days date range */
+"jetpackStats.calendar.last7Days" = "Last 7 Days";
+
+/* Month time period */
+"jetpackStats.calendar.month" = "Month";
+
+/* Quarter time period */
+"jetpackStats.calendar.quarter" = "Quarter";
+
+/* This month date range */
+"jetpackStats.calendar.thisMonth" = "This Month";
+
+/* This quarter date range */
+"jetpackStats.calendar.thisQuarter" = "This Quarter";
+
+/* This week date range */
+"jetpackStats.calendar.thisWeek" = "This Week";
+
+/* This year date range */
+"jetpackStats.calendar.thisYear" = "This Year";
+
+/* Today date range */
+"jetpackStats.calendar.today" = "Today";
+
+/* Week time period */
+"jetpackStats.calendar.week" = "Week";
+
+/* Year time period */
+"jetpackStats.calendar.year" = "Year";
+
+/* Bar chart type */
+"jetpackStats.chart.barChart" = "Bars";
+
+/* Shown for empty states */
+"jetpackStats.chart.dataEmpty" = "No data for period";
+
+/* Genertic error message */
+"jetpackStats.chart.generitcError" = "Something went wrong";
+
+/* Shown for metrics that don't support hourly data */
+"jetpackStats.chart.hourlyDataNotAvailable" = "Hourly data not available";
+
+/* Shown when current period data might be incomplete */
+"jetpackStats.chart.incompleteData" = "Might show incomplete data";
+
+/* Line chart type */
+"jetpackStats.chart.lineChart" = "Lines";
+
+/* Show chart data menu item */
+"jetpackStats.chart.showData" = "Show Data";
+
+/* Label for change value */
+"jetpackStats.chartData.change" = "Change";
+
+/* Column header for date */
+"jetpackStats.chartData.date" = "DATE";
+
+/* Section title for detailed data */
+"jetpackStats.chartData.detailedData" = "Detailed Data";
+
+/* Label for previous value */
+"jetpackStats.chartData.previous" = "Previous";
+
+/* Title for chart data screen */
+"jetpackStats.chartData.title" = "Chart Data";
+
+/* Label for total value */
+"jetpackStats.chartData.total" = "Total";
+
+/* Column header for value */
+"jetpackStats.chartData.value" = "VALUE";
+
+/* Context menu action to copy country name */
+"jetpackStats.contextMenu.copyCountryName" = "Copy Country Name";
+
+/* Context menu action to copy domain */
+"jetpackStats.contextMenu.copyDomain" = "Copy Domain";
+
+/* Context menu action to copy file name */
+"jetpackStats.contextMenu.copyFileName" = "Copy File Name";
+
+/* Context menu action to copy file path */
+"jetpackStats.contextMenu.copyFilePath" = "Copy File Path";
+
+/* Context menu action to copy name */
+"jetpackStats.contextMenu.copyName" = "Copy Name";
+
+/* Context menu action to copy search term */
+"jetpackStats.contextMenu.copySearchTerm" = "Copy Search Term";
+
+/* Context menu action to copy title */
+"jetpackStats.contextMenu.copyTitle" = "Copy Title";
+
+/* Context menu action to copy URL */
+"jetpackStats.contextMenu.copyURL" = "Copy URL";
+
+/* Context menu action to copy video URL */
+"jetpackStats.contextMenu.copyVideoURL" = "Copy Video URL";
+
+/* Context menu action to open link in browser */
+"jetpackStats.contextMenu.openInBrowser" = "Open in Browser";
+
+/* Context menu action to search term in Google */
+"jetpackStats.contextMenu.searchInGoogle" = "Search in Google";
+
+/* Message shown when a country has no views */
+"jetpackStats.countries.noViews" = "No views";
+
+/* CSV header for country column */
+"jetpackStats.csv.country" = "Country";
+
+/* CSV header for country code column */
+"jetpackStats.csv.countryCode" = "Country Code";
+
+/* CSV header for date column */
+"jetpackStats.csv.date" = "Date";
+
+/* CSV header for domain column */
+"jetpackStats.csv.domain" = "Domain";
+
+/* CSV header for file name column */
+"jetpackStats.csv.fileName" = "File Name";
+
+/* CSV header for file path column */
+"jetpackStats.csv.filePath" = "File Path";
+
+/* CSV header for name column */
+"jetpackStats.csv.name" = "Name";
+
+/* CSV header for role column */
+"jetpackStats.csv.role" = "Role";
+
+/* CSV header for search term column */
+"jetpackStats.csv.searchTerm" = "Search Term";
+
+/* CSV header for section column */
+"jetpackStats.csv.section" = "Section";
+
+/* CSV header for title column */
+"jetpackStats.csv.title" = "Title";
+
+/* CSV header for type column */
+"jetpackStats.csv.type" = "Type";
+
+/* CSV header for URL column */
+"jetpackStats.csv.url" = "URL";
+
+/* CSV header for video URL column */
+"jetpackStats.csv.videoURL" = "Video URL";
+
+/* Title for comparison menu */
+"jetpackStats.datePicker.compareWith" = "Compare With…";
+
+/* Title for custom date range picker */
+"jetpackStats.datePicker.customRange" = "Custom Range";
+
+/* Menu item for custom date range picker */
+"jetpackStats.datePicker.customRangeMenu" = "Custom Range…";
+
+/* From date label */
+"jetpackStats.datePicker.from" = "From";
+
+/* Compare with same period last year option */
+"jetpackStats.datePicker.lastYear" = "Last Year";
+
+/* Compare with preceding period option */
+"jetpackStats.datePicker.precedingPeriod" = "Preceding Period";
+
+/* Label for quick period selection */
+"jetpackStats.datePicker.quickPeriodsForStartDate" = "Quick periods for start date";
+
+/* Site time zone header */
+"jetpackStats.datePicker.siteTimeZone" = "Site Time Zone";
+
+/* Explanation of how stats are reported in site time zone */
+"jetpackStats.datePicker.siteTimeZoneDescription" = "Stats are reported and shown in your site's time zone. If a visitor comes to your site on Tuesday in their time zone, but it's Monday in your site time zone, the visit is recorded as Monday.";
+
+/* To date label */
+"jetpackStats.datePicker.to" = "To";
+
+/* Section title for the list of child links */
+"jetpackStats.externalLinkDetails.childLinks" = "Sub-links";
+
+/* Button to open the external link in browser */
+"jetpackStats.externalLinkDetails.openLink" = "Open Link";
+
+/* Title for the external link details screen */
+"jetpackStats.externalLinkDetails.title" = "External Link";
+
+/* Label for daily average in tooltip */
+"jetpackStats.postDetails.dailyAverage" = "Daily Average";
+
+/* Title for email metrics card */
+"jetpackStats.postDetails.emailMetrics" = "Emails";
+
+/* Must be short!Label for emails sent metric */
+"jetpackStats.postDetails.emailsSent" = "Emails Sent";
+
+/* Legend label for lower activity */
+"jetpackStats.postDetails.less" = "Less";
+
+/* Singular like count. %1$d is the number. */
+"jetpackStats.postDetails.like" = "%1$d like";
+
+/* Plural likes count. %1$d is the number. */
+"jetpackStats.postDetails.likes" = "%1$d likes";
+
+/* Title for monthly activity heatmap */
+"jetpackStats.postDetails.monthsAndYears" = "Recent Months";
+
+/* Legend label for higher activity */
+"jetpackStats.postDetails.more" = "More";
+
+/* Label */
+"jetpackStats.postDetails.noLikesYet" = "No likes yet";
+
+/* Must be short! Label for email open rate metric */
+"jetpackStats.postDetails.openRate" = "Open Rate";
+
+/* Shows when the post was published. %1$@ is the formatted date. */
+"jetpackStats.postDetails.published" = "Published %1$@";
+
+/* Title for recent weeks activity heatmap */
+"jetpackStats.postDetails.recentWeeks" = "Recent Weeks";
+
+/* Navigation title */
+"jetpackStats.postDetails.title" = "Post Stats";
+
+/* Must be short!Label for total email opens metric */
+"jetpackStats.postDetails.totalOpens" = "Total Opens";
+
+/* Must be short!Label for unique email opens metric */
+"jetpackStats.postDetails.uniqueOpens" = "Unique Opens";
+
+/* Label for week-over-week comparison in tooltip */
+"jetpackStats.postDetails.weekOverWeek" = "Week over Week";
+
+/* Label for weekly total in tooltip */
+"jetpackStats.postDetails.weekTotal" = "Week Total";
+
+/* Title for weekly activity heatmap */
+"jetpackStats.postDetails.weeklyActivity" = "Weekly Activity";
+
+/* Title for error alert when marking referrer as spam fails */
+"jetpackStats.referrerDetails.errorAlertTitle" = "Error";
+
+/* Button to mark a referrer as spam */
+"jetpackStats.referrerDetails.markAsSpam" = "Mark as Spam";
+
+/* Error message when marking a referrer as spam fails */
+"jetpackStats.referrerDetails.markAsSpamError" = "Failed to mark as spam";
+
+/* Label shown when a referrer is already marked as spam */
+"jetpackStats.referrerDetails.markedAsSpam" = "Marked as Spam";
+
+/* Section title for the list of referral sources */
+"jetpackStats.referrerDetails.referralSources" = "Referral Sources";
+
+/* Title for the referrer details screen */
+"jetpackStats.referrerDetails.title" = "Referrer";
+
+/* Archive data type */
+"jetpackStats.siteDataTypes.archive" = "Archive";
+
+/* Authors data type */
+"jetpackStats.siteDataTypes.authors" = "Authors";
+
+/* External links data type */
+"jetpackStats.siteDataTypes.externalLinks" = "External Links";
+
+/* File downloads data type */
+"jetpackStats.siteDataTypes.fileDownloads" = "File Downloads";
+
+/* Locations data type */
+"jetpackStats.siteDataTypes.locations" = "Locations";
+
+/* Posts and pages data type */
+"jetpackStats.siteDataTypes.postsAndPages" = "Posts & Pages";
+
+/* Referrers data type */
+"jetpackStats.siteDataTypes.referrers" = "Referrers";
+
+/* Search terms data type */
+"jetpackStats.siteDataTypes.searchTerms" = "Search Terms";
+
+/* Videos data type */
+"jetpackStats.siteDataTypes.videos" = "Videos";
+
+/* Bounce rate metric */
+"jetpackStats.siteMetrics.bounceRate" = "Bounce Rate";
+
+/* Site comments metric */
+"jetpackStats.siteMetrics.comments" = "Comments";
+
+/* Download count */
+"jetpackStats.siteMetrics.downloads" = "Downloads";
+
+/* Site likes metric */
+"jetpackStats.siteMetrics.likes" = "Likes";
+
+/* Site posts metric */
+"jetpackStats.siteMetrics.posts" = "Posts";
+
+/* Time on site metric */
+"jetpackStats.siteMetrics.timeOnSite" = "Time on Site";
+
+/* Site views metric */
+"jetpackStats.siteMetrics.views" = "Views";
+
+/* Site visitors metric */
+"jetpackStats.siteMetrics.visitors" = "Visitors";
+
+/* Current active visitors metric */
+"jetpackStats.siteMetrics.visitorsNow" = "Visitors Now";
+
+/* Insights tab */
+"jetpackStats.tabs.insights" = "Insights";
+
+/* Realtime tab */
+"jetpackStats.tabs.realtime" = "Realtime";
+
+/* Subscribers tab */
+"jetpackStats.tabs.subscribers" = "Subscribers";
+
+/* Traffic tab */
+"jetpackStats.tabs.traffic" = "Traffic";
+
+/* Stats screen title */
+"jetpackStats.title" = "Stats";
+
+/* Title for items with highest bounce rate */
+"jetpackStats.topList.highestBounceRate" = "Highest Bounce Rate";
+
+/* Title for items with longest time on site */
+"jetpackStats.topList.longestTimeOnSite" = "Longest Time on Site";
+
+/* Title for most commented items */
+"jetpackStats.topList.mostCommented" = "Most Commented";
+
+/* Title for chart */
+"jetpackStats.topList.mostDownloads" = "Most Downloaded";
+
+/* Title for most liked items */
+"jetpackStats.topList.mostLiked" = "Most Liked";
+
+/* Title for most posts (per author) */
+"jetpackStats.topList.mostPosts" = "Most Posts";
+
+/* Title for most viewed items */
+"jetpackStats.topList.mostViewed" = "Most Viewed";
+
+/* Title for items with most visitors */
+"jetpackStats.topList.mostVisitors" = "Most Visitors";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Learn more";
@@ -8731,6 +9429,12 @@ Example: Reply to Pamela Nguyen */
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Reclaim your Google Domains";
 
+/* Title for the menu item */
+"mySite.menu.subscribers" = "Subscribers";
+
+/* Title for the menu item */
+"mySite.menu.users" = "Users";
+
 /* Button title. Displays the account and setting screen. */
 "mySite.noSites.button.accountAndSettings" = "Account and settings";
 
@@ -8890,6 +9594,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Pages by me";
 
+/* Title for the parent page picker screen */
+"parentPagePicker.title" = "Parent Page";
+
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "Parent Page";
 
@@ -9043,6 +9750,9 @@ Example: Reply to Pamela Nguyen */
 /* Button label to view plugin on WordPress.org */
 "pluginDetails.viewOnWordPressOrg.button" = "View on WordPress.org";
 
+/* Title for the post author selection screen */
+"postAuthorPicker.title" = "Author";
+
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Discard changes";
 
@@ -9117,6 +9827,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Saving draft…";
+
+/* Empty state description when no post formats are available */
+"postFormatPicker.emptyState.description" = "Post formats haven't been configured for this site.";
+
+/* Empty state title when no post formats are available */
+"postFormatPicker.emptyState.title" = "No Post Formats Available";
+
+/* Navigation bar title for the Post Format picker */
+"postFormatPicker.navigationTitle" = "Post Format";
+
+/* Error message when post formats refresh fails */
+"postFormatPicker.refreshErrorMessage" = "Failed to refresh post formats";
 
 /* Button title */
 "postFromAudio.beginRecording" = "Begin recording";
@@ -9262,8 +9984,42 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Untitled";
 
+/* Label for the author field in Post Settings */
+"postSettings.author.label" = "Author";
+
+/* Label for the add category button field. Should be the same as WP core. */
+"postSettings.categories.addCategoryButton" = "Add Category";
+
+/* Label for the categories field. Should be the same as WP core.
+   Label for the category field. Should be the same as WP core. */
+"postSettings.categories.label" = "Categories";
+
+/* Button to confirm discarding changes */
+"postSettings.discardChanges.button" = "Discard Changes";
+
+/* Message for the discard changes confirmation dialog */
+"postSettings.discardChanges.message" = "You have unsaved changes. Are you sure you want to discard them?";
+
+/* Title for the discard changes confirmation dialog */
+"postSettings.discardChanges.title" = "Discard Changes?";
+
+/* Character count for excerpt. %1$d is the number of characters. */
+"postSettings.excerpt.characterCount" = "%1$d characters";
+
+/* Section header for Excerpt in Post Settings */
+"postSettings.excerpt.header" = "Excerpt";
+
+/* Placeholder text for the excerpt field in Post Settings */
+"postSettings.excerpt.placeholder" = "Write a brief summary of your post to appear on blog index, archives, and search results.";
+
+/* Word count for excerpt. %1$d is the number of words. */
+"postSettings.excerpt.wordCount" = "%1$d words";
+
 /* Cancel upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.cancelUpload" = "Cancel Upload";
+
+/* Section header for Featured Image in Post Settings */
+"postSettings.featuredImage.header" = "Featured Image";
 
 /* Replace image upload button in Post Settings / Featured Image cell */
 "postSettings.featuredImage.replaceImage" = "Replace";
@@ -9276,6 +10032,81 @@ Example: Reply to Pamela Nguyen */
 
 /* Post Settings */
 "postSettings.featuredImage.uploading" = "Uploading…";
+
+/* Label for the last edited field in Post Settings */
+"postSettings.lastEdited.label" = "Last Edited";
+
+/* Section header for Info in Post Settings */
+"postSettings.metadata.header" = "Info";
+
+/* Section header for More Options in Post Settings. Should use the same translation as core WP. */
+"postSettings.moreOptions.header" = "More Options";
+
+/* The title of the Page Settings screen. */
+"postSettings.navigationTitle.page" = "Page Settings";
+
+/* The title of the Post Settings screen. */
+"postSettings.navigationTitle.post" = "Post Settings";
+
+/* Label for the Organization area (categories, keywords, ...) in post settings. */
+"postSettings.organization.header" = "Organisation";
+
+/* Message when trying to save a deleted page */
+"postSettings.pageDeleted.message" = "This page has been deleted and can no longer be saved.";
+
+/* Title of alert when trying to save a deleted page */
+"postSettings.pageDeleted.title" = "Page Deleted";
+
+/* Label for the parent page field */
+"postSettings.parentPage.label" = "Parent Page";
+
+/* Cell title for the Top Level option case */
+"postSettings.parentPage.topLevel" = "Top level";
+
+/* Label for the pending review toggle in Post Settings */
+"postSettings.pendingReview.label" = "Pending Review";
+
+/* Label for the permalink field in Post Settings */
+"postSettings.permalink.label" = "Permalink";
+
+/* Message when trying to save a deleted post */
+"postSettings.postDeleted.message" = "This post has been deleted and can no longer be saved.";
+
+/* Title of alert when trying to save a deleted post */
+"postSettings.postDeleted.title" = "Post Deleted";
+
+/* Label for the post format field. Should be the same as WP core. */
+"postSettings.postFormat.label" = "Post Format";
+
+/* Label for the post ID field in Post Settings */
+"postSettings.postID.label" = "ID";
+
+/* Label for the publish date field in Post Settings */
+"postSettings.publishDate.label" = "Date";
+
+/* Section header for General settings in Post Settings */
+"postSettings.section.general" = "General";
+
+/* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
+"postSettings.slug.hint" = "The slug is the URL-friendly version of the post title.";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.label" = "Slug";
+
+/* Placeholder for the slug field */
+"postSettings.slug.placeholder" = "Enter slug";
+
+/* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
+"postSettings.stickyPost.label" = "Sticky";
+
+/* Label for the add tags button field. Should be the same as WP core. */
+"postSettings.tags.addTagsButton" = "Add Tags";
+
+/* Label for the tags field. Should be the same as WP core. */
+"postSettings.tags.label" = "Tags";
+
+/* Label for the visibility field in Post Settings */
+"postSettings.visibility.label" = "Visibility";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Cancel";
@@ -9448,6 +10279,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Visibility";
+
+/* An error message displayed when attempting to update their profile while the user's email address is not verified. */
+"profile.update.email.verification.required" = "To update your profile, you need to verify your email address first.";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "prologue.title.reader" = "Subscribe to your favourite sites and discover new blogs.";
@@ -9933,6 +10767,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "reader.sidebar.section.favorites.title" = "Favourites";
 
 /* Reader sidebar section title */
+"reader.sidebar.section.library.title" = "Library";
+
+/* Reader sidebar section title */
 "reader.sidebar.section.lists.title" = "Lists";
 
 /* Reader sidebar section title */
@@ -10164,6 +11001,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.cancel" = "Cancel";
 
 /* A shared button title used in different contexts */
+"shared.button.clear" = "Clear";
+
+/* A shared button title used in different contexts */
 "shared.button.close" = "Close";
 
 /* A shared button title used in different contexts */
@@ -10196,6 +11036,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* A shared button title used in different contexts */
 "shared.button.save" = "Save";
 
+/* A shared button title used in different contexts (send email, send message, sent invites) */
+"shared.button.send" = "Send";
+
 /* A shared button title used in different contexts */
 "shared.button.share" = "Share";
 
@@ -10210,6 +11053,27 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* A generic error message */
 "shared.error.geneirc" = "Something went wrong";
+
+/* A generic error message */
+"shared.error.generic" = "Something went wrong";
+
+/* As in default value */
+"shared.misc.default" = "Default";
+
+/* Default value with a value. Example usage when ordering items: Default (Date Edited). */
+"shared.misc.defaultWithValue" = "Default (%@)";
+
+/* A default filter value */
+"shared.misc.showAll" = "Show All";
+
+/* Sort ordering */
+"shared.misc.sortAascending" = "Ascending";
+
+/* A button title used in different contexts */
+"shared.misc.sortBy" = "Sort By";
+
+/* Sort ordering */
+"shared.misc.sortDescending" = "Descending";
 
 /* Sidebar button title on iPad */
 "sidebar.addSite" = "Add Site";
@@ -10635,6 +11499,15 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "Total Subscribers";
 
+/* Menu item to send feedback about new stats experience */
+"stats.menu.sendFeedback" = "Send Feedback";
+
+/* Menu item to switch back to classic stats experience */
+"stats.menu.switchToClassic" = "Switch to Classic Stats";
+
+/* Menu item to enable new stats experience */
+"stats.menu.tryNewStats" = "Try New Stats";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
@@ -10673,6 +11546,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The label for the option to show Stats Traffic chart for Days. */
 "stats.traffic.days" = "Days";
+
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.hours" = "Hours";
 
 /* The label for the option to show Stats Traffic chart for Months. */
 "stats.traffic.months" = "Months";
@@ -10725,11 +11601,149 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Submit feedback screen submit fsuccess notice title */
 "submitFeedback.successNoticeTitle" = "Feedback sent";
 
+/* Button title */
+"subscriberDetails.buttonDeleteSubscriber" = "Delete Subscriber";
+
+/* Remove subscriber confirmation dialog message; subscriber name as input. */
+"subscriberDetails.deleteSubscriberConfirmationDialog.message" = "Are you sure you want to remove %@? They will no longer receive new notifications from your site.";
+
+/* Remove subscriber confirmation dialog title */
+"subscriberDetails.deleteSubscriberConfirmationDialog.title" = "Delete the subscriber";
+
+/* Form field name */
+"subscriberDetails.fieldName.country" = "Country";
+
+/* Form field name */
+"subscriberDetails.fieldName.email" = "Email";
+
+/* Form field name */
+"subscriberDetails.fieldName.paidUpgrade" = "Paid Upgrade";
+
+/* Form field name */
+"subscriberDetails.fieldName.plan" = "Plan";
+
+/* Form field name */
+"subscriberDetails.fieldName.planEndDate" = "End Date";
+
+/* Form field name */
+"subscriberDetails.fieldName.planStartDate" = "Start Date";
+
+/* Form field name */
+"subscriberDetails.fieldName.planStatus" = "Plan Status";
+
+/* Form field name */
+"subscriberDetails.fieldName.renewalInterval" = "Renewal Interval";
+
+/* Form field name */
+"subscriberDetails.fieldName.renewalPrice" = "Renewal Price";
+
+/* Form field name */
+"subscriberDetails.fieldName.site" = "Site";
+
+/* Form field name (has to be short!) */
+"subscriberDetails.fieldName.statsClickedEmails" = "Clicked";
+
+/* Form field name (has to be short!) */
+"subscriberDetails.fieldName.statsEmailCount" = "Emails";
+
+/* Form field name (has to be short!) */
+"subscriberDetails.fieldName.statsOpenedEmails" = "Opened";
+
+/* Form field name */
+"subscriberDetails.fieldName.subscriptionDate" = "Subscription Date";
+
+/* Name of a free plan */
+"subscriberDetails.plan.free" = "Free";
+
+/* Newsletter subscription plan type */
+"subscriberDetails.plan.gift" = "Gift";
+
+/* Card section title */
+"subscriberDetails.section.newletterSubscription" = "Newsletter Subscription";
+
+/* Card section title */
+"subscriberDetails.section.subscriberDetails" = "Subscriber Details";
+
+/* Button title */
+"subscribers.buttonDeleteSubscriber" = "Delete Subscriber";
+
+/* Remove subscriber confirmation dialog message; subscriber name as input. */
+"subscribers.deleteSubscriberConfirmationDialog.message" = "Are you sure you want to remove %@? They will no longer receive new notifications from your site.";
+
+/* Remove subscriber confirmation dialog title */
+"subscribers.deleteSubscriberConfirmationDialog.title" = "Delete the subscriber";
+
+/* Empty state view title */
+"subscribers.empty" = "No Subscribers";
+
+/* Empty state view title */
+"subscribers.filter.emailSubscription" = "Email Subscription";
+
+/* Empty state view title */
+"subscribers.filter.paymentType" = "Payment";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.blocked" = "Not Sending";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.email" = "Subscribed";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.reader" = "Not Subscribed";
+
+/* Email subscription type filter */
+"subscribers.filterByEmailSubscriptionType.unconfirmed" = "Not Confirmed";
+
+/* Subscription type filter */
+"subscribers.filterBySubscriptionType.free" = "Free";
+
+/* Subscription type filter */
+"subscribers.filterBySubscriptionType.paid" = "Paid";
+
+/* Part of the label in the menu showing how many subscribers are displayed (has to have two arguments!) */
+"subscribers.menu.nOutOf" = "%1$@ out of %2$@";
+
+/* Part of the label in the menu showing how many subscribers are displayed */
+"subscribers.menu.subscribers" = "Subscribers:";
+
+/* Subscribers sort by field */
+"subscribers.sortField.dateSubscribed" = "Date Subscribed";
+
+/* Subscribers sort by field */
+"subscribers.sortField.email" = "Email";
+
+/* Subscribers sort by field */
+"subscribers.sortField.name" = "Name";
+
+/* Subscribers sort by field */
+"subscribers.sortField.plan" = "Plan";
+
+/* Subscribers sort by field */
+"subscribers.sortField.subscriptionStatus" = "Email Subscription";
+
+/* Screen title */
+"subscribers.title" = "Subscribers";
+
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "In this conversation";
 
 /* Section title for regular suggestions */
 "suggestions.section.regular" = "Site members";
+
+/* Label for the current activity log file in the list. */
+"support.activityLogs.currentLogTilte" = "Current";
+
+/* Message shown in the alert when attempting to clear old activity logs. */
+"support.activityLogs.deleteLogsAlert.message" = "Are you sure you want to delete all activity logs?";
+
+/* Title shown in the alert when attempting to clear old activity logs. */
+"support.activityLogs.deleteLogsAlert.title" = "Delete Logs";
+
+/* Title shown in the navigation bar of the Activity Logs screen. */
+"support.activityLogs.navigationTitle" = "Activity Logs";
+
+/* Footer text explaining the log retention policy in the Activity Logs screen. */
+"support.activityLogs.sectionFooter" = "Logs for up to seven days are saved.";
 
 /* Dismiss the current view */
 "support.button.close.title" = "Done";
@@ -10872,11 +11886,53 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Reader for iOS Support";
 
+/* Button to add a new tag. %1$@ is the tag name. */
+"tags.add.button" = "Add tag: %1$@";
+
+/* Description for empty state when there are no tags */
+"tags.empty.description" = "Tags help organise your content and make it easier for readers to find related posts.";
+
+/* Title for empty state when there are no tags */
+"tags.empty.title" = "No Tags";
+
+/* Error message when tag data is invalid */
+"tags.error.invalid_tag" = "The tag information is invalid. Please try again.";
+
+/* Error message when the tags service cannot connect to the remote site */
+"tags.error.no_remote_service" = "Unable to connect to your site. Please check your connection and try again.";
+
+/* Button to remove a selected tag. %1$@ is the tag name. */
+"tags.remove.button" = "Remove %1$@";
+
+/* Placeholder text for the tag search field */
+"tags.search.placeholder" = "Search tags";
+
+/* Message shown when no tags are selected */
+"tags.selected.empty" = "No tags are selected";
+
+/* Title for the tags screen */
+"tags.title" = "Tags";
+
 /* Title for placeholder in Tenor picker */
 "tenor.welcomeMessage" = "Search to find GIFs to add to your Media Library!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "these items will be deleted:";
+
+/* Section title for suggested timezones */
+"timeZoneSelector.suggested" = "Suggested";
+
+/* Title for the time zone selector */
+"timeZoneSelector.title" = "Time Zone";
+
+/* Action button title to enable new stats from tip */
+"tips.newStats.action" = "Enable Now";
+
+/* Tip for new stats feature */
+"tips.newStats.message" = "Experience new sleek and powerful stats. Switch back whenever you like.";
+
+/* Tip for new stats feature */
+"tips.newStats.title" = "Try New Stats";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Swipe right to access your sites, Reader, notifications, and profile";
@@ -10998,6 +12054,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Site Subscribers */
 "users.list.title.subscribers" = "Subscribers";
+
+/* Screen title */
+"users.title" = "Users";
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Dismiss";

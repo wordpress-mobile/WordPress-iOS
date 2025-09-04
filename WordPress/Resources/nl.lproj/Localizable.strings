@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-09 07:47:42+0000 */
+/* Translation-Revision-Date: 2025-08-30 07:09:21+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: nl */
@@ -8652,17 +8652,11 @@ Example: Reply to Pamela Nguyen */
 /* Top list option title */
 "jetpackStats.addChart.topListOption" = "Toplijst";
 
-/* Archive section for authors */
-"jetpackStats.archiveSections.author" = "Auteurs";
-
 /* Plural item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.plural" = "%1$d items";
 
 /* Singular item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.singular" = "%1$d item";
-
-/* Archive section for other items */
-"jetpackStats.archiveSections.other" = "Andere";
 
 /* Title for the author details screen */
 "jetpackStats.authorDetails.title" = "Auteur";
@@ -8730,6 +8724,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 months date range */
 "jetpackStats.calendar.last12Months" = "Laatste 12 maanden";
 
+/* Last 12 weeks (84 days) date range */
+"jetpackStats.calendar.last12Weeks" = "Afgelopen 12 weken";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Laatste 28 dagen";
 
@@ -8744,9 +8741,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 7 days date range */
 "jetpackStats.calendar.last7Days" = "Laatste 7 dagen";
-
-/* Last 90 days date range */
-"jetpackStats.calendar.last90Days" = "Laatste 90 dagen";
 
 /* Month time period */
 "jetpackStats.calendar.month" = "Maand";
@@ -8911,7 +8905,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.datePicker.lastYear" = "Vorig jaar";
 
 /* Menu item for more date period options */
-"jetpackStats.datePicker.morePeriods" = "Meer periodes…";
+"jetpackStats.datePicker.more" = "Meer…";
 
 /* Compare with preceding period option */
 "jetpackStats.datePicker.precedingPeriod" = "Vorige periode";
@@ -8927,6 +8921,12 @@ Example: Reply to Pamela Nguyen */
 
 /* To date label */
 "jetpackStats.datePicker.to" = "To";
+
+/* Message explaining how to use the date range control */
+"jetpackStats.dateRangeTip.message" = "Bekijk recente dagen, weken, maanden, jaren, of selecteer aangepaste datumbereiken.";
+
+/* Title for stats date range control tip */
+"jetpackStats.dateRangeTip.title" = "Navigeer door de tijd";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Sub links";
@@ -11957,6 +11957,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "Je sites";
+
+/* Message explaining how to use the date range control */
+"tips.statsDateRange.message" = "Gebruik de kalender om dagen, weken, maanden, jaren te selecteren, of kies aangepaste datumbereiken om je statistieken te bekijken.";
+
+/* Title for stats date range control tip */
+"tips.statsDateRange.title" = "Navigeer door de tijd";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "beste tips";
