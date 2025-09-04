@@ -126,7 +126,13 @@ class EditPageViewController: UIViewController {
     }
 
     @objc private func dismissApplicationPasswordView() {
-        dismiss(animated: true)
+        // Dismiss the ApplicationPasswordRequiredView, then dismiss the entire EditPageViewController
+        // since there's no meaningful content to show without the editor
+        dismiss(animated: true) { [weak self] in
+            self?.dismiss(animated: true) {
+                self?.onClose?()
+            }
+        }
     }
 
     private func show(_ editor: EditorViewController) {

@@ -187,7 +187,11 @@ class EditPostViewController: UIViewController {
     }
 
     @objc private func dismissApplicationPasswordView() {
-        dismiss(animated: true)
+        // Dismiss the ApplicationPasswordRequiredView, then close the entire EditPostViewController
+        // since there's no meaningful content to show without the editor
+        dismiss(animated: true) { [weak self] in
+            self?.closeEditor()
+        }
     }
 
     private func showEditor(_ editor: EditorViewController) {
