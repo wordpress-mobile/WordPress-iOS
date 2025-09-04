@@ -1,9 +1,2 @@
-Hemos mejorado la forma en que gestionas tus contenidos y trabajas con los medios. Encontrarás una pantalla de «Ajustes de entrada» completamente rediseñada que hace que la configuración de tus entradas sea más fluida e intuitiva.
-
-También hemos mejorado nuestro editor experimental con una mejor integración de VideoPress y una autenticación mejorada para sitios privados. Ahora tus contenidos multimedia se mostrarán correctamente, independientemente de los ajustes de privacidad de tu sitio.
-
-Por último, hemos eliminado varios errores y hemos hecho las cosas más fiables.
-- La aplicación no se volverá a colgar cuando abras tus Entradas o Páginas. (Sabemos lo frustrante que era).
-- Hemos corregido un fallo que se producía al guardar ciertos ajustes del editor.
-- ¿Esas molestas ventanas emergentes de error en tu panel de control? Se han ido.
-- Las contraseñas de las aplicaciones ahora funcionan mejor entre bastidores.
+- Hemos añadido menciones al editor experimental: etiqueta a tus colaboradores y observa cómo se produce la magia.
+- La vista dividida del iPad ahora se comporta perfectamente en modo vertical. Se acabaron los diseños incómodos.
