@@ -2,7 +2,7 @@
 
 SCHEME="${1:?Usage $0 SCHEME}"
 DEVICE="iPhone 16"
-OS_VERSION="18.4"
+OS_VERSION="26.0"
 
 if "$(dirname "${BASH_SOURCE[0]}")/should-skip-job.sh" --job-type validation; then
   exit 0
