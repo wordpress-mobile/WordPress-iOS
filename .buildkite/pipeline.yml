@@ -141,7 +141,7 @@ steps:
   - group: "🔬 UI Tests"
     steps:
       - label: "🔬 :jetpack: UI Tests (iPhone)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPhone 16'
+        command: .buildkite/commands/run-ui-tests.sh 'iPhone 17'
         depends_on: "build_jetpack"
         plugins: [$CI_TOOLKIT_PLUGIN]
         artifact_paths:
