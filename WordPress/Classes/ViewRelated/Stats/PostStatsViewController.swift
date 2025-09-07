@@ -68,5 +68,5 @@ final class PostStatsViewController: UIViewController {
 }
 
 private enum Strings {
-    static let title = NSLocalizedString("postStats.title", value: "Post Stats", comment: "Navigation bar title")
+    static let title = NSLocalizedString("postStats.title", value: "Post Stats", comment: "Navigation bar title of the Post Stats screen")
 }
