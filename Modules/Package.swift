@@ -41,7 +41,8 @@ let package = Package(
         .package(url: "https://github.com/Quick/Nimble", from: "10.0.0"),
         .package(url: "https://github.com/scinfu/SwiftSoup", exact: "2.7.5"),
         .package(url: "https://github.com/squarefrog/UIDeviceIdentifier", from: "2.3.0"),
-        .package(url: "https://github.com/SVProgressHUD/SVProgressHUD", from: "2.3.1"),
+        // We can remove the SVProgressHUD fork once this PR is merged: https://github.com/SVProgressHUD/SVProgressHUD/pull/1131
+        .package(url: "https://github.com/automattic/SVProgressHUD", branch: "master"),
         .package(url: "https://github.com/Automattic/Reachability", branch: "framework-support-via-spm"),
         .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.19"),
         .package(url: "https://github.com/wordpress-mobile/FSInteractiveMap", from: "0.3.0"),
