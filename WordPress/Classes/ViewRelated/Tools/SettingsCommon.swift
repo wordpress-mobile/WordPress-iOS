@@ -16,13 +16,6 @@ extension SettingsController {
         }
     }
 
-    func editMultilineText(_ changeType: @escaping AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsMultiTextViewController {
-        return { row in
-            let editableRow = row as! EditableTextRow
-            return self.controllerForEditableMultilineText(editableRow, changeType: changeType, hint: hint, service: service)
-        }
-    }
-
     func editEmailAddress(_ changeType: @escaping AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
         return { row in
             let editableRow = row as! EditableTextRow
@@ -52,32 +45,6 @@ extension SettingsController {
                 sendGravatarSyncNotice()
             }
             DDLogDebug("\(title) changed: \(value)")
-
-            trackChangeIfNeeded(row)
-        }
-
-        return controller
-    }
-
-    func controllerForEditableMultilineText(_ row: EditableTextRow,
-                                   changeType: @escaping AccountSettingsChangeWithString,
-                                   hint: String? = nil,
-                                   service: AccountSettingsService) -> SettingsMultiTextViewController {
-        let title = row.title
-        let value = row.value
-
-        let controller = SettingsMultiTextViewController(text: value, placeholder: "\(title)...", hint: hint, isPassword: false)
-
-        controller.title = title
-        controller.onValueChanged = {
-            newValue in
-            guard value != newValue else { return }
-            let change = changeType(newValue)
-            service.saveChange(change)
-            if change.isGravatarField {
-                sendGravatarSyncNotice()
-            }
-            DDLogDebug("\(title) changed: \(newValue)")
 
             trackChangeIfNeeded(row)
         }
