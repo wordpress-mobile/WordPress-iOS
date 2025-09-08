@@ -299,15 +299,7 @@ extension BlogDetailHeaderView {
 
         fileprivate func configureLargeTitleMode() {
             siteIconView.setImageViewSize(50)
-
             siteIconView.transform = CGAffineTransform(translationX: 0, y: 2) // Visually center vertically
-
-            siteSwitcherButton.removeFromSuperview()
-            mainStackView.addSubview(siteSwitcherButton)
-            NSLayoutConstraint.activate([
-                siteSwitcherButton.lastBaselineAnchor.constraint(equalTo: titleButton.lastBaselineAnchor, constant: -2),
-                siteSwitcherButton.leadingAnchor.constraint(equalTo: titleButton.trailingAnchor, constant: 2)
-            ])
         }
 
         func set(url: String) {
