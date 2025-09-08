@@ -220,6 +220,8 @@ extension BlogDetailHeaderView {
             }
             configuration.contentInsets = isSidebarModeEnabled ? NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 2, trailing: 0) : NSDirectionalEdgeInsets(top: 2, leading: 0, bottom: 1, trailing: 0)
             configuration.titleLineBreakMode = .byTruncatingTail
+            configuration.cornerStyle = .fixed
+            configuration.background.cornerRadius = 0
             button.configuration = configuration
             button.accessibilityHint = NSLocalizedString("Tap to view your site", comment: "Accessibility hint for button used to view the user's site")
             button.translatesAutoresizingMaskIntoConstraints = false
