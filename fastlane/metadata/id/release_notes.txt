@@ -1,9 +1,2 @@
-Kami menyempurnakan cara mengelola konten dan cara bekerja dengan media. Layar Pengaturan Pos sepenuhnya didesain ulang sehingga proses pengaturan pos menjadi lebih mulus dan intuitif.
-
-Kami juga meningkatkan editor eksperimental kami dengan perbaikan integrasi VideoPress dan penyempurnaan autentikasi untuk situs pribadi. Media kini ditampilkan dengan semestinya, apa pun pengaturan privasi situs Anda.
-
-Terakhir, kami mengatasi beberapa bug dan membuat berbagai fitur jadi lebih andal.
-- Aplikasi tidak akan macet lagi ketika Anda membuka Pos atau Halaman. (Kami tahu betapa menjengkelkanya hal itu.)
-- Kami memperbaiki crash yang terjadi saat menyimpan pengaturan editor tertentu.
-- Pop up eror yang mengganggu di dasbor Anda? Hilang.
-- Kata sandi aplikasi sekarang bekerja lebih lancar di belakang layar.
+- Kami telah menambahkan fitur penyebutan ke editor eksperimental. Tandai kolaborator Anda dan saksikan keajaibannya.
+- Split View iPad kini berfungsi dengan baik di mode malam. Tak ada lagi tata letak yang aneh.

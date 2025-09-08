@@ -1,9 +1,3 @@
-Nous avons repris les Stats de zéro, et c’est absolument stupéfiant. Cette nouvelle expérience comprend des animations fluides en 120 i/s, des graphiques interactifs sur lesquels vous pouvez appuyer et que vous pouvez explorer, des vues de données heure par heure et un tableau de bord entièrement personnalisable. Vous pouvez tout réorganiser, exporter vos données et même voir les statistiques de vos articles grâce aux indicateurs de campagne par e-mail. C’est incroyable à utiliser, on ne cesse de l’ouvrir rien que pour regarder ces magnifiques animations. (Recherchez « Essayer les nouvelles statistiques » lorsque vous ouvrez Stats ou activez-les à tout moment dans Moi > Réglages de l’app > Fonctionnalités expérimentales.)
-
-Nous avons également amélioré la façon dont vous gérez votre contenu. L’écran des réglages des articles a été entièrement repensé. Il rend la configuration de vos articles plus fluide et plus intuitive, sans compter qu’il améliore l’intégration de VideoPress et l’authentification des sites privés dans notre éditeur expérimental.
-
-Enfin, nous avons éliminé plusieurs bugs et amélioré la fiabilité.
-- L’application ne sera plus ralentie lorsque vous ouvrirez vos articles ou pages. (Nous savons à quel point cela pouvait être frustrant.)
-- Nous avons résolu un incident qui se produisait lors de l’enregistrement de certains réglages de l’éditeur.
-- Les fenêtres contextuelles d’erreur agaçantes sur votre tableau de bord ? Disparues.
-- Les mots de passe d’application fonctionnent désormais avec plus de fluidité en arrière-plan et le flux de connexion Jetpack est plus fiable.
+- Ces magnifiques tableaux de statistiques ont encore été améliorés : appuyez sur n’importe quelle barre pour obtenir des informations instantanées, explorez les tendances hebdomadaires et profitez d’un mode sombre parfait. Vos données méritent ce niveau d’élégance.
+- Nous avons ajouté des mentions à l’éditeur expérimental : taguez vos collaborateurs et observez la magie se produire.
+- La vue fractionnée (Split View) sur iPad se comporte désormais parfaitement en mode portrait. Fini les mises en page gênantes.

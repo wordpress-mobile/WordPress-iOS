@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-14 15:54:08+0000 */
+/* Translation-Revision-Date: 2025-09-02 10:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -8634,17 +8634,11 @@ Example: Reply to Pamela Nguyen */
 /* Top list option title */
 "jetpackStats.addChart.topListOption" = "佳績清單";
 
-/* Archive section for authors */
-"jetpackStats.archiveSections.author" = "作者";
-
 /* Plural item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.plural" = "%1$d 個項目";
 
 /* Singular item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.singular" = "%1$d 個項目";
-
-/* Archive section for other items */
-"jetpackStats.archiveSections.other" = "其他";
 
 /* Title for the author details screen */
 "jetpackStats.authorDetails.title" = "作者";
@@ -8712,6 +8706,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 months date range */
 "jetpackStats.calendar.last12Months" = "過去 12 個月";
 
+/* Last 12 weeks (84 days) date range */
+"jetpackStats.calendar.last12Weeks" = "過去 12 週";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "過去 28 天";
 
@@ -8726,9 +8723,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 7 days date range */
 "jetpackStats.calendar.last7Days" = "過去 7 天";
-
-/* Last 90 days date range */
-"jetpackStats.calendar.last90Days" = "過去 90 天";
 
 /* Month time period */
 "jetpackStats.calendar.month" = "月";
@@ -8893,7 +8887,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.datePicker.lastYear" = "去年";
 
 /* Menu item for more date period options */
-"jetpackStats.datePicker.morePeriods" = "更多期間...";
+"jetpackStats.datePicker.more" = "更多...";
 
 /* Compare with preceding period option */
 "jetpackStats.datePicker.precedingPeriod" = "前一個期間";
@@ -8909,6 +8903,12 @@ Example: Reply to Pamela Nguyen */
 
 /* To date label */
 "jetpackStats.datePicker.to" = "結束日期";
+
+/* Message explaining how to use the date range control */
+"jetpackStats.dateRangeTip.message" = "檢視最近幾天、週、月或年，或選取自訂日期範圍。";
+
+/* Title for stats date range control tip */
+"jetpackStats.dateRangeTip.title" = "瀏覽不同時間的資料";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "子連結";
@@ -11903,6 +11903,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "你的網站";
+
+/* Message explaining how to use the date range control */
+"tips.statsDateRange.message" = "檢視統計資料時，可使用月曆選取天、週、月、年，或選擇自訂日期範圍。";
+
+/* Title for stats date range control tip */
+"tips.statsDateRange.title" = "瀏覽不同時間的資料";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "重要秘訣";

@@ -1,9 +1,3 @@
-Hemos reconstruido las estadísticas desde cero y es absolutamente impresionante. Esta nueva experiencia incluye animaciones fluidas de 120 fps, gráficos interactivos que puedes tocar y explorar, vistas de datos por hora y un escritorio completamente personalizable. Puedes reorganizarlo todo, exportar tus datos e incluso ver el análisis de tus entradas con las métricas de las campañas por correo electrónico. Usarlo es una experiencia increíble: no paramos de abrirlo solo para ver esas animaciones. (Busca «Probar nuevas estadísticas» al abrir Estadísticas o actívalo en cualquier momento en Yo > Ajustes de la aplicación > Funciones experimentales).
-
-También hemos mejorado la forma en que gestionas tu contenido. Encontrarás una pantalla de ajustes de entradas completamente rediseñada que hace que la configuración de tus entradas sea más fluida e intuitiva, además de una mejor integración con VideoPress y una autenticación mejorada para sitios privados en nuestro editor experimental.
-
-Por último, hemos corregido varios errores y mejorado la fiabilidad.
-- La aplicación ya no se queda colgada cuando abres tus entradas o páginas (sabemos lo frustrante que era eso).
-- Hemos corregido un error que se producía al guardar ciertos ajustes del editor.
-- ¿Esas molestas ventanas emergentes de error en tu escritorio? Eliminadas.
-- Las contraseñas de aplicación ahora funcionan mejor en segundo plano, y el flujo de conexión con Jetpack es más fiable.
+- Esas magníficas estadísticas son aún mejores: toca cualquier barra para obtener información instantánea, explora las tendencias semanales y disfruta de un modo oscuro impecable. Tus datos merecen este nivel de elegancia.
+- Hemos añadido las menciones al editor experimental: etiqueta a tus colaboradores y observa cómo sucede la magia.
+- Split View de iPad ahora funciona muy bien en modo retrato. Olvídate de las disposiciones raras.

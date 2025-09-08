@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-13 09:54:12+0000 */
+/* Translation-Revision-Date: 2025-09-02 10:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ko_KR */
@@ -8649,17 +8649,11 @@ Example: Reply to Pamela Nguyen */
 /* Top list option title */
 "jetpackStats.addChart.topListOption" = "상위 목록";
 
-/* Archive section for authors */
-"jetpackStats.archiveSections.author" = "글쓴이";
-
 /* Plural item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.plural" = "%1$d개 아이템";
 
 /* Singular item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.singular" = "%1$d개 아이템";
-
-/* Archive section for other items */
-"jetpackStats.archiveSections.other" = "기타";
 
 /* Title for the author details screen */
 "jetpackStats.authorDetails.title" = "글쓴이";
@@ -8727,6 +8721,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 months date range */
 "jetpackStats.calendar.last12Months" = "최근 12개월";
 
+/* Last 12 weeks (84 days) date range */
+"jetpackStats.calendar.last12Weeks" = "최근 12주";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "최근 28일";
 
@@ -8741,9 +8738,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 7 days date range */
 "jetpackStats.calendar.last7Days" = "최근 7일";
-
-/* Last 90 days date range */
-"jetpackStats.calendar.last90Days" = "최근 90일";
 
 /* Month time period */
 "jetpackStats.calendar.month" = "월";
@@ -8905,7 +8899,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.datePicker.lastYear" = "작년";
 
 /* Menu item for more date period options */
-"jetpackStats.datePicker.morePeriods" = "더 많은 기간...";
+"jetpackStats.datePicker.more" = "더 보기…";
 
 /* Compare with preceding period option */
 "jetpackStats.datePicker.precedingPeriod" = "이전 기간";
@@ -8921,6 +8915,12 @@ Example: Reply to Pamela Nguyen */
 
 /* To date label */
 "jetpackStats.datePicker.to" = "받는 사람";
+
+/* Message explaining how to use the date range control */
+"jetpackStats.dateRangeTip.message" = "최근 일, 주, 월, 년을 보거나 사용자 정의 날짜 범위를 선택하세요.";
+
+/* Title for stats date range control tip */
+"jetpackStats.dateRangeTip.title" = "시각 탐색";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "하위 링크";
@@ -11942,6 +11942,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "내 사이트";
+
+/* Message explaining how to use the date range control */
+"tips.statsDateRange.message" = "통계를 보려면 달력을 사용하여 일, 주, 월, 년을 선택하거나 사용자 정의 날짜 범위를 선택하세요.";
+
+/* Title for stats date range control tip */
+"tips.statsDateRange.title" = "시각 탐색";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "최고의 팁";

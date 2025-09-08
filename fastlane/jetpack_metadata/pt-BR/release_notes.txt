@@ -1,9 +1,3 @@
-Refizemos as estatísticas do zero, e o resultado é impressionante. Essa nova experiência oferece animações suaves a 120 fps, gráficos interativos para você explorar, visualizações de dados por hora e um painel totalmente personalizável. Reorganize tudo, exporte seus dados e veja a análise dos seus posts com métricas de campanhas por e-mail. A experiência é tão incrível que dá vontade de abrir só para curtir as animações. Procure "Experimentar novas estatísticas" ao abrir as Estatísticas ou ative-as a qualquer momento em Meu perfil > Configurações do aplicativo > Funcionalidades experimentais.
-
-Também fizemos melhorias no gerenciamento de conteúdo. A nova tela de configurações de post foi completamente repaginada para oferecer uma experiência mais fluida e intuitiva, com integração aprimorada ao VideoPress e compatibilidade avançada com a autenticação de sites privados no editor experimental.
-
-Por fim, vários bugs foram corrigidos, garantindo uma experiência mais confiável.
-- O aplicativo não será mais suspenso quando você abrir seus posts ou páginas. (Sabemos o quanto isso era frustrante.)
-- Corrigimos uma falha que ocorria ao salvar determinadas configurações do editor.
-- Aqueles pop-ups de erro irritantes no seu painel? Sumiram.
-- Agora, as senhas de aplicativos funcionam de forma mais estável em segundo plano, e o fluxo de conexão do Jetpack está mais confiável.
+- Esses gráficos de estatísticas incríveis ficaram ainda melhores. Toque em qualquer barra para obter informações imediatas, descobrir tendências semanais e desfrutar do impecável modo escuro. Seus dados merecem esse nível de elegância.
+- Adicionamos menções ao editor experimental: marque seus colaboradores e veja a magia acontecer.
+- A visualização dividida do iPad agora fica linda no modo retrato. Chega de layouts esquisitos.

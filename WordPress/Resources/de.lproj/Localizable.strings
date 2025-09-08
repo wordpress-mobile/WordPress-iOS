@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-13 14:54:07+0000 */
+/* Translation-Revision-Date: 2025-09-01 00:37:52+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -1253,7 +1253,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Choose from device" = "Aus einem Gerät auswählen";
 
 /* No comment provided by engineer. */
-"Choose image" = "Bild wählen";
+"Choose image" = "Bild auswählen";
 
 /* No comment provided by engineer. */
 "Choose image or video" = "Bild oder Video auswählen";
@@ -4062,7 +4062,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Oops" = "Hoppala";
 
 /* An informal exclaimation meaning `something went wrong`. */
-"Oops!" = "Hoppala!";
+"Oops!" = "Hoppla!";
 
 /* No comment provided by engineer. */
 "Opacity" = "Deckkraft";
@@ -5115,7 +5115,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Service" = "Dienst";
 
 /* No comment provided by engineer. */
-"Set as Featured Image" = "Als Beitragsbild festlegen ";
+"Set as Featured Image" = "Als Beitragsbild festlegen";
 
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "Als Beitragsbild festlegen";
@@ -8506,7 +8506,7 @@ Example: Reply to Pamela Nguyen */
 "jetpack.plugin.modal.subtitle.jetpack.plugin" = "vollständiges Jetpack-Plugin";
 
 /* Jetpack Plugin Modal footnote terms and conditions */
-"jetpack.plugin.modal.terms" = "Geschäftsbedingungen";
+"jetpack.plugin.modal.terms" = "Allgemeine Geschäftsbedingungen";
 
 /* Jetpack Plugin Modal title */
 "jetpack.plugin.modal.title" = "Bitte installiere das vollständige Jetpack-Plugin";
@@ -8652,17 +8652,11 @@ Example: Reply to Pamela Nguyen */
 /* Top list option title */
 "jetpackStats.addChart.topListOption" = "Top-Liste";
 
-/* Archive section for authors */
-"jetpackStats.archiveSections.author" = "Autoren";
-
 /* Plural item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.plural" = "%1$d Artikel";
 
 /* Singular item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.singular" = "%1$d Artikel";
-
-/* Archive section for other items */
-"jetpackStats.archiveSections.other" = "Sonstige";
 
 /* Title for the author details screen */
 "jetpackStats.authorDetails.title" = "Autor";
@@ -8730,6 +8724,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 months date range */
 "jetpackStats.calendar.last12Months" = "Letzte 12 Monate";
 
+/* Last 12 weeks (84 days) date range */
+"jetpackStats.calendar.last12Weeks" = "Letzte 12 Wochen";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Letzte 28 Tage";
 
@@ -8744,9 +8741,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 7 days date range */
 "jetpackStats.calendar.last7Days" = "Letzte 7 Tage";
-
-/* Last 90 days date range */
-"jetpackStats.calendar.last90Days" = "Letzte 90 Tage";
 
 /* Month time period */
 "jetpackStats.calendar.month" = "Monat";
@@ -8911,7 +8905,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.datePicker.lastYear" = "Letztes Jahr";
 
 /* Menu item for more date period options */
-"jetpackStats.datePicker.morePeriods" = "Weitere Zeiträume …";
+"jetpackStats.datePicker.more" = "Mehr …";
 
 /* Compare with preceding period option */
 "jetpackStats.datePicker.precedingPeriod" = "Vorheriger Zeitraum";
@@ -8927,6 +8921,12 @@ Example: Reply to Pamela Nguyen */
 
 /* To date label */
 "jetpackStats.datePicker.to" = "Bis";
+
+/* Message explaining how to use the date range control */
+"jetpackStats.dateRangeTip.message" = "Lass dir die letzten Tage, Wochen, Monate, Jahre anzeigen oder wähle individuelle Zeiträume aus.";
+
+/* Title for stats date range control tip */
+"jetpackStats.dateRangeTip.title" = "Navigiere durch die Zeit";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Sublinks";
@@ -9739,7 +9739,7 @@ Example: Reply to Pamela Nguyen */
 "pluginDetails.section.installation" = "Installation";
 
 /* Title of the reviews section in plugin details */
-"pluginDetails.section.reviews" = "Bewertungen";
+"pluginDetails.section.reviews" = "Rezensionen";
 
 /* Title of the screenshots section in plugin details */
 "pluginDetails.section.screenshots" = "Screenshots";
@@ -9910,7 +9910,7 @@ Example: Reply to Pamela Nguyen */
 "postList.cancel" = "Abbrechen";
 
 /* Delete option in the confirmation alert when deleting a page from the trash. */
-"postList.deletePermanently.actionTitle" = "Dauerhaft löschen";
+"postList.deletePermanently.actionTitle" = "Endgültig löschen";
 
 /* Message of the confirmation alert when deleting a page from the trash. */
 "postList.deletePermanently.alertMessage" = "Bist du sicher, dass du „%@“ endgültig löschen möchtest?";
@@ -10139,7 +10139,7 @@ Example: Reply to Pamela Nguyen */
 "posts.comments.actionTitle" = "Kommentare";
 
 /* Label for the delete post option. Tapping permanently deletes a post. */
-"posts.delete.actionTitle" = "Unwiderruflich löschen";
+"posts.delete.actionTitle" = "Endgültig löschen";
 
 /* Label for an option that moves a post to the draft folder */
 "posts.draft.actionTitle" = "In Entwurf verschieben";
@@ -10392,7 +10392,7 @@ Tapping on this row allows the user to edit the sharing message. */
 "reader.button.unsubscribe" = "Deabonnieren";
 
 /* Button title. Follow the comments on a post. */
-"reader.comments.buttonFollow" = "Abonnieren";
+"reader.comments.buttonFollow" = "Folgen";
 
 /* Informational message, should be short. */
 "reader.comments.commentsClosed" = "Kommentare geschlossen";
@@ -11957,6 +11957,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "Deine Websites";
+
+/* Message explaining how to use the date range control */
+"tips.statsDateRange.message" = "Verwende den Kalender, um Tage, Wochen, Monate, Jahre oder individuelle Zeiträume auszuwählen, um dir deine Statistiken anzeigen zu lassen.";
+
+/* Title for stats date range control tip */
+"tips.statsDateRange.title" = "Navigiere durch die Zeit";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "Top-Tipps";

@@ -1,9 +1,0 @@
-Nous avons amélioré la façon dont vous gérez votre contenu et travaillez avec les médias. L’écran des réglages des articles a été entièrement repensé. Il rend la configuration des articles plus fluide et plus intuitive.
-
-Nous avons également amélioré notre éditeur expérimental avec une meilleure intégration de VideoPress et une authentification améliorée pour les sites privés. Vos médias s’afficheront désormais correctement, quels que soient les réglages de confidentialité de votre site.
-
-Enfin, nous avons éliminé plusieurs bugs et amélioré la fiabilité.
-- L’application ne sera plus ralentie lorsque vous ouvrirez vos articles ou pages. (Nous savons à quel point cela pouvait être frustrant.)
-- Nous avons résolu un incident qui se produisait lors de l’enregistrement de certains réglages de l’éditeur.
-- Les fenêtres contextuelles d’erreur agaçantes sur votre tableau de bord ? Disparues.
-- Les mots de passe d’application fonctionnent désormais de manière plus fluide en arrière-plan.

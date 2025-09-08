@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-12 14:54:08+0000 */
+/* Translation-Revision-Date: 2025-09-04 13:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: tr */
@@ -8646,17 +8646,11 @@ Example: Reply to Pamela Nguyen */
 /* Top list option title */
 "jetpackStats.addChart.topListOption" = "En İyi Liste";
 
-/* Archive section for authors */
-"jetpackStats.archiveSections.author" = "Yazarlar";
-
 /* Plural item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.plural" = "%1$d öğe";
 
 /* Singular item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.singular" = "%1$d öğe";
-
-/* Archive section for other items */
-"jetpackStats.archiveSections.other" = "Diğer";
 
 /* Title for the author details screen */
 "jetpackStats.authorDetails.title" = "Yazar";
@@ -8724,6 +8718,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 months date range */
 "jetpackStats.calendar.last12Months" = "Son 12 Ay";
 
+/* Last 12 weeks (84 days) date range */
+"jetpackStats.calendar.last12Weeks" = "Son 12 Hafta";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Son 28 Gün";
 
@@ -8738,9 +8735,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 7 days date range */
 "jetpackStats.calendar.last7Days" = "Son 7 Gün";
-
-/* Last 90 days date range */
-"jetpackStats.calendar.last90Days" = "Son 90 Gün";
 
 /* Month time period */
 "jetpackStats.calendar.month" = "Ay";
@@ -8899,7 +8893,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.datePicker.lastYear" = "Geçen Yıl";
 
 /* Menu item for more date period options */
-"jetpackStats.datePicker.morePeriods" = "Diğer Dönemler…";
+"jetpackStats.datePicker.more" = "Daha fazla…";
 
 /* Compare with preceding period option */
 "jetpackStats.datePicker.precedingPeriod" = "Önceki Dönem";
@@ -8915,6 +8909,12 @@ Example: Reply to Pamela Nguyen */
 
 /* To date label */
 "jetpackStats.datePicker.to" = "Başlangıç";
+
+/* Message explaining how to use the date range control */
+"jetpackStats.dateRangeTip.message" = "Son günleri, haftaları, ayları, yılları görüntüleyin veya özel tarih aralıkları seçin.";
+
+/* Title for stats date range control tip */
+"jetpackStats.dateRangeTip.title" = "Zaman İçinde Gezinme";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Alt bağlantılar";
@@ -11936,6 +11936,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "Siteleriniz";
+
+/* Message explaining how to use the date range control */
+"tips.statsDateRange.message" = "Gün, hafta, ay, yıl seçmek için takvimi kullanın veya istatistiklerinizi görüntülemek için özel tarih aralıkları seçin.";
+
+/* Title for stats date range control tip */
+"tips.statsDateRange.title" = "Zaman İçinde Gezinme";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "en iyi ipuçları";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-14 10:54:11+0000 */
+/* Translation-Revision-Date: 2025-09-03 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ja_JP */
@@ -8631,17 +8631,11 @@ Example: Reply to Pamela Nguyen */
 /* Top list option title */
 "jetpackStats.addChart.topListOption" = "トップリスト";
 
-/* Archive section for authors */
-"jetpackStats.archiveSections.author" = "投稿者";
-
 /* Plural item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.plural" = "%1$d個のアイテム";
 
 /* Singular item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.singular" = "%1$d個のアイテム";
-
-/* Archive section for other items */
-"jetpackStats.archiveSections.other" = "その他";
 
 /* Title for the author details screen */
 "jetpackStats.authorDetails.title" = "投稿者";
@@ -8706,6 +8700,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 months date range */
 "jetpackStats.calendar.last12Months" = "過去12か月";
 
+/* Last 12 weeks (84 days) date range */
+"jetpackStats.calendar.last12Weeks" = "過去12週間";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "過去28日間";
 
@@ -8720,9 +8717,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 7 days date range */
 "jetpackStats.calendar.last7Days" = "過去7日間";
-
-/* Last 90 days date range */
-"jetpackStats.calendar.last90Days" = "過去90日間";
 
 /* Month time period */
 "jetpackStats.calendar.month" = "月";
@@ -8881,7 +8875,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.datePicker.lastYear" = "去年";
 
 /* Menu item for more date period options */
-"jetpackStats.datePicker.morePeriods" = "その他の期間...";
+"jetpackStats.datePicker.more" = "もっと表示…";
 
 /* Compare with preceding period option */
 "jetpackStats.datePicker.precedingPeriod" = "前の期間";
@@ -8894,6 +8888,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Explanation of how stats are reported in site time zone */
 "jetpackStats.datePicker.siteTimeZoneDescription" = "統計はサイトのタイムゾーンで報告および表示されます。 訪問者が自身のタイムゾーンで火曜日にサイトを訪れても、サイトのタイムゾーンでは月曜日であれば、その訪問は月曜日として記録されます。";
+
+/* Message explaining how to use the date range control */
+"jetpackStats.dateRangeTip.message" = "最近の日、週、月、年を表示するか、カスタムの日付範囲を選択します。";
+
+/* Title for stats date range control tip */
+"jetpackStats.dateRangeTip.title" = "期間を変更";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "サブリンク";
@@ -11879,6 +11879,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "あなたのサイト";
+
+/* Message explaining how to use the date range control */
+"tips.statsDateRange.message" = "カレンダーを使用して日、週、月、年を選択するか、カスタムの日付範囲を選択して、統計を表示します。";
+
+/* Title for stats date range control tip */
+"tips.statsDateRange.title" = "期間を変更";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "最高のヒント";
