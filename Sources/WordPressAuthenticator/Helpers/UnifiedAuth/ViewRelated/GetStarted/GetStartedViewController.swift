@@ -278,7 +278,6 @@ private extension GetStartedViewController {
 
     func configureNavBar() {
         navigationItem.title = WordPressAuthenticator.shared.displayStrings.getStartedTitle
-        styleNavigationBar(forUnified: true)
     }
 
     func setupTable() {

@@ -38,7 +38,6 @@ final class MagicLinkRequestedViewController: LoginViewController {
         super.viewDidLoad()
 
         navigationItem.title = WordPressAuthenticator.shared.displayStrings.logInTitle
-        styleNavigationBar(forUnified: true)
 
         setupButtons()
         setupTitleLabel()

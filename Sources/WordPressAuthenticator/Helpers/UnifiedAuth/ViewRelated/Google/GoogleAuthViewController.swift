@@ -23,7 +23,6 @@ class GoogleAuthViewController: LoginViewController {
         super.viewDidLoad()
 
         navigationItem.title = WordPressAuthenticator.shared.displayStrings.waitingForGoogleTitle
-        styleNavigationBar(forUnified: true)
 
         titleLabel?.text = NSLocalizedString("Waiting for Google to complete…", comment: "Message shown on screen while waiting for Google to finish its signup process.")
     }

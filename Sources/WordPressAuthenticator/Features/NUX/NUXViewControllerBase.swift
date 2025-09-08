@@ -142,48 +142,6 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         displaySupportViewController(from: sourceTag)
     }
 
-    // MARK: - Navbar Help and App Logo methods
-
-    func styleNavigationBar(forUnified: Bool = false) {
-        var backgroundColor: UIColor
-        var buttonTextColor: UIColor
-        var titleTextColor: UIColor
-        var hideBottomBorder: Bool
-
-        if forUnified {
-            // Unified nav bar style
-            backgroundColor = WordPressAuthenticator.shared.unifiedStyle?.navBarBackgroundColor ??
-                              WordPressAuthenticator.shared.style.navBarBackgroundColor
-            buttonTextColor = WordPressAuthenticator.shared.unifiedStyle?.navButtonTextColor ??
-                              WordPressAuthenticator.shared.style.navButtonTextColor
-            titleTextColor = WordPressAuthenticator.shared.unifiedStyle?.navTitleTextColor ??
-                             WordPressAuthenticator.shared.style.primaryTitleColor
-            hideBottomBorder = true
-        } else {
-            // Original nav bar style
-            backgroundColor = WordPressAuthenticator.shared.style.navBarBackgroundColor
-            buttonTextColor = WordPressAuthenticator.shared.style.navButtonTextColor
-            titleTextColor = WordPressAuthenticator.shared.style.primaryTitleColor
-            hideBottomBorder = false
-        }
-
-        setupNavBarIcon(showIcon: !forUnified)
-        setHelpButtonTextColor(forUnified: forUnified)
-
-        let buttonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [LoginNavigationController.self])
-        buttonItemAppearance.tintColor = buttonTextColor
-        buttonItemAppearance.setTitleTextAttributes([.foregroundColor: buttonTextColor], for: .normal)
-
-        let appearance = UINavigationBarAppearance()
-        appearance.shadowColor = hideBottomBorder ? .clear : .separator
-        appearance.backgroundColor = backgroundColor
-        appearance.titleTextAttributes = [.foregroundColor: titleTextColor]
-
-        UINavigationBar.appearance(whenContainedInInstancesOf: [LoginNavigationController.self]).standardAppearance = appearance
-        UINavigationBar.appearance(whenContainedInInstancesOf: [LoginNavigationController.self]).compactAppearance = appearance
-        UINavigationBar.appearance(whenContainedInInstancesOf: [LoginNavigationController.self]).scrollEdgeAppearance = appearance
-    }
-
     /// Add/remove the nav bar app logo.
     ///
     func setupNavBarIcon(showIcon: Bool = true) {
@@ -216,23 +174,6 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         refreshSupportNotificationIndicator()
     }
 
-    /// Sets the Help button text color.
-    ///
-    /// - Parameters:
-    ///     - forUnified: Indicates whether to use text color for the unified auth flows or the original auth flows.
-    ///
-    func setHelpButtonTextColor(forUnified: Bool) {
-        let navButtonTextColor: UIColor = {
-            if forUnified {
-                return WordPressAuthenticator.shared.unifiedStyle?.navButtonTextColor ?? WordPressAuthenticator.shared.style.navButtonTextColor
-            }
-            return WordPressAuthenticator.shared.style.navButtonTextColor
-        }()
-
-        helpButton.setTitleColor(navButtonTextColor, for: .normal)
-        helpButton.setTitleColor(navButtonTextColor.withAlphaComponent(0.4), for: .highlighted)
-    }
-
     // MARK: - Helpers
 
     /// Adds the Help Button to the nav controller
@@ -263,7 +204,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     private func addHelpButton(to superView: UIView) {
         helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
-        setHelpButtonTextColor(forUnified: false)
+        helpButton.setTitleColor(.label, for: [])
         helpButton.accessibilityIdentifier = "authenticator-help-button"
 
         helpButton.on(.touchUpInside) { [weak self] control in
@@ -315,7 +256,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
             view.centerYAnchor.constraint(equalTo: helpButton.topAnchor, constant: yConstant),
             view.widthAnchor.constraint(equalToConstant: Constants.notificationIndicatorSize.width),
             view.heightAnchor.constraint(equalToConstant: Constants.notificationIndicatorSize.height)
-            ])
+        ])
     }
 
     // MARK: - UIViewControllerTransitioningDelegate

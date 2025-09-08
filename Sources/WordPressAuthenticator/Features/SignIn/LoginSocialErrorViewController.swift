@@ -65,7 +65,6 @@ class LoginSocialErrorViewController: NUXTableViewController {
         let unifiedApple = unifiedAuthEnabled && loginFields.meta.socialService == .apple
         forUnified = unifiedGoogle || unifiedApple
 
-        styleNavigationBar(forUnified: forUnified)
         styleBackground()
     }
 
