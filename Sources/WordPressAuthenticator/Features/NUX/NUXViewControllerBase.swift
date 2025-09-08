@@ -14,7 +14,6 @@ private enum Constants {
 /// base protocol for NUX view controllers
 public protocol NUXViewControllerBase {
     var sourceTag: WordPressSupportSourceTag { get }
-    var helpNotificationIndicator: WPHelpIndicatorView { get }
     var helpButton: UIButton { get }
     var loginFields: LoginFields { get }
     var dismissBlock: ((_ cancelled: Bool) -> Void)? { get }
@@ -106,15 +105,6 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         self.dismiss(animated: true, completion: nil)
     }
 
-    // MARK: - Notifications
-
-    /// Updates the notification indicatorand its visibility.
-    ///
-    func refreshSupportNotificationIndicator() {
-        let showIndicator = WordPressAuthenticator.shared.delegate?.showSupportNotificationIndicator ?? false
-        helpNotificationIndicator.isHidden = !showIndicator
-    }
-
     // MARK: - Actions
 
     func handleBackgroundTapGesture() {
@@ -171,7 +161,6 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         }
 
         addHelpButtonToNavController()
-        refreshSupportNotificationIndicator()
     }
 
     // MARK: - Helpers
@@ -181,7 +170,6 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     private func addHelpButtonToNavController() {
         let barButtonView = createBarButtonView()
         addHelpButton(to: barButtonView)
-        addNotificationIndicatorView(to: barButtonView)
         addRightBarButtonItem(with: barButtonView)
     }
 
@@ -218,45 +206,6 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         helpButton.trailingAnchor.constraint(equalTo: superView.trailingAnchor, constant: -Constants.helpButtonInsets.right).isActive = true
         helpButton.topAnchor.constraint(equalTo: superView.topAnchor).isActive = true
         helpButton.bottomAnchor.constraint(equalTo: superView.bottomAnchor).isActive = true
-    }
-
-    // MARK: Notification Indicator settings
-
-    private func addNotificationIndicatorView(to superView: UIView) {
-        setupNotificationsIndicator()
-        layoutNotificationIndicatorView(helpNotificationIndicator, to: superView)
-    }
-
-    private func setupNotificationsIndicator() {
-        helpNotificationIndicator.isHidden = true
-
-        addNotificationObserver(
-            NotificationCenter.default.addObserver(forName: .wordpressSupportNotificationReceived, object: nil, queue: nil) { [weak self] _ in
-                self?.refreshSupportNotificationIndicator()
-            }
-        )
-
-        addNotificationObserver(
-            NotificationCenter.default.addObserver(forName: .wordpressSupportNotificationCleared, object: nil, queue: nil) { [weak self] _ in
-                self?.refreshSupportNotificationIndicator()
-            }
-        )
-    }
-
-    private func layoutNotificationIndicatorView(_ view: UIView, to superView: UIView) {
-        superView.addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        let centerOffset = Constants.notificationIndicatorCenterOffset
-        let xConstant = helpButton.contentEdgeInsets.top + centerOffset.x
-        let yConstant = helpButton.contentEdgeInsets.top + centerOffset.y
-
-        NSLayoutConstraint.activate([
-            view.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor, constant: xConstant),
-            view.centerYAnchor.constraint(equalTo: helpButton.topAnchor, constant: yConstant),
-            view.widthAnchor.constraint(equalToConstant: Constants.notificationIndicatorSize.width),
-            view.heightAnchor.constraint(equalToConstant: Constants.notificationIndicatorSize.height)
-        ])
     }
 
     // MARK: - UIViewControllerTransitioningDelegate

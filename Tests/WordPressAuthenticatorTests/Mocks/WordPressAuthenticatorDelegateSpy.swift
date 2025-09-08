@@ -6,7 +6,6 @@ class WordPressAuthenticatorDelegateSpy: WordPressAuthenticatorDelegate {
     var dismissActionEnabled: Bool = true
     var supportActionEnabled: Bool = true
     var wpcomTermsOfServiceEnabled: Bool = true
-    var showSupportNotificationIndicator: Bool = true
     var supportEnabled: Bool = true
     var allowWPComLogin: Bool = true
     var shouldHandleError: Bool = false

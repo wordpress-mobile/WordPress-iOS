@@ -406,7 +406,6 @@ extension WordPressAppDelegate {
         )
 
         authManager.initializeWordPressAuthenticator()
-        authManager.startRelayingSupportNotifications()
 
         WordPressAuthenticator.shared.delegate = authManager
         self.authManager = authManager

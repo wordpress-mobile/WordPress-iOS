@@ -55,25 +55,6 @@ class WordPressAuthenticatorTests: XCTestCase {
         XCTAssertEqual(correctedURL, url)
     }
 
-    // MARK: WordPressAuthenticator Notification Tests
-    func testDispatchesSupportPushNotificationReceived() {
-        let authenticator = WordpressAuthenticatorProvider.getWordpressAuthenticator()
-        _ = expectation(forNotification: .wordpressSupportNotificationReceived, object: nil, handler: nil)
-
-        authenticator.supportPushNotificationReceived()
-
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-
-    func testDispatchesSupportPushNotificationCleared() {
-        let authenticator = WordpressAuthenticatorProvider.getWordpressAuthenticator()
-        _ = expectation(forNotification: .wordpressSupportNotificationCleared, object: nil, handler: nil)
-
-        authenticator.supportPushNotificationCleared()
-
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-
     // MARK: View Tests
     func testWordpressAuthIsAuthenticationViewController() {
         let loginViewcontroller = LoginViewController()

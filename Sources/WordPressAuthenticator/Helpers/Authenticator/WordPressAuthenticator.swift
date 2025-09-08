@@ -100,14 +100,6 @@ import WordPressKit
 
     // MARK: - Public Methods
 
-    public func supportPushNotificationReceived() {
-        NotificationCenter.default.post(name: .wordpressSupportNotificationReceived, object: nil)
-    }
-
-    public func supportPushNotificationCleared() {
-        NotificationCenter.default.post(name: .wordpressSupportNotificationCleared, object: nil)
-    }
-
     /// Indicates if the specified ViewController belongs to the Authentication Flow, or not.
     ///
     public class func isAuthenticationViewController(_ viewController: UIViewController) -> Bool {
