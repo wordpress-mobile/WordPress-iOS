@@ -98,10 +98,8 @@ class EditPageViewController: UIViewController {
             })
 
             // Dismiss application password view, then present the editor
-            DispatchQueue.main.async {
-                self.dismiss(animated: true) {
-                    self.show(editorViewController)
-                }
+            self.dismiss(animated: true) {
+                self.show(editorViewController)
             }
 
             return EmptyView()

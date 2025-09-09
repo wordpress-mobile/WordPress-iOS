@@ -160,10 +160,8 @@ class EditPostViewController: UIViewController {
             editor.entryPoint = self.entryPoint
 
             // Dismiss application password view, then present the editor
-            DispatchQueue.main.async {
-                self.dismiss(animated: true) {
-                    self.showEditor(editor)
-                }
+            self.dismiss(animated: true) {
+                self.showEditor(editor)
             }
 
             return EmptyView()
