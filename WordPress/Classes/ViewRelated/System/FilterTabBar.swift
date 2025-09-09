@@ -564,7 +564,9 @@ public class FilterTabBar: UIControl {
     }
 
     private func updateForCurrentEnvironment() {
-        tabSizingStyle = traitCollection.horizontalSizeClass == .regular ? .equalWidths : .fitting
+        if isAutomaticTabSizingStyleEnabled {
+            tabSizingStyle = traitCollection.horizontalSizeClass == .regular ? .equalWidths : .fitting
+        }
     }
 }
 
