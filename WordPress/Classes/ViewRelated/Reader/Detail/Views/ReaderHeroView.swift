@@ -69,8 +69,9 @@ final class ReaderHeroView: UIView {
         super.traitCollectionDidChange(previousTraitCollection)
 
         // Extend below the header of the article to support corner radius
-        if traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
-            bottomExtensionHeight = traitCollection.horizontalSizeClass == .compact ? DesignConstants.radius(.large) : 0
+        let newValue = traitCollection.horizontalSizeClass == .compact ? DesignConstants.radius(.large) : 0
+        if bottomExtensionHeight != newValue {
+            bottomExtensionHeight = newValue
             setNeedsLayout()
         }
     }

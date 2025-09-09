@@ -236,11 +236,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        if traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
-            let isCompact = traitCollection.horizontalSizeClass == .compact
-            headerContainerView.layer.cornerRadius = isCompact ? DesignConstants.radius(.large) : 0
-            headerContainerView.layer.maskedCorners = isCompact ? [.layerMaxXMinYCorner, .layerMinXMinYCorner] : []
-        }
+        let isCompact = traitCollection.horizontalSizeClass == .compact
+        headerContainerView.layer.cornerRadius = isCompact ? DesignConstants.radius(.large) : 0
+        headerContainerView.layer.maskedCorners = isCompact ? [.layerMaxXMinYCorner, .layerMinXMinYCorner] : []
     }
 
     func render(_ post: ReaderPost) {
