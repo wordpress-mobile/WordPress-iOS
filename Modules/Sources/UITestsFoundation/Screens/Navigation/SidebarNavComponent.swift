@@ -26,7 +26,6 @@ public class SidebarNavComponent: ScreenObject, MainNavigationComponent {
 
     @discardableResult
     public func openSiteMenu() throws -> SidebarSiteMenuScreen {
-        app.buttons["ToggleSidebar"].firstMatch.tap()
         return try SidebarSiteMenuScreen()
     }
 }
