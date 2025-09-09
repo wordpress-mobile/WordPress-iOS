@@ -16,7 +16,6 @@ public class SidebarScreen: ScreenObject {
 
     public func openReaderScreen() {
         app.staticTexts["sidebar_reader"].firstMatch.tap()
-        app.swipeLeft() // Close the sidebar
     }
 
     public func openNotificationsScreen() throws -> NotificationsScreen {
