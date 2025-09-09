@@ -5,6 +5,7 @@
 #import "WPKitDateUtils.h"
 #import "NSString+Helpers.h"
 #import "WPMapFilterReduce.h"
+#import "WordPressComRestApiErrorDomain.h"
 
 @import NSObject_SafeExpectations;
 
@@ -207,6 +208,12 @@ NSString * const ParamKeyMetaValue = @"site,feed";
            parameters:params
               success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                   if (!success) {
+                      return;
+                  }
+                  if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                      if (failure) {
+                          failure([NSError errorWithDomain:WordPressComRestApiErrorDomain code:-1 userInfo:nil]);
+                      }
                       return;
                   }
 
