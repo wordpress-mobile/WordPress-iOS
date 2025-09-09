@@ -4,6 +4,7 @@
 
 26.3
 -----
+* [*] Fix a rare crash when scrolling the Reader sidebar [#24816]
 * [*] Fix an issue with Notification Settings button not working in the Reader Subscriptions context menus for subscriptions [#24778]
 
 26.2
