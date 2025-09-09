@@ -76,13 +76,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self refreshAndSyncIfNeeded];
 }
 
-- (void)willMoveToParentViewController:(UIViewController *)parent {
-    [super willMoveToParentViewController:parent];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
 
-    if (!parent) {
-        if (@available(iOS 26.0, *)) {
-            [self.splitViewController hideColumn:UISplitViewControllerColumnInspector];
-        }
+    if (@available(iOS 26.0, *)) {
+        [self.splitViewController hideColumn:UISplitViewControllerColumnInspector];
     }
 }
 
