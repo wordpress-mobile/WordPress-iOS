@@ -27,6 +27,8 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 @property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (weak, nonatomic) UISplitViewController *currentSplitViewController;
+
 // Keep track of the index path of the Comment displayed in comment details.
 // Used to advance the displayed Comment when Next is selected on the moderation confirmation snackbar.
 @property (nonatomic, strong) NSIndexPath *displayedCommentIndexPath;
@@ -80,7 +82,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [super viewWillDisappear:animated];
 
     if (@available(iOS 26.0, *)) {
-        [self.splitViewController hideColumn:UISplitViewControllerColumnInspector];
+        [self.currentSplitViewController hideColumn:UISplitViewControllerColumnInspector];
     }
 }
 
@@ -245,6 +247,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
             self.splitViewController.maximumInspectorColumnWidth = 680;
             self.splitViewController.preferredInspectorColumnWidth = 680;
             [self.splitViewController showColumn:UISplitViewControllerColumnInspector];
+            self.currentSplitViewController = self.splitViewController;
         } else {
             [self showDetailViewController:self.commentDetailViewController sender:nil];
         }
