@@ -76,10 +76,15 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [self refreshAndSyncIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+    [super willMoveToParentViewController:parent];
 
+    if (!parent) {
+        if (@available(iOS 26.0, *)) {
+            [self.splitViewController hideColumn:UISplitViewControllerColumnInspector];
+        }
+    }
+}
 
 #pragma mark - Configuration
 
@@ -235,7 +240,16 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     if (self.isSidebarModeEnabled) {
         self.commentDetailViewController.isSidebarModeEnabled = true;
         self.commentDetailViewController.navigationItem.hidesBackButton = YES;
-        [self showDetailViewController:self.commentDetailViewController sender:nil];
+
+
+        if (@available(iOS 26.0, *)) {
+            [self.splitViewController setViewController:self.commentDetailViewController forColumn:UISplitViewControllerColumnInspector];
+            self.splitViewController.maximumInspectorColumnWidth = 680;
+            self.splitViewController.preferredInspectorColumnWidth = 680;
+            [self.splitViewController showColumn:UISplitViewControllerColumnInspector];
+        } else {
+            [self showDetailViewController:self.commentDetailViewController sender:nil];
+        }
     } else {
         [self.navigationController pushViewController:self.commentDetailViewController animated:YES];
     }
