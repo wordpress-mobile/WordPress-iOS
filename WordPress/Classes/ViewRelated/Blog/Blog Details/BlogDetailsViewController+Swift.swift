@@ -210,19 +210,22 @@ extension BlogDetailsViewController {
         if isSidebarModeEnabled {
             commentsVC.isSidebarModeEnabled = true
 
-            let splitVC = UISplitViewController(style: .doubleColumn)
-            splitVC.presentsWithGesture = false
-            splitVC.preferredDisplayMode = .oneBesideSecondary
-            splitVC.preferredPrimaryColumnWidth = 320
-            splitVC.minimumPrimaryColumnWidth = 375
-            splitVC.maximumPrimaryColumnWidth = 400
-            splitVC.setViewController(commentsVC, for: .primary)
+            if #available(iOS 26, *) {
+                presentationDelegate?.presentBlogDetailsViewController(commentsVC)
+            } else {
+                let splitVC = UISplitViewController(style: .doubleColumn)
+                splitVC.presentsWithGesture = false
+                splitVC.preferredDisplayMode = .oneBesideSecondary
+                splitVC.preferredPrimaryColumnWidth = 320
+                splitVC.minimumPrimaryColumnWidth = 375
+                splitVC.maximumPrimaryColumnWidth = 400
+                splitVC.setViewController(commentsVC, for: .primary)
 
-            let noSelectionVC = UIViewController()
-            noSelectionVC.view.backgroundColor = .systemBackground
-            splitVC.setViewController(noSelectionVC, for: .secondary)
-
-            presentationDelegate?.presentBlogDetailsViewController(splitVC)
+                let noSelectionVC = UIViewController()
+                noSelectionVC.view.backgroundColor = .systemBackground
+                splitVC.setViewController(noSelectionVC, for: .secondary)
+                presentationDelegate?.presentBlogDetailsViewController(splitVC)
+            }
         } else {
             presentationDelegate?.presentBlogDetailsViewController(commentsVC)
         }

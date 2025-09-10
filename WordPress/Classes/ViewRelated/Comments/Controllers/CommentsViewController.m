@@ -14,18 +14,20 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 @interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, NoResultsViewControllerDelegate, CommentDetailsDelegate>
-@property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
-@property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
-@property (nonatomic, strong) NoResultsViewController   *noResultsViewController;
-@property (nonatomic, strong) NoResultsViewController   *noConnectionViewController;
-@property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
-@property (nonatomic, strong) UIView                    *footerView;
-@property (nonatomic, strong) Blog                      *blog;
+@property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
+@property (nonatomic, strong) WPContentSyncHelper *syncHelper;
+@property (nonatomic, strong) NoResultsViewController *noResultsViewController;
+@property (nonatomic, strong) NoResultsViewController *noConnectionViewController;
+@property (nonatomic, strong) UIActivityIndicatorView *footerActivityIndicator;
+@property (nonatomic, strong) UIView *footerView;
+@property (nonatomic, strong) Blog *blog;
 
 @property (nonatomic) CommentStatusFilter currentStatusFilter;
 @property (nonatomic) CommentStatusFilter cachedStatusFilter;
 @property (weak, nonatomic) IBOutlet FilterTabBar *filterTabBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (weak, nonatomic) UISplitViewController *currentSplitViewController;
 
 // Keep track of the index path of the Comment displayed in comment details.
 // Used to advance the displayed Comment when Next is selected on the moderation confirmation snackbar.
@@ -78,8 +80,12 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-}
 
+    if (@available(iOS 26.0, *)) {
+        [self.currentSplitViewController hideColumn:UISplitViewControllerColumnInspector];
+        [self.currentSplitViewController setViewController:nil forColumn:UISplitViewControllerColumnInspector];
+    }
+}
 
 #pragma mark - Configuration
 
@@ -235,7 +241,27 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     if (self.isSidebarModeEnabled) {
         self.commentDetailViewController.isSidebarModeEnabled = true;
         self.commentDetailViewController.navigationItem.hidesBackButton = YES;
-        [self showDetailViewController:self.commentDetailViewController sender:nil];
+
+        if (@available(iOS 26.0, *)) {
+            __weak __typeof(self) weakSelf = self;
+            self.commentDetailViewController.closeBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemClose primaryAction:[UIAction actionWithHandler:^(__kindof UIAction * _Nonnull _) {
+                [weakSelf.currentSplitViewController hideColumn:UISplitViewControllerColumnInspector];
+
+                // Deselect any selected rows
+                NSIndexPath *selectedIndexPath = [weakSelf.tableView indexPathForSelectedRow];
+                if (selectedIndexPath) {
+                    [weakSelf.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
+                }
+            }]];
+
+            [self.splitViewController setViewController:self.commentDetailViewController forColumn:UISplitViewControllerColumnInspector];
+            self.splitViewController.maximumInspectorColumnWidth = 680;
+            self.splitViewController.preferredInspectorColumnWidth = 680;
+            [self.splitViewController showColumn:UISplitViewControllerColumnInspector];
+            self.currentSplitViewController = self.splitViewController;
+        } else {
+            [self showDetailViewController:self.commentDetailViewController sender:nil];
+        }
     } else {
         [self.navigationController pushViewController:self.commentDetailViewController animated:YES];
     }
