@@ -7,8 +7,6 @@ struct BarChartView: View {
 
     @State private var selectedDataPoints: SelectedDataPoints?
     @State private var isDragging = false
-    @State private var isLongPressing = false
-    @State private var longPressLocation: CGPoint?
     @State private var tappedDataPoint: DataPoint?
 
     @Environment(\.context) var context
@@ -246,43 +244,15 @@ struct BarChartView: View {
                 .onTapGesture { location in
                     handleTapGesture(at: location, proxy: proxy, geometry: geometry)
                 }
-                .onLongPressGesture(minimumDuration: 0.3) {
-                    // Long press completed - keep showing annotation
-                } onPressingChanged: { isPressing in
-                    if isPressing {
-                        // Long press started - show annotation at current location
-                        if let location = longPressLocation {
-                            isLongPressing = true
-                            selectedDataPoints = getSelectedDataPoints(at: location, proxy: proxy, geometry: geometry)
-                        }
-                    } else {
-                        // Long press ended - clear annotation
-                        isLongPressing = false
-                        longPressLocation = nil
-                        if !isDragging {
-                            selectedDataPoints = nil
-                        }
-                        tappedDataPoint = nil
-                    }
-                }
                 .simultaneousGesture(
-                    DragGesture(minimumDistance: 0)
+                    DragGesture(minimumDistance: 16)
                         .onChanged { value in
-                            // Store location for long press
-                            longPressLocation = value.location
-
-                            // Handle drag if moved enough
-                            if value.translation.width.magnitude > 8 || value.translation.height.magnitude > 8 {
-                                isDragging = true
-                                selectedDataPoints = getSelectedDataPoints(at: value.location, proxy: proxy, geometry: geometry)
-                            }
+                            isDragging = true
+                            selectedDataPoints = getSelectedDataPoints(at: value.location, proxy: proxy, geometry: geometry)
                         }
                         .onEnded { _ in
                             isDragging = false
-                            longPressLocation = nil
-                            if !isLongPressing {
-                                selectedDataPoints = nil
-                            }
+                            selectedDataPoints = nil
                             tappedDataPoint = nil
                         }
                 )
@@ -291,7 +261,7 @@ struct BarChartView: View {
 
     private func handleTapGesture(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) {
         // Only handle tap if not dragging or long pressing
-        guard !isDragging && !isLongPressing else { return }
+        guard !isDragging else { return }
 
         guard let onDateSelected,
               data.granularity != .hour,

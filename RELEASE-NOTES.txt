@@ -1,6 +1,7 @@
 26.3
 -----
 * [*] Fix an issue with Notification Settings button not working in the Reader Subscriptions context menus for subscriptions [#24778]
+* [*] Fix an issue with tooltip in bar charts in Stats preventing scrolling [#24822]
 * [*] Fix rare crash in Reader when loading posts [#24815]
 
 26.2
