@@ -83,6 +83,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
     if (@available(iOS 26.0, *)) {
         [self.currentSplitViewController hideColumn:UISplitViewControllerColumnInspector];
+        [self.currentSplitViewController setViewController:nil forColumn:UISplitViewControllerColumnInspector];
     }
 }
 
