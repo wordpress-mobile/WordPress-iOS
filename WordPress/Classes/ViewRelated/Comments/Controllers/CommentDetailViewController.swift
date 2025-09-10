@@ -325,6 +325,11 @@ private extension CommentDetailViewController {
 
     func configureNavBarButton() {
         var barItems: [UIBarButtonItem] = []
+        if isSidebarModeEnabled, #available(iOS 26, *) {
+            barItems.append(UIBarButtonItem(systemItem: .close, primaryAction: .init { [weak self] _ in
+                self?.splitViewController?.hide(.inspector)
+            }))
+        }
         barItems.append(shareBarButtonItem)
         if comment.allowsModeration() {
             barItems.append(editBarButtonItem)
