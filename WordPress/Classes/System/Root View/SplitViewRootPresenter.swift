@@ -103,6 +103,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
             content = notificationsContent
         case .reader:
             content = readerPresenter
+            readerPresenter.splitViewController = splitVC
+
         }
 
         display(content: content)

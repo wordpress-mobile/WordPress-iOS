@@ -105,15 +105,8 @@ final class SiteAddressViewController: LoginViewController {
 
     // MARK: - Overrides
 
-    /// Style individual ViewController backgrounds, for now.
-    ///
     override func styleBackground() {
-        guard let unifiedBackgroundColor = WordPressAuthenticator.shared.unifiedStyle?.viewControllerBackgroundColor else {
-            super.styleBackground()
-            return
-        }
-
-        view.backgroundColor = unifiedBackgroundColor
+        view.backgroundColor = .systemBackground
     }
 
     /// Style individual ViewController status bars.
@@ -266,7 +259,6 @@ private extension SiteAddressViewController {
 
     func configureNavBar() {
         navigationItem.title = WordPressAuthenticator.shared.displayStrings.logInTitle
-        styleNavigationBar(forUnified: true)
     }
 
     func setupTable() {

@@ -49,14 +49,6 @@ class WordPressAuthenticationManager: NSObject {
         self.googleLoginScheme = googleLoginScheme
         self.googleLoginServerClientId = googleLoginServerClientId
     }
-
-    /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
-    /// We'll setup a mechanism to relay the Support event back to the Authenticator.
-    ///
-    func startRelayingSupportNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationReceived), name: .ZendeskPushNotificationReceivedNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationCleared), name: .ZendeskPushNotificationClearedNotification, object: nil)
-    }
 }
 
 // MARK: - Initialization Methods
@@ -332,15 +324,6 @@ extension WordPressAuthenticationManager {
 // MARK: - Notification Handlers
 //
 extension WordPressAuthenticationManager {
-
-    @objc func supportPushNotificationReceived(_ notification: Foundation.Notification) {
-        WordPressAuthenticator.shared.supportPushNotificationReceived()
-    }
-
-    @objc func supportPushNotificationCleared(_ notification: Foundation.Notification) {
-        WordPressAuthenticator.shared.supportPushNotificationCleared()
-    }
-
     @objc func accontRequiresShowingWPComSigninReceived(_ notification: Foundation.Notification) {
         DispatchQueue.main.async {
             WordPressAuthenticationManager.showSigninForWPComFixingAuthToken()
@@ -377,12 +360,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     var supportEnabled: Bool {
         return ZendeskUtils.zendeskEnabled
-    }
-
-    /// Indicates if the Support notification indicator should be displayed.
-    ///
-    var showSupportNotificationIndicator: Bool {
-        return ZendeskUtils.showSupportNotificationIndicator
     }
 
     private var tracker: AuthenticatorAnalyticsTracker {

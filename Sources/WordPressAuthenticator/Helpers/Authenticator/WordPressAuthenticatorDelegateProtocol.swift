@@ -17,10 +17,6 @@ public protocol WordPressAuthenticatorDelegate: AnyObject {
     ///
     var wpcomTermsOfServiceEnabled: Bool { get }
 
-    /// Indicates if the Support notification indicator should be displayed.
-    ///
-    var showSupportNotificationIndicator: Bool { get }
-
     /// Indicates if Support is available or not.
     ///
     var supportEnabled: Bool { get }

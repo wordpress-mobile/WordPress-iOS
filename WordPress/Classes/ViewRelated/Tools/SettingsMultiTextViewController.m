@@ -82,6 +82,10 @@ static CGFloat const SettingsMinHeight = 82.0f;
     UIEdgeInsets textInset = textView.textContainerInset;
     textInset.left = 0.0;
     textInset.right = 0.0;
+    if (@available(iOS 26, *)) {
+        textInset.top = 12;
+        textInset.bottom = 12;
+    }
     textView.textContainerInset = textInset;
     textView.textContainer.lineFragmentPadding = 0.0;
 

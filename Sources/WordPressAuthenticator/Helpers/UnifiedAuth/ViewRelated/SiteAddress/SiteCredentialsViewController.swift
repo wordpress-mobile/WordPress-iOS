@@ -66,7 +66,6 @@ final class SiteCredentialsViewController: LoginViewController {
         if isDismissible {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissView))
         }
-        styleNavigationBar(forUnified: true)
 
         // Store default margin, and size table for the view.
         defaultTableViewMargin = tableViewLeadingConstraint?.constant ?? 0

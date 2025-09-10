@@ -27,6 +27,8 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         self.init(viewModel: ReaderSidebarViewModel())
     }
 
+    weak var splitViewController: UISplitViewController?
+
     init(viewModel: ReaderSidebarViewModel) {
         sidebarViewModel = viewModel
         secondary = UINavigationController()
@@ -219,10 +221,6 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         } else {
             mainNavigationController.safePushViewController(viewController, animated: true)
         }
-    }
-
-    private var splitViewController: UISplitViewController? {
-        sidebar.splitViewController
     }
 
     // MARK: - Deep Links (ReaderNavigationPath)

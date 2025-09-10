@@ -24,7 +24,6 @@ class UnifiedSignupViewController: LoginViewController {
         super.viewDidLoad()
 
         navigationItem.title = WordPressAuthenticator.shared.displayStrings.signUpTitle
-        styleNavigationBar(forUnified: true)
 
         // Store default margin, and size table for the view.
         defaultTableViewMargin = tableViewLeadingConstraint?.constant ?? 0

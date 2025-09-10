@@ -24,7 +24,6 @@ class GoogleSignupConfirmationViewController: LoginViewController {
         removeGoogleWaitingView()
 
         navigationItem.title = WordPressAuthenticator.shared.displayStrings.signUpTitle
-        styleNavigationBar(forUnified: true)
 
         defaultTableViewMargin = tableViewLeadingConstraint?.constant ?? 0
         setTableViewMargins(forWidth: view.frame.width)

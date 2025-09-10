@@ -37,7 +37,6 @@ final class SignupMagicLinkViewController: LoginViewController {
         validationCheck()
 
         navigationItem.title = WordPressAuthenticator.shared.displayStrings.signUpTitle
-        styleNavigationBar(forUnified: true)
 
         // Store default margin, and size table for the view.
         defaultTableViewMargin = tableViewLeadingConstraint?.constant ?? 0

@@ -52,7 +52,6 @@ class PasswordViewController: LoginViewController {
         removeGoogleWaitingView()
 
         navigationItem.title = WordPressAuthenticator.shared.displayStrings.logInTitle
-        styleNavigationBar(forUnified: true)
 
         defaultTableViewMargin = tableViewLeadingConstraint?.constant ?? 0
         setTableViewMargins(forWidth: view.frame.width)

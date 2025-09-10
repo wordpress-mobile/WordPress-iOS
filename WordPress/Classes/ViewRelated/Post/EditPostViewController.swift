@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 import WordPressData
 import WordPressShared
 
@@ -117,14 +118,76 @@ class EditPostViewController: UIViewController {
     // MARK: - Show editor by settings and post
 
     fileprivate func showEditor() {
-        let editor = editorFactory.instantiateEditor(
-            for: postToEdit(),
-            replaceEditor: { [weak self] (editor, replacement) in
-                self?.replaceEditor(editor: editor, replacement: replacement)
-        })
-        editor.postIsReblogged = postIsReblogged
-        editor.entryPoint = entryPoint
-        showEditor(editor)
+        let post = postToEdit()
+
+        // Check if application password is required for this post
+        if editorFactory.requiresApplicationPasswordForEditor(post: post) {
+            showApplicationPasswordRequired(for: post)
+        } else {
+            // Proceed with normal editor instantiation
+            let editor = editorFactory.instantiateEditor(
+                for: post,
+                replaceEditor: { [weak self] (editor, replacement) in
+                    self?.replaceEditor(editor: editor, replacement: replacement)
+            })
+            editor.postIsReblogged = postIsReblogged
+            editor.entryPoint = entryPoint
+            showEditor(editor)
+        }
+    }
+
+    private func showApplicationPasswordRequired(for post: Post) {
+        let feature = NSLocalizedString(
+            "applicationPasswordRequired.feature.blockEditor",
+            value: "Block Editor",
+            comment: "Feature name for the block editor in application password required prompt"
+        )
+
+        let applicationPasswordView = ApplicationPasswordRequiredView(
+            blog: post.blog,
+            localizedFeatureName: feature,
+            presentingViewController: self
+        ) { [weak self] client in
+            // Once authenticated, dismiss the application password view and show editor
+            guard let self else { return EmptyView() }
+
+            let editor = self.editorFactory.instantiateEditor(
+                for: post,
+                replaceEditor: { [weak self] (editor, replacement) in
+                    self?.replaceEditor(editor: editor, replacement: replacement)
+            })
+            editor.postIsReblogged = self.postIsReblogged
+            editor.entryPoint = self.entryPoint
+
+            // Dismiss application password view, then present the editor
+            self.dismiss(animated: true) {
+                self.showEditor(editor)
+            }
+
+            return EmptyView()
+        }
+
+        let hostingController = UIHostingController(rootView: applicationPasswordView)
+
+        hostingController.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .close,
+            target: self,
+            action: #selector(dismissApplicationPasswordView)
+        )
+
+        let navController = AztecNavigationController(rootViewController: hostingController)
+        navController.modalPresentationStyle = .fullScreen
+        navController.view.backgroundColor = .systemBackground
+
+        present(navController, animated: !showImmediately)
+    }
+
+    @objc private func dismissApplicationPasswordView() {
+        // Dismiss the ApplicationPasswordRequiredView, then close the entire EditPostViewController
+        // since there's no meaningful content to show without the editor
+        dismiss(animated: true) { [weak self] in
+            self?.closeEditor()
+        }
     }
 
     private func showEditor(_ editor: EditorViewController) {
