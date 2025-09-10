@@ -18,7 +18,7 @@ extension UIScrollView {
 
 extension UICollectionView {
     @objc override func scrollToTop(animated: Bool) {
-        if numberOfSections > 0 {
+        if numberOfSections > 0, numberOfItems(inSection: 0) {
             scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: animated)
         }
     }
