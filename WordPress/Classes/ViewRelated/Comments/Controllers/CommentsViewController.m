@@ -246,6 +246,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
             __weak __typeof(self) weakSelf = self;
             self.commentDetailViewController.closeBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemClose primaryAction:[UIAction actionWithHandler:^(__kindof UIAction * _Nonnull _) {
                 [weakSelf.currentSplitViewController hideColumn:UISplitViewControllerColumnInspector];
+                [weakSelf.currentSplitViewController setViewController:nil forColumn:UISplitViewControllerColumnInspector];
 
                 // Deselect any selected rows
                 NSIndexPath *selectedIndexPath = [weakSelf.tableView indexPathForSelectedRow];
