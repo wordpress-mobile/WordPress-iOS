@@ -71,6 +71,8 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     private var headerCell = CommentHeaderTableViewCell()
 
+    @objc public var closeBarButtonItem: UIBarButtonItem?
+
     private lazy var replyIndicatorCell: UITableViewCell = {
         let cell = UITableViewCell()
 
@@ -325,10 +327,8 @@ private extension CommentDetailViewController {
 
     func configureNavBarButton() {
         var barItems: [UIBarButtonItem] = []
-        if isSidebarModeEnabled, #available(iOS 26, *) {
-            barItems.append(UIBarButtonItem(systemItem: .close, primaryAction: .init { [weak self] _ in
-                self?.splitViewController?.hide(.inspector)
-            }))
+        if let closeBarButtonItem {
+            barItems.append(closeBarButtonItem)
         }
         barItems.append(shareBarButtonItem)
         if comment.allowsModeration() {

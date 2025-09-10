@@ -14,13 +14,13 @@ static NSInteger const CommentsFetchBatchSize                   = 10;
 static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
 @interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, NoResultsViewControllerDelegate, CommentDetailsDelegate>
-@property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
-@property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
-@property (nonatomic, strong) NoResultsViewController   *noResultsViewController;
-@property (nonatomic, strong) NoResultsViewController   *noConnectionViewController;
-@property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
-@property (nonatomic, strong) UIView                    *footerView;
-@property (nonatomic, strong) Blog                      *blog;
+@property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
+@property (nonatomic, strong) WPContentSyncHelper *syncHelper;
+@property (nonatomic, strong) NoResultsViewController *noResultsViewController;
+@property (nonatomic, strong) NoResultsViewController *noConnectionViewController;
+@property (nonatomic, strong) UIActivityIndicatorView *footerActivityIndicator;
+@property (nonatomic, strong) UIView *footerView;
+@property (nonatomic, strong) Blog *blog;
 
 @property (nonatomic) CommentStatusFilter currentStatusFilter;
 @property (nonatomic) CommentStatusFilter cachedStatusFilter;
@@ -242,8 +242,18 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
         self.commentDetailViewController.isSidebarModeEnabled = true;
         self.commentDetailViewController.navigationItem.hidesBackButton = YES;
 
-
         if (@available(iOS 26.0, *)) {
+            __weak __typeof(self) weakSelf = self;
+            self.commentDetailViewController.closeBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemClose primaryAction:[UIAction actionWithHandler:^(__kindof UIAction * _Nonnull _) {
+                [weakSelf.currentSplitViewController hideColumn:UISplitViewControllerColumnInspector];
+
+                // Deselect any selected rows
+                NSIndexPath *selectedIndexPath = [weakSelf.tableView indexPathForSelectedRow];
+                if (selectedIndexPath) {
+                    [weakSelf.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
+                }
+            }]];
+
             [self.splitViewController setViewController:self.commentDetailViewController forColumn:UISplitViewControllerColumnInspector];
             self.splitViewController.maximumInspectorColumnWidth = 680;
             self.splitViewController.preferredInspectorColumnWidth = 680;
