@@ -12,7 +12,7 @@ final class ReaderHeroView: UIView {
         traitCollection.horizontalSizeClass == .compact ? 40 : 20
     }
 
-    let bottomExtensionHeight = DesignConstants.radius(.large)
+    private(set) var bottomExtensionHeight: CGFloat = 0
 
     var imageURL: URL?
 
@@ -62,6 +62,17 @@ final class ReaderHeroView: UIView {
 
         if imageViewFrame != imageView.frame {
             imageView.frame = imageViewFrame
+        }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Extend below the header of the article to support corner radius
+        let newValue = traitCollection.horizontalSizeClass == .compact ? DesignConstants.radius(.large) : 0
+        if bottomExtensionHeight != newValue {
+            bottomExtensionHeight = newValue
+            setNeedsLayout()
         }
     }
 

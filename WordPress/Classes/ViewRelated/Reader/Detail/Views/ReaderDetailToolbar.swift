@@ -176,7 +176,7 @@ class ReaderDetailToolbar {
         // Set font
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
-            outgoing.font = .preferredFont(forTextStyle: .subheadline)
+            outgoing.font = .system(size: 15)
             return outgoing
         }
 

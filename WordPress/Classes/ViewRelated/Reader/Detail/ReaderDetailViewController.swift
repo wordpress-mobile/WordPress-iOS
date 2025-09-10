@@ -173,8 +173,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
             headerContainerView.clipsToBounds = true
             headerContainerView.backgroundColor = .systemBackground
-            headerContainerView.layer.cornerRadius = DesignConstants.radius(.large)
-            headerContainerView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         }
 
         // Fixes swipe to go back not working when leftBarButtonItem is set
@@ -233,6 +231,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     override func contentScrollView(for edge: NSDirectionalRectEdge) -> UIScrollView? {
         scrollView
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        let isCompact = traitCollection.horizontalSizeClass == .compact
+        headerContainerView.layer.cornerRadius = isCompact ? DesignConstants.radius(.large) : 0
+        headerContainerView.layer.maskedCorners = isCompact ? [.layerMaxXMinYCorner, .layerMinXMinYCorner] : []
     }
 
     func render(_ post: ReaderPost) {
@@ -444,13 +450,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Apply view styles
     @MainActor private func applyStyles() {
-        guard let readableGuide = webView.superview?.readableContentGuide else {
-            return
-        }
-
+        webView.pinEdges(.horizontal, to: view, insets: UIEdgeInsets(.horizontal, 16), priority: .init(950))
         NSLayoutConstraint.activate([
-            webView.rightAnchor.constraint(equalTo: readableGuide.rightAnchor, constant: -Constants.margin),
-            webView.leftAnchor.constraint(equalTo: readableGuide.leftAnchor, constant: Constants.margin)
+            webView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            webView.widthAnchor.constraint(lessThanOrEqualToConstant: UIFontMetrics(forTextStyle: .body).scaledValue(for: Constants.preferredArticleWidth))
         ])
 
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -853,7 +856,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private enum Constants {
-        static let margin: CGFloat = UIDevice.isPad() ? 0 : 8
+        static let preferredArticleWidth: CGFloat = 680
     }
 
     // MARK: - Managed object observer
