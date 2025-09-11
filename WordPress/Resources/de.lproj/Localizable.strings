@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-11 11:45:29+0000 */
+/* Translation-Revision-Date: 2025-09-11 14:46:22+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -1503,7 +1503,7 @@ translators: %s: Block name e.g. \"Image block\" */
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen. */
-"Continue" = "Weiter";
+"Continue" = "Fortfahren";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
 "Continue With WordPress.com" = "Weiter mit WordPress.com";
