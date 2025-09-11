@@ -21,7 +21,6 @@ final class ReaderHeroView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-#if compiler(>=6.2)
         if #available(iOS 26.0, *) {
             let extensionView = UIBackgroundExtensionView()
             extensionView.automaticallyPlacesContentView = false
@@ -32,9 +31,6 @@ final class ReaderHeroView: UIView {
         } else {
             addSubview(imageView)
         }
-#else
-        addSubview(imageView)
-#endif
 
         clipsToBounds = true
     }
