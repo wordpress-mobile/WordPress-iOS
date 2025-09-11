@@ -35,8 +35,9 @@ final class CommentGutenbergEditorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        var configuration = EditorConfiguration(content: initialContent ?? "")
-        configuration.hideTitle = true
+        let configuration = EditorConfigurationBuilder(content: initialContent ?? "")
+            .setShouldHideTitle(true)
+            .build()
 
         let editorVC = GutenbergKit.EditorViewController(configuration: configuration)
         editorVC.delegate = self

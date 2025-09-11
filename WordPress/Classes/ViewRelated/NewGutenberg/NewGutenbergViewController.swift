@@ -137,13 +137,14 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenbergKit, post: post)
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
-        var conf = EditorConfiguration(blog: post.blog)
-        conf.title = post.postTitle ?? ""
-        conf.content = post.content ?? ""
-        conf.postID = post.postID?.intValue != -1 ? post.postID?.intValue : nil
-        conf.postType = post is Page ? "page" : "post"
+        let configuration = EditorConfigurationBuilder(blog: post.blog)
+            .setTitle(post.postTitle ?? "")
+            .setContent(post.content ?? "")
+            .setPostID(post.postID?.intValue != -1 ? post.postID?.intValue : nil)
+            .setPostType(post is Page ? "page" : "post")
+            .build()
 
-        self.editorViewController = GutenbergKit.EditorViewController(configuration: conf)
+        self.editorViewController = GutenbergKit.EditorViewController(configuration: configuration)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -417,10 +418,12 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         hasEditorStarted = true
 
         if let settings {
-            var updatedConfig = self.editorViewController.configuration
-            updatedConfig.updateEditorSettings(settings)
+            let updatedConfig = self.editorViewController.configuration.toBuilder()
+                .setEditorSettings(settings)
+                .build()
             self.editorViewController.updateConfiguration(updatedConfig)
         }
+
         self.editorViewController.startEditorSetup()
     }
 }
