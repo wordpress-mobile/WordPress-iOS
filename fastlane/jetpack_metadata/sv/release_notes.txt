@@ -1,3 +1,0 @@
-- De vackra statistikdiagrammen har precis blivit ännu bättre – tryck på valfri stapel för omedelbara insikter, utforska veckovisa trender och njut av ett felfritt mörkt läge. Dina data förtjänar denna nivå av elegans.
-- Vi har lagt till omnämnanden till den experimentella redigeraren – nämn dina samarbetspartners och beskåda magin.
-- Delad vy för iPad fungerar nu perfekt i stående läge. Inga fler besvärliga layouter.

@@ -1,3 +1,0 @@
-- Ces magnifiques tableaux de statistiques ont encore été améliorés : appuyez sur n’importe quelle barre pour obtenir des informations instantanées, explorez les tendances hebdomadaires et profitez d’un mode sombre parfait. Vos données méritent ce niveau d’élégance.
-- Nous avons ajouté des mentions à l’éditeur expérimental : taguez vos collaborateurs et observez la magie se produire.
-- La vue fractionnée (Split View) sur iPad se comporte désormais parfaitement en mode portrait. Fini les mises en page gênantes.

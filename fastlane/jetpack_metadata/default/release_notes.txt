@@ -1,3 +1,4 @@
-- Those gorgeous Stats charts just got even better—tap any bar for instant insights, explore weekly trends, and enjoy flawless dark mode. Your data deserves this level of elegance.
-- We've added mentions to the experimental editor—tag your collaborators and watch the magic happen.
-- iPad Split View now behaves beautifully in portrait mode. No more awkward layouts.
+* [*] Fix a rare crash when scrolling the Reader sidebar [#24816]
+* [*] Fix an issue with Notification Settings button not working in the Reader Subscriptions context menus for subscriptions [#24778]
+* [*] Fix an issue with tooltip in bar charts in Stats preventing scrolling [#24822]
+* [*] Fix rare crash in Reader when loading posts [#24815]
