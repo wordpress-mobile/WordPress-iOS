@@ -21,18 +21,12 @@ final class BlockEditorCache {
 
     // MARK: - Block Settings
 
-    func saveBlockSettings(_ settings: [String: Any], for blogID: TaggedManagedObjectID<Blog>) {
+    func saveBlockSettings(_ settings: Data, for blogID: TaggedManagedObjectID<Blog>) throws {
         let fileURL = makeBlockSettingsURL(for: blogID)
-
-        do {
-            let data = try JSONSerialization.data(withJSONObject: settings, options: [.prettyPrinted])
-            try data.write(to: fileURL)
-        } catch {
-            DDLogError("Failed to save block editor settings: \(error)")
-        }
+        try settings.write(to: fileURL)
     }
 
-    func getBlockSettings(for blogID: TaggedManagedObjectID<Blog>) -> [String: Any]? {
+    func getBlockSettings(for blogID: TaggedManagedObjectID<Blog>) -> Data? {
         let fileURL = makeBlockSettingsURL(for: blogID)
 
         guard FileManager.default.fileExists(atPath: fileURL.path) else {
@@ -40,9 +34,7 @@ final class BlockEditorCache {
         }
 
         do {
-            let data = try Data(contentsOf: fileURL)
-            let object = try JSONSerialization.jsonObject(with: data, options: [])
-            return object as? [String: Any]
+            return try Data(contentsOf: fileURL)
         } catch {
             DDLogError("Failed to load block editor settings: \(error)")
             // If the file is corrupted, delete it

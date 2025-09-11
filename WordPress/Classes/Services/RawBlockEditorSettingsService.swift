@@ -4,8 +4,9 @@ import WordPressKit
 import WordPressShared
 
 final class RawBlockEditorSettingsService {
+
     private let blog: Blog
-    private var refreshTask: Task<[String: Any], Error>?
+    private var refreshTask: Task<Data, Error>?
 
     init(blog: Blog) {
         self.blog = blog
@@ -24,27 +25,6 @@ final class RawBlockEditorSettingsService {
         return service
     }
 
-    @MainActor
-    private func fetchSettingsFromAPI() async throws -> [String: Any] {
-        guard let remoteAPI = WordPressOrgRestApi(blog: blog) else {
-            throw URLError(.unknown) // Should not happen
-        }
-        let result = await remoteAPI.get(path: "/wp-block-editor/v1/settings")
-        switch result {
-        case .success(let response):
-            guard let dictionary = response as? [String: Any] else {
-                throw NSError(domain: "RawBlockEditorSettingsService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
-            }
-            let blogID = TaggedManagedObjectID(blog)
-            Task {
-                await saveSettingsInBackground(dictionary, for: blogID)
-            }
-            return dictionary
-        case .failure(let error):
-            throw error
-        }
-    }
-
     /// Refreshes the editor settings in the background.
     func refreshSettings() {
         Task { @MainActor in
@@ -53,7 +33,7 @@ final class RawBlockEditorSettingsService {
     }
 
     @MainActor
-    private func fetchSettings() async throws -> [String: Any] {
+    private func fetchSettings() async throws -> Data {
         if let task = refreshTask {
             return try await task.value
         }
@@ -70,10 +50,27 @@ final class RawBlockEditorSettingsService {
         return try await task.value
     }
 
+    private func fetchSettingsFromAPI() async throws -> Data {
+        guard let remoteAPI = WordPressOrgRestApi(blog: blog) else {
+            throw URLError(.unknown) // Should not happen
+        }
+
+        let response: WordPressAPIResult<Data, WordPressOrgRestApiError> = await remoteAPI.get(
+            path: "/wp-block-editor/v1/settings"
+        )
+
+        let data = try response.get() // Unwrap the result type
+
+        let blogID = TaggedManagedObjectID(blog)
+        saveSettingsInBackground(data, for: blogID)
+
+        return data
+    }
+
     /// Returns cached settings if available. If not, fetches the settings from
     /// the network.
     @MainActor
-    func getSettings() async throws -> [String: Any] {
+    func getSettings() async throws -> Data {
         // Return cached settings if available
         let blogID = TaggedManagedObjectID(blog)
         if let cachedSettings = await loadSettingsInBackground(for: blogID) {
@@ -81,12 +78,27 @@ final class RawBlockEditorSettingsService {
         }
         return try await fetchSettings()
     }
+
+    @MainActor
+    func getSettingsString() async throws -> String {
+        let data = try await getSettings()
+        guard let string = String(data: data, encoding: .utf8) else {
+            throw CocoaError(.fileReadCorruptFile)
+        }
+        return string
+    }
 }
 
-private func saveSettingsInBackground(_ settings: [String: Any], for blogID: TaggedManagedObjectID<Blog>) async {
-    BlockEditorCache.shared.saveBlockSettings(settings, for: blogID)
+private func saveSettingsInBackground(_ settings: Data, for blogID: TaggedManagedObjectID<Blog>) {
+    Task {
+        do {
+            try BlockEditorCache.shared.saveBlockSettings(settings, for: blogID)
+        } catch {
+            wpAssertionFailure("Unable to save block settings", userInfo: ["error": error])
+        }
+    }
 }
 
-private func loadSettingsInBackground(for blogID: TaggedManagedObjectID<Blog>) async -> [String: Any]? {
+private func loadSettingsInBackground(for blogID: TaggedManagedObjectID<Blog>) async -> Data? {
     BlockEditorCache.shared.getBlockSettings(for: blogID)
 }

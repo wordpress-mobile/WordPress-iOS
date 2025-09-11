@@ -379,12 +379,12 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         }
     }
 
-    private func fetchBlockEditorSettings() async -> [String: Any]? {
+    private func fetchBlockEditorSettings() async -> String? {
         let service = RawBlockEditorSettingsService.getService(forBlog: post.blog)
         service.refreshSettings()
 
         do {
-            let settings = try await service.getSettings()
+            let settings = try await service.getSettingsString()
             return settings
         } catch {
             return nil
@@ -413,12 +413,12 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         }
     }
 
-    private func startEditor(with settings: [String: Any]? = nil) {
+    private func startEditor(with settings: String? = nil) {
         guard !hasEditorStarted else { return }
         hasEditorStarted = true
 
         if let settings {
-            let updatedConfig = self.editorViewController.configuration.toBuilder()
+            let updatedConfig: GutenbergKit.EditorConfiguration = self.editorViewController.configuration.toBuilder()
                 .setEditorSettings(settings)
                 .build()
             self.editorViewController.updateConfiguration(updatedConfig)
@@ -1031,28 +1031,34 @@ extension EditorConfiguration {
             siteApiNamespace.append("sites/\(siteDomain)/")
         }
 
-        self = EditorConfiguration()
+        var builder = EditorConfigurationBuilder(blog: blog)
+            .setSiteApiNamespace(siteApiNamespace)
+            .setNamespaceExcludedPaths(["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"])
+            .setAuthHeader(authHeader)
+            .setShouldUseThemeStyles(FeatureFlag.newGutenbergThemeStyles.enabled)
+            // Limited to Jetpack-connected sites until editor assets endpoint is available in WordPress core
+            .setShouldUsePlugins(EditorConfiguration.shouldEnablePlugins(for: blog, appPassword: applicationPassword))
+            .setLocale(WordPressComLanguageDatabase().deviceLanguage.slug)
 
-        self.siteURL = blog.url ?? ""
-        self.siteApiRoot = siteApiRoot ?? ""
-        self.siteApiNamespace = siteApiNamespace
-        self.namespaceExcludedPaths = ["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"]
-        self.authHeader = authHeader
+        if let blogUrl = blog.url {
+            builder = builder.setSiteUrl(blogUrl)
+        }
 
-        self.themeStyles = FeatureFlag.newGutenbergThemeStyles.enabled
-        // Limited to Jetpack-connected sites until editor assets endpoint is available in WordPress core
-        if EditorConfiguration.shouldEnablePlugins(for: blog, appPassword: applicationPassword) {
-            self.plugins = true
-            if var editorAssetsEndpoint = URL(string: self.siteApiRoot) {
+        if let siteApiRoot {
+            builder = builder.setSiteApiRoot(siteApiRoot)
+
+            if var editorAssetsEndpoint = URL(string: siteApiRoot) {
                 editorAssetsEndpoint.appendPathComponent("wpcom/v2/")
                 if let namespace = siteApiNamespace.first {
                     editorAssetsEndpoint.appendPathComponent(namespace)
                 }
+
                 editorAssetsEndpoint.appendPathComponent("editor-assets")
-                self.editorAssetsEndpoint = editorAssetsEndpoint
+                builder = builder.setEditorAssetsEndpoint(editorAssetsEndpoint)
             }
         }
-        self.locale = WordPressComLanguageDatabase().deviceLanguage.slug
+
+        self = builder.build()
     }
 
     /// Returns true if the plugins should be enabled for the given blog.
