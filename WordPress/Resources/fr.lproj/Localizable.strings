@@ -1292,8 +1292,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Clics";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Fermer";
 
@@ -6325,7 +6324,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "HTML inconnu";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Erreur inconnue";
 
 /* People: Invitation Error */
@@ -9137,9 +9136,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "Supprimé !";
-
-/* The name of the media filter */
-"mediaLibrary.filterAll" = "Tout";
 
 /* The name of the media filter */
 "mediaLibrary.filterAudio" = "Audio";

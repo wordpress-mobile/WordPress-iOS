@@ -1229,8 +1229,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Kliknutí";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Zavřít";
 
@@ -6118,7 +6117,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "Neznámé HTML";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Neznámá chyba";
 
 /* People: Invitation Error */

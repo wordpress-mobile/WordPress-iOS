@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-02 10:54:10+0000 */
+/* Translation-Revision-Date: 2025-09-05 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -1298,8 +1298,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "點擊率";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "關閉";
 
@@ -6328,7 +6327,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "不明 HTML";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "發生未知的錯誤";
 
 /* People: Invitation Error */
@@ -8039,6 +8038,9 @@ Example: Reply to Pamela Nguyen */
 /* Shared empty state view */
 "emptyStateView.noSearchResult.title" = "沒有結果";
 
+/* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
+"entityMetadataFooterView.id" = "ID";
+
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
@@ -9194,9 +9196,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "已刪除！";
-
-/* The name of the media filter */
-"mediaLibrary.filterAll" = "全部";
 
 /* The name of the media filter */
 "mediaLibrary.filterAudio" = "音訊";
@@ -11185,6 +11184,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "選取媒體。";
+
+/* Title for the URL field */
+"siteMedia.details.url" = "URL";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "點選即可在全螢幕中檢視媒體";

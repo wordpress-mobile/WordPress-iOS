@@ -113,8 +113,7 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Klikovi";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Zatvori";
 
@@ -631,7 +630,7 @@
 /* Unapproves a Comment */
 "Unapprove Comment" = "Neodobren Komentar";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Nepoznata greška.";
 
 /* Title of unreplied Comments filter. */

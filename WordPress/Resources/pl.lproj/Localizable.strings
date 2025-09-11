@@ -456,8 +456,7 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Kliknięcia";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Zamknij";
 
@@ -2400,7 +2399,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "Przestań obserwować konwersację";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Nieznany błąd";
 
 /* Search Terms label for 'unknown search terms'. */

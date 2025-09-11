@@ -1292,8 +1292,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Klikime";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Mbylle";
 
@@ -6304,7 +6303,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "HTML e panjohur";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Gabim i panjohur";
 
 /* People: Invitation Error */
@@ -8379,9 +8378,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "U fshi!";
-
-/* The name of the media filter */
-"mediaLibrary.filterAll" = "Krejt";
 
 /* The name of the media filter */
 "mediaLibrary.filterAudio" = "Audio";

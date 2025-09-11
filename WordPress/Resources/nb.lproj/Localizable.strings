@@ -882,8 +882,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Klikk";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Lukk";
 
@@ -4343,7 +4342,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "Ukjent HTML";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Ukjent feil";
 
 /* People: Invitation Error */
