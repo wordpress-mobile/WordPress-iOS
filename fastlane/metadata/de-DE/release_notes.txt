@@ -1,2 +1,0 @@
-- Wir haben dem experimentellen Editor Erwähnungen hinzugefügt, damit du beteiligte Personen markieren und besser mit ihnen zusammenarbeiten kannst.
-- Die getrennte Ansicht auf dem iPad funktioniert im Hochformat nun einwandfrei. Keine seltsamen Layouts mehr.

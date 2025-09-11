@@ -1,2 +1,0 @@
-- Deneysel düzenleyiciye bahsedilmeler ekledik: Çalışma arkadaşlarınızı etiketleyin ve sihrin gerçekleşmesini izleyin.
-- iPad Bölünmüş Görünüm artık portre modunda iyi davranıyor. Artık garip düzenler yok.

@@ -1,2 +1,0 @@
-- Kami telah menambahkan fitur penyebutan ke editor eksperimental. Tandai kolaborator Anda dan saksikan keajaibannya.
-- Split View iPad kini berfungsi dengan baik di mode malam. Tak ada lagi tata letak yang aneh.

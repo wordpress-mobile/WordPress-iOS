@@ -1,2 +1,0 @@
-- Vi har lagt till omnämnanden till den experimentella redigeraren – nämn dina samarbetspartners och beskåda magin.
-- Delad vy för iPad fungerar nu perfekt i stående läge. Inga fler besvärliga layouter.

@@ -1,2 +1,1 @@
-- We've added mentions to the experimental editor—tag your collaborators and watch the magic happen.
-- iPad Split View now behaves beautifully in portrait mode. No more awkward layouts.
+

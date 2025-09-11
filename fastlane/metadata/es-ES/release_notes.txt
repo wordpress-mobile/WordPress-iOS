@@ -1,2 +1,0 @@
-- Hemos añadido menciones al editor experimental: etiqueta a tus colaboradores y observa cómo se produce la magia.
-- La vista dividida del iPad ahora se comporta perfectamente en modo vertical. Se acabaron los diseños incómodos.
