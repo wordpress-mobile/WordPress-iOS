@@ -862,6 +862,9 @@
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Application passwords are a more secure way to connect to your self-hosted site, and enable support for features like %@.";
 
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "Block Editor";
+
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Plugin Management";
 
@@ -1749,8 +1752,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
    Period Stats 'Clicks' header */
 "Clicks" = "Clicks";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Close";
 
@@ -5532,10 +5534,10 @@ Please install the %3$@ to use the app with this site.";
 "mediaLibrary.deletionSuccessMessage" = "Deleted!";
 
 /* The name of the media filter */
-"mediaLibrary.filterAll" = "All";
+"mediaLibrary.filterAudio" = "Audio";
 
 /* The name of the media filter */
-"mediaLibrary.filterAudio" = "Audio";
+"mediaLibrary.filterDefault" = "Default (All)";
 
 /* The name of the media filter */
 "mediaLibrary.filterDocuments" = "Documents";
@@ -7452,6 +7454,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Menu option for filtering posts by me */
 "postsList.postsByMe" = "Posts by me";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "Post Stats";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Cancel";
@@ -11099,7 +11104,7 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "Unknown";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Unknown error";
 
 /* People: Invitation Error */
