@@ -53,6 +53,10 @@ class EditorGutenbergTests_01: EditorGutenbergTests {
 // The slowest one are in separate for better parallelization
 class EditorGutenbergTests_02: EditorGutenbergTests {
     func testBasicPostPublishWithCategoryAndTag() throws {
+        if #available(iOS 26.0, *) {
+            throw XCTSkip("No photos in the Photos app")
+        }
+
         try BlockEditorScreen()
             .enterTextInTitle(text: postTitle)
             .addParagraphBlock(withText: postContent)
@@ -70,6 +74,10 @@ class EditorGutenbergTests_02: EditorGutenbergTests {
 
 class EditorGutenbergTests_03: EditorGutenbergTests {
     func testAddRemoveFeaturedImage() throws {
+        if #available(iOS 26.0, *) {
+            throw XCTSkip("No photos in the Photos app")
+        }
+
         try BlockEditorScreen()
             .enterTextInTitle(text: postTitle)
             .addParagraphBlock(withText: postContent)
@@ -87,6 +95,10 @@ class EditorGutenbergTests_03: EditorGutenbergTests {
 
 class EditorGutenbergTests_04: EditorGutenbergTests {
     func testAddGalleryBlock() throws {
+        if #available(iOS 26.0, *) {
+            throw XCTSkip("No photos in the Photos app")
+        }
+
         try BlockEditorScreen()
             .enterTextInTitle(text: postTitle)
             .addParagraphBlock(withText: postContent)
@@ -95,6 +107,10 @@ class EditorGutenbergTests_04: EditorGutenbergTests {
     }
 
     func testAddMediaBlocks() throws {
+        if #available(iOS 26.0, *) {
+            throw XCTSkip("No photos in the Photos app")
+        }
+
         try BlockEditorScreen()
             .addImage()
             .addVideoFromUrl(urlPath: videoUrlPath)
