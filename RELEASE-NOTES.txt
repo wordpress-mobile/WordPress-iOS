@@ -1,3 +1,7 @@
+26.4
+-----
+
+
 26.3
 -----
 * [*] Fix a rare crash when scrolling the Reader sidebar [#24816]
