@@ -191,7 +191,8 @@ extension BlogDetailHeaderView {
             let stackView = UIStackView(arrangedSubviews: [
                 siteIconView,
                 titleStackView,
-                siteSwitcherButton
+                siteSwitcherButton,
+                UIView()
             ])
 
             stackView.alignment = .center
