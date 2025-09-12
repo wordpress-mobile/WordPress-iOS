@@ -119,6 +119,53 @@ extension StringRankedSearch {
         .sorted { $0.1 > $1.1 }
         .map(\.0)
     }
+
+    /// Parallel version of search that computes scores concurrently for better performance.
+    /// Divides work into chunks based on available CPU cores for optimal performance.
+    ///
+    /// - parameter items: The items to search through
+    /// - parameter minScore: Minimum score threshold (default 0.7)
+    /// - parameter input: Function to extract searchable text from each item
+    /// - returns: Array of matching items sorted by relevance score
+    public func parallelSearch<S: Sequence>(
+        in items: S,
+        minScore: Double = 0.7,
+        input: @escaping @Sendable (S.Element) -> String
+    ) async -> [S.Element] where S.Element: Sendable {
+        let items = Array(items)
+
+        // Calculate optimal chunk size based on CPU cores (leave one core free)
+        let maxConcurrency = max(1, ProcessInfo.processInfo.activeProcessorCount - 1)
+        let chunkSize = max(1, items.count / maxConcurrency)
+
+        // Divide items into chunks
+        let chunks = items.chunked(into: chunkSize)
+
+        // Process chunks in parallel using TaskGroup
+        let results = await withTaskGroup(of: [(S.Element, Double)].self) { group in
+            for chunk in chunks {
+                group.addTask { [self] in
+                    chunk.compactMap { item -> (S.Element, Double)? in
+                        let itemScore = self.score(for: input(item))
+                        guard itemScore > minScore else { return nil }
+                        return (item, itemScore)
+                    }
+                }
+            }
+
+            // Collect all results from chunks
+            var collected: [(S.Element, Double)] = []
+            for await chunkResults in group {
+                collected.append(contentsOf: chunkResults)
+            }
+            return collected
+        }
+
+        // Sort by score and return items
+        return results
+            .sorted { $0.1 > $1.1 }
+            .map(\.0)
+    }
 }
 
 public extension Sequence {
@@ -131,4 +178,13 @@ public extension Sequence {
         search(query, minScore: minScore, using: \.self)
     }
 
+}
+
+private extension Array {
+    /// Divides the array into chunks of the specified size.
+    func chunked(into chunkSize: Int) -> [[Element]] {
+        return stride(from: 0, to: count, by: chunkSize).map {
+            Array(self[$0..<Swift.min($0 + chunkSize, count)])
+        }
+    }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 import WordPressData
 import WordPressUI
 import WordPressShared
+import CoreData
 
 struct ReaderSubscriptionsView: View {
     @FetchRequest(
@@ -13,13 +14,13 @@ struct ReaderSubscriptionsView: View {
     @State private var searchText = ""
     @State private var isShowingMainAddSubscriptonPopover = false
 
-    @State private var searchResults: [ReaderSiteTopic] = []
+    @State private var searchResults: [ReaderSiteTopic]?
+    @State private var searchTask: Task<Void, Never>?
+    @State private var pendingSearchText: String?
 
     @StateObject private var viewModel = ReaderSubscriptionsViewModel()
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-
-    var isShowingSearchResuts: Bool { !searchText.isEmpty }
 
     var onSelection: (_ subscription: ReaderSiteTopic) -> Void = { _ in }
 
@@ -72,7 +73,7 @@ struct ReaderSubscriptionsView: View {
 
     private var main: some View {
         List {
-            if isShowingSearchResuts {
+            if let searchResults {
                 ForEach(searchResults, id: \.objectID, content: makeSubscriptionCell)
                     .onDelete(perform: delete)
             } else {
@@ -84,11 +85,11 @@ struct ReaderSubscriptionsView: View {
         .searchable(text: $searchText)
         .onReceive(subscriptions.publisher) { _ in
             if !searchText.isEmpty {
-                reloadSearchResults(searchText: searchText)
+                performBackgroundSearch(searchText: searchText)
             }
         }
         .onChange(of: searchText) {
-            reloadSearchResults(searchText: $0)
+            performBackgroundSearch(searchText: $0)
         }
     }
 
@@ -117,7 +118,7 @@ struct ReaderSubscriptionsView: View {
     }
 
     private func getSubscription(at index: Int) -> ReaderSiteTopic {
-        if isShowingSearchResuts {
+        if let searchResults {
             searchResults[index]
         } else {
             subscriptions[index]
@@ -128,9 +129,66 @@ struct ReaderSubscriptionsView: View {
         ReaderSubscriptionHelper().unfollow(site)
     }
 
-    private func reloadSearchResults(searchText: String) {
-        let ranking = StringRankedSearch(searchTerm: searchText)
-        searchResults = ranking.search(in: subscriptions) { "\($0.title) \($0.siteURL)" }
+    private func performBackgroundSearch(searchText: String) {
+        struct SearchableSubscription: Sendable {
+            let objectID: NSManagedObjectID
+            let title: String
+            let siteURL: String
+
+            var searchableText: String {
+                "\(title) \(siteURL)"
+            }
+
+            init(_ subscription: ReaderSiteTopic) {
+                self.objectID = subscription.objectID
+                self.title = subscription.title
+                self.siteURL = subscription.siteURL
+            }
+        }
+
+        // Cancel any existing search task
+        searchTask?.cancel()
+
+        // Clear results immediately if search text is empty
+        if searchText.isEmpty {
+            searchResults = nil
+            pendingSearchText = nil
+            return
+        }
+
+        // Start new background search task
+        searchTask = Task {
+            // Store the search text we're processing
+            let currentSearchText = searchText
+
+            // Create searchable data on main thread to avoid Core Data context issues
+            let searchableData = subscriptions.map(SearchableSubscription.init)
+
+            // Perform the search on a background queue with parallel processing
+            let resultObjectIDs = await StringRankedSearch(searchTerm: currentSearchText)
+                .parallelSearch(in: searchableData) { $0.searchableText }
+                .map(\.objectID)
+
+            // Check if we were cancelled or if search text changed during search
+            guard !Task.isCancelled else { return }
+
+            // Update results on main thread
+            await MainActor.run {
+                // Only update if this search is still relevant
+                if currentSearchText == searchText {
+                    searchResults = subscriptions.filter { resultObjectIDs.contains($0.objectID) }
+                    pendingSearchText = nil
+                } else {
+                    // Search text changed during our search, mark that we need a new search
+                    pendingSearchText = searchText
+                }
+
+                // If there's a pending search, start it now
+                if let pendingSearchText {
+                    performBackgroundSearch(searchText: pendingSearchText)
+                }
+            }
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 26.4
 -----
+* [*] Fix performance issues with search in Reader Subscriptions [#24841]
 
 
 26.3
