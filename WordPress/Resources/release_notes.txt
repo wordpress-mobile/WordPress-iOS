@@ -1,1 +1,5 @@
+We made some thoughtful improvements to make your WordPress experience even smoother.
 
+We added support for iOS 26, so you can take advantage of all the latest features your device has to offer. Everything looks and feels just right.
+
+We also made some behind-the-scenes improvements to buttons and navigation throughout the app. You'll notice things feel more polished and consistent, especially in the Editor, Settings, and Stats screens.
