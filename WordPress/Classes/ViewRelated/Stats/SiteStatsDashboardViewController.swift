@@ -462,13 +462,6 @@ private extension SiteStatsDashboardViewController {
         ])
 
         child.didMove(toParent: self)
-
-        // Delay for SwiftUI-based views that don't render immediatelly
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-            if let scrollView = child.contentScrollView(for: .top) {
-                self.filterBarController.enableAutomaticHiding(in: scrollView)
-            }
-        }
     }
 
     private func _removeChildViewController(_ child: UIViewController) {
