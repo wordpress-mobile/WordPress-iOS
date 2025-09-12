@@ -1,4 +1,7 @@
-* [*] Fix a rare crash when scrolling the Reader sidebar [#24816]
-* [*] Fix an issue with Notification Settings button not working in the Reader Subscriptions context menus for subscriptions [#24778]
-* [*] Fix an issue with tooltip in bar charts in Stats preventing scrolling [#24822]
-* [*] Fix rare crash in Reader when loading posts [#24815]
+We made some thoughtful improvements to make your Jetpack experience even smoother.
+
+We added support for iOS 26, so you can take advantage of all the latest features your device has to offer. Everything looks and feels just right.
+
+The Reader got some love with visual updates to the article screen, making it easier on the eyes when you're catching up on your favorite content.
+
+We also made some behind-the-scenes improvements to buttons and navigation throughout the app. You'll notice things feel more polished and consistent, especially in the Editor, Settings, and Stats screens.
