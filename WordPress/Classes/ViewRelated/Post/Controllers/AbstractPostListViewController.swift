@@ -199,7 +199,7 @@ class AbstractPostListViewController: UIViewController,
 
 #if compiler(>=6.2)
         if #available(iOS 26, *) {
-            navigationItem.preferredSearchBarPlacement = traitCollection.horizontalSizeClass == .regular ? .integrated : .integratedButton
+            navigationItem.preferredSearchBarPlacement = .integrated
         }
 #endif
 
