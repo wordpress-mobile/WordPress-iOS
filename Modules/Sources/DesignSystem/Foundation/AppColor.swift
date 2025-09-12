@@ -5,14 +5,8 @@ import BuildSettingsKit
 
 public enum UIAppColor {
     /// A tint color used in places like navigation bars.
-    ///
-    /// - note: The Jetpack app uses
     public static var tint: UIColor {
-        switch AppBrand.current {
-        case .wordpress: primary
-        case .jetpack: UIColor.label
-        case .reader: primary
-        }
+        UIColor.label
     }
 
     public static var primary: UIColor {

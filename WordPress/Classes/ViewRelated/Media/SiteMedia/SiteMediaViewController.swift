@@ -3,6 +3,7 @@ import PhotosUI
 import SVProgressHUD
 import WordPressData
 import WordPressShared
+import WordPressUI
 
 /// The main Site Media screen.
 final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewControllerDelegate {
@@ -83,6 +84,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         let config = UIImage.SymbolConfiguration(textStyle: .body, scale: .large)
         let image = UIImage(systemName: "plus", withConfiguration: config) ?? .gridicon(.plus)
         button.setImage(image, for: .normal)
+        button.tintColor = UIAppColor.tint
         button.menu = buttonAddMediaMenuController.makeMenu(for: self)
         button.showsMenuAsPrimaryAction = true
         button.accessibilityLabel = Strings.addButtonAccessibilityLabel
