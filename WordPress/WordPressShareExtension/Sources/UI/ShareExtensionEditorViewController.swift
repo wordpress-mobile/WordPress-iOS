@@ -254,6 +254,10 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     // MARK: - Title and Title placeholder position methods
 
     func refreshTitlePosition() {
+        guard titleTopConstraint != nil && textPlaceholderTopConstraint != nil else {
+            return
+        }
+
         let referenceView: UITextView = richTextView
         titleTopConstraint.constant = -(referenceView.contentOffset.y + referenceView.contentInset.top)
 
