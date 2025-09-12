@@ -101,7 +101,7 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
 
         if AccountHelper.noWordPressDotComAccount {
             let selfHostedRemoval = RemoteFeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted.enabled(using: featureFlagStore)
-            return selfHostedRemoval ? .selfHosted : .normal
+            return selfHostedRemoval ? .selfHosted : .staticScreens
         }
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.enabled(using: featureFlagStore) {
             return .newUsers
@@ -122,7 +122,7 @@ public class JetpackFeaturesRemovalCoordinator: NSObject {
             return .one
         }
 
-        return .normal
+        return .staticScreens
     }
 
     static func siteCreationPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> SiteCreationPhase {
