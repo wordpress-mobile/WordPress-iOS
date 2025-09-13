@@ -11,7 +11,7 @@ struct PostAction: ActionSheetItem {
     func makeButton() -> ActionSheetButton {
         return ActionSheetButton(
             title: NSLocalizedString("Blog post", comment: "Create new Blog Post button title"),
-            image: UIImage(named: "wpl-posts") ?? .init(),
+            image: UIImage(named: "wpl-posts")?.withRenderingMode(.alwaysTemplate) ?? .init(),
             identifier: "blogPostButton",
             action: {
                 WPAnalytics.track(.createSheetActionTapped, properties: ["source": source, "action": action])
@@ -47,7 +47,7 @@ struct PageAction: ActionSheetItem {
     func makeButton() -> ActionSheetButton {
         return ActionSheetButton(
             title: NSLocalizedString("Site page", comment: "Create new Site Page button title"),
-            image: UIImage(named: "wpl-pages") ?? .init(),
+            image: UIImage(named: "wpl-pages")?.withRenderingMode(.alwaysTemplate) ?? .init(),
             identifier: "sitePageButton",
             action: {
                 WPAnalytics.track(.createSheetActionTapped, properties: ["source": source, "action": action])
