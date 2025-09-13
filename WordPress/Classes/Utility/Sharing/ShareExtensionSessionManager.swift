@@ -26,7 +26,7 @@ import WordPressKit
     fileprivate lazy var backgroundSession: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: self.backgroundSessionIdentifier)
         configuration.sharedContainerIdentifier = self.appGroup
-        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: OperationQueue.main)
         return session
     }()
 
