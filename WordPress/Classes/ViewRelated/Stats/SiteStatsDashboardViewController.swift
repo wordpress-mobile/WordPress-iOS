@@ -297,12 +297,10 @@ public class SiteStatsDashboardViewController: UIViewController {
 
     @available(iOS 17, *)
     private func showNewStatsTip() {
-        guard let button = parent?.navigationItem.rightBarButtonItem else { return }
-
         tipObserver?.cancel()
         tipObserver = registerTipPopover(
             AppTips.NewStatsTip(),
-            sourceItem: button,
+            sourceItem: statsMenuButton,
             arrowDirection: .up
         ) { [weak self] action in
             guard let self else { return }
