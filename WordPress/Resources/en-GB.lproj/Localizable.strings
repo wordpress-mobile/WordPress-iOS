@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-25 15:05:59+0000 */
+/* Translation-Revision-Date: 2025-09-12 16:10:14+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: en_GB */
@@ -7386,6 +7386,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Application passwords are a more secure way to connect to your self-hosted site, and enable support for features like %@.";
 
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "Block Editor";
+
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Plugin Management";
 
@@ -8723,6 +8726,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 months date range */
 "jetpackStats.calendar.last12Months" = "Last 12 Months";
 
+/* Last 12 weeks (84 days) date range */
+"jetpackStats.calendar.last12Weeks" = "Last 12 Weeks";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Last 28 Days";
 
@@ -8900,6 +8906,9 @@ Example: Reply to Pamela Nguyen */
 /* Compare with same period last year option */
 "jetpackStats.datePicker.lastYear" = "Last Year";
 
+/* Menu item for more date period options */
+"jetpackStats.datePicker.more" = "More…";
+
 /* Compare with preceding period option */
 "jetpackStats.datePicker.precedingPeriod" = "Preceding Period";
 
@@ -8914,6 +8923,12 @@ Example: Reply to Pamela Nguyen */
 
 /* To date label */
 "jetpackStats.datePicker.to" = "To";
+
+/* Message explaining how to use the date range control */
+"jetpackStats.dateRangeTip.message" = "View recent days, weeks, months, years, or select custom date ranges.";
+
+/* Title for stats date range control tip */
+"jetpackStats.dateRangeTip.title" = "Navigate Through Time";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Sub-links";
@@ -9202,6 +9217,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the media filter */
 "mediaLibrary.filterAudio" = "Audio";
+
+/* The name of the media filter */
+"mediaLibrary.filterDefault" = "Default (All)";
 
 /* The name of the media filter */
 "mediaLibrary.filterDocuments" = "Documents";
@@ -10103,6 +10121,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Visibility";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "Post Stats";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Cancel";
@@ -11941,6 +11962,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "Your Sites";
+
+/* Message explaining how to use the date range control */
+"tips.statsDateRange.message" = "Use the calendar to select days, weeks, months, years, or choose custom date ranges to view your stats.";
+
+/* Title for stats date range control tip */
+"tips.statsDateRange.title" = "Navigate Through Time";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "top tips";
