@@ -30,7 +30,7 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
     }
 
     public let filterBar = AdaptiveTabBar()
-    private var filterBarContainer = UIView()
+    private var filterBarContainer = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
 
     public let segmentedControl = UISegmentedControl()
 
@@ -51,8 +51,8 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
     }
 
     private func setupFilterBar() {
-        filterBarContainer.backgroundColor = .secondarySystemGroupedBackground
-        filterBarContainer.addSubview(filterBar)
+//        filterBarContainer.backgroundColor = .systemGroupedBackground // .secondarySystemGroupedBackground
+        filterBarContainer.contentView.addSubview(filterBar)
         filterBar.pinEdges(.top, to: filterBarContainer.safeAreaLayoutGuide, insets: UIEdgeInsets(.top, -filterBar.tabBarHeight))
         filterBar.pinEdges([.horizontal, .bottom])
 
