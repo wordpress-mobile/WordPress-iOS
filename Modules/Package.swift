@@ -173,7 +173,12 @@ let package = Package(
             resources: [.process("Resources")],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
-        .target(name: "WordPressKitObjCUtils"),
+        .target(
+            name: "WordPressKitObjCUtils",
+            cSettings: [
+                .define("NS_BLOCK_ASSERTIONS", to: "1", .when(configuration: .release))
+            ]
+        ),
         .target(
             name: "WordPressKitModels",
             dependencies: [
@@ -189,7 +194,10 @@ let package = Package(
                 "WordPressKitModels",
                 "WordPressKitObjCUtils",
             ],
-            publicHeadersPath: "include"
+            publicHeadersPath: "include",
+            cSettings: [
+                .define("NS_BLOCK_ASSERTIONS", to: "1", .when(configuration: .release))
+            ],
         ),
         .target(
             name: "WordPressKit",
