@@ -265,7 +265,7 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>AppIcon</string>
+				<string>AppIconLegacy</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
@@ -523,7 +523,7 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>AppIcon</string>
+				<string>AppIconLegacy</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
