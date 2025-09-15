@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-12 13:54:09+0000 */
+/* Translation-Revision-Date: 2025-09-15 19:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: fr */
@@ -7362,6 +7362,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Les mots de passe d’application sont un moyen plus sûr de vous connecter à votre site auto-hébergé et activer des fonctionnalités telles que %@.";
 
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "Éditeur de blocs";
+
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Gestion des extensions";
 
@@ -9141,6 +9144,9 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.filterAudio" = "Audio";
 
 /* The name of the media filter */
+"mediaLibrary.filterDefault" = "Par défaut (tout)";
+
+/* The name of the media filter */
 "mediaLibrary.filterDocuments" = "Documents";
 
 /* The name of the media filter */
@@ -10019,6 +10025,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Visibilité";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "Statistiques de l’article";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Annuler";
