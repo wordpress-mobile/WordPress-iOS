@@ -28,28 +28,26 @@ public enum LanguageModelHelper {
         style: GenerationStyle
     ) -> String {
         """
-        Generate three distinct excerpt options for the following post. Each excerpt should capture the essence of the content while being engaging enough to encourage readers to click through and read the full post.
+        Task: Create exactly 3 excerpts for a blog post.
 
-        **Parameters:**
-        - Excerpt Length: around \(length.promptModifier) (important!!!)
-        - Writing Style: \(style.promptDescription)
+        CRITICAL CONSTRAINTS:
+        • Each excerpt MUST be \(length.promptModifier) (\(length.wordRange) words)
+        • Style: \(style.promptDescription)
 
-        **Requirements for each excerpt:**
+        EXCERPT REQUIREMENTS:
+        * Follow the best practices for post excerpts esteblished in the WordPress ecosystem
+        • First sentence: Strong hook that creates curiosity
+        • Include the post's main value proposition
+        • Use active voice (avoid "is", "are", "was", "were" when possible)
+        • End with implicit promise of more information
+        • Do not use ellipsis (...) at the end
 
-        1. Stay within the target word count
-        2. Hook the reader within the first sentence
-        3. Maintain the specified writing style throughout
-        4. Include the most compelling point or benefit from the post
-        5. Use active voice predominantly
-        6. Follow other best practices for post excerpts established within the WordPress community
+        VARIATION GUIDELINES:
+        Excerpt 1: Open with a question that addresses reader's problem
+        Excerpt 2: Start with a bold statement or surprising fact
+        Excerpt 3: Lead with the primary benefit or outcome
 
-        **Generate three variations that differ in:**
-
-        - Opening approach (question vs. statement vs. statistic/fact)
-        - Emotional appeal (logical vs. emotional vs. aspirational)
-        - Information density (high detail vs. broad strokes vs. balanced)
-
-        **Post Content:**
+        SOURCE CONTENT:
         \(content)
         """
     }
@@ -106,9 +104,17 @@ public enum GeneratedContentLength: Int, CaseIterable, RawRepresentable {
 
     public var promptModifier: String {
         switch self {
-        case .short: "50 words"
-        case .medium: "100 words"
-        case .long: "150 words"
+        case .short: "short"
+        case .medium: "medium"
+        case .long: "long"
+        }
+    }
+
+    public var wordRange: String {
+        switch self {
+        case .short: "30-60"
+        case .medium: "60-90"
+        case .long: "120-150"
         }
     }
 }

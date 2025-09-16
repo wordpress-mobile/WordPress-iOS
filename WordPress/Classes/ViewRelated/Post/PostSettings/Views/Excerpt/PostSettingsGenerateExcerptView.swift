@@ -239,7 +239,7 @@ struct PostSettingsGenerateExcerptView: View {
 
             if isFirstResult {
                 isFirstResult = false
-                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
             }
 
             let values = (result.content.excerpts ?? [])
