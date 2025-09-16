@@ -154,7 +154,7 @@ struct PostSettingsGenerateExcerptView: View {
             }
             .tint(AppColor.primary)
             .onChange(of: length) { _ in
-                debouncedRegenerateExcerpts()
+                didChangeGenerationParameters()
             }
         }
     }
@@ -182,7 +182,7 @@ struct PostSettingsGenerateExcerptView: View {
             .pickerStyle(.menu)
             .tint(Color.primary)
             .onChange(of: style) { _ in
-                debouncedRegenerateExcerpts()
+                didChangeGenerationParameters()
             }
         }
     }
@@ -195,9 +195,9 @@ struct PostSettingsGenerateExcerptView: View {
     }
 
     private func generateExcerpts() {
-        // Cancel any existing generation task
         generationTask?.cancel()
 
+        excerpts = []
         isGenerating = true
         isFirstResult = true
         error = nil
@@ -216,17 +216,12 @@ struct PostSettingsGenerateExcerptView: View {
         }
     }
 
-    private func regenerateExcerpts() {
-        excerpts = []
-        generateExcerpts()
-    }
-
-    private func debouncedRegenerateExcerpts() {
+    private func didChangeGenerationParameters() {
         debounceTask?.cancel()
         debounceTask = Task {
             try? await Task.sleep(for: .milliseconds(330))
             guard !Task.isCancelled else { return }
-            regenerateExcerpts()
+            generateExcerpts()
         }
     }
 
