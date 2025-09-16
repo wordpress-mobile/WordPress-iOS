@@ -1,6 +1,6 @@
 26.4
 -----
-
+* [*] [Intelligence] Add support for generating excerpts for posts [#24852]
 
 26.3
 -----
