@@ -6,7 +6,14 @@ extension PrepublishingViewController {
         // End editing to avoid issues with accessibility
         presentingViewController.view.endEditing(true)
 
-        let viewController = PrepublishingViewController(post: revision, isStandalone: isStandalone, completion: completion)
-        viewController.presentAsSheet(from: presentingViewController)
+        guard FeatureFlag.newPublishingSheet.enabled else {
+            let viewController = PrepublishingViewController(post: revision, isStandalone: isStandalone, completion: completion)
+            viewController.presentAsSheet(from: presentingViewController)
+            return
+        }
+
+        let publishVC = PublishPostViewController(post: revision)
+        publishVC.sheetPresentationController?.detents = [.medium(), .large()]
+        presentingViewController.present(publishVC, animated: true)
     }
 }
