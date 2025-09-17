@@ -25,9 +25,9 @@ public struct LanguageModelUnavailableView: View {
             } description: {
                 Text(Strings.appleIntelligenceDisabledMessage)
             } actions: {
-                VStack(spacing: 12) {
+                if let settingURL = URL(string: UIApplication.openSettingsURLString) {
                     Button(Strings.openAppleIntelligenceSettings) {
-                        openAppleIntelligenceSettings()
+                        UIApplication.shared.open(settingURL)
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(AppColor.primary)
@@ -48,19 +48,6 @@ public struct LanguageModelUnavailableView: View {
                 Text(Strings.appleIntelligenceUnavailableTitle)
             } actions: {
                 EmptyView()
-            }
-        }
-    }
-}
-
-private func openAppleIntelligenceSettings() {
-    if let settingsURL = URL(string: "App-Prefs:root=APPLE_INTELLIGENCE_SIRI_SETTINGS") {
-        UIApplication.shared.open(settingsURL) { success in
-            if !success {
-                // Fallback to general Settings app
-                if let generalSettingsURL = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(generalSettingsURL)
-                }
             }
         }
     }
