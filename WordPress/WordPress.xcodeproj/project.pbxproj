@@ -2786,7 +2786,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1640;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 2600;
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
 					0C3313B62E0439A8000C3760 = {
