@@ -44,15 +44,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // MARK: - Set content
 
-    // TODO: reimplement
-    func setTitle(_ title: String) {
-//        guard gutenberg.isLoaded else {
-//            return
-//        }
-//
-//        gutenberg.setTitle(title)
-    }
-
     var post: AbstractPost {
         didSet {
             postEditorStateContext = PostEditorStateContext(post: post, delegate: self)
@@ -169,6 +160,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         setupEditor()
 
+        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) {
+            // Do nothing
+        }
+
         // TODO: reimplement
 //        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
 ////            self?.gutenberg.updateCapabilities()
@@ -215,20 +210,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
     }
 
-    // TODO: this should not be called on viewDidLoad
-    private func reloadEditorContents() {
-        let content = post.content ?? String()
-
-        setTitle(post.postTitle ?? "")
-        editorViewController.setContent(content)
-
-        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) {
-            // Do nothing
-        }
-    }
-
     private func refreshInterface() {
-        reloadEditorContents()
         reloadPublishButton()
         navigationItem.rightBarButtonItems = post.status == .trash ? [] : navigationBarManager.rightBarButtonItems
     }
@@ -411,13 +393,18 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         guard !hasEditorStarted else { return }
         hasEditorStarted = true
 
+        var configurationBuilder = self.editorViewController.configuration.toBuilder()
+
         if let settings {
-            let updatedConfig: GutenbergKit.EditorConfiguration = self.editorViewController.configuration.toBuilder()
-                .setEditorSettings(settings)
-                .build()
-            self.editorViewController.updateConfiguration(updatedConfig)
+            configurationBuilder = configurationBuilder.setEditorSettings(settings)
         }
 
+        let updatedConfiguration = configurationBuilder
+            .setTitle(post.postTitle ?? "")
+            .setContent(post.content ?? "")
+            .build()
+
+        self.editorViewController.updateConfiguration(updatedConfiguration)
         self.editorViewController.startEditorSetup()
     }
 }
