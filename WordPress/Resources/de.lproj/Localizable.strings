@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-11 14:46:22+0000 */
+/* Translation-Revision-Date: 2025-09-16 00:35:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -2656,7 +2656,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
-"Got it" = "OK";
+"Got it" = "Verstanden";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Die Website-URL wird abgerufen";

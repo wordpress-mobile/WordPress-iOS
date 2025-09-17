@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-03 09:54:09+0000 */
+/* Translation-Revision-Date: 2025-09-16 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ja_JP */
@@ -7380,6 +7380,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "アプリケーションパスワードを使用するとインストール型のサイトにより安全に接続でき、%@ などの機能がサポートされます。";
 
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "ブロックエディター";
+
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "プラグイン管理";
 
@@ -9177,6 +9180,9 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.filterAudio" = "音声ファイル";
 
 /* The name of the media filter */
+"mediaLibrary.filterDefault" = "デフォルト (すべて)";
+
+/* The name of the media filter */
 "mediaLibrary.filterDocuments" = "文書";
 
 /* The name of the media filter */
@@ -10067,6 +10073,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "表示設定";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "投稿統計情報";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "キャンセル";
