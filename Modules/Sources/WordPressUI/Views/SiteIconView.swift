@@ -17,7 +17,7 @@ public struct SiteIconView: View {
     }
 
     private var cornerRadius: CGFloat {
-        if #available(iOS 26, *) { 12 } else { 6 }
+        if #available(iOS 26, *) { 10 } else { 6 }
     }
 
     @ViewBuilder
