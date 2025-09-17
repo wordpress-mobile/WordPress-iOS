@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-02 10:54:09+0000 */
+/* Translation-Revision-Date: 2025-09-16 09:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: id */
@@ -7386,6 +7386,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Agar lebih aman, gunakan kata sandi aplikasi untuk terhubung dengan situs Anda yang dihosting sendiri sehingga Anda mendapatkan dukungan bagi fitur seperti %@.";
 
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "Editor Blok";
+
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Pengelolaan Plugin";
 
@@ -9195,6 +9198,9 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.filterAudio" = "Audio";
 
 /* The name of the media filter */
+"mediaLibrary.filterDefault" = "Default (Semua)";
+
+/* The name of the media filter */
 "mediaLibrary.filterDocuments" = "Dokumen";
 
 /* The name of the media filter */
@@ -10079,6 +10085,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Visibilitas";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "Statistik Pos";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Batal";

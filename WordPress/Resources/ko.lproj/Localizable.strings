@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-10 23:59:47+0000 */
+/* Translation-Revision-Date: 2025-09-15 23:49:41+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ko_KR */
@@ -7386,6 +7386,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "애플리케이션 비밀번호를 사용하면 독립 호스트 사이트에 더욱 안전하게 연결할 수 있고 %@을(를) 비롯한 기능을 지원할 수 있습니다.";
 
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "블록 에디터";
+
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "플러그인 관리";
 
@@ -9216,6 +9219,9 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.filterAudio" = "오디오";
 
 /* The name of the media filter */
+"mediaLibrary.filterDefault" = "기본 (모두)";
+
+/* The name of the media filter */
 "mediaLibrary.filterDocuments" = "문서";
 
 /* The name of the media filter */
@@ -10115,6 +10121,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "표시 여부";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "게시물 통계";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "취소";

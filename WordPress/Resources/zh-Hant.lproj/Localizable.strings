@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-05 09:54:10+0000 */
+/* Translation-Revision-Date: 2025-09-16 12:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -7377,6 +7377,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "應用程式密碼可提供更安全的自助託管網站連結方式，還支援「%@」等功能。";
 
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "區塊編輯器";
+
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "外掛程式管理";
 
@@ -9201,6 +9204,9 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.filterAudio" = "音訊";
 
 /* The name of the media filter */
+"mediaLibrary.filterDefault" = "預設 (全部)";
+
+/* The name of the media filter */
 "mediaLibrary.filterDocuments" = "文件";
 
 /* The name of the media filter */
@@ -10094,6 +10100,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "可見度";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "文章統計資料";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "取消";
