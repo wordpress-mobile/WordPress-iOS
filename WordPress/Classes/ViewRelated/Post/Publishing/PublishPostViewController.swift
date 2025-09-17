@@ -118,8 +118,7 @@ struct PublishPostView: View {
         if viewModel.isSaving {
             ProgressView()
         } else {
-            // TODO: change dyncam to "Schedule"
-            Button(Strings.publish) {
+            Button(viewModel.publishButtonTitle) {
                 viewModel.buttonPublishTapped()
             }
             .fontWeight(.medium)
@@ -127,6 +126,13 @@ struct PublishPostView: View {
             .buttonBorderShape(.capsule)
             .tint(AppColor.primary)
         }
+    }
+}
+
+private extension PostSettingsViewModel {
+    var publishButtonTitle: String {
+        let isScheduled = settings.publishDate.map { $0 > .now } ?? false
+        return isScheduled ? Strings.schedule : Strings.publish
     }
 }
 
