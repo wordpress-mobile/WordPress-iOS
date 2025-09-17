@@ -7,9 +7,11 @@ final class RawBlockEditorSettingsService {
 
     private let blog: Blog
     private var refreshTask: Task<Data, Error>?
+    private let dotOrgRestAPI: WordPressOrgRestApi
 
     init(blog: Blog) {
         self.blog = blog
+        self.dotOrgRestAPI = WordPressOrgRestApi(blog: blog)!
     }
 
     private static var services: [TaggedManagedObjectID<Blog>: RawBlockEditorSettingsService] = [:]
@@ -51,11 +53,8 @@ final class RawBlockEditorSettingsService {
     }
 
     private func fetchSettingsFromAPI() async throws -> Data {
-        guard let remoteAPI = WordPressOrgRestApi(blog: blog) else {
-            throw URLError(.unknown) // Should not happen
-        }
 
-        let response: WordPressAPIResult<Data, WordPressOrgRestApiError> = await remoteAPI.get(
+        let response: WordPressAPIResult<Data, WordPressOrgRestApiError> = await dotOrgRestAPI.get(
             path: "/wp-block-editor/v1/settings"
         )
 
