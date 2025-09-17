@@ -49,7 +49,6 @@ struct PublishPostView: View {
 
     var post: AbstractPost { viewModel.post }
 
-    // TODO: (publish) figure out the media upload situation
     var body: some View {
         Form {
             PostSettingsFormContentView(viewModel: viewModel)
@@ -72,12 +71,14 @@ struct PublishPostView: View {
                         Text(Strings.discardChangesMessage)
                     }
             }
-            ToolbarItemGroup(placement: .topBarTrailing) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     // TODO: (publish) show preview
                 } label: {
                     Image(systemName: "safari")
                 }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
                 buttonPublish
             }
         }
