@@ -12,7 +12,7 @@ extension PrepublishingViewController {
             return
         }
 
-        let publishVC = PublishPostViewController(post: revision)
+        let publishVC = PublishPostViewController(post: revision, isStandalone: isStandalone)
         publishVC.onCompletion = completion
         publishVC.sheetPresentationController?.detents = [.medium(), .large()]
         presentingViewController.present(publishVC, animated: true)

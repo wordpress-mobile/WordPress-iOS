@@ -12,12 +12,10 @@ final class PublishPostViewController: UIHostingController<NavigationView<Publis
 
     var onCompletion: ((PrepublishingSheetResult) -> Void)?
 
-    // TODO: add isShowingDeletedAlert
-    init(post: AbstractPost) {
-        // TODO: add isStandalone support
+    init(post: AbstractPost, isStandalone: Bool) {
         let viewModel = PostSettingsViewModel(
             post: post,
-            isStandalone: true,
+            isStandalone: isStandalone,
             context: .publishing
         )
         self.viewModel = viewModel
@@ -46,6 +44,8 @@ final class PublishPostViewController: UIHostingController<NavigationView<Publis
 
 struct PublishPostView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
+
+    @State private var isShowingDiscardChangesAlert = false
 
     var post: AbstractPost { viewModel.post }
 
@@ -77,6 +77,16 @@ struct PublishPostView: View {
         } message: {
             Text(viewModel.deletedAlertMessage)
         }
+        .confirmationDialog(Strings.discardChangesTitle, isPresented: $isShowingDiscardChangesAlert) {
+            Button(Strings.discardChangesButton, role: .destructive) {
+                viewModel.buttonCancelTapped()
+            }
+            Button(SharedStrings.Button.save, role: .cancel) {
+                viewModel.buttonSaveTapped()
+            }
+        } message: {
+            Text(Strings.discardChangesMessage)
+        }
         .disabled(viewModel.isSaving)
     }
 
@@ -84,7 +94,6 @@ struct PublishPostView: View {
 
     @ViewBuilder
     private var buttonCancel: some View {
-        // TODO: (publish) connect to actual hasChanges
         if #available(iOS 26, *) {
             Button(role: .cancel, action: buttonCancelTapped)
         } else {
@@ -95,8 +104,7 @@ struct PublishPostView: View {
 
     private func buttonCancelTapped() {
         if viewModel.hasChanges {
-            // TODO: implement isShowingDiscardChangesAlert
-//                isShowingDiscardChangesAlert = true
+            isShowingDiscardChangesAlert = true
         } else {
             viewModel.buttonCancelTapped()
         }
@@ -140,4 +148,22 @@ enum PrepublishingSheetStrings {
     }
     static let mediaUploadFailedTitle = NSLocalizedString("prepublishing.mediaUploadFailedTitle", value: "Failed to upload media", comment: "Title for a publish button state in the pre-publishing sheet")
     static let mediaUploadFailedDetailsMultipleFailures = NSLocalizedString("prepublishing.mediaUploadFailedDetails", value: "%@ items failed to upload", comment: "Details for a publish button state in the pre-publishing sheet; count as a parameter")
+
+    static let discardChangesTitle = NSLocalizedString(
+        "prepublishing.discardChanges.title",
+        value: "Discard Changes?",
+        comment: "Title for the discard changes confirmation dialog"
+    )
+
+    static let discardChangesMessage = NSLocalizedString(
+        "prepublishing.discardChanges.message",
+        value: "You have unsaved changes to the post settings. Are you sure you want to discard them?",
+        comment: "Message for the discard changes confirmation dialog"
+    )
+
+    static let discardChangesButton = NSLocalizedString(
+        "prepublishing.discardChanges.button",
+        value: "Discard Changes",
+        comment: "Button to confirm discarding changes"
+    )
 }
