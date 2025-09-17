@@ -669,6 +669,12 @@ import WordPressShared
     case jetpackConnectCompleted
     case jetpackConnectStepRetried
 
+    // Intelligence
+    case intelligenceExcerptGeneratorOpened
+    case intelligenceExcerptSelected
+    case intelligenceExcerptOptionsGenerated
+    case intelligenceUnavailableViewShown
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1808,6 +1814,16 @@ import WordPressShared
             return "jetpack_rest_connect_completed"
         case .jetpackConnectStepRetried:
             return "jetpack_rest_connect_step_retried"
+
+            // Intelligence
+        case .intelligenceExcerptGeneratorOpened:
+            "intelligence_excerpt_generator_opened"
+        case .intelligenceExcerptSelected:
+            "intelligence_excerpt_selected"
+        case .intelligenceExcerptOptionsGenerated:
+            "intelligence_excerpt_options_generated"
+        case .intelligenceUnavailableViewShown:
+            "intelligence_unavailable_view_shown"
         } // END OF SWITCH
     }
 

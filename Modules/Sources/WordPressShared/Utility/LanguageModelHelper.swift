@@ -102,6 +102,14 @@ public enum GeneratedContentLength: Int, CaseIterable, RawRepresentable {
         }
     }
 
+    public var trackingName: String {
+        switch self {
+        case .short: "short"
+        case .medium: "medium"
+        case .long: "long"
+        }
+    }
+
     public var promptModifier: String {
         switch self {
         case .short: "short"

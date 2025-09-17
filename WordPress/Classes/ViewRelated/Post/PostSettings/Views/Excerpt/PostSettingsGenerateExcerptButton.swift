@@ -20,6 +20,7 @@ struct PostSettingsGenerateExcerptButton: View {
         Button {
             onWillShowPopover?()
             isShowingExcerptGenerator = true
+            WPAnalytics.track(.intelligenceGenerateExcerptOpened)
         } label: {
             HStack(spacing: 4) {
                 Image(systemName: "sparkle")

@@ -9,7 +9,11 @@ public struct LanguageModelUnavailableView: View {
     public let reason: SystemLanguageModel.Availability.UnavailableReason
 
     public var body: some View {
-        makeUnavailableView(for: reason)
+        makeUnavailableView(for: reason).onAppear {
+            WPAppAnalytics.track(.intelligenceUnavailableViewShown, properties: [
+                "reason": "\(reason)"
+            ])
+        }
     }
 
     public init(reason: SystemLanguageModel.Availability.UnavailableReason) {
@@ -60,43 +64,43 @@ public struct LanguageModelUnavailableView: View {
 
 private enum Strings {
     static let appleIntelligenceDisabledTitle = NSLocalizedString(
-        "onDeviceAI.unavailableView.appleIntelligenceDisabled.title",
+        "intelligence.unavailableView.appleIntelligenceDisabled.title",
         value: "Apple Intelligence Required",
         comment: "Title shown when Apple Intelligence is disabled"
     )
 
     static let appleIntelligenceDisabledMessage = NSLocalizedString(
-        "onDeviceAI.unavailableView.appleIntelligenceDisabled.message",
+        "intelligence.unavailableView.appleIntelligenceDisabled.message",
         value: "To generate excerpts with AI, please enable Apple Intelligence in Settings. This feature uses on-device processing to protect your privacy.",
         comment: "Message shown when Apple Intelligence is disabled"
     )
 
     static let openAppleIntelligenceSettings = NSLocalizedString(
-        "onDeviceAI.unavailableView.appleIntelligenceDisabled.openSettings",
+        "intelligence.unavailableView.appleIntelligenceDisabled.openSettings",
         value: "Open Settings",
         comment: "Button to open Apple Intelligence settings"
     )
 
     static let preparingModel = NSLocalizedString(
-        "onDeviceAI.unavailableView.preparingModel.title",
+        "intelligence.unavailableView.preparingModel.title",
         value: "Preparing model...",
         comment: "Title shown when the AI model is not ready"
     )
 
     static let preparingModelDescription = NSLocalizedString(
-        "onDeviceAI.unavailableView.preparingModel.description",
+        "intelligence.unavailableView.preparingModel.description",
         value: "The AI model is downloading or being prepared. Please try again in a moment.",
         comment: "Description shown when the AI model is not ready"
     )
 
     static let appleIntelligenceUnavailableTitle = NSLocalizedString(
-        "onDeviceAI.unavailableView.appleIntelligenceUnvailable.title",
+        "intelligence.unavailableView.appleIntelligenceUnvailable.title",
         value: "Apple Intelligence Unvailable",
         comment: "Title shown when Apple Intelligence is unavailable"
     )
 
     static let appleIntelligenceUnavailableMessage = NSLocalizedString(
-        "onDeviceAI.unavailableView.appleIntelligenceUnvailable.message",
+        "intelligence.unavailableView.appleIntelligenceUnvailable.message",
         value: "Apple Intelligence is not available on this device",
         comment: "Message shown when Apple Intelligence is unavailable"
     )

@@ -79,6 +79,9 @@ struct PostSettingsGenerateExcerptView: View {
                 Button(action: {
                     cancelAllTasks()
                     onSelection(excerpt.content)
+                    WPAnalytics.track(.intelligenceExcerptSelected, properties: [
+                        "index": "\(index)"
+                    ])
                     dismiss()
                 }) {
                     ExcerptOptionView(index: index, excerpt: excerpt)
@@ -260,6 +263,11 @@ struct PostSettingsGenerateExcerptView: View {
                 excerpts[index].isPartial = false
             }
         }
+
+        WPAnalytics.track(.intelligenceExcerptOptionsGenerated, proprties: [
+            "length": length.trackingName,
+            "style": style.rawValue
+        ])
     }
 
     enum TestScenario: String, CaseIterable {
