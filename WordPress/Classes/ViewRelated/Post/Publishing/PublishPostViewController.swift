@@ -34,6 +34,43 @@ struct PublishPostView: View {
         }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                buttonCancel
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                buttonPublish
+            }
+        }
+    }
+
+    private var buttonCancel: some View {
+        // TODO: connect to actual hasChanges
+        Button(SharedStrings.Button.cancel) {
+            if settingsViewModel.hasChanges {
+                // TODO: implement isShowingDiscardChangesAlert
+//                isShowingDiscardChangesAlert = true
+            } else {
+                settingsViewModel.buttonCancelTapped()
+            }
+        }
+        .tint(AppColor.tint)
+    }
+
+    @ViewBuilder
+    private var buttonPublish: some View {
+        // TODO: connect to actual isSaving and save
+        if settingsViewModel.isSaving {
+            ProgressView()
+        } else {
+            // TODO: change dyncam to "Schedule"
+            Button(Strings.publish) {
+                settingsViewModel.buttonSaveTapped()
+            }
+            .buttonStyle(.borderedProminent)
+            .buttonBorderShape(.capsule)
+            .tint(AppColor.tint)
+        }
     }
 }
 
