@@ -12,7 +12,11 @@ final class PublishPostViewController: UIHostingController<NavigationView<Publis
 
     init(post: AbstractPost) {
         // TODO: add isStandalone support
-        let settingsViewModel = PostSettingsViewModel(post: post, isStandalone: true)
+        let settingsViewModel = PostSettingsViewModel(
+            post: post,
+            isStandalone: true,
+            context: .publishing
+        )
         self.settingsViewModel = settingsViewModel
         super.init(rootView: NavigationView { PublishPostView(settingsViewModel: settingsViewModel) })
     }
@@ -27,14 +31,17 @@ struct PublishPostView: View {
 
     var post: AbstractPost { settingsViewModel.post }
 
+    // TODO: figure out the media upload situation
     var body: some View {
         Form {
-            PublishingHeaderView(blog: post.blog)
             PostSettingsFormContentView(viewModel: settingsViewModel)
         }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .title) {
+                PublishingHeaderView(blog: post.blog)
+            }
             ToolbarItem(placement: .navigationBarLeading) {
                 buttonCancel
             }
@@ -44,17 +51,24 @@ struct PublishPostView: View {
         }
     }
 
+    @ViewBuilder
     private var buttonCancel: some View {
         // TODO: connect to actual hasChanges
-        Button(SharedStrings.Button.cancel) {
-            if settingsViewModel.hasChanges {
-                // TODO: implement isShowingDiscardChangesAlert
-//                isShowingDiscardChangesAlert = true
-            } else {
-                settingsViewModel.buttonCancelTapped()
-            }
+        if #available(iOS 26, *) {
+            Button(role: .cancel, action: buttonCancelTapped)
+        } else {
+            Button(SharedStrings.Button.cancel, action: buttonCancelTapped)
+                .tint(AppColor.tint)
         }
-        .tint(AppColor.tint)
+    }
+
+    private func buttonCancelTapped() {
+        if settingsViewModel.hasChanges {
+            // TODO: implement isShowingDiscardChangesAlert
+//                isShowingDiscardChangesAlert = true
+        } else {
+            settingsViewModel.buttonCancelTapped()
+        }
     }
 
     @ViewBuilder
@@ -67,9 +81,10 @@ struct PublishPostView: View {
             Button(Strings.publish) {
                 settingsViewModel.buttonSaveTapped()
             }
+            .fontWeight(.medium)
             .buttonStyle(.borderedProminent)
             .buttonBorderShape(.capsule)
-            .tint(AppColor.tint)
+            .tint(AppColor.primary)
         }
     }
 }
@@ -78,24 +93,25 @@ private struct PublishingHeaderView: View {
     let blog: Blog
 
     var body: some View {
-        HStack(alignment: .center, spacing: 12) {
-            SiteIconView(viewModel: SiteIconViewModel(blog: blog, size: .regular))
-                .frame(width: 40, height: 40)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(Strings.publishingTo.uppercased())
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-
-                Text(blog.title ?? "")
+//        HStack(alignment: .center, spacing: 12) {
+            VStack(alignment: .center, spacing: 3) {
+                Text(Strings.title)
                     .font(.headline)
-                    .foregroundStyle(.primary)
+
+                HStack(alignment: .center, spacing: 4) {
+                    SiteIconView(viewModel: SiteIconViewModel(blog: blog, size: .regular))
+                        .frame(width: 20, height: 20)
+                    Text(blog.title ?? "")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
             }
 
-            Spacer()
-        }
-        .listRowBackground(Color.clear)
-        .listRowInsets(EdgeInsets.zero)
+//            Spacer()
+//        }
+//        .listRowBackground(Color.clear)
+//        .listRowInsets(EdgeInsets.zero)
     }
 }
 
@@ -121,4 +137,3 @@ enum PrepublishingSheetStrings {
     static let mediaUploadFailedTitle = NSLocalizedString("prepublishing.mediaUploadFailedTitle", value: "Failed to upload media", comment: "Title for a publish button state in the pre-publishing sheet")
     static let mediaUploadFailedDetailsMultipleFailures = NSLocalizedString("prepublishing.mediaUploadFailedDetails", value: "%@ items failed to upload", comment: "Details for a publish button state in the pre-publishing sheet; count as a parameter")
 }
-
