@@ -107,6 +107,7 @@ final class PostSettingsViewModel: ObservableObject {
 
     var onDismiss: (() -> Void)?
     var onEditorPostSaved: (() -> Void)?
+    var onPostPublished: (() -> Void)?
 
     /// Weak reference to the view controller for navigation.
     /// This is temporary until we can fully migrate to SwiftUI navigation.
@@ -240,6 +241,7 @@ final class PostSettingsViewModel: ObservableObject {
                 let coordinator = PostCoordinator.shared
                 let changes = settings.makeUpdateParameters(from: post)
                 try await coordinator.publish_v2(post.original(), parameters: changes)
+                onPostPublished?()
             } catch {
                 isSaving = false
                 // `PostCoordinator` handles errors by showing an alert when needed

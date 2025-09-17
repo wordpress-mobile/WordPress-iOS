@@ -10,6 +10,8 @@ import WordPressUI
 final class PublishPostViewController: UIHostingController<NavigationView<PublishPostView>> {
     private let viewModel: PostSettingsViewModel
 
+    var onCompletion: ((PrepublishingSheetResult) -> Void)?
+
     // TODO: add isShowingDeletedAlert
     init(post: AbstractPost) {
         // TODO: add isStandalone support
@@ -29,6 +31,9 @@ final class PublishPostViewController: UIHostingController<NavigationView<Publis
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        viewModel.onPostPublished = { [weak self] in
+            self?.onCompletion?(.published)
+        }
         viewModel.onDismiss = { [weak self] in
             self?.presentingViewController?.dismiss(animated: true)
         }
