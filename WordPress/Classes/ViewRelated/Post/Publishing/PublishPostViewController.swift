@@ -60,11 +60,13 @@ struct PublishPostView: View {
             ToolbarItem(placement: .topBarLeading) {
                 buttonCancel
                     .confirmationDialog(Strings.discardChangesTitle, isPresented: $isShowingDiscardChangesAlert) {
+                        Button(Strings.saveChangesButton) {
+                            viewModel.buttonSaveTapped()
+                        }
+                        // - warning: It's important for the destructive button to
+                        // be at the bottom or "Save" will not be shown
                         Button(Strings.discardChangesButton, role: .destructive) {
                             viewModel.buttonCancelTapped()
-                        }
-                        Button(SharedStrings.Button.save) {
-                            viewModel.buttonSaveTapped()
                         }
                     } message: {
                         Text(Strings.discardChangesMessage)
@@ -164,6 +166,12 @@ enum PrepublishingSheetStrings {
     static let discardChangesButton = NSLocalizedString(
         "prepublishing.discardChanges.button",
         value: "Discard Changes",
+        comment: "Button to confirm discarding changes"
+    )
+
+    static let saveChangesButton = NSLocalizedString(
+        "prepublishing.saveChanges.button",
+        value: "Save Changes",
         comment: "Button to confirm discarding changes"
     )
 }
