@@ -1,0 +1,5 @@
+Nous avons apporté des améliorations réfléchies pour rendre votre expérience WordPress encore plus fluide.
+
+Nous avons ajouté la prise en charge d’iOS 26, afin que vous puissiez profiter de toutes les dernières fonctionnalités que votre appareil a à offrir. Tout semble parfait.
+
+Nous avons également apporté quelques améliorations en arrière-plan aux boutons et à la navigation dans l’application. Vous remarquerez que les choses semblent plus soignées et cohérentes, en particulier dans les écrans Éditeur, Réglages et Statistiques.
