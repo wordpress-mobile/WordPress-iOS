@@ -7,7 +7,7 @@ import WordPressUI
 
 /// A screen shown just before publishing the post and allows you to change
 /// the post settings along with some publishing options like the publish date.
-final class PublishPostViewController: UIHostingController<NavigationView<PublishPostView>> {
+final class PublishPostViewController: UIHostingController<PublishPostView> {
     private let viewModel: PostSettingsViewModel
 
     var onCompletion: ((PrepublishingSheetResult) -> Void)?
@@ -19,7 +19,7 @@ final class PublishPostViewController: UIHostingController<NavigationView<Publis
             context: .publishing
         )
         self.viewModel = viewModel
-        super.init(rootView: NavigationView { PublishPostView(viewModel: viewModel) })
+        super.init(rootView: PublishPostView(viewModel: viewModel))
     }
 
     required dynamic init?(coder aDecoder: NSCoder) {
