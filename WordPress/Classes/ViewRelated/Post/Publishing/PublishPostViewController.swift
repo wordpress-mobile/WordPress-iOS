@@ -36,12 +36,8 @@ struct PublishPostView: View {
         Form {
             PostSettingsFormContentView(viewModel: settingsViewModel)
         }
-        .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .title) {
-                PublishingHeaderView(blog: post.blog)
-            }
             ToolbarItem(placement: .navigationBarLeading) {
                 buttonCancel
             }
@@ -86,32 +82,6 @@ struct PublishPostView: View {
             .buttonBorderShape(.capsule)
             .tint(AppColor.primary)
         }
-    }
-}
-
-private struct PublishingHeaderView: View {
-    let blog: Blog
-
-    var body: some View {
-//        HStack(alignment: .center, spacing: 12) {
-            VStack(alignment: .center, spacing: 3) {
-                Text(Strings.title)
-                    .font(.headline)
-
-                HStack(alignment: .center, spacing: 4) {
-                    SiteIconView(viewModel: SiteIconViewModel(blog: blog, size: .regular))
-                        .frame(width: 20, height: 20)
-                    Text(blog.title ?? "")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                }
-            }
-
-//            Spacer()
-//        }
-//        .listRowBackground(Color.clear)
-//        .listRowInsets(EdgeInsets.zero)
     }
 }
 

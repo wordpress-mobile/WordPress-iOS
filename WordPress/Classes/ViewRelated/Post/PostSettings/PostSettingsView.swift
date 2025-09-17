@@ -124,6 +124,9 @@ struct PostSettingsFormContentView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
 
     var body: some View {
+        if viewModel.context == .publishing {
+            publishingOptionsSection
+        }
         featuredImageSection
         if viewModel.isPost {
             organizationSection
@@ -134,6 +137,17 @@ struct PostSettingsFormContentView: View {
         infoSection
     }
 
+    // MARK: - "Publishing Options" Section
+    @ViewBuilder
+    private var publishingOptionsSection: some View {
+        Section {
+            BlogListSiteView(site: .init(blog: viewModel.post.blog))
+            publishDateRow
+            visibilityRow
+        } header: {
+            SectionHeader(Strings.publishingOptionsHeader)
+        }
+    }
     // MARK: - "Featured Image" Section
 
     @ViewBuilder
@@ -209,7 +223,7 @@ struct PostSettingsFormContentView: View {
     private var generalSection: some View {
         Section {
             authorRow
-            if !viewModel.isDraftOrPending || viewModel.context == .publishing {
+            if !viewModel.isDraftOrPending {
                 publishDateRow
                 visibilityRow
             }
@@ -579,5 +593,20 @@ private enum Strings {
         "postSettings.publishDateImmediately",
         value: "Immediately",
         comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected"
+    )
+    static let publishingOptionsHeader = NSLocalizedString(
+        "postSettings.publishing.header",
+        value: "Publishing",
+        comment: "Section header for Publishing Options in Post Settings"
+    )
+    static let publishingTo = NSLocalizedString(
+        "postSettings.publishingTo",
+        value: "Publishing to",
+        comment: "Label indicating which site you are publishing to"
+    )
+    static let previewLabel = NSLocalizedString(
+        "postSettings.preview.label",
+        value: "Preview",
+        comment: "Label for the preview button in Post Settings"
     )
 }
