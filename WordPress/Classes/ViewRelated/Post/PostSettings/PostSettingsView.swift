@@ -209,7 +209,7 @@ struct PostSettingsFormContentView: View {
     private var generalSection: some View {
         Section {
             authorRow
-            if !viewModel.isDraftOrPending {
+            if !viewModel.isDraftOrPending || viewModel.context == .publishing {
                 publishDateRow
                 visibilityRow
             }
@@ -249,7 +249,7 @@ struct PostSettingsFormContentView: View {
                 }
             ))
         } label: {
-            SettingsRow(Strings.publishDateLabel, value: viewModel.publishDateText ?? "–")
+            SettingsRow(Strings.publishDateLabel, value: viewModel.publishDateText ?? Strings.immediately)
         }
     }
 
@@ -573,5 +573,11 @@ private enum Strings {
         "postSettings.postID.label",
         value: "ID",
         comment: "Label for the post ID field in Post Settings"
+    )
+
+    static let immediately = NSLocalizedString(
+        "postSettings.publishDateImmediately",
+        value: "Immediately",
+        comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected"
     )
 }

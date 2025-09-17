@@ -8,6 +8,7 @@ import Combine
 final class PostSettingsViewModel: ObservableObject {
     let post: AbstractPost
     let isStandalone: Bool
+    let context: Context
     let featuredImageViewModel: PostSettingsFeaturedImageViewModel
 
     @Published var settings: PostSettings {
@@ -111,9 +112,19 @@ final class PostSettingsViewModel: ObservableObject {
     /// This is temporary until we can fully migrate to SwiftUI navigation.
     weak var viewController: UIViewController?
 
-    init(post: AbstractPost, isStandalone: Bool = false) {
+    enum Context {
+        case settings
+        case publishing
+    }
+
+    init(
+        post: AbstractPost,
+        isStandalone: Bool = false,
+        context: Context = .settings
+    ) {
         self.post = post
         self.isStandalone = isStandalone
+        self.context = context
 
         // Initialize settings from the post
         let initialSettings = PostSettings(from: post)
