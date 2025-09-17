@@ -50,14 +50,7 @@ private struct PostSettingsView: View {
 
     var body: some View {
         Form {
-            featuredImageSection
-            generalSection
-            if viewModel.isPost {
-                organizationSection
-            }
-            excerptSection
-            moreOptionsSection
-            infoSection
+            PostSettingsFormContentView(viewModel: viewModel)
         }
         .accessibilityIdentifier("post_settings_form")
         .disabled(viewModel.isSaving)
@@ -124,6 +117,21 @@ private struct PostSettingsView: View {
             .disabled(!viewModel.hasChanges)
             .tint(AppColor.tint)
         }
+    }
+}
+
+struct PostSettingsFormContentView: View {
+    @ObservedObject var viewModel: PostSettingsViewModel
+
+    var body: some View {
+        featuredImageSection
+        generalSection
+        if viewModel.isPost {
+            organizationSection
+        }
+        excerptSection
+        moreOptionsSection
+        infoSection
     }
 
     // MARK: - "Featured Image" Section
