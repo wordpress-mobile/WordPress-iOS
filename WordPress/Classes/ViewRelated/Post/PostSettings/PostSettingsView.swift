@@ -125,11 +125,11 @@ struct PostSettingsFormContentView: View {
 
     var body: some View {
         featuredImageSection
-        generalSection
         if viewModel.isPost {
             organizationSection
         }
         excerptSection
+        generalSection
         moreOptionsSection
         infoSection
     }
