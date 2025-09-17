@@ -2785,6 +2785,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 2600;
 				ORGANIZATIONNAME = WordPress;
