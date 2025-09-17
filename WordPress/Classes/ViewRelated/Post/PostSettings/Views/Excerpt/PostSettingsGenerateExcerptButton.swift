@@ -27,13 +27,13 @@ struct PostSettingsGenerateExcerptButton: View {
                 Text(Strings.generateButton)
             }
         }
-        .popover(isPresented: $isShowingExcerptGenerator) {
-            popover
+        .sheet(isPresented: $isShowingExcerptGenerator) {
+            form
         }
     }
 
     @ViewBuilder
-    private var popover: some View {
+    private var form: some View {
         NavigationView {
             Group {
                 switch SystemLanguageModel.default.availability {
@@ -57,7 +57,6 @@ struct PostSettingsGenerateExcerptButton: View {
                 }
             }
         }
-        .frame(maxWidth: 420, minHeight: 500)
     }
 }
 

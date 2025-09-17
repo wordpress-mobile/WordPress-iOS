@@ -106,7 +106,7 @@ struct PostSettingsGenerateExcerptView: View {
         .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
         .padding(.horizontal)
         .padding(.horizontal)
-        .padding(.bottom, 8)
+        .padding(.bottom)
         .dynamicTypeSize(...DynamicTypeSize.xLarge)
     }
 
