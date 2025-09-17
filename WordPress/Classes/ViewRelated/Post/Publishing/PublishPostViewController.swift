@@ -59,6 +59,16 @@ struct PublishPostView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 buttonCancel
+                    .confirmationDialog(Strings.discardChangesTitle, isPresented: $isShowingDiscardChangesAlert) {
+                        Button(Strings.discardChangesButton, role: .destructive) {
+                            viewModel.buttonCancelTapped()
+                        }
+                        Button(SharedStrings.Button.save) {
+                            viewModel.buttonSaveTapped()
+                        }
+                    } message: {
+                        Text(Strings.discardChangesMessage)
+                    }
             }
             ToolbarItemGroup(placement: .topBarTrailing) {
                 Button {
@@ -76,16 +86,6 @@ struct PublishPostView: View {
             }
         } message: {
             Text(viewModel.deletedAlertMessage)
-        }
-        .confirmationDialog(Strings.discardChangesTitle, isPresented: $isShowingDiscardChangesAlert) {
-            Button(Strings.discardChangesButton, role: .destructive) {
-                viewModel.buttonCancelTapped()
-            }
-            Button(SharedStrings.Button.save, role: .cancel) {
-                viewModel.buttonSaveTapped()
-            }
-        } message: {
-            Text(Strings.discardChangesMessage)
         }
         .disabled(viewModel.isSaving)
     }

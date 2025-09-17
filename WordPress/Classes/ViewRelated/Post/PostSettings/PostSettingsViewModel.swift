@@ -149,7 +149,7 @@ final class PostSettingsViewModel: ObservableObject {
     }
 
     private func refresh(from old: PostSettings, to new: PostSettings) {
-        hasChanges = new != originalSettings
+        hasChanges = getSettingsToSave(for: new) != originalSettings
 
         if old.categoryIDs != new.categoryIDs {
             refreshDisplayedCategories()
@@ -209,6 +209,7 @@ final class PostSettingsViewModel: ObservableObject {
 
     private func actuallySave() async {
         do {
+            let settings = getSettingsToSave(for: self.settings)
             let coordinator = PostCoordinator.shared
             if coordinator.isSyncAllowed(for: post) {
                 let revision = post.createRevision()
@@ -225,6 +226,19 @@ final class PostSettingsViewModel: ObservableObject {
             isSaving = false
             // `PostCoordinator` handles errors by showing an alert when needed
         }
+    }
+
+    func getSettingsToSave(for settings: PostSettings) -> PostSettings {
+        var settings = settings
+        if context == .publishing {
+            // We don't support saving these changes on the "Publishing" sheet
+            // as it would trigger the change in status and publishing. We'll
+            // only save what we can without publishing: tags, categories, etc.
+            settings.status = originalSettings.status
+            settings.password = originalSettings.password
+            settings.publishDate = originalSettings.publishDate
+        }
+        return settings
     }
 
     func buttonPublishTapped() {

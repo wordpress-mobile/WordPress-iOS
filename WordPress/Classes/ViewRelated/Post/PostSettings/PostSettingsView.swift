@@ -55,10 +55,21 @@ private struct PostSettingsView: View {
         .accessibilityIdentifier("post_settings_form")
         .disabled(viewModel.isSaving)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .topBarLeading) {
                 buttonCancel
+                    .confirmationDialog(Strings.discardChangesTitle, isPresented: $isShowingDiscardChangesAlert) {
+                        Button(Strings.discardChangesButton, role: .destructive) {
+                            viewModel.buttonCancelTapped()
+                        }
+                        Button(SharedStrings.Button.cancel, role: .cancel) {
+                            // Do nothing - continue editing
+                        }
+                    } message: {
+                        Text(Strings.discardChangesMessage)
+                    }
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
+
+            ToolbarItem(placement: .topBarTrailing) {
                 buttonSave
             }
         }
@@ -69,16 +80,6 @@ private struct PostSettingsView: View {
             }
         } message: {
             Text(viewModel.deletedAlertMessage)
-        }
-        .confirmationDialog(Strings.discardChangesTitle, isPresented: $isShowingDiscardChangesAlert) {
-            Button(Strings.discardChangesButton, role: .destructive) {
-                viewModel.buttonCancelTapped()
-            }
-            Button(SharedStrings.Button.cancel, role: .cancel) {
-                // Do nothing - continue editing
-            }
-        } message: {
-            Text(Strings.discardChangesMessage)
         }
     }
 
@@ -92,6 +93,7 @@ private struct PostSettingsView: View {
         }
         .tint(AppColor.tint)
         .accessibilityIdentifier("post_settings_cancel_button")
+
     }
 
     @ViewBuilder
