@@ -138,16 +138,17 @@ struct PostSettingsFormContentView: View {
     }
 
     // MARK: - "Publishing Options" Section
+
     @ViewBuilder
     private var publishingOptionsSection: some View {
         Section {
             BlogListSiteView(site: .init(blog: viewModel.post.blog))
+                .listRowSeparator(.hidden, edges: .bottom)
             publishDateRow
             visibilityRow
-        } header: {
-            SectionHeader(Strings.publishingOptionsHeader)
         }
     }
+
     // MARK: - "Featured Image" Section
 
     @ViewBuilder

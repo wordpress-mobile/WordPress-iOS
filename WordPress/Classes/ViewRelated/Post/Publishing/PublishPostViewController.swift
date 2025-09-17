@@ -36,6 +36,7 @@ struct PublishPostView: View {
         Form {
             PostSettingsFormContentView(viewModel: settingsViewModel)
         }
+        .environment(\.defaultMinListHeaderHeight, 0) // Reduces top inset a bit
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
