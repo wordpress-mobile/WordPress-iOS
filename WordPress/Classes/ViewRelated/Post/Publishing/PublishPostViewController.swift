@@ -8,33 +8,46 @@ import WordPressUI
 /// A screen shown just before publishing the post and allows you to change
 /// the post settings along with some publishing options like the publish date.
 final class PublishPostViewController: UIHostingController<NavigationView<PublishPostView>> {
-    private let settingsViewModel: PostSettingsViewModel
+    private let viewModel: PostSettingsViewModel
 
+    // TODO: add isShowingDeletedAlert
     init(post: AbstractPost) {
         // TODO: add isStandalone support
-        let settingsViewModel = PostSettingsViewModel(
+        let viewModel = PostSettingsViewModel(
             post: post,
             isStandalone: true,
             context: .publishing
         )
-        self.settingsViewModel = settingsViewModel
-        super.init(rootView: NavigationView { PublishPostView(settingsViewModel: settingsViewModel) })
+        self.viewModel = viewModel
+        super.init(rootView: NavigationView { PublishPostView(viewModel: viewModel) })
     }
 
     required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        viewModel.onDismiss = { [weak self] in
+            self?.presentingViewController?.dismiss(animated: true)
+        }
+
+        // Set the view controller reference for navigation
+        // This is temporary until we can fully migrate to SwiftUI navigation
+        viewModel.viewController = self
+    }
 }
 
 struct PublishPostView: View {
-    @ObservedObject var settingsViewModel: PostSettingsViewModel
+    @ObservedObject var viewModel: PostSettingsViewModel
 
-    var post: AbstractPost { settingsViewModel.post }
+    var post: AbstractPost { viewModel.post }
 
     // TODO: (publish) figure out the media upload situation
     var body: some View {
         Form {
-            PostSettingsFormContentView(viewModel: settingsViewModel)
+            PostSettingsFormContentView(viewModel: viewModel)
         }
         .environment(\.defaultMinListHeaderHeight, 0) // Reduces top inset a bit
         .navigationBarTitleDisplayMode(.inline)
@@ -51,7 +64,18 @@ struct PublishPostView: View {
                 buttonPublish
             }
         }
+        .interactiveDismissDisabled(viewModel.isSaving || viewModel.hasChanges)
+        .alert(viewModel.deletedAlertTitle, isPresented: $viewModel.isShowingDeletedAlert) {
+            Button(SharedStrings.Button.ok) {
+                viewModel.onDismiss?()
+            }
+        } message: {
+            Text(viewModel.deletedAlertMessage)
+        }
+        .disabled(viewModel.isSaving)
     }
+
+    // MARK: – Actions
 
     @ViewBuilder
     private var buttonCancel: some View {
@@ -65,23 +89,22 @@ struct PublishPostView: View {
     }
 
     private func buttonCancelTapped() {
-        if settingsViewModel.hasChanges {
+        if viewModel.hasChanges {
             // TODO: implement isShowingDiscardChangesAlert
 //                isShowingDiscardChangesAlert = true
         } else {
-            settingsViewModel.buttonCancelTapped()
+            viewModel.buttonCancelTapped()
         }
     }
 
     @ViewBuilder
     private var buttonPublish: some View {
-        // TODO: connect to actual isSaving and save
-        if settingsViewModel.isSaving {
+        if viewModel.isSaving {
             ProgressView()
         } else {
             // TODO: change dyncam to "Schedule"
             Button(Strings.publish) {
-                settingsViewModel.buttonSaveTapped()
+                viewModel.buttonPublishTapped()
             }
             .fontWeight(.medium)
             .buttonStyle(.borderedProminent)

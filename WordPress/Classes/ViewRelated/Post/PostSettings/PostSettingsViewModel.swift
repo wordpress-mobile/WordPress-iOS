@@ -226,6 +226,27 @@ final class PostSettingsViewModel: ObservableObject {
         }
     }
 
+    func buttonPublishTapped() {
+        // Check if the post still exists
+        guard let context = post.managedObjectContext,
+              let _ = try? context.existingObject(with: post.objectID) else {
+            isShowingDeletedAlert = true
+            return
+        }
+
+        isSaving = true
+        Task {
+            do {
+                let coordinator = PostCoordinator.shared
+                let changes = settings.makeUpdateParameters(from: post)
+                try await coordinator.publish_v2(post.original(), parameters: changes)
+            } catch {
+                isSaving = false
+                // `PostCoordinator` handles errors by showing an alert when needed
+            }
+        }
+    }
+
     private func didSaveChanges() {
         trackChanges(from: originalSettings, to: settings)
     }
