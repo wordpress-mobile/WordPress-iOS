@@ -31,7 +31,7 @@ struct PublishPostView: View {
 
     var post: AbstractPost { settingsViewModel.post }
 
-    // TODO: figure out the media upload situation
+    // TODO: (publish) figure out the media upload situation
     var body: some View {
         Form {
             PostSettingsFormContentView(viewModel: settingsViewModel)
@@ -39,17 +39,15 @@ struct PublishPostView: View {
         .environment(\.defaultMinListHeaderHeight, 0) // Reduces top inset a bit
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .topBarLeading) {
                 buttonCancel
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
                 Button {
-                    // TODO: implement preview
+                    // TODO: (publish) show preview
                 } label: {
                     Image(systemName: "safari")
                 }
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
                 buttonPublish
             }
         }
@@ -57,7 +55,7 @@ struct PublishPostView: View {
 
     @ViewBuilder
     private var buttonCancel: some View {
-        // TODO: connect to actual hasChanges
+        // TODO: (publish) connect to actual hasChanges
         if #available(iOS 26, *) {
             Button(role: .cancel, action: buttonCancelTapped)
         } else {
