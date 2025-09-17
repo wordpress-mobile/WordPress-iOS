@@ -1714,7 +1714,7 @@ extension AztecPostViewController {
         richTextView.inputAssistantItem.trailingBarButtonGroups = []
 
         richTextView.autocorrectionType = .no
-        
+
         if #available(iOS 17, *) {
             var configuration = PHPickerConfiguration()
             configuration.filter = .any(of: [.images, .videos])
@@ -1725,11 +1725,11 @@ extension AztecPostViewController {
             ]
             configuration.edgesWithoutContentMargins = .all
             configuration.selection = .continuousAndOrdered
-            
+
             let picker = PHPickerViewController(configuration: configuration)
             picker.delegate = self
             mediaPickerInputViewController = picker
-            
+
             if currentKeyboardFrame != .zero {
                 // iOS is not adjusting the media picker's height to match the default keyboard's height when autoresizingMask
                 // is set to UIViewAutoresizingFlexibleHeight (even though the docs claim it should). Need to manually
@@ -1737,7 +1737,7 @@ extension AztecPostViewController {
                 picker.view.autoresizingMask = []
                 picker.view.frame = CGRect(x: 0, y: 0, width: currentKeyboardFrame.width, height: mediaKeyboardHeight)
             }
-            
+
             presentToolbarViewControllerAsInputView(picker)
         }
     }
