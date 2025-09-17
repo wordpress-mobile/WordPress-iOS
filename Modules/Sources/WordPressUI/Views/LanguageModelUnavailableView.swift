@@ -9,11 +9,7 @@ public struct LanguageModelUnavailableView: View {
     public let reason: SystemLanguageModel.Availability.UnavailableReason
 
     public var body: some View {
-        makeUnavailableView(for: reason).onAppear {
-            WPAppAnalytics.track(.intelligenceUnavailableViewShown, properties: [
-                "reason": "\(reason)"
-            ])
-        }
+        makeUnavailableView(for: reason)
     }
 
     public init(reason: SystemLanguageModel.Availability.UnavailableReason) {

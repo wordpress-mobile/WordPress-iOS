@@ -2,7 +2,6 @@ import Foundation
 import WordPressData
 import WordPressShared
 
-// WPiOS-only events
 @objc public enum WPAnalyticsEvent: Int {
 
     case createSheetShown
@@ -1817,13 +1816,13 @@ import WordPressShared
 
             // Intelligence
         case .intelligenceExcerptGeneratorOpened:
-            "intelligence_excerpt_generator_opened"
+            return "intelligence_excerpt_generator_opened"
         case .intelligenceExcerptSelected:
-            "intelligence_excerpt_selected"
+            return "intelligence_excerpt_selected"
         case .intelligenceExcerptOptionsGenerated:
-            "intelligence_excerpt_options_generated"
+            return "intelligence_excerpt_options_generated"
         case .intelligenceUnavailableViewShown:
-            "intelligence_unavailable_view_shown"
+            return "intelligence_unavailable_view_shown"
         } // END OF SWITCH
     }
 

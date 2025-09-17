@@ -38,6 +38,8 @@ struct PostSettingsGenerateExcerptView: View {
             .navigationTitle(Strings.generateExcerptTitle)
             .navigationBarTitleDisplayMode(.inline)
         .onAppear {
+            WPAnalytics.track(.intelligenceExcerptGeneratorOpened)
+
             if let testScenario {
                 setupTestScenario(testScenario)
             } else {
@@ -264,7 +266,7 @@ struct PostSettingsGenerateExcerptView: View {
             }
         }
 
-        WPAnalytics.track(.intelligenceExcerptOptionsGenerated, proprties: [
+        WPAnalytics.track(.intelligenceExcerptOptionsGenerated, properties: [
             "length": length.trackingName,
             "style": style.rawValue
         ])

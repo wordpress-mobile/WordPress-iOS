@@ -20,7 +20,6 @@ struct PostSettingsGenerateExcerptButton: View {
         Button {
             onWillShowPopover?()
             isShowingExcerptGenerator = true
-            WPAnalytics.track(.intelligenceGenerateExcerptOpened)
         } label: {
             HStack(spacing: 4) {
                 Image(systemName: "sparkle")
@@ -47,7 +46,9 @@ struct PostSettingsGenerateExcerptButton: View {
                         }
                     )
                 case .unavailable(let reason):
-                    LanguageModelUnavailableView(reason: reason)
+                    LanguageModelUnavailableView(reason: reason).onAppear {
+                        WPAnalytics.track(WPAnalyticsEvent.intelligenceUnavailableViewShown)
+                    }
                 }
             }
             .toolbar {
