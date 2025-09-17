@@ -43,6 +43,13 @@ struct PublishPostView: View {
                 buttonCancel
             }
             ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    // TODO: implement preview
+                } label: {
+                    Image(systemName: "safari")
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
                 buttonPublish
             }
         }
