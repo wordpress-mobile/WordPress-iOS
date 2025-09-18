@@ -86,8 +86,6 @@ class PreviewDeviceSelectionViewController: UIViewController {
 
         effectView.contentView.pinSubviewToAllEdges(tableView)
 
-        tableView.separatorEffect = UIVibrancyEffect(blurEffect: blurEffect)
-
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
 
