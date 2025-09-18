@@ -198,7 +198,11 @@ class AbstractPostListViewController: UIViewController,
         searchResultsViewController.configure(searchController, self as? InteractivePostViewDelegate)
 
         if #available(iOS 26, *) {
-            navigationItem.preferredSearchBarPlacement = .integrated
+            if tabBarController?.isTabBarHidden == false {
+                navigationItem.preferredSearchBarPlacement = .integratedButton
+            } else {
+                navigationItem.preferredSearchBarPlacement = .integrated
+            }
         }
 
         definesPresentationContext = true
@@ -850,28 +854,34 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Misc
 
     private func showRefreshingIndicator() {
-        guard navigationItem.titleView == nil else {
-            return
+        // TODO: Design a better way to show it that doesn't affect the navigation bar
+
+        if #unavailable(iOS 26) {
+            guard navigationItem.titleView == nil else {
+                return
+            }
+
+            let spinner = UIActivityIndicatorView(style: .medium)
+            spinner.startAnimating()
+            spinner.tintColor = .secondaryLabel
+            spinner.transform = .init(scaleX: 0.8, y: 0.8)
+
+            let titleView = UILabel()
+            titleView.text = Strings.updating + "..."
+            titleView.font = UIFont.preferredFont(forTextStyle: .headline)
+            titleView.textColor = UIColor.secondaryLabel
+
+            let stack = UIStackView(arrangedSubviews: [spinner, titleView])
+            stack.spacing = 8
+
+            navigationItem.titleView = stack
         }
-
-        let spinner = UIActivityIndicatorView(style: .medium)
-        spinner.startAnimating()
-        spinner.tintColor = .secondaryLabel
-        spinner.transform = .init(scaleX: 0.8, y: 0.8)
-
-        let titleView = UILabel()
-        titleView.text = Strings.updating + "..."
-        titleView.font = UIFont.preferredFont(forTextStyle: .headline)
-        titleView.textColor = UIColor.secondaryLabel
-
-        let stack = UIStackView(arrangedSubviews: [spinner, titleView])
-        stack.spacing = 8
-
-        navigationItem.titleView = stack
     }
 
     private func hideRefreshingIndicator() {
-        navigationItem.titleView = nil
+        if #unavailable(iOS 26) {
+            navigationItem.titleView = nil
+        }
     }
 
     private func setFooterHidden(_ isHidden: Bool) {
