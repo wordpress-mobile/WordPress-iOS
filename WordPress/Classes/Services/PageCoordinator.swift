@@ -14,7 +14,12 @@ class PageCoordinator {
 
     private static func showLayoutPicker(from controller: UIViewController, forBlog blog: Blog, _ completion: @escaping TemplateSelectionCompletion) {
         let rootViewController = GutenbergLayoutPickerViewController(blog: blog, completion: completion)
-        let navigationController = GutenbergLightNavigationController(rootViewController: rootViewController)
+        let navigationController: UINavigationController
+        if #available(iOS 26, *) {
+            navigationController = UINavigationController(rootViewController: rootViewController)
+        } else {
+            navigationController = GutenbergLightNavigationController(rootViewController: rootViewController)
+        }
         navigationController.modalPresentationStyle = .pageSheet
 
         controller.present(navigationController, animated: true, completion: nil)
