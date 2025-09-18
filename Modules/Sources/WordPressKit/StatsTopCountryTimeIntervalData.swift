@@ -43,7 +43,7 @@ extension StatsTopCountryTimeIntervalData: StatsTimeIntervalData {
     public init?(date: Date, period: StatsPeriodUnit, jsonDictionary: [String: AnyObject]) {
         guard
             let unwrappedDays = type(of: self).unwrapDaysDictionary(jsonDictionary: jsonDictionary),
-            let countriesViews = unwrappedDays["views"] as? [[String: AnyObject]]
+            let countriesViews = Bamboozled.parseArray(unwrappedDays["views"])
             else {
                 return nil
         }

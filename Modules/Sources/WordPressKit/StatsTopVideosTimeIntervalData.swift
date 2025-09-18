@@ -48,7 +48,7 @@ extension StatsTopVideosTimeIntervalData: StatsTimeIntervalData {
             let unwrappedDays = type(of: self).unwrapDaysDictionary(jsonDictionary: jsonDictionary),
             let totalPlayCount = unwrappedDays["total_plays"] as? Int,
             let otherPlays = unwrappedDays["other_plays"] as? Int,
-            let videos = unwrappedDays["plays"] as? [[String: AnyObject]]
+            let videos = Bamboozled.parseArray(unwrappedDays["plays"])
             else {
                 return nil
         }

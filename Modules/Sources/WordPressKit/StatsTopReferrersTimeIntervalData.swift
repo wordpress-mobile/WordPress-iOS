@@ -51,7 +51,7 @@ extension StatsTopReferrersTimeIntervalData: StatsTimeIntervalData {
     public init?(date: Date, period: StatsPeriodUnit, jsonDictionary: [String: AnyObject]) {
         guard
             let unwrappedDays = type(of: self).unwrapDaysDictionary(jsonDictionary: jsonDictionary),
-            let referrers = unwrappedDays["groups"] as? [[String: AnyObject]]
+            let referrers = Bamboozled.parseArray(unwrappedDays["groups"])
             else {
                 return nil
         }
