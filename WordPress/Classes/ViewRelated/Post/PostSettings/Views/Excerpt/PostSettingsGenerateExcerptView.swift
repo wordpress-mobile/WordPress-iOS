@@ -57,6 +57,7 @@ struct PostSettingsGenerateExcerptView: View {
                 } else if let error {
                     EmptyStateView.failure(error: error)
                         .frame(minHeight: 460)
+                        .transition(.opacity.combined(with: .scale(scale: 0.9)))
                 } else {
                     listContent
                 }

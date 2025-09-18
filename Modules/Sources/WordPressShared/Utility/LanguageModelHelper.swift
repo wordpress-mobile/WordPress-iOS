@@ -120,7 +120,7 @@ public enum GeneratedContentLength: Int, CaseIterable, RawRepresentable {
     public var trackingName: String { name }
 
     public var promptModifier: String {
-        "\(name) (\(wordRange) words)"
+        "\(wordRange) words"
     }
 
     private var name: String {
@@ -133,9 +133,9 @@ public enum GeneratedContentLength: Int, CaseIterable, RawRepresentable {
 
     private var wordRange: String {
         switch self {
-        case .short: "30-40"
+        case .short: "20-40"
         case .medium: "50-70"
-        case .long: "100-120"
+        case .long: "120-180"
         }
     }
 }
