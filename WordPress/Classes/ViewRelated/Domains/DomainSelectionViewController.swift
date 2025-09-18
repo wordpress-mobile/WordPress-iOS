@@ -419,10 +419,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         searchTextField.delegate = self
         searchTextField.accessibilityTraits = .searchField
 
-        let placeholderText = Strings.searchPlaceholder
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.placeholderText)
-        let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
-        searchTextField.attributedPlaceholder = attributedPlaceholder
+        searchBar.placeholder = Strings.searchPlaceholder
         searchTextField.accessibilityHint = Strings.searchAccessibility
 
         view.addSubview(noResultsLabel)

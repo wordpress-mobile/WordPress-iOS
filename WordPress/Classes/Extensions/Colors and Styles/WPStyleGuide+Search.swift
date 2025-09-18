@@ -8,9 +8,13 @@ extension WPStyleGuide {
         searchBar.accessibilityIdentifier = "Search"
         searchBar.autocapitalizationType = .none
         searchBar.autocorrectionType = .no
-        searchBar.isTranslucent = true
-        searchBar.backgroundImage = UIImage()
-        searchBar.backgroundColor = backgroundColor
+        if #available(iOS 26, *) {
+            searchBar.searchBarStyle = .minimal // Removes borders
+        } else {
+            searchBar.isTranslucent = true
+            searchBar.backgroundImage = UIImage()
+            searchBar.backgroundColor = backgroundColor
+        }
         searchBar.returnKeyType = returnKeyType
     }
 
