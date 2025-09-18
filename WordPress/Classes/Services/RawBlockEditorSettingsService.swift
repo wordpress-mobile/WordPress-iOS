@@ -16,8 +16,6 @@ final class RawBlockEditorSettingsService {
         self.blogID = blog.locallyUniqueId
     }
 
-    private static var services: [String: RawBlockEditorSettingsService] = [:]
-
     private func fetchSettingsFromAPI() async throws -> Data {
         let response: WordPressAPIResult<Data, WordPressOrgRestApiError> = await dotOrgRestAPI.get(
             path: "/wp-block-editor/v1/settings"
