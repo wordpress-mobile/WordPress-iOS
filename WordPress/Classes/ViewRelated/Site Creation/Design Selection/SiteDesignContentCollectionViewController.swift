@@ -340,7 +340,12 @@ extension SiteDesignContentCollectionViewController: CategorySectionTableViewCel
             completion: completion
         )
 
-        let navController = GutenbergLightNavigationController(rootViewController: previewVC)
+        let navController: UINavigationController
+        if #available(iOS 26, *) {
+            navController = UINavigationController(rootViewController: previewVC)
+        } else {
+            navController = GutenbergLightNavigationController(rootViewController: previewVC)
+        }
         navController.modalPresentationStyle = .pageSheet
         navigationController?.present(navController, animated: true) {
             // deselect so no border is shown on dismissal of the preview
