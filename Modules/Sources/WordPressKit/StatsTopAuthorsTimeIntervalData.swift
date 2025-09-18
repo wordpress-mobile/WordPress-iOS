@@ -70,7 +70,7 @@ extension StatsTopAuthorsTimeIntervalData: StatsTimeIntervalData {
     public init?(date: Date, period: StatsPeriodUnit, jsonDictionary: [String: AnyObject]) {
         guard
             let unwrappedDays = type(of: self).unwrapDaysDictionary(jsonDictionary: jsonDictionary),
-            let authors = unwrappedDays["authors"] as? [[String: AnyObject]]
+            let authors = Bamboozled.parseArray(unwrappedDays["authors"])
             else {
                 return nil
         }
@@ -87,7 +87,7 @@ extension StatsTopAuthor {
             let name = jsonDictionary["name"] as? String,
             let views = jsonDictionary["views"] as? Int,
             let avatar = jsonDictionary["avatar"] as? String,
-            let posts = jsonDictionary["posts"] as? [[String: AnyObject]]
+            let posts = Bamboozled.parseArray(jsonDictionary["posts"])
             else {
                 return nil
         }

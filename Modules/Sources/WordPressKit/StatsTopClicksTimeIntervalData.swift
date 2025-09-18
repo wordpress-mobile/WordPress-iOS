@@ -50,7 +50,7 @@ extension StatsTopClicksTimeIntervalData: StatsTimeIntervalData {
     public init?(date: Date, period: StatsPeriodUnit, jsonDictionary: [String: AnyObject]) {
         guard
             let unwrappedDays = type(of: self).unwrapDaysDictionary(jsonDictionary: jsonDictionary),
-            let clicks = unwrappedDays["clicks"] as? [[String: AnyObject]]
+            let clicks = Bamboozled.parseArray(unwrappedDays["clicks"])
             else {
                 return nil
         }
