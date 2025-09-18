@@ -16,12 +16,18 @@ struct PostSettingsGenerateExcerptView: View {
     @AppStorage("jetpack_ai_generated_excerpt_length")
     private var length: GeneratedContentLength = .medium
 
-    @State private var excerpts: [GeneratedExcerpt] = []
-    @State private var isFirstResult = true
+    @State private var results: [ExcerptGenerationResult.PartiallyGenerated] = []
     @State private var isGenerating = false
+    @State private var isPreparingResponse = true
     @State private var error: Error?
+    @State private var loadMoreError: Error?
     @State private var generationTask: Task<Void, Never>?
     @State private var debounceTask: Task<Void, Never>?
+    @State private var session: LanguageModelSession?
+
+    private var excerpts: [String] {
+        results.flatMap { ($0.excerpts ?? []) }
+    }
 
     private var testScenario: TestScenario?
 
@@ -52,18 +58,14 @@ struct PostSettingsGenerateExcerptView: View {
     private var contentView: some View {
         ScrollView {
             VStack(spacing: 0) {
-                if isGenerating && excerpts.isEmpty {
-                    ProgressView()
-                        .scaleEffect(x: 0.9, y: 0.9)
-                        .padding()
+                if isGenerating && results.isEmpty {
+                    progressView
                         .padding(.top, 4)
-                        .padding(.leading, 2)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 } else if let error {
                     EmptyStateView.failure(error: error)
                         .frame(minHeight: 460)
                 } else {
-                    results
+                    listContent
                 }
             }
         }
@@ -72,18 +74,31 @@ struct PostSettingsGenerateExcerptView: View {
         }
     }
 
-    private var results: some View {
+    private var progressView: some View {
+        ProgressView()
+            .scaleEffect(x: 0.9, y: 0.9)
+            .padding()
+            .padding(.leading, 2)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    }
+
+    @ViewBuilder
+    private var listContent: some View {
+        let excerpts = self.excerpts
+
         ForEach(Array(excerpts.enumerated()), id: \.offset) { index, excerpt in
             VStack(spacing: 0) {
                 Button(action: {
                     cancelAllTasks()
-                    onSelection(excerpt.content)
-                    WPAnalytics.track(.intelligenceExcerptSelected, properties: [
-                        "index": "\(index)"
-                    ])
+                    onSelection(excerpt)
+                    WPAnalytics.track(.intelligenceExcerptSelected, properties: ["index": "\(index)"])
                     dismiss()
                 }) {
-                    ExcerptOptionView(index: index, excerpt: excerpt)
+                    ExcerptOptionView(
+                        index: index,
+                        excerpt: excerpt,
+                        isPartial: index == excerpts.endIndex - 1 && isGenerating && !isPreparingResponse
+                    )
                         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 }
                 .buttonStyle(.plain)
@@ -93,6 +108,21 @@ struct PostSettingsGenerateExcerptView: View {
                         .padding(.horizontal)
                 }
             }
+        }
+
+        if !isGenerating {
+            if let loadMoreError {
+                Text(loadMoreError.localizedDescription)
+                    .foregroundStyle(.secondary)
+            } else if !results.isEmpty && results.count < 5 {
+                Button(Strings.generateMore, action: generateMoreExcerpts)
+                    .font(.subheadline.weight(.medium))
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .transition(.opacity.combined(with: .offset(y: 8)))
+            }
+        } else if isPreparingResponse {
+            progressView
         }
     }
 
@@ -200,21 +230,33 @@ struct PostSettingsGenerateExcerptView: View {
     private func generateExcerpts() {
         generationTask?.cancel()
 
-        excerpts = []
-        isGenerating = true
-        isFirstResult = true
+        session = nil
+        results = []
         error = nil
+        loadMoreError = nil
 
         generationTask = Task {
             do {
-                try await startGeneration()
+                let session = LanguageModelSession(instructions: LanguageModelHelper.generateExcerptInstructions)
+                self.session = session
+                try await actuallyGenerateExcerpts(in: session)
             } catch {
-                if !Task.isCancelled {
-                    self.error = error
-                }
+                guard !Task.isCancelled else { return }
+                self.error = error
             }
-            if !Task.isCancelled {
-                isGenerating = false
+        }
+    }
+
+    private func generateMoreExcerpts() {
+        guard let session else {
+            return wpAssertionFailure("session missing")
+        }
+        generationTask = Task {
+            do {
+                try await actuallyGenerateExcerpts(in: session, isLoadMore: true)
+            } catch {
+                guard !Task.isCancelled else { return }
+                loadMoreError = error
             }
         }
     }
@@ -228,42 +270,41 @@ struct PostSettingsGenerateExcerptView: View {
         }
     }
 
-    private func startGeneration() async throws {
-        let session = LanguageModelSession(instructions: LanguageModelHelper.generateExcerptInstructions)
-        let prompt = LanguageModelHelper.makeGenerateExcerptPrompt(content: postContent, length: length, style: style)
+    private func actuallyGenerateExcerpts(in session: LanguageModelSession, isLoadMore: Bool = false) async throws {
+        isGenerating = true
+        isPreparingResponse = true
+
+        let prompt = isLoadMore ? LanguageModelHelper.generateMoreOptionsPrompt : LanguageModelHelper.makeGenerateExcerptPrompt(content: postContent, length: length, style: style)
         let stream = session.streamResponse(to: prompt, generating: ExcerptGenerationResult.self)
 
         for try await result in stream {
             guard !Task.isCancelled else { return }
 
-            if isFirstResult {
-                isFirstResult = false
-                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-            }
+            withAnimation(.smooth) {
+                if isPreparingResponse {
+                    isPreparingResponse = false
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                }
 
-            let values = (result.content.excerpts ?? [])
-            let excerpts: [GeneratedExcerpt] = values.enumerated().map { index, excerpt in
-                GeneratedExcerpt(content: excerpt, isPartial: index == values.endIndex - 1)
-            }
-            if !excerpts.isEmpty {
-                withAnimation(.smooth) {
-                    self.excerpts = excerpts
+                if let index = results.firstIndex(where: { $0.id == result.content.id }) {
+                    results[index] = result.content
+                } else {
+                    results.append(result.content)
                 }
             }
         }
 
         guard !Task.isCancelled else { return }
 
-        withAnimation(.smooth) {
-            for index in excerpts.indices {
-                excerpts[index].isPartial = false
-            }
-        }
-
         WPAnalytics.track(.intelligenceExcerptOptionsGenerated, properties: [
             "length": length.trackingName,
-            "style": style.rawValue
+            "style": style.rawValue,
+            "load_more": isLoadMore ? 1 : 0
         ])
+
+        withAnimation(.smooth) {
+            isGenerating = false
+        }
     }
 
     enum TestScenario: String, CaseIterable {
@@ -286,19 +327,12 @@ struct PostSettingsGenerateExcerptView: View {
         case .error:
             error = URLError(.unknown)
         case .finished:
-            excerpts = [
-                GeneratedExcerpt(
-                    content: "Discover the cutting-edge trends transforming web development today. This comprehensive guide covers advanced JavaScript frameworks, innovative CSS techniques, and performance optimization strategies that modern developers use to create faster, more accessible websites.",
-                    isPartial: false
-                ),
-                GeneratedExcerpt(
-                    content: "Whether you're a seasoned developer or just starting out, this practical guide provides actionable insights into the latest web development trends. Learn about responsive design principles, modern frameworks, and techniques to build engaging digital experiences.",
-                    isPartial: false
-                ),
-                GeneratedExcerpt(
-                    content: "The future of web development is here! Explore innovative approaches to creating digital experiences, from advanced JavaScript frameworks to CSS techniques that enhance performance and accessibility. Get ready to transform your development workflow with these proven strategies.",
-                    isPartial: false
-                )
+            results = [
+                ExcerptGenerationResult(excerpts: [
+                    "Discover the cutting-edge trends transforming web development today. This comprehensive guide covers advanced JavaScript frameworks, innovative CSS techniques, and performance optimization strategies that modern developers use to create faster, more accessible websites.",
+                    "Whether you're a seasoned developer or just starting out, this practical guide provides actionable insights into the latest web development trends. Learn about responsive design principles, modern frameworks, and techniques to build engaging digital experiences.",
+                    "The future of web development is here! Explore innovative approaches to creating digital experiences, from advanced JavaScript frameworks to CSS techniques that enhance performance and accessibility. Get ready to transform your development workflow with these proven strategies."
+                ]).asPartiallyGenerated()
             ]
         }
 #endif
@@ -312,15 +346,11 @@ private struct ExcerptGenerationResult {
     var excerpts: [String]
 }
 
-private struct GeneratedExcerpt {
-    let content: String
-    var isPartial: Bool
-}
-
 @available(iOS 26, *)
 private struct ExcerptOptionView: View {
     let index: Int
-    let excerpt: GeneratedExcerpt
+    let excerpt: String
+    let isPartial: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -330,9 +360,9 @@ private struct ExcerptOptionView: View {
 
                 Spacer(minLength: 8)
 
-                if !excerpt.isPartial {
+                if !isPartial {
                     HStack(alignment: .center, spacing: 4) {
-                        Text(Strings.characterCount(excerpt.content.count))
+                        Text(Strings.characterCount(excerpt.count))
                             .font(.footnote)
                             .foregroundStyle(Color.secondary)
 
@@ -345,7 +375,7 @@ private struct ExcerptOptionView: View {
             }
             .font(.footnote)
 
-            Text(excerpt.content)
+            Text(excerpt)
                 .contentTransition(.interpolate)
                 .font(.callout)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -432,6 +462,12 @@ private enum Strings {
         )
         return String(format: format, count)
     }
+
+    static let generateMore = NSLocalizedString(
+        "postSettings.excerpt.generator.generateMore",
+        value: "Suggest More Options",
+        comment: "Button to suggest (generate) more options"
+    )
 }
 
 #if DEBUG

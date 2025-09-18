@@ -58,6 +58,10 @@ public enum LanguageModelHelper {
         \(content)
         """
     }
+
+    public static var generateMoreOptionsPrompt: String {
+        "Generate additional three options"
+    }
 }
 
 public enum GenerationStyle: String, CaseIterable, RawRepresentable {
