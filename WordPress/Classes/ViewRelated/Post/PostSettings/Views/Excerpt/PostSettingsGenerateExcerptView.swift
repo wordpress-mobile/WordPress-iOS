@@ -435,4 +435,3 @@ private enum Strings {
     }
     .accentColor(AppColor.primary)
 }
-#endif
