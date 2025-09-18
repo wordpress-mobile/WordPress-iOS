@@ -327,10 +327,6 @@ private struct ExcerptOptionView: View {
                         Text(Strings.characterCount(excerpt.count))
                             .font(.footnote)
                             .foregroundStyle(Color.secondary)
-
-                        Image(systemName: "chevron.right")
-                            .font(.caption2.weight(.semibold))
-                            .foregroundStyle(Color(.secondaryLabel).opacity(0.5))
                     }
                     .transition(.opacity.combined(with: .offset(x: 7)))
                 }
