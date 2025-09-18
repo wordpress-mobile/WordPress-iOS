@@ -266,6 +266,11 @@ struct PostSettingsGenerateExcerptView: View {
     private func actuallyGenerateExcerpts(in session: LanguageModelSession, isLoadMore: Bool = false) async throws {
         isGenerating = true
         isPreparingResponse = true
+        defer {
+            withAnimation(.smooth) {
+                isGenerating = false
+            }
+        }
 
         let prompt = isLoadMore ? LanguageModelHelper.generateMoreOptionsPrompt : LanguageModelHelper.makeGenerateExcerptPrompt(content: postContent, length: length, style: style)
         let stream = session.streamResponse(to: prompt, generating: ExcerptGenerationResult.self)
@@ -294,10 +299,6 @@ struct PostSettingsGenerateExcerptView: View {
             "style": style.rawValue,
             "load_more": isLoadMore ? 1 : 0
         ])
-
-        withAnimation(.smooth) {
-            isGenerating = false
-        }
     }
 }
 
