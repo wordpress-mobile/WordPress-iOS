@@ -393,15 +393,12 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         guard !hasEditorStarted else { return }
         hasEditorStarted = true
 
-        var configurationBuilder = self.editorViewController.configuration.toBuilder()
-
-        if let settings {
-            configurationBuilder = configurationBuilder.setEditorSettings(settings)
-        }
-
-        let updatedConfiguration = configurationBuilder
+        let updatedConfiguration = self.editorViewController.configuration.toBuilder()
+            .apply(settings) { $0.setEditorSettings($1) }
+            .apply(post.postID?.intValue) { $0.setPostID($1) }
             .setTitle(post.postTitle ?? "")
             .setContent(post.content ?? "")
+            .setPostType(post.wpPostType)
             .build()
 
         self.editorViewController.updateConfiguration(updatedConfiguration)
