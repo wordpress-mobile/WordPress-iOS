@@ -115,7 +115,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
             }
 
             if isEditing {
-                let doneButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonDoneTapped))
+                let doneButton = UIBarButtonItem(title: SharedStrings.Button.cancel, image: nil, target: self, action: #selector(buttonDoneTapped))
                 items.append(doneButton)
             }
             return items
