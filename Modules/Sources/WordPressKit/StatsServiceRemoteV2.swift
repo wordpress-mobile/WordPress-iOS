@@ -444,7 +444,37 @@ extension StatsTimeIntervalData {
         }
         return nil
     }
+}
 
+enum Bamboozled {
+    /// Sometimes PHP returns a dictionary with numbers as keys instead of an
+    /// actual array. This fixes it.
+    static func parseArray(_ object: AnyObject?) -> [[String: AnyObject]]? {
+        guard let object else {
+            return nil
+        }
+        if let array = object as? [[String: AnyObject]] {
+            return array
+        }
+        if let dictionary = object as? [String: [String: AnyObject]] {
+            return dictionary.sorted { lhs, rhs in
+                if let lhs = Int(lhs.key), let rhs = Int(rhs.key) {
+                    return lhs < rhs
+                }
+                return lhs.key.compare(rhs.key, options: .numeric) == .orderedAscending
+            }.map {
+                $0.value
+            }
+        }
+        if let dictionary = object as? [Int: [String: AnyObject]] {
+            return dictionary.sorted { lhs, rhs in
+                lhs.key < rhs.key
+            }.map {
+                $0.value
+            }
+        }
+        return nil
+    }
 }
 
 // We'll bring `StatsPeriodUnit` into this file when the "old" `WPStatsServiceRemote` gets removed.

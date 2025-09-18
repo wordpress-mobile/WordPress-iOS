@@ -1,6 +1,11 @@
 26.4
 -----
 
+26.3.1
+------
+* [*] Fix an issue with Top Posts not loading for some users [#24860]
+* [*] Fix crash in Reader Article view [#24857]
+* [*] Fix more minor visual glitches on iOS 26 [#24858]
 
 26.3
 -----
