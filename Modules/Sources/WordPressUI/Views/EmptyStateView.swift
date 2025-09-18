@@ -26,6 +26,7 @@ public struct EmptyStateView<Label: View, Description: View, Actions: View>: Vie
                 label()
                     .font(.title2.weight(.medium))
                     .labelStyle(EmptyStateViewLabelStyle())
+                    .multilineTextAlignment(.center)
                 description()
                     .font(.subheadline)
                     .multilineTextAlignment(.center)

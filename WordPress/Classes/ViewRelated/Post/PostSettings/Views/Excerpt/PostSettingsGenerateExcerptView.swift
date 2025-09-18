@@ -55,7 +55,7 @@ struct PostSettingsGenerateExcerptView: View {
                     progressView
                         .padding(.top, 4)
                 } else if let error {
-                    EmptyStateView.failure(error: error)
+                    EmptyStateView(error.localizedDescription, systemImage: "exclamationmark.message.fill")
                         .frame(minHeight: 460)
                         .transition(.opacity.combined(with: .scale(scale: 0.9)))
                 } else {
@@ -268,9 +268,7 @@ struct PostSettingsGenerateExcerptView: View {
         isGenerating = true
         isPreparingResponse = true
         defer {
-            withAnimation(.smooth) {
-                isGenerating = false
-            }
+            isGenerating = false
         }
 
         let prompt = isLoadMore ? LanguageModelHelper.generateMoreOptionsPrompt : LanguageModelHelper.makeGenerateExcerptPrompt(content: postContent, length: length, style: style)
