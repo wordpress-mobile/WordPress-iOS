@@ -29,8 +29,6 @@ struct PostSettingsGenerateExcerptView: View {
         results.flatMap { ($0.excerpts ?? []) }
     }
 
-    private var testScenario: TestScenario?
-
     init(postContent: String, onSelection: @escaping (String) -> Void) {
         self.postContent = postContent
         self.onSelection = onSelection
@@ -42,12 +40,7 @@ struct PostSettingsGenerateExcerptView: View {
             .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             WPAnalytics.track(.intelligenceExcerptGeneratorOpened)
-
-            if let testScenario {
-                setupTestScenario(testScenario)
-            } else {
-                generateExcerpts()
-            }
+            generateExcerpts()
         }
         .onDisappear {
             cancelAllTasks()
@@ -306,37 +299,6 @@ struct PostSettingsGenerateExcerptView: View {
             isGenerating = false
         }
     }
-
-    enum TestScenario: String, CaseIterable {
-        case loading
-        case error
-        case finished
-    }
-
-    func testing(scenario: TestScenario) -> PostSettingsGenerateExcerptView {
-        var copy = self
-        copy.testScenario = scenario
-        return copy
-    }
-
-    private func setupTestScenario(_ scenario: TestScenario) {
-#if DEBUG
-        switch scenario {
-        case .loading:
-            isGenerating = true
-        case .error:
-            error = URLError(.unknown)
-        case .finished:
-            results = [
-                ExcerptGenerationResult(excerpts: [
-                    "Discover the cutting-edge trends transforming web development today. This comprehensive guide covers advanced JavaScript frameworks, innovative CSS techniques, and performance optimization strategies that modern developers use to create faster, more accessible websites.",
-                    "Whether you're a seasoned developer or just starting out, this practical guide provides actionable insights into the latest web development trends. Learn about responsive design principles, modern frameworks, and techniques to build engaging digital experiences.",
-                    "The future of web development is here! Explore innovative approaches to creating digital experiences, from advanced JavaScript frameworks to CSS techniques that enhance performance and accessibility. Get ready to transform your development workflow with these proven strategies."
-                ]).asPartiallyGenerated()
-            ]
-        }
-#endif
-    }
 }
 
 @available(iOS 26, *)
@@ -470,20 +432,11 @@ private enum Strings {
     )
 }
 
-#if DEBUG
 @available(iOS 26, *)
-struct PostSettingsGenerateExcerptView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            ForEach(PostSettingsGenerateExcerptView.TestScenario.allCases, id: \.self) { scenario in
-                PostSettingsGenerateExcerptView(postContent: PostSettingsExcerptEditor.mockPostContent) {
-                    print("Text selected:", $0)
-                }
-                .testing(scenario: scenario)
-                .previewDisplayName(scenario.rawValue.capitalized)
-                .accentColor(AppColor.primary)
-            }
-        }
+#Preview {
+    PostSettingsGenerateExcerptView(postContent: PostSettingsExcerptEditor.mockPostContent) {
+        print("Text selected:", $0)
     }
+    .accentColor(AppColor.primary)
 }
 #endif
