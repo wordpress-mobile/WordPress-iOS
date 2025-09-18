@@ -182,6 +182,7 @@ struct PostSettingsGenerateExcerptView: View {
                 }
             }
             .pickerStyle(.menu)
+            .fixedSize()
             .tint(Color.primary)
             .onChange(of: style) { _ in
                 didChangeGenerationParameters()
@@ -228,12 +229,8 @@ struct PostSettingsGenerateExcerptView: View {
     }
 
     private func startGeneration() async throws {
-        let session = LanguageModelSession()
-        let prompt = LanguageModelHelper.makeGenerateExcerptPrompt(
-            content: postContent,
-            length: length,
-            style: style
-        )
+        let session = LanguageModelSession(instructions: LanguageModelHelper.generateExcerptInstructions)
+        let prompt = LanguageModelHelper.makeGenerateExcerptPrompt(content: postContent, length: length, style: style)
         let stream = session.streamResponse(to: prompt, generating: ExcerptGenerationResult.self)
 
         for try await result in stream {
