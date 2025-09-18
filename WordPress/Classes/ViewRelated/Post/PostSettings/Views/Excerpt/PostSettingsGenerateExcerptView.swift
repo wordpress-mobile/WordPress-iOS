@@ -231,7 +231,10 @@ struct PostSettingsGenerateExcerptView: View {
 
         generationTask = Task {
             do {
-                let session = LanguageModelSession(instructions: LanguageModelHelper.generateExcerptInstructions)
+                let session = LanguageModelSession(
+                    model: .init(guardrails: .permissiveContentTransformations),
+                    instructions: LanguageModelHelper.generateExcerptInstructions
+                )
                 self.session = session
                 try await actuallyGenerateExcerpts(in: session)
             } catch {
