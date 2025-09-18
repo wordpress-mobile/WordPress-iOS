@@ -107,7 +107,7 @@ public final class WordPressOrgRestApi: NSObject {
         path: String,
         parameters: [String: Any]? = nil
     ) async -> WordPressAPIResult<Data, WordPressOrgRestApiError> {
-        await perform(.get, path: path, parameters: parameters)
+        await perform(.get, path: path, parameters: parameters) { $0 }
     }
 
     public func post<Success: Decodable>(
