@@ -1,10 +1,7 @@
 import SwiftUI
 import WordPressUI
 import DesignSystem
-
-#if canImport(FoundationModels)
 import FoundationModels
-#endif
 
 @available(iOS 26, *)
 struct PostSettingsGenerateExcerptView: View {

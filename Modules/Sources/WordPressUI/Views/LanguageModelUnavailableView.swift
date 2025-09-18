@@ -1,8 +1,5 @@
 import SwiftUI
-
-#if canImport(FoundationModels)
 import FoundationModels
-#endif
 
 @available(iOS 26, *)
 public struct LanguageModelUnavailableView: View {

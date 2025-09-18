@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(FoundationModels)
 import FoundationModels
-#endif
 
 public enum LanguageModelHelper {
     public static var isSupported: Bool {
