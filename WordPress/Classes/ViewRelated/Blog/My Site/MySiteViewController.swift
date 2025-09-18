@@ -387,7 +387,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
 
         if RemoteFeatureFlag.newGutenberg.enabled() {
-            RawBlockEditorSettingsService.getService(forBlog: blog).refreshSettings()
+            RawBlockEditorSettingsService(blog: blog).prefetchSettings()
         }
     }
 
