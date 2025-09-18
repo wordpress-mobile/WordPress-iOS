@@ -4,7 +4,7 @@ import XCTest
 public class ChooseLayoutScreen: ScreenObject {
 
     private let closeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Close"]
+        $0.buttons["close-button"]
     }
 
     private let createBlankPageButtonGetter: (XCUIApplication) -> XCUIElement = {
