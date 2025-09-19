@@ -11,12 +11,12 @@ struct ReaderSubscriptionsView: View {
     )
     private var subscriptions: FetchedResults<ReaderSiteTopic>
 
-    @State private var searchText = ""
     @State private var isShowingMainAddSubscriptonPopover = false
 
+    @State private var searchText = ""
+    @State private var pendingSearchText: String?
     @State private var searchResults: [ReaderSiteTopic]?
     @State private var searchTask: Task<Void, Never>?
-    @State private var pendingSearchText: String?
 
     @StateObject private var viewModel = ReaderSubscriptionsViewModel()
 
@@ -130,65 +130,56 @@ struct ReaderSubscriptionsView: View {
     }
 
     private func performBackgroundSearch(searchText: String) {
-        struct SearchableSubscription: Sendable {
-            let objectID: NSManagedObjectID
-            let title: String
-            let siteURL: String
-
-            var searchableText: String {
-                "\(title) \(siteURL)"
-            }
-
-            init(_ subscription: ReaderSiteTopic) {
-                self.objectID = subscription.objectID
-                self.title = subscription.title
-                self.siteURL = subscription.siteURL
-            }
-        }
-
-        // Cancel any existing search task
-        searchTask?.cancel()
-
-        // Clear results immediately if search text is empty
-        if searchText.isEmpty {
+        guard !searchText.isEmpty else {
             searchResults = nil
             pendingSearchText = nil
+            searchTask?.cancel()
             return
         }
 
-        // Start new background search task
-        searchTask = Task {
-            // Store the search text we're processing
-            let currentSearchText = searchText
-
-            // Create searchable data on main thread to avoid Core Data context issues
-            let searchableData = subscriptions.map(SearchableSubscription.init)
-
-            // Perform the search on a background queue with parallel processing
-            let resultObjectIDs = await StringRankedSearch(searchTerm: currentSearchText)
-                .parallelSearch(in: searchableData) { $0.searchableText }
-                .map(\.objectID)
-
-            // Check if we were cancelled or if search text changed during search
-            guard !Task.isCancelled else { return }
-
-            // Update results on main thread
-            await MainActor.run {
-                // Only update if this search is still relevant
-                if currentSearchText == searchText {
-                    searchResults = subscriptions.filter { resultObjectIDs.contains($0.objectID) }
-                    pendingSearchText = nil
-                } else {
-                    // Search text changed during our search, mark that we need a new search
-                    pendingSearchText = searchText
-                }
-
-                // If there's a pending search, start it now
-                if let pendingSearchText {
-                    performBackgroundSearch(searchText: pendingSearchText)
-                }
-            }
+        guard searchTask == nil else {
+            pendingSearchText = searchText
+            return
         }
+
+        searchTask = Task { [searchText] in
+            await performSearch(for: searchText)
+        }
+    }
+
+    private func performSearch(for searchText: String) async {
+        let searchableData = subscriptions.map(SearchableSubscription.init)
+
+        let resultObjectIDs = await StringRankedSearch(searchTerm: searchText)
+            .parallelSearch(in: searchableData) { $0.searchableText }
+            .map(\.objectID)
+
+        searchResults = subscriptions.filter { resultObjectIDs.contains($0.objectID) }
+
+        guard !Task.isCancelled else { return }
+
+        searchTask = nil
+
+        if let pendingSearchText {
+            self.pendingSearchText = nil
+            performBackgroundSearch(searchText: pendingSearchText)
+        }
+    }
+}
+
+private struct SearchableSubscription: Sendable {
+    let objectID: NSManagedObjectID
+    let title: String
+    let siteURL: String
+
+    var searchableText: String {
+        "\(title) \(siteURL)"
+    }
+
+    init(_ subscription: ReaderSiteTopic) {
+        self.objectID = subscription.objectID
+        self.title = subscription.title
+        self.siteURL = subscription.siteURL
     }
 }
 

@@ -2,7 +2,6 @@
 -----
 * [*] Fix performance issues with search in Reader Subscriptions [#24841]
 
-
 26.3
 -----
 * [*] Fix a rare crash when scrolling the Reader sidebar [#24816]
