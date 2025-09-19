@@ -10,7 +10,7 @@ struct PostAction: ActionSheetItem {
 
     func makeButton() -> ActionSheetButton {
         return ActionSheetButton(
-            title: NSLocalizedString("Blog post", comment: "Create new Blog Post button title"),
+            title: Strings.post,
             image: UIImage(named: "wpl-posts")?.withRenderingMode(.alwaysTemplate) ?? .init(),
             identifier: "blogPostButton",
             action: {
@@ -28,7 +28,7 @@ struct PostFromAudioAction: ActionSheetItem {
 
     func makeButton() -> ActionSheetButton {
         return ActionSheetButton(
-            title: NSLocalizedString("createFAB.postFromAudio", value: "Post from Audio", comment: "Create new Blog Post from Audio button title"),
+            title: Strings.postFromAudio,
             image: .gridicon(.microphone),
             identifier: "blogPostFromAudioButton",
             action: {
@@ -46,7 +46,7 @@ struct PageAction: ActionSheetItem {
 
     func makeButton() -> ActionSheetButton {
         return ActionSheetButton(
-            title: NSLocalizedString("Site page", comment: "Create new Site Page button title"),
+            title: Strings.page,
             image: UIImage(named: "wpl-pages")?.withRenderingMode(.alwaysTemplate) ?? .init(),
             identifier: "sitePageButton",
             action: {
@@ -54,4 +54,10 @@ struct PageAction: ActionSheetItem {
                 handler()
             })
     }
+}
+
+private enum Strings {
+    static let post = NSLocalizedString("createSheet.post", value: "Post", comment: "Create Sheet button title")
+    static let postFromAudio = NSLocalizedString("createSheet.postFromAudio", value: "Post from Audio", comment: "Create Sheet button title")
+    static let page = NSLocalizedString("createSheet.page", value: "Page", comment: "Create Sheet button title")
 }
