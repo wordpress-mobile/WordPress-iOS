@@ -4,10 +4,13 @@ import UniformTypeIdentifiers
 
 struct TopListScreenView: View {
     @StateObject private var viewModel: TopListViewModel
+    @State private var isShowingAllItems = false
 
     @Environment(\.router) var router
     @Environment(\.context) var context
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    private let limit = 50
 
     init(
         selection: TopListViewModel.Selection,
@@ -185,7 +188,7 @@ struct TopListScreenView: View {
 
     private func itemsListView(data: TopListData) -> some View {
         VStack(spacing: Constants.step0_5) {
-            ForEach(data.items, id: \.id) { item in
+            ForEach(getDisplayedItems(from: data.items), id: \.id) { item in
                 TopListItemView(
                     item: item,
                     previousValue: data.previousItem(for: item)?.metrics[viewModel.selection.metric],
@@ -195,7 +198,39 @@ struct TopListScreenView: View {
                 )
                 .frame(height: TopListItemView.defaultCellHeight)
             }
+
+            if data.items.count > limit && !isShowingAllItems {
+                showMoreButton
+            }
         }
+    }
+
+    private func getDisplayedItems(from items: [any TopListItemProtocol]) -> [any TopListItemProtocol] {
+        if isShowingAllItems || items.count <= limit {
+            return items
+        } else {
+            return Array(items.prefix(limit))
+        }
+    }
+
+    private var showMoreButton: some View {
+        Button {
+            withAnimation(.spring) {
+                isShowingAllItems = true
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Text(Strings.Buttons.showMore)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                Image(systemName: "chevron.down")
+                    .font(.caption)
+                    .fontWeight(.medium)
+            }
+        }
+        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Constants.step2)
     }
 
     private func makeEmptyStateView(message: String) -> some View {
