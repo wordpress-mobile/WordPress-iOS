@@ -322,11 +322,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
             return nil
         }
 
-#if swift(>=4.0)
         let rsdURLRange = matches[0].range(at: 1)
-#else
-        let rsdURLRange = matches[0].rangeAt(1)
-#endif
 
         if rsdURLRange.location == NSNotFound {
             return nil

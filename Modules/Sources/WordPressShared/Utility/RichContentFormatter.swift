@@ -290,11 +290,7 @@ import WordPressSharedObjC
         let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count))
         if let match = matches.first {
             let index = content.index(content.startIndex, offsetBy: match.range.location)
-            #if swift(>=4.0)
             content = String(content.prefix(upTo: index))
-            #else
-            content = content.substring(to: index)
-            #endif
         }
 
         return content

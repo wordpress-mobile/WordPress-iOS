@@ -36,25 +36,9 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     private var lastReloadDate: Date?
     private var isReloadNeeded = false
 
-    /// A shared web view context with resources that can be reused across
-    /// mutliple web view instances.
-    @MainActor
-    public final class Context {
-        let processPool = WKProcessPool()
-
-        public init() {}
-    }
-
     // MARK: Methods
-
-    public required override convenience init() {
-        self.init(context: .init())
-    }
-
-    public init(context: Context) {
+    public override init() {
         super.init()
-
-        webView.configuration.processPool = context.processPool
 
         if #available(iOS 16.4, *) {
             webView.isInspectable = true

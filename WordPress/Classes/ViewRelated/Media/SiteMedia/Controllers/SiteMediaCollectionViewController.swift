@@ -92,11 +92,9 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
 
         parentViewController.navigationItem.searchController = searchController
 
-#if compiler(>=6.2)
         if #available(iOS 26, *) {
             parentViewController.navigationItem.preferredSearchBarPlacement = .integrated
         }
-#endif
     }
 
     override func viewDidLoad() {

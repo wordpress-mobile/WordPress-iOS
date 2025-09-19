@@ -87,6 +87,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private lazy var toolbar = ReaderDetailToolbar()
     private var lastContentOffset: CGFloat = 0
 
+    private var toolbarUpdateTimer: Timer?
+
     /// Likes summary view
     private let likesSummary: ReaderDetailLikesView = .loadFromNib()
 
@@ -135,6 +137,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// This may happen if we initialize our coordinator with a postURL that
     /// has a comment anchor fragment.
     private var hasAutomaticallyTriggeredCommentAction = false
+
+    private var isToolbarHidden = false
 
     // Reader customization model
     private lazy var displaySettingStore: ReaderDisplaySettingStore = {
@@ -445,6 +449,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     deinit {
         scrollObserver?.invalidate()
+        toolbarUpdateTimer?.invalidate()
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -900,8 +905,23 @@ extension ReaderDetailViewController: UIScrollViewDelegate {
         layoutHeroView()
     }
 
+    private func setNeedsToolbarHidden(_ isHidden: Bool) {
+        // Debounce to prevent it from quickly switching between states when
+        // on the edge of the scroll threshold.
+        toolbarUpdateTimer?.invalidate()
+        toolbarUpdateTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { [weak self] _ in
+            self?.setToolbarHidden(isHidden, animated: true)
+        }
+    }
+
     private func setToolbarHidden(_ isHidden: Bool, animated: Bool) {
-        guard navigationController?.isToolbarHidden != isHidden else { return } // Important
+        guard scrollView.contentSize.height > view.bounds.height * 2.5 else {
+            return // No point in briefly hiding it
+        }
+        guard isToolbarHidden != isHidden else {
+            return
+        }
+        isToolbarHidden = isHidden
         navigationController?.setToolbarHidden(isHidden, animated: animated)
     }
 }
