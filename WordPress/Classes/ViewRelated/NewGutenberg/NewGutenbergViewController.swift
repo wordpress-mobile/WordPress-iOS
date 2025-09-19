@@ -211,8 +211,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         configureNavigationBar()
         refreshInterface()
 
-        prewarmEditor()
-
         startLoadingDependencies()
 
         SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) {
@@ -497,11 +495,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
                 continuation.resume(returning: true)
             }
         }
-    }
-
-    // Loads the GutenbergKit assets into memory
-    private func prewarmEditor() {
-        GutenbergKit.EditorViewController(configuration: .default, isWarmupMode: true).startEditorSetup()
     }
 }
 
