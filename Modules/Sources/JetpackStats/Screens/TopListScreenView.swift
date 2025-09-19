@@ -132,7 +132,7 @@ struct TopListScreenView: View {
 
     private var listHeaderView: some View {
         HStack {
-            Text(viewModel.selection.item.localizedTitle)
+            Text(Strings.TopListTitles.top10)
                 .font(.subheadline)
                 .fontWeight(.medium)
 
@@ -189,6 +189,11 @@ struct TopListScreenView: View {
     private func itemsListView(data: TopListData) -> some View {
         VStack(spacing: Constants.step0_5) {
             ForEach(getDisplayedItems(from: data.items), id: \.id) { item in
+                if data.items.count > 10, item.id == data.items[10].id {
+                    Divider()
+                        .padding(.horizontal, Constants.step1)
+                        .padding(.vertical)
+                }
                 TopListItemView(
                     item: item,
                     previousValue: data.previousItem(for: item)?.metrics[viewModel.selection.metric],

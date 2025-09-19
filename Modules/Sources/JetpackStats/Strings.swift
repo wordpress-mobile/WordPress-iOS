@@ -122,6 +122,7 @@ enum Strings {
         static let highestBounceRate = AppLocalizedString("jetpackStats.topList.highestBounceRate", value: "Highest Bounce Rate", comment: "Title for items with highest bounce rate")
         static let longestTimeOnSite = AppLocalizedString("jetpackStats.topList.longestTimeOnSite", value: "Longest Time on Site", comment: "Title for items with longest time on site")
         static let mostDownloadeded = AppLocalizedString("jetpackStats.topList.mostDownloads", value: "Most Downloaded", comment: "Title for chart")
+        static let top10 = AppLocalizedString("jetpackStats.topList.top10", value: "Top 10", comment: "Title for section in a list")
     }
 
     enum Errors {
