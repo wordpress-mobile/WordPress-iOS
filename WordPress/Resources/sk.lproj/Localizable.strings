@@ -554,8 +554,7 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Kliknutia";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Zavrieť";
 
@@ -3108,7 +3107,7 @@
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "Neznámy kód HTML";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Neznáma chyba";
 
 /* People: Invitation Error */

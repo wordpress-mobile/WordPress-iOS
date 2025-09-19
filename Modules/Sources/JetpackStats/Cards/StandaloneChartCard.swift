@@ -197,7 +197,7 @@ struct StandaloneChartCard: View {
     }
 
     private var dateRangeControls: some View {
-        HStack(spacing: Constants.step1) {
+        HStack {
             // Date range menu button
             Menu {
                 StatsDateRangePickerMenu(selection: $dateRange, isShowingCustomRangePicker: $isShowingDatePicker)
@@ -216,7 +216,7 @@ struct StandaloneChartCard: View {
             }
             .tint(Color.primary)
 
-            Spacer()
+            Spacer(minLength: Constants.step1)
 
             // Navigation controls
             HStack(spacing: 4) {
@@ -224,6 +224,7 @@ struct StandaloneChartCard: View {
                 navigationButton(direction: .forward)
             }
         }
+        .lineLimit(1)
     }
 
     @ViewBuilder

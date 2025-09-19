@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-04 13:54:09+0000 */
+/* Translation-Revision-Date: 2025-09-16 18:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: tr */
@@ -1295,8 +1295,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Tıklamalar";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Kapat";
 
@@ -6331,7 +6330,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "HTML bilinmiyor";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Bilinmeyen sorun";
 
 /* People: Invitation Error */
@@ -7383,6 +7382,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Uygulama şifreleri, kullanıcı tarafından barındırılan sitelerinizi bağlamanız ve %@ gibi özellikler için destek sağlamanın daha güvenli bir yoludur.";
+
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "Blok Düzenleyici";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Eklenti Yönetimi";
@@ -9199,10 +9201,10 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.deletionSuccessMessage" = "Silindi!";
 
 /* The name of the media filter */
-"mediaLibrary.filterAll" = "Tümü";
+"mediaLibrary.filterAudio" = "Ses";
 
 /* The name of the media filter */
-"mediaLibrary.filterAudio" = "Ses";
+"mediaLibrary.filterDefault" = "Varsayılan (Tümü)";
 
 /* The name of the media filter */
 "mediaLibrary.filterDocuments" = "Belgeler";
@@ -10104,6 +10106,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Görünürlük";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "Gönderi İstatistikleri";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "İptal Et";

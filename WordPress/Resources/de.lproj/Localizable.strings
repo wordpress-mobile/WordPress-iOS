@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-01 00:37:52+0000 */
+/* Translation-Revision-Date: 2025-09-16 00:35:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -1298,8 +1298,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Klicks";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Schließen";
 
@@ -1504,7 +1503,7 @@ translators: %s: Block name e.g. \"Image block\" */
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
    Title of the continue button for the Site Intent screen. */
-"Continue" = "Weiter";
+"Continue" = "Fortfahren";
 
 /* Button title. Takes the user to the login with WordPress.com flow. */
 "Continue With WordPress.com" = "Weiter mit WordPress.com";
@@ -2657,7 +2656,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
-"Got it" = "OK";
+"Got it" = "Verstanden";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Grabbing site URL" = "Die Website-URL wird abgerufen";
@@ -6334,7 +6333,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "Unbekanntes HTML";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Unbekannter Fehler";
 
 /* People: Invitation Error */
@@ -7386,6 +7385,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Anwendungspasswörter sind eine noch sicherere Methode, auf deine selbst gehostete Website zuzugreifen und Funktionen wie %@ zu nutzen.";
+
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "Block-Editor";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Plugin-Verwaltung";
@@ -9214,10 +9216,10 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.deletionSuccessMessage" = "Gelöscht!";
 
 /* The name of the media filter */
-"mediaLibrary.filterAll" = "Alle";
+"mediaLibrary.filterAudio" = "Audio";
 
 /* The name of the media filter */
-"mediaLibrary.filterAudio" = "Audio";
+"mediaLibrary.filterDefault" = "Standard (Alle)";
 
 /* The name of the media filter */
 "mediaLibrary.filterDocuments" = "Dokumente";
@@ -10119,6 +10121,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Sichtbarkeit";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "Beitrags-Statistiken";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Abbrechen";

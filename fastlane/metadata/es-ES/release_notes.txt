@@ -1,2 +1,5 @@
-- Hemos añadido menciones al editor experimental: etiqueta a tus colaboradores y observa cómo se produce la magia.
-- La vista dividida del iPad ahora se comporta perfectamente en modo vertical. Se acabaron los diseños incómodos.
+Hemos introducido algunas mejoras para que tu experiencia con WordPress sea aún más fluida.
+
+Hemos añadido compatibilidad con iOS 26, para que puedas aprovechar las últimas funciones de tu dispositivo. Todo se ve y se siente perfectamente.
+
+También hemos realizado algunas mejoras entre bastidores en los botones y la navegación de la aplicación. Notarás que todo está más pulido y es más coherente, sobre todo en las pantallas del editor, los ajustes y las estadísticas.

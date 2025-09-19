@@ -1,3 +1,7 @@
-- Esas magníficas estadísticas son aún mejores: toca cualquier barra para obtener información instantánea, explora las tendencias semanales y disfruta de un modo oscuro impecable. Tus datos merecen este nivel de elegancia.
-- Hemos añadido las menciones al editor experimental: etiqueta a tus colaboradores y observa cómo sucede la magia.
-- Split View de iPad ahora funciona muy bien en modo retrato. Olvídate de las disposiciones raras.
+Hemos realizado algunas mejoras para que tu experiencia con Jetpack sea aún más fluida.
+
+Hemos añadido compatibilidad con iOS 26 para que puedas aprovechar todas las funciones más recientes que ofrece tu dispositivo. Todo se ve y funciona bien.
+
+Al lector le han encantado las actualizaciones visuales en la pantalla del artículo, que facilitan el trabajo de tus ojos a la hora de ponerte al día con tu contenido favorito.
+
+También hemos realizado algunas mejoras en segundo plano en los botones y en la navegación a lo largo de la aplicación. Notarás que todo está más pulido y es más coherente, sobre todo en las pantallas Editor, Ajustes y Estadísticas.

@@ -5,11 +5,7 @@ import Foundation
 extension String {
 
     func compatibleSubstring(with range: Range<String.Index>) -> String {
-        #if swift(>=4.0)
-            return String(self[range])
-        #else
-            return self.substring(with: range)
-        #endif
+        String(self[range])
     }
 
     /// Converts a UTF16 NSRange into a Swift String NSRange for this string.

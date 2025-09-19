@@ -104,10 +104,6 @@ class WindowManager: NSObject {
             completion: { _ in
                 completion?()
             })
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-            self.window.rootViewController = viewController
-        }
     }
 
     // MARK: Temporary Overlaying Window

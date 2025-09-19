@@ -132,6 +132,16 @@ public extension AbstractPost {
         ]
     }
 
+    /// The post type as recorded in the `post_type` column of `wp_posts`
+    ///
+    var wpPostType: String {
+        return switch self {
+            case is Post: "post"
+            case is Page: "page"
+            default: preconditionFailure("Unknown post type")
+        }
+    }
+
     var analyticsPostType: String? {
         switch self {
         case is Post:

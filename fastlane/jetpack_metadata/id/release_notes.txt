@@ -1,3 +1,7 @@
-- Bagan Statistik yang memukau kini jadi makin keren. Ketuk bilah mana saja untuk mendapatkan wawasan cepat, jelajahi tren mingguan, dan nikmati mode gelap yang sempurna. Data Anda layak mendapatkan visualisasi unggul seperti ini.
-- Kami telah menambahkan fitur penyebutan ke editor eksperimental. Tandai kolaborator Anda dan saksikan keajaibannya.
-- Split View iPad kini berfungsi dengan baik di mode malam. Tak ada lagi tata letak yang aneh.
+Kami melakukan beberapa peningkatan yang cermat untuk membuat pengalaman Jetpack Anda lebih lancar.
+
+Kami menambahkan dukungan untuk iOS 26, sehingga Anda dapat memanfaatkan semua fitur terbaru yang ditawarkan perangkat Anda. Semuanya tampak dan terasa tepat.
+
+Pembaca akan mendapat banyak perhatian dengan pembaruan visual pada layar artikel, membuatnya lebih nyaman dilihat saat Anda membaca konten favorit Anda.
+
+Kami juga melakukan beberapa perbaikan di balik layar untuk tombol dan navigasi di seluruh aplikasi. Anda akan melihat semuanya terasa lebih rapi dan konsisten, terutama di layar Editor, Pengaturan, dan Statistik.

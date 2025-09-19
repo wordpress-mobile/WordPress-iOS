@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-30 06:05:54+0000 */
+/* Translation-Revision-Date: 2025-09-11 14:27:30+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ro */
@@ -1298,8 +1298,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Clicuri";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Închidere";
 
@@ -6334,7 +6333,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "HTML necunoscut";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Eroare necunoscută";
 
 /* People: Invitation Error */
@@ -7386,6 +7385,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Parolele aplicației sunt o modalitate mai sigură de a-ți conecta site-ul auto-găzduit și de a activa suportul pentru funcționalități, cum ar fi %@.";
+
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "Editor de blocuri";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Administrare module";
@@ -9214,10 +9216,10 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.deletionSuccessMessage" = "Ștearsă!";
 
 /* The name of the media filter */
-"mediaLibrary.filterAll" = "Tot";
+"mediaLibrary.filterAudio" = "Audio";
 
 /* The name of the media filter */
-"mediaLibrary.filterAudio" = "Audio";
+"mediaLibrary.filterDefault" = "Implicit (tot)";
 
 /* The name of the media filter */
 "mediaLibrary.filterDocuments" = "Documente";
@@ -10119,6 +10121,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Vizibilitate";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "Statistici articol";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Anulează";

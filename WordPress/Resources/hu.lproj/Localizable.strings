@@ -75,8 +75,7 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Kattintások";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Bezár";
 
@@ -622,7 +621,7 @@
 /* Unapproves a Comment */
 "Unapprove Comment" = "Hozzászólás elutasítása";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Ismeretlen hiba";
 
 /* (Verb) Title of button confirming updating settings for blogging reminders.

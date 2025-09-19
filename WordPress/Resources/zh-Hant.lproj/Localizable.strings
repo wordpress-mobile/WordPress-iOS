@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-02 10:54:10+0000 */
+/* Translation-Revision-Date: 2025-09-16 12:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -1298,8 +1298,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "點擊率";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "關閉";
 
@@ -6328,7 +6327,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "不明 HTML";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "發生未知的錯誤";
 
 /* People: Invitation Error */
@@ -7378,6 +7377,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "應用程式密碼可提供更安全的自助託管網站連結方式，還支援「%@」等功能。";
 
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "區塊編輯器";
+
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "外掛程式管理";
 
@@ -8038,6 +8040,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Shared empty state view */
 "emptyStateView.noSearchResult.title" = "沒有結果";
+
+/* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
+"entityMetadataFooterView.id" = "ID";
 
 /* Placeholder for the site url textfield.
    Site Address placeholder */
@@ -9196,10 +9201,10 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.deletionSuccessMessage" = "已刪除！";
 
 /* The name of the media filter */
-"mediaLibrary.filterAll" = "全部";
+"mediaLibrary.filterAudio" = "音訊";
 
 /* The name of the media filter */
-"mediaLibrary.filterAudio" = "音訊";
+"mediaLibrary.filterDefault" = "預設 (全部)";
 
 /* The name of the media filter */
 "mediaLibrary.filterDocuments" = "文件";
@@ -10095,6 +10100,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "可見度";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "文章統計資料";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "取消";
@@ -11185,6 +11193,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "選取媒體。";
+
+/* Title for the URL field */
+"siteMedia.details.url" = "URL";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "點選即可在全螢幕中檢視媒體";

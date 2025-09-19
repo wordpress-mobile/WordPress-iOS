@@ -297,12 +297,10 @@ public class SiteStatsDashboardViewController: UIViewController {
 
     @available(iOS 17, *)
     private func showNewStatsTip() {
-        guard let button = parent?.navigationItem.rightBarButtonItem else { return }
-
         tipObserver?.cancel()
         tipObserver = registerTipPopover(
             AppTips.NewStatsTip(),
-            sourceItem: button,
+            sourceItem: statsMenuButton,
             arrowDirection: .up
         ) { [weak self] action in
             guard let self else { return }
@@ -462,13 +460,6 @@ private extension SiteStatsDashboardViewController {
         ])
 
         child.didMove(toParent: self)
-
-        // Delay for SwiftUI-based views that don't render immediatelly
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-            if let scrollView = child.contentScrollView(for: .top) {
-                self.filterBarController.enableAutomaticHiding(in: scrollView)
-            }
-        }
     }
 
     private func _removeChildViewController(_ child: UIViewController) {

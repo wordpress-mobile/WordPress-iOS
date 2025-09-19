@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-30 07:09:21+0000 */
+/* Translation-Revision-Date: 2025-09-11 10:20:12+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: nl */
@@ -1298,8 +1298,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Kliks";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Sluit";
 
@@ -6334,7 +6333,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "Onbekende HTML";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Onbekende fout";
 
 /* People: Invitation Error */
@@ -7386,6 +7385,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Applicatie wachtwoorden zijn een veiligere manier om verbinding te maken met je zelf-gehoste site, en inschakelen ondersteuning voor functies zoals %@.";
+
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "Blok-editor";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Pluginbeheer";
@@ -9214,10 +9216,10 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.deletionSuccessMessage" = "Verwijderd!";
 
 /* The name of the media filter */
-"mediaLibrary.filterAll" = "Alles";
+"mediaLibrary.filterAudio" = "Audio";
 
 /* The name of the media filter */
-"mediaLibrary.filterAudio" = "Audio";
+"mediaLibrary.filterDefault" = "Standaard (Alle)";
 
 /* The name of the media filter */
 "mediaLibrary.filterDocuments" = "Documenten";
@@ -10119,6 +10121,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Zichtbaarheid";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "Berichtstatistieken";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Annuleren";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-01 13:54:09+0000 */
+/* Translation-Revision-Date: 2025-09-15 14:54:07+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ar */
@@ -1298,8 +1298,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "نقرات";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "إغلاق";
 
@@ -6334,7 +6333,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "HTML غير معروف";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "خطأ غير معروف";
 
 /* People: Invitation Error */
@@ -7386,6 +7385,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "كلمات مرور التطبيقات هي طريقة أكثر أمانًا للاتصال بموقعك المستضاف ذاتيًا، وتمكين الدعم لميزات، مثل: %@.";
+
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "محرِّر المكوِّنات";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "إدارة الإضافة";
@@ -9196,10 +9198,10 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.deletionSuccessMessage" = "محذوف!";
 
 /* The name of the media filter */
-"mediaLibrary.filterAll" = "الكل";
+"mediaLibrary.filterAudio" = "الصوت";
 
 /* The name of the media filter */
-"mediaLibrary.filterAudio" = "الصوت";
+"mediaLibrary.filterDefault" = "افتراضي (الكل)";
 
 /* The name of the media filter */
 "mediaLibrary.filterDocuments" = "الوثائق";
@@ -10092,6 +10094,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "إمكانية الرؤية";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "إحصاءات التدوينات";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "إلغاء";

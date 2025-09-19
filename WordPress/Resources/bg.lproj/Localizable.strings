@@ -376,8 +376,7 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Кликове";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Затваряне";
 
@@ -2092,7 +2091,7 @@
 /* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "Непознат";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Непозната грешка";
 
 /* People: Invitation Error */

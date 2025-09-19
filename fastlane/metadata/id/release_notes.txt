@@ -1,2 +1,5 @@
-- Kami telah menambahkan fitur penyebutan ke editor eksperimental. Tandai kolaborator Anda dan saksikan keajaibannya.
-- Split View iPad kini berfungsi dengan baik di mode malam. Tak ada lagi tata letak yang aneh.
+Kami melakukan beberapa peningkatan yang cermat untuk membuat pengalaman WordPress Anda lebih lancar.
+
+Kami menambahkan dukungan untuk iOS 26, sehingga Anda dapat memanfaatkan semua fitur terbaru yang ditawarkan perangkat Anda. Semuanya tampak dan terasa tepat.
+
+Kami juga melakukan beberapa perbaikan di balik layar untuk tombol dan navigasi di seluruh aplikasi. Anda akan melihat semuanya terasa lebih rapi dan konsisten, terutama di layar Editor, Pengaturan, dan Statistik.

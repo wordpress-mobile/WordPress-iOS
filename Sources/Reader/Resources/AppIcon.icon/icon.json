@@ -8,11 +8,11 @@
         {
           "glass" : false,
           "image-name" : "Clip path group.png",
-          "name" : "Clip path group"
+          "name" : "path"
         },
         {
           "image-name" : "Group 14.png",
-          "name" : "Group 14",
+          "name" : "bg",
           "position" : {
             "scale" : 1.09,
             "translation-in-points" : [

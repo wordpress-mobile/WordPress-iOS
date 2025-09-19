@@ -123,13 +123,8 @@ extension WPStyleGuide {
 
         var fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
 
-        #if swift(>=4.0)
         let traits = [UIFontDescriptor.TraitKey.weight: weight]
         fontDescriptor = fontDescriptor.addingAttributes([.traits: traits])
-        #else
-        let traits = [UIFontWeightTrait: weight]
-        fontDescriptor = fontDescriptor.addingAttributes([UIFontDescriptorTraitsAttribute: traits])
-        #endif
 
         return UIFont(descriptor: fontDescriptor, size: CGFloat(0.0))
     }

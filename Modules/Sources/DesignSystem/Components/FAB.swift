@@ -9,7 +9,6 @@ public struct FAB: View {
         self.action = action
     }
 
-#if compiler(>=6.2)
     public var body: some View {
         if #available(iOS 26, *) {
             Button(action: action ?? {}) {
@@ -25,11 +24,6 @@ public struct FAB: View {
             legacy
         }
     }
-#else
-    public var body: some View {
-        legacy
-    }
-#endif
 
     @ViewBuilder
     private var legacy: some View {

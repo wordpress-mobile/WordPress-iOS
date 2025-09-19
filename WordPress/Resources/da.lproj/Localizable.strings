@@ -144,8 +144,7 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Klik";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Luk";
 
@@ -1049,7 +1048,7 @@
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Fandt ikke et WordPress websted på den URL. Tryk 'Behov for hjælp?' for at læse FAQ.";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Ukendt fejl";
 
 /* Displayed when a site has no name */

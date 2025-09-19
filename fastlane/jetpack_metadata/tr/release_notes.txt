@@ -1,3 +1,7 @@
-- Bu muhteşem İstatistik tabloları artık daha da iyi: Anlık içgörüler için herhangi bir çubuğa dokunun, haftalık trendleri keşfedin ve kusursuz karanlık modun keyfini çıkarın. Verileriniz bu düzeydeki zarafeti hak ediyor.
-- Deneysel düzenleyiciye bahsedilmeler ekledik: Çalışma arkadaşlarınızı etiketleyin ve sihrin gerçekleşmesini izleyin.
-- iPad Bölünmüş Görünüm artık portre modunda iyi davranıyor. Artık garip düzenler yok.
+Jetpack deneyiminizi daha da sorunsuz hale getirmek için bazı özenli iyileştirmeler yaptık.
+
+iOS 26 için destek ekledik, böylece cihazınızın sunduğu en son özelliklerden tümünden yararlanabilirsiniz. Her şey doğru görünüyor ve hissettirir.
+
+Okuyucu, makale ekranında yapılan görsel güncellemelerle biraz iyileştirildi ve favori içeriğinizi okumak artık daha kolay.
+
+Ayrıca uygulama genelinde düğmeler ve gezinme konusunda arka planda bazı iyileştirmeler yaptık. Özellikle Düzenleyici, Ayarlar ve İstatistikler ekranlarında her şeyin daha şık ve tutarlı olduğunu fark edeceksiniz.

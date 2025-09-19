@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-02 14:54:10+0000 */
+/* Translation-Revision-Date: 2025-09-15 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sv_SE */
@@ -1298,8 +1298,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Klick";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Stäng";
 
@@ -6334,7 +6333,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for Unknown HTML Editor */
 "Unknown HTML" = "Okänd HTML-kodning";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Okänt fel";
 
 /* People: Invitation Error */
@@ -7386,6 +7385,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Applikationslösenord är ett säkrare sätt att ansluta till din webbplats som drivs på egen server och möjliggör stöd för funktioner som %@.";
+
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "Blockredigerare";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Hantering av tillägg";
@@ -9214,10 +9216,10 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.deletionSuccessMessage" = "Borttaget!";
 
 /* The name of the media filter */
-"mediaLibrary.filterAll" = "Allt";
+"mediaLibrary.filterAudio" = "Ljud";
 
 /* The name of the media filter */
-"mediaLibrary.filterAudio" = "Ljud";
+"mediaLibrary.filterDefault" = "Standard (Alla)";
 
 /* The name of the media filter */
 "mediaLibrary.filterDocuments" = "Dokument";
@@ -10119,6 +10121,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Synlighet";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "Inläggsstatistik";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Avbryt";

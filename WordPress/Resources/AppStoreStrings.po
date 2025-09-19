@@ -45,10 +45,13 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v26.2-whats-new"
+msgctxt "v26.3-whats-new"
 msgid ""
-"- We've added mentions to the experimental editor—tag your collaborators and watch the magic happen.\n"
-"- iPad Split View now behaves beautifully in portrait mode. No more awkward layouts.\n"
+"We made some thoughtful improvements to make your WordPress experience even smoother.\n"
+"\n"
+"We added support for iOS 26, so you can take advantage of all the latest features your device has to offer. Everything looks and feels just right.\n"
+"\n"
+"We also made some behind-the-scenes improvements to buttons and navigation throughout the app. You'll notice things feel more polished and consistent, especially in the Editor, Settings, and Stats screens.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

@@ -1,3 +1,7 @@
-- Diese wunderschönen Statistiken-Diagramme sind jetzt noch besser. Tippe auf eine beliebige Leiste, um sofortige Einsichten zu erhalten, erkunde wöchentliche Trends und genieße den makellosen Dunkelmodus. Deine Daten verdienen diese Eleganz.
-- Wir haben dem experimentellen Editor Erwähnungen hinzugefügt, damit du beteiligte Personen markieren und besser mit ihnen zusammenarbeiten kannst.
-- Die getrennte Ansicht auf dem iPad funktioniert im Hochformat nun einwandfrei. Keine seltsamen Layouts mehr.
+Wir haben einige Verbesserungen vorgenommen, um dein Jetpack-Erlebnis noch reibungsloser zu gestalten.
+
+Wir haben Unterstützung für iOS 26 hinzugefügt, damit du alle neuesten Funktionen nutzen kannst, die dein Gerät zu bieten hat. Alles sieht gut aus und fühlt sich genau richtig an.
+
+Der Reader wurde mit visuellen Updates auf dem Artikelbildschirm aktualisiert, damit du deine Lieblingsinhalte besser im Auge behalten kannst.
+
+Wir haben auch einige Verbesserungen hinter den Kulissen an Buttons und der Navigation in der gesamten App vorgenommen. Besonders im Editor, in den Einstellungen und den Statistikbildschirmen wird dir auffallen, dass alles ansprechender und konsistenter aussieht.

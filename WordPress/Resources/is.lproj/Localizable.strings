@@ -350,8 +350,7 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Smellir";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "Loka";
 
@@ -2006,7 +2005,7 @@
 /* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "Óþekkt";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "Óþekkt villa";
 
 /* People: Invitation Error */

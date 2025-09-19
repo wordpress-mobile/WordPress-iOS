@@ -1,2 +1,5 @@
-- Abbiamo aggiunto le menzioni all'editor sperimentale: tagga i tuoi collaboratori e assisti a una vera e propria magia.
-- Ora la funzionalità Split View di iPad funziona benissimo in modalità ritratto. Di' addio ai layout mediocri.
+Abbiamo apportato alcuni miglioramenti mirati per rendere la tua esperienza con WordPress ancora più fluida.
+
+Abbiamo aggiunto il supporto a iOS 26, così potrai sfruttare tutte le ultime funzionalità offerte dal tuo dispositivo. L'aspetto e l'esperienza d'uso ora sono impeccabili.
+
+Abbiamo anche apportato alcuni miglioramenti dietro le quinte ai pulsanti e alla navigazione in tutta l'app. Noterai che tutto risulta più rifinito e coerente, soprattutto nelle schermate dell'Editor, delle Impostazioni e delle Statistiche.

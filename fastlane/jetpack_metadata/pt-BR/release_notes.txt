@@ -1,3 +1,7 @@
-- Esses gráficos de estatísticas incríveis ficaram ainda melhores. Toque em qualquer barra para obter informações imediatas, descobrir tendências semanais e desfrutar do impecável modo escuro. Seus dados merecem esse nível de elegância.
-- Adicionamos menções ao editor experimental: marque seus colaboradores e veja a magia acontecer.
-- A visualização dividida do iPad agora fica linda no modo retrato. Chega de layouts esquisitos.
+Fizemos algumas melhorias ponderadas para tornar sua experiência com o Jetpack ainda mais tranquila.
+
+Adicionamos suporte para iOS 26, para que você possa aproveitar todas as funcionalidades mais recentes que seu dispositivo tem a oferecer. Tudo parece e se sente perfeito.
+
+O Leitor tem algum amor com atualizações visuais na tela do artigo, tornando-o mais fácil para os olhos quando você está alcançando seu conteúdo favorito.
+
+Também fizemos algumas melhorias nos bastidores para botões e navegação em todo o aplicativo. Você notará que as coisas estão mais polidas e consistentes, especialmente nas telas Editor, Configurações e Estatísticas.

@@ -1,2 +1,5 @@
-- Vi har lagt till omnämnanden till den experimentella redigeraren – nämn dina samarbetspartners och beskåda magin.
-- Delad vy för iPad fungerar nu perfekt i stående läge. Inga fler besvärliga layouter.
+Vi har gjort några genomtänkta förbättringar för att göra din WordPress-upplevelse ännu smidigare.
+
+Vi har lagt till stöd för iOS 26, så att du kan dra nytta av alla de senaste funktionerna som din enhet har att erbjuda. Allt ser ut och känns helt rätt.
+
+Vi har också gjort några förbättringar bakom kulisserna av knapparna och navigeringen i appen. Du kommer att märka att saker och ting känns mer polerade och konsekventa, särskilt på skärmarna Redigerare, Inställningar och Statistik.

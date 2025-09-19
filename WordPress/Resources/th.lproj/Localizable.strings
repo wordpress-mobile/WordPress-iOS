@@ -214,8 +214,7 @@
    Period Stats 'Clicks' header */
 "Clicks" = "การกด";
 
-/* Action button to close edior and cancel changes or insertion of post
-   Action button to close the editor
+/* Action button to close the editor
    Dismisses the current screen */
 "Close" = "ปิด";
 
@@ -1323,7 +1322,7 @@
 /* Label for size of media when it's not possible to calculate it. */
 "Unknown" = "ไม่รู้จัก";
 
-/* No comment provided by engineer. */
+/* Unknown error */
 "Unknown error" = "ความผิดพลาดไม่ทราบสาเหตุ";
 
 /* Search Terms label for 'unknown search terms'. */

@@ -1,2 +1,5 @@
-- הוספנו אזכורים לעורך הניסיוני – אפשר לתייג שותפים לעריכה כבר עכשיו כדי להתרשם מהיכולות.
-- ה-Split View ב-iPad מוצגת בצורה הראויה גם בפריסה לאורך. כבר אין פריסות מבולגנות.
+ביצענו כמה שיפורים משמעותיים כדי להפוך את החוויה שלך ב-WordPress לטובה עוד יותר.
+
+We added support for iOS 26, so you can take advantage of all the latest features your device has to offer. Everything looks and feels just right.
+
+We also made some behind-the-scenes improvements to buttons and navigation throughout the app. You'll notice things feel more polished and consistent, especially in the Editor, Settings, and Stats screens.
