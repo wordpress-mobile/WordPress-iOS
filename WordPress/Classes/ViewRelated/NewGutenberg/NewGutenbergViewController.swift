@@ -11,7 +11,7 @@ import CocoaLumberjackSwift
 
 class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
-    enum EditorState {
+    enum EditorLoadingState {
         /// We haven't done anything with the editor yet
         ///
         /// Valid states to transition to:
@@ -124,7 +124,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private var suggestionViewBottomConstraint: NSLayoutConstraint?
     private var currentSuggestionsController: GutenbergSuggestionsViewController?
 
-    private var editorState: EditorState = .uninitialized
+    private var editorState: EditorLoadingState = .uninitialized
     private var dependencyLoadingError: Error?
     private var editorLoadingTask: Task<Void, Error>?
 
@@ -236,7 +236,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             self.showActivityIndicator()
         }
 
-        if case .loadingCancelled = editorState {
+        if case .loadingCancelled = self.editorState {
             startLoadingDependencies()
         }
     }
@@ -244,7 +244,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if case .loadingCancelled = editorState {
+        if case .loadingCancelled = self.editorState {
             preconditionFailure("Dependency loading should not be cancelled")
         }
 
@@ -254,7 +254,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
                     try await Task.sleep(nanoseconds: 1000)
                 }
 
-                switch editorState {
+                switch self.editorState {
                     case .uninitialized: preconditionFailure("Dependencies must be initialized")
                     case .loadingDependencies: preconditionFailure("Dependencies should not still be loading")
                     case .loadingCancelled: preconditionFailure("Dependency loading should not be cancelled")
@@ -270,7 +270,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if case .loadingDependencies(let task) = editorState {
+        if case .loadingDependencies(let task) = self.editorState {
             task.cancel()
         }
 
@@ -386,7 +386,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     @MainActor
     func startEditor(settings: String) async throws {
-        guard case .dependenciesReady = editorState else {
+        guard case .dependenciesReady = self.editorState else {
             preconditionFailure("`startEditor` should only be called when the editor is in the `.dependenciesReady` state.")
         }
 
