@@ -431,6 +431,8 @@ private enum Strings {
     )
 }
 
+#if DEBUG
+
 @available(iOS 26, *)
 #Preview {
     PostSettingsGenerateExcerptView(postContent: PostSettingsExcerptEditor.mockPostContent) {
@@ -438,3 +440,5 @@ private enum Strings {
     }
     .accentColor(AppColor.primary)
 }
+
+#endif
