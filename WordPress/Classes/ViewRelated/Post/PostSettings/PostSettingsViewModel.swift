@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 import WordPressData
 import WordPressKit
 import WordPressShared
@@ -22,6 +23,7 @@ final class PostSettingsViewModel: ObservableObject {
     @Published private(set) var displayedCategories: [String] = []
     @Published private(set) var displayedTags: [String] = []
     @Published private(set) var parentPageText: String?
+    @Published private(set) var socialSharingState: SocialSharingRowState = .hidden
 
     @Published var isShowingDeletedAlert = false
 
@@ -102,7 +104,16 @@ final class PostSettingsViewModel: ObservableObject {
         return postID
     }
 
+    enum SocialSharingRowState {
+        /// The initial prompt to set up connections.
+        case setup
+        /// The site has existing connections.
+        case connected
+        case hidden
+    }
+
     private let originalSettings: PostSettings
+    private let preferences: UserPersistentRepository
     private var cancellables = Set<AnyCancellable>()
 
     var onDismiss: (() -> Void)?
@@ -121,11 +132,13 @@ final class PostSettingsViewModel: ObservableObject {
     init(
         post: AbstractPost,
         isStandalone: Bool = false,
-        context: Context = .settings
+        context: Context = .settings,
+        preferences: UserPersistentRepository = UserDefaults.standard
     ) {
         self.post = post
         self.isStandalone = isStandalone
         self.context = context
+        self.preferences = preferences
 
         // Initialize settings from the post
         let initialSettings = PostSettings(from: post)
@@ -144,9 +157,12 @@ final class PostSettingsViewModel: ObservableObject {
         refreshDisplayedCategories()
         refreshDisplayedTags()
         refreshParentPageText()
+        refreshSocialSharingState()
 
         WPAnalytics.track(.postSettingsShown)
     }
+
+    // MARK: - Refresh
 
     private func refresh(from old: PostSettings, to new: PostSettings) {
         hasChanges = getSettingsToSave(for: new) != originalSettings
@@ -179,6 +195,29 @@ final class PostSettingsViewModel: ObservableObject {
             parentPageText = nil
         }
     }
+
+    private func refreshSocialSharingState() {
+        guard BuildSettings.current.brand == .jetpack &&
+                RemoteFeatureFlag.jetpackSocialImprovements.enabled() &&
+                post.status != .publishPrivate &&
+                !getPublicizeServices().isEmpty &&
+                post.blog.supportsPublicize() else {
+            socialSharingState = .hidden
+            return
+        }
+
+        if (post.blog.connections ?? []).isEmpty &&  {
+            socialSharingState = isSocialConnectionSetupDismissed ? .hidden : .setup
+        } else {
+            socialSharingState = .connected
+        }
+    }
+
+    private func getPublicizeServices() -> [PublicizeService] {
+        try? PublicizeService.allPublicizeServices(in: ContextManager.shared.mainContext) ?? []
+    }
+
+    // MARK: - Actions
 
     func buttonCancelTapped() {
         onDismiss?()
@@ -343,6 +382,30 @@ final class PostSettingsViewModel: ObservableObject {
     private func track(_ event: WPAnalyticsEvent) {
         WPAnalytics.track(event, properties: ["via": "settings"])
     }
+
+    // MARK: - Helpers
+
+    /// Convenience variable representing whether the No Connection view has been dismissed.
+    /// Note: the value is stored per site.
+    private var isSocialConnectionSetupDismissed: Bool {
+        get {
+            guard let blogID = post.blog.dotComID?.intValue,
+                  let dictionary = preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool],
+                  let value = dictionary["\(blogID)"] else {
+                return false
+            }
+            return value
+        }
+
+        set {
+            guard let blogID = post.blog.dotComID?.intValue else {
+                return wpAssertionFailure("blogID missing")
+            }
+            var dictionary = (persistentStore.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool]) ?? .init()
+            dictionary["\(postBlogID)"] = newValue
+            preferences.set(dictionary, forKey: Constants.noConnectionKey)
+        }
+    }
 }
 
 // MARK: - Localized Strings
@@ -383,4 +446,8 @@ private enum Strings {
         value: "This page has been deleted and can no longer be saved.",
         comment: "Message when trying to save a deleted page"
     )
+}
+
+private enum Constants {
+    static let noConnectionKey = "prepublishing-social-no-connection-view-hidden"
 }
