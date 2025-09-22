@@ -632,22 +632,10 @@ private enum Strings {
         comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected"
     )
 
-    static let publishingOptionsHeader = NSLocalizedString(
-        "postSettings.publishing.header",
-        value: "Publishing",
-        comment: "Section header for Publishing Options in Post Settings"
-    )
-
     static let publishingTo = NSLocalizedString(
         "postSettings.publishingTo",
         value: "Publishing to",
         comment: "Label indicating which site you are publishing to"
-    )
-
-    static let previewLabel = NSLocalizedString(
-        "postSettings.preview.label",
-        value: "Preview",
-        comment: "Label for the preview button in Post Settings"
     )
 
     static let socialSharing = NSLocalizedString(
