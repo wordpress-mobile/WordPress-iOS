@@ -28,7 +28,11 @@ final class IntentCell: UITableViewCell, ModelSettableCell, NibLoadable {
     }
 
     private func commonInit() {
-        selectedBackgroundView?.backgroundColor = .clear
+        if #available(iOS 26, *) {
+            selectionStyle = .none
+        } else {
+            selectedBackgroundView?.backgroundColor = .clear
+        }
 
         accessibilityTraits = .button
         accessibilityHint = NSLocalizedString("Selects this topic as the intent for your site.",

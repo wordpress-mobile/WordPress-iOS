@@ -1,7 +1,12 @@
 GCC_WARN_UNUSED_PARAMETER = YES
 WARNING_CFLAGS = -Wno-nullability-completeness
-IPHONEOS_DEPLOYMENT_TARGET = 16.0
+IPHONEOS_DEPLOYMENT_TARGET = 17.0
 CODE_SIGN_STYLE = Manual
+
+// Temporarily disable this build settings. There are too many new warnings (mostly using deprecated APIs)
+// in the Objective-C code. We'll address them one by one, instead of on one go.
+// We can remove this config once all warnings are addressed.
+GCC_TREAT_WARNINGS_AS_ERRORS = NO
 
 // See https://forums.swift.org/t/swift-cant-see-objc-methods-that-include-package-symbols/65732/9
 // Without this flag, Objective-C APIs that contains Swift types in WordPressKit will not be available

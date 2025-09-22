@@ -15,7 +15,9 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         let searchBar = UISearchBar()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         WPStyleGuide.configureSearchBar(searchBar, backgroundColor: .clear, returnKeyType: .search)
-        searchBar.setImage(UIImage(), for: .search, state: .normal)
+        if #unavailable(iOS 26) {
+            searchBar.setImage(UIImage(), for: .search, state: .normal)
+        }
         return searchBar
     }()
 
@@ -78,15 +80,9 @@ class SiteIntentViewController: CollapsableHeaderViewController {
         // Title
         navigationItem.backButtonTitle = Strings.backButtonTitle
         // Skip button
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.skipButtonTitle,
-                                                            style: .done,
-                                                            target: self,
-                                                            action: #selector(skipButtonTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.skipButtonTitle, style: .plain, target: self, action: #selector(skipButtonTapped))
         // Cancel button
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancelButtonTitle,
-                                                           style: .done,
-                                                           target: self,
-                                                           action: #selector(closeButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(closeButtonTapped))
         navigationItem.leftBarButtonItem?.accessibilityIdentifier = "site-intent-cancel-button"
     }
 
@@ -132,8 +128,6 @@ extension SiteIntentViewController {
                                                        comment: "Shortened version of the main title to be used in back navigation")
         static let skipButtonTitle = NSLocalizedString("Skip",
                                                        comment: "Continue without making a selection")
-        static let cancelButtonTitle = NSLocalizedString("Cancel",
-                                                         comment: "Cancel site creation")
         static let searchTextFieldPlaceholder = NSLocalizedString("E.g. Fashion, Poetry, Politics", comment: "Placeholder text for the search field int the Site Intent screen.")
         static let continueButtonTitle = NSLocalizedString("Continue", comment: "Title of the continue button for the Site Intent screen.")
     }

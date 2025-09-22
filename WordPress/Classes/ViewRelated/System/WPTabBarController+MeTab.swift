@@ -67,7 +67,11 @@ extension UITabBarItem {
 
     func configureGravatarImage(_ image: UIImage) {
         let gravatarIcon = image.gravatarIcon(size: 26.0)
-        self.image = gravatarIcon?.blackAndWhite?.withAlpha(0.36)
+        if #available(iOS 26, *) {
+            self.image = gravatarIcon
+        } else {
+            self.image = gravatarIcon?.blackAndWhite?.withAlpha(0.36)
+        }
         self.selectedImage = gravatarIcon
     }
 }

@@ -182,8 +182,11 @@ private struct PostSettingsView: View {
     private var excerptSection: some View {
         Section {
             NavigationLink {
-                PostSettingsExcerptEditor(text: $viewModel.settings.excerpt)
-                    .navigationTitle(Strings.excerptHeader)
+                PostSettingsExcerptEditor(
+                    postContent: (viewModel.post.content ?? ""),
+                    text: $viewModel.settings.excerpt
+                )
+                .navigationTitle(Strings.excerptHeader)
             } label: {
                 PostSettingExcerptRow(text: viewModel.settings.excerpt)
             }

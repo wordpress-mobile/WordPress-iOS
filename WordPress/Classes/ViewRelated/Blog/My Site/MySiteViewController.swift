@@ -172,7 +172,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
         if RemoteFeatureFlag.newGutenberg.enabled() {
             GutenbergKit.EditorViewController.warmup(
-                configuration: blog.flatMap({ EditorConfiguration.init(blog: $0) }) ?? .default
+                configuration: blog.flatMap { EditorConfiguration(blog: $0) } ?? .default
             )
         }
     }
@@ -387,7 +387,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
 
         if RemoteFeatureFlag.newGutenberg.enabled() {
-            RawBlockEditorSettingsService.getService(forBlog: blog).refreshSettings()
+            RawBlockEditorSettingsService(blog: blog).prefetchSettings()
         }
     }
 
