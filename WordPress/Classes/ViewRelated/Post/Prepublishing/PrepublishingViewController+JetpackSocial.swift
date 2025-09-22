@@ -244,26 +244,6 @@ private extension PrepublishingViewController {
     }
 }
 
-// MARK: - Auto Sharing Model
-
-/// A value-type representation of `PublicizeService` for the current blog that's simplified for the auto-sharing flow.
-struct PostSocialSharingSettings {
-    let services: [Service]
-    let message: String
-    let sharingLimit: PublicizeInfo.SharingLimit?
-
-    struct Service: Hashable {
-        let name: PublicizeService.ServiceName
-        let connections: [Connection]
-    }
-
-    struct Connection: Hashable {
-        let account: String
-        let keyringID: Int
-        var enabled: Bool
-    }
-}
-
 // MARK: - Sharing View Controller Delegate
 
 extension PrepublishingViewController: SharingViewControllerDelegate {

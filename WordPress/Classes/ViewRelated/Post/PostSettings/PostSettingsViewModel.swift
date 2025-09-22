@@ -320,8 +320,10 @@ final class PostSettingsViewModel: ObservableObject {
             } else {
                 socialSharingState = .setup(makeSocialSharingSetupViewModel())
             }
+        } else if let settings = settings.sharing {
+            socialSharingState = .connected(settings)
         } else {
-            socialSharingState = .connected(makeAutoSharingModel(for: post))
+            socialSharingState = nil
         }
     }
 
@@ -379,48 +381,16 @@ final class PostSettingsViewModel: ObservableObject {
         }
     }
 
-    private func makeAutoSharingModel(for post: Post) -> PostSocialSharingSettings {
-        let connections = post.blog.sortedConnections
-
-        // first, build a dictionary to categorize the connections.
-        var connectionsMap = [PublicizeService.ServiceName: [PublicizeConnection]]()
-        connections.filter { !$0.requiresUserAction() }.forEach { connection in
-            let serviceName = PublicizeService.ServiceName(rawValue: connection.service) ?? .unknown
-            var serviceConnections = connectionsMap[serviceName] ?? []
-            serviceConnections.append(connection)
-            connectionsMap[serviceName] = serviceConnections
-        }
-
-        let services = getPublicizeServices().compactMap { service -> PostSocialSharingSettings.Service? in
-            // skip services without connections.
-            guard let serviceConnections = connectionsMap[service.name],
-                  !serviceConnections.isEmpty else {
-                return nil
-            }
-
-            return PostSocialSharingSettings.Service(
-                name: service.name,
-                connections: serviceConnections.map {
-                    .init(account: $0.externalDisplay,
-                          keyringID: $0.keyringConnectionID.intValue,
-                          enabled: !post.publicizeConnectionDisabledForKeyringID($0.keyringConnectionID))
-                }
-            )
-        }
-
-        return .init(services: services, message: post.publicizeMessage ?? post.titleForDisplay(), sharingLimit: post.blog.sharingLimit)
-    }
-
     func showSocialSharingOptions() {
         guard let blogID = post.blog.dotComID?.intValue,
-              let post = post as? Post else {
+              let settigns = settings.sharing else {
             return wpAssertionFailure("invalid context")
         }
         let delegate = PrepublishingSocialAccountsDelegateAdapter()
         cancellables.insert(AnyCancellable { _ = delegate }) // Retain it
         let optionsVC = PrepublishingSocialAccountsViewController(
             blogID: blogID,
-            model: makeAutoSharingModel(for: post),
+            model: settigns,
             delegate: delegate,
             coreDataStack: ContextManager.shared
         )

@@ -288,9 +288,9 @@ struct PostSettingsFormContentView: View {
                 switch state {
                 case .setup(let viewModel):
                     JetpackSocialNoConnectionView(viewModel: viewModel)
-                case .connected(let viewModel):
-                    LegacyNavigationLinkRow(action: self.viewModel.showSocialSharingOptions) {
-                        PrepublishingAutoSharingView(model: viewModel)
+                case .connected(let settings):
+                    LegacyNavigationLinkRow(action: viewModel.showSocialSharingOptions) {
+                        PrepublishingAutoSharingView(model: settings)
                     }
                 }
             } header: {

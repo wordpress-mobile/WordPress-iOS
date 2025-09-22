@@ -25,6 +25,7 @@ struct PostSettings: Hashable {
     // MARK: - Post-specific
     var postFormat: String?
     var isStickyPost = false
+    var sharing: PostSocialSharingSettings?
 
     // MARK: - Page-specific
     var parentPageID: Int?
@@ -57,6 +58,7 @@ struct PostSettings: Hashable {
             categoryIDs = Set((post.categories ?? []).compactMap {
                 $0.categoryID?.intValue
             })
+            sharing = PostSocialSharingSettings.make(for: post)
         case let page as Page:
             parentPageID = page.parentID?.intValue
         default:
@@ -184,5 +186,72 @@ extension PostSettings {
         return categoryIDs.compactMap { categories[$0] }
             .sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
             .map { $0.stringByDecodingXMLCharacters() }
+    }
+}
+
+/// A value-type representation of `PublicizeService` for the current blog that's simplified for the auto-sharing flow.
+struct PostSocialSharingSettings: Hashable {
+    let services: [Service]
+    let message: String
+    let sharingLimit: PublicizeInfo.SharingLimit?
+
+    struct Service: Hashable {
+        let name: PublicizeService.ServiceName
+        let connections: [Connection]
+    }
+
+    struct Connection: Hashable {
+        let account: String
+        let keyringID: Int
+        var enabled: Bool
+    }
+
+    static func make(for post: Post) -> PostSocialSharingSettings? {
+        guard let context = post.managedObjectContext else {
+            wpAssertionFailure("missing moc")
+            return nil
+        }
+
+        let connections = post.blog.sortedConnections
+
+        // first, build a dictionary to categorize the connections.
+        var connectionsMap = [PublicizeService.ServiceName: [PublicizeConnection]]()
+        connections.filter { !$0.requiresUserAction() }.forEach { connection in
+            let name = PublicizeService.ServiceName(rawValue: connection.service) ?? .unknown
+            var serviceConnections = connectionsMap[name] ?? []
+            serviceConnections.append(connection)
+            connectionsMap[name] = serviceConnections
+        }
+
+        let publicizeServices: [PublicizeService]
+        do {
+            publicizeServices = try PublicizeService.allPublicizeServices(in: context)
+        } catch {
+            wpAssertionFailure("failed to fetch services", userInfo: ["error": error.localizedDescription])
+            return nil
+        }
+
+        let services = publicizeServices.compactMap { service -> PostSocialSharingSettings.Service? in
+            // skip services without connections.
+            guard let serviceConnections = connectionsMap[service.name],
+                  !serviceConnections.isEmpty else {
+                return nil
+            }
+
+            return PostSocialSharingSettings.Service(
+                name: service.name,
+                connections: serviceConnections.map {
+                    .init(account: $0.externalDisplay,
+                          keyringID: $0.keyringConnectionID.intValue,
+                          enabled: !post.publicizeConnectionDisabledForKeyringID($0.keyringConnectionID))
+                }
+            )
+        }
+
+        return PostSocialSharingSettings(
+            services: services,
+            message: post.publicizeMessage ?? post.titleForDisplay(),
+            sharingLimit: post.blog.sharingLimit
+        )
     }
 }
