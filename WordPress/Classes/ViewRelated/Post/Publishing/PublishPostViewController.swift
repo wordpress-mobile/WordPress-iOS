@@ -72,13 +72,6 @@ struct PublishPostView: View {
                     }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    // TODO: (publish) show preview
-                } label: {
-                    Image(systemName: "safari")
-                }
-            }
-            ToolbarItem(placement: .topBarTrailing) {
                 buttonPublish
             }
         }
