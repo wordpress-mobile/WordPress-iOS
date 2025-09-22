@@ -183,28 +183,16 @@ struct PostSettingsFormContentView: View {
     }
 
     private var categoriesRow: some View {
-        Button(action: viewModel.showCategoriesPicker) {
-            HStack {
-                PostSettingsCategoriesRow(categories: viewModel.displayedCategories)
-                Image(systemName: "chevron.forward")
-                    .font(.footnote.weight(.semibold))
-                    .foregroundColor(Color(.tertiaryLabel))
-            }
+        LegacyNavigationLinkRow(action: viewModel.showCategoriesPicker) {
+            PostSettingsCategoriesRow(categories: viewModel.displayedCategories)
         }
-        .tint(.primary)
         .accessibilityIdentifier("post_settings_categories")
     }
 
     private var tagsRow: some View {
-        Button(action: viewModel.showTagsPicker) {
-            HStack {
-                PostSettingsTagsRow(tags: viewModel.displayedTags)
-                Image(systemName: "chevron.forward")
-                    .font(.footnote.weight(.semibold))
-                    .foregroundColor(Color(.tertiaryLabel))
-            }
+        LegacyNavigationLinkRow(action: viewModel.showTagsPicker) {
+            PostSettingsTagsRow(tags: viewModel.displayedTags)
         }
-        .tint(.primary)
         .accessibilityIdentifier("post_settings_tags")
     }
 
@@ -300,8 +288,10 @@ struct PostSettingsFormContentView: View {
                 switch state {
                 case .setup(let viewModel):
                     JetpackSocialNoConnectionView(viewModel: viewModel)
-                case .connected:
-                    Text("Connected (not implemented)")
+                case .connected(let viewModel):
+                    LegacyNavigationLinkRow(action: self.viewModel.showSocialSharingOptions) {
+                        PrepublishingAutoSharingView(model: viewModel)
+                    }
                 }
             } header: {
                 SectionHeader(Strings.socialSharing)
@@ -469,6 +459,23 @@ private struct SettingsTextFieldView: View {
         .onAppear {
             isFocused = true
         }
+    }
+}
+
+private struct LegacyNavigationLinkRow<Content: View>: View {
+    let action: () -> Void
+    @ViewBuilder let label: () -> Content
+
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                label()
+                Image(systemName: "chevron.forward")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundColor(Color(.tertiaryLabel))
+            }
+        }
+        .tint(.primary)
     }
 }
 

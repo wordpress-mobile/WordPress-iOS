@@ -109,7 +109,7 @@ final class PostSettingsViewModel: ObservableObject {
         /// The initial prompt to set up connections.
         case setup(JetpackSocialNoConnectionViewModel)
         /// The site has existing connections.
-        case connected
+        case connected(PrepublishingAutoSharingModel)
     }
 
     private let originalSettings: PostSettings
@@ -308,7 +308,8 @@ final class PostSettingsViewModel: ObservableObject {
                 RemoteFeatureFlag.jetpackSocialImprovements.enabled() &&
                 post.status != .publishPrivate &&
                 !getPublicizeServices().isEmpty &&
-                post.blog.supportsPublicize() else {
+                post.blog.supportsPublicize(),
+                let post = post as? Post else {
             socialSharingState = nil
             return
         }
@@ -320,7 +321,7 @@ final class PostSettingsViewModel: ObservableObject {
                 socialSharingState = .setup(makeSocialSharingSetupViewModel())
             }
         } else {
-            socialSharingState = .connected
+            socialSharingState = .connected(makeAutoSharingModel(for: post))
         }
     }
 
@@ -376,6 +377,54 @@ final class PostSettingsViewModel: ObservableObject {
         withAnimation {
             socialSharingState = nil
         }
+    }
+
+    private func makeAutoSharingModel(for post: Post) -> PrepublishingAutoSharingModel {
+        let connections = post.blog.sortedConnections
+
+        // first, build a dictionary to categorize the connections.
+        var connectionsMap = [PublicizeService.ServiceName: [PublicizeConnection]]()
+        connections.filter { !$0.requiresUserAction() }.forEach { connection in
+            let serviceName = PublicizeService.ServiceName(rawValue: connection.service) ?? .unknown
+            var serviceConnections = connectionsMap[serviceName] ?? []
+            serviceConnections.append(connection)
+            connectionsMap[serviceName] = serviceConnections
+        }
+
+        let services = getPublicizeServices().compactMap { service -> PrepublishingAutoSharingModel.Service? in
+            // skip services without connections.
+            guard let serviceConnections = connectionsMap[service.name],
+                  !serviceConnections.isEmpty else {
+                return nil
+            }
+
+            return PrepublishingAutoSharingModel.Service(
+                name: service.name,
+                connections: serviceConnections.map {
+                    .init(account: $0.externalDisplay,
+                          keyringID: $0.keyringConnectionID.intValue,
+                          enabled: !post.publicizeConnectionDisabledForKeyringID($0.keyringConnectionID))
+                }
+            )
+        }
+
+        return .init(services: services, message: post.publicizeMessage ?? post.titleForDisplay(), sharingLimit: post.blog.sharingLimit)
+    }
+
+    func showSocialSharingOptions() {
+        guard let blogID = post.blog.dotComID?.intValue,
+              let post = post as? Post else {
+            return wpAssertionFailure("invalid context")
+        }
+        let delegate = PrepublishingSocialAccountsDelegateAdapter()
+        cancellables.insert(AnyCancellable { _ = delegate }) // Retain it
+        let optionsVC = PrepublishingSocialAccountsViewController(
+            blogID: blogID,
+            model: makeAutoSharingModel(for: post),
+            delegate: delegate,
+            coreDataStack: ContextManager.shared
+        )
+        viewController?.navigationController?.pushViewController(optionsVC, animated: true)
     }
 
     // MARK: - Navigation
@@ -450,6 +499,37 @@ final class PostSettingsViewModel: ObservableObject {
 extension PostSettingsViewModel: @MainActor SharingViewControllerDelegate {
     func didChangePublicizeServices() {
         refreshSocialSharingState()
+    }
+}
+
+private final class PrepublishingSocialAccountsDelegateAdapter: NSObject, @MainActor PrepublishingSocialAccountsDelegate {
+    func didUpdateSharingLimit(with newValue: PublicizeInfo.SharingLimit?) {
+//        reloadData()
+    }
+
+    func didFinish(with connectionChanges: [Int: Bool], message: String?) {
+//        DispatchQueue.main.async {
+//            self._didFinish(with: connectionChanges, message: message)
+//        }
+    }
+
+    private func _didFinish(with connectionChanges: [Int: Bool], message: String?) {
+//        guard let post = post as? Post else {
+//            wpAssertionFailure("invalid post type")
+//            return
+//        }
+//        connectionChanges.forEach { (keyringID, enabled) in
+//            if enabled {
+//                post.enablePublicizeConnectionWithKeyringID(NSNumber(value: keyringID))
+//            } else {
+//                post.disablePublicizeConnectionWithKeyringID(NSNumber(value: keyringID))
+//            }
+//        }
+//
+//        let isMessageEmpty = message?.isEmpty ?? true
+//        post.publicizeMessage = isMessageEmpty ? nil : message
+//
+//        reloadData()
     }
 }
 
