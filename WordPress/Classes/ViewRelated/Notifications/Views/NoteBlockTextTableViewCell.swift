@@ -119,9 +119,22 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
 
     // MARK: - RichTextView Data Source
 
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        onUrlClick?(URL)
-        return false
+    func textView(_ textView: UITextView, primaryActionFor textItem: UITextItem, defaultAction: UIAction) -> UIAction? {
+        guard case let .link(URL) = textItem.content else {
+            return nil
+        }
+
+        return UIAction { [weak self] _ in
+            self?.onUrlClick?(URL)
+        }
+    }
+
+    func textView(_ textView: UITextView, menuConfigurationFor textItem: UITextItem, defaultMenu: UIMenu) -> UITextItem.MenuConfiguration? {
+        if case .link = textItem.content {
+            return nil
+        }
+
+        return .init(menu: defaultMenu)
     }
 
     func textView(_ textView: UITextView, didPressLink link: URL) {

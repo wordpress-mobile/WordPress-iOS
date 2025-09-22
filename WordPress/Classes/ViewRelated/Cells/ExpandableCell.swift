@@ -76,15 +76,21 @@ class ExpandableCell: WPReusableTableViewCell, NibLoadable {
 }
 
 extension ExpandableCell: UITextViewDelegate {
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        switch interaction {
-        case .invokeDefaultAction:
-            urlCallback?(URL)
-            return false
-        case .preview, .presentActions:
-            return true
-        @unknown default:
-            fatalError()
+    func textView(_ textView: UITextView, primaryActionFor textItem: UITextItem, defaultAction: UIAction) -> UIAction? {
+        guard case let .link(URL) = textItem.content else {
+            return defaultAction
         }
+
+        return UIAction { [weak self] _ in
+            self?.urlCallback?(URL)
+        }
+    }
+
+    func textView(_ textView: UITextView, menuConfigurationFor textItem: UITextItem, defaultMenu: UIMenu) -> UITextItem.MenuConfiguration? {
+        if case .link = textItem.content {
+            return nil
+        }
+
+        return .init(menu: defaultMenu)
     }
 }

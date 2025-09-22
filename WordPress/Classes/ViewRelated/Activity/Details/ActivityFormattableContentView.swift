@@ -57,14 +57,28 @@ struct ActivityFormattableContentView: UIViewRepresentable {
             super.init()
         }
 
-        func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-            guard interaction == .invokeDefaultAction else {
-                return false
+        func textView(_ textView: UITextView, primaryActionFor textItem: UITextItem, defaultAction: UIAction) -> UIAction? {
+            guard case let .link(URL) = textItem.content else {
+                return nil
             }
 
+            return UIAction { [weak self] _ in
+                self?.routeTo(URL)
+            }
+        }
+
+        func textView(_ textView: UITextView, menuConfigurationFor textItem: UITextItem, defaultMenu: UIMenu) -> UITextItem.MenuConfiguration? {
+            if case .link = textItem.content {
+                return nil
+            }
+
+            return .init(menu: defaultMenu)
+        }
+
+        private func routeTo(_ URL: URL) {
             // Get the top view controller to create content coordinator
             guard let viewController = UIViewController.topViewController else {
-                return false
+                return
             }
 
             let contentCoordinator = DefaultContentCoordinator(
@@ -78,8 +92,6 @@ struct ActivityFormattableContentView: UIViewRepresentable {
             )
 
             router.routeTo(URL)
-
-            return false
         }
     }
 }
