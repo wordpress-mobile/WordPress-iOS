@@ -2,7 +2,6 @@ import Foundation
 import WordPressData
 import WordPressShared
 
-// WPiOS-only events
 @objc public enum WPAnalyticsEvent: Int {
 
     case createSheetShown
@@ -668,6 +667,12 @@ import WordPressShared
     case jetpackConnectFinalize
     case jetpackConnectCompleted
     case jetpackConnectStepRetried
+
+    // Intelligence
+    case intelligenceExcerptGeneratorOpened
+    case intelligenceExcerptSelected
+    case intelligenceExcerptOptionsGenerated
+    case intelligenceUnavailableViewShown
 
     /// A String that represents the event
     var value: String {
@@ -1808,6 +1813,16 @@ import WordPressShared
             return "jetpack_rest_connect_completed"
         case .jetpackConnectStepRetried:
             return "jetpack_rest_connect_step_retried"
+
+            // Intelligence
+        case .intelligenceExcerptGeneratorOpened:
+            return "intelligence_excerpt_generator_opened"
+        case .intelligenceExcerptSelected:
+            return "intelligence_excerpt_selected"
+        case .intelligenceExcerptOptionsGenerated:
+            return "intelligence_excerpt_options_generated"
+        case .intelligenceUnavailableViewShown:
+            return "intelligence_unavailable_view_shown"
         } // END OF SWITCH
     }
 

@@ -17,7 +17,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     let secondaryActionTitle: String?
     let defaultActionTitle: String?
     open var accessoryBarHeight: CGFloat {
-        return 44
+        if #available(iOS 26, *) { 64 + 16 } else { 44 }
     }
 
     open var separatorStyle: SeparatorStyle {
@@ -96,7 +96,11 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     @IBOutlet var visualEffects: [UIVisualEffectView]! {
         didSet {
             visualEffects.forEach { (visualEffect) in
-                visualEffect.effect = UIBlurEffect.init(style: .systemChromeMaterial)
+                if #available(iOS 26, *) {
+                    visualEffect.effect = UIBlurEffect(style: .regular)
+                } else {
+                    visualEffect.effect = UIBlurEffect(style: .systemChromeMaterial)
+                }
                 // Allow touches to pass through to the scroll view behind the header.
                 visualEffect.contentView.isUserInteractionEnabled = false
             }
@@ -166,23 +170,9 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Static Helpers
     public static func closeButton(target: Any?, action: Selector) -> UIBarButtonItem {
-        let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        closeButton.layer.cornerRadius = 15
-        closeButton.accessibilityLabel = NSLocalizedString("Close", comment: "Dismisses the current screen")
+        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: target, action: action)
         closeButton.accessibilityIdentifier = "close-button"
-        closeButton.setImage(UIImage.gridicon(.crossSmall), for: .normal)
-        closeButton.addTarget(target, action: action, for: .touchUpInside)
-
-        closeButton.tintColor = .secondaryLabel
-        closeButton.backgroundColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-            if traitCollection.userInterfaceStyle == .dark {
-                return UIColor.systemFill
-            } else {
-                return UIColor.quaternarySystemFill
-            }
-        }
-
-        return UIBarButtonItem(customView: closeButton)
+        return closeButton
     }
 
     // MARK: - Initializers

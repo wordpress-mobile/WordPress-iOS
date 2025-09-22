@@ -45,7 +45,7 @@ extension StatsSearchTermTimeIntervalData: StatsTimeIntervalData {
             let totalSearchTerms = unwrappedDays["total_search_terms"] as? Int,
             let hiddenSearchTerms = unwrappedDays["encrypted_search_terms"] as? Int,
             let otherSearchTerms = unwrappedDays["other_search_terms"] as? Int,
-            let searchTermsDict = unwrappedDays["search_terms"] as? [[String: AnyObject]]
+            let searchTermsDict = Bamboozled.parseArray(unwrappedDays["search_terms"])
             else {
                 return nil
         }

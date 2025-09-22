@@ -269,7 +269,7 @@ enum LintResult { case ok, skipped, violationsFound([(line: Int, col: Int)]) }
 /// Lint a given file for usages of `NSLocalizedString` instead of `AppLocalizedString`
 func lint(fileAt url: URL, targetName: String) throws -> LintResult {
     guard ["m", "swift"].contains(url.pathExtension) else { return .skipped }
-    let content = try String(contentsOf: url)
+    let content = try String(contentsOf: url, encoding: .utf8)
     var lineNo = 0
     var violations: [(line: Int, col: Int)] = []
     content.enumerateLines { line, _ in
@@ -324,3 +324,4 @@ do {
     print("\(projectPath): error: Error while parsing the project file \(projectPath): \(error.localizedDescription)")
     exit(2)
 }
+

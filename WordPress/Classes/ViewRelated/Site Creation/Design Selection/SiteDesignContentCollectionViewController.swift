@@ -215,7 +215,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     }
 
     private func configureSkipButton() {
-        let skip = UIBarButtonItem(title: TextContent.skipButtonTitle, style: .done, target: self, action: #selector(skipButtonTapped))
+        let skip = UIBarButtonItem(title: TextContent.skipButtonTitle, style: .plain, target: self, action: #selector(skipButtonTapped))
         navigationItem.rightBarButtonItem = skip
     }
 
@@ -224,7 +224,7 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
             return
         }
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: TextContent.cancelButtonTitle, style: .done, target: self, action: #selector(closeButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(closeButtonTapped))
     }
 
     @objc
@@ -253,8 +253,6 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
                                                        comment: "Shortened version of the main title to be used in back navigation.")
         static let skipButtonTitle = NSLocalizedString("Skip",
                                                        comment: "Continue without making a selection.")
-        static let cancelButtonTitle = NSLocalizedString("Cancel",
-                                                         comment: "Cancel site creation.")
         static let errorTitle = NSLocalizedString("Unable to load this content right now.",
                                                   comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection.")
         static let errorSubtitle = NSLocalizedString("Check your network connection and try again.",
@@ -342,7 +340,12 @@ extension SiteDesignContentCollectionViewController: CategorySectionTableViewCel
             completion: completion
         )
 
-        let navController = GutenbergLightNavigationController(rootViewController: previewVC)
+        let navController: UINavigationController
+        if #available(iOS 26, *) {
+            navController = UINavigationController(rootViewController: previewVC)
+        } else {
+            navController = GutenbergLightNavigationController(rootViewController: previewVC)
+        }
         navController.modalPresentationStyle = .pageSheet
         navigationController?.present(navController, animated: true) {
             // deselect so no border is shown on dismissal of the preview

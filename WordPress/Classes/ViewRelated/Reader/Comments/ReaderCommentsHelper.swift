@@ -6,10 +6,9 @@ import WordPressUI
 @MainActor
 @objc class ReaderCommentsHelper: NSObject {
     private var contentHeights: [String: CGFloat] = [:]
-    private let webViewContext = WebCommentContentRenderer.Context()
 
     func makeWebRenderer() -> WebCommentContentRenderer {
-        let renderer = WebCommentContentRenderer(context: webViewContext)
+        let renderer = WebCommentContentRenderer()
         renderer.tintColor = UIAppColor.primary
         return renderer
     }

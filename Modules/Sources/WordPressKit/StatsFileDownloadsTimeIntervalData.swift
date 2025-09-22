@@ -44,7 +44,7 @@ extension StatsFileDownloadsTimeIntervalData: StatsTimeIntervalData {
     public init?(date: Date, period: StatsPeriodUnit, jsonDictionary: [String: AnyObject]) {
         guard
             let unwrappedDays = type(of: self).unwrapDaysDictionary(jsonDictionary: jsonDictionary),
-            let fileDownloadsDict = unwrappedDays["files"] as? [[String: AnyObject]]
+            let fileDownloadsDict = Bamboozled.parseArray(unwrappedDays["files"])
             else {
                 return nil
         }

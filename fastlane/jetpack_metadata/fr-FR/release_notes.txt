@@ -1,0 +1,7 @@
+Nous avons apporté des améliorations réfléchies pour rendre votre expérience Jetpack encore plus fluide.
+
+Nous avons ajouté la prise en charge d’iOS 26, afin que vous puissiez profiter de toutes les dernières fonctionnalités que votre appareil a à offrir. Tout semble parfait.
+
+Le Lecteur a bénéficié de mises à jour visuelles apportées à l’écran Article, le rendant plus agréable à lire lorsque vous consultez votre contenu favori.
+
+Nous avons également apporté quelques améliorations en arrière-plan aux boutons et à la navigation dans l’application. Vous remarquerez que les choses semblent plus soignées et cohérentes, en particulier dans les écrans Éditeur, Réglages et Statistiques.

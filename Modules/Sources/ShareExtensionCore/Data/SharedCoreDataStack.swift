@@ -16,9 +16,7 @@ final class SharedPersistentContainer: NSPersistentContainer {
     }
 }
 
-#if compiler(>=6)
 extension SharedPersistentContainer: @unchecked Sendable {}
-#endif
 
 public final class SharedCoreDataStack {
 

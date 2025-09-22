@@ -107,7 +107,14 @@ import WordPressData
         // Delete all the logs after logging out
         WPLogger.shared().deleteAllLogs()
 
-        // Delete all cached block editor settings
-        BlockEditorCache.shared.deleteAll()
+        // This is best-effort for now – eventually all of this should be async
+        Task {
+            do {
+                // Delete all cached block editor settings
+                try await BlockEditorCache.shared.deleteAll()
+            } catch {
+                debugPrint("Unable to delete all block editor settings: \(error)")
+            }
+        }
     }
 }

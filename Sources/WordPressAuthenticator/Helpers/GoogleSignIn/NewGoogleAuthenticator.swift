@@ -1,4 +1,4 @@
-import AuthenticationServices
+@preconcurrency import AuthenticationServices
 
 public class NewGoogleAuthenticator: NSObject {
 

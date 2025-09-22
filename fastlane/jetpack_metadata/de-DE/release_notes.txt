@@ -1,0 +1,7 @@
+Wir haben einige Verbesserungen vorgenommen, um dein Jetpack-Erlebnis noch reibungsloser zu gestalten.
+
+Wir haben Unterstützung für iOS 26 hinzugefügt, damit du alle neuesten Funktionen nutzen kannst, die dein Gerät zu bieten hat. Alles sieht gut aus und fühlt sich genau richtig an.
+
+Der Reader wurde mit visuellen Updates auf dem Artikelbildschirm aktualisiert, damit du deine Lieblingsinhalte besser im Auge behalten kannst.
+
+Wir haben auch einige Verbesserungen hinter den Kulissen an Buttons und der Navigation in der gesamten App vorgenommen. Besonders im Editor, in den Einstellungen und den Statistikbildschirmen wird dir auffallen, dass alles ansprechender und konsistenter aussieht.

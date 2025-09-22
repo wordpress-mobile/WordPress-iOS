@@ -1,0 +1,7 @@
+We hebben een aantal doordachte verbeteringen aangebracht om je Jetpack-ervaring nog soepeler te maken.
+
+We hebben ondersteuning toegevoegd voor iOS 26, zodat je kunt profiteren van alle nieuwste functies die je apparaat te bieden heeft. Alles ziet er mooi uit en voelt precies goed.
+
+De Reader heeft wat aandacht gekregen met visuele updates voor het artikelscherm, waardoor het voor de ogen gemakkelijker wordt wanneer je je favoriete inhoud bijhoudt.
+
+We hebben ook enkele verbeteringen achter de schermen aangebracht aan knoppen en navigatie in de app. Je zult merken dat dingen gepolijst en consistenter aanvoelen, vooral in de editor-, instellingen- en statistiekenschermen.
