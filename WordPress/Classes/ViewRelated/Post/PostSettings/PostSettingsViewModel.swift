@@ -7,7 +7,7 @@ import WordPressShared
 import Combine
 
 @MainActor
-final class PostSettingsViewModel: ObservableObject {
+final class PostSettingsViewModel: NSObject, ObservableObject {
     let post: AbstractPost
     let isStandalone: Bool
     let context: Context
@@ -109,7 +109,7 @@ final class PostSettingsViewModel: ObservableObject {
         /// The initial prompt to set up connections.
         case setup(JetpackSocialNoConnectionViewModel)
         /// The site has existing connections.
-        case connected(PostSocialSharingSettings)
+        case connected
     }
 
     private let originalSettings: PostSettings
@@ -147,6 +147,8 @@ final class PostSettingsViewModel: ObservableObject {
 
         // Initialize featured image view model
         self.featuredImageViewModel = PostSettingsFeaturedImageViewModel(post: post)
+
+        super.init()
 
         // Observe selection changes from featured image view model
         featuredImageViewModel.$selection.dropFirst().sink { [weak self] media in
@@ -320,10 +322,8 @@ final class PostSettingsViewModel: ObservableObject {
             } else {
                 socialSharingState = .setup(makeSocialSharingSetupViewModel())
             }
-        } else if let settings = settings.sharing {
-            socialSharingState = .connected(settings)
         } else {
-            socialSharingState = nil
+            socialSharingState = .connected
         }
     }
 
@@ -386,12 +386,10 @@ final class PostSettingsViewModel: ObservableObject {
               let settigns = settings.sharing else {
             return wpAssertionFailure("invalid context")
         }
-        let delegate = PrepublishingSocialAccountsDelegateAdapter()
-        cancellables.insert(AnyCancellable { _ = delegate }) // Retain it
         let optionsVC = PrepublishingSocialAccountsViewController(
             blogID: blogID,
             model: settigns,
-            delegate: delegate,
+            delegate: self,
             coreDataStack: ContextManager.shared
         )
         viewController?.navigationController?.pushViewController(optionsVC, animated: true)
@@ -472,34 +470,28 @@ extension PostSettingsViewModel: @MainActor SharingViewControllerDelegate {
     }
 }
 
-private final class PrepublishingSocialAccountsDelegateAdapter: NSObject, @MainActor PrepublishingSocialAccountsDelegate {
+extension PostSettingsViewModel: @MainActor PrepublishingSocialAccountsDelegate {
     func didUpdateSharingLimit(with newValue: PublicizeInfo.SharingLimit?) {
-//        reloadData()
+        settings.sharing?.sharingLimit = newValue
     }
 
     func didFinish(with connectionChanges: [Int: Bool], message: String?) {
-//        DispatchQueue.main.async {
-//            self._didFinish(with: connectionChanges, message: message)
-//        }
-    }
-
-    private func _didFinish(with connectionChanges: [Int: Bool], message: String?) {
-//        guard let post = post as? Post else {
-//            wpAssertionFailure("invalid post type")
-//            return
-//        }
-//        connectionChanges.forEach { (keyringID, enabled) in
-//            if enabled {
-//                post.enablePublicizeConnectionWithKeyringID(NSNumber(value: keyringID))
-//            } else {
-//                post.disablePublicizeConnectionWithKeyringID(NSNumber(value: keyringID))
-//            }
-//        }
-//
-//        let isMessageEmpty = message?.isEmpty ?? true
-//        post.publicizeMessage = isMessageEmpty ? nil : message
-//
-//        reloadData()
+        guard var settings = settings.sharing else {
+            return wpAssertionFailure("social sharing settings missing")
+        }
+        settings.services = settings.services.map {
+            var service = $0
+            service.connections = service.connections.map {
+                var connection = $0
+                if let isEnabled = connectionChanges[connection.keyringID] {
+                    connection.enabled = isEnabled
+                }
+                return connection
+            }
+            return service
+        }
+        settings.message = message ?? ""
+        self.settings.sharing = settings
     }
 }
 

@@ -191,13 +191,13 @@ extension PostSettings {
 
 /// A value-type representation of `PublicizeService` for the current blog that's simplified for the auto-sharing flow.
 struct PostSocialSharingSettings: Hashable {
-    let services: [Service]
-    let message: String
-    let sharingLimit: PublicizeInfo.SharingLimit?
+    var services: [Service]
+    var message: String
+    var sharingLimit: PublicizeInfo.SharingLimit?
 
     struct Service: Hashable {
         let name: PublicizeService.ServiceName
-        let connections: [Connection]
+        var connections: [Connection]
     }
 
     struct Connection: Hashable {
