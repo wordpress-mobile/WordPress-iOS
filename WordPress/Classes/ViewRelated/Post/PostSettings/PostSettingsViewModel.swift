@@ -1,5 +1,6 @@
 import Foundation
 import BuildSettingsKit
+import SwiftUI
 import WordPressData
 import WordPressKit
 import WordPressShared
@@ -321,9 +322,6 @@ final class PostSettingsViewModel: ObservableObject {
         } else {
             socialSharingState = .connected
         }
-
-        // TEMP:
-        socialSharingState = .setup(makeSocialSharingSetupViewModel())
     }
 
     private func getPublicizeServices() -> [PublicizeService] {
@@ -357,54 +355,28 @@ final class PostSettingsViewModel: ObservableObject {
         JetpackSocialNoConnectionViewModel(
             services: getPublicizeServices(),
             padding: .zero,
-            onConnectTap: { [weak self] in
-                // TODO:
-            },
-            onNotNowTap: { [weak self] in
-                // TODO:
-            }
+            onConnectTap: { [weak self] in self?.showSocialSharingSetupScreen() },
+            onNotNowTap: { [weak self] in self?.didDismissSocialSharingSetupPrompt() }
         )
     }
 
-//    /// A closure to be executed when the Connect button is tapped in the No Connection view.
-//    func noConnectionConnectTapped() -> () -> Void {
-//        return { [weak self] in
-//            guard let self,
-//                  let controller = SharingViewController(blog: self.post.blog, delegate: self),
-//                  self.presentedViewController == nil else {
-//                return
-//            }
-//
-//            WPAnalytics.track(.jetpackSocialNoConnectionCTATapped, properties: ["source": Constants.trackingSource])
-//
-//            let navigationController = UINavigationController(rootViewController: controller)
-//            self.show(navigationController, sender: nil)
-//        }
-//    }
-//
-//    /// A closure to be executed when the "Not now" button is tapped in the No Connection view.
-//    func noConnectionDismissTapped() -> () -> Void {
-//        return { [weak self] in
-//            guard let self,
-//                  let autoSharingRowIndex = options.firstIndex(where: { $0.id == .autoSharing }) else {
-//                return
-//            }
-//
-//            WPAnalytics.track(.jetpackSocialNoConnectionCardDismissed, properties: ["source": Constants.trackingSource])
-//
-//            self.isNoConnectionDismissed = true
-//            self.refreshOptions()
-//
-//            // ensure that the `.autoSharing` identifier is truly removed to prevent table updates from crashing.
-//            guard options.firstIndex(where: { $0.id == .autoSharing }) == nil else {
-//                return
-//            }
-//
-//            self.tableView.performBatchUpdates {
-//                self.tableView.deleteRows(at: [.init(row: autoSharingRowIndex, section: .zero)], with: .fade)
-//            } completion: { _ in }
-//        }
-//    }
+    private func showSocialSharingSetupScreen() {
+        guard let sharingVC = SharingViewController(blog: post.blog, delegate: self) else {
+            return wpAssertionFailure("failed to instantiate SharingVC")
+        }
+        track(.jetpackSocialNoConnectionCTATapped)
+        let navigationVC = UINavigationController(rootViewController: sharingVC)
+        viewController?.present(navigationVC, animated: true)
+    }
+
+    private func didDismissSocialSharingSetupPrompt() {
+        track(.jetpackSocialNoConnectionCardDismissed)
+        isSocialConnectionSetupDismissed = true
+
+        withAnimation {
+            socialSharingState = nil
+        }
+    }
 
     // MARK: - Navigation
 
@@ -445,7 +417,7 @@ final class PostSettingsViewModel: ObservableObject {
         }
         if old.featuredImageID != new.featuredImageID {
             let action = new.featuredImageID == nil ? "removed" : "changed"
-            WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": action])
+            WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": source, "action": action])
         }
         if old.excerpt != new.excerpt {
             track(.editorPostExcerptChanged)
@@ -464,7 +436,20 @@ final class PostSettingsViewModel: ObservableObject {
     }
 
     private func track(_ event: WPAnalyticsEvent) {
-        WPAnalytics.track(event, properties: ["via": "settings"])
+        WPAnalytics.track(event, properties: ["via": source])
+    }
+
+    private var source: String {
+        switch context {
+        case .settings: "post_settings"
+        case .publishing: "pre_publishing"
+        }
+    }
+}
+
+extension PostSettingsViewModel: @MainActor SharingViewControllerDelegate {
+    func didChangePublicizeServices() {
+        refreshSocialSharingState()
     }
 }
 

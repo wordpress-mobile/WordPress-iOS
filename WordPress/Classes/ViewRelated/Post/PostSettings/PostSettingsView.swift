@@ -134,7 +134,7 @@ struct PostSettingsFormContentView: View {
             organizationSection
         }
         excerptSection
-        if viewModel.context == .publishing {
+        if viewModel.isPost, viewModel.context == .publishing {
             socialSharingSection
         }
         generalSection
