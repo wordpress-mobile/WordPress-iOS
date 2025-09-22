@@ -142,10 +142,6 @@ struct PostSettingsFeaturedImageRow: View {
             RoundedRectangle(cornerRadius: cornerRadius)
                 .fill(Color(UIColor.secondarySystemGroupedBackground))
 
-            // Very subtle accent tint
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .fill(Color.accentColor.opacity(0.02))
-
             content()
 
             // Prominent border

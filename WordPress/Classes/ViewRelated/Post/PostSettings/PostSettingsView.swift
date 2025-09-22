@@ -134,9 +134,14 @@ struct PostSettingsFormContentView: View {
             organizationSection
         }
         excerptSection
+        if viewModel.context == .publishing {
+            socialSharingSection
+        }
         generalSection
         moreOptionsSection
-        infoSection
+        if viewModel.context != .publishing {
+            infoSection
+        }
     }
 
     // MARK: - "Publishing Options" Section
@@ -144,10 +149,12 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var publishingOptionsSection: some View {
         Section {
-            BlogListSiteView(site: .init(blog: viewModel.post.blog))
-                .listRowSeparator(.hidden, edges: .bottom)
             publishDateRow
             visibilityRow
+        } header: {
+            BlogListSiteView(site: .init(blog: viewModel.post.blog))
+                .padding(.bottom, 8)
+                .foregroundStyle(.primary)
         }
     }
 
@@ -281,6 +288,24 @@ struct PostSettingsFormContentView: View {
             )
         } label: {
             SettingsRow(Strings.visibilityLabel, value: viewModel.visibilityText)
+        }
+    }
+
+    // MARK: - "Social Sharing" Section
+
+    @ViewBuilder
+    private var socialSharingSection: some View {
+        if let state = viewModel.socialSharingState {
+            Section {
+                switch state {
+                case .setup(let viewModel):
+                    JetpackSocialNoConnectionView(viewModel: viewModel)
+                case .connected:
+                    Text("Connected (not implemented)")
+                }
+            } header: {
+                SectionHeader(Strings.socialSharing)
+            }
         }
     }
 
@@ -597,19 +622,28 @@ private enum Strings {
         value: "Immediately",
         comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected"
     )
+
     static let publishingOptionsHeader = NSLocalizedString(
         "postSettings.publishing.header",
         value: "Publishing",
         comment: "Section header for Publishing Options in Post Settings"
     )
+
     static let publishingTo = NSLocalizedString(
         "postSettings.publishingTo",
         value: "Publishing to",
         comment: "Label indicating which site you are publishing to"
     )
+
     static let previewLabel = NSLocalizedString(
         "postSettings.preview.label",
         value: "Preview",
+        comment: "Label for the preview button in Post Settings"
+    )
+
+    static let socialSharing = NSLocalizedString(
+        "postSettings.socialSharing.header",
+        value: "Social Sharing",
         comment: "Label for the preview button in Post Settings"
     )
 }

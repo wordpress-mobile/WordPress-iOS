@@ -23,7 +23,7 @@ final class PostSettingsViewModel: ObservableObject {
     @Published private(set) var displayedCategories: [String] = []
     @Published private(set) var displayedTags: [String] = []
     @Published private(set) var parentPageText: String?
-    @Published private(set) var socialSharingState: SocialSharingRowState = .hidden
+    @Published private(set) var socialSharingState: SocialSharingSectionState?
 
     @Published var isShowingDeletedAlert = false
 
@@ -104,12 +104,11 @@ final class PostSettingsViewModel: ObservableObject {
         return postID
     }
 
-    enum SocialSharingRowState {
+    enum SocialSharingSectionState {
         /// The initial prompt to set up connections.
-        case setup
+        case setup(JetpackSocialNoConnectionViewModel)
         /// The site has existing connections.
         case connected
-        case hidden
     }
 
     private let originalSettings: PostSettings
@@ -194,27 +193,6 @@ final class PostSettingsViewModel: ObservableObject {
         } else {
             parentPageText = nil
         }
-    }
-
-    private func refreshSocialSharingState() {
-        guard BuildSettings.current.brand == .jetpack &&
-                RemoteFeatureFlag.jetpackSocialImprovements.enabled() &&
-                post.status != .publishPrivate &&
-                !getPublicizeServices().isEmpty &&
-                post.blog.supportsPublicize() else {
-            socialSharingState = .hidden
-            return
-        }
-
-        if (post.blog.connections ?? []).isEmpty &&  {
-            socialSharingState = isSocialConnectionSetupDismissed ? .hidden : .setup
-        } else {
-            socialSharingState = .connected
-        }
-    }
-
-    private func getPublicizeServices() -> [PublicizeService] {
-        try? PublicizeService.allPublicizeServices(in: ContextManager.shared.mainContext) ?? []
     }
 
     // MARK: - Actions
@@ -322,6 +300,112 @@ final class PostSettingsViewModel: ObservableObject {
         settings.password = selection.password.isEmpty ? nil : selection.password
     }
 
+    // MARK: - Social Sharing
+
+    private func refreshSocialSharingState() {
+        guard BuildSettings.current.brand == .jetpack &&
+                RemoteFeatureFlag.jetpackSocialImprovements.enabled() &&
+                post.status != .publishPrivate &&
+                !getPublicizeServices().isEmpty &&
+                post.blog.supportsPublicize() else {
+            socialSharingState = nil
+            return
+        }
+
+        if (post.blog.connections ?? []).isEmpty {
+            if isSocialConnectionSetupDismissed {
+                socialSharingState = nil
+            } else {
+                socialSharingState = .setup(makeSocialSharingSetupViewModel())
+            }
+        } else {
+            socialSharingState = .connected
+        }
+
+        // TEMP:
+        socialSharingState = .setup(makeSocialSharingSetupViewModel())
+    }
+
+    private func getPublicizeServices() -> [PublicizeService] {
+        let context = ContextManager.shared.mainContext
+        return (try? PublicizeService.allPublicizeServices(in: context)) ?? []
+    }
+
+    /// Convenience variable representing whether the No Connection view has been dismissed.
+    /// Note: the value is stored per site.
+    private var isSocialConnectionSetupDismissed: Bool {
+        get {
+            guard let blogID = post.blog.dotComID?.intValue,
+                  let dictionary = preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool],
+                  let value = dictionary["\(blogID)"] else {
+                return false
+            }
+            return value
+        }
+
+        set {
+            guard let blogID = post.blog.dotComID?.intValue else {
+                return wpAssertionFailure("blogID missing")
+            }
+            var dictionary = (preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool]) ?? .init()
+            dictionary["\(blogID)"] = newValue
+            preferences.set(dictionary, forKey: Constants.noConnectionKey)
+        }
+    }
+
+    private func makeSocialSharingSetupViewModel() -> JetpackSocialNoConnectionViewModel {
+        JetpackSocialNoConnectionViewModel(
+            services: getPublicizeServices(),
+            padding: .zero,
+            onConnectTap: { [weak self] in
+                // TODO:
+            },
+            onNotNowTap: { [weak self] in
+                // TODO:
+            }
+        )
+    }
+
+//    /// A closure to be executed when the Connect button is tapped in the No Connection view.
+//    func noConnectionConnectTapped() -> () -> Void {
+//        return { [weak self] in
+//            guard let self,
+//                  let controller = SharingViewController(blog: self.post.blog, delegate: self),
+//                  self.presentedViewController == nil else {
+//                return
+//            }
+//
+//            WPAnalytics.track(.jetpackSocialNoConnectionCTATapped, properties: ["source": Constants.trackingSource])
+//
+//            let navigationController = UINavigationController(rootViewController: controller)
+//            self.show(navigationController, sender: nil)
+//        }
+//    }
+//
+//    /// A closure to be executed when the "Not now" button is tapped in the No Connection view.
+//    func noConnectionDismissTapped() -> () -> Void {
+//        return { [weak self] in
+//            guard let self,
+//                  let autoSharingRowIndex = options.firstIndex(where: { $0.id == .autoSharing }) else {
+//                return
+//            }
+//
+//            WPAnalytics.track(.jetpackSocialNoConnectionCardDismissed, properties: ["source": Constants.trackingSource])
+//
+//            self.isNoConnectionDismissed = true
+//            self.refreshOptions()
+//
+//            // ensure that the `.autoSharing` identifier is truly removed to prevent table updates from crashing.
+//            guard options.firstIndex(where: { $0.id == .autoSharing }) == nil else {
+//                return
+//            }
+//
+//            self.tableView.performBatchUpdates {
+//                self.tableView.deleteRows(at: [.init(row: autoSharingRowIndex, section: .zero)], with: .fade)
+//            } completion: { _ in }
+//        }
+//    }
+
     // MARK: - Navigation
 
     func showCategoriesPicker() {
@@ -381,30 +465,6 @@ final class PostSettingsViewModel: ObservableObject {
 
     private func track(_ event: WPAnalyticsEvent) {
         WPAnalytics.track(event, properties: ["via": "settings"])
-    }
-
-    // MARK: - Helpers
-
-    /// Convenience variable representing whether the No Connection view has been dismissed.
-    /// Note: the value is stored per site.
-    private var isSocialConnectionSetupDismissed: Bool {
-        get {
-            guard let blogID = post.blog.dotComID?.intValue,
-                  let dictionary = preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool],
-                  let value = dictionary["\(blogID)"] else {
-                return false
-            }
-            return value
-        }
-
-        set {
-            guard let blogID = post.blog.dotComID?.intValue else {
-                return wpAssertionFailure("blogID missing")
-            }
-            var dictionary = (persistentStore.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool]) ?? .init()
-            dictionary["\(postBlogID)"] = newValue
-            preferences.set(dictionary, forKey: Constants.noConnectionKey)
-        }
     }
 }
 
