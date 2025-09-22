@@ -109,7 +109,7 @@ final class PostSettingsViewModel: ObservableObject {
         /// The initial prompt to set up connections.
         case setup(JetpackSocialNoConnectionViewModel)
         /// The site has existing connections.
-        case connected(PrepublishingAutoSharingModel)
+        case connected(PostSocialSharingSettings)
     }
 
     private let originalSettings: PostSettings
@@ -379,7 +379,7 @@ final class PostSettingsViewModel: ObservableObject {
         }
     }
 
-    private func makeAutoSharingModel(for post: Post) -> PrepublishingAutoSharingModel {
+    private func makeAutoSharingModel(for post: Post) -> PostSocialSharingSettings {
         let connections = post.blog.sortedConnections
 
         // first, build a dictionary to categorize the connections.
@@ -391,14 +391,14 @@ final class PostSettingsViewModel: ObservableObject {
             connectionsMap[serviceName] = serviceConnections
         }
 
-        let services = getPublicizeServices().compactMap { service -> PrepublishingAutoSharingModel.Service? in
+        let services = getPublicizeServices().compactMap { service -> PostSocialSharingSettings.Service? in
             // skip services without connections.
             guard let serviceConnections = connectionsMap[service.name],
                   !serviceConnections.isEmpty else {
                 return nil
             }
 
-            return PrepublishingAutoSharingModel.Service(
+            return PostSocialSharingSettings.Service(
                 name: service.name,
                 connections: serviceConnections.map {
                     .init(account: $0.externalDisplay,
