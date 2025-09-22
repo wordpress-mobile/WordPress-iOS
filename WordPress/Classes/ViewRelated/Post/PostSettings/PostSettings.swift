@@ -131,6 +131,22 @@ struct PostSettings: Hashable {
             if post.isStickyPost != isStickyPost {
                 post.isStickyPost = isStickyPost
             }
+
+            if let sharing {
+                for connection in sharing.services.flatMap(\.connections) {
+                    let keyringID = NSNumber(value: connection.keyringID)
+                    if !post.publicizeConnectionDisabledForKeyringID(keyringID) != connection.enabled {
+                        if connection.enabled {
+                            post.enablePublicizeConnectionWithKeyringID(keyringID)
+                        } else {
+                            post.disablePublicizeConnectionWithKeyringID(keyringID)
+                        }
+                    }
+                }
+                if post.publicizeMessage != sharing.message {
+                    post.publicizeMessage = sharing.message
+                }
+            }
         case let page as Page:
             if page.parentID?.intValue != parentPageID {
                 page.parentID = parentPageID.map { NSNumber(value: $0) }
