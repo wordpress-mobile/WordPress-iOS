@@ -150,9 +150,9 @@ struct ReaderSubscriptionsView: View {
     private func performSearch(for searchText: String) async {
         let searchableData = subscriptions.map(SearchableSubscription.init)
 
-        let resultObjectIDs = await StringRankedSearch(searchTerm: searchText)
+        let resultObjectIDs = Set(await StringRankedSearch(searchTerm: searchText)
             .parallelSearch(in: searchableData) { $0.searchableText }
-            .map(\.objectID)
+            .map(\.objectID))
 
         searchResults = subscriptions.filter { resultObjectIDs.contains($0.objectID) }
 
