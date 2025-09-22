@@ -4,6 +4,7 @@ import AutomatticTracks
 import WordPressReader
 import WordPressData
 import WordPressKit
+import Combine
 @preconcurrency import WebKit
 
 typealias RelatedPostsSection = (postType: RemoteReaderSimplePost.PostType, posts: [RemoteReaderSimplePost])
@@ -88,6 +89,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private var lastContentOffset: CGFloat = 0
 
     private var toolbarUpdateTimer: Timer?
+    private let toolbarHiddenDebouncer = PassthroughSubject<Bool, Never>()
+    private var toolbarHiddenDebounceCancellable: AnyCancellable?
 
     /// Likes summary view
     private let likesSummary: ReaderDetailLikesView = .loadFromNib()
@@ -184,6 +187,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // When comments are moderated or edited from the Comments view, update the Comments snippet here.
         NotificationCenter.default.addObserver(self, selector: #selector(fetchComments), name: .ReaderCommentModifiedNotification, object: nil)
+
+        // In the `scrollViewDidScroll` function, "toolbar hidden" is toggled repeatedly when the scroll view in the
+        // middle of scrolling animation. This debouncer is introduced to avoid toggling
+        // `navigationController.toolbarHidden`, which causes inifity loops.
+        // Sentry issue: https://a8c.sentry.io/issues/6884521550
+        toolbarHiddenDebounceCancellable = toolbarHiddenDebouncer
+            .removeDuplicates()
+            .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
+            .sink { [weak self] isHidden in
+                self?.setToolbarHidden(isHidden, animated: true)
+            }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -895,11 +909,11 @@ extension ReaderDetailViewController: UIScrollViewDelegate {
         // Using `safeAreaLayoutGuide.layoutFrame.height` because it doesn't
         // change when we extend the scroll view size by hiding the toolbar
         if (currentOffset + view.safeAreaLayoutGuide.layoutFrame.height) > likesContainerView.frame.minY {
-            setToolbarHidden(false, animated: true) // Reached bottom (controls, comments, etc)
+            toolbarHiddenDebouncer.send(false) // Reached bottom (controls, comments, etc)
         } else if currentOffset > lastContentOffset && currentOffset > 0 {
-            setToolbarHidden(true, animated: true) // Scrolling down
+            toolbarHiddenDebouncer.send(true) // Scrolling down
         } else if currentOffset < lastContentOffset {
-            setToolbarHidden(false, animated: true) // Scrolling up
+            toolbarHiddenDebouncer.send(false) // Scrolling up
         }
         lastContentOffset = currentOffset
         layoutHeroView()
