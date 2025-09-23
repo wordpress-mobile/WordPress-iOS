@@ -255,14 +255,7 @@ struct PostSettingsFormContentView: View {
 
     private var publishDateRow: some View {
         NavigationLink {
-            PublishDatePickerView(configuration: PublishDatePickerConfiguration(
-                date: viewModel.settings.publishDate,
-                isRequired: !viewModel.isDraftOrPending,
-                timeZone: viewModel.timeZone,
-                updated: { date in
-                    viewModel.settings.publishDate = date
-                }
-            ))
+            PostSettingsPublishDatePicker(viewModel: viewModel)
         } label: {
             SettingsRow(Strings.publishDateLabel, value: viewModel.publishDateText ?? Strings.immediately)
         }

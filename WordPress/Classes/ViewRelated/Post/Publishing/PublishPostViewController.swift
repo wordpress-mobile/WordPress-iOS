@@ -46,7 +46,6 @@ struct PublishPostView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
 
     @State private var isShowingDiscardChangesAlert = false
-    @State private var isShowingDatePicker = false
 
     var post: AbstractPost { viewModel.post }
 
@@ -110,23 +109,10 @@ struct PublishPostView: View {
 
     @ViewBuilder
     private var buttonSchedule: some View {
-        Button {
-            isShowingDatePicker = true
+        NavigationLink {
+            PostSettingsPublishDatePicker(viewModel: viewModel)
         } label: {
             Image(systemName: "calendar")
-        }
-        .popover(isPresented: $isShowingDatePicker) {
-            NavigationView {
-                PublishDatePickerView(configuration: PublishDatePickerConfiguration(
-                    date: viewModel.settings.publishDate,
-                    isRequired: !viewModel.isDraftOrPending,
-                    timeZone: viewModel.timeZone,
-                    updated: { date in
-                        viewModel.settings.publishDate = date
-                    }
-                ))
-            }
-            .presentationDetents([.height(430), .large])
         }
     }
 
