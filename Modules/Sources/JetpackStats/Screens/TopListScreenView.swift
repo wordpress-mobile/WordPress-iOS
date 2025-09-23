@@ -171,8 +171,8 @@ struct TopListScreenView: View {
 
         var title: String {
             switch self {
-            case .top10: Strings.TopListTitles.top(10)
-            case .top50: Strings.TopListTitles.top(50)
+            case .top10: Strings.TopListTitles.top10
+            case .top50: Strings.TopListTitles.top50
             case .other: ""
             }
         }
