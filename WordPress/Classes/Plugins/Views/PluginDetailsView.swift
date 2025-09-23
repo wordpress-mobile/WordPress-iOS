@@ -783,9 +783,7 @@ private extension View {
 
     @ViewBuilder
     func pagingIfAvailable() -> some View {
-        if #available(iOS 17.0, *) {
-            scrollTargetBehavior(.paging)
-        }
+        scrollTargetBehavior(.paging)
     }
 
 }

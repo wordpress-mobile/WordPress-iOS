@@ -237,11 +237,7 @@ private enum SubmitFeedbackAttachmentError: Error, LocalizedError {
 private extension View {
     @ViewBuilder
     func _scrollClipDisabled() -> some View {
-        if #available(iOS 17, *) {
-            self.scrollClipDisabled()
-        } else {
-            self
-        }
+        self.scrollClipDisabled()
     }
 }
 

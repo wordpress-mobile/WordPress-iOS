@@ -138,22 +138,17 @@ struct ColorGallery: View {
 private extension Color {
 
     func hexString(for environment: EnvironmentValues) -> String {
+        let resolved = self.resolve(in: environment)
 
-        if #available(iOS 17.0, *) {
-            let resolved = self.resolve(in: environment)
-
-            guard let components = resolved.cgColor.components, components.count >= 3 else {
-                return ""
-            }
-
-            let r = Float(components[0])
-            let g = Float(components[1])
-            let b = Float(components[2])
-
-            return String(format: "#%02lX%02lX%02lX", lroundf(r * 255), lroundf(g * 255), lroundf(b * 255))
+        guard let components = resolved.cgColor.components, components.count >= 3 else {
+            return ""
         }
 
-        return ""
+        let r = Float(components[0])
+        let g = Float(components[1])
+        let b = Float(components[2])
+
+        return String(format: "#%02lX%02lX%02lX", lroundf(r * 255), lroundf(g * 255), lroundf(b * 255))
     }
 }
 

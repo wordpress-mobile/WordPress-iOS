@@ -141,7 +141,6 @@ private struct FloatingStyle: ViewModifier {
     }
 }
 
-@available(iOS 17, *)
 private struct StatsDateRangeTip: Tip {
     var title: Text {
         Text(Strings.DateRangeTips.title)
@@ -186,11 +185,7 @@ private extension View {
 
 private struct DateRangeTipModifier: ViewModifier {
     func body(content: Content) -> some View {
-        if #available(iOS 17, *) {
-            content
-                .popoverTip(StatsDateRangeTip(), arrowEdge: .bottom)
-        } else {
-            content
-        }
+        content
+            .popoverTip(StatsDateRangeTip(), arrowEdge: .bottom)
     }
 }
