@@ -37,7 +37,7 @@ struct PostSettings: Hashable {
         excerpt = post.mt_excerpt ?? ""
         slug = post.wp_slug ?? ""
         status = post.status ?? .draft
-        publishDate = post.dateCreated
+        publishDate = post.shouldPublishImmediately() ? nil : post.dateCreated
         password = post.password
 
         if let authorID = post.authorID?.intValue, authorID > 0 {
