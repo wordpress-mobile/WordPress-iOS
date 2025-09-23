@@ -51,6 +51,7 @@ private struct PostSettingsView: View {
     var body: some View {
         Form {
             PostSettingsFormContentView(viewModel: viewModel)
+            infoSection
         }
         .accessibilityIdentifier("post_settings_form")
         .disabled(viewModel.isSaving)
@@ -120,6 +121,22 @@ private struct PostSettingsView: View {
             .tint(AppColor.tint)
         }
     }
+
+    @ViewBuilder
+    private var infoSection: some View {
+        if viewModel.lastEditedText != nil || viewModel.postID != nil {
+            Section {
+                if let postID = viewModel.postID {
+                    SettingsRow(Strings.postIDLabel, value: String(postID))
+                }
+                if let lastEditedText = viewModel.lastEditedText {
+                    SettingsRow(Strings.lastEditedLabel, value: lastEditedText)
+                }
+            } header: {
+                SectionHeader(Strings.infoLabel)
+            }
+        }
+    }
 }
 
 struct PostSettingsFormContentView: View {
@@ -134,9 +151,6 @@ struct PostSettingsFormContentView: View {
         generalSection
         socialSharingSection
         moreOptionsSection
-        if viewModel.context != .publishing {
-            infoSection
-        }
     }
 
     // MARK: - "Publishing Options" Section
@@ -358,24 +372,6 @@ struct PostSettingsFormContentView: View {
     private var stickyPostRow: some View {
         Toggle(isOn: $viewModel.settings.isStickyPost) {
             Text(Strings.stickyPostLabel)
-        }
-    }
-
-    // MARK: - "Info" Section
-
-    @ViewBuilder
-    private var infoSection: some View {
-        if viewModel.lastEditedText != nil || viewModel.postID != nil {
-            Section {
-                if let postID = viewModel.postID {
-                    SettingsRow(Strings.postIDLabel, value: String(postID))
-                }
-                if let lastEditedText = viewModel.lastEditedText {
-                    SettingsRow(Strings.lastEditedLabel, value: lastEditedText)
-                }
-            } header: {
-                SectionHeader(Strings.infoLabel)
-            }
         }
     }
 }
