@@ -177,6 +177,10 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         view.addSubview(stackView)
         stackView.pinEdges()
 
+        if #unavailable(iOS 26) {
+            WPStyleGuide.disableScrollEdgeAppearance(for: self)
+        }
+
         // we are pinning the top and bottom of the stack view to the safe area to prevent unintentionally hidden content/overlaps (ie cookie acceptance popup) then center the horizontal constraints vertically
         let safeArea = self.view.safeAreaLayoutGuide
 
