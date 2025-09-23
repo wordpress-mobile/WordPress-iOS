@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "Modules",
     platforms: [
-        .iOS(.v16),
+        .iOS(.v17),
     ],
     products: XcodeSupport.products + [
         .library(name: "AsyncImageKit", targets: ["AsyncImageKit"]),
