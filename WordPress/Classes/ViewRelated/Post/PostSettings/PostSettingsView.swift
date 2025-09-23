@@ -254,7 +254,7 @@ struct PostSettingsFormContentView: View {
         NavigationLink {
             PublishDatePickerView(configuration: PublishDatePickerConfiguration(
                 date: viewModel.settings.publishDate,
-                isRequired: true,
+                isRequired: viewModel.isDraftOrPending,
                 timeZone: viewModel.timeZone,
                 updated: { date in
                     viewModel.settings.publishDate = date
