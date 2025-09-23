@@ -179,7 +179,7 @@ struct PostSettingsGenerateExcerptView: View {
                     .foregroundStyle(.secondary)
             }
             .tint(AppColor.primary)
-            .onChange(of: length) { _ in
+            .onChange(of: length) {
                 didChangeGenerationParameters()
             }
         }
@@ -208,7 +208,7 @@ struct PostSettingsGenerateExcerptView: View {
             .pickerStyle(.menu)
             .fixedSize()
             .tint(Color.primary)
-            .onChange(of: style) { _ in
+            .onChange(of: style) {
                 didChangeGenerationParameters()
             }
         }

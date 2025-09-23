@@ -88,8 +88,8 @@ struct ReaderSubscriptionsView: View {
                 performBackgroundSearch(searchText: searchText)
             }
         }
-        .onChange(of: searchText) {
-            performBackgroundSearch(searchText: $0)
+        .onChange(of: searchText) { _, newText in
+            performBackgroundSearch(searchText: newText)
         }
     }
 

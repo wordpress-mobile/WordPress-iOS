@@ -66,7 +66,7 @@ struct ZendeskAttachmentsSection: View {
             }
             .foregroundStyle(Color(uiColor: UIAppColor.primary))
         }
-        .onChange(of: selection, perform: viewModel.process)
+        .onChange(of: selection) { _, newValue in viewModel.process(selection: newValue) }
     }
 }
 

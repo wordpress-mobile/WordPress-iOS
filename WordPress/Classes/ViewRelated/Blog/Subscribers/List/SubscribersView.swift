@@ -61,7 +61,7 @@ private struct SubscribersListView: View {
         .onAppear {
             viewModel.onAppear()
         }
-        .onChange(of: viewModel.parameters) { _ in
+        .onChange(of: viewModel.parameters) {
             viewModel.onRefreshNeeded()
         }
         .refreshable {

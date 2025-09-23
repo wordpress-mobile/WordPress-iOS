@@ -72,7 +72,7 @@ struct TagsView: View {
             if allowAddingTagsFromTextField {
                 textField
                     .onSubmit(addTag)
-                    .onChange(of: viewModel.searchText) { newValue in
+                    .onChange(of: viewModel.searchText) { _, newValue in
                         handleTextChange(newValue)
                     }
             } else {
