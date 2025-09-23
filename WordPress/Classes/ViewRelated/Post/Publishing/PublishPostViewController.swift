@@ -51,6 +51,11 @@ struct PublishPostView: View {
 
     var body: some View {
         Form {
+            Section {
+                BlogListSiteView(site: .init(blog: viewModel.post.blog))
+            } header: {
+                SectionHeader(Strings.readyToPublish)
+            }
             PostSettingsFormContentView(viewModel: viewModel)
         }
         .environment(\.defaultMinListHeaderHeight, 0) // Reduces top inset a bit
@@ -183,5 +188,11 @@ enum PrepublishingSheetStrings {
         "prepublishing.saveChanges.button",
         value: "Save Changes",
         comment: "Button to confirm discarding changes"
+    )
+
+    static let readyToPublish = NSLocalizedString(
+        "prepublishing.publishingSectionTitle",
+        value: "Ready to Publish?",
+        comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
     )
 }

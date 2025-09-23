@@ -126,14 +126,6 @@ struct PostSettingsFormContentView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
 
     var body: some View {
-        Section {
-            BlogListSiteView(site: .init(blog: viewModel.post.blog))
-                .listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-        } header: {
-            SectionHeader(Strings.readyToPublish)
-        }
-
         featuredImageSection
         if viewModel.isPost {
             organizationSection
@@ -626,18 +618,6 @@ private enum Strings {
         "postSettings.publishDateImmediately",
         value: "Immediately",
         comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected"
-    )
-
-    static let readyToPublish = NSLocalizedString(
-        "postSettings.publishingSectionTitle",
-        value: "Ready to Publish?",
-        comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
-    )
-
-    static let publishingTo = NSLocalizedString(
-        "postSettings.publishingTo",
-        value: "Publishing to",
-        comment: "Label indicating which site you are publishing to"
     )
 
     static let socialSharing = NSLocalizedString(
