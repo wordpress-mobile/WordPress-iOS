@@ -126,18 +126,21 @@ struct PostSettingsFormContentView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
 
     var body: some View {
-        if viewModel.context == .publishing {
-            publishingOptionsSection
+        Section {
+            BlogListSiteView(site: .init(blog: viewModel.post.blog))
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+        } header: {
+            SectionHeader(Strings.readyToPublish)
         }
+
         featuredImageSection
         if viewModel.isPost {
             organizationSection
         }
         excerptSection
-        if viewModel.isPost, viewModel.context == .publishing {
-            socialSharingSection
-        }
         generalSection
+        socialSharingSection
         moreOptionsSection
         if viewModel.context != .publishing {
             infoSection
@@ -221,7 +224,7 @@ struct PostSettingsFormContentView: View {
     private var generalSection: some View {
         Section {
             authorRow
-            if !viewModel.isDraftOrPending {
+            if !viewModel.isDraftOrPending || viewModel.context == .publishing {
                 publishDateRow
                 visibilityRow
             }
@@ -254,7 +257,7 @@ struct PostSettingsFormContentView: View {
         NavigationLink {
             PublishDatePickerView(configuration: PublishDatePickerConfiguration(
                 date: viewModel.settings.publishDate,
-                isRequired: viewModel.isDraftOrPending,
+                isRequired: !viewModel.isDraftOrPending,
                 timeZone: viewModel.timeZone,
                 updated: { date in
                     viewModel.settings.publishDate = date
@@ -630,6 +633,12 @@ private enum Strings {
         "postSettings.publishDateImmediately",
         value: "Immediately",
         comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected"
+    )
+
+    static let readyToPublish = NSLocalizedString(
+        "postSettings.publishingSectionTitle",
+        value: "Ready to Publish?",
+        comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
     )
 
     static let publishingTo = NSLocalizedString(

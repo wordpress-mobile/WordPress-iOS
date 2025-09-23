@@ -46,6 +46,7 @@ struct PublishPostView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
 
     @State private var isShowingDiscardChangesAlert = false
+    @State private var isShowingDatePicker = false
 
     var post: AbstractPost { viewModel.post }
 
@@ -71,7 +72,8 @@ struct PublishPostView: View {
                         Text(Strings.discardChangesMessage)
                     }
             }
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                buttonSchedule
                 buttonPublish
             }
         }
@@ -103,6 +105,28 @@ struct PublishPostView: View {
             isShowingDiscardChangesAlert = true
         } else {
             viewModel.buttonCancelTapped()
+        }
+    }
+
+    @ViewBuilder
+    private var buttonSchedule: some View {
+        Button {
+            isShowingDatePicker = true
+        } label: {
+            Image(systemName: "calendar")
+        }
+        .popover(isPresented: $isShowingDatePicker) {
+            NavigationView {
+                PublishDatePickerView(configuration: PublishDatePickerConfiguration(
+                    date: viewModel.settings.publishDate,
+                    isRequired: !viewModel.isDraftOrPending,
+                    timeZone: viewModel.timeZone,
+                    updated: { date in
+                        viewModel.settings.publishDate = date
+                    }
+                ))
+            }
+            .presentationDetents([.height(430), .large])
         }
     }
 
