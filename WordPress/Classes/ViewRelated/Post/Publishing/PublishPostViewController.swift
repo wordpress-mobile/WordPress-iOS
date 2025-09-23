@@ -9,6 +9,7 @@ import WordPressUI
 /// the post settings along with some publishing options like the publish date.
 final class PublishPostViewController: UIHostingController<PublishPostView> {
     private let viewModel: PostSettingsViewModel
+    private let uploadsViewModel: PostMediaUploadsViewModel
 
     var onCompletion: ((PrepublishingSheetResult) -> Void)?
 
@@ -19,7 +20,12 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
             context: .publishing
         )
         self.viewModel = viewModel
-        super.init(rootView: PublishPostView(viewModel: viewModel))
+
+        let uploadsViewModel = PostMediaUploadsViewModel(post: post)
+        self.uploadsViewModel = uploadsViewModel
+
+        let view = PublishPostView(viewModel: viewModel, uploadsViewModel: uploadsViewModel)
+        super.init(rootView: view)
     }
 
     required dynamic init?(coder aDecoder: NSCoder) {
@@ -44,6 +50,7 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
 
 struct PublishPostView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
+    @ObservedObject var uploadsViewModel: PostMediaUploadsViewModel
 
     @State private var isShowingDiscardChangesAlert = false
 
@@ -52,6 +59,13 @@ struct PublishPostView: View {
     var body: some View {
         Form {
             Section {
+                if let state = uploadsViewModel.uploadingSnackbarState {
+                    NavigationLink {
+                        PostMediaUploadsView(viewModel: uploadsViewModel)
+                    } label: {
+                        PostMediaUploadsSnackbarView(state: state)
+                    }
+                }
                 BlogListSiteView(site: .init(blog: viewModel.post.blog))
             } header: {
                 SectionHeader(Strings.readyToPublish)
@@ -126,13 +140,16 @@ struct PublishPostView: View {
         if viewModel.isSaving {
             ProgressView()
         } else {
+            let isDisabled = !uploadsViewModel.isCompleted
+
             Button(viewModel.publishButtonTitle) {
                 viewModel.buttonPublishTapped()
             }
             .fontWeight(.medium)
             .buttonStyle(.borderedProminent)
             .buttonBorderShape(.capsule)
-            .tint(AppColor.primary)
+            .tint(isDisabled ? Color(.opaqueSeparator) : AppColor.primary)
+            .disabled(isDisabled)
         }
     }
 }

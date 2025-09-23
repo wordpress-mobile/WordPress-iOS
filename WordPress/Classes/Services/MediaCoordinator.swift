@@ -398,10 +398,10 @@ class MediaCoordinator: NSObject {
         // https://github.com/wordpress-mobile/WordPress-iOS/issues/20298#issuecomment-1465319707
         let service = self.mediaServiceFactory.create(coreDataStack.mainContext)
         var progress: Progress? = nil
-        service.uploadMedia(media, automatedRetry: automatedRetry, progress: &progress, success: success, failure: failure)
-        if let progress {
-            resultProgress.addChild(progress, withPendingUnitCount: resultProgress.totalUnitCount)
-        }
+//        service.uploadMedia(media, automatedRetry: automatedRetry, progress: &progress, success: success, failure: failure)
+//        if let progress {
+//            resultProgress.addChild(progress, withPendingUnitCount: resultProgress.totalUnitCount)
+//        }
 
         uploading(media, progress: resultProgress)
 
