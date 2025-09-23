@@ -307,7 +307,7 @@ class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
     /// - post an NSNotification so the various indicators can be cleared.
     ///
     static func pushNotificationRead() {
-        UIApplication.shared.applicationIconBadgeNumber -= unreadNotificationsCount
+        UNUserNotificationCenter.current().setBadgeCount(UIApplication.shared.applicationIconBadgeNumber - unreadNotificationsCount)
         unreadNotificationsCount = 0
         saveUnreadCount()
         postNotificationRead()
