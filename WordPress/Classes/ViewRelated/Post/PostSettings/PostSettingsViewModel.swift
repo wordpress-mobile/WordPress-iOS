@@ -306,16 +306,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     // MARK: - Social Sharing
 
     private func refreshSocialSharingState() {
-        guard BuildSettings.current.brand == .jetpack &&
-                RemoteFeatureFlag.jetpackSocialImprovements.enabled() &&
-                post.status != .publishPrivate &&
-                !getPublicizeServices().isEmpty &&
-                post.blog.supportsPublicize(),
-                let post = post as? Post else {
+        guard let post = post as? Post, isPostEligibleForSocialSharing(post) else {
             socialSharingState = nil
             return
         }
-
         if (post.blog.connections ?? []).isEmpty {
             if isSocialConnectionSetupDismissed {
                 socialSharingState = nil
@@ -325,6 +319,14 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         } else {
             socialSharingState = .connected
         }
+    }
+
+    private func isPostEligibleForSocialSharing(_ post: Post) -> Bool {
+        BuildSettings.current.brand == .jetpack &&
+        RemoteFeatureFlag.jetpackSocialImprovements.enabled() &&
+        post.status != .publishPrivate &&
+        !getPublicizeServices().isEmpty &&
+        post.blog.supportsPublicize()
     }
 
     private func getPublicizeServices() -> [PublicizeService] {
@@ -343,7 +345,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             }
             return value
         }
-
         set {
             guard let blogID = post.blog.dotComID?.intValue else {
                 return wpAssertionFailure("blogID missing")
@@ -375,7 +376,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     private func didDismissSocialSharingSetupPrompt() {
         track(.jetpackSocialNoConnectionCardDismissed)
         isSocialConnectionSetupDismissed = true
-
         withAnimation {
             socialSharingState = nil
         }
