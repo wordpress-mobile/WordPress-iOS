@@ -89,9 +89,6 @@ class PostCoordinator: NSObject {
     ///
     /// - warning: Before publishing, ensure that the media for the post got
     /// uploaded. Managing media is not the responsibility of `PostRepository.`
-    ///
-    /// - parameter changes: The set of changes apply to the post together
-    /// with the publishing options.
     @MainActor
     func publish(_ post: AbstractPost, options: PublishingOptions) async throws {
         wpAssert(post.isOriginal())

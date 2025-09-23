@@ -94,7 +94,6 @@ private struct PostSettingsView: View {
         }
         .tint(AppColor.tint)
         .accessibilityIdentifier("post_settings_cancel_button")
-
     }
 
     @ViewBuilder
