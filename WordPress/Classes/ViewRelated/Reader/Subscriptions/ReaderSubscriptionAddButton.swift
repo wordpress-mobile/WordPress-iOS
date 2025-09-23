@@ -12,12 +12,8 @@ struct ReaderSubscriptionAddButton: View {
 
     var body: some View {
         button.popover(isPresented: $isShowingPopover) {
-            if #available(iOS 16.4, *) {
-                ReaderSubscriptionAddView()
-                    .presentationCompactAdaptation(.popover)
-            } else {
-                ReaderSubscriptionAddView()
-            }
+            ReaderSubscriptionAddView()
+                .presentationCompactAdaptation(.popover)
         }
     }
 

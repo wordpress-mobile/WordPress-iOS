@@ -81,7 +81,6 @@ class WordPressComRestApiTests: XCTestCase {
         }
     }
 
-    @available(iOS 16.0, *)
     func testQuery() {
         var requestURL: URL?
         stub(condition: isRestAPIRequest()) {
