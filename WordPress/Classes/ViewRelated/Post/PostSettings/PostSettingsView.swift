@@ -197,12 +197,12 @@ struct PostSettingsFormContentView: View {
         .accessibilityIdentifier("post_settings_tags")
     }
 
+    @ViewBuilder
     private var suggestedTagsRow: some View {
-        if !suggestedTags.isEmpty {
-            PostSettingsTagSuggestionsView(suggestions: suggestedTags) { tag in
+        if !viewModel.suggestedTags.isEmpty {
+            PostSettingsTagSuggestionsView(suggestions: viewModel.suggestedTags) { tag in
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                    selectedTags.append(Tag(id: UUID().uuidString, name: tag))
-                    suggestedTags.removeAll { $0 == tag }
+                    viewModel.didSelectSuggestedTag(tag)
                 }
             }
             .listRowSeparator(.hidden, edges: .top)

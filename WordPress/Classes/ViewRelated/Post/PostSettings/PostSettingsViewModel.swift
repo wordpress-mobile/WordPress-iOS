@@ -174,10 +174,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     private func getSuggestedTags() async throws {
         guard !post.isContentEmpty() else { return }
 
-        let siteTags = try await TagsService(blog: post.blog).getTags()
-        let postTags = displayedTags
-        let suggestedTags = try await IntelligenceService()
-            .suggestTags(post: post.content ?? "")
+        let suggestedTags = try await IntelligenceService().suggestTags(
+            post: post.content ?? "",
+            siteTags: try await TagsService(blog: post.blog).getTags(),
+            postTags: displayedTags
+        )
         if !suggestedTags.isEmpty {
             withAnimation {
                 self.suggestedTags = suggestedTags
@@ -324,8 +325,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         settings.password = selection.password.isEmpty ? nil : selection.password
     }
 
-    func didPickSuggestedTag(_ tag: String) {
-        // TODO:
+    func didSelectSuggestedTag(_ tag: String) {
+        suggestedTags.removeAll(where: { $0 == tag })
+        settings.tags.append(",\(tag)")
+
     }
 
     // MARK: - Social Sharing

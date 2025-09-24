@@ -3,6 +3,8 @@ import FoundationModels
 
 @available(iOS 26, *)
 public struct IntelligenceService {
+    public init() {}
+
     /// Suggests tags for a WordPress post.
     ///
     /// - Parameters:
@@ -36,7 +38,7 @@ public struct IntelligenceService {
             model: .init(guardrails: .permissiveContentTransformations),
             instructions: instructions
         )
-        
+
         // Step 1: Identify the format of existing tags
         let formatPrompt = """
         Analyze the formatting pattern used in these tags:
@@ -46,13 +48,13 @@ public struct IntelligenceService {
         
         Identify the specific formatting pattern being used (e.g., lowercase with underscores, capitalized words with spaces, etc.). You will use this format for tag suggestions.
         """
-        
+
         let formatResponse = try await session.respond(
             to: formatPrompt,
             generating: TagFormatAnalysisResult.self,
             options: GenerationOptions(temperature: 0.1)
         )
-        
+
         // Step 2: Pick existing tags that match the content
         let matchingTagsPrompt = """
         Review the post content and determine which of the existing tags are relevant.
@@ -63,13 +65,13 @@ public struct IntelligenceService {
         
         Select only the tags from SITE_TAGS that are directly relevant to the post content. Do not include any tags from EXISTING_POST_TAGS. If none match, return an empty list.
         """
-        
+
         let matchingTagsResponse = try await session.respond(
             to: matchingTagsPrompt,
             generating: MatchingTagsResult.self,
             options: GenerationOptions(temperature: 0.1) // Accuracy over creativity
         )
-        
+
         // Step 3: Generate new tags following the identified format
         let newTagsPrompt = """
         Generate suggested tags for the post content.
@@ -78,13 +80,13 @@ public struct IntelligenceService {
         
         Generate up to 10 new tags following the same format and naming conventions. Do not include any tags from SITE_TAGS or EXISTING_POST_TAGS.
         """
-        
+
         let newTagsResponse = try await session.respond(
             to: newTagsPrompt,
             generating: NewTagsResult.self,
             options: GenerationOptions(temperature: 0.1)
         )
-        
+
         // Combine picked existing tags with new tags
         let suggestedExistingTags = matchingTagsResponse.content.tags
         let suggestedNewTags = newTagsResponse.content.tags
