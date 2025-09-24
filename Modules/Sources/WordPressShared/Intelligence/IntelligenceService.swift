@@ -2,7 +2,7 @@ import Foundation
 import FoundationModels
 
 @available(iOS 26, *)
-struct IntelligenceService {
+public struct IntelligenceService {
     /// Suggests tags for a WordPress post.
     ///
     /// - Parameters:
@@ -11,7 +11,7 @@ struct IntelligenceService {
     ///   - postTags: An array of tags already assigned to the post.
     ///
     /// - Returns: An array of suggested tags.
-    func suggestTags(post: String, siteTags: [String] = [], postTags: [String] = []) async throws -> [String] {
+    public func suggestTags(post: String, siteTags: [String] = [], postTags: [String] = []) async throws -> [String] {
         // Notes:
         // - It was critical to add "case-sensitive" as otherwise it would ignore
         // case sensitivity and pick the wrong output format.
