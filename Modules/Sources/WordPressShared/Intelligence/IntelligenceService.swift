@@ -34,13 +34,13 @@ public actor IntelligenceService {
         let siteTags = siteTags.prefix(50)
 
         var startTime = CFAbsoluteTimeGetCurrent()
-        print("IntelligenceService suggestTags called")
+        WPLogDebug("IntelligenceService suggestTags called")
 
         let postSizeLimit = Double(IntelligenceService.contextSizeLimit) * 0.5
         let post = extractPlainText(from: post)
             .prefix(Int(postSizeLimit))
 
-        print("IntelligenceService post content extracted (\((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms)")
+        WPLogDebug("IntelligenceService post content extracted (\((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms)")
         startTime = CFAbsoluteTimeGetCurrent()
 
         // Notes:
@@ -91,7 +91,7 @@ public actor IntelligenceService {
             options: GenerationOptions(temperature: 0.1)
         )
 
-        print("IntelligenceService session finished (\((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms)")
+        WPLogDebug("IntelligenceService session finished (\((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms)")
 
         return newTagsResponse.content.tags.deduplicated()
     }
