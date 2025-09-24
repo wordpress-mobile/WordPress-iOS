@@ -39,6 +39,10 @@
         [self setupIconView];
         [self setupTextField];
         [self setupCancelLabel];
+
+        [self registerForTraitChanges:@[[UITraitUserInterfaceStyle self]]
+                           withTarget:self
+                               action:@selector(handleTraitCollectionChanges)];
     }
 
     return self;
@@ -220,10 +224,8 @@
     return [super resignFirstResponder];
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+- (void)handleTraitCollectionChanges
 {
-    [super traitCollectionDidChange:previousTraitCollection];
-
     [self setNeedsDisplay];
 }
 

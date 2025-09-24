@@ -26,9 +26,7 @@ final class SiteSwitcherViewController: UIHostingController<SiteSwitcherView>, U
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.close, style: .plain, target: self, action: #selector(buttonCloseTapped))
         navigationItem.leftBarButtonItem?.accessibilityIdentifier = "my-sites-cancel-button"
 
-        if #available(iOS 17, *) {
-            AppTips.SitePickerTip().invalidate(reason: .actionPerformed)
-        }
+        AppTips.SitePickerTip().invalidate(reason: .actionPerformed)
     }
 
     @objc private func buttonCloseTapped() {

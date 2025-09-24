@@ -32,7 +32,7 @@ struct LineChartView: View {
         .chartYScale(domain: yAxisDomain)
         .chartLegend(.hidden)
         .environment(\.timeZone, context.timeZone)
-        .modifier(ChartSelectionModifier(selection: $selectedDate))
+        .chartXSelection(value: $selectedDate)
         .animation(.spring, value: ObjectIdentifier(data))
         .onChange(of: selectedDate) {
             selectedDataPoints = SelectedDataPoints.compute(for: $0, data: data)
@@ -139,7 +139,7 @@ struct LineChartView: View {
 
     @ChartContentBuilder
     private var selectionIndicatorMarks: some ChartContent {
-        if #available(iOS 17.0, *), let selectedDataPoints {
+        if let selectedDataPoints {
             if let currentPoint = selectedDataPoints.current {
                 RuleMark(x: .value("Selected", currentPoint.date))
                     .foregroundStyle(Color.secondary.opacity(0.33))

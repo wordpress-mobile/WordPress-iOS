@@ -58,7 +58,7 @@ struct LegacyFloatingDateControl: View {
         .tint(Color.primary)
         .menuOrder(.fixed)
         .buttonStyle(.plain)
-        .modifier(DateRangeTipModifier())
+        .popoverTip(StatsDateRangeTip(), arrowEdge: .bottom)
     }
 
     private var dateRangeButtonContent: some View {
@@ -141,7 +141,6 @@ private struct FloatingStyle: ViewModifier {
     }
 }
 
-@available(iOS 17, *)
 private struct StatsDateRangeTip: Tip {
     var title: Text {
         Text(Strings.DateRangeTips.title)
@@ -181,16 +180,5 @@ private struct MinimumBottomSafeArea: ViewModifier {
 private extension View {
     func floatingStyle(cornerRadius: CGFloat = 40) -> some View {
         modifier(FloatingStyle(cornerRadius: cornerRadius))
-    }
-}
-
-private struct DateRangeTipModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 17, *) {
-            content
-                .popoverTip(StatsDateRangeTip(), arrowEdge: .bottom)
-        } else {
-            content
-        }
     }
 }

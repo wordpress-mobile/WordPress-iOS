@@ -69,7 +69,6 @@ struct AddCardSheet: View {
             }
             .padding(.horizontal, Constants.step1)
             .padding(.vertical, Constants.step0_5)
-            .background(Color(UIColor.secondarySystemGroupedBackground))
             .clipShape(RoundedRectangle(cornerRadius: 10))
         }
     }
