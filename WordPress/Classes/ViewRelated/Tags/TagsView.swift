@@ -63,20 +63,24 @@ struct TagsView: View {
     private var searchField: some View {
         HStack {
             let placeholder = allowAddingTagsFromTextField ? Strings.searchOrAddTagsPlaceholder : Strings.searchPlaceholder
-            let textField = TextField(placeholder, text: $viewModel.searchText)
-                .focused($isTextFieldFocused)
-                .textInputAutocapitalization(.never)
-                .submitLabel(.return)
-                .accessibilityIdentifier("add-tags")
 
             if allowAddingTagsFromTextField {
-                textField
-                    .onSubmit(addTag)
-                    .onChange(of: viewModel.searchText) { newValue in
-                        handleTextChange(newValue)
-                    }
+                // We want to keep the focus on text field, after tapping the return key, which is not supported
+                // by `SwiftUI.TextField`.
+                AddTagsTextField(
+                    placeholder: placeholder,
+                    text: $viewModel.searchText,
+                    onSubmit: addTag
+                )
+                .onChange(of: viewModel.searchText) { (_, newValue) in
+                    handleTextChange(newValue)
+                }
             } else {
-                textField
+                TextField(placeholder, text: $viewModel.searchText)
+                    .focused($isTextFieldFocused)
+                    .textInputAutocapitalization(.never)
+                    .submitLabel(.return)
+                    .accessibilityIdentifier("add-tags")
             }
 
             if allowAddingTagsFromTextField, !viewModel.searchText.trim().isEmpty {
@@ -383,6 +387,59 @@ private struct TagRowContent: View {
                 Image(systemName: "checkmark")
                     .foregroundColor(.accentColor)
             }
+        }
+    }
+}
+
+private struct AddTagsTextField: UIViewRepresentable {
+    let placeholder: String
+    @Binding var text: String
+    var onSubmit: (() -> Void)
+
+    func makeUIView(context: Context) -> UITextField {
+        let textField = UITextField()
+        textField.placeholder = placeholder
+        textField.delegate = context.coordinator
+        textField.autocapitalizationType = .none
+        textField.returnKeyType = .default
+        textField.accessibilityIdentifier = "add-tags"
+        textField.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        textField.addTarget(context.coordinator, action: #selector(Coordinator.textFieldDidChange), for: .editingChanged)
+
+        // Ideally, we should bind the focus state of `textField` with `TagsView.isTextFieldFocused`, but I couldn't
+        // get that working. So here, we always keep the text field on focused, which is the same as the old tags list.
+        textField.becomeFirstResponder()
+
+        return textField
+    }
+
+    func updateUIView(_ textField: UITextField, context: Context) {
+        if textField.text != text {
+            textField.text = text
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(view: self)
+    }
+
+    class Coordinator: NSObject, UITextFieldDelegate {
+        let view: AddTagsTextField
+
+        init(view: AddTagsTextField) {
+            self.view = view
+        }
+
+        @objc func textFieldDidChange(_ textField: UITextField) {
+            let text = textField.text ?? ""
+            if self.view.text != text {
+                self.view.text = text
+            }
+        }
+
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            view.onSubmit()
+            return false
         }
     }
 }
