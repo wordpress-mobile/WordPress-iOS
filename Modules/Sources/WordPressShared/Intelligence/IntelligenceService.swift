@@ -3,6 +3,14 @@ import FoundationModels
 
 @available(iOS 26, *)
 public actor IntelligenceService {
+    /// A single token corresponds to three or four characters in languages like
+    /// English, Spanish, or German, and one token per character in languages like
+    /// Japanese, Chinese, or Korean. In a single session, the sum of all tokens
+    /// in the instructions, all prompts, and all outputs count toward the context window size.
+    ///
+    /// https://developer.apple.com/documentation/foundationmodels/generating-content-and-performing-tasks-with-foundation-models#Consider-context-size-limits-per-session
+    static let contextSizeLimit = 4096
+
     public init() {}
 
     /// Suggests tags for a WordPress post.
@@ -14,12 +22,26 @@ public actor IntelligenceService {
     ///
     /// - Returns: An array of suggested tags.
     public func suggestTags(post: String, siteTags: [String] = [], postTags: [String] = []) async throws -> [String] {
+        guard postTags.count > 20 else {
+            return [] // No point suggesting more
+        }
+
+        // Step 0: We have to be mindful of the content size limit, so we
+        // only support a subset of tags, preamptively remove Gutenberg tags
+        // from the content, and limit the content size.
+
+        // A maximum of 700 characters assuming 10 characters per
+        let siteTags = siteTags.prefix(50)
+
+        let postSizeLimit = Double(IntelligenceService.contextSizeLimit) * (2.0 / 3.0)
+        let post = extractPlainText(from: post)
+            .prefix(Int(postSizeLimit))
+
         // Notes:
         // - It was critical to add "case-sensitive" as otherwise it would ignore
         // case sensitivity and pick the wrong output format.
         // - The lowered temperature helped improved the accuracy.
         // - `useCase: .contentTagging` is not recommended for arbitraty hashtags
-        // - Splitting thet task into separate steps increases accuracy.
 
         let instructions = """
         You are helping a WordPress user add tags to a post or a page on their site.
@@ -55,14 +77,12 @@ public actor IntelligenceService {
             options: GenerationOptions(temperature: 0.1)
         )
 
-        let content = extractPlainText(from: post)
-
         // Step 2: Pick existing tags that match the content
         let matchingTagsPrompt = """
         Review the post content and determine which of the existing tags are relevant.
 
         POST_CONTENT: '''
-        \(content)
+        \(post)
         '''
 
         Select only the tags from SITE_TAGS that are directly relevant to the post content. Do not include any tags from EXISTING_POST_TAGS. If none match, return an empty list.
@@ -102,8 +122,10 @@ public actor IntelligenceService {
     }
 }
 
-private func extractPlainText(from html: String) -> String? {
-    guard let data = html.data(using: .utf8) else { return nil }
+private func extractPlainText(from html: String) -> String {
+    guard let data = html.data(using: .utf8) else {
+        return html
+    }
 
     let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
         .documentType: NSAttributedString.DocumentType.html,
