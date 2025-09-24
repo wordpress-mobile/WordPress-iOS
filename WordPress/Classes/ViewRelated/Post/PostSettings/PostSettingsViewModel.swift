@@ -167,7 +167,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     func onAppear() {
         Task {
-            try await getSuggestedTags()
+            do {
+                try await getSuggestedTags()
+            } catch {
+                track(.intelligenceGenerationFailed, properties: ["description": (error as NSError).debugDescription])
+            }
         }
     }
 

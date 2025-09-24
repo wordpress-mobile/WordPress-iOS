@@ -22,7 +22,7 @@ public actor IntelligenceService {
     ///
     /// - Returns: An array of suggested tags.
     public func suggestTags(post: String, siteTags: [String] = [], postTags: [String] = []) async throws -> [String] {
-        guard postTags.count > 20 else {
+        guard postTags.count < 20 else {
             return [] // No point suggesting more
         }
 
