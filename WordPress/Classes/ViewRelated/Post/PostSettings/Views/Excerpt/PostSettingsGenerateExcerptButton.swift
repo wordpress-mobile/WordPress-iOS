@@ -19,8 +19,7 @@ struct PostSettingsGenerateExcerptButton: View {
             isShowingExcerptGenerator = true
         } label: {
             HStack(spacing: 4) {
-                Image(systemName: "sparkle")
-                    .font(.caption2)
+                ScaledImage("sparkle", height: 15)
                 Text(Strings.generateButton)
             }
         }
