@@ -2,7 +2,7 @@ import Foundation
 import FoundationModels
 
 @available(iOS 26, *)
-public struct IntelligenceService {
+public actor IntelligenceService {
     public init() {}
 
     /// Suggests tags for a WordPress post.
@@ -23,12 +23,12 @@ public struct IntelligenceService {
 
         let instructions = """
         You are helping a WordPress user add tags to a post or a page on their site.
-        
+
         Parameters:
-        - POST_CONTENT: The contents of the post, likely in the Gutenberg format.
+        - POST_CONTENT: The contents of the post.
         - SITE_TAGS: A case-sensitive comma-separated list of the existing tags used elsewhere on the site (can be empty). 
         - EXISTING_POST_TAGS: A list of tags already added to the post.
-        
+
         Requirements:
         - Use the best practices for tagging posts and pages established in the WordPress ecocystem.
         - Use the same language as used for the SITE_TAGS.
@@ -42,10 +42,10 @@ public struct IntelligenceService {
         // Step 1: Identify the format of existing tags
         let formatPrompt = """
         Analyze the formatting pattern used in these tags:
-        
+
         SITE_TAGS: '\(siteTags.joined(separator: ", "))'
         EXISTING_POST_TAGS: '\(siteTags.joined(separator: ", "))'
-        
+
         Identify the specific formatting pattern being used (e.g., lowercase with underscores, capitalized words with spaces, etc.). You will use this format for tag suggestions.
         """
 
@@ -55,14 +55,16 @@ public struct IntelligenceService {
             options: GenerationOptions(temperature: 0.1)
         )
 
+        let content = extractPlainText(from: post)
+
         // Step 2: Pick existing tags that match the content
         let matchingTagsPrompt = """
         Review the post content and determine which of the existing tags are relevant.
-        
+
         POST_CONTENT: '''
-        \(post)
+        \(content)
         '''
-        
+
         Select only the tags from SITE_TAGS that are directly relevant to the post content. Do not include any tags from EXISTING_POST_TAGS. If none match, return an empty list.
         """
 
@@ -75,9 +77,9 @@ public struct IntelligenceService {
         // Step 3: Generate new tags following the identified format
         let newTagsPrompt = """
         Generate suggested tags for the post content.
-        
+
         Format requirement: \(formatResponse.content.formatDescription)
-        
+
         Generate up to 10 new tags following the same format and naming conventions. Do not include any tags from SITE_TAGS or EXISTING_POST_TAGS.
         """
 
@@ -98,6 +100,24 @@ public struct IntelligenceService {
             return true
         }
     }
+}
+
+private func extractPlainText(from html: String) -> String? {
+    guard let data = html.data(using: .utf8) else { return nil }
+
+    let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+        .documentType: NSAttributedString.DocumentType.html,
+        .characterEncoding: String.Encoding.utf8.rawValue
+    ]
+
+    var content: String?
+    try? WPException.objcTry {
+        if let attributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) {
+            content = attributedString.string
+        }
+    }
+
+    return content ?? html
 }
 
 @available(iOS 26, *)

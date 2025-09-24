@@ -174,11 +174,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     private func getSuggestedTags() async throws {
         guard #available(iOS 26, *), !post.isContentEmpty() else { return }
 
-        let siteTags = try await TagsService(blog: post.blog).getTags()
+        let siteTags = try? await TagsService(blog: post.blog).getTags()
 
         let suggestedTags = try await IntelligenceService().suggestTags(
             post: post.content ?? "",
-            siteTags: siteTags.map { $0.name ?? ""},
+            siteTags: (siteTags ?? []).map { $0.name ?? ""},
             postTags: displayedTags
         )
         if !suggestedTags.isEmpty {
