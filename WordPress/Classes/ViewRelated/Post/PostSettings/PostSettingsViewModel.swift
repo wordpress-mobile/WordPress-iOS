@@ -184,6 +184,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
                 self.suggestedTags = suggestedTags
             }
         }
+
+        track(.intelligenceSuggestedTagsGenerated, properties: ["count": suggestedTags.count])
     }
 
     // MARK: - Refresh
@@ -329,6 +331,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         suggestedTags.removeAll(where: { $0 == tag })
         settings.tags.append(",\(tag)")
 
+        track(.intelligenceSuggestedTagSelected)
     }
 
     // MARK: - Social Sharing
@@ -462,7 +465,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         }
         if old.featuredImageID != new.featuredImageID {
             let action = new.featuredImageID == nil ? "removed" : "changed"
-            WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": source, "action": action])
+            track(.editorPostFeaturedImageChanged, properties: ["action": action])
         }
         if old.excerpt != new.excerpt {
             track(.editorPostExcerptChanged)
@@ -480,8 +483,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         }
     }
 
-    private func track(_ event: WPAnalyticsEvent) {
-        WPAnalytics.track(event, properties: ["via": source])
+    private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:]) {
+        var properties = properties
+        properties["via"] = source
+        WPAnalytics.track(event, properties: properties)
     }
 
     private var source: String {

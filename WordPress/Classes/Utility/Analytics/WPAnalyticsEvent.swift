@@ -673,6 +673,8 @@ import WordPressShared
     case intelligenceExcerptSelected
     case intelligenceExcerptOptionsGenerated
     case intelligenceUnavailableViewShown
+    case intelligenceSuggestedTagsGenerated
+    case intelligenceSuggestedTagSelected
 
     /// A String that represents the event
     var value: String {
@@ -1823,6 +1825,10 @@ import WordPressShared
             return "intelligence_excerpt_options_generated"
         case .intelligenceUnavailableViewShown:
             return "intelligence_unavailable_view_shown"
+        case .intelligenceSuggestedTagsGenerated:
+            return "intelligence_suggested_tags_generated"
+        case .intelligenceSuggestedTagSelected:
+            return "intelligence_suggested_tag_selected"
         } // END OF SWITCH
     }
 
