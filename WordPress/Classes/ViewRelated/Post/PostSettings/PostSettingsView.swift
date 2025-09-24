@@ -55,6 +55,9 @@ private struct PostSettingsView: View {
         }
         .accessibilityIdentifier("post_settings_form")
         .disabled(viewModel.isSaving)
+        .onAppear {
+            viewModel.onAppear()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 buttonCancel
@@ -174,6 +177,7 @@ struct PostSettingsFormContentView: View {
         Section {
             categoriesRow
             tagsRow
+            suggestedTagsRow
         } header: {
             SectionHeader(Strings.taxonomyHeader)
         }
@@ -191,6 +195,19 @@ struct PostSettingsFormContentView: View {
             PostSettingsTagsRow(tags: viewModel.displayedTags)
         }
         .accessibilityIdentifier("post_settings_tags")
+    }
+
+    private var suggestedTagsRow: some View {
+        if !suggestedTags.isEmpty {
+            PostSettingsTagSuggestionsView(suggestions: suggestedTags) { tag in
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    selectedTags.append(Tag(id: UUID().uuidString, name: tag))
+                    suggestedTags.removeAll { $0 == tag }
+                }
+            }
+            .listRowSeparator(.hidden, edges: .top)
+            .padding(.top, -12)
+        }
     }
 
     // MARK: - "Excerpt" Section

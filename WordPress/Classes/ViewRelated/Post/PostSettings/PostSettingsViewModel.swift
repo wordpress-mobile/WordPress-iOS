@@ -23,6 +23,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     @Published private(set) var hasChanges = false
     @Published private(set) var displayedCategories: [String] = []
     @Published private(set) var displayedTags: [String] = []
+    @Published private(set) var suggestedTags: [String] = []
     @Published private(set) var parentPageText: String?
     @Published private(set) var socialSharingState: SocialSharingSectionState?
 
@@ -164,6 +165,26 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         WPAnalytics.track(.postSettingsShown)
     }
 
+    func onAppear() {
+        Task {
+            try await getSuggestedTags()
+        }
+    }
+
+    private func getSuggestedTags() async throws {
+        guard !post.isContentEmpty() else { return }
+
+        let siteTags = try await TagsService(blog: post.blog).getTags()
+        let postTags = displayedTags
+        let suggestedTags = try await IntelligenceService()
+            .suggestTags(post: post.content ?? "")
+        if !suggestedTags.isEmpty {
+            withAnimation {
+                self.suggestedTags = suggestedTags
+            }
+        }
+    }
+
     // MARK: - Refresh
 
     private func refresh(from old: PostSettings, to new: PostSettings) {
@@ -301,6 +322,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             settings.status = .publishPrivate
         }
         settings.password = selection.password.isEmpty ? nil : selection.password
+    }
+
+    func didPickSuggestedTag(_ tag: String) {
+        // TODO:
     }
 
     // MARK: - Social Sharing
