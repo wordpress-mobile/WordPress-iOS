@@ -87,7 +87,7 @@ public actor IntelligenceService {
 
         let newTagsResponse = try await session.respond(
             to: matchingTagsPrompt,
-            generating: NewTagsResult.self,
+            generating: SuggestedTagsResult.self,
             options: GenerationOptions(temperature: 0.1)
         )
 
@@ -126,21 +126,7 @@ private extension Array where Element: Hashable {
 
 @available(iOS 26, *)
 @Generable
-private struct TagFormatAnalysisResult {
-    @Guide(description: "A description of the formatting pattern used in the existing tags")
-    var formatDescription: String
-}
-
-@available(iOS 26, *)
-@Generable
-private struct MatchingTagsResult {
-    @Guide(description: "Tags from the existing tags list that match the post content")
-    var tags: [String]
-}
-
-@available(iOS 26, *)
-@Generable
-private struct NewTagsResult {
+private struct SuggestedTagsResult {
     @Guide(description: "Newly generated tags following the identified format")
     var tags: [String]
 }
