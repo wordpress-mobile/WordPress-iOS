@@ -425,9 +425,7 @@ private func makeButton(image: UIImage? = nil, font: UIFont = UIFont.preferredFo
     configuration.contentInsets = .init(top: 12, leading: 12, bottom: 14, trailing: 12)
 
     let button = UIButton(configuration: configuration)
-    if #available(iOS 17.0, *) {
-        button.isSymbolAnimationEnabled = true
-    }
+    button.isSymbolAnimationEnabled = true
     button.maximumContentSizeCategory = .extraExtraExtraLarge
     return button
 }
@@ -469,7 +467,6 @@ private extension ReaderPostCellView {
 
 // MARK: - Previews
 
-@available(iOS 17, *)
 #Preview {
     let cell = ReaderPostCellView()
     cell.configure(with: .mock())

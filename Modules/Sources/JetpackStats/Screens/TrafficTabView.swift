@@ -151,7 +151,7 @@ struct TrafficTabView: View {
                 viewModel.addCard(type: cardType)
             }
             .dynamicTypeSize(...DynamicTypeSize.xLarge)
-            .modifier(PopoverPresentationModifier())
+            .presentationCompactAdaptation(.popover)
         }
     }
 

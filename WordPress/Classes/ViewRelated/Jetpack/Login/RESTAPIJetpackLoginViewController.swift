@@ -123,26 +123,11 @@ private struct CompletedAnimationView: View {
             .opacity(opacity)
             .onAppear {
                 let animation = Animation.spring(response: animationDuration)
-
-                if #available(iOS 17.0, *) {
-                    withAnimation(animation) {
-                        scale = 1.0
-                        opacity = 1.0
-                    } completion: {
-                        onAnimationComplete()
-                    }
-                } else {
-                    withAnimation(animation) {
-                        scale = 1.0
-                        opacity = 1.0
-                    }
-
-                    guard !hasTriggeredCallback else { return }
-                    hasTriggeredCallback = true
-
-                    DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
-                        onAnimationComplete()
-                    }
+                withAnimation(animation) {
+                    scale = 1.0
+                    opacity = 1.0
+                } completion: {
+                    onAnimationComplete()
                 }
             }
     }

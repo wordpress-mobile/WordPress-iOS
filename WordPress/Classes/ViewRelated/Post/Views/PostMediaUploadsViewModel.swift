@@ -42,6 +42,24 @@ final class PostMediaUploadsViewModel: ObservableObject {
         }.store(in: &cancellables)
     }
 
+    /// - returns `nil` if upload is completed.
+    var uploadingSnackbarState: PostMediaUploadsSnackbarState? {
+        guard !isCompleted else {
+            return nil
+        }
+        typealias Strings = PrepublishingSheetStrings
+        let errors = uploads.compactMap(\.error)
+        if !errors.isEmpty {
+            let details = errors.count == 1 ? errors[0].localizedDescription : String(format: Strings.mediaUploadFailedDetailsMultipleFailures, errors.count.description)
+            return .failed(title: Strings.mediaUploadFailedTitle, details: details)
+        }
+        return .uploading(
+            title: Strings.uploadingMedia,
+            details: Strings.uploadMediaRemaining(count: uploads.count - completedUploadsCount),
+            progress: fractionCompleted
+        )
+    }
+
     private func didUpdateMedia(_ media: Set<Media>) {
         let remainingObjectIDs = Set(media.map(\.objectID))
         withAnimation {

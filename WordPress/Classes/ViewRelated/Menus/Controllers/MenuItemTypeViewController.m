@@ -23,6 +23,10 @@
     self.view.contentMode = UIViewContentModeRedraw;
 
     [self setupScrollView];
+
+    [self registerForTraitChanges:@[[UITraitHorizontalSizeClass self], [UITraitVerticalSizeClass self], [UITraitPreferredContentSizeCategory self]]
+                       withTarget:self
+                           action:@selector(handleTraitCollectionChanges)];
 }
 
 - (void)setupScrollView
@@ -31,9 +35,8 @@
     self.scrollView.scrollsToTop = NO;
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+- (void)handleTraitCollectionChanges
 {
-    [super traitCollectionDidChange:previousTraitCollection];
     [self focusSelectedTypeViewIfNeeded:NO];
 }
 

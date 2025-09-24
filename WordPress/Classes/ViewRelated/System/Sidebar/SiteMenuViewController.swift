@@ -66,10 +66,8 @@ final class SiteMenuViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if #available(iOS 17, *) {
-            if tipObserver == nil {
-                tipObserver = registerTipPopover(AppTips.SidebarTip(), sourceItem: getTipAnchor(), arrowDirection: [.up])
-            }
+        if tipObserver == nil {
+            tipObserver = registerTipPopover(AppTips.SidebarTip(), sourceItem: getTipAnchor(), arrowDirection: [.up])
         }
 
         didAppear = true

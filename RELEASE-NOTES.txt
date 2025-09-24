@@ -1,5 +1,6 @@
 26.4
 -----
+* [*] Fix a few minor visual issues on iOS 26 [#24863], [#24863], [#24865], [#24866], [#24867]
 * [*] [Intelligence] Add support for generating excerpts for posts [#24852]
 * [*] Fix performance issues with search in Reader Subscriptions [#24841]
 

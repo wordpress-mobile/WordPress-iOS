@@ -40,9 +40,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     public override init() {
         super.init()
 
-        if #available(iOS 16.4, *) {
-            webView.isInspectable = true
-        }
+        webView.isInspectable = true
         webView.backgroundColor = .clear
         webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
         webView.translatesAutoresizingMaskIntoConstraints = false
