@@ -193,7 +193,7 @@ private struct TagsPaginatedForEach: View {
     @ObservedObject var viewModel: TagsViewModel
 
     var body: some View {
-        DataViewPaginatedForEach(response: response) { tag in
+        DataViewPaginatedForEach(response: response, filter: viewModel.isNotSelected(_:)) { tag in
             TagRowView(tag: tag, viewModel: viewModel)
         }
         .onReceive(NotificationCenter.default.publisher(for: .tagDeleted)) { notification in

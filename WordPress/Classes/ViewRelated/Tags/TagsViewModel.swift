@@ -141,6 +141,10 @@ class TagsViewModel: ObservableObject {
         return selectedTagsSet.contains(tagName.lowercased())
     }
 
+    func isNotSelected(_ tag: RemotePostTag) -> Bool {
+        !isSelected(tag)
+    }
+
     func removeSelectedTag(_ tagName: String) {
         let lowercasedTagName = tagName.lowercased()
         selectedTagsSet.remove(lowercasedTagName)
