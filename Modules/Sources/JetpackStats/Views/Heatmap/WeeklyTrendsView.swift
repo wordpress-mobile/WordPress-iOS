@@ -259,7 +259,7 @@ private struct DayCell: View {
                 calendar: calendar,
                 formatter: formatter
             )
-            .modifier(PopoverPresentationModifier())
+            .presentationCompactAdaptation(.popover)
         }
         .accessibilityElement()
         .accessibilityAddTraits(.isButton)
