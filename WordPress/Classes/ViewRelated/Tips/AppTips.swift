@@ -107,11 +107,11 @@ extension UIViewController {
         _ tip: some Tip,
         sourceItem: any UIPopoverPresentationControllerSourceItem,
         arrowDirection: UIPopoverArrowDirection? = nil,
-        actionHandler: ((Tips.Action) -> Void)? = nil
+        actionHandler: (@MainActor @Sendable (Tips.Action) -> Void)? = nil
     ) -> TipObserver? {
-        let task = Task { @MainActor [weak self] in
+        let task = Task { @MainActor [weak self, weak sourceItem] in
             for await shouldDisplay in tip.shouldDisplayUpdates {
-                if shouldDisplay {
+                if shouldDisplay, let sourceItem {
                     let popoverController = TipUIPopoverViewController(tip, sourceItem: sourceItem, actionHandler: actionHandler ?? { _ in })
                     popoverController.view.tintColor = .secondaryLabel
                     if let arrowDirection {
