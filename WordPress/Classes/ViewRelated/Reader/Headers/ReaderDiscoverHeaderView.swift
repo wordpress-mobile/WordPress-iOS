@@ -244,7 +244,6 @@ private enum Strings {
     static let editInterests = NSLocalizedString("reader.editInterests.title", value: "Edit Interests", comment: "Screen title")
 }
 
-@available(iOS 17, *)
 #Preview {
     ReaderDiscoverHeaderView()
 }

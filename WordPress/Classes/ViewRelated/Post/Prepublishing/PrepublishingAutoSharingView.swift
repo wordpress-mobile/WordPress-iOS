@@ -3,7 +3,7 @@ import WordPressUI
 
 struct PrepublishingAutoSharingView: View {
 
-    let model: PrepublishingAutoSharingModel
+    let model: PostSocialSharingSettings
 
     @Environment(\.sizeCategory) private var sizeCategory
 
@@ -107,7 +107,7 @@ private extension PrepublishingAutoSharingView {
 
 // MARK: - PrepublishingAutoSharingModel Private Extensions
 
-private extension PrepublishingAutoSharingModel.Service {
+private extension PostSocialSharingSettings.Service {
     /// Whether the icon for this service should be opaque or transparent.
     /// If at least one account is enabled, an opaque version should be shown.
     var usesOpaqueIcon: Bool {
@@ -116,12 +116,12 @@ private extension PrepublishingAutoSharingModel.Service {
         }
     }
 
-    var enabledConnections: [PrepublishingAutoSharingModel.Connection] {
+    var enabledConnections: [PostSocialSharingSettings.Connection] {
         connections.filter { $0.enabled }
     }
 }
 
-private extension PrepublishingAutoSharingModel {
+private extension PostSocialSharingSettings {
     var enabledConnectionsCount: Int {
         services.reduce(0) { $0 + $1.enabledConnections.count }
     }

@@ -567,21 +567,4 @@ private struct PrepublishingStackView: UIViewRepresentable {
     }
 }
 
-private enum Strings {
-    static let publish = NSLocalizedString("prepublishing.publish", value: "Publish", comment: "Primary button label in the pre-publishing sheet")
-    static let schedule = NSLocalizedString("prepublishing.schedule", value: "Schedule", comment: "Primary button label in the pre-publishing shee")
-    static let publishDate = NSLocalizedString("prepublishing.publishDate", value: "Publish Date", comment: "Label for a cell in the pre-publishing sheet")
-    static let visibility = NSLocalizedString("prepublishing.visibility", value: "Visibility", comment: "Label for a cell in the pre-publishing sheet")
-    static let categories = NSLocalizedString("prepublishing.categories", value: "Categories", comment: "Label for a cell in the pre-publishing sheet")
-    static let tags = NSLocalizedString("prepublishing.tags", value: "Tags", comment: "Label for a cell in the pre-publishing sheet")
-    static let jetpackSocial = NSLocalizedString("prepublishing.jetpackSocial", value: "Jetpack Social", comment: "Label for a cell in the pre-publishing sheet")
-    static let immediately = NSLocalizedString("prepublishing.publishDateImmediately", value: "Immediately", comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected")
-    static let uploadingMedia = NSLocalizedString("prepublishing.uploadingMedia", value: "Uploading media", comment: "Title for a publish button state in the pre-publishing sheet")
-    private static let uploadMediaOneItemRemaining = NSLocalizedString("prepublishing.uploadMediaOneItemRemaining", value: "%@ item remaining", comment: "Details label for a publish button state in the pre-publishing sheet")
-    private static let uploadMediaManyItemsRemaining = NSLocalizedString("prepublishing.uploadMediaManyItemsRemaining", value: "%@ items remaining", comment: "Details label for a publish button state in the pre-publishing sheet")
-    static func uploadMediaRemaining(count: Int) -> String {
-        String(format: count == 1 ? Strings.uploadMediaOneItemRemaining : Strings.uploadMediaManyItemsRemaining, count.description)
-    }
-    static let mediaUploadFailedTitle = NSLocalizedString("prepublishing.mediaUploadFailedTitle", value: "Failed to upload media", comment: "Title for a publish button state in the pre-publishing sheet")
-    static let mediaUploadFailedDetailsMultipleFailures = NSLocalizedString("prepublishing.mediaUploadFailedDetails", value: "%@ items failed to upload", comment: "Details for a publish button state in the pre-publishing sheet; count as a parameter")
-}
+private typealias Strings = PrepublishingSheetStrings

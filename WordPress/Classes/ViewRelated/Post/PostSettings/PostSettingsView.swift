@@ -50,22 +50,27 @@ private struct PostSettingsView: View {
 
     var body: some View {
         Form {
-            featuredImageSection
-            generalSection
-            if viewModel.isPost {
-                organizationSection
-            }
-            excerptSection
-            moreOptionsSection
+            PostSettingsFormContentView(viewModel: viewModel)
             infoSection
         }
         .accessibilityIdentifier("post_settings_form")
         .disabled(viewModel.isSaving)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .topBarLeading) {
                 buttonCancel
+                    .confirmationDialog(Strings.discardChangesTitle, isPresented: $isShowingDiscardChangesAlert) {
+                        Button(Strings.discardChangesButton, role: .destructive) {
+                            viewModel.buttonCancelTapped()
+                        }
+                        Button(SharedStrings.Button.cancel, role: .cancel) {
+                            // Do nothing - continue editing
+                        }
+                    } message: {
+                        Text(Strings.discardChangesMessage)
+                    }
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
+
+            ToolbarItem(placement: .topBarTrailing) {
                 buttonSave
             }
         }
@@ -76,16 +81,6 @@ private struct PostSettingsView: View {
             }
         } message: {
             Text(viewModel.deletedAlertMessage)
-        }
-        .confirmationDialog(Strings.discardChangesTitle, isPresented: $isShowingDiscardChangesAlert) {
-            Button(Strings.discardChangesButton, role: .destructive) {
-                viewModel.buttonCancelTapped()
-            }
-            Button(SharedStrings.Button.cancel, role: .cancel) {
-                // Do nothing - continue editing
-            }
-        } message: {
-            Text(Strings.discardChangesMessage)
         }
     }
 
@@ -126,6 +121,51 @@ private struct PostSettingsView: View {
         }
     }
 
+    @ViewBuilder
+    private var infoSection: some View {
+        if viewModel.lastEditedText != nil || viewModel.postID != nil {
+            Section {
+                if let postID = viewModel.postID {
+                    SettingsRow(Strings.postIDLabel, value: String(postID))
+                }
+                if let lastEditedText = viewModel.lastEditedText {
+                    SettingsRow(Strings.lastEditedLabel, value: lastEditedText)
+                }
+            } header: {
+                SectionHeader(Strings.infoLabel)
+            }
+        }
+    }
+}
+
+struct PostSettingsFormContentView: View {
+    @ObservedObject var viewModel: PostSettingsViewModel
+
+    var body: some View {
+        featuredImageSection
+        if viewModel.isPost {
+            organizationSection
+        }
+        excerptSection
+        generalSection
+        socialSharingSection
+        moreOptionsSection
+    }
+
+    // MARK: - "Publishing Options" Section
+
+    @ViewBuilder
+    private var publishingOptionsSection: some View {
+        Section {
+            publishDateRow
+            visibilityRow
+        } header: {
+            BlogListSiteView(site: .init(blog: viewModel.post.blog))
+                .padding(.bottom, 8)
+                .foregroundStyle(.primary)
+        }
+    }
+
     // MARK: - "Featured Image" Section
 
     @ViewBuilder
@@ -151,28 +191,16 @@ private struct PostSettingsView: View {
     }
 
     private var categoriesRow: some View {
-        Button(action: viewModel.showCategoriesPicker) {
-            HStack {
-                PostSettingsCategoriesRow(categories: viewModel.displayedCategories)
-                Image(systemName: "chevron.forward")
-                    .font(.footnote.weight(.semibold))
-                    .foregroundColor(Color(.tertiaryLabel))
-            }
+        LegacyNavigationLinkRow(action: viewModel.showCategoriesPicker) {
+            PostSettingsCategoriesRow(categories: viewModel.displayedCategories)
         }
-        .tint(.primary)
         .accessibilityIdentifier("post_settings_categories")
     }
 
     private var tagsRow: some View {
-        Button(action: viewModel.showTagsPicker) {
-            HStack {
-                PostSettingsTagsRow(tags: viewModel.displayedTags)
-                Image(systemName: "chevron.forward")
-                    .font(.footnote.weight(.semibold))
-                    .foregroundColor(Color(.tertiaryLabel))
-            }
+        LegacyNavigationLinkRow(action: viewModel.showTagsPicker) {
+            PostSettingsTagsRow(tags: viewModel.displayedTags)
         }
-        .tint(.primary)
         .accessibilityIdentifier("post_settings_tags")
     }
 
@@ -201,7 +229,7 @@ private struct PostSettingsView: View {
     private var generalSection: some View {
         Section {
             authorRow
-            if !viewModel.isDraftOrPending {
+            if !viewModel.isDraftOrPending || viewModel.context == .publishing {
                 publishDateRow
                 visibilityRow
             }
@@ -232,16 +260,9 @@ private struct PostSettingsView: View {
 
     private var publishDateRow: some View {
         NavigationLink {
-            PublishDatePickerView(configuration: PublishDatePickerConfiguration(
-                date: viewModel.settings.publishDate,
-                isRequired: true,
-                timeZone: viewModel.timeZone,
-                updated: { date in
-                    viewModel.settings.publishDate = date
-                }
-            ))
+            PostSettingsPublishDatePicker(viewModel: viewModel)
         } label: {
-            SettingsRow(Strings.publishDateLabel, value: viewModel.publishDateText ?? "–")
+            SettingsRow(Strings.publishDateLabel, value: viewModel.publishDateText ?? Strings.immediately)
         }
     }
 
@@ -256,6 +277,28 @@ private struct PostSettingsView: View {
             )
         } label: {
             SettingsRow(Strings.visibilityLabel, value: viewModel.visibilityText)
+        }
+    }
+
+    // MARK: - "Social Sharing" Section
+
+    @ViewBuilder
+    private var socialSharingSection: some View {
+        if let state = viewModel.socialSharingState {
+            Section {
+                switch state {
+                case .setup(let viewModel):
+                    JetpackSocialNoConnectionView(viewModel: viewModel)
+                case .connected:
+                    if let settings = viewModel.settings.sharing {
+                        LegacyNavigationLinkRow(action: viewModel.showSocialSharingOptions) {
+                            PrepublishingAutoSharingView(model: settings)
+                        }
+                    }
+                }
+            } header: {
+                SectionHeader(Strings.socialSharing)
+            }
         }
     }
 
@@ -330,24 +373,6 @@ private struct PostSettingsView: View {
             Text(Strings.stickyPostLabel)
         }
     }
-
-    // MARK: - "Info" Section
-
-    @ViewBuilder
-    private var infoSection: some View {
-        if viewModel.lastEditedText != nil || viewModel.postID != nil {
-            Section {
-                if let postID = viewModel.postID {
-                    SettingsRow(Strings.postIDLabel, value: String(postID))
-                }
-                if let lastEditedText = viewModel.lastEditedText {
-                    SettingsRow(Strings.lastEditedLabel, value: lastEditedText)
-                }
-            } header: {
-                SectionHeader(Strings.infoLabel)
-            }
-        }
-    }
 }
 
 @MainActor
@@ -419,6 +444,23 @@ private struct SettingsTextFieldView: View {
         .onAppear {
             isFocused = true
         }
+    }
+}
+
+private struct LegacyNavigationLinkRow<Content: View>: View {
+    let action: () -> Void
+    @ViewBuilder let label: () -> Content
+
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                label()
+                Image(systemName: "chevron.forward")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundColor(Color(.tertiaryLabel))
+            }
+        }
+        .tint(.primary)
     }
 }
 
@@ -565,5 +607,17 @@ private enum Strings {
         "postSettings.postID.label",
         value: "ID",
         comment: "Label for the post ID field in Post Settings"
+    )
+
+    static let immediately = NSLocalizedString(
+        "postSettings.publishDateImmediately",
+        value: "Immediately",
+        comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected"
+    )
+
+    static let socialSharing = NSLocalizedString(
+        "postSettings.socialSharing.header",
+        value: "Social Sharing",
+        comment: "Label for the preview button in Post Settings"
     )
 }

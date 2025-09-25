@@ -133,12 +133,8 @@ private struct RecordButton: View {
     var body: some View {
         Button(action: isRecording ? viewModel.buttonDoneRecordingTapped : viewModel.buttonRecordTapped) {
             VStack(spacing: 16) {
-                if #available(iOS 17.0, *) {
-                    icon
-                        .contentTransition(.symbolEffect(.replace, options: .speed(5)))
-                } else {
-                    icon
-                }
+                icon
+                    .contentTransition(.symbolEffect(.replace, options: .speed(5)))
                 Text(isRecording ? Strings.done : Strings.beginRecording)
                     .font(.callout)
                     .tint(.primary)

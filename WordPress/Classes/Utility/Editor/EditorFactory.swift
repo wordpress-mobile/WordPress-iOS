@@ -54,9 +54,15 @@ class EditorFactory {
             return false
         }
 
-        // Only require application password for non-WPCOM Simple sites (self-hosted sites)
         let blog = post.blog
-        guard !blog.isHostedAtWPcom && !blog.isAtomic() else {
+
+        // WPCOM Simple sites rely upon bearer tokens
+        if blog.isHostedAtWPcom {
+            return false
+        }
+
+        // Application passwords do not support private Atomic sites currently
+        if blog.isAtomic() && blog.isPrivate() {
             return false
         }
 

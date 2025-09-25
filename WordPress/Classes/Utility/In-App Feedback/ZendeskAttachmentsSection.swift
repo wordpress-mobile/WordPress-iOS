@@ -34,7 +34,7 @@ struct ZendeskAttachmentsSection: View {
             HStack(spacing: 8) {
                 ForEach(viewModel.attachments, content: makeView)
             }
-        }._scrollClipDisabled()
+        }.scrollClipDisabled()
     }
 
     private func makeView(for attachment: ZendeskAttachmentViewModel) -> some View {
@@ -230,17 +230,6 @@ private enum SubmitFeedbackAttachmentError: Error, LocalizedError {
         case .attachmentTooLarge:
             let format = NSLocalizedString("zendeskAttachmentsSection.unsupportedAttachmentErrorMessage", value: "The attachment is too large. The maximum allowed size is %@.", comment: "Managing Zendesk attachments")
             return String(format: format, ByteCountFormatter().string(fromByteCount: Constants.attachmentSizeLimit))
-        }
-    }
-}
-
-private extension View {
-    @ViewBuilder
-    func _scrollClipDisabled() -> some View {
-        if #available(iOS 17, *) {
-            self.scrollClipDisabled()
-        } else {
-            self
         }
     }
 }

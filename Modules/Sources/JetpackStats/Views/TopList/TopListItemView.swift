@@ -4,6 +4,7 @@ import DesignSystem
 struct TopListItemView: View {
     static let defaultCellHeight: CGFloat = 52
 
+    var index: Int?
     let item: any TopListItemProtocol
     let previousValue: Int?
     let metric: SiteMetric
@@ -52,6 +53,15 @@ struct TopListItemView: View {
 
     var content: some View {
         HStack(alignment: .center, spacing: 0) {
+            if let index {
+                Text("\(index + 1)")
+                    .font(.system(.subheadline, design: .rounded, weight: .medium))
+                    .frame(width: 22, alignment: .center)
+                    .lineLimit(1)
+                    .dynamicTypeSize(...DynamicTypeSize.large)
+                    .padding(.trailing, 8)
+            }
+
             // Content-specific view
             switch item {
             case let post as TopListItem.Post:
@@ -92,7 +102,7 @@ struct TopListItemView: View {
             .padding(.trailing, -3)
             .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
-        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
+        .dynamicTypeSize(...DynamicTypeSize.xLarge)
         .padding(.horizontal, Constants.step1)
         .frame(height: cellHeight)
         .contentShape(Rectangle())

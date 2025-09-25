@@ -32,9 +32,7 @@ class ReaderWebView: WKWebView {
 
         isOpaque = false
         backgroundColor = .clear
-        if #available(iOS 16.4, *) {
-            isInspectable = true
-        }
+        isInspectable = true
 
         // - warning: It retains the handler. It can't be `self`.
         configuration.userContentController.add(ReaderWebViewMessageHandler(), name: "eventHandler")

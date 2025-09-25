@@ -28,29 +28,6 @@ class WPWPUserAgentTests {
         #expect(WPUserAgent.wordPressUserAgent(userDefaults: userDefaults) == expectedUserAgent)
     }
 
-    @Test @MainActor
-    func usesWordPressUserAgentInWebViews() throws {
-        if #available(iOS 17, *) { // #available cannot go as an argument in @Test(.enabled(if: ..))
-            print("In iOS 17, WKWebView no longer reads User Agent from UserDefaults. Skipping while working on an alternative setup.")
-            return
-        }
-
-        let userDefaults = UserDefaults.standard
-        let defaultUserAgent = WPUserAgent.defaultUserAgent(userDefaults: userDefaults)
-        let wordPressUserAgent = WPUserAgent.wordPressUserAgent(userDefaults: userDefaults)
-
-        // FIXME: Is this necessary?
-        // See original implementation at
-        // https://github.com/wordpress-mobile/WordPress-iOS/blob/a6eaa7aa8acb50828449df2d3fccaa50d7def821/WordPress/WordPressTest/WPUserAgentTests.m#L57-L75
-        userDefaults.removeObject(forKey: WPUserAgent.userAgentKey)
-        userDefaults.register(defaults: [WPUserAgent.userAgentKey: defaultUserAgent])
-
-        WPUserAgent.useWordPressInWebViews(userDefaults: userDefaults)
-
-        #expect(try currentUserAgent(userDefaults: userDefaults) == wordPressUserAgent)
-        #expect(try currentUserAgentFromWebView() == wordPressUserAgent)
-    }
-
     // FIXME: Is there even a point in testing for no throws when the method does not throw?
     // See original implementation at
     // https://github.com/wordpress-mobile/WordPress-iOS/blob/a6eaa7aa8acb50828449df2d3fccaa50d7def821/WordPress/WordPressTest/WPUserAgentTests.m#L102-L107
