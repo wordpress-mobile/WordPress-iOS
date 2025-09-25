@@ -164,13 +164,18 @@ private struct PostSettingsView: View {
     }
 
     private var tagsRow: some View {
-        Button(action: viewModel.showTagsPicker) {
-            HStack {
-                PostSettingsTagsRow(tags: viewModel.displayedTags)
-                Image(systemName: "chevron.forward")
-                    .font(.footnote.weight(.semibold))
-                    .foregroundColor(Color(.tertiaryLabel))
-            }
+        NavigationLink {
+            let tags = TagsViewModel(
+                blog: viewModel.post.blog,
+                selectedTags: viewModel.settings.tags,
+                mode: .selection(onSelectedTagsChanged: nil)
+            )
+            TagsView(viewModel: tags)
+                .onDisappear {
+                    self.viewModel.settings.tags = tags.selectedTags.joined(separator: ", ")
+                }
+        } label: {
+            PostSettingsTagsRow(tags: viewModel.displayedTags)
         }
         .tint(.primary)
         .accessibilityIdentifier("post_settings_tags")
