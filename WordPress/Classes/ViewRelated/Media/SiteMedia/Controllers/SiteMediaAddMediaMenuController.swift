@@ -38,7 +38,7 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
         if let quotaUsageDescription = blog.quotaUsageDescription {
             if FeatureFlag.mediaQuotaView.enabled {
                 children += [
-                    UIAction(title: "View Usage", subtitle: blog.quotaUsageShortDescription, image: UIImage(systemName: "opticaldiscdrive"), handler: { _ in
+                    UIAction(title: Strings.viewUsage, subtitle: blog.quotaUsageShortDescription, image: UIImage(systemName: "opticaldiscdrive"), handler: { _ in
                         self.showQuotaView(from: viewController)
                     })
                 ]
@@ -165,4 +165,5 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
 
 private enum Strings {
     static let pickFromOtherApps = NSLocalizedString("mediaPicker.pickFromOtherApps", value: "Other Files", comment: "The name of the action in the context menu for selecting photos from other apps (Files app)")
+    static let viewUsage = NSLocalizedString("mediaPicker.viewUsage", value: "View Usage", comment: "The menu item of viewing media library usage")
 }
