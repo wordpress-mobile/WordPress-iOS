@@ -22,20 +22,16 @@ public actor IntelligenceService {
     ///
     /// - Returns: An array of suggested tags.
     public func suggestTags(post: String, siteTags: [String] = [], postTags: [String] = []) async throws -> [String] {
-        guard postTags.count < 20 else {
-            return [] // No point suggesting more
-        }
+        let startTime = CFAbsoluteTimeGetCurrent()
 
-        // Step 0: We have to be mindful of the content size limit, so we
+        // We have to be mindful of the content size limit, so we
         // only support a subset of tags, preamptively remove Gutenberg tags
         // from the content, and limit the content size.
 
         // A maximum of 500 characters assuming 10 characters per
         let siteTags = siteTags.prefix(50)
 
-        var startTime = CFAbsoluteTimeGetCurrent()
-
-        let postSizeLimit = Double(IntelligenceService.contextSizeLimit) * 0.5
+        let postSizeLimit = Double(IntelligenceService.contextSizeLimit) * 0.6
         let post = ((try? IntelligenceUtilities.extractRelevantText(from: post)) ?? post)
             .prefix(Int(postSizeLimit))
 
@@ -52,7 +48,7 @@ public actor IntelligenceService {
 
         **Parameters**
         - POST_CONTENT: contents of the post (plain text)
-        - SITE_TAGS: case-sensitive comma-separated list of the existing tags used elsewhere on the site
+        - SITE_TAGS: case-sensitive comma-separated list of the existing tags used elsewhere on the site (not always relevant to the post)
         - EXISTING_POST_TAGS: tags already added to the post
 
         **Steps**
@@ -70,8 +66,7 @@ public actor IntelligenceService {
             instructions: instructions
         )
 
-        // Step 2: Pick existing tags that match the content
-        let matchingTagsPrompt = """
+        let prompt = """
         Suggest up to ten tags for a post.
 
         POST_CONTENT: '''
@@ -83,15 +78,18 @@ public actor IntelligenceService {
         EXISTING_POST_TAGS: '\(postTags.joined(separator: ", "))'
         """
 
-        let newTagsResponse = try await session.respond(
-            to: matchingTagsPrompt,
+        let response = try await session.respond(
+            to: prompt,
             generating: SuggestedTagsResult.self,
-            options: GenerationOptions(temperature: 0.1)
+            options: GenerationOptions(temperature: 0.2)
         )
 
         WPLogInfo("IntelligenceService.suggestTags executed in \((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms")
 
-        return newTagsResponse.content.tags.deduplicated()
+        let existingPostTags = Set(postTags)
+        return response.content.tags
+            .deduplicated()
+            .filter { !existingPostTags.contains($0) }
     }
 }
 

@@ -20,9 +20,14 @@ final class TagSuggestionsService {
             return []
         }
 
-        let siteTags = await getSiteTags(for: post.blog)
-        let postTags = AbstractPost.makeTags(from: post.tags ?? "")
         let postContent = post.content ?? ""
+        let postTags = AbstractPost.makeTags(from: post.tags ?? "")
+        let siteTags = await getSiteTags(for: post.blog)
+
+        guard postTags.count < 10 else {
+            // It's full – let's not waste resources suggesting even more
+            return []
+        }
 
         try Task.checkCancellation()
 
