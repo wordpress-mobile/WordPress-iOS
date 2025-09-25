@@ -34,13 +34,15 @@ public actor IntelligenceService {
         let siteTags = siteTags.prefix(50)
 
         var startTime = CFAbsoluteTimeGetCurrent()
-        WPLogDebug("IntelligenceService suggestTags called")
+        print("IntelligenceService suggestTags called")
 
         let postSizeLimit = Double(IntelligenceService.contextSizeLimit) * 0.5
         let post = extractPlainText(from: post)
             .prefix(Int(postSizeLimit))
 
-        WPLogDebug("IntelligenceService post content extracted (\((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms)")
+        try Task.checkCancellation()
+
+        print("IntelligenceService post content extracted (\((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms)")
         startTime = CFAbsoluteTimeGetCurrent()
 
         // Notes:
@@ -74,7 +76,7 @@ public actor IntelligenceService {
 
         // Step 2: Pick existing tags that match the content
         let matchingTagsPrompt = """
-        Suggest tags for a post.
+        Suggest up to ten tags for a post.
 
         POST_CONTENT: '''
         \(post)
@@ -91,7 +93,7 @@ public actor IntelligenceService {
             options: GenerationOptions(temperature: 0.1)
         )
 
-        WPLogDebug("IntelligenceService session finished (\((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms)")
+        print("IntelligenceService session finished (\((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms)")
 
         return newTagsResponse.content.tags.deduplicated()
     }

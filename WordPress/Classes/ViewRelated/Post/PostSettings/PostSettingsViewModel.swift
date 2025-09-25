@@ -114,6 +114,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private let originalSettings: PostSettings
+    private let moc: NSManagedObjectContext
     private let preferences: UserPersistentRepository
     private var cancellables = Set<AnyCancellable>()
 
@@ -134,11 +135,13 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         post: AbstractPost,
         isStandalone: Bool = false,
         context: Context = .settings,
+        moc: NSManagedObjectContext = ContextManager.shared.mainContext,
         preferences: UserPersistentRepository = UserDefaults.standard
     ) {
         self.post = post
         self.isStandalone = isStandalone
         self.context = context
+        self.moc = moc
         self.preferences = preferences
 
         // Initialize settings from the post
@@ -166,36 +169,24 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     func onAppear() {
-        Task {
+        let task = Task { @MainActor [weak self, post] in
             do {
-                try await getSuggestedTags()
+                let tags = try await TagSuggestionsService().getSuggestedTags(for: post)
+                guard let self else { return }
+                if !tags.isEmpty {
+                    withAnimation {
+                        self.suggestedTags = tags
+                    }
+                }
+                self.track(.intelligenceSuggestedTagsGenerated, properties: ["count": tags.count])
             } catch {
-                track(.intelligenceGenerationFailed, properties: ["description": (error as NSError).debugDescription])
+                guard let self else { return }
+                self.track(.intelligenceGenerationFailed, properties: ["description": (error as NSError).debugDescription])
             }
         }
-    }
-
-    private func getSuggestedTags() async throws {
-        guard FeatureFlag.intelligence.enabled,
-              #available(iOS 26, *),
-              !post.isContentEmpty() else {
-            return
-        }
-
-        let siteTags = try? await TagsService(blog: post.blog).getTags()
-
-        let suggestedTags = try await IntelligenceService().suggestTags(
-            post: post.content ?? "",
-            siteTags: (siteTags ?? []).map { $0.name ?? ""},
-            postTags: displayedTags
-        )
-        if !suggestedTags.isEmpty {
-            withAnimation {
-                self.suggestedTags = suggestedTags
-            }
-        }
-
-        track(.intelligenceSuggestedTagsGenerated, properties: ["count": suggestedTags.count])
+        cancellables.insert(AnyCancellable {
+            task.cancel()
+        })
     }
 
     // MARK: - Refresh
