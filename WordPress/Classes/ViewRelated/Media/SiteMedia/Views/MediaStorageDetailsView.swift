@@ -161,7 +161,6 @@ private struct ActionSection<Destination: View>: View {
     }
 }
 
-
 private struct WebPurchase: Identifiable {
     var url: URL
     var title: String
