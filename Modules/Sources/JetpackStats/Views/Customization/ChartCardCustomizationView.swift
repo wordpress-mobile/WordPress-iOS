@@ -104,6 +104,7 @@ struct ChartCardCustomizationView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .listRowBackground(Color.clear)
     }
 
     private func resetToDefaults() {

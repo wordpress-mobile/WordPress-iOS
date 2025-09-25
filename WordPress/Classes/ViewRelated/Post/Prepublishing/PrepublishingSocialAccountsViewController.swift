@@ -84,7 +84,7 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
     }
 
     init(blogID: Int,
-         model: PrepublishingAutoSharingModel,
+         model: PostSocialSharingSettings,
          delegate: PrepublishingSocialAccountsDelegate?,
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          blogService: BlogService? = nil) {
@@ -374,7 +374,7 @@ private extension PrepublishingSocialAccountsViewController {
 
 }
 
-private extension PrepublishingAutoSharingModel {
+private extension PostSocialSharingSettings {
     var enabledConnectionsCount: Int {
         services.flatMap { $0.connections }.filter { $0.enabled }.count
     }

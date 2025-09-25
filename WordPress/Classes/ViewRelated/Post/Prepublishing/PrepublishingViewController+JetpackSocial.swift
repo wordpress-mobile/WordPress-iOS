@@ -195,7 +195,7 @@ private extension PrepublishingViewController {
 
     // MARK: - Model Creation
 
-    func makeAutoSharingModel() -> PrepublishingAutoSharingModel {
+    func makeAutoSharingModel() -> PostSocialSharingSettings {
         return coreDataStack.performQuery { [postObjectID = post.objectID] context in
             guard let post = (try? context.existingObject(with: postObjectID)) as? Post,
                   let supportedServices = try? PublicizeService.allSupportedServices(in: context) else {
@@ -213,14 +213,14 @@ private extension PrepublishingViewController {
             }
 
             // then, transform [PublicizeService] to [PrepublishingAutoSharingModel.Service].
-            let modelServices = supportedServices.compactMap { service -> PrepublishingAutoSharingModel.Service? in
+            let modelServices = supportedServices.compactMap { service -> PostSocialSharingSettings.Service? in
                 // skip services without connections.
                 guard let serviceConnections = connectionsMap[service.name],
                       !serviceConnections.isEmpty else {
                     return nil
                 }
 
-                return PrepublishingAutoSharingModel.Service(
+                return PostSocialSharingSettings.Service(
                     name: service.name,
                     connections: serviceConnections.map {
                         .init(account: $0.externalDisplay,
@@ -241,26 +241,6 @@ private extension PrepublishingViewController {
     enum Constants {
         static let trackingSource = "pre_publishing"
         static let noConnectionKey = "prepublishing-social-no-connection-view-hidden"
-    }
-}
-
-// MARK: - Auto Sharing Model
-
-/// A value-type representation of `PublicizeService` for the current blog that's simplified for the auto-sharing flow.
-struct PrepublishingAutoSharingModel {
-    let services: [Service]
-    let message: String
-    let sharingLimit: PublicizeInfo.SharingLimit?
-
-    struct Service: Hashable {
-        let name: PublicizeService.ServiceName
-        let connections: [Connection]
-    }
-
-    struct Connection: Hashable {
-        let account: String
-        let keyringID: Int
-        var enabled: Bool
     }
 }
 

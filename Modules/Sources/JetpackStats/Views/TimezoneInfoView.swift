@@ -50,7 +50,7 @@ struct TimezoneInfoView: View {
         }
         .padding()
         .frame(idealWidth: 280, maxWidth: 320)
-        .modifier(PopoverPresentationModifier())
+        .presentationCompactAdaptation(.popover)
     }
 }
 

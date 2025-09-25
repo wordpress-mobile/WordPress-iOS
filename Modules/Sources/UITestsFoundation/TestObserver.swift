@@ -43,10 +43,7 @@ class TestObserver: NSObject, XCTestObservation {
         guard passwordOptions.waitForIsHittable() else { return false }
         passwordOptions.tap()
 
-        var autoFillPasswordsText = "AutoFill Passwords"
-        if #available(iOS 17, *) {
-            autoFillPasswordsText += " and Passkeys"
-        }
+        var autoFillPasswordsText = "AutoFill Passwords and Passkeys"
         let autoFillPasswordsSwitch = settings.switches[autoFillPasswordsText]
         guard autoFillPasswordsSwitch.waitForIsHittable() else { return false }
 

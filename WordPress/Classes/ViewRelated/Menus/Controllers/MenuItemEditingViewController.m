@@ -105,6 +105,10 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 
     self.sourceViewController.blog = self.blog;
     self.sourceViewController.item = self.item;
+
+    [self registerForTraitChanges:@[[UITraitHorizontalSizeClass self], [UITraitVerticalSizeClass self], [UITraitPreferredContentSizeCategory self]]
+                        withTarget:self
+                            action:@selector(updateLayoutIfNeeded)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -142,12 +146,6 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 {
     [self.headerView setNeedsTopConstraintsUpdateForStatusBarAppearence:self.headerView.hidden];
     return self.headerView.hidden;
-}
-
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [super traitCollectionDidChange:previousTraitCollection];
-    [self updateLayoutIfNeeded];
 }
 
 - (void)loadContentLayoutConstraints

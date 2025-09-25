@@ -48,21 +48,13 @@ class TimeZoneFormatterTests: XCTestCase {
         // An argument could be made to modify these tests, or the whole component, so that we don't need
         // to assert on what `DateFormatter` does for us. In the meantime, let's use the proper Unicode
         // character in the expectation.
-        if #available(iOS 17.0, *) {
-            XCTAssertEqual("6:00\u{202F}PM", timeAtZone)
-        } else {
-            XCTAssertEqual("6:00 PM", timeAtZone)
-        }
+        XCTAssertEqual("6:00\u{202F}PM", timeAtZone)
 
         // When end of May date
         formatter = TimeZoneFormatter(currentDate: testEndOfMayDate)
 
         // Then TimeAtZone = "7:00 PM"
         timeAtZone = formatter.getTimeAtZone(timeZone)
-        if #available(iOS 17.0, *) {
-            XCTAssertEqual("7:00\u{202F}PM", timeAtZone)
-        } else {
-            XCTAssertEqual("7:00 PM", timeAtZone)
-        }
+        XCTAssertEqual("7:00\u{202F}PM", timeAtZone)
     }
 }

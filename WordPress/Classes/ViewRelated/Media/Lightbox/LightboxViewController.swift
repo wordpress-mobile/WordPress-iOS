@@ -126,7 +126,6 @@ private func getThumbnail(fromSourceView sourceView: UIView) -> UIImage? {
     return nil
 }
 
-@available(iOS 17, *)
 #Preview {
     UINavigationController(rootViewController: LightboxDemoViewController())
 }

@@ -31,7 +31,7 @@ public class PublicizeInfo: NSManagedObject {
     }
 
     /// A value-type representation for Publicize auto-sharing usage.
-    public struct SharingLimit {
+    public struct SharingLimit: Hashable {
         /// The remaining shares available for use.
         public let remaining: Int
 

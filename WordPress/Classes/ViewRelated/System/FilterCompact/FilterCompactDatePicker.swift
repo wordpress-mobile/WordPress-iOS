@@ -21,30 +21,11 @@ struct FilterCompactDatePicker: View {
             let binding = Binding(get: { self.selection ?? Date() }, set: { self.selection = $0 })
             let picker = DatePicker(title, selection: binding, in: range, displayedComponents: components)
                 .datePickerStyle(.graphical)
-
-            if #available(iOS 16.4, *) {
-                picker
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 10)
-                    .frame(width: 360)
-                    .presentationCompactAdaptation(.popover)
-            } else {
-                if UIDevice.current.userInterfaceIdiom == .phone {
-                    NavigationView {
-                        FilterCompactDatePickerCompatibilityView {
-                            VStack {
-                                picker
-                                    .padding(.horizontal, 8)
-                                Spacer()
-                            }
-                        }
-                        .navigationTitle(title)
-                        .navigationBarTitleDisplayMode(.inline)
-                    }
-                } else {
-                    picker.frame(width: 360)
-                }
-            }
+            picker
+                .padding(.horizontal, 16)
+                .padding(.bottom, 10)
+                .frame(width: 360)
+                .presentationCompactAdaptation(.popover)
         } label: { value in
             Text(string(from: value))
         }

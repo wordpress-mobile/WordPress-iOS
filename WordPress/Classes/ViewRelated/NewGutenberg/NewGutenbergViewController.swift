@@ -283,9 +283,9 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         view.pinSubviewToAllEdges(editorViewController.view)
         editorViewController.didMove(toParent: self)
 
-        if #available(iOS 16.4, *) {
-            editorViewController.webView.isInspectable = true // TODO: should be disabled in production
-        }
+#if DEBUG
+        editorViewController.webView.isInspectable = true
+#endif
 
         // Doesn't seem to do anything
         setContentScrollView(editorViewController.webView.scrollView)
