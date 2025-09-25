@@ -34,16 +34,12 @@ public actor IntelligenceService {
         let siteTags = siteTags.prefix(50)
 
         var startTime = CFAbsoluteTimeGetCurrent()
-        print("IntelligenceService suggestTags called")
 
         let postSizeLimit = Double(IntelligenceService.contextSizeLimit) * 0.5
-        let post = extractPlainText(from: post)
+        let post = ((try? IntelligenceUtilities.extractRelevantText(from: post)) ?? post)
             .prefix(Int(postSizeLimit))
 
         try Task.checkCancellation()
-
-        print("IntelligenceService post content extracted (\((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms)")
-        startTime = CFAbsoluteTimeGetCurrent()
 
         // Notes:
         // - It was critical to add "case-sensitive" as otherwise it would ignore
@@ -93,30 +89,10 @@ public actor IntelligenceService {
             options: GenerationOptions(temperature: 0.1)
         )
 
-        print("IntelligenceService session finished (\((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms)")
+        WPLogInfo("IntelligenceService.suggestTags executed in \((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms")
 
         return newTagsResponse.content.tags.deduplicated()
     }
-}
-
-private func extractPlainText(from html: String) -> String {
-    guard let data = html.data(using: .utf8) else {
-        return html
-    }
-
-    let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-        .documentType: NSAttributedString.DocumentType.html,
-        .characterEncoding: String.Encoding.utf8.rawValue
-    ]
-
-    var content: String?
-    try? WPException.objcTry {
-        if let attributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) {
-            content = attributedString.string
-        }
-    }
-
-    return content ?? html
 }
 
 private extension Array where Element: Hashable {

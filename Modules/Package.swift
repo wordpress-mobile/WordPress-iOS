@@ -154,6 +154,7 @@ let package = Package(
             name: "WordPressShared",
             dependencies: [
                 .product(name: "Reachability", package: "Reachability"),
+                .product(name: "SwiftSoup", package: "SwiftSoup"),
                 .target(name: "SFHFKeychainUtils"),
                 .target(name: "WordPressSharedObjC"),
             ],
