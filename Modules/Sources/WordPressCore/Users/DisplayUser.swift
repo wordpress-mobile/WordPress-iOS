@@ -69,3 +69,15 @@ extension DisplayUser {
             .joined(separator: " ")
     }
 }
+
+extension UserRole: @retroactive Codable {
+    public init(from decoder: any Decoder) throws {
+        let role = try decoder.singleValueContainer().decode(String.self)
+        self.init(role)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.rawValue)
+    }
+}

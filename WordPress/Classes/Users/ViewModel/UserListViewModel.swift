@@ -126,7 +126,7 @@ class UserListViewModel: ObservableObject {
     }
 
     private func sortUsers(_ users: [DisplayUser]) -> [Section] {
-        Dictionary(grouping: users) { $0.id == currentUserId ? RoleSection.me : RoleSection.role($0.role) }
+        Dictionary(grouping: users) { $0.id == currentUserId ? RoleSection.me : RoleSection.role($0.role.rawValue) }
             .map { Section(id: $0.key, users: $0.value.sorted(by: { $0.username < $1.username })) }
             .sorted { $0.id < $1.id }
     }
