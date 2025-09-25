@@ -63,23 +63,23 @@ extension IntelligenceUtilities {
     <!-- wp:heading {"level":1} -->
     <h1>The Art of Making Perfect Sourdough Bread at Home</h1>
     <!-- /wp:heading -->
-    
+
     <!-- wp:paragraph -->
     <p>After years of trial and error, I've finally cracked the code to making restaurant-quality sourdough bread in my own kitchen. Today, I'm sharing everything I've learned about this ancient craft that has seen a remarkable revival in recent years.</p>
     <!-- /wp:paragraph -->
-    
+
     <!-- wp:image {"id":1234,"sizeSlug":"large","linkDestination":"none"} -->
     <figure class="wp-block-image size-large"><img src="sourdough-loaf.jpg" alt="A golden-brown sourdough loaf with a crispy crust" class="wp-image-1234"/><figcaption>My latest sourdough creation - crusty on the outside, soft and airy inside</figcaption></figure>
     <!-- /wp:image -->
-    
+
     <!-- wp:heading {"level":2} -->
     <h2>Why Sourdough?</h2>
     <!-- /wp:heading -->
-    
+
     <!-- wp:paragraph -->
     <p>Sourdough bread isn't just a trendy food item - it's a healthier alternative to commercial bread. The natural fermentation process breaks down gluten, making it easier to digest, while also creating that distinctive tangy flavor we all love.</p>
     <!-- /wp:paragraph -->
-    
+
     <!-- wp:list -->
     <ul>
     <li>Better digestibility due to fermentation</li>
@@ -89,15 +89,15 @@ extension IntelligenceUtilities {
     <li>Longer shelf life naturally</li>
     </ul>
     <!-- /wp:list -->
-    
+
     <!-- wp:heading {"level":2} -->
     <h2>Essential Equipment</h2>
     <!-- /wp:heading -->
-    
+
     <!-- wp:paragraph -->
     <p>You don't need fancy equipment to get started, but a few key tools will make your journey much easier:</p>
     <!-- /wp:paragraph -->
-    
+
     <!-- wp:columns -->
     <div class="wp-block-columns">
     <!-- wp:column -->
@@ -105,7 +105,7 @@ extension IntelligenceUtilities {
     <!-- wp:heading {"level":3} -->
     <h3>Must-Haves</h3>
     <!-- /wp:heading -->
-    
+
     <!-- wp:list -->
     <ul>
     <li>Kitchen scale</li>
@@ -116,13 +116,13 @@ extension IntelligenceUtilities {
     <!-- /wp:list -->
     </div>
     <!-- /wp:column -->
-    
+
     <!-- wp:column -->
     <div class="wp-block-column">
     <!-- wp:heading {"level":3} -->
     <h3>Nice-to-Haves</h3>
     <!-- /wp:heading -->
-    
+
     <!-- wp:list -->
     <ul>
     <li>Banneton proofing basket</li>
@@ -135,22 +135,22 @@ extension IntelligenceUtilities {
     <!-- /wp:column -->
     </div>
     <!-- /wp:columns -->
-    
+
     <!-- wp:quote -->
     <blockquote class="wp-block-quote">
     <p>"The secret to great sourdough isn't just in the recipe - it's in understanding the rhythm of fermentation and learning to read your dough."</p>
     <cite>- Sarah Mitchell, Artisan Baker</cite>
     </blockquote>
     <!-- /wp:quote -->
-    
+
     <!-- wp:heading {"level":2} -->
     <h2>My Go-To Recipe</h2>
     <!-- /wp:heading -->
-    
+
     <!-- wp:paragraph -->
     <p>This recipe yields one large loaf and has never failed me. The key is maintaining consistent temperatures and being patient with the process.</p>
     <!-- /wp:paragraph -->
-    
+
     <!-- wp:table -->
     <figure class="wp-block-table"><table>
     <thead>
@@ -184,11 +184,11 @@ extension IntelligenceUtilities {
     </tbody>
     </table></figure>
     <!-- /wp:table -->
-    
+
     <!-- wp:separator -->
     <hr class="wp-block-separator"/>
     <!-- /wp:separator -->
-    
+
     <!-- wp:buttons -->
     <div class="wp-block-buttons">
     <!-- wp:button -->

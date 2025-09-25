@@ -43,10 +43,10 @@ public struct IntelligenceUtilities {
 
         return output.joined(separator: "\n")
     }
-    
+
     private static func processElement(_ element: Element, relevantSelectors: Set<String>, output: inout [String]) throws {
         let tagName = element.tagName().lowercased()
-        
+
         // Check if this is an element we want to extract
         if relevantSelectors.contains(tagName) {
             if tagName == "img" {
@@ -62,7 +62,7 @@ public struct IntelligenceUtilities {
                 }
             }
         }
-        
+
         // Recursively process child elements
         for child in element.children() {
             try processElement(child, relevantSelectors: relevantSelectors, output: &output)
