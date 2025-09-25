@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 import UniformTypeIdentifiers
 
 struct ChartDataListView: View {
@@ -33,8 +34,14 @@ struct ChartDataListView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Button(Strings.Buttons.done) {
-                    dismiss()
+                if #available(iOS 26, *) {
+                    SwiftUI.Button(role: .close) {
+                        dismiss()
+                    }
+                } else {
+                    SwiftUI.Button(Strings.Buttons.cancel) {
+                        dismiss()
+                    }
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
