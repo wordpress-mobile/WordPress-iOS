@@ -135,7 +135,14 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private var suggestionViewBottomConstraint: NSLayoutConstraint?
     private var currentSuggestionsController: GutenbergSuggestionsViewController?
 
-    private var editorState: EditorLoadingState = .uninitialized
+    private var editorState: EditorLoadingState = .uninitialized {
+        willSet {
+            // TODO: Cancel tasks
+        }
+        didSet {
+            self.evaluateEditorState()
+        }
+    }
     private var dependencyLoadingError: Error?
     private var editorLoadingTask: Task<Void, Error>?
 
@@ -156,6 +163,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     func getHTML() -> String { post.content ?? "" }
 
     private let blockEditorSettingsService: RawBlockEditorSettingsService
+    private let pluginRecommendationService = PluginRecommendationService()
 
     // MARK: - Initializers
     required convenience init(
@@ -275,7 +283,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
                     case .loadingCancelled: preconditionFailure("Dependency loading should not be cancelled")
                     case .suggestingPlugin(let plugin): self.recommendPlugin(plugin)
                     case .dependencyError(let error): self.showEditorError(error)
-                    case .dependenciesReady(let dependencies): try await self.startEditor(settings: dependencies.settings)
+                    case .dependenciesReady(let dependencies): self.startEditor(settings: dependencies.settings)
                     case .started: preconditionFailure("The editor should not already be started")
                 }
             } catch {
@@ -361,7 +369,15 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     func showEditorError(_ error: Error) {
-        // TODO: We should have a unified way to do this
+        let controller = UIAlertController(
+            title: "Error loading editor",
+            message: error.localizedDescription,
+            preferredStyle: .actionSheet
+        )
+
+        controller.addAction(UIAlertAction(title: "Dismiss", style: .cancel))
+
+        self.present(controller, animated: true)
     }
 
     func showFeedbackView() {
@@ -371,6 +387,18 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     func logException(_ exception: GutenbergJSException, with callback: @escaping () -> Void) {
         DispatchQueue.main.async {
             WordPressAppDelegate.crashLogging?.logJavaScriptException(exception, callback: callback)
+        }
+    }
+
+    func evaluateEditorState() {
+        switch self.editorState {
+            case .uninitialized: break
+            case .loadingDependencies: break
+            case .loadingCancelled: break
+            case .suggestingPlugin(let plugin): self.recommendPlugin(plugin)
+            case .dependencyError(let error): self.showEditorError(error)
+            case .dependenciesReady(let dependencies): self.startEditor(settings: dependencies.settings)
+            case .started: break
         }
     }
 
@@ -396,7 +424,9 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             do {
                 try await fetchEditorDependencies()
             } catch {
-                self.editorState = .dependencyError(error)
+                await MainActor.run {
+                    self.editorState = .dependencyError(error)
+                }
             }
         })
     }
@@ -422,7 +452,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     @MainActor
-    func startEditor(settings: String?) async throws {
+    func startEditor(settings: String?) {
         guard case .dependenciesReady = self.editorState else {
             preconditionFailure("`startEditor` should only be called when the editor is in the `.dependenciesReady` state.")
         }
@@ -508,37 +538,58 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // MARK: - Editor Setup
     private func fetchEditorDependencies() async throws {
-        let site = try await ContextManager.shared.performQuery { context in
+        let (site, dotComID) = try await ContextManager.shared.performQuery { context in
             let blog = try context.existingObject(with: self.blogID)
-            return try WordPressSite(blog: blog)
+            return (try WordPressSite(blog: blog), blog.dotComID?.intValue)
         }
 
         let client = WordPressClient(site: site)
-        let pluginService = PluginService(client: client, wordpressCoreVersion: nil)
-        let pluginRecommendationService = PluginRecommendationService()
 
-        let features: [PluginRecommendationService.Feature] = [.themeStyles, .editorCompatibility]
-
-        // Don't make plugin recommendations for WordPress
-        if AppConfiguration.isJetpack {
-            for feature in features {
-                if pluginRecommendationService.shouldRecommendPlugin(for: feature, frequency: .weekly) {
-                    let plugin = try await pluginRecommendationService.recommendPlugin(for: feature)
-
-                    guard try await pluginService.hasInstalledPlugin(slug: plugin.pluginSlug) else {
-                        pluginRecommendationService.didRecommendPlugin(for: feature)
-                        self.editorState = .suggestingPlugin(plugin)
-                        return
-                    }
-                }
-            }
+        if let plugin = try await self.fetchPluginRecommendation(client: client) {
+            self.editorState = .suggestingPlugin(plugin)
+            return
         }
 
-        let settings = try await blockEditorSettingsService.getSettingsString(allowingCachedResponse: true)
+        let settings: String?
+
+        if try await client.supports(.themeStyles, forSiteId: dotComID) {
+            settings = try await blockEditorSettingsService.getSettingsString(allowingCachedResponse: true)
+        }
+
         let loaded = await loadAuthenticationCookiesAsync()
 
         let dependencies = EditorDependencies(settings: settings, didLoadCookies: loaded)
         self.editorState = .dependenciesReady(dependencies)
+    }
+
+    private func fetchPluginRecommendation(client: WordPressClient) async throws -> RecommendedPlugin? {
+
+        guard try await client.supports(.managePlugins) else {
+            return nil
+        }
+
+        let pluginService = PluginService(client: client, wordpressCoreVersion: nil)
+        try await pluginService.fetchInstalledPlugins()
+
+        // Don't make plugin recommendations for WordPress – that app only supports features available in Core
+        guard AppConfiguration.isJetpack else {
+            return nil
+        }
+
+        let features: [PluginRecommendationService.Feature] = [.themeStyles, .editorCompatibility]
+
+        for feature in features {
+            if await pluginRecommendationService.shouldRecommendPlugin(for: feature, frequency: .weekly) {
+                let plugin = try await pluginRecommendationService.recommendPlugin(for: feature)
+
+                guard try await pluginService.hasInstalledPlugin(slug: plugin.pluginSlug) else {
+                    await pluginRecommendationService.displayedRecommendation(for: feature)
+                    return plugin
+                }
+            }
+        }
+
+        return nil
     }
 
     private func loadAuthenticationCookiesAsync() async -> Bool {

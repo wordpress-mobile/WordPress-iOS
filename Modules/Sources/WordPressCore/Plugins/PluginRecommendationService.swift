@@ -2,7 +2,7 @@ import Foundation
 import WordPressAPI
 import WordPressAPIInternal
 
-public struct RecommendedPlugin {
+public struct RecommendedPlugin: Codable, Sendable {
 
     /// The plugin name – this will be inserted into headers and buttons
     public let name: String
@@ -47,6 +47,10 @@ public struct RecommendedPlugin {
         self.successMessage = successMessage
         self.imageUrl = imageUrl
         self.helpUrl = helpUrl
+    }
+
+    public var pluginSlug: PluginWpOrgDirectorySlug {
+        PluginWpOrgDirectorySlug(slug: self.slug)
     }
 }
 
@@ -139,6 +143,7 @@ public actor PluginRecommendationService {
 
     private let dotOrgClient: WordPressOrgApiClient
     private let userDefaults: UserDefaults
+    private let diskCache = DiskCache()
 
     public init(
         dotOrgClient: WordPressOrgApiClient = WordPressOrgApiClient(urlSession: .shared),
@@ -153,12 +158,16 @@ public actor PluginRecommendationService {
     }
 
     public func recommendPlugin(for feature: Feature) async throws -> RecommendedPlugin {
+        if let cachedPlugin = try await fetchCachedPlugin(for: feature.recommendedPlugin.slug) {
+            return cachedPlugin
+        }
+
         let plugin = try await dotOrgClient.pluginInformation(slug: feature.recommendedPlugin)
 
         return RecommendedPlugin(
             name: plugin.name,
             slug: plugin.slug.slug,
-            usageTitle: "Install \(plugin.name)",
+            usageTitle: "Install \(plugin.name.removingPercentEncoding ?? plugin.slug.slug)",
             usageDescription: feature.explanation,
             successMessage: feature.successMessage,
             imageUrl: try await cachePluginHeader(for: plugin),
@@ -180,7 +189,7 @@ public actor PluginRecommendationService {
         return earliestFeatureDate > featureTimestamp && earliestGlobalDate > globalTimestamp
     }
 
-    public func didRecommendPlugin(for feature: Feature, at date: Date = Date()) {
+    public func displayedRecommendation(for feature: Feature, at date: Date = Date()) {
         self.userDefaults.set(date.timeIntervalSince1970, forKey: feature.cacheKey)
         self.userDefaults.set(date.timeIntervalSince1970, forKey: "plugin-last-recommended")
     }
@@ -191,17 +200,39 @@ public actor PluginRecommendationService {
         }
         self.userDefaults.removeObject(forKey: "plugin-last-recommended")
     }
+}
 
-    private func cachePluginHeader(for plugin: PluginInformation) async throws -> URL? {
+// MARK: - RecommendedPlugin Cache
+private extension PluginRecommendationService {
+    private func cachedPluginData(for plugin: RecommendedPlugin) async throws {
+        let cacheKey = "plugin-recommendation-\(plugin.slug)"
+        try await self.diskCache.store(object: plugin, for: cacheKey)
+    }
+
+    private func fetchCachedPlugin(for slug: String) async throws -> RecommendedPlugin? {
+        let cacheKey = "plugin-recommendation-\(slug)"
+        return try await self.diskCache.retrieve(for: cacheKey, notOlderThan: Date().addingTimeInterval(-86_400))
+    }
+}
+
+// MARK: - Plugin Banner Cache
+private extension PluginRecommendationService {
+    func cachePluginHeader(for plugin: PluginInformation) async throws -> URL? {
         guard let pluginUrl = plugin.bannerUrl, let bannerFileName = plugin.bannerFileName else {
             return nil
         }
 
         let cachePath = self.storagePath(for: plugin, filename: bannerFileName)
+
+        try FileManager.default.createDirectory(
+            at: cachePath.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+
         return try await cacheAsset(pluginUrl, at: cachePath)
     }
 
-    private func cacheAsset(_ url: URL, at path: URL) async throws -> URL {
+    func cacheAsset(_ url: URL, at path: URL) async throws -> URL {
         if FileManager.default.fileExists(at: path) {
             return path
         }
@@ -212,7 +243,7 @@ public actor PluginRecommendationService {
         return path
     }
 
-    private func storagePath(for plugin: PluginInformation, filename: String) -> URL {
+    func storagePath(for plugin: PluginInformation, filename: String) -> URL {
         URL.cachesDirectory
             .appendingPathComponent("plugin-assets")
             .appendingPathComponent(plugin.slug.slug)

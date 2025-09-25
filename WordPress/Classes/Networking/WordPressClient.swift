@@ -138,6 +138,7 @@ private class AppNotifier: @unchecked Sendable, WpAppNotifier {
         let blogId = site.blogId(in: coreDataStack)
         NotificationCenter.default.post(name: WordPressClient.requestedWithInvalidAuthenticationNotification, object: blogId)
     }
+
 }
 
 private extension WordPressSite {

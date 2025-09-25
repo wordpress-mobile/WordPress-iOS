@@ -44,6 +44,10 @@ public actor PluginService: PluginServiceProtocol {
         try await pluginDirectoryDataStore.store([plugin])
     }
 
+    public func hasInstalledPlugin(slug: PluginWpOrgDirectorySlug) async throws -> Bool {
+        try await findInstalledPlugin(slug: slug) != nil
+    }
+
     public func findInstalledPlugin(slug: PluginWpOrgDirectorySlug) async throws -> InstalledPlugin? {
         try await installedPluginDataStore.list(query: .slug(slug)).first
     }
