@@ -77,11 +77,7 @@ struct CSVDataRepresentation: Transferable {
         let dataRepresentation = DataRepresentation(exportedContentType: .commaSeparatedText) { (representation: CSVDataRepresentation) in
             try representation.generateCSVData()
         }
-        if #available(iOS 17.0, *) {
-            return dataRepresentation.suggestedFileName { $0.fileName }
-        } else {
-            return dataRepresentation
-        }
+        return dataRepresentation.suggestedFileName { $0.fileName }
     }
 
     private func generateCSVData() throws -> Data {
@@ -103,15 +99,11 @@ struct ChartDataCSVRepresentation: Transferable {
         let dataRepresentation = DataRepresentation(exportedContentType: .commaSeparatedText) { (representation: ChartDataCSVRepresentation) in
             try representation.generateCSVData()
         }
-        if #available(iOS 17.0, *) {
-            return dataRepresentation.suggestedFileName { representation in
-                let dateString = representation.context.formatters.dateRange.string(from: representation.dateRange.dateInterval)
-                    .replacingOccurrences(of: "/", with: "-")
-                    .replacingOccurrences(of: ",", with: "")
-                return "\(representation.data.metric.localizedTitle)-\(dateString).csv"
-            }
-        } else {
-            return dataRepresentation
+        return dataRepresentation.suggestedFileName { representation in
+            let dateString = representation.context.formatters.dateRange.string(from: representation.dateRange.dateInterval)
+                .replacingOccurrences(of: "/", with: "-")
+                .replacingOccurrences(of: ",", with: "")
+            return "\(representation.data.metric.localizedTitle)-\(dateString).csv"
         }
     }
 

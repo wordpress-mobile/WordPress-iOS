@@ -1,9 +1,11 @@
 import SwiftUI
 import DesignSystem
 import UniformTypeIdentifiers
+import WordPressUI
 
 struct TopListScreenView: View {
     @StateObject private var viewModel: TopListViewModel
+    @State private var isShowingAllItems = false
 
     @Environment(\.router) var router
     @Environment(\.context) var context
@@ -33,32 +35,40 @@ struct TopListScreenView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: Constants.step4) {
+        List {
+            Group {
                 headerView
                     .background(Color(.secondarySystemBackground).opacity(0.7))
                     .cardStyle()
                     .dynamicTypeSize(...DynamicTypeSize.xLarge)
                     .accessibilityElement(children: .contain)
                     .padding(.horizontal, Constants.step1)
+                    .padding(.top, Constants.step1)
 
-                VStack {
-                    listHeaderView
-                        .padding(.horizontal, Constants.step1)
-                        .dynamicTypeSize(...DynamicTypeSize.xLarge)
-                    listContentView
-                        .grayscale(viewModel.isStale ? 1 : 0)
-                        .animation(.smooth, value: viewModel.isStale)
+                Group {
+                    if viewModel.isFirstLoad {
+                        listContent(data: mockData())
+                            .redacted(reason: .placeholder)
+                            .pulsating()
+                    } else if let data = viewModel.data {
+                        if data.items.isEmpty {
+                            makeEmptyStateView(message: Strings.Chart.empty)
+                        } else {
+                            listContent(data: data)
+                        }
+                    } else {
+                        makeEmptyStateView(message: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
+                    }
                 }
                 .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
             }
+            .listRowSeparator(.hidden)
+            .listRowInsets(.zero)
             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-            .padding(.vertical, Constants.step2)
-            .frame(maxWidth: horizontalSizeClass == .regular ? Constants.maxHortizontalWidthPlainLists : .infinity)
-            .frame(maxWidth: .infinity)
-            .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
         }
-        .background(Color(.systemBackground))
+        .animation(.default, value: viewModel.data.map(ObjectIdentifier.init))
+        .listStyle(.plain)
+        .environment(\.defaultMinListRowHeight, 1)
         .navigationTitle(viewModel.selection.item.localizedTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -106,9 +116,9 @@ struct TopListScreenView: View {
     @ViewBuilder
     private var headerView: some View {
         HStack(alignment: .center, spacing: Constants.step1) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(viewModel.selection.item.getTitle(for: viewModel.selection.metric))
-                    .font(.headline)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(viewModel.selection.metric.localizedTitle)
+                    .font(.title3.weight(.medium))
                     .foregroundColor(.primary)
                 Text(context.formatters.dateRange.string(from: viewModel.dateRange.dateInterval))
                     .font(.subheadline)
@@ -118,27 +128,13 @@ struct TopListScreenView: View {
             Spacer()
 
             // Always show the metrics view to preserve identity
-            metricsOverviewView(data: viewModel.data ?? mockData)
+            metricsOverviewView(data: viewModel.data ?? mockData())
                 .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
                 .pulsating(viewModel.isFirstLoad)
                 .animation(.smooth, value: viewModel.isFirstLoad)
         }
         .padding(.vertical, Constants.step2)
         .padding(.horizontal, Constants.step3)
-    }
-
-    private var listHeaderView: some View {
-        HStack {
-            Text(viewModel.selection.item.localizedTitle)
-                .font(.subheadline)
-                .fontWeight(.medium)
-
-            Spacer()
-
-            Text(viewModel.selection.metric.localizedTitle)
-                .font(.subheadline)
-                .fontWeight(.medium)
-        }
     }
 
     @ViewBuilder
@@ -166,53 +162,140 @@ struct TopListScreenView: View {
         }
     }
 
-    @ViewBuilder
-    private var listContentView: some View {
-        if viewModel.isFirstLoad {
-            itemsListView(data: mockData)
-                .redacted(reason: .placeholder)
-                .pulsating()
-        } else if let data = viewModel.data {
-            if data.items.isEmpty {
-                makeEmptyStateView(message: Strings.Chart.empty)
-            } else {
-                itemsListView(data: data)
+    // MARK: - Lists
+
+    enum ListSection {
+        case top10
+        case top50
+        case other
+
+        var title: String {
+            switch self {
+            case .top10: Strings.TopListTitles.top10
+            case .top50: Strings.TopListTitles.top50
+            case .other: ""
             }
-        } else {
-            makeEmptyStateView(message: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
         }
     }
 
-    private func itemsListView(data: TopListData) -> some View {
-        VStack(spacing: Constants.step0_5) {
-            ForEach(data.items, id: \.id) { item in
-                TopListItemView(
-                    item: item,
-                    previousValue: data.previousItem(for: item)?.metrics[viewModel.selection.metric],
-                    metric: viewModel.selection.metric,
-                    maxValue: data.metrics.maxValue,
-                    dateRange: viewModel.dateRange
-                )
-                .frame(height: TopListItemView.defaultCellHeight)
+    @ViewBuilder
+    private func listContent(data: TopListData) -> some View {
+        if data.items.count > 0 {
+            listSection(.top10, data: data)
+        }
+        if data.items.count > 10 {
+            listSection(.top50, data: data)
+        }
+        if data.items.count > 50 {
+            if isShowingAllItems {
+                listSection(.other, data: data)
+            } else {
+                showMoreButton
             }
         }
+    }
+
+    @ViewBuilder
+    private func listSection(_ section: ListSection, data: TopListData) -> some View {
+        if section == .other {
+            VStack(spacing: 0) {
+                Spacer().frame(height: 20)
+                Divider()
+                Spacer().frame(height: 20)
+            }
+            .padding(.horizontal, Constants.step1)
+        } else {
+            listHeaderView(title: section.title)
+                .padding(EdgeInsets(top: Constants.step3, leading: Constants.step1, bottom: Constants.step0_5, trailing: Constants.step1))
+                .dynamicTypeSize(...DynamicTypeSize.xLarge)
+        }
+        listForEach(for: section, data: data)
+            .grayscale(viewModel.isStale ? 1 : 0)
+            .animation(.smooth, value: viewModel.isStale)
+    }
+
+    private func listHeaderView(title: String) -> some View {
+        HStack {
+            Text(title)
+                .font(.subheadline)
+                .fontWeight(.medium)
+
+            Spacer()
+
+            Text(viewModel.selection.metric.localizedTitle)
+                .font(.subheadline)
+                .fontWeight(.medium)
+        }
+    }
+
+    @ViewBuilder
+    private func listForEach(for section: ListSection, data: TopListData) -> some View {
+        let items = getDisplayedItems(from: data.items, section: section)
+        ForEach(items, id: \.element.id) { index, item in
+            TopListItemView(
+                index: index < 50 ? index : nil,
+                item: item,
+                previousValue: data.previousItem(for: item)?.metrics[viewModel.selection.metric],
+                metric: viewModel.selection.metric,
+                maxValue: data.metrics.maxValue,
+                dateRange: viewModel.dateRange
+            )
+            .frame(height: TopListItemView.defaultCellHeight)
+        }
+        .listRowInsets(EdgeInsets(top: Constants.step0_5 / 2, leading: 0, bottom: Constants.step0_5 / 2, trailing: 0))
+    }
+
+    private func getDisplayedItems(
+        from items: [any TopListItemProtocol],
+        section: ListSection
+    ) -> [(offset: Int, element: any TopListItemProtocol)] {
+        switch section {
+        case .top10:
+            return Array(items.enumerated().prefix(10))
+        case .top50:
+            return Array(items.enumerated().prefix(50).dropFirst(10))
+        case .other:
+            return Array(items.enumerated().dropFirst(50))
+        }
+    }
+
+    private var showMoreButton: some View {
+        Button {
+            withAnimation(.spring) {
+                isShowingAllItems = true
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Text(Strings.Buttons.showMore)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                Image(systemName: "chevron.down")
+                    .font(.caption)
+                    .fontWeight(.medium)
+            }
+        }
+        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Constants.step2)
     }
 
     private func makeEmptyStateView(message: String) -> some View {
-        itemsListView(data: mockData)
-            .redacted(reason: .placeholder)
-            .grayscale(1)
-            .opacity(0.25)
-            .overlay {
-                SimpleErrorView(message: message)
-            }
+        VStack {
+            listContent(data: mockData(count: 6))
+        }
+        .redacted(reason: .placeholder)
+        .grayscale(1)
+        .opacity(0.25)
+        .overlay {
+            SimpleErrorView(message: message)
+        }
     }
 
-    private var mockData: TopListData {
+    private func mockData(count: Int = 10) -> TopListData {
         TopListData.mock(
             for: viewModel.selection.item,
             metric: viewModel.selection.metric,
-            itemCount: 10
+            itemCount: count
         )
     }
 

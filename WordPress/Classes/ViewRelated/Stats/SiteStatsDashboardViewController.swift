@@ -178,7 +178,7 @@ public class SiteStatsDashboardViewController: UIViewController {
             }
 
             // Show tip for new stats if available and not enabled
-            if #available(iOS 17, *), !FeatureFlag.newStats.enabled {
+            if !FeatureFlag.newStats.enabled {
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                     self.showNewStatsTip()
                 }
@@ -295,7 +295,6 @@ public class SiteStatsDashboardViewController: UIViewController {
         Notice(title: message).post()
     }
 
-    @available(iOS 17, *)
     private func showNewStatsTip() {
         tipObserver?.cancel()
         tipObserver = registerTipPopover(

@@ -321,9 +321,7 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
 
     [self observeGravatarImageUpdate];
 
-    if (@available(iOS 17.0, *)) {
-        [self registerForTraitChanges:@[[UITraitHorizontalSizeClass self]] withAction:@selector(handleTraitChanges)];
-    }
+    [self registerForTraitChanges:@[[UITraitHorizontalSizeClass self]] withAction:@selector(handleTraitChanges)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -369,17 +367,6 @@ CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-}
-
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [super traitCollectionDidChange:previousTraitCollection];
-
-    if (@available(iOS 17.0, *)) {
-        // Do nothing. `handleTraitChanges` is registered using iOS 17 API.
-    } else {
-        [self handleTraitChanges];
-    }
 }
 
 - (void)handleTraitChanges

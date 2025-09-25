@@ -45,6 +45,10 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
         [self setupStackView];
         [self setupIconView];
         [self setupTextLabel];
+
+        [self registerForTraitChanges:@[[UITraitUserInterfaceStyle self]]
+                           withTarget:self
+                               action:@selector(handleTraitCollectionChanges)];
     }
 
     return self;
@@ -297,9 +301,8 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 
 #pragma mark - overrides
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+- (void)handleTraitCollectionChanges
 {
-    [super traitCollectionDidChange:previousTraitCollection];
     [self setNeedsDisplay];
     [self.contentView setNeedsDisplay];
 }

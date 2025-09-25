@@ -5,7 +5,7 @@ import WordPressUI
 
 struct JetpackSocialNoConnectionView: View {
 
-    private let viewModel: JetpackSocialNoConnectionViewModel
+    let viewModel: JetpackSocialNoConnectionViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12.0) {

@@ -5,7 +5,6 @@ import Combine
 
 enum AppTips {
     static func initialize() {
-        guard #available(iOS 17, *) else { return }
         do {
             try Tips.configure()
         } catch {
@@ -13,7 +12,6 @@ enum AppTips {
         }
     }
 
-    @available(iOS 17, *)
     struct SitePickerTip: Tip {
         let id = "site_picker_tip"
 
@@ -34,7 +32,6 @@ enum AppTips {
         }
     }
 
-    @available(iOS 17, *)
     struct SidebarTip: Tip {
         let id = "sidebar_tip"
 
@@ -55,7 +52,6 @@ enum AppTips {
         }
     }
 
-    @available(iOS 17, *)
     struct NewStatsTip: Tip {
         let id = "new_stats_tip"
 
@@ -84,7 +80,6 @@ enum AppTips {
         }
     }
 
-    @available(iOS 17, *)
     struct StatsDateRangeTip: Tip {
         let id = "stats_date_range_tip"
 
@@ -108,16 +103,15 @@ enum AppTips {
 
 extension UIViewController {
     /// Registers a popover to be displayed for the given tip.
-    @available(iOS 17, *)
     func registerTipPopover(
         _ tip: some Tip,
         sourceItem: any UIPopoverPresentationControllerSourceItem,
         arrowDirection: UIPopoverArrowDirection? = nil,
-        actionHandler: ((Tips.Action) -> Void)? = nil
+        actionHandler: (@MainActor @Sendable (Tips.Action) -> Void)? = nil
     ) -> TipObserver? {
-        let task = Task { @MainActor [weak self] in
+        let task = Task { @MainActor [weak self, weak sourceItem] in
             for await shouldDisplay in tip.shouldDisplayUpdates {
-                if shouldDisplay {
+                if shouldDisplay, let sourceItem {
                     let popoverController = TipUIPopoverViewController(tip, sourceItem: sourceItem, actionHandler: actionHandler ?? { _ in })
                     popoverController.view.tintColor = .secondaryLabel
                     if let arrowDirection {

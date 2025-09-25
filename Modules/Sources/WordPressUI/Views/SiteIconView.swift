@@ -13,7 +13,11 @@ public struct SiteIconView: View {
 
     public var body: some View {
         contents
-            .clipShape(RoundedRectangle(cornerRadius: 6))
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+    }
+
+    private var cornerRadius: CGFloat {
+        if #available(iOS 26, *) { 10 } else { 6 }
     }
 
     @ViewBuilder

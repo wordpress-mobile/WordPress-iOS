@@ -37,6 +37,10 @@
 
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateTypeWasSelected)];
         [self addGestureRecognizer:tap];
+
+        [self registerForTraitChanges:@[[UITraitUserInterfaceStyle self]]
+                           withTarget:self
+                               action:@selector(handleTraitCollectionChanges)];
     }
 
     return self;
@@ -184,10 +188,8 @@
     }
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+- (void)handleTraitCollectionChanges
 {
-    [super traitCollectionDidChange:previousTraitCollection];
-
     [self setNeedsDisplay];
 }
 

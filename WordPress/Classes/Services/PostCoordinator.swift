@@ -128,6 +128,43 @@ class PostCoordinator: NSObject {
         }
     }
 
+    /// Publishes the post according to the current settings and user capabilities.
+    ///
+    /// - warning: Before publishing, ensure that the media for the post got
+    /// uploaded. Managing media is not the responsibility of `PostRepository.`
+    ///
+    /// - parameter changes: The set of changes apply to the post together
+    /// with the publishing options.
+    @MainActor
+    func publish_v2(_ post: AbstractPost, parameters: RemotePostUpdateParameters) async throws {
+        wpAssert(post.isOriginal())
+        wpAssert(post.isStatus(in: [.draft, .pending]))
+
+        await pauseSyncing(for: post)
+        defer { resumeSyncing(for: post) }
+
+        var parameters = parameters
+        if parameters.status == nil {
+            parameters.status = Post.Status.publish.rawValue
+        }
+        if parameters.date == nil {
+            // If the post was previously scheduled for a different date,
+            // the app has to send a new value to override it.
+            parameters.date = post.shouldPublishImmediately() ? nil : Date()
+        }
+
+        do {
+            let repository = PostRepository(coreDataStack: coreDataStack)
+            try await repository.save(post, changes: parameters)
+            didPublish(post)
+            show(PostCoordinator.makeUploadSuccessNotice(for: post))
+        } catch {
+            trackError(error, operation: "post-publish", post: post)
+            handleError(error, for: post)
+            throw error
+        }
+    }
+
     @MainActor
     private func didPublish(_ post: AbstractPost) {
         if post.status == .scheduled {

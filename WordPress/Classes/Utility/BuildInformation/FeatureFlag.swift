@@ -26,6 +26,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case pluginManagementOverhaul
     case newsletterSubscribers
     case newStats
+    case newPublishingSheet
     case mediaQuotaView
 
     /// Returns a boolean indicating if the feature is enabled.
@@ -83,6 +84,8 @@ public enum FeatureFlag: Int, CaseIterable {
             return true
         case .newStats:
             return false
+        case .newPublishingSheet:
+            return false
         case .mediaQuotaView:
             return false
         }
@@ -128,6 +131,7 @@ extension FeatureFlag {
         case .readerGutenbergCommentComposer: "Gutenberg Comment Composer"
         case .newsletterSubscribers: "Newsletter Subscribers"
         case .newStats: "New Stats"
+        case .newPublishingSheet: "New Publishing Sheet"
         case .mediaQuotaView: "Media Quota"
         }
     }
