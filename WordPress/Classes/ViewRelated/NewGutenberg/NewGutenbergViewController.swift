@@ -564,7 +564,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     private func fetchPluginRecommendation(client: WordPressClient) async throws -> RecommendedPlugin? {
 
-        guard try await client.supports(.managePlugins) else {
+        guard try await client.supports(.managePlugins), try await client.currentUserCan(.installPlugins) else {
             return nil
         }
 

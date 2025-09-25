@@ -14,6 +14,7 @@ public actor WordPressClient {
     public let rootUrl: String
 
     private var apiRoot: WpApiDetails?
+    private var currentUser: UserWithEditContext?
 
     public init(api: WordPressAPI, rootUrl: ParsedUrl) {
         self.api = api
@@ -21,12 +22,27 @@ public actor WordPressClient {
     }
 
     public func refreshCachedSiteInfo() async throws {
-        let apiRoot = try await self.api.apiRoot.get()
-        self.apiRoot = apiRoot.data
+        async let apiRootTask = try await self.api.apiRoot.get().data
+        async let currentUserTask = try await self.api.users.retrieveMeWithEditContext().data
+
+        let (apiRoot, currentUser) = try await (apiRootTask, currentUserTask)
+
+        self.apiRoot = apiRoot
+        self.currentUser = currentUser
     }
 
-    public func currentUserCan(_ capability: String) async throws -> Bool {
-        false
+    public func currentUserCan(_ capability: UserCapability) async throws -> Bool {
+        try await fetchCurrentUser().capabilities.keys.contains(capability)
+    }
+
+    private func fetchCurrentUser() async throws -> UserWithEditContext {
+        if let currentUser = self.currentUser {
+            return currentUser
+        }
+
+        let currentUser = try await self.api.users.retrieveMeWithEditContext().data
+        self.currentUser = currentUser
+        return currentUser
     }
 
     public func supports(_ feature: Feature, forSiteId siteId: Int? = nil) async throws -> Bool {

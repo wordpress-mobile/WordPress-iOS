@@ -1,6 +1,7 @@
 import Foundation
 import WordPressData
 import WordPressKit
+import WordPressCore
 
 /// Provides service remote instances for CommentService
 @objc public class CommentServiceRemoteFactory: NSObject {
@@ -18,7 +19,7 @@ import WordPressKit
 
         // The REST API does not have information about comment "likes". We'll continue to use WordPress.com API for now.
         if let site = try? WordPressSite(blog: blog) {
-            return CommentServiceRemoteCoreRESTAPI(client: .init(site: site))
+            return CommentServiceRemoteCoreRESTAPI(client: WordPressClient(site: site))
         }
 
         if let api = blog.xmlrpcApi,
