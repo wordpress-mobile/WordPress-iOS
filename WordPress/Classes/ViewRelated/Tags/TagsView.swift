@@ -308,9 +308,10 @@ private struct SelectedTagsView: View {
                 .padding(.horizontal)
             } else {
                 Text(Strings.noTagsSelected)
-                    .font(.callout)
+                    .font(.body)
                     .foregroundColor(.secondary)
                     .padding(.horizontal)
+                    .padding(.vertical, 4)
             }
         }
         .padding(.top, 8)
@@ -325,13 +326,13 @@ private struct SelectedTag: View {
     var body: some View {
         HStack(spacing: 4) {
             Text(tagName)
-                .font(.subheadline)
+                .font(.body)
                 .foregroundColor(.primary)
                 .lineLimit(1)
 
-            Image(systemName: "xmark.circle.fill")
+            Image(systemName: "xmark")
                 .foregroundColor(.secondary)
-                .font(.subheadline)
+                .font(.caption)
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
