@@ -409,7 +409,9 @@ private struct AddTagsTextField: UIViewRepresentable {
 
         // Ideally, we should bind the focus state of `textField` with `TagsView.isTextFieldFocused`, but I couldn't
         // get that working. So here, we always keep the text field on focused, which is the same as the old tags list.
-        textField.becomeFirstResponder()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
+            textField.becomeFirstResponder()
+        }
 
         return textField
     }
