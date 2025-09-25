@@ -43,7 +43,8 @@ final class DashboardQuickActionCell: UITableViewCell {
         stackView.isUserInteractionEnabled = false
 
         contentView.addSubview(stackView)
-        stackView.pinEdges(insets: UIEdgeInsets(horizontal: 16, vertical: 12))
+        let vertical: CGFloat = if #available(iOS 26, *) { 14 } else { 12 }
+        stackView.pinEdges(insets: UIEdgeInsets(horizontal: 16, vertical: vertical))
     }
 
     func configure(_ viewModel: DashboardQuickActionItemViewModel) {

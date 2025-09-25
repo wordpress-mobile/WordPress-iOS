@@ -1,5 +1,6 @@
 import XCTest
 import WordPressData
+import UserNotifications
 @testable import WordPress
 
 final class NotificationsViewControllerTests: XCTestCase {
@@ -46,7 +47,7 @@ final class NotificationsViewControllerTests: XCTestCase {
     func testResetApplicationBadgeWhenAccountChange() throws {
         // Give
         let newUnreadCount = 1
-        UIApplication.shared.applicationIconBadgeNumber = 0
+        UNUserNotificationCenter.current().setBadgeCount(0)
         ZendeskUtils.unreadNotificationsCount = newUnreadCount
 
         // When

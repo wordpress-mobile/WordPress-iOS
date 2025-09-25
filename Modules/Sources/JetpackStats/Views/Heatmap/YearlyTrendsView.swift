@@ -184,7 +184,7 @@ private struct MonthCell: View {
                 metric: metric,
                 formatter: formatter
             )
-            .modifier(PopoverPresentationModifier())
+            .presentationCompactAdaptation(.popover)
         }
         .accessibilityElement()
         .accessibilityLabel(accessibilityLabel)

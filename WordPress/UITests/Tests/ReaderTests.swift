@@ -37,15 +37,14 @@ class ReaderTests_01: ReaderTests {
             .verifyPostContentEquals(.expectedPostContent)
     }
 
-    func testDiscover() throws {
-        try XCTSkipIf(true, "Flaky on CI, but passing consistently locally")
-
-        try openStream(.discover)
-            .selectTag()
-            .verifyTagLoaded()
-            .followTag()
-            .verifyTagFollowed()
-    }
+    // This test is flaky on CI, but passing consistently locally
+    // func testDiscover() throws {
+    //     try openStream(.discover)
+    //         .selectTag()
+    //         .verifyTagLoaded()
+    //         .followTag()
+    //         .verifyTagFollowed()
+    // }
 }
 
 class ReaderTests_02: ReaderTests {

@@ -8,7 +8,7 @@ struct PostSettingsFeaturedImageRow: View {
     @ObservedObject var viewModel: PostSettingsFeaturedImageViewModel
     @State private var presentedMedia: Media?
 
-    @ScaledMetric(relativeTo: .body) var height = 120
+    @ScaledMetric(relativeTo: .body) var height = 110
 
     var body: some View {
         Group {
@@ -141,10 +141,6 @@ struct PostSettingsFeaturedImageRow: View {
             // System background that adapts to dark mode
             RoundedRectangle(cornerRadius: cornerRadius)
                 .fill(Color(UIColor.secondarySystemGroupedBackground))
-
-            // Very subtle accent tint
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .fill(Color.accentColor.opacity(0.02))
 
             content()
 

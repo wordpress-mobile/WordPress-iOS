@@ -6,19 +6,11 @@ public extension URL {
 
     struct Helpers {
         public static func temporaryFile(named name: String = UUID().uuidString) -> URL {
-            if #available(iOS 16.0, *) {
-                return URL.temporaryDirectory.appending(path: name)
-            } else {
-                return URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(name)
-            }
+            return URL.temporaryDirectory.appending(path: name)
         }
 
         public static func temporaryDirectory(named name: String) -> URL {
-            if #available(iOS 16.0, *) {
-                return URL.temporaryDirectory.appending(path: name, directoryHint: .isDirectory)
-            } else {
-                return URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(name, isDirectory: true)
-            }
+            return URL.temporaryDirectory.appending(path: name, directoryHint: .isDirectory)
         }
     }
 

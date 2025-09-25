@@ -234,12 +234,8 @@ private struct ReaderSidebarSection<Content: View>: View {
             if isExpanded {
                 content()
             }
-        } else if #available(iOS 17, *) {
-            Section(title, isExpanded: $isExpanded) {
-                content()
-            }
         } else {
-            Section(title) {
+            Section(title, isExpanded: $isExpanded) {
                 content()
             }
         }
@@ -256,12 +252,8 @@ struct ReaderSidebarImage: View {
 
 private extension View {
     @ViewBuilder func withDisabledSelection(_ isDisabled: Bool) -> some View {
-        if #available(iOS 17, *) {
-            self.opacity(isDisabled ? 0.33 : 1)
-                .selectionDisabled(isDisabled)
-        } else {
-            self
-        }
+        self.opacity(isDisabled ? 0.33 : 1)
+            .selectionDisabled(isDisabled)
     }
 }
 

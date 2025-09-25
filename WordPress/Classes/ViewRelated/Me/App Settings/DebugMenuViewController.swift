@@ -15,9 +15,7 @@ struct DebugMenuView: View {
         List {
             Section { main }
             Section(Strings.sectionSettings) { settings }
-            if #available(iOS 17, *) {
-                Section(Strings.sectionTipKit) { tipKit }
-            }
+            Section(Strings.sectionTipKit) { tipKit }
             Section(Strings.sectionLogging) { logging }
         }
         .toolbar {
@@ -55,7 +53,6 @@ struct DebugMenuView: View {
         }
     }
 
-    @available(iOS 17, *)
     @ViewBuilder private var tipKit: some View {
         Button(Strings.showAllTips) {
             Tips.showAllTipsForTesting()

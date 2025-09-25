@@ -142,7 +142,7 @@ struct BarChartView: View {
 
     @ChartContentBuilder
     private var selectionIndicatorMarks: some ChartContent {
-        if #available(iOS 17.0, *), let selectedDataPoints {
+        if let selectedDataPoints {
             if let currentPoint = selectedDataPoints.current {
                 RuleMark(x: .value("Selected", currentPoint.date))
                     .foregroundStyle(Color.clear)

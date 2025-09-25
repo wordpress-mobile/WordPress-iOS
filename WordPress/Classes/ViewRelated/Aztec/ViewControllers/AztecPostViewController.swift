@@ -1715,31 +1715,29 @@ extension AztecPostViewController {
 
         richTextView.autocorrectionType = .no
 
-        if #available(iOS 17, *) {
-            var configuration = PHPickerConfiguration()
-            configuration.filter = .any(of: [.images, .videos])
-            configuration.preferredAssetRepresentationMode = .current
-            configuration.selectionLimit = 0
-            configuration.disabledCapabilities = [
-                .collectionNavigation, .collectionNavigation, .search, .stagingArea
-            ]
-            configuration.edgesWithoutContentMargins = .all
-            configuration.selection = .continuousAndOrdered
+        var configuration = PHPickerConfiguration()
+        configuration.filter = .any(of: [.images, .videos])
+        configuration.preferredAssetRepresentationMode = .current
+        configuration.selectionLimit = 0
+        configuration.disabledCapabilities = [
+            .collectionNavigation, .collectionNavigation, .search, .stagingArea
+        ]
+        configuration.edgesWithoutContentMargins = .all
+        configuration.selection = .continuousAndOrdered
 
-            let picker = PHPickerViewController(configuration: configuration)
-            picker.delegate = self
-            mediaPickerInputViewController = picker
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        mediaPickerInputViewController = picker
 
-            if currentKeyboardFrame != .zero {
-                // iOS is not adjusting the media picker's height to match the default keyboard's height when autoresizingMask
-                // is set to UIViewAutoresizingFlexibleHeight (even though the docs claim it should). Need to manually
-                // set the picker's frame to the current keyboard's frame.
-                picker.view.autoresizingMask = []
-                picker.view.frame = CGRect(x: 0, y: 0, width: currentKeyboardFrame.width, height: mediaKeyboardHeight)
-            }
-
-            presentToolbarViewControllerAsInputView(picker)
+        if currentKeyboardFrame != .zero {
+            // iOS is not adjusting the media picker's height to match the default keyboard's height when autoresizingMask
+            // is set to UIViewAutoresizingFlexibleHeight (even though the docs claim it should). Need to manually
+            // set the picker's frame to the current keyboard's frame.
+            picker.view.autoresizingMask = []
+            picker.view.frame = CGRect(x: 0, y: 0, width: currentKeyboardFrame.width, height: mediaKeyboardHeight)
         }
+
+        presentToolbarViewControllerAsInputView(picker)
     }
 
     @objc func toggleEditingMode() {
