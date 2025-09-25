@@ -85,7 +85,7 @@ private struct PostSettingsView: View {
     }
 
     private var buttonCancel: some View {
-        Button(SharedStrings.Button.cancel) {
+        Button.make(role: .cancel) {
             if viewModel.hasChanges {
                 isShowingDiscardChangesAlert = true
             } else {
@@ -101,19 +101,8 @@ private struct PostSettingsView: View {
         if viewModel.isSaving {
             ProgressView()
         } else {
-            Group {
-                if viewModel.isStandalone {
-                    Button(SharedStrings.Button.save) {
-                        viewModel.buttonSaveTapped()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.capsule)
-                } else {
-                    Button(SharedStrings.Button.done) {
-                        viewModel.buttonSaveTapped()
-                    }
-                    .fontWeight(.medium)
-                }
+            Button.make(role: .confirm) {
+                viewModel.buttonSaveTapped()
             }
             .accessibilityIdentifier("post_settings_save_button")
             .disabled(!viewModel.hasChanges)
