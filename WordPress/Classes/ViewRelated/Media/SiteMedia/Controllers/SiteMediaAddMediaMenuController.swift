@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 import Photos
 import PhotosUI
@@ -35,9 +36,17 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
             ]
         }
         if let quotaUsageDescription = blog.quotaUsageDescription {
-            children += [
-                UIAction(subtitle: quotaUsageDescription, handler: { _ in })
-            ]
+            if FeatureFlag.mediaQuotaView.enabled {
+                children += [
+                    UIAction(title: "View Usage", subtitle: blog.quotaUsageShortDescription, image: UIImage(systemName: "opticaldiscdrive"), handler: { _ in
+                        self.showQuotaView(from: viewController)
+                    })
+                ]
+            } else {
+                children += [
+                    UIAction(subtitle: quotaUsageDescription, handler: { _ in })
+                ]
+            }
         }
         return UIMenu(options: [.displayInline], children: children)
     }
@@ -45,6 +54,12 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
     func showPhotosPicker(from viewController: UIViewController) {
         MediaPickerMenu(viewController: viewController, isMultipleSelectionEnabled: true)
             .showPhotosPicker(delegate: self)
+    }
+
+    private func showQuotaView(from viewController: UIViewController) {
+        guard let viewModel = try? MediaStorageDetailsViewModel(blog: blog) else { return }
+        let rootView = MediaStorageDetailsView(viewModel: viewModel)
+        viewController.present(UIHostingController(rootView: rootView), animated: true)
     }
 
     // MARK: - PHPickerViewControllerDelegate
