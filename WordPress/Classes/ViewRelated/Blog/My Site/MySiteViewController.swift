@@ -170,14 +170,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         subscribeToModelChanges()
         subscribeToPostPublished()
         subscribeToWillEnterForeground()
-
-        if RemoteFeatureFlag.newGutenberg.enabled() {
-            if let blog {
-                warmUpEditorIfNeeded(for: blog)
-            } else {
-                GutenbergKit.EditorViewController.warmup(configuration: .default)
-            }
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
