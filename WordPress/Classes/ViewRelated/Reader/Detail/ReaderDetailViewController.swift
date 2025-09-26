@@ -913,10 +913,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 extension ReaderDetailViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentOffset = scrollView.contentOffset.y
-        // Using `safeAreaLayoutGuide.layoutFrame.height` because it doesn't
-        // change when we extend the scroll view size by hiding the toolbar
-        if (currentOffset + view.safeAreaLayoutGuide.layoutFrame.height) > likesContainerView.frame.minY {
+
+        if let frame = likesContainerView.frame(in: view), frame.origin.y < view.bounds.height {
             toolbarHiddenDebouncer.send(false) // Reached bottom (controls, comments, etc)
+        } else if currentOffset > scrollView.contentSize.height - view.bounds.height {
+            toolbarHiddenDebouncer.send(false) // Close enough to the bottom
         } else if currentOffset > lastContentOffset && currentOffset > 0 {
             toolbarHiddenDebouncer.send(true) // Scrolling down
         } else if currentOffset < lastContentOffset {

@@ -12,6 +12,7 @@
 * [*] Fix performance issues with search in Reader Subscriptions [#24841]
 * [*] Fix New Stats layout not adapting for resizing windows [#24908]
 * [*] Fix rare crash in Stats / Subscribers [#24907]
+* [*] Fix an issue with toolbar in Reader articles sporadically reappearing [#24896]
 * [*] Improve performance and animations when showing a full Top List with a large number of items [#24868]
 * [*] Fix an issue with New Stats resetting the preferred preset after selecting a custom range [#24899]
 * [*] Show the Top 10 and 50 items in the Top List screen in a dedicated section [#24868]
