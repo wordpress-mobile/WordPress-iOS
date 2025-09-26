@@ -18,8 +18,8 @@ struct PostSettingsGenerateExcerptButton: View {
             onWillShowPopover?()
             isShowingExcerptGenerator = true
         } label: {
-            HStack(spacing: 4) {
-                ScaledImage("sparkle", height: 15)
+            HStack(spacing: 5) {
+                ScaledImage("sparkle", height: 18)
                 Text(Strings.generateButton)
             }
         }

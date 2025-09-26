@@ -30,10 +30,7 @@ public actor IntelligenceService {
 
         // A maximum of 500 characters assuming 10 characters per
         let siteTags = siteTags.prefix(50)
-
-        let postSizeLimit = Double(IntelligenceService.contextSizeLimit) * 0.6
-        let post = ((try? IntelligenceUtilities.extractRelevantText(from: post)) ?? post)
-            .prefix(Int(postSizeLimit))
+        let post = extractRelevantText(from: post)
 
         try Task.checkCancellation()
 
@@ -47,7 +44,7 @@ public actor IntelligenceService {
         You are helping a WordPress user add tags to a post or a page.
 
         **Parameters**
-        - POST_CONTENT: contents of the post (plain text)
+        - POST_CONTENT: contents of the post (HTML or plain text)
         - SITE_TAGS: case-sensitive comma-separated list of the existing tags used elsewhere on the site (not always relevant to the post)
         - EXISTING_POST_TAGS: tags already added to the post
 
@@ -90,6 +87,12 @@ public actor IntelligenceService {
         return response.content.tags
             .deduplicated()
             .filter { !existingPostTags.contains($0) }
+    }
+
+    public nonisolated func extractRelevantText(from post: String) -> String {
+        let extract = try? IntelligenceUtilities.extractRelevantText(from: post)
+        let postSizeLimit = Double(IntelligenceService.contextSizeLimit) * 0.6
+        return String((extract ?? post).prefix(Int(postSizeLimit)))
     }
 }
 
