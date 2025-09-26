@@ -30,7 +30,6 @@ struct IntelligenceUtilitiesTests {
         <li>Dough whisk</li>
         <li>Thermometer</li>
         <blockquote>"The secret to great sourdough isn't just in the recipe - it's in understanding the rhythm of fermentation and learning to read your dough." - Sarah Mitchell, Artisan Baker</blockquote>
-        <p>"The secret to great sourdough isn't just in the recipe - it's in understanding the rhythm of fermentation and learning to read your dough."</p>
         <h2>My Go-To Recipe</h2>
         <p>This recipe yields one large loaf and has never failed me. The key is maintaining consistent temperatures and being patient with the process.</p>
         <th>Ingredient</th>
@@ -49,6 +48,26 @@ struct IntelligenceUtilitiesTests {
         <td>10g</td>
         <td>2%</td>
         """)
+    }
+
+    /// Blockquote contain nested block and the implementation should account for that.
+    @Test func blockquotes() throws {
+        let text = try IntelligenceUtilities.extractRelevantText(from: """
+        <!-- wp:paragraph -->
+        <p>Welcome to <strong><em>WordPress</em></strong>! This is your first post. Edit or delete it to take the first step in your blogging journey.</p>
+        <!-- /wp:paragraph -->
+        <!-- wp:quote -->
+        <blockquote class="wp-block-quote"><!-- wp:quote -->
+        <blockquote class="wp-block-quote"><!-- wp:quote -->
+        <blockquote class="wp-block-quote"><!-- wp:paragraph -->
+        <p>Welcome to <strong><em>WordPress</em></strong>!</p>
+        <!-- /wp:paragraph --></blockquote>
+        <!-- /wp:quote --></blockquote>
+        <!-- /wp:quote --></blockquote>
+        <!-- /wp:quote -->
+        """)
+
+        print(text)
     }
 
     @Test func extractRelevantTextFromPlainText() throws {

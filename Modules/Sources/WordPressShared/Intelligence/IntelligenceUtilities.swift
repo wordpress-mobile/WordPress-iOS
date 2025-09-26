@@ -48,7 +48,7 @@ public struct IntelligenceUtilities {
         let tagName = element.tagName().lowercased()
 
         // Check if this is an element we want to extract
-        if relevantSelectors.contains(tagName) {
+        guard !relevantSelectors.contains(tagName) else {
             if tagName == "img" {
                 // Special handling for images - extract alt text
                 if let alt = try? element.attr("alt"), !alt.isEmpty {
@@ -61,6 +61,7 @@ public struct IntelligenceUtilities {
                     output.append("<\(tagName)>\(text)</\(tagName)>")
                 }
             }
+            return
         }
 
         // Recursively process child elements
