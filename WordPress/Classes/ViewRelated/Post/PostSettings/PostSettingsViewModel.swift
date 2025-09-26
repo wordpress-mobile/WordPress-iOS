@@ -114,7 +114,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private let originalSettings: PostSettings
-    private let moc: NSManagedObjectContext
     private let preferences: UserPersistentRepository
     private var cancellables = Set<AnyCancellable>()
 
@@ -135,13 +134,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         post: AbstractPost,
         isStandalone: Bool = false,
         context: Context = .settings,
-        moc: NSManagedObjectContext = ContextManager.shared.mainContext,
         preferences: UserPersistentRepository = UserDefaults.standard
     ) {
         self.post = post
         self.isStandalone = isStandalone
         self.context = context
-        self.moc = moc
         self.preferences = preferences
 
         // Initialize settings from the post
