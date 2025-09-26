@@ -34,6 +34,8 @@ public class MediaProgressCoordinator: NSObject {
 
     private static var mediaProgressObserverContext = 0
 
+    private lazy var bgTaskTracker: MediaUploadBackgroundTracker? = mediaUploadBackgroundTracker()
+
     deinit {
         mediaGlobalProgress?.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
     }
@@ -72,6 +74,11 @@ public class MediaProgressCoordinator: NSObject {
         progress.setUserInfoObject(media, forKey: .mediaObject)
         mediaGlobalProgress?.addChild(progress, withPendingUnitCount: 1)
         mediaInProgress[mediaID] = progress
+
+        let objectID = TaggedManagedObjectID(media)
+        Task {
+            await bgTaskTracker?.track(progress: progress, media: objectID)
+        }
     }
 
     /// Finish one of the tasks.

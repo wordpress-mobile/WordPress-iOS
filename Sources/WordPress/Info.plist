@@ -6,6 +6,7 @@
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>
 		<string>org.wordpress.bgtask.weeklyroundup.processing</string>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER).mediaUpload</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
@@ -191,13 +192,13 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Spectrum &apos;22</key>
+			<key>Spectrum '22</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>spectrum-&apos;22-icon-app-60x60</string>
-					<string>spectrum-&apos;22-icon-app-76x76</string>
-					<string>spectrum-&apos;22-icon-app-83.5x83.5</string>
+					<string>spectrum-'22-icon-app-60x60</string>
+					<string>spectrum-'22-icon-app-76x76</string>
+					<string>spectrum-'22-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>
@@ -406,13 +407,13 @@
 				<key>UIPrerenderedIcon</key>
 				<true/>
 			</dict>
-			<key>Spectrum &apos;22</key>
+			<key>Spectrum '22</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>spectrum-&apos;22-icon-app-60x60</string>
-					<string>spectrum-&apos;22-icon-app-76x76</string>
-					<string>spectrum-&apos;22-icon-app-83.5x83.5</string>
+					<string>spectrum-'22-icon-app-60x60</string>
+					<string>spectrum-'22-icon-app-76x76</string>
+					<string>spectrum-'22-icon-app-83.5x83.5</string>
 				</array>
 				<key>UIPrerenderedIcon</key>
 				<true/>

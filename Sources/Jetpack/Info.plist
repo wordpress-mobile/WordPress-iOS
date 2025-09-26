@@ -6,6 +6,7 @@
 	<array>
 		<string>org.wordpress.bgtask.weeklyroundup</string>
 		<string>org.wordpress.bgtask.weeklyroundup.processing</string>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER).mediaUpload</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>

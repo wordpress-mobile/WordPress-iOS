@@ -142,7 +142,7 @@ class MediaCoordinator: NSObject {
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     func addMedia(from asset: ExportableAsset, to blog: Blog, analyticsInfo: MediaAnalyticsInfo? = nil) {
-        addMedia(from: asset, blog: blog, post: nil, coordinator: mediaLibraryProgressCoordinator, analyticsInfo: analyticsInfo)
+        addMedia(from: asset, blog: blog, coordinator: mediaLibraryProgressCoordinator, analyticsInfo: analyticsInfo)
     }
 
     /// Adds the specified media asset to the specified post. The upload process
@@ -192,14 +192,14 @@ class MediaCoordinator: NSObject {
     /// Create a `Media` instance and upload the asset to the Media Library.
     ///
     /// - SeeAlso: `MediaImportService.createMedia(with:blog:post:receiveUpdate:thumbnailCallback:completion:)`
-    private func addMedia(from asset: ExportableAsset, blog: Blog, post: AbstractPost?, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) {
+    private func addMedia(from asset: ExportableAsset, blog: Blog, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) {
         coordinator.track(numberOfItems: 1)
         let service = MediaImportService(coreDataStack: coreDataStack)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         let creationProgress = service.createMedia(
             with: asset,
             blog: blog,
-            post: post,
+            post: nil,
             receiveUpdate: { [weak self] media in
                 self?.processing(media)
                 coordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
