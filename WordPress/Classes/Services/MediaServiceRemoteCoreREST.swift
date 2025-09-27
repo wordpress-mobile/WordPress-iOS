@@ -3,7 +3,6 @@ import Combine
 import WordPressCore
 import WordPressShared
 import WordPressAPI
-import WordPressAPIInternal
 import WordPressKit
 
 /// A `MediaServiceRemote` implementation that uses the WordPress core REST API (`/wp-json/wp/v2/media`).

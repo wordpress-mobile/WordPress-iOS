@@ -1,6 +1,5 @@
 import Foundation
 import WordPressAPI
-import WordPressAPIInternal
 
 public struct InstalledPlugin: Equatable, Hashable, Identifiable, Sendable {
     public var slug: PluginSlug

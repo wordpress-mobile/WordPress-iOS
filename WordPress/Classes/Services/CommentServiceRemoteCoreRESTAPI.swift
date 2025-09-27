@@ -1,7 +1,7 @@
 import Foundation
 import WordPressCore
 import WordPressAPI
-import WordPressAPIInternal
+import WordPressAPIInternal // Required for `WpApiParamCommentsOrderBy`
 import WordPressKit
 import WordPressShared
 import WordPressData

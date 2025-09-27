@@ -2,7 +2,6 @@ import Foundation
 import SwiftUI
 import WordPressCore
 import WordPressAPI
-import WordPressAPIInternal
 
 struct AddNewPluginView: View {
     @Environment(\.dismiss) var dismiss
@@ -214,7 +213,7 @@ private class AddNewPluginViewModel: ObservableObject {
         case popular
         case recommended
 
-        var wpOrgCategory: WordPressOrgApiPluginDirectoryCategory {
+        var wpOrgCategory: PluginWpOrgDirectoryCategory {
             // TODO: Update the returned values to be the correct onces after updating the wordpress-rs library
             switch self {
             case .featured:

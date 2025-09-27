@@ -3,7 +3,6 @@ import WordPressCore
 import WordPressData
 import WordPressShared
 import WordPressAPI
-import WordPressAPIInternal
 
 @MainActor
 class JetpackConnectionViewModel: ObservableObject {

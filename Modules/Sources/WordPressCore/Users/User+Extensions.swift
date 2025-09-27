@@ -1,5 +1,5 @@
 import WordPressAPI
-import WordPressAPIInternal // Needed for `UserRole` Equatable conformance – it'd be nice to not need this.
+import WordPressAPIInternal // Required for `UserRole` Equatable conformance – it'd be nice to not need this.
 
 public extension UserRole {
     var displayString: String {

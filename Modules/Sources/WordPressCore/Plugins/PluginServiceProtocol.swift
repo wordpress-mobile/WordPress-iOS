@@ -1,6 +1,5 @@
 import Foundation
 import WordPressAPI
-import WordPressAPIInternal
 
 public protocol PluginServiceProtocol: Actor {
 
@@ -21,7 +20,7 @@ public protocol PluginServiceProtocol: Actor {
     func uninstalledPlugin(slug: PluginSlug) async throws
     func installPlugin(slug: PluginWpOrgDirectorySlug) async throws -> InstalledPlugin
 
-    func fetchPluginsDirectory(category: WordPressOrgApiPluginDirectoryCategory) async throws
+    func fetchPluginsDirectory(category: PluginWpOrgDirectoryCategory) async throws
     func pluginDirectoryUpdates(query: CategorizedPluginInformationDataStoreQuery) async -> AsyncStream<Result<[CategorizedPluginInformation], Error>>
 
     func searchPluginsDirectory(input: String) async throws -> [PluginInformation]

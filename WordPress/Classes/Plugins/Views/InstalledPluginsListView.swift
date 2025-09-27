@@ -2,7 +2,6 @@ import SwiftUI
 import AsyncImageKit
 import WordPressUI
 import WordPressAPI
-import WordPressAPIInternal
 import WordPressCore
 
 struct InstalledPluginsListView: View {

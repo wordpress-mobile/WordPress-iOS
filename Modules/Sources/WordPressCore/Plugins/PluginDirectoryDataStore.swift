@@ -1,6 +1,6 @@
 import Foundation
 import WordPressAPI
-import WordPressAPIInternal
+import WordPressAPIInternal // Required for `Sendable` conformance for multiple types
 
 // MARK: - DataStore for full plugin deatils
 

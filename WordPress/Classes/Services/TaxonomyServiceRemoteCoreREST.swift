@@ -3,7 +3,6 @@ import WordPressKit
 import WordPressCore
 import WordPressData
 import WordPressAPI
-import WordPressAPIInternal
 
 @objc public class TaxonomyServiceRemoteCoreREST: NSObject, TaxonomyServiceRemote {
     let client: WordPressClient

@@ -4,7 +4,6 @@ import SwiftUI
 import WordPressData
 import WordPressCore
 import WordPressShared
-import WordPressAPIInternal
 
 class RESTAPIJetpackLoginViewController: UIViewController, JetpackConnectionSupport {
 

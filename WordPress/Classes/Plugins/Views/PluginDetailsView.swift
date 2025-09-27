@@ -1,8 +1,9 @@
 import Foundation
 import SwiftUI
 import AsyncImageKit
+import WordPressAPI
+import WordPressAPIInternal // Required for `Screenshot`, `Ratings`
 import WordPressCore
-import WordPressAPIInternal
 
 struct PluginDetailsView: View {
     private struct BasicPluginInfo {
