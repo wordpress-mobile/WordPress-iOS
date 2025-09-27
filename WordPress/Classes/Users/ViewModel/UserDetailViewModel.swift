@@ -19,6 +19,6 @@ class UserDetailViewModel: ObservableObject {
         isLoadingCurrentUser = true
         defer { isLoadingCurrentUser = false}
 
-        currentUserCanModifyUsers = await userService.isCurrentUserCapableOf("edit_users")
+        currentUserCanModifyUsers = await userService.isCurrentUserCapableOf(.editUsers)
     }
 }

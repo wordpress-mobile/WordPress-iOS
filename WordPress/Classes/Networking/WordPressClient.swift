@@ -133,7 +133,7 @@ private class AppNotifier: @unchecked Sendable, WpAppNotifier {
         self.coreDataStack = coreDataStack
     }
 
-    func requestedWithInvalidAuthentication() async {
+    func requestedWithInvalidAuthentication(requestUrl: String) async {
         let blogId = site.blogId(in: coreDataStack)
         NotificationCenter.default.post(name: WordPressClient.requestedWithInvalidAuthenticationNotification, object: blogId)
     }

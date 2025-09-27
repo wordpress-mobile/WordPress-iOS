@@ -14,7 +14,7 @@ class UserListViewModel: ObservableObject {
 
     enum RoleSection: Hashable, Comparable {
         case me
-        case role(String)
+        case role(UserRole)
         case searchResult
 
         /// Order in the users list.
@@ -41,7 +41,7 @@ class UserListViewModel: ObservableObject {
             case .me:
                 return ""
             case let .role(role):
-                return role
+                return role.displayString
             case .searchResult:
                 return NSLocalizedString("userList.searchResults.header", value: "Search Results", comment: "Header text fo the search results section in the users list")
             }
