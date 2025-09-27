@@ -149,7 +149,7 @@ private extension RemoteComment {
         self.postID = NSNumber(value: comment.post)
 
         self.status = comment.status.commentStatusType?.description
-        self.type = comment.commentType.type
+        self.type = comment.commentType.rawValue
 
         if let ext = try? comment.additionalFields.parseWpcomCommentsExtension() {
             self.postTitle = ext.post?.title

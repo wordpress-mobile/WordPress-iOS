@@ -3,7 +3,7 @@ import WordPressAPIInternal // Required for `UserRole` Equatable conformance –
 
 public extension UserRole {
     var displayString: String {
-        "" // TODO: This should use .rawValue
+        self.rawValue.capitalized
     }
 }
 
@@ -16,7 +16,7 @@ extension UserRole: @retroactive Codable {
 
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode("") // TODO: Use `.rawValue` here
+        try container.encode(self.rawValue)
     }
 }
 
