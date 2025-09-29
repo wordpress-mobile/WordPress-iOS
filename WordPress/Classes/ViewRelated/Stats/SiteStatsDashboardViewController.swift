@@ -554,9 +554,9 @@ private enum Strings {
     )
 
     static let switchToClassic = NSLocalizedString(
-        "stats.menu.switchToClassic",
-        value: "Switch to Classic Stats",
-        comment: "Menu item to switch back to classic stats experience"
+        "stats.menu.disableNewStats",
+        value: "Disable New Stats",
+        comment: "Menu item to disable the new stats"
     )
 
     static let tryNewStats = NSLocalizedString(
