@@ -22,6 +22,7 @@ extension StatsEvent {
         case .chartTypeChanged: .jetpackStatsChartTypeChanged
         case .chartMetricSelected: .jetpackStatsChartMetricSelected
         case .chartBarSelected: .jetpackStatsChartBarSelected
+        case .todayCardTapped: .jetpackStatsTodayCardTapped
         case .topListItemTapped: .jetpackStatsTopListItemTapped
         case .statsTabSelected: .jetpackStatsTabSelected
         case .errorEncountered: .jetpackStatsErrorEncountered

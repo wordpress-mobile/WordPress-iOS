@@ -45,6 +45,15 @@ struct StatsDateRangeFormatter {
         dateIntervalFormatter.timeStyle = .none
     }
 
+    /// Returns a preset name or a formatted date interval depending on what's
+    /// optimial for presentation.
+    func string(from dateRange: StatsDateRange) -> String {
+        if let preset = dateRange.preset, !preset.prefersDateIntervalFormatting {
+            return preset.localizedString
+        }
+        return string(from: dateRange.dateInterval)
+    }
+
     func string(from interval: DateInterval, now: Date = Date()) -> String {
         var calendar = Calendar.current
         calendar.timeZone = timeZone

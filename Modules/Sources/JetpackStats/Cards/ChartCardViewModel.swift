@@ -4,6 +4,7 @@ import SwiftUI
 final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
     var id: UUID { configuration.id }
     var metrics: [SiteMetric] { configuration.metrics }
+    let cardType: CardType = .chart
 
     @Published private(set) var configuration: ChartCardConfiguration
     @Published private(set) var chartData: [SiteMetric: ChartData] = [:]
@@ -75,7 +76,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
 
         // Track card shown event
         tracker?.send(.cardShown, properties: [
-            "card_type": "chart",
+            "card_type": CardType.chart.rawValue,
             "configuration": metrics.map { $0.analyticsName }.joined(separator: "_"),
             "chart_type": selectedChartType.rawValue
         ])

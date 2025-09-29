@@ -44,10 +44,12 @@ struct EditCardMenuContent: View {
         } label: {
             Label(Strings.Buttons.moveCard, systemImage: "arrow.up.arrow.down")
         }
-        Button {
-            cardViewModel.isEditing = true
-        } label: {
-            Label(Strings.Buttons.customize, systemImage: "widget.small")
+        if cardViewModel.isEditable {
+            Button {
+                cardViewModel.isEditing = true
+            } label: {
+                Label(Strings.Buttons.customize, systemImage: "widget.small")
+            }
         }
         Button(role: .destructive) {
             cardViewModel.configurationDelegate?.deleteCard(cardViewModel)

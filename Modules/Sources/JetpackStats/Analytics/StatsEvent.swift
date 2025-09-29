@@ -95,6 +95,10 @@ public enum StatsEvent {
     ///   - "value": The value of the selected bar
     case chartBarSelected
 
+    // MARK: - Today
+
+    case todayCardTapped
+
     // MARK: - List Events
 
     /// Top list item tapped

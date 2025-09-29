@@ -23,6 +23,7 @@ struct TimezoneInfoView: View {
         .popover(isPresented: $showingTimezoneInfo) {
             timezoneInfoContent
         }
+        .dynamicTypeSize(...DynamicTypeSize.xLarge)
     }
 
     private var formattedTimeZone: String {

@@ -65,7 +65,7 @@ struct TopListCard: View {
         .sheet(isPresented: $viewModel.isEditing) {
             NavigationStack {
                 TopListCardCustomizationView(viewModel: viewModel)
-                    .navigationTitle(Strings.AddChart.selectDataType)
+                    .navigationTitle(Strings.Cards.selectDataType)
                     .navigationBarTitleDisplayMode(.inline)
             }
             .presentationDetents([.medium, .large])

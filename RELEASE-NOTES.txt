@@ -2,6 +2,9 @@
 -----
 * [*] Fix a few minor visual issues on iOS 26 [#24863], [#24863], [#24901], [#24865], [#24866], [#24867], [#24890], [#24899]
 * [*] Fix an issue with "Homepage" not shown in Top List in New Stats [#24902]
+* [*] Fix a few minor visual issues on iOS 26 [#24863], [#24863], [#24901], [#24865], [#24866], [#24867], [#24890]
+* [**] [New Stats] Add "Today" card [#24898]
+* [*] Fix a few minor visual issues on iOS 26 [#24863], [#24863], [#24865], [#24866], [#24867], [#24890]
 * [*] [Intelligence] Add support for generating excerpts for posts [#24852]
 * [*] [Intelligence] Add auto-suggested tags for posts [#24886]
 * [*] [Intelligence] Add "Summarize Post" features in Reader [#24892]
@@ -14,6 +17,7 @@
 * [*] Improve performance and animations when showing a full Top List with a large number of items [#24868]
 * [*] Fix an issue with New Stats resetting the preferred preset after selecting a custom range [#24899]
 * [*] Show the Top 10 and 50 items in the Top List screen in a dedicated section [#24868]
+* [*] Add pull-to-refresh to the new Traffic tab [#24898]
 
 26.3.1
 ------

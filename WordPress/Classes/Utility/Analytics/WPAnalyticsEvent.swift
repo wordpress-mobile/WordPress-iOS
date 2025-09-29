@@ -649,6 +649,9 @@ import WordPressShared
     case jetpackStatsChartMetricSelected
     case jetpackStatsChartBarSelected
 
+    // Today
+    case jetpackStatsTodayCardTapped
+
     // List Events
     case jetpackStatsTopListItemTapped
 
@@ -1787,6 +1790,10 @@ import WordPressShared
             return "jetpack_stats_chart_metric_selected"
         case .jetpackStatsChartBarSelected:
             return "jetpack_stats_chart_bar_selected"
+
+        // Today
+        case .jetpackStatsTodayCardTapped:
+            return "jetpack_stats_today_card_tapped"
 
         // List Events
         case .jetpackStatsTopListItemTapped:

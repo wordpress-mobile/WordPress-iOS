@@ -5,8 +5,6 @@ struct ChartCard: View {
     @ObservedObject private var viewModel: ChartCardViewModel
 
     private var onDateRangeSelected: ((StatsDateRange) -> Void)?
-    private var backButtonTitle: String?
-    private var backButtonAction: (() -> Void)?
 
     private var dateRange: StatsDateRange { viewModel.dateRange }
     private var metrics: [SiteMetric] { viewModel.metrics }
@@ -23,7 +21,7 @@ struct ChartCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: Constants.step1) {
+            VStack(spacing: Constants.step0_5) {
                 headerView(for: selectedMetric)
                     .unredacted()
                 contentView
@@ -41,10 +39,7 @@ struct ChartCard: View {
             viewModel.onAppear()
         }
         .overlay(alignment: .topTrailing) {
-            HStack(alignment: .center, spacing: 0) {
-                backButton
-                moreMenu
-            }
+            moreMenu
         }
         .cardStyle()
         .grayscale(viewModel.isStale ? 1 : 0)
@@ -57,7 +52,7 @@ struct ChartCard: View {
         .sheet(isPresented: $viewModel.isEditing) {
             NavigationStack {
                 ChartCardCustomizationView(chartViewModel: viewModel)
-                    .navigationTitle(Strings.AddChart.selectMetric)
+                    .navigationTitle(Strings.Cards.selectMetric)
                     .navigationBarTitleDisplayMode(.inline)
             }
             .presentationDetents([.medium, .large])
@@ -77,31 +72,13 @@ struct ChartCard: View {
             StatsCardTitleView(title: metric.localizedTitle, showChevron: false)
             Spacer(minLength: 0)
         }
-        .animation(.spring, value: backButtonTitle)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Strings.Accessibility.cardTitle(metric.localizedTitle))
     }
 
     @ViewBuilder
-    private var backButton: some View {
-        if let title = backButtonTitle, let action = backButtonAction {
-            Button(action: action) {
-                HStack(spacing: 4) {
-                    Image(systemName: "chevron.backward")
-                        .font(.system(size: 12, weight: .bold))
-                    Text(title)
-                        .font(.system(size: 14, weight: .medium))
-                }
-                .foregroundColor(Constants.Colors.blue)
-            }
-            .buttonStyle(.plain)
-            .transition(.scale(scale: 0.9).combined(with: .opacity))
-        }
-    }
-
-    @ViewBuilder
     private var contentView: some View {
-        VStack(spacing: Constants.step0_5) {
+        VStack(spacing: 4) {
             chartHeaderView
                 .padding(.trailing, -Constants.step0_5)
             chartContentView
@@ -271,14 +248,6 @@ struct ChartCard: View {
         )
         onDateRangeSelected?(newDateRange)
         viewModel.tracker?.send(.chartBarSelected)
-    }
-
-    /// Configures the back button for navigation history
-    func backButton(title: String?, action: (() -> Void)?) -> ChartCard {
-        var copy = self
-        copy.backButtonTitle = title
-        copy.backButtonAction = action
-        return copy
     }
 
     /// Configures the action when a bar is tapped for drill-down navigation

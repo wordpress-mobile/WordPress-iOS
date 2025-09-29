@@ -58,7 +58,7 @@ public class AdaptiveTabBar: UIControl {
     private var indicatorCenterXConstraint: NSLayoutConstraint?
     private var previousWidth: CGFloat?
 
-    public let tabBarHeight: CGFloat = 44
+    public let tabBarHeight: CGFloat = 40
 
     // MARK: - Initialization
 

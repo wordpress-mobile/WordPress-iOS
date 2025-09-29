@@ -3,6 +3,7 @@ import SwiftUI
 @MainActor
 final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     var id: UUID { configuration.id }
+    let cardType: CardType = .topList
     let items: [TopListItemType]
     let groupedItems: [[TopListItemType]]
 
@@ -105,7 +106,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
 
         // Track card shown event
         tracker?.send(.cardShown, properties: [
-            "card_type": "top_list",
+            "card_type": CardType.topList.rawValue,
             "configuration": "\(selection.item.analyticsName)_\(selection.metric.analyticsName)",
             "item_type": selection.item.analyticsName,
             "metric": selection.metric.analyticsName
