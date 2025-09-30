@@ -11,6 +11,10 @@ public actor IntelligenceService {
     /// https://developer.apple.com/documentation/foundationmodels/generating-content-and-performing-tasks-with-foundation-models#Consider-context-size-limits-per-session
     static let contextSizeLimit = 4096
 
+    public nonisolated static var isSupported: Bool {
+        LanguageModelHelper.isSupported
+    }
+
     public init() {}
 
     /// Suggests tags for a WordPress post.
@@ -89,9 +93,38 @@ public actor IntelligenceService {
             .filter { !existingPostTags.contains($0) }
     }
 
-    public nonisolated func extractRelevantText(from post: String) -> String {
+    /// Summarizes a WordPress post.
+    ///
+    /// - Parameter content: The content of the WordPress post (HTML or plain text).
+    /// - Returns: An async stream of partial summaries as they are generated.
+    public func summarizePost(content: String) -> LanguageModelSession.ResponseStream<String> {
+        let content = extractRelevantText(from: content, ratio: 0.8)
+
+        let instructions = """
+        You are helping a WordPress user understand the content of a post.
+        Generate a concise summary that captures the main points and key information.
+        The summary should be clear, informative, and written in a neutral tone.
+
+        Do not include anything other than the summary in the response.
+        """
+
+        let session = LanguageModelSession(
+            model: .init(guardrails: .permissiveContentTransformations),
+            instructions: instructions
+        )
+
+        let prompt = """
+        Summarize the following post:
+
+        \(content)
+        """
+
+        return session.streamResponse(to: prompt)
+    }
+
+    public nonisolated func extractRelevantText(from post: String, ratio: CGFloat = 0.6) -> String {
         let extract = try? IntelligenceUtilities.extractRelevantText(from: post)
-        let postSizeLimit = Double(IntelligenceService.contextSizeLimit) * 0.6
+        let postSizeLimit = Double(IntelligenceService.contextSizeLimit) * ratio
         return String((extract ?? post).prefix(Int(postSizeLimit)))
     }
 }

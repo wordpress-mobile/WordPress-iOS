@@ -3,6 +3,7 @@
 * [*] Fix a few minor visual issues on iOS 26 [#24863], [#24863], [#24901], [#24865], [#24866], [#24867], [#24890]
 * [*] [Intelligence] Add support for generating excerpts for posts [#24852]
 * [*] [Intelligence] Add auto-suggested tags for posts [#24886]
+* [*] [Intelligence] Add "Summarize Post" features in Reader [#24892]
 * [*] Fix an issue with themes in Reader [#24881]
 * [*] Fix an issue with Reader article rendering when iOS "Display Zoom" is enabled [#24895]
 * [*] Fix an issue with "Add Media" button not visible in "Media" under some scenarios [#24900]
