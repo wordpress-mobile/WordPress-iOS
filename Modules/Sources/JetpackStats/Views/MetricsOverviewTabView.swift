@@ -88,7 +88,7 @@ private struct MetricItemView: View {
     // MARK: - Private Views
 
     private var tabContent: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(alignment: .leading, spacing: -2) {
             headerView
                 .unredacted()
             metricsView

@@ -64,7 +64,7 @@ struct TodayCard: View {
                 .font(.caption.weight(.medium))
         }
         .foregroundStyle(Color.secondary)
-        .offset(y: 9) // Get it close to the value
+        .offset(y: 7) // Get it close to the value
         .dynamicTypeSize(...DynamicTypeSize.large)
     }
 
