@@ -74,6 +74,9 @@ struct PublishPostView: View {
         }
         .environment(\.defaultMinListHeaderHeight, 0) // Reduces top inset a bit
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            viewModel.onAppear()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 buttonCancel
