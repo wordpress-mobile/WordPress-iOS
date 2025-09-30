@@ -7,6 +7,7 @@
 * [*] Fix an issue with Reader article rendering when iOS "Display Zoom" is enabled [#24895]
 * [*] Fix an issue with "Add Media" button not visible in "Media" under some scenarios [#24900]
 * [*] Fix performance issues with search in Reader Subscriptions [#24841]
+* [*] Fix rare crash in Stats / Subscribers [#24907]
 * [*] Improve performance and animations when showing a full Top List with a large number of items [#24868]
 * [*] Show the Top 10 and 50 items in the Top List screen in a dedicated section [#24868]
 
