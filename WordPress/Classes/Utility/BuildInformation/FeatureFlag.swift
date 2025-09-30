@@ -86,11 +86,12 @@ public enum FeatureFlag: Int, CaseIterable {
         case .newStats:
             return false
         case .newPublishingSheet:
-            return false
+            return true
         case .mediaQuotaView:
             return false
         case .intelligence:
-            return BuildConfiguration.current == .debug
+            let languageCode = Locale.current.languageCode
+            return (languageCode ?? "en").hasPrefix("en")
         }
     }
 
