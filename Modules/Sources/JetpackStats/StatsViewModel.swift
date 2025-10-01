@@ -38,7 +38,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
         Self.performMigrations(userDefaults: userDefaults, context: context)
 
-        let preset = Self.loadDateRangePreset(from: userDefaults) {
+        let preset = Self.loadDateRangePreset(from: userDefaults)
         self.dateRange = context.calendar.makeDateRange(for: preset ?? .last7Days)
 
         let configuraiton = Self.getConfiguration(from: userDefaults)
