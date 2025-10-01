@@ -673,6 +673,10 @@ import WordPressShared
     case intelligenceExcerptSelected
     case intelligenceExcerptOptionsGenerated
     case intelligenceUnavailableViewShown
+    case intelligenceSuggestedTagsGenerated
+    case intelligenceSuggestedTagSelected
+    case intelligenceGenerationFailed
+    case intelligenceSummarizeReaderPostTapped
 
     /// A String that represents the event
     var value: String {
@@ -1823,6 +1827,14 @@ import WordPressShared
             return "intelligence_excerpt_options_generated"
         case .intelligenceUnavailableViewShown:
             return "intelligence_unavailable_view_shown"
+        case .intelligenceSuggestedTagsGenerated:
+            return "intelligence_suggested_tags_generated"
+        case .intelligenceSuggestedTagSelected:
+            return "intelligence_suggested_tag_selected"
+        case .intelligenceGenerationFailed:
+            return "intelligence_generation_failed"
+        case .intelligenceSummarizeReaderPostTapped:
+            return "intelligence_summarize_reader_post_tapped"
         } // END OF SWITCH
     }
 

@@ -23,6 +23,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     @Published private(set) var hasChanges = false
     @Published private(set) var displayedCategories: [String] = []
     @Published private(set) var displayedTags: [String] = []
+    @Published private(set) var suggestedTags: [String] = []
     @Published private(set) var parentPageText: String?
     @Published private(set) var socialSharingState: SocialSharingSectionState?
 
@@ -164,6 +165,27 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         WPAnalytics.track(.postSettingsShown)
     }
 
+    func onAppear() {
+        let task = Task { @MainActor [weak self, post] in
+            do {
+                let tags = try await TagSuggestionsService().getSuggestedTags(for: post)
+                guard let self else { return }
+                if !tags.isEmpty {
+                    withAnimation {
+                        self.suggestedTags = tags
+                    }
+                }
+                self.track(.intelligenceSuggestedTagsGenerated, properties: ["count": tags.count])
+            } catch {
+                guard let self else { return }
+                self.track(.intelligenceGenerationFailed, properties: ["description": (error as NSError).debugDescription])
+            }
+        }
+        cancellables.insert(AnyCancellable {
+            task.cancel()
+        })
+    }
+
     // MARK: - Refresh
 
     private func refresh(from old: PostSettings, to new: PostSettings) {
@@ -303,6 +325,13 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         settings.password = selection.password.isEmpty ? nil : selection.password
     }
 
+    func didSelectSuggestedTag(_ tag: String) {
+        suggestedTags.removeAll(where: { $0 == tag })
+        settings.tags.append(",\(tag)")
+
+        track(.intelligenceSuggestedTagSelected)
+    }
+
     // MARK: - Social Sharing
 
     private func refreshSocialSharingState() {
@@ -434,7 +463,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         }
         if old.featuredImageID != new.featuredImageID {
             let action = new.featuredImageID == nil ? "removed" : "changed"
-            WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": source, "action": action])
+            track(.editorPostFeaturedImageChanged, properties: ["action": action])
         }
         if old.excerpt != new.excerpt {
             track(.editorPostExcerptChanged)
@@ -452,8 +481,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         }
     }
 
-    private func track(_ event: WPAnalyticsEvent) {
-        WPAnalytics.track(event, properties: ["via": source])
+    private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:]) {
+        var properties = properties
+        properties["via"] = source
+        WPAnalytics.track(event, properties: properties)
     }
 
     private var source: String {

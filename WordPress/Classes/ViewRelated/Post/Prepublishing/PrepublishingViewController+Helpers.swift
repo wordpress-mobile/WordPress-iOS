@@ -17,7 +17,7 @@ extension PrepublishingViewController {
         // - warning: Has to be UIKit because some of the  `PostSettingsView` rows rely on it.
         let navigationVC = UINavigationController(rootViewController: publishVC)
         navigationVC.sheetPresentationController?.detents = [
-            .custom(identifier: .medium, resolver: { context in 460 }),
+            .custom(identifier: .medium, resolver: { context in 526 }),
             .large()
         ]
         presentingViewController.present(navigationVC, animated: true)

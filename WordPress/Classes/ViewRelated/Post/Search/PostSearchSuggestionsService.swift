@@ -99,8 +99,7 @@ actor PostSearchSuggestionsService {
         }
         let tags = try? await coreData.performQuery { [blogID] context in
             let blog = try context.existingObject(with: blogID)
-            let tags = (blog.tags as? Set<PostTag>) ?? []
-            return tags.compactMap {
+            return (blog.tags ?? []).compactMap {
                 $0.name.map(PostSearchTagToken.init)
             }
         }

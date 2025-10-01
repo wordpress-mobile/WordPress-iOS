@@ -316,18 +316,28 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     func configureToolbarButtons() {
 
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-
-        let items = [
-            backButton,
-            space,
-            forwardButton,
-            space,
-            shareButton,
-            space,
-            safariButton
-        ]
-        for item in items {
-            item.tintColor = UIAppColor.tint
+        let items: [UIBarButtonItem]
+        if #available(iOS 26, *) {
+            items = [
+                backButton,
+                forwardButton,
+                space,
+                shareButton,
+                safariButton
+            ]
+        } else {
+            items = [
+                backButton,
+                space,
+                forwardButton,
+                space,
+                shareButton,
+                space,
+                safariButton
+            ]
+            for item in items {
+                item.tintColor = UIAppColor.tint
+            }
         }
         setToolbarItems(items, animated: false)
     }
