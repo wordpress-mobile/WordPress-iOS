@@ -153,6 +153,7 @@ struct PublishPostView: View {
             .buttonBorderShape(.capsule)
             .tint(isDisabled ? Color(.opaqueSeparator) : AppColor.primary)
             .disabled(isDisabled)
+            .accessibilityIdentifier("publish")
         }
     }
 }
