@@ -58,17 +58,12 @@ struct PublishPostView: View {
 
     var body: some View {
         Form {
-            Section {
-                if let state = uploadsViewModel.uploadingSnackbarState {
-                    NavigationLink {
-                        PostMediaUploadsView(viewModel: uploadsViewModel)
-                    } label: {
-                        PostMediaUploadsSnackbarView(state: state)
-                    }
+            if let state = uploadsViewModel.uploadingSnackbarState {
+                NavigationLink {
+                    PostMediaUploadsView(viewModel: uploadsViewModel)
+                } label: {
+                    PostMediaUploadsSnackbarView(state: state)
                 }
-                BlogListSiteView(site: .init(blog: viewModel.post.blog))
-            } header: {
-                SectionHeader(Strings.readyToPublish)
             }
             PostSettingsFormContentView(viewModel: viewModel)
         }
@@ -94,7 +89,6 @@ struct PublishPostView: View {
                     }
             }
             ToolbarItemGroup(placement: .topBarTrailing) {
-                buttonSchedule
                 buttonPublish
             }
         }
@@ -126,15 +120,6 @@ struct PublishPostView: View {
             isShowingDiscardChangesAlert = true
         } else {
             viewModel.buttonCancelTapped()
-        }
-    }
-
-    @ViewBuilder
-    private var buttonSchedule: some View {
-        NavigationLink {
-            PostSettingsPublishDatePicker(viewModel: viewModel)
-        } label: {
-            Image(systemName: "calendar")
         }
     }
 
@@ -209,11 +194,5 @@ enum PrepublishingSheetStrings {
         "prepublishing.saveChanges.button",
         value: "Save Changes",
         comment: "Button to confirm discarding changes"
-    )
-
-    static let readyToPublish = NSLocalizedString(
-        "prepublishing.publishingSectionTitle",
-        value: "Ready to Publish?",
-        comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
     )
 }
