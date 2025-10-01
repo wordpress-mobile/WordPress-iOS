@@ -1,4 +1,5 @@
 import Foundation
+
 import WordPressKitObjC
 
 /// The purpose of this class is to encapsulate all of the interaction with the REST endpoint,
@@ -21,11 +22,15 @@ import WordPressKitObjC
             "push_token": token
         ]
 
+        WPKitLogInfo("authorizeLoginSent")
+
         wordPressComRESTAPI.post(requestUrl, parameters: parameters,
-                                 success: { _, _ in
+                                 success: { object, response in
+            WPKitLogInfo("authorizeLoginSuccess. object: \(object), response: \(response)")
                                     success?()
                                  },
-                                 failure: { _, _ in
+                                 failure: { error, response in
+            WPKitLogError("authorizeLoginFailure. error: \(error), response: \(response)")
                                     failure?()
                                  })
     }
