@@ -55,6 +55,9 @@ private struct PostSettingsView: View {
         }
         .accessibilityIdentifier("post_settings_form")
         .disabled(viewModel.isSaving)
+        .onAppear {
+            viewModel.onAppear()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 buttonCancel
@@ -131,6 +134,9 @@ struct PostSettingsFormContentView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
 
     var body: some View {
+        if viewModel.context == .publishing {
+            publishingOptionsSection
+        }
         featuredImageSection
         if viewModel.isPost {
             organizationSection
@@ -146,12 +152,11 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var publishingOptionsSection: some View {
         Section {
+            BlogListSiteView(site: .init(blog: viewModel.post.blog))
             publishDateRow
             visibilityRow
         } header: {
-            BlogListSiteView(site: .init(blog: viewModel.post.blog))
-                .padding(.bottom, 8)
-                .foregroundStyle(.primary)
+            SectionHeader(Strings.readyToPublish)
         }
     }
 
@@ -174,6 +179,7 @@ struct PostSettingsFormContentView: View {
         Section {
             categoriesRow
             tagsRow
+            suggestedTagsRow
         } header: {
             SectionHeader(Strings.taxonomyHeader)
         }
@@ -191,6 +197,19 @@ struct PostSettingsFormContentView: View {
             PostSettingsTagsRow(tags: viewModel.displayedTags)
         }
         .accessibilityIdentifier("post_settings_tags")
+    }
+
+    @ViewBuilder
+    private var suggestedTagsRow: some View {
+        if !viewModel.suggestedTags.isEmpty {
+            PostSettingsTagSuggestionsView(suggestions: viewModel.suggestedTags) { tag in
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    viewModel.didSelectSuggestedTag(tag)
+                }
+            }
+            .listRowSeparator(.hidden, edges: .top)
+            .padding(.top, -12)
+        }
     }
 
     // MARK: - "Excerpt" Section
@@ -608,5 +627,11 @@ private enum Strings {
         "postSettings.socialSharing.header",
         value: "Social Sharing",
         comment: "Label for the preview button in Post Settings"
+    )
+
+    static let readyToPublish = NSLocalizedString(
+        "prepublishing.publishingSectionTitle",
+        value: "Ready to Publish?",
+        comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
     )
 }

@@ -122,19 +122,23 @@ class PreviewWebKitViewController: WebKitViewController {
     func toolbarItems(linkBehavior: LinkBehavior) -> [UIBarButtonItem] {
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
-        let items: [UIBarButtonItem]
+        var adaptiveSpace: UIBarButtonItem? {
+            if #available(iOS 26, *) { nil } else { space }
+        }
+
+        let items: [UIBarButtonItem?]
 
         switch linkBehavior {
         case .all:
             items = [
                 backButton,
-                space,
+                adaptiveSpace,
                 forwardButton,
                 space,
                 shareButton,
-                space,
+                adaptiveSpace,
                 safariButton,
-                space,
+                adaptiveSpace,
                 previewButton
             ]
         case .withBaseURLOnly:
@@ -143,7 +147,7 @@ class PreviewWebKitViewController: WebKitViewController {
             if canPublish {
                 items = [
                     backButton,
-                    space,
+                    adaptiveSpace,
                     forwardButton,
                     space,
                     previewButton
@@ -151,13 +155,13 @@ class PreviewWebKitViewController: WebKitViewController {
             } else {
                 items = [
                     backButton,
-                    space,
+                    adaptiveSpace,
                     forwardButton,
                     space,
                     shareButton,
-                    space,
+                    adaptiveSpace,
                     safariButton,
-                    space,
+                    adaptiveSpace,
                     previewButton
                 ]
             }
@@ -165,11 +169,11 @@ class PreviewWebKitViewController: WebKitViewController {
             if canPublish {
                 items = [space, previewButton]
             } else {
-                items = [shareButton, space, safariButton, space, previewButton]
+                items = [shareButton, adaptiveSpace, safariButton, space, previewButton]
             }
         }
 
-        return items
+        return items.compactMap { $0 }
     }
 
     // MARK: Button Actions

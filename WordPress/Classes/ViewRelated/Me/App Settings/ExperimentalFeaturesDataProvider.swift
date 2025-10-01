@@ -6,10 +6,11 @@ import SwiftUI
 class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvider {
 
     let flags: [OverridableFlag] = [
+        FeatureFlag.intelligence,
+        FeatureFlag.newStats,
         FeatureFlag.allowApplicationPasswords,
         RemoteFeatureFlag.newGutenberg,
-        FeatureFlag.newGutenbergThemeStyles,
-        FeatureFlag.newStats,
+        FeatureFlag.newGutenbergThemeStyles
     ]
 
     private let flagStore = FeatureFlagOverrideStore()
