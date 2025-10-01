@@ -876,11 +876,14 @@ private extension SiteStatsDetailsViewModel {
         let emailsSummaryPosts = subscribersStore.emailsSummary.value.data?.posts ?? []
 
         return emailsSummaryPosts.map {
-            StatsTotalRowData(name: $0.title,
-                              data: $0.opens.abbreviatedString(),
-                              secondData: $0.clicks.abbreviatedString(),
-                              multiline: false,
-                              statSection: .subscribersEmailsSummary)
+            StatsTotalRowData(
+                id: UUID(),
+                name: $0.title,
+                data: $0.opens.abbreviatedString(),
+                secondData: $0.clicks.abbreviatedString(),
+                multiline: false,
+                statSection: .subscribersEmailsSummary
+            )
         }
     }
 

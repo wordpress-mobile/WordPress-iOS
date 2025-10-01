@@ -134,6 +134,9 @@ struct PostSettingsFormContentView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
 
     var body: some View {
+        if viewModel.context == .publishing {
+            publishingOptionsSection
+        }
         featuredImageSection
         if viewModel.isPost {
             organizationSection
@@ -149,12 +152,11 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var publishingOptionsSection: some View {
         Section {
+            BlogListSiteView(site: .init(blog: viewModel.post.blog))
             publishDateRow
             visibilityRow
         } header: {
-            BlogListSiteView(site: .init(blog: viewModel.post.blog))
-                .padding(.bottom, 8)
-                .foregroundStyle(.primary)
+            SectionHeader(Strings.readyToPublish)
         }
     }
 
@@ -625,5 +627,11 @@ private enum Strings {
         "postSettings.socialSharing.header",
         value: "Social Sharing",
         comment: "Label for the preview button in Post Settings"
+    )
+
+    static let readyToPublish = NSLocalizedString(
+        "prepublishing.publishingSectionTitle",
+        value: "Ready to Publish?",
+        comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
     )
 }

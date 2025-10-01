@@ -12,7 +12,7 @@ public class PrepublishingSheetScreen: ScreenObject {
     }
 
     private let publishDateButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.staticTexts["Publish Date"]
+        $0.staticTexts["Date"]
     }
 
     private let closeButtonGetter: (XCUIApplication) -> XCUIElement = {
