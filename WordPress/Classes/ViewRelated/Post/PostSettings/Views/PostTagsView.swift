@@ -58,7 +58,11 @@ struct PostTagsView: View {
                 .padding(.horizontal)
                 .padding(.top)
             if !viewModel.searchText.isEmpty {
-                DataViewSearchView(searchText: viewModel.searchText, delay: nil, search: viewModel.search) { response in
+                DataViewSearchView(
+                    searchText: viewModel.searchText,
+                    delay: viewModel.isLocalSearchEnabled ? 0 : nil,
+                    search: viewModel.search
+                ) { response in
                     TagsPaginatedForEach(response: response, viewModel: viewModel)
                 }
                 .emptyStateViewHiddden()
