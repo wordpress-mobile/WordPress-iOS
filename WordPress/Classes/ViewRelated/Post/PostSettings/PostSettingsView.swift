@@ -195,7 +195,7 @@ struct PostSettingsFormContentView: View {
     private var tagsRow: some View {
         NavigationLink {
             PostTagsView(blog: viewModel.post.blog, selectedTags: viewModel.settings.tags) { tags in
-                viewModel.settings.tags = tags
+                viewModel.didSelectTags(tags)
             }
         } label: {
             PostSettingsTagsRow(tags: viewModel.displayedTags)
