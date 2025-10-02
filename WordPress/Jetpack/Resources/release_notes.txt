@@ -1,7 +1,18 @@
-We made some thoughtful improvements to make your Jetpack experience even smoother.
-
-We added support for iOS 26, so you can take advantage of all the latest features your device has to offer. Everything looks and feels just right.
-
-The Reader got some love with visual updates to the article screen, making it easier on the eyes when you're catching up on your favorite content.
-
-We also made some behind-the-scenes improvements to buttons and navigation throughout the app. You'll notice things feel more polished and consistent, especially in the Editor, Settings, and Stats screens.
+* [**] [New Stats] Add "Today" card [#24898]
+* [**] [Intelligence] Add support for generating excerpts for posts [#24852]
+* [**] [Intelligence] Add auto-suggested tags for posts [#24886]
+* [**] [Intelligence] Add "Summarize Post" features in Reader [#24892]
+* [*] Fix a few minor visual issues on iOS 26 [#24863], [#24863], [#24901], [#24865], [#24866], [#24867], [#24890], [#24899]
+* [*] Fix an issue with "Homepage" not shown in Top List in New Stats [#24902]
+* [*] Fix an issue with themes in Reader [#24881]
+* [*] Fix an issue with Reader article rendering when iOS "Display Zoom" is enabled [#24895]
+* [*] Fix an issue with "Add Media" button not visible in "Media" under some scenarios [#24900]
+* [*] Fix performance issues with search in Reader Subscriptions [#24841]
+* [*] Fix New Stats layout not adapting for resizing windows [#24908]
+* [*] Fix rare crash in Stats / Subscribers [#24907]
+* [*] Fix an issue with toolbar in Reader articles sporadically reappearing [#24896]
+* [*] Improve performance and animations when showing a full Top List with a large number of items [#24868]
+* [*] Fix an issue with New Stats resetting the preferred preset after selecting a custom range [#24899]
+* [*] Show the Top 10 and 50 items in the Top List screen in a dedicated section [#24868]
+* [*] Add pull-to-refresh to the new Traffic tab [#24898]
+* [*] Improve the "Tags" picker in "Post Settings" [#24883]
