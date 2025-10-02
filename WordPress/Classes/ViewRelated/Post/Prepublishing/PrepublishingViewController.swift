@@ -322,14 +322,14 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private func didTapTagCell() {
         let post = post as! Post
-        let viewModel = TagsViewModel(blog: post.blog, selectedTags: post.tags, mode: .selection(onSelectedTagsChanged: { [weak self] tags in
+        let view = PostTagsView(blog: post.blog, selectedTags: post.tags) {
+            [weak self] tags in
             guard let self else { return }
             WPAnalytics.track(.editorPostTagsChanged, properties: Constants.analyticsDefaultProperty)
 
-            (self.post as! Post).tags = tags
+            post.tags = tags
             self.reloadData()
-        }))
-        let view = PostTagsView(viewModel: viewModel)
+        }
         let hostVC = UIHostingController(rootView: view)
         navigationController?.pushViewController(hostVC, animated: true)
     }

@@ -9,6 +9,14 @@ struct PostTagsView: View {
 
     @State private var isKeyboardPresented = false
 
+    /// - note: The tags are encoded as a comma-separate list.
+    init(blog: Blog, selectedTags: String?, onSelectionChanged: @escaping (String) -> Void) {
+        let viewModel = TagsViewModel(blog: blog, selectedTags: selectedTags, mode: .selection(onSelectedTagsChanged: { tags in
+            onSelectionChanged(tags)
+        }))
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
+
     var body: some View {
         GeometryReader { proxy in
             ScrollViewReader { proxy in

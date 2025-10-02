@@ -17,7 +17,7 @@ class TagsViewModel: ObservableObject {
     @Published private(set) var response: TagsPaginatedResponse?
     @Published private(set) var isLoading = false
     @Published private(set) var error: Error?
-    @Published private(set) var selectedTags: [String] = [] {
+    @Published private(set) var selectedTags: [String] {
         didSet {
             if case .selection(let onSelectedTagsChanged) = mode {
                 onSelectedTagsChanged?(selectedTags.joined(separator: ", "))
@@ -39,9 +39,7 @@ class TagsViewModel: ObservableObject {
     init(blog: Blog, selectedTags: String? = nil, mode: TagsViewMode) {
         self.tagsService = TagsService(blog: blog)
         self.mode = mode
-        self.selectedTags = selectedTags?.split(separator: ",").map {
-            $0.trimmingCharacters(in: .whitespacesAndNewlines)
-        } ?? []
+        self.selectedTags = AbstractPost.makeTags(from: selectedTags ?? "")
         self.selectedTagsSet = Set(self.selectedTags.map { $0.lowercased() })
     }
 

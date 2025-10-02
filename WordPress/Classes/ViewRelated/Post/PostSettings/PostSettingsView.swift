@@ -194,15 +194,9 @@ struct PostSettingsFormContentView: View {
 
     private var tagsRow: some View {
         NavigationLink {
-            let tags = TagsViewModel(
-                blog: viewModel.post.blog,
-                selectedTags: viewModel.settings.tags,
-                mode: .selection(onSelectedTagsChanged: nil)
-            )
-            PostTagsView(viewModel: tags)
-                .onDisappear {
-                    self.viewModel.settings.tags = tags.selectedTags.joined(separator: ",")
-                }
+            PostTagsView(blog: viewModel.post.blog, selectedTags: viewModel.settings.tags) { tags in
+                viewModel.settings.tags = tags
+            }
         } label: {
             PostSettingsTagsRow(tags: viewModel.displayedTags)
         }
