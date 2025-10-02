@@ -12,21 +12,23 @@ extension PostEditor {
         let originalFeaturedImageID = post.featuredImage?.mediaID
         let viewModel = PostSettingsViewModel(post: post)
         viewModel.onEditorPostSaved = { [weak self] in
-            self?.editorContentWasUpdated()
-
-            // Check if featured image changed and notify Gutenberg
-            if let self,
-               let gutenbergVC = self as? GutenbergViewController,
-               originalFeaturedImageID != self.post.featuredImage?.mediaID {
-                let newMediaID = self.post.featuredImage?.mediaID ?? GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet as NSNumber
-                gutenbergVC.gutenbergDidRequestFeaturedImageId(newMediaID)
-            }
-
+            self?.didSavePostSettings(originalFeaturedImageID: originalFeaturedImageID)
             self?.navigationController?.dismiss(animated: true)
         }
         let postSettingsVC = PostSettingsViewController(viewModel: viewModel)
         let navigation = UINavigationController(rootViewController: postSettingsVC)
         self.navigationController?.present(navigation, animated: true)
+    }
+
+    func didSavePostSettings(originalFeaturedImageID: NSNumber?) {
+        editorContentWasUpdated()
+
+        // Check if featured image changed and notify Gutenberg
+        if let gutenbergVC = self as? GutenbergViewController,
+           originalFeaturedImageID != self.post.featuredImage?.mediaID {
+            let newMediaID = self.post.featuredImage?.mediaID ?? GutenbergFeaturedImageHelper.mediaIdNoFeaturedImageSet as NSNumber
+            gutenbergVC.gutenbergDidRequestFeaturedImageId(newMediaID)
+        }
     }
 
     private func savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {

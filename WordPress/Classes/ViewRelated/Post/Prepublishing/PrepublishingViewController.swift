@@ -8,8 +8,11 @@ import WordPressUI
 enum PrepublishingSheetResult {
     /// The sheet published the post (new behavior)
     case published
-    /// The user cancelled.
-    case cancelled
+    /// The user cancelled publishing.
+    ///
+    /// - parameter isSaved: If `true`, the changes to the settings made in
+    /// the publishing sheet were saved.
+    case cancelled(isSaved: Bool = false)
 }
 
 final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIAdaptivePresentationControllerDelegate {
@@ -160,7 +163,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     private func didCancel() {
-        getCompletion()?(.cancelled)
+        getCompletion()?(.cancelled())
         deleteRevisionIfNeeded()
     }
 

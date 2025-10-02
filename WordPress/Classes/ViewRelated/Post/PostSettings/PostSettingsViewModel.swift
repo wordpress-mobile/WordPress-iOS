@@ -240,6 +240,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             didSaveChanges()
             wpAssert(onEditorPostSaved != nil, "configuration missing")
             onEditorPostSaved?()
+            onDismiss?()
             return
         }
 

@@ -35,6 +35,10 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        viewModel.onEditorPostSaved = { [weak self] in
+            self?.onCompletion?(.cancelled(isSaved: true))
+        }
+
         viewModel.onPostPublished = { [weak self] in
             self?.onCompletion?(.published)
         }

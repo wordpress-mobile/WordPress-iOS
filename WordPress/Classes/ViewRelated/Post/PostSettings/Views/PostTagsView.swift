@@ -60,7 +60,7 @@ struct PostTagsView: View {
             if !viewModel.searchText.isEmpty {
                 DataViewSearchView(
                     searchText: viewModel.searchText,
-                    delay: viewModel.isLocalSearchEnabled ? 0 : nil,
+                    delay: viewModel.isLocalSearchEnabled ? nil : .milliseconds(330),
                     search: viewModel.search
                 ) { response in
                     TagsPaginatedForEach(response: response, viewModel: viewModel)
