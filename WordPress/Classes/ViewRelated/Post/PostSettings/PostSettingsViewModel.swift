@@ -436,13 +436,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         viewController?.navigationController?.pushViewController(categoriesVC, animated: true)
     }
 
-    func showTagsPicker() {
-        let tagsVC = TagsViewController(blog: post.blog, selectedTags: settings.tags) { [weak self] newTagsString in
-            self?.settings.tags = newTagsString
-        }
-        viewController?.navigationController?.pushViewController(tagsVC, animated: true)
-    }
-
     // MARK: - Analytics
 
     private func trackChanges(from old: PostSettings, to new: PostSettings) {

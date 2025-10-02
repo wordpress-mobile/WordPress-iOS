@@ -5,6 +5,7 @@ struct TrafficTabView: View {
 
     @State private var isShowingCustomRangePicker = false
     @State private var isShowingAddCardSheet = false
+    @State private var isShowingColumns = false
 
     @Environment(\.context) var context
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -39,6 +40,11 @@ struct TrafficTabView: View {
             .animation(.spring, value: viewModel.cards.map(\.id))
             .listStyle(.plain)
         }
+        .onGeometryChange(for: Bool.self, of: { proxy in
+            proxy.size.width > 680
+        }, action: {
+            isShowingColumns = $0
+        })
         .toolbar {
             if horizontalSizeClass == .regular {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -58,7 +64,7 @@ struct TrafficTabView: View {
 
     @ViewBuilder
     private var cards: some View {
-        if horizontalSizeClass == .regular {
+        if isShowingColumns {
             var cards = viewModel.cards
             if let first = cards.first as? ChartCardViewModel {
                 let _ = cards.removeFirst()

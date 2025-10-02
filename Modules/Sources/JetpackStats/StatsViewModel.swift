@@ -32,12 +32,8 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         self.context = context
         self.userDefaults = userDefaults
 
-        // Try to load the saved preset, otherwise use the initial date range
-        if let savedPreset = Self.loadDateRangePreset(from: userDefaults, key: dateRangePresetKey) {
-            self.dateRange = context.calendar.makeDateRange(for: savedPreset)
-        } else {
-            self.dateRange = context.calendar.makeDateRange(for: .last7Days)
-        }
+        let preset = Self.loadDateRangePreset(from: userDefaults, key: dateRangePresetKey)
+        self.dateRange = context.calendar.makeDateRange(for: preset ?? .last7Days)
 
         self.trafficCardConfiguration = Self.loadConfiguration(
             from: userDefaults,
@@ -273,7 +269,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         if let preset = dateRange.preset {
             userDefaults.set(preset.rawValue, forKey: dateRangePresetKey)
         } else {
-            userDefaults.removeObject(forKey: dateRangePresetKey)
+            // Do nothing – remember last used preset-based period
         }
     }
 
