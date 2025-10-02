@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressUI
 
 struct TopListCardCustomizationView: View {
     let viewModel: TopListViewModel
@@ -82,6 +83,7 @@ struct TopListCardCustomizationView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .listRowBackground(Color.clear)
     }
 
     private func updateConfiguration(with item: TopListItemType) {

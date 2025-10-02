@@ -50,7 +50,6 @@ private extension StatsTopPost {
     // but with keys just subtly different enough that we need a custom init here.
     init?(topPostsJSONDictionary jsonDictionary: [String: AnyObject]) {
         guard
-            let url = jsonDictionary["href"] as? String,
             let postID = jsonDictionary["id"] as? Int,
             let title = jsonDictionary["title"] as? String,
             let viewsCount = jsonDictionary["views"] as? Int,
@@ -62,7 +61,7 @@ private extension StatsTopPost {
         self.title = title
         self.date = jsonDictionary["date"] as? String
         self.postID = postID
-        self.postURL = URL(string: url)
+        self.postURL = (jsonDictionary["href"] as? String).flatMap(URL.init)
         self.viewsCount = viewsCount
         self.kind = type(of: self).kind(from: typeString)
     }

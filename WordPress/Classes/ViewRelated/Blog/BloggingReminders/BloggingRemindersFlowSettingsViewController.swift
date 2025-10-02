@@ -284,6 +284,12 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init(handler: { [weak self] _ in
             self?.presentingViewController?.dismiss(animated: true)
         }))
+
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { [weak self] (_: Self, traitCollection) in
+            guard let self else { return }
+
+            self.imageView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory || !self.shouldShowFullUI
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -300,12 +306,6 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
         if isBeingDismissedDirectlyOrByAncestor() && navigationController?.viewControllers.last == self {
             tracker.flowDismissed(source: .dayPicker)
         }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        imageView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory || !shouldShowFullUI
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

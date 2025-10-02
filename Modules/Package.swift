@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "Modules",
     platforms: [
-        .iOS(.v16),
+        .iOS(.v17),
     ],
     products: XcodeSupport.products + [
         .library(name: "AsyncImageKit", targets: ["AsyncImageKit"]),
@@ -53,7 +53,7 @@ let package = Package(
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20250901"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.8.1-alpha.2"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.8.1"),
         .package(
             url: "https://github.com/Automattic/color-studio",
             revision: "bf141adc75e2769eb469a3e095bdc93dc30be8de"
@@ -154,6 +154,7 @@ let package = Package(
             name: "WordPressShared",
             dependencies: [
                 .product(name: "Reachability", package: "Reachability"),
+                .product(name: "SwiftSoup", package: "SwiftSoup"),
                 .target(name: "SFHFKeychainUtils"),
                 .target(name: "WordPressSharedObjC"),
             ],

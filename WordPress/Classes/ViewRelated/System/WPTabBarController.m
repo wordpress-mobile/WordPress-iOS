@@ -356,7 +356,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     // Discount Zendesk unread notifications when determining if we need to show the notificationsTabBarImageUnread.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - ObjCBridge.unreadNotificationsCount;
+#pragma clang diagnostic pop
+
     if (count > 0 || ![self welcomeNotificationSeen]) {
         notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");

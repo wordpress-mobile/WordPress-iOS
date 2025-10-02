@@ -8,6 +8,7 @@ import Gridicons
 import UIKit
 import WordPressUI
 import SwiftUI
+import UserNotifications
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -458,11 +459,6 @@ private extension NotificationsViewController {
             navigationController?.navigationBar.prefersLargeTitles = false
             navigationItem.largeTitleDisplayMode = .never
         }
-
-        // Don't show 'Notifications' in the next-view back button
-        // we are using a space character because we need a non-empty string to ensure a smooth
-        // transition back, with large titles enabled.
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
         navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
     }
 
@@ -1720,7 +1716,7 @@ private extension NotificationsViewController {
     func resetApplicationBadge() {
         // These notifications are cleared, so we just need to take Zendesk unread notifications
         // into account when setting the app icon count.
-        UIApplication.shared.applicationIconBadgeNumber = ZendeskUtils.unreadNotificationsCount
+        UNUserNotificationCenter.current().setBadgeCount(ZendeskUtils.unreadNotificationsCount)
     }
 }
 

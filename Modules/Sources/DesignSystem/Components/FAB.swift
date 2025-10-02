@@ -58,7 +58,6 @@ private struct FABContentView: View {
     }
 }
 
-@available(iOS 17, *)
 #Preview(traits: .fixedLayout(width: 200, height: 200)) {
     FAB(action: {})
 }

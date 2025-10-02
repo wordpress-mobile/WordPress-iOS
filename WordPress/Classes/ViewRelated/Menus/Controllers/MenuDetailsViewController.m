@@ -44,6 +44,10 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
     [self setupTrashButton];
 
     [self updateTextFieldDesignIconPositioning];
+
+    [self registerForTraitChanges:@[[UITraitHorizontalSizeClass self], [UITraitVerticalSizeClass self], [UITraitPreferredContentSizeCategory self]]
+                       withTarget:self
+                           action:@selector(handleTraitCollectionChanges)];
 }
 
 - (void)setupTextField
@@ -171,10 +175,8 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
     } completion:nil];
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+- (void)handleTraitCollectionChanges
 {
-    [super traitCollectionDidChange:previousTraitCollection];
-
     [self updateTextFieldFont];
     [self updateTextFieldDesignIconPositioning];
 }

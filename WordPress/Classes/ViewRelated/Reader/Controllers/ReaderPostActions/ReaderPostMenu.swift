@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import SafariServices
+import SwiftUI
 import WordPressData
 import WordPressShared
 
@@ -24,7 +25,8 @@ struct ReaderPostMenu {
             share,
             copyPostLink,
             viewPostInBrowser,
-            post.isSeenSupported ? toggleSeen : nil
+            post.isSeenSupported ? toggleSeen : nil,
+            summarize
         ].compactMap { $0 })
     }
 
@@ -107,6 +109,25 @@ struct ReaderPostMenu {
         UIAction(SharedStrings.Reader.unsubscribe, systemImage: "minus.circle", attributes: [.destructive]) {
             ReaderSubscriptionHelper().toggleSiteSubscription(forPost: post)
             track(.unsubscribe)
+        }
+    }
+
+    private var summarize: UIAction? {
+        guard FeatureFlag.intelligence.enabled,
+              #available(iOS 26, *),
+              IntelligenceService.isSupported else {
+            return nil
+        }
+        return UIAction(Strings.summarize, systemImage: "text.line.3.summary") {
+            guard let viewController else { return }
+
+            track(.summarize)
+            WPAnalytics.track(.intelligenceSummarizeReaderPostTapped)
+
+            let view = ReaderSummarizePostView(post: post)
+            let summarizeVC = UIHostingController(rootView: NavigationView { view })
+            summarizeVC.sheetPresentationController?.detents = [.medium(), .large()]
+            viewController.present(summarizeVC, animated: true)
         }
     }
 
@@ -210,6 +231,7 @@ private enum ReaderPostMenuAnalyticsButton: String {
     case reportUser = "report_user"
     case markRead = "mark_read"
     case markUnread = "mark_unread"
+    case summarize = "summarize"
 }
 
 private enum Strings {
@@ -224,4 +246,5 @@ private enum Strings {
     static let reportUser = NSLocalizedString("reader.postContextMenu.reportUser", value: "Report User", comment: "Context menu action")
     static let markRead = NSLocalizedString("reader.postContextMenu.markRead", value: "Mark as Read", comment: "Context menu action")
     static let markUnread = NSLocalizedString("reader.postContextMenu.markUnread", value: "Mark as Unread", comment: "Context menu action")
+    static let summarize = NSLocalizedString("reader.postContextMenu.summarize", value: "Summarize", comment: "Context menu action")
 }

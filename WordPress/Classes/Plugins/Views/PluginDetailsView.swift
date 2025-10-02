@@ -298,7 +298,7 @@ struct PluginDetailsView: View {
                     }
                     .padding(.horizontal)
                 }
-                .pagingIfAvailable()
+                .scrollTargetBehavior(.paging)
             }
             .padding(.vertical)
             .listRowInsets(.zero)
@@ -777,15 +777,4 @@ private enum Strings {
         value: "This plugin has not provided any description.",
         comment: "Placeholder message shown when a plugin has no description"
     )
-}
-
-private extension View {
-
-    @ViewBuilder
-    func pagingIfAvailable() -> some View {
-        if #available(iOS 17.0, *) {
-            scrollTargetBehavior(.paging)
-        }
-    }
-
 }

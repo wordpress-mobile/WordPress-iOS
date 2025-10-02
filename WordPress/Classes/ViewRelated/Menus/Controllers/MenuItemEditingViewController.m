@@ -105,6 +105,10 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 
     self.sourceViewController.blog = self.blog;
     self.sourceViewController.item = self.item;
+
+    [self registerForTraitChanges:@[[UITraitHorizontalSizeClass self], [UITraitVerticalSizeClass self], [UITraitPreferredContentSizeCategory self]]
+                        withTarget:self
+                            action:@selector(updateLayoutIfNeeded)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -144,12 +148,6 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
     return self.headerView.hidden;
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [super traitCollectionDidChange:previousTraitCollection];
-    [self updateLayoutIfNeeded];
-}
-
 - (void)loadContentLayoutConstraints
 {
     self.layoutConstraintsForDisplayingTypeView = @[
@@ -174,11 +172,11 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 
 - (BOOL)shouldLayoutForCompactWidth
 {
-    BOOL horizontallyCompact = [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassCompact]];
+    BOOL horizontallyCompact = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact;
 
     if (horizontallyCompact) {
 
-        if ([self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithVerticalSizeClass:UIUserInterfaceSizeClassCompact]]) {
+        if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) {
             horizontallyCompact = NO;
         }
     }

@@ -180,7 +180,6 @@ class HTTPRequestBuilderTests: XCTestCase {
         )
     }
 
-    @available(iOS 16.0, *)
     func testSetQueryWithDictionary() throws {
         let query = try HTTPRequestBuilder(url: URL(string: "https://wordpress.org")!)
             .query(HTTPRequestBuilderTests.nestedParameters)

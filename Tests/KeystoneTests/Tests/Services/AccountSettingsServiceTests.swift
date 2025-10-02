@@ -62,7 +62,7 @@ class AccountSettingsServiceTests: CoreDataTestCase {
     }
 
     func testCancelGettingSettings() throws {
-        XCTSkip("Flaky")
+        throw XCTSkip("Flaky")
 
         // This test performs steps described in the link below to reproduce a crash.
         // https://github.com/wordpress-mobile/WordPress-iOS/issues/20379#issuecomment-1481995663

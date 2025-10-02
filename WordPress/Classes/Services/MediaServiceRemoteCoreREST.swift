@@ -14,6 +14,14 @@ class MediaServiceRemoteCoreREST: NSObject, MediaServiceRemote {
         self.client = client
     }
 
+    func unattachedMediaItemCount() async throws -> Int? {
+        try await client.api.media
+            .listWithViewContext(params: .init(parent: [0]))
+            .headerMap
+            .wpTotal()
+            .flatMap(Int.init)
+    }
+
     func getMediaWithID(_ mediaID: NSNumber, success: ((RemoteMedia?) -> Void)?, failure: (((any Error)?) -> Void)?) {
         Task { @MainActor in
             do {

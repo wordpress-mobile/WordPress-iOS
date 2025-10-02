@@ -178,7 +178,7 @@ public class SiteStatsDashboardViewController: UIViewController {
             }
 
             // Show tip for new stats if available and not enabled
-            if #available(iOS 17, *), !FeatureFlag.newStats.enabled {
+            if !FeatureFlag.newStats.enabled {
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                     self.showNewStatsTip()
                 }
@@ -295,7 +295,6 @@ public class SiteStatsDashboardViewController: UIViewController {
         Notice(title: message).post()
     }
 
-    @available(iOS 17, *)
     private func showNewStatsTip() {
         tipObserver?.cancel()
         tipObserver = registerTipPopover(
@@ -555,9 +554,9 @@ private enum Strings {
     )
 
     static let switchToClassic = NSLocalizedString(
-        "stats.menu.switchToClassic",
-        value: "Switch to Classic Stats",
-        comment: "Menu item to switch back to classic stats experience"
+        "stats.menu.disableNewStats",
+        value: "Disable New Stats",
+        comment: "Menu item to disable the new stats"
     )
 
     static let tryNewStats = NSLocalizedString(

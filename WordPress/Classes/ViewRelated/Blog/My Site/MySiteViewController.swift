@@ -289,7 +289,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     private func setupNavigationItem() {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = Strings.mySite
-        navigationItem.backButtonTitle = Strings.mySite
 
         // Set the nav bar
         navigationController?.navigationBar.accessibilityIdentifier = "my-site-navigation-bar"

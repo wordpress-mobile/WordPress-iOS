@@ -23,23 +23,23 @@ public enum LanguageModelHelper {
         """
         Generate exactly 3 excerpts for the blog post and follow the instructions from the prompt regarding the length and the style.
 
-        CRITICAL CONSTRAINTS:
-        • Each excerpt MUST follow the style and the length requirements
+        **Paramters**
+        - POST_CONTENT: contents of the post (HTML or plain text)
+        - GENERATED_CONTENT_LENGTH: the length of the generated content
+        - GENERATION_STYLE: the writing style to follow
 
-        EXCERPT BEST PRACTICES:
-        * Follow the best practices for post excerpts esteblished in the WordPress ecosystem
-        • Include the post's main value proposition
-        • Use active voice (avoid "is", "are", "was", "were" when possible)
-        • End with implicit promise of more information
-        • Do not use ellipsis (...) at the end
-        * Focus on value, not summary
-        * Include strategic keywords naturall
-        * Write independently from the introduction – excerpt shouldn't just duplicate your opening paragraph. While your introduction eases readers into the topic, your excerpt needs to work as standalone copy that makes sense out of context—whether it appears in search results, social media cards, or email newsletters.
+        **Requirements**
+        - Each excerpt must follow the provided GENERATED_CONTENT_LENGTH and use GENERATION_STYLE
 
-        VARIATION GUIDELINES:
-        Excerpt 1: Open with a question that addresses reader's problem
-        Excerpt 2: Start with a bold statement or surprising fact
-        Excerpt 3: Lead with the primary benefit or outcome
+        **Excerpt best practices**
+        - Follow the best practices for post excerpts esteblished in the WordPress ecosystem
+        - Include the post's main value proposition
+        - Use active voice (avoid "is", "are", "was", "were" when possible)
+        - End with implicit promise of more information
+        - Do not use ellipsis (...) at the end
+        - Focus on value, not summary
+        - Include strategic keywords naturally
+        - Write independently from the introduction – excerpt shouldn't just duplicate your opening paragraph. While your introduction eases readers into the topic, your excerpt needs to work as standalone copy that makes sense out of context—whether it appears in search results, social media cards, or email newsletters.
         """
     }
 
@@ -49,12 +49,13 @@ public enum LanguageModelHelper {
         style: GenerationStyle
     ) -> String {
         """
-        Generate excerpts with the following constraints (MUST FOLLOW):
+        Generate three different excerpts for the given post and parameters
 
-        • Length: \(length.promptModifier)
-        • Style: \(style.promptModifier)
+        GENERATED_CONTENT_LENGTH: \(length.promptModifier)
 
-        SOURCE POST CONTENT:
+        GENERATION_STYLE: \(style.promptModifier)
+
+        POST_CONTENT: '''
         \(content)
         """
     }

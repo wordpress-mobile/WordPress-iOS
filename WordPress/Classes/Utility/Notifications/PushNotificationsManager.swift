@@ -75,7 +75,7 @@ public final class PushNotificationsManager: NSObject {
             sharedApplication.registerForRemoteNotifications()
         }
         sharedApplication.unregisterForRemoteNotifications()
-        sharedApplication.applicationIconBadgeNumber = 0
+        UNUserNotificationCenter.current().setBadgeCount(0)
         didRegisterForRemoteNotifications = false
     }
 
@@ -187,7 +187,7 @@ public final class PushNotificationsManager: NSObject {
 
         // Badge: Update
         if let badgeCountNumber = userInfo.number(forKeyPath: Notification.badgePath)?.intValue {
-            sharedApplication.applicationIconBadgeNumber = badgeCountNumber
+            UNUserNotificationCenter.current().setBadgeCount(badgeCountNumber)
         }
 
         // Badge: Reset

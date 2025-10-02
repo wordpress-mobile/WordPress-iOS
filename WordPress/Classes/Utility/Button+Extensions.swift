@@ -2,7 +2,7 @@ import SwiftUI
 
 extension Button where Label == Text {
     @ViewBuilder
-    public static func make(role: BackportButtonRole, _ action: @escaping () -> Void) -> some View {
+    public static func make(role: BackportButtonRole, action: @escaping () -> Void) -> some View {
         if #available(iOS 26, *) {
             SwiftUI.Button(role: ButtonRole(role), action: action)
         } else {
