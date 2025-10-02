@@ -13,14 +13,16 @@ public struct DataViewSearchView<Response: DataViewPaginatedResponseProtocol, Co
     let content: (Response) -> Content
 
     /// Delay in milliseconds before executing search (default: 500ms)
-    let delay: Duration
+    let delay: Duration?
+
+    private var isEmptyStateViewHidden = false
 
     @State private var response: Response?
     @State private var error: Error?
 
     public init(
         searchText: String,
-        delay: Duration = .milliseconds(500),
+        delay: Duration? = .milliseconds(400),
         search: @escaping () async throws -> Response,
         @ViewBuilder content: @escaping (Response) -> Content
     ) {
@@ -40,16 +42,20 @@ public struct DataViewSearchView<Response: DataViewPaginatedResponseProtocol, Co
         }
         .listStyle(.plain)
         .overlay {
-            if let response, response.items.isEmpty {
-                EmptyStateView.search()
-            } else if let error {
-                EmptyStateView.failure(error: error)
+            if !isEmptyStateViewHidden {
+                if let response, response.items.isEmpty {
+                    EmptyStateView.search()
+                } else if let error {
+                    EmptyStateView.failure(error: error)
+                }
             }
         }
         .task(id: searchText) {
             error = nil
             do {
-                try await Task.sleep(for: delay)
+                if let delay {
+                    try await Task.sleep(for: delay)
+                }
                 let response = try await search()
                 guard !Task.isCancelled else { return }
                 self.response = response
@@ -59,5 +65,11 @@ public struct DataViewSearchView<Response: DataViewPaginatedResponseProtocol, Co
                 self.error = error
             }
         }
+    }
+
+    public func emptyStateViewHiddden(_ isHidden: Bool = true) -> Self {
+        var copy = self
+        copy.isEmptyStateViewHidden = isHidden
+        return copy
     }
 }

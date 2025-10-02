@@ -17,7 +17,6 @@ struct PostSettingsTagsRow: View {
 
                 if tags.isEmpty {
                     Text(Strings.addTags)
-                        .font(.body)
                         .font(.subheadline)
                         .foregroundColor(Color(.tertiaryLabel))
                 } else {

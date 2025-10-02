@@ -17,7 +17,6 @@ struct PostSettingsCategoriesRow: View {
 
                 if categories.isEmpty {
                     Text(Strings.addCategory)
-                        .font(.body)
                         .font(.subheadline)
                         .foregroundColor(Color(.tertiaryLabel))
                 } else {

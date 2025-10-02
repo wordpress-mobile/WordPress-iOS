@@ -199,9 +199,9 @@ struct PostSettingsFormContentView: View {
                 selectedTags: viewModel.settings.tags,
                 mode: .selection(onSelectedTagsChanged: nil)
             )
-            TagsView(viewModel: tags)
+            PostTagsView(viewModel: tags)
                 .onDisappear {
-                    self.viewModel.settings.tags = tags.selectedTags.joined(separator: ", ")
+                    self.viewModel.settings.tags = tags.selectedTags.joined(separator: ",")
                 }
         } label: {
             PostSettingsTagsRow(tags: viewModel.displayedTags)
