@@ -407,7 +407,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         await fulfillment(of: [expectation], timeout: 2)
 
         // WHEN
-        try await coordinator.publish(post, options: .init(visibility: .public, password: nil, publishDate: nil))
+        try await coordinator.publish(post)
 
         // THEN the coordinator wait for the sync to complete and the post to
         // be created and only then sends a parial update to get it published
@@ -462,7 +462,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         }
 
         // WHEN
-        try await coordinator.publish(post, options: .init(visibility: .public, password: nil, publishDate: nil))
+        try await coordinator.publish(post)
 
         // THEN
         XCTAssertEqual(post.publicizeMessage, "message-a")

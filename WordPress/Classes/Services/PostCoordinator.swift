@@ -73,61 +73,6 @@ class PostCoordinator: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityUpdated, object: nil)
     }
 
-    struct PublishingOptions {
-        var visibility: PostVisibility
-        var password: String?
-        var publishDate: Date?
-
-        init(visibility: PostVisibility, password: String?, publishDate: Date?) {
-            self.visibility = visibility
-            self.password = password
-            self.publishDate = publishDate
-        }
-    }
-
-    /// Publishes the post according to the current settings and user capabilities.
-    ///
-    /// - warning: Before publishing, ensure that the media for the post got
-    /// uploaded. Managing media is not the responsibility of `PostRepository.`
-    @MainActor
-    func publish(_ post: AbstractPost, options: PublishingOptions) async throws {
-        wpAssert(post.isOriginal())
-        wpAssert(post.isStatus(in: [.draft, .pending]))
-
-        await pauseSyncing(for: post)
-        defer { resumeSyncing(for: post) }
-
-        var parameters = RemotePostUpdateParameters()
-        switch options.visibility {
-        case .public, .protected:
-            parameters.status = Post.Status.publish.rawValue
-        case .private:
-            parameters.status = Post.Status.publishPrivate.rawValue
-        }
-        let latest = post.latest()
-        if (latest.password ?? "") != (options.password ?? "") {
-            parameters.password = options.password
-        }
-        if let publishDate = options.publishDate {
-            parameters.date = publishDate
-        } else {
-            // If the post was previously scheduled for a different date,
-            // the app has to send a new value to override it.
-            parameters.date = post.shouldPublishImmediately() ? nil : Date()
-        }
-
-        do {
-            let repository = PostRepository(coreDataStack: coreDataStack)
-            try await repository.save(post, changes: parameters)
-            didPublish(post)
-            show(PostCoordinator.makeUploadSuccessNotice(for: post))
-        } catch {
-            trackError(error, operation: "post-publish", post: post)
-            handleError(error, for: post)
-            throw error
-        }
-    }
-
     /// Publishes the post according to the current settings and user capabilities.
     ///
     /// - warning: Before publishing, ensure that the media for the post got
@@ -136,7 +81,7 @@ class PostCoordinator: NSObject {
     /// - parameter changes: The set of changes apply to the post together
     /// with the publishing options.
     @MainActor
-    func publish_v2(_ post: AbstractPost, parameters: RemotePostUpdateParameters) async throws {
+    func publish(_ post: AbstractPost, parameters: RemotePostUpdateParameters = .init()) async throws {
         wpAssert(post.isOriginal())
         wpAssert(post.isStatus(in: [.draft, .pending]))
 
