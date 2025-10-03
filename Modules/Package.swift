@@ -16,6 +16,7 @@ let package = Package(
         .library(name: "NotificationServiceExtensionCore", targets: ["NotificationServiceExtensionCore"]),
         .library(name: "ShareExtensionCore", targets: ["ShareExtensionCore"]),
         .library(name: "SFHFKeychainUtils", targets: ["SFHFKeychainUtils"]),
+        .library(name: "Support", targets: ["Support"]),
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
         .library(name: "WordPressUI", targets: ["WordPressUI"]),
@@ -52,8 +53,8 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
-        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20250926"),
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.9.0"),
+        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20251007"),
         .package(
             url: "https://github.com/Automattic/color-studio",
             revision: "bf141adc75e2769eb469a3e095bdc93dc30be8de"
@@ -131,6 +132,12 @@ let package = Package(
         .target(
             name: "SFHFKeychainUtils",
             cSettings: [.unsafeFlags(["-fno-objc-arc"])]
+        ),
+        .target(
+            name: "Support",
+            dependencies: [
+                "AsyncImageKit"
+            ]
         ),
         .target(name: "TextBundle"),
         .target(
@@ -329,6 +336,7 @@ enum XcodeSupport {
             "NotificationServiceExtensionCore",
             "SFHFKeychainUtils",
             "ShareExtensionCore",
+            "Support",
             "WordPressFlux",
             "WordPressShared",
             "WordPressLegacy",

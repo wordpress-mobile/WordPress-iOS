@@ -50,6 +50,10 @@ public extension WPAccount {
         return try lookup(withUUIDString: uuid, in: context)
     }
 
+    static func lookupDefaultWordPressComAccountToken(in context: NSManagedObjectContext) throws -> String? {
+        try lookupDefaultWordPressComAccount(in: context)?.authToken
+    }
+
     /// Lookup a WPAccount by its local uuid
     ///
     /// - Parameters:
