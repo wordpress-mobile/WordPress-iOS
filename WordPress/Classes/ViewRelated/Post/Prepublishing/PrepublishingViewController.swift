@@ -32,7 +32,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     /// The data source for the table rows, based on the filtered `identifiers`.
     private(set) var options = [PrepublishingOption]()
 
-    private let headerView = PrepublishingHeaderView()
+    private let headerView = UIView()
     let tableView = UITableView(frame: .zero, style: .plain)
 
     private lazy var publishButtonViewModel = PublishButtonViewModel(title: "Publish") { [weak self] in
@@ -153,8 +153,8 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     private func configureHeader() {
-        headerView.closeButton.addTarget(self, action: #selector(buttonCloseTapped), for: .touchUpInside)
-        headerView.configure(post.blog)
+//        headerView.closeButton.addTarget(self, action: #selector(buttonCloseTapped), for: .touchUpInside)
+//        headerView.configure(post.blog)
     }
 
     @objc private func buttonCloseTapped() {
@@ -296,7 +296,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        headerView.separator.alpha = max(0, min(1, scrollView.contentOffset.y / 60))
+//        headerView.separator.alpha = max(0, min(1, scrollView.contentOffset.y / 60))
     }
 
     // MARK: – Misc
