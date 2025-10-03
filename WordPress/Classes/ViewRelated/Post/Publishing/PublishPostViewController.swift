@@ -28,6 +28,21 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
         super.init(rootView: view)
     }
 
+    static func show(for revision: AbstractPost, isStandalone: Bool = false, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
+        // End editing to avoid issues with accessibility
+        presentingViewController.view.endEditing(true)
+
+        let publishVC = PublishPostViewController(post: revision, isStandalone: isStandalone)
+        publishVC.onCompletion = completion
+        // - warning: Has to be UIKit because some of the  `PostSettingsView` rows rely on it.
+        let navigationVC = UINavigationController(rootViewController: publishVC)
+        navigationVC.sheetPresentationController?.detents = [
+            .custom(identifier: .medium, resolver: { context in 526 }),
+            .large()
+        ]
+        presentingViewController.present(navigationVC, animated: true)
+    }
+
     required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
