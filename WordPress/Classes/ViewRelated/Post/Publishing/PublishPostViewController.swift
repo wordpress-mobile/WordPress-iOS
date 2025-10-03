@@ -5,13 +5,23 @@ import WordPressData
 import WordPressShared
 import WordPressUI
 
+enum PublishingSheetResult {
+    /// The sheet published the post (new behavior)
+    case published
+    /// The user cancelled publishing.
+    ///
+    /// - parameter isSaved: If `true`, the changes to the settings made in
+    /// the publishing sheet were saved.
+    case cancelled(isSaved: Bool = false)
+}
+
 /// A screen shown just before publishing the post and allows you to change
 /// the post settings along with some publishing options like the publish date.
 final class PublishPostViewController: UIHostingController<PublishPostView> {
     private let viewModel: PostSettingsViewModel
     private let uploadsViewModel: PostMediaUploadsViewModel
 
-    var onCompletion: ((PrepublishingSheetResult) -> Void)?
+    var onCompletion: ((PublishingSheetResult) -> Void)?
 
     init(post: AbstractPost, isStandalone: Bool) {
         let viewModel = PostSettingsViewModel(
@@ -28,7 +38,7 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
         super.init(rootView: view)
     }
 
-    static func show(for revision: AbstractPost, isStandalone: Bool = false, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
+    static func show(for revision: AbstractPost, isStandalone: Bool = false, from presentingViewController: UIViewController, completion: @escaping (PublishingSheetResult) -> Void) {
         // End editing to avoid issues with accessibility
         presentingViewController.view.endEditing(true)
 
