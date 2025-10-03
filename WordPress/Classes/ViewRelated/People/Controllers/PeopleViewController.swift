@@ -579,20 +579,6 @@ private extension PeopleViewController {
     }
 }
 
-extension PeopleViewController {
-    class func controllerWithBlog(_ blog: Blog, selectedFilter: Filter) -> PeopleViewController? {
-        let storyboard = UIStoryboard(name: "People", bundle: .keystone)
-        guard let viewController = storyboard.instantiateInitialViewController() as? PeopleViewController else {
-            return nil
-        }
-
-        viewController.defaultFilter = selectedFilter
-        viewController.blog = blog
-
-        return viewController
-    }
-}
-
 private enum Strings {
     static let title = NSLocalizedString("users.title", value: "Users", comment: "Screen title")
 }

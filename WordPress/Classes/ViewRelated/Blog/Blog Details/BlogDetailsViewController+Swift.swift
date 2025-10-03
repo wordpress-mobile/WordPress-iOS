@@ -10,7 +10,7 @@ import WordPressCore
 
 extension BlogDetailsViewController {
     @objc public var shouldShowSubscribersRow: Bool {
-        FeatureFlag.newsletterSubscribers.enabled && blog.supports(.people)
+        blog.supports(.people)
     }
 
     @objc public func makeSubscribersRow() -> BlogDetailsRow {
