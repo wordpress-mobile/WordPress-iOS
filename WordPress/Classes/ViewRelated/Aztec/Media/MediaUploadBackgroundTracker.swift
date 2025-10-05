@@ -106,7 +106,7 @@ private actor ConcreteMediaUploadBackgroundTracker: MediaUploadBackgroundTracker
         task.progress.totalUnitCount = 100
         task.expirationHandler = { [weak self] in
             Task {
-                await self?.setTaskCompleted(success: false)
+                await self?.handleExpiration()
             }
         }
 
@@ -149,6 +149,20 @@ private actor ConcreteMediaUploadBackgroundTracker: MediaUploadBackgroundTracker
         guard case var .accepted(accepted) = state else { return }
         accepted.observers.append(cancellable)
         self.state = .accepted(accepted)
+    }
+
+    private func handleExpiration() {
+        if case let .accepted(accepted) = state {
+            Task { @MainActor in
+                let context = ContextManager.shared.mainContext
+                for item in accepted.items {
+                    guard let media = try? context.existingObject(with: item.media) else { continue }
+                    MediaCoordinator.shared.cancelUpload(of: media)
+                }
+            }
+        }
+
+        setTaskCompleted(success: false)
     }
 
     private func handleProgressUpdates() {
