@@ -55,14 +55,13 @@ private actor ConcreteMediaUploadBackgroundTracker: MediaUploadBackgroundTracker
     // State transtion: idle -> pending -> accepted -> [accepted...] -> idle.
     private var state: BGTaskState = .idle
 
-    private init?() {
-        let taskId = (Bundle.main.infoDictionary?["BGTaskSchedulerPermittedIdentifiers"] as? [String])?.first {
-            $0.hasSuffix(".mediaUpload")
-        }
-        guard let taskId else {
-            wpAssertionFailure("media upload task id not found in the Info.plist")
-            return nil
-        }
+    private init() {
+        let taskId = Bundle.main.bundleIdentifier! + ".mediaUpload"
+
+        wpAssert(
+            (Bundle.main.infoDictionary?["BGTaskSchedulerPermittedIdentifiers"] as? [String])?.contains(taskId) == true,
+            "media upload task id not found in the Info.plist"
+        )
 
         self.taskId = taskId
         BGTaskScheduler.shared.register(forTaskWithIdentifier: self.taskId, using: nil) { [weak self] task in
