@@ -75,11 +75,6 @@ struct MediaStorageDetailsView: View {
     @ViewBuilder
     private func actionSection(_ action: Action) -> some View {
         switch action.kind {
-        case .cleanUp:
-            ActionSection(action: action) {
-                // TODO: Implement a view that shows unattached media (order by file size)
-                Image(systemName: "trash")
-            }
         case .buyStorage:
             ActionSection(action: action) {
                 self.purchase = .storage(blog: viewModel.blog)
@@ -89,13 +84,11 @@ struct MediaStorageDetailsView: View {
                 self.purchase = .upgradePlan(blog: viewModel.blog)
             }
         }
-
     }
 }
 
 private struct Action {
     enum Kind: Hashable {
-        case cleanUp
         case buyStorage
         case upgradePlan
     }
@@ -294,7 +287,6 @@ final class MediaStorageDetailsViewModel: ObservableObject {
     fileprivate let blog: Blog
     private let client: WordPressClient
     private let service: MediaServiceRemoteCoreREST
-    private var unattachedCount: Int?
 
     @Published fileprivate private(set) var actions: [Action] = []
     @Published fileprivate private(set) var usage: Usage?
@@ -320,43 +312,7 @@ final class MediaStorageDetailsViewModel: ObservableObject {
         // `BlogService.syncBlogAndAllMetadata` function.
 
         updateUsage()
-
-        do {
-            unattachedCount = try await service.unattachedMediaItemCount()
-        } catch {
-            DDLogError("Failed due to error: \(error)")
-        }
-
         updateActions()
-    }
-
-    private var cleanUpAction: Action {
-        let message: String
-        let state: Action.State
-
-        if let unattachedCount {
-            if unattachedCount == 0 {
-                message = Strings.cleanupAllAttachedMessage
-                state = .disabled
-            } else {
-                message = String.localizedStringWithFormat(
-                    Strings.cleanupMessage,
-                    unattachedCount
-                )
-                state = .enabled
-            }
-        } else {
-            message = Strings.cleanupLoadingMessage
-            state = .loading
-        }
-
-        return Action(
-            icon: "trash",
-            title: Strings.cleanupTitle,
-            message: message,
-            kind: .cleanUp,
-            state: state
-        )
     }
 
     private func updateActions() {
@@ -380,13 +336,6 @@ final class MediaStorageDetailsViewModel: ObservableObject {
                     state: .enabled
                 )
             )
-        }
-
-        let cleanUp = cleanUpAction
-        if cleanUp.state == .disabled {
-            actions.append(cleanUp)
-        } else {
-            actions.insert(cleanUp, at: 0)
         }
 
         self.actions = actions
@@ -414,18 +363,6 @@ private enum Strings {
         comment: "Storage usage message showing used space and total space. %1$@ is used space, %2$@ is total space."
     )
 
-    static let cleanupTitle = NSLocalizedString(
-        "mediaLibrary.storageDetails.cleanup.title",
-        value: "Remove unused items",
-        comment: "Title for cleanup section"
-    )
-
-    static let cleanupMessage = NSLocalizedString(
-        "mediaLibrary.storageDetails.cleanup.message",
-        value: "%1$d item unattached. Remove them to free up some space.",
-        comment: "Message about unattached media that can be cleaned up. %1$d is the count of unattached media."
-    )
-
     static let buyStorageTitle = NSLocalizedString(
         "mediaLibrary.storageDetails.buyStorage.message",
         value: "Buy storage add-on",
@@ -448,18 +385,6 @@ private enum Strings {
         "mediaLibrary.storageDetails.upgradePlan.detail",
         value: "Upgrade your plan to increase your storage space.",
         comment: "Detail message for upgrading plan"
-    )
-
-    static let cleanupAllAttachedMessage = NSLocalizedString(
-        "mediaLibrary.storageDetails.cleanup.allAttached",
-        value: "All items in the Media Library are attached.",
-        comment: "Message shown when all media items are attached"
-    )
-
-    static let cleanupLoadingMessage = NSLocalizedString(
-        "mediaLibrary.storageDetails.cleanup.loading",
-        value: "Finding out if there are any unattached media items...",
-        comment: "Message shown while loading unattached media count"
     )
 
     static let calculatingUsageMessage = NSLocalizedString(
