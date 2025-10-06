@@ -1,7 +1,6 @@
-* [**] [Intelligence] Add support for generating excerpts for posts [#24852]
-* [**] [Intelligence] Add auto-suggested tags for posts [#24886]
-* [*] Fix a few minor visual issues on iOS 26 [#24863], [#24863], [#24901], [#24865], [#24866], [#24867], [#24890], [#24899]
-* [*] Fix an issue with Reader article rendering when iOS "Display Zoom" is enabled [#24895]
-* [*] Fix an issue with "Add Media" button not visible in "Media" under some scenarios [#24900]
-* [*] Fix performance issues with search in Reader Subscriptions [#24841]
-* [*] Improve the "Tags" picker in "Post Settings" [#24883]
+You can now create an excerpt for your posts and get auto-suggested tags using Apple Intelligence. It’s also easier to pick your tags in Post Settings. Now that’s smart.
+We made a few visual fixes for iOS in areas like the site creation flow, the media selection screen, and the Stats screen.
+While we were at it, we also squashed a few bugs.
+- Reader articles render properly on devices with Display Zoom enabled.
+- The “Add Media” button stays visible in the media library. No more disappearing act.
+- You can search in Reader Subscriptions without freezing the app.
