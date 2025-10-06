@@ -1,18 +1,16 @@
-* [**] [New Stats] Add "Today" card [#24898]
-* [**] [Intelligence] Add support for generating excerpts for posts [#24852]
-* [**] [Intelligence] Add auto-suggested tags for posts [#24886]
-* [**] [Intelligence] Add "Summarize Post" features in Reader [#24892]
-* [*] Fix a few minor visual issues on iOS 26 [#24863], [#24863], [#24901], [#24865], [#24866], [#24867], [#24890], [#24899]
-* [*] Fix an issue with "Homepage" not shown in Top List in New Stats [#24902]
-* [*] Fix an issue with themes in Reader [#24881]
-* [*] Fix an issue with Reader article rendering when iOS "Display Zoom" is enabled [#24895]
-* [*] Fix an issue with "Add Media" button not visible in "Media" under some scenarios [#24900]
-* [*] Fix performance issues with search in Reader Subscriptions [#24841]
-* [*] Fix New Stats layout not adapting for resizing windows [#24908]
-* [*] Fix rare crash in Stats / Subscribers [#24907]
-* [*] Fix an issue with toolbar in Reader articles sporadically reappearing [#24896]
-* [*] Improve performance and animations when showing a full Top List with a large number of items [#24868]
-* [*] Fix an issue with New Stats resetting the preferred preset after selecting a custom range [#24899]
-* [*] Show the Top 10 and 50 items in the Top List screen in a dedicated section [#24868]
-* [*] Add pull-to-refresh to the new Traffic tab [#24898]
-* [*] Improve the "Tags" picker in "Post Settings" [#24883]
+You can now create an excerpt, a post summary, and auto-generated tags for your posts using Apple Intelligence. It’s also easier to pick your tags in Post Settings. Now that’s smart.
+Speaking of Stats, there are several new improvements in this area of the app.
+- We added a Today card to the New Stats screen.
+- Your homepage now appears in the list of top pages.
+- Your top 10 and 50 items now have their own special section. A place for everything, and everything in its place.
+- Your top pages show up properly when you have a large number of items.
+- The New Stats layout changes to fit different screen sizes. Even really, really big ones.
+- The screen will remember your preferred settings when you pick a custom date range.
+- The Traffic tab lets you pull down to refresh the screen.
+We also made a few visual fixes for iOS in areas like the site creation flow, the media selection screen, and the Stats screen. And while we were at it, we squashed several bugs, too.
+- We fixed a rare crash that sometimes appears in Stats and Subscribers. (But not anymore.)
+- Article views look as they should in the Reader when certain themes are enabled.
+- Reader articles render properly on devices with Display Zoom enabled.
+- The “Add Media” button stays visible in the media library. No more disappearing act.
+- You can search in Reader Subscriptions without freezing the app.
+- The toolbar in Reader articles no longer disappears and reappears from time to time. Now you see it, now you… still see it, we guess.
