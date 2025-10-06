@@ -654,7 +654,7 @@ class AbstractPostListViewController: UIViewController,
 
     func publish(_ post: AbstractPost) {
         WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
-        PrepublishingViewController.show(for: post, isStandalone: true, from: self) { [weak self] result in
+        PublishPostViewController.show(for: post, isStandalone: true, from: self) { [weak self] result in
             switch result {
             case .published:
                 self?.dismiss(animated: true)

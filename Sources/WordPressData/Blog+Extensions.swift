@@ -4,6 +4,14 @@ import WordPressShared
 
 extension Blog {
 
+    /// The title of the blog
+    public var title: String? {
+        guard let blogName = settings?.name, !blogName.isEmpty else {
+            return displayURL as String?
+        }
+        return blogName
+    }
+
     // MARK: - Post Formats
 
     /// Returns an array of post format keys sorted with "standard" first, then alphabetically

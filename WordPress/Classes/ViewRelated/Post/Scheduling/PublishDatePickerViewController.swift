@@ -20,25 +20,6 @@ private extension PublishDatePickerConfiguration {
     }
 }
 
-final class PublishDatePickerViewController: UIHostingController<PublishDatePickerView> {
-    init(configuration: PublishDatePickerConfiguration) {
-        if configuration.isRequired && configuration.date == nil {
-            wpAssertionFailure("initial date value missing")
-        }
-        super.init(rootView: PublishDatePickerView(configuration: configuration))
-    }
-
-    required dynamic init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        title = Strings.title
-    }
-}
-
 struct PublishDatePickerView: View {
     @State var configuration: PublishDatePickerConfiguration
 

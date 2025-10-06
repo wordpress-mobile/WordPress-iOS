@@ -307,7 +307,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             do {
                 let coordinator = PostCoordinator.shared
                 let changes = settings.makeUpdateParameters(from: post)
-                try await coordinator.publish_v2(post.original(), parameters: changes)
+                try await coordinator.publish(post.original(), parameters: changes)
                 onPostPublished?()
             } catch {
                 isSaving = false
