@@ -60,7 +60,7 @@ public class SiteStatsDashboardViewController: UIViewController {
     private var currentChildViewController: UIViewController?
     private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
     private var tipObserver: TipObserver?
-    private var isUsingMockData = false
+    private var isUsingMockData = UITestConfigurator.isEnabled(.useMockData)
     private var navigationItemObserver: NSKeyValueObservation?
     private let filterBarController = AdaptiveTabBarController<StatsTabType>()
 

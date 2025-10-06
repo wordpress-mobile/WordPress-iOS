@@ -25,4 +25,9 @@ public final class ReaderMenuScreen: ScreenObject {
         stream.menuButton(app).tap()
         return try ReaderScreen()
     }
+
+    public func selectSubscription(named name: String) throws -> ReaderScreen {
+        app.staticTexts[name].firstMatch.tap()
+        return try ReaderScreen()
+    }
 }

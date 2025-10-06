@@ -32,6 +32,16 @@ extension MySiteViewController {
         if blog?.supports(.pages) ?? false {
             actions.append(PageAction(handler: newPage, source: source))
         }
+        if UITestConfigurator.isEnabled(.screenshotGeneration), let blog {
+            actions.append(AnonymousAction(title: "create-mock-post") {
+                let post = blog.createDraftPost()
+                post.postTitle = "Welcome to Gutenberg"
+                post.content = """
+                <!-- wp:image {"id":1657,"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="https://en.blog.wordpress.com/wp-content/uploads/2025/03/how-to-write-a-blog-post.jpg?w=1600&h=1000&crop=1" alt="" class="wp-image-1657"/></figure><!-- /wp:image --><!-- wp:paragraph --><p>Experience the flexibility that blocks allow, whether you are writing a blog post or building your first site.</p><!-- /wp:paragraph -->
+                """
+                RootViewCoordinator.sharedPresenter.showPostEditor(post: post)
+            })
+        }
 
         let coordinator = CreateButtonCoordinator(self, actions: actions, source: source, blog: blog)
         return coordinator

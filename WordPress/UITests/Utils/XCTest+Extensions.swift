@@ -17,6 +17,7 @@ extension XCTestCase {
         for inputApp: XCUIApplication? = .none,
         removeBeforeLaunching: Bool = false,
         crashOnCoreDataConcurrencyIssues: Bool = true,
+        arguments: [String] = [],
         selectWPComSite: String? = .none
     ) {
         let app: XCUIApplication
@@ -52,6 +53,8 @@ extension XCTestCase {
         if let selectWPComSite {
             app.launchArguments.append(contentsOf: ["-ui-test-select-wpcom-site", selectWPComSite])
         }
+
+        app.launchArguments.append(contentsOf: arguments)
 
         if removeBeforeLaunching {
             removeApp(app)

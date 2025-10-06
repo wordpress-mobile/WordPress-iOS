@@ -33,7 +33,7 @@ public class MySiteScreen: ScreenObject {
     }
 
     private let moreMenuButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.tables.cells.staticTexts["More"]
+        $0.tables.cells["quick_actions_more"]
     }
 
     private let noticeTitleGetter: (XCUIApplication) -> XCUIElement = {

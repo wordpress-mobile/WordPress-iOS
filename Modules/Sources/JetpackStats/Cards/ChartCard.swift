@@ -127,6 +127,7 @@ struct ChartCard: View {
                 loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
             } else {
                 mainChartView(metric: selectedMetric, data: data)
+                    .accessibilityIdentifier("chart_card_chart_view")
                     .transition(.opacity.combined(with: .scale(scale: 0.97)))
             }
         } else {
@@ -275,7 +276,7 @@ private struct CardGradientBackground: View {
     }
 }
 
-enum ChartType: String, CaseIterable, Codable {
+public enum ChartType: String, CaseIterable, Codable {
     case line
     case columns
 

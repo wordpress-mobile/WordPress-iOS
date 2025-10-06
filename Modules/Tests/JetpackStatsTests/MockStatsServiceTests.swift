@@ -13,6 +13,7 @@ struct MockStatsServiceTests {
         let dateInterval = calendar.makeDateInterval(for: .today)
 
         // WHEN
+        let startTime = CFAbsoluteTimeGetCurrent()
         let response = try await service.getTopListData(
             .postsAndPages,
             metric: .views,
@@ -20,6 +21,7 @@ struct MockStatsServiceTests {
             granularity: dateInterval.preferredGranularity,
             limit: nil
         )
+        print("elapsed: \((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms")
 
         // THEN
         #expect(response.items.count > 0)
@@ -45,10 +47,12 @@ struct MockStatsServiceTests {
         let granularity = dateInterval.preferredGranularity
 
         // WHEN
+        let startTime = CFAbsoluteTimeGetCurrent()
         let response = try await service.getSiteStats(
             interval: dateInterval,
             granularity: granularity
         )
+        print("elapsed: \((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms")
 
         // THEN - Basic validations
         #expect(response.metrics.count > 0, "Should return at least one data point")

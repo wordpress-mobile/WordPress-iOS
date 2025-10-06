@@ -1,5 +1,6 @@
 import UIKit
 import WordPressData
+import JetpackStats
 
 struct UITestConfigurator {
     static func isUITesting() -> Bool {
@@ -23,6 +24,13 @@ struct UITestConfigurator {
         if arguments.contains("-ui-test-disable-animations") {
             flags.insert(.disableAnimations)
             disableAnimations(in: app, window: window)
+        }
+        if arguments.contains("-ui-test-use-mock-data") {
+            flags.insert(.useMockData)
+        }
+        if arguments.contains("-ui-test-screenshot-generation") {
+            flags.insert(.screenshotGeneration)
+            ChartCardConfiguration.defaultChartType = .line
         }
         if arguments.contains("-ui-test-reset-everything") {
             resetEverything()
@@ -77,4 +85,10 @@ struct UITestFlag: OptionSet {
     static let disableAnimations = UITestFlag(rawValue: 1 << 3)
 
     static let disableLogging = UITestFlag(rawValue: 1 << 4)
+
+    /// Use programatically created mock data where possible.
+    static let useMockData = UITestFlag(rawValue: 1 << 5)
+
+    /// If enabled, the screenshot generation is running.
+    static let screenshotGeneration = UITestFlag(rawValue: 1 << 6)
 }

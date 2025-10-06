@@ -46,10 +46,17 @@ struct FeatureFlagOverrideStore {
     /// If no override exists, returns `nil`.
     ///
     func overriddenValue(for featureFlag: OverridableFlag) -> Bool? {
-        guard store.object(forKey: featureFlag.key) != nil else {
+        guard let object = store.object(forKey: featureFlag.key) else {
             return nil
         }
-        return store.bool(forKey: featureFlag.key)
+        switch object {
+        case let value as Bool:
+            return value
+        case let value as String:
+            return (value as NSString).boolValue
+        default:
+            return nil
+        }
     }
 }
 

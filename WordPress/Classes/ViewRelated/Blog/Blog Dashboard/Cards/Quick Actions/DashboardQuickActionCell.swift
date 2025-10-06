@@ -53,6 +53,7 @@ final class DashboardQuickActionCell: UITableViewCell {
         titleLabel.text = viewModel.title
         iconView.image = viewModel.image?.withRenderingMode(.alwaysTemplate)
         detailsLabel.text = viewModel.details
+        accessibilityIdentifier = viewModel.action.accessibilityIdentifier
     }
 
     override func layoutSubviews() {

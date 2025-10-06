@@ -291,7 +291,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         if isSidebarModeEnabled {
             notificationsButtonViewModel.$image.sink { [weak self] in
                 guard let self else { return }
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: $0, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))
+                let button = UIBarButtonItem(image: $0, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))
+                button.accessibilityIdentifier = "bar-button-item-notifications"
+                self.navigationItem.rightBarButtonItem = button
             }.store(in: &cancellables)
         }
     }

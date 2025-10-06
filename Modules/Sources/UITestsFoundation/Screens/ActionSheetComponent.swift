@@ -34,4 +34,9 @@ public class ActionSheetComponent: ScreenObject {
 
         return try ChooseLayoutScreen()
     }
+
+    public func openMockPost() throws -> BlockEditorScreen {
+        app.buttons["create-mock-post"].firstMatch.tap()
+        return try BlockEditorScreen()
+    }
 }

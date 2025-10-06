@@ -9,10 +9,9 @@ require 'fileutils'
 # - https://size-charts.com/topics/screen-size-charts/apple-ipad-size-chart/
 #
 SCREENSHOT_SIMULATORS = [
-  'iPhone Xs Max', # 6.5in - 2688x1242 @ 458 ppi
-  'iPhone 8 Plus', # 5.5in - 1920x1080 @ 401 ppi -- !!! FIXME: `canvas_size` in `fastlane/screenshots.json` does not match ([1242, 2208])
-  'iPad Pro (12.9-inch) (2nd generation)', # 12.9in - 2732x2048 @ 264 ppi
-  'iPad Pro (12.9-inch) (5th generation)' # 12.9in - 2732x2048 @ 264 ppi
+  'iPhone 17 Pro Max', # 6.5in - 2688x1242 @ 458 ppi
+  'iPhone 17',
+  'iPad Pro 11-inch (M4)'  
 ].freeze
 
 #################################################
@@ -67,6 +66,9 @@ platform :ios do
 
     UI.message "--- Generating screenshots for the following languages: #{languages}"
 
+    # It ensures `override_status_bar` works correctly
+    ENV['SNAPSHOT_SIMULATOR_WAIT_FOR_BOOT_TIMEOUT'] = '20'
+
     create_missing_simulators_for_screenshots
     dark_mode_values.each do |dark_mode_enabled|
       capture_ios_screenshots(
@@ -77,12 +79,18 @@ platform :ios do
         output_directory: output_directory,
         languages: languages,
         dark_mode: dark_mode_enabled,
-        override_status_bar: true,
 
-        reinstall_app: true,
-        erase_simulator: true,
+        # It's been broken since early 2024 and everyone uses this workaround
+        # https://github.com/fastlane/fastlane/pull/21954
+        override_status_bar: true,
+        override_status_bar_arguments: "--time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --operatorName '' --cellularBars 4 --batteryState charged --batteryLevel 100",
+
+        reinstall_app: false,
+        erase_simulator: false,
         localize_simulator: true,
         concurrent_simulators: false,
+        headless: false,
+        skip_package_dependencies_resolution: true,
 
         devices: SCREENSHOT_SIMULATORS
       )

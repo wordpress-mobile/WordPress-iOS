@@ -95,6 +95,7 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         statusLabel.isHidden = viewModel.status.isEmpty
 
         accessibilityLabel = viewModel.accessibilityLabel
+        accessibilityIdentifier = viewModel.post.wp_slug ?? viewModel.title.string
 
         configure(with: viewModel.syncStateViewModel)
         if let delegate {

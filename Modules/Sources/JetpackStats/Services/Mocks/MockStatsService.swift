@@ -12,6 +12,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     }
     let supportedItems = TopListItemType.allCases
 
+    private var delaysDisabled = false
+
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
         switch item {
         case .postsAndPages: [.views, .visitors, .comments, .likes]
@@ -41,6 +43,10 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         await generateTopListMockData()
     }
 
+    func disableDelays() {
+        delaysDisabled = true
+    }
+
     func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsResponse {
         await generateDataIfNeeded()
 
@@ -66,7 +72,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             total[metric] = periodData.total
         }
 
-        try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        if !delaysDisabled {
+            try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        }
 
         return SiteMetricsResponse(total: total, metrics: output)
     }
@@ -266,7 +274,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         let jsonObject = try JSONSerialization.jsonObject(with: data) as! [String: AnyObject]
 
         // Simulate network delay
-        try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        if !delaysDisabled {
+            try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        }
 
         guard let details = StatsPostDetails(jsonDictionary: jsonObject) else {
             throw URLError(.cannotParseResponse)
@@ -277,7 +287,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
     func getPostLikes(for postID: Int, count: Int) async throws -> PostLikesData {
         // Simulate network delay
-        try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        if !delaysDisabled {
+            try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        }
 
         func makeUser(id: Int, name: String) -> PostLikesData.PostLikeUser {
             PostLikesData.PostLikeUser(
@@ -315,7 +327,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
     func getEmailOpens(for postID: Int) async throws -> StatsEmailOpensData {
         // Simulate network delay
-        try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        if !delaysDisabled {
+            try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        }
 
         // Generate realistic random data
         let totalSends = Int.random(in: 500...5000)
@@ -412,9 +426,16 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
     // MARK: - Data Generation
 
+    /// Calculates a recency boost factor for the given date
+    private func calculateRecentBoost(for date: Date) -> Double {
+        // NOT using Calendar as it's pretty slow and we don't need the precision
+        let isRecent = abs(date.timeIntervalSinceNow) < 86400 * 7
+        return isRecent ? Double.random(in: 1.05...1.30) : 1.0
+    }
+
     /// Mutates item metrics based on growth factors and variations
-    private func mutateItemMetrics(_ item: any TopListItemProtocol, growthFactor: Double, seasonalFactor: Double, weekendFactor: Double, randomFactor: Double) -> any TopListItemProtocol {
-        let combinedFactor = growthFactor * seasonalFactor * weekendFactor * randomFactor
+    private func mutateItemMetrics(_ item: any TopListItemProtocol, growthFactor: Double, recentBoost: Double, seasonalFactor: Double, weekendFactor: Double, randomFactor: Double) -> any TopListItemProtocol {
+        let combinedFactor = growthFactor * recentBoost * seasonalFactor * weekendFactor * randomFactor
 
         var item = item
         if let views = item.metrics.views {
@@ -431,11 +452,11 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         }
         if let bounceRate = item.metrics.bounceRate {
             let bounceVariation = randomFactor > 1.0 ? 0.95 : 1.05
-            item.metrics.bounceRate = min(100, max(0, Int(Double(bounceRate) * bounceVariation)))
+            item.metrics.bounceRate = min(100, max(0, Int(Double(bounceRate) * bounceVariation / recentBoost)))
         }
         if let timeOnSite = item.metrics.timeOnSite {
             let timeVariation = Double.random(in: 0.85...1.15)
-            item.metrics.timeOnSite = Int(Double(timeOnSite) * timeVariation)
+            item.metrics.timeOnSite = Int(Double(timeOnSite) * recentBoost * timeVariation)
         }
         if let downloads = item.metrics.downloads {
             item.metrics.downloads = Int(Double(downloads) * combinedFactor)
@@ -470,15 +491,29 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         }
     }
 
+    private var memoizedDateComponents: [Date: DateComponents] = [:]
+
     private func generateRealisticValue(for metric: SiteMetric, at date: Date) -> Int {
-        let hour = calendar.component(.hour, from: date)
-        let dayOfWeek = calendar.component(.weekday, from: date)
-        let month = calendar.component(.month, from: date)
-        let year = calendar.component(.year, from: date)
+
+        let components: DateComponents = {
+            if let components = memoizedDateComponents[date] {
+                return components
+            }
+            let components = calendar.dateComponents([.year, .month, .weekday, .hour], from: date)
+            memoizedDateComponents[date] = components
+            return components
+        }()
+        let hour = components.hour!
+        let dayOfWeek = components.weekday!
+        let month = components.month!
+        let year = components.year!
 
         // Base values and growth factors
         let yearsSince2011 = year - 2011
         let growthFactor = 1.0 + (Double(yearsSince2011) * 0.15) // 15% yearly growth
+
+        // Recent period boost
+        let recentBoost = calculateRecentBoost(for: date)
 
         // Seasonal factor (higher in fall/winter)
         let seasonalFactor = 1.0 + 0.2 * sin(2.0 * .pi * (Double(month - 3) / 12.0))
@@ -492,39 +527,34 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         // Random variation
         let randomFactor = Double.random(in: 0.8...1.2)
 
+        let combinedFactor = growthFactor * recentBoost * seasonalFactor * weekendFactor * randomFactor * hourFactor
+
         switch metric {
         case .views:
-            let baseValue = 1000.0
-            return Int(baseValue * growthFactor * seasonalFactor * weekendFactor * hourFactor * randomFactor)
+            return Int(1000 * combinedFactor)
 
         case .visitors:
-            let baseValue = 400.0
-            return Int(baseValue * growthFactor * seasonalFactor * weekendFactor * hourFactor * randomFactor)
+            return Int(400 * combinedFactor)
 
         case .likes:
-            let baseValue = 10.0
-            return Int(baseValue * growthFactor * seasonalFactor * weekendFactor * randomFactor)
+            return Int(10 * combinedFactor)
 
         case .comments:
-            let baseValue = 3.0
-            return Int(baseValue * growthFactor * seasonalFactor * weekendFactor * randomFactor)
+            return Int(3 * combinedFactor)
 
         case .posts:
-            let baseValue = 1.0
-            return Int(baseValue * growthFactor * seasonalFactor * weekendFactor * randomFactor)
+            return Int(1 * combinedFactor)
 
         case .timeOnSite:
-            // Time in seconds - doesn't follow same patterns
-            return Int(170 + Double.random(in: -40...40))
+            let baseTime = 170.0
+            return Int((baseTime * recentBoost) + Double.random(in: -40...40))
 
         case .bounceRate:
-            // Percentage - inverse relationship with engagement
             let engagementFactor = growthFactor * seasonalFactor
-            return Int(75 - (5 * engagementFactor) + Double.random(in: -5...5))
+            return Int((75 - (5 * engagementFactor)) / recentBoost + Double.random(in: -5...5))
 
         case .downloads:
-            let baseValue = 50.0
-            return Int(baseValue * growthFactor * seasonalFactor * weekendFactor * randomFactor)
+            return Int(50 * combinedFactor)
         }
     }
 
@@ -561,13 +591,17 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                 // Calculate daily variations
                 let yearsSince2011 = year - 2011
                 let growthFactor = 1.0 + (Double(yearsSince2011) * 0.12)
+
+                // Recent period boost
+                let recentBoost = calculateRecentBoost(for: currentDate)
+
                 let seasonalFactor = 1.0 + 0.15 * sin(2.0 * .pi * (Double(month - 3) / 12.0))
                 let weekendFactor = (dayOfWeek == 1 || dayOfWeek == 7) ? 0.7 : 1.0
                 let randomFactor = Double.random(in: 0.8...1.2)
 
                 // Apply mutations to each item for this day
                 let dailyItems = baseItems.map { item in
-                    var mutatedItem = mutateItemMetrics(item, growthFactor: growthFactor, seasonalFactor: seasonalFactor, weekendFactor: weekendFactor, randomFactor: randomFactor)
+                    var mutatedItem = mutateItemMetrics(item, growthFactor: growthFactor, recentBoost: recentBoost, seasonalFactor: seasonalFactor, weekendFactor: weekendFactor, randomFactor: randomFactor)
 
                     // If it's an Author with posts, mutate the posts too
                     if let author = mutatedItem as? TopListItem.Author, let posts = author.posts {
@@ -576,7 +610,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                             var mutatedPost = post
                             // Apply similar mutation factors to post metrics
                             let postRandomFactor = Double.random(in: 0.9...1.1) // Slight variation per post
-                            let postCombinedFactor = growthFactor * seasonalFactor * weekendFactor * randomFactor * postRandomFactor
+                            let postCombinedFactor = growthFactor * recentBoost * seasonalFactor * weekendFactor * randomFactor * postRandomFactor
 
                             if let views = post.metrics.views {
                                 mutatedPost.metrics.views = Int(Double(views) * postCombinedFactor)

@@ -7,11 +7,296 @@
     "status": 200,
     "jsonBody": {
       "subscriptions": [
-
+        {
+          "ID": "788578957",
+          "blog_ID": "182890486",
+          "feed_ID": "143967848",
+          "URL": "http://automattic.design",
+          "date_subscribed": "2024-11-13T13:27:45+00:00",
+          "delivery_methods": {
+            "notification": {
+              "send_posts": false
+            }
+          },
+          "name": "Automattic Design",
+          "organization_id": 0,
+          "unseen_count": 0,
+          "last_updated": "2025-09-22T15:28:55+00:00",
+          "site_icon": "https://a8cdesignsimple.wordpress.com/wp-content/uploads/2024/09/a8c-design-site-icon-2024.png?w=96",
+          "is_owner": false,
+          "meta": {
+            "links": {
+              "site": "https://public-api.wordpress.com/rest/v1.2/read/sites/182890486",
+              "feed": "https://public-api.wordpress.com/rest/v1.1/read/feed/143967848"
+            },
+            "data": {
+              "site": {
+                "ID": 182890486,
+                "name": "Automattic Design",
+                "description": "Designing a better web",
+                "URL": "http://automattic.design",
+                "jetpack": false,
+                "jetpack_connection": false,
+                "post_count": 541,
+                "subscribers_count": 6978,
+                "lang": "en",
+                "icon": {
+                  "img": "https://a8cdesignsimple.wordpress.com/wp-content/uploads/2024/09/a8c-design-site-icon-2024.png?w=96",
+                  "ico": "https://a8cdesignsimple.wordpress.com/wp-content/uploads/2024/09/a8c-design-site-icon-2024.png?w=96"
+                },
+                "logo": {
+                  "id": "25306",
+                  "sizes": [],
+                  "url": "https://a8cdesignsimple.wordpress.com/wp-content/uploads/2025/06/automattic-logo.svg"
+                },
+                "visible": true,
+                "is_private": false,
+                "is_coming_soon": false,
+                "is_following": true,
+                "organization_id": 0,
+                "meta": {
+                  "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.2/sites/182890486",
+                    "help": "https://public-api.wordpress.com/rest/v1.2/sites/182890486/help",
+                    "posts": "https://public-api.wordpress.com/rest/v1.2/sites/182890486/posts/",
+                    "comments": "https://public-api.wordpress.com/rest/v1.1/sites/182890486/comments/",
+                    "xmlrpc": "https://a8cdesignsimple.wordpress.com/xmlrpc.php"
+                  }
+                },
+                "launch_status": "launched",
+                "site_migration": {
+                  "is_complete": false,
+                  "in_progress": false
+                },
+                "is_fse_active": false,
+                "is_fse_eligible": false,
+                "is_core_site_editor_enabled": true,
+                "is_wpcom_atomic": false,
+                "is_wpcom_staging_site": false,
+                "is_deleted": false,
+                "is_a4a_client": false,
+                "is_a4a_dev_site": false,
+                "capabilities": {
+                  "edit_pages": false,
+                  "edit_posts": false,
+                  "edit_others_posts": false,
+                  "edit_theme_options": false,
+                  "list_users": false,
+                  "manage_categories": false,
+                  "manage_options": false,
+                  "publish_posts": false,
+                  "upload_files": false,
+                  "view_stats": false
+                },
+                "is_multi_author": true,
+                "feed_ID": 143967848,
+                "feed_URL": "http://automattic.design",
+                "header_image": false,
+                "owner": {
+                  "ID": 26957695,
+                  "login": "a8cuser",
+                  "name": "a8cuser",
+                  "first_name": "",
+                  "last_name": "",
+                  "nice_name": "a8cuser",
+                  "URL": "",
+                  "avatar_URL": "https://1.gravatar.com/avatar/48e997e4a437d5002ae4c1eff741b37c2f4e1cad14d45f173ae78c25a0c41a38?s=96&d=identicon&r=G",
+                  "profile_URL": "https://gravatar.com/a8cuser",
+                  "ip_address": false,
+                  "site_visible": false,
+                  "has_avatar": true
+                },
+                "subscription": {
+                  "delivery_methods": {
+                    "email": null,
+                    "notification": {
+                      "send_posts": false
+                    }
+                  }
+                },
+                "is_blocked": false,
+                "unseen_count": 0
+              },
+              "feed": {
+                "blog_ID": "182890486",
+                "feed_ID": "143967848",
+                "blog_owner": {
+                  "ID": 26957695,
+                  "name": "a8cuser"
+                },
+                "name": "Automattic Design",
+                "URL": "http://automattic.design/",
+                "feed_URL": "http://automattic.design",
+                "subscribers_count": 6978,
+                "is_following": true,
+                "last_update": "2025-09-22T15:28:55+00:00",
+                "last_checked": "2025-09-22T15:29:01+00:00",
+                "marked_for_refresh": false,
+                "next_refresh_time": null,
+                "organization_id": 0,
+                "subscription_id": "788578957",
+                "unseen_count": 0,
+                "meta": {
+                  "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.1/read/feed/143967848",
+                    "site": "https://public-api.wordpress.com/rest/v1.1/read/sites/182890486"
+                  }
+                },
+                "image": "https://a8cdesignsimple.files.wordpress.com/2024/09/a8c-design-site-icon-2024.png?w=32",
+                "description": "Designing a better web"
+              }
+            }
+          },
+          "is_wpforteams_site": false,
+          "is_paid_subscription": false,
+          "is_rss": false,
+          "is_gift": false
+        },
+        {
+          "ID": "785513750",
+          "blog_ID": "3584907",
+          "feed_ID": "25823",
+          "URL": "http://en.blog.wordpress.com",
+          "date_subscribed": "2024-10-11T20:14:36+00:00",
+          "delivery_methods": {
+            "notification": {
+              "send_posts": false
+            }
+          },
+          "name": "WordPress.com News",
+          "organization_id": 0,
+          "unseen_count": 0,
+          "last_updated": "2025-09-30T21:13:09+00:00",
+          "site_icon": null,
+          "is_owner": false,
+          "meta": {
+            "links": {
+              "site": "https://public-api.wordpress.com/rest/v1.2/read/sites/3584907",
+              "feed": "https://public-api.wordpress.com/rest/v1.1/read/feed/25823"
+            },
+            "data": {
+              "site": {
+                "ID": 3584907,
+                "name": "WordPress.com News",
+                "description": "The latest news on WordPress.com and the WordPress community.",
+                "URL": "http://en.blog.wordpress.com",
+                "jetpack": false,
+                "jetpack_connection": false,
+                "post_count": 1992,
+                "subscribers_count": 120400870,
+                "lang": "en",
+                "logo": {
+                  "id": 0,
+                  "sizes": [],
+                  "url": ""
+                },
+                "visible": true,
+                "is_private": false,
+                "is_coming_soon": false,
+                "is_following": true,
+                "organization_id": 0,
+                "meta": {
+                  "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.2/sites/3584907",
+                    "help": "https://public-api.wordpress.com/rest/v1.2/sites/3584907/help",
+                    "posts": "https://public-api.wordpress.com/rest/v1.2/sites/3584907/posts/",
+                    "comments": "https://public-api.wordpress.com/rest/v1.1/sites/3584907/comments/",
+                    "xmlrpc": "https://en.blog.wordpress.com/xmlrpc.php"
+                  }
+                },
+                "launch_status": false,
+                "site_migration": {
+                  "is_complete": false,
+                  "in_progress": false
+                },
+                "is_fse_active": false,
+                "is_fse_eligible": false,
+                "is_core_site_editor_enabled": false,
+                "is_wpcom_atomic": false,
+                "is_wpcom_staging_site": false,
+                "is_deleted": false,
+                "is_a4a_client": false,
+                "is_a4a_dev_site": false,
+                "capabilities": {
+                  "edit_pages": false,
+                  "edit_posts": false,
+                  "edit_others_posts": false,
+                  "edit_theme_options": false,
+                  "list_users": false,
+                  "manage_categories": false,
+                  "manage_options": false,
+                  "publish_posts": false,
+                  "upload_files": false,
+                  "view_stats": false
+                },
+                "is_multi_author": true,
+                "feed_ID": 25823,
+                "feed_URL": "http://en.blog.wordpress.com",
+                "header_image": false,
+                "owner": {
+                  "ID": 26957695,
+                  "login": "a8cuser",
+                  "name": "a8cuser",
+                  "first_name": "",
+                  "last_name": "",
+                  "nice_name": "a8cuser",
+                  "URL": "",
+                  "avatar_URL": "https://1.gravatar.com/avatar/48e997e4a437d5002ae4c1eff741b37c2f4e1cad14d45f173ae78c25a0c41a38?s=96&d=retro",
+                  "profile_URL": "https://gravatar.com/a8cuser",
+                  "ip_address": false,
+                  "site_visible": false,
+                  "has_avatar": true
+                },
+                "subscription": {
+                  "delivery_methods": {
+                    "email": null,
+                    "notification": {
+                      "send_posts": false
+                    }
+                  }
+                },
+                "is_blocked": false,
+                "unseen_count": 0
+              },
+              "feed": {
+                "blog_ID": "3584907",
+                "feed_ID": "25823",
+                "blog_owner": {
+                  "ID": 26957695,
+                  "name": "a8cuser"
+                },
+                "name": "WordPress.com News",
+                "URL": "http://en.blog.wordpress.com/",
+                "feed_URL": "http://en.blog.wordpress.com",
+                "subscribers_count": 120400870,
+                "is_following": true,
+                "last_update": "2025-09-30T21:13:09+00:00",
+                "last_checked": "2025-09-30T21:24:37+00:00",
+                "marked_for_refresh": false,
+                "next_refresh_time": null,
+                "organization_id": 0,
+                "subscription_id": "785513750",
+                "unseen_count": 0,
+                "meta": {
+                  "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.1/read/feed/25823",
+                    "site": "https://public-api.wordpress.com/rest/v1.1/read/sites/3584907"
+                  }
+                },
+                "image": "http://s0.wp.com/i/buttonw-com.png",
+                "description": "The latest news on WordPress.com and the WordPress community."
+              }
+            }
+          },
+          "is_wpforteams_site": false,
+          "is_paid_subscription": false,
+          "is_rss": false,
+          "is_gift": false
+        }
       ],
       "page": 1,
-      "number": 0,
-      "total_subscriptions": 0
+      "number": 2,
+      "total_subscriptions": 2
     },
     "headers": {
       "Content-Type": "application/json",
