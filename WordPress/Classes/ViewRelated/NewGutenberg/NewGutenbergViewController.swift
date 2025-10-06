@@ -111,6 +111,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private var editorViewController: GutenbergKit.EditorViewController
     private var activityIndicator: UIActivityIndicatorView?
     private var hasEditorStarted = false
+    private var isModalDialogOpen = false
 
     lazy var autosaver = Autosaver() {
         self.performAutoSave()
@@ -496,6 +497,14 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             }
         }
     }
+
+    private func setNavigationItemsEnabled(_ enabled: Bool) {
+        navigationBarManager.closeButton.isEnabled = enabled
+        navigationBarManager.moreButton.isEnabled = enabled
+        navigationBarManager.publishButton.isEnabled = enabled
+        navigationBarManager.undoButton.isEnabled = enabled
+        navigationBarManager.redoButton.isEnabled = enabled
+    }
 }
 
 extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate {
@@ -606,6 +615,16 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         default:
             DDLogError("Unknown autocompleter type: \(type)")
         }
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didOpenModalDialog dialogType: String) {
+        isModalDialogOpen = true
+        setNavigationItemsEnabled(false)
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didCloseModalDialog dialogType: String) {
+        isModalDialogOpen = false
+        setNavigationItemsEnabled(true)
     }
 
     private func convertMediaInfoArrayToJSONString(_ mediaInfoArray: [MediaInfo]) -> String? {
