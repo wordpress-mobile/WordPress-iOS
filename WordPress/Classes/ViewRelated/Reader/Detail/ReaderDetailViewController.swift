@@ -468,13 +468,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Apply view styles
     @MainActor private func applyStyles() {
-        guard let readableGuide = webView.superview?.readableContentGuide else {
-            return
-        }
-
         NSLayoutConstraint.activate([
-            webView.rightAnchor.constraint(equalTo: readableGuide.rightAnchor, constant: -Constants.margin),
-            webView.leftAnchor.constraint(equalTo: readableGuide.leftAnchor, constant: Constants.margin)
+            webView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor, constant: -Constants.margin),
+            webView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor, constant: Constants.margin)
         ])
 
         webView.translatesAutoresizingMaskIntoConstraints = false
