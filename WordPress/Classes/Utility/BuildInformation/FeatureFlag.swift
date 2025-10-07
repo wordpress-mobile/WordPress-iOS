@@ -85,7 +85,7 @@ public enum FeatureFlag: Int, CaseIterable {
             return false
         case .intelligence:
             let languageCode = Locale.current.languageCode
-            return (languageCode ?? "en").hasPrefix("en")
+            return (languageCode ?? "en").hasPrefix("en") && app == .jetpack
         }
     }
 
