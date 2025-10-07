@@ -51,7 +51,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     struct EditorDependencies {
-        let settings: String
+        let settings: String?
         let didLoadCookies: Bool
     }
 
@@ -383,13 +383,13 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     @MainActor
-    func startEditor(settings: String) async throws {
+    func startEditor(settings: String?) async throws {
         guard case .dependenciesReady = self.editorState else {
             preconditionFailure("`startEditor` should only be called when the editor is in the `.dependenciesReady` state.")
         }
 
         let updatedConfiguration = self.editorViewController.configuration.toBuilder()
-            .setEditorSettings(settings)
+            .apply(settings) { $0.setEditorSettings($1) }
             .setTitle(post.postTitle ?? "")
             .setContent(post.content ?? "")
             .build()
@@ -469,7 +469,14 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // MARK: - Editor Setup
     private func fetchEditorDependencies() async throws -> EditorDependencies {
-        let settings = try await blockEditorSettingsService.getSettingsString(allowingCachedResponse: true)
+        let settings: String?
+        do {
+            settings = try await blockEditorSettingsService.getSettingsString(allowingCachedResponse: true)
+        } catch {
+            DDLogError("Failed to fetch editor settings: \(error)")
+            settings = nil
+        }
+
         let loaded = await loadAuthenticationCookiesAsync()
 
         return EditorDependencies(settings: settings, didLoadCookies: loaded)
