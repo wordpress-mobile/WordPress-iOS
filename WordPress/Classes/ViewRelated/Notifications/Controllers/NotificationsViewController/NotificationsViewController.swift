@@ -115,7 +115,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         NotificationsViewModel(userDefaults: userDefaults)
     }()
 
-    var isSidebarModeEnabled = false
     var isReaderAppModeEnabled = false
 
     private var isNavigationItemsConfigured = false
@@ -124,7 +123,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     static func showInPopover(from presentingVC: UIViewController, sourceItem: UIPopoverPresentationControllerSourceItem) {
         let notificationsVC = Notifications.instantiateInitialViewController()
-        notificationsVC.isSidebarModeEnabled = true
 
         let navigationVC = UINavigationController(rootViewController: notificationsVC)
         navigationVC.modalPresentationStyle = .popover
@@ -781,16 +779,11 @@ extension NotificationsViewController {
             let siteID = note.metaSiteID,
             note.kind == .matcher || note.kind == .newPost {
 
-            if isSidebarModeEnabled && splitViewController == nil {
-                presentingViewController?.dismiss(animated: true)
-                RootViewCoordinator.sharedPresenter.showReader(path: .post(postID: postID.intValue, siteID: siteID.intValue))
-            } else {
-                let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-                readerViewController.navigationItem.largeTitleDisplayMode = .never
-                readerViewController.hidesBottomBarWhenPushed = true
-                readerViewController.coordinator?.notificationID = note.notificationId
-                displayViewController(readerViewController)
-            }
+            let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+            readerViewController.navigationItem.largeTitleDisplayMode = .never
+            readerViewController.hidesBottomBarWhenPushed = true
+            readerViewController.coordinator?.notificationID = note.notificationId
+            displayViewController(readerViewController)
             return
         }
 
@@ -851,12 +844,6 @@ extension NotificationsViewController {
     private func displayViewController(_ controller: UIViewController) {
         if shouldPushDetailsViewController {
             navigationController?.pushViewController(controller, animated: true)
-        } else if isSidebarModeEnabled {
-            if let splitViewController {
-                splitViewController.setViewController(controller, for: .secondary)
-            } else {
-                navigationController?.pushViewController(controller, animated: true)
-            }
         } else {
             showDetailViewController(controller, sender: nil)
         }

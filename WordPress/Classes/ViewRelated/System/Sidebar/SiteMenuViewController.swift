@@ -1,14 +1,39 @@
 import UIKit
+import SwiftUI
 import WordPressData
 import WordPressUI
+
+final class SiteMenuViewModel {
+    let site: Blog
+
+    init(site: Blog) {
+        self.site = site
+    }
+}
 
 protocol SiteMenuViewControllerDelegate: AnyObject {
     func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController)
 }
 
+struct SiteMenuView: UIViewControllerRepresentable {
+    let viewModel: SiteMenuViewModel
+    weak var delegate: SiteMenuViewControllerDelegate?
+
+    func makeUIViewController(context: Context) -> SiteMenuViewController {
+        let siteMenuVC = SiteMenuViewController(viewModel: viewModel)
+        siteMenuVC.delegate = delegate
+        return siteMenuVC
+    }
+
+    func updateUIViewController(_ uiViewController: SiteMenuViewController, context: Context) {
+        // do nothing
+    }
+}
+
 /// The site menu for the split view navigation.
 final class SiteMenuViewController: UIViewController {
-    let blog: Blog
+    let viewModel: SiteMenuViewModel
+    private var blog: Blog { viewModel.site }
     private let blogDetailsVC = SiteMenuListViewController()
 
     weak var delegate: SiteMenuViewControllerDelegate?
@@ -17,13 +42,17 @@ final class SiteMenuViewController: UIViewController {
     private var didAppear = false
     private let tipAnchor = UIView()
 
-    init(blog: Blog) {
-        self.blog = blog
+    init(viewModel: SiteMenuViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func contentScrollView(for edge: NSDirectionalRectEdge) -> UIScrollView? {
+        blogDetailsVC.contentScrollView(for: edge)
     }
 
     override func viewDidLoad() {
@@ -36,13 +65,11 @@ final class SiteMenuViewController: UIViewController {
 
         addChild(blogDetailsVC)
         view.addSubview(blogDetailsVC.view)
-        blogDetailsVC.view.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToAllEdges(blogDetailsVC.view)
+        blogDetailsVC.view.pinEdges()
 
         blogDetailsVC.showInitialDetailsForBlog()
 
         navigationItem.title = blog.settings?.name ?? (blog.displayURL as String?) ?? ""
-
     }
 
     private func getTipAnchor() -> UIView {
@@ -136,12 +163,5 @@ private final class SiteMenuListViewController: BlogDetailsViewController {
 extension SiteMenuViewController: BlogDetailsPresentationDelegate {
     func presentBlogDetailsViewController(_ viewController: UIViewController) {
         delegate?.siteMenuViewController(self, showDetailsViewController: viewController)
-
-        // didAppear prevents it from being hidden on first show
-        if didAppear, let splitVC = splitViewController, splitVC.splitBehavior == .overlay {
-            DispatchQueue.main.async {
-                splitVC.hide(.supplementary)
-            }
-        }
     }
 }

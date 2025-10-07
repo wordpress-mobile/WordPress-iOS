@@ -7,282 +7,183 @@ import WordPressKit
 import WordPressUI
 
 /// The sidebar for the iPad version of the app.
-final class SidebarViewController: UIHostingController<AnyView> {
+final class SidebarViewController: UIViewController, SiteMenuViewControllerDelegate {
     private let viewModel: SidebarViewModel
+    private let segmentedControl = UISegmentedControl()
+    private var currentChildViewController: UIViewController?
+    private var cancellables: [AnyCancellable] = []
+    private let notificationsButtonViewModel = NotificationsButtonViewModel()
+    private var profileButtonController: ProfileButtonController?
+
+    weak var topSplitViewController: UISplitViewController?
 
     init(viewModel: SidebarViewModel) {
         self.viewModel = viewModel
-        self.viewModel.blogListViewModel.sidebarViewModel = viewModel
-        super.init(rootView: AnyView(SidebarView(viewModel: viewModel, blogListViewModel: viewModel.blogListViewModel)))
-        self.title = Strings.sectionMySites
+        super.init(nibName: nil, bundle: nil)
     }
 
     required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-        viewModel.onAppear()
+        setupSegmentedControl()
+        setupBarButtonItems()
+        setupObservers()
     }
-}
 
-struct SidebarView: View {
-    @ObservedObject var viewModel: SidebarViewModel
-    @ObservedObject var blogListViewModel: BlogListViewModel
-    @StateObject private var notificationsButtonViewModel = NotificationsButtonViewModel()
+    private func setupSegmentedControl() {
+        for (index, item) in SidebarMode.allCases.enumerated() {
+            let title = item.localizedTitle
+            segmentedControl.insertSegment(withTitle: title, at: index, animated: false)
+        }
+        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
 
-    static let displayedSiteLimit = 4
+        view.addSubview(segmentedControl)
+        segmentedControl.pinEdges([.horizontal, .bottom], to: view.safeAreaLayoutGuide, insets: UIEdgeInsets(.all, 16))
+    }
 
-    var body: some View {
-        let list = List(selection: $viewModel.selection) {
-            if !blogListViewModel.searchText.isEmpty {
-                searchResults
+    private func setupBarButtonItems() {
+        let profileButton = UIBarButtonItem(
+            image: UIImage(systemName: "person.crop.circle"),
+            style: .plain,
+            target: self,
+            action: #selector(profileButtonTapped)
+        )
+
+        navigationItem.leftBarButtonItems = [profileButton]
+        profileButtonController = ProfileButtonController(barButtonItem: profileButton)
+
+        notificationsButtonViewModel.$image.sink { [weak self] image in
+            guard let self else { return }
+
+            let notificationsButton = UIBarButtonItem(
+                image: image,
+                style: .plain,
+                target: self,
+                action: #selector(self.notificationsButtonTapped)
+            )
+
+            var rightBarButtonItems = [notificationsButton]
+
+            // Add Help button for Jetpack
+            if BuildSettings.current.brand == .jetpack {
+                let helpButton = UIBarButtonItem(
+                    image: UIImage(systemName: "questionmark.circle"),
+                    style: .plain,
+                    target: self,
+                    action: #selector(self.helpButtonTapped)
+                )
+                rightBarButtonItems.append(helpButton)
+            }
+
+            self.navigationItem.rightBarButtonItems = rightBarButtonItems
+        }.store(in: &cancellables)
+    }
+
+    private func setupObservers() {
+        viewModel.$mode.sink { [weak self] mode in
+            self?.configure(for: mode)
+        }.store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
+            .sink { [weak self] _ in self?.applicationDidBecomeActive() }
+            .store(in: &cancellables)
+    }
+
+    // MARK: - Actions
+
+    @objc private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+        viewModel.mode = SidebarMode.allCases[sender.selectedSegmentIndex]
+    }
+
+    @objc private func profileButtonTapped() {
+        viewModel.navigate(.profile)
+    }
+
+    @objc private func helpButtonTapped() {
+        viewModel.navigate(.help)
+    }
+
+    @objc private func notificationsButtonTapped(_ sender: UIBarButtonItem) {
+        NotificationsViewController.showInPopover(from: self, sourceItem: sender)
+    }
+
+    @objc private func applicationDidBecomeActive() {
+        trackAnalytics(for: viewModel.mode)
+    }
+
+    // MARK: - Modes
+
+    private func configure(for mode: SidebarMode) {
+        if let index = SidebarMode.allCases.firstIndex(of: mode) {
+            if segmentedControl.selectedSegmentIndex != index {
+                segmentedControl.selectedSegmentIndex = index
+            }
+        }
+
+        switch mode {
+        case .sites:
+            if let site = viewModel.siteViewModel {
+                let siteVC = SiteMenuViewController(viewModel: site)
+                siteVC.delegate = self
+                showChildViewController(siteVC)
             } else {
-                Section {
-                    siteListSectionContent
-                }
-                Section(Strings.moreSection) {
-                    more
-                }
+                // TODO: (kean) add empry state view
             }
-        }
-        .listStyle(.sidebar)
-        .accessibilityIdentifier("sidebar_list")
-        .tint(AppColor.tint)
-        .overlay(alignment: .bottom) {
-            SidebarProfileContainerView(viewModel: viewModel)
-        }
-        if blogListViewModel.allSites.count > SidebarView.displayedSiteLimit {
-            list.searchable(text: $blogListViewModel.searchText, placement: .sidebar)
-        } else {
-            list
-        }
-    }
-
-    @ViewBuilder
-    var searchResults: some View {
-        if blogListViewModel.searchResults.isEmpty {
-            EmptyStateView.search()
-        } else {
-            makeSiteList(with: blogListViewModel.searchResults)
-        }
-    }
-
-    // MARK: - Sites
-
-    @ViewBuilder
-    private var siteListSectionContent: some View {
-        let topSites = blogListViewModel.topSites
-        if topSites.isEmpty {
-            Label(Strings.createSite, systemImage: "plus.circle")
-                .tag(SidebarSelection.welcome)
-        } else {
-            makeSiteList(with: topSites)
-            if blogListViewModel.allSites.count > SidebarView.displayedSiteLimit {
-                GeometryReader { proxy in
-                    Button {
-                        viewModel.navigate(.allSites(sourceRect: proxy.frame(in: .global)))
-                    } label: {
-                        Label(Strings.allSites, systemImage: "rectangle.stack")
-                    }
-                    .tint(Color.primary)
-                }
-            }
-            addSiteView
-                .tint(Color.primary)
-        }
-    }
-
-    private func makeSiteList(with sites: [BlogListSiteViewModel]) -> some View {
-        ForEach(sites) { site in
-            BlogListSiteView(site: site, style: .sidebar)
-                .environment(\.siteIconBackgroundColor, Color(.systemBackground))
-                .tag(SidebarSelection.blog(site.id))
-                .listRowInsets(EdgeInsets(top: 9, leading: 8, bottom: 9, trailing: 8))
-        }
-    }
-
-    @ViewBuilder
-    private var addSiteView: some View {
-        let viewModel = AddSiteMenuViewModel(onSelection: { [weak viewModel] in
-            viewModel?.navigate(.addSite(selection: $0))
-        })
-        let label = SidebarAddButtonLabel(title: Strings.addSite)
-        switch viewModel.actions.count {
-        case 0:
-            EmptyView()
-        case 1:
-            Button(action: viewModel.actions[0].handler) { label }
-        default:
-            Menu {
-                ForEach(viewModel.actions) { action in
-                    Button(action.title, action: action.handler)
-                }
-            } label: { label }
-        }
-    }
-
-    // MARK: - More
-
-    @ViewBuilder
-    private var more: some View {
-        switch BuildSettings.current.brand {
-        case .wordpress:
-            Button(action: { viewModel.navigate(.help) }) {
-                Label(Strings.help, systemImage: "questionmark.circle")
-            }
-            .accessibilityIdentifier("sidebar_help")
-        case .jetpack:
-            if AccountHelper.isDotcomAvailable() {
-                Label {
-                    Text(Strings.notifications)
-                } icon: {
-                    if notificationsButtonViewModel.counter > 0 {
-                        Image(systemName: "bell.badge")
-                            .foregroundStyle(.red, .primary)
-                    } else {
-                        Image(systemName: "bell")
-                    }
-                }
-                .accessibilityIdentifier("sidebar_notifications")
-                .tag(SidebarSelection.notifications)
-
-                Label(Strings.reader, systemImage: "eyeglasses")
-                    .tag(SidebarSelection.reader)
-                    .accessibilityIdentifier("sidebar_reader")
-
-                if RemoteFeatureFlag.domainManagement.enabled() {
-                    Button(action: { viewModel.navigate(.domains) }) {
-                        Label(Strings.domains, systemImage: "network")
-                    }
-                    .accessibilityIdentifier("sidebar_domains")
-                }
-            }
-
-            Button(action: { viewModel.navigate(.help) }) {
-                Label(Strings.help, systemImage: "questionmark.circle")
-            }
-            .accessibilityIdentifier("sidebar_help")
         case .reader:
-            // TODO: (reader) add iPad support
-            fatalError("unsupported")
+            showChildViewController(viewModel.readerPresenter.sidebar)
+            viewModel.readerPresenter.showInitialSelection()
         }
+
+        trackAnalytics(for: mode)
     }
-}
 
-private struct SidebarProfileContainerView: View {
-    @ObservedObject var viewModel: SidebarViewModel
-    @Environment(\.isSearching) private var isSearching // placemenet is important
-
-    var body: some View {
-        if !isSearching {
-            content
-                .padding(.horizontal)
-                .padding(.top, 8)
-                .background(Color(uiColor: .secondarySystemBackground))
+    private func trackAnalytics(for mode: SidebarMode) {
+        switch mode {
+        case .sites: WPAnalytics.track(.mySitesTabAccessed)
+        case .reader: WPAnalytics.track(.readerAccessed)
         }
     }
 
-    @ViewBuilder
-    var content: some View {
-        if let account = viewModel.account {
-            Button(action: { viewModel.navigate(.profile) }) {
-                SidebarProfileView(account: account)
-            }
-            .containerShape(Rectangle())
-            .buttonStyle(.plain)
-            .accessibilityIdentifier("sidebar_me")
+    private func showChildViewController(_ childViewController: UIViewController) {
+        // Remove current child if exists
+        if let currentChild = currentChildViewController {
+            _removeChildViewController(currentChild)
+        }
+
+        // Add new child
+        _addChildViewController(childViewController)
+        currentChildViewController = childViewController
+    }
+
+    private func _addChildViewController(_ child: UIViewController) {
+        addChild(child)
+        view.insertSubview(child.view, belowSubview: segmentedControl)
+        child.view.pinEdges()
+        child.didMove(toParent: self)
+    }
+
+    private func _removeChildViewController(_ child: UIViewController) {
+        child.willMove(toParent: nil)
+        child.view.removeFromSuperview()
+        child.removeFromParent()
+    }
+
+    // MARK: - SiteMenuViewControllerDelegate
+
+    func siteMenuViewController(_ siteMenuViewController: SiteMenuViewController, showDetailsViewController viewController: UIViewController) {
+        guard let splitVC = topSplitViewController else {
+            return wpAssertionFailure("missing split view controller")
+        }
+        if viewController is UINavigationController || viewController is UISplitViewController {
+            splitVC.setViewController(viewController, for: .secondary)
         } else {
-            HStack {
-                if AppConfiguration.isJetpack {
-                    Button(action: { viewModel.navigate(.signIn) }) {
-                        HStack {
-                            Image(systemName: "person.crop.circle")
-                                .font(.title2)
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text("Sign In")
-                                    .font(.subheadline.weight(.medium))
-                                Text("WordPress.com")
-                                    .font(.footnote)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                    }
-                    .tint(Color(UIAppColor.primary))
-                }
-
-                Spacer()
-
-                Button(action: { viewModel.navigate(.profile) }) {
-                    Image(systemName: "gearshape")
-                        .font(.title3)
-                        .foregroundColor(Color.secondary)
-                }
-                .frame(width: 44, height: 44)
-                .contentShape(Rectangle())
-                .accessibilityIdentifier("sidebar_me")
-            }
+            // Reset previous navigation or split stack
+            let navigationVC = UINavigationController(rootViewController: viewController)
+            splitVC.setViewController(navigationVC, for: .secondary)
         }
     }
-}
-
-extension BlogListViewModel {
-    /// Returns a list of sites to display in the sidebar, ensuring that:
-    /// 1. The current site is always included
-    /// 2. The most recent sites are included up to the display limit
-    /// 3. The sites are sorted alphabetically
-    var topSites: [BlogListSiteViewModel] {
-        var displaySites = [BlogListSiteViewModel]()
-        var encounteredIDs = Set<TaggedManagedObjectID<Blog>>()
-
-        // Ensure the current site is included (if there is one)
-        if let currentSite {
-            displaySites.append(currentSite)
-            encounteredIDs.insert(currentSite.id)
-        }
-
-        // Add recent sites up to the limit, if we still have space, add other sites
-        for site in recentSites + allSites {
-            if displaySites.count >= SidebarView.displayedSiteLimit {
-                break
-            }
-
-            if !encounteredIDs.contains(site.id) {
-                displaySites.append(site)
-                encounteredIDs.insert(site.id)
-            }
-        }
-
-        // Sort the sites alphabetically
-        return displaySites.sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
-    }
-}
-
-struct SidebarAddButtonLabel: View {
-    let title: String
-
-    var body: some View {
-        Label {
-            Text(title)
-        } icon: {
-            Image(systemName: "plus.square.fill")
-                .foregroundStyle(AppColor.primary, Color(.secondarySystemFill))
-                .font(.title2)
-        }
-    }
-}
-
-private enum Strings {
-    static let sectionMySites = NSLocalizedString("sidebar.mySitesSectionTitle", value: "Sites", comment: "Sidebar section title on iPad")
-    static let moreSection = NSLocalizedString("sidebar.moreSectionTitle", value: "More", comment: "Sidebar section title on iPad")
-    static let allSites = NSLocalizedString("sidebar.allSites", value: "All Sites", comment: "Sidebar button title on iPad")
-    static let addSite = NSLocalizedString("sidebar.addSite", value: "Add Site", comment: "Sidebar button title on iPad")
-    static let createSite = NSLocalizedString("sidebar.createSite", value: "Create Site", comment: "Sidebar button title on iPad")
-    static let notifications = NSLocalizedString("sidebar.notifications", value: "Notifications", comment: "Sidebar item on iPad")
-    static let reader = SharedStrings.Reader.title
-    static let domains = NSLocalizedString("sidebar.domains", value: "Domains", comment: "Sidebar item on iPad")
-    static let help = NSLocalizedString("sidebar.help", value: "Help & Support", comment: "Sidebar item on iPad")
-    static let me = NSLocalizedString("sidebar.me", value: "Me", comment: "Sidebar item on iPad")
 }

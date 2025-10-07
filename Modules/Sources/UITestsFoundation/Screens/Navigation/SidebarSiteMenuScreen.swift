@@ -1,7 +1,7 @@
 import ScreenObject
 import XCTest
 
-/// Represents the site menu displayed in the supplementary column on iPad.
+/// Represents the site menu displayed in the site menu column on iPad.
 public class SidebarSiteMenuScreen: ScreenObject {
     var navigationBar: XCUIElement {
         app.navigationBars["site_menu_navbar"].firstMatch

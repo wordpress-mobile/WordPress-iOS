@@ -6,13 +6,11 @@ import WordPressData
 import WordPressUI
 
 /// Manages top-level Reader navigation.
-public final class ReaderPresenter: NSObject, SplitViewDisplayable {
+public final class ReaderPresenter: NSObject {
     private let sidebarViewModel: ReaderSidebarViewModel
 
     // The view controllers used during split view presentation.
     let sidebar: ReaderSidebarViewController
-    let supplementary: UINavigationController
-    var secondary: UINavigationController
 
     /// The navigation controller for the main content when shown using tabs.
     private var mainNavigationController = UINavigationController()
@@ -31,12 +29,8 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     init(viewModel: ReaderSidebarViewModel) {
         sidebarViewModel = viewModel
-        secondary = UINavigationController()
         sidebar = ReaderSidebarViewController(viewModel: sidebarViewModel)
         sidebar.navigationItem.largeTitleDisplayMode = .automatic
-        supplementary = UINavigationController(rootViewController: sidebar)
-        supplementary.navigationBar.prefersLargeTitles = true
-
         super.init()
     }
 
@@ -103,22 +97,11 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .organization(let objectID):
             show(makeViewController(withTopicID: objectID))
         }
-
-        hideSupplementaryColumnIfNeeded()
     }
 
     private func popMainNavigationController(in splitViewController: UISplitViewController) {
         let secondaryVC = splitViewController.viewController(for: .secondary)
         (secondaryVC as? UINavigationController)?.popToRootViewController(animated: true)
-        hideSupplementaryColumnIfNeeded()
-    }
-
-    private func hideSupplementaryColumnIfNeeded() {
-        if sidebar.didAppear, let splitVC = sidebar.splitViewController, splitVC.splitBehavior == .overlay {
-            DispatchQueue.main.async {
-                splitVC.hide(.supplementary)
-            }
-        }
     }
 
     private func makeViewController<T: ReaderAbstractTopic>(withTopicID objectID: TaggedManagedObjectID<T>) -> UIViewController {
@@ -249,14 +232,6 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case let .tag(slug):
             viewModel.selection = nil
             show(ReaderStreamViewController.controllerWithTagSlug(slug))
-        }
-    }
-
-    // MARK: - SplitViewDisplayable
-
-    func displayed(in splitVC: UISplitViewController) {
-        if secondary.viewControllers.isEmpty {
-            showInitialSelection()
         }
     }
 }

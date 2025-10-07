@@ -199,7 +199,7 @@ public class MeViewController: UITableViewController {
                     if shouldShowQRLoginRow {
                         loggedInRows.append(qrLogin)
                     }
-                    if BuildSettings.current.brand == .jetpack, RemoteFeatureFlag.domainManagement.enabled() && !isSidebarModeEnabled {
+                    if BuildSettings.current.brand == .jetpack, RemoteFeatureFlag.domainManagement.enabled() {
                         loggedInRows.append(domains)
                     }
                     rows = loggedInRows + rows

@@ -4,32 +4,37 @@ import WordPressData
 import WordPressKit
 import WordPressShared
 
-enum SidebarSelection: Hashable {
-    case welcome
-    case blog(TaggedManagedObjectID<Blog>)
-    case notifications
-    case reader
-}
-
 enum SidebarNavigationStep {
     case allSites(sourceRect: CGRect)
     case addSite(selection: AddSiteMenuViewModel.Selection)
-    case domains
     case help
     case profile
     case signIn
 }
 
-final class SidebarViewModel: ObservableObject {
-    @Published var selection: SidebarSelection?
-    @Published private(set) var account: WPAccount?
+enum SidebarMode: Hashable, CaseIterable {
+    case sites
+    case reader
 
-    let blogListViewModel = BlogListViewModel()
+    var localizedTitle: String {
+        switch self {
+        case .sites: Strings.sites
+        case .reader: Strings.reader
+        }
+    }
+}
+
+final class SidebarViewModel: ObservableObject {
+    @Published var mode: SidebarMode = .sites
+
+    @Published private(set) var siteViewModel: SiteMenuViewModel?
+    let readerPresenter = ReaderPresenter()
+
+    @Published private(set) var account: WPAccount?
 
     var navigate: (SidebarNavigationStep) -> Void = { _ in }
 
     private let contextManager: CoreDataStackSwift
-    private var previousReloadTimestamp: Date?
     private var cancellables: [AnyCancellable] = []
 
     init(contextManager: CoreDataStackSwift = ContextManager.shared) {
@@ -40,22 +45,6 @@ final class SidebarViewModel: ObservableObject {
         setupObservers()
     }
 
-    func onAppear() {
-        reloadMenuIfNeeded()
-    }
-
-    private func reloadMenuIfNeeded() {
-        blogListViewModel.updateDisplayedSites()
-
-        if Date.now.timeIntervalSince(previousReloadTimestamp ?? .distantPast) > 60 {
-            previousReloadTimestamp = .now
-
-            Task {
-                try? await blogListViewModel.refresh()
-            }
-        }
-    }
-
     private func setupObservers() {
         NotificationCenter.default
             .publisher(for: MySiteViewController.didPickSiteNotification)
@@ -63,7 +52,7 @@ final class SidebarViewModel: ObservableObject {
                 guard let site = $0.userInfo?[MySiteViewController.siteUserInfoKey] as? Blog else {
                     return wpAssertionFailure("invalid notification")
                 }
-                self?.selection = .blog(TaggedManagedObjectID(site))
+                self?.didSelectSite(site)
             }.store(in: &cancellables)
 
         NotificationCenter.default
@@ -79,18 +68,51 @@ final class SidebarViewModel: ObservableObject {
             }
             .store(in: &cancellables)
 
-        $selection.sink {
+        NotificationCenter.default
+            .publisher(for: .NSManagedObjectContextObjectsDidChange, object: ContextManager.shared.mainContext)
+            .sink { [weak self] in
+                self?.handleCoreDataChanges($0)
+            }
+            .store(in: &cancellables)
+
+        $mode.sink {
             UserDefaults.standard.isReaderSelected = $0 == .reader
         }.store(in: &cancellables)
     }
 
     private func resetSelection() {
-        if UserDefaults.standard.isReaderSelected {
-            selection = .reader
-        } else if let blog = Blog.lastUsedOrFirst(in: contextManager.mainContext) {
-            selection = .blog(TaggedManagedObjectID(blog))
+        let site = Blog.lastUsedOrFirst(in: contextManager.mainContext)
+        self.siteViewModel = site.map(SiteMenuViewModel.init)
+        self.mode = UserDefaults.standard.isReaderSelected ? .reader : .sites
+    }
+
+    func didSelectSite(_ site: Blog?) {
+        self.siteViewModel = site.map(SiteMenuViewModel.init)
+        self.mode = .sites
+    }
+
+    // MARK: - Events
+
+    private func handleCoreDataChanges(_ notification: Foundation.Notification) {
+        // Automatically switch to a site or show the sign in screen, when the current blog is removed.
+        guard let blog = siteViewModel?.site,
+              let deleted = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject>,
+              deleted.contains(blog)
+        else {
+            return
+        }
+
+        if let newSite = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
+            self.siteViewModel = SiteMenuViewModel(site: newSite)
+        } else if AccountHelper.isDotcomAvailable() {
+            self.siteViewModel = nil // Show "Empty" state
         } else {
-            selection = .welcome
+            WordPressAppDelegate.shared?.windowManager.showSignInUI()
         }
     }
+}
+
+private enum Strings {
+    static let sites = NSLocalizedString("sidebar.mySitesSectionTitle", value: "Sites", comment: "Sidebar section title on iPad")
+    static let reader = SharedStrings.Reader.title
 }

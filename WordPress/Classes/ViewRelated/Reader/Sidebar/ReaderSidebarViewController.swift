@@ -9,7 +9,6 @@ class ReaderSidebarViewController: UIHostingController<AnyView> {
     let viewModel: ReaderSidebarViewModel
 
     private var viewContext: NSManagedObjectContext { ContextManager.shared.mainContext }
-    var didAppear = false
 
     var onViewDidLoad: (() -> Void)?
 
@@ -39,12 +38,6 @@ class ReaderSidebarViewController: UIHostingController<AnyView> {
         super.viewWillAppear(animated)
 
         viewModel.onAppear()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        didAppear = true
     }
 }
 

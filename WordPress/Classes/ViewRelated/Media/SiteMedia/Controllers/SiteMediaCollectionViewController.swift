@@ -125,7 +125,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
 
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.pinSubviewToAllEdges(view)
+        collectionView.pinEdges()
         collectionView.accessibilityIdentifier = "MediaCollection"
 
         collectionView.dataSource = self
@@ -155,6 +155,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
         flowLayout.minimumLineSpacing = spacing
         flowLayout.sectionInset = UIEdgeInsets(top: spacing, left: 0.0, bottom: 0.0, right: 0.0)
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
+        flowLayout.sectionInsetReference = .fromSafeArea
     }
 
     func toggleAspectRatioMode() {
