@@ -533,6 +533,11 @@ extension WordPressAppDelegate {
             FeatureFlagOverrideStore().override(RemoteFeatureFlag.dotComWebLogin, withValue: true)
         }
 
+        /// - warning: must be called before the `update(using:then:)`.
+        if remoteFeatureFlagStore.isFreshInstall {
+            FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: true)
+        }
+
         var api: WordPressComRestApi
         if let authToken {
             api = WordPressComRestApi.defaultV2Api(authToken: authToken)
