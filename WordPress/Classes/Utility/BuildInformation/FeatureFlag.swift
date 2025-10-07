@@ -84,7 +84,7 @@ public enum FeatureFlag: Int, CaseIterable {
         case .mediaQuotaView:
             return false
         case .intelligence:
-            let languageCode = Locale.current.language.languageCode?.identifier
+            let languageCode = Locale.current.languageCode
             return (languageCode ?? "en").hasPrefix("en")
         }
     }
