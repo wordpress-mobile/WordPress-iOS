@@ -9,16 +9,24 @@ platform :ios do
   # - Extracts the Release Notes
   # - Freezes the GitHub milestone and enables the GitHub branch protection for the new branch
   #
-  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
+  # @param [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
+  # @param [String] version (optional) The version number for the release, used for validation
   #
-  desc 'Executes the initial steps needed during code freeze'
-  lane :code_freeze do |options|
+  lane :code_freeze do |skip_confirm: false, version: nil|
     ensure_git_status_clean
 
     # Check out the up-to-date default branch, the designated starting point for the code freeze
     Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
 
-    release_branch_name = compute_release_branch_name(options: options, version: release_version_next)
+    # Validate provided version matches the calculated version
+    expected_version = release_version_next
+    provided_version = version
+    if provided_version && provided_version != expected_version
+      UI.user_error!("Version mismatch: Provided version '#{provided_version}' does not match calculated version '#{expected_version}'. Please check the release scenario version matches the project version.")
+    end
+    UI.success("✓ Version validation passed: Version (#{provided_version || expected_version}) matches calculated version") if provided_version
+
+    release_branch_name = compute_release_branch_name(options: { version: version, skip_confirm: skip_confirm }, version: expected_version)
     ensure_branch_does_not_exist!(release_branch_name)
 
     # The `release_version_next` is used as the `new internal release version` value because the external and internal
@@ -28,14 +36,12 @@ platform :ios do
       • New release branch from #{DEFAULT_BRANCH}: #{release_branch_name}
 
       • Current release version and build code: #{release_version_current} (#{build_code_current}).
-      • New release version and build code: #{release_version_next} (#{build_code_code_freeze}).
+      • New release version and build code: #{expected_version} (#{build_code_code_freeze}).
     MESSAGE
 
     UI.important(message)
 
-    skip_user_confirmation = options[:skip_confirm]
-
-    UI.user_error!('Aborted by user request') unless skip_user_confirmation || UI.confirm('Do you want to continue?')
+    UI.user_error!('Aborted by user request') unless skip_confirm || UI.confirm('Do you want to continue?')
 
     UI.message 'Creating release branch...'
     Fastlane::Helper::GitHelper.create_branch(release_branch_name, from: DEFAULT_BRANCH)
