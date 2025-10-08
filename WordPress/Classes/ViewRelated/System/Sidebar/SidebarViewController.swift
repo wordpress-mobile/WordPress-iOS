@@ -53,7 +53,6 @@ final class SidebarViewController: UIViewController, SiteMenuViewControllerDeleg
             action: #selector(profileButtonTapped)
         )
 
-        navigationItem.leftBarButtonItems = [profileButton]
         profileButtonController = ProfileButtonController(barButtonItem: profileButton)
 
         notificationsButtonViewModel.$image.sink { [weak self] image in
@@ -66,7 +65,7 @@ final class SidebarViewController: UIViewController, SiteMenuViewControllerDeleg
                 action: #selector(self.notificationsButtonTapped)
             )
 
-            var rightBarButtonItems = [notificationsButton]
+            var rightBarButtonItems = [profileButton, notificationsButton]
 
             // Add Help button for Jetpack
             if BuildSettings.current.brand == .jetpack {
@@ -79,7 +78,7 @@ final class SidebarViewController: UIViewController, SiteMenuViewControllerDeleg
                 rightBarButtonItems.append(helpButton)
             }
 
-            self.navigationItem.rightBarButtonItems = rightBarButtonItems
+            self.navigationItem.leftBarButtonItems = rightBarButtonItems
         }.store(in: &cancellables)
     }
 
