@@ -24,5 +24,6 @@
 @property (nonatomic, strong, nullable) NSString *videopressGUID;
 @property (nonatomic, strong, nullable) NSNumber *length;
 @property (nonatomic, strong, nullable) NSString *remoteThumbnailURL;
+@property (nonatomic, strong, nullable) NSString *formattedSize;
 
 @end

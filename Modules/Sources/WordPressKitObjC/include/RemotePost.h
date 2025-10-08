@@ -45,6 +45,8 @@ extern NSString * const PostStatusDeleted;
 */
 @property (nonatomic, strong) RemotePostAutosave *autosave;
 
+@property (nonatomic, strong) NSString *commentsStatus;
+@property (nonatomic, strong) NSString *pingsStatus;
 @property (nonatomic, strong) NSNumber *commentCount;
 @property (nonatomic, strong) NSNumber *likeCount;
 

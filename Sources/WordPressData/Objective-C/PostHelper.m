@@ -57,6 +57,8 @@
         [self updateCommentsForPost:post];
     }
 
+    post.rawMetadata = [PostHelper makeRawMetadataFrom:remotePost];
+
     post.autosaveTitle = remotePost.autosave.title;
     post.autosaveExcerpt = remotePost.autosave.excerpt;
     post.autosaveContent = remotePost.autosave.content;
@@ -69,6 +71,8 @@
         pagePost.foreignID = remotePost.foreignID;
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
+        postPost.commentsStatus = remotePost.commentsStatus;
+        postPost.pingsStatus = remotePost.pingsStatus;
         postPost.commentCount = remotePost.commentCount;
         postPost.likeCount = remotePost.likeCount;
         postPost.postFormat = remotePost.format;

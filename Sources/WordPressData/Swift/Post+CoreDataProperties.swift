@@ -14,6 +14,8 @@ public extension Post {
     @NSManaged var tags: String?
     @NSManaged var categories: Set<PostCategory>?
     @NSManaged var isStickyPost: Bool
+    @NSManaged var commentsStatus: String?
+    @NSManaged var pingsStatus: String?
 
     // If the post is created as an answer to a Blogging Prompt, the promptID is stored here.
     @NSManaged var bloggingPromptID: String?

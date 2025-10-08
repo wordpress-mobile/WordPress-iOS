@@ -412,6 +412,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     remoteMedia.remoteThumbnailURL = [jsonMedia stringForKeyPath:@"thumbnails.fmt_std"];
     remoteMedia.videopressGUID = [jsonMedia stringForKey:@"videopress_guid"];
     remoteMedia.length = [jsonMedia numberForKey:@"length"];
+    remoteMedia.formattedSize = [jsonMedia stringForKey:@"size"];
     return remoteMedia;
 }
 

@@ -17,7 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class SiteSuggestion;
 @class PageTemplateCategory;
 @class PublicizeInfo;
-@class BlobEntity;
 @class PostCategory;
 @class PostTag;
 @class PublicizeConnection;
@@ -179,7 +178,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceAllowed;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceUsed;
 @property (nullable, nonatomic, retain) NSSet<PageTemplateCategory *> *pageTemplateCategories;
-@property (nonatomic, strong, readwrite, nullable) BlobEntity *rawBlockEditorSettings __deprecated_msg("Use BlockEditorCache instead");;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 

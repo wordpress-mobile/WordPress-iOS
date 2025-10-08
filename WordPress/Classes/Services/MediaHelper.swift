@@ -70,7 +70,9 @@ public class MediaHelper: NSObject {
         if media.error != nil {
             media.error = nil
         }
-
+        if media.formattedSize != remoteMedia.formattedSize {
+            media.formattedSize = remoteMedia.formattedSize
+        }
     }
 }
 

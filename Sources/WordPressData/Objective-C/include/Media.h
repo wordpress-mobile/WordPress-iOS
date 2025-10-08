@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, strong, nullable) NSString *desc;
 @property (nonatomic, strong, nullable) NSString *filename;
 @property (nonatomic, strong, nullable) NSNumber *filesize;
+@property (nonatomic, strong, nullable) NSString *formattedSize;
 @property (nonatomic, strong, nullable) NSNumber *height;
 @property (nonatomic, strong, nullable) NSNumber *length;
 @property (nonatomic, strong, nullable) NSString *localThumbnailIdentifier;

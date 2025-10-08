@@ -53,6 +53,10 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 @property (nonatomic, strong, nullable) NSDate *confirmedChangesTimestamp;
 
+/// Contains all the custom metadata associated with a post, including the
+/// Jetpack plugin metadata.`
+@property (nonatomic, strong, nullable) NSData *rawMetadata;
+
 @property (nonatomic, strong, nullable) NSString *voiceContent;
 
 // Revision management
