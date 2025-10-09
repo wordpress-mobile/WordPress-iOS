@@ -18,15 +18,19 @@ platform :ios do
     # Check out the up-to-date default branch, the designated starting point for the code freeze
     Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
 
-    # Validate provided version matches the calculated version
-    expected_version = release_version_next
+    # Use provided version from release tool, or fall back to calculated version
+    calculated_version = release_version_next
     provided_version = version
-    if provided_version && provided_version != expected_version
-      UI.user_error!("Version mismatch: Provided version '#{provided_version}' does not match calculated version '#{expected_version}'. Please check the release scenario version matches the project version.")
-    end
-    UI.success("✓ Version validation passed: Version (#{provided_version || expected_version}) matches calculated version") if provided_version
+    release_version = provided_version || calculated_version
 
-    release_branch_name = compute_release_branch_name(options: { version: version, skip_confirm: skip_confirm }, version: expected_version)
+    # Warn if provided version differs from calculated version
+    if provided_version && provided_version != calculated_version
+      warning_message = "⚠️ Version mismatch: Release tool version is '#{provided_version}' but calculated version is '#{calculated_version}'. Using '#{provided_version}' from release tool."
+      UI.important(warning_message)
+      buildkite_annotate(style: 'warning', context: 'code-freeze-version-mismatch', message: warning_message) if is_ci
+    end
+
+    release_branch_name = compute_release_branch_name(options: { version: version, skip_confirm: skip_confirm }, version: release_version)
     ensure_branch_does_not_exist!(release_branch_name)
 
     # The `release_version_next` is used as the `new internal release version` value because the external and internal
@@ -36,7 +40,7 @@ platform :ios do
       • New release branch from #{DEFAULT_BRANCH}: #{release_branch_name}
 
       • Current release version and build code: #{release_version_current} (#{build_code_current}).
-      • New release version and build code: #{expected_version} (#{build_code_code_freeze}).
+      • New release version and build code: #{release_version} (#{build_code_code_freeze}).
     MESSAGE
 
     UI.important(message)
