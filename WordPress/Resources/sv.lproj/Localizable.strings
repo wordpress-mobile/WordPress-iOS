@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-15 14:54:08+0000 */
+/* Translation-Revision-Date: 2025-10-07 15:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sv_SE */
@@ -959,9 +959,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blogg";
 
-/* Create new Blog Post button title */
-"Blog post" = "Blogginlägg";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Bloggande";
 
@@ -1071,8 +1068,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel Insight management action sheet.
    Cancel registering a domain
    Cancel removing a plugin
-   Cancel site creation
-   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1298,8 +1293,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Klick";
 
-/* Action button to close the editor
-   Dismisses the current screen */
+/* Action button to close the editor */
 "Close" = "Stäng";
 
 /* Close account action label */
@@ -5300,9 +5294,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Webbplatsen hittades inte";
 
-/* Create new Site Page button title */
-"Site page" = "Webbplatssida";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Webbplatsens tidszon (UTC%1$@%2$d%3$@)";
 
@@ -7707,11 +7698,17 @@ Example: Reply to Pamela Nguyen */
 /* Toggle Title for the privacy compliance popover. */
 "compliance.analytics.popover.toggle" = "Analyser";
 
-/* Create new Blog Post from Audio button title */
-"createFAB.postFromAudio" = "Inlägg via ljud";
-
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "Skapa ett inlägg eller en sida";
+
+/* Create Sheet button title */
+"createSheet.page" = "Sida";
+
+/* Create Sheet button title */
+"createSheet.post" = "Inlägg";
+
+/* Create Sheet button title */
+"createSheet.postFromAudio" = "Inlägg från ljud";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Skapa din egen anpassade adminpanel och välj vilka rapporter du vill se. Fokusera på den data du bryr dig mest om.";
@@ -8123,6 +8120,30 @@ Example: Reply to Pamela Nguyen */
 /* A footer retry button */
 "general.pagingFooterView.retry" = "Försök igen";
 
+/* Generated content length (needs to be short) */
+"generation.length.long" = "Lång";
+
+/* Generated content length (needs to be short) */
+"generation.length.medium" = "Medium";
+
+/* Generated content length (needs to be short) */
+"generation.length.short" = "Kort";
+
+/* AI generation style */
+"generation.style.conversational" = "Samtalston";
+
+/* AI generation style */
+"generation.style.engaging" = "Engagerande";
+
+/* AI generation style */
+"generation.style.formal" = "Formell";
+
+/* AI generation style */
+"generation.style.professional" = "Professionell";
+
+/* AI generation style */
+"generation.style.witty" = "Kvick";
+
 /* A generic title for an error */
 "generic.error.title" = "Fel";
 
@@ -8236,6 +8257,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Message shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.message" = "Aktivera Apple Intelligence i Inställningar för att generera utdrag med AI. Den här funktionen använder bearbetning på enheten för att skydda din integritet.";
+
+/* Button to open Apple Intelligence settings */
+"intelligence.unavailableView.appleIntelligenceDisabled.openSettings" = "Öppna Inställningar";
+
+/* Title shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.title" = "Apple Intelligence krävs";
+
+/* Message shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.message" = "Apple Intelligence är inte tillgängligt på denna enhet";
+
+/* Title shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.title" = "Apple Intelligence är inte tillgängligt";
+
+/* Description shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.description" = "AI-modellen laddas ner eller förbereds. Försök igen om en liten stund.";
+
+/* Title shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.title" = "Förbereder modell …";
 
 /* Cancel dialog confirmation title */
 "inviteSubscribers.cancelConfirmationTitle" = "Är du säker på att du vill ta bort de nya prenumeranterna?";
@@ -8648,7 +8690,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for metric selection */
 "jetpackStats.addChart.selectMetric" = "Välj mätvärden";
 
-/* Top list option description */
+/* Today chart title */
+"jetpackStats.addChart.today" = "I dag";
+
+/* Today option description
+   Top list option description */
 "jetpackStats.addChart.topListDescription" = "Se ditt bäst presterande innehåll";
 
 /* Top list option title */
@@ -8978,6 +9024,12 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title */
 "jetpackStats.postDetails.title" = "Inläggsstatus";
 
+/* Section title */
+"jetpackStats.postDetails.top10" = "Topp 10";
+
+/* Section title */
+"jetpackStats.postDetails.top50" = "Topp 50";
+
 /* Must be short!Label for total email opens metric */
 "jetpackStats.postDetails.totalOpens" = "Totalt antal öppningar";
 
@@ -9079,6 +9131,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Stats screen title */
 "jetpackStats.title" = "Statistik";
+
+/* Today card title */
+"jetpackStats.todayCard.title" = "I dag";
 
 /* Title for items with highest bounce rate */
 "jetpackStats.topList.highestBounceRate" = "Högsta avvisningsfrekvens";
@@ -9188,8 +9243,14 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "Bildförhållande för rutnät";
 
+/* Navigation bar button item */
+"mediaLibrary.buttonAddMedia" = "Lägg till media";
+
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "Ta bort";
+
+/* Navigation bar button item */
+"mediaLibrary.buttonFilter" = "Filtrera";
 
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Välj";
@@ -9248,6 +9309,45 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "Fyrkantigt rutnät";
 
+/* Detail message for buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.detail" = "Gör mer utrymme för högkvalitativa foton, videoklipp och annan media.";
+
+/* Message about buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.message" = "Köp lagringsutrymmesutökning";
+
+/* Message shown when all media items are attached */
+"mediaLibrary.storageDetails.cleanup.allAttached" = "Alla objekt i mediebiblioteket är bifogade.";
+
+/* Message shown while loading unattached media count */
+"mediaLibrary.storageDetails.cleanup.loading" = "Tar reda på om det finns några ej bifogade mediaobjekt...";
+
+/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
+"mediaLibrary.storageDetails.cleanup.message" = "%1$d objekt bifogat Ta bort dem för att frigöra lite utrymme.";
+
+/* Title for cleanup section */
+"mediaLibrary.storageDetails.cleanup.title" = "Ta bort oanvända objekt";
+
+/* Success message shown after upgrading plan */
+"mediaLibrary.storageDetails.purchase.plan.success" = "Ditt webbplatspaket har uppgraderats!";
+
+/* Success message shown after purchasing storage add-on */
+"mediaLibrary.storageDetails.purchase.storage.success" = "Din webbplats lagringsutrymme för mediabiblioteket har ökats!";
+
+/* Title for the storage details screen */
+"mediaLibrary.storageDetails.title" = "Lagringsutrymme för mediabibliotek";
+
+/* Detail message for upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.detail" = "Uppgradera ditt paket för att öka ditt lagringsutrymme.";
+
+/* Message about upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.message" = "Uppgradera paket";
+
+/* Storage usage message showing used space and total space. %1$@ is used space, %2$@ is total space. */
+"mediaLibrary.storageDetails.usage" = "%1$@ av %2$@ använt";
+
+/* Message shown while calculating storage usage */
+"mediaLibrary.storageDetails.usage.calculating" = "Beräknar …";
+
 /* Media screen navigation title */
 "mediaLibrary.title" = "Media";
 
@@ -9301,6 +9401,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Spela in en video";
+
+/* The menu item of viewing media library usage */
+"mediaPicker.viewUsage" = "Visa användning";
 
 /* Navigation title for media preview. Example: 1 of 3 */
 "mediaPreview.NofM" = "%1$@ av %2$@";
@@ -10020,6 +10123,48 @@ Example: Reply to Pamela Nguyen */
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d tecken";
 
+/* Button to generate an excerpt using AI */
+"postSettings.excerpt.generateButton" = "Generera";
+
+/* Character count display. %d is replaced with the number of characters. */
+"postSettings.excerpt.generator.characterCount" = "%d tecken";
+
+/* Button to suggest (generate) more options */
+"postSettings.excerpt.generator.generateMore" = "Föreslå fler alternativ";
+
+/* Label for the length picker section */
+"postSettings.excerpt.generator.length" = "Längd";
+
+/* Accessibility label for the length adjustment slider */
+"postSettings.excerpt.generator.lengthSlider" = "Skjutreglage för längd";
+
+/* Button to make excerpts longer */
+"postSettings.excerpt.generator.longer" = "Längre";
+
+/* Label for excerpt option number. %d is replaced with the option number. */
+"postSettings.excerpt.generator.option" = "Alternativ %d";
+
+/* Title shown when ready to generate excerpts */
+"postSettings.excerpt.generator.ready" = "Redo att generera";
+
+/* Description shown when ready to generate excerpts */
+"postSettings.excerpt.generator.readyDescription" = "Tryck för att skapa AI-drivna utdragsalternativ";
+
+/* Button to make excerpts shorter */
+"postSettings.excerpt.generator.shorter" = "Kortare";
+
+/* Title for the style picker section */
+"postSettings.excerpt.generator.style" = "Skrivstil";
+
+/* Label for the style picker section */
+"postSettings.excerpt.generator.styleLabel" = "Stil";
+
+/* Accessibility label for the style picker */
+"postSettings.excerpt.generator.stylePicker" = "Stil";
+
+/* Title for the excerpt generator popover */
+"postSettings.excerpt.generator.title" = "Generera utdrag";
+
 /* Section header for Excerpt in Post Settings */
 "postSettings.excerpt.header" = "Utdrag";
 
@@ -10098,6 +10243,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for the publish date field in Post Settings */
 "postSettings.publishDate.label" = "Datum";
 
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"postSettings.publishDateImmediately" = "Omedelbart";
+
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Allmänt";
 
@@ -10110,6 +10258,9 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Ange slug";
 
+/* Label for the preview button in Post Settings */
+"postSettings.socialSharing.header" = "Social delning";
+
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "Klistrat";
 
@@ -10119,11 +10270,26 @@ Example: Reply to Pamela Nguyen */
 /* Label for the tags field. Should be the same as WP core. */
 "postSettings.tags.label" = "Etiketter";
 
+/* Label for the tag suggestions section. */
+"postSettings.tags.suggestions" = "Föreslagna etiketter";
+
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Synlighet";
 
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Inläggsstatistik";
+
+/* Button to add a new tag. %1$@ is the tag name. */
+"postTags.addTag" = "Lägg till etikett";
+
+/* Placeholder text for the tag search field */
+"postTags.searchOrAdd.placeholder" = "Sök eller lägg till etiketter";
+
+/* Message shown when no tags are selected */
+"postTags.selectionEmpty" = "Inga etiketter är valda";
+
+/* Title for the tags screen */
+"postTags.title" = "Etiketter";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Avbryt";
@@ -10203,6 +10369,15 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "Stäng";
 
+/* Button to confirm discarding changes */
+"prepublishing.discardChanges.button" = "Ignorera ändringarna";
+
+/* Message for the discard changes confirmation dialog */
+"prepublishing.discardChanges.message" = "Du har osparade ändringar i inläggsinställningarna. Är du säker på att du vill ignorera dem?";
+
+/* Title for the discard changes confirmation dialog */
+"prepublishing.discardChanges.title" = "Kasta ändringar?";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
@@ -10221,8 +10396,14 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "prepublishing.publishDateImmediately" = "Omedelbart";
 
+/* The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?' */
+"prepublishing.publishingSectionTitle" = "Redo att publicera?";
+
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "Publicerar till";
+
+/* Button to confirm discarding changes */
+"prepublishing.saveChanges.button" = "Spara ändringar";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Schemalägg";
@@ -10284,6 +10465,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketter";
+
+/* Navigation title */
+"prepublishing.title" = "Publicera";
 
 /* Details label for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadMediaManyItemsRemaining" = "%@ objekt återstår";
@@ -10359,6 +10543,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Message of error prompt shown when no internet connection is available */
 "reachability-utils.alert.utils" = "Kan inte ansluta till Internet.";
+
+/* Navigation title */
+"reader.article.summary" = "Sammanfattning";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "Bloggen %@ kommer inte längre att visas i läsaren. Tryck här för att ångra åtgärden.";
@@ -10640,6 +10827,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.showBlog" = "Gå till blogg";
+
+/* Context menu action */
+"reader.postContextMenu.summarize" = "Sammanfatta";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Visa i webbläsare";
@@ -11516,11 +11706,11 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "Totalt antal prenumeranter";
 
+/* Menu item to disable the new stats */
+"stats.menu.disableNewStats" = "Inaktivera ny statistik";
+
 /* Menu item to send feedback about new stats experience */
 "stats.menu.sendFeedback" = "Skicka feedback";
-
-/* Menu item to switch back to classic stats experience */
-"stats.menu.switchToClassic" = "Växla till klassiska Statistik";
 
 /* Menu item to enable new stats experience */
 "stats.menu.tryNewStats" = "Prova nya Statistik";
@@ -11903,9 +12093,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Läsare för iOS-support";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"tags.add.button" = "Lägg till etikett: %1$@";
-
 /* Description for empty state when there are no tags */
 "tags.empty.description" = "Etiketter hjälper till att organisera ditt innehåll och gör det lättare för läsare att hitta relaterade inlägg.";
 
@@ -11923,9 +12110,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Placeholder text for the tag search field */
 "tags.search.placeholder" = "Sök etiketter";
-
-/* Message shown when no tags are selected */
-"tags.selected.empty" = "Inga etiketter har valts";
 
 /* Title for the tags screen */
 "tags.title" = "Etiketter";

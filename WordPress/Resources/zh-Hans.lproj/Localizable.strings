@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-04 09:54:08+0000 */
+/* Translation-Revision-Date: 2025-10-07 15:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -959,9 +959,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "博客";
 
-/* Create new Blog Post button title */
-"Blog post" = "博文";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "撰写博客";
 
@@ -1071,8 +1068,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel Insight management action sheet.
    Cancel registering a domain
    Cancel removing a plugin
-   Cancel site creation
-   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1298,8 +1293,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "点击数";
 
-/* Action button to close the editor
-   Dismisses the current screen */
+/* Action button to close the editor */
 "Close" = "关闭";
 
 /* Close account action label */
@@ -5300,9 +5294,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "未找到站点";
 
-/* Create new Site Page button title */
-"Site page" = "站点页面";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "站点时区 (UTC%1$@%2$d%3$@)";
 
@@ -7386,6 +7377,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "应用程序密码能让您更安全地连接到您的自托管站点，并且支持 %@ 等功能。";
 
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "区块编辑器";
+
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "插件管理";
 
@@ -7704,11 +7698,14 @@ Example: Reply to Pamela Nguyen */
 /* Toggle Title for the privacy compliance popover. */
 "compliance.analytics.popover.toggle" = "分析";
 
-/* Create new Blog Post from Audio button title */
-"createFAB.postFromAudio" = "从音频创建的文章";
-
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "创建文章或页面";
+
+/* Create Sheet button title */
+"createSheet.page" = "页面";
+
+/* Create Sheet button title */
+"createSheet.post" = "文章";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "创建专属于您的定制仪表盘并选择查看哪些报告。 重点关注您最关心的数据。";
@@ -8120,6 +8117,30 @@ Example: Reply to Pamela Nguyen */
 /* A footer retry button */
 "general.pagingFooterView.retry" = "重试";
 
+/* Generated content length (needs to be short) */
+"generation.length.long" = "长篇";
+
+/* Generated content length (needs to be short) */
+"generation.length.medium" = "中篇";
+
+/* Generated content length (needs to be short) */
+"generation.length.short" = "短篇";
+
+/* AI generation style */
+"generation.style.conversational" = "对话式";
+
+/* AI generation style */
+"generation.style.engaging" = "引人入胜";
+
+/* AI generation style */
+"generation.style.formal" = "正式";
+
+/* AI generation style */
+"generation.style.professional" = "专业";
+
+/* AI generation style */
+"generation.style.witty" = "幽默";
+
 /* A generic title for an error */
 "generic.error.title" = "错误";
 
@@ -8233,6 +8254,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Message shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.message" = "要使用 AI 生成摘要，请在设置中启用 Apple Intelligence。 此功能通过设备端处理来保护您的隐私。";
+
+/* Button to open Apple Intelligence settings */
+"intelligence.unavailableView.appleIntelligenceDisabled.openSettings" = "打开设置";
+
+/* Title shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.title" = "需要 Apple Intelligence";
+
+/* Message shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.message" = "Apple Intelligence 在此设备上不可用";
+
+/* Title shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.title" = "Apple Intelligence 不可用";
+
+/* Description shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.description" = "AI 模型正在下载或准备中。 请稍后重试。";
+
+/* Title shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.title" = "正在准备模型…";
 
 /* Cancel dialog confirmation title */
 "inviteSubscribers.cancelConfirmationTitle" = "是否确定要放弃新订阅者？";
@@ -8645,7 +8687,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for metric selection */
 "jetpackStats.addChart.selectMetric" = "选择指标";
 
-/* Top list option description */
+/* Today chart title */
+"jetpackStats.addChart.today" = "今天";
+
+/* Today option description
+   Top list option description */
 "jetpackStats.addChart.topListDescription" = "查看您最受关注的内容";
 
 /* Top list option title */
@@ -8975,6 +9021,12 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title */
 "jetpackStats.postDetails.title" = "文章统计信息";
 
+/* Section title */
+"jetpackStats.postDetails.top10" = "前 10";
+
+/* Section title */
+"jetpackStats.postDetails.top50" = "前 50";
+
 /* Must be short!Label for total email opens metric */
 "jetpackStats.postDetails.totalOpens" = "总打开次数";
 
@@ -9076,6 +9128,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Stats screen title */
 "jetpackStats.title" = "统计信息";
+
+/* Today card title */
+"jetpackStats.todayCard.title" = "今天";
 
 /* Title for items with highest bounce rate */
 "jetpackStats.topList.highestBounceRate" = "最高跳出率";
@@ -9185,8 +9240,14 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "长宽比网格";
 
+/* Navigation bar button item */
+"mediaLibrary.buttonAddMedia" = "添加媒体";
+
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "删除";
+
+/* Navigation bar button item */
+"mediaLibrary.buttonFilter" = "筛选";
 
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "选择";
@@ -9216,6 +9277,9 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.filterAudio" = "音频";
 
 /* The name of the media filter */
+"mediaLibrary.filterDefault" = "默认（所有）";
+
+/* The name of the media filter */
 "mediaLibrary.filterDocuments" = "文档";
 
 /* The name of the media filter */
@@ -9241,6 +9305,45 @@ Example: Reply to Pamela Nguyen */
 
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "方形网格";
+
+/* Detail message for buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.detail" = "为高质量照片、视频和其他媒体留出更多空间。";
+
+/* Message about buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.message" = "购买存储空间加载项";
+
+/* Message shown when all media items are attached */
+"mediaLibrary.storageDetails.cleanup.allAttached" = "媒体库中的所有项目均已附加。";
+
+/* Message shown while loading unattached media count */
+"mediaLibrary.storageDetails.cleanup.loading" = "正在检查是否存在任何尚未附加的媒体项目…";
+
+/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
+"mediaLibrary.storageDetails.cleanup.message" = "%1$d 个项目尚未附加。 移除它们以释放一些空间。";
+
+/* Title for cleanup section */
+"mediaLibrary.storageDetails.cleanup.title" = "移除未使用的项目";
+
+/* Success message shown after upgrading plan */
+"mediaLibrary.storageDetails.purchase.plan.success" = "您的站点套餐已升级！";
+
+/* Success message shown after purchasing storage add-on */
+"mediaLibrary.storageDetails.purchase.storage.success" = "您的站点媒体库存储空间已增加！";
+
+/* Title for the storage details screen */
+"mediaLibrary.storageDetails.title" = "媒体库存储空间";
+
+/* Detail message for upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.detail" = "升级您的套餐以增加存储空间。";
+
+/* Message about upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.message" = "升级套餐";
+
+/* Storage usage message showing used space and total space. %1$@ is used space, %2$@ is total space. */
+"mediaLibrary.storageDetails.usage" = "已使用 %1$@（共 %2$@）";
+
+/* Message shown while calculating storage usage */
+"mediaLibrary.storageDetails.usage.calculating" = "正在计算...";
 
 /* Media screen navigation title */
 "mediaLibrary.title" = "媒体";
@@ -9295,6 +9398,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "拍摄视频";
+
+/* The menu item of viewing media library usage */
+"mediaPicker.viewUsage" = "查看使用情况";
 
 /* Navigation title for media preview. Example: 1 of 3 */
 "mediaPreview.NofM" = "第 %1$@ 步，共 %2$@ 步";
@@ -10014,6 +10120,48 @@ Example: Reply to Pamela Nguyen */
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d 个字符";
 
+/* Button to generate an excerpt using AI */
+"postSettings.excerpt.generateButton" = "生成";
+
+/* Character count display. %d is replaced with the number of characters. */
+"postSettings.excerpt.generator.characterCount" = "%d 个字符";
+
+/* Button to suggest (generate) more options */
+"postSettings.excerpt.generator.generateMore" = "建议更多选项";
+
+/* Label for the length picker section */
+"postSettings.excerpt.generator.length" = "长度";
+
+/* Accessibility label for the length adjustment slider */
+"postSettings.excerpt.generator.lengthSlider" = "长度滑块";
+
+/* Button to make excerpts longer */
+"postSettings.excerpt.generator.longer" = "更长";
+
+/* Label for excerpt option number. %d is replaced with the option number. */
+"postSettings.excerpt.generator.option" = "选项 %d";
+
+/* Title shown when ready to generate excerpts */
+"postSettings.excerpt.generator.ready" = "准备生成";
+
+/* Description shown when ready to generate excerpts */
+"postSettings.excerpt.generator.readyDescription" = "轻点以创建由 AI 提供支持的摘要选项";
+
+/* Button to make excerpts shorter */
+"postSettings.excerpt.generator.shorter" = "更短";
+
+/* Title for the style picker section */
+"postSettings.excerpt.generator.style" = "写作风格";
+
+/* Label for the style picker section */
+"postSettings.excerpt.generator.styleLabel" = "样式";
+
+/* Accessibility label for the style picker */
+"postSettings.excerpt.generator.stylePicker" = "样式";
+
+/* Title for the excerpt generator popover */
+"postSettings.excerpt.generator.title" = "生成摘要";
+
 /* Section header for Excerpt in Post Settings */
 "postSettings.excerpt.header" = "摘要";
 
@@ -10086,6 +10234,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for the publish date field in Post Settings */
 "postSettings.publishDate.label" = "日期";
 
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"postSettings.publishDateImmediately" = "立即";
+
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "常规";
 
@@ -10098,6 +10249,9 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "输入别名";
 
+/* Label for the preview button in Post Settings */
+"postSettings.socialSharing.header" = "社交共享";
+
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "置顶";
 
@@ -10107,8 +10261,23 @@ Example: Reply to Pamela Nguyen */
 /* Label for the tags field. Should be the same as WP core. */
 "postSettings.tags.label" = "标签";
 
+/* Label for the tag suggestions section. */
+"postSettings.tags.suggestions" = "推荐标签";
+
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "可见性";
+
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "文章统计数据";
+
+/* Button to add a new tag. %1$@ is the tag name. */
+"postTags.addTag" = "添加标签";
+
+/* Placeholder text for the tag search field */
+"postTags.searchOrAdd.placeholder" = "搜索或添加标签";
+
+/* Title for the tags screen */
+"postTags.title" = "标签";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "取消";
@@ -10188,6 +10357,15 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "关闭";
 
+/* Button to confirm discarding changes */
+"prepublishing.discardChanges.button" = "放弃更改";
+
+/* Message for the discard changes confirmation dialog */
+"prepublishing.discardChanges.message" = "您对文章设置进行了未保存的更改。 是否确定要放弃这些更改？";
+
+/* Title for the discard changes confirmation dialog */
+"prepublishing.discardChanges.title" = "放弃更改？";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
@@ -10206,8 +10384,14 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "prepublishing.publishDateImmediately" = "立即";
 
+/* The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?' */
+"prepublishing.publishingSectionTitle" = "准备好发布了吗？";
+
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "正在发布到";
+
+/* Button to confirm discarding changes */
+"prepublishing.saveChanges.button" = "保存更改";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "安排";
@@ -10269,6 +10453,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "标签";
+
+/* Navigation title */
+"prepublishing.title" = "发布";
 
 /* Details label for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadMediaManyItemsRemaining" = "剩余 %@ 个项目";
@@ -10344,6 +10531,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Message of error prompt shown when no internet connection is available */
 "reachability-utils.alert.utils" = "网络连接似乎已断开。";
+
+/* Navigation title */
+"reader.article.summary" = "摘要";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "博客 %@ 将不再显示在您的阅读器中。 轻点以撤消。";
@@ -10625,6 +10815,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.showBlog" = "转到博客";
+
+/* Context menu action */
+"reader.postContextMenu.summarize" = "总结";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "在浏览器中查看";
@@ -11498,11 +11691,11 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "订阅者总数";
 
+/* Menu item to disable the new stats */
+"stats.menu.disableNewStats" = "禁用新统计信息";
+
 /* Menu item to send feedback about new stats experience */
 "stats.menu.sendFeedback" = "发送反馈";
-
-/* Menu item to switch back to classic stats experience */
-"stats.menu.switchToClassic" = "切换到经典统计信息";
 
 /* Menu item to enable new stats experience */
 "stats.menu.tryNewStats" = "试用新版统计信息";
@@ -11882,9 +12075,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* View title for Help & Support page. */
 "support.title" = "帮助";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"tags.add.button" = "添加标签：%1$@";
-
 /* Description for empty state when there are no tags */
 "tags.empty.description" = "标签可以帮助您整理内容，让读者更容易找到相关文章。";
 
@@ -11902,9 +12092,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Placeholder text for the tag search field */
 "tags.search.placeholder" = "搜索标签";
-
-/* Message shown when no tags are selected */
-"tags.selected.empty" = "未选择标签";
 
 /* Title for the tags screen */
 "tags.title" = "标签";
@@ -11946,7 +12133,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "tips.statsDateRange.message" = "使用日历选择按天、周、月、年查看统计信息，或选择自定义日期范围进行查看。";
 
 /* Title for stats date range control tip */
-"tips.statsDateRange.title" = "浏览时间";
+"tips.statsDateRange.title" = "按时间浏览";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "重要提示";

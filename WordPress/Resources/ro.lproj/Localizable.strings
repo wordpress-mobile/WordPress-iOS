@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-11 14:27:30+0000 */
+/* Translation-Revision-Date: 2025-10-03 07:05:33+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ro */
@@ -959,9 +959,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
-/* Create new Blog Post button title */
-"Blog post" = "Articol blog";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Blogging";
 
@@ -1071,8 +1068,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel Insight management action sheet.
    Cancel registering a domain
    Cancel removing a plugin
-   Cancel site creation
-   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1298,8 +1293,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Clicuri";
 
-/* Action button to close the editor
-   Dismisses the current screen */
+/* Action button to close the editor */
 "Close" = "Închidere";
 
 /* Close account action label */
@@ -3819,7 +3813,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No fixed threats" = "Nicio amenințare înlăturată";
 
 /* Title for the view when there aren't any history items to display */
-"No history yet" = "Încă niciun istoric";
+"No history yet" = "Niciun istoric până acum";
 
 /* Title for the view when there aren't any ignored threats to display */
 "No ignored threats" = "Nicio amenințare ignorată";
@@ -5299,9 +5293,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Nu am găsit site-ul";
-
-/* Create new Site Page button title */
-"Site page" = "Pagină site";
 
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Fus orar site (UTC%1$@%2$d%3$@)";
@@ -7707,11 +7698,17 @@ Example: Reply to Pamela Nguyen */
 /* Toggle Title for the privacy compliance popover. */
 "compliance.analytics.popover.toggle" = "Analytics";
 
-/* Create new Blog Post from Audio button title */
-"createFAB.postFromAudio" = "Articol din fișier audio";
-
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "Creează un articol sau o pagină";
+
+/* Create Sheet button title */
+"createSheet.page" = "Pagină";
+
+/* Create Sheet button title */
+"createSheet.post" = "Articol";
+
+/* Create Sheet button title */
+"createSheet.postFromAudio" = "Articol din fișier audio";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Creează-ți propriul panou de control personalizat și alege ce rapoarte vrei să vezi. Axează-te pe datele care te interesează cel mai mult.";
@@ -8123,6 +8120,30 @@ Example: Reply to Pamela Nguyen */
 /* A footer retry button */
 "general.pagingFooterView.retry" = "Reîncearcă";
 
+/* Generated content length (needs to be short) */
+"generation.length.long" = "Lung";
+
+/* Generated content length (needs to be short) */
+"generation.length.medium" = "Mediu";
+
+/* Generated content length (needs to be short) */
+"generation.length.short" = "Scurt";
+
+/* AI generation style */
+"generation.style.conversational" = "Colocvial";
+
+/* AI generation style */
+"generation.style.engaging" = "Captivant";
+
+/* AI generation style */
+"generation.style.formal" = "Formal";
+
+/* AI generation style */
+"generation.style.professional" = "Profesional";
+
+/* AI generation style */
+"generation.style.witty" = "Spiritual";
+
 /* A generic title for an error */
 "generic.error.title" = "Eroare";
 
@@ -8236,6 +8257,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Message shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.message" = "Pentru a genera rezumate cu AI, te rog să activezi Apple Intelligence în Setări. Această funcționalitate folosește procesarea pe dispozitive pentru a-ți proteja confidențialitatea.";
+
+/* Button to open Apple Intelligence settings */
+"intelligence.unavailableView.appleIntelligenceDisabled.openSettings" = "Deschide setările";
+
+/* Title shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.title" = "Apple Intelligence este obligatoriu";
+
+/* Message shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.message" = "Apple Intelligence nu este disponibil pe acest dispozitiv";
+
+/* Title shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.title" = "Apple Intelligence nu este disponibil";
+
+/* Description shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.description" = "Modelul AI este în curs de descărcare sau pregătire. Te rog să încerci din nou, peste o clipă.";
+
+/* Title shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.title" = "Pregătesc modelul...";
 
 /* Cancel dialog confirmation title */
 "inviteSubscribers.cancelConfirmationTitle" = "Sigur vrei să să renunți la abonații noi?";
@@ -8648,7 +8690,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for metric selection */
 "jetpackStats.addChart.selectMetric" = "Selectează valorile metrice";
 
-/* Top list option description */
+/* Today chart title */
+"jetpackStats.addChart.today" = "Azi";
+
+/* Today option description
+   Top list option description */
 "jetpackStats.addChart.topListDescription" = "Vezi conținutul cu performanțe foarte bune";
 
 /* Top list option title */
@@ -8978,6 +9024,12 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title */
 "jetpackStats.postDetails.title" = "Statistici articol";
 
+/* Section title */
+"jetpackStats.postDetails.top10" = "Primele 10";
+
+/* Section title */
+"jetpackStats.postDetails.top50" = "Primele 50";
+
 /* Must be short!Label for total email opens metric */
 "jetpackStats.postDetails.totalOpens" = "Total deschideri";
 
@@ -9079,6 +9131,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Stats screen title */
 "jetpackStats.title" = "Statistici";
+
+/* Today card title */
+"jetpackStats.todayCard.title" = "Azi";
 
 /* Title for items with highest bounce rate */
 "jetpackStats.topList.highestBounceRate" = "Cea mai mare rată de respingere";
@@ -9188,8 +9243,14 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "Grilă cu rapoarte aspect";
 
+/* Navigation bar button item */
+"mediaLibrary.buttonAddMedia" = "Adaugă fișier Media";
+
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "Șterge";
+
+/* Navigation bar button item */
+"mediaLibrary.buttonFilter" = "Filtrează";
 
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Selectează";
@@ -9248,6 +9309,45 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "Grilă pătrată";
 
+/* Detail message for buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.detail" = "Ai mai mult spațiu de stocare pentru fotografii, videouri și alte elemente media de înaltă calitate.";
+
+/* Message about buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.message" = "Cumpără un supliment pentru stocare";
+
+/* Message shown when all media items are attached */
+"mediaLibrary.storageDetails.cleanup.allAttached" = "Toate elementele din biblioteca Media sunt atașate.";
+
+/* Message shown while loading unattached media count */
+"mediaLibrary.storageDetails.cleanup.loading" = "Cercetez dacă există elemente media neatașate...";
+
+/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
+"mediaLibrary.storageDetails.cleanup.message" = "%1$d elemente nu sunt atașate. Înlătură-le pentru a elibera spațiu.";
+
+/* Title for cleanup section */
+"mediaLibrary.storageDetails.cleanup.title" = "Înlătură elementele nefolosite";
+
+/* Success message shown after upgrading plan */
+"mediaLibrary.storageDetails.purchase.plan.success" = "Planul site-ului tău a fost actualizat!";
+
+/* Success message shown after purchasing storage add-on */
+"mediaLibrary.storageDetails.purchase.storage.success" = "Spațiul de stocare din biblioteca Media a site-ului tău a fost mărit!";
+
+/* Title for the storage details screen */
+"mediaLibrary.storageDetails.title" = "Stocare în biblioteca Media";
+
+/* Detail message for upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.detail" = "Actualizează-ți planul pentru a mări spațiul de stocare.";
+
+/* Message about upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.message" = "Actualizează planul";
+
+/* Storage usage message showing used space and total space. %1$@ is used space, %2$@ is total space. */
+"mediaLibrary.storageDetails.usage" = "Ai folosit %1$@ din %2$@";
+
+/* Message shown while calculating storage usage */
+"mediaLibrary.storageDetails.usage.calculating" = "Calculez...";
+
 /* Media screen navigation title */
 "mediaLibrary.title" = "Media";
 
@@ -9301,6 +9401,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Fă un video";
+
+/* The menu item of viewing media library usage */
+"mediaPicker.viewUsage" = "Vezi utilizarea";
 
 /* Navigation title for media preview. Example: 1 of 3 */
 "mediaPreview.NofM" = "%1$@ din %2$@";
@@ -10020,6 +10123,48 @@ Example: Reply to Pamela Nguyen */
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d caractere";
 
+/* Button to generate an excerpt using AI */
+"postSettings.excerpt.generateButton" = "Generează";
+
+/* Character count display. %d is replaced with the number of characters. */
+"postSettings.excerpt.generator.characterCount" = "%d caractere";
+
+/* Button to suggest (generate) more options */
+"postSettings.excerpt.generator.generateMore" = "Sugerează mai multe opțiuni";
+
+/* Label for the length picker section */
+"postSettings.excerpt.generator.length" = "Durată";
+
+/* Accessibility label for the length adjustment slider */
+"postSettings.excerpt.generator.lengthSlider" = "Durată carusel";
+
+/* Button to make excerpts longer */
+"postSettings.excerpt.generator.longer" = "Mai lung";
+
+/* Label for excerpt option number. %d is replaced with the option number. */
+"postSettings.excerpt.generator.option" = "Opțiune %d";
+
+/* Title shown when ready to generate excerpts */
+"postSettings.excerpt.generator.ready" = "Gata pentru generare";
+
+/* Description shown when ready to generate excerpts */
+"postSettings.excerpt.generator.readyDescription" = "Atinge pentru a crea opțiuni pentru rezumate bazate pe AI";
+
+/* Button to make excerpts shorter */
+"postSettings.excerpt.generator.shorter" = "Mai scurt";
+
+/* Title for the style picker section */
+"postSettings.excerpt.generator.style" = "Stil de scriere";
+
+/* Label for the style picker section */
+"postSettings.excerpt.generator.styleLabel" = "Stil";
+
+/* Accessibility label for the style picker */
+"postSettings.excerpt.generator.stylePicker" = "Stil";
+
+/* Title for the excerpt generator popover */
+"postSettings.excerpt.generator.title" = "Generează un rezumat";
+
 /* Section header for Excerpt in Post Settings */
 "postSettings.excerpt.header" = "Rezumat";
 
@@ -10098,6 +10243,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for the publish date field in Post Settings */
 "postSettings.publishDate.label" = "Dată";
 
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"postSettings.publishDateImmediately" = "Imediat";
+
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Generale";
 
@@ -10110,6 +10258,9 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Introdu descriptorul";
 
+/* Label for the preview button in Post Settings */
+"postSettings.socialSharing.header" = "Partajare pe media socială";
+
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "Reprezentativ";
 
@@ -10119,11 +10270,26 @@ Example: Reply to Pamela Nguyen */
 /* Label for the tags field. Should be the same as WP core. */
 "postSettings.tags.label" = "Etichete";
 
+/* Label for the tag suggestions section. */
+"postSettings.tags.suggestions" = "Etichete sugerate";
+
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Vizibilitate";
 
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Statistici articol";
+
+/* Button to add a new tag. %1$@ is the tag name. */
+"postTags.addTag" = "Adaugă etichetă";
+
+/* Placeholder text for the tag search field */
+"postTags.searchOrAdd.placeholder" = "Caută sau adaugă etichete";
+
+/* Message shown when no tags are selected */
+"postTags.selectionEmpty" = "Nu ai selectat nicio etichetă";
+
+/* Title for the tags screen */
+"postTags.title" = "Etichete";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Anulează";
@@ -10203,6 +10369,15 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "Închide";
 
+/* Button to confirm discarding changes */
+"prepublishing.discardChanges.button" = "Renunță la modificări";
+
+/* Message for the discard changes confirmation dialog */
+"prepublishing.discardChanges.message" = "Ai modificări nesalvate la setările pentru articole. Sigur vrei să renunți la ele?";
+
+/* Title for the discard changes confirmation dialog */
+"prepublishing.discardChanges.title" = "Renunți la modificări?";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
@@ -10221,8 +10396,14 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "prepublishing.publishDateImmediately" = "Imediat";
 
+/* The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?' */
+"prepublishing.publishingSectionTitle" = "Ești gata să publici?";
+
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "Publicare în";
+
+/* Button to confirm discarding changes */
+"prepublishing.saveChanges.button" = "Salvează modificările";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Programează";
@@ -10284,6 +10465,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etichete";
+
+/* Navigation title */
+"prepublishing.title" = "Publicare";
 
 /* Details label for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadMediaManyItemsRemaining" = "%@ elemente rămase";
@@ -10359,6 +10543,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Message of error prompt shown when no internet connection is available */
 "reachability-utils.alert.utils" = "Conexiunea la internet pare să fie offline.";
+
+/* Navigation title */
+"reader.article.summary" = "Rezumat";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "Blogul %@ nu va mai apărea în Cititor. Atinge pentru a reveni.";
@@ -10640,6 +10827,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.showBlog" = "Mergi la blog";
+
+/* Context menu action */
+"reader.postContextMenu.summarize" = "Rezumă";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Vizualizează în navigator";
@@ -11516,11 +11706,11 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "Total abonați";
 
+/* Menu item to disable the new stats */
+"stats.menu.disableNewStats" = "Dezactivează noile statistici";
+
 /* Menu item to send feedback about new stats experience */
 "stats.menu.sendFeedback" = "Trimite-ne impresii";
-
-/* Menu item to switch back to classic stats experience */
-"stats.menu.switchToClassic" = "Comută la Statistici clasice";
 
 /* Menu item to enable new stats experience */
 "stats.menu.tryNewStats" = "Încearcă noile Statistici";
@@ -11903,9 +12093,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Suport Cititor pentru iOS";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"tags.add.button" = "Adaugă etichetă: %1$@";
-
 /* Description for empty state when there are no tags */
 "tags.empty.description" = "Etichetele ajută la organizarea conținutului și facilitează cititorilor găsirea unor articole similare.";
 
@@ -11923,9 +12110,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Placeholder text for the tag search field */
 "tags.search.placeholder" = "Caută etichete";
-
-/* Message shown when no tags are selected */
-"tags.selected.empty" = "Nu ai selectat nicio etichetă";
 
 /* Title for the tags screen */
 "tags.title" = "Etichete";
