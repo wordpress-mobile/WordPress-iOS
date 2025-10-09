@@ -1,5 +1,6 @@
-Nous avons apporté des améliorations réfléchies pour rendre votre expérience WordPress encore plus fluide.
-
-Nous avons ajouté la prise en charge d’iOS 26, afin que vous puissiez profiter de toutes les dernières fonctionnalités que votre appareil a à offrir. Tout semble parfait.
-
-Nous avons également apporté quelques améliorations en arrière-plan aux boutons et à la navigation dans l’application. Vous remarquerez que les choses semblent plus soignées et cohérentes, en particulier dans les écrans Éditeur, Réglages et Statistiques.
+Vous pouvez désormais créer un extrait pour vos articles et obtenir des étiquettes suggérées automatiquement à l’aide d’Apple Intelligence. Il est également plus facile de choisir vos étiquettes dans les réglages de l’article. Et maintenant, le tout est plus intelligent.
+Nous avons apporté quelques correctifs visuels pour iOS comme sur le flux de création de site, l’écran de sélection de médias et l’écran Statistiques.
+Pendant que nous y étions, nous avons également éliminé quelques bugs.
+- Les articles du Lecteur s’affichent correctement sur les appareils où l’agrandissement d’écran est activé.
+- Le bouton « Ajouter un média » reste visible dans la médiathèque. Fini les « on me voit, on me voit plus ».
+- Vous pouvez effectuer une recherche dans Abonnements au Lecteur sans figer l’application.
