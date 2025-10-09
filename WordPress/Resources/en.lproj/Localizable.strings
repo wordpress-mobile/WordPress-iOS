@@ -7651,9 +7651,6 @@ Please install the %3$@ to use the app with this site.";
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Categories";
 
-/* Voiceover accessibility label informing the user that this button dismiss the current view */
-"prepublishing.close" = "Close";
-
 /* Button to confirm discarding changes */
 "prepublishing.discardChanges.button" = "Discard Changes";
 
@@ -8684,9 +8681,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Removes location metadata from photos before uploading them to your site.";
-
-/* First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.";
 
 /* No comment provided by engineer. */
 "Replace audio" = "Replace audio";
@@ -11436,9 +11430,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Use password to sign in";
 
-/* Site's Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.subscriber" = "Site's Subscriber";
-
 /* Sites's User Profile. Displayed when the name is empty! */
 "user.details.title.user" = "Site's User";
 
@@ -11547,9 +11538,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Blog Users
    Noun. Title. Links to the user management feature. */
 "Users" = "Users";
-
-/* Site Subscribers */
-"users.list.title.subscribers" = "Subscribers";
 
 /* Screen title */
 "users.title" = "Users";
@@ -12052,7 +12040,7 @@ from anywhere.";
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "World map showing views by country.";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Would you still like to remove this person?";
 
 /* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
