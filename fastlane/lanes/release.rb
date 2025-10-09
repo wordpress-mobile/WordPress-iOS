@@ -10,7 +10,7 @@ platform :ios do
   # - Freezes the GitHub milestone and enables the GitHub branch protection for the new branch
   #
   # @param [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @param [String] version (optional) The version number for the release, used for validation
+  # @param [String] version (optional) The version number for the release from the release tool. If not provided, uses the calculated version.
   #
   lane :code_freeze do |skip_confirm: false, version: nil|
     ensure_git_status_clean
