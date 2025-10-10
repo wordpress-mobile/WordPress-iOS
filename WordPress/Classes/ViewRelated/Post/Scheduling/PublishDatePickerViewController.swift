@@ -11,7 +11,7 @@ struct PublishDatePickerConfiguration {
     /// If set to `true`, the user will no longer be able to remove the selection.
     var isRequired = false
     var timeZone: TimeZone
-    var range = Date.distantFuture...Date.distantFuture
+    var range = Date.distantPast...Date.distantFuture
     var updated: (Date?) -> Void
 }
 

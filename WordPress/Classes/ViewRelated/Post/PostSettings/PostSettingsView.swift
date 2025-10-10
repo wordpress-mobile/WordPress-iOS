@@ -245,10 +245,7 @@ struct PostSettingsFormContentView: View {
                 statusRow
             }
             authorRow
-            if !viewModel.isDraftOrPending || viewModel.context == .publishing {
-                publishDateRow
-                visibilityRow
-            }
+            publishDateRow
             slugRow
         } header: {
             SectionHeader(Strings.generalHeader)

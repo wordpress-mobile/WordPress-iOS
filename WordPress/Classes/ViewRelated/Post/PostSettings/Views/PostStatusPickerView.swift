@@ -158,7 +158,7 @@ private struct PostStatusPublishDatePicker: View {
     let timeZone: TimeZone
     let onSubmit: (Date) -> Void
 
-    @State private var newDate: Date?
+    @State private var newSelection: Date?
 
     @Environment(\.dismiss) var dismiss
 
@@ -169,9 +169,12 @@ private struct PostStatusPublishDatePicker: View {
             timeZone: timeZone,
             range: Date.now...Date.distantFuture,
             updated: { date in
-                newDate = date
+                newSelection = date
             }
         ))
+        .onAppear {
+            newSelection = selection
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button.make(role: .cancel) {
@@ -180,12 +183,12 @@ private struct PostStatusPublishDatePicker: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button.make(role: .confirm) {
-                    if let newDate {
-                        onSubmit(newDate)
+                    if let newSelection {
+                        onSubmit(newSelection)
                     }
                     dismiss()
                 }
-                .disabled(newDate == nil)
+                .disabled(newSelection == nil)
             }
         }
     }

@@ -15,6 +15,7 @@ public struct SettingsRow<Content: View>: View {
                 .layoutPriority(1)
             Spacer()
             content
+                .font(.callout)
                 .foregroundColor(.secondary)
                 .textSelection(.enabled)
         }
