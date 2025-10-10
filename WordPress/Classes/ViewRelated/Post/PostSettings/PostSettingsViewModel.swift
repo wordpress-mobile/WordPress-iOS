@@ -53,6 +53,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         guard let date = settings.publishDate else {
             return nil
         }
+        return Self.formattedDate(date, in: timeZone)
+    }
+
+    static func formattedDate(_ date: Date, in timeZone: TimeZone) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .short

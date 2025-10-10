@@ -62,7 +62,7 @@ struct PostStatusPickerView: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel(status.title)
 
-                if status == .scheduled && settings.status == .scheduled {
+                if status == .scheduled && settings.status == .scheduled, let date = settings.publishDate {
                     NavigationLink {
                         PublishDatePickerView(configuration: PublishDatePickerConfiguration(
                             date: settings.publishDate,
@@ -73,7 +73,7 @@ struct PostStatusPickerView: View {
                             }
                         ))
                     } label: {
-                        SettingsRow(Strings.scheduleDate, value: settings.publishDate?.formatted() ?? "–")
+                        SettingsRow(Strings.scheduleDate, value: PostSettingsViewModel.formattedDate(date, in: timeZone))
                             .padding(.leading, statusRowLeadingInset)
                     }
                 }
