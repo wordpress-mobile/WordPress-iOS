@@ -1,7 +1,16 @@
-Abbiamo apportato alcuni miglioramenti mirati per rendere la tua esperienza con Jetpack ancora più fluida.
-
-Abbiamo aggiunto il supporto a iOS 26, così potrai sfruttare tutte le ultime funzionalità offerte dal tuo dispositivo. L'aspetto e l'esperienza d'uso ora sono impeccabili.
-
-Il Reader è stato rinnovato, con aggiornamenti grafici alla schermata degli articoli che rendono la lettura dei tuoi contenuti preferiti più riposante per gli occhi.
-
-Abbiamo anche apportato alcuni miglioramenti dietro le quinte ai pulsanti e alla navigazione in tutta l'app. Noterai che tutto risulta più rifinito e coerente, soprattutto nelle schermate dell'Editor, delle Impostazioni e delle Statistiche.
+Ora puoi creare un estratto, un riepilogo dell'articolo e tag generati automaticamente per gli articoli usando Apple Intelligence. È anche più facile scegliere i tag nelle Impostazioni articolo. Questo sì che è intelligente.
+Parlando di Statistiche, ci sono diversi nuovi miglioramenti in questa sezione dell'app.
+- Abbiamo aggiunto una scheda Oggi alla schermata Nuove statistiche.
+- La tua home page ora appare nell'elenco delle prime pagine.
+- I primi 10 e 50 elementi ora hanno la loro sezione speciale. Il posto giusto per tutto e tutto al posto giusto.
+- Le tue prime pagine appaiono correttamente quando hai un gran numero di elementi.
+- Il layout delle nuove statistiche viene modificato per adattarsi alle diverse dimensioni dello schermo. Anche quelli veramente grandi.
+- La schermata ricorderà le impostazioni preferite quando scegli un intervallo di date personalizzato.
+- La scheda Traffico ti permette di aggiornare lo schermo.
+Abbiamo anche apportato alcune correzioni visive per iOS in aree come il flusso di creazione del sito, la schermata di selezione dei media e la schermata Statistiche. E già che c'eravamo, abbiamo anche risolto diversi bug.
+- Abbiamo risolto un raro arresto anomalo che si verificava in Statistiche e Abbonati. (Ma non più.)
+- Le visualizzazioni degli articoli hanno l'aspetto che dovrebbero avere nel Reader quando alcuni temi sono attivati.
+- Gli articoli del lettore vengono visualizzati correttamente sui dispositivi con Display Zoom abilitato.
+- Il pulsante "Aggiungi media" rimane visibile nella libreria multimediale. Niente più sparizioni.
+- Puoi cercare in Iscrizioni Reader senza che l'app si blocchi.
+- La barra degli strumenti negli articoli del Reader non scompare più e riappare di tanto in tanto. Ora la vedi, ora la... vedi ancora, a quanto pare.
