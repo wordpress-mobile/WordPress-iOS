@@ -51,7 +51,19 @@ class InvitePersonViewController: UITableViewController {
     /// Roles available for the current site
     ///
     fileprivate var availableRoles: [RemoteRole] {
-        (blog?.sortedRoles ?? []).map { $0.toUnmanaged() }
+        let blogRoles = blog?.sortedRoles ?? []
+        var roles = [RemoteRole]()
+        let inviteRole: RemoteRole
+        if blog.isPrivateAtWPCom() {
+            inviteRole = RemoteRole.viewer
+        } else {
+            inviteRole = RemoteRole.follower
+        }
+        roles += blogRoles.map({ $0.toUnmanaged() })
+        if !FeatureFlag.newsletterSubscribers.enabled {
+            roles.append(inviteRole)
+        }
+        return roles
     }
 
     private lazy var inviteActivityView: UIActivityIndicatorView = {

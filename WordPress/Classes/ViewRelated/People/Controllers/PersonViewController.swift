@@ -21,15 +21,18 @@ final class PersonViewController: UITableViewController {
     /// PersonViewController operation modes
     ///
     enum ScreenMode: String {
-        case user = "user"
-        case viewer = "viewer"
+        case User = "user"
+        case Follower = "follower"
+        case Viewer = "viewer"
 
         var title: String {
             switch self {
-            case .user:
-                NSLocalizedString("user.details.title.user", value: "Site's User", comment: "Sites's User Profile. Displayed when the name is empty!")
-            case .viewer:
-                NSLocalizedString("user.details.title.viewer", value: "Site's Viewer", comment: "Site's Viewers Profile. Displayed when the name is empty!")
+            case .User:
+                return NSLocalizedString("user.details.title.user", value: "Site's User", comment: "Sites's User Profile. Displayed when the name is empty!")
+            case .Follower:
+                return NSLocalizedString("user.details.title.subscriber", value: "Site's Subscriber", comment: "Site's Subscriber Profile. Displayed when the name is empty!")
+            case .Viewer:
+                return NSLocalizedString("user.details.title.viewer", value: "Site's Viewer", comment: "Site's Viewers Profile. Displayed when the name is empty!")
             }
         }
     }
@@ -50,7 +53,7 @@ final class PersonViewController: UITableViewController {
         }
     }
 
-    /// Mode: User / Viewer
+    /// Mode: User / Follower / Viewer / Email Follower
     ///
     private let screenMode: ScreenMode
 
@@ -207,8 +210,8 @@ private extension PersonViewController {
 
     func removeWasPressed() {
         let titleFormat = NSLocalizedString("Remove %@", comment: "Remove Person Alert Title")
-        let titleText = String(format: titleFormat, person.username)
-        let name = person.firstName?.nonEmptyString() ?? person.username
+        let titleText = String(format: titleFormat, isEmailFollower ? person.displayName : "@" + person.username)
+        let name = person.firstName?.nonEmptyString() ?? (isEmailFollower ? person.displayName : person.username)
         let message = warningTextForRemovingPerson(name)
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Action")
         let removeTitle = NSLocalizedString("Remove", comment: "Remove Action")
@@ -223,9 +226,11 @@ private extension PersonViewController {
             }
 
             switch strongSelf.screenMode {
-            case .user:
+            case .User:
                 strongSelf.deleteUser()
-            case .viewer:
+            case .Follower:
+                strongSelf.deleteFollower()
+            case .Viewer:
                 strongSelf.deleteViewer()
                 return
             }
@@ -237,17 +242,20 @@ private extension PersonViewController {
     func warningTextForRemovingPerson(_ name: String) -> String {
         var messageFirstLine: String
         switch screenMode {
-        case .user:
+        case .User:
             let text = NSLocalizedString("If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site.",
                                          comment: "First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string.")
             messageFirstLine = String.localizedStringWithFormat(text, name, name)
-        case .viewer:
+        case .Follower:
+            messageFirstLine = NSLocalizedString("Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.",
+                                                 comment: "First line of remove follower warning in confirmation dialog.")
+        case .Viewer:
             messageFirstLine = NSLocalizedString("If you remove this viewer, he or she will not be able to visit this site.",
                                                  comment: "First line of remove viewer warning in confirmation dialog.")
         }
 
         let messageSecondLineText = NSLocalizedString("Would you still like to remove this person?",
-                                                      comment: "Second line of Remove user/viewer warning in confirmation dialog.")
+                                                      comment: "Second line of Remove user/follower/viewer warning in confirmation dialog.")
 
         return messageFirstLine + "\n\n" + messageSecondLineText
     }
@@ -271,6 +279,23 @@ private extension PersonViewController {
         _ = navigationController?.popViewController(animated: true)
     }
 
+    func deleteFollower() {
+        guard let follower, isFollower else {
+            DDLogError("Error: Only Followers can be deleted here")
+            assertionFailure()
+            return
+        }
+
+        service?.deleteFollower(follower, failure: {[weak self] (error: Error?) -> () in
+            guard let strongSelf = self, let error = error as NSError? else {
+                return
+            }
+
+            strongSelf.handleRemoveViewerOrFollowerError(error)
+        })
+        _ = navigationController?.popViewController(animated: true)
+    }
+
     func deleteViewer() {
         guard let viewer, isViewer else {
             DDLogError("Error: Only Viewers can be deleted here")
@@ -285,7 +310,7 @@ private extension PersonViewController {
                 return
             }
 
-            strongSelf.handleRemoveViewerError(error)
+            strongSelf.handleRemoveViewerOrFollowerError(error)
         })
         _ = navigationController?.popViewController(animated: true)
     }
@@ -308,7 +333,7 @@ private extension PersonViewController {
         WPError.showAlert(withTitle: errorTitleText, message: errorMessage, withSupportButton: true)
     }
 
-    func handleRemoveViewerError(_ error: NSError) {
+    func handleRemoveViewerOrFollowerError(_ error: NSError) {
         let errorWithSource = NSError(domain: error.domain, code: error.code, userInfo: error.userInfo)
         WPError.showNetworkingAlertWithError(errorWithSource)
     }
@@ -371,7 +396,7 @@ private extension PersonViewController {
         }
         headerCell.fullNameLabel.font = .preferredFont(forTextStyle: .headline)
         headerCell.fullNameLabel.textColor = .label
-        headerCell.fullNameLabel.text = person.fullName
+        headerCell.fullNameLabel.text = isEmailFollower ? person.displayName : person.fullName
 
         headerCell.userNameLabel.font = .preferredFont(forTextStyle: .subheadline)
         headerCell.userNameLabel.textColor = .secondaryLabel
@@ -400,7 +425,7 @@ private extension PersonViewController {
     func configureRemoveCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewDestructiveActionCell(cell)
         let removeFormat = NSLocalizedString("Remove %@", comment: "Remove User. Verb")
-        let removeText = String(format: removeFormat, person.username)
+        let removeText = String(format: removeFormat, isEmailFollower ? person.displayName : "@" + person.username)
         cell.textLabel?.text = removeText as String
         cell.isHidden = !isRemoveEnabled
     }
@@ -479,7 +504,7 @@ private extension PersonViewController {
     }
 
     var isFullnamePrivate: Bool {
-        // Viewers shouldn't display First / Last name
+        // Followers + Viewers shouldn't display First / Last name
         return isUser == false
     }
 
@@ -491,10 +516,12 @@ private extension PersonViewController {
 
     var isRemoveEnabled: Bool {
         switch screenMode {
-        case .user:
+        case .User:
             // YES, ListUsers. Brought from Calypso's code
             return blog.isUserCapableOf(.ListUsers) && isMyself == false && isUser == true
-        case .viewer:
+        case .Follower:
+            return isFollower == true
+        case .Viewer:
             return isViewer == true
         }
     }
@@ -507,6 +534,22 @@ private extension PersonViewController {
         return person as? User
     }
 
+    var isFollower: Bool {
+        return follower != nil
+    }
+
+    var follower: Follower? {
+        return person as? Follower
+    }
+
+    var isEmailFollower: Bool {
+        return person is EmailFollower
+    }
+
+    var emailFollower: EmailFollower? {
+        return person as? EmailFollower
+    }
+
     var isViewer: Bool {
         return viewer != nil
     }
@@ -517,9 +560,11 @@ private extension PersonViewController {
 
     var role: RemoteRole? {
         switch screenMode {
-        case .viewer:
+        case .Follower:
+            return .follower
+        case .Viewer:
             return .viewer
-        case .user:
+        case .User:
             return try? Role.lookup(withBlogID: blog.objectID, slug: person.role, in: context)?.toUnmanaged()
         }
     }
