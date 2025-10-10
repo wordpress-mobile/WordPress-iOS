@@ -267,7 +267,7 @@ struct PostSettingsFormContentView: View {
 
     private var statusRow: some View {
         NavigationLink {
-            PostStatusPickerView(settings: $viewModel.settings, timeZone: viewModel.timeZone)
+            PostStatusView(settings: $viewModel.settings, timeZone: viewModel.timeZone)
         } label: {
             SettingsRow(Strings.status) {
                 HStack(alignment: .center, spacing: 2) {

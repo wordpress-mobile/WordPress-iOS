@@ -2,7 +2,7 @@ import SwiftUI
 import WordPressUI
 import WordPressData
 
-struct PostStatusPickerView: View {
+struct PostStatusView: View {
     @Binding var settings: PostSettings
     let timeZone: TimeZone
 
@@ -59,27 +59,22 @@ struct PostStatusPickerView: View {
                         wpAssertionFailure("unsupported case")
                     }
                 } label: {
-                    PostStatusRow(status: status, isSelected: settings.status == status)
+                    VStack {
+                        PostStatusRow(status: status, isSelected: settings.status == status)
+                        if status == .scheduled && settings.status == .scheduled, let date = settings.publishDate {
+                            HStack {
+                                SettingsRow(Strings.scheduleDate, value: PostSettingsViewModel.formattedDate(date, in: timeZone))
+                                Image(systemName: "chevron.forward")
+                                    .font(.footnote.weight(.semibold))
+                                    .foregroundColor(Color(.tertiaryLabel))
+                            }
+                            .padding(.leading, statusRowLeadingInset)
+                            .padding(.top, 8)
+                        }
+                    }
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(status.title)
-
-                if status == .scheduled && settings.status == .scheduled, let date = settings.publishDate {
-                    NavigationLink {
-                        PublishDatePickerView(configuration: PublishDatePickerConfiguration(
-                            date: settings.publishDate,
-                            isRequired: true,
-                            timeZone: timeZone,
-                            range: Date.now...Date.distantFuture,
-                            updated: { date in
-                                settings.publishDate = date
-                            }
-                        ))
-                    } label: {
-                        SettingsRow(Strings.scheduleDate, value: PostSettingsViewModel.formattedDate(date, in: timeZone))
-                            .padding(.leading, statusRowLeadingInset)
-                    }
-                }
             }
         }
     }
