@@ -435,29 +435,6 @@ private struct PostSettingsAuthorRow: View {
 }
 
 @MainActor
-private struct SettingsRow: View {
-    let title: String
-    let value: String
-
-    init(_ title: String, value: String) {
-        self.title = title
-        self.value = value
-    }
-
-    var body: some View {
-        HStack {
-            Text(title)
-                .layoutPriority(1)
-            Spacer()
-            Text(value)
-                .foregroundColor(.secondary)
-                .textSelection(.enabled)
-        }
-        .lineLimit(1)
-    }
-}
-
-@MainActor
 private struct SettingsTextFieldView: View {
     let title: String
     @Binding var text: String
