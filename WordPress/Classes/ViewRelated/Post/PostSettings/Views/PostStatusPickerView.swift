@@ -49,7 +49,9 @@ struct PostStatusPickerView: View {
                 Button {
                     switch status {
                     case .draft, .pending, .publishPrivate, .publish:
-                        settings.publishDate = nil
+                        if settings.status == .scheduled {
+                            settings.publishDate = nil
+                        }
                         settings.status = status
                     case .scheduled:
                         isShowingPublishDatePicker = true

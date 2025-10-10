@@ -86,12 +86,6 @@ class PostCoordinator: NSObject {
         if parameters.status == nil {
             parameters.status = Post.Status.publish.rawValue
         }
-        if parameters.date == nil {
-            // If the post was previously scheduled for a different date,
-            // the app has to send a new value to override it.
-            parameters.date = post.shouldPublishImmediately() ? nil : Date()
-        }
-
         try await save(post, changes: parameters)
     }
 
@@ -114,8 +108,21 @@ class PostCoordinator: NSObject {
         await pauseSyncing(for: post)
         defer { resumeSyncing(for: post) }
 
+        let previousStatus = post.status
+
+        var changes = changes ?? .init()
+
+        // If the post was previously scheduled and the user wants to publish
+        // it without specifying a new publish date, we have to send `.now`
+        // to ensure it gets published immediatelly.
+        if (changes.status == Post.Status.publish.rawValue ||
+            changes.status == Post.Status.publishPrivate.rawValue) &&
+            previousStatus == .scheduled &&
+            changes.date == nil {
+            changes.date = .now
+        }
+
         do {
-            let previousStatus = post.status
             try await PostRepository().save(post, changes: changes)
 
             if previousStatus != post.status && post.isStatus(in: [.scheduled, .publish]) {
