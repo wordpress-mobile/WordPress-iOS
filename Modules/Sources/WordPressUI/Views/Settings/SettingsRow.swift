@@ -1,12 +1,12 @@
 import SwiftUI
 
-public struct SettingsRow: View {
+public struct SettingsRow<Content: View>: View {
     let title: String
-    let value: String
+    let content: Content
 
-    public init(_ title: String, value: String) {
+    public init(_ title: String, @ViewBuilder content: () -> Content) {
         self.title = title
-        self.value = value
+        self.content = content()
     }
 
     public var body: some View {
@@ -14,10 +14,18 @@ public struct SettingsRow: View {
             Text(title)
                 .layoutPriority(1)
             Spacer()
-            Text(value)
+            content
                 .foregroundColor(.secondary)
                 .textSelection(.enabled)
         }
         .lineLimit(1)
+    }
+}
+
+public extension SettingsRow where Content == Text {
+    init(_ title: String, value: String) {
+        self.init(title) {
+            Text(value)
+        }
     }
 }

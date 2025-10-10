@@ -241,6 +241,9 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var generalSection: some View {
         Section {
+            if viewModel.context != .publishing {
+                statusRow
+            }
             authorRow
             if !viewModel.isDraftOrPending || viewModel.context == .publishing {
                 publishDateRow
@@ -262,6 +265,21 @@ struct PostSettingsFormContentView: View {
             }
         } label: {
             PostSettingsAuthorRow(author: viewModel.settings.author)
+        }
+    }
+
+    private var statusRow: some View {
+        NavigationLink {
+            PostStatusPickerView(settings: $viewModel.settings, timeZone: viewModel.timeZone)
+        } label: {
+            SettingsRow(Strings.status) {
+                HStack(alignment: .center, spacing: 2) {
+                    ScaledImage(viewModel.settings.status.image, height: 23)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(viewModel.settings.status.title)
+                    }
+                }
+            }
         }
     }
 
@@ -644,5 +662,11 @@ private enum Strings {
         "prepublishing.publishingSectionTitle",
         value: "Ready to Publish?",
         comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
+    )
+
+    static let status = NSLocalizedString(
+        "postSettings.status.label",
+        value: "Status",
+        comment: "Label for the status field in Post Settings"
     )
 }

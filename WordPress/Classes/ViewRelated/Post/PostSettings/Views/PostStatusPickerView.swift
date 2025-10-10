@@ -62,15 +62,21 @@ struct PostStatusPickerView: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel(status.title)
 
-//                if status == .scheduled && settings.status == .scheduled {
-//                    NavigationLink {
-//                        EmptyView() // TODO: shwo actual picker
-//                        // PostSettingsPublishDatePicker(viewModel: viewModel)
-//                    } label: {
-//                        SettingsRow(Strings.scheduleDate, value: settings.publishDate?.formatted() ?? "–")
-//                            .padding(.leading, statusRowLeadingInset)
-//                    }
-//                }
+                if status == .scheduled && settings.status == .scheduled {
+                    NavigationLink {
+                        PublishDatePickerView(configuration: PublishDatePickerConfiguration(
+                            date: settings.publishDate,
+                            isRequired: true,
+                            timeZone: timeZone,
+                            updated: { date in
+                                settings.publishDate = date
+                            }
+                        ))
+                    } label: {
+                        SettingsRow(Strings.scheduleDate, value: settings.publishDate?.formatted() ?? "–")
+                            .padding(.leading, statusRowLeadingInset)
+                    }
+                }
             }
         }
     }
@@ -170,7 +176,7 @@ private struct PostStatusPublishDatePicker: View {
                     dismiss()
                 }
             }
-            ToolbarItem(placement: .topBarLeading) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button.make(role: .confirm) {
                     if let newDate {
                         onSubmit(newDate)
