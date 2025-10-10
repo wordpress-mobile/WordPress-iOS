@@ -1,5 +1,6 @@
-We hebben een paar doordachte verbeteringen doorgevoerd om je WordPress ervaring nog soepeler te maken.
-
-We hebben ondersteuning toegevoegd voor iOS 26, zodat je kunt profiteren van alle nieuwste functies die je apparaat te bieden heeft. Alles ziet er precies goed uit en voelt ook zo.
-
-We hebben ook wat verbeteringen achter de schermen gedaan aan knoppen en navigatie in de hele app. Je merkt dat alles netter en consistenter aanvoelt, vooral in de Editor, Settings en Stats schermen.
+Je kunt nu een samenvatting maken voor je berichten en automatisch voorgestelde tags krijgen met behulp van Apple Intelligence. Het is ook gemakkelijker om je tags te kiezen in de instellingen voor berichten. Dat is nog eens slim.
+We hebben een paar visuele oplossingen voor iOS in gebieden, zoals de site aanmaak workflow, het media selectiescherm en het statistieken scherm.
+Terwijl we toch bezig waren, hebben we ook een paar bugs geplet.
+- Reader artikelen worden goed weergegeven op apparaten met scherm zoom ingeschakeld.
+- De knop "Media toevoegen" blijft zichtbaar in de mediabibliotheek. Geen verdwijntruc meer.
+- Je kunt zoeken in Reader abonnementen zonder dat de app bevriest.
