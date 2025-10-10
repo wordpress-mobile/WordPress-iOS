@@ -37,10 +37,8 @@ Also, the marketing text added on those screenshots is localized. If you update 
 
  - First, update the `fastlane/appstoreres/{metadata,jetpack_metadata}/source/promo_screenshot_*.txt` files with new English copies
  - During the release process, those new copies will be imported into GlotPress (see `update_appstore_strings` lane)
- - Once those copies have been translated in GlotPress, you can replace them in `fastlane/appstoreres/{metadata,jetpack_metadata}/<locale>/*.{txt,html}`
-    - Note: As of today, it seems the automation for downloading those translated copies is disabled.
-    - Such automation was supposed to be handled by the `download_wordpress_localized_app_store_metadata` and `download_jetpack_localized_app_store_metadata` lanes, but in the current setup those lanes don't seem to include the export of the `fastlane/appstoreres/*` copies (but only the App Store app meta like title/subtitle)
-    - So if you get to this point, we'll need to update the lanes to fix that, or altenatively you will have to copy the translations from GlotPress to the `appstoreres/**/.txt` files manually
+ - Once those copies have been translated in GlotPress, run `bundle exec fastlane download_promo_strings` (WordPress) / `bundle exec fastlane download_jetpack_promo_strings` to update the `fastlane/appstoreres/{metadata,jetpack_metadata}/<locale>/*.{txt,html}` files with those translated copies
+
 
 ## Use screenshots provided by your designer
 
