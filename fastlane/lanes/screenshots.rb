@@ -11,7 +11,7 @@ require 'fileutils'
 SCREENSHOT_SIMULATORS = [
   'iPhone 17 Pro Max', # 6.5in - 2688x1242 @ 458 ppi
   'iPhone 17',
-  'iPad Pro 11-inch (M4)'  
+  'iPad Pro 11-inch (M4)'
 ].freeze
 
 #################################################
