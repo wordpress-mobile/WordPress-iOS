@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-16 12:54:08+0000 */
+/* Translation-Revision-Date: 2025-10-07 09:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -959,9 +959,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "網誌";
 
-/* Create new Blog Post button title */
-"Blog post" = "網誌文章";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "撰寫網誌";
 
@@ -1071,8 +1068,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel Insight management action sheet.
    Cancel registering a domain
    Cancel removing a plugin
-   Cancel site creation
-   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1298,8 +1293,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "點擊率";
 
-/* Action button to close the editor
-   Dismisses the current screen */
+/* Action button to close the editor */
 "Close" = "關閉";
 
 /* Close account action label */
@@ -5294,9 +5288,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "找不到網站";
 
-/* Create new Site Page button title */
-"Site page" = "網頁";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "網站時區 (UTC%1$@%2$d%3$@)";
 
@@ -7692,11 +7683,14 @@ Example: Reply to Pamela Nguyen */
 /* Toggle Title for the privacy compliance popover. */
 "compliance.analytics.popover.toggle" = "分析";
 
-/* Create new Blog Post from Audio button title */
-"createFAB.postFromAudio" = "從音訊張貼";
-
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "建立文章或頁面";
+
+/* Create Sheet button title */
+"createSheet.page" = "頁面";
+
+/* Create Sheet button title */
+"createSheet.post" = "文章";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "建立你專屬的自訂儀表板，並選擇要查看的報告。 把重心放在你最關心的資料。";
@@ -8108,6 +8102,30 @@ Example: Reply to Pamela Nguyen */
 /* A footer retry button */
 "general.pagingFooterView.retry" = "重試";
 
+/* Generated content length (needs to be short) */
+"generation.length.long" = "長篇";
+
+/* Generated content length (needs to be short) */
+"generation.length.medium" = "中等篇幅";
+
+/* Generated content length (needs to be short) */
+"generation.length.short" = "簡短";
+
+/* AI generation style */
+"generation.style.conversational" = "對話式";
+
+/* AI generation style */
+"generation.style.engaging" = "引人入勝";
+
+/* AI generation style */
+"generation.style.formal" = "正式";
+
+/* AI generation style */
+"generation.style.professional" = "職業";
+
+/* AI generation style */
+"generation.style.witty" = "機智";
+
 /* A generic title for an error */
 "generic.error.title" = "錯誤";
 
@@ -8221,6 +8239,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Message shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.message" = "若要使用 AI 生成摘要，請在「設定」中啟用 Apple Intelligence。 此功能使用裝置端處理技術來保護你的隱私。";
+
+/* Button to open Apple Intelligence settings */
+"intelligence.unavailableView.appleIntelligenceDisabled.openSettings" = "開啟設定";
+
+/* Title shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.title" = "需要使用 Apple Intelligence";
+
+/* Message shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.message" = "此裝置無法使用 Apple Intelligence";
+
+/* Title shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.title" = "無法使用 Apple Intelligence";
+
+/* Description shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.description" = "正在下載或正在準備 AI 模型。 請稍後再試。";
+
+/* Title shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.title" = "正在準備模型...";
 
 /* Cancel dialog confirmation title */
 "inviteSubscribers.cancelConfirmationTitle" = "你確定要捨棄新訂閱者？";
@@ -8633,7 +8672,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for metric selection */
 "jetpackStats.addChart.selectMetric" = "選取指標";
 
-/* Top list option description */
+/* Today chart title */
+"jetpackStats.addChart.today" = "今天";
+
+/* Today option description
+   Top list option description */
 "jetpackStats.addChart.topListDescription" = "查看成效最佳的內容";
 
 /* Top list option title */
@@ -8963,6 +9006,12 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title */
 "jetpackStats.postDetails.title" = "文章統計資料";
 
+/* Section title */
+"jetpackStats.postDetails.top10" = "前 10 名";
+
+/* Section title */
+"jetpackStats.postDetails.top50" = "前 50 名";
+
 /* Must be short!Label for total email opens metric */
 "jetpackStats.postDetails.totalOpens" = "總開啟數";
 
@@ -9064,6 +9113,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Stats screen title */
 "jetpackStats.title" = "統計資料";
+
+/* Today card title */
+"jetpackStats.todayCard.title" = "今天";
 
 /* Title for items with highest bounce rate */
 "jetpackStats.topList.highestBounceRate" = "最高跳出率";
@@ -9173,8 +9225,14 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "長寬比網格";
 
+/* Navigation bar button item */
+"mediaLibrary.buttonAddMedia" = "新增媒體";
+
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "刪除";
+
+/* Navigation bar button item */
+"mediaLibrary.buttonFilter" = "篩選條件";
 
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "選取";
@@ -9233,6 +9291,45 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "正方形網格";
 
+/* Detail message for buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.detail" = "為高畫質照片、影片和其他媒體內容騰出更多空間。";
+
+/* Message about buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.message" = "購買儲存空間附加元件";
+
+/* Message shown when all media items are attached */
+"mediaLibrary.storageDetails.cleanup.allAttached" = "已附加媒體庫中的所有項目。";
+
+/* Message shown while loading unattached media count */
+"mediaLibrary.storageDetails.cleanup.loading" = "正在尋找是否有任何未附加的媒體項目…";
+
+/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
+"mediaLibrary.storageDetails.cleanup.message" = "%1$d 個未附加的項目。 移除這些項目以釋放儲存空間。";
+
+/* Title for cleanup section */
+"mediaLibrary.storageDetails.cleanup.title" = "移除未使用的項目";
+
+/* Success message shown after upgrading plan */
+"mediaLibrary.storageDetails.purchase.plan.success" = "你的網站方案已升級！";
+
+/* Success message shown after purchasing storage add-on */
+"mediaLibrary.storageDetails.purchase.storage.success" = "你的網站媒體庫儲存空間已增加！";
+
+/* Title for the storage details screen */
+"mediaLibrary.storageDetails.title" = "媒體庫儲存空間";
+
+/* Detail message for upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.detail" = "只要升級方案，即可增加儲存空間。";
+
+/* Message about upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.message" = "升級方案";
+
+/* Storage usage message showing used space and total space. %1$@ is used space, %2$@ is total space. */
+"mediaLibrary.storageDetails.usage" = "已使用 %1$@，共 %2$@";
+
+/* Message shown while calculating storage usage */
+"mediaLibrary.storageDetails.usage.calculating" = "正在計算...";
+
 /* Media screen navigation title */
 "mediaLibrary.title" = "媒體";
 
@@ -9286,6 +9383,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "拍攝影片";
+
+/* The menu item of viewing media library usage */
+"mediaPicker.viewUsage" = "檢視使用狀況";
 
 /* Navigation title for media preview. Example: 1 of 3 */
 "mediaPreview.NofM" = "第 %1$@ 步，共 %2$@ 步";
@@ -10005,6 +10105,48 @@ Example: Reply to Pamela Nguyen */
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d 個字元";
 
+/* Button to generate an excerpt using AI */
+"postSettings.excerpt.generateButton" = "生成";
+
+/* Character count display. %d is replaced with the number of characters. */
+"postSettings.excerpt.generator.characterCount" = "%d 個字元";
+
+/* Button to suggest (generate) more options */
+"postSettings.excerpt.generator.generateMore" = "建議更多選項";
+
+/* Label for the length picker section */
+"postSettings.excerpt.generator.length" = "長度";
+
+/* Accessibility label for the length adjustment slider */
+"postSettings.excerpt.generator.lengthSlider" = "長度滑杆";
+
+/* Button to make excerpts longer */
+"postSettings.excerpt.generator.longer" = "較長";
+
+/* Label for excerpt option number. %d is replaced with the option number. */
+"postSettings.excerpt.generator.option" = "選項 %d";
+
+/* Title shown when ready to generate excerpts */
+"postSettings.excerpt.generator.ready" = "準備生成";
+
+/* Description shown when ready to generate excerpts */
+"postSettings.excerpt.generator.readyDescription" = "點選以建立 AI 提供的內容摘要選項";
+
+/* Button to make excerpts shorter */
+"postSettings.excerpt.generator.shorter" = "較短";
+
+/* Title for the style picker section */
+"postSettings.excerpt.generator.style" = "寫作風格";
+
+/* Label for the style picker section */
+"postSettings.excerpt.generator.styleLabel" = "風格";
+
+/* Accessibility label for the style picker */
+"postSettings.excerpt.generator.stylePicker" = "風格";
+
+/* Title for the excerpt generator popover */
+"postSettings.excerpt.generator.title" = "生成內容摘要";
+
 /* Section header for Excerpt in Post Settings */
 "postSettings.excerpt.header" = "文章摘要";
 
@@ -10077,6 +10219,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for the publish date field in Post Settings */
 "postSettings.publishDate.label" = "日期";
 
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"postSettings.publishDateImmediately" = "立即";
+
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "一般";
 
@@ -10089,6 +10234,9 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "輸入代稱";
 
+/* Label for the preview button in Post Settings */
+"postSettings.socialSharing.header" = "社群分享";
+
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "置頂";
 
@@ -10098,11 +10246,23 @@ Example: Reply to Pamela Nguyen */
 /* Label for the tags field. Should be the same as WP core. */
 "postSettings.tags.label" = "標籤";
 
+/* Label for the tag suggestions section. */
+"postSettings.tags.suggestions" = "建議使用的標籤";
+
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "可見度";
 
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "文章統計資料";
+
+/* Button to add a new tag. %1$@ is the tag name. */
+"postTags.addTag" = "新增標籤";
+
+/* Placeholder text for the tag search field */
+"postTags.searchOrAdd.placeholder" = "搜尋或新增標籤";
+
+/* Title for the tags screen */
+"postTags.title" = "標籤";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "取消";
@@ -10182,6 +10342,15 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "關閉";
 
+/* Button to confirm discarding changes */
+"prepublishing.discardChanges.button" = "捨棄變更";
+
+/* Message for the discard changes confirmation dialog */
+"prepublishing.discardChanges.message" = "你有未儲存的文章設定變更。 確定要捨棄這些變更嗎？";
+
+/* Title for the discard changes confirmation dialog */
+"prepublishing.discardChanges.title" = "要捨棄變更嗎？";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
@@ -10197,8 +10366,14 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "prepublishing.publishDateImmediately" = "立即";
 
+/* The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?' */
+"prepublishing.publishingSectionTitle" = "確定要發表嗎？";
+
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "發表至";
+
+/* Button to confirm discarding changes */
+"prepublishing.saveChanges.button" = "儲存變更";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "排程";
@@ -10260,6 +10435,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "標籤";
+
+/* Navigation title */
+"prepublishing.title" = "發表";
 
 /* Details label for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadMediaManyItemsRemaining" = "剩下 %@ 個項目";
@@ -10335,6 +10513,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Message of error prompt shown when no internet connection is available */
 "reachability-utils.alert.utils" = "網際網路連線似乎已中斷。";
+
+/* Navigation title */
+"reader.article.summary" = "摘要";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "網誌「%@」將不再顯示於你的讀取器中。 點選以復原。";
@@ -10616,6 +10797,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.showBlog" = "前往「網誌」";
+
+/* Context menu action */
+"reader.postContextMenu.summarize" = "建立摘要";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "在瀏覽器中檢視";
@@ -11474,11 +11658,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "訂閱者總人數";
 
+/* Menu item to disable the new stats */
+"stats.menu.disableNewStats" = "停用新統計資料";
+
 /* Menu item to send feedback about new stats experience */
 "stats.menu.sendFeedback" = "傳送意見回饋";
-
-/* Menu item to switch back to classic stats experience */
-"stats.menu.switchToClassic" = "切換至傳統版統計功能";
 
 /* Menu item to enable new stats experience */
 "stats.menu.tryNewStats" = "試用新版統計功能";
@@ -11855,9 +12039,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* View title for Help & Support page. */
 "support.title" = "說明";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"tags.add.button" = "新增標籤：%1$@";
-
 /* Description for empty state when there are no tags */
 "tags.empty.description" = "可運用標籤整理內容，方便讀者尋找相關文章。";
 
@@ -11875,9 +12056,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Placeholder text for the tag search field */
 "tags.search.placeholder" = "搜尋標籤";
-
-/* Message shown when no tags are selected */
-"tags.selected.empty" = "未選取標籤";
 
 /* Title for the tags screen */
 "tags.title" = "標籤";

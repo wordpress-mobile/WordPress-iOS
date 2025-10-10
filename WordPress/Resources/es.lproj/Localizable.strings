@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-11 19:07:17+0000 */
+/* Translation-Revision-Date: 2025-10-06 19:00:22+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: es */
@@ -959,9 +959,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
-/* Create new Blog Post button title */
-"Blog post" = "Entrada del blog";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Bloguear";
 
@@ -1071,8 +1068,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel Insight management action sheet.
    Cancel registering a domain
    Cancel removing a plugin
-   Cancel site creation
-   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1298,8 +1293,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Clics";
 
-/* Action button to close the editor
-   Dismisses the current screen */
+/* Action button to close the editor */
 "Close" = "Cerrar";
 
 /* Close account action label */
@@ -5300,9 +5294,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Sitio no encontrado";
 
-/* Create new Site Page button title */
-"Site page" = "Página del sitio";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Zona horaria del sitio (UTC%1$@%2$d%3$@)";
 
@@ -7707,11 +7698,17 @@ Example: Reply to Pamela Nguyen */
 /* Toggle Title for the privacy compliance popover. */
 "compliance.analytics.popover.toggle" = "Analíticas";
 
-/* Create new Blog Post from Audio button title */
-"createFAB.postFromAudio" = "Publicar desde audio";
-
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "Crear una entrada o página";
+
+/* Create Sheet button title */
+"createSheet.page" = "Página";
+
+/* Create Sheet button title */
+"createSheet.post" = "Publicar";
+
+/* Create Sheet button title */
+"createSheet.postFromAudio" = "Publicar desde audio";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Crea tu propio escritorio personalizado y elige los informes que quieres ver. Céntrate en los datos que más te interesan.";
@@ -8123,6 +8120,30 @@ Example: Reply to Pamela Nguyen */
 /* A footer retry button */
 "general.pagingFooterView.retry" = "Reintentar";
 
+/* Generated content length (needs to be short) */
+"generation.length.long" = "Largo";
+
+/* Generated content length (needs to be short) */
+"generation.length.medium" = "Medio";
+
+/* Generated content length (needs to be short) */
+"generation.length.short" = "Corto";
+
+/* AI generation style */
+"generation.style.conversational" = "Coloquial";
+
+/* AI generation style */
+"generation.style.engaging" = "Participativo";
+
+/* AI generation style */
+"generation.style.formal" = "Formal";
+
+/* AI generation style */
+"generation.style.professional" = "Profesional";
+
+/* AI generation style */
+"generation.style.witty" = "Ingenioso";
+
 /* A generic title for an error */
 "generic.error.title" = "Error";
 
@@ -8236,6 +8257,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Message shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.message" = "Para generar extractos con IA activa Apple Intelligence en los ajustes. Esta característica utiliza procesamiento del dispositivo para proteger tu privacidad.";
+
+/* Button to open Apple Intelligence settings */
+"intelligence.unavailableView.appleIntelligenceDisabled.openSettings" = "Abrir ajustes";
+
+/* Title shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.title" = "Apple Intelligence obligatorio";
+
+/* Message shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.message" = "Apple Intelligence no está disponible en este dispositivo";
+
+/* Title shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.title" = "Apple Intelligence no está disponible";
+
+/* Description shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.description" = "El modelo de IA se está descargando o preparando. Inténtalo de nuevo dentro de un momento.";
+
+/* Title shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.title" = "Preparando el modelo…";
 
 /* Cancel dialog confirmation title */
 "inviteSubscribers.cancelConfirmationTitle" = "¿Estás seguro de que quieres descartar a los nuevos suscriptores?";
@@ -8648,7 +8690,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for metric selection */
 "jetpackStats.addChart.selectMetric" = "Elegir métricas";
 
-/* Top list option description */
+/* Today chart title */
+"jetpackStats.addChart.today" = "Hoy";
+
+/* Today option description
+   Top list option description */
 "jetpackStats.addChart.topListDescription" = "Consulta el contenido con mejor rendimiento";
 
 /* Top list option title */
@@ -8978,6 +9024,12 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title */
 "jetpackStats.postDetails.title" = "Estadísticas de la entrada";
 
+/* Section title */
+"jetpackStats.postDetails.top10" = "Los 10 mejores";
+
+/* Section title */
+"jetpackStats.postDetails.top50" = "Los 50 mejores";
+
 /* Must be short!Label for total email opens metric */
 "jetpackStats.postDetails.totalOpens" = "Total de aperturas";
 
@@ -9079,6 +9131,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Stats screen title */
 "jetpackStats.title" = "Estadísticas";
+
+/* Today card title */
+"jetpackStats.todayCard.title" = "Hoy";
 
 /* Title for items with highest bounce rate */
 "jetpackStats.topList.highestBounceRate" = "Mayor tasa de rebote";
@@ -9188,8 +9243,14 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "Cuadrícula de relación de aspecto";
 
+/* Navigation bar button item */
+"mediaLibrary.buttonAddMedia" = "Añadir medios";
+
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "Borrar";
+
+/* Navigation bar button item */
+"mediaLibrary.buttonFilter" = "Filtro";
 
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Seleccionar";
@@ -9248,6 +9309,45 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "Cuadrícula";
 
+/* Detail message for buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.detail" = "Consigue más espacio para fotos de alta calidad, vídeos y otros medios.";
+
+/* Message about buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.message" = "Compra la extensión de almacenamiento";
+
+/* Message shown when all media items are attached */
+"mediaLibrary.storageDetails.cleanup.allAttached" = "Todos los elementos de la biblioteca de medios están adjuntos.";
+
+/* Message shown while loading unattached media count */
+"mediaLibrary.storageDetails.cleanup.loading" = "Buscando si hay algún elemento de medios sin adjuntar...";
+
+/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
+"mediaLibrary.storageDetails.cleanup.message" = "%1$d elemento sin adjuntar. Elimínalos para liberar algo de espacio.";
+
+/* Title for cleanup section */
+"mediaLibrary.storageDetails.cleanup.title" = "Eliminar elementos sin uso";
+
+/* Success message shown after upgrading plan */
+"mediaLibrary.storageDetails.purchase.plan.success" = "¡El plan de tu sitio se ha actualizado!";
+
+/* Success message shown after purchasing storage add-on */
+"mediaLibrary.storageDetails.purchase.storage.success" = "¡Se ha aumentado tu almacenamiento de la biblioteca de medios del sitio!";
+
+/* Title for the storage details screen */
+"mediaLibrary.storageDetails.title" = "Almacenamiento de la biblioteca de medios";
+
+/* Detail message for upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.detail" = "Actualiza tu plan para aumentar tu espacio de almacenamiento.";
+
+/* Message about upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.message" = "Actualizar plan";
+
+/* Storage usage message showing used space and total space. %1$@ is used space, %2$@ is total space. */
+"mediaLibrary.storageDetails.usage" = "%1$@ de %2$@ utilizado";
+
+/* Message shown while calculating storage usage */
+"mediaLibrary.storageDetails.usage.calculating" = "Calculando...";
+
 /* Media screen navigation title */
 "mediaLibrary.title" = "Medios";
 
@@ -9301,6 +9401,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Grabar vídeo";
+
+/* The menu item of viewing media library usage */
+"mediaPicker.viewUsage" = "Ver uso";
 
 /* Navigation title for media preview. Example: 1 of 3 */
 "mediaPreview.NofM" = "%1$@ de %2$@";
@@ -10020,6 +10123,48 @@ Example: Reply to Pamela Nguyen */
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d caracteres";
 
+/* Button to generate an excerpt using AI */
+"postSettings.excerpt.generateButton" = "Generar";
+
+/* Character count display. %d is replaced with the number of characters. */
+"postSettings.excerpt.generator.characterCount" = "%d caracteres";
+
+/* Button to suggest (generate) more options */
+"postSettings.excerpt.generator.generateMore" = "Sugerir más opciones";
+
+/* Label for the length picker section */
+"postSettings.excerpt.generator.length" = "Longitud";
+
+/* Accessibility label for the length adjustment slider */
+"postSettings.excerpt.generator.lengthSlider" = "Longitud del carrusel";
+
+/* Button to make excerpts longer */
+"postSettings.excerpt.generator.longer" = "Más largo";
+
+/* Label for excerpt option number. %d is replaced with the option number. */
+"postSettings.excerpt.generator.option" = "Opción %d";
+
+/* Title shown when ready to generate excerpts */
+"postSettings.excerpt.generator.ready" = "Listo para generar";
+
+/* Description shown when ready to generate excerpts */
+"postSettings.excerpt.generator.readyDescription" = "Toca para crear opciones de extractos gracias a la IA";
+
+/* Button to make excerpts shorter */
+"postSettings.excerpt.generator.shorter" = "Más breve";
+
+/* Title for the style picker section */
+"postSettings.excerpt.generator.style" = "Estilo de escritura";
+
+/* Label for the style picker section */
+"postSettings.excerpt.generator.styleLabel" = "Estilo";
+
+/* Accessibility label for the style picker */
+"postSettings.excerpt.generator.stylePicker" = "Estilo";
+
+/* Title for the excerpt generator popover */
+"postSettings.excerpt.generator.title" = "Generar extracto";
+
 /* Section header for Excerpt in Post Settings */
 "postSettings.excerpt.header" = "Extracto";
 
@@ -10098,6 +10243,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for the publish date field in Post Settings */
 "postSettings.publishDate.label" = "Fecha";
 
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"postSettings.publishDateImmediately" = "Inmediatamente";
+
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "General";
 
@@ -10110,6 +10258,9 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Introducir slug";
 
+/* Label for the preview button in Post Settings */
+"postSettings.socialSharing.header" = "Compartir en redes sociales";
+
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "Fija";
 
@@ -10119,11 +10270,26 @@ Example: Reply to Pamela Nguyen */
 /* Label for the tags field. Should be the same as WP core. */
 "postSettings.tags.label" = "Etiquetas";
 
+/* Label for the tag suggestions section. */
+"postSettings.tags.suggestions" = "Etiquetas sugeridas";
+
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Visibilidad";
 
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Estadísticas de la entrada";
+
+/* Button to add a new tag. %1$@ is the tag name. */
+"postTags.addTag" = "Añadir etiqueta";
+
+/* Placeholder text for the tag search field */
+"postTags.searchOrAdd.placeholder" = "Buscar o añadir etiquetas";
+
+/* Message shown when no tags are selected */
+"postTags.selectionEmpty" = "No hay etiquetas seleccionadas";
+
+/* Title for the tags screen */
+"postTags.title" = "Etiquetas";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Cancelar";
@@ -10203,6 +10369,15 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "Cerrar";
 
+/* Button to confirm discarding changes */
+"prepublishing.discardChanges.button" = "Descartar cambios";
+
+/* Message for the discard changes confirmation dialog */
+"prepublishing.discardChanges.message" = "Tienes cambios sin guardar en los ajustes de la entrada. ¿Seguro que quieres descartarlos?";
+
+/* Title for the discard changes confirmation dialog */
+"prepublishing.discardChanges.title" = "¿Descartar cambios?";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
@@ -10221,8 +10396,14 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "prepublishing.publishDateImmediately" = "Inmediatamente";
 
+/* The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?' */
+"prepublishing.publishingSectionTitle" = "¿Listo para publicar?";
+
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "Publicando en";
+
+/* Button to confirm discarding changes */
+"prepublishing.saveChanges.button" = "Guardar cambios";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Programar";
@@ -10284,6 +10465,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiquetas";
+
+/* Navigation title */
+"prepublishing.title" = "Publicar";
 
 /* Details label for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadMediaManyItemsRemaining" = "%@ elementos restantes";
@@ -10359,6 +10543,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Message of error prompt shown when no internet connection is available */
 "reachability-utils.alert.utils" = "Parece que no hay conexión a internet.";
+
+/* Navigation title */
+"reader.article.summary" = "Resumen";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "El blog %@ ya no aparecerá en tu lector. Toca para deshacer.";
@@ -10640,6 +10827,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.showBlog" = "Ir al blog";
+
+/* Context menu action */
+"reader.postContextMenu.summarize" = "Resumir";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Ver en navegador";
@@ -11516,11 +11706,11 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "Suscriptores totales";
 
+/* Menu item to disable the new stats */
+"stats.menu.disableNewStats" = "Desactivar las nuevas estadísticas";
+
 /* Menu item to send feedback about new stats experience */
 "stats.menu.sendFeedback" = "Envía tu opinión";
-
-/* Menu item to switch back to classic stats experience */
-"stats.menu.switchToClassic" = "Cambiar a las estadísticas clásicas";
 
 /* Menu item to enable new stats experience */
 "stats.menu.tryNewStats" = "Prueba las nuevas estadísticas";
@@ -11903,9 +12093,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Compatibilidad con el Lector para iOS";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"tags.add.button" = "Añadir etiqueta: %1$@";
-
 /* Description for empty state when there are no tags */
 "tags.empty.description" = "Las etiquetas ayudan a organizar tu contenido y facilitan a los lectores la búsqueda de entradas relacionadas.";
 
@@ -11923,9 +12110,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Placeholder text for the tag search field */
 "tags.search.placeholder" = "Buscar etiquetas";
-
-/* Message shown when no tags are selected */
-"tags.selected.empty" = "No hay etiquetas seleccionadas";
 
 /* Title for the tags screen */
 "tags.title" = "Etiquetas";

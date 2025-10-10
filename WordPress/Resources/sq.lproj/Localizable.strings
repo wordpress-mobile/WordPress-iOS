@@ -953,9 +953,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
-/* Create new Blog Post button title */
-"Blog post" = "Postim blogu";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Blogim";
 
@@ -1065,8 +1062,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel Insight management action sheet.
    Cancel registering a domain
    Cancel removing a plugin
-   Cancel site creation
-   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1292,8 +1287,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Klikime";
 
-/* Action button to close the editor
-   Dismisses the current screen */
+/* Action button to close the editor */
 "Close" = "Mbylle";
 
 /* Close account action label */
@@ -5273,9 +5267,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Sajti s’u gjet";
 
-/* Create new Site Page button title */
-"Site page" = "Faqe sajti";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Zonë kohore e sajtit (UTC%1$@%2$d%3$@)";
 
@@ -7542,9 +7533,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Toggle Title for the privacy compliance popover. */
 "compliance.analytics.popover.toggle" = "Statistika";
-
-/* Create new Blog Post from Audio button title */
-"createFAB.postFromAudio" = "Postim që nga Audio";
 
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "Krijoni një postim, ose faqe";
