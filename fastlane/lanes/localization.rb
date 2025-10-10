@@ -474,7 +474,7 @@ platform :ios do
     upload_to_app_store(
       **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
       app_identifier: WORDPRESS_BUNDLE_IDENTIFIER,
-      screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
+      screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo_screenshots'),
       skip_screenshots: skip_screenshots
     )
   end
