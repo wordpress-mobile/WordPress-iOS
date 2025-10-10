@@ -1,7 +1,16 @@
-Vi har gjort några genomtänkta förbättringar för att göra din Jetpack-upplevelse ännu smidigare.
-
-Vi har lagt till stöd för iOS 26, så att du kan dra nytta av alla de senaste funktionerna som din enhet har att erbjuda. Allt ser ut och känns helt rätt.
-
-Vi har lagt lite tid på läsaren, med visuella uppdateringar av artikelskärmen, vilket har gjort den mer bekväm för ögonen när du tar del av ditt favoritinnehåll.
-
-Vi har också gjort några förbättringar bakom kulisserna av knapparna och navigeringen i appen. Du kommer att märka att saker och ting känns mer polerade och konsekventa, särskilt på skärmarna Redigerare, Inställningar och Statistik.
+Du kan nu skapa ett utdrag, en inläggssammanfattning och automatiskt genererade etiketter för dina inlägg med hjälp av Apple Intelligence. Det är också enklare att välja dina etiketter i inläggsinställningarna. Det är smart.
+På tal om statistik så har vi gjort flera nya förbättringar inom detta område av appen.
+- Vi har lagt till ett Idag-kort på skärmen Ny statistik.
+- Din startsida visas nu i listan över de populäraste sidorna.
+- Dina topp 10- och topp 50-objekt har nu sin egen specialsektion. En plats för allt och allt på sin plats.
+- Dina toppsidor visas korrekt när du har ett stort antal objekt.
+- Ny statistik-layouten ändras för att passa olika skärmstorlekar. Till och med riktigt, riktigt stora.
+- Skärmen kommer ihåg dina föredragna inställningar när du väljer ett anpassat datumintervall.
+- Fliken Trafik kan dras nedåt för att uppdatera skärmen.
+Vi har också gjort några visuella korrigeringar för iOS i områden som flödet för webbplatsskapande, skärmen för mediaval och statistikskärmen. Och medan vi ändå höll på åtgärdade vi även ett flertal buggar.
+- Vi har åtgärdat en sällsynt krasch som ibland kunde uppstå i Statistik och Prenumeranter. (Nu gör den inte det längre.)
+- Artikelvisningar ser ut som de ska i Läsaren när vissa teman är aktiverade.
+- Läsarartiklar återges korrekt på enheter med Visningszoom aktiverat.
+- Knappen ”Lägg till media” förblir synlig i mediebiblioteket. Inget mer försvinnande.
+- Du kan söka i läsarprenumerationer utan att appen hänger sig.
+- Verktygsfältet i läsarartiklar försvinner inte längre för att sedan komma tillbaka igen då och då. Nu ser du det, nu ser du det… fortfarande, hoppas vi.
