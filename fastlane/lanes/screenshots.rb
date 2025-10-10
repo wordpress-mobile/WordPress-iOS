@@ -38,7 +38,7 @@ platform :ios do
   # That way, it uses incremental builds instead of clean builds (faster iterations), and only generates screenshots for one language
   # (which is usually enough to check that the design and screens being captured look correct while iterating).
   #
-  desc 'Generate localised screenshots'
+  desc 'Generate localized screenshots'
   lane :screenshots do |options|
     FileUtils.rm_rf(DERIVED_DATA_PATH) unless options[:skip_clean]
 
@@ -101,7 +101,7 @@ platform :ios do
   #
   # Generates both light and dark mode, for each of the Mag16 locale, and a fixed set of device sizes (2 iPhones, 2 iPads).
   #
-  desc 'Generate localised Jetpack screenshots'
+  desc 'Generate localized Jetpack screenshots'
   lane :jetpack_screenshots do |options|
     screenshots(
       scheme: 'JetpackScreenshotGeneration',
