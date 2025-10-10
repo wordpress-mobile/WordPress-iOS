@@ -108,7 +108,7 @@ extension PublishingEditor {
 
     private func showPublishingConfirmation(for action: PostEditorAction, analyticsStat: WPAnalyticsStat?) {
         let originalFeaturedImageID = post.featuredImage?.mediaID
-        PublishPostViewController.show(for: post, from: self) { [weak self] result in
+        PrepublishingViewController.show(for: post, from: self) { [weak self] result in
             guard let self else { return }
             switch result {
             case .published:
