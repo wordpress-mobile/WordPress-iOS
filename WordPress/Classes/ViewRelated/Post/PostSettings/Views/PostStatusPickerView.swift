@@ -68,6 +68,7 @@ struct PostStatusPickerView: View {
                             date: settings.publishDate,
                             isRequired: true,
                             timeZone: timeZone,
+                            range: Date.now...Date.distantFuture,
                             updated: { date in
                                 settings.publishDate = date
                             }
@@ -166,6 +167,7 @@ private struct PostStatusPublishDatePicker: View {
             date: selection,
             isRequired: true,
             timeZone: timeZone,
+            range: Date.now...Date.distantFuture,
             updated: { date in
                 newDate = date
             }
