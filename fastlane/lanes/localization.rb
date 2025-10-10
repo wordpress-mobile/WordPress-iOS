@@ -474,7 +474,7 @@ platform :ios do
     upload_to_app_store(
       **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
       app_identifier: WORDPRESS_BUNDLE_IDENTIFIER,
-      screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo_screenshots'),
+      screenshots_path: WORDPRESS_PROMO_SCREENSHOTS_PATH,
       skip_screenshots: skip_screenshots
     )
   end
@@ -495,7 +495,7 @@ platform :ios do
       **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
       app_identifier: JETPACK_BUNDLE_IDENTIFIER,
       metadata_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata'),
-      screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_promo_screenshots'),
+      screenshots_path: JETPACK_PROMO_SCREENSHOTS_PATH,
       skip_screenshots: skip_screenshots
     )
   end

@@ -118,7 +118,7 @@ platform :ios do
   #
   # - Raw screenshots are expected to be in the `screenshots/`
   # - Localized metadata for the screenshots are expected to be in `appstoreres/metadata`
-  # - Generated promo screenshots will be generated in `fastlane//promo_screenshots`
+  # - Generated promo screenshots will be generated in `fastlane/promo_screenshots`
   #
   desc 'Creates promo screenshots'
   lane :create_promo_screenshots do |options|
@@ -126,7 +126,7 @@ platform :ios do
     promo_screenshots(
       orig_folder: 'screenshots',
       metadata_folder: 'appstoreres/metadata',
-      output_folder: File.join(Dir.pwd, '/promo_screenshots'),
+      output_folder: WORDPRESS_PROMO_SCREENSHOTS_PATH,
       force: options[:force]
     )
   end
@@ -146,7 +146,7 @@ platform :ios do
       orig_folder: 'jetpack_screenshots',
       metadata_folder: 'appstoreres/jetpack_metadata',
       config_file: 'jetpack_screenshots.json',
-      output_folder: File.join(Dir.pwd, '/jetpack_promo_screenshots'),
+      output_folder: JETPACK_PROMO_SCREENSHOTS_PATH,
       force: options[:force]
     )
   end
