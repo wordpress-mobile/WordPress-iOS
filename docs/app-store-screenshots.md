@@ -3,12 +3,12 @@
 The upload of App Store screenshots is automated via `fastlane`.
 
 First, you will want to generate the PNG files for the screenshots you want to update:
- - Typically you can use fastlane to generate screenshots from your app's UI screens for all locales, as well as to post-process those raw screenshots of the UI to add some marketing design around them.
- - Alternatively, if your designer already provided some pre-generated PNG files for you to use, you can put them directly in the right folders for fastlane to pick them up in the next phase.
+ - Typically you can use fastlane to [generate screenshots from your app's UI screens for all locales](#raw-screenshots), as well as to [post-process those raw screenshots of the UI to add some marketing design around them](#create-promo-screenshots).
+ - Alternatively, if your designer already provided some pre-generated PNG files for you to use, you can [put them directly in the right folders for fastlane to pick them up](#designer-provided-screenshots) in the next phase.
 
-Then, you will use `with_screenshots:true` when calling the lanes to upload those PNG files to App Store Connect.
+Then, you will [use `update_metadata_on_app_store_connect with_screenshots:true` to upload those PNG files to App Store Connect](#upload-screenshots-to-asc).
 
-## Auto-Generating the raw screenshots from the app's screens
+## <a name="raw-screenshots">Auto-Generating the raw screenshots from the app's screens</a>
 
 This step is based on UI Tests that fastlane will run to go through various screens in your app's UI then take screenshots of them, repeating the process for all the supported locales.
 
@@ -22,7 +22,7 @@ To run the automation that will generate those raw screenshots from your app's U
  - `bundle exec fastlane screenshots` for WordPress
  - `bundle exec fastlane jetpack_screenshots` for Jetpack
 
-## Post-processing raw screenshots with marketing design to get the final promo-screenshots
+## <a name="create-promo-screenshots">Post-processing raw screenshots with marketing design to get the final promo-screenshots</a>
 
 This step takes the raw screenshots generated from the previous section, and apply some post-processing based on the instructions from the `fastlane/screenshots.json` (WordPress) / `fastlane/jetpack_screenshots.json` (Jetpack) config files, including
  - Framing the raw screenshots into an image of an iPhone frame
@@ -40,7 +40,7 @@ Also, the marketing text added on those screenshots is localized. If you update 
  - Once those copies have been translated in GlotPress, run `bundle exec fastlane download_promo_strings` (WordPress) / `bundle exec fastlane download_jetpack_promo_strings` to update the `fastlane/appstoreres/{metadata,jetpack_metadata}/<locale>/*.{txt,html}` files with those translated copies
 
 
-## Use screenshots provided by your designer
+## <a name="designer-provided-screenshots">Use screenshots provided by your designer</a>
 
 Instead of going through the 2 sections above to generate the screenshots from the app's current UI for all locales, maybe you instead already have pre-designed PNG files provided by your designer that you'll just want to use as-is.
 
@@ -55,7 +55,7 @@ Fastlane will auto-detect the device type each screenshot is for based on the im
 
 <em>If you don't want to provide dedicated localized screenshots for some locales (and make the App Store fall back to the English ones instead), be sure to delete any potential old `<locale>/*.png` files that might be present in your filesystem from a past iteration, to avoid fastlane to pick up those old files.</em>
 
-## Uploading new promo screenshots to the App Store
+## <a name="upload-screenshots-to-asc">Uploading new promo screenshots to the App Store</a>
 
 Once all the final screenshot PNG files have been put in the right `fastlane/{jetpack_,}promo_screenshots/<locale>/*.png` location:
 
