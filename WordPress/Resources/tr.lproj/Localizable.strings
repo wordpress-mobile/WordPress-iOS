@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-16 18:54:09+0000 */
+/* Translation-Revision-Date: 2025-10-07 13:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: tr */
@@ -956,9 +956,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
-/* Create new Blog Post button title */
-"Blog post" = "Blog yazısı";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Blog yazma";
 
@@ -1068,8 +1065,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel Insight management action sheet.
    Cancel registering a domain
    Cancel removing a plugin
-   Cancel site creation
-   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1295,8 +1290,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Tıklamalar";
 
-/* Action button to close the editor
-   Dismisses the current screen */
+/* Action button to close the editor */
 "Close" = "Kapat";
 
 /* Close account action label */
@@ -5297,9 +5291,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Site bulunamadı";
 
-/* Create new Site Page button title */
-"Site page" = "Site sayfası";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Site saat dilimi (UTC%1$@%2$d%3$@)";
 
@@ -7704,11 +7695,14 @@ Example: Reply to Pamela Nguyen */
 /* Toggle Title for the privacy compliance popover. */
 "compliance.analytics.popover.toggle" = "İstatistikler";
 
-/* Create new Blog Post from Audio button title */
-"createFAB.postFromAudio" = "Sesten gönderi oluştur";
-
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "Gönderi veya sayfa oluştur";
+
+/* Create Sheet button title */
+"createSheet.page" = "Sayfa";
+
+/* Create Sheet button title */
+"createSheet.post" = "Gönderi";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Kendi özelleştirilmiş panonuzu oluşturun ve görmek istediğiniz raporları seçin. Sizi en çok ilgilendiren verilere odaklanın.";
@@ -8120,6 +8114,30 @@ Example: Reply to Pamela Nguyen */
 /* A footer retry button */
 "general.pagingFooterView.retry" = "Yeniden dene";
 
+/* Generated content length (needs to be short) */
+"generation.length.long" = "Uzun";
+
+/* Generated content length (needs to be short) */
+"generation.length.medium" = "Orta";
+
+/* Generated content length (needs to be short) */
+"generation.length.short" = "Kısa";
+
+/* AI generation style */
+"generation.style.conversational" = "Sohbete dayalı";
+
+/* AI generation style */
+"generation.style.engaging" = "İlgi çekici";
+
+/* AI generation style */
+"generation.style.formal" = "Resmi";
+
+/* AI generation style */
+"generation.style.professional" = "Profesyonel";
+
+/* AI generation style */
+"generation.style.witty" = "Zeki";
+
 /* A generic title for an error */
 "generic.error.title" = "Hata";
 
@@ -8233,6 +8251,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Message shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.message" = "Yapay zeka ile alıntılar oluşturmak için lütfen Ayarlar'dan Apple Intelligence'ı etkinleştirin. Bu özellik, gizliliğinizi korumak için cihazda işlem yapar.";
+
+/* Button to open Apple Intelligence settings */
+"intelligence.unavailableView.appleIntelligenceDisabled.openSettings" = "Ayarları Aç";
+
+/* Title shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.title" = "Apple Intelligence Gerekli";
+
+/* Message shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.message" = "Apple Intelligence bu cihazda kullanılamıyor";
+
+/* Title shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.title" = "Apple Intelligence Kullanılamıyor";
+
+/* Description shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.description" = "Yapay zeka modeli indiriliyor veya hazırlanıyor. Lütfen birazdan tekrar deneyin.";
+
+/* Title shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.title" = "Model hazırlanıyor...";
 
 /* Cancel dialog confirmation title */
 "inviteSubscribers.cancelConfirmationTitle" = "Bu değişiklikleri iptal etmek istediğinizden emin misiniz?";
@@ -8642,7 +8681,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for metric selection */
 "jetpackStats.addChart.selectMetric" = "Ölçümleri Seç";
 
-/* Top list option description */
+/* Today chart title */
+"jetpackStats.addChart.today" = "Bugün";
+
+/* Today option description
+   Top list option description */
 "jetpackStats.addChart.topListDescription" = "En iyi performans gösteren içeriğinizi görün";
 
 /* Top list option title */
@@ -8963,6 +9006,12 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title */
 "jetpackStats.postDetails.title" = "Gönderi İstatistikleri";
 
+/* Section title */
+"jetpackStats.postDetails.top10" = "İlk 10";
+
+/* Section title */
+"jetpackStats.postDetails.top50" = "İlk 50";
+
 /* Must be short!Label for total email opens metric */
 "jetpackStats.postDetails.totalOpens" = "Toplam Açılış";
 
@@ -9064,6 +9113,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Stats screen title */
 "jetpackStats.title" = "İstatistikler";
+
+/* Today card title */
+"jetpackStats.todayCard.title" = "Bugün";
 
 /* Title for items with highest bounce rate */
 "jetpackStats.topList.highestBounceRate" = "En Yüksek Siteden Hemen Çıkma Oranı";
@@ -9173,8 +9225,14 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "En boy oranı ızgarası";
 
+/* Navigation bar button item */
+"mediaLibrary.buttonAddMedia" = "Ortam Ekle";
+
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "Sil";
+
+/* Navigation bar button item */
+"mediaLibrary.buttonFilter" = "Filtrele";
 
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Seçin";
@@ -9233,6 +9291,45 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "Kare ızgara";
 
+/* Detail message for buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.detail" = "Yüksek kaliteli fotoğraflara, videolara ve diğer ortam dosyalarına daha fazla alan açın.";
+
+/* Message about buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.message" = "Depolama eklentisi satın alın";
+
+/* Message shown when all media items are attached */
+"mediaLibrary.storageDetails.cleanup.allAttached" = "Ortam Kütüphanesindeki tüm öğeler ekli.";
+
+/* Message shown while loading unattached media count */
+"mediaLibrary.storageDetails.cleanup.loading" = "Eklenmemiş ortam öğesi olup olmadığı öğreniliyor...";
+
+/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
+"mediaLibrary.storageDetails.cleanup.message" = "%1$d öğe kaldırıldı Yer açmak için çıkarın.";
+
+/* Title for cleanup section */
+"mediaLibrary.storageDetails.cleanup.title" = "Kullanılmayan öğeleri kaldır";
+
+/* Success message shown after upgrading plan */
+"mediaLibrary.storageDetails.purchase.plan.success" = "Site paketiniz yükseltildi!";
+
+/* Success message shown after purchasing storage add-on */
+"mediaLibrary.storageDetails.purchase.storage.success" = "Sitenizin Ortam Kütüphanesi depolama alanı artırıldı!";
+
+/* Title for the storage details screen */
+"mediaLibrary.storageDetails.title" = "Ortam Kütüphanesi Depolama";
+
+/* Detail message for upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.detail" = "Depolama alanınızı artırmak için paketinizi yükseltin.";
+
+/* Message about upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.message" = "Paketi yükselt";
+
+/* Storage usage message showing used space and total space. %1$@ is used space, %2$@ is total space. */
+"mediaLibrary.storageDetails.usage" = "%1$@\/%2$@ kullanılıyor";
+
+/* Message shown while calculating storage usage */
+"mediaLibrary.storageDetails.usage.calculating" = "Hesaplanıyor...";
+
 /* Media screen navigation title */
 "mediaLibrary.title" = "Ortam";
 
@@ -9286,6 +9383,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Video çekin";
+
+/* The menu item of viewing media library usage */
+"mediaPicker.viewUsage" = "Kullanımı Görüntüle";
 
 /* Navigation title for media preview. Example: 1 of 3 */
 "mediaPreview.NofM" = "%1$@ \/ %2$@";
@@ -10005,6 +10105,48 @@ Example: Reply to Pamela Nguyen */
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d karakter";
 
+/* Button to generate an excerpt using AI */
+"postSettings.excerpt.generateButton" = "Oluştur";
+
+/* Character count display. %d is replaced with the number of characters. */
+"postSettings.excerpt.generator.characterCount" = "%d karakter";
+
+/* Button to suggest (generate) more options */
+"postSettings.excerpt.generator.generateMore" = "Daha Fazla Seçenek Öner";
+
+/* Label for the length picker section */
+"postSettings.excerpt.generator.length" = "Uzunluk";
+
+/* Accessibility label for the length adjustment slider */
+"postSettings.excerpt.generator.lengthSlider" = "Uzunluk Kaydırıcısı";
+
+/* Button to make excerpts longer */
+"postSettings.excerpt.generator.longer" = "Daha Uzun";
+
+/* Label for excerpt option number. %d is replaced with the option number. */
+"postSettings.excerpt.generator.option" = "%d Seçeneği";
+
+/* Title shown when ready to generate excerpts */
+"postSettings.excerpt.generator.ready" = "Oluşturmaya Hazır";
+
+/* Description shown when ready to generate excerpts */
+"postSettings.excerpt.generator.readyDescription" = "Yapay zeka destekli alıntı seçenekleri oluşturmak için dokunun";
+
+/* Button to make excerpts shorter */
+"postSettings.excerpt.generator.shorter" = "Daha Kısa";
+
+/* Title for the style picker section */
+"postSettings.excerpt.generator.style" = "Yazma Stili";
+
+/* Label for the style picker section */
+"postSettings.excerpt.generator.styleLabel" = "Stil";
+
+/* Accessibility label for the style picker */
+"postSettings.excerpt.generator.stylePicker" = "Stil";
+
+/* Title for the excerpt generator popover */
+"postSettings.excerpt.generator.title" = "Alıntı Oluştur";
+
 /* Section header for Excerpt in Post Settings */
 "postSettings.excerpt.header" = "Alıntı";
 
@@ -10083,6 +10225,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for the publish date field in Post Settings */
 "postSettings.publishDate.label" = "Tarih";
 
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"postSettings.publishDateImmediately" = "Hemen";
+
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Genel";
 
@@ -10095,6 +10240,9 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Kısaltma gir";
 
+/* Label for the preview button in Post Settings */
+"postSettings.socialSharing.header" = "Sosyal Paylaşım";
+
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "Yapışkan";
 
@@ -10104,11 +10252,26 @@ Example: Reply to Pamela Nguyen */
 /* Label for the tags field. Should be the same as WP core. */
 "postSettings.tags.label" = "Etiketler";
 
+/* Label for the tag suggestions section. */
+"postSettings.tags.suggestions" = "Önerilen Etiketler";
+
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Görünürlük";
 
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Gönderi İstatistikleri";
+
+/* Button to add a new tag. %1$@ is the tag name. */
+"postTags.addTag" = "Etiket ekle";
+
+/* Placeholder text for the tag search field */
+"postTags.searchOrAdd.placeholder" = "Etiketleri ara veya ekle";
+
+/* Message shown when no tags are selected */
+"postTags.selectionEmpty" = "Hiç etiket seçilmedi";
+
+/* Title for the tags screen */
+"postTags.title" = "Etiketler";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "İptal Et";
@@ -10188,6 +10351,15 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "Kapat";
 
+/* Button to confirm discarding changes */
+"prepublishing.discardChanges.button" = "Değişiklikleri İptal Et";
+
+/* Message for the discard changes confirmation dialog */
+"prepublishing.discardChanges.message" = "Gönderi ayarlarında kaydedilmemiş değişiklikleriniz var. Bunları iptal etmek istediğinizden emin misiniz?";
+
+/* Title for the discard changes confirmation dialog */
+"prepublishing.discardChanges.title" = "Değişiklikler İptal Edilsin Mi?";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
@@ -10206,8 +10378,14 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "prepublishing.publishDateImmediately" = "Hemen";
 
+/* The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?' */
+"prepublishing.publishingSectionTitle" = "Yayımlanmaya hazır mı?";
+
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "Şuraya yayınlanıyor";
+
+/* Button to confirm discarding changes */
+"prepublishing.saveChanges.button" = "Değişiklikleri Kaydet";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Zamanla";
@@ -10269,6 +10447,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketler";
+
+/* Navigation title */
+"prepublishing.title" = "Yayımcılık";
 
 /* Details label for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadMediaManyItemsRemaining" = "%@ öğe kaldı";
@@ -10344,6 +10525,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Message of error prompt shown when no internet connection is available */
 "reachability-utils.alert.utils" = "İnternet bağlantısı çevrimdışı gibi duruyor.";
+
+/* Navigation title */
+"reader.article.summary" = "Özet";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "%@ bloğu artık okuyucunuzda görüntülenmeyecek. Geri almak için dokunun.";
@@ -10625,6 +10809,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.showBlog" = "Blog'a Git";
+
+/* Context menu action */
+"reader.postContextMenu.summarize" = "Özetleyin";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Tarayıcıda Görüntüle";
@@ -11498,11 +11685,11 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "Toplam Abone";
 
+/* Menu item to disable the new stats */
+"stats.menu.disableNewStats" = "Yeni İstatistikleri Devre Dışı Bırak";
+
 /* Menu item to send feedback about new stats experience */
 "stats.menu.sendFeedback" = "Geri Bildirim Gönder";
-
-/* Menu item to switch back to classic stats experience */
-"stats.menu.switchToClassic" = "Klasik İstatistiklere geç";
 
 /* Menu item to enable new stats experience */
 "stats.menu.tryNewStats" = "Yeni İstatistikleri Deneyin";
@@ -11882,9 +12069,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* View title for Help & Support page. */
 "support.title" = "Yardım";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"tags.add.button" = "Etiket ekle: %1$@";
-
 /* Description for empty state when there are no tags */
 "tags.empty.description" = "Etiketler içeriğinizi düzenlemenize ve okurların ilgili gönderileri bulmasını kolaylaştırmanıza yardımcı olur.";
 
@@ -11902,9 +12086,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Placeholder text for the tag search field */
 "tags.search.placeholder" = "Etiketleri ara";
-
-/* Message shown when no tags are selected */
-"tags.selected.empty" = "Etiket seçilmedi";
 
 /* Title for the tags screen */
 "tags.title" = "Etiketler";

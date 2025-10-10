@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-02 16:54:09+0000 */
+/* Translation-Revision-Date: 2025-10-08 13:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: he_IL */
@@ -959,9 +959,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "אתר";
 
-/* Create new Blog Post button title */
-"Blog post" = "פוסט בבלוג";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "פרסום בבלוג";
 
@@ -1071,8 +1068,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel Insight management action sheet.
    Cancel registering a domain
    Cancel removing a plugin
-   Cancel site creation
-   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1298,8 +1293,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "לחיצות";
 
-/* Action button to close the editor
-   Dismisses the current screen */
+/* Action button to close the editor */
 "Close" = "סגור";
 
 /* Close account action label */
@@ -5297,9 +5291,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "האתר לא נמצא";
 
-/* Create new Site Page button title */
-"Site page" = "עמוד האתר";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "אזור הזמן של האתר (UTC%1$@%2$d%3$@)";
 
@@ -7692,11 +7683,14 @@ Example: Reply to Pamela Nguyen */
 /* Toggle Title for the privacy compliance popover. */
 "compliance.analytics.popover.toggle" = "ניתוח סטטיסטי";
 
-/* Create new Blog Post from Audio button title */
-"createFAB.postFromAudio" = "פוסט מאודיו";
-
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "ליצור פוסט או עמוד";
+
+/* Create Sheet button title */
+"createSheet.page" = "עמוד";
+
+/* Create Sheet button title */
+"createSheet.post" = "פוסט";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "ניתן ליצור לוח בקרה מותאם ולבחור אילו דוחות ברצונך להציג. להתמקד במידע שהכי חשוב לך.";
@@ -8108,6 +8102,30 @@ Example: Reply to Pamela Nguyen */
 /* A footer retry button */
 "general.pagingFooterView.retry" = "יש לנסות שנית";
 
+/* Generated content length (needs to be short) */
+"generation.length.long" = "ארוך";
+
+/* Generated content length (needs to be short) */
+"generation.length.medium" = "בינוני";
+
+/* Generated content length (needs to be short) */
+"generation.length.short" = "קצר";
+
+/* AI generation style */
+"generation.style.conversational" = "שיחתי";
+
+/* AI generation style */
+"generation.style.engaging" = "אינטראקטיבי";
+
+/* AI generation style */
+"generation.style.formal" = "רשמי";
+
+/* AI generation style */
+"generation.style.professional" = "מקצועי";
+
+/* AI generation style */
+"generation.style.witty" = "שנון";
+
 /* A generic title for an error */
 "generic.error.title" = "שגיאה";
 
@@ -8221,6 +8239,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Message shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.message" = "כדי ליצור תקצירים עם בינה מלאכותית, יש להפעיל את Apple Intelligence ב'הגדרות'. תכונה זו משתמשת בעיבוד במכשיר עצמו כדי להגן על הפרטיות שלך.";
+
+/* Button to open Apple Intelligence settings */
+"intelligence.unavailableView.appleIntelligenceDisabled.openSettings" = "לפתוח את ההגדרות";
+
+/* Title shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.title" = "נדרש Apple Intelligence";
+
+/* Message shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.message" = "השירות של Apple Intelligence לא זמין במכשיר הזה";
+
+/* Title shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.title" = "Apple Intelligence לא זמין";
+
+/* Description shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.description" = "מודל ה-AI מבצע הורדה או בתהליך הכנה. כדאי להמתין רגע ולנסות שוב.";
+
+/* Title shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.title" = "מכין את המודל...";
 
 /* Cancel dialog confirmation title */
 "inviteSubscribers.cancelConfirmationTitle" = "האם ברצונך לבטל את המנויים החדשים?";
@@ -8633,7 +8672,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for metric selection */
 "jetpackStats.addChart.selectMetric" = "לבחור מדדים";
 
-/* Top list option description */
+/* Today chart title */
+"jetpackStats.addChart.today" = "היום";
+
+/* Today option description
+   Top list option description */
 "jetpackStats.addChart.topListDescription" = "להציג תוכן עם ביצועים מובילים";
 
 /* Top list option title */
@@ -8963,6 +9006,12 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title */
 "jetpackStats.postDetails.title" = "נתונים סטטיסטיים של הפוסט";
 
+/* Section title */
+"jetpackStats.postDetails.top10" = "10 המובילים";
+
+/* Section title */
+"jetpackStats.postDetails.top50" = "50 המובילים";
+
 /* Must be short!Label for total email opens metric */
 "jetpackStats.postDetails.totalOpens" = "סך כל אירועי הפתיחה";
 
@@ -9064,6 +9113,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Stats screen title */
 "jetpackStats.title" = "נתונים סטטיסטיים";
+
+/* Today card title */
+"jetpackStats.todayCard.title" = "היום";
 
 /* Title for items with highest bounce rate */
 "jetpackStats.topList.highestBounceRate" = "שיעור הנטישה הגבוה ביותר";
@@ -9173,8 +9225,14 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "יחס גובה:רוחב:";
 
+/* Navigation bar button item */
+"mediaLibrary.buttonAddMedia" = "להוסיף מדיה";
+
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "למחוק";
+
+/* Navigation bar button item */
+"mediaLibrary.buttonFilter" = "לסנן";
 
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "לבחור";
@@ -9230,6 +9288,45 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "Square Grid";
 
+/* Detail message for buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.detail" = "לפנות מקום לתמונות באיכות גבוהה, לסרטונים ולמדיה אחרת.";
+
+/* Message about buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.message" = "לרכוש הרחבת אחסון";
+
+/* Message shown when all media items are attached */
+"mediaLibrary.storageDetails.cleanup.allAttached" = "כל הפריטים בספריית המדיה מצורפים.";
+
+/* Message shown while loading unattached media count */
+"mediaLibrary.storageDetails.cleanup.loading" = "בודק אם יש פריטי מדיה לא מצורפים...";
+
+/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
+"mediaLibrary.storageDetails.cleanup.message" = "פריט ⁦%1$d⁩ הוסר. יש להסיר אותם כדי לפנות מקום.";
+
+/* Title for cleanup section */
+"mediaLibrary.storageDetails.cleanup.title" = "להסיר פריטים שאינם בשימוש";
+
+/* Success message shown after upgrading plan */
+"mediaLibrary.storageDetails.purchase.plan.success" = "תוכנית האתר שלך שודרגה!";
+
+/* Success message shown after purchasing storage add-on */
+"mediaLibrary.storageDetails.purchase.storage.success" = "שטח האחסון של ספריית המדיה באתר שלך הורחב!";
+
+/* Title for the storage details screen */
+"mediaLibrary.storageDetails.title" = "אחסון בספריית המדיה";
+
+/* Detail message for upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.detail" = "ניתן לשדרג את התוכנית שלך כדי להגדיל את שטח האחסון.";
+
+/* Message about upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.message" = "לשדרג תוכנית";
+
+/* Storage usage message showing used space and total space. %1$@ is used space, %2$@ is total space. */
+"mediaLibrary.storageDetails.usage" = "%1$@ מתוך %2$@ נוצלו";
+
+/* Message shown while calculating storage usage */
+"mediaLibrary.storageDetails.usage.calculating" = "החישוב בתהליך...";
+
 /* Media screen navigation title */
 "mediaLibrary.title" = "מדיה";
 
@@ -9283,6 +9380,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "צילום וידאו";
+
+/* The menu item of viewing media library usage */
+"mediaPicker.viewUsage" = "להציג את השימוש";
 
 /* Navigation title for media preview. Example: 1 of 3 */
 "mediaPreview.NofM" = "%1$@ מתוך %2$@";
@@ -10002,6 +10102,48 @@ Example: Reply to Pamela Nguyen */
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "⁦%1$d⁩ תווים";
 
+/* Button to generate an excerpt using AI */
+"postSettings.excerpt.generateButton" = "ליצור";
+
+/* Character count display. %d is replaced with the number of characters. */
+"postSettings.excerpt.generator.characterCount" = "%d תווים";
+
+/* Button to suggest (generate) more options */
+"postSettings.excerpt.generator.generateMore" = "להציע אפשרויות נוספות";
+
+/* Label for the length picker section */
+"postSettings.excerpt.generator.length" = "אורך";
+
+/* Accessibility label for the length adjustment slider */
+"postSettings.excerpt.generator.lengthSlider" = "סליידר לאורך";
+
+/* Button to make excerpts longer */
+"postSettings.excerpt.generator.longer" = "ארוך יותר";
+
+/* Label for excerpt option number. %d is replaced with the option number. */
+"postSettings.excerpt.generator.option" = "אפשרות %d";
+
+/* Title shown when ready to generate excerpts */
+"postSettings.excerpt.generator.ready" = "מוכן ליצירה";
+
+/* Description shown when ready to generate excerpts */
+"postSettings.excerpt.generator.readyDescription" = "יש להקיש כדי ליצור אפשרויות תקציר שמופעלות על ידי בינה מלאכותית";
+
+/* Button to make excerpts shorter */
+"postSettings.excerpt.generator.shorter" = "קצר יותר";
+
+/* Title for the style picker section */
+"postSettings.excerpt.generator.style" = "סגנון כתיבה";
+
+/* Label for the style picker section */
+"postSettings.excerpt.generator.styleLabel" = "סגנון";
+
+/* Accessibility label for the style picker */
+"postSettings.excerpt.generator.stylePicker" = "סגנון";
+
+/* Title for the excerpt generator popover */
+"postSettings.excerpt.generator.title" = "ליצור תקציר";
+
 /* Section header for Excerpt in Post Settings */
 "postSettings.excerpt.header" = "תקציר";
 
@@ -10077,6 +10219,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for the publish date field in Post Settings */
 "postSettings.publishDate.label" = "תאריך";
 
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"postSettings.publishDateImmediately" = "מייד";
+
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "כללי";
 
@@ -10089,6 +10234,9 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "הזנת מזהה לכתובת";
 
+/* Label for the preview button in Post Settings */
+"postSettings.socialSharing.header" = "שיתוף ברשתות חברתיות";
+
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "דביק";
 
@@ -10098,8 +10246,20 @@ Example: Reply to Pamela Nguyen */
 /* Label for the tags field. Should be the same as WP core. */
 "postSettings.tags.label" = "תגיות";
 
+/* Label for the tag suggestions section. */
+"postSettings.tags.suggestions" = "תגיות מומלצות";
+
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "נראות";
+
+/* Button to add a new tag. %1$@ is the tag name. */
+"postTags.addTag" = "להוסיף תגית";
+
+/* Placeholder text for the tag search field */
+"postTags.searchOrAdd.placeholder" = "לחפש או להוסיף תגית";
+
+/* Title for the tags screen */
+"postTags.title" = "תגיות";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "ביטול";
@@ -10179,6 +10339,15 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "לסגור";
 
+/* Button to confirm discarding changes */
+"prepublishing.discardChanges.button" = "לבטל את השינויים";
+
+/* Message for the discard changes confirmation dialog */
+"prepublishing.discardChanges.message" = "יש לך שינויים שלא נשמרו בהגדרות של הפוסט. האם ברצונך לבטל אותם?";
+
+/* Title for the discard changes confirmation dialog */
+"prepublishing.discardChanges.title" = "האם לבטל את השינויים?";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
@@ -10194,8 +10363,14 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "prepublishing.publishDateImmediately" = "מייד";
 
+/* The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?' */
+"prepublishing.publishingSectionTitle" = "הכול מוכן לפרסום?";
+
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "מפרסם בעמוד";
+
+/* Button to confirm discarding changes */
+"prepublishing.saveChanges.button" = "לשמור את השינויים";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "תזמון";
@@ -10257,6 +10432,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "תגיות";
+
+/* Navigation title */
+"prepublishing.title" = "פרסום";
 
 /* Details label for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadMediaManyItemsRemaining" = "נותרו %@ פריטים";
@@ -10332,6 +10510,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Message of error prompt shown when no internet connection is available */
 "reachability-utils.alert.utils" = "החיבור לאינטרנט לא מחובר.";
+
+/* Navigation title */
+"reader.article.summary" = "סיכום";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "הבלוג %@ לא יופיע עוד ב-Reader שלך. יש להקיש כדי לבטל.";
@@ -10613,6 +10794,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.showBlog" = "מעבר לבלוג";
+
+/* Context menu action */
+"reader.postContextMenu.summarize" = "לסכם";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "לפתוח בדפדפן";
@@ -11474,11 +11658,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "סך כל המנויים";
 
+/* Menu item to disable the new stats */
+"stats.menu.disableNewStats" = "להשבית נתונים סטטיסטיים חדשים";
+
 /* Menu item to send feedback about new stats experience */
 "stats.menu.sendFeedback" = "לשלוח משוב";
-
-/* Menu item to switch back to classic stats experience */
-"stats.menu.switchToClassic" = "מעבר לנתונים סטטיסטייים קלאסיים";
 
 /* Menu item to enable new stats experience */
 "stats.menu.tryNewStats" = "לנסות את הנתונים הסטטיסטיים החדשים";
@@ -11858,9 +12042,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Reader לתמיכה ב-iOS";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"tags.add.button" = "להוסיף תגית: %1$@";
-
 /* Description for empty state when there are no tags */
 "tags.empty.description" = "תגיות עוזרות לארגן את התוכן שלך ולעזור לקוראים למצוא פוסטים קשורים בקלות.";
 
@@ -11878,9 +12059,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Placeholder text for the tag search field */
 "tags.search.placeholder" = "לחפש תגיות";
-
-/* Message shown when no tags are selected */
-"tags.selected.empty" = "לא נבחרה אף תגית";
 
 /* Title for the tags screen */
 "tags.title" = "תגיות";

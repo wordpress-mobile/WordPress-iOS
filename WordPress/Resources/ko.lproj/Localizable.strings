@@ -959,9 +959,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "블로그";
 
-/* Create new Blog Post button title */
-"Blog post" = "블로그 글";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "블로깅";
 
@@ -1071,8 +1068,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel Insight management action sheet.
    Cancel registering a domain
    Cancel removing a plugin
-   Cancel site creation
-   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1298,8 +1293,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "클릭";
 
-/* Action button to close the editor
-   Dismisses the current screen */
+/* Action button to close the editor */
 "Close" = "닫기";
 
 /* Close account action label */
@@ -5300,9 +5294,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "사이트를 찾을 수 없음";
 
-/* Create new Site Page button title */
-"Site page" = "사이트 페이지";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "사이트 시간대(UTC%1$@%2$d%3$@)";
 
@@ -7707,9 +7698,6 @@ Example: Reply to Pamela Nguyen */
 /* Toggle Title for the privacy compliance popover. */
 "compliance.analytics.popover.toggle" = "분석";
 
-/* Create new Blog Post from Audio button title */
-"createFAB.postFromAudio" = "오디오에서 글 작성하기";
-
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "글 또는 페이지 만들기";
 
@@ -8648,7 +8636,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for metric selection */
 "jetpackStats.addChart.selectMetric" = "지표 선택";
 
-/* Top list option description */
+/* Today option description
+   Top list option description */
 "jetpackStats.addChart.topListDescription" = "성과 상위 콘텐츠 참조";
 
 /* Top list option title */
@@ -11519,9 +11508,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Menu item to send feedback about new stats experience */
 "stats.menu.sendFeedback" = "피드백 보내기";
 
-/* Menu item to switch back to classic stats experience */
-"stats.menu.switchToClassic" = "클래식 통계로 전환";
-
 /* Menu item to enable new stats experience */
 "stats.menu.tryNewStats" = "새 통계 체험";
 
@@ -11903,9 +11889,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "IOS용 리더 지원";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"tags.add.button" = "태그 추가: %1$@";
-
 /* Description for empty state when there are no tags */
 "tags.empty.description" = "태그를 사용하면 회원님이 콘텐츠를 구성하고 독자가 관련 글을 더 쉽게 찾는 데 도움이 됩니다.";
 
@@ -11923,9 +11906,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Placeholder text for the tag search field */
 "tags.search.placeholder" = "태그 검색";
-
-/* Message shown when no tags are selected */
-"tags.selected.empty" = "선택된 태그 없음";
 
 /* Title for the tags screen */
 "tags.title" = "태그";
