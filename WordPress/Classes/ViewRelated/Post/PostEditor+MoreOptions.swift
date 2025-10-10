@@ -13,7 +13,6 @@ extension PostEditor {
         let viewModel = PostSettingsViewModel(post: post)
         viewModel.onEditorPostSaved = { [weak self] in
             self?.didSavePostSettings(originalFeaturedImageID: originalFeaturedImageID)
-            self?.navigationController?.dismiss(animated: true)
         }
         let postSettingsVC = PostSettingsViewController(viewModel: viewModel)
         let navigation = UINavigationController(rootViewController: postSettingsVC)
