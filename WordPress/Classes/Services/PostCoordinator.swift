@@ -82,12 +82,6 @@ class PostCoordinator: NSObject {
     /// with the publishing options.
     @MainActor
     func publish(_ post: AbstractPost, parameters: RemotePostUpdateParameters = .init()) async throws {
-        wpAssert(post.isOriginal())
-        wpAssert(post.isStatus(in: [.draft, .pending]))
-
-        await pauseSyncing(for: post)
-        defer { resumeSyncing(for: post) }
-
         var parameters = parameters
         if parameters.status == nil {
             parameters.status = Post.Status.publish.rawValue
@@ -98,16 +92,7 @@ class PostCoordinator: NSObject {
             parameters.date = post.shouldPublishImmediately() ? nil : Date()
         }
 
-        do {
-            let repository = PostRepository(coreDataStack: coreDataStack)
-            try await repository.save(post, changes: parameters)
-            didPublish(post)
-            show(PostCoordinator.makeUploadSuccessNotice(for: post))
-        } catch {
-            trackError(error, operation: "post-publish", post: post)
-            handleError(error, for: post)
-            throw error
-        }
+        try await save(post, changes: parameters)
     }
 
     @MainActor
@@ -132,6 +117,16 @@ class PostCoordinator: NSObject {
         do {
             let previousStatus = post.status
             try await PostRepository().save(post, changes: changes)
+
+            if previousStatus != post.status && post.isStatus(in: [.scheduled, .publish]) {
+                if post.status == .scheduled {
+                    notifyNewPostScheduled()
+                } else if post.status == .publish {
+                    notifyNewPostPublished()
+                }
+                SearchManager.shared.indexItem(post)
+                AppRatingUtility.shared.incrementSignificantEvent()
+            }
             show(PostCoordinator.makeUploadSuccessNotice(for: post, previousStatus: previousStatus))
             return post
         } catch {

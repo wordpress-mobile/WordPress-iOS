@@ -279,7 +279,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         do {
             let settings = getSettingsToSave(for: self.settings)
             let coordinator = PostCoordinator.shared
-            if coordinator.isSyncAllowed(for: post) {
+            if coordinator.isSyncAllowed(for: post) && post.status == settings.status {
                 let revision = post.createRevision()
                 settings.apply(to: revision)
                 coordinator.setNeedsSync(for: revision)
