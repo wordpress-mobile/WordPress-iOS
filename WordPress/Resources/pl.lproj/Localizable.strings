@@ -360,8 +360,6 @@
    Cancel Insight management action sheet.
    Cancel registering a domain
    Cancel removing a plugin
-   Cancel site creation
-   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -456,8 +454,7 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Kliknięcia";
 
-/* Action button to close the editor
-   Dismisses the current screen */
+/* Action button to close the editor */
 "Close" = "Zamknij";
 
 /* Close Comments Title */
@@ -2058,9 +2055,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Witryna została usunięta";
-
-/* Create new Site Page button title */
-"Site page" = "Strona witryny";
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Tytuł witryny został zmieniony";

@@ -1,7 +1,16 @@
-Hemos realizado algunas mejoras para que tu experiencia con Jetpack sea aún más fluida.
-
-Hemos añadido compatibilidad con iOS 26 para que puedas aprovechar todas las funciones más recientes que ofrece tu dispositivo. Todo se ve y funciona bien.
-
-Al lector le han encantado las actualizaciones visuales en la pantalla del artículo, que facilitan el trabajo de tus ojos a la hora de ponerte al día con tu contenido favorito.
-
-También hemos realizado algunas mejoras en segundo plano en los botones y en la navegación a lo largo de la aplicación. Notarás que todo está más pulido y es más coherente, sobre todo en las pantallas Editor, Ajustes y Estadísticas.
+Ahora puedes crear un extracto, un resumen de la entrada y etiquetas generadas automáticamente para tus entradas con Apple Intelligence. También es más fácil elegir tus etiquetas en los ajustes de entradas. Eso sí que es inteligente.
+En cuanto a las estadísticas, hay varias mejoras nuevas en esta área de la aplicación.
+- Hemos añadido una tarjeta Hoy a la pantalla de nuevas estadísticas.
+- Tu página de inicio aparece ahora en la lista de páginas principales.
+- Tus 10 y 50 elementos principales ahora tienen su propia sección especial. Un sitio para cada cosa y cada cosa en su sitio.
+- Tus páginas principales se muestran correctamente cuando tienes un gran número de elementos.
+- El diseño de las nuevas estadísticas cambia para adaptarse a diferentes tamaños de pantalla. Incluso a las que son muy, muy grandes.
+- La pantalla recordará tus ajustes preferidos cuando elijas un intervalo de fechas personalizado.
+- La pestaña Tráfico te permite deslizar hacia abajo para actualizar la pantalla.
+También hemos hecho algunas correcciones visuales para iOS en áreas como el flujo de creación del sitio, la pantalla de selección de medios y la pantalla de estadísticas. Y mientras tanto, también hemos solucionado algunos errores.
+- Hemos corregido un fallo poco frecuente que a veces aparecía en Estadísticas y Suscriptores (pero ya no).
+- Las vistas de artículos se ven como deberían en el Lector cuando ciertos temas están activados.
+- Los artículos del Lector se muestran correctamente en los dispositivos con el zoom de pantalla activado.
+- El botón «Añadir medios» permanece visible en la biblioteca de medios. Ya no volverá a desaparecer.
+- Puedes buscar en Suscripciones del Lector sin que la aplicación se quede bloqueada.
+- La barra de herramientas de los artículos del Lector ya no desaparece y reaparece de vez en cuando. Ahora lo ves, ahora... aún lo ves.

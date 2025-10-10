@@ -96,4 +96,12 @@ extension CommentGutenbergEditorViewController: GutenbergKit.EditorViewControlle
     func editor(_ viewController: GutenbergKit.EditorViewController, didTriggerAutocompleter type: String) {
         // Do nothing
     }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didOpenModalDialog dialogType: String) {
+        // Do nothing
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didCloseModalDialog dialogType: String) {
+        // Do nothing
+    }
 }

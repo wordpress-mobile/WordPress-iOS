@@ -8,7 +8,6 @@ import Gridicons
 import UIKit
 import WordPressUI
 import SwiftUI
-import UserNotifications
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -1716,7 +1715,7 @@ private extension NotificationsViewController {
     func resetApplicationBadge() {
         // These notifications are cleared, so we just need to take Zendesk unread notifications
         // into account when setting the app icon count.
-        UNUserNotificationCenter.current().setBadgeCount(ZendeskUtils.unreadNotificationsCount)
+        UIApplication.shared.applicationIconBadgeNumber = ZendeskUtils.unreadNotificationsCount
     }
 }
 
