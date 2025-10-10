@@ -10,7 +10,7 @@ public struct SettingsCheckmark: View {
 
     public var body: some View {
         Image(systemName: "checkmark")
-            .font(.subheadline.weight(.medium))
+            .font(.headline)
             .opacity(isSelected ? 1 : 0)
             .foregroundStyle(AppColor.primary)
             .symbolEffect(.bounce.up, value: isSelected)
