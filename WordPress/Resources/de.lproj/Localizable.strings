@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-10-08 17:52:58+0000 */
+/* Translation-Revision-Date: 2025-10-10 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -8133,7 +8133,7 @@ Example: Reply to Pamela Nguyen */
 "generation.style.conversational" = "Dialogorientiert";
 
 /* AI generation style */
-"generation.style.engaging" = "Interagieren";
+"generation.style.engaging" = "Interaktiv";
 
 /* AI generation style */
 "generation.style.formal" = "Formell";
@@ -8259,7 +8259,7 @@ Example: Reply to Pamela Nguyen */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
 
 /* Message shown when Apple Intelligence is disabled */
-"intelligence.unavailableView.appleIntelligenceDisabled.message" = "Um Auszüge mit KI zu generieren, aktiviere bitte Apple Intelligence in den Einstellungen. Diese Funktion verwendet die Verarbeitung auf dem Gerät, um deine Privatsphäre zu schützen.";
+"intelligence.unavailableView.appleIntelligenceDisabled.message" = "Um Textauszüge mit KI zu generieren, aktiviere bitte Apple Intelligence in den Einstellungen. Diese Funktion nutzt die Verarbeitung auf dem Gerät, um deine Privatsphäre zu schützen.";
 
 /* Button to open Apple Intelligence settings */
 "intelligence.unavailableView.appleIntelligenceDisabled.openSettings" = "Einstellungen öffnen";
@@ -9024,6 +9024,12 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title */
 "jetpackStats.postDetails.title" = "Beitrags-Statistiken";
 
+/* Section title */
+"jetpackStats.postDetails.top10" = "Top 10";
+
+/* Section title */
+"jetpackStats.postDetails.top50" = "Top 50";
+
 /* Must be short!Label for total email opens metric */
 "jetpackStats.postDetails.totalOpens" = "Insgesamt geöffnet";
 
@@ -9307,16 +9313,16 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.storageDetails.buyStorage.detail" = "Erhalte mehr Speicherplatz für hochwertige Fotos, Videos und andere Medien.";
 
 /* Message about buying storage add-on */
-"mediaLibrary.storageDetails.buyStorage.message" = "Speicherplatz-Add-on";
+"mediaLibrary.storageDetails.buyStorage.message" = "Speicherplatz-Add-on kaufen";
 
 /* Message shown when all media items are attached */
-"mediaLibrary.storageDetails.cleanup.allAttached" = "Alle Elemente in der Mediathek sind angehängt.";
+"mediaLibrary.storageDetails.cleanup.allAttached" = "Alle Elemente in der Mediathek sind verknüpft.";
 
 /* Message shown while loading unattached media count */
-"mediaLibrary.storageDetails.cleanup.loading" = "Es wird ermittelt, ob nicht verbundene Medienelemente vorhanden sind ...";
+"mediaLibrary.storageDetails.cleanup.loading" = "Es wird ermittelt, ob nicht verknüpfte Medienelemente vorhanden sind …";
 
 /* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
-"mediaLibrary.storageDetails.cleanup.message" = "%1$d (Nicht verknüpft) Entferne sie, um Speicherplatz freizugeben.";
+"mediaLibrary.storageDetails.cleanup.message" = "%1$d Elemente nicht verknüpft. Entferne sie, um Speicherplatz freizugeben.";
 
 /* Title for cleanup section */
 "mediaLibrary.storageDetails.cleanup.title" = "Nicht verwendete Elemente entfernen";
@@ -9328,7 +9334,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.storageDetails.purchase.storage.success" = "Der Speicherplatz deiner Website-Mediathek wurde erhöht!";
 
 /* Title for the storage details screen */
-"mediaLibrary.storageDetails.title" = "Speicherplatz für Medien";
+"mediaLibrary.storageDetails.title" = "Speicherplatz der Mediathek";
 
 /* Detail message for upgrading plan */
 "mediaLibrary.storageDetails.upgradePlan.detail" = "Führe ein Tarif-Upgrade durch, um deinen Speicherplatz zu erweitern.";
@@ -10124,7 +10130,7 @@ Example: Reply to Pamela Nguyen */
 "postSettings.excerpt.generator.characterCount" = "%d Zeichen";
 
 /* Button to suggest (generate) more options */
-"postSettings.excerpt.generator.generateMore" = "Vorschläge";
+"postSettings.excerpt.generator.generateMore" = "Weitere Optionen vorschlagen";
 
 /* Label for the length picker section */
 "postSettings.excerpt.generator.length" = "Länge";
@@ -10142,7 +10148,7 @@ Example: Reply to Pamela Nguyen */
 "postSettings.excerpt.generator.ready" = "Bereit zum Generieren";
 
 /* Description shown when ready to generate excerpts */
-"postSettings.excerpt.generator.readyDescription" = "Tippen, um Auszugsoptionen mit KI zu erstellen";
+"postSettings.excerpt.generator.readyDescription" = "Tippen, um Textauszüge mit KI zu erstellen";
 
 /* Button to make excerpts shorter */
 "postSettings.excerpt.generator.shorter" = "Kürzer";
@@ -10253,7 +10259,7 @@ Example: Reply to Pamela Nguyen */
 "postSettings.slug.placeholder" = "Titelform eingeben";
 
 /* Label for the preview button in Post Settings */
-"postSettings.socialSharing.header" = "Soziales Teilen";
+"postSettings.socialSharing.header" = "Social Sharing";
 
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "Oben gehalten";

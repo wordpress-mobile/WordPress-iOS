@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-15 23:49:41+0000 */
+/* Translation-Revision-Date: 2025-10-10 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ko_KR */
@@ -7701,6 +7701,12 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "글 또는 페이지 만들기";
 
+/* Create Sheet button title */
+"createSheet.page" = "페이지";
+
+/* Create Sheet button title */
+"createSheet.post" = "글";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "나만의 사용자 정의 알림판을 만들고 보고 싶은 보고서를 선택하세요. 가장 중요한 데이터에 집중하세요.";
 
@@ -8111,6 +8117,30 @@ Example: Reply to Pamela Nguyen */
 /* A footer retry button */
 "general.pagingFooterView.retry" = "재시도";
 
+/* Generated content length (needs to be short) */
+"generation.length.long" = "길게";
+
+/* Generated content length (needs to be short) */
+"generation.length.medium" = "중간";
+
+/* Generated content length (needs to be short) */
+"generation.length.short" = "짧게";
+
+/* AI generation style */
+"generation.style.conversational" = "대화하는 것처럼";
+
+/* AI generation style */
+"generation.style.engaging" = "매력적으로";
+
+/* AI generation style */
+"generation.style.formal" = "정중하게";
+
+/* AI generation style */
+"generation.style.professional" = "전문적으로";
+
+/* AI generation style */
+"generation.style.witty" = "위트있게";
+
 /* A generic title for an error */
 "generic.error.title" = "오류";
 
@@ -8224,6 +8254,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Message shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.message" = "AI로 요약문을 생성하려면 설정에서 Apple Intelligence를 활성화하세요. 이 기능은 기기 내 처리를 사용하여 개인정보를 보호합니다.";
+
+/* Button to open Apple Intelligence settings */
+"intelligence.unavailableView.appleIntelligenceDisabled.openSettings" = "설정 열기";
+
+/* Title shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.title" = "Apple Intelligence 필요";
+
+/* Message shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.message" = "이 기기에서는 Apple Intelligence를 사용할 수 없음";
+
+/* Title shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.title" = "Apple Intelligence 사용 불가";
+
+/* Description shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.description" = "AI 모델 다운로드 또는 준비 중입니다. 잠시 후 다시 시도해 보세요.";
+
+/* Title shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.title" = "모델 준비 중...";
 
 /* Cancel dialog confirmation title */
 "inviteSubscribers.cancelConfirmationTitle" = "새 구독자를 취소하시겠습니까?";
@@ -8636,6 +8687,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for metric selection */
 "jetpackStats.addChart.selectMetric" = "지표 선택";
 
+/* Today chart title */
+"jetpackStats.addChart.today" = "오늘";
+
 /* Today option description
    Top list option description */
 "jetpackStats.addChart.topListDescription" = "성과 상위 콘텐츠 참조";
@@ -8967,6 +9021,12 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title */
 "jetpackStats.postDetails.title" = "글 통계";
 
+/* Section title */
+"jetpackStats.postDetails.top10" = "Top 10";
+
+/* Section title */
+"jetpackStats.postDetails.top50" = "Top 50";
+
 /* Must be short!Label for total email opens metric */
 "jetpackStats.postDetails.totalOpens" = "총 열기 횟수";
 
@@ -9068,6 +9128,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Stats screen title */
 "jetpackStats.title" = "통계";
+
+/* Today card title */
+"jetpackStats.todayCard.title" = "오늘";
 
 /* Title for items with highest bounce rate */
 "jetpackStats.topList.highestBounceRate" = "최고 이탈률";
@@ -9177,8 +9240,14 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "화면 비율 그리드";
 
+/* Navigation bar button item */
+"mediaLibrary.buttonAddMedia" = "미디어 추가";
+
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "삭제";
+
+/* Navigation bar button item */
+"mediaLibrary.buttonFilter" = "필터";
 
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "선택";
@@ -9237,6 +9306,45 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "정사각형 그리드";
 
+/* Detail message for buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.detail" = "고품질 사진, 비디오 등의 미디어를 저장할 공간을 확보하세요.";
+
+/* Message about buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.message" = "스토리지 애드온 구입";
+
+/* Message shown when all media items are attached */
+"mediaLibrary.storageDetails.cleanup.allAttached" = "미디어 라이브러리의 모든 아이템이 첨부됩니다.";
+
+/* Message shown while loading unattached media count */
+"mediaLibrary.storageDetails.cleanup.loading" = "첨부되지 않은 미디어 아이템이 있는지 확인 중...";
+
+/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
+"mediaLibrary.storageDetails.cleanup.message" = "%1$d 아이템이 첨부되지 않았습니다. 제거하고 공간을 확보하세요.";
+
+/* Title for cleanup section */
+"mediaLibrary.storageDetails.cleanup.title" = "사용하지 않는 아이템 제거";
+
+/* Success message shown after upgrading plan */
+"mediaLibrary.storageDetails.purchase.plan.success" = "사이트 요금제가 업데이트되었습니다!";
+
+/* Success message shown after purchasing storage add-on */
+"mediaLibrary.storageDetails.purchase.storage.success" = "사이트 미디어 라이브러리 스토리지가 증가했습니다!";
+
+/* Title for the storage details screen */
+"mediaLibrary.storageDetails.title" = "미디어 라이브러리 스토리지 공간";
+
+/* Detail message for upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.detail" = "요금제를 업그레이드하면 스토리지 공간이 늘어납니다.";
+
+/* Message about upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.message" = "요금제 업그레이드";
+
+/* Storage usage message showing used space and total space. %1$@ is used space, %2$@ is total space. */
+"mediaLibrary.storageDetails.usage" = "%1$@\/%2$@ 사용됨";
+
+/* Message shown while calculating storage usage */
+"mediaLibrary.storageDetails.usage.calculating" = "계산 중...";
+
 /* Media screen navigation title */
 "mediaLibrary.title" = "미디어";
 
@@ -9290,6 +9398,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "비디오 촬영";
+
+/* The menu item of viewing media library usage */
+"mediaPicker.viewUsage" = "사용 보기";
 
 /* Navigation title for media preview. Example: 1 of 3 */
 "mediaPreview.NofM" = "%1$@\/%2$@";
@@ -10009,6 +10120,48 @@ Example: Reply to Pamela Nguyen */
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d개 문자";
 
+/* Button to generate an excerpt using AI */
+"postSettings.excerpt.generateButton" = "생성";
+
+/* Character count display. %d is replaced with the number of characters. */
+"postSettings.excerpt.generator.characterCount" = "%d개 문자";
+
+/* Button to suggest (generate) more options */
+"postSettings.excerpt.generator.generateMore" = "더 많은 옵션 추천";
+
+/* Label for the length picker section */
+"postSettings.excerpt.generator.length" = "길이";
+
+/* Accessibility label for the length adjustment slider */
+"postSettings.excerpt.generator.lengthSlider" = "길이 슬라이더";
+
+/* Button to make excerpts longer */
+"postSettings.excerpt.generator.longer" = "더 길게";
+
+/* Label for excerpt option number. %d is replaced with the option number. */
+"postSettings.excerpt.generator.option" = "옵션 %d";
+
+/* Title shown when ready to generate excerpts */
+"postSettings.excerpt.generator.ready" = "생성 준비 완료";
+
+/* Description shown when ready to generate excerpts */
+"postSettings.excerpt.generator.readyDescription" = "눌러서 AI 기반 요약문 옵션 생성";
+
+/* Button to make excerpts shorter */
+"postSettings.excerpt.generator.shorter" = "더 짧게";
+
+/* Title for the style picker section */
+"postSettings.excerpt.generator.style" = "글쓰기 스타일";
+
+/* Label for the style picker section */
+"postSettings.excerpt.generator.styleLabel" = "스타일";
+
+/* Accessibility label for the style picker */
+"postSettings.excerpt.generator.stylePicker" = "스타일";
+
+/* Title for the excerpt generator popover */
+"postSettings.excerpt.generator.title" = "요약문 생성";
+
 /* Section header for Excerpt in Post Settings */
 "postSettings.excerpt.header" = "요약문";
 
@@ -10087,6 +10240,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for the publish date field in Post Settings */
 "postSettings.publishDate.label" = "날짜";
 
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"postSettings.publishDateImmediately" = "즉시";
+
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "일반";
 
@@ -10099,6 +10255,9 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "슬러그 입력";
 
+/* Label for the preview button in Post Settings */
+"postSettings.socialSharing.header" = "소셜 공유";
+
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "붙박이";
 
@@ -10108,11 +10267,26 @@ Example: Reply to Pamela Nguyen */
 /* Label for the tags field. Should be the same as WP core. */
 "postSettings.tags.label" = "태그";
 
+/* Label for the tag suggestions section. */
+"postSettings.tags.suggestions" = "추천 태그";
+
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "표시 여부";
 
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "게시물 통계";
+
+/* Button to add a new tag. %1$@ is the tag name. */
+"postTags.addTag" = "태그 추가";
+
+/* Placeholder text for the tag search field */
+"postTags.searchOrAdd.placeholder" = "태그 검색 또는 추가";
+
+/* Message shown when no tags are selected */
+"postTags.selectionEmpty" = "선택한 태그 없음";
+
+/* Title for the tags screen */
+"postTags.title" = "태그";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "취소";
@@ -10192,6 +10366,15 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "닫기";
 
+/* Button to confirm discarding changes */
+"prepublishing.discardChanges.button" = "변경 사항 취소";
+
+/* Message for the discard changes confirmation dialog */
+"prepublishing.discardChanges.message" = "발행 설정에서 저장되지 않은 변경 사항이 있습니다. 취소하시겠습니까?";
+
+/* Title for the discard changes confirmation dialog */
+"prepublishing.discardChanges.title" = "변경 사항을 취소할까요?";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "젯팩 소셜";
 
@@ -10210,8 +10393,14 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "prepublishing.publishDateImmediately" = "즉시";
 
+/* The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?' */
+"prepublishing.publishingSectionTitle" = "발행할 준비가 되었나요?";
+
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "발행 위치";
+
+/* Button to confirm discarding changes */
+"prepublishing.saveChanges.button" = "변경 사항 저장";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "일정";
@@ -10273,6 +10462,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "태그";
+
+/* Navigation title */
+"prepublishing.title" = "발행";
 
 /* Details label for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadMediaManyItemsRemaining" = "남은 항목 %@";
@@ -10348,6 +10540,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Message of error prompt shown when no internet connection is available */
 "reachability-utils.alert.utils" = "인터넷 연결이 오프라인 상태인 것 같습니다.";
+
+/* Navigation title */
+"reader.article.summary" = "요약";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "블로그 %@은(는) 더 이상 리더에 표시되지 않습니다. 눌러서 취소하세요.";
@@ -10629,6 +10824,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.showBlog" = "블로그로 이동";
+
+/* Context menu action */
+"reader.postContextMenu.summarize" = "요약";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "브라우저로 보기";
@@ -11504,6 +11702,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "구독자 합계";
+
+/* Menu item to disable the new stats */
+"stats.menu.disableNewStats" = "새 통계 비활성화";
 
 /* Menu item to send feedback about new stats experience */
 "stats.menu.sendFeedback" = "피드백 보내기";
