@@ -1,6 +1,6 @@
-Du kannst jetzt mit Apple Intelligence einen Auszug für deine Beiträge erstellen und automatisch vorgeschlagene Schlagwörter erhalten. It’s also easier to pick your tags in Post Settings. Now that’s smart.
+Du kannst jetzt mit Apple Intelligence eine Kurzfassung deiner Beiträge erstellen und automatisch vorgeschlagene Schlagwörter erhalten. Es ist auch einfacher, deine Schlagwörter in den Beitragseinstellungen auszuwählen. Das ist wirklich schlau.
 Wir haben ein paar visuelle Korrekturen für iOS in Bereichen wie der Website-Erstellung, dem Bildschirm für die Medienauswahl und dem Bildschirm für Statistiken vorgenommen.
-Während wir dabei waren, haben wir auch ein paar Bugs zerquetscht.
-- Reader articles render properly on devices with Display Zoom enabled.
-- The “Add Media” button stays visible in the media library. Jetzt ist alles jederzeit sichtbar.
-- You can search in Reader Subscriptions without freezing the app.
+Während wir dabei waren, haben wir auch ein paar Fehler behoben.
+- Reader-Artikel werden auf Geräten mit aktiviertem Anzeigezoom richtig wiedergegeben.
+- Der Button „Medien hinzufügen“ bleibt in der Mediathek sichtbar. Kein Verschwinden mehr.
+- Du kannst in Reader-Abonnements suchen, ohne dass die App einfriert.

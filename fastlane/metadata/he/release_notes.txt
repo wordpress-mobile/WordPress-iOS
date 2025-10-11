@@ -1,6 +1,6 @@
-כעת אפשר ליצור תקציר של הפוסטים שלך ולקבל הצעות אוטומטיות לתגיות באמצעות Apple Intelligence. It’s also easier to pick your tags in Post Settings. Now that’s smart.
-ביצענו כמה תיקונים חזותיים עבור iOS באזורים כמו תהליך יצירת האתר, מסך בחירת המדיה ומסך 'נתונים סטטיסטיים'.
-בזמן שעסקנו בזה, גם מחצנו כמה חרקים.
-- Reader articles render properly on devices with Display Zoom enabled.
-- The “Add Media” button stays visible in the media library. סיימנו עם תרגיל ההיעלמות הזה.
-- You can search in Reader Subscriptions without freezing the app.
+כעת אפשר ליצור תקציר של הפוסטים ולקבל הצעות אוטומטיות לתגיות באמצעות Apple Intelligence. גם קל יותר לבחור תגיות בהגדרות 'פוסטים'. באמת חוכמה גדולה.
+ביצענו כמה תיקונים חזותיים ב-iOS באזורים כמו תהליך יצירת האתר, מסך בחירת המדיה והמסך 'נתונים סטטיסטיים'.
+כבר היינו בסביבה, אז גם מחצנו כמה באגים.
+- מאמרים ב-Reader מעובדים כראוי במכשירים שבהם האפשרות Display Zoom מופעלת.
+- הכפתור 'להוסיף מדיה' לא נעלם בספריית המדיה. סיימנו עם תרגיל ההיעלמות הזה.
+- אפשר לחפש ב'מינויים ב-Reader' בלי לגרום לאפליקציה לקפוא.
