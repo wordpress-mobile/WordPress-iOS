@@ -1,16 +1,16 @@
-Du kannst jetzt mit Apple Intelligence einen Auszug, eine Beitragsübersicht und automatisch generierte Schlagwörter für deine Beiträge erstellen. Es ist auch einfacher, deine Schlagwörter in den Beitragseinstellungen auszuwählen. Das ist jetzt klug.
+Du kannst jetzt mit Apple Intelligence eine Kurzfassung, eine Beitragsübersicht und automatisch generierte Schlagwörter für deine Beiträge erstellen. Es ist auch einfacher, deine Schlagwörter in den Beitragseinstellungen auszuwählen. Das ist wirklich schlau.
 Apropos Statistiken: In diesem Bereich der App gibt es einige neue Verbesserungen.
-- Wir haben dem Bildschirm „Neue Statistiken“ eine Heute-Karte hinzugefügt.
+- Wir haben dem Bildschirm für neue Statistiken eine Heute-Karte hinzugefügt.
 - Deine Startseite wird jetzt in der Liste der Top-Seiten angezeigt.
-- Deine Top 10 und 50 Artikel haben jetzt einen eigenen speziellen Abschnitt. Jeder Beitrag hat seinen eigenen Platz.
-- Deine oberen Seiten werden richtig angezeigt, wenn du eine große Anzahl von Elementen hast.
-- Das Layout der neuen Statistiken wird an unterschiedliche Bildschirmgrößen angepasst. Sogar wirklich, wirklich große.
+- Deine besten 10 und 50 Elemente haben jetzt einen eigenen speziellen Abschnitt. Ein Platz für alles und alles an seinem Platz.
+- Deine beliebtesten Seiten werden richtig angezeigt, wenn du eine große Anzahl von Elementen hast.
+- Das Layout für neue Statistiken wird an unterschiedliche Bildschirmgrößen angepasst. Sogar an wirklich, wirklich große.
 - Der Bildschirm merkt sich deine bevorzugten Einstellungen, wenn du einen individuellen Zeitraum auswählst.
-- Über den Tab Traffic kannst du nach unten ziehen, um den Bildschirm zu aktualisieren.
-Wir haben auch ein paar visuelle Korrekturen für iOS in Bereichen wie der Website-Erstellung, dem Bildschirm für die Medienauswahl und dem Bildschirm für Statistiken vorgenommen. Und während wir dabei waren, haben wir auch mehrere Wanzen zerquetscht.
-- Wir haben einen seltenen Absturz behoben, der manchmal in Statistiken und Abonnenten erscheint. (Aber nicht mehr.)
+- Auf dem Tab „Traffic“ kannst du herunterwischen, um den Bildschirm zu aktualisieren.
+Wir haben auch ein paar visuelle Korrekturen für iOS in Bereichen wie der Website-Erstellung, dem Bildschirm für die Medienauswahl und dem Bildschirm für Statistiken vorgenommen. Und während wir dabei waren, haben wir auch mehrere Fehler behoben.
+- Wir haben einen seltenen Absturz behoben, der manchmal in Statistiken und Abonnenten erschien. (Aber jetzt nicht mehr.)
 - Artikelansichten sehen aus, wie sie im Reader aussehen sollten, wenn bestimmte Themes aktiviert sind.
-- Reader-Artikel werden auf Geräten mit aktiviertem Anzeigezoom richtig gerendert.
-- Der Button „Medien hinzufügen“ bleibt in der Mediathek sichtbar. Jetzt ist alles jederzeit sichtbar.
-- Du kannst in Reader-Abonnements suchen, ohne die App einzufrieren.
-- Die Werkzeugleiste in Reader-Artikeln verschwindet nicht mehr und wird von Zeit zu Zeit wieder angezeigt. Jetzt siehst du es, jetzt siehst du es... immer noch, vermuten wir.
+- Reader-Artikel werden auf Geräten mit aktiviertem Anzeigezoom richtig wiedergegeben.
+- Der Button „Medien hinzufügen“ bleibt in der Mediathek sichtbar. Kein Verschwinden mehr.
+- Du kannst in Reader-Abonnements suchen, ohne dass die App einfriert.
+- Die Werkzeugleiste in Reader-Artikeln verschwindet nicht mehr und taucht von Zeit zu Zeit wieder auf. Jetzt siehst du sie, jetzt siehst du sie … immer noch, vermuten wir.
