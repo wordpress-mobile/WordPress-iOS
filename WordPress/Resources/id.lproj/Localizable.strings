@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-10-07 13:54:10+0000 */
+/* Translation-Revision-Date: 2025-10-10 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: id */
@@ -8115,7 +8115,13 @@ Example: Reply to Pamela Nguyen */
 "general.pagingFooterView.retry" = "Coba lagi";
 
 /* Generated content length (needs to be short) */
+"generation.length.long" = "Panjang";
+
+/* Generated content length (needs to be short) */
 "generation.length.medium" = "Sedang";
+
+/* Generated content length (needs to be short) */
+"generation.length.short" = "Singkat";
 
 /* AI generation style */
 "generation.style.conversational" = "Percakapan";
@@ -8124,10 +8130,13 @@ Example: Reply to Pamela Nguyen */
 "generation.style.engaging" = "Menarik";
 
 /* AI generation style */
+"generation.style.formal" = "Formal";
+
+/* AI generation style */
 "generation.style.professional" = "Profesional";
 
 /* AI generation style */
-"generation.style.witty" = "Cerdas";
+"generation.style.witty" = "Cerdik dan jenaka";
 
 /* A generic title for an error */
 "generic.error.title" = "Eror";
@@ -8244,22 +8253,22 @@ Example: Reply to Pamela Nguyen */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
 
 /* Message shown when Apple Intelligence is disabled */
-"intelligence.unavailableView.appleIntelligenceDisabled.message" = "Untuk membuat kutipan dengan AI, aktifkan Kecerdasan Apple di Pengaturan. Fitur ini menggunakan pemrosesan pada perangkat untuk melindungi privasi Anda.";
+"intelligence.unavailableView.appleIntelligenceDisabled.message" = "Untuk membuat kutipan dengan AI, aktifkan Apple Intelligence di Pengaturan. Fitur ini melakukan pemrosesan di perangkat demi melindungi privasi Anda.";
 
 /* Button to open Apple Intelligence settings */
 "intelligence.unavailableView.appleIntelligenceDisabled.openSettings" = "Buka Pengaturan";
 
 /* Title shown when Apple Intelligence is disabled */
-"intelligence.unavailableView.appleIntelligenceDisabled.title" = "Diperlukan Kecerdasan Apple";
+"intelligence.unavailableView.appleIntelligenceDisabled.title" = "Diperlukan Apple Intelligence";
 
 /* Message shown when Apple Intelligence is unavailable */
 "intelligence.unavailableView.appleIntelligenceUnvailable.message" = "Apple Intelligence tidak tersedia di perangkat ini";
 
 /* Title shown when Apple Intelligence is unavailable */
-"intelligence.unavailableView.appleIntelligenceUnvailable.title" = "Kecerdasan Apple Tidak Tersedia";
+"intelligence.unavailableView.appleIntelligenceUnvailable.title" = "Apple Intelligence Tidak Tersedia";
 
 /* Description shown when the AI model is not ready */
-"intelligence.unavailableView.preparingModel.description" = "Model AI sedang mengunduh atau sedang disiapkan. Silakan coba beberapa saat lagi.";
+"intelligence.unavailableView.preparingModel.description" = "Model AI sedang diunduh atau sedang disiapkan. Silakan coba beberapa saat lagi.";
 
 /* Title shown when the AI model is not ready */
 "intelligence.unavailableView.preparingModel.title" = "Menyiapkan model...";
@@ -8995,7 +9004,10 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.postDetails.title" = "Statistik Pos";
 
 /* Section title */
-"jetpackStats.postDetails.top50" = "50 Lagu Teratas";
+"jetpackStats.postDetails.top10" = "10 Teratas";
+
+/* Section title */
+"jetpackStats.postDetails.top50" = "50 Teratas";
 
 /* Must be short!Label for total email opens metric */
 "jetpackStats.postDetails.totalOpens" = "Total Buka";
@@ -9213,6 +9225,9 @@ Example: Reply to Pamela Nguyen */
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "Hapus";
 
+/* Navigation bar button item */
+"mediaLibrary.buttonFilter" = "Filter";
+
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Pilih";
 
@@ -9271,16 +9286,16 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.squareGrid" = "Kisi Persegi";
 
 /* Detail message for buying storage add-on */
-"mediaLibrary.storageDetails.buyStorage.detail" = "Dapatkan lebih banyak ruang untuk foto, video, dan media lainnya yang berkualitas tinggi.";
+"mediaLibrary.storageDetails.buyStorage.detail" = "Dapatkan ruang lebih untuk foto berkualitas tinggi, video, dan media lainnya.";
 
 /* Message about buying storage add-on */
-"mediaLibrary.storageDetails.buyStorage.message" = "Add-On Ruang Penyimpanan";
+"mediaLibrary.storageDetails.buyStorage.message" = "Beli add-on ruang penyimpanan";
 
 /* Message shown when all media items are attached */
-"mediaLibrary.storageDetails.cleanup.allAttached" = "Semua item pada Pustaka Media dilampirkan.";
+"mediaLibrary.storageDetails.cleanup.allAttached" = "Semua item di Pustaka Media terlampir.";
 
 /* Message shown while loading unattached media count */
-"mediaLibrary.storageDetails.cleanup.loading" = "Mencari tahu apakah ada item media yang belum dilampirkan...";
+"mediaLibrary.storageDetails.cleanup.loading" = "Mencari apakah ada item media yang tidak terlampir...";
 
 /* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
 "mediaLibrary.storageDetails.cleanup.message" = "%1$d item tidak terlampir. Hapus item untuk mengosongkan sebagian ruang.";
