@@ -37,7 +37,7 @@ public struct PostMetadata {
         }
 
         // MARK: - ExpressibleByStringLiteral
-        
+
         public init(stringLiteral value: String) {
             self.rawValue = value
         }
@@ -111,7 +111,7 @@ public struct PostMetadata {
         guard let value = value as? T else {
             wpAssertionFailure("unexpected value", userInfo: [
                 "key": key.rawValue,
-                "actual_type":  String(describing: expectedType),
+                "actual_type": String(describing: expectedType),
                 "expected_type": String(describing: type(of: value))
             ])
             return nil
@@ -160,7 +160,7 @@ public struct PostMetadata {
     public mutating func clear() {
         items.removeAll()
     }
-    
+
     /// Returns the complete dictionary entry for the given key.
     ///
     /// - Parameter key: The metadata key to retrieve
@@ -170,35 +170,33 @@ public struct PostMetadata {
     }
 }
 
-// MARK: - PostMetadata.Key Extensions
+// MARK: - PostMetadata (Jetpack)
 
 extension PostMetadata.Key {
     /// Jetpack Newsletter access level metadata key
     public static let jetpackNewsletterAccess: PostMetadata.Key = "_jetpack_newsletter_access"
 }
 
-// MARK: - PostMetadata (Jetpack)
-
-/// Valid access levels for Jetpack Newsletter
-public enum JetpackPostAccessLevel: String, CaseIterable, Hashable, Codable {
-    case everybody = "everybody"
-    case subscribers = "subscribers"
-    case paidSubscribers = "paid_subscribers"
-}
-
 extension PostMetadata {
     /// Gets or sets the Jetpack Newsletter access level as a PostAccessLevel enum
     public var accessLevel: JetpackPostAccessLevel? {
         get {
-            guard let stringValue = getString(for: .jetpackNewsletterAccess) else { return nil }
-            return JetpackPostAccessLevel(rawValue: stringValue)
+            guard let value = getString(for: .jetpackNewsletterAccess) else { return nil }
+            return JetpackPostAccessLevel(rawValue: value)
         }
         set {
-            if let newValue = newValue {
+            if let newValue {
                 setValue(newValue.rawValue, for: .jetpackNewsletterAccess)
             } else {
                 removeValue(for: .jetpackNewsletterAccess)
             }
         }
     }
+}
+
+/// Valid access levels for Jetpack Newsletter
+public enum JetpackPostAccessLevel: String, CaseIterable, Hashable, Codable {
+    case everybody = "everybody"
+    case subscribers = "subscribers"
+    case paidSubscribers = "paid_subscribers"
 }
