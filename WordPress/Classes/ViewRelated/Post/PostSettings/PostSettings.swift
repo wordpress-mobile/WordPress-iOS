@@ -156,7 +156,11 @@ struct PostSettings: Hashable {
             var metadata = PostMetadata(post)
             if metadata.accessLevel != accessLevel {
                 metadata.accessLevel = accessLevel
-                post.rawMetadata = metadata.encode()
+                do {
+                    post.rawMetadata = try metadata.encode()
+                } catch {
+                    wpAssertionFailure("failed to encode metadata")
+                }
             }
         case let page as Page:
             if page.parentID?.intValue != parentPageID {

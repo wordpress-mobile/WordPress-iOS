@@ -36,15 +36,17 @@ public struct PostMetadata {
             self.rawValue = rawValue
         }
 
-        // MARK: - ExpressibleByStringLiteral
-
         public init(stringLiteral value: String) {
             self.rawValue = value
         }
     }
 
+    enum Error: Swift.Error {
+        case invalidData
+    }
+
     // Raw JSON dictionaries, keyed by metadata key
-    private var items: [Key: [String: Any]]
+    private var items: [Key: [String: Any]] = [:]
 
     /// Returns all metadata as a dictionary (alias for allItems)
     public var values: [[String: Any]] {
@@ -68,16 +70,19 @@ public struct PostMetadata {
 
     /// Initialize with raw metadata Data (non-throwing version for backward compatibility)
     /// If the data is invalid, creates an empty PostMetadata
+    ///
     /// - Parameter data: The JSON data containing metadata array
     public init(data: Data) throws {
-        let metadata = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] ?? []
-        self = PostMetadata(metadata: metadata)
+        let metadata = try JSONSerialization.jsonObject(with: data)
+        guard let dictionary = metadata as? [[String: Any]] else {
+            throw Error.invalidData
+        }
+        self = PostMetadata(metadata: dictionary)
     }
 
     /// Initialize with raw metadata array (same format as JSON data)
     /// - Parameter metadata: Array of metadata dictionaries with "key", "value", and optional "id"
     public init(metadata: [[String: Any]] = []) {
-        items = [:]
         for item in metadata {
             if let key = item["key"] as? String {
                 self.items[Key(rawValue: key)] = item
@@ -89,13 +94,12 @@ public struct PostMetadata {
 
     /// Encodes the metadata back to Data for storage in rawMetadata
     /// - Returns: JSON Data representation of the metadata, or nil if empty
-    public func encode() -> Data? {
-        guard !items.isEmpty else { return nil }
+    public func encode() throws -> Data {
         do {
             return try JSONSerialization.data(withJSONObject: Array(items.values), options: [])
         } catch {
             wpAssertionFailure("Failed to encode metadata to JSON", userInfo: ["error": error.localizedDescription])
-            return nil
+            throw error
         }
     }
 

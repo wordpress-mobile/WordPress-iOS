@@ -156,7 +156,7 @@ struct PostMetadataTests {
     func encodeAndDecodeRoundTrip() throws {
         let originalMetadata = try PostMetadata(data: Self.mockMetadataJSON)
 
-        let encodedData = try #require(originalMetadata.encode(), "Failed to encode metadata")
+        let encodedData = try #require(try originalMetadata.encode(), "Failed to encode metadata")
 
         let decodedMetadata = try PostMetadata(data: encodedData)
 
@@ -167,13 +167,6 @@ struct PostMetadataTests {
                 decodedMetadata.getValue(String.self, forKey: .jetpackNewsletterAccess))
         #expect(originalMetadata.getValue(String.self, forKey: "wp_jp_foreign_id") ==
                 decodedMetadata.getValue(String.self, forKey: "wp_jp_foreign_id"))
-    }
-
-    @Test("Encode empty metadata")
-    func encodeEmptyMetadata() {
-        let metadata = PostMetadata()
-
-        #expect(metadata.encode() == nil)
     }
 
     // MARK: - Edge Cases and Error Handling
