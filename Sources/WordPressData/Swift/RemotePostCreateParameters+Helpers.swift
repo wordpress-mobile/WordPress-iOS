@@ -30,17 +30,42 @@ extension RemotePostCreateParameters {
             categoryIDs = (post.categories ?? []).compactMap {
                 $0.categoryID?.intValue
             }
-            metadata = Set(PostHelper.remoteMetadata(for: post).compactMap { value -> RemotePostMetadataItem? in
-                guard let dictionary = value as? [String: Any] else {
-                    wpAssertionFailure("Unexpected value", userInfo: [
-                        "value": value
-                    ])
-                    return nil
-                }
-                return PostHelper.mapDictionaryToMetadataItems(dictionary)
+            metadata = Set(Self.generateRemoteMetadata(for: post).compactMap { dictionary -> RemotePostMetadataItem? in
+                return Self.mapDictionaryToMetadataItems(dictionary)
             })
         default:
             break
         }
+    }
+}
+
+private extension RemotePostCreateParameters {
+    /// Generates remote metadata for the given post.
+    ///
+    /// - note: It includes _only_ the keys known to the app and that you as a
+    /// user can change from the app.
+    static func generateRemoteMetadata(for post: Post) -> [[String: Any]] {
+        // Start with existing metadata from PostHelper
+        var output = PostHelper.remoteMetadata(for: post) as? [[String: Any]] ?? []
+
+        // Add Jetpack Newsletter access level metadata
+        let metadata = PostMetadata(post)
+        if let entry = metadata.entry(forKey: .jetpackNewsletterAccess) {
+            output.append(entry)
+        }
+        return output
+    }
+    
+    /// Maps a metadata dictionary to a RemotePostMetadataItem.
+    ///
+    /// - Parameter dictionary: The metadata dictionary containing "key", "value", and optional "id"
+    /// - Returns: A RemotePostMetadataItem if the dictionary is valid, nil otherwise
+    static func mapDictionaryToMetadataItems(_ dictionary: [String: Any]) -> RemotePostMetadataItem? {
+        let id = dictionary["id"]
+        return RemotePostMetadataItem(
+            id: (id as? String) ?? (id as? NSNumber)?.stringValue,
+            key: dictionary["key"] as? String,
+            value: dictionary["value"] as? String
+        )
     }
 }

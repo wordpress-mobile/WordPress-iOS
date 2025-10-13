@@ -167,6 +167,14 @@ public struct PostMetadata {
     public mutating func clear() {
         items.removeAll()
     }
+    
+    /// Returns the complete dictionary entry for the given key.
+    ///
+    /// - Parameter key: The metadata key to retrieve
+    /// - Returns: The complete metadata dictionary containing "key", "value", and optional "id", or nil if not found
+    public func entry(forKey key: Key) -> [String: Any]? {
+        return items[key]
+    }
 }
 
 // MARK: - PostMetadata.Key Extensions
