@@ -3,6 +3,8 @@ import WordPressData
 import WordPressKit
 import WordPressShared
 
+
+
 /// A plain data structure representing the subset of post/page settings that can be edited in PostSettingsView.
 /// Used for change tracking and to separate UI state from Core Data objects.
 struct PostSettings: Hashable {
@@ -26,6 +28,7 @@ struct PostSettings: Hashable {
     var postFormat: String?
     var isStickyPost = false
     var sharing: PostSocialSharingSettings?
+    var access: String?
 
     // MARK: - Page-specific
     var parentPageID: Int?
@@ -59,6 +62,9 @@ struct PostSettings: Hashable {
                 $0.categoryID?.intValue
             })
             sharing = PostSocialSharingSettings.make(for: post)
+            
+            // Read access from metadata
+            access = post.metadata?.first { $0.key == "_jetpack_newsletter_access" }?.value
         case let page as Page:
             parentPageID = page.parentID?.intValue
         default:
@@ -147,6 +153,34 @@ struct PostSettings: Hashable {
                     post.publicizeMessage = sharing.message
                 }
             }
+
+            // Update access metadata
+            let currentAccess = post.metadata?.first { $0.key == "_jetpack_newsletter_access" }?.value
+            if currentAccess != access {
+                if let access = access {
+                    // Update or create the metadata entry
+                    if let existingMetadata = post.metadata?.first(where: { $0.key == "_jetpack_newsletter_access" }) {
+                        existingMetadata.value = access
+                    } else {
+                        // Create new metadata entry if it doesn't exist
+                        if let context = post.managedObjectContext {
+                            let newMetadata = NSEntityDescription.insertNewObject(forEntityName: "PostMetadata", into: context) as! PostMetadata
+                            newMetadata.key = "_jetpack_newsletter_access"
+                            newMetadata.value = access
+                            newMetadata.post = post
+                            post.addToMetadata(newMetadata)
+                        }
+                    }
+                } else {
+                    // Remove metadata entry if access is nil
+                    if let existingMetadata = post.metadata?.first(where: { $0.key == "_jetpack_newsletter_access" }) {
+                        post.removeFromMetadata(existingMetadata)
+                        if let context = post.managedObjectContext {
+                            context.delete(existingMetadata)
+                        }
+                    }
+                }
+            }
         case let page as Page:
             if page.parentID?.intValue != parentPageID {
                 page.parentID = parentPageID.map { NSNumber(value: $0) }
@@ -202,6 +236,19 @@ extension PostSettings {
         return categoryIDs.compactMap { categories[$0] }
             .sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
             .map { $0.stringByDecodingXMLCharacters() }
+    }
+
+    // MARK: - Access Management
+    
+    /// Convenience property to get/set access as an enum value
+    var accessLevel: JetpackPostAccessLevel? {
+        get {
+            guard let access = access else { return nil }
+            return JetpackPostAccessLevel(rawValue: access)
+        }
+        set {
+            access = newValue?.rawValue
+        }
     }
 }
 

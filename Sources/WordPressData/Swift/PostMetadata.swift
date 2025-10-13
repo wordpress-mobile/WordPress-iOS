@@ -1,0 +1,170 @@
+import Foundation
+import WordPressKit
+import WordPressShared
+
+/// Valid access levels for Jetpack Newsletter
+public enum JetpackPostAccessLevel: String, CaseIterable, Hashable, Codable {
+    case everybody = "everybody"
+    case paidSubscribers = "paid_subscribers"
+    case subscribers = "subscribers"
+}
+
+/// A convenience struct that provides CRUD operations on post metadata.
+public struct PostMetadata {
+    public struct Key: ExpressibleByStringLiteral {
+        public let rawValue: String
+
+        public init(rawValue: String) {
+            self.rawValue = rawValue
+        }
+
+        // MARK: - ExpressibleByStringLiteral
+        
+        public init(stringLiteral value: String) {
+            self.rawValue = value
+        }
+    }
+
+    // Raw JSON dictionaries, keyed by metadata key
+    private var items: [String: [String: Any]]
+
+    /// Returns all metadata as a dictionary (alias for allItems)
+    public var values: [[String: Any]] {
+        Array(items.values)
+    }
+
+    /// Initialized metadata with the given post.
+    public init(_ post: AbstractPost) {
+        if let data = post.rawMetadata {
+            do {
+                let metadata = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] ?? []
+                self = PostMetadata(metadata: metadata)
+            } catch {
+                wpAssertionFailure("Failed to decode metadata JSON", userInfo: ["error": error.localizedDescription])
+                self = PostMetadata()
+            }
+        } else {
+            self = PostMetadata()
+        }
+    }
+
+    /// Initialize with raw metadata Data (non-throwing version for backward compatibility)
+    /// If the data is invalid, creates an empty PostMetadata
+    /// - Parameter data: The JSON data containing metadata array
+    public init(data: Data) throws {
+        let metadata = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] ?? []
+        self = PostMetadata(metadata: metadata)
+    }
+
+    /// Initialize with raw metadata array (same format as JSON data)
+    /// - Parameter metadata: Array of metadata dictionaries with "key", "value", and optional "id"
+    public init(metadata: [[String: Any]] = []) {
+        for item in metadata {
+            if let key = item["key"] as? String {
+                self.items[key] = item
+            }
+        }
+    }
+
+    // MARK: - Encoding
+
+    /// Encodes the metadata back to Data for storage in rawMetadata
+    /// - Returns: JSON Data representation of the metadata, or nil if empty
+    public func encode() -> Data? {
+        guard !items.isEmpty else { return nil }
+        do {
+            return try JSONSerialization.data(withJSONObject: Array(items.values), options: [])
+        } catch {
+            wpAssertionFailure("Failed to encode metadata to JSON", userInfo: ["error": error.localizedDescription])
+            return nil
+        }
+    }
+
+    // MARK: - CRUD
+
+    /// Retrieves a metadata value by key with generic type casting
+    /// - Parameters:
+    ///   - expectedType: The expected type of the value
+    ///   - key: The metadata key to search for
+    /// - Returns: The value cast to the specified type if found and compatible, nil otherwise
+    public func getValue<T>(_ expectedType: T.Type, forKey key: Key) -> T? {
+        guard let dict = items[key.rawValue], let value = dict["value"] else { return nil }
+        guard let value = value as? T else {
+            wpAssertionFailure("unexpected value", userInfo: [
+                "key": key.rawValue,
+                "actual_type":  String(describing: expectedType),
+                "expected_type": String(describing: type(of: value))
+            ])
+            return nil
+        }
+        return value
+    }
+
+    /// Retrieves a metadata value by key as String (convenience method)
+    /// - Parameter key: The metadata key to search for
+    /// - Returns: The value as String if found and convertible, nil otherwise
+    public func getString(for key: Key) -> String? {
+        getValue(String.self, forKey: key)
+    }
+
+    /// Sets or updates a metadata item with any JSON-compatible value
+    /// - Parameters:
+    ///   - value: The metadata value (must be JSON-compatible)
+    ///   - key: The metadata key
+    ///   - id: Optional metadata ID
+    public mutating func setValue(_ value: Any, for key: Key, id: String? = nil) {
+        var dict: [String: Any] = [
+            "key": key.rawValue,
+            "value": value
+        ]
+        // Preserve existing ID if not provided
+        if let id {
+            dict["id"] = id
+        } else if let existingDict = items[key.rawValue], let existingID = existingDict["id"] {
+            dict["id"] = existingID
+        }
+        guard JSONSerialization.isValidJSONObject(dict) else {
+            return wpAssertionFailure("invalid value", userInfo: ["type": String(describing: type(of: value))])
+        }
+        items[key.rawValue] = dict
+    }
+
+    /// Removes a metadata item by key
+    /// - Parameter key: The metadata key to remove
+    /// - Returns: True if the item was found and removed, false otherwise
+    @discardableResult
+    public mutating func removeValue(for key: Key) -> Bool {
+        items.removeValue(forKey: key.rawValue) != nil
+    }
+
+    /// Clears all metadata
+    public mutating func clear() {
+        items.removeAll()
+    }
+}
+
+// MARK: - PostMetadata.Key Extensions
+
+extension PostMetadata.Key {
+    /// Jetpack Newsletter access level metadata key
+    public static let jetpackNewsletterAccess: PostMetadata.Key = "_jetpack_newsletter_access"
+}
+
+// MARK: - PostMetadata (Jetpack)
+
+extension PostMetadata {
+    /// Gets or sets the Jetpack Newsletter access level as a PostAccessLevel enum
+    public var accessLevel: JetpackPostAccessLevel? {
+        get {
+            guard let stringValue = getString(for: .jetpackNewsletterAccess) else { return nil }
+            return JetpackPostAccessLevel(rawValue: stringValue)
+        }
+        set {
+            if let newValue = newValue {
+                setValue(newValue.rawValue, for: .jetpackNewsletterAccess)
+            } else {
+                removeValue(for: .jetpackNewsletterAccess)
+            }
+        }
+    }
+}
