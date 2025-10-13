@@ -113,6 +113,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         case connected
     }
 
+    enum Row {
+        case jetpackAccessLevel
+    }
+
     private let originalSettings: PostSettings
     private let preferences: UserPersistentRepository
     private var isSuggestedTagsRefreshNeeded = true
@@ -168,6 +172,13 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     func onAppear() {
         refreshSuggestedTags()
+    }
+
+    func shouldShow(_ row: Row) -> Bool {
+        switch row {
+        case .jetpackAccessLevel:
+            post.blog.supports(.wpComRESTAPI)
+        }
     }
 
     private func refreshSuggestedTags() {

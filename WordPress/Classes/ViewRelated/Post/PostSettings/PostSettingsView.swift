@@ -144,6 +144,7 @@ struct PostSettingsFormContentView: View {
         excerptSection
         generalSection
         socialSharingSection
+        accessSection
         moreOptionsSection
     }
 
@@ -275,6 +276,29 @@ struct PostSettingsFormContentView: View {
             PostSettingsPublishDatePicker(viewModel: viewModel)
         } label: {
             SettingsRow(Strings.publishDateLabel, value: viewModel.publishDateText ?? Strings.immediately)
+        }
+    }
+
+    // MARK: - "Access" Section
+
+    @ViewBuilder
+    private var accessSection: some View {
+        if viewModel.shouldShow(.jetpackAccessLevel) {
+            Section {
+                SettingsPicker(
+                    title: Strings.accessHeader,
+                    selection: $viewModel.settings.accessLevel,
+                    values: JetpackPostAccessLevel.allCases.map { level in
+                        SettingsPickerValue(
+                            title: level.localizedTitle,
+                            details: level.localizedDescription,
+                            id: level
+                        )
+                    }
+                )
+            } header: {
+                SectionHeader(Strings.accessHeader)
+            }
         }
     }
 
@@ -553,6 +577,12 @@ private enum Strings {
         "postSettings.moreOptions.header",
         value: "More Options",
         comment: "Section header for More Options in Post Settings. Should use the same translation as core WP."
+    )
+
+    static let accessHeader = NSLocalizedString(
+        "postSettings.access.header",
+        value: "Access",
+        comment: "Section header for Access settings in Post Settings"
     )
 
     static let postFormatLabel = NSLocalizedString(

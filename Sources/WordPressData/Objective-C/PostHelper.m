@@ -214,8 +214,7 @@
             NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@", authorID];
             predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, authorPredicate]];
         }
-
-        NSFetchRequest *request;
+s        NSFetchRequest *request;
         if ([syncPostType isEqualToString:PostServiceTypeAny]) {
             // If syncing "any" posts, set up the fetch for any AbstractPost entities (including child entities).
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];

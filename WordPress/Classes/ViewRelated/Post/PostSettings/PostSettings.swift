@@ -62,7 +62,7 @@ struct PostSettings: Hashable {
                 $0.categoryID?.intValue
             })
             sharing = PostSocialSharingSettings.make(for: post)
-            accessLevel = metadata.accessLevel
+            accessLevel = metadata.accessLevel ?? .everybody
         case let page as Page:
             parentPageID = page.parentID?.intValue
         default:
@@ -214,10 +214,6 @@ extension PostSettings {
             .sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
             .map { $0.stringByDecodingXMLCharacters() }
     }
-
-    // MARK: - Access Management
-    
-    // accessLevel is already defined as a stored property in the main struct
 }
 
 /// A value-type representation of `PublicizeService` for the current blog that's simplified for the auto-sharing flow.

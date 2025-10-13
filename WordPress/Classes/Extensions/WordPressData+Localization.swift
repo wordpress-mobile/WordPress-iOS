@@ -2,7 +2,7 @@ import WordPressData
 
 extension JetpackPostAccessLevel {
     /// Returns the localized display name for the access level
-    var localizedDisplayName: String {
+    var localizedTitle: String {
         switch self {
         case .everybody: NSLocalizedString(
             "jetpackPostAccessLevel.everybody.title",
@@ -11,12 +11,12 @@ extension JetpackPostAccessLevel {
         )
         case .subscribers: NSLocalizedString(
             "jetpackPostAccessLevel.subscribers.title",
-            value: "Subscribers",
+            value: "All Subscribers",
             comment: "Title for post access level that allows only subscribers to view the post"
         )
         case .paidSubscribers: NSLocalizedString(
             "jetpackPostAccessLevel.paidSubscribers.title",
-            value: "Paid subscribers",
+            value: "Paid Subscribers",
             comment: "Title for post access level that allows only paid subscribers to view the post"
         )
         }
@@ -32,7 +32,7 @@ extension JetpackPostAccessLevel {
         )
         case .subscribers: NSLocalizedString(
             "jetpackPostAccessLevel.subscribers.description",
-            value: "Only subscribers can view this post",
+            value: "The post is visible to all subscribers, including free ones",
             comment: "Description for post access level that allows only subscribers to view the post"
         )
         case .paidSubscribers: NSLocalizedString(

@@ -2,13 +2,6 @@ import Foundation
 import WordPressKit
 import WordPressShared
 
-/// Valid access levels for Jetpack Newsletter
-public enum JetpackPostAccessLevel: String, CaseIterable, Hashable, Codable {
-    case everybody = "everybody"
-    case paidSubscribers = "paid_subscribers"
-    case subscribers = "subscribers"
-}
-
 /// A convenience struct that provides CRUD operations on post metadata.
 ///
 /// ## WordPress Metadata Overview
@@ -185,6 +178,13 @@ extension PostMetadata.Key {
 }
 
 // MARK: - PostMetadata (Jetpack)
+
+/// Valid access levels for Jetpack Newsletter
+public enum JetpackPostAccessLevel: String, CaseIterable, Hashable, Codable {
+    case everybody = "everybody"
+    case subscribers = "subscribers"
+    case paidSubscribers = "paid_subscribers"
+}
 
 extension PostMetadata {
     /// Gets or sets the Jetpack Newsletter access level as a PostAccessLevel enum
