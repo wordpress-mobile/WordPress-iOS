@@ -10,6 +10,31 @@ public enum JetpackPostAccessLevel: String, CaseIterable, Hashable, Codable {
 }
 
 /// A convenience struct that provides CRUD operations on post metadata.
+///
+/// ## WordPress Metadata Overview
+///
+/// WordPress stores custom metadata as key-value pairs associated with posts.
+/// Each metadata item contains a string key, a value (which can be any
+/// JSON-serializable type), and an optional ID for database tracking.
+///
+/// ## Expected Format
+///
+/// Metadata is stored as a JSON array of dictionaries, where each dictionary represents one
+/// metadata item:
+///
+/// ```json
+/// [
+///   {
+///     "key": "_jetpack_newsletter_access",
+///     "value": "subscribers",
+///     "id": "123"
+///   },
+///   {
+///     "key": "custom_field",
+///     "value": "some value"
+///   }
+/// ]
+/// ```
 public struct PostMetadata {
     public struct Key: ExpressibleByStringLiteral, Hashable {
         public let rawValue: String
