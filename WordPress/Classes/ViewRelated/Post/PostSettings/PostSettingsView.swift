@@ -241,7 +241,7 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var generalSection: some View {
         Section {
-            if viewModel.context != .publishing {
+            if viewModel.context == .settings && viewModel.isStandalone {
                 statusRow
             }
             authorRow
