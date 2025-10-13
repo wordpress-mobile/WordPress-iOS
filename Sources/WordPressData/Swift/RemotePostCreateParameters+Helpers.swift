@@ -31,7 +31,7 @@ extension RemotePostCreateParameters {
                 $0.categoryID?.intValue
             }
             metadata = Set(Self.generateRemoteMetadata(for: post).compactMap { dictionary -> RemotePostMetadataItem? in
-                return Self.mapDictionaryToMetadataItems(dictionary)
+                return PostHelper.mapDictionaryToMetadataItems(dictionary)
             })
         default:
             break
@@ -54,18 +54,5 @@ private extension RemotePostCreateParameters {
             output.append(entry)
         }
         return output
-    }
-    
-    /// Maps a metadata dictionary to a RemotePostMetadataItem.
-    ///
-    /// - Parameter dictionary: The metadata dictionary containing "key", "value", and optional "id"
-    /// - Returns: A RemotePostMetadataItem if the dictionary is valid, nil otherwise
-    static func mapDictionaryToMetadataItems(_ dictionary: [String: Any]) -> RemotePostMetadataItem? {
-        let id = dictionary["id"]
-        return RemotePostMetadataItem(
-            id: (id as? String) ?? (id as? NSNumber)?.stringValue,
-            key: dictionary["key"] as? String,
-            value: dictionary["value"] as? String
-        )
     }
 }
