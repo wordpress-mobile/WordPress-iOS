@@ -11,7 +11,7 @@ public enum JetpackPostAccessLevel: String, CaseIterable, Hashable, Codable {
 
 /// A convenience struct that provides CRUD operations on post metadata.
 public struct PostMetadata {
-    public struct Key: ExpressibleByStringLiteral {
+    public struct Key: ExpressibleByStringLiteral, Hashable {
         public let rawValue: String
 
         public init(rawValue: String) {
@@ -26,7 +26,7 @@ public struct PostMetadata {
     }
 
     // Raw JSON dictionaries, keyed by metadata key
-    private var items: [String: [String: Any]]
+    private var items: [Key: [String: Any]]
 
     /// Returns all metadata as a dictionary (alias for allItems)
     public var values: [[String: Any]] {
@@ -59,9 +59,10 @@ public struct PostMetadata {
     /// Initialize with raw metadata array (same format as JSON data)
     /// - Parameter metadata: Array of metadata dictionaries with "key", "value", and optional "id"
     public init(metadata: [[String: Any]] = []) {
+        items = [:]
         for item in metadata {
             if let key = item["key"] as? String {
-                self.items[key] = item
+                self.items[Key(rawValue: key)] = item
             }
         }
     }
@@ -88,7 +89,7 @@ public struct PostMetadata {
     ///   - key: The metadata key to search for
     /// - Returns: The value cast to the specified type if found and compatible, nil otherwise
     public func getValue<T>(_ expectedType: T.Type, forKey key: Key) -> T? {
-        guard let dict = items[key.rawValue], let value = dict["value"] else { return nil }
+        guard let dict = items[key], let value = dict["value"] else { return nil }
         guard let value = value as? T else {
             wpAssertionFailure("unexpected value", userInfo: [
                 "key": key.rawValue,
@@ -120,13 +121,13 @@ public struct PostMetadata {
         // Preserve existing ID if not provided
         if let id {
             dict["id"] = id
-        } else if let existingDict = items[key.rawValue], let existingID = existingDict["id"] {
+        } else if let existingDict = items[key], let existingID = existingDict["id"] {
             dict["id"] = existingID
         }
         guard JSONSerialization.isValidJSONObject(dict) else {
             return wpAssertionFailure("invalid value", userInfo: ["type": String(describing: type(of: value))])
         }
-        items[key.rawValue] = dict
+        items[key] = dict
     }
 
     /// Removes a metadata item by key
@@ -134,7 +135,7 @@ public struct PostMetadata {
     /// - Returns: True if the item was found and removed, false otherwise
     @discardableResult
     public mutating func removeValue(for key: Key) -> Bool {
-        items.removeValue(forKey: key.rawValue) != nil
+        items.removeValue(forKey: key) != nil
     }
 
     /// Clears all metadata
