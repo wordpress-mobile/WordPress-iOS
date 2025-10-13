@@ -1,5 +1,6 @@
 26.5
 -----
+* [*] Add "Access" section to "Post Settings" [#24942]
 
 
 26.4
