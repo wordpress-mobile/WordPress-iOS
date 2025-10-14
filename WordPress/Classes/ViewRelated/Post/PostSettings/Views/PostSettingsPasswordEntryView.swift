@@ -10,7 +10,6 @@ struct PostSettingsPasswordEntryView: View {
     @Environment(\.dismiss) private var dismiss
 
     var onSave: (String) -> Void
-    var onCancel: () -> Void
 
     var body: some View {
         NavigationStack {
@@ -38,7 +37,6 @@ struct PostSettingsPasswordEntryView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button.make(role: .cancel) {
-                        onCancel()
                         dismiss()
                     }
                 }

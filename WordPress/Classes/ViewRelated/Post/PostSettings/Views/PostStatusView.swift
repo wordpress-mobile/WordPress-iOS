@@ -8,8 +8,6 @@ struct PostStatusView: View {
 
     @State private var isShowingPublishDatePicker = false
     @State private var isShowingPasswordEntry = false
-    @State private var publishDate = Date()
-    @State private var password = ""
 
     @ScaledMetric
     private var statusRowLeadingInset: CGFloat = PostStatusRow.leadingInset
@@ -137,15 +135,9 @@ struct PostStatusView: View {
     }
 
     private var passwordEntryView: some View {
-        PostSettingsPasswordEntryView(
-            password: password,
-            onSave: {
-                settings.password = $0
-            },
-            onCancel: {
-                // Do nothing
-            }
-        )
+        PostSettingsPasswordEntryView(password: settings.password ?? "") {
+            settings.password = $0
+        }
         .presentationDetents([.large])
     }
 }
