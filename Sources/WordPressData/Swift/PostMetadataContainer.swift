@@ -111,16 +111,22 @@ public struct PostMetadataContainer {
     ///   - key: The metadata key to search for
     /// - Returns: The value cast to the specified type if found and compatible, nil otherwise
     public func getValue<T>(_ expectedType: T.Type, forKey key: Key) -> T? {
-        guard let dict = items[key], let value = dict["value"] else { return nil }
+        guard let value = _getValue(forKey: key) else {
+            return nil
+        }
         guard let value = value as? T else {
             wpAssertionFailure("unexpected value", userInfo: [
                 "key": key.rawValue,
-                "actual_type": String(describing: expectedType),
-                "expected_type": String(describing: type(of: value))
+                "actual_type": String(describing: type(of: _getValue)),
+                "expected_type": String(describing: expectedType)
             ])
             return nil
         }
         return value
+    }
+
+    private func _getValue(forKey key: Key) -> Any? {
+        items[key]?["value"]
     }
 
     /// Retrieves a metadata value by key as String (convenience method)
@@ -128,6 +134,23 @@ public struct PostMetadataContainer {
     /// - Returns: The value as String if found and convertible, nil otherwise
     public func getString(for key: Key) -> String? {
         getValue(String.self, forKey: key)
+    }
+
+    /// Gets a bool, regardless of how it's encoded.
+    public func getAdaptiveBool(for key: Key) -> Bool {
+        guard let value = _getValue(forKey: key) else {
+            return false
+        }
+        switch value {
+        case let value as Bool:
+            return value
+        case let value as NSNumber:
+            return value.boolValue
+        case let value as NSString:
+            return value.boolValue
+        default:
+            return false
+        }
     }
 
     /// Sets or updates a metadata item with any JSON-compatible value
@@ -170,53 +193,6 @@ public struct PostMetadataContainer {
     /// - Parameter key: The metadata key to retrieve
     /// - Returns: The complete metadata dictionary containing "key", "value", and optional "id", or nil if not found
     public func entry(forKey key: Key) -> [String: Any]? {
-        return items[key]
+        items[key]
     }
-}
-
-// MARK: - PostMetadata (Jetpack)
-
-extension PostMetadataContainer.Key {
-    public static let jetpackNewsletterAccess: PostMetadataContainer.Key = "_jetpack_newsletter_access"
-    public static let jetpackNewsletterEmailDisabled: PostMetadataContainer.Key = "_jetpack_dont_email_post_to_subs"
-}
-
-extension PostMetadataContainer {
-    /// Gets or sets the Jetpack Newsletter access level as a PostAccessLevel enum
-    public var accessLevel: JetpackPostAccessLevel? {
-        get {
-            guard let value = getString(for: .jetpackNewsletterAccess) else { return nil }
-            return JetpackPostAccessLevel(rawValue: value)
-        }
-        set {
-            if let newValue {
-                setValue(newValue.rawValue, for: .jetpackNewsletterAccess)
-            } else {
-                removeValue(for: .jetpackNewsletterAccess)
-            }
-        }
-    }
-
-    /// Returns `true` if the post is configured to _not_ be sent in an email
-    /// to subscribers.
-    public var isJetpackNewsletterEmailDisabled: Bool {
-        get {
-            guard let value = getString(for: .jetpackNewsletterEmailDisabled) else { return false }
-            return (value as NSString).boolValue
-        }
-        set {
-            if newValue {
-                setValue("1", for: .jetpackNewsletterEmailDisabled)
-            } else {
-                removeValue(for: .jetpackNewsletterEmailDisabled)
-            }
-        }
-    }
-}
-
-/// Valid access levels for Jetpack Newsletter
-public enum JetpackPostAccessLevel: String, CaseIterable, Hashable, Codable {
-    case everybody = "everybody"
-    case subscribers = "subscribers"
-    case paidSubscribers = "paid_subscribers"
 }
