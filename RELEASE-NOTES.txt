@@ -10,6 +10,7 @@
 * [*] Add permalink preview in the slug editor and make other improvements [#24949]
 * [*] Add "Taxonomies" to Site Settings [#24955]
 * [*] Update "Categories" picker to indicate multiple selection [#24952]
+* [*] Fix rare crash on launch when new editor is enabled [#24944]
 
 26.4
 -----

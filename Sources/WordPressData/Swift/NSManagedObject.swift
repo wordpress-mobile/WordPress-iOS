@@ -15,7 +15,7 @@ public extension NSManagedObject {
         return result.flatMap({ ValueType(rawValue: $0) })
     }
 
-    var locallyUniqueId: String {
+    var locallyUniqueID: String {
         let data = Data(self.objectID.uriRepresentation().absoluteString.utf8)
         return SHA256.hash(data: data).compactMap { String(format: "%02x", $0) }.joined()
     }
