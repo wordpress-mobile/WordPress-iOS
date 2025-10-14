@@ -221,6 +221,24 @@ struct PostMetadataTests {
         #expect(metadata.getString(for: .jetpackNewsletterAccess) == "key_value")
         #expect(metadata.getValue(String.self, forKey: "string_key") == "string_value")
     }
+
+    // MARK: - Extensions (JetpackNewsletterEmailDisabled)
+
+    @Test
+    func jetpackNewsletterEmailDisabled() {
+        var metadata = PostMetadata()
+
+        #expect(metadata.isJetpackNewsletterEmailDisabled == false)
+
+        metadata.setValue("", for: .jetpackNewsletterEmailDisabled)
+        #expect(metadata.isJetpackNewsletterEmailDisabled == false)
+
+        metadata.setValue("true", for: .jetpackNewsletterEmailDisabled)
+        #expect(metadata.isJetpackNewsletterEmailDisabled == true)
+
+        metadata.setValue("1", for: .jetpackNewsletterEmailDisabled)
+        #expect(metadata.isJetpackNewsletterEmailDisabled == true)
+    }
 }
 
 // MARK: - Mock Data

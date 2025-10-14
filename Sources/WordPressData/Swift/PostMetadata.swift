@@ -177,8 +177,8 @@ public struct PostMetadata {
 // MARK: - PostMetadata (Jetpack)
 
 extension PostMetadata.Key {
-    /// Jetpack Newsletter access level metadata key
     public static let jetpackNewsletterAccess: PostMetadata.Key = "_jetpack_newsletter_access"
+    public static let jetpackNewsletterEmailDisabled: PostMetadata.Key = "_jetpack_dont_email_post_to_subs"
 }
 
 extension PostMetadata {
@@ -193,6 +193,22 @@ extension PostMetadata {
                 setValue(newValue.rawValue, for: .jetpackNewsletterAccess)
             } else {
                 removeValue(for: .jetpackNewsletterAccess)
+            }
+        }
+    }
+
+    /// Returns `true` if the post is configured to _not_ be sent in an email
+    /// to subscribers.
+    public var isJetpackNewsletterEmailDisabled: Bool {
+        get {
+            guard let value = getString(for: .jetpackNewsletterEmailDisabled) else { return false }
+            return (value as NSString).boolValue
+        }
+        set {
+            if newValue {
+                setValue("1", for: .jetpackNewsletterEmailDisabled)
+            } else {
+                removeValue(for: .jetpackNewsletterEmailDisabled)
             }
         }
     }
