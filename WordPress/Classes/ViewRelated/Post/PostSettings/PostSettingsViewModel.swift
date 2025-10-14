@@ -115,6 +115,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     enum Row {
         case jetpackAccessLevel
+        case jetpackNewsletterEmailOptions
     }
 
     private let originalSettings: PostSettings
@@ -178,6 +179,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         switch row {
         case .jetpackAccessLevel:
             post.blog.supports(.wpComRESTAPI)
+        case .jetpackNewsletterEmailOptions:
+            post.blog.supports(.wpComRESTAPI) && context == .publishing
         }
     }
 

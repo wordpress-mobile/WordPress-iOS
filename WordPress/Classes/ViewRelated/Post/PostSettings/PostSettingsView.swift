@@ -344,6 +344,11 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var moreOptionsSection: some View {
         Section {
+            if viewModel.shouldShow(.jetpackNewsletterEmailOptions) {
+                Toggle(isOn: $viewModel.settings.metadata.isJetpackNewsletterEmailDisabled) {
+                    Text(Strings.newsletterLabel)
+                }
+            }
             if viewModel.shouldShowStickyOption {
                 stickyPostRow
             }
@@ -661,6 +666,12 @@ private enum Strings {
         "postSettings.socialSharing.header",
         value: "Social Sharing",
         comment: "Label for the preview button in Post Settings"
+    )
+
+    static let newsletterLabel = NSLocalizedString(
+        "postSettings.sendNewsletter",
+        value: "Email to Subscribers",
+        comment: "Label for the checkbox that lets you send a post to newsletter subscribers"
     )
 
     static let readyToPublish = NSLocalizedString(
