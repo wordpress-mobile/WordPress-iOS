@@ -28,7 +28,7 @@ import WordPressShared
 ///   }
 /// ]
 /// ```
-public struct PostMetadata {
+public struct PostMetadataContainer {
     public struct Key: ExpressibleByStringLiteral, Hashable {
         public let rawValue: String
 
@@ -58,13 +58,13 @@ public struct PostMetadata {
         if let data = post.rawMetadata {
             do {
                 let metadata = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] ?? []
-                self = PostMetadata(metadata: metadata)
+                self = PostMetadataContainer(metadata: metadata)
             } catch {
                 wpAssertionFailure("Failed to decode metadata JSON", userInfo: ["error": error.localizedDescription])
-                self = PostMetadata()
+                self = PostMetadataContainer()
             }
         } else {
-            self = PostMetadata()
+            self = PostMetadataContainer()
         }
     }
 
@@ -77,7 +77,7 @@ public struct PostMetadata {
         guard let dictionary = metadata as? [[String: Any]] else {
             throw Error.invalidData
         }
-        self = PostMetadata(metadata: dictionary)
+        self = PostMetadataContainer(metadata: dictionary)
     }
 
     /// Initialize with raw metadata array (same format as JSON data)
@@ -176,12 +176,12 @@ public struct PostMetadata {
 
 // MARK: - PostMetadata (Jetpack)
 
-extension PostMetadata.Key {
-    public static let jetpackNewsletterAccess: PostMetadata.Key = "_jetpack_newsletter_access"
-    public static let jetpackNewsletterEmailDisabled: PostMetadata.Key = "_jetpack_dont_email_post_to_subs"
+extension PostMetadataContainer.Key {
+    public static let jetpackNewsletterAccess: PostMetadataContainer.Key = "_jetpack_newsletter_access"
+    public static let jetpackNewsletterEmailDisabled: PostMetadataContainer.Key = "_jetpack_dont_email_post_to_subs"
 }
 
-extension PostMetadata {
+extension PostMetadataContainer {
     /// Gets or sets the Jetpack Newsletter access level as a PostAccessLevel enum
     public var accessLevel: JetpackPostAccessLevel? {
         get {

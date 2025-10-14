@@ -49,7 +49,7 @@ private extension RemotePostCreateParameters {
         var output = PostHelper.remoteMetadata(for: post) as? [[String: Any]] ?? []
 
         // Add Jetpack Newsletter access level metadata
-        let metadata = PostMetadata(post)
+        let metadata = PostMetadataContainer(post)
         if let entry = metadata.entry(forKey: .jetpackNewsletterAccess) {
             output.append(entry)
         }

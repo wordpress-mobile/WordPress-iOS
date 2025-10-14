@@ -51,7 +51,7 @@ struct PostSettings: Hashable {
 
         featuredImageID = post.featuredImage?.mediaID?.intValue
 
-        let metadata = PostMetadata(post)
+        let metadata = PostMetadataContainer(post)
 
         switch post {
         case let post as Post:
@@ -153,7 +153,7 @@ struct PostSettings: Hashable {
             }
 
             /// Update metadata
-            var metadata = PostMetadata(post)
+            var metadata = PostMetadataContainer(post)
             if metadata.accessLevel != accessLevel {
                 metadata.accessLevel = accessLevel
                 do {

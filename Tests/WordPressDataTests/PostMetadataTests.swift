@@ -11,7 +11,7 @@ struct PostMetadataTests {
 
     @Test("Initialization with mock data")
     func initializationWithMockData() throws {
-        let metadata = try PostMetadata(data: Self.mockMetadataJSON)
+        let metadata = try PostMetadataContainer(data: Self.mockMetadataJSON)
 
         #expect(!metadata.values.isEmpty)
         #expect(metadata.values.count == 12)
@@ -23,7 +23,7 @@ struct PostMetadataTests {
             ["key": "key1", "value": "value1"],
             ["key": "key2", "value": "value2"]
         ]
-        let metadata = PostMetadata(metadata: metadataArray)
+        let metadata = PostMetadataContainer(metadata: metadataArray)
 
         #expect(metadata.values.count == 2)
         #expect(metadata.getValue(String.self, forKey: "key1") == "value1")
@@ -32,7 +32,7 @@ struct PostMetadataTests {
 
     @Test("Empty initialization")
     func emptyInitialization() {
-        let metadata = PostMetadata()
+        let metadata = PostMetadataContainer()
 
         #expect(metadata.values.isEmpty)
         #expect(metadata.values.count == 0)
@@ -42,7 +42,7 @@ struct PostMetadataTests {
 
     @Test("Get value from mock data")
     func getValueFromMockData() throws {
-        let metadata = try PostMetadata(data: Self.mockMetadataJSON)
+        let metadata = try PostMetadataContainer(data: Self.mockMetadataJSON)
 
         #expect(metadata.getValue(String.self, forKey: .jetpackNewsletterAccess) == "subscribers")
         #expect(metadata.getValue(String.self, forKey: "wp_jp_foreign_id") == "95199E7F-EEF2-46B0-BC89-898AE817CEAD")
@@ -54,7 +54,7 @@ struct PostMetadataTests {
 
     @Test("Get string value from mock data")
     func getStringFromMockData() throws {
-        let metadata = try PostMetadata(data: Self.mockMetadataJSON)
+        let metadata = try PostMetadataContainer(data: Self.mockMetadataJSON)
 
         #expect(metadata.getString(for: .jetpackNewsletterAccess) == "subscribers")
         #expect(metadata.getString(for: "wp_jp_foreign_id") == "95199E7F-EEF2-46B0-BC89-898AE817CEAD")
@@ -64,7 +64,7 @@ struct PostMetadataTests {
 
     @Test("Set value")
     func setValue() {
-        var metadata = PostMetadata()
+        var metadata = PostMetadataContainer()
 
         metadata.setValue("test_value", for: "test_key", id: "123")
 
@@ -74,7 +74,7 @@ struct PostMetadataTests {
 
     @Test("Set value with Key type")
     func setValueWithKeyType() {
-        var metadata = PostMetadata()
+        var metadata = PostMetadataContainer()
 
         metadata.setValue("test_value", for: .jetpackNewsletterAccess)
 
@@ -84,7 +84,7 @@ struct PostMetadataTests {
 
     @Test("Set value updates existing")
     func setValueUpdatesExisting() throws {
-        var metadata = try PostMetadata(data: Self.mockMetadataJSON)
+        var metadata = try PostMetadataContainer(data: Self.mockMetadataJSON)
         let originalCount = metadata.values.count
 
         metadata.setValue("new_value", for: .jetpackNewsletterAccess)
@@ -95,7 +95,7 @@ struct PostMetadataTests {
 
     @Test("Remove value")
     func removeValue() throws {
-        var metadata = try PostMetadata(data: Self.mockMetadataJSON)
+        var metadata = try PostMetadataContainer(data: Self.mockMetadataJSON)
         let originalCount = metadata.values.count
 
         let removed = metadata.removeValue(for: .jetpackNewsletterAccess)
@@ -111,7 +111,7 @@ struct PostMetadataTests {
 
     @Test("Clear all metadata")
     func clear() throws {
-        var metadata = try PostMetadata(data: Self.mockMetadataJSON)
+        var metadata = try PostMetadataContainer(data: Self.mockMetadataJSON)
 
         metadata.clear()
 
@@ -123,14 +123,14 @@ struct PostMetadataTests {
 
     @Test("Access level from mock data")
     func accessLevelFromMockData() throws {
-        let metadata = try PostMetadata(data: Self.mockMetadataJSON)
+        let metadata = try PostMetadataContainer(data: Self.mockMetadataJSON)
 
         #expect(metadata.accessLevel == .subscribers)
     }
 
     @Test("Set access level")
     func setAccessLevel() {
-        var metadata = PostMetadata()
+        var metadata = PostMetadataContainer()
 
         metadata.accessLevel = .everybody
 
@@ -140,7 +140,7 @@ struct PostMetadataTests {
 
     @Test("Remove access level")
     func removeAccessLevel() throws {
-        var metadata = try PostMetadata(data: Self.mockMetadataJSON)
+        var metadata = try PostMetadataContainer(data: Self.mockMetadataJSON)
 
         #expect(metadata.accessLevel != nil)
 
@@ -154,11 +154,11 @@ struct PostMetadataTests {
 
     @Test("Encode and decode round trip")
     func encodeAndDecodeRoundTrip() throws {
-        let originalMetadata = try PostMetadata(data: Self.mockMetadataJSON)
+        let originalMetadata = try PostMetadataContainer(data: Self.mockMetadataJSON)
 
         let encodedData = try #require(try originalMetadata.encode(), "Failed to encode metadata")
 
-        let decodedMetadata = try PostMetadata(data: encodedData)
+        let decodedMetadata = try PostMetadataContainer(data: encodedData)
 
         #expect(originalMetadata.values.count == decodedMetadata.values.count)
 
@@ -176,7 +176,7 @@ struct PostMetadataTests {
         let invalidJSON = "invalid json".data(using: .utf8)!
 
         #expect(throws: Error.self) {
-            _ = try try PostMetadata(data: invalidJSON)
+            _ = try try PostMetadataContainer(data: invalidJSON)
         }
     }
 
@@ -189,7 +189,7 @@ struct PostMetadataTests {
         ]
 
         let jsonData = try JSONSerialization.data(withJSONObject: malformedData, options: [])
-        let metadata = try PostMetadata(data: jsonData)
+        let metadata = try PostMetadataContainer(data: jsonData)
 
         #expect(metadata.values.count == 1) // Only the valid item should be parsed
         #expect(metadata.getValue(String.self, forKey: "valid_key") == "valid_value")
@@ -197,19 +197,19 @@ struct PostMetadataTests {
 
     @Test("Key type string literal")
     func keyTypeStringLiteral() {
-        let key: PostMetadata.Key = "custom_key"
+        let key: PostMetadataContainer.Key = "custom_key"
         #expect(key.rawValue == "custom_key")
     }
 
     @Test("Key type raw value init")
     func keyTypeRawValueInit() {
-        let key = PostMetadata.Key(rawValue: "another_key")
+        let key = PostMetadataContainer.Key(rawValue: "another_key")
         #expect(key.rawValue == "another_key")
     }
 
     @Test("Mixed key types")
     func mixedKeyTypes() {
-        var metadata = PostMetadata()
+        var metadata = PostMetadataContainer()
 
         // Set using Key type
         metadata.setValue("key_value", for: .jetpackNewsletterAccess)
@@ -226,7 +226,7 @@ struct PostMetadataTests {
 
     @Test
     func jetpackNewsletterEmailDisabled() {
-        var metadata = PostMetadata()
+        var metadata = PostMetadataContainer()
 
         #expect(metadata.isJetpackNewsletterEmailDisabled == false)
 
