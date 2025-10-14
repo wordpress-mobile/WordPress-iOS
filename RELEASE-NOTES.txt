@@ -1,6 +1,7 @@
 26.5
 -----
 * [*] Add "Access" section to "Post Settings" [#24942]
+* [*] Add "Email to Subscribers" row to "Publishing" sheet [#24946]
 
 26.4
 -----
