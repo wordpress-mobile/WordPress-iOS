@@ -669,7 +669,7 @@ private enum Strings {
     )
 
     static let newsletterLabel = NSLocalizedString(
-        "postSettings.sendNewsletter",
+        "postSettings.emailToSubscribers.label",
         value: "Email to Subscribers",
         comment: "Label for the checkbox that lets you send a post to newsletter subscribers"
     )
