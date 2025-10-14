@@ -28,7 +28,7 @@ public struct PostMetadata: Hashable {
             container.accessLevel = accessLevel
         }
         if previous.isJetpackNewsletterEmailDisabled != isJetpackNewsletterEmailDisabled {
-            container.setValue(isJetpackNewsletterEmailDisabled, for: .jetpackNewsletterEmailDisabled)
+            container.setValue(String(describing: isJetpackNewsletterEmailDisabled), for: .jetpackNewsletterEmailDisabled)
         }
     }
 
