@@ -287,7 +287,7 @@ struct PostSettingsFormContentView: View {
             Section {
                 SettingsPicker(
                     title: Strings.accessHeader,
-                    selection: $viewModel.settings.accessLevel,
+                    selection: $viewModel.settings.metadata.accessLevel,
                     values: JetpackPostAccessLevel.allCases.map { level in
                         SettingsPickerValue(
                             title: level.localizedTitle,

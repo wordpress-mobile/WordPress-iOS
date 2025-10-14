@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// Metadata used by the app.
 public struct PostMetadata: Hashable {
@@ -8,6 +9,11 @@ public struct PostMetadata: Hashable {
     /// Returns `true` if the post is configured to _not_ be sent in an email
     /// to subscribers.
     public var isJetpackNewsletterEmailDisabled: Bool
+
+    /// Initialized metadata with the given post.
+    public init(_ post: AbstractPost) {
+        self = PostMetadata(from: PostMetadataContainer(post))
+    }
 
     public init(from container: PostMetadataContainer) {
         self.accessLevel = container.accessLevel
