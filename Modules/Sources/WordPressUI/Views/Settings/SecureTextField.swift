@@ -37,7 +37,7 @@ public struct SecureTextField: UIViewRepresentable {
         textView.text = text
         textView.isSecureTextEntry = isSecure
         textView.font = {
-            if isSecure {
+            if isSecure || text.isEmpty {
                 return UIFont.preferredFont(forTextStyle: .body)
             }
             guard let font = UIFont(name: "Menlo", size: 17) else {
