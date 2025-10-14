@@ -345,8 +345,8 @@ struct PostSettingsFormContentView: View {
     private var moreOptionsSection: some View {
         Section {
             if viewModel.shouldShow(.jetpackNewsletterEmailOptions) {
-                Toggle(isOn: $viewModel.settings.metadata.isJetpackNewsletterEmailDisabled) {
-                    Text(Strings.newsletterLabel)
+                Toggle(isOn: $viewModel.emailToSubscribers) {
+                    Text(Strings.emailToSubscribers)
                 }
             }
             if viewModel.shouldShowStickyOption {
@@ -668,7 +668,7 @@ private enum Strings {
         comment: "Label for the preview button in Post Settings"
     )
 
-    static let newsletterLabel = NSLocalizedString(
+    static let emailToSubscribers = NSLocalizedString(
         "postSettings.emailToSubscribers.label",
         value: "Email to Subscribers",
         comment: "Label for the checkbox that lets you send a post to newsletter subscribers"

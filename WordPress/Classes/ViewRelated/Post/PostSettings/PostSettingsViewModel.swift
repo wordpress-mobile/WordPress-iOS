@@ -49,6 +49,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         settings.author?.avatarURL
     }
 
+    var emailToSubscribers: Bool {
+        get { !settings.metadata.isJetpackNewsletterEmailDisabled }
+        set { settings.metadata.isJetpackNewsletterEmailDisabled = !newValue }
+    }
+
     var publishDateText: String? {
         guard let date = settings.publishDate else {
             return nil
