@@ -23,6 +23,7 @@ public struct RemotePostCreateParameters: Equatable {
     public var tags: [String] = []
     public var categoryIDs: [Int] = []
     public var metadata: Set<RemotePostMetadataItem> = []
+    public var discussion: RemotePostDiscussionSettings?
 
     public init(type: String, status: String) {
         self.type = type
@@ -53,6 +54,7 @@ public struct RemotePostUpdateParameters: Equatable {
     public var tags: [String]?
     public var categoryIDs: [Int]?
     public var metadata: Set<RemotePostMetadataItem>?
+    public var discussion: RemotePostDiscussionSettings?
 
     public init() {}
 }
@@ -66,6 +68,18 @@ public struct RemotePostMetadataItem: Hashable {
         self.id = id
         self.key = key
         self.value = value
+    }
+}
+
+public struct RemotePostDiscussionSettings: Hashable {
+    public var allowComments: Bool?
+    public var allowPings: Bool?
+
+    var isEmpty: Bool { allowComments == nil && allowPings == nil }
+
+    public init(allowComments: Bool? = nil, allowPings: Bool? = nil) {
+        self.allowComments = allowComments
+        self.allowPings = allowPings
     }
 }
 
@@ -118,6 +132,9 @@ extension RemotePostCreateParameters {
         if Set(previous.categoryIDs) != Set(categoryIDs) {
             changes.categoryIDs = categoryIDs
         }
+        if previous.discussion != discussion {
+            changes.discussion = discussion
+        }
         if previous.metadata != metadata {
             changes.metadata = metadata
         }
@@ -168,6 +185,9 @@ extension RemotePostCreateParameters {
         if let categoryIDs = changes.categoryIDs {
             self.categoryIDs = categoryIDs
         }
+        if let discussion = changes.discussion {
+            self.discussion = discussion
+        }
         if let metadata = changes.metadata {
             self.metadata = metadata
         }
@@ -193,6 +213,7 @@ private enum RemotePostWordPressComCodingKeys: String, CodingKey {
     case format
     case isSticky = "sticky"
     case categoryIDs = "categories_by_id"
+    case discussion
     case metadata
 
     static let postTags = "post_tag"
@@ -231,6 +252,9 @@ struct RemotePostCreateParametersWordPressComEncoder: Encodable {
         }
         if parameters.isSticky {
             try container.encode(parameters.isSticky, forKey: .isSticky)
+        }
+        if let discussion = parameters.discussion, !discussion.isEmpty {
+            try container.encode(RemotePostDiscussionSettingsWordPressComEncoder(discussion: discussion), forKey: .discussion)
         }
     }
 
@@ -279,6 +303,21 @@ struct RemotePostUpdateParametersWordPressComMetadata: Encodable {
     }
 }
 
+struct RemotePostDiscussionSettingsWordPressComEncoder: Encodable {
+    var discussion: RemotePostDiscussionSettings
+
+    private enum CodingKeys: String, CodingKey {
+        case commenets = "comments_open"
+        case pings = "pings_open"
+    }
+
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(discussion.allowComments, forKey: .commenets)
+        try container.encodeIfPresent(discussion.allowPings, forKey: .pings)
+    }
+}
+
 struct RemotePostUpdateParametersWordPressComEncoder: Encodable {
     let parameters: RemotePostUpdateParameters
 
@@ -314,6 +353,9 @@ struct RemotePostUpdateParametersWordPressComEncoder: Encodable {
         }
         try container.encodeIfPresent(parameters.categoryIDs, forKey: .categoryIDs)
         try container.encodeIfPresent(parameters.isSticky, forKey: .isSticky)
+        if let discussion = parameters.discussion, !discussion.isEmpty {
+            try container.encode(RemotePostDiscussionSettingsWordPressComEncoder(discussion: discussion), forKey: .discussion)
+        }
     }
 }
 
