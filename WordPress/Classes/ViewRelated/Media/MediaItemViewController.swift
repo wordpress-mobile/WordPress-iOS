@@ -105,6 +105,7 @@ final class MediaItemViewController: UITableViewController {
         rows.append(TextViewRow(title: Strings.url, details: media.remoteURL ?? ""))
         rows.append(TextRow(title: Strings.fileName, value: media.filename ?? ""))
         rows.append(TextRow(title: Strings.fileType, value: presenter.fileType ?? ""))
+        rows.append(TextRow(title: Strings.fileSize, value: media.formattedSize ?? ""))
 
         switch media.mediaType {
         case .image, .video:
@@ -475,8 +476,9 @@ private enum Strings {
     static let caption = NSLocalizedString("siteMedia.details.caption", value: "Caption", comment: "Noun. Label for the caption for a media asset (image / video)")
     static let description = NSLocalizedString("siteMedia.details.description", value: "Description", comment: "Label for the description for a media asset (image / video)")
     static let altText = NSLocalizedString("siteMedia.details.altText", value: "Alt Text", comment: "Label for the alt for a media asset (image)")
-    static let fileName = NSLocalizedString("siteMedia.details.fileName", value: "File name", comment: "Label for the file name for a media asset (image / video)")
-    static let fileType = NSLocalizedString("siteMedia.details.fileType", value: "File type", comment: "Label for the file type (.JPG, .PNG, etc) for a media asset (image / video)")
+    static let fileName = NSLocalizedString("siteMedia.details.fileName", value: "File Name", comment: "Label for the file name for a media asset (image / video)")
+    static let fileType = NSLocalizedString("siteMedia.details.fileType", value: "File Type", comment: "Label for the file type (.JPG, .PNG, etc) for a media asset (image / video)")
+    static let fileSize = NSLocalizedString("siteMedia.details.fileSize", value: "File Size", comment: "Label for the file size for a media asset (image / video)")
     static let dimensions = NSLocalizedString("siteMedia.details.dimensions", value: "Dimensions", comment: "Label for the dimensions in pixels for a media asset (image / video)")
     static let uploaded = NSLocalizedString("siteMedia.details.uploaded", value: "Uploaded", comment: "Label for the date a media asset (image / video) was uploaded")
     static let trash = NSLocalizedString("siteMedia.details.trash", value: "Trash", comment: "Accessibility label for trash buttons in nav bars")

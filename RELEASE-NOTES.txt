@@ -1,6 +1,7 @@
 26.5
 -----
 * [*] Add "Access" section to "Post Settings" [#24942]
+* [*] Add "File Size" to Site Media Details [#24947]
 
 26.4
 -----
