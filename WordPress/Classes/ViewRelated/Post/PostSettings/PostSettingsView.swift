@@ -351,8 +351,8 @@ struct PostSettingsFormContentView: View {
                 pendingReviewRow
             }
             if viewModel.isPost {
-                postFormatRow
                 discussionRow
+                postFormatRow
             }
             if !viewModel.isPost {
                 parentPageRow
