@@ -6,6 +6,11 @@ import WordPressShared
 /// A plain data structure representing the subset of post/page settings that can be edited in PostSettingsView.
 /// Used for change tracking and to separate UI state from Core Data objects.
 struct PostSettings: Hashable {
+    private enum DiscussionState: String, CaseIterable {
+        case open = "open"
+        case closed = "closed"
+    }
+    
     struct Author: Hashable {
         let id: Int
         let displayName: String
@@ -27,6 +32,8 @@ struct PostSettings: Hashable {
     var isStickyPost = false
     var sharing: PostSocialSharingSettings?
     var accessLevel: JetpackPostAccessLevel?
+    var allowComments = true
+    var allowPings = true
 
     // MARK: - Page-specific
     var parentPageID: Int?
@@ -63,6 +70,8 @@ struct PostSettings: Hashable {
             })
             sharing = PostSocialSharingSettings.make(for: post)
             accessLevel = metadata.accessLevel ?? .everybody
+            allowComments = post.commentsStatus != DiscussionState.closed.rawValue
+            allowPings = post.pingsStatus != DiscussionState.closed.rawValue
         case let page as Page:
             parentPageID = page.parentID?.intValue
         default:
@@ -134,6 +143,17 @@ struct PostSettings: Hashable {
             // Update sticky post setting
             if post.isStickyPost != isStickyPost {
                 post.isStickyPost = isStickyPost
+            }
+
+            // Update discussion settings
+            let newCommentsStatus = allowComments ? DiscussionState.open.rawValue : DiscussionState.closed.rawValue
+            if post.commentsStatus != newCommentsStatus {
+                post.commentsStatus = newCommentsStatus
+            }
+
+            let newPingsStatus = allowPings ? DiscussionState.open.rawValue : DiscussionState.closed.rawValue
+            if post.pingsStatus != newPingsStatus {
+                post.pingsStatus = newPingsStatus
             }
 
             if let sharing {
