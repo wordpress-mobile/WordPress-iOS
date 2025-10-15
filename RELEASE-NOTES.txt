@@ -1,6 +1,8 @@
 26.5
 -----
 * [*] Add "Access" section to "Post Settings" [#24942]
+* [*] Add "Discussion" to "Post Settings" [#24948]
+
 
 26.4
 -----
