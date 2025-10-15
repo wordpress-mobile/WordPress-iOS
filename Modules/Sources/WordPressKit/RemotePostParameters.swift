@@ -379,6 +379,8 @@ private enum RemotePostXMLRPCCodingKeys: String, CodingKey {
     case format = "post_format"
     case isSticky = "sticky"
     case metadata = "custom_fields"
+    case commentStatus = "comment_status"
+    case pingStatus = "ping_status"
 
     static let taxonomyTag = "post_tag"
     static let taxonomyCategory = "category"
@@ -417,6 +419,10 @@ struct RemotePostCreateParametersXMLRPCEncoder: Encodable {
         }
         if parameters.isSticky {
             try container.encode(parameters.isSticky, forKey: .isSticky)
+        }
+        if parameters.discussion != .default {
+            try container.encode(parameters.discussion.allowComments ? "open" : "closed", forKey: .commentStatus)
+            try container.encode(parameters.discussion.allowPings ? "open" : "closed", forKey: .pingStatus)
         }
     }
 }
@@ -457,6 +463,10 @@ struct RemotePostUpdateParametersXMLRPCEncoder: Encodable {
             try container.encode([RemotePostXMLRPCCodingKeys.taxonomyCategory: categoryIDs], forKey: .terms)
         }
         try container.encodeIfPresent(parameters.isSticky, forKey: .isSticky)
+        if let discussion = parameters.discussion {
+            try container.encode(discussion.allowComments ? "open" : "closed", forKey: .commentStatus)
+            try container.encode(discussion.allowPings ? "open" : "closed", forKey: .pingStatus)
+        }
     }
 }
 
