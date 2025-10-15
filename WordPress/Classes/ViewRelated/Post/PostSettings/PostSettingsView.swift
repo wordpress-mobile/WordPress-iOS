@@ -391,14 +391,7 @@ struct PostSettingsFormContentView: View {
 
     private var slugRow: some View {
         NavigationLink {
-            SettingsTextFieldView(
-                title: Strings.slugLabel,
-                text: $viewModel.settings.slug,
-                placeholder: Strings.slugPlaceholder,
-                hint: Strings.slugHint
-            )
-            .autocapitalization(.none)
-            .autocorrectionDisabled()
+            PostSlugEditorView(slug: $viewModel.settings.slug, post: viewModel.post)
         } label: {
             SettingsRow(Strings.slugLabel, value: viewModel.slugText)
         }
@@ -482,6 +475,7 @@ private struct SettingsTextFieldView: View {
         }
     }
 }
+
 
 private struct LegacyNavigationLinkRow<Content: View>: View {
     let action: () -> Void
