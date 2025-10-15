@@ -2,13 +2,13 @@ import SwiftUI
 
 struct PostDiscussionSettingsView: View {
     @Binding var postSettings: PostSettings
-    
+
     var body: some View {
         Form {
             Section {
                 Toggle(Strings.allowCommentsLabel, isOn: $postSettings.allowComments)
                     .accessibilityIdentifier("post_discussion_allow_comments_toggle")
-                
+
                 Toggle(Strings.allowPingsLabel, isOn: $postSettings.allowPings)
                     .accessibilityIdentifier("post_discussion_allow_pings_toggle")
             } header: {

@@ -72,12 +72,10 @@ public struct RemotePostMetadataItem: Hashable {
 }
 
 public struct RemotePostDiscussionSettings: Hashable {
-    public var allowComments: Bool?
-    public var allowPings: Bool?
+    public var allowComments: Bool
+    public var allowPings: Bool
 
-    var isEmpty: Bool { allowComments == nil && allowPings == nil }
-
-    public init(allowComments: Bool? = nil, allowPings: Bool? = nil) {
+    public init(allowComments: Bool = true, allowPings: Bool = true) {
         self.allowComments = allowComments
         self.allowPings = allowPings
     }
@@ -132,7 +130,7 @@ extension RemotePostCreateParameters {
         if Set(previous.categoryIDs) != Set(categoryIDs) {
             changes.categoryIDs = categoryIDs
         }
-        if previous.discussion != discussion {
+        if (previous.discussion ?? .init()) != (discussion ?? .init()) {
             changes.discussion = discussion
         }
         if previous.metadata != metadata {
@@ -253,7 +251,7 @@ struct RemotePostCreateParametersWordPressComEncoder: Encodable {
         if parameters.isSticky {
             try container.encode(parameters.isSticky, forKey: .isSticky)
         }
-        if let discussion = parameters.discussion, !discussion.isEmpty {
+        if let discussion = parameters.discussion {
             try container.encode(RemotePostDiscussionSettingsWordPressComEncoder(discussion: discussion), forKey: .discussion)
         }
     }
@@ -353,7 +351,7 @@ struct RemotePostUpdateParametersWordPressComEncoder: Encodable {
         }
         try container.encodeIfPresent(parameters.categoryIDs, forKey: .categoryIDs)
         try container.encodeIfPresent(parameters.isSticky, forKey: .isSticky)
-        if let discussion = parameters.discussion, !discussion.isEmpty {
+        if let discussion = parameters.discussion {
             try container.encode(RemotePostDiscussionSettingsWordPressComEncoder(discussion: discussion), forKey: .discussion)
         }
     }

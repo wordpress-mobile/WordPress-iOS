@@ -27,3 +27,20 @@ public extension Post {
     @NSManaged func addCategories(_ values: Set<PostCategory>)
     @NSManaged func removeCategories(_ values: Set<PostCategory>)
 }
+
+extension Post {
+    public var allowsComments: Bool {
+        get { commentsStatus != DiscussionState.closed.rawValue }
+        set { commentsStatus =  (allowsComments ? DiscussionState.open : .closed).rawValue }
+    }
+
+    public var allowsPings: Bool {
+        get { pingsStatus != DiscussionState.closed.rawValue }
+        set { pingsStatus = (allowsPings ? DiscussionState.open : .closed).rawValue }
+    }
+
+    private enum DiscussionState: String, CaseIterable {
+        case open = "open"
+        case closed = "closed"
+    }
+}
