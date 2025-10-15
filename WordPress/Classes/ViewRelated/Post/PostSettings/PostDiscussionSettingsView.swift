@@ -11,8 +11,6 @@ struct PostDiscussionSettingsView: View {
 
                 Toggle(Strings.allowPingsLabel, isOn: $postSettings.allowPings)
                     .accessibilityIdentifier("post_discussion_allow_pings_toggle")
-            } header: {
-                Text(Strings.discussionHeader)
             } footer: {
                 Text(Strings.discussionFooter)
             }

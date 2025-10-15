@@ -65,8 +65,8 @@ struct PostSettings: Hashable {
             })
             sharing = PostSocialSharingSettings.make(for: post)
             accessLevel = metadata.accessLevel ?? .everybody
-            allowComments = post.allowsComments
-            allowPings = post.allowsPings
+            allowComments = post.allowComments
+            allowPings = post.allowPings
         case let page as Page:
             parentPageID = page.parentID?.intValue
         default:
@@ -141,8 +141,8 @@ struct PostSettings: Hashable {
             }
 
             // Update discussion settings
-            if post.allowsComments != allowsComments {
-                post.allowsComments = allowsComments
+            if post.allowComments != allowComments {
+                post.allowComments = allowComments
             }
             if post.allowPings != allowPings {
                 post.allowPings = allowPings

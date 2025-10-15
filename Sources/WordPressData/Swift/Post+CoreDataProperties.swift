@@ -29,14 +29,14 @@ public extension Post {
 }
 
 extension Post {
-    public var allowsComments: Bool {
+    public var allowComments: Bool {
         get { commentsStatus != DiscussionState.closed.rawValue }
-        set { commentsStatus =  (allowsComments ? DiscussionState.open : .closed).rawValue }
+        set { commentsStatus = (newValue ? DiscussionState.open : .closed).rawValue }
     }
 
-    public var allowsPings: Bool {
+    public var allowPings: Bool {
         get { pingsStatus != DiscussionState.closed.rawValue }
-        set { pingsStatus = (allowsPings ? DiscussionState.open : .closed).rawValue }
+        set { pingsStatus = (newValue ? DiscussionState.open : .closed).rawValue }
     }
 
     private enum DiscussionState: String, CaseIterable {

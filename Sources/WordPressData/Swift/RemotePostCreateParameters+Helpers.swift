@@ -34,10 +34,10 @@ extension RemotePostCreateParameters {
                 return PostHelper.mapDictionaryToMetadataItems(dictionary)
             })
             // Pass the discussion settings only if we opt into closing (the default value is open)
-            if !post.allowsComments || !post.allowsPings {
+            if !post.allowComments || !post.allowPings {
                 discussion = RemotePostDiscussionSettings(
-                    allowComments: post.allowsComments,
-                    allowPings: post.allowsPings
+                    allowComments: post.allowComments,
+                    allowPings: post.allowPings
                 )
             }
         default:
