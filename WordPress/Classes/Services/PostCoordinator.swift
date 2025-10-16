@@ -123,7 +123,8 @@ class PostCoordinator: NSObject {
         }
 
         do {
-            try await PostRepository().save(post, changes: changes)
+            let repository = PostRepository(coreDataStack: coreDataStack)
+            try await repository.save(post, changes: changes)
 
             if previousStatus != post.status && post.isStatus(in: [.scheduled, .publish]) {
                 if post.status == .scheduled {
