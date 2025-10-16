@@ -112,7 +112,7 @@ struct PostSlugEditorView: View {
                     }
                 }
             }
-        } else if !post.hasRemote() {
+        } else if !post.hasRemote() && post.blog.dotComID != nil {
             Section(Strings.permalinkSectionTitle) {
                 Text(Strings.permalinkDraftNotice)
                     .font(.callout)
