@@ -257,26 +257,6 @@ struct RemotePostCreateParametersWordPressComEncoder: Encodable {
             try container.encode(RemotePostDiscussionSettingsWordPressComEncoder(discussion: parameters.discussion), forKey: .discussion)
         }
     }
-
-    // - warning: fixme
-    static func encodeMetadata(_ metadata: Set<RemotePostMetadataItem>) -> [[String: Any]] {
-        metadata.map { item in
-            var operation = "update"
-            if item.key == nil {
-                if item.id != nil && item.value == nil {
-                    operation = "delete"
-                } else if item.id == nil && item.value != nil {
-                    operation = "add"
-                }
-            }
-            var dictionary: [String: Any] = [:]
-            if let id = item.id { dictionary["id"] = id }
-            if let value = item.value { dictionary["value"] = value }
-            if let key = item.key { dictionary["key"] = key }
-            dictionary["operation"] = operation
-            return dictionary
-        }
-    }
 }
 
 struct RemotePostUpdateParametersWordPressComMetadata: Encodable {

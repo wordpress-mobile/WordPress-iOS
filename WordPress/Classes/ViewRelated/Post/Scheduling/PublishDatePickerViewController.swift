@@ -11,6 +11,7 @@ struct PublishDatePickerConfiguration {
     /// If set to `true`, the user will no longer be able to remove the selection.
     var isRequired = false
     var timeZone: TimeZone
+    var range = Date.distantPast...Date.distantFuture
     var updated: (Date?) -> Void
 }
 
@@ -90,7 +91,7 @@ struct PublishDatePickerView: View {
             configuration.date ?? Date()
         }, set: {
             configuration.date = $0
-        }), displayedComponents: [.date, .hourAndMinute])
+        }), in: configuration.range, displayedComponents: [.date, .hourAndMinute])
         .environment(\.timeZone, configuration.timeZone)
         .datePickerStyle(.graphical)
         .labelsHidden()
