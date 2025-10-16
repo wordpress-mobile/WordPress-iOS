@@ -1,236 +1,215 @@
 import SwiftUI
-import WordPressData
+import WordPressUI
 
 @MainActor
 struct PostSlugEditorView: View {
     @Binding var slug: String
     let post: AbstractPost
-    
+
     @FocusState private var isFocused: Bool
-    @Environment(\.openURL) private var openURL
-    
-    private var permalinkURL: String {
-        guard let blog = post.blog,
-              let blogURL = blog.url,
-              !blogURL.isEmpty else {
-            return ""
-        }
-        
-        let baseURL = blogURL.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
-        let slugToUse = effectiveSlug
-        
-        // Try to use the blog's permalink structure if available
-        if let permalinkStructure = blog.options?["permalink_structure"] as? String,
-           !permalinkStructure.isEmpty {
-            return constructPermalinkWithStructure(baseURL: baseURL, structure: permalinkStructure, slug: slugToUse)
-        } else {
-            // Fallback to common WordPress permalink structure
-            return constructDefaultPermalink(baseURL: baseURL, slug: slugToUse)
-        }
-    }
-    
-    private var basePermalinkURL: String {
-        guard let blog = post.blog,
-              let blogURL = blog.url,
-              !blogURL.isEmpty else {
-            return ""
-        }
-        
-        let baseURL = blogURL.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
-        
-        // Try to use the blog's permalink structure if available
-        if let permalinkStructure = blog.options?["permalink_structure"] as? String,
-           !permalinkStructure.isEmpty {
-            return constructBasePermalinkWithStructure(baseURL: baseURL, structure: permalinkStructure)
-        } else {
-            // Fallback to common WordPress permalink structure
-            return constructDefaultBasePermalink(baseURL: baseURL)
-        }
-    }
-    
+
     private var effectiveSlug: String {
         if !slug.isEmpty {
             return slug
-        } else if let postTitle = post.postTitle, !postTitle.isEmpty {
-            return sanitizeSlug(postTitle)
+        } else if let suggestedSlug = post.suggestedSlug, !suggestedSlug.isEmpty {
+            return suggestedSlug
         } else {
-            return "untitled"
+            return ""
         }
     }
-    
-    // MARK: - Permalink Construction Helpers
-    
-    private func constructPermalinkWithStructure(baseURL: String, structure: String, slug: String) -> String {
-        let postDate = post.dateCreated ?? Date()
-        let calendar = Calendar.current
-        
-        var permalink = structure
-        permalink = permalink.replacingOccurrences(of: "%year%", with: String(calendar.component(.year, from: postDate)))
-        permalink = permalink.replacingOccurrences(of: "%monthnum%", with: String(format: "%02d", calendar.component(.month, from: postDate)))
-        permalink = permalink.replacingOccurrences(of: "%day%", with: String(format: "%02d", calendar.component(.day, from: postDate)))
-        permalink = permalink.replacingOccurrences(of: "%hour%", with: String(format: "%02d", calendar.component(.hour, from: postDate)))
-        permalink = permalink.replacingOccurrences(of: "%minute%", with: String(format: "%02d", calendar.component(.minute, from: postDate)))
-        permalink = permalink.replacingOccurrences(of: "%second%", with: String(format: "%02d", calendar.component(.second, from: postDate)))
-        permalink = permalink.replacingOccurrences(of: "%postname%", with: slug)
-        
-        // Handle post ID if available
-        if let postID = post.postID {
-            permalink = permalink.replacingOccurrences(of: "%post_id%", with: String(postID.intValue))
+
+    private var placeholderText: String {
+        if let suggestedSlug = post.suggestedSlug, !suggestedSlug.isEmpty {
+            return suggestedSlug
         }
-        
-        return "\(baseURL)\(permalink)"
+        return Strings.slugPlaceholder
     }
-    
-    private func constructBasePermalinkWithStructure(baseURL: String, structure: String) -> String {
-        let postDate = post.dateCreated ?? Date()
-        let calendar = Calendar.current
-        
-        var basePermalink = structure
-        basePermalink = basePermalink.replacingOccurrences(of: "%year%", with: String(calendar.component(.year, from: postDate)))
-        basePermalink = basePermalink.replacingOccurrences(of: "%monthnum%", with: String(format: "%02d", calendar.component(.month, from: postDate)))
-        basePermalink = basePermalink.replacingOccurrences(of: "%day%", with: String(format: "%02d", calendar.component(.day, from: postDate)))
-        basePermalink = basePermalink.replacingOccurrences(of: "%hour%", with: String(format: "%02d", calendar.component(.hour, from: postDate)))
-        basePermalink = basePermalink.replacingOccurrences(of: "%minute%", with: String(format: "%02d", calendar.component(.minute, from: postDate)))
-        basePermalink = basePermalink.replacingOccurrences(of: "%second%", with: String(format: "%02d", calendar.component(.second, from: postDate)))
-        
-        // Handle post ID if available
-        if let postID = post.postID {
-            basePermalink = basePermalink.replacingOccurrences(of: "%post_id%", with: String(postID.intValue))
-        }
-        
-        // Remove the postname placeholder to get the base
-        basePermalink = basePermalink.replacingOccurrences(of: "%postname%", with: "")
-        
-        return "\(baseURL)\(basePermalink)"
-    }
-    
-    private func constructDefaultPermalink(baseURL: String, slug: String) -> String {
-        let postDate = post.dateCreated ?? Date()
-        let calendar = Calendar.current
-        let year = calendar.component(.year, from: postDate)
-        let month = String(format: "%02d", calendar.component(.month, from: postDate))
-        let day = String(format: "%02d", calendar.component(.day, from: postDate))
-        
-        return "\(baseURL)/\(year)/\(month)/\(day)/\(slug)/"
-    }
-    
-    private func constructDefaultBasePermalink(baseURL: String) -> String {
-        let postDate = post.dateCreated ?? Date()
-        let calendar = Calendar.current
-        let year = calendar.component(.year, from: postDate)
-        let month = String(format: "%02d", calendar.component(.month, from: postDate))
-        let day = String(format: "%02d", calendar.component(.day, from: postDate))
-        
-        return "\(baseURL)/\(year)/\(month)/\(day)/"
-    }
-    
-    private func sanitizeSlug(_ title: String) -> String {
-        return title
-            .lowercased()
-            .replacingOccurrences(of: " ", with: "-")
-            .replacingOccurrences(of: "[^a-z0-9-]", with: "", options: .regularExpression)
-            .replacingOccurrences(of: "-+", with: "-", options: .regularExpression)
-            .trimmingCharacters(in: CharacterSet(charactersIn: "-"))
-    }
-    
-    // MARK: - View Body
-    
+
     var body: some View {
         Form {
-            Section {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Customize the last part of the Permalink.")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    
-                    Button {
-                        // Open learn more URL - you can customize this URL as needed
-                        if let url = URL(string: "https://wordpress.com/support/permalinks/") {
-                            openURL(url)
-                        }
-                    } label: {
-                        Label("Learn more", systemImage: "arrow.up.right")
-                            .font(.subheadline)
-                            .foregroundColor(.accentColor)
-                    }
-                }
-                .padding(.vertical, 4)
-            }
-            
-            Section {
-                HStack {
-                    TextField(Strings.slugPlaceholder, text: $slug)
-                        .focused($isFocused)
-                        .autocapitalization(.none)
-                        .autocorrectionDisabled()
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    
-                    Button {
-                        UIPasteboard.general.string = slug
-                    } label: {
-                        Image(systemName: "doc.on.doc")
-                            .foregroundColor(.secondary)
-                    }
-                    .disabled(slug.isEmpty)
-                }
-            }
-            
-            Section("Permalink") {
-                Button {
-                    if let url = URL(string: permalinkURL) {
-                        openURL(url)
-                    }
-                } label: {
-                    HStack(spacing: 0) {
-                        Text(basePermalinkURL)
-                            .foregroundColor(.accentColor)
-                        Text(effectiveSlug)
-                            .foregroundColor(.accentColor)
-                            .fontWeight(.semibold)
-                            .background(
-                                RoundedRectangle(cornerRadius: 4)
-                                    .fill(Color.accentColor.opacity(0.1))
-                                    .padding(.horizontal, -2)
-                                    .padding(.vertical, -1)
-                            )
-                        
-                        // Add trailing slash if the permalink structure ends with one
-                        if permalinkURL.hasSuffix("/") {
-                            Text("/")
-                                .foregroundColor(.accentColor)
-                        }
-                        
-                        Spacer()
-                        
-                        Image(systemName: "arrow.up.right")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .multilineTextAlignment(.leading)
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
+            textFieldSection
+            previewSection
         }
-        .navigationTitle(Strings.slugLabel)
+        .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             isFocused = true
         }
     }
+
+    // MARK: - TextField
+
+    @ViewBuilder
+    private var textFieldSection: some View {
+        Section {
+            HStack {
+                TextField(placeholderText, text: $slug)
+                    .focused($isFocused)
+                    .autocapitalization(.none)
+                    .autocorrectionDisabled()
+                    .onChange(of: slug) { _, newValue in
+                        // Sanitize the slug by replacing spaces with dashes and removing other whitespace
+                        let sanitized = sanitizeSlug(newValue)
+                        if sanitized != newValue {
+                            slug = sanitized
+                        }
+                    }
+
+                if !slug.isEmpty {
+                    Button(action: {
+                        slug = ""
+                    }) {
+                        Image(systemName: "xmark.circle")
+                            .foregroundColor(.secondary)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
+            }
+        } header: {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(Strings.customizeDescription)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+
+                if let url = URL(string: "https://wordpress.com/support/permalinks-and-slugs/") {
+                    Link(destination: url) {
+                        (Text(Strings.learnMore) + Text(" ") + Text(Image(systemName: "arrow.up.right.square")))
+                            .font(.subheadline)
+                            .foregroundColor(.accentColor)
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Preview
+
+    @ViewBuilder
+    private var previewSection: some View {
+        if let permalinkURL = makePermalinkURL() {
+            Section(Strings.permalinkSectionTitle) {
+                Link(destination: permalinkURL) {
+                    HStack {
+                        Text(makeFormattedPermalinkString())
+                            .font(.callout)
+                            .multilineTextAlignment(.leading)
+                            .foregroundColor(.primary)
+                            .animation(.easeInOut(duration: 0.2), value: effectiveSlug)
+
+                        Spacer()
+
+                        Image(systemName: "arrow.up.right.square")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+        } else if !post.hasRemote() {
+            Section(Strings.permalinkSectionTitle) {
+                Text(Strings.permalinkDraftNotice)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    private let permalinkSlugPlaceholder = "%postname%"
+
+    private func makePermalinkURL() -> URL? {
+        guard let templateURL = post.permalinkTemplateURL,
+              !templateURL.isEmpty,
+              templateURL.firstRange(of: permalinkSlugPlaceholder) != nil else {
+            return nil
+        }
+        let permalinkString = templateURL.replacingOccurrences(of: permalinkSlugPlaceholder, with: effectiveSlug)
+        return URL(string: permalinkString)
+    }
+
+    private func makeFormattedPermalinkString() -> AttributedString {
+        guard let templateURL = post.permalinkTemplateURL,
+              !templateURL.isEmpty else {
+            return AttributedString(effectiveSlug)
+        }
+
+        var attributedString = AttributedString(templateURL)
+
+        // Find the placeholder range and replace it with the slug
+        if let range = attributedString.range(of: permalinkSlugPlaceholder) {
+            // Replace the placeholder with the slug
+            attributedString.replaceSubrange(range, with: AttributedString(effectiveSlug))
+
+            // Calculate the new range for the inserted slug
+            let slugStartIndex = range.lowerBound
+            let slugEndIndex = attributedString.index(slugStartIndex, offsetByCharacters: effectiveSlug.count)
+            let slugRange = slugStartIndex..<slugEndIndex
+
+            // Make the slug part bold
+            attributedString[slugRange].font = .body.bold()
+        }
+
+        return attributedString
+    }
+
+    // MARK: - Slug Sanitization
+
+    private func sanitizeSlug(_ input: String) -> String {
+        // Convert to lowercase and replace spaces with dashes
+        let lowercased = input.lowercased()
+            .replacingOccurrences(of: " ", with: "-")
+
+        // Keep only lowercase letters (supporting all locales), numbers, and hyphens
+        let allowedCharacters = CharacterSet.lowercaseLetters
+            .union(.decimalDigits)
+            .union(CharacterSet(charactersIn: "-"))
+
+        let filtered = lowercased.unicodeScalars.compactMap { scalar in
+            allowedCharacters.contains(scalar) ? Character(scalar) : nil
+        }
+
+        return String(filtered)
+    }
 }
 
-// MARK: - Strings
-
 private enum Strings {
-    static let slugLabel = NSLocalizedString(
-        "postSettings.slug.label",
+    static let title = NSLocalizedString(
+        "postSettings.slug.navigationTitle",
         value: "Slug",
         comment: "Label for the slug field. Should be the same as WP core."
     )
-    
+
     static let slugPlaceholder = NSLocalizedString(
         "postSettings.slug.placeholder",
         value: "Enter slug",
         comment: "Placeholder for the slug field"
+    )
+
+    static let customizeDescription = NSLocalizedString(
+        "postSettings.slug.customizeDescription",
+        value: "Customize the last part of the Permalink.",
+        comment: "Description text explaining what the slug editor does"
+    )
+
+    static let learnMore = NSLocalizedString(
+        "postSettings.slug.learnMore",
+        value: "Learn more",
+        comment: "Button text to learn more about permalinks"
+    )
+
+    static let permalinkSectionTitle = NSLocalizedString(
+        "postSettings.slug.permalinkSection",
+        value: "Permalink",
+        comment: "Section title for the permalink preview"
+    )
+
+    static let permalinkLabel = NSLocalizedString(
+        "postSettings.slug.permalinkLabel",
+        value: "Permalink",
+        comment: "Label for the permalink preview"
+    )
+
+    static let permalinkDraftNotice = NSLocalizedString(
+        "postSettings.slug.permalinkDraftNotice",
+        value: "The suggested permalink will appear when the draft is saved on the server",
+        comment: "Notice shown when the post doesn't have a remote and permalink template is missing"
     )
 }

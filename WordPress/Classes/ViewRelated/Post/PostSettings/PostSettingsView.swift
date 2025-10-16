@@ -476,7 +476,6 @@ private struct SettingsTextFieldView: View {
     }
 }
 
-
 private struct LegacyNavigationLinkRow<Content: View>: View {
     let action: () -> Void
     @ViewBuilder let label: () -> Content
