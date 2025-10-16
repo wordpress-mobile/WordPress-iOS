@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressKit
 
 public extension Post {
 
@@ -30,17 +31,12 @@ public extension Post {
 
 extension Post {
     public var allowComments: Bool {
-        get { commentsStatus != DiscussionState.closed.rawValue }
-        set { commentsStatus = (newValue ? DiscussionState.open : .closed).rawValue }
+        get { commentsStatus != RemotePostDiscussionState.closed.rawValue }
+        set { commentsStatus = (newValue ? RemotePostDiscussionState.open : .closed).rawValue }
     }
 
     public var allowPings: Bool {
-        get { pingsStatus != DiscussionState.closed.rawValue }
-        set { pingsStatus = (newValue ? DiscussionState.open : .closed).rawValue }
-    }
-
-    private enum DiscussionState: String, CaseIterable {
-        case open = "open"
-        case closed = "closed"
+        get { pingsStatus != RemotePostDiscussionState.closed.rawValue }
+        set { pingsStatus = (newValue ? RemotePostDiscussionState.open : .closed).rawValue }
     }
 }

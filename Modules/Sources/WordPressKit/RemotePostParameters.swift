@@ -59,6 +59,15 @@ public struct RemotePostUpdateParameters: Equatable {
     public init() {}
 }
 
+public enum RemotePostDiscussionState: String, CaseIterable {
+    case open = "open"
+    case closed = "closed"
+
+    init(isOpen: Bool) {
+        self = isOpen ? .open : .closed
+    }
+}
+
 public struct RemotePostMetadataItem: Hashable {
     public var id: String?
     public var key: String?
@@ -401,8 +410,8 @@ struct RemotePostCreateParametersXMLRPCEncoder: Encodable {
             try container.encode(parameters.isSticky, forKey: .isSticky)
         }
         if parameters.discussion != .default {
-            try container.encode(parameters.discussion.allowComments ? "open" : "closed", forKey: .commentStatus)
-            try container.encode(parameters.discussion.allowPings ? "open" : "closed", forKey: .pingStatus)
+            try container.encode(RemotePostDiscussionState(isOpen: parameters.discussion.allowComments).rawValue, forKey: .commentStatus)
+            try container.encode(RemotePostDiscussionState(isOpen: parameters.discussion.allowPings).rawValue, forKey: .pingStatus)
         }
     }
 }
@@ -444,8 +453,8 @@ struct RemotePostUpdateParametersXMLRPCEncoder: Encodable {
         }
         try container.encodeIfPresent(parameters.isSticky, forKey: .isSticky)
         if let discussion = parameters.discussion {
-            try container.encode(discussion.allowComments ? "open" : "closed", forKey: .commentStatus)
-            try container.encode(discussion.allowPings ? "open" : "closed", forKey: .pingStatus)
+            try container.encode(RemotePostDiscussionState(isOpen: discussion.allowComments).rawValue, forKey: .commentStatus)
+            try container.encode(RemotePostDiscussionState(isOpen: discussion.allowPings).rawValue, forKey: .pingStatus)
         }
     }
 }
