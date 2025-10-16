@@ -7,7 +7,10 @@ class StatsTests: XCTestCase {
 
     @MainActor
     override func setUpWithError() throws {
-        setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomPaidSite)
+        setUpTestSuite(
+            arguments: ["-ff-override-New Stats", "false"],
+            selectWPComSite: WPUITestCredentials.testWPcomPaidSite
+        )
 
         try MySiteScreen()
             .goToMoreMenu()

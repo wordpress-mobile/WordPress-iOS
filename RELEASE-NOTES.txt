@@ -1,6 +1,10 @@
 26.5
 -----
+* [**] Add "Status" field to the "Post Settings" screen to make it easier to move posts from one state to another [#24939]
+* [*] Add "Publish Date" back to "Post Settings" for draft and pending posts [#24939]
+* [*] Use "Menlo" font for the password field to make it easier to distinguish between characters like `0` and `0`  [#24939]
 * [*] Add "Access" section to "Post Settings" [#24942]
+* [*] Add "Email to Subscribers" row to "Publishing" sheet [#24946]
 
 26.4
 -----

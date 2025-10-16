@@ -82,32 +82,11 @@ class PostCoordinator: NSObject {
     /// with the publishing options.
     @MainActor
     func publish(_ post: AbstractPost, parameters: RemotePostUpdateParameters = .init()) async throws {
-        wpAssert(post.isOriginal())
-        wpAssert(post.isStatus(in: [.draft, .pending]))
-
-        await pauseSyncing(for: post)
-        defer { resumeSyncing(for: post) }
-
         var parameters = parameters
         if parameters.status == nil {
             parameters.status = Post.Status.publish.rawValue
         }
-        if parameters.date == nil {
-            // If the post was previously scheduled for a different date,
-            // the app has to send a new value to override it.
-            parameters.date = post.shouldPublishImmediately() ? nil : Date()
-        }
-
-        do {
-            let repository = PostRepository(coreDataStack: coreDataStack)
-            try await repository.save(post, changes: parameters)
-            didPublish(post)
-            show(PostCoordinator.makeUploadSuccessNotice(for: post))
-        } catch {
-            trackError(error, operation: "post-publish", post: post)
-            handleError(error, for: post)
-            throw error
-        }
+        try await save(post, changes: parameters)
     }
 
     @MainActor
@@ -129,9 +108,33 @@ class PostCoordinator: NSObject {
         await pauseSyncing(for: post)
         defer { resumeSyncing(for: post) }
 
+        let previousStatus = post.status
+
+        var changes = changes ?? .init()
+
+        // If the post was previously scheduled and the user wants to publish
+        // it without specifying a new publish date, we have to send `.now`
+        // to ensure it gets published immediatelly.
+        if (changes.status == Post.Status.publish.rawValue ||
+            changes.status == Post.Status.publishPrivate.rawValue) &&
+            previousStatus == .scheduled &&
+            changes.date == nil {
+            changes.date = .now
+        }
+
         do {
-            let previousStatus = post.status
-            try await PostRepository().save(post, changes: changes)
+            let repository = PostRepository(coreDataStack: coreDataStack)
+            try await repository.save(post, changes: changes)
+
+            if previousStatus != post.status && post.isStatus(in: [.scheduled, .publish]) {
+                if post.status == .scheduled {
+                    notifyNewPostScheduled()
+                } else if post.status == .publish {
+                    notifyNewPostPublished()
+                }
+                SearchManager.shared.indexItem(post)
+                AppRatingUtility.shared.incrementSignificantEvent()
+            }
             show(PostCoordinator.makeUploadSuccessNotice(for: post, previousStatus: previousStatus))
             return post
         } catch {
