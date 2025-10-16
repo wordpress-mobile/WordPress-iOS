@@ -103,6 +103,14 @@ struct PostSlugEditorView: View {
                             .foregroundColor(.secondary)
                     }
                 }
+                .contextMenu {
+                    Button(action: {
+                        UIPasteboard.general.string = permalinkURL.absoluteString
+                    }) {
+                        Text(SharedStrings.Button.copyLink)
+                        Image(systemName: "doc.on.doc")
+                    }
+                }
             }
         } else if !post.hasRemote() {
             Section(Strings.permalinkSectionTitle) {
