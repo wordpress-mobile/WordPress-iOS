@@ -49,6 +49,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         settings.author?.avatarURL
     }
 
+    var emailToSubscribers: Bool {
+        get { !settings.metadata.isJetpackNewsletterEmailDisabled }
+        set { settings.metadata.isJetpackNewsletterEmailDisabled = !newValue }
+    }
+
     var publishDateText: String? {
         guard let date = settings.publishDate else {
             return nil
@@ -119,6 +124,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     enum Row {
         case jetpackAccessLevel
+        case jetpackNewsletterEmailOptions
     }
 
     private let originalSettings: PostSettings
@@ -182,6 +188,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         switch row {
         case .jetpackAccessLevel:
             post.blog.supports(.wpComRESTAPI)
+        case .jetpackNewsletterEmailOptions:
+            post.blog.supports(.wpComRESTAPI) && context == .publishing
         }
     }
 

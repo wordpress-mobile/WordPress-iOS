@@ -47,12 +47,8 @@ private extension RemotePostCreateParameters {
     static func generateRemoteMetadata(for post: Post) -> [[String: Any]] {
         // Start with existing metadata from PostHelper
         var output = PostHelper.remoteMetadata(for: post) as? [[String: Any]] ?? []
-
-        // Add Jetpack Newsletter access level metadata
-        let metadata = PostMetadata(post)
-        if let entry = metadata.entry(forKey: .jetpackNewsletterAccess) {
-            output.append(entry)
-        }
+        // Add metadata mananged using `PostMetadata`
+        output += PostMetadata.entries(in: PostMetadataContainer(post))
         return output
     }
 }
