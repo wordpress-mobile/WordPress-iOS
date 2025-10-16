@@ -21,12 +21,12 @@ struct PostSettings: Hashable {
     var categoryIDs: Set<Int> = []
     var tags: String = ""
     var featuredImageID: Int?
+    var metadata: PostMetadata
 
     // MARK: - Post-specific
     var postFormat: String?
     var isStickyPost = false
     var sharing: PostSocialSharingSettings?
-    var accessLevel: JetpackPostAccessLevel?
 
     // MARK: - Page-specific
     var parentPageID: Int?
@@ -51,7 +51,7 @@ struct PostSettings: Hashable {
 
         featuredImageID = post.featuredImage?.mediaID?.intValue
 
-        let metadata = PostMetadata(post)
+        metadata = PostMetadata(post)
 
         switch post {
         case let post as Post:
@@ -61,8 +61,6 @@ struct PostSettings: Hashable {
             categoryIDs = Set((post.categories ?? []).compactMap {
                 $0.categoryID?.intValue
             })
-            sharing = PostSocialSharingSettings.make(for: post)
-            accessLevel = metadata.accessLevel ?? .everybody
         case let page as Page:
             parentPageID = page.parentID?.intValue
         default:
@@ -103,6 +101,16 @@ struct PostSettings: Hashable {
             }
         } else {
             post.featuredImage = nil
+        }
+
+        var postMetadataContainer = PostMetadataContainer(post)
+        if PostMetadata(from: postMetadataContainer) != metadata {
+            metadata.encode(in: &postMetadataContainer)
+            do {
+                post.rawMetadata = try postMetadataContainer.encode()
+            } catch {
+                wpAssertionFailure("failed to encode metadata")
+            }
         }
 
         switch post {
@@ -149,17 +157,6 @@ struct PostSettings: Hashable {
                 }
                 if post.publicizeMessage != sharing.message {
                     post.publicizeMessage = sharing.message
-                }
-            }
-
-            /// Update metadata
-            var metadata = PostMetadata(post)
-            if metadata.accessLevel != accessLevel {
-                metadata.accessLevel = accessLevel
-                do {
-                    post.rawMetadata = try metadata.encode()
-                } catch {
-                    wpAssertionFailure("failed to encode metadata")
                 }
             }
         case let page as Page:
