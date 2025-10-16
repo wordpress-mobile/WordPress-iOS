@@ -11,7 +11,7 @@ struct PostSlugEditorView: View {
     private var effectiveSlug: String {
         if !slug.isEmpty {
             return slug
-        } else if let suggestedSlug = post.suggestedSlug, !suggestedSlug.isEmpty {
+        } else if let suggestedSlug = post.suggested_slug, !suggestedSlug.isEmpty {
             return suggestedSlug
         } else {
             return ""
@@ -19,7 +19,7 @@ struct PostSlugEditorView: View {
     }
 
     private var placeholderText: String {
-        if let suggestedSlug = post.suggestedSlug, !suggestedSlug.isEmpty {
+        if let suggestedSlug = post.suggested_slug, !suggestedSlug.isEmpty {
             return suggestedSlug
         }
         return Strings.slugPlaceholder
