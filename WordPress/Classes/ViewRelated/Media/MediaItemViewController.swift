@@ -105,7 +105,9 @@ final class MediaItemViewController: UITableViewController {
         rows.append(TextViewRow(title: Strings.url, details: media.remoteURL ?? ""))
         rows.append(TextRow(title: Strings.fileName, value: media.filename ?? ""))
         rows.append(TextRow(title: Strings.fileType, value: presenter.fileType ?? ""))
-        rows.append(TextRow(title: Strings.fileSize, value: media.formattedSize ?? ""))
+        if let size = media.formattedSize {
+            rows.append(TextRow(title: Strings.fileSize, value: size))
+        }
 
         switch media.mediaType {
         case .image, .video:
