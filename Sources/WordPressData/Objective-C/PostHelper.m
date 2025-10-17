@@ -58,6 +58,7 @@
     }
 
     post.rawMetadata = [PostHelper makeRawMetadataFrom:remotePost];
+    post.foreignID = [PostHelper getForeignIDFor:remotePost];
 
     post.autosaveTitle = remotePost.autosave.title;
     post.autosaveExcerpt = remotePost.autosave.excerpt;
@@ -68,7 +69,6 @@
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         pagePost.parentID = remotePost.parentID;
-        pagePost.foreignID = remotePost.foreignID;
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
         postPost.commentsStatus = remotePost.commentsStatus;
@@ -100,7 +100,6 @@
             publicizeMessage = [publicizeMessageDictionary stringForKey:@"value"];
             publicizeMessageID = [publicizeMessageDictionary stringForKey:@"id"];
         }
-        postPost.foreignID = remotePost.foreignID;
         postPost.publicID = publicID;
         postPost.publicizeMessage = publicizeMessage;
         postPost.publicizeMessageID = publicizeMessageID;
@@ -185,7 +184,7 @@
     for (RemotePost *remotePost in remotePosts) {
         AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:context];
         if (post == nil) {
-            NSUUID *foreignID = remotePost.foreignID;
+            NSUUID *foreignID = [PostHelper getForeignIDFor:remotePost];
             if (foreignID != nil) {
                 post = [blog lookupLocalPostWithForeignID:foreignID inContext:context];
             }

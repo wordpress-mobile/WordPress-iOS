@@ -74,4 +74,5 @@ private extension PostMetadataContainer {
 extension PostMetadataContainer.Key {
     static let jetpackNewsletterAccess: PostMetadataContainer.Key = "_jetpack_newsletter_access"
     static let jetpackNewsletterEmailDisabled: PostMetadataContainer.Key = "_jetpack_dont_email_post_to_subs"
+    static let foreignID: PostMetadataContainer.Key = "wp_jp_foreign_id"
 }
