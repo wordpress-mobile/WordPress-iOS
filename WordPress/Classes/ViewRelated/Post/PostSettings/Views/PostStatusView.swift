@@ -14,11 +14,11 @@ struct PostStatusView: View {
     private var statusRowLeadingInset: CGFloat = PostStatusRow.leadingInset
 
     private var statuses: [BasePost.Status] {
-        var all = [.draft, .pending, .publishPrivate, .scheduled, .publish]
-        if isPublishing, let index = all.firstIndex(of: .draft) {
-            all.remove(at: index)
+        var statuses: [BasePost.Status] = [.draft, .pending, .publishPrivate, .scheduled, .publish]
+        if isPublishing {
+            statuses.removeAll { $0 == .draft }
         }
-        return all
+        return statuses
     }
 
     var body: some View {
