@@ -371,6 +371,7 @@ struct PostSettingsFormContentView: View {
                 pendingReviewRow
             }
             if viewModel.isPost {
+                discussionRow
                 postFormatRow
             }
             if !viewModel.isPost {
@@ -389,6 +390,14 @@ struct PostSettingsFormContentView: View {
             }
         } label: {
             SettingsRow(Strings.postFormatLabel, value: viewModel.postFormatText)
+        }
+    }
+
+    private var discussionRow: some View {
+        NavigationLink {
+            PostDiscussionSettingsView(postSettings: $viewModel.settings)
+        } label: {
+            SettingsRow(Strings.discussionLabel, value: viewModel.settings.allowComments ? Strings.discussionOpen : Strings.discussionClosed)
         }
     }
 
@@ -579,6 +588,23 @@ private enum Strings {
         "postSettings.postFormat.label",
         value: "Post Format",
         comment: "Label for the post format field. Should be the same as WP core."
+    )
+    static let discussionLabel = NSLocalizedString(
+        "postSettings.discussion.label",
+        value: "Discussion",
+        comment: "Label for the discussion settings field in Post Settings"
+    )
+
+    static let discussionOpen = NSLocalizedString(
+        "postSettings.discussion.open",
+        value: "Open",
+        comment: "Status text when discussion (comments) is enabled"
+    )
+
+    static let discussionClosed = NSLocalizedString(
+        "postSettings.discussion.closed",
+        value: "Closed",
+        comment: "Status text when discussion (comments) is disabled"
     )
 
     static let parentPageLabel = NSLocalizedString(

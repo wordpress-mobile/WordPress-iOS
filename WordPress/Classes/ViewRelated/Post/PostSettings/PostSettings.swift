@@ -27,6 +27,9 @@ struct PostSettings: Hashable {
     var postFormat: String?
     var isStickyPost = false
     var sharing: PostSocialSharingSettings?
+    var accessLevel: JetpackPostAccessLevel?
+    var allowComments = true
+    var allowPings = true
 
     // MARK: - Page-specific
     var parentPageID: Int?
@@ -61,6 +64,10 @@ struct PostSettings: Hashable {
             categoryIDs = Set((post.categories ?? []).compactMap {
                 $0.categoryID?.intValue
             })
+            sharing = PostSocialSharingSettings.make(for: post)
+            accessLevel = metadata.accessLevel ?? .everybody
+            allowComments = post.allowComments
+            allowPings = post.allowPings
         case let page as Page:
             parentPageID = page.parentID?.intValue
         default:
@@ -142,6 +149,14 @@ struct PostSettings: Hashable {
             // Update sticky post setting
             if post.isStickyPost != isStickyPost {
                 post.isStickyPost = isStickyPost
+            }
+
+            // Update discussion settings
+            if post.allowComments != allowComments {
+                post.allowComments = allowComments
+            }
+            if post.allowPings != allowPings {
+                post.allowPings = allowPings
             }
 
             if let sharing {

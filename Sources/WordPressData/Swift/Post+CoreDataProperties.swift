@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressKit
 
 public extension Post {
 
@@ -26,4 +27,16 @@ public extension Post {
     @NSManaged func removeCategoriesObject(_ value: PostCategory)
     @NSManaged func addCategories(_ values: Set<PostCategory>)
     @NSManaged func removeCategories(_ values: Set<PostCategory>)
+}
+
+extension Post {
+    public var allowComments: Bool {
+        get { commentsStatus != RemotePostDiscussionState.closed.rawValue }
+        set { commentsStatus = (newValue ? RemotePostDiscussionState.open : .closed).rawValue }
+    }
+
+    public var allowPings: Bool {
+        get { pingsStatus != RemotePostDiscussionState.closed.rawValue }
+        set { pingsStatus = (newValue ? RemotePostDiscussionState.open : .closed).rawValue }
+    }
 }

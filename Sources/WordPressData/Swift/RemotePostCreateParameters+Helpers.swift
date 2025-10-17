@@ -33,6 +33,10 @@ extension RemotePostCreateParameters {
             metadata = Set(Self.generateRemoteMetadata(for: post).compactMap { dictionary -> RemotePostMetadataItem? in
                 return PostHelper.mapDictionaryToMetadataItems(dictionary)
             })
+            discussion = RemotePostDiscussionSettings(
+                allowComments: post.allowComments,
+                allowPings: post.allowPings
+            )
         default:
             break
         }

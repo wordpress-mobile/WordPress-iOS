@@ -334,6 +334,9 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     post.tags = [self tagsFromXMLRPCTermsArray:terms];
     post.categories = [self remoteCategoriesFromXMLRPCTermsArray:terms];
 
+    post.commentsStatus = [xmlrpcDictionary stringForKey:@"comment_status"];
+    post.pingsStatus = [xmlrpcDictionary stringForKey:@"ping_status"];
+
     post.isStickyPost = [xmlrpcDictionary numberForKeyPath:@"sticky"];
 
     // Pick an image to use for display
