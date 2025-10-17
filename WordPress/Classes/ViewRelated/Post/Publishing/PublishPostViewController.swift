@@ -174,8 +174,12 @@ struct PublishPostView: View {
 
 private extension PostSettingsViewModel {
     var publishButtonTitle: String {
-        let isScheduled = settings.publishDate.map { $0 > .now } ?? false
-        return isScheduled ? Strings.schedule : Strings.publish
+        switch settings.status {
+        case .publish, .publishPrivate: Strings.publish
+        case .pending: Strings.submit
+        case .scheduled: Strings.schedule
+        default: SharedStrings.Button.save
+        }
     }
 }
 
@@ -185,6 +189,7 @@ enum PrepublishingSheetStrings {
     static let title = NSLocalizedString("prepublishing.title", value: "Publishing", comment: "Navigation title")
     static let publishingTo = NSLocalizedString("prepublishing.publishingTo", value: "Publishing to", comment: "Label in the header in the pre-publishing sheet")
     static let publish = NSLocalizedString("prepublishing.publish", value: "Publish", comment: "Primary button label in the pre-publishing sheet")
+    static let submit = NSLocalizedString("prepublishing.submitForReview", value: "Submit", comment: "Primary button label in the pre-publishing sheet (must be short)")
     static let schedule = NSLocalizedString("prepublishing.schedule", value: "Schedule", comment: "Primary button label in the pre-publishing shee")
     static let publishDate = NSLocalizedString("prepublishing.publishDate", value: "Publish Date", comment: "Label for a cell in the pre-publishing sheet")
     static let visibility = NSLocalizedString("prepublishing.visibility", value: "Visibility", comment: "Label for a cell in the pre-publishing sheet")
