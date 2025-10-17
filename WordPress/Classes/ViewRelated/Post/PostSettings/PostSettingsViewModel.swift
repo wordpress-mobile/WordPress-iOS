@@ -69,11 +69,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         return formatter.string(from: date)
     }
 
-    var visibilityText: String {
-        PostVisibility(status: settings.status, password: settings.password)
-            .localizedTitle
-    }
-
     var slugText: String {
         settings.slug.isEmpty ? (post.suggested_slug ?? "") : settings.slug
     }
@@ -345,22 +340,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     private func didSaveChanges() {
         trackChanges(from: originalSettings, to: settings)
-    }
-
-    func updateVisibility(_ selection: PostVisibilityPicker.Selection) {
-        track(.editorPostVisibilityChanged)
-
-        switch selection.type {
-        case .public, .protected:
-            if post.original().status == .scheduled {
-                // Keep it scheduled
-            } else {
-                settings.status = .publish
-            }
-        case .private:
-            settings.status = .publishPrivate
-        }
-        settings.password = selection.password.isEmpty ? nil : selection.password
     }
 
     func didSelectPublshDate(_ date: Date?) {

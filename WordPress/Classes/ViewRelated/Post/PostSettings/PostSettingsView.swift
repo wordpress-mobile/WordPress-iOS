@@ -321,20 +321,6 @@ struct PostSettingsFormContentView: View {
         }
     }
 
-    private var visibilityRow: some View {
-        NavigationLink {
-            PostVisibilityPicker(
-                selection: PostVisibilityPicker.Selection(post: viewModel.post),
-                dismissOnSelection: true,
-                onSubmit: { selection in
-                    viewModel.updateVisibility(selection)
-                }
-            )
-        } label: {
-            SettingsRow(Strings.visibilityLabel, value: viewModel.visibilityText)
-        }
-    }
-
     // MARK: - "Social Sharing" Section
 
     @ViewBuilder
@@ -520,12 +506,6 @@ private enum Strings {
         "postSettings.publishDate.label",
         value: "Date",
         comment: "Label for the publish date field in Post Settings"
-    )
-
-    static let visibilityLabel = NSLocalizedString(
-        "postSettings.visibility.label",
-        value: "Visibility",
-        comment: "Label for the visibility field in Post Settings"
     )
 
     static let pendingReviewLabel = NSLocalizedString(
