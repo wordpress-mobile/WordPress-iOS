@@ -184,11 +184,14 @@ import WordPressUI
         cell.indentationWidth = Constants.categoryCellIndentation
         cell.textLabel?.text = category.categoryName.stringByDecodingXMLCharacters()
         WPStyleGuide.configureTableViewCell(cell)
-        if selectedCategories.contains(category) {
-            cell.accessoryType = .checkmark
-        } else {
-            cell.accessoryType = .none
-        }
+        cell.accessoryView = makeAccessoryView(isSelected: selectedCategories.contains(category))
+    }
+
+    private func makeAccessoryView(isSelected: Bool) -> UIView {
+        let image = UIImage(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+        let view = UIImageView(image: image)
+        view.tintColor = isSelected ? UIAppColor.primary : .opaqueSeparator
+        return view
     }
 
     //tableView
@@ -255,10 +258,10 @@ import WordPressUI
                 if selectedCategories.contains(category),
                     let index = selectedCategories.firstIndex(of: category) {
                     selectedCategories.remove(at: index)
-                    tableView.cellForRow(at: indexPath)?.accessoryType = .none
+                    tableView.cellForRow(at: indexPath)?.accessoryView = makeAccessoryView(isSelected: false)
                 } else {
                     selectedCategories.append(category)
-                    tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+                    tableView.cellForRow(at: indexPath)?.accessoryView = makeAccessoryView(isSelected: true)
                 }
 
                 delegate?.postCategoriesViewController?(self, didUpdateSelectedCategories: NSSet(array: selectedCategories))
