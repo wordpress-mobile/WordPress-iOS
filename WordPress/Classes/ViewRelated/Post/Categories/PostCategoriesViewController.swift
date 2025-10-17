@@ -78,12 +78,12 @@ import WordPressUI
         switch selectionMode {
         case .post:
             navigationItem.rightBarButtonItem = rightBarButtonItem
-            title = NSLocalizedString("Post Categories", comment: "Title for selecting categories for a post")
+            title = Strings.postCategoriesTitle
         case .parent:
             navigationItem.rightBarButtonItem = rightBarButtonItem
-            title = NSLocalizedString("Parent Category", comment: "Title for selecting parent category of a category")
+            title = Strings.parentCategoryTitle
         case .blogDefault:
-            title = NSLocalizedString("Default Category", comment: "Title for selecting a default category for a post")
+            title = Strings.defaultCategoryTitle
         }
     }
 
@@ -170,7 +170,7 @@ import WordPressUI
     private func configureNoCategoryRow(cell: WPTableViewCell) {
         WPStyleGuide.configureTableViewDestructiveActionCell(cell)
         cell.textLabel?.textAlignment = .natural
-        cell.textLabel?.text = NSLocalizedString("No Category", comment: "Text shown (to select no-category) in the parent-category-selection screen when creating a new category.")
+        cell.textLabel?.text = Strings.noCategoryText
         if selectedCategories.isEmpty {
             cell.accessoryType = selectedCategories.isEmpty ? .checkmark : .none
         }  else {
@@ -283,5 +283,31 @@ private extension PostCategoriesViewController {
     struct Constants {
         static let categoryCellIdentifier = "CategoryCellIdentifier"
         static let categoryCellIndentation = CGFloat(16.0)
+    }
+
+    enum Strings {
+        static let postCategoriesTitle = NSLocalizedString(
+            "postCategories.title",
+            value: "Categories",
+            comment: "Title for selecting categories for a post or a page"
+        )
+
+        static let parentCategoryTitle = NSLocalizedString(
+            "parentCategory.title",
+            value: "Parent Category",
+            comment: "Title for selecting parent category of a category"
+        )
+
+        static let defaultCategoryTitle = NSLocalizedString(
+            "defaultCategory.title",
+            value: "Default Category",
+            comment: "Title for selecting a default category for a post"
+        )
+
+        static let noCategoryText = NSLocalizedString(
+            "parentCategory.noCategory",
+            value: "No Category",
+            comment: "Text shown (to select no-category) in the parent-category-selection screen when creating a new category."
+        )
     }
 }
