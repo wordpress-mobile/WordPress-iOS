@@ -154,8 +154,8 @@ struct PostSettingsFormContentView: View {
     private var publishingOptionsSection: some View {
         Section {
             BlogListSiteView(site: .init(blog: viewModel.post.blog))
+            statusRow
             publishDateRow
-            visibilityRow
         } header: {
             SectionHeader(Strings.readyToPublish)
         }
@@ -269,7 +269,7 @@ struct PostSettingsFormContentView: View {
         NavigationLink {
             PostStatusView(settings: $viewModel.settings, timeZone: viewModel.timeZone)
         } label: {
-            SettingsRow(Strings.status) {
+            SettingsRow(viewModel.context == .publishing ? Strings.statusAndVisibility : Strings.status) {
                 HStack(alignment: .center, spacing: 2) {
                     ScaledImage(viewModel.settings.status.image, height: 23)
                     VStack(alignment: .leading, spacing: 2) {
@@ -695,5 +695,11 @@ private enum Strings {
         "postSettings.status.label",
         value: "Status",
         comment: "Label for the status field in Post Settings"
+    )
+
+    static let statusAndVisibility = NSLocalizedString(
+        "postSettings.statusAndVisibility.label",
+        value: "Status & Visibility",
+        comment: "Label for the Status & Visibility field in Post Settings (should be short)"
     )
 }

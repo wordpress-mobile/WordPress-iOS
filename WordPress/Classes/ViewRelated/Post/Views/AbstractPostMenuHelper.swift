@@ -94,7 +94,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
     var icon: UIImage? {
         switch self {
         case .view: return UIImage(systemName: "safari")
-        case .publish: return UIImage(systemName: "tray.and.arrow.up")
+        case .publish: return UIImage(systemName: "paperplane")
         case .stats: return UIImage(systemName: "chart.line.uptrend.xyaxis")
         case .duplicate: return UIImage(systemName: "doc.on.doc")
         case .moveToDraft: return UIImage(systemName: "pencil.line")

@@ -157,7 +157,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         self.preferences = preferences
 
         // Initialize settings from the post
-        let initialSettings = PostSettings(from: post)
+        var initialSettings = PostSettings(from: post)
+        if context == .publishing {
+            initialSettings.status = .publish
+            initialSettings.updateStatusForPublishDate()
+        }
         self.settings = initialSettings
         self.originalSettings = initialSettings
 
@@ -359,6 +363,13 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         settings.password = selection.password.isEmpty ? nil : selection.password
     }
 
+    func didSelectPublshDate(_ date: Date?) {
+        settings.publishDate = date
+        if context == .publishing {
+            settings.updateStatusForPublishDate()
+        }
+    }
+
     func didSelectSuggestedTag(_ tag: String) {
         suggestedTags.removeAll(where: { $0 == tag })
         settings.tags.append(",\(tag)")
@@ -555,6 +566,26 @@ extension PostSettingsViewModel: @MainActor PrepublishingSocialAccountsDelegate 
         }
         settings.message = message ?? ""
         self.settings.sharing = settings
+    }
+}
+
+private extension PostSettings {
+    mutating func updateStatusForPublishDate() {
+        switch status {
+        case .publish:
+            if let date = publishDate, date > .now, status == .publish {
+                status = .scheduled
+            }
+        case .scheduled:
+            if let date = publishDate, date <= .now {
+                status = .publish
+            } else if publishDate == nil {
+                status = .publish
+            }
+        default:
+            break // Do nothing
+
+        }
     }
 }
 

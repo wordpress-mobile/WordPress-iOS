@@ -10,7 +10,7 @@ struct PostSettingsPublishDatePicker: View {
             isRequired: !viewModel.isDraftOrPending,
             timeZone: viewModel.timeZone,
             updated: { date in
-                viewModel.settings.publishDate = date
+                viewModel.didSelectPublshDate(date)
             }
         ))
     }
