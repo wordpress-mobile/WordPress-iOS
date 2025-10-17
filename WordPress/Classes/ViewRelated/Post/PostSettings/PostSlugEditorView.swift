@@ -71,12 +71,10 @@ struct PostSlugEditorView: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
 
-                if let url = URL(string: "https://wordpress.com/support/permalinks-and-slugs/") {
-                    Link(destination: url) {
-                        (Text(Strings.learnMore) + Text(" ") + Text(Image(systemName: "arrow.up.right.square")))
-                            .font(.subheadline)
-                            .foregroundColor(.accentColor)
-                    }
+                Link(destination: URL(string: "https://wordpress.com/support/permalinks-and-slugs/")!) {
+                    (Text(Strings.learnMore) + Text(" ") + Text(Image(systemName: "arrow.up.right.square")))
+                        .font(.subheadline)
+                        .foregroundColor(.accentColor)
                 }
             }
         }
