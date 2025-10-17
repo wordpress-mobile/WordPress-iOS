@@ -5,6 +5,7 @@ import WordPressData
 struct PostStatusView: View {
     @Binding var settings: PostSettings
     let timeZone: TimeZone
+    var isPublishing = false
 
     @State private var isShowingPublishDatePicker = false
     @State private var isShowingPasswordEntry = false
@@ -12,7 +13,13 @@ struct PostStatusView: View {
     @ScaledMetric
     private var statusRowLeadingInset: CGFloat = PostStatusRow.leadingInset
 
-    private let statuses = [BasePost.Status.draft, .pending, .publishPrivate, .scheduled, .publish]
+    private var statuses: [BasePost.Status] {
+        var all = [.draft, .pending, .publishPrivate, .scheduled, .publish]
+        if isPublishing, let index = all.firstIndex(of: .draft) {
+            all.remove(at: index)
+        }
+        return all
+    }
 
     var body: some View {
         Form {

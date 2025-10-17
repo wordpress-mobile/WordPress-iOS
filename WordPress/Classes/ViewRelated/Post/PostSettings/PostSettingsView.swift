@@ -267,7 +267,11 @@ struct PostSettingsFormContentView: View {
 
     private var statusRow: some View {
         NavigationLink {
-            PostStatusView(settings: $viewModel.settings, timeZone: viewModel.timeZone)
+            PostStatusView(
+                settings: $viewModel.settings,
+                timeZone: viewModel.timeZone,
+                isPublishing: viewModel.context == .publishing
+            )
         } label: {
             SettingsRow(viewModel.context == .publishing ? Strings.statusAndVisibility : Strings.status) {
                 HStack(alignment: .center, spacing: 2) {
