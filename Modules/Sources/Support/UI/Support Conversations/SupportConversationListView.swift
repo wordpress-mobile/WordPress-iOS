@@ -2,11 +2,34 @@ import SwiftUI
 
 public struct SupportConversationListView: View {
 
-    enum ViewState {
+    enum ViewState: Equatable {
         case loading
         case partiallyLoaded([ConversationSummary])
         case loaded([ConversationSummary])
         case error(Error)
+
+        static func == (lhs: ViewState, rhs: ViewState) -> Bool {
+            switch (lhs, rhs) {
+            case (.loading, .loading):
+                return true
+            case (.partiallyLoaded(let lhsConversations), .partiallyLoaded(let rhsConversations)):
+                return lhsConversations == rhsConversations
+            case (.loaded(let lhsConversations), .loaded(let rhsConversations)):
+                return lhsConversations == rhsConversations
+            case (.error, .error):
+                return true
+            default:
+                return false
+            }
+        }
+
+        var isPartiallyLoaded: Bool {
+            guard case .partiallyLoaded = self else {
+                return false
+            }
+
+            return true
+        }
     }
 
     @EnvironmentObject
@@ -55,11 +78,9 @@ public struct SupportConversationListView: View {
                 SupportForm(supportIdentity: self.currentUser)
             }.environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
         })
-        .overlay(content: {
-            if case .partiallyLoaded = state {
-                LoadingLatestContentView()
-            }
-        })
+        .overlay {
+            OverlayProgressView(shouldBeVisible: self.state.isPartiallyLoaded)
+        }
         .task(self.loadConversations)
         .refreshable(action: self.reloadConversations)
     }

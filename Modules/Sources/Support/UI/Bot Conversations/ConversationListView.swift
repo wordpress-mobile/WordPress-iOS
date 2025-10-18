@@ -58,6 +58,14 @@ public struct ConversationListView: View {
 
             return .loaded(conversations, nil)
         }
+
+        var isPartiallyLoaded: Bool {
+            guard case .partiallyLoaded = self else {
+                return false
+            }
+
+            return true
+        }
     }
 
     enum ViewSubstate {
@@ -109,11 +117,9 @@ public struct ConversationListView: View {
                 .disabled(!currentUser.permissions.contains(.createChatConversation))
             }
         }
-        .overlay(content: {
-            if case .partiallyLoaded = state {
-                LoadingLatestContentView()
-            }
-        })
+        .overlay {
+            OverlayProgressView(shouldBeVisible: state.isPartiallyLoaded)
+        }
         .task(self.loadConversations)
         .refreshable(action: self.reloadConversations)
     }

@@ -183,6 +183,14 @@ public struct ConversationView: View {
                 )
             }
         }
+
+        var isPartiallyLoaded: Bool {
+            guard case .partiallyLoaded = self else {
+                return false
+            }
+
+            return true
+        }
     }
 
     enum ViewSubstate: Equatable {
@@ -284,11 +292,9 @@ public struct ConversationView: View {
                 )
             }
         }
-        .overlay(content: {
-            if case .partiallyLoaded = state {
-                LoadingLatestContentView()
-            }
-        })
+        .overlay {
+            OverlayProgressView(shouldBeVisible: state.isPartiallyLoaded)
+        }
         .task(self.loadExistingConversation)
         .refreshable(action: self.reloadConversation)
     }

@@ -7,6 +7,14 @@ public struct SupportConversationView: View {
         case partiallyLoaded(Conversation)
         case loaded(Conversation)
         case error(Error)
+
+        var isPartiallyLoaded: Bool {
+            guard case .partiallyLoaded = self else {
+                return false
+            }
+
+            return true
+        }
     }
 
     @EnvironmentObject
@@ -49,8 +57,10 @@ public struct SupportConversationView: View {
             switch self.state {
             case .loading:
                 ProgressView(Localization.loadingMessages)
-            case .partiallyLoaded(let conversation): self.conversationView(conversation)
-            case .loaded(let conversation): self.conversationView(conversation)
+            case .partiallyLoaded(let conversation):
+                self.conversationView(conversation)
+            case .loaded(let conversation):
+                self.conversationView(conversation)
             case .error(let error):
                 ErrorView(
                     title: Localization.unableToDisplayConversation,
@@ -70,11 +80,9 @@ public struct SupportConversationView: View {
                 .disabled(!canReply)
             }
         }
-        .overlay(content: {
-            if case .partiallyLoaded = state {
-                LoadingLatestContentView()
-            }
-        })
+        .overlay {
+            OverlayProgressView(shouldBeVisible: self.state.isPartiallyLoaded)
+        }
         .sheet(isPresented: $isReplying) {
             if case .loaded(let conversation) = state {
                 NavigationStack {
