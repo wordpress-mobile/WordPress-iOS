@@ -136,7 +136,8 @@ let package = Package(
         .target(
             name: "Support",
             dependencies: [
-                "AsyncImageKit"
+                "AsyncImageKit",
+                "WordPressCore",
             ]
         ),
         .target(name: "TextBundle"),

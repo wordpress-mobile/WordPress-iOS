@@ -1,12 +1,12 @@
 import SwiftUI
 
-struct ErrorView: View {
+public struct ErrorView: View {
     let title: String
     let message: String
     let systemImage: String
     let retryAction: (() -> Void)?
 
-    init(
+    public init(
         title: String = "Something went wrong",
         message: String = "Please try again later",
         systemImage: String = "exclamationmark.triangle.fill",
@@ -18,7 +18,7 @@ struct ErrorView: View {
         self.retryAction = retryAction
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 16) {
             // Error icon
             Image(systemName: systemImage)

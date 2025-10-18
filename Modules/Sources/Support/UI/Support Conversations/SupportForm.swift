@@ -375,7 +375,7 @@ private extension SupportFormArea {
 
 // MARK: - Previews
 #Preview {
-    NavigationView {
+    NavigationStack {
         SupportForm(
             supportIdentity: SupportDataProvider.supportUser,
             applicationLogs: [SupportDataProvider.applicationLog]

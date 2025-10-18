@@ -3,25 +3,210 @@ import SwiftUI
 public struct ConversationView: View {
 
     enum ViewState: Equatable {
-        case idle
+        case start
         case loadingMessages
         case loadingMessagesError(Error)
-        case startingNewConversation
+        case partiallyLoaded(conversation: BotConversation)
+        case loaded(conversation: BotConversation, substate: ViewSubstate?)
+        case startingNewConversation(substate: ViewSubstate?)
         case conversationNotFound
-        case sendingMessage(String, Task<Void, Never>)
-        case sendingMessageError(Error)
 
         static func == (lhs: ConversationView.ViewState, rhs: ConversationView.ViewState) -> Bool {
             return switch (lhs, rhs) {
-            case (.idle, .idle): true
-            case (.loadingMessages, .loadingMessages): true
-            case (.loadingMessagesError, .loadingMessagesError): true
-            case (.startingNewConversation, .startingNewConversation): true
-            case (.conversationNotFound, .conversationNotFound): true
-            case (.sendingMessage, .sendingMessage): true
-            case (.sendingMessageError, .sendingMessageError): true
+            case (.start, .start):
+                true
+            case (.loadingMessages, .loadingMessages):
+                true
+            case (.loadingMessagesError, .loadingMessagesError):
+                true
+            case (.partiallyLoaded, .partiallyLoaded):
+                true
+            case (.loaded(_, let lhsSubstate), .loaded(_, let rhsSubstate)):
+                lhsSubstate == rhsSubstate
+            case (.startingNewConversation(let lhsSubstate), .startingNewConversation(let rhsSubstate)):
+                lhsSubstate == rhsSubstate
+            case (.conversationNotFound, .conversationNotFound):
+                true
+            default:
+                false
+            }
+        }
+
+        var conversationTitle: String {
+            self.conversation?.title ?? "New Conversation"
+        }
+
+        var conversation: BotConversation? {
+            return switch self {
+            case .partiallyLoaded(let conversation): conversation
+            case .loaded(conversation: let conversation, _): conversation
+            default: nil
+            }
+        }
+
+        var messages: [BotMessage] {
+            switch self {
+            case .partiallyLoaded(let conversation): conversation.messages
+            case .loaded(conversation: let conversation, _): conversation.messages
+            default: []
+            }
+        }
+
+        var userWantsHumanSupport: Bool {
+            switch self {
+            case .partiallyLoaded(let conversation): conversation.userWantsHumanSupport
+            case .loaded(conversation: let conversation, _): conversation.userWantsHumanSupport
             default: false
             }
+        }
+
+        var shouldCauseScrollToBottom: Bool {
+            switch self {
+            case .loaded, .partiallyLoaded: true
+            default: false
+            }
+        }
+
+        private var substate: ViewSubstate? {
+            if case .loaded(_, let substate) = self {
+                return substate
+            }
+
+            if case .startingNewConversation(let substate) = self {
+                return substate
+            }
+
+            return nil
+        }
+
+        var inFlightMessage: String? {
+            self.substate?.inflightMessage
+        }
+
+        var isSendingMessage: Bool {
+            inFlightMessage != nil
+        }
+
+        var isThinking: Bool {
+            self.substate?.isThinking ?? false
+        }
+
+        var isStartingNewConversation: Bool {
+            guard case .startingNewConversation = self else {
+                return false
+            }
+
+            return true
+        }
+
+        func transitioningToSendingMessage(message: String, task: Task<Void, Never>) -> Self {
+            guard self.substate == nil else {
+                preconditionFailure("Cannot send message – operation already in progress")
+            }
+
+            if let currentConversation = self.conversation {
+                return .loaded(
+                    conversation: currentConversation,
+                    substate: .sendingMessage(
+                        message: message,
+                        thinking: false,
+                        task
+                    )
+                )
+            } else {
+                return .startingNewConversation(
+                    substate: .sendingMessage(
+                        message: message,
+                        thinking: false,
+                        task
+                    )
+                )
+            }
+        }
+
+        func transitioningToThinking() -> Self {
+
+            guard case .sendingMessage(let message, _, let task) = self.substate else {
+                preconditionFailure("Cannot transition to `thinking` because no message is in-flight")
+            }
+
+            // If we're not sending a message, don't transition
+            guard self.isSendingMessage else {
+                return self
+            }
+
+            if let currentConversation = self.conversation {
+                return .loaded(
+                    conversation: currentConversation,
+                    substate: .sendingMessage(
+                        message: message,
+                        thinking: true,
+                        task
+                    )
+                )
+            } else {
+                return .startingNewConversation(
+                    substate: .sendingMessage(
+                        message: message,
+                        thinking: true,
+                        task
+                    )
+                )
+            }
+        }
+
+        func transitioningToMessageSent(updatedConversation: BotConversation) -> Self {
+            guard self.isSendingMessage, self.substate != nil else {
+                preconditionFailure("Cannot transition to message sent – none is in-flight")
+            }
+
+            return .loaded(conversation: updatedConversation, substate: nil)
+        }
+
+        func transitioningToMessageSendError(_ error: Error) -> Self {
+            if let currentConversation = self.conversation {
+                guard self.substate != nil else {
+                    preconditionFailure("Cannot transition to message send error – none is in-flight")
+                }
+
+                return .loaded(
+                    conversation: currentConversation,
+                    substate: .sendingMessageError(error)
+                )
+            } else {
+                guard self.substate != nil else {
+                    preconditionFailure("Cannot transition to message send error – none is in-flight")
+                }
+
+                return .startingNewConversation(
+                    substate: .sendingMessageError(error)
+                )
+            }
+        }
+    }
+
+    enum ViewSubstate: Equatable {
+        case sendingMessage(message: String, thinking: Bool, Task<Void, Never>)
+        case sendingMessageError(Error)
+
+        static func == (lhs: ConversationView.ViewSubstate, rhs: ConversationView.ViewSubstate) -> Bool {
+            false // Force SwiftUI to re-evaluate everything anytime the ViewSubstate changes
+        }
+
+        var isThinking: Bool {
+            if case .sendingMessage(_, let thinking, _) = self {
+                return thinking
+            }
+
+            return false
+        }
+
+        var inflightMessage: String? {
+            if case .sendingMessage(let message, _, _) = self {
+                return message
+            }
+
+            return nil
         }
     }
 
@@ -29,13 +214,10 @@ public struct ConversationView: View {
     private var dataProvider: SupportDataProvider
 
     @State
-    var conversation: BotConversation?
-
-    @State
     var currentUser: SupportUser
 
     @State
-    var state: ViewState = .idle
+    var state: ViewState = .start
 
     @State
     private var showThinkingView = false
@@ -43,25 +225,12 @@ public struct ConversationView: View {
     @Namespace
     var bottom
 
-    var messages: [BotMessage] {
-        self.conversation?.messages ?? []
-    }
-
-    var isSendingMessage: Bool {
-        return switch self.state {
-        case .sendingMessage: true
-        default: false
-        }
-    }
-
-    var title: String {
-        self.conversation?.title ?? "New Conversation"
-    }
+    private let conversationId: UInt64?
 
     private var loadingTask: Task<Void, Error>?
 
     public init(conversation: BotConversation?, currentUser: SupportUser) {
-        self.conversation = conversation
+        self.conversationId = conversation?.id
         self.currentUser = currentUser
     }
 
@@ -76,13 +245,11 @@ public struct ConversationView: View {
                     loadingMessagesError
 
                     Section {
-                        ForEach(self.messages) { message in
+                        ForEach(self.state.messages) { message in
                             MessageView(message: message).id(message.id)
                         }
 
-                        sendingMessageView(proxy: proxy).onChange(of: self.state) { oldValue, newValue in
-                            self.scrollToBottom(using: proxy, animated: true)
-                        }
+                        sendingMessageView(proxy: proxy)
                     }
                     .listRowSeparator(.hidden)
                     .listRowInsets(.zero)
@@ -99,57 +266,39 @@ public struct ConversationView: View {
                         .id(self.bottom)
                 }
                 .scrollDismissesKeyboard(.interactively)
-                .onAppear {
-                    scrollToBottom(using: proxy, animated: false)
+                .onChange(of: self.state) { _, newState in
+                    if newState.shouldCauseScrollToBottom {
+                        scrollToBottom(using: proxy, animated: false)
+                    }
                 }
             }
-            .navigationTitle(self.title)
+            .navigationTitle(self.state.conversationTitle)
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
             VStack {
                 Spacer()
                 CompositionView(
-                    disabled: self.isSendingMessage,
+                    isDisabled: self.state.isSendingMessage,
                     action: self.sendMessage
                 )
             }
         }
-        .task {
-            if case .idle = self.state {
-                await self.loadExistingConversation()
+        .overlay(content: {
+            if case .partiallyLoaded = state {
+                LoadingLatestContentView()
             }
-        }
-        .onChange(of: state) { _, newState in
-            switch newState {
-            case .sendingMessage:
-                // Start a timer to show ThinkingView after 1.5 seconds
-                Task {
-                    try? await Task.sleep(for: .seconds(1.5))
-                    await MainActor.run {
-                        // Only show if we're still in sendingMessage state
-                        if case .sendingMessage = self.state {
-                            withAnimation(.easeInOut) {
-                                self.showThinkingView = true
-                            }
-                        }
-                    }
-                }
-            default:
-                // Hide ThinkingView when leaving sendingMessage state
-                withAnimation(.easeInOut) {
-                    showThinkingView = false
-                }
-            }
-        }
+        })
+        .task(self.loadExistingConversation)
+        .refreshable(action: self.reloadConversation)
     }
 
     @ViewBuilder
     func sendingMessageView(proxy: ScrollViewProxy) -> some View {
-        if case .sendingMessage(let message, _) = self.state {
+        if let inFlightMessage = state.inFlightMessage {
             MessageView(message: BotMessage(
                 id: 0,
-                text: message,
+                text: inFlightMessage,
                 date: Date(),
                 userWantsToTalkToHuman: false,
                 isWrittenByUser: true
@@ -163,7 +312,7 @@ public struct ConversationView: View {
                 scrollToBottom(using: proxy, animated: true)
             }
 
-            if showThinkingView {
+            if self.state.isThinking {
                 HStack {
                     Spacer()
                     ThinkingView()
@@ -195,21 +344,24 @@ public struct ConversationView: View {
 
     @ViewBuilder
     var sendingMessageError: some View {
-        if case .sendingMessageError(let error) = self.state {
-            ErrorView(
-                title: "Unable to send message",
-                message: error.localizedDescription
-            )
-            .transition(.asymmetric(
-                insertion: .move(edge: .top).combined(with: .opacity),
-                removal: .opacity
-            ))
+        if case .loaded(_, let substate) = state {
+            if case .sendingMessageError(let error) = substate {
+                ErrorView(
+                    title: "Unable to send message",
+                    message: error.localizedDescription
+                )
+                .transition(.asymmetric(
+                    insertion: .move(edge: .top).combined(with: .opacity),
+                    removal: .opacity
+                ))
+            }
         }
     }
 
     @ViewBuilder
     var switchToHumanSupport: some View {
-        if let conversation, conversation.userWantsHumanSupport {
+
+        if state.userWantsHumanSupport {
             Section {
                 // Deliberately left empty
             } footer: {
@@ -252,25 +404,26 @@ public struct ConversationView: View {
         self.state = .loadingMessages
 
         do {
-            guard let conversationId = self.conversation?.id else {
+            guard let conversationId = self.conversationId else {
                 await MainActor.run {
-                    self.state = .startingNewConversation
+                    self.state = .startingNewConversation(substate: nil)
                 }
                 return
             }
 
-            guard let conversation = try await self.dataProvider.loadConversation(id: conversationId) else {
+            let fetch = try await self.dataProvider.loadConversation(id: conversationId)
+
+            if let cachedConversation = try await fetch.cachedResult() {
                 await MainActor.run {
-                    self.state = .conversationNotFound
+                    self.state = .partiallyLoaded(conversation: cachedConversation)
                 }
-                return
             }
+
+            let conversation = try await fetch.fetchedResult()
 
             await MainActor.run {
-                self.conversation = conversation
-                self.state = .idle
+                self.state = .loaded(conversation: conversation, substate: nil)
             }
-
         } catch {
             await MainActor.run {
                 self.state = .loadingMessagesError(error)
@@ -278,30 +431,53 @@ public struct ConversationView: View {
         }
     }
 
+    private func reloadConversation() async {
+        guard case .loaded(let conversation, _) = self.state else {
+            return
+        }
+        self.state = .partiallyLoaded(conversation: conversation)
+    }
+
     private func sendMessage(_ message: String) {
-        let sendTask = Task {
+        self.state = self.state.transitioningToSendingMessage(message: message, task: Task {
             do {
-                let conversation = try await self.dataProvider.sendMessage(
-                    message: message,
-                    in: self.conversation
-                )
+
+                let thinkingTask = Task.delayedAndRunOnMainActor(for: .seconds(1.5)) {
+                    self.state = self.state.transitioningToThinking()
+                }
+
+                let updatedConversation: BotConversation
+
+                if let currentConversation = self.state.conversation {
+                    updatedConversation = try await self.dataProvider.sendMessage(
+                        message: message,
+                        in: currentConversation
+                    )
+                } else {
+                    updatedConversation = try await self.dataProvider.sendMessage(
+                        message: message
+                    )
+                }
+
+                // If we somehow got a response before the thinking view shows up, don't show it
+                thinkingTask.cancel()
 
                 await MainActor.run {
-                    self.conversation = conversation
-                    self.state = .idle
+                    self.state = self.state.transitioningToMessageSent(
+                        updatedConversation: updatedConversation
+                    )
                 }
             } catch {
-                debugPrint("🚩 Error: \(error.localizedDescription)")
-                self.state = .sendingMessageError(error)
+                await MainActor.run {
+                    self.state = self.state.transitioningToMessageSendError(error)
+                }
             }
-        }
-
-        self.state = .sendingMessage(message, sendTask)
+        })
     }
 }
 
 #Preview("Default chat") {
-    NavigationView {
+    NavigationStack {
         ConversationView(
             conversation: SupportDataProvider.botConversation,
             currentUser: SupportDataProvider.supportUser
@@ -310,7 +486,7 @@ public struct ConversationView: View {
 }
 
 #Preview("User wants to chat with a human") {
-    NavigationView {
+    NavigationStack {
         ConversationView(
             conversation: SupportDataProvider.conversationReferredToHuman,
             currentUser: SupportDataProvider.supportUser

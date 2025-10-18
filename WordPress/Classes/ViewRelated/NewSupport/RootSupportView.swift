@@ -5,96 +5,199 @@ import WebKit
 
 struct RootSupportView: View {
 
+    enum ViewState {
+        case loading
+        case partiallyLoaded(user: SupportUser?)
+        case loaded(user: SupportUser?)
+        case error(Error)
+
+        var isLoading: Bool {
+            guard case .loading = self else {
+                return false
+            }
+
+            return true
+        }
+    }
+
     @EnvironmentObject
     var dataProvider: SupportDataProvider
 
     @State
-    var dataLoadingError: Error? = nil
-
-    @State
-    var userIdentity: SupportUser? = nil
-
-    @State
-    var userIsEligibleForSupport: Bool = false
+    private var state: ViewState = .loading
 
     var body: some View {
+        VStack {
+            switch self.state {
+            case .loading:
+                ProgressView("Loading Support Profile")
+            case .partiallyLoaded(user: let currentUser), .loaded(let currentUser):
+                listView(identity: currentUser)
+            case .error(let error):
+                ErrorView(
+                    title: "Unable to load support",
+                    message: error.localizedDescription
+                )
+            }
+        }
+        .task(self.loadIdentity)
+        .refreshable(action: self.reloadIdentity)
+        .navigationTitle("Support")
+    }
+
+    @ViewBuilder
+    private func listView(identity: SupportUser?) -> some View {
         List {
-            Section("Support Profile") {
-                if let identity = self.userIdentity {
+            if let identity {
+                Section("Support Profile") {
                     ProfileView(user: identity)
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                } else {
-                    Button(role: nil) {
-                        debugPrint("Start WP.com login")
-                    } label: {
-                        Text("Sign in with WordPress.com")
-                    }
+                        .listRowBackground(Color(.secondarySystemGroupedBackground))
+                        .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                 }
             }
 
             Section("How can we help?") {
-                NavigationLink {
-                    let url = URL(string: "https://apps.wordpress.com/support/")!
-                    WebKitView(configuration: WebViewControllerConfiguration(url: url))
-                } label: {
-                    SubtitledListViewItem(
-                        title: "Help Center",
-                        subtitle: "Documentation and Tutorials to help you get started"
-                    )
-                }
-
-                if let identity = self.userIdentity {
-                    NavigationLink {
-                        ConversationListView(currentUser: identity)
-                            .environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
-                    } label: {
-                        SubtitledListViewItem(
-                            title: "Ask the bots",
-                            subtitle: "Get quick answers to common questions"
-                        )
-                    }
-
-                    NavigationLink {
-                        SupportConversationListView(currentUser: identity)
-                            .environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
-                    } label: {
-                        SubtitledListViewItem(
-                            title: "Ask the Happiness Engineers",
-                            subtitle: "For your tough questions. We'll reply via email"
-                        )
-                    }
+                communitySupportLink
+                if let identity {
+                    botSupportLink(for: identity)
+                    humanSupportLink(for: identity)
                 }
             }
 
             Section("Diagnostics") {
-                NavigationLink {
-                    ActivityLogListView()
-                        .environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
-                } label: {
-                    SubtitledListViewItem(
-                        title: "Application Logs",
-                        subtitle: "Advanced tool to debug issues"
-                    )
-                }
-
-                NavigationLink {
-                    Text("Site Status Report")
-                } label: {
-                    SubtitledListViewItem(
-                        title: "System Status Report",
-                        subtitle: "Various system information about your site"
-                    )
-                }
+                applicationLogLink
+                diagnosticsLink
             }
         }
-        .navigationTitle("Support")
-        .task {
-            do {
-                self.userIdentity = try await self.dataProvider.loadSupportIdentity()
-            } catch {
-                debugPrint(error.localizedDescription)
-                self.dataLoadingError = error
+        .listStyle(.insetGrouped)
+        .listRowBackground(Color(.secondarySystemGroupedBackground))
+        .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+    }
+
+    @ViewBuilder
+    private var communitySupportLink: some View {
+        NavigationLink {
+            let url = URL(string: "https://apps.wordpress.com/support/")!
+            WebKitView(configuration: WebViewControllerConfiguration(url: url))
+        } label: {
+            SupportAreaRow(
+                imageName: "book.pages",
+                title: "Help Center",
+                detail: "Documentation and tutorials to help you get started."
+            )
+        }
+    }
+
+    @ViewBuilder
+    private func botSupportLink(for identity: SupportUser) -> some View {
+        NavigationLink {
+            ConversationListView(currentUser: identity)
+                .environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
+        } label: {
+            SupportAreaRow(
+                imageName: "bubble.left.and.text.bubble.right",
+                title: "Ask the bots",
+                detail: "Get quick answers to common questions."
+            )
+        }
+    }
+
+    @ViewBuilder
+    private func humanSupportLink(for identity: SupportUser) -> some View {
+        NavigationLink {
+            SupportConversationListView(currentUser: identity)
+                .environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
+        } label: {
+            SupportAreaRow(
+                imageName: "envelope.badge",
+                title: "Ask the Happiness Engineers",
+                detail: "For your tough questions. We'll reply via email."
+            )
+        }
+    }
+
+    @ViewBuilder
+    private var applicationLogLink: some View {
+        NavigationLink {
+            ActivityLogListView()
+                .environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
+        } label: {
+            SupportAreaRow(
+                imageName: "wrench.and.screwdriver",
+                title: "Application Logs",
+                detail: "Find out what the app is doing under the hood."
+            )
+        }
+    }
+
+    @ViewBuilder
+    private var diagnosticsLink: some View {
+        NavigationLink {
+            DiagnosticsView()
+        } label: {
+            SupportAreaRow(
+                imageName: "doc.text.magnifyingglass",
+                title: "System Status Report",
+                detail: "Tools to help diagnose issues"
+            )
+        }
+    }
+
+    @Sendable private func loadIdentity() async {
+
+        do {
+            let result = try await self.dataProvider.loadSupportIdentity()
+
+            // Don't treat a `nil` value as a cache miss – they might not be logged into WP.com
+            let cachedIdentity = try await result.cachedResult()
+            await MainActor.run {
+                self.state = .partiallyLoaded(user: cachedIdentity)
+            }
+
+            // If we fail to fetch the user's identity, we'll assume they're logged out
+            let fetchedIdentity = try? await result.fetchedResult()
+
+            await MainActor.run {
+                self.state = .loaded(user: fetchedIdentity)
+            }
+        } catch {
+            await MainActor.run {
+                self.state = .error(error)
+            }
+        }
+    }
+
+    @Sendable private func reloadIdentity() async {
+        do {
+            let fetchedIdentity = try await self.dataProvider.loadSupportIdentity().fetchedResult()
+            await MainActor.run {
+                self.state = .loaded(user: fetchedIdentity)
+            }
+        } catch {
+            await MainActor.run {
+                self.state = .error(error)
+            }
+        }
+    }
+}
+
+struct SupportAreaRow: View {
+
+    let imageName: String
+    let title: String
+    let detail: String
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: imageName)
+                .frame(width: 24, height: 24)
+                .foregroundColor(.accentColor)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.headline)
+                Text(detail)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
         }
     }

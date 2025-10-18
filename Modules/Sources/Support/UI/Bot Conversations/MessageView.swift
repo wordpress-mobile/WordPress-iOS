@@ -12,7 +12,7 @@ struct MessageView: View {
             VStack(alignment: message.isWrittenByUser ? .trailing : .leading, spacing: 4) {
                 Text(message.attributedText)
                     .padding(12)
-                    .background(message.isWrittenByUser ? Color.blue : Color(.systemGray5))
+                    .background(message.isWrittenByUser ? Color.accentColor : Color(.systemGray5))
                     .foregroundColor(message.isWrittenByUser ? .white : .primary)
                     .cornerRadius(16)
 

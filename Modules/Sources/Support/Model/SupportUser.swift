@@ -1,21 +1,24 @@
 import Foundation
 import CryptoKit
 
-public struct SupportUser: Sendable {
+public struct SupportUser: Sendable, Codable {
     public let userId: UInt64
     public let username: String
     public let email: String
+    public let permissions: [SupportUserPermission]
     public let avatarUrl: URL
 
     public init(
         userId: UInt64,
         username: String,
         email: String,
+        permissions: [SupportUserPermission] = [],
         avatarUrl: URL? = nil
     ) {
         self.userId = userId
         self.username = username
         self.email = email
+        self.permissions = permissions
 
         if let avatarUrl {
             self.avatarUrl = avatarUrl

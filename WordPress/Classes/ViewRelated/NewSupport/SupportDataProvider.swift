@@ -4,6 +4,7 @@ import Support
 import SwiftUI
 import WordPressAPI
 import WordPressAPIInternal // Needed for `SupportUserIdentity`
+import WordPressCore
 import WordPressData
 import WordPressShared
 import CocoaLumberjack
@@ -20,7 +21,7 @@ extension SupportDataProvider {
         ),
         supportConversationDataProvider: WpSupportConversationDataProvider(
             wpcomClient: WordPressDotComClient()),
-        delegate: nil
+        delegate: WpSupportDelegate()
     )
 }
 
@@ -43,6 +44,16 @@ actor WpLogDataProvider: ApplicationLogDataProvider {
     }
 }
 
+class WpSupportDelegate: NSObject, SupportDelegate {
+    func userDid(_ action: Support.SupportFormAction) {
+        // TODO: Handle metrics
+    }
+    
+    func userDid(_ action: Support.DiagnosticAction, progress: (Support.DiagnosticActionStatus) -> Void) {
+        // TODO: Handle user actions
+    }
+}
+
 actor WpBotConversationDataProvider: BotConversationDataProvider {
 
     private let botId = "jetpack-chat-mobile"
@@ -55,29 +66,33 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
         self.wpcomClient = wpcomClient
     }
 
-    func loadBotConversations() async throws -> [Support.BotConversation] {
-        try await self.wpcomClient
-            .api
-            .supportBots
-            .getBotConverationList(botId: self.botId)
-            .data
-            .map { $0.asSupportConversation() }
+    func loadBotConversations() async throws -> any CachedAndFetchedResult<[Support.BotConversation]> {
+        return DiskCachedAndFetchedResult(fetchedResult: {
+            try await self.wpcomClient
+                .api
+                .supportBots
+                .getBotConverationList(botId: self.botId)
+                .data
+                .map { $0.asSupportConversation() }
+        }, cacheKey: "bot-conversation-list")
     }
 
-    func loadBotConversation(id: UInt64) async throws -> Support.BotConversation? {
-        let params = GetBotConversationParams(
-            pageNumber: 1,
-            itemsPerPage: 100,
-            includeFeedback: false
-        )
+    func loadBotConversation(id: UInt64) async throws -> any CachedAndFetchedResult<Support.BotConversation> {
+        return DiskCachedAndFetchedResult(fetchedResult: {
+            let params = GetBotConversationParams(
+                pageNumber: 1,
+                itemsPerPage: 100,
+                includeFeedback: false
+            )
 
-        let conversation = try await self.wpcomClient
-            .api
-            .supportBots
-            .getBotConversation(botId: self.botId, chatId: ChatId(id), params: params)
-            .data
+            let conversation = try await self.wpcomClient
+                .api
+                .supportBots
+                .getBotConversation(botId: self.botId, chatId: ChatId(id), params: params)
+                .data
 
-        return conversation.asSupportConversation()
+            return conversation.asSupportConversation()
+        }, cacheKey: "bot-conversation-\(id)")
     }
 
     func delete(conversationIds: [UInt64]) async throws {
@@ -87,7 +102,7 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
     func sendMessage(message: String, in conversation: Support.BotConversation?) async throws -> Support.BotConversation {
         if let conversation {
             _ = try await add(message: message, to: conversation)
-            return try await loadBotConversation(id: conversation.id) ?? conversation
+            return try await loadBotConversation(id: conversation.id).fetchedResult()
         } else {
             return try await createConversation(message: message)
         }
@@ -136,20 +151,19 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
 actor WpCurrentUserDataProvider: CurrentUserDataProvider {
 
     private let wpcomClient: WordPressDotComClient
-    private var cachedCurrentSupportUser: Support.SupportUser?
 
     init(wpcomClient: WordPressDotComClient) {
         self.wpcomClient = wpcomClient
     }
 
-    func fetchCurrentSupportUser() async throws -> Support.SupportUser {
-        if let cachedCurrentSupportUser {
-            return cachedCurrentSupportUser
-        }
+    func fetchCurrentSupportUser() async throws -> any CachedAndFetchedResult<Support.SupportUser> {
+        return DiskCachedAndFetchedResult(fetchedResult: {
+            async let user = try await self.wpcomClient.api.me.get().data.asSupportIdentity()
+            async let eligibility = try await self.wpcomClient.api.supportEligibility.getSupportEligibility().data
 
-        let user = try await self.wpcomClient.api.me.get().data.asSupportIdentity()
-        cachedCurrentSupportUser = user
-        return user
+            let supportUser = try await user.applyingSupportEligibility(eligibility)
+            return supportUser
+        }, cacheKey: "current-support-user")
     }
 }
 
@@ -161,20 +175,24 @@ actor WpSupportConversationDataProvider: SupportConversationDataProvider {
         self.wpcomClient = wpcomClient
     }
 
-    func loadSupportConversations() async throws -> [ConversationSummary] {
-        try await self.wpcomClient.api
-            .supportTickets
-            .getSupportConversationList()
-            .data
-            .map { $0.asConversationSummary() }
+    func loadSupportConversations() async throws -> any CachedAndFetchedResult<[ConversationSummary]> {
+        return DiskCachedAndFetchedResult(fetchedResult: {
+            try await self.wpcomClient.api
+                .supportTickets
+                .getSupportConversationList()
+                .data
+                .map { $0.asConversationSummary() }
+        }, cacheKey: "support-conversation-list")
     }
 
-    func loadSupportConversation(id: UInt64) async throws -> Conversation {
-        try await self.wpcomClient.api
-            .supportTickets
-            .getSupportConversation(conversationId: id)
-            .data
-            .asConversation()
+    func loadSupportConversation(id: UInt64) async throws -> any CachedAndFetchedResult<Conversation> {
+        return DiskCachedAndFetchedResult(fetchedResult: {
+            try await self.wpcomClient.api
+                .supportTickets
+                .getSupportConversation(conversationId: id)
+                .data
+                .asConversation()
+        }, cacheKey: "support-conversation-\(id)")
     }
 
     func createSupportConversation(
@@ -207,11 +225,13 @@ actor WpSupportConversationDataProvider: SupportConversationDataProvider {
             attachments: attachments.map { $0.path() }
         )
 
-        return try await self.wpcomClient.api
+        let conversation = try await self.wpcomClient.api
             .supportTickets
             .addMessageToSupportConversation(conversationId: id, params: params)
             .data
             .asConversation()
+
+        return conversation
     }
 }
 
@@ -223,7 +243,7 @@ extension WpComUserInfo {
             userId: self.id,
             username: self.displayName,
             email: self.email,
-            avatarUrl: self.getAvatarUrl(),
+            avatarUrl: self.getAvatarUrl()
         )
     }
 
@@ -233,6 +253,24 @@ extension WpComUserInfo {
         }
 
         return url
+    }
+}
+
+extension SupportUser {
+    func applyingSupportEligibility(_ eligiblity: SupportEligibility) -> SupportUser {
+        var permissions = [SupportUserPermission]()
+
+        if eligiblity.isUserEligible {
+            permissions = [.createSupportRequest, .createChatConversation]
+        }
+
+        return SupportUser(
+            userId: self.userId,
+            username: self.username,
+            email: self.email,
+            permissions: permissions,
+            avatarUrl: self.avatarUrl,
+        )
     }
 }
 

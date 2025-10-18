@@ -4,6 +4,7 @@ public struct SupportConversationListView: View {
 
     enum ViewState {
         case loading
+        case partiallyLoaded([ConversationSummary])
         case loaded([ConversationSummary])
         case error(Error)
     }
@@ -28,7 +29,8 @@ public struct SupportConversationListView: View {
             switch self.state {
             case .loading:
                 ProgressView(Localization.loadingConversations)
-            case .loaded(let conversations): self.conversationsList(conversations)
+            case .partiallyLoaded(let conversations), .loaded(let conversations):
+                self.conversationsList(conversations)
             case .error(let error):
                 ErrorView(
                     title: Localization.errorLoadingSupportConversations,
@@ -49,12 +51,17 @@ public struct SupportConversationListView: View {
             }
         }
         .sheet(isPresented: self.$isComposingNewMessage, content: {
-            NavigationView {
+            NavigationStack {
                 SupportForm(supportIdentity: self.currentUser)
             }.environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
         })
+        .overlay(content: {
+            if case .partiallyLoaded = state {
+                LoadingLatestContentView()
+            }
+        })
         .task(self.loadConversations)
-        .refreshable(action: self.loadConversations)
+        .refreshable(action: self.reloadConversations)
     }
 
     @ViewBuilder
@@ -79,7 +86,29 @@ public struct SupportConversationListView: View {
 
     private func loadConversations() async {
         do {
-            let conversations = try await dataProvider.loadSupportConversations()
+            let fetch = try await dataProvider.loadSupportConversations()
+
+            if let cachedResults = try await fetch.cachedResult() {
+                await MainActor.run {
+                    self.state = .partiallyLoaded(cachedResults)
+                }
+            }
+
+            let fetchedResults = try await fetch.fetchedResult()
+
+            await MainActor.run {
+                self.state = .loaded(fetchedResults)
+            }
+        } catch {
+            await MainActor.run {
+                self.state = .error(error)
+            }
+        }
+    }
+
+    private func reloadConversations() async {
+        do {
+            let conversations = try await dataProvider.loadSupportConversations().fetchedResult()
 
             await MainActor.run {
                 self.state = .loaded(conversations)
@@ -131,7 +160,7 @@ struct EmailRowView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SupportConversationListView(
             currentUser: SupportDataProvider.supportUser
         )

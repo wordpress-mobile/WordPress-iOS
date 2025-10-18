@@ -80,3 +80,17 @@ func convertMarkdownTextToAttributedString(_ text: String) -> AttributedString {
         return AttributedString(text)
     }
 }
+
+extension Task where Failure == Error {
+    static func delayedAndRunOnMainActor<C>(
+        for duration: C.Instant.Duration,
+        priority: TaskPriority? = nil,
+        operation: @MainActor @escaping @Sendable () throws -> Success,
+        clock: C = .continuous
+    ) -> Task where C: Clock {
+        Task(priority: priority) {
+            try await clock.sleep(for: duration)
+            return try await MainActor.run(body: operation)
+        }
+    }
+}

@@ -4,6 +4,7 @@ public struct SupportConversationView: View {
 
     enum ViewState {
         case loading
+        case partiallyLoaded(Conversation)
         case loaded(Conversation)
         case error(Error)
     }
@@ -22,9 +23,15 @@ public struct SupportConversationView: View {
     private let currentUser: SupportUser
 
     private var canReply: Bool {
+        // Don't enable the new conversation button if the user isn't eligible for it
+        guard currentUser.permissions.contains(.createSupportRequest) else {
+            return false
+        }
+
         if case .loaded = state {
             return true
         }
+
         return false
     }
 
@@ -42,6 +49,7 @@ public struct SupportConversationView: View {
             switch self.state {
             case .loading:
                 ProgressView(Localization.loadingMessages)
+            case .partiallyLoaded(let conversation): self.conversationView(conversation)
             case .loaded(let conversation): self.conversationView(conversation)
             case .error(let error):
                 ErrorView(
@@ -62,9 +70,14 @@ public struct SupportConversationView: View {
                 .disabled(!canReply)
             }
         }
+        .overlay(content: {
+            if case .partiallyLoaded = state {
+                LoadingLatestContentView()
+            }
+        })
         .sheet(isPresented: $isReplying) {
             if case .loaded(let conversation) = state {
-                NavigationView {
+                NavigationStack {
                     SupportConversationReplyView(
                         conversation: conversation,
                         currentUser: currentUser,
@@ -79,7 +92,13 @@ public struct SupportConversationView: View {
             }
         }
         .task(self.loadConversation)
-        .refreshable(action: self.loadConversation)
+        .refreshable(action: self.reloadConversation)
+        .onAppear {
+            debugPrint("💬 onAppear – detail")
+        }
+        .onDisappear {
+            debugPrint("💬 onDisappear – detail")
+        }
     }
 
     @ViewBuilder
@@ -176,10 +195,49 @@ public struct SupportConversationView: View {
     private func loadConversation() async {
         do {
             let conversationId = self.conversationSummary.id
-            let conversation = try await self.dataProvider.loadSupportConversation(id: conversationId)
-            self.state = .loaded(conversation)
+
+            let fetch = try await self.dataProvider.loadSupportConversation(id: conversationId)
+
+            if let cached = try await fetch.cachedResult() {
+                debugPrint("💬 Finished fetching cached conversations")
+
+                await MainActor.run {
+                    self.state = .partiallyLoaded(cached)
+                }
+            }
+
+            if Task.isCancelled {
+                preconditionFailure("need to handle cancellation!")
+            }
+
+            let conversation = try await fetch.fetchedResult()
+            debugPrint("💬 Finished fetching cached conversations")
+
+            await MainActor.run {
+                self.state = .loaded(conversation)
+            }
         } catch {
             self.state = .error(error)
+        }
+    }
+
+    private func reloadConversation() async {
+        guard case .loaded(let conversation) = state else {
+            return
+        }
+
+        do {
+            await MainActor.run {
+                self.state = .partiallyLoaded(conversation)
+            }
+
+            let conversation = try await self.dataProvider.loadSupportConversation(id: conversation.id).fetchedResult()
+
+            self.state = .loaded(conversation)
+        } catch {
+            await MainActor.run {
+                self.state = .error(error)
+            }
         }
     }
 }
@@ -254,14 +312,10 @@ struct AttachmentListView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SupportConversationView(
             conversation: SupportDataProvider.supportConversationSummaries.first!,
-            currentUser: SupportUser(
-                userId: 1,
-                username: "john_doe",
-                email: "john@example.com"
-            )
+            currentUser: SupportDataProvider.supportUser
         )
     }
     .environmentObject(SupportDataProvider.testing)

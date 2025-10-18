@@ -10,5 +10,4 @@ public actor WordPressClient {
         self.api = api
         self.rootUrl = rootUrl.url()
     }
-
 }

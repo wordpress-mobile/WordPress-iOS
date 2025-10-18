@@ -44,33 +44,35 @@ public struct ProfileView: View {
         Button(action: self.didTapProfile) {
             VStack(alignment: .leading) {
                 HStack(spacing: 16) {
-                    if let avatarImage {
-                        avatarImage
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 60, height: 60)
-                            .clipShape(Circle())
-                    } else if let avatarImageUrl {
-                        CachedAsyncImage(url: avatarImageUrl) { image in
-                            image
+                    Group {
+                        if let avatarImage {
+                            avatarImage
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: 60, height: 60)
                                 .clipShape(Circle())
-                        } placeholder: {
-                            ProgressView()
-                        }
-                    } else {
-                        ZStack {
-                            Circle()
-                                .fill(Color.secondary.opacity(0.2))
-                                .frame(width: 60, height: 60)
+                        } else if let avatarImageUrl {
+                            CachedAsyncImage(url: avatarImageUrl) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 60, height: 60)
+                                    .clipShape(Circle())
+                            } placeholder: {
+                                ProgressView()
+                            }.frame(width: 60, height: 60)
+                        } else {
+                            ZStack {
+                                Circle()
+                                    .fill(Color.secondary.opacity(0.2))
+                                    .frame(width: 60, height: 60)
 
-                            Image(systemName: "person.fill")
-                                .font(.system(size: 30))
-                                .foregroundColor(.secondary)
+                                Image(systemName: "person.fill")
+                                    .font(.system(size: 30))
+                                    .foregroundColor(.secondary)
+                            }
                         }
-                    }
+                    }.frame(width: 60, height: 60)
 
                     // User details
                     VStack(alignment: .leading, spacing: 4) {

@@ -33,7 +33,7 @@ struct ActivityLogSharingView: View {
     var destination: () -> AnyView
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(alignment: .leading, spacing: 24) {
 
                 VStack(spacing: 12) {

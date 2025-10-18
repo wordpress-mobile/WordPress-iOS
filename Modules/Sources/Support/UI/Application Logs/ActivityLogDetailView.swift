@@ -124,7 +124,7 @@ struct ActivityLogDetailView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ActivityLogDetailView(
             applicationLog: SupportDataProvider.applicationLog      ).environmentObject(SupportDataProvider.testing)
     }

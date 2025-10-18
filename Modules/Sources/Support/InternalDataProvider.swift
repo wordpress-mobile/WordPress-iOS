@@ -1,4 +1,5 @@
 import Foundation
+import WordPressCore
 
 // This file is all module-internal and provides sample data for UI development
 
@@ -14,7 +15,8 @@ extension SupportDataProvider {
     static let supportUser = SupportUser(
         userId: 1234,
         username: "demo-user",
-        email: "test@example.com"
+        email: "test@example.com",
+        permissions: [.createChatConversation, .createSupportRequest]
     )
     static let botConversation = BotConversation(
         id: 1234,
@@ -271,16 +273,20 @@ actor InternalBotConversationDataProvider: BotConversationDataProvider {
         await SupportDataProvider.supportUser
     }
 
-    func loadBotConversations() async throws -> [BotConversation] {
-        [await SupportDataProvider.botConversation]
+    func loadBotConversations() async throws -> any CachedAndFetchedResult<[BotConversation]> {
+        UncachedResult {
+            [await SupportDataProvider.botConversation]
+        }
     }
 
-    func loadBotConversation(id: UInt64) async throws -> BotConversation? {
-        if id == 5678 {
-            return await SupportDataProvider.conversationReferredToHuman
-        }
+    func loadBotConversation(id: UInt64) async throws -> any CachedAndFetchedResult<BotConversation> {
+        UncachedResult {
+            if id == 5678 {
+                return await SupportDataProvider.conversationReferredToHuman
+            }
 
-        return await SupportDataProvider.botConversation
+            return await SupportDataProvider.botConversation
+        }
     }
 
     func delete(conversationIds: [UInt64]) async throws {
@@ -309,23 +315,28 @@ actor InternalBotConversationDataProvider: BotConversationDataProvider {
 }
 
 actor InternalUserDataProvider: CurrentUserDataProvider {
-    func fetchCurrentSupportUser() async throws -> SupportUser {
-        await SupportDataProvider.supportUser
+    func fetchCurrentSupportUser() async throws -> any CachedAndFetchedResult<SupportUser> {
+        UncachedResult {
+            await SupportDataProvider.supportUser
+        }
     }
 }
 
 actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
     private var conversations: [UInt64: Conversation] = [:]
 
-    func loadSupportConversations() async throws -> [ConversationSummary] {
-        try await Task.sleep(for: .seconds(10))
-        return await SupportDataProvider.supportConversationSummaries
+    func loadSupportConversations() async throws -> any CachedAndFetchedResult<[ConversationSummary]> {
+        UncachedResult {
+            return await SupportDataProvider.supportConversationSummaries
+        }
     }
 
-    func loadSupportConversation(id: UInt64) async throws -> Conversation {
-        let conversation = await SupportDataProvider.supportConversation
-        self.conversations[id] = conversation
-        return conversation
+    func loadSupportConversation(id: UInt64) async throws -> any CachedAndFetchedResult<Conversation> {
+        UncachedResult {
+            let conversation = await SupportDataProvider.supportConversation
+            await self.cache(conversation)
+            return conversation
+        }
     }
 
     func replyToSupportConversation(
@@ -335,7 +346,7 @@ actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
         attachments: [URL]
     ) async throws -> Conversation {
 
-        let conversation = try await loadSupportConversation(id: id)
+        let conversation = try await loadSupportConversation(id: id).fetchedResult()
 
         if Bool.random() {
             throw CocoaError(.validationInvalidDate)
@@ -374,5 +385,9 @@ actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
                 attachments: []
             )]
         )
+    }
+
+    private func cache(_ value: Conversation) {
+        self.conversations[value.id] = value
     }
 }

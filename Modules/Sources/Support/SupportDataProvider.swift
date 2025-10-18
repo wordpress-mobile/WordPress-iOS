@@ -1,7 +1,18 @@
 import Foundation
+import WordPressCore
 
 public enum SupportFormAction {
     case viewSupportForm
+}
+
+public enum DiagnosticAction {
+    case clearDiskCache
+}
+
+public enum DiagnosticActionStatus {
+    case running(progress: Float)
+    case success
+    case error(Error)
 }
 
 @MainActor
@@ -33,17 +44,21 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         self.supportDelegate?.userDid(action)
     }
 
+    public func userDid(_ action: DiagnosticAction, progress: @escaping (DiagnosticActionStatus) -> Void) {
+        self.supportDelegate?.userDid(action, progress: progress)
+    }
+
     // Support Bots Data Source
-    public func loadSupportIdentity() async throws -> SupportUser {
+    public func loadSupportIdentity() async throws -> any CachedAndFetchedResult<SupportUser> {
         try await self.userDataProvider.fetchCurrentSupportUser()
     }
 
     // Bot Conversation Data Source
-    public func loadConversations() async throws -> [BotConversation] {
+    public func loadConversations() async throws -> any CachedAndFetchedResult<[BotConversation]> {
         try await self.botConversationDataProvider.loadBotConversations()
     }
 
-    public func loadConversation(id: UInt64) async throws -> BotConversation? {
+    public func loadConversation(id: UInt64) async throws -> any CachedAndFetchedResult<BotConversation> {
         try await self.botConversationDataProvider.loadBotConversation(id: id)
     }
 
@@ -51,16 +66,16 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         try await self.botConversationDataProvider.delete(conversationIds: conversationIds)
     }
 
-    public func sendMessage(message: String, in conversation: BotConversation?) async throws -> BotConversation {
+    public func sendMessage(message: String, in conversation: BotConversation? = nil) async throws -> BotConversation {
         try await self.botConversationDataProvider.sendMessage(message: message, in: conversation)
     }
 
     // Support Conversations Data Source
-    public func loadSupportConversations() async throws -> [ConversationSummary] {
+    public func loadSupportConversations() async throws -> any CachedAndFetchedResult<[ConversationSummary]> {
         try await self.supportConversationDataProvider.loadSupportConversations()
     }
 
-    public func loadSupportConversation(id: UInt64) async throws -> Conversation {
+    public func loadSupportConversation(id: UInt64) async throws -> any CachedAndFetchedResult<Conversation> {
         try await self.supportConversationDataProvider.loadSupportConversation(id: id)
     }
 
@@ -147,10 +162,16 @@ extension SupportFormDataProvider {
 
 public protocol SupportDelegate: NSObject {
     func userDid(_ action: SupportFormAction)
+    func userDid(_ action: DiagnosticAction, progress: (DiagnosticActionStatus) -> Void)
+}
+
+public enum SupportUserPermission: Sendable, Codable {
+    case createChatConversation
+    case createSupportRequest
 }
 
 public protocol CurrentUserDataProvider: Actor {
-    func fetchCurrentSupportUser() async throws -> SupportUser
+    func fetchCurrentSupportUser() async throws -> any CachedAndFetchedResult<SupportUser>
 }
 
 public protocol ApplicationLogDataProvider: Actor {
@@ -173,16 +194,16 @@ public extension ApplicationLogDataProvider {
 }
 
 public protocol BotConversationDataProvider: Actor {
-    func loadBotConversations() async throws -> [BotConversation]
-    func loadBotConversation(id: UInt64) async throws -> BotConversation?
+    func loadBotConversations() async throws -> any CachedAndFetchedResult<[BotConversation]>
+    func loadBotConversation(id: UInt64) async throws -> any CachedAndFetchedResult<BotConversation>
 
     func sendMessage(message: String, in conversation: BotConversation?) async throws -> BotConversation
     func delete(conversationIds: [UInt64]) async throws
 }
 
 public protocol SupportConversationDataProvider: Actor {
-    func loadSupportConversations() async throws -> [ConversationSummary]
-    func loadSupportConversation(id: UInt64) async throws -> Conversation
+    func loadSupportConversations() async throws -> any CachedAndFetchedResult<[ConversationSummary]>
+    func loadSupportConversation(id: UInt64) async throws -> any CachedAndFetchedResult<Conversation>
 
     func replyToSupportConversation(
         id: UInt64,

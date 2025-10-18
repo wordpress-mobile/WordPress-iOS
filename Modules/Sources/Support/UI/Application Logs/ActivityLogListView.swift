@@ -43,15 +43,7 @@ public struct ActivityLogListView: View {
         }
         .navigationTitle("Activity Logs")
         .overlay {
-            if case .loaded(let array, let deletionState) = self.state {
-                if array.isEmpty {
-                    ContentUnavailableView {
-                        Label("No Logs Found", systemImage: "doc.text")
-                    } description: {
-                        Text("There are no activity logs available")
-                    }
-                }
-
+            if case .loaded(_, let deletionState) = self.state {
                 switch deletionState {
                 case .none: EmptyView() // Do nothing
                 case .deleting: ProgressView()
@@ -110,6 +102,12 @@ public struct ActivityLogListView: View {
                     self.isConfirmingDeletion = true
                 }
             }
+        } else {
+            ContentUnavailableView {
+                Label("No Logs Found", systemImage: "doc.text")
+            } description: {
+                Text("There are no activity logs available")
+            }
         }
     }
 
@@ -166,7 +164,7 @@ public struct ActivityLogListView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ActivityLogListView()    .environmentObject(SupportDataProvider.testing)
 
     }

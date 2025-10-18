@@ -3,9 +3,64 @@ import SwiftUI
 public struct ConversationListView: View {
 
     enum ViewState {
-        case loadingConversations
+        case loading
+        case partiallyLoaded([BotConversation])
+        case loaded([BotConversation], ViewSubstate?)
         case loadingConversationsError(Error)
-        case ready
+
+        var conversations: [BotConversation]? {
+            return switch self {
+            case .partiallyLoaded(let conversations): conversations
+            case .loaded(let conversations, _): conversations
+            default: nil
+            }
+        }
+
+        var canDeleteConversations: Bool {
+            switch self {
+            case .loaded: true
+            default: false
+            }
+        }
+
+        func addSubstate(_ newValue: ViewSubstate) -> Self {
+            guard case .loaded(let conversations, let oldValue) = self else {
+                preconditionFailure("You cannot transition to a substate unless the current state is `loaded`")
+            }
+
+            guard case .none = oldValue else {
+                preconditionFailure("You cannot add a substate – one already exists")
+            }
+
+            return .loaded(conversations, newValue)
+        }
+
+        func updateSubstate(_ newValue: ViewSubstate) -> Self {
+            guard case .loaded(let conversations, let oldValue) = self else {
+                preconditionFailure("You cannot transition to a substate unless the current state is `loaded`")
+            }
+
+            guard oldValue != nil else {
+                preconditionFailure("You cannot update to a new substate – none exists")
+            }
+
+            return .loaded(conversations, newValue)
+        }
+
+        func clearSubstate() -> Self {
+            guard case .loaded(let conversations, let oldValue) = self else {
+                preconditionFailure("You cannot clear substate unless the current state is `loaded`")
+            }
+
+            guard oldValue != nil else {
+                preconditionFailure("You cannot clear substate – none exists")
+            }
+
+            return .loaded(conversations, nil)
+        }
+    }
+
+    enum ViewSubstate {
         case deletingConversations(Task<Void, Never>)
         case deletingConversationsError(Error)
     }
@@ -14,16 +69,10 @@ public struct ConversationListView: View {
     private var dataProvider: SupportDataProvider
 
     @State
-    var conversations: [BotConversation] = []
-
-    @State
-    var state: ViewState = .loadingConversations
+    var state: ViewState = .loading
 
     @State
     var selectedConversations = Set<String>()
-
-    @State
-    private var deletionTask: Task<Void, Error>? = nil
 
     private let currentUser: SupportUser
 
@@ -32,25 +81,17 @@ public struct ConversationListView: View {
     }
 
     public var body: some View {
-        List(selection: $selectedConversations) {
-
-            if case .loadingConversationsError(let error) = self.state {
+        VStack {
+            switch self.state {
+            case .loading:
+                ProgressView("Loading Bot Conversations")
+            case .partiallyLoaded(let conversations): self.conversationList(conversations)
+            case .loaded(let conversations, _): self.conversationList(conversations)
+            case .loadingConversationsError(let error):
                 ErrorView(
                     title: "Unable to load conversations",
                     message: error.localizedDescription
                 )
-            }
-
-            ForEach(self.conversations) { conversation in
-                NavigationLink(destination: ConversationView(
-                    conversation: conversation,
-                    currentUser: currentUser
-                ).environmentObject(dataProvider)) {
-                    ConversationRow(conversation: conversation)
-                }
-            }
-            .onDelete { indexSet in
-                self.deleteConversations(at: indexSet)
             }
         }
         .navigationTitle("Conversations")
@@ -65,48 +106,97 @@ public struct ConversationListView: View {
                 label: {
                     Image(systemName: "square.and.pencil")
                 }
+                .disabled(!currentUser.permissions.contains(.createChatConversation))
             }
         }
-        .overlay {
-            if case .ready = state, self.conversations.isEmpty {
-                ContentUnavailableView {
-                    Label("No Conversations", systemImage: "message")
-                } description: {
-                    Text("Start a new conversation using the button above")
+        .overlay(content: {
+            if case .partiallyLoaded = state {
+                LoadingLatestContentView()
+            }
+        })
+        .task(self.loadConversations)
+        .refreshable(action: self.reloadConversations)
+    }
+
+    @ViewBuilder
+    private func conversationList(_ conversations: [BotConversation]) -> some View {
+        if case .loaded = self.state, conversations.isEmpty {
+            ContentUnavailableView {
+                Label("No Conversations", systemImage: "message")
+            } description: {
+                Text("Start a new conversation using the button above")
+            }
+        } else {
+            List(conversations) { conversation in
+                NavigationLink(destination: ConversationView(
+                    conversation: conversation,
+                    currentUser: currentUser
+                ).environmentObject(dataProvider)) {
+                    ConversationRow(conversation: conversation)
                 }
             }
         }
-        .refreshable {
-            await self.reloadConversations()
-        }
-        .task {
-            await self.reloadConversations()
+    }
+
+    private func loadConversations() async {
+        do {
+            let fetch = try await dataProvider.loadConversations()
+
+            if let cachedConversations = try await fetch.cachedResult() {
+                debugPrint("💬 Finished fetching cached conversations")
+
+                await MainActor.run {
+                    self.state = .partiallyLoaded(cachedConversations)
+                }
+            }
+
+            let fetchedConversations = try await fetch.fetchedResult()
+
+            debugPrint("💬 Finished fetching conversations")
+
+            await MainActor.run {
+                self.state = .loaded(fetchedConversations, .none)
+            }
+
+        } catch {
+            debugPrint("🚩 Load conversations error: \(error.localizedDescription)")
+            await MainActor.run {
+                self.state = .loadingConversationsError(error)
+            }
         }
     }
 
     private func reloadConversations() async {
-        self.state = .loadingConversations
-
         do {
-            self.conversations = try await self.dataProvider.loadConversations()
-            self.state = .ready
+            let conversationList = try await self.dataProvider.loadConversations().fetchedResult()
+            await MainActor.run {
+                self.state = .loaded(conversationList, .none)
+            }
         } catch {
-            self.state = .loadingConversationsError(error)
+            await MainActor.run {
+                self.state = .loadingConversationsError(error)
+            }
         }
     }
 
     private func deleteConversations(at indexSet: IndexSet) {
-        let conversationIds = indexSet.map { conversations[$0].id }
+        guard let conversationIds = self.state.conversations?.map({ $0.id }) else {
+            return
+        }
 
-        self.state = .deletingConversations(Task {
+        self.state = self.state.addSubstate(.deletingConversations(Task {
             do {
                 try await self.dataProvider.delete(conversationIds: conversationIds)
-                self.state = .ready
+                await MainActor.run {
+                    self.state = self.state.clearSubstate()
+                }
             }
             catch {
-                self.state = .deletingConversationsError(error)
+                await MainActor.run {
+                    self.state = self.state.updateSubstate(.deletingConversationsError(error))
+                }
             }
-        })
+        }))
     }
 }
 
@@ -140,7 +230,7 @@ struct ConversationRow: View {
 
 #Preview {
 
-    NavigationView {
+    NavigationStack {
         ConversationListView(
             currentUser: SupportDataProvider.supportUser
         )
