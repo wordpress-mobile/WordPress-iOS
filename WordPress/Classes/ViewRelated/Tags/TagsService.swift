@@ -22,20 +22,19 @@ class TagsService {
     }
 
     func getTags(
-        number: Int = 100,
-        offset: Int = 0,
-        orderBy: RemoteTaxonomyPagingResultsOrdering = .byName,
-        order: RemoteTaxonomyPagingResultsOrder = .orderAscending
+        page: Int = 0,
+        recentlyUsed: Bool = false
     ) async throws -> [RemotePostTag] {
         guard let remote else {
             throw TagsServiceError.noRemoteService
         }
 
+        let pageSize = 100
         let paging = RemoteTaxonomyPaging()
-        paging.number = NSNumber(value: number)
-        paging.offset = NSNumber(value: offset)
-        paging.orderBy = .byCount
-        paging.order = .orderDescending
+        paging.number = NSNumber(value: pageSize)
+        paging.offset = NSNumber(value: page * pageSize)
+        paging.orderBy = recentlyUsed ? .byCount : .byName
+        paging.order = recentlyUsed ? .orderDescending : .orderAscending
 
         return try await withCheckedThrowingContinuation { continuation in
             remote.getTagsWith(paging, success: { remoteTags in

@@ -68,16 +68,14 @@ class TagsViewModel: ObservableObject {
                     throw TagsServiceError.noRemoteService
                 }
 
-                let offset = pageIndex ?? 0
+                let page = pageIndex ?? 0
                 let remoteTags = try await self.tagsService.getTags(
-                    number: 100,
-                    offset: offset,
-                    orderBy: self.isBrowseMode ? .byCount : .byName,
-                    order: self.isBrowseMode ? .orderDescending : .orderAscending
+                    page: page,
+                    recentlyUsed: self.isBrowseMode
                 )
 
                 let hasMore = remoteTags.count == 100
-                let nextPage = hasMore ? offset + 100 : nil
+                let nextPage = hasMore ? page + 1 : nil
 
                 return TagsPaginatedResponse.Page(
                     items: remoteTags,
