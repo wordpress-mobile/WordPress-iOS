@@ -10,7 +10,7 @@ data model as well as any custom migrations.
 - Remove unused `AbstactPost` properties: `metaIsLocal`, `metaPublishImmediatelly`, `statusAfterSync`, `confirmedChangesHash`
 - Remove unused `Blog` properties: `rawBlockEditorSettings`
 - Remove unused `BlobEntity`
-- Add `metadata` field to `AbstractPost`
+- Add `metadata`, `permalinkTemplateURL` fields to `AbstractPost`
 - Add `commentsStatus` and `pingsStatus` to `Post`
 - Add `formattedSize` to `Media`
 
@@ -27,7 +27,7 @@ data model as well as any custom migrations.
 @momozw 2024-05-07
 
 - `AbstractPost`: 
-    - Added `foreignID` (optional, no default, `UUID`)
+  - Added `foreignID` (optional, no default, `UUID`)
 
 ## WordPress 153
 

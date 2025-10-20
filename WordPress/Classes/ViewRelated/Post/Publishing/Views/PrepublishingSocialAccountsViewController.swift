@@ -1,3 +1,5 @@
+import UIKit
+import SwiftUI
 import WordPressData
 import WordPressShared
 import WordPressUI
@@ -37,7 +39,7 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 
     private var shareMessage: String {
         didSet {
-            messageCell.detailTextLabel?.text = shareMessage
+            tableView.reloadData()
         }
     }
 
@@ -60,22 +62,6 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
     /// This property is only used for visual purposes, to allow the toggled cell's switch animation to complete
     /// instead of having it abruptly stopped due to the table view reload.
     private var lastToggledRow: Int = -1
-
-    private lazy var messageCell: UITableViewCell = {
-        let cell = UITableViewCell(style: .value1, reuseIdentifier: Constants.messageCellIdentifier)
-        WPStyleGuide.configureTableViewCell(cell)
-
-        cell.textLabel?.text = Constants.messageCellLabelText
-        cell.textLabel?.adjustsFontForContentSizeCategory = true
-        cell.detailTextLabel?.text = shareMessage
-        cell.detailTextLabel?.adjustsFontForContentSizeCategory = true
-        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-            cell.detailTextLabel?.numberOfLines = 3
-        }
-        cell.accessoryType = .disclosureIndicator
-
-        return cell
-    }()
 
     // MARK: Methods
 
@@ -108,9 +94,10 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = Constants.navigationTitle
+        title = Strings.navigationTitle
 
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: Constants.accountCellIdentifier)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.messageCellIdentifier)
 
         // setting a custom spacer view will override the default 34pt padding from the grouped table view style.
         tableView.tableHeaderView = UIView(frame: .init(x: 0, y: 0, width: 0, height: Constants.tableTopPadding))
@@ -130,29 +117,48 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 extension PrepublishingSocialAccountsViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return connections.count + 1 // extra row for the sharing message
+        switch section {
+        case 0: connections.count
+        case 1: 1
+        default: fatalError("invalid section")
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row < connections.count {
+        switch indexPath.section {
+        case 0:
             return accountCell(for: indexPath)
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.messageCellIdentifier, for: indexPath)
+            cell.contentConfiguration = UIHostingConfiguration {
+                SocialSharingMessageRow(text: shareMessage)
+            }
+            cell.accessoryType = .disclosureIndicator
+            return cell
+        default: fatalError("invalid section")
         }
-
-        return messageCell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // interactions for the account switches are absorbed by the tap gestures set up in the SwitchTableViewCell,
         // so it shouldn't trigger this method. In any case, we should only care about handling taps on the message row.
-        guard indexPath.row == connections.count else {
-            return
+        switch indexPath.section {
+        case 0: break // Do nothing
+        case 1: showEditMessageScreen()
+        default: fatalError("invalid section")
         }
+    }
 
-        showEditMessageScreen()
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0: Strings.servicesSectionTitle
+        case 1: Strings.messageCellLabelText
+        default: fatalError("invalid section")
+        }
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -171,7 +177,6 @@ extension PrepublishingSocialAccountsViewController {
 // MARK: - Private Helpers
 
 private extension PrepublishingSocialAccountsViewController {
-
     var enabledCount: Int {
         connections
             .filter { connectionChanges[$0.keyringID] ?? $0.isOn }
@@ -247,12 +252,14 @@ private extension PrepublishingSocialAccountsViewController {
     }
 
     func showEditMessageScreen() {
-        let multiTextViewController = SettingsMultiTextViewController(text: shareMessage,
-                                                                      placeholder: nil,
-                                                                      hint: Constants.editShareMessageHint,
-                                                                      isPassword: false)
+        let multiTextViewController = SettingsMultiTextViewController(
+            text: shareMessage,
+            placeholder: nil,
+            hint: Strings.editShareMessageHint,
+            isPassword: false
+        )
 
-        multiTextViewController.title = Constants.editShareMessageNavigationTitle
+        multiTextViewController.title = Strings.editShareMessageNavigationTitle
         multiTextViewController.onValueChanged = { [weak self] newValue in
             self?.shareMessage = newValue
         }
@@ -340,38 +347,42 @@ private extension PrepublishingSocialAccountsViewController {
 
         static let webViewSource = "prepublishing_social_accounts_subscribe"
         static let trackingSource = "pre_publishing"
-
-        static let navigationTitle = NSLocalizedString(
-            "prepublishing.socialAccounts.navigationTitle",
-            value: "Social",
-            comment: "The navigation title for the pre-publishing social accounts screen."
-        )
-
-        static let messageCellLabelText = NSLocalizedString(
-            "prepublishing.socialAccounts.message.label",
-            value: "Message",
-            comment: """
-                The label displayed for a table row that displays the sharing message for the post.
-                Tapping on this row allows the user to edit the sharing message.
-                """
-        )
-
-        static let editShareMessageNavigationTitle = NSLocalizedString(
-            "prepublishing.socialAccounts.editMessage.navigationTitle",
-            value: "Customize message",
-            comment: "The navigation title for a screen that edits the sharing message for the post."
-        )
-
-        static let editShareMessageHint = NSLocalizedString(
-            "prepublishing.socialAccounts.editMessage.hint",
-            value: """
-                Customize the message you want to share.
-                If you don't add your own text here, we'll use the post's title as the message.
-                """,
-            comment: "A hint shown below the text field when editing the sharing message from the pre-publishing flow."
-        )
     }
+}
 
+private enum Strings {
+    static let navigationTitle = NSLocalizedString(
+        "prepublishing.socialAccounts.navigationTitle",
+        value: "Social",
+        comment: "The navigation title for the pre-publishing social accounts screen."
+    )
+
+    static let servicesSectionTitle = NSLocalizedString(
+        "prepublishing.socialAccounts.servicesSectionTitle",
+        value: "Services",
+        comment: "Table section title"
+    )
+
+    static let messageCellLabelText = NSLocalizedString(
+        "prepublishing.socialAccounts.message.label",
+        value: "Message",
+        comment: "Table section title"
+    )
+
+    static let editShareMessageNavigationTitle = NSLocalizedString(
+        "prepublishing.socialAccounts.editMessage.navigationTitle",
+        value: "Customize message",
+        comment: "The navigation title for a screen that edits the sharing message for the post."
+    )
+
+    static let editShareMessageHint = NSLocalizedString(
+        "prepublishing.socialAccounts.editMessage.hint",
+        value: """
+            Customize the message you want to share.
+            If you don't add your own text here, we'll use the post's title as the message.
+            """,
+        comment: "A hint shown below the text field when editing the sharing message from the pre-publishing flow."
+    )
 }
 
 private extension PostSocialSharingSettings {

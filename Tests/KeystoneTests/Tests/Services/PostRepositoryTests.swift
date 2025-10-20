@@ -227,7 +227,7 @@ class PostRepositoryTests: CoreDataTestCase {
             if $0 <= 3 {
                 post.metadata = [[
                     "id": 1234,
-                    "key": PostHelper.foreignIDKey,
+                    "key": "wp_jp_foreign_id",
                     "value": "892D484C-9972-47DE-8103-03A7FDE4EFCC"
                 ]]
             }

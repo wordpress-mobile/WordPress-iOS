@@ -3,7 +3,18 @@ import WordPressShared
 import WordPressKit
 
 extension PostHelper {
-    @objc public static let foreignIDKey = "wp_jp_foreign_id"
+    @objc public static let foreignIDKey = PostMetadataContainer.Key.foreignID.rawValue
+
+    @objc public static func getForeignID(for post: RemotePost) -> UUID? {
+        guard let metadata = post.metadata as? [[String: Any]] else {
+            return nil
+        }
+        let container = PostMetadataContainer(metadata: metadata)
+        guard let value = container.getString(for: .foreignID) else {
+            return nil
+        }
+        return UUID(uuidString: value)
+    }
 
     @objc public static func makeRawMetadata(from post: RemotePost) -> Data? {
         guard let metadata = post.metadata else {

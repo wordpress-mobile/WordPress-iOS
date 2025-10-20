@@ -417,6 +417,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     post.excerpt = jsonPost[@"excerpt"];
     post.slug = jsonPost[@"slug"];
     post.suggestedSlug = [jsonPost stringForKeyPath:@"other_URLs.suggested_slug"];
+    post.permalinkTemplateURL = [jsonPost stringForKeyPath:@"other_URLs.permalink_URL"];
     post.status = jsonPost[@"status"];
     post.password = jsonPost[@"password"];
     if ([post.password wpkit_isEmpty]) {
