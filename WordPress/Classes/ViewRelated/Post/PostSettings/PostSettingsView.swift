@@ -273,7 +273,7 @@ struct PostSettingsFormContentView: View {
                 isPublishing: viewModel.context == .publishing
             )
         } label: {
-            SettingsRow(viewModel.context == .publishing ? Strings.statusAndVisibility : Strings.status) {
+            SettingsRow(Strings.status) {
                 HStack(alignment: .center, spacing: 2) {
                     ScaledImage(viewModel.settings.status.image, height: 23)
                     VStack(alignment: .leading, spacing: 2) {
@@ -679,11 +679,5 @@ private enum Strings {
         "postSettings.status.label",
         value: "Status",
         comment: "Label for the status field in Post Settings"
-    )
-
-    static let statusAndVisibility = NSLocalizedString(
-        "postSettings.statusAndVisibility.label",
-        value: "Status & Visibility",
-        comment: "Label for the Status & Visibility field in Post Settings (should be short)"
     )
 }
