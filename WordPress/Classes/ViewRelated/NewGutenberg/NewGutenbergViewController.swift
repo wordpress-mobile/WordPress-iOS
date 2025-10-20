@@ -250,7 +250,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             preconditionFailure("Dependency loading should not be cancelled")
         }
 
-        self.editorLoadingTask = Task {
+        self.editorLoadingTask = Task { [weak self] in
+            guard let self else { return }
             do {
                 while case .loadingDependencies = self.editorState {
                     try await Task.sleep(nanoseconds: 1000)
