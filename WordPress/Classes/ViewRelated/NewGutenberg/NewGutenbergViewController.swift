@@ -200,11 +200,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         // Cancel any pending tasks
         editorLoadingTask?.cancel()
-
-        // Clean up child view controller
-        editorViewController.willMove(toParent: nil)
-        editorViewController.view.removeFromSuperview()
-        editorViewController.removeFromParent()
     }
 
     // MARK: - Lifecycle methods
