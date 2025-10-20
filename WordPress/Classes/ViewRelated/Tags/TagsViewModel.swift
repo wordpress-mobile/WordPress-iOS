@@ -3,8 +3,9 @@ import WordPressKit
 import WordPressData
 import WordPressUI
 import WordPressShared
+import WordPressAPI
 
-typealias TagsPaginatedResponse = DataViewPaginatedResponse<RemotePostTag, Int>
+typealias TagsPaginatedResponse = DataViewPaginatedResponse<AnyTermWithViewContext, Int>
 
 enum TagsViewMode {
     case selection(onSelectedTagsChanged: ((String) -> Void)?)
@@ -117,8 +118,8 @@ class TagsViewModel: ObservableObject {
         }
     }
 
-    func toggleSelection(for tag: RemotePostTag) {
-        guard let tagName = tag.name else { return }
+    func toggleSelection(for term: AnyTermWithViewContext) {
+        let tagName = term.name
         let lowercasedTagName = tagName.lowercased()
         if selectedTagsSet.contains(lowercasedTagName) {
             selectedTagsSet.remove(lowercasedTagName)
@@ -140,20 +141,19 @@ class TagsViewModel: ObservableObject {
         // Create a new tag in the background, which is consistent with the web editor.
         Task {
             do {
-                _ = try await tagsService.createTag(named: name)
+                _ = try await tagsService.createTag(name: name, description: "")
             } catch {
                 removeSelectedTag(name)
             }
         }
     }
 
-    func isSelected(_ tag: RemotePostTag) -> Bool {
-        guard let tagName = tag.name else { return false }
-        return selectedTagsSet.contains(tagName.lowercased())
+    func isSelected(_ term: AnyTermWithViewContext) -> Bool {
+        return selectedTagsSet.contains(term.name.lowercased())
     }
 
-    func isNotSelected(_ tag: RemotePostTag) -> Bool {
-        !isSelected(tag)
+    func isNotSelected(_ term: AnyTermWithViewContext) -> Bool {
+        !isSelected(term)
     }
 
     func removeSelectedTag(_ tagName: String) {

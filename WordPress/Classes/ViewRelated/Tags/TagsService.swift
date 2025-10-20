@@ -1,6 +1,7 @@
 import Foundation
 import WordPressKit
 import WordPressData
+import WordPressAPI
 
 class TagsService {
     private let remote: TaxonomyServiceRemote?
@@ -24,7 +25,7 @@ class TagsService {
     func getTags(
         page: Int = 0,
         recentlyUsed: Bool = false
-    ) async throws -> [RemotePostTag] {
+    ) async throws -> [AnyTermWithViewContext] {
         guard let remote else {
             throw TagsServiceError.noRemoteService
         }
@@ -38,14 +39,14 @@ class TagsService {
 
         return try await withCheckedThrowingContinuation { continuation in
             remote.getTagsWith(paging, success: { remoteTags in
-                continuation.resume(returning: remoteTags)
+                continuation.resume(returning: remoteTags.map { AnyTermWithViewContext(tag: $0) })
             }, failure: { error in
                 continuation.resume(throwing: error)
             })
         }
     }
 
-    func searchTags(with query: String) async throws -> [RemotePostTag] {
+    func searchTags(with query: String) async throws -> [AnyTermWithViewContext] {
         guard let remote else {
             throw TagsServiceError.noRemoteService
         }
@@ -56,31 +57,55 @@ class TagsService {
 
         return try await withCheckedThrowingContinuation { continuation in
             remote.searchTags(withName: query, success: { remoteTags in
-                continuation.resume(returning: remoteTags)
+                continuation.resume(returning: remoteTags.map { AnyTermWithViewContext(tag: $0) })
             }, failure: { error in
                 continuation.resume(throwing: error)
             })
         }
     }
 
-    func createTag(named name: String) async throws -> RemotePostTag {
-        // Do not create a new tag if a tag with the same name already exists.
-        let existing = try await searchTags(with: name)
-            .first { $0.name.compare(name, options: .caseInsensitive) == .orderedSame }
-        if let existing {
-            return existing
-        }
-
-        let tag = RemotePostTag()
-        tag.name = name
-        return try await saveTag(tag)
-    }
-
-    func deleteTag(_ tag: RemotePostTag) async throws {
+    func createTag(name: String, description: String) async throws -> AnyTermWithViewContext {
         guard let remote else {
             throw TagsServiceError.noRemoteService
         }
 
+        let tag = RemotePostTag()
+        tag.name = name
+        tag.tagDescription = description
+
+        return try await withCheckedThrowingContinuation { continuation in
+            remote.createTag(tag, success: { savedTag in
+                continuation.resume(returning: AnyTermWithViewContext(tag: savedTag))
+            }, failure: { error in
+                continuation.resume(throwing: error)
+            })
+        }
+    }
+
+    func updateTag(_ term: AnyTermWithViewContext, name: String, description: String) async throws -> AnyTermWithViewContext {
+        guard let remote else {
+            throw TagsServiceError.noRemoteService
+        }
+
+        let tag = term.tag
+        tag.name = name
+        tag.tagDescription = description
+
+        return try await withCheckedThrowingContinuation { continuation in
+            remote.update(tag, success: { savedTag in
+                continuation.resume(returning: AnyTermWithViewContext(tag: savedTag))
+            }, failure: { error in
+                continuation.resume(throwing: error)
+            })
+        }
+    }
+
+    func deleteTag(_ term: AnyTermWithViewContext) async throws {
+        guard let remote else {
+            throw TagsServiceError.noRemoteService
+        }
+
+        let tag = term.tag
         guard tag.tagID != nil else {
             throw TagsServiceError.invalidTag
         }
@@ -91,30 +116,6 @@ class TagsService {
             }, failure: { error in
                 continuation.resume(throwing: error)
             })
-        }
-    }
-
-    func saveTag(_ tag: RemotePostTag) async throws -> RemotePostTag {
-        guard let remote else {
-            throw TagsServiceError.noRemoteService
-        }
-
-        tag.tagDescription = tag.tagDescription ?? ""
-
-        return try await withCheckedThrowingContinuation { continuation in
-            if tag.tagID == nil {
-                remote.createTag(tag, success: { savedTag in
-                    continuation.resume(returning: savedTag)
-                }, failure: { error in
-                    continuation.resume(throwing: error)
-                })
-            } else {
-                remote.update(tag, success: { savedTag in
-                    continuation.resume(returning: savedTag)
-                }, failure: { error in
-                    continuation.resume(throwing: error)
-                })
-            }
         }
     }
 }
@@ -140,5 +141,32 @@ extension TagsServiceError: LocalizedError {
                 comment: "Error message when tag data is invalid"
             )
         }
+    }
+}
+
+extension AnyTermWithViewContext: @retroactive Identifiable {}
+
+extension AnyTermWithViewContext {
+    init(tag: RemotePostTag) {
+        self.init(
+            id: tag.tagID?.int64Value ?? 0,
+            count: tag.postCount?.int64Value ?? 0,
+            description: tag.tagDescription ?? "",
+            link: "",
+            name: tag.name ?? "",
+            slug: tag.slug ?? "",
+            taxonomy: .postTag,
+            parent: nil
+        )
+    }
+
+    var tag: RemotePostTag {
+        let tag = RemotePostTag()
+        tag.tagID = id == 0 ? nil : NSNumber(value: id)
+        tag.name = name
+        tag.slug = slug.isEmpty ? nil : slug
+        tag.tagDescription = description
+        tag.postCount = NSNumber(value: count)
+        return tag
     }
 }

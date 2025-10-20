@@ -2,14 +2,15 @@ import SwiftUI
 import WordPressUI
 import WordPressKit
 import WordPressData
+import WordPressAPI
 import SVProgressHUD
 
 struct EditTagView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: EditTagViewModel
 
-    init(tag: RemotePostTag?, tagsService: TagsService) {
-        self._viewModel = StateObject(wrappedValue: EditTagViewModel(tag: tag, tagsService: tagsService))
+    init(term: AnyTermWithViewContext?, tagsService: TagsService) {
+        self._viewModel = StateObject(wrappedValue: EditTagViewModel(term: term, tagsService: tagsService))
     }
 
     var body: some View {
@@ -98,38 +99,37 @@ class EditTagViewModel: ObservableObject {
     @Published var showError = false
     @Published var errorMessage = ""
 
-    private let originalTag: RemotePostTag?
+    private let originalTerm: AnyTermWithViewContext?
     private let tagsService: TagsService
 
     var isExistingTag: Bool {
-        originalTag != nil
+        originalTerm != nil
     }
 
     var navigationTitle: String {
-        originalTag?.name ?? Strings.newTagTitle
+        originalTerm?.name ?? Strings.newTagTitle
     }
 
-    init(tag: RemotePostTag?, tagsService: TagsService) {
-        self.originalTag = tag
+    init(term: AnyTermWithViewContext?, tagsService: TagsService) {
+        self.originalTerm = term
         self.tagsService = tagsService
-        self.tagName = tag?.name ?? ""
-        self.tagDescription = tag?.tagDescription ?? ""
+        self.tagName = term?.name ?? ""
+        self.tagDescription = term?.description ?? ""
     }
 
     func deleteTag() async -> Bool {
-        guard let tag = originalTag else { return false }
+        guard let term = originalTerm else { return false }
 
         SVProgressHUD.show()
         defer { SVProgressHUD.dismiss() }
 
         do {
-            try await tagsService.deleteTag(tag)
+            try await tagsService.deleteTag(term)
 
-            // Post notification to update the UI
             NotificationCenter.default.post(
                 name: .tagDeleted,
                 object: nil,
-                userInfo: [TagNotificationUserInfoKeys.tagID: tag.tagID ?? 0]
+                userInfo: [TagNotificationUserInfoKeys.tagID: NSNumber(value: term.id)]
             )
             return true
         } catch {
@@ -143,23 +143,26 @@ class EditTagViewModel: ObservableObject {
         SVProgressHUD.show()
         defer { SVProgressHUD.dismiss() }
 
-        let tagToSave: RemotePostTag
-        if let existingTag = originalTag {
-            tagToSave = existingTag
-        } else {
-            tagToSave = RemotePostTag()
-        }
-
-        tagToSave.name = tagName.trimmingCharacters(in: .whitespacesAndNewlines)
-        tagToSave.tagDescription = tagDescription.trimmingCharacters(in: .whitespacesAndNewlines)
-
         do {
-            let savedTag = try await tagsService.saveTag(tagToSave)
+            let savedTerm: AnyTermWithViewContext
+
+            if let existingTerm = originalTerm {
+                savedTerm = try await tagsService.updateTag(
+                    existingTerm,
+                    name: tagName.trimmingCharacters(in: .whitespacesAndNewlines),
+                    description: tagDescription.trimmingCharacters(in: .whitespacesAndNewlines)
+                )
+            } else {
+                savedTerm = try await tagsService.createTag(
+                    name: tagName.trimmingCharacters(in: .whitespacesAndNewlines),
+                    description: tagDescription.trimmingCharacters(in: .whitespacesAndNewlines)
+                )
+            }
 
             NotificationCenter.default.post(
-                name: originalTag == nil ? .tagCreated : .tagUpdated,
+                name: originalTerm == nil ? .tagCreated : .tagUpdated,
                 object: nil,
-                userInfo: [TagNotificationUserInfoKeys.tag: savedTag]
+                userInfo: [TagNotificationUserInfoKeys.tag: savedTerm]
             )
             return true
         } catch {
