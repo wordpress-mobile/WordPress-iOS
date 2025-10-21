@@ -29,7 +29,12 @@ final actor BlockEditorCache {
         guard FileManager.default.fileExists(atPath: fileURL.path) else {
             return nil
         }
-        return try? Data(contentsOf: fileURL)
+        do {
+            return try Data(contentsOf: fileURL)
+        } catch {
+            wpAssertionFailure("BlockEditorCache failed to read cached data", userInfo: ["error": "\(error)"])
+            return nil
+        }
     }
 
     func deleteBlockSettings(for blogID: String) throws {
