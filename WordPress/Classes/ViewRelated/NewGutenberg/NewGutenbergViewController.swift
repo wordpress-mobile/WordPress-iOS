@@ -273,11 +273,13 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if case .loadingDependencies(let task) = self.editorState {
-            task.cancel()
-        }
 
-        self.editorLoadingTask?.cancel()
+        if isBeingDismissedDirectlyOrByAncestor() {
+            if case .loadingDependencies(let task) = editorState {
+                task.cancel()
+            }
+            editorLoadingTask?.cancel()
+        }
     }
 
     private func setupEditorView() {
