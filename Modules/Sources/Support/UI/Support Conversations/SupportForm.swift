@@ -269,7 +269,7 @@ private extension SupportForm {
 
         Task {
             do {
-                let conversation = try await self.dataProvider.createSupportConversation(
+                _ = try await self.dataProvider.createSupportConversation(
                     subject: self.subject,
                     message: self.getText(),
                     user: self.supportIdentity,

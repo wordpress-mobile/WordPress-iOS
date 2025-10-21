@@ -149,16 +149,12 @@ public struct ConversationListView: View {
             let fetch = try await dataProvider.loadConversations()
 
             if let cachedConversations = try await fetch.cachedResult() {
-                debugPrint("💬 Finished fetching cached conversations")
-
                 await MainActor.run {
                     self.state = .partiallyLoaded(cachedConversations)
                 }
             }
 
             let fetchedConversations = try await fetch.fetchedResult()
-
-            debugPrint("💬 Finished fetching conversations")
 
             await MainActor.run {
                 self.state = .loaded(fetchedConversations, .none)

@@ -165,7 +165,6 @@ public struct ActivityLogListView: View {
 
 #Preview {
     NavigationStack {
-        ActivityLogListView()    .environmentObject(SupportDataProvider.testing)
-
+        ActivityLogListView().environmentObject(SupportDataProvider.testing)
     }
 }

@@ -204,23 +204,15 @@ public struct SupportConversationView: View {
         do {
             let conversationId = self.conversationSummary.id
 
-            let fetch = try await self.dataProvider.loadSupportConversation(id: conversationId)
+            let fetch = try self.dataProvider.loadSupportConversation(id: conversationId)
 
             if let cached = try await fetch.cachedResult() {
-                debugPrint("💬 Finished fetching cached conversations")
-
                 await MainActor.run {
                     self.state = .partiallyLoaded(cached)
                 }
             }
 
-            if Task.isCancelled {
-                preconditionFailure("need to handle cancellation!")
-            }
-
             let conversation = try await fetch.fetchedResult()
-            debugPrint("💬 Finished fetching cached conversations")
-
             await MainActor.run {
                 self.state = .loaded(conversation)
             }

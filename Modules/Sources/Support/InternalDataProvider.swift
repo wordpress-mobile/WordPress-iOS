@@ -273,13 +273,13 @@ actor InternalBotConversationDataProvider: BotConversationDataProvider {
         await SupportDataProvider.supportUser
     }
 
-    func loadBotConversations() async throws -> any CachedAndFetchedResult<[BotConversation]> {
+    nonisolated func loadBotConversations() throws -> any CachedAndFetchedResult<[BotConversation]> {
         UncachedResult {
             [await SupportDataProvider.botConversation]
         }
     }
 
-    func loadBotConversation(id: UInt64) async throws -> any CachedAndFetchedResult<BotConversation> {
+    nonisolated func loadBotConversation(id: UInt64) throws -> any CachedAndFetchedResult<BotConversation> {
         UncachedResult {
             if id == 5678 {
                 return await SupportDataProvider.conversationReferredToHuman
@@ -315,7 +315,7 @@ actor InternalBotConversationDataProvider: BotConversationDataProvider {
 }
 
 actor InternalUserDataProvider: CurrentUserDataProvider {
-    func fetchCurrentSupportUser() async throws -> any CachedAndFetchedResult<SupportUser> {
+    nonisolated func fetchCurrentSupportUser() throws -> any CachedAndFetchedResult<SupportUser> {
         UncachedResult {
             await SupportDataProvider.supportUser
         }
@@ -325,13 +325,13 @@ actor InternalUserDataProvider: CurrentUserDataProvider {
 actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
     private var conversations: [UInt64: Conversation] = [:]
 
-    func loadSupportConversations() async throws -> any CachedAndFetchedResult<[ConversationSummary]> {
+    nonisolated func loadSupportConversations() throws -> any CachedAndFetchedResult<[ConversationSummary]> {
         UncachedResult {
             return await SupportDataProvider.supportConversationSummaries
         }
     }
 
-    func loadSupportConversation(id: UInt64) async throws -> any CachedAndFetchedResult<Conversation> {
+    nonisolated func loadSupportConversation(id: UInt64) throws -> any CachedAndFetchedResult<Conversation> {
         UncachedResult {
             let conversation = await SupportDataProvider.supportConversation
             await self.cache(conversation)

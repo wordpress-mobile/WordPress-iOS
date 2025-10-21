@@ -66,8 +66,8 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
         self.wpcomClient = wpcomClient
     }
 
-    func loadBotConversations() async throws -> any CachedAndFetchedResult<[Support.BotConversation]> {
-        return DiskCachedAndFetchedResult(fetchedResult: {
+    nonisolated func loadBotConversations() throws -> any CachedAndFetchedResult<[Support.BotConversation]> {
+        DiskCachedAndFetchedResult(fetchedResult: {
             try await self.wpcomClient
                 .api
                 .supportBots
@@ -77,7 +77,7 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
         }, cacheKey: "bot-conversation-list")
     }
 
-    func loadBotConversation(id: UInt64) async throws -> any CachedAndFetchedResult<Support.BotConversation> {
+    nonisolated func loadBotConversation(id: UInt64) throws -> any CachedAndFetchedResult<Support.BotConversation> {
         return DiskCachedAndFetchedResult(fetchedResult: {
             let params = GetBotConversationParams(
                 pageNumber: 1,
@@ -156,8 +156,8 @@ actor WpCurrentUserDataProvider: CurrentUserDataProvider {
         self.wpcomClient = wpcomClient
     }
 
-    func fetchCurrentSupportUser() async throws -> any CachedAndFetchedResult<Support.SupportUser> {
-        return DiskCachedAndFetchedResult(fetchedResult: {
+    nonisolated func fetchCurrentSupportUser() throws -> any CachedAndFetchedResult<Support.SupportUser> {
+        DiskCachedAndFetchedResult(fetchedResult: {
             async let user = try await self.wpcomClient.api.me.get().data.asSupportIdentity()
             async let eligibility = try await self.wpcomClient.api.supportEligibility.getSupportEligibility().data
 
@@ -175,7 +175,7 @@ actor WpSupportConversationDataProvider: SupportConversationDataProvider {
         self.wpcomClient = wpcomClient
     }
 
-    func loadSupportConversations() async throws -> any CachedAndFetchedResult<[ConversationSummary]> {
+    nonisolated func loadSupportConversations() throws -> any CachedAndFetchedResult<[ConversationSummary]> {
         return DiskCachedAndFetchedResult(fetchedResult: {
             try await self.wpcomClient.api
                 .supportTickets
@@ -185,7 +185,7 @@ actor WpSupportConversationDataProvider: SupportConversationDataProvider {
         }, cacheKey: "support-conversation-list")
     }
 
-    func loadSupportConversation(id: UInt64) async throws -> any CachedAndFetchedResult<Conversation> {
+    nonisolated func loadSupportConversation(id: UInt64) throws -> any CachedAndFetchedResult<Conversation> {
         return DiskCachedAndFetchedResult(fetchedResult: {
             try await self.wpcomClient.api
                 .supportTickets

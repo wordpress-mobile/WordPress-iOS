@@ -107,7 +107,7 @@ public struct SupportConversationListView: View {
 
     private func loadConversations() async {
         do {
-            let fetch = try await dataProvider.loadSupportConversations()
+            let fetch = try dataProvider.loadSupportConversations()
 
             if let cachedResults = try await fetch.cachedResult() {
                 await MainActor.run {
