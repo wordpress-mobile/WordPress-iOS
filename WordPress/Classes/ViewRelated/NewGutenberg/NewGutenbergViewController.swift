@@ -355,18 +355,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private func actuallyLoadEditor() async {
         showActivityIndicator()
 
-        do {
-            let dependencies = try await fetchEditorDependencies()
-            startEditor(dependencies: dependencies)
-        } catch {
-            hideActivityIndicator()
-
-            let host = UIHostingView(view: EmptyStateView.failure(error: error) { [weak self] in
-                self?.loadEditor()
-            })
-            view.addSubview(host)
-            host.pinEdges()
-        }
+        let dependencies = await fetchEditorDependencies()
+        startEditor(dependencies: dependencies)
     }
 
     private func startEditor(dependencies: EditorDependencies) {
@@ -383,7 +373,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         editorContentWasUpdated()
     }
 
-    private func fetchEditorDependencies() async throws -> EditorDependencies {
+    private func fetchEditorDependencies() async -> EditorDependencies {
         let settings: String?
         do {
             settings = try await blockEditorSettingsService.getSettingsString(allowingCachedResponse: true)
