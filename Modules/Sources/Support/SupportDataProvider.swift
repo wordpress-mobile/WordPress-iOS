@@ -5,16 +5,6 @@ public enum SupportFormAction {
     case viewSupportForm
 }
 
-public enum DiagnosticAction {
-    case clearDiskCache
-}
-
-public enum DiagnosticActionStatus {
-    case running(progress: Float)
-    case success
-    case error(Error)
-}
-
 @MainActor
 public final class SupportDataProvider: ObservableObject, Sendable {
 
@@ -42,10 +32,6 @@ public final class SupportDataProvider: ObservableObject, Sendable {
     // Delegate Methods
     public func userDid(_ action: SupportFormAction) {
         self.supportDelegate?.userDid(action)
-    }
-
-    public func userDid(_ action: DiagnosticAction, progress: @escaping (DiagnosticActionStatus) -> Void) {
-        self.supportDelegate?.userDid(action, progress: progress)
     }
 
     // Support Bots Data Source
@@ -162,7 +148,6 @@ extension SupportFormDataProvider {
 
 public protocol SupportDelegate: NSObject {
     func userDid(_ action: SupportFormAction)
-    func userDid(_ action: DiagnosticAction, progress: (DiagnosticActionStatus) -> Void)
 }
 
 public enum SupportUserPermission: Sendable, Codable {

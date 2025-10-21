@@ -48,10 +48,6 @@ class WpSupportDelegate: NSObject, SupportDelegate {
     func userDid(_ action: Support.SupportFormAction) {
         // TODO: Handle metrics
     }
-    
-    func userDid(_ action: Support.DiagnosticAction, progress: (Support.DiagnosticActionStatus) -> Void) {
-        // TODO: Handle user actions
-    }
 }
 
 actor WpBotConversationDataProvider: BotConversationDataProvider {
