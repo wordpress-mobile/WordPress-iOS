@@ -14,7 +14,7 @@ actor WordPressDotComClient {
         let delegate = WpApiClientDelegate(
             authProvider: .dynamic(dynamicAuthenticationProvider: provider),
             requestExecutor: WpRequestExecutor(urlSession: session),
-            middlewarePipeline: WpApiMiddlewarePipeline(middlewares: [TmpDebugMiddleware()]),
+            middlewarePipeline: WpApiMiddlewarePipeline(middlewares: []),
             appNotifier: WpComNotifier()
         )
 
@@ -92,20 +92,5 @@ final class WpComNotifier: WpAppNotifier {
 
     func requestedWithInvalidAuthentication(requestUrl: String) async {
         NotificationCenter.default.post(name: Self.notificationName, object: nil)
-    }
-}
-
-public final class TmpDebugMiddleware: WpApiMiddleware {
-    public func process(
-        requestExecutor: any WordPressAPIInternal.RequestExecutor,
-        response: WordPressAPIInternal.WpNetworkResponse,
-        request: WordPressAPIInternal.WpNetworkRequest,
-        context: WordPressAPIInternal.RequestContext?
-    ) async throws -> WordPressAPIInternal.WpNetworkResponse {
-        debugPrint("Performed request: \(request.url())")
-        debugPrint("Request Headers: \(request.headerMap().toFlatMap())")
-        debugPrint("Body: \(String(describing: request.bodyAsString()))")
-        debugPrint("Received response: \(response)")
-        return response
     }
 }
