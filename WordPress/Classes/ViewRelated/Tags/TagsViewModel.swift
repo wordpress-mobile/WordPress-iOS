@@ -4,6 +4,7 @@ import WordPressData
 import WordPressUI
 import WordPressShared
 import WordPressAPI
+import WordPressCore
 
 typealias TagsPaginatedResponse = DataViewPaginatedResponse<AnyTermWithViewContext, Int>
 
@@ -27,8 +28,10 @@ class TagsViewModel: ObservableObject {
     }
     private var selectedTagsSet: Set<String> = []
 
-    let tagsService: TagsService
+    let tagsService: TaxonomyServiceProtocol
     let mode: TagsViewMode
+    let labels: TaxonomyLocalizedLabels
+    let taxonomy: SiteTaxonomy?
 
     var isBrowseMode: Bool {
         if case .browse = mode {
@@ -38,9 +41,20 @@ class TagsViewModel: ObservableObject {
     }
 
     init(blog: Blog, selectedTags: String? = nil, mode: TagsViewMode) {
+        self.taxonomy = nil
         self.tagsService = TagsService(blog: blog)
         self.mode = mode
+        self.labels = TaxonomyLocalizedLabels.tag
         self.selectedTags = AbstractPost.makeTags(from: selectedTags ?? "")
+        self.selectedTagsSet = Set(self.selectedTags.map { $0.lowercased() })
+    }
+
+    init(blog: Blog, api: WordPressAPI, taxonomy: SiteTaxonomy, selectedTerms: String? = nil, mode: TagsViewMode) {
+        self.taxonomy = taxonomy
+        self.tagsService = AnyTermService(api: api, endpoint: taxonomy.endpoint)
+        self.mode = mode
+        self.labels = TaxonomyLocalizedLabels.from(taxonomy: taxonomy)
+        self.selectedTags = AbstractPost.makeTags(from: selectedTerms ?? "")
         self.selectedTagsSet = Set(self.selectedTags.map { $0.lowercased() })
     }
 
@@ -175,4 +189,65 @@ extension Foundation.Notification.Name {
 struct TagNotificationUserInfoKeys {
     static let tagID = "tagID"
     static let tag = "tag"
+}
+
+struct TaxonomyLocalizedLabels {
+    var name: String
+    var empty: String
+    var emptyDescription: String
+    var searchPlaceholder: String
+
+    static func from(taxonomy: SiteTaxonomy) -> Self {
+        Self(
+            name: taxonomy.localizedName,
+            empty: (taxonomy.details.labels[.noTerms] ?? nil)
+                ?? String.localizedStringWithFormat(Strings.defaultNoTermsFormat, taxonomy.details.name),
+            emptyDescription: String.localizedStringWithFormat(Strings.defaultEmptyDescriptionFormat, taxonomy.details.name),
+            searchPlaceholder: (taxonomy.details.labels[.searchItems] ?? nil)
+                ?? String.localizedStringWithFormat(Strings.defaultSearchFormat, taxonomy.details.name)
+        )
+    }
+
+    static var tag: Self {
+        Self(
+            name: NSLocalizedString(
+                "tags.title",
+                value: "Tags",
+                comment: "Title for the tags screen"
+            ),
+            empty: NSLocalizedString(
+                "tags.empty.title",
+                value: "No Tags",
+                comment: "Title for empty state when there are no tags"
+            ),
+            emptyDescription: NSLocalizedString(
+                "tags.empty.description",
+                value: "Tags help organize your content and make it easier for readers to find related posts.",
+                comment: "Description for empty state when there are no tags"
+            ),
+            searchPlaceholder: NSLocalizedString(
+                "tags.search.placeholder",
+                value: "Search tags",
+                comment: "Placeholder text for the tag search field"
+            )
+        )
+    }
+}
+
+private enum Strings {
+    static let defaultNoTermsFormat = NSLocalizedString(
+        "localizedLabels.defaultNoTerms.format",
+        value: "No %1$@",
+        comment: "Default empty state message format when there are no terms. %1$@ is the taxonomy name."
+    )
+    static let defaultSearchFormat = NSLocalizedString(
+        "localizedLabels.defaultSearch.format",
+        value: "Search %1$@",
+        comment: "Default search placeholder format. %1$@ is the taxonomy name."
+    )
+    static let defaultEmptyDescriptionFormat = NSLocalizedString(
+        "tags.empty.description",
+        value: "%1$@ help organize your content and make it easier for readers to find related posts.",
+        comment: "Description for empty state when there are no tags. %1$@ is the taxonomy name."
+    )
 }

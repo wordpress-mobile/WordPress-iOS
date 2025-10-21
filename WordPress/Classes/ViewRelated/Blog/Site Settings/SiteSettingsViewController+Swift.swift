@@ -3,6 +3,9 @@ import SwiftUI
 import WordPressData
 import WordPressFlux
 import WordPressShared
+import WordPressAPI
+import WordPressAPIInternal
+import WordPressCore
 
 extension SiteSettingsViewController {
     // MARK: - General
@@ -50,6 +53,26 @@ extension SiteSettingsViewController {
     @objc public func showTagList() {
         let tagsVC = SiteTagsViewController(blog: blog)
         navigationController?.pushViewController(tagsVC, animated: true)
+    }
+
+    @objc public func showCustomTaxonomies() {
+        let viewController: UIViewController
+        if let client = try? WordPressClient(site: .init(blog: blog)) {
+            let rootView = SiteCustomTaxonomiesView(blog: self.blog, api: client.api)
+            viewController = UIHostingController(rootView: rootView)
+        } else {
+            let feature = NSLocalizedString(
+                "applicationPasswordRequired.feature.customTaxonomies",
+                value: "Taxonomies Management",
+                comment: "Feature name for managing terms and taxonomies in the app"
+            )
+            let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature, presentingViewController: self) { client in
+                SiteCustomTaxonomiesView(blog: self.blog, api: client.api)
+            }
+            viewController = UIHostingController(rootView: rootView)
+        }
+
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     // MARK: - Timezone

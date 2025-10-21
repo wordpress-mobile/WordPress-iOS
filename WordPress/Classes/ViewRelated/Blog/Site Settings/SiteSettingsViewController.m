@@ -33,6 +33,7 @@ NS_ENUM(NSInteger, SiteSettingsEditor) {
 NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingDefaultCategory = 0,
     SiteSettingsWritingTags,
+    SiteSettingsWritingCustomTaxonomies,
     SiteSettingsWritingDefaultPostFormat,
     SiteSettingsWritingRelatedPosts,
     SiteSettingsWritingDateAndTimeFormat,
@@ -62,6 +63,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 @property (nonatomic, strong) SwitchTableViewCell  *editorSelectorCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *tagsCell;
+@property (nonatomic, strong) SettingTableViewCell *customTaxonomiesCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
 @property (nonatomic, strong) SettingTableViewCell *dateAndTimeFormatCell;
@@ -204,6 +206,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     NSMutableArray *rows = [NSMutableArray arrayWithObjects:
                             @(SiteSettingsWritingDefaultCategory),
                             @(SiteSettingsWritingTags),
+                            @(SiteSettingsWritingCustomTaxonomies),
                             @(SiteSettingsWritingDefaultPostFormat), nil];
 
     BOOL jetpackFeaturesEnabled = [JetpackFeaturesRemovalCoordinator jetpackFeaturesEnabled];
@@ -364,6 +367,17 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
                                                               editable: self.blog.isAdmin
                                                        reuseIdentifier:nil];
     return _tagsCell;
+}
+
+- (SettingTableViewCell *)customTaxonomiesCell
+{
+    if (_customTaxonomiesCell){
+        return _customTaxonomiesCell;
+    }
+    _customTaxonomiesCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Taxonomies", @"Label for viewing the custom taxonomies")
+                                                               editable:self.blog.isAdmin
+                                                        reuseIdentifier:nil];
+    return _customTaxonomiesCell;
 }
 
 - (SettingTableViewCell *)defaultPostFormatCell
@@ -532,6 +546,9 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
         case (SiteSettingsWritingTags):
             return self.tagsCell;
+
+        case (SiteSettingsWritingCustomTaxonomies):
+            return self.customTaxonomiesCell;
 
         case (SiteSettingsWritingDefaultPostFormat):
             [self configureDefaultPostFormatCell];
@@ -856,6 +873,10 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
         case SiteSettingsWritingTags:
             [self showTagList];
+            break;
+
+        case SiteSettingsWritingCustomTaxonomies:
+            [self showCustomTaxonomies];
             break;
 
         case SiteSettingsWritingDefaultPostFormat:

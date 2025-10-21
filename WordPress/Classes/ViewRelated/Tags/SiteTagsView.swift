@@ -17,7 +17,7 @@ struct SiteTagsView: View {
                 TagsListView(viewModel: viewModel)
             }
         }
-        .navigationTitle(Strings.title)
+        .navigationTitle(viewModel.labels.name)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -27,10 +27,10 @@ struct SiteTagsView: View {
                 }
             }
         }
-        .searchable(text: $viewModel.searchText, prompt: Strings.searchPlaceholder)
+        .searchable(text: $viewModel.searchText, prompt: viewModel.labels.searchPlaceholder)
         .sheet(isPresented: $isShowingAddTagView) {
             NavigationView {
-                EditTagView(term: nil, tagsService: viewModel.tagsService)
+                EditTagView(term: nil, taxonomy: viewModel.taxonomy, tagsService: viewModel.tagsService)
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button(SharedStrings.Button.cancel) {
@@ -57,9 +57,9 @@ private struct TagsListView: View {
             if let response = viewModel.response {
                 if response.isEmpty {
                     EmptyStateView(
-                        Strings.empty,
+                        viewModel.labels.empty,
                         systemImage: "tag",
-                        description: Strings.emptyDescription
+                        description: viewModel.labels.emptyDescription
                     )
                 }
             } else if viewModel.isLoading {
@@ -140,7 +140,7 @@ private struct TagRowView: View {
                 }
                 .listRowBackground(Color.clear)
         case .browse:
-            NavigationLink(destination: EditTagView(term: tag, tagsService: viewModel.tagsService)) {
+            NavigationLink(destination: EditTagView(term: tag, taxonomy: viewModel.taxonomy, tagsService: viewModel.tagsService)) {
                 TagRowContent(tag: tag, showPostCount: true, isSelected: false)
             }
         }
@@ -169,30 +169,6 @@ private struct TagRowContent: View {
 }
 
 private enum Strings {
-    static let title = NSLocalizedString(
-        "tags.title",
-        value: "Tags",
-        comment: "Title for the tags screen"
-    )
-
-    static let empty = NSLocalizedString(
-        "tags.empty.title",
-        value: "No Tags",
-        comment: "Title for empty state when there are no tags"
-    )
-
-    static let emptyDescription = NSLocalizedString(
-        "tags.empty.description",
-        value: "Tags help organize your content and make it easier for readers to find related posts.",
-        comment: "Description for empty state when there are no tags"
-    )
-
-    static let searchPlaceholder = NSLocalizedString(
-        "tags.search.placeholder",
-        value: "Search tags",
-        comment: "Placeholder text for the tag search field"
-    )
-
     static func removeTag(_ tagName: String) -> String {
         let template = NSLocalizedString(
             "tags.remove.button",

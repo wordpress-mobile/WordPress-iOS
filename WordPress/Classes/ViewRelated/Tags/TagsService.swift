@@ -1,9 +1,19 @@
 import Foundation
 import WordPressKit
+import WordPressCore
 import WordPressData
 import WordPressAPI
+import WordPressAPIInternal
 
-class TagsService {
+protocol TaxonomyServiceProtocol {
+    func getTags(page: Int, recentlyUsed: Bool) async throws -> [AnyTermWithViewContext]
+    func searchTags(with query: String) async throws -> [AnyTermWithViewContext]
+    func createTag(name: String, description: String) async throws -> AnyTermWithViewContext
+    func updateTag(_ term: AnyTermWithViewContext, name: String, description: String) async throws -> AnyTermWithViewContext
+    func deleteTag(_ term: AnyTermWithViewContext) async throws
+}
+
+class TagsService: TaxonomyServiceProtocol {
     private let remote: TaxonomyServiceRemote?
 
     init(blog: Blog) {
@@ -168,5 +178,101 @@ extension AnyTermWithViewContext {
         tag.tagDescription = description
         tag.postCount = NSNumber(value: count)
         return tag
+    }
+}
+
+class AnyTermService: TaxonomyServiceProtocol {
+    private let api: WordPressAPI
+    let endpoint: TermEndpointType
+
+    init(api: WordPressAPI, endpoint: TermEndpointType) {
+        self.endpoint = endpoint
+        self.api = api
+    }
+
+    func getTags(page: Int = 0, recentlyUsed: Bool = false) async throws -> [AnyTermWithViewContext] {
+        let perPage: UInt32 = 100
+        let params = TermListParams(
+            page: UInt32(page + 1),
+            perPage: perPage,
+            order: recentlyUsed ? .desc : .asc,
+            orderby: recentlyUsed ? .count : .name
+        )
+
+        let response = try await api.terms.listWithViewContext(
+            termEndpointType: endpoint,
+            params: params
+        )
+
+        return response.data
+    }
+
+    func searchTags(with query: String) async throws -> [AnyTermWithViewContext] {
+        guard !query.isEmpty else {
+            return []
+        }
+
+        let params = TermListParams(
+            perPage: 100,
+            search: query
+        )
+
+        let response = try await api.terms.listWithViewContext(
+            termEndpointType: endpoint,
+            params: params
+        )
+
+        return response.data
+    }
+
+    func createTag(name: String, description: String) async throws -> AnyTermWithViewContext {
+        let params = TermCreateParams(
+            name: name,
+            description: description.isEmpty ? nil : description
+        )
+
+        let response = try await api.terms.create(
+            termEndpointType: endpoint,
+            params: params
+        )
+
+        return response.data.toViewContext()
+    }
+
+    func updateTag(_ term: AnyTermWithViewContext, name: String, description: String) async throws -> AnyTermWithViewContext {
+        let params = TermUpdateParams(
+            name: name,
+            description: description
+        )
+
+        let response = try await api.terms.update(
+            termEndpointType: endpoint,
+            termId: term.id,
+            params: params
+        )
+
+        return response.data.toViewContext()
+    }
+
+    func deleteTag(_ term: AnyTermWithViewContext) async throws {
+        _ = try await api.terms.delete(
+            termEndpointType: endpoint,
+            termId: term.id
+        )
+    }
+}
+
+extension AnyTermWithEditContext {
+    func toViewContext() -> AnyTermWithViewContext {
+        return AnyTermWithViewContext(
+            id: id,
+            count: count,
+            description: description,
+            link: link,
+            name: name,
+            slug: slug,
+            taxonomy: taxonomy,
+            parent: parent
+        )
     }
 }
