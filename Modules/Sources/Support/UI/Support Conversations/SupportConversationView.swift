@@ -99,14 +99,11 @@ public struct SupportConversationView: View {
                 .environmentObject(dataProvider)
             }
         }
+        .onAppear {
+            self.dataProvider.userDid(.viewSupportTicket(ticketId: conversationSummary.id))
+        }
         .task(self.loadConversation)
         .refreshable(action: self.reloadConversation)
-        .onAppear {
-            debugPrint("💬 onAppear – detail")
-        }
-        .onDisappear {
-            debugPrint("💬 onDisappear – detail")
-        }
     }
 
     @ViewBuilder

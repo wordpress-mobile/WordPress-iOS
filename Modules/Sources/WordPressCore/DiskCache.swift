@@ -5,11 +5,11 @@ import Foundation
 public actor DiskCache {
 
     public struct DiskCacheUsage: Sendable, Equatable {
-        public let count: Int
-        let totalSize: Int64
+        public let fileCount: Int
+        public let byteCount: Int64
 
         public var diskUsage: Measurement<UnitInformationStorage> {
-            Measurement(value: Double(totalSize), unit: .bytes)
+            Measurement(value: Double(byteCount), unit: .bytes)
         }
 
         public var formattedDiskUsage: String {
@@ -17,7 +17,7 @@ public actor DiskCache {
         }
 
         public var isEmpty: Bool {
-            count == 0
+            fileCount == 0
         }
     }
 
@@ -74,8 +74,8 @@ public actor DiskCache {
         let files = try await fetchCacheEntries()
 
         return DiskCacheUsage(
-            count: files.count,
-            totalSize: files.reduce(into: Int64(0)) { $0 += $1.fileSize ?? 0 }
+            fileCount: files.count,
+            byteCount: files.reduce(into: Int64(0)) { $0 += $1.fileSize ?? 0 }
         )
     }
 

@@ -3,6 +3,9 @@ import WordPressCore
 
 public struct DiagnosticsView: View {
 
+    @EnvironmentObject
+    private var dataProvider: SupportDataProvider
+
     public init() {}
 
     public var body: some View {
@@ -17,7 +20,9 @@ public struct DiagnosticsView: View {
         }
         .navigationTitle("Diagnostics")
         .background(.background)
-
+        .onAppear {
+            dataProvider.userDid(.viewDiagnostics)
+        }
     }
 }
 

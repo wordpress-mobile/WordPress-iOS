@@ -3,6 +3,9 @@ import WordPressCore
 
 struct EmptyDiskCacheView: View {
 
+    @EnvironmentObject
+    private var dataProvider: SupportDataProvider
+
     enum ViewState: Equatable {
         case loading
         case loaded(usage: DiskCache.DiskCacheUsage)
@@ -77,7 +80,7 @@ struct EmptyDiskCacheView: View {
                                 .font(.footnote)
                                 .foregroundStyle(.secondary)
                         } else {
-                            Text("^[\(usage.count) cache files](inflect: true) (\(usage.formattedDiskUsage))")
+                            Text("^[\(usage.fileCount) cache files](inflect: true) (\(usage.formattedDiskUsage))")
                                 .font(.footnote)
                                 .foregroundStyle(.secondary)
                         }
@@ -102,7 +105,8 @@ struct EmptyDiskCacheView: View {
                     }
 
                 }
-            }.task(self.fetchDiskCacheUsage)
+            }
+            .task(self.fetchDiskCacheUsage)
         }
     }
 
@@ -121,6 +125,12 @@ struct EmptyDiskCacheView: View {
 
     // Simulated async cache clearing with progress updates.
     private func clearDiskCache() async {
+        guard case .loaded(let usage) = state else {
+            return
+        }
+
+        self.dataProvider.userDid(.emptyDiskCache(bytesSaved: usage.byteCount))
+
         self.state = .clearing(progress: 0, result: "")
 
         do {

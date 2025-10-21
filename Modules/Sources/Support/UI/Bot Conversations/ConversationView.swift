@@ -295,6 +295,13 @@ public struct ConversationView: View {
         .overlay {
             OverlayProgressView(shouldBeVisible: state.isPartiallyLoaded)
         }
+        .onAppear {
+            if let conversationId {
+                self.dataProvider.userDid(.viewSupportBotConversation(conversationId: conversationId))
+            } else {
+                self.dataProvider.userDid(.startSupportBotConversation)
+            }
+        }
         .task(self.loadExistingConversation)
         .refreshable(action: self.reloadConversation)
     }
@@ -447,7 +454,6 @@ public struct ConversationView: View {
     private func sendMessage(_ message: String) {
         self.state = self.state.transitioningToSendingMessage(message: message, task: Task {
             do {
-
                 let thinkingTask = Task.delayedAndRunOnMainActor(for: .seconds(1.5)) {
                     self.state = self.state.transitioningToThinking()
                 }

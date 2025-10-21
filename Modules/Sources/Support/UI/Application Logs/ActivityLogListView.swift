@@ -68,6 +68,9 @@ public struct ActivityLogListView: View {
         }, message: {
             Text("You won't be able to get them back.")
         })
+        .onAppear {
+            self.dataProvider.userDid(.viewApplicationLogList)
+        }
         .refreshable {
             await self.loadLogFiles()
         }

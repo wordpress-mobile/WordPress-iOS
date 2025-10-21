@@ -67,10 +67,10 @@ struct ScreenshotPicker: View {
                     selection: $selectedPhotos,
                     maxSelectionCount: maxScreenshots,
                     matching: .images
-                ) {
+                ) { [imageCount = attachedImages.count] in
                     HStack {
                         Image(systemName: "camera.fill")
-                        Text(attachedImages.isEmpty ? Localization.addScreenshots : Localization.addMoreScreenshots)
+                        Text(imageCount == 0 ? Localization.addScreenshots : Localization.addMoreScreenshots)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()

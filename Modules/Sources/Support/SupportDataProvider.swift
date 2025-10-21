@@ -2,7 +2,27 @@ import Foundation
 import WordPressCore
 
 public enum SupportFormAction {
-    case viewSupportForm
+    case viewApplicationLogList
+    case viewApplicationLog(String)
+    case deleteApplicationLogs([String])
+    case deleteAllApplicationLogs
+
+    case viewSupportBotConversationList
+    case startSupportBotConversation
+    case viewSupportBotConversation(conversationId: UInt64)
+    case replyToSupportBotMessage(conversationId: UInt64)
+    case failToCreateBotConversation(Error)
+    case failToReplyToBotConversation(Error)
+
+    case viewSupportTicketList
+    case viewSupportTicket(ticketId: UInt64)
+    case createSupportTicket
+    case replyToSupportTicket(ticketId: UInt64)
+    case failToCreateSupportTicket(Error)
+    case failToReplyToSupportTicket(Error)
+
+    case viewDiagnostics
+    case emptyDiskCache(bytesSaved: Int64)
 }
 
 @MainActor
@@ -53,7 +73,23 @@ public final class SupportDataProvider: ObservableObject, Sendable {
     }
 
     public func sendMessage(message: String, in conversation: BotConversation? = nil) async throws -> BotConversation {
-        try await self.botConversationDataProvider.sendMessage(message: message, in: conversation)
+        if let conversation {
+            self.userDid(.replyToSupportBotMessage(conversationId: conversation.id))
+        } else {
+            self.userDid(.startSupportBotConversation)
+        }
+
+        do {
+            return try await self.botConversationDataProvider.sendMessage(message: message, in: conversation)
+        } catch {
+            if conversation != nil {
+                self.userDid(.failToCreateBotConversation(error))
+            } else {
+                self.userDid(.failToReplyToBotConversation(error))
+            }
+
+            throw error
+        }
     }
 
     // Support Conversations Data Source
@@ -71,12 +107,19 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         user: SupportUser,
         attachments: [URL]
     ) async throws -> Conversation {
-        try await self.supportConversationDataProvider.replyToSupportConversation(
-            id: id,
-            message: message,
-            user: user,
-            attachments: attachments
-        )
+        self.userDid(.replyToSupportTicket(ticketId: id))
+
+        do {
+            return try await self.supportConversationDataProvider.replyToSupportConversation(
+                id: id,
+                message: message,
+                user: user,
+                attachments: attachments
+            )
+        } catch {
+            self.userDid(.failToReplyToSupportTicket(error))
+            throw error
+        }
     }
 
     public func createSupportConversation(
@@ -85,12 +128,19 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         user: SupportUser,
         attachments: [URL]
     ) async throws -> Conversation {
-        try await self.supportConversationDataProvider.createSupportConversation(
-            subject: subject,
-            message: message,
-            user: user,
-            attachments: attachments
-        )
+        self.userDid(.createSupportTicket)
+
+        do {
+            return try await self.supportConversationDataProvider.createSupportConversation(
+                subject: subject,
+                message: message,
+                user: user,
+                attachments: attachments
+            )
+        } catch {
+            self.userDid(.failToCreateSupportTicket(error))
+            throw error
+        }
     }
 
     // Application Logs
@@ -103,10 +153,12 @@ public final class SupportDataProvider: ObservableObject, Sendable {
     }
 
     public func deleteApplicationLogs(in list: [ApplicationLog]) async throws {
+        self.userDid(.deleteApplicationLogs(list.map({ $0.id })))
         try await self.applicationLogProvider.deleteApplicationLogs(in: list)
     }
 
     public func deleteAllApplicationLogs() async throws {
+        self.userDid(.deleteAllApplicationLogs)
         try await self.applicationLogProvider.deleteAllApplicationLogs()
     }
 }

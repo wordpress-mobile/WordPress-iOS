@@ -46,7 +46,95 @@ actor WpLogDataProvider: ApplicationLogDataProvider {
 
 class WpSupportDelegate: NSObject, SupportDelegate {
     func userDid(_ action: Support.SupportFormAction) {
-        // TODO: Handle metrics
+
+        switch action {
+        case .viewApplicationLogList:
+            WPAnalytics.track(.applicationLog, properties: [
+                "subaction": "view-list"
+            ])
+        case .viewApplicationLog(let id):
+            WPAnalytics.track(.applicationLog, properties: [
+                "subaction": "view-single",
+                "log_id": id
+            ])
+        case .deleteApplicationLogs(let ids):
+            for id in ids {
+                WPAnalytics.track(.applicationLog, properties: [
+                    "subaction": "delete-log",
+                    "log_id": id
+                ])
+            }
+        case .deleteAllApplicationLogs:
+            WPAnalytics.track(.applicationLog, properties: [
+                "subaction": "delete-all"
+            ])
+
+        case .viewSupportBotConversationList:
+            WPAnalytics.track(.supportChatbot, properties: [
+                "subaction": "view-list"
+            ])
+        case .startSupportBotConversation:
+            WPAnalytics.track(.supportChatbot, properties: [
+                "subaction": "start-conversation"
+            ])
+        case .failToCreateBotConversation(let error):
+            WPAnalytics.track(.supportChatbot, properties: [
+                "subaction": "error-starting-conversation",
+                "error": error.localizedDescription
+            ])
+        case .viewSupportBotConversation(let id):
+            WPAnalytics.track(.supportChatbot, properties: [
+                "subaction": "view-conversation",
+                "conversation_id": id
+            ])
+        case .replyToSupportBotMessage(let id):
+            WPAnalytics.track(.supportChatbot, properties: [
+                "subaction": "reply-to-conversation",
+                "conversation_id": id
+            ])
+        case .failToReplyToBotConversation(let error):
+            WPAnalytics.track(.supportChatbot, properties: [
+                "subaction": "error-replying-to-conversation",
+                "error": error.localizedDescription
+            ])
+        case .viewSupportTicketList:
+            WPAnalytics.track(.supportTickets, properties: [
+                "subaction": "view-list"
+            ])
+        case .viewSupportTicket(let id):
+            WPAnalytics.track(.supportTickets, properties: [
+                "subaction": "view-ticket",
+                "ticket_id": id
+            ])
+        case .createSupportTicket:
+            WPAnalytics.track(.supportTickets, properties: [
+                "subaction": "create-ticket",
+            ])
+        case .failToCreateSupportTicket(let error):
+            WPAnalytics.track(.supportTickets, properties: [
+                "subaction": "error-creating-ticket",
+                "error": error.localizedDescription
+            ])
+        case .replyToSupportTicket(let id):
+            WPAnalytics.track(.supportTickets, properties: [
+                "subaction": "reply-to-ticket",
+                "ticket_id": id
+            ])
+        case .failToReplyToSupportTicket(let error):
+            WPAnalytics.track(.supportTickets, properties: [
+                "subaction": "error-replying-to-ticket",
+                "error": error.localizedDescription
+            ])
+        case .viewDiagnostics:
+            WPAnalytics.track(.diagnostics, properties: [
+                "subaction": "view-list"
+            ])
+        case .emptyDiskCache(bytesSaved: let bytesSaved):
+            WPAnalytics.track(.diagnostics, properties: [
+                "subaction": "empty-disk-cache",
+                "bytes-saved": bytesSaved
+            ])
+        }
     }
 }
 

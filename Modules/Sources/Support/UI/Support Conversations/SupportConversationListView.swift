@@ -81,6 +81,9 @@ public struct SupportConversationListView: View {
         .overlay {
             OverlayProgressView(shouldBeVisible: self.state.isPartiallyLoaded)
         }
+        .onAppear {
+            self.dataProvider.userDid(.viewSupportTicketList)
+        }
         .task(self.loadConversations)
         .refreshable(action: self.reloadConversations)
     }

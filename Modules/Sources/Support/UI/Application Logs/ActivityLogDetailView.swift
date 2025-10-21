@@ -8,7 +8,7 @@ struct ActivityLogDetailView: View {
 
     enum ViewState: Equatable {
         case loading
-        case loaded(String, Bool)
+        case loaded(String, isSharing: Bool)
         case error(Error)
 
         static func == (lhs: ActivityLogDetailView.ViewState, rhs: ActivityLogDetailView.ViewState) -> Bool {
@@ -26,7 +26,7 @@ struct ActivityLogDetailView: View {
     private var state: ViewState = .loading
 
     @State
-    private var isSharing: Bool = false
+    private var isDisplayingShareSheet: Bool = false
 
     @State
     private var sharingIsDisabled: Bool = true
@@ -53,26 +53,29 @@ struct ActivityLogDetailView: View {
                 .disabled(self.sharingIsDisabled)
             }
         }
-        .sheet(isPresented: self.$isSharing, onDismiss: {
+        .sheet(isPresented: self.$isDisplayingShareSheet, onDismiss: {
             guard case .loaded(let content, _) = self.state else {
                 return
             }
 
-            self.state = .loaded(content, false)
+            self.state = .loaded(content, isSharing: false)
         }, content: {
             ActivityLogSharingView(applicationLog: applicationLog) {
                 AnyView(erasing: Text("TODO: A new support request with the application log attached"))
             }
             .presentationDetents([.medium])
         })
+        .onAppear {
+            self.dataProvider.userDid(.viewApplicationLog(self.applicationLog.id))
+        }
         .task(self.loadLogContent)
         .refreshable(action: self.loadLogContent)
         .onChange(of: state) { oldValue, newValue in
             if case .loaded(_, let isSharing) = state {
                 self.sharingIsDisabled = false
-                self.isSharing = isSharing
+                self.isDisplayingShareSheet = isSharing
             } else {
-                self.isSharing = false
+                self.isDisplayingShareSheet = false
                 self.sharingIsDisabled = true
             }
         }
@@ -108,7 +111,7 @@ struct ActivityLogDetailView: View {
         do {
             let content = try await self.dataProvider.readApplicationLog(applicationLog)
 
-            self.state = .loaded(content, false)
+            self.state = .loaded(content, isSharing: false)
         } catch {
             self.state = .error(error)
         }
@@ -119,13 +122,14 @@ struct ActivityLogDetailView: View {
             return
         }
 
-        state = .loaded(content, true)
+        state = .loaded(content, isSharing: true)
     }
 }
 
 #Preview {
     NavigationStack {
         ActivityLogDetailView(
-            applicationLog: SupportDataProvider.applicationLog      ).environmentObject(SupportDataProvider.testing)
+            applicationLog: SupportDataProvider.applicationLog
+        ).environmentObject(SupportDataProvider.testing)
     }
 }

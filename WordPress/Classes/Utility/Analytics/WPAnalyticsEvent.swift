@@ -549,6 +549,17 @@ import WordPressShared
     case supportChatbotTicketFailure
     case supportChatbotEnded
 
+    case supportChatbot
+
+    // Support Tickets
+    case supportTickets
+
+    // Application Logs
+    case applicationLog
+
+    // Application Diagnostics
+    case diagnostics
+
     // Jetpack plugin connection to user's WP.com account
     case jetpackPluginConnectUserAccountStarted
     case jetpackPluginConnectUserAccountFailed
@@ -1618,6 +1629,12 @@ import WordPressShared
             return "support_migration_faq_tapped"
         case .supportMigrationFAQCardViewed:
             return "support_migration_faq_viewed"
+        case .supportTickets:
+            return "jetpack_mobile_support_tickets"
+        case .applicationLog:
+            return "jetpack_mobile_application_log"
+        case .diagnostics:
+            return "jetpack_mobile_diagnostics"
 
         // Chatbot Support
         case .supportChatbotStarted:
@@ -1630,6 +1647,8 @@ import WordPressShared
             return "support_chatbot_ticket_failure"
         case .supportChatbotEnded:
             return "support_chatbot_ended"
+        case .supportChatbot:
+            return "jetpack_mobile_support_chatbot"
 
         // Jetpack plugin connection to user's WP.com account
         case .jetpackPluginConnectUserAccountStarted:
