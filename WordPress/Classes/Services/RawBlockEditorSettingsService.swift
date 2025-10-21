@@ -31,7 +31,7 @@ final class RawBlockEditorSettingsService {
     /// the network.
     func getSettings(allowingCachedResponse: Bool = true) async throws -> Data {
         // Return cached settings if available
-        if allowingCachedResponse, let cachedSettings = try await BlockEditorCache.shared.getBlockSettings(for: blogID) {
+        if allowingCachedResponse, let cachedSettings = await BlockEditorCache.shared.getBlockSettings(for: blogID) {
             return cachedSettings
         }
         return try await fetchSettingsFromAPI()

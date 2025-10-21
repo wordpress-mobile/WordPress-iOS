@@ -24,14 +24,12 @@ final actor BlockEditorCache {
         try settings.write(to: fileURL)
     }
 
-    func getBlockSettings(for blogID: String) throws -> Data? {
+    func getBlockSettings(for blogID: String) -> Data? {
         let fileURL = makeBlockSettingsURL(for: blogID)
-
         guard FileManager.default.fileExists(atPath: fileURL.path) else {
             return nil
         }
-
-        return try Data(contentsOf: fileURL)
+        return try? Data(contentsOf: fileURL)
     }
 
     func deleteBlockSettings(for blogID: String) throws {

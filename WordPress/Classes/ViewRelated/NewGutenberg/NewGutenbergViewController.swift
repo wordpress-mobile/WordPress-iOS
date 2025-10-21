@@ -184,10 +184,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 //            DDLogError("Error syncing JETPACK: \(String(describing: error))")
 //        })
 
-        editorLoadingTask = Task { @MainActor in
-            await loadEditor()
-        }
-
+        loadEditor()
         onViewDidLoad()
     }
 
@@ -215,7 +212,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         setContentScrollView(editorViewController.webView.scrollView)
     }
 
-    // MARK: - Functions
+    // MARK: - Helpers
 
     private func configureNavigationBar() {
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
@@ -277,29 +274,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     func logException(_ exception: GutenbergJSException, with callback: @escaping () -> Void) {
         DispatchQueue.main.async {
             WordPressAppDelegate.crashLogging?.logJavaScriptException(exception, callback: callback)
-        }
-    }
-
-    @MainActor
-    private func loadEditor() async {
-        showActivityIndicator()
-
-        do {
-            let dependencies = try await fetchEditorDependencies()
-
-            let configuration = editorViewController.configuration.toBuilder()
-                .apply(dependencies.settings) { $0.setEditorSettings($1) }
-                .setTitle(post.postTitle ?? "")
-                .setContent(post.content ?? "")
-                .build()
-
-            editorViewController.updateConfiguration(configuration)
-            editorViewController.startEditorSetup()
-
-            // Handles refreshing controls with state context after options screen is dismissed
-            editorContentWasUpdated()
-        } catch {
-            // TODO: handle errors
         }
     }
 
@@ -370,6 +344,45 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     // MARK: - Editor Setup
+
+    private func loadEditor() {
+        editorLoadingTask = Task { @MainActor in
+            await actuallyLoadEditor()
+        }
+    }
+
+    @MainActor
+    private func actuallyLoadEditor() async {
+        showActivityIndicator()
+
+        do {
+            let dependencies = try await fetchEditorDependencies()
+            startEditor(dependencies: dependencies)
+        } catch {
+            hideActivityIndicator()
+
+            let host = UIHostingView(view: EmptyStateView.failure(error: error) { [weak self] in
+                self?.loadEditor()
+            })
+            view.addSubview(host)
+            host.pinEdges()
+        }
+    }
+
+    private func startEditor(dependencies: EditorDependencies) {
+        let configuration = editorViewController.configuration.toBuilder()
+            .apply(dependencies.settings) { $0.setEditorSettings($1) }
+            .setTitle(post.postTitle ?? "")
+            .setContent(post.content ?? "")
+            .build()
+
+        editorViewController.updateConfiguration(configuration)
+        editorViewController.startEditorSetup()
+
+        // Handles refreshing controls with state context after options screen is dismissed
+        editorContentWasUpdated()
+    }
+
     private func fetchEditorDependencies() async throws -> EditorDependencies {
         let settings: String?
         do {
@@ -424,7 +437,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
             // is still reflecting the actual startup time of the editor
             editorSession.start()
         }
-        self.hideActivityIndicator()
+        hideActivityIndicator()
     }
 
     func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
