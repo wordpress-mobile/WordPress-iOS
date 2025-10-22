@@ -134,6 +134,7 @@ struct RootSupportView: View {
     private var diagnosticsLink: some View {
         NavigationLink {
             DiagnosticsView()
+                .environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
         } label: {
             SupportAreaRow(
                 imageName: "doc.text.magnifyingglass",
@@ -146,7 +147,7 @@ struct RootSupportView: View {
     @Sendable private func loadIdentity() async {
 
         do {
-            let result = try await self.dataProvider.loadSupportIdentity()
+            let result = try self.dataProvider.loadSupportIdentity()
 
             // Don't treat a `nil` value as a cache miss – they might not be logged into WP.com
             let cachedIdentity = try await result.cachedResult()
