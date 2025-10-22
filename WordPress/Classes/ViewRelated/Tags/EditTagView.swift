@@ -54,12 +54,30 @@ struct EditTagView: View {
 
             if viewModel.isExistingTag {
                 Section {
-                    Button(action: {
+                    Button(role: .destructive) {
                         viewModel.showDeleteConfirmation = true
-                    }) {
+                    } label: {
                         Text(SharedStrings.Button.delete)
                             .foregroundColor(.red)
                     }
+                    .frame(maxWidth: .infinity)
+                }
+                .confirmationDialog(
+                    Strings.deleteConfirmationTitle,
+                    isPresented: $viewModel.showDeleteConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button(SharedStrings.Button.delete, role: .destructive) {
+                        Task {
+                            let success = await viewModel.deleteTag()
+                            if success {
+                                dismiss()
+                            }
+                        }
+                    }
+                    Button(SharedStrings.Button.cancel, role: .cancel) { }
+                } message: {
+                    Text(Strings.deleteConfirmationMessage)
                 }
             }
         }
@@ -77,23 +95,6 @@ struct EditTagView: View {
                 }
                 .disabled(viewModel.tagName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
-        }
-        .confirmationDialog(
-            Strings.deleteConfirmationTitle,
-            isPresented: $viewModel.showDeleteConfirmation,
-            titleVisibility: .visible
-        ) {
-            Button(SharedStrings.Button.delete, role: .destructive) {
-                Task {
-                    let success = await viewModel.deleteTag()
-                    if success {
-                        dismiss()
-                    }
-                }
-            }
-            Button(SharedStrings.Button.cancel, role: .cancel) { }
-        } message: {
-            Text(Strings.deleteConfirmationMessage)
         }
         .alert(SharedStrings.Error.generic, isPresented: $viewModel.showError) {
             Button(SharedStrings.Button.ok) { }
