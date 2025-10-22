@@ -93,7 +93,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 @property (nonatomic, strong) NSArray<NSNumber *> *tableSections;
 @property (nonatomic, strong) NSArray<NSNumber *> *writingSectionRows;
-@property (nonatomic, strong) NSArray<NSNumber *> *editorSectionRows;
 @end
 
 @implementation SiteSettingsViewController
@@ -173,7 +172,15 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         [sections addObject:@(SiteSettingsSectionAccount)];
     }
 
-    [sections addObject:@(SiteSettingsSectionEditor)];
+    // Only show "Use block editor" toggle for non-Simple WP.com sites
+    if (![GutenbergSettings isSimpleWPComSite:self.blog]) {
+        [sections addObject:@(SiteSettingsSectionBlockEditor)];
+    }
+
+    // Only show theme styles toggle when GutenbergKit is enabled
+    if ([RemoteFeature enabled:RemoteFeatureFlagNewGutenberg]) {
+        [sections addObject:@(SiteSettingsSectionThemeStyles)];
+    }
 
     if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
         [sections addObject:@(SiteSettingsSectionWriting)];
@@ -195,28 +202,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
     _tableSections = sections;
     return sections;
-}
-
-- (NSArray *)editorSectionRows
-{
-    if (_editorSectionRows) {
-        return _editorSectionRows;
-    }
-
-    NSMutableArray *rows = [NSMutableArray array];
-
-    // Only show "Use block editor" toggle for non-Simple WP.com sites
-    if (![GutenbergSettings isSimpleWPComSite:self.blog]) {
-        [rows addObject:@(SiteSettingsEditorSelector)];
-    }
-
-    // Only show theme styles toggle when GutenbergKit is enabled
-    if ([RemoteFeature enabled:RemoteFeatureFlagNewGutenberg]) {
-        [rows addObject:@(SiteSettingsEditorThemeStyles)];
-    }
-
-    _editorSectionRows = rows;
-    return rows;
 }
 
 - (NSArray *)writingSectionRows
@@ -273,9 +258,13 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         {
             return SiteSettingsAccountCount;
         }
-        case SiteSettingsSectionEditor:
+        case SiteSettingsSectionBlockEditor:
         {
-            return self.editorSectionRows.count;
+            return 1;
+        }
+        case SiteSettingsSectionThemeStyles:
+        {
+            return 1;
         }
         case SiteSettingsSectionWriting:
         {
@@ -567,21 +556,6 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     [self.postsPerPageCell setTextValue:self.blog.settings.postsPerPage.stringValue];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForEditorSettingsAtRow:(NSInteger)row
-{
-    NSInteger editorRow = [self.editorSectionRows[row] integerValue];
-    switch (editorRow) {
-        case (SiteSettingsEditorSelector):
-            [self configureEditorSelectorCell];
-            return self.editorSelectorCell;
-
-        case (SiteSettingsEditorThemeStyles):
-            [self configureThemeStylesSelectorCell];
-            return self.themeStylesSelectorCell;
-    }
-    return nil;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
     NSInteger writingRow = [self.writingSectionRows[row] integerValue];
@@ -711,8 +685,13 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         case SiteSettingsSectionAccount:
             return [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
 
-        case SiteSettingsSectionEditor:
-            return [self tableView:tableView cellForEditorSettingsAtRow:indexPath.row];
+        case SiteSettingsSectionBlockEditor:
+            [self configureEditorSelectorCell];
+            return self.editorSelectorCell;
+
+        case SiteSettingsSectionThemeStyles:
+            [self configureThemeStylesSelectorCell];
+            return self.themeStylesSelectorCell;
 
         case SiteSettingsSectionWriting:
             return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
@@ -775,8 +754,16 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
             headingTitle = NSLocalizedString(@"Account", @"Title for the account section in site settings screen");
             break;
 
-        case SiteSettingsSectionEditor:
-            headingTitle = NSLocalizedString(@"Editor", @"Title for the editor settings section");
+        case SiteSettingsSectionBlockEditor:
+            headingTitle = NSLocalizedString(@"Editor", @"Title for the editor section in site settings screen");
+            break;
+
+        case SiteSettingsSectionThemeStyles:
+            // Only show "Editor" header if this is the first editor section
+            // (i.e., if block editor section is not present)
+            if (![self.tableSections containsObject:@(SiteSettingsSectionBlockEditor)]) {
+                headingTitle = NSLocalizedString(@"Editor", @"Title for the editor section in site settings screen");
+            }
             break;
 
         case SiteSettingsSectionWriting:
@@ -807,8 +794,12 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     NSInteger settingsSection = [self.tableSections[section] integerValue];
     UIView *footerView = nil;
     switch (settingsSection) {
-        case SiteSettingsSectionEditor:
-            footerView = [self getEditorSettingsSectionFooterView];
+        case SiteSettingsSectionBlockEditor:
+            footerView = [self getBlockEditorSectionFooterView];
+            break;
+
+        case SiteSettingsSectionThemeStyles:
+            footerView = [self getThemeStylesSectionFooterView];
             break;
 
         case SiteSettingsSectionTraffic:

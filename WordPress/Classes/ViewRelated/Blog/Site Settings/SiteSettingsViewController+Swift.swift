@@ -190,10 +190,17 @@ extension SiteSettingsViewController {
         return footer
     }
 
-    @objc(getEditorSettingsSectionFooterView)
-    public func editorSettingsSectionFooterView() -> UIView {
+    @objc(getBlockEditorSectionFooterView)
+    public func blockEditorSectionFooterView() -> UIView {
         let footer = makeFooterView()
         footer.textLabel?.text = NSLocalizedString("Edit new posts and pages with the block editor.", comment: "Explanation for the option to enable the block editor")
+        return footer
+    }
+
+    @objc(getThemeStylesSectionFooterView)
+    public func themeStylesSectionFooterView() -> UIView {
+        let footer = makeFooterView()
+        footer.textLabel?.text = NSLocalizedString("Make the block editor look like your theme.", comment: "Explanation for the option to enable theme styles")
         return footer
     }
 
