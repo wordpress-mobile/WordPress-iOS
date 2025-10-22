@@ -210,7 +210,10 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         [rows addObject:@(SiteSettingsEditorSelector)];
     }
 
-    [rows addObject:@(SiteSettingsEditorThemeStyles)];
+    // Only show theme styles toggle when GutenbergKit is enabled
+    if ([RemoteFeature enabled:RemoteFeatureFlagNewGutenberg]) {
+        [rows addObject:@(SiteSettingsEditorThemeStyles)];
+    }
 
     _editorSectionRows = rows;
     return rows;
