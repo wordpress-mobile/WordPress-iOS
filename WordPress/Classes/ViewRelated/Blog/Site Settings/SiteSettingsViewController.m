@@ -93,6 +93,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 @property (nonatomic, strong) NSArray<NSNumber *> *tableSections;
 @property (nonatomic, strong) NSArray<NSNumber *> *writingSectionRows;
+@property (nonatomic, strong) NSArray<NSNumber *> *editorSectionRows;
 @end
 
 @implementation SiteSettingsViewController
@@ -172,10 +173,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         [sections addObject:@(SiteSettingsSectionAccount)];
     }
 
-    // Only add the editor section if the site is not a Simple WP.com site
-    if (![GutenbergSettings isSimpleWPComSite:self.blog]) {
-        [sections addObject:@(SiteSettingsSectionEditor)];
-    }
+    [sections addObject:@(SiteSettingsSectionEditor)];
 
     if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
         [sections addObject:@(SiteSettingsSectionWriting)];
@@ -197,6 +195,25 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
     _tableSections = sections;
     return sections;
+}
+
+- (NSArray *)editorSectionRows
+{
+    if (_editorSectionRows) {
+        return _editorSectionRows;
+    }
+
+    NSMutableArray *rows = [NSMutableArray array];
+
+    // Only show "Use block editor" toggle for non-Simple WP.com sites
+    if (![GutenbergSettings isSimpleWPComSite:self.blog]) {
+        [rows addObject:@(SiteSettingsEditorSelector)];
+    }
+
+    [rows addObject:@(SiteSettingsEditorThemeStyles)];
+
+    _editorSectionRows = rows;
+    return rows;
 }
 
 - (NSArray *)writingSectionRows
@@ -255,7 +272,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         }
         case SiteSettingsSectionEditor:
         {
-            return SiteSettingsEditorCount;
+            return self.editorSectionRows.count;
         }
         case SiteSettingsSectionWriting:
         {
@@ -549,7 +566,8 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForEditorSettingsAtRow:(NSInteger)row
 {
-    switch (row) {
+    NSInteger editorRow = [self.editorSectionRows[row] integerValue];
+    switch (editorRow) {
         case (SiteSettingsEditorSelector):
             [self configureEditorSelectorCell];
             return self.editorSelectorCell;
