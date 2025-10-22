@@ -183,10 +183,10 @@ public actor PluginRecommendationService {
             return true
         }
 
-        let earliestFeatureDate = Date().timeIntervalSince1970 - frequency.timeInterval
-        let earliestGlobalDate = Date().timeIntervalSince1970 - 86_400
+        let earliestFeatureDate = Date(timeIntervalSince1970: featureTimestamp + frequency.timeInterval)
+        let earliestGlobalDate = Date(timeIntervalSince1970: globalTimestamp + frequency.timeInterval)
 
-        return earliestFeatureDate > featureTimestamp && earliestGlobalDate > globalTimestamp
+        return earliestFeatureDate.hasPast && earliestGlobalDate.hasPast
     }
 
     public func displayedRecommendation(for feature: Feature, at date: Date = Date()) {

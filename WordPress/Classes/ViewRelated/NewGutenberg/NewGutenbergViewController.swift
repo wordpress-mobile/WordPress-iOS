@@ -584,10 +584,14 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             if await pluginRecommendationService.shouldRecommendPlugin(for: feature, frequency: .weekly) {
                 let plugin = try await pluginRecommendationService.recommendPlugin(for: feature)
 
-                guard try await pluginService.hasInstalledPlugin(slug: plugin.pluginSlug) else {
-                    await pluginRecommendationService.displayedRecommendation(for: feature)
-                    return plugin
+                let pluginIsAlreadyInstalled = try await pluginService.hasInstalledPlugin(slug: plugin.pluginSlug)
+
+                if pluginIsAlreadyInstalled {
+                    continue
                 }
+
+                await pluginRecommendationService.displayedRecommendation(for: feature)
+                return plugin
             }
         }
 
