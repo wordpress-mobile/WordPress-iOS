@@ -25,12 +25,6 @@ NS_ENUM(NSInteger, SiteSettingsHomepage) {
     SiteSettingsHomepageCount,
 };
 
-NS_ENUM(NSInteger, SiteSettingsEditor) {
-    SiteSettingsEditorSelector = 0,
-    SiteSettingsEditorThemeStyles,
-    SiteSettingsEditorCount,
-};
-
 NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingDefaultCategory = 0,
     SiteSettingsWritingTags,
