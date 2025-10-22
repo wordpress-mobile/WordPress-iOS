@@ -27,6 +27,7 @@ NS_ENUM(NSInteger, SiteSettingsHomepage) {
 
 NS_ENUM(NSInteger, SiteSettingsEditor) {
     SiteSettingsEditorSelector = 0,
+    SiteSettingsEditorThemeStyles,
     SiteSettingsEditorCount,
 };
 
@@ -61,6 +62,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
 @property (nonatomic, strong) SwitchTableViewCell  *editorSelectorCell;
+@property (nonatomic, strong) SwitchTableViewCell  *themeStylesSelectorCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *tagsCell;
 @property (nonatomic, strong) SettingTableViewCell *customTaxonomiesCell;
@@ -347,6 +349,20 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     return _editorSelectorCell;
 }
 
+- (SwitchTableViewCell *)themeStylesSelectorCell
+{
+    if (!_themeStylesSelectorCell) {
+        _themeStylesSelectorCell = [SwitchTableViewCell new];
+        _themeStylesSelectorCell.name = NSLocalizedString(@"Use theme styles", @"Option to enable theme styles in the block editor");
+        _themeStylesSelectorCell.flipSwitch.accessibilityIdentifier = @"useThemeStylesSwitch";
+        __weak Blog *blog = self.blog;
+        _themeStylesSelectorCell.onChange = ^(BOOL value){
+            [GutenbergSettings setThemeStylesEnabled:value forBlog:blog];
+        };
+    }
+    return _themeStylesSelectorCell;
+}
+
 - (SettingTableViewCell *)defaultCategoryCell
 {
     if (_defaultCategoryCell){
@@ -508,6 +524,11 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     [self.editorSelectorCell setOn:self.blog.isGutenbergEnabled];
 }
 
+- (void)configureThemeStylesSelectorCell
+{
+    [self.themeStylesSelectorCell setOn:[GutenbergSettings isThemeStylesEnabledForBlog:self.blog]];
+}
+
 - (void)configureDefaultCategoryCell
 {
     PostCategory *postCategory = [PostCategory lookupWithBlogObjectID:self.blog.objectID
@@ -532,6 +553,10 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         case (SiteSettingsEditorSelector):
             [self configureEditorSelectorCell];
             return self.editorSelectorCell;
+
+        case (SiteSettingsEditorThemeStyles):
+            [self configureThemeStylesSelectorCell];
+            return self.themeStylesSelectorCell;
     }
     return nil;
 }
