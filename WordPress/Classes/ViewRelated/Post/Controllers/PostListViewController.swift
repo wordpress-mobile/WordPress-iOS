@@ -12,14 +12,14 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
     // MARK: - Convenience constructors
 
-    class func controllerWithBlog(_ blog: Blog, wordPressClient: WordPressClient?) -> PostListViewController {
+    class func controllerWithBlog(_ blog: Blog, wordPressClient: WordPressClient? = nil) -> PostListViewController {
         return PostListViewController(blog: blog, wordPressClient: wordPressClient ?? blog.wordPressClient())
     }
 
     static func showForBlog(
         _ blog: Blog,
         from sourceController: UIViewController,
-        wordPressClient: WordPressClient?,
+        wordPressClient: WordPressClient? = nil,
         withPostStatus postStatus: BasePost.Status? = nil
     ) {
         let controller = PostListViewController.controllerWithBlog(blog, wordPressClient: wordPressClient)

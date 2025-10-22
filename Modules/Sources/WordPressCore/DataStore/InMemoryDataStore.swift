@@ -39,6 +39,10 @@ public actor InMemoryDataStore<T: Sendable & Identifiable>: DataStore where T.ID
     /// A `Dictionary` to store the data in memory.
     private var storage: [T.ID: T] = [:]
 
+    public var isEmpty: Bool {
+        storage.isEmpty
+    }
+
     /// A publisher for sending and subscribing data changes.
     ///
     /// The publisher emits events when data changes, with identifiers of changed models.

@@ -167,6 +167,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     private let blockEditorSettingsService: RawBlockEditorSettingsService
     private let pluginRecommendationService = PluginRecommendationService()
+    private let pluginService: PluginService
 
     // MARK: - Initializers
     required convenience init(
@@ -210,6 +211,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         self.editorViewController = GutenbergKit.EditorViewController(configuration: editorConfiguration)
 
         self.blockEditorSettingsService = RawBlockEditorSettingsService(blog: post.blog)
+        self.pluginService = PluginService(client: wordPressClient, wordpressCoreVersion: nil)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -569,12 +571,12 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             return nil
         }
 
-        guard try await client.supports(.managePlugins), try await client.currentUserCan(.installPlugins) else {
+        guard
+            try await wordPressClient.supports(.plugins),
+            try await wordPressClient.currentUserCan(.installPlugins)
+        else {
             return nil
         }
-
-        let pluginService = PluginService(client: client, wordpressCoreVersion: nil)
-        try await pluginService.fetchInstalledPlugins()
 
         let features: [PluginRecommendationService.Feature] = [.themeStyles, .editorCompatibility]
 

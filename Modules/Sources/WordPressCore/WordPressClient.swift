@@ -5,9 +5,14 @@ import WordPressAPIInternal
 public actor WordPressClient {
 
     public enum Feature {
+        /// Theme styles allow us to style the editor
         case themeStyles
+
+        /// Application Password Extras grants additional capabilities using Application Passwords
         case applicationPasswordExtras
-        case managePlugins
+
+        /// WordPress.com sites don't all support plugins
+        case plugins
     }
 
     public let api: WordPressAPI
@@ -22,7 +27,6 @@ public actor WordPressClient {
         self.api = api
         self.rootUrl = rootUrl.url()
         self.loadSiteInfoTask = Task { [api] in
-            debugPrint("🚚 Fetching Site Info")
             async let apiRootTask = try await api.apiRoot.get().data
             async let currentUserTask = try await api.users.retrieveMeWithEditContext().data
 
@@ -43,19 +47,18 @@ public actor WordPressClient {
         let start = Date().timeIntervalSince1970
 
         let apiRoot = try await fetchApiRoot()
-        debugPrint("    ⏱ Fetched API root in \(Date().timeIntervalSince1970 - start)")
 
         if let siteId {
             return switch feature {
             case .themeStyles: apiRoot.hasRoute(route: "/wp-block-editor/v1/sites/\(siteId)/settings")
-            case .managePlugins: apiRoot.hasRoute(route: "/wp/v2/plugins")
+            case .plugins: apiRoot.hasRoute(route: "/wp/v2/plugins")
             case .applicationPasswordExtras: apiRoot.hasRoute(route: "/application-password-extras/v1/admin-ajax")
             }
         }
 
         return switch feature {
         case .themeStyles: apiRoot.hasRoute(route: "/wp-block-editor/v1/settings")
-        case .managePlugins: apiRoot.hasRoute(route: "/wp/v2/plugins")
+        case .plugins: apiRoot.hasRoute(route: "/wp/v2/plugins")
         case .applicationPasswordExtras: apiRoot.hasRoute(route: "/application-password-extras/v1/admin-ajax")
         }
     }
