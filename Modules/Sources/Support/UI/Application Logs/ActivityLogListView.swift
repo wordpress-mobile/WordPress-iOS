@@ -41,7 +41,7 @@ public struct ActivityLogListView: View {
                 )
             }
         }
-        .navigationTitle("Activity Logs")
+        .navigationTitle("Application Logs")
         .overlay {
             if case .loaded(_, let deletionState) = self.state {
                 switch deletionState {
