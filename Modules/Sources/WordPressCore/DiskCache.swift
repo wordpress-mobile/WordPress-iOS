@@ -25,11 +25,28 @@ public actor DiskCache {
 
     public init() {}
 
-    public func read<T>(_ type: T.Type, forKey key: String) throws -> T? where T: Decodable {
+    public func read<T>(
+        _ type: T.Type,
+        forKey key: String,
+        notOlderThan interval: TimeInterval? = nil
+    ) throws -> T? where T: Decodable {
         let path = self.path(forKey: key)
 
         guard FileManager.default.fileExists(at: path) else {
             return nil
+        }
+
+        if let interval {
+            let attributes = try FileManager.default.attributesOfItem(atPath: path.absoluteString)
+
+            // If we can't get a modification date, assume it's invalid
+            guard let lastModifiedAt = attributes[.modificationDate] as? Date else {
+                return nil
+            }
+
+            if Date.now.addingTimeInterval(interval * -1) < lastModifiedAt {
+                return nil
+            }
         }
 
         let data = try Data(contentsOf: path)

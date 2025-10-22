@@ -206,12 +206,12 @@ public actor PluginRecommendationService {
 private extension PluginRecommendationService {
     private func cachedPluginData(for plugin: RecommendedPlugin) async throws {
         let cacheKey = "plugin-recommendation-\(plugin.slug)"
-        try await self.diskCache.store(object: plugin, for: cacheKey)
+        try await self.diskCache.store(plugin, forKey: cacheKey)
     }
 
     private func fetchCachedPlugin(for slug: String) async throws -> RecommendedPlugin? {
         let cacheKey = "plugin-recommendation-\(slug)"
-        return try await self.diskCache.retrieve(for: cacheKey, notOlderThan: Date().addingTimeInterval(-86_400))
+        return try await self.diskCache.read(RecommendedPlugin.self, forKey: cacheKey)
     }
 }
 

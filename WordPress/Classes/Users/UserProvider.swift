@@ -36,9 +36,7 @@ actor MockUserProvider: UserServiceProtocol {
             // Do nothing
             try await Task.sleep(for: .seconds(24 * 60 * 60))
         case .dummyData:
-            let dummyDataUrl = URL(string: "https://my.api.mockaroo.com/users.json?key=067c9730")!
-            let response = try await URLSession.shared.data(from: dummyDataUrl)
-            let users = try JSONDecoder().decode([DisplayUser].self, from: response.0)
+            let users = [DisplayUser.mockUser]
             try await userDataStore.delete(query: .all)
             try await userDataStore.store(users)
         case .error:

@@ -1,7 +1,7 @@
 import Foundation
 import WordPressAPI
 
-public struct DisplayUser: Identifiable, Codable, Hashable, Sendable {
+public struct DisplayUser: Identifiable, Hashable, Sendable {
     public let id: Int64
     public let handle: String
     public let username: String
@@ -67,17 +67,5 @@ extension DisplayUser {
         ]
             .compactMap { $0 }
             .joined(separator: " ")
-    }
-}
-
-extension UserRole: @retroactive Codable {
-    public init(from decoder: any Decoder) throws {
-        let role = try decoder.singleValueContainer().decode(String.self)
-        self.init(role)
-    }
-
-    public func encode(to encoder: any Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(self.rawValue)
     }
 }

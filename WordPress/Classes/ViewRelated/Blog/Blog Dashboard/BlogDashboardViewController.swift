@@ -1,4 +1,5 @@
 import UIKit
+import WordPressCore
 import WordPressData
 import WordPressShared
 
@@ -12,7 +13,7 @@ final class BlogDashboardViewController: UIViewController {
     private let embeddedInScrollView: Bool
 
     private lazy var viewModel: BlogDashboardViewModel = {
-        BlogDashboardViewModel(viewController: self, blog: blog)
+        BlogDashboardViewModel(viewController: self, blog: blog, wordPressClient: self.wordPressClient)
     }()
 
     lazy var collectionView: DynamicHeightCollectionView = {
@@ -35,10 +36,23 @@ final class BlogDashboardViewController: UIViewController {
         return view.superview?.superview as? UIScrollView
     }
 
+    let wordPressClient: WordPressClient?
+
     // MARK: - Init
 
     @objc init(blog: Blog, embeddedInScrollView: Bool) {
         self.blog = blog
+
+        do {
+            let site = try WordPressSite(blog: blog)
+            self.wordPressClient = WordPressClient.for(site: site)
+        } catch {
+            self.wordPressClient = nil
+            WPAnalytics.track(.applicationPasswordClientInitializationFailed, properties: [
+                "error": error.localizedDescription
+            ])
+        }
+
         self.embeddedInScrollView = embeddedInScrollView
         super.init(nibName: nil, bundle: nil)
     }
