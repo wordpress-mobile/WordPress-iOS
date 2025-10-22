@@ -13,22 +13,21 @@ public actor WordPressClient {
     public let api: WordPressAPI
     public let rootUrl: String
 
-    private var apiRoot: WpApiDetails?
-    private var currentUser: UserWithEditContext?
+    private var apiRoot: WpApiDetails? = nil
+    private var currentUser: UserWithEditContext? = nil
+
+    private var loadSiteInfoTask: Task<(WpApiDetails, UserWithEditContext), Error>
 
     public init(api: WordPressAPI, rootUrl: ParsedUrl) {
         self.api = api
         self.rootUrl = rootUrl.url()
-    }
+        self.loadSiteInfoTask = Task { [api] in
+            debugPrint("🚚 Fetching Site Info")
+            async let apiRootTask = try await api.apiRoot.get().data
+            async let currentUserTask = try await api.users.retrieveMeWithEditContext().data
 
-    public func refreshCachedSiteInfo() async throws {
-        async let apiRootTask = try await self.api.apiRoot.get().data
-        async let currentUserTask = try await self.api.users.retrieveMeWithEditContext().data
-
-        let (apiRoot, currentUser) = try await (apiRootTask, currentUserTask)
-
-        self.apiRoot = apiRoot
-        self.currentUser = currentUser
+            return try await (apiRootTask, currentUserTask)
+        }
     }
 
     public func currentUserCan(_ capability: UserCapability) async throws -> Bool {
@@ -36,17 +35,15 @@ public actor WordPressClient {
     }
 
     private func fetchCurrentUser() async throws -> UserWithEditContext {
-        if let currentUser = self.currentUser {
-            return currentUser
-        }
-
-        let currentUser = try await self.api.users.retrieveMeWithEditContext().data
-        self.currentUser = currentUser
-        return currentUser
+        // Wait for the `loadSiteInfoTask` to finish the initial load then use that value
+        return try await loadSiteInfoTask.value.1
     }
 
     public func supports(_ feature: Feature, forSiteId siteId: Int? = nil) async throws -> Bool {
+        let start = Date().timeIntervalSince1970
+
         let apiRoot = try await fetchApiRoot()
+        debugPrint("    ⏱ Fetched API root in \(Date().timeIntervalSince1970 - start)")
 
         if let siteId {
             return switch feature {
@@ -64,11 +61,15 @@ public actor WordPressClient {
     }
 
     private func fetchApiRoot() async throws -> WpApiDetails {
-        if let apiRoot = self.apiRoot {
-            return apiRoot
-        }
-        let apiRoot = try await self.api.apiRoot.get()
-        self.apiRoot = apiRoot.data
-        return apiRoot.data
+        // Wait for the `loadSiteInfoTask` to finish the initial load then use that value
+        return try await loadSiteInfoTask.value.0
+    }
+
+    private func setApiRoot(_ newValue: WpApiDetails) {
+        self.apiRoot = newValue
+    }
+
+    private func setCurrentUser(_ newValue: UserWithEditContext) {
+        self.currentUser = newValue
     }
 }

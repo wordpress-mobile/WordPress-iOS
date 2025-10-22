@@ -194,7 +194,7 @@ class JetpackConnectionService {
         }
 
         self.blogId = TaggedManagedObjectID(blog)
-        self.client = .init(site: site)
+        self.client = .for(site: site)
         self.jetpackConnectionClient = .init(
             apiRootUrl: apiRootURL,
             urlSession: .init(configuration: .ephemeral),

@@ -94,10 +94,18 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
         switch items[indexPath.row].action {
         case .posts:
             trackQuickActionsEvent(.openedPosts, blog: blog)
-            PostListViewController.showForBlog(blog, from: parentViewController)
+            PostListViewController.showForBlog(
+                blog,
+                from: parentViewController,
+                wordPressClient: parentViewController.wordPressClient
+            )
         case .pages:
             trackQuickActionsEvent(.openedPages, blog: blog)
-            PageListViewController.showForBlog(blog, from: parentViewController)
+            PageListViewController.showForBlog(
+                blog,
+                from: parentViewController,
+                wordPressClient: parentViewController.wordPressClient
+            )
         case .comments:
             if let viewController = CommentsViewController(blog: blog) {
                 trackQuickActionsEvent(.openedComments, blog: blog)
@@ -105,6 +113,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             }
         case .media:
             trackQuickActionsEvent(.openedMediaLibrary, blog: blog)
+            let client = self.parentViewController?.wordPressClient
             let controller = SiteMediaViewController(blog: blog)
             parentViewController.show(controller, sender: nil)
         case .stats:

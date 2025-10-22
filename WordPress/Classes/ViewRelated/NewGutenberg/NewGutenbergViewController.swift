@@ -10,6 +10,7 @@ import WordPressData
 import WordPressShared
 import WebKit
 import CocoaLumberjackSwift
+import OSLog
 
 class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
@@ -146,6 +147,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private var dependencyLoadingError: Error?
     private var editorLoadingTask: Task<Void, Error>?
 
+    private let wordPressClient: WordPressClient
+
     // TODO: remove (none of these APIs are needed for the new editor)
     func prepopulateMediaItems(_ media: [Media]) {}
     var debouncer = WordPressShared.Debouncer(delay: 10)
@@ -169,6 +172,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     required convenience init(
         post: AbstractPost,
         replaceEditor: @escaping ReplaceEditorCallback,
+        wordPressClient: WordPressClient,
         editorSession: PostEditorAnalyticsSession?
     ) {
         self.init(
@@ -181,7 +185,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             //
             // The reason we need this init at all even though the other one does the same job is
             // to conform to the PostEditor protocol.
-            navigationBarManager: nil
+            navigationBarManager: nil,
+            wordPressClient: wordPressClient
         )
     }
 
@@ -189,11 +194,13 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         post: AbstractPost,
         replaceEditor: @escaping ReplaceEditorCallback,
         editorSession: PostEditorAnalyticsSession? = nil,
-        navigationBarManager: PostEditorNavigationBarManager? = nil
+        navigationBarManager: PostEditorNavigationBarManager? = nil,
+        wordPressClient: WordPressClient
     ) {
 
         self.post = post
         self.blogID = TaggedManagedObjectID(post.blog)
+        self.wordPressClient = wordPressClient
 
         self.replaceEditor = replaceEditor
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenbergKit, post: post)
@@ -433,15 +440,11 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     @MainActor
     func recommendPlugin(_ plugin: RecommendedPlugin) {
-        guard let site = try? WordPressSite(blog: self.post.blog) else {
-            return
-        }
-
         let controller = PluginInstallationPromptViewController(
             plugin: plugin,
-            installer: WordPressClient(site: site)) { _ in
-                self.startLoadingDependencies()
-            }
+            installer: self.wordPressClient
+        ) { _ in self.startLoadingDependencies() }
+
         if let sheet = controller.sheetPresentationController {
             sheet.detents = [.medium(), .large()]
             sheet.prefersGrabberVisible = true
@@ -538,21 +541,19 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // MARK: - Editor Setup
     private func fetchEditorDependencies() async throws {
-        let (site, dotComID) = try await ContextManager.shared.performQuery { context in
+        let dotComId = try await ContextManager.shared.performQuery { context in
             let blog = try context.existingObject(with: self.blogID)
-            return (try WordPressSite(blog: blog), blog.dotComID?.intValue)
+            return blog.dotComID?.intValue
         }
 
-        let client = WordPressClient(site: site)
-
-        if let plugin = try await self.fetchPluginRecommendation(client: client) {
+        if let plugin = try await self.fetchPluginRecommendation(client: self.wordPressClient) {
             self.editorState = .suggestingPlugin(plugin)
             return
         }
 
-        let settings: String?
+        var settings: String? = nil
 
-        if try await client.supports(.themeStyles, forSiteId: dotComID) {
+        if try await self.wordPressClient.supports(.themeStyles, forSiteId: dotComId) {
             settings = try await blockEditorSettingsService.getSettingsString(allowingCachedResponse: true)
         }
 
@@ -563,6 +564,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     private func fetchPluginRecommendation(client: WordPressClient) async throws -> RecommendedPlugin? {
+        // Don't make plugin recommendations for WordPress – that app only supports features available in Core
+        guard AppConfiguration.isJetpack else {
+            return nil
+        }
 
         guard try await client.supports(.managePlugins), try await client.currentUserCan(.installPlugins) else {
             return nil
@@ -570,11 +575,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         let pluginService = PluginService(client: client, wordpressCoreVersion: nil)
         try await pluginService.fetchInstalledPlugins()
-
-        // Don't make plugin recommendations for WordPress – that app only supports features available in Core
-        guard AppConfiguration.isJetpack else {
-            return nil
-        }
 
         let features: [PluginRecommendationService.Feature] = [.themeStyles, .editorCompatibility]
 

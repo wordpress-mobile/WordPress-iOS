@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import WordPressCore
 import WordPressData
 import WordPressShared
 
@@ -24,6 +25,8 @@ class EditPostViewController: UIViewController {
     fileprivate var hasShownEditor = false
     fileprivate var editingExistingPost = false
     fileprivate let blog: Blog
+
+    private let wordPressClient: WordPressClient?
 
     @objc var onClose: (() -> ())?
     @objc var afterDismiss: (() -> Void)?
@@ -54,12 +57,26 @@ class EditPostViewController: UIViewController {
         self.init(post: nil, blog: blog)
     }
 
+    /// Initialize as an editor with the provided post
+    ///
+    /// - Parameter post: post to edit
+    convenience init(post: Post, wordPressClient: WordPressClient?) {
+        self.init(post: post, blog: post.blog, wordPressClient: wordPressClient)
+    }
+
+    /// Initialize as an editor to create a new post for the provided blog
+    ///
+    /// - Parameter blog: blog to create a new post for
+    convenience init(blog: Blog, wordPressClient: WordPressClient?) {
+        self.init(post: nil, blog: blog, wordPressClient: wordPressClient)
+    }
+
     /// Initialize as an editor to create a new post for the provided blog and prompt
     ///
     /// - Parameter blog: blog to create a new post for
     /// - Parameter prompt: blogging prompt to configure the new post for
-    convenience init(blog: Blog, prompt: BloggingPrompt) {
-        self.init(post: nil, blog: blog, prompt: prompt)
+    convenience init(blog: Blog, prompt: BloggingPrompt, wordPressClient: WordPressClient? = nil) {
+        self.init(post: nil, blog: blog, prompt: prompt, wordPressClient: wordPressClient)
     }
 
     /// Initialize as an editor with a specified post to edit and blog to post too.
@@ -68,7 +85,7 @@ class EditPostViewController: UIViewController {
     ///   - post: the post to edit
     ///   - blog: the blog to create a post for, if post is nil
     /// - Note: it's preferable to use one of the convenience initializers
-    fileprivate init(post: Post?, blog: Blog, prompt: BloggingPrompt? = nil) {
+    fileprivate init(post: Post?, blog: Blog, prompt: BloggingPrompt? = nil, wordPressClient: WordPressClient? = nil) {
         self.post = post
         if let post {
             if !post.originalIsDraft() {
@@ -79,6 +96,8 @@ class EditPostViewController: UIViewController {
         }
         self.blog = blog
         self.prompt = prompt
+        self.wordPressClient = wordPressClient ?? blog.wordPressClient()
+
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
         modalTransitionStyle = .coverVertical
@@ -129,7 +148,9 @@ class EditPostViewController: UIViewController {
                 for: post,
                 replaceEditor: { [weak self] (editor, replacement) in
                     self?.replaceEditor(editor: editor, replacement: replacement)
-            })
+                },
+                wordPressClient: self.wordPressClient
+            )
             editor.postIsReblogged = postIsReblogged
             editor.entryPoint = entryPoint
             showEditor(editor)
@@ -275,11 +296,19 @@ extension EditPostViewController {
             return nil
         }
 
+        let wordPressClient: WordPressClient?
+
+        if let site = try? WordPressSite(blog: post.blog) {
+            wordPressClient = .for(site: site)
+        } else {
+            wordPressClient = nil
+        }
+
         switch post {
         case let post as Post:
-            return EditPostViewController(post: post)
+            return EditPostViewController(post: post, wordPressClient: wordPressClient)
         case let page as Page:
-            return EditPageViewController(page: page)
+            return EditPageViewController(page: page, wordPressClient: wordPressClient)
         default:
             wpAssertionFailure("unexpected post type", userInfo: [
                 "post_type": type(of: post)

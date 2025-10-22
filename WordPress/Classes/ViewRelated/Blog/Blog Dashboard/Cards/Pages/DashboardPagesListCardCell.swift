@@ -91,7 +91,7 @@ extension DashboardPagesListCardCell {
 
         configureContextMenu(blog: blog)
 
-        viewModel = PagesCardViewModel(blog: blog, view: self)
+        viewModel = PagesCardViewModel(blog: blog, wordPressClient: viewController?.wordPressClient, view: self)
         viewModel?.viewDidLoad()
         tableView.dataSource = viewModel?.diffableDataSource
         viewModel?.refresh()
@@ -132,7 +132,13 @@ extension DashboardPagesListCardCell {
         guard let blog, let presentingViewController else {
             return
         }
-        PageListViewController.showForBlog(blog, from: presentingViewController)
+
+        PageListViewController.showForBlog(
+            blog,
+            from: presentingViewController,
+            wordPressClient: presentingViewController.wordPressClient
+        )
+
         WPAppAnalytics.track(.openedPages, properties: [WPAppAnalyticsKeyTapSource: source.rawValue], blog: blog)
     }
 }
@@ -155,9 +161,13 @@ extension DashboardPagesListCardCell: UITableViewDelegate {
               let presentingViewController else {
             return
         }
-        PageEditorPresenter.handle(page: page,
-                                   in: presentingViewController,
-                                   entryPoint: .dashboard)
+
+        PageEditorPresenter.handle(
+            page: page,
+            in: presentingViewController,
+            wordPressClient: presentingViewController.wordPressClient,
+            entryPoint: .dashboard
+        )
 
         viewModel?.trackPageTapped()
     }

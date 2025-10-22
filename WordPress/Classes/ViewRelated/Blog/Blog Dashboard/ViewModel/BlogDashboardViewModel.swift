@@ -31,7 +31,7 @@ final class BlogDashboardViewModel {
 
     private var error: Error?
 
-    private let wordpressClient: WordPressClient?
+    private let wordPressClient: WordPressClient?
 
     private var currentCards: [DashboardCardModel] = []
 
@@ -98,7 +98,8 @@ final class BlogDashboardViewModel {
     init(
         viewController: BlogDashboardViewController,
         managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext,
-        blog: Blog
+        blog: Blog,
+        wordPressClient: WordPressClient?
     ) {
         self.viewController = viewController
         self.managedObjectContext = managedObjectContext
@@ -106,19 +107,9 @@ final class BlogDashboardViewModel {
         self.personalizationService = BlogDashboardPersonalizationService(siteID: blog.dotComID?.intValue ?? 0)
         self.blazeViewModel = DashboardBlazeCardCellViewModel(blog: blog)
         self.quickActionsViewModel = DashboardQuickActionsViewModel(blog: blog, personalizationService: personalizationService)
-
-        var _error: Error?
-
-        do {
-            self.wordpressClient = try WordPressClient(site: .init(blog: self.blog))
-        } catch {
-            _error = error
-            self.wordpressClient = nil
-        }
+        self.wordPressClient = wordPressClient ?? blog.wordPressClient()
 
         registerNotifications()
-
-        self.error = _error
     }
 
     /// Apply the initial configuration when the view loaded

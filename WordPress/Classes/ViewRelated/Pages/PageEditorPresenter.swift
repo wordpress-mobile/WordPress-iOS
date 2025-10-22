@@ -1,10 +1,16 @@
 import UIKit
+import WordPressCore
 import WordPressData
 import WordPressFlux
 
 struct PageEditorPresenter {
     @discardableResult
-    static func handle(page: Page, in presentingViewController: UIViewController, entryPoint: PostEditorEntryPoint) -> Bool {
+    static func handle(
+        page: Page,
+        in presentingViewController: UIViewController,
+        wordPressClient: WordPressClient?,
+        entryPoint: PostEditorEntryPoint
+    ) -> Bool {
         guard !page.isSitePostsPage else {
             showSitePostPageUneditableNotice()
             return false
@@ -27,7 +33,7 @@ struct PageEditorPresenter {
         /// by `EditPostViewController` due to its unconventional setup.
         NotificationCenter.default.post(name: .postListEditorPresenterWillShowEditor, object: nil)
 
-        let editorViewController = EditPageViewController(page: page)
+        let editorViewController = EditPageViewController(page: page, wordPressClient: wordPressClient)
         editorViewController.entryPoint = entryPoint
         editorViewController.onClose = {
             NotificationCenter.default.post(name: .postListEditorPresenterDidHideEditor, object: nil)

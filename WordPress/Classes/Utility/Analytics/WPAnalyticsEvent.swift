@@ -631,6 +631,7 @@ import WordPressShared
     case applicationPasswordLogin
 
     case wpcomWebSignIn
+    case applicationPasswordClientInitializationFailed
 
     // MARK: - Jetpack Stats
 
@@ -1760,6 +1761,9 @@ import WordPressShared
         // Login Autodiscovery
         case .applicationPasswordLogin:
             return "application_password_login"
+
+        case .applicationPasswordClientInitializationFailed:
+            return "application_password_client_initialization_failed"
 
         case .wpcomWebSignIn:
             return "wpcom_web_sign_in"

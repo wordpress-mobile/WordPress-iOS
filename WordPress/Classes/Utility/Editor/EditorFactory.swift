@@ -1,4 +1,5 @@
 import Foundation
+import WordPressCore
 import WordPressData
 
 /// This class takes care of instantiating the correct editor based on the App settings, feature flags,
@@ -13,10 +14,14 @@ class EditorFactory {
 
     // MARK: - Editor: Instantiation
 
-    func instantiateEditor(for post: AbstractPost, replaceEditor: @escaping ReplaceEditorBlock) -> EditorViewController {
+    func instantiateEditor(
+        for post: AbstractPost,
+        replaceEditor: @escaping ReplaceEditorBlock,
+        wordPressClient: WordPressClient? = nil
+    ) -> EditorViewController {
         if gutenbergSettings.mustUseGutenberg(for: post) {
-            if RemoteFeatureFlag.newGutenberg.enabled() {
-                return NewGutenbergViewController(post: post, replaceEditor: replaceEditor)
+            if RemoteFeatureFlag.newGutenberg.enabled(), let client = wordPressClient {
+                return NewGutenbergViewController(post: post, replaceEditor: replaceEditor, wordPressClient: client)
             }
             return createGutenbergVC(with: post, replaceEditor: replaceEditor)
         } else {

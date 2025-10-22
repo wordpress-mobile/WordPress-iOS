@@ -5,13 +5,40 @@ import WordPressAPIInternal // Required for `WpAuthenticationProvider`
 import WordPressCore
 import WordPressData
 import WordPressShared
+import Synchronization
 
 extension WordPressClient {
+    typealias ClientCache = [WordPressSite.Identifier: WordPressClient]
+
+    @available(iOS 18.0, *)
+    private static let cachedClients = Mutex<ClientCache>(ClientCache())
+
     static var requestedWithInvalidAuthenticationNotification: Foundation.Notification.Name {
         .init("WordPressClient.requestedWithInvalidAuthenticationNotification")
     }
 
-    init(site: WordPressSite) {
+    /// Tries to get an existing `WordPressClient` object for the given `site`.
+    ///
+    /// On iOS 17 and earlier, there is no caching behaviour. This exists to get around problems with passing around the client object, but should be replaced
+    /// as soon as possible.
+    static func `for`(site: WordPressSite) -> WordPressClient {
+        // client caching only available on iOS 18+
+        if #available(iOS 18.0, *) {
+            return cachedClients.withLock { value in
+                if let existingClient = value[site.identifier] {
+                    return existingClient
+                }
+
+                let newClient = WordPressClient(site: site)
+                value[site.identifier] = newClient
+                return newClient
+            }
+        } else {
+            return WordPressClient(site: site)
+        }
+    }
+
+    private init(site: WordPressSite) {
         // Currently, the app supports both account passwords and application passwords.
         // When a site is initially signed in with an account password, WordPress login cookies are stored
         // in `URLSession.shared`. After switching the site to application password authentication,

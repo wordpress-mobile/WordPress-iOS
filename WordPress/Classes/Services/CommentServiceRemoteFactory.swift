@@ -19,7 +19,7 @@ import WordPressCore
 
         // The REST API does not have information about comment "likes". We'll continue to use WordPress.com API for now.
         if let site = try? WordPressSite(blog: blog) {
-            return CommentServiceRemoteCoreRESTAPI(client: WordPressClient(site: site))
+            return CommentServiceRemoteCoreRESTAPI(client: WordPressClient.for(site: site))
         }
 
         if let api = blog.xmlrpcApi,

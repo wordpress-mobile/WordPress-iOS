@@ -57,7 +57,7 @@ extension SiteSettingsViewController {
 
     @objc public func showCustomTaxonomies() {
         let viewController: UIViewController
-        if let client = try? WordPressClient(site: .init(blog: blog)) {
+        if let client = try? WordPressClient.for(site: .init(blog: blog)) {
             let rootView = SiteCustomTaxonomiesView(blog: self.blog, api: client.api)
             viewController = UIHostingController(rootView: rootView)
         } else {

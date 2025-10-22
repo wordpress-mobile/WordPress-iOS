@@ -497,7 +497,11 @@ private extension DashboardPromptsCardCell {
         }
         WPAnalytics.track(.promptsDashboardCardAnswerPrompt)
 
-        let editor = EditPostViewController(blog: blog, prompt: prompt)
+        let editor = EditPostViewController(
+            blog: blog,
+            prompt: prompt,
+            wordPressClient: self.presenterViewController?.wordPressClient
+        )
         editor.modalPresentationStyle = .fullScreen
         editor.entryPoint = .bloggingPromptsDashboardCard
         presenterViewController?.present(editor, animated: true)
@@ -513,7 +517,11 @@ private extension DashboardPromptsCardCell {
         }
 
         WPAnalytics.track(.promptsDashboardCardMenuViewMore)
-        BloggingPromptsViewController.show(for: blog, from: presenterViewController)
+        BloggingPromptsViewController.show(
+            for: blog,
+            wordPressClient: self.presenterViewController?.wordPressClient,
+            from: presenterViewController
+        )
     }
 
     func skipMenuTapped() {

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressCore
 import WordPressData
 import WordPressShared
 import WordPressFlux
@@ -53,15 +54,12 @@ final class PageListViewController: AbstractPostListViewController {
     private var fetchAllPagesTask: Task<[TaggedManagedObjectID<Page>], Error>?
 
     // MARK: - Convenience constructors
-
-    class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
-        let vc = PageListViewController()
-        vc.blog = blog
-        return vc
+    class func controllerWithBlog(_ blog: Blog, wordPressClient: WordPressClient?) -> PageListViewController {
+        return PageListViewController(blog: blog, wordPressClient: wordPressClient ?? blog.wordPressClient())
     }
 
-    static func showForBlog(_ blog: Blog, from sourceController: UIViewController) {
-        let controller = PageListViewController.controllerWithBlog(blog)
+    static func showForBlog(_ blog: Blog, from sourceController: UIViewController, wordPressClient: WordPressClient?) {
+        let controller = PageListViewController.controllerWithBlog(blog, wordPressClient: wordPressClient)
         controller.navigationItem.largeTitleDisplayMode = .never
         sourceController.navigationController?.pushViewController(controller, animated: true)
     }
