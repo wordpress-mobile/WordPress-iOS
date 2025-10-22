@@ -224,9 +224,17 @@ class GutenbergSettings {
     /// Returns whether theme styles should be enabled for the given blog.
     ///
     /// - Parameter blog: The blog to check theme styles setting for
-    /// - Returns: true if theme styles are enabled, false otherwise
+    /// - Returns: true if theme styles are enabled (default: true), false if explicitly disabled
     func isThemeStylesEnabled(for blog: Blog) -> Bool {
-        return database.bool(forKey: Key.themeStylesEnabled(forBlogURL: blog.url))
+        let key = Key.themeStylesEnabled(forBlogURL: blog.url)
+
+        // If the preference has been explicitly set, return its value
+        if database.object(forKey: key) != nil {
+            return database.bool(forKey: key)
+        }
+
+        // Default to enabled for sites that haven't set a preference
+        return true
     }
 
     /// Sets whether theme styles should be enabled for the given blog.
