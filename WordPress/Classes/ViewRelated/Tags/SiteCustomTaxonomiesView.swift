@@ -88,7 +88,7 @@ private enum Strings {
 
     static let emptyTitle = NSLocalizedString(
         "siteCustomTaxonomies.empty.title",
-        value: "No custom taxonomies in the current site",
+        value: "No custom taxonomies",
         comment: "Title for empty state when there are no custom taxonomies"
     )
 
