@@ -160,17 +160,12 @@ class EditTagViewModel: ObservableObject {
         do {
             let savedTerm: AnyTermWithViewContext
 
+            let tagName = tagName.trimmingCharacters(in: .whitespacesAndNewlines)
+            let tagDescription = tagDescription.trimmingCharacters(in: .whitespacesAndNewlines)
             if let existingTerm = originalTerm {
-                savedTerm = try await tagsService.updateTag(
-                    existingTerm,
-                    name: tagName.trimmingCharacters(in: .whitespacesAndNewlines),
-                    description: tagDescription.trimmingCharacters(in: .whitespacesAndNewlines)
-                )
+                savedTerm = try await tagsService.updateTag(existingTerm, name: tagName, description: tagDescription)
             } else {
-                savedTerm = try await tagsService.createTag(
-                    name: tagName.trimmingCharacters(in: .whitespacesAndNewlines),
-                    description: tagDescription.trimmingCharacters(in: .whitespacesAndNewlines)
-                )
+                savedTerm = try await tagsService.createTag(name: tagName, description: tagDescription)
             }
 
             NotificationCenter.default.post(
