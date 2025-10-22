@@ -113,8 +113,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private var hasEditorStarted = false
     private var isModalDialogOpen = false
 
-    lazy var autosaver = Autosaver() {
-        self.performAutoSave()
+    lazy var autosaver = Autosaver() { [weak self] in
+        self?.performAutoSave()
     }
 
     // MARK: - Private Properties
@@ -197,6 +197,9 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     deinit {
         tearDownKeyboardObservers()
+
+        // Cancel any pending tasks
+        editorLoadingTask?.cancel()
     }
 
     // MARK: - Lifecycle methods
@@ -247,7 +250,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             preconditionFailure("Dependency loading should not be cancelled")
         }
 
-        self.editorLoadingTask = Task {
+        self.editorLoadingTask = Task { [weak self] in
+            guard let self else { return }
             do {
                 while case .loadingDependencies = self.editorState {
                     try await Task.sleep(nanoseconds: 1000)
