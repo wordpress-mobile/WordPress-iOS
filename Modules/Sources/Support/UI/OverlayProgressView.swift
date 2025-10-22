@@ -8,14 +8,8 @@ struct OverlayProgressView: View {
         case inherit
     }
 
-    enum Style {
-        case toast
-        case horizontalBar
-    }
-
     let shouldBeVisible: Bool
     private let minimumDisplayTime: Duration
-    private let style: Style
 
     @State
     private var state: ViewState = .mustBeHidden // Start off hidden so the view animates in
@@ -28,42 +22,12 @@ struct OverlayProgressView: View {
         }
     }
 
-    init(shouldBeVisible: Bool, minimumDisplayTime: Duration = .seconds(3.8), style: Style = .horizontalBar) {
+    init(shouldBeVisible: Bool, minimumDisplayTime: Duration = .seconds(3.8)) {
         self.shouldBeVisible = shouldBeVisible
         self.minimumDisplayTime = minimumDisplayTime
-        self.style = style
     }
 
     var body: some View {
-        ZStack {
-            switch style {
-            case .toast:
-                toastView
-            case .horizontalBar:
-                horizontalBarView
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: style == .toast ? .top : .bottom)
-        .padding(.top, style == .toast ? 24 : 0)
-        .padding(.bottom, style == .horizontalBar ? 0 : 0)
-        .onAppear {
-            withAnimation(.easeOut) {
-                self.state = .mustBeVisible
-            }
-        }
-        .task {
-            try? await Task.sleep(for: self.minimumDisplayTime)
-            await MainActor.run {
-                withAnimation(.easeOut) {
-                    self.state = .inherit
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
-    private var toastView: some View {
-        // The toast container
         HStack(spacing: 12) {
             ProgressView()
                 .progressViewStyle(.circular)
@@ -85,34 +49,25 @@ struct OverlayProgressView: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Loading latest content")
         .accessibilityAddTraits(.isStaticText)
-    }
-
-    @ViewBuilder
-    private var horizontalBarView: some View {
-        VStack(spacing: 0) {
-            Rectangle()
-                .fill(Color.accentColor)
-                .frame(height: 4)
-                .frame(maxWidth: .infinity)
-                .opacity(isVisible ? 1 : 0)
-                .scaleEffect(x: isVisible ? 1 : 0, y: 1, anchor: .leading)
-                .overlay(
-                    Rectangle()
-                        .fill(Color.accentColor.opacity(0.7))
-                        .scaleEffect(x: 0.3, y: 1)
-                        .offset(x: isVisible ? UIScreen.main.bounds.width : -100)
-                        .animation(
-                            isVisible ? .easeInOut(duration: 1.2).repeatForever(autoreverses: false) : .default,
-                            value: isVisible
-                        )
-                )
-                .accessibilityLabel("Loading")
-                .accessibilityAddTraits(.updatesFrequently)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .padding(.top, 24)
+        .onAppear {
+            withAnimation(.easeOut) {
+                self.state = .mustBeVisible
+            }
+        }
+        .task {
+            try? await Task.sleep(for: self.minimumDisplayTime)
+            await MainActor.run {
+                withAnimation(.easeOut) {
+                    self.state = .inherit
+                }
+            }
         }
     }
 }
 
-#Preview("Toast Style") {
+#Preview {
     NavigationStack {
         List {
             ForEach(0..<12) { i in
@@ -122,20 +77,6 @@ struct OverlayProgressView: View {
         .navigationTitle("Demo")
     }
     .overlay(alignment: .top) {
-        OverlayProgressView(shouldBeVisible: true, style: .toast)
-    }
-}
-
-#Preview("Horizontal Bar Style") {
-    NavigationStack {
-        List {
-            ForEach(0..<12) { i in
-                Text("Row \(i)")
-            }
-        }
-        .navigationTitle("Demo")
-    }
-    .overlay(alignment: .bottom) {
-        OverlayProgressView(shouldBeVisible: true, style: .horizontalBar)
+        OverlayProgressView(shouldBeVisible: true)
     }
 }
