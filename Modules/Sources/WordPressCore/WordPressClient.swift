@@ -44,8 +44,6 @@ public actor WordPressClient {
     }
 
     public func supports(_ feature: Feature, forSiteId siteId: Int? = nil) async throws -> Bool {
-        let start = Date().timeIntervalSince1970
-
         let apiRoot = try await fetchApiRoot()
 
         if let siteId {

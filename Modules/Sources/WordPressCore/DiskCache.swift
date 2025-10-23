@@ -1,26 +1,9 @@
 import Foundation
+import WordPressCoreProtocols
 
 /// A super-basic on-disk cache for `Codable` objects.
 ///
-public actor DiskCache {
-
-    public struct DiskCacheUsage: Sendable, Equatable {
-        public let fileCount: Int
-        public let byteCount: Int64
-
-        public var diskUsage: Measurement<UnitInformationStorage> {
-            Measurement(value: Double(byteCount), unit: .bytes)
-        }
-
-        public var formattedDiskUsage: String {
-            return diskUsage.formatted(.byteCount(style: .file, allowedUnits: [.mb, .gb], spellsOutZero: true))
-        }
-
-        public var isEmpty: Bool {
-            fileCount == 0
-        }
-    }
-
+public actor DiskCache: DiskCacheProtocol {
     private let cacheRoot: URL = URL.cachesDirectory
 
     public init() {}
@@ -69,16 +52,16 @@ public actor DiskCache {
         try FileManager.default.removeItem(at: self.path(forKey: key))
     }
 
-    public func removeAll(progress: (@Sendable (Int, Int) async throws -> Void)? = nil) async throws {
+    public func removeAll(progress: (@Sendable (CacheDeletionProgress) async throws -> Void)? = nil) async throws {
         let files = try await fetchCacheEntries()
 
         let count = files.count
 
-        try await progress?(0, count)
+        try await progress?(CacheDeletionProgress(filesDeleted: 0, totalFileCount: count))
 
         for file in files.enumerated() {
             try FileManager.default.removeItem(at: file.element)
-            try await progress?(file.offset + 1, count)
+            try await progress?(CacheDeletionProgress(filesDeleted: file.offset + 1, totalFileCount: count))
         }
     }
 

@@ -22,6 +22,7 @@ let package = Package(
         .library(name: "WordPressUI", targets: ["WordPressUI"]),
         .library(name: "WordPressReader", targets: ["WordPressReader"]),
         .library(name: "WordPressCore", targets: ["WordPressCore"]),
+        .library(name: "WordPressCoreProtocols", targets: ["WordPressCore"]),
     ],
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
@@ -138,7 +139,7 @@ let package = Package(
             name: "Support",
             dependencies: [
                 "AsyncImageKit",
-                "WordPressCore",
+                "WordPressCoreProtocols",
             ]
         ),
         .target(name: "TextBundle"),
@@ -153,10 +154,15 @@ let package = Package(
         ], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(name: "WordPressCore", dependencies: [
+                "WordPressCoreProtocols",
                 "WordPressShared",
-                .product(name: "WordPressAPI", package: "wordpress-rs")
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
             ]
         ),
+        .target(name: "WordPressCoreProtocols", dependencies: [
+            // This package should never have dependencies – it exists to expose protocols implemented in WordPressCore
+            // to UI code, because `wordpress-rs` doesn't work nicely with previews.
+        ]),
         .target(name: "WordPressLegacy", dependencies: ["DesignSystem", "WordPressShared"]),
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(

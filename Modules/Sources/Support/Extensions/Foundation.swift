@@ -93,4 +93,20 @@ extension Task where Failure == Error {
             return try await MainActor.run(body: operation)
         }
     }
+
+    enum RunForAtLeastResult<T>: Sendable where T: Sendable {
+        case result(T)
+        case wait
+    }
+
+    static func runForAtLeast<C>(
+        _ duration: C.Instant.Duration,
+        operation: @escaping @Sendable () async throws -> Success,
+        clock: C = .continuous
+    ) async throws -> Success where C: Clock  {
+        async let waitResult: () = try await clock.sleep(for: duration)
+        async let performTask = try await operation()
+
+        return try await (waitResult, performTask).1
+    }
 }
