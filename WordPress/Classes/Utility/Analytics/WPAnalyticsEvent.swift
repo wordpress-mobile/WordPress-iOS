@@ -60,6 +60,8 @@ import WordPressShared
     case gutenbergEditorBlockInserted
     case gutenbergEditorBlockMoved
 
+    case gutenbergPluginInstallationPrompt
+
     // Notifications Permissions
     case pushNotificationsPrimerSeen
     case pushNotificationsPrimerAllowTapped
@@ -782,6 +784,8 @@ import WordPressShared
             return "editor_block_inserted"
         case .gutenbergEditorBlockMoved:
             return "editor_block_moved"
+        case .gutenbergPluginInstallationPrompt:
+            return "gutenberg_plugin_installation_prompt"
         // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"

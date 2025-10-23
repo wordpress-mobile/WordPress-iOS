@@ -6,6 +6,7 @@ import GutenbergKit
 import SafariServices
 import WordPressAPI
 import WordPressCore
+import WordPressCoreProtocols
 import WordPressData
 import WordPressShared
 import WebKit
@@ -445,7 +446,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         let controller = PluginInstallationPromptViewController(
             plugin: plugin,
             installer: self.wordPressClient
-        ) { _ in self.startLoadingDependencies() }
+        ) { result in
+            self.recordPluginPromptResult(result)
+            self.startLoadingDependencies()
+        }
 
         if let sheet = controller.sheetPresentationController {
             sheet.detents = [.medium(), .large()]
@@ -1210,3 +1214,32 @@ private extension NewGutenbergViewController {
 // Extend Gutenberg JavaScript exception struct to conform the protocol defined in the Crash Logging service
 extension GutenbergJSException.StacktraceLine: @retroactive AutomatticTracks.JSStacktraceLine {}
 extension GutenbergJSException: @retroactive AutomatticTracks.JSException {}
+
+extension NewGutenbergViewController {
+    fileprivate func recordPluginPromptResult(_ result: PluginInstallationResult) {
+        switch result.installationState {
+        case .start:
+            WPAnalytics.track(.gutenbergPluginInstallationPrompt, properties: [
+                "subaction": "dismissed-before-installing",
+                "plugin": result.pluginDetails.slug
+            ])
+        case .installationError(let error):
+            WPAnalytics.track(.gutenbergPluginInstallationPrompt, properties: [
+                "subaction": "installation-error",
+                "error": error.localizedDescription,
+                "plugin": result.pluginDetails.slug
+            ])
+        case .installationCancelled:
+            WPAnalytics.track(.gutenbergPluginInstallationPrompt, properties: [
+                "subaction": "installation-cancelled",
+                "plugin": result.pluginDetails.slug
+            ])
+        case .installationComplete:
+            WPAnalytics.track(.gutenbergPluginInstallationPrompt, properties: [
+                "subaction": "installed",
+                "plugin": result.pluginDetails.slug
+            ])
+        case .installing: break // This shouldn't be possible
+        }
+    }
+}

@@ -1,5 +1,10 @@
 import SwiftUI
-import WordPressCore
+import WordPressCoreProtocols
+
+struct PluginInstallationResult {
+    let pluginDetails: RecommendedPlugin
+    let installationState: PluginInstallationState
+}
 
 enum PluginInstallationState: Equatable {
     case start
@@ -30,7 +35,7 @@ struct PluginInstallationPrompt: View {
 
     let pluginDetails: RecommendedPlugin
     let installer: PluginInstallerProtocol
-    let wasDismissed: ((PluginInstallationState) -> Void)?
+    let wasDismissed: ((PluginInstallationResult) -> Void)?
 
     @State
     private var state: PluginInstallationState = .start
@@ -47,7 +52,7 @@ struct PluginInstallationPrompt: View {
     public init(
         plugin: RecommendedPlugin,
         installer: PluginInstallerProtocol,
-        wasDismissed: ((PluginInstallationState) -> Void)? = nil
+        wasDismissed: ((PluginInstallationResult) -> Void)? = nil
     ) {
         self.pluginDetails = plugin
         self.installer = installer
@@ -228,7 +233,12 @@ struct PluginInstallationPrompt: View {
     }
 
     func dismiss() {
-        self.wasDismissed?(self.state)
+        let result = PluginInstallationResult(
+            pluginDetails: self.pluginDetails,
+            installationState: self.state
+        )
+
+        self.wasDismissed?(result)
         self._dismiss()
     }
 
@@ -286,12 +296,12 @@ fileprivate let gutenbergDetails = RecommendedPlugin(
 )
 
 fileprivate let jetpackDetails = RecommendedPlugin(
-    name: "Jetpack",
+    name: "Jetpack &#8211; WP Security, Backup, Speed, &amp; Growth",
     slug: "jetpack",
     usageTitle: "Install Jetpack to continue",
     usageDescription: "To preview posts and pages you'll need to install the Jetpack plugin.",
     successMessage: "Now you can preview and edit your content.",
-    imageUrl: URL(string: "https://ps.w.org/jetpack/assets/banner-1544x500.png?rev=2653649"),
+    imageUrl: URL(string: "https://ps.w.org/jetpack/assets/banner-1544x500.png"),
     helpUrl: URL(string: "https://wordpress.org/support/article/managing-plugins/#installing-plugins")!
 )
 
@@ -306,22 +316,34 @@ fileprivate let noBannerDetails = RecommendedPlugin(
 )
 
 #Preview("Gutenberg") {
-    PluginInstallationPrompt(
-        plugin: gutenbergDetails,
-        installer: DummyInstaller()
-    )
+    NavigationStack {
+        Text("")
+    }.sheet(isPresented: .constant(true)) {
+        PluginInstallationPrompt(
+            plugin: gutenbergDetails,
+            installer: DummyInstaller()
+        ).presentationDetents([.medium, .large])
+    }
 }
 
 #Preview("Jetpack") {
-    PluginInstallationPrompt(
-        plugin: jetpackDetails,
-        installer: DummyInstaller()
-    )
+    NavigationStack {
+        Text("")
+    }.sheet(isPresented: .constant(true)) {
+        PluginInstallationPrompt(
+            plugin: jetpackDetails,
+            installer: DummyInstaller()
+        ).presentationDetents([.medium, .large])
+    }
 }
 
 #Preview("No Banner") {
-    PluginInstallationPrompt(
-        plugin: noBannerDetails,
-        installer: DummyInstaller()
-    )
+    NavigationStack {
+        Text("")
+    }.sheet(isPresented: .constant(true)) {
+        PluginInstallationPrompt(
+            plugin: noBannerDetails,
+            installer: DummyInstaller()
+        )
+    }
 }

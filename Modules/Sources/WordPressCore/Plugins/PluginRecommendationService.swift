@@ -1,145 +1,12 @@
 import Foundation
 import WordPressAPI
 import WordPressAPIInternal
+import WordPressCoreProtocols
 
-public struct RecommendedPlugin: Codable, Sendable {
+public actor PluginRecommendationService: PluginRecommendationServiceProtocol {
 
-    /// The plugin name – this will be inserted into headers and buttons
-    public let name: String
-
-    /// The plugin slug – this is its identifier in the WordPress.org Plugins Directory
-    public let slug: String
-
-    /// An explanation of what you're asking the user to do.
-    ///
-    /// For example:
-    /// - Gutenberg Required
-    /// - Install Jetpack for a better experience
-    public let usageTitle: String
-
-    /// An explanation for how installing this plugin will help the user.
-    ///
-    /// This is _not_ the plugin's description from the WP.org directory.
-    public let usageDescription: String
-
-    /// An explanation for the new capabilities the user has because this plugin was installed.
-    public let successMessage: String
-
-    /// The banner image for this plugin
-    public let imageUrl: URL?
-
-    /// URL to a help article explaining why this is needed
-    public let helpUrl: URL
-
-    public init(
-        name: String,
-        slug: String,
-        usageTitle: String,
-        usageDescription: String,
-        successMessage: String,
-        imageUrl: URL?,
-        helpUrl: URL
-    ) {
-        self.name = name
-        self.slug = slug
-        self.usageTitle = usageTitle
-        self.usageDescription = usageDescription
-        self.successMessage = successMessage
-        self.imageUrl = imageUrl
-        self.helpUrl = helpUrl
-    }
-
-    public var pluginSlug: PluginWpOrgDirectorySlug {
-        PluginWpOrgDirectorySlug(slug: self.slug)
-    }
-}
-
-public actor PluginRecommendationService {
-
-    public enum Feature: CaseIterable {
-        case themeStyles
-        case postPreviews
-        case editorCompatibility
-
-        var explanation: String {
-            switch self {
-            case .themeStyles: NSLocalizedString(
-                "org.wordpress.plugin-recommendations.explanations.gutenberg-for-theme-styles",
-                value: "The Gutenberg Plugin is required to use your theme's styles in the editor.",
-                comment: "A short message explaining why we're recommending this plugin"
-            )
-            case .postPreviews: NSLocalizedString(
-                "org.wordpress.plugin-recommendations.explanations.jetpack-for-post-previews",
-                value: "The Jetpack Plugin is required for post previews.",
-                comment: "A short message explaining why we're recommending this plugin"
-            )
-            case .editorCompatibility: NSLocalizedString(
-                "org.wordpress.plugin-recommendations.explanations.jetpack-for-editor-compatibility",
-                value: "The Jetpack Plugin improves compatibility with plugins that provide blocks.",
-                comment: "A short message explaining why we're recommending this plugin"
-            )
-            }
-        }
-
-        var successMessage: String {
-            return switch self {
-            case .themeStyles: NSLocalizedString(
-                "org.wordpress.plugin-recommendations.success.theme-styles",
-                value: "The editor will now display content exactly how it appears on your site.",
-                comment: "A short message explaining what the user can do now that they've installed this plugin"
-            )
-            case .postPreviews: NSLocalizedString(
-                "org.wordpress.plugin-recommendations.success.post-previews",
-                value: "You can now preview posts within the app.",
-                comment: "A short message explaining what the user can do now that they've installed this plugin"
-            )
-            case .editorCompatibility: NSLocalizedString(
-                "org.wordpress.plugin-recommendations.success.editor-compatibility",
-                value: "Your blocks will render correctly in the editor.",
-                comment: "A short message explaining what the user can do now that they've installed this plugin"
-            )
-            }
-        }
-
-        var helpArticleUrl: URL {
-            // TODO: We need to write these articles and update the URLs
-            let url = switch self {
-                case .themeStyles: "https://wordpress.com/support/plugins/install-a-plugin/"
-                case .postPreviews: "https://wordpress.com/support/plugins/install-a-plugin/"
-                case .editorCompatibility: "https://wordpress.com/support/plugins/install-a-plugin/"
-            }
-
-            return URL(string: url)!
-        }
-
-        var recommendedPlugin: PluginWpOrgDirectorySlug {
-            let slug = switch self {
-                case .themeStyles: "gutenberg"
-                case .postPreviews: "jetpack"
-                case .editorCompatibility: "jetpack"
-            }
-
-            return PluginWpOrgDirectorySlug(slug: slug)
-        }
-
-        fileprivate var cacheKey: String {
-            return "plugin-recommendation-\(self)-\(recommendedPlugin.slug)"
-        }
-    }
-
-    public enum Frequency {
-        case daily
-        case weekly
-        case monthly
-
-        var timeInterval: TimeInterval {
-            return switch self {
-            case .daily: 86_400
-            case .weekly: 604_800
-            case .monthly: 14_515_200
-            }
-        }
-    }
+    public typealias Feature = WordPressCoreProtocols.PluginRecommendationFeature
+    public typealias Frequency = WordPressCoreProtocols.PluginRecommendationFrequency
 
     private let dotOrgClient: WordPressOrgApiClient
     private let userDefaults: UserDefaults
@@ -152,21 +19,21 @@ public actor PluginRecommendationService {
         self.userDefaults = userDefaults
     }
 
-    public func recommendedPluginSlug(for feature: Feature) async throws -> PluginWpOrgDirectorySlug {
+    public func recommendedPluginSlug(for feature: Feature) async throws -> String {
         feature.recommendedPlugin
     }
 
     public func recommendPlugin(for feature: Feature) async throws -> RecommendedPlugin {
-        if let cachedPlugin = try await fetchCachedPlugin(for: feature.recommendedPlugin.slug) {
+        if let cachedPlugin = try await fetchCachedPlugin(for: feature.recommendedPlugin) {
             return cachedPlugin
         }
 
-        let plugin = try await dotOrgClient.pluginInformation(slug: feature.recommendedPlugin)
+        let plugin = try await dotOrgClient.pluginInformation(slug: .init(slug: feature.recommendedPlugin))
 
         return RecommendedPlugin(
             name: plugin.name,
             slug: plugin.slug.slug,
-            usageTitle: "Install \(plugin.name.removingPercentEncoding ?? plugin.slug.slug)",
+            usageTitle: "Install \(unescapePluginTitle(plugin.name) ?? plugin.slug.slug)",
             usageDescription: feature.explanation,
             successMessage: feature.successMessage,
             imageUrl: try await cachePluginHeader(for: plugin),
@@ -198,6 +65,25 @@ public actor PluginRecommendationService {
             self.userDefaults.removeObject(forKey: feature.cacheKey)
         }
         self.userDefaults.removeObject(forKey: "plugin-last-recommended")
+    }
+
+    private func unescapePluginTitle(_ string: String) -> String? {
+        string
+            .replacingOccurrences(of: "&amp;", with: "&")
+            .replacingOccurrences(of: "&#8211;", with: "–")
+            .removingPercentEncoding
+    }
+}
+
+public extension RecommendedPlugin {
+    var pluginSlug: PluginWpOrgDirectorySlug {
+        PluginWpOrgDirectorySlug(slug: self.slug)
+    }
+}
+
+private extension PluginRecommendationService.Feature {
+    var cacheKey: String {
+        "plugin-recommendation-\(self)-\(recommendedPlugin)"
     }
 }
 

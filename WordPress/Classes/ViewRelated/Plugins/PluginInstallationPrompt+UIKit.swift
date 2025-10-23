@@ -1,10 +1,10 @@
 import UIKit
 import SwiftUI
-import WordPressCore
+import WordPressCoreProtocols
 
 class PluginInstallationPromptViewController: UIHostingController<PluginInstallationPrompt> {
 
-    typealias ActionCallback = (PluginInstallationState) -> Void
+    typealias ActionCallback = (PluginInstallationResult) -> Void
 
     @MainActor
     public init(plugin: RecommendedPlugin, installer: any PluginInstallerProtocol, wasDismissed: ActionCallback? = nil) {
