@@ -171,7 +171,7 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         try await self.diagnosticsDataProvider.fetchDiskCacheUsage()
     }
 
-    public func clearDiskCache(progress: (@Sendable (CacheDeletionProgress) async throws -> Void)) async throws {
+    public func clearDiskCache(progress: (@Sendable @escaping (CacheDeletionProgress) async throws -> Void)) async throws {
         try await self.diagnosticsDataProvider.clearDiskCache(progress: progress)
     }
 
@@ -231,7 +231,7 @@ public protocol CurrentUserDataProvider: Actor {
 
 public protocol DiagnosticsDataProvider: Actor {
     func fetchDiskCacheUsage() async throws -> DiskCacheUsage
-    func clearDiskCache(progress: (@Sendable (CacheDeletionProgress) async throws -> Void)) async throws
+    func clearDiskCache(progress: (@Sendable @escaping (CacheDeletionProgress) async throws -> Void)) async throws
 
     func resetPluginRecommendations() async throws
 }

@@ -1,5 +1,4 @@
 import SwiftUI
-import WordPressCore
 
 public struct DiagnosticsView: View {
 
@@ -15,6 +14,7 @@ public struct DiagnosticsView: View {
                     .foregroundStyle(.secondary)
 
                 EmptyDiskCacheView()
+                ResetPluginRecommendationsView()
             }
             .padding()
         }

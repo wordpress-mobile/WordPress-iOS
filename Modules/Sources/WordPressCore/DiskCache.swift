@@ -4,9 +4,10 @@ import WordPressCoreProtocols
 /// A super-basic on-disk cache for `Codable` objects.
 ///
 public actor DiskCache: DiskCacheProtocol {
-    private let cacheRoot: URL = URL.cachesDirectory
 
-    public init() {}
+    public static let shared = DiskCache()
+
+    private let cacheRoot: URL = URL.cachesDirectory
 
     public func read<T>(
         _ type: T.Type,

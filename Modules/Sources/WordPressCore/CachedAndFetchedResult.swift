@@ -28,14 +28,14 @@ public struct DiskCachedAndFetchedResult<T>: CachedAndFetchedResult where T: Cod
 
     public func fetchAndCache() async throws -> T {
         let result = try await userProvidedFetchBlock()
-        try await DiskCache().store(result, forKey: self.cacheKey)
+        try await DiskCache.shared.store(result, forKey: self.cacheKey)
         return result
     }
 
     // We can ignore decoding failures here because the data format may change over time. Treating it as a cache
     // miss is preferable to returning an error because the cache will simply be updated on the next remote fetch.
     private func readFromCache() async throws -> T? {
-        try await DiskCache().read(T.self, forKey: self.cacheKey)
+        try await DiskCache.shared.read(T.self, forKey: self.cacheKey)
     }
 }
 
@@ -76,4 +76,3 @@ public struct UserDefaultsCachedAndFetchedResult<T>: CachedAndFetchedResult wher
         return try? PropertyListDecoder().decode(T.self, from: data)
     }
 }
-

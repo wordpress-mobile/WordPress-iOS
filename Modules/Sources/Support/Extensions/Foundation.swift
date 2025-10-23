@@ -103,7 +103,7 @@ extension Task where Failure == Error {
         _ duration: C.Instant.Duration,
         operation: @escaping @Sendable () async throws -> Success,
         clock: C = .continuous
-    ) async throws -> Success where C: Clock  {
+    ) async throws -> Success where C: Clock {
         async let waitResult: () = try await clock.sleep(for: duration)
         async let performTask = try await operation()
 

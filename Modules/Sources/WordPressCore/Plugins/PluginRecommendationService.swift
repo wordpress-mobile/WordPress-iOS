@@ -143,7 +143,6 @@ public actor PluginRecommendationService {
 
     private let dotOrgClient: WordPressOrgApiClient
     private let userDefaults: UserDefaults
-    private let diskCache = DiskCache()
 
     public init(
         dotOrgClient: WordPressOrgApiClient = WordPressOrgApiClient(urlSession: .shared),
@@ -206,12 +205,12 @@ public actor PluginRecommendationService {
 private extension PluginRecommendationService {
     private func cachedPluginData(for plugin: RecommendedPlugin) async throws {
         let cacheKey = "plugin-recommendation-\(plugin.slug)"
-        try await self.diskCache.store(plugin, forKey: cacheKey)
+        try await DiskCache.shared.store(plugin, forKey: cacheKey)
     }
 
     private func fetchCachedPlugin(for slug: String) async throws -> RecommendedPlugin? {
         let cacheKey = "plugin-recommendation-\(slug)"
-        return try await self.diskCache.read(RecommendedPlugin.self, forKey: cacheKey)
+        return try await DiskCache.shared.read(RecommendedPlugin.self, forKey: cacheKey)
     }
 }
 
