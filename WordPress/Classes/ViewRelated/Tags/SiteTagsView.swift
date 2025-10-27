@@ -55,13 +55,7 @@ private struct TagsListView: View {
         .listStyle(.plain)
         .overlay {
             if let response = viewModel.response {
-                if response.isEmpty {
-                    EmptyStateView(
-                        viewModel.labels.empty,
-                        systemImage: "tag",
-                        description: viewModel.labels.emptyDescription
-                    )
-                }
+                NoTermView(viewModel: viewModel, response: response)
             } else if viewModel.isLoading {
                 ProgressView()
             } else if let error = viewModel.error {
@@ -72,6 +66,21 @@ private struct TagsListView: View {
         }
         .onAppear {
             viewModel.onAppear()
+        }
+    }
+}
+
+private struct NoTermView: View {
+    @ObservedObject var viewModel: TagsViewModel
+    @ObservedObject var response: TagsPaginatedResponse
+
+    var body: some View {
+        if response.isEmpty {
+            EmptyStateView(
+                viewModel.labels.empty,
+                systemImage: "tag",
+                description: viewModel.labels.emptyDescription
+            )
         }
     }
 }
