@@ -1,4 +1,5 @@
 import UIKit
+import WordPressCore
 import WordPressData
 import WordPressShared
 
@@ -37,6 +38,7 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
 
     private var viewModel: PostsCardViewModel?
     private var blog: Blog?
+    private var wordPressClient: WordPressClient?
     private var status: BasePost.Status = .draft
 
     /// The VC presenting this cell
@@ -161,7 +163,13 @@ extension DashboardPostsListCardCell {
             return
         }
 
-        PostListViewController.showForBlog(blog, from: viewController, withPostStatus: status)
+        PostListViewController.showForBlog(
+            blog,
+            from: viewController,
+            wordPressClient: wordPressClient,
+            withPostStatus: status
+        )
+
         WPAppAnalytics.track(.openedPosts, properties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "posts_card"], blog: blog)
     }
 

@@ -115,7 +115,7 @@ import WordPressData
                 try await BlockEditorCache.shared.deleteAll()
 
                 // Delete everything in the disk cache
-                try await DiskCache().removeAll()
+                try await DiskCache.shared.removeAll()
             } catch {
                 debugPrint("Unable to delete all block editor settings: \(error)")
             }

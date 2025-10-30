@@ -185,6 +185,20 @@ public extension WpApiApplicationPasswordDetails {
 }
 
 public enum WordPressSite {
+
+    public enum Identifier: Sendable, Hashable {
+        case siteId(Int)
+        case siteUrl(String)
+
+        /// A string representation of this object – guaranteed to be URL-safe
+        public var description: String {
+            switch self {
+            case .siteId(let siteId): "\(siteId)"
+            case .siteUrl(let siteUrl): "siteUrl_\(siteUrl)"
+            }
+        }
+    }
+
     case dotCom(siteId: Int, authToken: String)
     case selfHosted(blogId: TaggedManagedObjectID<Blog>, apiRootURL: ParsedUrl, username: String, authToken: String)
 
@@ -236,6 +250,13 @@ public enum WordPressSite {
             }
         case let .selfHosted(id, _, _, _):
             return id
+        }
+    }
+
+    public var identifier: Identifier {
+        switch self {
+        case .dotCom(let siteId, _): .siteId(siteId)
+        case .selfHosted(_, let apiRootUrl, _, _): .siteUrl(apiRootUrl.url())
         }
     }
 }

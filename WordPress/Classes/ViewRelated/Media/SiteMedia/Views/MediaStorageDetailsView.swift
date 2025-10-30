@@ -297,7 +297,7 @@ final class MediaStorageDetailsViewModel: ObservableObject {
         assert(blog.dotComID != nil)
 
         self.blog = blog
-        client = try WordPressClient(site: WordPressSite(blog: blog))
+        client = try WordPressClient.for(site: WordPressSite(blog: blog))
         service = MediaServiceRemoteCoreREST(client: client)
 
         updateUsage()

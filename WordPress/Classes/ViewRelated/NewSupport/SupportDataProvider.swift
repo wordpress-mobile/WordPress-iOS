@@ -5,6 +5,7 @@ import SwiftUI
 import WordPressAPI
 import WordPressAPIInternal // Needed for `SupportUserIdentity`
 import WordPressCore
+import WordPressCoreProtocols
 import WordPressData
 import WordPressShared
 import CocoaLumberjack
@@ -21,6 +22,7 @@ extension SupportDataProvider {
         ),
         supportConversationDataProvider: WpSupportConversationDataProvider(
             wpcomClient: WordPressDotComClient()),
+        diagnosticsDataProvider: WpDiagnosticsDataProvider(),
         delegate: WpSupportDelegate()
     )
 }
@@ -133,6 +135,10 @@ class WpSupportDelegate: NSObject, SupportDelegate {
             WPAnalytics.track(.diagnostics, properties: [
                 "subaction": "empty-disk-cache",
                 "bytes-saved": bytesSaved
+            ])
+        case .resetPluginRecommendations:
+            WPAnalytics.track(.diagnostics, properties: [
+                "subaction": "reset-plugin-recommendations",
             ])
         }
     }
@@ -316,6 +322,20 @@ actor WpSupportConversationDataProvider: SupportConversationDataProvider {
             .asConversation()
 
         return conversation
+    }
+}
+
+actor WpDiagnosticsDataProvider: DiagnosticsDataProvider {
+    func fetchDiskCacheUsage() async throws -> WordPressCoreProtocols.DiskCacheUsage {
+        try await DiskCache.shared.diskUsage()
+    }
+
+    func clearDiskCache(progress: @Sendable @escaping (WordPressCoreProtocols.CacheDeletionProgress) async throws -> Void) async throws {
+        try await DiskCache.shared.removeAll(progress: progress)
+    }
+
+    func resetPluginRecommendations() async throws {
+        await PluginRecommendationService().resetRecommendations()
     }
 }
 

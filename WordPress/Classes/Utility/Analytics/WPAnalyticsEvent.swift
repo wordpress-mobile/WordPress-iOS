@@ -60,6 +60,8 @@ import WordPressShared
     case gutenbergEditorBlockInserted
     case gutenbergEditorBlockMoved
 
+    case gutenbergPluginInstallationPrompt
+
     // Notifications Permissions
     case pushNotificationsPrimerSeen
     case pushNotificationsPrimerAllowTapped
@@ -631,6 +633,7 @@ import WordPressShared
     case applicationPasswordLogin
 
     case wpcomWebSignIn
+    case applicationPasswordClientInitializationFailed
 
     // MARK: - Jetpack Stats
 
@@ -781,6 +784,8 @@ import WordPressShared
             return "editor_block_inserted"
         case .gutenbergEditorBlockMoved:
             return "editor_block_moved"
+        case .gutenbergPluginInstallationPrompt:
+            return "gutenberg_plugin_installation_prompt"
         // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
@@ -1760,6 +1765,9 @@ import WordPressShared
         // Login Autodiscovery
         case .applicationPasswordLogin:
             return "application_password_login"
+
+        case .applicationPasswordClientInitializationFailed:
+            return "application_password_client_initialization_failed"
 
         case .wpcomWebSignIn:
             return "wpcom_web_sign_in"

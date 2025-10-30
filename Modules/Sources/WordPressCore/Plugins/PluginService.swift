@@ -12,25 +12,36 @@ public actor PluginService: PluginServiceProtocol {
     private let updateChecksDataStore = PluginUpdateChecksDataStore()
     private let urlSession: URLSession
 
+    private var installedPluginsTask: Task<[InstalledPlugin], Error>
+
     public init(client: WordPressClient, wordpressCoreVersion: String?) {
         self.client = client
         self.wordpressCoreVersion = wordpressCoreVersion
         self.urlSession = URLSession(configuration: .ephemeral)
-        wpOrgClient = WordPressOrgApiClient(urlSession: urlSession)
+        self.wpOrgClient = WordPressOrgApiClient(urlSession: urlSession)
+
+        self.installedPluginsTask = Task {
+            try await client.api
+                .plugins
+                .listWithViewContext(params: PluginListParams())
+                .data
+                .map { InstalledPlugin(plugin: $0) }
+        }
     }
 
     public func fetchInstalledPlugins() async throws {
-        let response = try await self.client.api.plugins.listWithViewContext(params: .init())
-        let plugins = response.data.map(InstalledPlugin.init(plugin:))
+        let plugins = try await self.installedPluginsTask.value
         try await installedPluginDataStore.store(plugins)
+    }
 
-        // Check for plugin updates in the background. No need to block the current task from completion.
-        // We could move this call out and make the UI invoke it explicitly. However, currently the `checkPluginUpdates`
-        // function takes a REST API response type, which is not exposed as a public API of `PluginService`.
-        // We could refactor this API if we need to call `checkPluginUpdates` directly.
-        Task.detached {
-            try await self.checkPluginUpdates(plugins: response.data)
-        }
+    public func checkForUpdates() async throws {
+        let latestInstalledPlugins = try await self.client
+            .api
+            .plugins
+            .listWithViewContext(params: PluginListParams(status: .active))
+            .data
+
+        try await self.checkPluginUpdates(plugins: latestInstalledPlugins)
     }
 
     public func fetchPluginInformation(slug: PluginWpOrgDirectorySlug) async throws {
@@ -44,8 +55,16 @@ public actor PluginService: PluginServiceProtocol {
         try await pluginDirectoryDataStore.store([plugin])
     }
 
+    public func hasInstalledPlugin(slug: PluginWpOrgDirectorySlug) async throws -> Bool {
+        try await findInstalledPlugin(slug: slug) != nil
+    }
+
     public func findInstalledPlugin(slug: PluginWpOrgDirectorySlug) async throws -> InstalledPlugin? {
-        try await installedPluginDataStore.list(query: .slug(slug)).first
+        if await installedPluginDataStore.isEmpty {
+            try await installedPluginDataStore.store(installedPluginsTask.value)
+        }
+
+        return try await installedPluginDataStore.list(query: .slug(slug)).first
     }
 
     public func installedPlugins(query: PluginDataStoreQuery) async throws -> [InstalledPlugin] {

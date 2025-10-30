@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import WordPressCore
 import WordPressData
 
 class EditPageViewController: UIViewController {
@@ -11,19 +12,28 @@ class EditPageViewController: UIViewController {
     fileprivate var hasShownEditor = false
     var onClose: (() -> Void)?
 
-    convenience init(page: Page) {
-        self.init(page: page, blog: page.blog, postTitle: nil, content: nil)
+    private let wordPressClient: WordPressClient?
+
+    convenience init(page: Page, wordPressClient: WordPressClient? = nil) {
+        self.init(page: page, blog: page.blog, postTitle: nil, content: nil, wordPressClient: wordPressClient)
     }
 
-    convenience init(blog: Blog, postTitle: String?, content: String?) {
-        self.init(page: nil, blog: blog, postTitle: postTitle, content: content)
+    convenience init(blog: Blog, postTitle: String?, content: String?, wordPressClient: WordPressClient? = nil) {
+        self.init(page: nil, blog: blog, postTitle: postTitle, content: content, wordPressClient: wordPressClient)
     }
 
-    fileprivate init(page: Page?, blog: Blog, postTitle: String?, content: String?) {
+    fileprivate init(
+        page: Page?,
+        blog: Blog,
+        postTitle: String?,
+        content: String?,
+        wordPressClient: WordPressClient? = nil
+    ) {
         self.page = page
         self.blog = blog
         self.postTitle = postTitle
         self.content = content
+        self.wordPressClient = wordPressClient ?? blog.wordPressClient()
 
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overFullScreen
@@ -70,7 +80,9 @@ class EditPageViewController: UIViewController {
                 for: page,
                 replaceEditor: { [weak self] (editor, replacement) in
                     self?.replaceEditor(editor: editor, replacement: replacement)
-            })
+                },
+                wordPressClient: self.wordPressClient
+            )
 
             show(editorViewController)
         }

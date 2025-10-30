@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import Gridicons
+import WordPressCore
 import WordPressData
 import WordPressShared
 import WordPressFlux
@@ -36,6 +37,8 @@ class AbstractPostListViewController: UIViewController,
     }
 
     var blog: Blog!
+
+    var wordPressClient: WordPressClient?
 
     /// This closure will be executed whenever the noResultsView must be visually refreshed.  It's up
     /// to the subclass to define this property.
@@ -81,6 +84,12 @@ class AbstractPostListViewController: UIViewController,
     private var atLeastSyncedOnce = false
 
     private var pendingChanges: [(UITableView) -> Void] = []
+
+    init(blog: Blog, wordPressClient: WordPressClient? = nil) {
+        self.blog = blog
+        self.wordPressClient = wordPressClient
+        super.init(nibName: nil, bundle: nil)
+    }
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressCore
 import WordPressData
 import WordPressShared
 import Gridicons
@@ -11,14 +12,17 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
     // MARK: - Convenience constructors
 
-    class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
-        let vc = PostListViewController()
-        vc.blog = blog
-        return vc
+    class func controllerWithBlog(_ blog: Blog, wordPressClient: WordPressClient? = nil) -> PostListViewController {
+        return PostListViewController(blog: blog, wordPressClient: wordPressClient ?? blog.wordPressClient())
     }
 
-    static func showForBlog(_ blog: Blog, from sourceController: UIViewController, withPostStatus postStatus: BasePost.Status? = nil) {
-        let controller = PostListViewController.controllerWithBlog(blog)
+    static func showForBlog(
+        _ blog: Blog,
+        from sourceController: UIViewController,
+        wordPressClient: WordPressClient? = nil,
+        withPostStatus postStatus: BasePost.Status? = nil
+    ) {
+        let controller = PostListViewController.controllerWithBlog(blog, wordPressClient: wordPressClient)
         controller.navigationItem.largeTitleDisplayMode = .never
         controller.initialFilterWithPostStatus = postStatus
         sourceController.navigationController?.pushViewController(controller, animated: true)
@@ -180,7 +184,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
     // MARK: - Post Actions
 
     override func createPost() {
-        let editor = EditPostViewController(blog: blog)
+        let editor = EditPostViewController(blog: blog, wordPressClient: wordPressClient)
         editor.modalPresentationStyle = .fullScreen
         editor.entryPoint = .postsList
         present(editor, animated: false, completion: nil)
@@ -191,14 +195,14 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         guard let post = post as? Post else {
             return
         }
-        PostListEditorPresenter.handle(post: post, in: self, entryPoint: .postsList)
+        PostListEditorPresenter.handle(post: post, in: self, entryPoint: .postsList, wordPressClient: wordPressClient)
     }
 
-    private func editDuplicatePost(_ post: AbstractPost) {
+    private func editDuplicatePost(_ post: AbstractPost, wordPressClient: WordPressClient? = nil) {
         guard let post = post.latest() as? Post else {
             return wpAssertionFailure("unexpected post type")
         }
-        PostListEditorPresenter.handleCopy(post: post, in: self)
+        PostListEditorPresenter.handleCopy(post: post, in: self, wordPressClient: wordPressClient)
     }
 
     // MARK: - InteractivePostViewDelegate

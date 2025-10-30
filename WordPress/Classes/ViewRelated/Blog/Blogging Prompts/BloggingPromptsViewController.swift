@@ -1,4 +1,5 @@
 import UIKit
+import WordPressCore
 import WordPressData
 import WordPressUI
 
@@ -10,6 +11,8 @@ class BloggingPromptsViewController: UIViewController, NoResultsViewHost {
     @IBOutlet private weak var filterTabBar: FilterTabBar!
 
     private var blog: Blog?
+    private var wordPressClient: WordPressClient?
+
     private var prompts: [BloggingPrompt] = [] {
         didSet {
             tableView.reloadData()
@@ -31,15 +34,16 @@ class BloggingPromptsViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Init
 
-    class func controllerWithBlog(_ blog: Blog) -> BloggingPromptsViewController {
+    class func controllerWithBlog(_ blog: Blog, wordPressClient: WordPressClient?) -> BloggingPromptsViewController {
         let controller = BloggingPromptsViewController.loadFromStoryboard()
         controller.blog = blog
+        controller.wordPressClient = wordPressClient ?? blog.wordPressClient()
         return controller
     }
 
-    class func show(for blog: Blog, from presentingViewController: UIViewController) {
+    class func show(for blog: Blog, wordPressClient: WordPressClient?, from presentingViewController: UIViewController) {
         WPAnalytics.track(.promptsListViewed)
-        let controller = BloggingPromptsViewController.controllerWithBlog(blog)
+        let controller = BloggingPromptsViewController.controllerWithBlog(blog, wordPressClient: wordPressClient)
         presentingViewController.navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -168,7 +172,7 @@ extension BloggingPromptsViewController: UITableViewDataSource, UITableViewDeleg
             return
         }
 
-        let editor = EditPostViewController(blog: blog, prompt: prompt)
+        let editor = EditPostViewController(blog: blog, prompt: prompt, wordPressClient: self.wordPressClient)
         editor.modalPresentationStyle = .fullScreen
         editor.entryPoint = .bloggingPromptsListView
         present(editor, animated: true)

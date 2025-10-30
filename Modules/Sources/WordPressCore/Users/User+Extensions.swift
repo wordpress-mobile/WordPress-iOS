@@ -7,19 +7,6 @@ public extension UserRole {
     }
 }
 
-extension UserRole: @retroactive Codable {
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let string: String = try container.decode(String.self)
-        self = .custom(string)
-    }
-
-    public func encode(to encoder: any Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(self.rawValue)
-    }
-}
-
 extension UserRole: @retroactive Comparable {
 
     public static func < (lhs: UserRole, rhs: UserRole) -> Bool {

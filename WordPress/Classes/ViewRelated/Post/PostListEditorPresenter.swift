@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressCore
 import WordPressData
 
 typealias EditorPresenterViewController = UIViewController & EditorAnalyticsProperties
@@ -15,7 +16,12 @@ protocol EditorAnalyticsProperties: AnyObject {
 /// Analytics are also tracked.
 struct PostListEditorPresenter {
 
-    static func handle(post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
+    static func handle(
+        post: Post,
+        in postListViewController: EditorPresenterViewController,
+        entryPoint: PostEditorEntryPoint = .unknown,
+        wordPressClient: WordPressClient? = nil
+    ) {
         // Return early if a post is still uploading when the editor's requested.
         guard !PostCoordinator.shared.isUpdating(post) else {
             return // It's clear from the UI that the cells are not interactive
@@ -30,10 +36,14 @@ struct PostListEditorPresenter {
             return
         }
 
-        openEditor(with: post, in: postListViewController, entryPoint: entryPoint)
+        openEditor(with: post, in: postListViewController, entryPoint: entryPoint, wordPressClient: wordPressClient)
     }
 
-    static func handleCopy(post: Post, in postListViewController: EditorPresenterViewController) {
+    static func handleCopy(
+        post: Post,
+        in postListViewController: EditorPresenterViewController,
+        wordPressClient: WordPressClient? = nil
+    ) {
         // Copy Post
         let newPost = post.blog.createDraftPost()
         newPost.postTitle = post.postTitle
@@ -41,17 +51,22 @@ struct PostListEditorPresenter {
         newPost.categories = post.categories
         newPost.postFormat = post.postFormat
 
-        openEditor(with: newPost, in: postListViewController)
+        openEditor(with: newPost, in: postListViewController, wordPressClient: wordPressClient)
 
         WPAppAnalytics.track(.postListDuplicateAction, properties: postListViewController.propertiesForAnalytics(), post: post)
     }
 
-    private static func openEditor(with post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
-        /// This is a workaround for the lack of vie wapperance callbacks send
+    private static func openEditor(
+        with post: Post,
+        in postListViewController: EditorPresenterViewController,
+        entryPoint: PostEditorEntryPoint = .unknown,
+        wordPressClient: WordPressClient? = nil
+    ) {
+        /// This is a workaround for the lack of viewapperance callbacks send
         /// by `EditPostViewController` due to its weird setup.
         NotificationCenter.default.post(name: .postListEditorPresenterWillShowEditor, object: nil)
 
-        let editor = EditPostViewController(post: post)
+        let editor = EditPostViewController(post: post, wordPressClient: wordPressClient)
         editor.modalPresentationStyle = .fullScreen
         editor.entryPoint = entryPoint
         editor.onClose = {

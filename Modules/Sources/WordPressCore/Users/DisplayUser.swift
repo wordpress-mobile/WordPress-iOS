@@ -1,7 +1,7 @@
 import Foundation
 import WordPressAPI
 
-public struct DisplayUser: Identifiable, Codable, Hashable, Sendable {
+public struct DisplayUser: Identifiable, Hashable, Sendable {
     public let id: Int64
     public let handle: String
     public let username: String

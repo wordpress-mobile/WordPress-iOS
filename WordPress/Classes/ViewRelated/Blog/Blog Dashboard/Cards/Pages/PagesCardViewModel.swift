@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import UIKit
+import WordPressCore
 import WordPressData
 import WordPressUI
 
@@ -31,6 +32,8 @@ enum PagesListItem: Hashable {
 ///
 class PagesCardViewModel: NSObject {
     var blog: Blog
+
+    private let wordPressClient: WordPressClient?
 
     private let managedObjectContext: NSManagedObjectContext
 
@@ -72,8 +75,14 @@ class PagesCardViewModel: NSObject {
 
     }
 
-    init(blog: Blog, view: PagesCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
+    init(
+        blog: Blog,
+        wordPressClient: WordPressClient?,
+        view: PagesCardView,
+        managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext
+    ) {
         self.blog = blog
+        self.wordPressClient = wordPressClient
         self.view = view
         self.managedObjectContext = managedObjectContext
 
@@ -110,7 +119,12 @@ class PagesCardViewModel: NSObject {
             guard let blog = self?.blog else {
                 return
             }
-            let editorViewController = EditPageViewController(blog: blog, postTitle: selectedLayout?.title, content: selectedLayout?.content)
+            let editorViewController = EditPageViewController(
+                blog: blog,
+                postTitle: selectedLayout?.title,
+                content: selectedLayout?.content,
+                wordPressClient: self?.wordPressClient
+            )
             viewController.present(editorViewController, animated: false)
         }
         trackCreateSectionTapped()

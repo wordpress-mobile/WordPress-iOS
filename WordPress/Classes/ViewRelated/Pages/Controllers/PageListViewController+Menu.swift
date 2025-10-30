@@ -6,7 +6,7 @@ extension PageListViewController: InteractivePostViewDelegate {
     func edit(_ apost: AbstractPost) {
         guard let page = apost as? Page else { return }
 
-        PageEditorPresenter.handle(page: page, in: self, entryPoint: .pagesList)
+        PageEditorPresenter.handle(page: page, in: self, wordPressClient: wordPressClient, entryPoint: .pagesList)
     }
 
     func view(_ apost: AbstractPost) {
@@ -73,7 +73,7 @@ extension PageListViewController: InteractivePostViewDelegate {
         newPage.postTitle = page.postTitle
         newPage.content = page.content
         // Open Editor
-        let editorViewController = EditPageViewController(page: newPage)
+        let editorViewController = EditPageViewController(page: newPage, wordPressClient: wordPressClient)
         present(editorViewController, animated: false)
     }
 }

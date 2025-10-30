@@ -28,7 +28,7 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
             } else if showLoading {
                 ProgressView()
             } else if let site {
-                builder(WordPressClient(site: site))
+                builder(WordPressClient.for(site: site))
             } else {
                 RestApiUpgradePrompt(localizedFeatureName: localizedFeatureName) {
                     Task {
