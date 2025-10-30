@@ -24,15 +24,17 @@ platform :ios do
     provided_version = version
     new_version = provided_version || computed_version
 
-    # Warn if provided version differs from computed version
+    # Fail if provided version differs from computed version
     if provided_version && provided_version != computed_version
-      warning_message = <<~WARNING
-        ⚠️ Version mismatch: The explicitly-provided version was '#{provided_version}' while new computed version would have been '#{computed_version}'.
-        If this is unexpected, you might want to investigate the discrepency.
-        Continuing with the explicitly-provided verison '#{provided_version}'.
-      WARNING
-      UI.important(warning_message)
-      buildkite_annotate(style: 'warning', context: 'code-freeze-version-mismatch', message: warning_message) if is_ci
+      error_message = <<~ERROR
+        ❌ Version mismatch detected!
+
+        The explicitly-provided version from the release tool is '#{provided_version}' but the computed version from the codebase is '#{computed_version}'.
+
+        This mismatch must be resolved before proceeding with the code freeze. Please investigate and ensure the versions are aligned.
+      ERROR
+      buildkite_annotate(style: 'error', context: 'code-freeze-version-mismatch', message: error_message) if is_ci
+      UI.user_error!(error_message)
     end
 
     release_branch_name = compute_release_branch_name(options: { version: version, skip_confirm: skip_confirm }, version: new_version)
