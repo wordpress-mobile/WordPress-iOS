@@ -565,8 +565,8 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, performRequest: GutenbergKit.EditorNetworkRequest) async throws -> GutenbergKit.EditorNetworkResponse {
-        throw URLError(.unknown)
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogMessage message: String, level: GutenbergKit.LogLevel) {
+        // Do nothing
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction) {

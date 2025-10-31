@@ -1,5 +1,5 @@
 {
-  "originHash" : "0018852d4b5daf8ccfef53dba310fdb313c4511d7c5ade6fe3ef42fa2490ca4e",
+  "originHash" : "33b78b0c403a7a4c2e461dff99d86f18e7b060ddd2dfb2327b41e1406735762d",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -149,8 +149,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/GutenbergKit",
       "state" : {
-        "revision" : "06a322f5fe222c4991abca407b7392f76bcff9d8",
-        "version" : "0.9.0"
+        "revision" : "3527195a557cdf28c589e1f75b76652e16eb9b2b"
       }
     },
     {
@@ -293,6 +292,15 @@
       "state" : {
         "revision" : "6b5f6d2ffc92c10d38cb9c716ae37b2832230c89",
         "version" : "8.0.4"
+      }
+    },
+    {
+      "identity" : "svgview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/exyte/SVGView.git",
+      "state" : {
+        "revision" : "6465962facdd25cb96eaebc35603afa2f15d2c0d",
+        "version" : "1.0.6"
       }
     },
     {
