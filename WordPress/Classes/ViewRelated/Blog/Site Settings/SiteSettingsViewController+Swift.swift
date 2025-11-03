@@ -13,11 +13,11 @@ extension SiteSettingsViewController {
     @objc public func showPrivacySelector() {
         struct SiteSettingsPrivacyPicker: View {
             let blog: Blog
-            @State var selection: SiteVisibility
-            let onChange: (SiteVisibility) -> Void
+            @State var selection: WordPress.SiteVisibility
+            let onChange: (WordPress.SiteVisibility) -> Void
 
             var body: some View {
-                SettingsPickerListView(selection: $selection, values: SiteVisibility.eligiblePickerValues(for: blog))
+                SettingsPickerListView(selection: $selection, values: WordPress.SiteVisibility.eligiblePickerValues(for: blog))
                     .onChange(of: selection, perform: onChange)
             }
         }

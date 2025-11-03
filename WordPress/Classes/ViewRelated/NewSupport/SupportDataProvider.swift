@@ -155,7 +155,7 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
             try await self.wpcomClient
                 .api
                 .supportBots
-                .getBotConverationList(botId: self.botId)
+                .getBotConversationList(botId: self.botId, params: ListBotConversationsParams())
                 .data
                 .map { $0.asSupportConversation() }
         }, cacheKey: "bot-conversation-list")
@@ -360,7 +360,7 @@ extension SupportUser {
 
 extension WordPressAPIInternal.BotConversationSummary {
     func asSupportConversation() -> Support.BotConversation {
-        var summary = self.lastMessage.content
+        var summary = self.summaryMessage.content
 
         if let preview = summary.components(separatedBy: .newlines).first?.prefix(64) {
             summary = String(preview)
@@ -369,7 +369,6 @@ extension WordPressAPIInternal.BotConversationSummary {
         return BotConversation(
             id: self.chatId,
             title: summary,
-            mostRecentMessageDate: self.lastMessage.createdAt,
             messages: []
         )
     }
@@ -380,7 +379,6 @@ extension WordPressAPIInternal.BotConversation {
         BotConversation(
             id: self.chatId,
             title: self.messages.first?.content ?? "New Bot Chat",
-            mostRecentMessageDate: self.messages.last?.createdAt ?? self.createdAt,
             messages: self.messages.map { $0.asSupportMessage() }
         )
     }
