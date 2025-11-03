@@ -165,7 +165,9 @@ private struct WebPurchase: Identifiable {
 
     static func storage(blog: Blog) -> Self {
         WebPurchase(
-            url: URL(string: "https://wordpress.com/add-ons/")!.appending(path: blog.primaryDomainAddress),
+            url: URL(string: "https://wordpress.com/add-ons/")!
+                .appending(path: blog.primaryDomainAddress)
+                .appending(queryItems: [.init(name: "product", value: "storage")]),
             title: Strings.buyStorageTitle,
             successMessage: Strings.storageUpgradeSuccessMessage
         )
