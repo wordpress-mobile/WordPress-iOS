@@ -350,7 +350,7 @@ extension BlogDetailsViewController {
     }
 
     @objc public func showApplicationPasswords() {
-        let feature = NSLocalizedString("applicationPasswordRequired.feature.users", value: "Application Passwords Management", comment: "Feature name for managing application passwords in the app")
+        let feature = NSLocalizedString("applicationPasswordRequired.feature.applicationPasswords", value: "Application Passwords Management", comment: "Feature name for managing application passwords in the app")
         let view = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, presentingViewController: self) {
             ApplicationTokenListView(dataProvider: ApplicationPasswordService(api: $0))
         }

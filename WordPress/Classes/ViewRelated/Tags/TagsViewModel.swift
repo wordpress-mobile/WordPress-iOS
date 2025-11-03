@@ -33,6 +33,10 @@ class TagsViewModel: ObservableObject {
     let labels: TaxonomyLocalizedLabels
     let taxonomy: SiteTaxonomy?
 
+    var localizedTaxonomyName: String {
+        taxonomy?.localizedName ?? Strings.tags
+    }
+
     var isBrowseMode: Bool {
         if case .browse = mode {
             return true
@@ -49,9 +53,9 @@ class TagsViewModel: ObservableObject {
         self.selectedTagsSet = Set(self.selectedTags.map { $0.lowercased() })
     }
 
-    init(blog: Blog, api: WordPressAPI, taxonomy: SiteTaxonomy, selectedTerms: String? = nil, mode: TagsViewMode) {
+    init(blog: Blog, client: WordPressClient, taxonomy: SiteTaxonomy, selectedTerms: String? = nil, mode: TagsViewMode) {
         self.taxonomy = taxonomy
-        self.tagsService = AnyTermService(api: api, endpoint: taxonomy.endpoint)
+        self.tagsService = AnyTermService(client: client, endpoint: taxonomy.endpoint)
         self.mode = mode
         self.labels = TaxonomyLocalizedLabels.from(taxonomy: taxonomy)
         self.selectedTags = AbstractPost.makeTags(from: selectedTerms ?? "")
@@ -200,11 +204,11 @@ struct TaxonomyLocalizedLabels {
     static func from(taxonomy: SiteTaxonomy) -> Self {
         Self(
             name: taxonomy.localizedName,
-            empty: (taxonomy.details.labels[.noTerms] ?? nil)
-                ?? String.localizedStringWithFormat(Strings.defaultNoTermsFormat, taxonomy.details.name),
-            emptyDescription: String.localizedStringWithFormat(Strings.defaultEmptyDescriptionFormat, taxonomy.details.name),
-            searchPlaceholder: (taxonomy.details.labels[.searchItems] ?? nil)
-                ?? String.localizedStringWithFormat(Strings.defaultSearchFormat, taxonomy.details.name)
+            empty: taxonomy.labels.noTerms
+                ?? String.localizedStringWithFormat(Strings.defaultNoTermsFormat, taxonomy.name),
+            emptyDescription: String.localizedStringWithFormat(Strings.defaultEmptyDescriptionFormat, taxonomy.name),
+            searchPlaceholder: taxonomy.labels.searchItems
+                ?? String.localizedStringWithFormat(Strings.defaultSearchFormat, taxonomy.name)
         )
     }
 
@@ -235,6 +239,12 @@ struct TaxonomyLocalizedLabels {
 }
 
 private enum Strings {
+    static let tags = NSLocalizedString(
+        "Tags",
+        value: "Tags",
+        comment: "Post tags."
+    )
+
     static let defaultNoTermsFormat = NSLocalizedString(
         "localizedLabels.defaultNoTerms.format",
         value: "No %1$@",

@@ -182,12 +182,12 @@ extension AnyTermWithViewContext {
 }
 
 class AnyTermService: TaxonomyServiceProtocol {
-    private let api: WordPressAPI
+    private let client: WordPressClient
     let endpoint: TermEndpointType
 
-    init(api: WordPressAPI, endpoint: TermEndpointType) {
+    init(client: WordPressClient, endpoint: TermEndpointType) {
         self.endpoint = endpoint
-        self.api = api
+        self.client = client
     }
 
     func getTags(page: Int = 0, recentlyUsed: Bool = false) async throws -> [AnyTermWithViewContext] {
@@ -199,7 +199,7 @@ class AnyTermService: TaxonomyServiceProtocol {
             orderby: recentlyUsed ? .count : .name
         )
 
-        let response = try await api.terms.listWithViewContext(
+        let response = try await client.api.terms.listWithViewContext(
             termEndpointType: endpoint,
             params: params
         )
@@ -217,7 +217,7 @@ class AnyTermService: TaxonomyServiceProtocol {
             search: query
         )
 
-        let response = try await api.terms.listWithViewContext(
+        let response = try await client.api.terms.listWithViewContext(
             termEndpointType: endpoint,
             params: params
         )
@@ -231,7 +231,7 @@ class AnyTermService: TaxonomyServiceProtocol {
             description: description.isEmpty ? nil : description
         )
 
-        let response = try await api.terms.create(
+        let response = try await client.api.terms.create(
             termEndpointType: endpoint,
             params: params
         )
@@ -245,7 +245,7 @@ class AnyTermService: TaxonomyServiceProtocol {
             description: description
         )
 
-        let response = try await api.terms.update(
+        let response = try await client.api.terms.update(
             termEndpointType: endpoint,
             termId: term.id,
             params: params
@@ -255,7 +255,7 @@ class AnyTermService: TaxonomyServiceProtocol {
     }
 
     func deleteTag(_ term: AnyTermWithViewContext) async throws {
-        _ = try await api.terms.delete(
+        _ = try await client.api.terms.delete(
             termEndpointType: endpoint,
             termId: term.id
         )

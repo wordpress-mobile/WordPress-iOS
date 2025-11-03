@@ -8,22 +8,22 @@ import WordPressUI
 
 struct SiteCustomTaxonomiesView: View {
     let blog: Blog
-    let api: WordPressAPI
+    let client: WordPressClient
 
     @State private var isLoading: Bool = false
     @State private var taxonomies: [SiteTaxonomy]? = nil
     @State private var error: Error?
 
-    init(blog: Blog, api: WordPressAPI) {
+    init(blog: Blog, client: WordPressClient) {
         self.blog = blog
-        self.api = api
+        self.client = client
     }
 
     var body: some View {
         List {
             ForEach(taxonomies ?? [], id: \.slug) { taxonomy in
                 NavigationLink {
-                    SiteTagsView(viewModel: .init(blog: blog, api: api, taxonomy: taxonomy, mode: .browse))
+                    SiteTagsView(viewModel: .init(blog: blog, client: client, taxonomy: taxonomy, mode: .browse))
                 } label: {
                     Text(taxonomy.localizedName)
                 }
@@ -56,7 +56,7 @@ struct SiteCustomTaxonomiesView: View {
 
         self.error = nil
         do {
-            let result = try await api.taxonomies.listWithEditContext(params: .init()).data
+            let result = try await client.api.taxonomies.listWithEditContext(params: .init()).data
             // The "Categories" and "Tags" are displayed in its own views. This view only displays custom taxonomies.
             let customTaxonomies: [TaxonomyTypeDetailsWithEditContext] = result.taxonomyTypes.compactMap { (type, taxonomy) in
                 switch type {

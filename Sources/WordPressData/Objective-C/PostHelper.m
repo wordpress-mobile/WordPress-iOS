@@ -60,6 +60,7 @@
 
     post.rawMetadata = [PostHelper makeRawMetadataFrom:remotePost];
     post.foreignID = [PostHelper getForeignIDFor:remotePost];
+    [post setParsedOtherTerms:remotePost.otherTerms];
 
     post.autosaveTitle = remotePost.autosave.title;
     post.autosaveExcerpt = remotePost.autosave.excerpt;

@@ -181,6 +181,7 @@ struct PostSettingsFormContentView: View {
             categoriesRow
             tagsRow
             suggestedTagsRow
+            customTaxonomyRow
         } header: {
             SectionHeader(Strings.taxonomyHeader)
         }
@@ -214,6 +215,26 @@ struct PostSettingsFormContentView: View {
             }
             .listRowSeparator(.hidden, edges: .top)
             .padding(.top, -12)
+        }
+    }
+
+    @ViewBuilder
+    private var customTaxonomyRow: some View {
+        if let client = viewModel.client, !viewModel.customTaxonomies.isEmpty {
+            ForEach(viewModel.customTaxonomies, id: \.slug) { taxonomy in
+                NavigationLink {
+                    PostTagsView(
+                        blog: viewModel.post.blog,
+                        client: client,
+                        taxonomy: taxonomy,
+                        selectedTerms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug).joined(separator: ",")
+                    ) { terms in
+                        viewModel.didSelectTerms(terms, forTaxonomySlug: taxonomy.slug)
+                    }
+                } label: {
+                    PostSettingsCustomTaxonomyRow(taxonomy: taxonomy, terms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug))
+                }
+            }
         }
     }
 

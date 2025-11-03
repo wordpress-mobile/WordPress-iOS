@@ -21,6 +21,7 @@ public struct RemotePostCreateParameters: Equatable {
     public var format: String?
     public var isSticky = false
     public var tags: [String] = []
+    public var otherTerms: [String: [String]] = [:]
     public var categoryIDs: [Int] = []
     public var metadata: Set<RemotePostMetadataItem> = []
     public var discussion: RemotePostDiscussionSettings = .default
@@ -52,6 +53,7 @@ public struct RemotePostUpdateParameters: Equatable {
     public var format: String??
     public var isSticky: Bool?
     public var tags: [String]?
+    public var otherTerms: [String: [String]]?
     public var categoryIDs: [Int]?
     public var metadata: Set<RemotePostMetadataItem>?
     public var discussion: RemotePostDiscussionSettings?
@@ -138,6 +140,9 @@ extension RemotePostCreateParameters {
         if previous.tags != tags {
             changes.tags = tags
         }
+        if !RemotePost.compareOtherTerms(previous.otherTerms, withAnother: otherTerms) {
+            changes.otherTerms = otherTerms
+        }
         if Set(previous.categoryIDs) != Set(categoryIDs) {
             changes.categoryIDs = categoryIDs
         }
@@ -190,6 +195,9 @@ extension RemotePostCreateParameters {
         }
         if let tags = changes.tags {
             self.tags = tags
+        }
+        if let otherTerms = changes.otherTerms {
+            self.otherTerms = otherTerms
         }
         if let categoryIDs = changes.categoryIDs {
             self.categoryIDs = categoryIDs
@@ -253,9 +261,19 @@ struct RemotePostCreateParametersWordPressComEncoder: Encodable {
 
         // Posts
         try container.encodeIfPresent(parameters.format, forKey: .format)
+
+        // Terms (including tags)
+        var terms = [String: [String]]()
         if !parameters.tags.isEmpty {
-            try container.encode([RemotePostWordPressComCodingKeys.postTags: parameters.tags], forKey: .terms)
+            terms[RemotePostWordPressComCodingKeys.postTags] = parameters.tags
         }
+        if !parameters.otherTerms.isEmpty {
+            terms.merge(parameters.otherTerms) { old, _ in old }
+        }
+        if !terms.isEmpty {
+            try container.encode(terms, forKey: .terms)
+        }
+
         if !parameters.categoryIDs.isEmpty {
             try container.encodeIfPresent(parameters.categoryIDs, forKey: .categoryIDs)
         }
@@ -330,6 +348,18 @@ struct RemotePostUpdateParametersWordPressComEncoder: Encodable {
             try container.encode(metadata, forKey: .metadata)
         }
 
+        // Terms (including tags)
+        var terms = [String: [String]]()
+        if let tags = parameters.tags, !tags.isEmpty {
+            terms[RemotePostWordPressComCodingKeys.postTags] = tags
+        }
+        if let otherTerms = parameters.otherTerms, !otherTerms.isEmpty {
+            terms.merge(otherTerms) { old, _ in old }
+        }
+        if !terms.isEmpty {
+            try container.encode(terms, forKey: .terms)
+        }
+
         // Pages
         if let parentPageID = parameters.parentPageID {
             try container.encodeNullableID(parentPageID, forKey: .parentPageID)
@@ -337,9 +367,6 @@ struct RemotePostUpdateParametersWordPressComEncoder: Encodable {
 
         // Posts
         try container.encodeIfPresent(parameters.format, forKey: .format)
-        if let tags = parameters.tags {
-            try container.encode([RemotePostWordPressComCodingKeys.postTags: tags], forKey: .terms)
-        }
         try container.encodeIfPresent(parameters.categoryIDs, forKey: .categoryIDs)
         try container.encodeIfPresent(parameters.isSticky, forKey: .isSticky)
         if let discussion = parameters.discussion {
@@ -395,14 +422,23 @@ struct RemotePostCreateParametersXMLRPCEncoder: Encodable {
             try container.encode(metadata, forKey: .metadata)
         }
 
+        // Terms (including tags)
+        var terms = [String: [String]]()
+        if !parameters.tags.isEmpty {
+            terms[RemotePostXMLRPCCodingKeys.taxonomyTag] = parameters.tags
+        }
+        if !parameters.otherTerms.isEmpty {
+            terms.merge(parameters.otherTerms) { old, _ in old }
+        }
+        if !terms.isEmpty {
+            try container.encode(terms, forKey: .termNames)
+        }
+
         // Pages
         try container.encodeIfPresent(parameters.parentPageID, forKey: .parentPageID)
 
         // Posts
         try container.encodeIfPresent(parameters.format, forKey: .format)
-        if !parameters.tags.isEmpty {
-            try container.encode([RemotePostXMLRPCCodingKeys.taxonomyTag: parameters.tags], forKey: .termNames)
-        }
         if !parameters.categoryIDs.isEmpty {
             try container.encode([RemotePostXMLRPCCodingKeys.taxonomyCategory: parameters.categoryIDs], forKey: .terms)
         }
@@ -438,6 +474,18 @@ struct RemotePostUpdateParametersXMLRPCEncoder: Encodable {
             try container.encode(metadata, forKey: .metadata)
         }
 
+        // Terms (including tags)
+        var terms = [String: [String]]()
+        if let tags = parameters.tags, !tags.isEmpty {
+            terms[RemotePostXMLRPCCodingKeys.taxonomyTag] = tags
+        }
+        if let otherTerms = parameters.otherTerms, !otherTerms.isEmpty {
+            terms.merge(otherTerms) { old, _ in old }
+        }
+        if !terms.isEmpty {
+            try container.encode(terms, forKey: .termNames)
+        }
+
         // Pages
         if let parentPageID = parameters.parentPageID {
             try container.encodeNullableID(parentPageID, forKey: .parentPageID)
@@ -445,9 +493,6 @@ struct RemotePostUpdateParametersXMLRPCEncoder: Encodable {
 
         // Posts
         try container.encodeStringIfPresent(parameters.format, forKey: .format)
-        if let tags = parameters.tags {
-            try container.encode([RemotePostXMLRPCCodingKeys.taxonomyTag: tags], forKey: .termNames)
-        }
         if let categoryIDs = parameters.categoryIDs {
             try container.encode([RemotePostXMLRPCCodingKeys.taxonomyCategory: categoryIDs], forKey: .terms)
         }

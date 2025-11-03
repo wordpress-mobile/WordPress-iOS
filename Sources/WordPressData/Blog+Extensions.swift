@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import WordPressShared
+import WordPressAPI
 
 extension Blog {
 
@@ -79,5 +80,15 @@ extension Blog {
         return roles.sorted { lhs, rhs in
             (lhs.order?.intValue ?? 0) < (rhs.order?.intValue ?? 0)
         }
+    }
+
+    public var taxonomies: [SiteTaxonomy] {
+        get throws {
+            try rawTaxonomies.flatMap { try JSONDecoder().decode([SiteTaxonomy].self, from: $0) } ?? []
+        }
+    }
+
+    public func setTaxonomies(_ taxonomies: [SiteTaxonomy]) throws {
+        self.rawTaxonomies = try JSONEncoder().encode(taxonomies)
     }
 }

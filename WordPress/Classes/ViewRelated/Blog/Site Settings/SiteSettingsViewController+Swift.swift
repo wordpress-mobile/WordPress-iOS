@@ -58,7 +58,7 @@ extension SiteSettingsViewController {
     @objc public func showCustomTaxonomies() {
         let viewController: UIViewController
         if let client = try? WordPressClient(site: .init(blog: blog)) {
-            let rootView = SiteCustomTaxonomiesView(blog: self.blog, api: client.api)
+            let rootView = SiteCustomTaxonomiesView(blog: self.blog, client: client)
             viewController = UIHostingController(rootView: rootView)
         } else {
             let feature = NSLocalizedString(
@@ -67,7 +67,7 @@ extension SiteSettingsViewController {
                 comment: "Feature name for managing terms and taxonomies in the app"
             )
             let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature, presentingViewController: self) { client in
-                SiteCustomTaxonomiesView(blog: self.blog, api: client.api)
+                SiteCustomTaxonomiesView(blog: self.blog, client: client)
             }
             viewController = UIHostingController(rootView: rootView)
         }

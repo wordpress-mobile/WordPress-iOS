@@ -1,6 +1,7 @@
 #import "PostServiceRemoteREST.h"
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
+#import "RemotePostTerm.h"
 #import "FilePart.h"
 #import "WPMapFilterReduce.h"
 #import "DisplayableImageHelper.h"
@@ -453,6 +454,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
         post.categories = [self remoteCategoriesFromJSONArray:[categories allValues]];
     }
     post.tags = [self tagNamesFromJSONDictionary:jsonPost[@"tags"]];
+    post.otherTerms = [RemotePostTerm simpleMappingRepresentation:[self otherTermsFromJSONDictionary:jsonPost[@"terms"]]];
 
     post.revisions = [jsonPost arrayForKey:@"revisions"];
 
@@ -522,11 +524,19 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
         parameters[@"categories_by_id"] = [post.categories valueForKey:@"categoryID"];
     }
 
-    if (post.tags) {
-        NSArray *tags = post.tags;
-        NSDictionary *postTags = @{@"post_tag":tags};
-        parameters[@"terms"] = postTags;
+    {
+        NSMutableDictionary *terms = [NSMutableDictionary dictionary];
+        if (post.tags) {
+            terms[@"post_tag"] = post.tags;
+        }
+        [post.otherTerms enumerateKeysAndObjectsUsingBlock:^(NSString *taxonomy, NSArray<NSString *> *theTerms, BOOL *stop) {
+            terms[taxonomy] = theTerms;
+        }];
+        if (terms.count > 0) {
+            parameters[@"terms"] = terms;
+        }
     }
+
     if (post.format) {
         parameters[@"format"] = post.format;
     }
@@ -594,6 +604,26 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
 + (NSArray *)tagNamesFromJSONDictionary:(NSDictionary *)jsonTags {
     return [jsonTags allKeys];
+}
+
++ (NSArray<RemotePostTerm *> *)otherTermsFromJSONDictionary:(NSDictionary *)terms {
+    NSMutableArray<RemotePostTerm *> *otherTerms = [NSMutableArray array];
+
+    for (NSString *taxonomySlug in terms) {
+        if ([taxonomySlug isEqualToString:@"category"] ||
+            [taxonomySlug isEqualToString:@"post_tag"] ||
+            [taxonomySlug isEqualToString:@"post_format"]) {
+            continue;
+        }
+
+        NSDictionary *taxonomyTerms = terms[taxonomySlug];
+        for (NSString *termKey in taxonomyTerms) {
+            NSDictionary *termData = taxonomyTerms[termKey];
+            [otherTerms addObject:[[RemotePostTerm alloc] initWithRESTAPIResponse:termData taxonomySlug:taxonomySlug]];
+        }
+    }
+
+    return [otherTerms copy];
 }
 
 /**

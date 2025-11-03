@@ -91,6 +91,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @dynamic quotaSpaceUsed;
 @dynamic pageTemplateCategories;
 @dynamic publicizeInfo;
+@dynamic rawTaxonomies;
 
 @synthesize videoPressEnabled;
 @synthesize xmlrpcApi = _xmlrpcApi;

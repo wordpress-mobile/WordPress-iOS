@@ -1,6 +1,7 @@
 #import "PostServiceRemoteXMLRPC.h"
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
+#import "RemotePostTerm.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "NSString+Helpers.h"
 #import "WPMapFilterReduce.h"
@@ -333,6 +334,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     NSArray *terms = [xmlrpcDictionary arrayForKey:@"terms"];
     post.tags = [self tagsFromXMLRPCTermsArray:terms];
     post.categories = [self remoteCategoriesFromXMLRPCTermsArray:terms];
+    post.otherTerms = [RemotePostTerm simpleMappingRepresentation:[self otherTermsFromXMLRPCTermsArray:terms]];
 
     post.commentsStatus = [xmlrpcDictionary stringForKey:@"comment_status"];
     post.pingsStatus = [xmlrpcDictionary stringForKey:@"ping_status"];
@@ -370,6 +372,15 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
         return [[category stringForKey:@"taxonomy"] isEqualToString:@"category"];
     }] wpkit_map:^id(NSDictionary *category) {
         return [self remoteCategoryFromXMLRPCDictionary:category];
+    }];
+}
+
++ (NSArray<RemotePostTerm *> *)otherTermsFromXMLRPCTermsArray:(NSArray *)terms {
+    return [[terms wpkit_filter:^BOOL(NSDictionary *category) {
+        return ![[category stringForKey:@"taxonomy"] isEqualToString:@"category"]
+            && ![[category stringForKey:@"taxonomy"] isEqualToString:@"post_tag"];
+    }] wpkit_map:^id(NSDictionary *term) {
+        return [[RemotePostTerm alloc] initWithXMLRPCResponse:term];
     }];
 }
 
@@ -423,6 +434,10 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
         }];
 
         postParams[@"categories"] = categoryNames;
+    }
+
+    if (post.otherTerms.count > 0) {
+        postParams[@"terms_names"] = post.otherTerms;
     }
 
     if ([post.metadata count] > 0) {

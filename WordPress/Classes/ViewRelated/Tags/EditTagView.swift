@@ -191,10 +191,10 @@ private struct LocalizedLabels {
 
     static func from(taxonomy: SiteTaxonomy) -> Self {
         Self(
-            newPlaceholder: (taxonomy.details.labels[.newItemName] ?? nil) ?? "",
-            newItemTitle: (taxonomy.details.labels[.addNewItem] ?? nil) ?? "",
-            nameFieldDescription: taxonomy.details.labels[.nameFieldDescription] ?? nil,
-            descriptionFieldDescription: taxonomy.details.labels[.descFieldDescription] ?? nil
+            newPlaceholder: taxonomy.labels.newItemName ?? "",
+            newItemTitle: taxonomy.labels.addNewItem ?? "",
+            nameFieldDescription: taxonomy.labels.nameFieldDescription,
+            descriptionFieldDescription: taxonomy.labels.descFieldDescription
         )
     }
 

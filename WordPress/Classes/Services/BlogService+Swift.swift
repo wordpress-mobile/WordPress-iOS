@@ -1,6 +1,8 @@
 import Foundation
 import WordPressData
 import WordPressShared
+import WordPressCore
+import WordPressAPI
 
 extension BlogService {
     @objc public func unscheduleBloggingReminders(for blog: Blog) {
@@ -70,6 +72,30 @@ extension BlogService {
                 .forEach { $0.deletedFromBlog = true }
         } catch {
             return
+        }
+    }
+
+    public func syncTaxnomies(for blogId: TaggedManagedObjectID<Blog>) async throws {
+        let client = try await self.coreDataStack.performQuery { context in
+            let blog = try context.existingObject(with: blogId)
+            return try WordPressClient(site: .init(blog: blog))
+        }
+
+        let result = try await client.api.taxonomies.listWithEditContext(params: .init()).data.taxonomyTypes.values
+        try await ContextManager.shared.performAndSave { context in
+            let blog = try context.existingObject(with: blogId)
+            try blog.setTaxonomies(result.map(SiteTaxonomy.init))
+        }
+    }
+
+    @objc
+    public func syncTaxnomies(for blog: Blog, completion: @escaping () -> Void) {
+        let blogId = TaggedManagedObjectID(blog)
+        Task { @MainActor in
+            defer {
+                completion()
+            }
+            try await self.syncTaxnomies(for: blogId)
         }
     }
 

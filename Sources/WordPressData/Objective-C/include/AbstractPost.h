@@ -58,6 +58,8 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 /// Jetpack plugin metadata.`
 @property (nonatomic, strong, nullable) NSData *rawMetadata;
 
+@property (nonatomic, strong, nullable) NSData *rawOtherTerms;
+
 @property (nonatomic, strong, nullable) NSString *voiceContent;
 
 // Revision management
@@ -127,6 +129,11 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  * If no appropiated image is found the path is set to nil.
  */
 - (void)updatePathForDisplayImageBasedOnContent;
+
+- (void)setParsedOtherTerms:(NSDictionary<NSString *, NSArray<NSString *> *> *)data;
+- (NSDictionary<NSString *, NSArray<NSString *> *> *)parseOtherTerms;
+
++ (BOOL)compareOtherTerms:(NSDictionary<NSString *, NSArray<NSString *> *> *)lhs withAnother:(NSDictionary<NSString *, NSArray<NSString *> *> *)rhs;
 
 @end
 

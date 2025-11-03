@@ -3,7 +3,9 @@ import BuildSettingsKit
 import SwiftUI
 import WordPressData
 import WordPressKit
+import WordPressCore
 import WordPressShared
+import WordPressAPIInternal
 import Combine
 
 @MainActor
@@ -12,6 +14,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     let isStandalone: Bool
     let context: Context
     let featuredImageViewModel: PostSettingsFeaturedImageViewModel
+    let client: WordPressClient?
 
     @Published var settings: PostSettings {
         didSet {
@@ -24,6 +27,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     @Published private(set) var displayedCategories: [String] = []
     @Published private(set) var displayedTags: [String] = []
     @Published private(set) var suggestedTags: [String] = []
+    @Published private(set) var customTaxonomies: [SiteTaxonomy] = []
     @Published private(set) var parentPageText: String?
     @Published private(set) var socialSharingState: SocialSharingSectionState?
 
@@ -155,6 +159,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         self.isStandalone = isStandalone
         self.context = context
         self.preferences = preferences
+        self.client = try? WordPressClient(site: .init(blog: post.blog))
 
         // Initialize settings from the post
         let initialSettings = PostSettings(from: post)
@@ -174,6 +179,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         // Initialize all cached properties
         refreshDisplayedCategories()
         refreshDisplayedTags()
+        refreshCustomTaxonomies()
         refreshParentPageText()
         refreshSocialSharingState()
 
@@ -217,6 +223,22 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         cancellables.insert(AnyCancellable {
             task.cancel()
         })
+    }
+
+    private func refreshCustomTaxonomies() {
+        let postType: String? = switch post {
+            case is Post: "post"
+            case is Page: "page"
+            default: nil
+            }
+        guard let postType else { return }
+
+        let customTaxonomies = try? post.blog.taxonomies
+            .filter {
+                $0.slug != "post_tag" && $0.slug != "category" && $0.supportedPostTypes.contains(postType)
+            }
+            .sorted(using: KeyPathComparator(\.name))
+        self.customTaxonomies = customTaxonomies ?? []
     }
 
     // MARK: - Refresh
@@ -369,6 +391,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     func didSelectTags(_ tags: String) {
         settings.tags = tags
         isSuggestedTagsRefreshNeeded = true
+    }
+
+    func didSelectTerms(_ terms: String, forTaxonomySlug taxonomySlug: String) {
+        settings.setTerms(terms, forTaxonomySlug: taxonomySlug)
     }
 
     // MARK: - Social Sharing

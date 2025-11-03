@@ -3,6 +3,8 @@ import Combine
 import WordPressUI
 import WordPressKit
 import WordPressData
+import WordPressAPI
+import WordPressCore
 
 struct PostTagsView: View {
     @StateObject var viewModel: TagsViewModel
@@ -12,6 +14,14 @@ struct PostTagsView: View {
     /// - note: The tags are encoded as a comma-separate list.
     init(blog: Blog, selectedTags: String?, onSelectionChanged: @escaping (String) -> Void) {
         let viewModel = TagsViewModel(blog: blog, selectedTags: selectedTags, mode: .selection(onSelectedTagsChanged: { tags in
+            onSelectionChanged(tags)
+        }))
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
+
+    /// - note: The tags are encoded as a comma-separate list.
+    init(blog: Blog, client: WordPressClient, taxonomy: SiteTaxonomy, selectedTerms: String? = nil, onSelectionChanged: @escaping (String) -> Void) {
+        let viewModel = TagsViewModel(blog: blog, client: client, taxonomy: taxonomy, selectedTerms: selectedTerms, mode: .selection(onSelectedTagsChanged: { tags in
             onSelectionChanged(tags)
         }))
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -47,7 +57,7 @@ struct PostTagsView: View {
         .onAppear {
             viewModel.onAppear()
         }
-        .navigationTitle(Strings.title)
+        .navigationTitle(viewModel.labels.name)
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -103,7 +113,7 @@ struct PostTagsView: View {
             // We want to keep the focus on text field, after tapping the return key, which is not supported
             // by `SwiftUI.TextField`.
             AddTagsTextField(
-                placeholder: Strings.searchPlaceholder,
+                placeholder: Strings.searchPlaceholder(viewModel.localizedTaxonomyName),
                 text: $viewModel.searchText,
                 onSubmit: addTag
             )
@@ -115,7 +125,7 @@ struct PostTagsView: View {
                 Button(action: addTag) {
                     Image(systemName: "plus")
                 }
-                .accessibilityLabel(Strings.addTag)
+                .accessibilityLabel(Strings.addTag(viewModel.localizedTaxonomyName))
             }
         }
         .textFieldStyle(.plain)
@@ -233,7 +243,7 @@ private struct SelectedTagsView: View {
                 }
                 .padding(.horizontal)
             } else {
-                Text(Strings.noTagsSelected)
+                Text(Strings.noTagsSelected(viewModel.localizedTaxonomyName))
                     .font(.body)
                     .foregroundColor(.secondary)
                     .padding(.horizontal)
@@ -341,23 +351,30 @@ private extension View {
 }
 
 private enum Strings {
-    static let title = NSLocalizedString(
-        "postTags.title",
-        value: "Tags",
-        comment: "Title for the tags screen"
-    )
+    static func searchPlaceholder(_ taxonomyName: String) -> String {
+        let format = NSLocalizedString(
+            "postTags.searchOrAdd.placeholder",
+            value: "Search or add %1$@",
+            comment: "Placeholder text for the taxonomy search field. %1$@ is the taxonomy name (e.g., 'tags', 'categories')."
+        )
+        return String.localizedStringWithFormat(format, taxonomyName.lowercased())
+    }
 
-    static let searchPlaceholder = NSLocalizedString(
-        "postTags.searchOrAdd.placeholder",
-        value: "Search or add tags",
-        comment: "Placeholder text for the tag search field"
-    )
+    static func noTagsSelected(_ taxonomyName: String) -> String {
+        let format = NSLocalizedString(
+            "postTags.selectionEmpty",
+            value: "No %1$@ are selected",
+            comment: "Message shown when no taxonomy terms are selected. %1$@ is the taxonomy name (e.g., 'tags', 'categories')."
+        )
+        return String.localizedStringWithFormat(format, taxonomyName.lowercased())
+    }
 
-    static let noTagsSelected = NSLocalizedString(
-        "postTags.selectionEmpty",
-        value: "No tags are selected",
-        comment: "Message shown when no tags are selected"
-    )
-
-    static let addTag = NSLocalizedString("postTags.addTag", value: "Add tag", comment: "Button to add a new tag. %1$@ is the tag name.")
+    static func addTag(_ taxonomyName: String) -> String {
+        let format = NSLocalizedString(
+            "postTags.addTag",
+            value: "Add %1$@",
+            comment: "Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories')."
+        )
+        return String.localizedStringWithFormat(format, taxonomyName.lowercased())
+    }
 }

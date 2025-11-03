@@ -179,6 +179,8 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceUsed;
 @property (nullable, nonatomic, retain) NSSet<PageTemplateCategory *> *pageTemplateCategories;
 
+@property (nullable, nonatomic, retain) NSData *rawTaxonomies;
+
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 
  *              and their values.

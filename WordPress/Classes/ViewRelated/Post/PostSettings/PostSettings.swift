@@ -20,6 +20,7 @@ struct PostSettings: Hashable {
     var author: Author?
     var categoryIDs: Set<Int> = []
     var tags: String = ""
+    var otherTerms: [String: [String]] = [:]
     var featuredImageID: Int?
     var metadata: PostMetadata
 
@@ -53,6 +54,7 @@ struct PostSettings: Hashable {
         }
 
         featuredImageID = post.featuredImage?.mediaID?.intValue
+        otherTerms = post.parseOtherTerms()
 
         metadata = PostMetadata(post)
 
@@ -108,6 +110,10 @@ struct PostSettings: Hashable {
             }
         } else {
             post.featuredImage = nil
+        }
+
+        if !AbstractPost.compareOtherTerms(post.parseOtherTerms(), withAnother: otherTerms) {
+            post.setParsedOtherTerms(otherTerms)
         }
 
         var postMetadataContainer = PostMetadataContainer(post)
@@ -229,6 +235,14 @@ extension PostSettings {
         return categoryIDs.compactMap { categories[$0] }
             .sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
             .map { $0.stringByDecodingXMLCharacters() }
+    }
+
+    func getTerms(forTaxonomySlug taxonomySlug: String) -> [String] {
+        otherTerms[taxonomySlug] ?? []
+    }
+
+    mutating func setTerms(_ terms: String, forTaxonomySlug taxonomySlug: String) {
+        otherTerms[taxonomySlug] = AbstractPost.makeTags(from: terms)
     }
 }
 

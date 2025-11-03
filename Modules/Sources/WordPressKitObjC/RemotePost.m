@@ -23,6 +23,25 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     return self;
 }
 
++ (BOOL)compareOtherTerms:(NSDictionary<NSString *, NSArray<NSString *> *> *)lhs withAnother:(NSDictionary<NSString *, NSArray<NSString *> *> *)rhs
+{
+    if (lhs.count != rhs.count) {
+        return NO;
+    }
+
+    NSMutableDictionary<NSString *, NSSet<NSString *> *> *lhsNormalized = [NSMutableDictionary dictionary];
+    for (NSString *key in lhs) {
+        lhsNormalized[key] = [NSSet setWithArray:lhs[key]];
+    }
+
+    NSMutableDictionary<NSString *, NSSet<NSString *> *> *rhsNormalized = [NSMutableDictionary dictionary];
+    for (NSString *key in rhs) {
+        rhsNormalized[key] = [NSSet setWithArray:rhs[key]];
+    }
+
+    return [lhsNormalized isEqualToDictionary:rhsNormalized];
+}
+
 - (NSString *)debugDescription {
     NSDictionary *properties = [self debugProperties];
     return [NSString stringWithFormat:@"<%@: %p> (%@)", NSStringFromClass([self class]), self, properties];
