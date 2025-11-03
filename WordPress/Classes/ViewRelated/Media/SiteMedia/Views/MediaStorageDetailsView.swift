@@ -206,19 +206,35 @@ private struct UsageView: View {
 
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 3)
+                    Rectangle()
                         .fill(Color(white: 0.9))
                         .frame(height: geometry.size.height)
 
-                    RoundedRectangle(cornerRadius: 3)
-                        .fill(progressColor)
-                        .frame(
-                            width: geometry.size.width * min(usage?.percentage ?? 0, 1),
-                            height: geometry.size.height
-                        )
+                    if let breakdown = usage?.breakdown {
+                        HStack(spacing: 0) {
+                            ForEach(breakdown.items) { item in
+                                Rectangle()
+                                    .fill(item.category.color)
+                                    .frame(width: geometry.size.width * item.percentage)
+                            }
+                        }
+                        .frame(height: geometry.size.height)
+                    } else {
+                        Rectangle()
+                            .fill(progressColor)
+                            .frame(
+                                width: geometry.size.width * min(usage?.percentage ?? 0, 1),
+                                height: geometry.size.height
+                            )
+                    }
                 }
+                .clipShape(.rect(cornerRadius: 3))
             }
             .frame(height: 16)
+
+            if let breakdown = usage?.breakdown {
+                legendView(breakdown: breakdown)
+            }
         }
     }
 
@@ -232,11 +248,40 @@ private struct UsageView: View {
             return Color(red: 0.0, green: 0.48, blue: 0.8)
         }
     }
+
+    @ViewBuilder
+    private func legendView(breakdown: MediaTypeBreakdown) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            ForEach(breakdown.items) { item in
+                HStack(spacing: 4) {
+                    Circle()
+                        .fill(item.category.color)
+                        .frame(width: 8, height: 8)
+
+                    Text(item.category.displayName)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+
+                    Spacer()
+
+                    Text(item.displaySize)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+
+                    Text(verbatim: "(\(Int(item.percentage * 100))%)")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+        }
+        .padding(.top, 8)
+    }
 }
 
 private struct Usage {
     var used: Measurement<UnitInformationStorage>
     var total: Measurement<UnitInformationStorage>
+    var breakdown: MediaTypeBreakdown?
 
     var usedText: String {
         ByteCountFormatter.string(from: used, countStyle: .binary)
@@ -248,6 +293,142 @@ private struct Usage {
 
     var percentage: Double {
         used.converted(to: .bytes).value / total.converted(to: .bytes).value
+    }
+}
+
+// Known issue: when the app is in middle of its very first media library sync, unsynced items will be shown as "Other".
+// Ideally, we should show a loading indicator in the `UsageView` to indicate that something is happening in the
+// background and update the breakdown view as the background syncing progresses.
+private struct MediaTypeBreakdown {
+    struct Item: Identifiable {
+        enum Category: Int, Hashable, Comparable {
+            case image
+            case video
+            case document
+            case powerpoint
+            case audio
+            case other
+
+            init(mediaType: MediaType) {
+                switch mediaType {
+                case .image:
+                    self = .image
+                case .video:
+                    self = .video
+                case .document:
+                    self = .document
+                case .powerpoint:
+                    self = .powerpoint
+                case .audio:
+                    self = .audio
+                @unknown default:
+                    self = .other
+                }
+            }
+
+            var displayName: String {
+                switch self {
+                case .image:
+                    return Strings.mediaTypeImage
+                case .video:
+                    return Strings.mediaTypeVideo
+                case .document:
+                    return Strings.mediaTypeDocument
+                case .powerpoint:
+                    return Strings.mediaTypePowerpoint
+                case .audio:
+                    return Strings.mediaTypeAudio
+                case .other:
+                    return Strings.mediaTypeOther
+                }
+            }
+
+            var color: Color {
+                switch self {
+                case .image:
+                    return Color(red: 0.0, green: 0.48, blue: 0.8)
+                case .video:
+                    return .purple
+                case .document:
+                    return .green
+                case .powerpoint:
+                    return .orange
+                case .audio:
+                    return .pink
+                case .other:
+                    return .gray
+                }
+            }
+
+            static func < (lhs: Category, rhs: Category) -> Bool {
+                return lhs.rawValue < rhs.rawValue
+            }
+        }
+
+        let category: Category
+        var size: Measurement<UnitInformationStorage>
+        var percentage: Double
+
+        var id: Category {
+            category
+        }
+
+        var displaySize: String {
+            ByteCountFormatter.string(from: size, countStyle: .binary)
+        }
+    }
+
+    let items: [Item]
+
+    init?(media: [Media], used: Double, allowed: Double) {
+        precondition(allowed > 0)
+
+        guard !media.isEmpty else {
+            return nil
+        }
+
+        // First, we categorize all media items by `Category`.
+        var categorized: [Item.Category: [Media]] = [:]
+        var knownSizes = 0.0
+        for item in media {
+            var category = Item.Category(mediaType: item.mediaType)
+            let size = item.actualFileSize
+            if size > 0 {
+                knownSizes += size
+            } else {
+                // Media items with `mediaType` that is not handled by the app are consider "others". In an unlikely
+                // scenario where the media file size is zero, we'll consider them as "others", too. That's to avoid
+                // showing a specifc type with incorrect total file size.
+                category = .other
+            }
+            categorized[category, default: []].append(item)
+        }
+
+        // Then, we group media items into `Item` for displaying on the breakdown view.
+        var items = categorized.map { (category, media) in
+            let size = media.reduce(0) { $0 + $1.actualFileSize }
+            return Item(category: category, size: Measurement(value: size, unit: .bytes), percentage: size / allowed)
+        }
+
+        // We need to handle the "others" category additionally. See the comments above about the "others" category.
+        var otherItem: Item
+        if let index = items.firstIndex(where: { $0.category == .other }) {
+            otherItem = items.remove(at: index)
+        } else {
+            otherItem = Item(category: .other, size: Measurement(value: 0, unit: .bytes), percentage: 0)
+        }
+
+        if knownSizes < used {
+            let newValue = otherItem.size.value + (used - knownSizes)
+            otherItem.size = Measurement(value: newValue, unit: .bytes)
+            otherItem.percentage = newValue / allowed
+        }
+
+        if otherItem.size.value > 0 {
+            items.append(otherItem)
+        }
+
+        self.items = items.sorted(using: KeyPathComparator(\.category))
     }
 }
 
@@ -345,11 +526,83 @@ final class MediaStorageDetailsViewModel: ObservableObject {
 
     private func updateUsage() {
         if let used = blog.quotaSpaceUsed, let allowed = blog.quotaSpaceAllowed {
-            self.usage = .init(used: .init(value: used.doubleValue, unit: .bytes), total: .init(value: allowed.doubleValue, unit: .bytes))
+            let breakdown = calculateMediaBreakdown(used: used.doubleValue, allowed: allowed.doubleValue)
+            self.usage = .init(
+                used: .init(value: used.doubleValue, unit: .bytes),
+                total: .init(value: allowed.doubleValue, unit: .bytes),
+                breakdown: breakdown
+            )
         } else {
             self.usage = nil
         }
     }
+
+    private func calculateMediaBreakdown(used: Double, allowed: Double) -> MediaTypeBreakdown? {
+        guard let context = blog.managedObjectContext else {
+            return nil
+        }
+
+        guard allowed > 0 else {
+            return nil
+        }
+
+        let fetchRequest = NSFetchRequest<Media>(entityName: "Media")
+        fetchRequest.predicate = NSPredicate(
+            format: "blog == %@ AND remoteStatusNumber == %d",
+            blog,
+            MediaRemoteStatus.sync.rawValue
+        )
+
+        guard let allMedia = try? context.fetch(fetchRequest) else {
+            return nil
+        }
+
+        return MediaTypeBreakdown(media: allMedia, used: used, allowed: allowed)
+    }
+}
+
+private extension Media {
+
+    // Parse the `formattedSize` String as Double (in bytes).
+    //
+    // The 'size' returned by WP.com API is computed using `size_format` function in
+    // https://github.com/WordPress/wordpress-develop/blob/6.8.3/src/wp-includes/functions.php#L468
+    //
+    // The implementation here may not match the php function exactly.
+    // The REST API should return the file size in number. See https://linear.app/a8c/issue/AINFRA-1496
+    var actualFileSize: Double {
+        guard let formattedSize = formattedSize?.trimmingCharacters(in: .whitespaces),
+              !formattedSize.isEmpty else {
+            return 0
+        }
+
+        let components = formattedSize.split(separator: " ", maxSplits: 1)
+        guard components.count == 2 else {
+            return 0
+        }
+
+        let numberString = components[0].replacingOccurrences(of: ",", with: "")
+        guard let value = Double(numberString) else {
+            return 0
+        }
+
+        let unit = String(components[1])
+        let multiplier: Double = switch unit {
+        case "B": 1
+        case "KB": 1024
+        case "MB": 1024 * 1024
+        case "GB": 1024 * 1024 * 1024
+        case "TB": 1024 * 1024 * 1024 * 1024
+        case "PB": 1024 * 1024 * 1024 * 1024 * 1024
+        case "EB": 1024 * 1024 * 1024 * 1024 * 1024 * 1024
+        case "ZB": 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024
+        case "YB": 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024
+        default: 0
+        }
+
+        return value * multiplier
+    }
+
 }
 
 private enum Strings {
@@ -405,5 +658,41 @@ private enum Strings {
         "mediaLibrary.storageDetails.purchase.plan.success",
         value: "Your site plan has been upgraded!",
         comment: "Success message shown after upgrading plan"
+    )
+
+    static let mediaTypeImage = NSLocalizedString(
+        "mediaLibrary.storageDetails.mediaType.image",
+        value: "Images",
+        comment: "Label for image media type in storage breakdown"
+    )
+
+    static let mediaTypeVideo = NSLocalizedString(
+        "mediaLibrary.storageDetails.mediaType.video",
+        value: "Videos",
+        comment: "Label for video media type in storage breakdown"
+    )
+
+    static let mediaTypeDocument = NSLocalizedString(
+        "mediaLibrary.storageDetails.mediaType.document",
+        value: "Documents",
+        comment: "Label for document media type in storage breakdown"
+    )
+
+    static let mediaTypePowerpoint = NSLocalizedString(
+        "mediaLibrary.storageDetails.mediaType.powerpoint",
+        value: "Presentations",
+        comment: "Label for PowerPoint/presentation media type in storage breakdown"
+    )
+
+    static let mediaTypeAudio = NSLocalizedString(
+        "mediaLibrary.storageDetails.mediaType.audio",
+        value: "Audio",
+        comment: "Label for audio media type in storage breakdown"
+    )
+
+    static let mediaTypeOther = NSLocalizedString(
+        "mediaLibrary.storageDetails.mediaType.other",
+        value: "Other",
+        comment: "Label for other/unknown media type in storage breakdown"
     )
 }
