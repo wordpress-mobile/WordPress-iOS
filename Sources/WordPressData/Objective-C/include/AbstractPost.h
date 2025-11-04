@@ -133,8 +133,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (void)setParsedOtherTerms:(NSDictionary<NSString *, NSArray<NSString *> *> *)data;
 - (NSDictionary<NSString *, NSArray<NSString *> *> *)parseOtherTerms;
 
-+ (BOOL)compareOtherTerms:(NSDictionary<NSString *, NSArray<NSString *> *> *)lhs withAnother:(NSDictionary<NSString *, NSArray<NSString *> *> *)rhs;
-
 @end
 
 @interface AbstractPost (CoreDataGeneratedAccessors)

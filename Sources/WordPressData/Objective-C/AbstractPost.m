@@ -365,9 +365,4 @@
     return [NSJSONSerialization JSONObjectWithData:self.rawOtherTerms options:0 error:nil] ?: [NSDictionary dictionary];
 }
 
-+ (BOOL)compareOtherTerms:(NSDictionary<NSString *, NSArray<NSString *> *> *)lhs withAnother:(NSDictionary<NSString *, NSArray<NSString *> *> *)rhs
-{
-    return [RemotePost compareOtherTerms:lhs withAnother:rhs];
-}
-
 @end

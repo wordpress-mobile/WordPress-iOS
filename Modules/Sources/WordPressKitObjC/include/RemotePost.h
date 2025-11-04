@@ -56,7 +56,6 @@ extern NSString * const PostStatusDeleted;
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, strong) NSArray *revisions;
 @property (nonatomic, strong) NSArray *tags;
-//@property (nonatomic, strong) NSArray<RemotePostTerm *> *otherTerms;
 @property (nonatomic, strong) NSDictionary<NSString *, NSArray<NSString *> *> *otherTerms;
 @property (nonatomic, strong) NSString *pathForDisplayImage;
 @property (nonatomic, assign) NSNumber *isStickyPost;
@@ -66,8 +65,6 @@ extern NSString * const PostStatusDeleted;
  Array of custom fields. Each value is a dictionary containing {ID, key, value}
  */
 @property (nonatomic, strong) NSArray *metadata;
-
-+ (BOOL)compareOtherTerms:(NSDictionary<NSString *, NSArray<NSString *> *> *)lhs withAnother:(NSDictionary<NSString *, NSArray<NSString *> *> *)rhs;
 
 // Featured images?
 // Geolocation?

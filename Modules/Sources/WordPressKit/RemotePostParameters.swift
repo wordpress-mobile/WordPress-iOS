@@ -140,7 +140,7 @@ extension RemotePostCreateParameters {
         if previous.tags != tags {
             changes.tags = tags
         }
-        if !RemotePost.compareOtherTerms(previous.otherTerms, withAnother: otherTerms) {
+        if !RemotePost.compare(otherTerms: previous.otherTerms, withAnother: otherTerms) {
             changes.otherTerms = otherTerms
         }
         if Set(previous.categoryIDs) != Set(categoryIDs) {

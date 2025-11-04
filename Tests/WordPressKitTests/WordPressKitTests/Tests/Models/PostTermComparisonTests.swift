@@ -9,7 +9,7 @@ struct PostTermComparisonTests {
         let lhs: [String: [String]] = [:]
         let rhs: [String: [String]] = [:]
 
-        #expect(RemotePost.compareOtherTerms(lhs, withAnother: rhs) == true)
+        #expect(RemotePost.compare(otherTerms: lhs, withAnother: rhs) == true)
     }
 
     @Test
@@ -23,7 +23,7 @@ struct PostTermComparisonTests {
             "post_tag": ["tag1", "tag2"]
         ]
 
-        #expect(RemotePost.compareOtherTerms(lhs, withAnother: rhs) == true)
+        #expect(RemotePost.compare(otherTerms: lhs, withAnother: rhs) == true)
     }
 
     @Test
@@ -37,7 +37,7 @@ struct PostTermComparisonTests {
             "post_tag": ["tag2", "tag1"]
         ]
 
-        #expect(RemotePost.compareOtherTerms(lhs, withAnother: rhs) == true)
+        #expect(RemotePost.compare(otherTerms: lhs, withAnother: rhs) == true)
     }
 
     @Test
@@ -49,7 +49,7 @@ struct PostTermComparisonTests {
             "post_tag": ["tag1", "tag2"]
         ]
 
-        #expect(RemotePost.compareOtherTerms(lhs, withAnother: rhs) == false)
+        #expect(RemotePost.compare(otherTerms: lhs, withAnother: rhs) == false)
     }
 
     @Test
@@ -61,7 +61,7 @@ struct PostTermComparisonTests {
             "category": ["1", "2", "4"]
         ]
 
-        #expect(RemotePost.compareOtherTerms(lhs, withAnother: rhs) == false)
+        #expect(RemotePost.compare(otherTerms: lhs, withAnother: rhs) == false)
     }
 
     @Test
@@ -74,7 +74,7 @@ struct PostTermComparisonTests {
             "category": ["1", "2", "3"]
         ]
 
-        #expect(RemotePost.compareOtherTerms(lhs, withAnother: rhs) == false)
+        #expect(RemotePost.compare(otherTerms: lhs, withAnother: rhs) == false)
     }
 
     @Test
@@ -86,7 +86,7 @@ struct PostTermComparisonTests {
             "category": ["1", "2", "3"]
         ]
 
-        #expect(RemotePost.compareOtherTerms(lhs, withAnother: rhs) == true)
+        #expect(RemotePost.compare(otherTerms: lhs, withAnother: rhs) == true)
     }
 
     @Test
@@ -102,7 +102,7 @@ struct PostTermComparisonTests {
             "custom_tax": ["term1"]
         ]
 
-        #expect(RemotePost.compareOtherTerms(lhs, withAnother: rhs) == true)
+        #expect(RemotePost.compare(otherTerms: lhs, withAnother: rhs) == true)
     }
 
 }
