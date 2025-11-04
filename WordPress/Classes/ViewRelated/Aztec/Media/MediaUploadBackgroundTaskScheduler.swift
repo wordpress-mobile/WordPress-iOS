@@ -4,15 +4,15 @@ import Combine
 import WordPressShared
 
 // This protocol is used to hide the `@available(iOS 26.0, *)` check.
-protocol MediaUploadBackgroundTracker {
+protocol MediaUploadBackgroundTaskScheduler {
 
-    func track(progress: Progress, media: TaggedManagedObjectID<Media>) async
+    func scheduleTask(for media: TaggedManagedObjectID<Media>, progress: Progress) async
 
 }
 
-func mediaUploadBackgroundTracker() -> MediaUploadBackgroundTracker? {
+func mediaUploadBackgroundTaskScheduler() -> MediaUploadBackgroundTaskScheduler? {
     if #available(iOS 26.0, *) {
-        ConcreteMediaUploadBackgroundTracker.shared
+        ConcreteMediaUploadBackgroundTaskScheduler.shared
     } else {
         nil
     }
@@ -20,7 +20,7 @@ func mediaUploadBackgroundTracker() -> MediaUploadBackgroundTracker? {
 
 @available(iOS 26.0, *)
 /// Utilize `BGContinuedProcessingTask` to show the uploading media activity.
-private actor ConcreteMediaUploadBackgroundTracker: MediaUploadBackgroundTracker {
+private actor ConcreteMediaUploadBackgroundTaskScheduler: MediaUploadBackgroundTaskScheduler {
     struct Item {
         // Please note: all media query needs to be done in the main context, due to the current upload media implementation.
         var media: TaggedManagedObjectID<Media>
@@ -47,7 +47,7 @@ private actor ConcreteMediaUploadBackgroundTracker: MediaUploadBackgroundTracker
     }
 
     // Since this type works with `BGTaskScheduler.shared`, it only makes sense for the type to also be a singleton.
-    static let shared = ConcreteMediaUploadBackgroundTracker()
+    static let shared = ConcreteMediaUploadBackgroundTaskScheduler()
 
     // We only use one `BGContinuedProcessingTask` for all uploads. When adding new media during uploading, the new ones
     // will be added to the existing task.
@@ -80,7 +80,7 @@ private actor ConcreteMediaUploadBackgroundTracker: MediaUploadBackgroundTracker
 
     }
 
-    func track(progress: Progress, media: TaggedManagedObjectID<Media>) async {
+    func scheduleTask(for media: TaggedManagedObjectID<Media>, progress: Progress) async {
         observeCoreDataChanges()
 
         let item = Item(media: media, progress: progress)
