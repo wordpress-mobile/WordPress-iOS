@@ -112,7 +112,7 @@ struct PostSettings: Hashable {
             post.featuredImage = nil
         }
 
-        if !RemotePost.compare(otherTerms:post.parseOtherTerms(), withAnother: otherTerms) {
+        if !RemotePost.compare(otherTerms: post.parseOtherTerms(), withAnother: otherTerms) {
             post.setParsedOtherTerms(otherTerms)
         }
 
