@@ -22,6 +22,11 @@ public class ReaderScreen: ScreenObject {
         }
     }
 
+    public func openFirstPost() throws -> ReaderScreen {
+        readerTable.cells.firstMatch.tap()
+        return self
+    }
+
     public func openLastPost() throws -> ReaderScreen {
         try getLastPost().tap()
         return self

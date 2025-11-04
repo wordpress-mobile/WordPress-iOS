@@ -16,6 +16,10 @@ class GutenbergSettings {
             let url = urlString(fromBlogURL: url)
             return "kShowGutenbergPhase2Dialog-" + url
         }
+        static func themeStylesEnabled(forBlogURL url: String?) -> String {
+            let url = urlString(fromBlogURL: url)
+            return "com.wordpress.gutenberg-theme-styles-" + url
+        }
         static let focalPointPickerTooltipShown = "kGutenbergFocalPointPickerTooltipShown"
         static let blockTypeImpressions = "kBlockTypeImpressions"
 
@@ -214,6 +218,33 @@ class GutenbergSettings {
         database.set(true, forKey: Key.enabledOnce(forBlogURL: blog.url))
         return .gutenberg
     }
+
+    // MARK: - Theme Styles
+
+    /// Returns whether theme styles should be enabled for the given blog.
+    ///
+    /// - Parameter blog: The blog to check theme styles setting for
+    /// - Returns: true if theme styles are enabled (default: true), false if explicitly disabled
+    func isThemeStylesEnabled(for blog: Blog) -> Bool {
+        let key = Key.themeStylesEnabled(forBlogURL: blog.url)
+
+        // If the preference has been explicitly set, return its value
+        if database.object(forKey: key) != nil {
+            return database.bool(forKey: key)
+        }
+
+        // Default to enabled for sites that haven't set a preference
+        return true
+    }
+
+    /// Sets whether theme styles should be enabled for the given blog.
+    ///
+    /// - Parameters:
+    ///   - isEnabled: Whether to enable theme styles
+    ///   - blog: The blog to set theme styles setting for
+    func setThemeStylesEnabled(_ isEnabled: Bool, for blog: Blog) {
+        database.set(isEnabled, forKey: Key.themeStylesEnabled(forBlogURL: blog.url))
+    }
 }
 
 @objc(GutenbergSettings)
@@ -231,6 +262,16 @@ public class GutenbergSettingsBridge: NSObject {
     @objc(isSimpleWPComSite:)
     public static func isSimpleWPComSite(_ blog: Blog) -> Bool {
         return GutenbergSettings().isSimpleWPComSite(blog)
+    }
+
+    @objc(isThemeStylesEnabledForBlog:)
+    public static func isThemeStylesEnabled(for blog: Blog) -> Bool {
+        return GutenbergSettings().isThemeStylesEnabled(for: blog)
+    }
+
+    @objc(setThemeStylesEnabled:forBlog:)
+    public static func setThemeStylesEnabled(_ isEnabled: Bool, for blog: Blog) {
+        GutenbergSettings().setThemeStylesEnabled(isEnabled, for: blog)
     }
 }
 

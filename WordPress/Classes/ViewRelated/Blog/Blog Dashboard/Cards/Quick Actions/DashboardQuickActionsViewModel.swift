@@ -97,6 +97,17 @@ enum DashboardQuickAction: String, CaseIterable {
         }
     }
 
+    var accessibilityIdentifier: String {
+        switch self {
+        case .stats: "quick_actions_stats"
+        case .posts: "quick_actions_posts"
+        case .pages: "quick_actions_pages"
+        case .media: "quick_actions_media"
+        case .comments: "quick_actions_comments"
+        case .more: "quick_actions_more"
+        }
+    }
+
     var isEnabledByDefault: Bool {
         switch self {
         case .posts, .pages, .media, .stats, .more:

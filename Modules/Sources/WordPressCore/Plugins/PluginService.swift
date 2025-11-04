@@ -1,7 +1,6 @@
 import Foundation
 import UIKit
 import WordPressAPI
-@preconcurrency import WordPressAPIInternal
 
 public actor PluginService: PluginServiceProtocol {
     private let client: WordPressClient
@@ -103,7 +102,7 @@ public actor PluginService: PluginServiceProtocol {
         return installed
     }
 
-    public func fetchPluginsDirectory(category: WordPressOrgApiPluginDirectoryCategory) async throws {
+    public func fetchPluginsDirectory(category: PluginWpOrgDirectoryCategory) async throws {
         // Hard-code the pagination parameters for now. We can suface these parameters when the app needs pagination.
         let plugins = try await wpOrgClient.browsePlugins(category: category, page: 1, pageSize: 10).plugins
         try await pluginDirectoryBrowserDataStore.delete(query: .category(category))

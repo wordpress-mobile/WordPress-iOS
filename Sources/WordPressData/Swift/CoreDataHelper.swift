@@ -209,6 +209,13 @@ public extension CoreDataStack {
         }
     }
 
+    func performQuery<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) rethrows -> T {
+        let context = newDerivedContext()
+        return try context.performAndWait {
+            try block(context)
+        }
+    }
+
     // MARK: - Database Migration
 
     /// Creates a copy of the current open store and saves it to the specified destination

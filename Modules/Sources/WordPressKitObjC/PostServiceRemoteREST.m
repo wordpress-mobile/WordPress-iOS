@@ -417,6 +417,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     post.excerpt = jsonPost[@"excerpt"];
     post.slug = jsonPost[@"slug"];
     post.suggestedSlug = [jsonPost stringForKeyPath:@"other_URLs.suggested_slug"];
+    post.permalinkTemplateURL = [jsonPost stringForKeyPath:@"other_URLs.permalink_URL"];
     post.status = jsonPost[@"status"];
     post.password = jsonPost[@"password"];
     if ([post.password wpkit_isEmpty]) {
@@ -431,6 +432,8 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     post.format = jsonPost[@"format"];
     post.order = [jsonPost numberForKey:@"menu_order"].integerValue;
 
+    post.commentsStatus = [jsonPost stringForKeyPath:@"discussion.comment_status"];
+    post.pingsStatus = [jsonPost stringForKeyPath:@"discussion.ping_status"];
     post.commentCount = [jsonPost numberForKeyPath:@"discussion.comment_count"] ?: @0;
     post.likeCount = [jsonPost numberForKeyPath:@"like_count"] ?: @0;
 

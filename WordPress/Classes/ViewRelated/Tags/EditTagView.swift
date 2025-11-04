@@ -2,21 +2,22 @@ import SwiftUI
 import WordPressUI
 import WordPressKit
 import WordPressData
+import WordPressAPI
 import SVProgressHUD
 
 struct EditTagView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: EditTagViewModel
 
-    init(tag: RemotePostTag?, tagsService: TagsService) {
-        self._viewModel = StateObject(wrappedValue: EditTagViewModel(tag: tag, tagsService: tagsService))
+    init(term: AnyTermWithViewContext?, taxonomy: SiteTaxonomy?, tagsService: TaxonomyServiceProtocol) {
+        self._viewModel = StateObject(wrappedValue: EditTagViewModel(term: term, taxonomy: taxonomy, tagsService: tagsService))
     }
 
     var body: some View {
         Form {
-            Section(Strings.tagSectionHeader) {
+            Section {
                 HStack {
-                    TextField(Strings.tagNamePlaceholder, text: $viewModel.tagName)
+                    TextField(viewModel.localizedLabels.newPlaceholder, text: $viewModel.tagName)
                         .textFieldStyle(.plain)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
@@ -31,22 +32,52 @@ struct EditTagView: View {
                         }
                     }
                 }
+            } header: {
+                Text(Strings.tagSectionHeader)
+            } footer: {
+                if let text = viewModel.localizedLabels.nameFieldDescription {
+                    Text(verbatim: text)
+                }
             }
 
-            Section(Strings.descriptionSectionHeader) {
+            Section {
                 TextField(Strings.descriptionPlaceholder, text: $viewModel.tagDescription, axis: .vertical)
                     .textFieldStyle(.plain)
                     .lineLimit(5...15)
+            } header: {
+                Text(Strings.descriptionSectionHeader)
+            } footer: {
+                if let text = viewModel.localizedLabels.descriptionFieldDescription {
+                    Text(verbatim: text)
+                }
             }
 
             if viewModel.isExistingTag {
                 Section {
-                    Button(action: {
+                    Button(role: .destructive) {
                         viewModel.showDeleteConfirmation = true
-                    }) {
+                    } label: {
                         Text(SharedStrings.Button.delete)
                             .foregroundColor(.red)
                     }
+                    .frame(maxWidth: .infinity)
+                }
+                .confirmationDialog(
+                    Strings.deleteConfirmationTitle,
+                    isPresented: $viewModel.showDeleteConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button(SharedStrings.Button.delete, role: .destructive) {
+                        Task {
+                            let success = await viewModel.deleteTag()
+                            if success {
+                                dismiss()
+                            }
+                        }
+                    }
+                    Button(SharedStrings.Button.cancel, role: .cancel) { }
+                } message: {
+                    Text(Strings.deleteConfirmationMessage)
                 }
             }
         }
@@ -65,23 +96,6 @@ struct EditTagView: View {
                 .disabled(viewModel.tagName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
         }
-        .confirmationDialog(
-            Strings.deleteConfirmationTitle,
-            isPresented: $viewModel.showDeleteConfirmation,
-            titleVisibility: .visible
-        ) {
-            Button(SharedStrings.Button.delete, role: .destructive) {
-                Task {
-                    let success = await viewModel.deleteTag()
-                    if success {
-                        dismiss()
-                    }
-                }
-            }
-            Button(SharedStrings.Button.cancel, role: .cancel) { }
-        } message: {
-            Text(Strings.deleteConfirmationMessage)
-        }
         .alert(SharedStrings.Error.generic, isPresented: $viewModel.showError) {
             Button(SharedStrings.Button.ok) { }
         } message: {
@@ -98,38 +112,39 @@ class EditTagViewModel: ObservableObject {
     @Published var showError = false
     @Published var errorMessage = ""
 
-    private let originalTag: RemotePostTag?
-    private let tagsService: TagsService
+    private let originalTerm: AnyTermWithViewContext?
+    private let tagsService: TaxonomyServiceProtocol
+    fileprivate let localizedLabels: LocalizedLabels
 
     var isExistingTag: Bool {
-        originalTag != nil
+        originalTerm != nil
     }
 
     var navigationTitle: String {
-        originalTag?.name ?? Strings.newTagTitle
+        originalTerm?.name ?? localizedLabels.newItemTitle
     }
 
-    init(tag: RemotePostTag?, tagsService: TagsService) {
-        self.originalTag = tag
+    init(term: AnyTermWithViewContext?, taxonomy: SiteTaxonomy?, tagsService: TaxonomyServiceProtocol) {
+        self.originalTerm = term
+        self.localizedLabels = taxonomy.flatMap(LocalizedLabels.from) ?? .tag
         self.tagsService = tagsService
-        self.tagName = tag?.name ?? ""
-        self.tagDescription = tag?.tagDescription ?? ""
+        self.tagName = term?.name ?? ""
+        self.tagDescription = term?.description ?? ""
     }
 
     func deleteTag() async -> Bool {
-        guard let tag = originalTag else { return false }
+        guard let term = originalTerm else { return false }
 
         SVProgressHUD.show()
         defer { SVProgressHUD.dismiss() }
 
         do {
-            try await tagsService.deleteTag(tag)
+            try await tagsService.deleteTag(term)
 
-            // Post notification to update the UI
             NotificationCenter.default.post(
                 name: .tagDeleted,
                 object: nil,
-                userInfo: [TagNotificationUserInfoKeys.tagID: tag.tagID ?? 0]
+                userInfo: [TagNotificationUserInfoKeys.tagID: NSNumber(value: term.id)]
             )
             return true
         } catch {
@@ -143,23 +158,21 @@ class EditTagViewModel: ObservableObject {
         SVProgressHUD.show()
         defer { SVProgressHUD.dismiss() }
 
-        let tagToSave: RemotePostTag
-        if let existingTag = originalTag {
-            tagToSave = existingTag
-        } else {
-            tagToSave = RemotePostTag()
-        }
-
-        tagToSave.name = tagName.trimmingCharacters(in: .whitespacesAndNewlines)
-        tagToSave.tagDescription = tagDescription.trimmingCharacters(in: .whitespacesAndNewlines)
-
         do {
-            let savedTag = try await tagsService.saveTag(tagToSave)
+            let savedTerm: AnyTermWithViewContext
+
+            let tagName = tagName.trimmingCharacters(in: .whitespacesAndNewlines)
+            let tagDescription = tagDescription.trimmingCharacters(in: .whitespacesAndNewlines)
+            if let existingTerm = originalTerm {
+                savedTerm = try await tagsService.updateTag(existingTerm, name: tagName, description: tagDescription)
+            } else {
+                savedTerm = try await tagsService.createTag(name: tagName, description: tagDescription)
+            }
 
             NotificationCenter.default.post(
-                name: originalTag == nil ? .tagCreated : .tagUpdated,
+                name: originalTerm == nil ? .tagCreated : .tagUpdated,
                 object: nil,
-                userInfo: [TagNotificationUserInfoKeys.tag: savedTag]
+                userInfo: [TagNotificationUserInfoKeys.tag: savedTerm]
             )
             return true
         } catch {
@@ -170,10 +183,43 @@ class EditTagViewModel: ObservableObject {
     }
 }
 
+private struct LocalizedLabels {
+    var newPlaceholder: String
+    var newItemTitle: String
+    var nameFieldDescription: String?
+    var descriptionFieldDescription: String?
+
+    static func from(taxonomy: SiteTaxonomy) -> Self {
+        Self(
+            newPlaceholder: (taxonomy.details.labels[.newItemName] ?? nil) ?? "",
+            newItemTitle: (taxonomy.details.labels[.addNewItem] ?? nil) ?? "",
+            nameFieldDescription: taxonomy.details.labels[.nameFieldDescription] ?? nil,
+            descriptionFieldDescription: taxonomy.details.labels[.descFieldDescription] ?? nil
+        )
+    }
+
+    static var tag: Self {
+        Self(
+            newPlaceholder: NSLocalizedString(
+                "edit.tag.name.placeholder",
+                value: "Tag name",
+                comment: "Placeholder text for tag name field"
+            ),
+             newItemTitle: NSLocalizedString(
+                "edit.tag.new.title",
+                value: "New Tag",
+                comment: "Navigation title for new tag creation"
+            ),
+            nameFieldDescription: nil,
+            descriptionFieldDescription: nil
+        )
+    }
+}
+
 private enum Strings {
     static let tagSectionHeader = NSLocalizedString(
         "edit.tag.section.tag",
-        value: "Tag",
+        value: "Name",
         comment: "Section header for tag name in edit tag view"
     )
 
@@ -183,33 +229,21 @@ private enum Strings {
         comment: "Section header for tag description in edit tag view"
     )
 
-    static let tagNamePlaceholder = NSLocalizedString(
-        "edit.tag.name.placeholder",
-        value: "Tag name",
-        comment: "Placeholder text for tag name field"
-    )
-
     static let descriptionPlaceholder = NSLocalizedString(
         "edit.tag.description.placeholder",
         value: "Add a description...",
         comment: "Placeholder text for tag description field"
     )
 
-    static let newTagTitle = NSLocalizedString(
-        "edit.tag.new.title",
-        value: "New Tag",
-        comment: "Navigation title for new tag creation"
-    )
-
     static let deleteConfirmationTitle = NSLocalizedString(
         "edit.tag.delete.confirmation.title",
-        value: "Delete Tag",
-        comment: "Title for delete tag confirmation dialog"
+        value: "Delete",
+        comment: "Title for delete a term confirmation dialog"
     )
 
     static let deleteConfirmationMessage = NSLocalizedString(
         "edit.tag.delete.confirmation.message",
-        value: "Are you sure you want to delete this tag?",
+        value: "Are you sure you want to delete this?",
         comment: "Message for delete tag confirmation dialog"
     )
 }

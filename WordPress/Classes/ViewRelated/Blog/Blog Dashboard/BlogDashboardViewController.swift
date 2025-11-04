@@ -238,8 +238,12 @@ extension BlogDashboardViewController {
     private enum Constants {
         static let estimatedHeight: CGFloat = 44
         static let horizontalSectionInset: CGFloat = 12
-        static let verticalSectionInset: CGFloat = 20
-        static let cellSpacing: CGFloat = 20
+        static let verticalSectionInset: CGFloat = verticalInset
+        static let cellSpacing: CGFloat = verticalInset
+
+        static var verticalInset: CGFloat {
+            if #available(iOS 26, *) { 28 } else { 20 }
+        }
     }
 }
 

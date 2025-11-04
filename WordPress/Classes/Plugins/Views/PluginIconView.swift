@@ -2,7 +2,6 @@ import Foundation
 import SwiftUI
 import AsyncImageKit
 import WordPressAPI
-import WordPressAPIInternal
 import WordPressCore
 
 struct PluginIconView: View {

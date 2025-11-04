@@ -20,14 +20,13 @@ public enum FeatureFlag: Int, CaseIterable {
     case googleDomainsCard
     case voiceToContent
     case allowApplicationPasswords
-    case newGutenbergThemeStyles
     case selfHostedSiteUserManagement
     case readerGutenbergCommentComposer
     case pluginManagementOverhaul
-    case newsletterSubscribers
     case newStats
-    case newPublishingSheet
     case mediaQuotaView
+    case intelligence
+    case newSupport
 
     /// Returns a boolean indicating if the feature is enabled.
     ///
@@ -72,21 +71,20 @@ public enum FeatureFlag: Int, CaseIterable {
             return app == .jetpack && BuildConfiguration.current.isInternal
         case .allowApplicationPasswords:
             return false
-        case .newGutenbergThemeStyles:
-            return false
         case .selfHostedSiteUserManagement:
             return false
         case .readerGutenbergCommentComposer:
             return false
         case .pluginManagementOverhaul:
             return false
-        case .newsletterSubscribers:
-            return true
         case .newStats:
             return false
-        case .newPublishingSheet:
-            return false
         case .mediaQuotaView:
+            return false
+        case .intelligence:
+            let languageCode = Locale.current.language.languageCode?.identifier
+            return (languageCode ?? "en").hasPrefix("en")
+        case .newSupport:
             return false
         }
     }
@@ -125,14 +123,13 @@ extension FeatureFlag {
         case .googleDomainsCard: "Google Domains Promotional Card"
         case .voiceToContent: "Voice to Content"
         case .allowApplicationPasswords: "Allow creating Application Passwords"
-        case .newGutenbergThemeStyles: "Experimental Block Editor Styles"
         case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
         case .pluginManagementOverhaul: "Plugin Management Overhaul"
         case .readerGutenbergCommentComposer: "Gutenberg Comment Composer"
-        case .newsletterSubscribers: "Newsletter Subscribers"
         case .newStats: "New Stats"
-        case .newPublishingSheet: "New Publishing Sheet"
         case .mediaQuotaView: "Media Quota"
+        case .intelligence: "Intelligence"
+        case .newSupport: "New Support"
         }
     }
 }

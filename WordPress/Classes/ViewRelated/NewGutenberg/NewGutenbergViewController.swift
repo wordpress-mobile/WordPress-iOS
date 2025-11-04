@@ -51,7 +51,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     struct EditorDependencies {
-        let settings: String
+        let settings: String?
         let didLoadCookies: Bool
     }
 
@@ -111,9 +111,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private var editorViewController: GutenbergKit.EditorViewController
     private var activityIndicator: UIActivityIndicatorView?
     private var hasEditorStarted = false
+    private var isModalDialogOpen = false
 
-    lazy var autosaver = Autosaver() {
-        self.performAutoSave()
+    lazy var autosaver = Autosaver() { [weak self] in
+        self?.performAutoSave()
     }
 
     // MARK: - Private Properties
@@ -196,6 +197,9 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     deinit {
         tearDownKeyboardObservers()
+
+        // Cancel any pending tasks
+        editorLoadingTask?.cancel()
     }
 
     // MARK: - Lifecycle methods
@@ -246,7 +250,8 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             preconditionFailure("Dependency loading should not be cancelled")
         }
 
-        self.editorLoadingTask = Task {
+        self.editorLoadingTask = Task { [weak self] in
+            guard let self else { return }
             do {
                 while case .loadingDependencies = self.editorState {
                     try await Task.sleep(nanoseconds: 1000)
@@ -383,13 +388,13 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     @MainActor
-    func startEditor(settings: String) async throws {
+    func startEditor(settings: String?) async throws {
         guard case .dependenciesReady = self.editorState else {
             preconditionFailure("`startEditor` should only be called when the editor is in the `.dependenciesReady` state.")
         }
 
         let updatedConfiguration = self.editorViewController.configuration.toBuilder()
-            .setEditorSettings(settings)
+            .apply(settings) { $0.setEditorSettings($1) }
             .setTitle(post.postTitle ?? "")
             .setContent(post.content ?? "")
             .build()
@@ -469,7 +474,14 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // MARK: - Editor Setup
     private func fetchEditorDependencies() async throws -> EditorDependencies {
-        let settings = try await blockEditorSettingsService.getSettingsString(allowingCachedResponse: true)
+        let settings: String?
+        do {
+            settings = try await blockEditorSettingsService.getSettingsString(allowingCachedResponse: true)
+        } catch {
+            DDLogError("Failed to fetch editor settings: \(error)")
+            settings = nil
+        }
+
         let loaded = await loadAuthenticationCookiesAsync()
 
         return EditorDependencies(settings: settings, didLoadCookies: loaded)
@@ -495,6 +507,14 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
                 continuation.resume(returning: true)
             }
         }
+    }
+
+    private func setNavigationItemsEnabled(_ enabled: Bool) {
+        navigationBarManager.closeButton.isEnabled = enabled
+        navigationBarManager.moreButton.isEnabled = enabled
+        navigationBarManager.publishButton.isEnabled = enabled
+        navigationBarManager.undoButton.isEnabled = enabled
+        navigationBarManager.redoButton.isEnabled = enabled
     }
 }
 
@@ -606,6 +626,16 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         default:
             DDLogError("Unknown autocompleter type: \(type)")
         }
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didOpenModalDialog dialogType: String) {
+        isModalDialogOpen = true
+        setNavigationItemsEnabled(false)
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didCloseModalDialog dialogType: String) {
+        isModalDialogOpen = false
+        setNavigationItemsEnabled(true)
     }
 
     private func convertMediaInfoArrayToJSONString(_ mediaInfoArray: [MediaInfo]) -> String? {

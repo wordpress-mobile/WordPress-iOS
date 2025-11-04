@@ -11,7 +11,6 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     private let coordinator = MediaCoordinator.shared
 
     private lazy var collectionViewController = SiteMediaCollectionViewController(blog: blog)
-    private lazy var buttonAddMedia = UIButton(type: .custom)
     private lazy var buttonAddMediaMenuController = SiteMediaAddMediaMenuController(blog: blog, coordinator: coordinator)
 
     private lazy var toolbarItemDelete = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(buttonDeleteTapped))
@@ -46,8 +45,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
         collectionViewController.embed(in: self)
         collectionViewController.delegate = self
 
-        configureAddMediaButton()
-        configureNavigationTitle()
+        title = Strings.title
         refreshNavigationItems()
     }
 
@@ -75,53 +73,39 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
 
     // MARK: - Configuration
 
-    private func configureNavigationTitle() {
-        title = Strings.title
-    }
-
-    private func configureAddMediaButton() {
-        let button = self.buttonAddMedia
-        let config = UIImage.SymbolConfiguration(textStyle: .body, scale: .large)
-        let image = UIImage(systemName: "plus", withConfiguration: config) ?? .gridicon(.plus)
-        button.setImage(image, for: .normal)
-        button.tintColor = UIAppColor.tint
-        button.menu = buttonAddMediaMenuController.makeMenu(for: self)
-        button.showsMenuAsPrimaryAction = true
-        button.accessibilityLabel = Strings.addButtonAccessibilityLabel
-        button.accessibilityHint = Strings.addButtonAccessibilityHint
-    }
-
     private func refreshNavigationItems() {
         navigationItem.hidesBackButton = isEditing
 
-        var groups: [UIBarButtonItemGroup] = []
+        var items: [UIBarButtonItem] = []
 
         if !isEditing {
             let selectButton = UIBarButtonItem(title: Strings.select, style: .plain, target: self, action: #selector(buttonSelectTapped))
-            groups.append(UIBarButtonItemGroup(barButtonItems: [selectButton], representativeItem: nil))
+            items.append(selectButton)
+        } else {
+            let doneButton = UIBarButtonItem(title: SharedStrings.Button.cancel, image: nil, target: self, action: #selector(buttonDoneTapped))
+            items.append(doneButton)
         }
 
-        groups.append(UIBarButtonItemGroup(barButtonItems: {
-            var items: [UIBarButtonItem] = []
+        if !isEditing {
+            items.append(makeFiltersBarButtonItem())
+        }
 
-            if !isEditing {
-                items.append(makeFiltersBarButtonItem())
-            }
+        if !isEditing, blog.userCanUploadMedia {
+            items.append(makeButtonAddMedia())
+        }
 
-            if !isEditing, blog.userCanUploadMedia {
-                configureAddMediaButton()
+        navigationItem.rightBarButtonItems = items
+    }
 
-                items.append(UIBarButtonItem(customView: buttonAddMedia))
-            }
-
-            if isEditing {
-                let doneButton = UIBarButtonItem(title: SharedStrings.Button.cancel, image: nil, target: self, action: #selector(buttonDoneTapped))
-                items.append(doneButton)
-            }
-            return items
-        }(), representativeItem: nil))
-
-        navigationItem.trailingItemGroups = groups
+    private func makeButtonAddMedia() -> UIBarButtonItem {
+        let button = UIBarButtonItem(
+            title: Strings.addMedia,
+            image: UIImage(systemName: "plus"),
+            menu: buttonAddMediaMenuController.makeMenu(for: self)
+        )
+        button.accessibilityLabel = Strings.addButtonAccessibilityLabel
+        button.accessibilityHint = Strings.addButtonAccessibilityHint
+        return button
     }
 
     private func makeFiltersBarButtonItem() -> UIBarButtonItem {
@@ -146,7 +130,7 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
             }
         ])
 
-        return UIBarButtonItem(image: UIImage(systemName: "line.3.horizontal.decrease"), menu: menu)
+        return UIBarButtonItem(title: Strings.filter, image: UIImage(systemName: "line.3.horizontal.decrease"), menu: menu)
     }
 
     private func didUpdateFilter(_ filter: SiteMediaFilter) {
@@ -325,6 +309,8 @@ extension SiteMediaViewController {
 private enum Strings {
     static let title = NSLocalizedString("mediaLibrary.title", value: "Media", comment: "Media screen navigation title")
     static let select = NSLocalizedString("mediaLibrary.buttonSelect", value: "Select", comment: "Media screen navigation bar button Select title")
+    static let addMedia = NSLocalizedString("mediaLibrary.buttonAddMedia", value: "Add Media", comment: "Navigation bar button item")
+    static let filter = NSLocalizedString("mediaLibrary.buttonFilter", value: "Filter", comment: "Navigation bar button item")
     static let addButtonAccessibilityLabel = NSLocalizedString("mediaLibrary.addButtonAccessibilityLabel", value: "Add", comment: "Accessibility label for add button to add items to the user's media library")
     static let addButtonAccessibilityHint = NSLocalizedString("mediaLibrary.addButtonAccessibilityHint", value: "Add new media", comment: "Accessibility hint for add button to add items to the user's media library")
     static let deleteConfirmationMessageOne = NSLocalizedString("mediaLibrary.deleteConfirmationMessageOne", value: "Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso.")

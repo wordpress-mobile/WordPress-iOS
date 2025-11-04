@@ -92,10 +92,10 @@ private struct SubmitFeedbackView: View {
         .alert(Strings.attachmentsStillUploadingAlertTitle, isPresented: $isShowingAttachmentsUploadingAlert) {
             Button(SharedStrings.Button.ok) {}
         }
-        .onChange(of: isInputEmpty) {
-            presentingViewController?.isModalInPresentation = !$0
+        .onChange(of: isInputEmpty) { _, newValue in
+            presentingViewController?.isModalInPresentation = !newValue
         }
-        .onChange(of: text) { text in
+        .onChange(of: text) { _, text in
             if text.count > textLimit {
                 self.text = String(text.prefix(textLimit))
             }

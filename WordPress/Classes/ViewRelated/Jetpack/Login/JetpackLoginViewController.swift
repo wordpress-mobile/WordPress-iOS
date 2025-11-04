@@ -4,7 +4,6 @@ import WordPressData
 import WordPressShared
 import WordPressAuthenticator
 import WordPressUI
-import WordPressAPIInternal
 
 protocol JetpackConnectionSupport: AnyObject {
     init?(blog: Blog)

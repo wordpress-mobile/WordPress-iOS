@@ -3,7 +3,6 @@ import WordPressKit
 import WordPressCore
 import WordPressData
 import WordPressAPI
-import WordPressAPIInternal
 
 @objc public class TaxonomyServiceRemoteCoreREST: NSObject, TaxonomyServiceRemote {
     let client: WordPressClient
@@ -21,11 +20,11 @@ import WordPressAPIInternal
     public func createCategory(_ category: RemotePostCategory, success: ((RemotePostCategory) -> Void)?, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
-                let params = CategoryCreateParams(
+                let params = TermCreateParams(
                     name: category.name ?? "",
                     parent: category.parentID?.int64Value
                 )
-                let response = try await client.api.categories.create(params: params)
+                let response = try await client.api.terms.create(termEndpointType: .categories, params: params)
                 let remoteCategory = RemotePostCategory(category: response.data)
                 success?(remoteCategory)
             } catch {
@@ -37,7 +36,10 @@ import WordPressAPIInternal
     public func getCategoriesWithSuccess(_ success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
-                let sequence = await client.api.categories.sequenceWithEditContext(params: CategoryListParams(perPage: 100))
+                let sequence = await client.api.terms.sequenceWithEditContext(
+                    type: .categories,
+                    params: TermListParams(perPage: 100)
+                )
                 let categories: [RemotePostCategory] = try await sequence.reduce(into: []) {
                     let page = $1.map(RemotePostCategory.init(category:))
                     $0.append(contentsOf: page)
@@ -52,14 +54,17 @@ import WordPressAPIInternal
     public func getCategoriesWith(_ paging: RemoteTaxonomyPaging, success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
-                let params = CategoryListParams(
+                let params = TermListParams(
                     page: paging.page?.uint32Value,
                     perPage: paging.number?.uint32Value,
                     offset: paging.offset?.uint32Value,
-                    order: .init(paging.order),
-                    orderby: .init(paging.orderBy)
+                    order: WpApiParamOrder(paging.order),
+                    orderby: WpApiParamTermsOrderBy(paging.orderBy)
                 )
-                let response = try await client.api.categories.listWithEditContext(params: params)
+                let response = try await client.api.terms.listWithEditContext(
+                    termEndpointType: .categories,
+                    params: params
+                )
                 let categories = response.data.map(RemotePostCategory.init(category:))
                 success(categories)
             } catch {
@@ -71,8 +76,11 @@ import WordPressAPIInternal
     public func searchCategories(withName nameQuery: String, success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
-                let params = CategoryListParams(search: nameQuery)
-                let response = try await client.api.categories.listWithEditContext(params: params)
+                let params = TermListParams(search: nameQuery)
+                let response = try await client.api.terms.listWithEditContext(
+                    termEndpointType: .categories,
+                    params: params
+                )
                 let categories = response.data.map(RemotePostCategory.init(category:))
                 success(categories)
             } catch {
@@ -84,12 +92,15 @@ import WordPressAPIInternal
     public func createTag(_ tag: RemotePostTag, success: ((RemotePostTag) -> Void)?, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
-                let params = TagCreateParams(
+                let params = TermCreateParams(
                     name: tag.name ?? "",
                     description: tag.tagDescription,
                     slug: tag.slug
                 )
-                let response = try await client.api.tags.create(params: params)
+                let response = try await client.api.terms.create(
+                    termEndpointType: .tags,
+                    params: params
+                )
                 let remoteTag = RemotePostTag(tag: response.data)
                 success?(remoteTag)
             } catch {
@@ -106,12 +117,16 @@ import WordPressAPIInternal
 
         Task { @MainActor in
             do {
-                let params = TagUpdateParams(
+                let params = TermUpdateParams(
                     name: tag.name,
                     description: tag.tagDescription,
                     slug: tag.slug
                 )
-                let response = try await client.api.tags.update(tagId: TagId(tagID.int64Value), params: params)
+                let response = try await client.api.terms.update(
+                    termEndpointType: .tags,
+                    termId: tagID.int64Value,
+                    params: params
+                )
                 let remoteTag = RemotePostTag(tag: response.data)
                 success?(remoteTag)
             } catch {
@@ -128,7 +143,7 @@ import WordPressAPIInternal
 
         Task { @MainActor in
             do {
-                let _ = try await client.api.tags.delete(tagId: TagId(tagID.int64Value))
+                let _ = try await client.api.terms.delete(termEndpointType: .tags, termId: tagID.int64Value)
                 success?()
             } catch {
                 failure?(error)
@@ -139,7 +154,10 @@ import WordPressAPIInternal
     public func getTagsWithSuccess(_ success: @escaping ([RemotePostTag]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
-                let response = try await client.api.tags.listWithEditContext(params: TagListParams())
+                let response = try await client.api.terms.listWithEditContext(
+                    termEndpointType: .tags,
+                    params: TermListParams()
+                )
                 let tags = response.data.map(RemotePostTag.init(tag:))
                 success(tags)
             } catch {
@@ -151,14 +169,17 @@ import WordPressAPIInternal
     public func getTagsWith(_ paging: RemoteTaxonomyPaging, success: @escaping ([RemotePostTag]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
-                let params = TagListParams(
+                let params = TermListParams(
                     page: paging.page?.uint32Value,
                     perPage: paging.number?.uint32Value,
                     offset: paging.offset?.uint32Value,
-                    order: .init(paging.order),
-                    orderby: .init(paging.orderBy)
+                    order: WpApiParamOrder(paging.order),
+                    orderby: WpApiParamTermsOrderBy(paging.orderBy)
                 )
-                let response = try await client.api.tags.listWithEditContext(params: params)
+                let response = try await client.api.terms.listWithEditContext(
+                    termEndpointType: .tags,
+                    params: params
+                )
                 let tags = response.data.map(RemotePostTag.init(tag:))
                 success(tags)
             } catch {
@@ -170,7 +191,10 @@ import WordPressAPIInternal
     public func searchTags(withName nameQuery: String, success: @escaping ([RemotePostTag]) -> Void, failure: ((any Error) -> Void)? = nil) {
         Task { @MainActor in
             do {
-                let response = try await client.api.tags.listWithEditContext(params: TagListParams(search: nameQuery))
+                let response = try await client.api.terms.listWithEditContext(
+                    termEndpointType: .tags,
+                    params: TermListParams(search: nameQuery)
+                )
                 let tags = response.data.map(RemotePostTag.init(tag:))
                 success(tags)
             } catch {
@@ -181,16 +205,16 @@ import WordPressAPIInternal
 }
 
 private extension RemotePostCategory {
-    convenience init(category: CategoryWithEditContext) {
+    convenience init(category: AnyTermWithEditContext) {
         self.init()
         self.categoryID = NSNumber(value: category.id)
         self.name = category.name
-        self.parentID = NSNumber(value: category.parent)
+        self.parentID = NSNumber(value: category.parent ?? 0)
     }
 }
 
 private extension RemotePostTag {
-    convenience init(tag: TagWithEditContext) {
+    convenience init(tag: AnyTermWithEditContext) {
         self.init()
         self.tagID = NSNumber(value: tag.id)
         self.name = tag.name
@@ -213,20 +237,7 @@ private extension WpApiParamOrder {
     }
 }
 
-private extension WpApiParamCategoriesOrderBy {
-    init(_ other: RemoteTaxonomyPagingResultsOrdering) {
-        switch other {
-        case .byName:
-            self = .name
-        case .byCount:
-            self = .count
-        @unknown default:
-            self = .name
-        }
-    }
-}
-
-private extension WpApiParamTagsOrderBy {
+private extension WpApiParamTermsOrderBy {
     init(_ other: RemoteTaxonomyPagingResultsOrdering) {
         switch other {
         case .byName:

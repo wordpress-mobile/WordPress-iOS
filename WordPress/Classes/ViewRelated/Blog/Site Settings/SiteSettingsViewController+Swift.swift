@@ -3,6 +3,9 @@ import SwiftUI
 import WordPressData
 import WordPressFlux
 import WordPressShared
+import WordPressAPI
+import WordPressAPIInternal
+import WordPressCore
 
 extension SiteSettingsViewController {
     // MARK: - General
@@ -10,11 +13,11 @@ extension SiteSettingsViewController {
     @objc public func showPrivacySelector() {
         struct SiteSettingsPrivacyPicker: View {
             let blog: Blog
-            @State var selection: SiteVisibility
-            let onChange: (SiteVisibility) -> Void
+            @State var selection: WordPress.SiteVisibility
+            let onChange: (WordPress.SiteVisibility) -> Void
 
             var body: some View {
-                SettingsPickerListView(selection: $selection, values: SiteVisibility.eligiblePickerValues(for: blog))
+                SettingsPickerListView(selection: $selection, values: WordPress.SiteVisibility.eligiblePickerValues(for: blog))
                     .onChange(of: selection, perform: onChange)
             }
         }
@@ -48,8 +51,28 @@ extension SiteSettingsViewController {
     }
 
     @objc public func showTagList() {
-        let tagsVC = TagsViewController(blog: blog)
+        let tagsVC = SiteTagsViewController(blog: blog)
         navigationController?.pushViewController(tagsVC, animated: true)
+    }
+
+    @objc public func showCustomTaxonomies() {
+        let viewController: UIViewController
+        if let client = try? WordPressClient(site: .init(blog: blog)) {
+            let rootView = SiteCustomTaxonomiesView(blog: self.blog, api: client.api)
+            viewController = UIHostingController(rootView: rootView)
+        } else {
+            let feature = NSLocalizedString(
+                "applicationPasswordRequired.feature.customTaxonomies",
+                value: "Taxonomies Management",
+                comment: "Feature name for managing terms and taxonomies in the app"
+            )
+            let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature, presentingViewController: self) { client in
+                SiteCustomTaxonomiesView(blog: self.blog, api: client.api)
+            }
+            viewController = UIHostingController(rootView: rootView)
+        }
+
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     // MARK: - Timezone
@@ -167,10 +190,17 @@ extension SiteSettingsViewController {
         return footer
     }
 
-    @objc(getEditorSettingsSectionFooterView)
-    public func editorSettingsSectionFooterView() -> UIView {
+    @objc(getBlockEditorSectionFooterView)
+    public func blockEditorSectionFooterView() -> UIView {
         let footer = makeFooterView()
         footer.textLabel?.text = NSLocalizedString("Edit new posts and pages with the block editor.", comment: "Explanation for the option to enable the block editor")
+        return footer
+    }
+
+    @objc(getThemeStylesSectionFooterView)
+    public func themeStylesSectionFooterView() -> UIView {
+        let footer = makeFooterView()
+        footer.textLabel?.text = NSLocalizedString("Make the block editor look like your theme.", comment: "Explanation for the option to enable theme styles")
         return footer
     }
 

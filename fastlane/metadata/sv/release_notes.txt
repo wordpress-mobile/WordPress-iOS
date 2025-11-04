@@ -1,5 +1,6 @@
-Vi har gjort några genomtänkta förbättringar för att göra din WordPress-upplevelse ännu smidigare.
-
-Vi har lagt till stöd för iOS 26, så att du kan dra nytta av alla de senaste funktionerna som din enhet har att erbjuda. Allt ser ut och känns helt rätt.
-
-Vi har också gjort några förbättringar bakom kulisserna av knapparna och navigeringen i appen. Du kommer att märka att saker och ting känns mer polerade och konsekventa, särskilt på skärmarna Redigerare, Inställningar och Statistik.
+Du kan nu skapa ett utdrag för dina inlägg och få automatiskt föreslagna etiketter med hjälp av Apple Intelligence. Det är också enklare att välja dina etiketter i inläggsinställningarna. Det är smart.
+Vi har gjort några visuella korrigeringar för iOS inom områden som flödet för webbplatsskapande, skärmen för mediaval och statistikskärmen.
+Och medan vi ändå höll på åtgärdade vi även ett antal buggar.
+- Läsarartiklar återges korrekt på enheter med Visningszoom aktiverat.
+- Knappen ”Lägg till media” förblir synlig i mediebiblioteket. Inget mer försvinnande.
+- Du kan söka i läsarprenumerationer utan att appen hänger sig.

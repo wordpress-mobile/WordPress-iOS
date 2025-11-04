@@ -1,7 +1,16 @@
-Fizemos algumas melhorias ponderadas para tornar sua experiência com o Jetpack ainda mais tranquila.
-
-Adicionamos suporte para iOS 26, para que você possa aproveitar todas as funcionalidades mais recentes que seu dispositivo tem a oferecer. Tudo parece e se sente perfeito.
-
-O Leitor tem algum amor com atualizações visuais na tela do artigo, tornando-o mais fácil para os olhos quando você está alcançando seu conteúdo favorito.
-
-Também fizemos algumas melhorias nos bastidores para botões e navegação em todo o aplicativo. Você notará que as coisas estão mais polidas e consistentes, especialmente nas telas Editor, Configurações e Estatísticas.
+Agora você pode criar um resumo e tags geradas automaticamente para seus posts usando a Apple Intelligence. Também ficou mais fácil escolher suas tags nas configurações do post. Isso, sim, é inteligente.
+Falando em estatísticas, há várias novas melhorias nesta área do aplicativo.
+- Adicionamos um cartão "Hoje" à tela "Novas estatísticas".
+- Sua página inicial agora aparece na lista de páginas principais.
+- Seus 10 e 50 itens mais populares agora têm uma seção especial. Um lugar para tudo, e tudo em seu lugar.
+- Suas páginas principais aparecem corretamente quando você tem muitos itens.
+- O layout de "Novas estatísticas" é alterado para se ajustar a diferentes tamanhos de tela. Até mesmo àquelas incrivelmente grandes.
+- A tela lembrará suas configurações preferidas quando você escolher um intervalo de datas personalizado.
+- A aba "Tráfego" permite que você puxe a tela para baixo para atualizar.
+Também fizemos algumas correções visuais para iOS em áreas como o fluxo de criação do site, a tela de seleção de mídia e a tela de estatísticas. E enquanto isso, eliminamos vários bugs.
+- Corrigimos uma falha rara que às vezes aparecia em "Estatísticas" e "Assinantes". (Mas não mais!)
+- As visualizações de artigo ficam como deveriam no Leitor quando certos temas estão ativados.
+- Os artigos do Leitor são renderizados corretamente em dispositivos com a opção "Exibir zoom" ativada.
+- O botão "Adicionar mídia" permanece visível na biblioteca de mídia. Chega de chá de sumiço.
+- Você pode pesquisar em "Assinaturas do Leitor" sem travar o aplicativo.
+- A barra de ferramentas nos artigos do Leitor não desaparece e reaparece de tempos em tempos. Chega de pique-esconde.

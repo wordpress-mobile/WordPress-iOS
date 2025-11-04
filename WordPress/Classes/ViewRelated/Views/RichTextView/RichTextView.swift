@@ -259,12 +259,12 @@ import UniformTypeIdentifiers
         delegate?.textViewDidChangeSelection?(textView)
     }
 
-    open func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        return delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange, interaction: interaction) ?? true
+    open func textView(_ textView: UITextView, primaryActionFor textItem: UITextItem, defaultAction: UIAction) -> UIAction? {
+        delegate?.textView?(textView, primaryActionFor: textItem, defaultAction: defaultAction)
     }
 
-    open func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        return delegate?.textView?(textView, shouldInteractWith: textAttachment, in: characterRange, interaction: interaction) ?? true
+    public func textView(_ textView: UITextView, menuConfigurationFor textItem: UITextItem, defaultMenu: UIMenu) -> UITextItem.MenuConfiguration? {
+        delegate?.textView?(textView, menuConfigurationFor: textItem, defaultMenu: defaultMenu)
     }
 
     // MARK: - Private Properites

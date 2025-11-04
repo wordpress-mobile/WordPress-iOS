@@ -119,6 +119,9 @@ final class SiteMediaCollectionCell: UICollectionViewCell, Reusable {
             aspectRatioConstraint.isActive = true
             self.aspectRatioConstraint = aspectRatioConstraint
         }
+
+        imageContainerView.layer.cornerRadius = isAspectRatioModeEnabled ? 4 : 0
+        imageContainerView.layer.masksToBounds = true
     }
 
     // MARK: - Refresh

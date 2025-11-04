@@ -1,7 +1,16 @@
-Kami melakukan beberapa peningkatan yang cermat untuk membuat pengalaman Jetpack Anda lebih lancar.
-
-Kami menambahkan dukungan untuk iOS 26, sehingga Anda dapat memanfaatkan semua fitur terbaru yang ditawarkan perangkat Anda. Semuanya tampak dan terasa tepat.
-
-Pembaca akan mendapat banyak perhatian dengan pembaruan visual pada layar artikel, membuatnya lebih nyaman dilihat saat Anda membaca konten favorit Anda.
-
-Kami juga melakukan beberapa perbaikan di balik layar untuk tombol dan navigasi di seluruh aplikasi. Anda akan melihat semuanya terasa lebih rapi dan konsisten, terutama di layar Editor, Pengaturan, dan Statistik.
+Sekarang, Anda bisa membuat kutipan untuk pos dan mendapatkan tag yang dibuat secara otomatis dengan Apple Intelligence. Memilih tag di Pengaturan Pos juga lebih mudah. Ini baru cerdas.
+Ada beberapa perbaikan baru di Statistik dalam aplikasi.
+- Kami menambahkan kartu Hari Ini ke layar Statistik Baru.
+- Beranda kini muncul di daftar halaman teratas.
+- 10 dan 50 item teratas kini punya bagian khusus sendiri. Satu tempat untuk semuanya, dan semua punya tempatnya masing-masing.
+- Halaman teratas ditampilkan dengan benar meski ada sejumlah besar item.
+- Tata letak Statistik Baru berubah sesuai ukuran layar, termasuk layar yang benar-benar besar.
+- Layar akan mengingat preferensi pengaturan Anda saat memilih rentang tanggal kustom.
+- Tab Lalu Lintas dapat ditarik ke bawah untuk menyegarkan layar.
+Kami juga memperbaiki sejumlah aspek visual di iOS di area-area seperti alur pembuatan situs, layar pemilihan media, dan layar Statistik. Kami juga sekalian membasmi beberapa bug.
+- Kami memperbaiki crash langka yang kadang terjadi pada Statistik dan Pelanggan. (Yang tadinya langka, kini punah.)
+- Tampilan artikel di Pembaca saat tema tertentu diaktifkan kini sudah benar.
+- Artikel Pembaca kini ditampilkan dengan benar di perangkat yang mengaktifkan Zoom Tampilan.
+- Tombol “Tambah Media” terus terlihat di pustaka media. Tiada lagi yang tiba-tiba lenyap.
+- Aplikasi tidak lagi macet saat Anda mencari di Langganan Pembaca.
+- Bilah peralatan dalam artikel Pembaca tidak lagi hilang timbul secara tiba-tiba. Anda bisa terus melihatnya.

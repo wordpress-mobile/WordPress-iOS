@@ -48,6 +48,7 @@
     post.mt_excerpt = remotePost.excerpt;
     post.wp_slug = remotePost.slug;
     post.suggested_slug = remotePost.suggestedSlug;
+    post.permalinkTemplateURL = remotePost.permalinkTemplateURL;
 
     if ([remotePost.revisions wp_isValidObject]) {
         post.revisions = [remotePost.revisions copy];
@@ -56,6 +57,9 @@
     if (remotePost.postID != previousPostID) {
         [self updateCommentsForPost:post];
     }
+
+    post.rawMetadata = [PostHelper makeRawMetadataFrom:remotePost];
+    post.foreignID = [PostHelper getForeignIDFor:remotePost];
 
     post.autosaveTitle = remotePost.autosave.title;
     post.autosaveExcerpt = remotePost.autosave.excerpt;
@@ -66,9 +70,10 @@
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         pagePost.parentID = remotePost.parentID;
-        pagePost.foreignID = remotePost.foreignID;
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
+        postPost.commentsStatus = remotePost.commentsStatus;
+        postPost.pingsStatus = remotePost.pingsStatus;
         postPost.commentCount = remotePost.commentCount;
         postPost.likeCount = remotePost.likeCount;
         postPost.postFormat = remotePost.format;
@@ -96,7 +101,6 @@
             publicizeMessage = [publicizeMessageDictionary stringForKey:@"value"];
             publicizeMessageID = [publicizeMessageDictionary stringForKey:@"id"];
         }
-        postPost.foreignID = remotePost.foreignID;
         postPost.publicID = publicID;
         postPost.publicizeMessage = publicizeMessage;
         postPost.publicizeMessageID = publicizeMessageID;
@@ -181,7 +185,7 @@
     for (RemotePost *remotePost in remotePosts) {
         AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:context];
         if (post == nil) {
-            NSUUID *foreignID = remotePost.foreignID;
+            NSUUID *foreignID = [PostHelper getForeignIDFor:remotePost];
             if (foreignID != nil) {
                 post = [blog lookupLocalPostWithForeignID:foreignID inContext:context];
             }

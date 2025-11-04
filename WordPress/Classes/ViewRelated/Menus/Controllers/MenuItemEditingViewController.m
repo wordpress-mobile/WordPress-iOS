@@ -172,11 +172,11 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 
 - (BOOL)shouldLayoutForCompactWidth
 {
-    BOOL horizontallyCompact = [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassCompact]];
+    BOOL horizontallyCompact = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact;
 
     if (horizontallyCompact) {
 
-        if ([self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithVerticalSizeClass:UIUserInterfaceSizeClassCompact]]) {
+        if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) {
             horizontallyCompact = NO;
         }
     }

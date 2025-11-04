@@ -23,6 +23,7 @@
 @dynamic autosaveIdentifier;
 @dynamic foreignID;
 @dynamic order;
+@dynamic rawMetadata;
 @synthesize voiceContent;
 
 #pragma mark - Life Cycle Methods

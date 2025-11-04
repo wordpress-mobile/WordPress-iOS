@@ -42,7 +42,7 @@ extension EditorConfiguration {
             .setSiteApiNamespace(siteApiNamespace)
             .setNamespaceExcludedPaths(["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"])
             .setAuthHeader(authHeader)
-            .setShouldUseThemeStyles(FeatureFlag.newGutenbergThemeStyles.enabled)
+            .setShouldUseThemeStyles(GutenbergSettings().isThemeStylesEnabled(for: blog))
             // Limited to Jetpack-connected sites until editor assets endpoint is available in WordPress core
             .setShouldUsePlugins(Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword))
             .setLocale(WordPressComLanguageDatabase().deviceLanguage.slug)

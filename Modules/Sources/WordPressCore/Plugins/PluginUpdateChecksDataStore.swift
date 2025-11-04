@@ -1,5 +1,5 @@
 import Foundation
-import WordPressAPIInternal
+import WordPressAPIInternal // Required for `UpdateCheckPluginInfo` Hashable conformance
 
 extension UpdateCheckPluginInfo: @retroactive Identifiable {
     public var id: PluginSlug { plugin }

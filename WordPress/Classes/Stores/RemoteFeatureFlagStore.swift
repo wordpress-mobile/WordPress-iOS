@@ -27,6 +27,12 @@ class RemoteFeatureFlagStore {
         return deviceID
     }
 
+    /// Returns `true` if the store hasn't been updated yet. It uses the
+    /// presence of `deviceID` as an indicator of the previous install.
+    public var isFreshInstall: Bool {
+        persistenceStore.string(forKey: Constants.DeviceIdKey) == nil
+    }
+
     init(persistenceStore: UserPersistentRepository = UserDefaults.standard) {
         self.persistenceStore = persistenceStore
     }

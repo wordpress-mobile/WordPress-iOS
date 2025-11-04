@@ -11,31 +11,13 @@ struct PublishDatePickerConfiguration {
     /// If set to `true`, the user will no longer be able to remove the selection.
     var isRequired = false
     var timeZone: TimeZone
+    var range = Date.distantPast...Date.distantFuture
     var updated: (Date?) -> Void
 }
 
 private extension PublishDatePickerConfiguration {
     var isCurrentTimeZone: Bool {
         timeZone.secondsFromGMT() == TimeZone.current.secondsFromGMT()
-    }
-}
-
-final class PublishDatePickerViewController: UIHostingController<PublishDatePickerView> {
-    init(configuration: PublishDatePickerConfiguration) {
-        if configuration.isRequired && configuration.date == nil {
-            wpAssertionFailure("initial date value missing")
-        }
-        super.init(rootView: PublishDatePickerView(configuration: configuration))
-    }
-
-    required dynamic init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        title = Strings.title
     }
 }
 
@@ -109,7 +91,7 @@ struct PublishDatePickerView: View {
             configuration.date ?? Date()
         }, set: {
             configuration.date = $0
-        }), displayedComponents: [.date, .hourAndMinute])
+        }), in: configuration.range, displayedComponents: [.date, .hourAndMinute])
         .environment(\.timeZone, configuration.timeZone)
         .datePickerStyle(.graphical)
         .labelsHidden()

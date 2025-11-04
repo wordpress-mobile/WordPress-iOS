@@ -55,7 +55,7 @@ struct UserDetailsView: View {
             .listRowInsets(.zero)
 
             Section {
-                makeRow(title: Strings.roleFieldTitle, content: user.role)
+                makeRow(title: Strings.roleFieldTitle, content: user.role.displayString)
                 makeRow(title: Strings.emailAddressFieldTitle, content: user.emailAddress, link: user.emailAddress.asEmail())
                 if let website = user.websiteUrl, !website.isEmpty {
                     makeRow(title: Strings.websiteFieldTitle, content: website, link: URL(string: website))

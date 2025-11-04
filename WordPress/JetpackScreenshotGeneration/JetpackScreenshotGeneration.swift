@@ -3,17 +3,27 @@ import UIKit
 import UITestsFoundation
 import XCTest
 
+@MainActor
 class JetpackScreenshotGeneration: XCTestCase {
     let scanWaitTime: UInt32 = 5
 
-    @MainActor
-    override func setUpWithError() throws {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
 
         let app = XCUIApplication.jetpack
 
+        let arguments = [
+            "-ff-override-New Stats", "true",
+            "-ui-test-use-mock-data",
+            "-ui-test-screenshot-generation"
+        ]
+
         // This does the shared setup including injecting mocks and launching the app
-        setUpTestSuite(for: app, removeBeforeLaunching: true)
+        setUpTestSuite(
+            for: app,
+            arguments: arguments,
+            selectWPComSite: WPUITestCredentials.testWPcomPaidSite
+        )
 
         // The app is already launched so we can set it up for screenshots here
         setupSnapshot(app)
@@ -23,64 +33,56 @@ class JetpackScreenshotGeneration: XCTestCase {
         } else {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
-
-        try LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail)
-    }
-
-    override func tearDown() {
-        removeApp(.jetpack)
-        super.tearDown()
     }
 
     func testGenerateScreenshots() throws {
+        let app = XCUIApplication()
 
-        let mySite = try MySiteScreen()
-        let mySiteMenu = try MySiteMoreMenuScreen()
+        // 2. Editor
+        try MySiteScreen()
+            .goToCreateSheet()
+            .openMockPost()
+            .thenTakeScreenshot(2, named: "Gutenberg")
+            .closeEditor()
 
-        // Get Site Creation screenshot
-        let mySitesScreen = try mySite.showSiteSwitcher()
-        let siteIntentScreen = try mySitesScreen
-            .tapPlusButton()
-            .thenTakeScreenshot(1, named: "SiteCreation")
-
-        try siteIntentScreen.closeModal()
-        try mySitesScreen.closeModal()
-
-        // Get Create New screenshot
-        let createSheet = try mySite.goToCreateSheet()
-            .thenTakeScreenshot(2, named: "CreateNew")
-
-        // Get Page Builder screenshot
-        let chooseLayout = try createSheet.goToSitePage()
-            .thenTakeScreenshot(3, named: "PageBuilder")
-
-        try chooseLayout.closeModal()
-
-        // Open Menu to be able to access stats
-        if XCTestCase.isPhone {
-            try mySite.goToMoreMenu()
-        }
-
-        // Get Stats screenshot
-        let statsScreen = try mySiteMenu.goToStatsScreen()
-        statsScreen
-            .dismissCustomizeInsightsNotice()
-            .thenTakeScreenshot(4, named: "Stats")
-
-        // Get Notifications screenshot
-        let notificationList = try TabNavComponent()
-            .goToNotificationsScreen()
         if XCTestCase.isPad {
-            notificationList
-                .openNotification(withSubstring: "commented on")
+            // 4. Notifications
+            app.buttons["bar-button-item-notifications"].firstMatch.tap()
+            try NotificationsScreen()
+                .thenTakeScreenshot(4, named: "Notifications")
+            app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+                .tap()
         }
-        notificationList.thenTakeScreenshot(5, named: "Notifications")
+
+        // 1. Stats
+        try MySiteScreen()
+            .goToMoreMenu()
+            .goToStatsScreen()
+            .waitUntilDataLoaded()
+            .thenTakeScreenshot(1, named: "Stats")
+
+        if XCTestCase.isPhone {
+            // 4. Notifications
+            app.navigationBars.buttons.element(boundBy: 0).tap() // go back
+
+            try makeMainNavigationComponent()
+                .goToNotificationsScreen()
+                .thenTakeScreenshot(4, named: "Notifications")
+        }
+
+        // 3. Reader
+        try makeMainNavigationComponent()
+            .openReaderMenu()
+            .selectSubscription(named: "WordPress.com News")
+            .openFirstPost()
+            .thenTakeScreenshot(3, named: "Reader")
+        app.navigationBars.buttons.element(boundBy: 0).tap() // go back
     }
 }
 
 extension ScreenObject {
 
-    @discardableResult
+    @MainActor @discardableResult
     func thenTakeScreenshot(_ index: Int, named title: String) -> Self {
         let mode = XCUIDevice.inDarkMode ? "dark" : "light"
         let filename = "\(index)-\(mode)-\(title)"
@@ -88,6 +90,13 @@ extension ScreenObject {
         snapshot(filename)
 
         return self
+    }
+}
+
+private extension MainNavigationComponent {
+    func openReaderMenu() throws -> ReaderMenuScreen {
+        try goToReaderScreen()
+        return try ReaderMenuScreen()
     }
 }
 

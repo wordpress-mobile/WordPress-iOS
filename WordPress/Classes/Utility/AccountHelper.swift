@@ -1,4 +1,5 @@
 import Foundation
+import WordPressCore
 import WordPressData
 
 /// Encapsulates Account-Y Helpers
@@ -112,6 +113,9 @@ import WordPressData
             do {
                 // Delete all cached block editor settings
                 try await BlockEditorCache.shared.deleteAll()
+
+                // Delete everything in the disk cache
+                try await DiskCache().removeAll()
             } catch {
                 debugPrint("Unable to delete all block editor settings: \(error)")
             }

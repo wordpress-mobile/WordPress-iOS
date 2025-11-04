@@ -55,6 +55,9 @@ private struct PostSettingsView: View {
         }
         .accessibilityIdentifier("post_settings_form")
         .disabled(viewModel.isSaving)
+        .onAppear {
+            viewModel.onAppear()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 buttonCancel
@@ -85,7 +88,7 @@ private struct PostSettingsView: View {
     }
 
     private var buttonCancel: some View {
-        Button(SharedStrings.Button.cancel) {
+        Button.make(role: .cancel) {
             if viewModel.hasChanges {
                 isShowingDiscardChangesAlert = true
             } else {
@@ -101,19 +104,8 @@ private struct PostSettingsView: View {
         if viewModel.isSaving {
             ProgressView()
         } else {
-            Group {
-                if viewModel.isStandalone {
-                    Button(SharedStrings.Button.save) {
-                        viewModel.buttonSaveTapped()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.capsule)
-                } else {
-                    Button(SharedStrings.Button.done) {
-                        viewModel.buttonSaveTapped()
-                    }
-                    .fontWeight(.medium)
-                }
+            Button.make(role: .confirm) {
+                viewModel.buttonSaveTapped()
             }
             .accessibilityIdentifier("post_settings_save_button")
             .disabled(!viewModel.hasChanges)
@@ -142,6 +134,9 @@ struct PostSettingsFormContentView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
 
     var body: some View {
+        if viewModel.context == .publishing {
+            publishingOptionsSection
+        }
         featuredImageSection
         if viewModel.isPost {
             organizationSection
@@ -149,6 +144,7 @@ struct PostSettingsFormContentView: View {
         excerptSection
         generalSection
         socialSharingSection
+        accessSection
         moreOptionsSection
     }
 
@@ -157,12 +153,11 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var publishingOptionsSection: some View {
         Section {
+            BlogListSiteView(site: .init(blog: viewModel.post.blog))
             publishDateRow
             visibilityRow
         } header: {
-            BlogListSiteView(site: .init(blog: viewModel.post.blog))
-                .padding(.bottom, 8)
-                .foregroundStyle(.primary)
+            SectionHeader(Strings.readyToPublish)
         }
     }
 
@@ -185,6 +180,7 @@ struct PostSettingsFormContentView: View {
         Section {
             categoriesRow
             tagsRow
+            suggestedTagsRow
         } header: {
             SectionHeader(Strings.taxonomyHeader)
         }
@@ -198,10 +194,27 @@ struct PostSettingsFormContentView: View {
     }
 
     private var tagsRow: some View {
-        LegacyNavigationLinkRow(action: viewModel.showTagsPicker) {
+        NavigationLink {
+            PostTagsView(blog: viewModel.post.blog, selectedTags: viewModel.settings.tags) { tags in
+                viewModel.didSelectTags(tags)
+            }
+        } label: {
             PostSettingsTagsRow(tags: viewModel.displayedTags)
         }
         .accessibilityIdentifier("post_settings_tags")
+    }
+
+    @ViewBuilder
+    private var suggestedTagsRow: some View {
+        if !viewModel.suggestedTags.isEmpty {
+            PostSettingsTagSuggestionsView(suggestions: viewModel.suggestedTags) { tag in
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    viewModel.didSelectSuggestedTag(tag)
+                }
+            }
+            .listRowSeparator(.hidden, edges: .top)
+            .padding(.top, -12)
+        }
     }
 
     // MARK: - "Excerpt" Section
@@ -228,11 +241,11 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var generalSection: some View {
         Section {
-            authorRow
-            if !viewModel.isDraftOrPending || viewModel.context == .publishing {
-                publishDateRow
-                visibilityRow
+            if viewModel.context == .settings && viewModel.isStandalone {
+                statusRow
             }
+            authorRow
+            publishDateRow
             slugRow
         } header: {
             SectionHeader(Strings.generalHeader)
@@ -252,6 +265,21 @@ struct PostSettingsFormContentView: View {
         }
     }
 
+    private var statusRow: some View {
+        NavigationLink {
+            PostStatusView(settings: $viewModel.settings, timeZone: viewModel.timeZone)
+        } label: {
+            SettingsRow(Strings.status) {
+                HStack(alignment: .center, spacing: 2) {
+                    ScaledImage(viewModel.settings.status.image, height: 23)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(viewModel.settings.status.title)
+                    }
+                }
+            }
+        }
+    }
+
     private var pendingReviewRow: some View {
         Toggle(isOn: $viewModel.settings.isPendingReview) {
             Text(Strings.pendingReviewLabel)
@@ -263,6 +291,29 @@ struct PostSettingsFormContentView: View {
             PostSettingsPublishDatePicker(viewModel: viewModel)
         } label: {
             SettingsRow(Strings.publishDateLabel, value: viewModel.publishDateText ?? Strings.immediately)
+        }
+    }
+
+    // MARK: - "Access" Section
+
+    @ViewBuilder
+    private var accessSection: some View {
+        if viewModel.shouldShow(.jetpackAccessLevel) {
+            Section {
+                SettingsPicker(
+                    title: Strings.accessHeader,
+                    selection: $viewModel.settings.metadata.accessLevel,
+                    values: JetpackPostAccessLevel.allCases.map { level in
+                        SettingsPickerValue(
+                            title: level.localizedTitle,
+                            details: level.localizedDescription,
+                            id: level
+                        )
+                    }
+                )
+            } header: {
+                SectionHeader(Strings.accessHeader)
+            }
         }
     }
 
@@ -308,6 +359,11 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var moreOptionsSection: some View {
         Section {
+            if viewModel.shouldShow(.jetpackNewsletterEmailOptions) {
+                Toggle(isOn: $viewModel.emailToSubscribers) {
+                    Text(Strings.emailToSubscribers)
+                }
+            }
             if viewModel.shouldShowStickyOption {
                 stickyPostRow
             }
@@ -315,6 +371,7 @@ struct PostSettingsFormContentView: View {
                 pendingReviewRow
             }
             if viewModel.isPost {
+                discussionRow
                 postFormatRow
             }
             if !viewModel.isPost {
@@ -333,6 +390,14 @@ struct PostSettingsFormContentView: View {
             }
         } label: {
             SettingsRow(Strings.postFormatLabel, value: viewModel.postFormatText)
+        }
+    }
+
+    private var discussionRow: some View {
+        NavigationLink {
+            PostDiscussionSettingsView(postSettings: $viewModel.settings)
+        } label: {
+            SettingsRow(Strings.discussionLabel, value: viewModel.settings.allowComments ? Strings.discussionOpen : Strings.discussionClosed)
         }
     }
 
@@ -355,14 +420,7 @@ struct PostSettingsFormContentView: View {
 
     private var slugRow: some View {
         NavigationLink {
-            SettingsTextFieldView(
-                title: Strings.slugLabel,
-                text: $viewModel.settings.slug,
-                placeholder: Strings.slugPlaceholder,
-                hint: Strings.slugHint
-            )
-            .autocapitalization(.none)
-            .autocorrectionDisabled()
+            PostSlugEditorView(slug: $viewModel.settings.slug, post: viewModel.post)
         } label: {
             SettingsRow(Strings.slugLabel, value: viewModel.slugText)
         }
@@ -395,29 +453,6 @@ private struct PostSettingsAuthorRow: View {
                     .foregroundColor(.secondary)
             }
         }
-    }
-}
-
-@MainActor
-private struct SettingsRow: View {
-    let title: String
-    let value: String
-
-    init(_ title: String, value: String) {
-        self.title = title
-        self.value = value
-    }
-
-    var body: some View {
-        HStack {
-            Text(title)
-                .layoutPriority(1)
-            Spacer()
-            Text(value)
-                .foregroundColor(.secondary)
-                .textSelection(.enabled)
-        }
-        .lineLimit(1)
     }
 }
 
@@ -543,10 +578,33 @@ private enum Strings {
         comment: "Section header for More Options in Post Settings. Should use the same translation as core WP."
     )
 
+    static let accessHeader = NSLocalizedString(
+        "postSettings.access.header",
+        value: "Access",
+        comment: "Section header for Access settings in Post Settings"
+    )
+
     static let postFormatLabel = NSLocalizedString(
         "postSettings.postFormat.label",
         value: "Post Format",
         comment: "Label for the post format field. Should be the same as WP core."
+    )
+    static let discussionLabel = NSLocalizedString(
+        "postSettings.discussion.label",
+        value: "Discussion",
+        comment: "Label for the discussion settings field in Post Settings"
+    )
+
+    static let discussionOpen = NSLocalizedString(
+        "postSettings.discussion.open",
+        value: "Open",
+        comment: "Status text when discussion (comments) is enabled"
+    )
+
+    static let discussionClosed = NSLocalizedString(
+        "postSettings.discussion.closed",
+        value: "Closed",
+        comment: "Status text when discussion (comments) is disabled"
     )
 
     static let parentPageLabel = NSLocalizedString(
@@ -619,5 +677,23 @@ private enum Strings {
         "postSettings.socialSharing.header",
         value: "Social Sharing",
         comment: "Label for the preview button in Post Settings"
+    )
+
+    static let emailToSubscribers = NSLocalizedString(
+        "postSettings.emailToSubscribers.label",
+        value: "Email to Subscribers",
+        comment: "Label for the checkbox that lets you send a post to newsletter subscribers"
+    )
+
+    static let readyToPublish = NSLocalizedString(
+        "prepublishing.publishingSectionTitle",
+        value: "Ready to Publish?",
+        comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
+    )
+
+    static let status = NSLocalizedString(
+        "postSettings.status.label",
+        value: "Status",
+        comment: "Label for the status field in Post Settings"
     )
 }

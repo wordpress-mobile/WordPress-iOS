@@ -56,6 +56,20 @@ struct PageAction: ActionSheetItem {
     }
 }
 
+struct AnonymousAction: ActionSheetItem {
+    let title: String
+    let handler: () -> Void
+
+    func makeButton() -> ActionSheetButton {
+        ActionSheetButton(
+            title: title,
+            image: UIImage(systemName: "bolt")!,
+            identifier: title,
+            action: handler
+        )
+    }
+}
+
 private enum Strings {
     static let post = NSLocalizedString("createSheet.post", value: "Post", comment: "Create Sheet button title")
     static let postFromAudio = NSLocalizedString("createSheet.postFromAudio", value: "Post from Audio", comment: "Create Sheet button title")

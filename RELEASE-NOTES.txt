@@ -1,10 +1,36 @@
+26.5
+-----
+* [*] Add "Status" field to the "Post Settings" screen to make it easier to move posts from one state to another [#24939]
+* [*] Add "Publish Date" back to "Post Settings" for draft and pending posts [#24939]
+* [*] Use "Menlo" font for the password field to make it easier to distinguish between characters like `0` and `0`  [#24939]
+* [*] Add "Access" section to "Post Settings" [#24942]
+* [*] Add "Discussion" to "Post Settings" [#24948]
+* [*] Add "File Size" to Site Media Details [#24947]
+* [*] Add "Email to Subscribers" row to "Publishing" sheet [#24946]
+* [*] Add permalink preview in the slug editor and make other improvements [#24949]
+* [*] Add "Taxonomies" to Site Settings [#24955]
+* [*] Update "Categories" picker to indicate multiple selection [#24952]
+
 26.4
 -----
-* [*] Fix a few minor visual issues on iOS 26 [#24863], [#24863], [#24865], [#24866], [#24867]
-* [*] [Intelligence] Add support for generating excerpts for posts [#24852]
+* [**] [New Stats] Add "Today" card [#24898]
+* [**] [Intelligence] Add support for generating excerpts for posts [#24852]
+* [**] [Intelligence] Add auto-suggested tags for posts [#24886]
+* [**] [Intelligence] Add "Summarize Post" features in Reader [#24892]
+* [*] Fix a few minor visual issues on iOS 26 [#24863], [#24863], [#24901], [#24865], [#24866], [#24867], [#24890], [#24899]
+* [*] Fix an issue with "Homepage" not shown in Top List in New Stats [#24902]
+* [*] Fix an issue with themes in Reader [#24881]
+* [*] Fix an issue with Reader article rendering when iOS "Display Zoom" is enabled [#24895]
+* [*] Fix an issue with "Add Media" button not visible in "Media" under some scenarios [#24900]
 * [*] Fix performance issues with search in Reader Subscriptions [#24841]
+* [*] Fix New Stats layout not adapting for resizing windows [#24908]
+* [*] Fix rare crash in Stats / Subscribers [#24907]
+* [*] Fix an issue with toolbar in Reader articles sporadically reappearing [#24896]
 * [*] Improve performance and animations when showing a full Top List with a large number of items [#24868]
+* [*] Fix an issue with New Stats resetting the preferred preset after selecting a custom range [#24899]
 * [*] Show the Top 10 and 50 items in the Top List screen in a dedicated section [#24868]
+* [*] Add pull-to-refresh to the new Traffic tab [#24898]
+* [*] Improve the "Tags" picker in "Post Settings" [#24883]
 
 26.3.1
 ------
@@ -212,7 +238,7 @@
 * [*] [internal] Incorporate a parser to handle Gutenberg blocks more efficiently for improved performance [#22886]
 * [**] Improve performance of Image and Gallery block processors to avoid long delay when saving a post [#22896]
 * [*] Improve performance of File block processor [#22897]
-* [*] [internal] Prompt users to keep the app up to date on their devices, so they can try new features, as well as benefit from performance improvements and bug fixes [#23195, #23216, #23218, #23211] 
+* [*] [internal] Prompt users to keep the app up to date on their devices, so they can try new features, as well as benefit from performance improvements and bug fixes [#23195, #23216, #23218, #23211]
 * [**] [Jetpack-only] Reader: Add a new feed dedicated to tags [#23242]
 
 24.9.1

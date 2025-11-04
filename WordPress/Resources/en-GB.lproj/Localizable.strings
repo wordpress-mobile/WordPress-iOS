@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-12 16:10:14+0000 */
+/* Translation-Revision-Date: 2025-10-08 13:05:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: en_GB */
@@ -959,9 +959,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
-/* Create new Blog Post button title */
-"Blog post" = "Blog post";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Blogging";
 
@@ -1071,8 +1068,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel Insight management action sheet.
    Cancel registering a domain
    Cancel removing a plugin
-   Cancel site creation
-   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1298,8 +1293,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Clicks";
 
-/* Action button to close the editor
-   Dismisses the current screen */
+/* Action button to close the editor */
 "Close" = "Close";
 
 /* Close account action label */
@@ -5300,9 +5294,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Site not found";
 
-/* Create new Site Page button title */
-"Site page" = "Site page";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Site time zone (UTC%1$@%2$d%3$@)";
 
@@ -7707,11 +7698,17 @@ Example: Reply to Pamela Nguyen */
 /* Toggle Title for the privacy compliance popover. */
 "compliance.analytics.popover.toggle" = "Analytics";
 
-/* Create new Blog Post from Audio button title */
-"createFAB.postFromAudio" = "Post from Audio";
-
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "Create a post or page";
+
+/* Create Sheet button title */
+"createSheet.page" = "Page";
+
+/* Create Sheet button title */
+"createSheet.post" = "Post";
+
+/* Create Sheet button title */
+"createSheet.postFromAudio" = "Post from Audio";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Create your own customised dashboard and choose what reports to see. Focus on the data you care most about.";
@@ -8123,6 +8120,30 @@ Example: Reply to Pamela Nguyen */
 /* A footer retry button */
 "general.pagingFooterView.retry" = "Retry";
 
+/* Generated content length (needs to be short) */
+"generation.length.long" = "Long";
+
+/* Generated content length (needs to be short) */
+"generation.length.medium" = "Medium";
+
+/* Generated content length (needs to be short) */
+"generation.length.short" = "Short";
+
+/* AI generation style */
+"generation.style.conversational" = "Conversational";
+
+/* AI generation style */
+"generation.style.engaging" = "Engaging";
+
+/* AI generation style */
+"generation.style.formal" = "Formal";
+
+/* AI generation style */
+"generation.style.professional" = "Professional";
+
+/* AI generation style */
+"generation.style.witty" = "Witty";
+
 /* A generic title for an error */
 "generic.error.title" = "Error";
 
@@ -8236,6 +8257,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Message shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.message" = "To generate excerpts with AI, please enable Apple Intelligence in Settings. This feature uses on-device processing to protect your privacy.";
+
+/* Button to open Apple Intelligence settings */
+"intelligence.unavailableView.appleIntelligenceDisabled.openSettings" = "Open Settings";
+
+/* Title shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.title" = "Apple Intelligence Required";
+
+/* Message shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.message" = "Apple Intelligence is not available on this device";
+
+/* Title shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.title" = "Apple Intelligence Unvailable";
+
+/* Description shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.description" = "The AI model is downloading or being prepared. Please try again in a moment.";
+
+/* Title shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.title" = "Preparing model...";
 
 /* Cancel dialog confirmation title */
 "inviteSubscribers.cancelConfirmationTitle" = "Are you sure you want to discard the new subscribers?";
@@ -8648,7 +8690,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for metric selection */
 "jetpackStats.addChart.selectMetric" = "Select Metrics";
 
-/* Top list option description */
+/* Today chart title */
+"jetpackStats.addChart.today" = "Today";
+
+/* Today option description
+   Top list option description */
 "jetpackStats.addChart.topListDescription" = "See your top performing content";
 
 /* Top list option title */
@@ -8978,6 +9024,12 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title */
 "jetpackStats.postDetails.title" = "Post Stats";
 
+/* Section title */
+"jetpackStats.postDetails.top10" = "Top 10";
+
+/* Section title */
+"jetpackStats.postDetails.top50" = "Top 50";
+
 /* Must be short!Label for total email opens metric */
 "jetpackStats.postDetails.totalOpens" = "Total Opens";
 
@@ -9079,6 +9131,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Stats screen title */
 "jetpackStats.title" = "Stats";
+
+/* Today card title */
+"jetpackStats.todayCard.title" = "Today";
 
 /* Title for items with highest bounce rate */
 "jetpackStats.topList.highestBounceRate" = "Highest Bounce Rate";
@@ -9188,8 +9243,14 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "Aspect Ratio Grid";
 
+/* Navigation bar button item */
+"mediaLibrary.buttonAddMedia" = "Add Media";
+
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "Delete";
+
+/* Navigation bar button item */
+"mediaLibrary.buttonFilter" = "Filter";
 
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Select";
@@ -9248,6 +9309,45 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "Square Grid";
 
+/* Detail message for buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.detail" = "Make more space for high-quality photos, videos, and other media.";
+
+/* Message about buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.message" = "Buy storage add-on";
+
+/* Message shown when all media items are attached */
+"mediaLibrary.storageDetails.cleanup.allAttached" = "All items in the Media Library are attached.";
+
+/* Message shown while loading unattached media count */
+"mediaLibrary.storageDetails.cleanup.loading" = "Finding out if there are any unattached media items...";
+
+/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
+"mediaLibrary.storageDetails.cleanup.message" = "%1$d item unattached. Remove them to free up some space.";
+
+/* Title for cleanup section */
+"mediaLibrary.storageDetails.cleanup.title" = "Remove unused items";
+
+/* Success message shown after upgrading plan */
+"mediaLibrary.storageDetails.purchase.plan.success" = "Your site plan has been upgraded!";
+
+/* Success message shown after purchasing storage add-on */
+"mediaLibrary.storageDetails.purchase.storage.success" = "Your site Media Library storage has been increased!";
+
+/* Title for the storage details screen */
+"mediaLibrary.storageDetails.title" = "Media Library Storage";
+
+/* Detail message for upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.detail" = "Upgrade your plan to increase your storage space.";
+
+/* Message about upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.message" = "Upgrade plan";
+
+/* Storage usage message showing used space and total space. %1$@ is used space, %2$@ is total space. */
+"mediaLibrary.storageDetails.usage" = "%1$@ out of %2$@ used";
+
+/* Message shown while calculating storage usage */
+"mediaLibrary.storageDetails.usage.calculating" = "Calculating...";
+
 /* Media screen navigation title */
 "mediaLibrary.title" = "Media";
 
@@ -9301,6 +9401,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Take Video";
+
+/* The menu item of viewing media library usage */
+"mediaPicker.viewUsage" = "View Usage";
 
 /* Navigation title for media preview. Example: 1 of 3 */
 "mediaPreview.NofM" = "%1$@ of %2$@";
@@ -10020,6 +10123,48 @@ Example: Reply to Pamela Nguyen */
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d characters";
 
+/* Button to generate an excerpt using AI */
+"postSettings.excerpt.generateButton" = "Generate";
+
+/* Character count display. %d is replaced with the number of characters. */
+"postSettings.excerpt.generator.characterCount" = "%d characters";
+
+/* Button to suggest (generate) more options */
+"postSettings.excerpt.generator.generateMore" = "Suggest More Options";
+
+/* Label for the length picker section */
+"postSettings.excerpt.generator.length" = "Length";
+
+/* Accessibility label for the length adjustment slider */
+"postSettings.excerpt.generator.lengthSlider" = "Length Slider";
+
+/* Button to make excerpts longer */
+"postSettings.excerpt.generator.longer" = "Longer";
+
+/* Label for excerpt option number. %d is replaced with the option number. */
+"postSettings.excerpt.generator.option" = "Option %d";
+
+/* Title shown when ready to generate excerpts */
+"postSettings.excerpt.generator.ready" = "Ready to Generate";
+
+/* Description shown when ready to generate excerpts */
+"postSettings.excerpt.generator.readyDescription" = "Tap to create AI-powered excerpt options";
+
+/* Button to make excerpts shorter */
+"postSettings.excerpt.generator.shorter" = "Shorter";
+
+/* Title for the style picker section */
+"postSettings.excerpt.generator.style" = "Writing Style";
+
+/* Label for the style picker section */
+"postSettings.excerpt.generator.styleLabel" = "Style";
+
+/* Accessibility label for the style picker */
+"postSettings.excerpt.generator.stylePicker" = "Style";
+
+/* Title for the excerpt generator popover */
+"postSettings.excerpt.generator.title" = "Generate Excerpt";
+
 /* Section header for Excerpt in Post Settings */
 "postSettings.excerpt.header" = "Excerpt";
 
@@ -10098,6 +10243,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for the publish date field in Post Settings */
 "postSettings.publishDate.label" = "Date";
 
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"postSettings.publishDateImmediately" = "Immediately";
+
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "General";
 
@@ -10110,6 +10258,9 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Enter slug";
 
+/* Label for the preview button in Post Settings */
+"postSettings.socialSharing.header" = "Social Sharing";
+
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "Sticky";
 
@@ -10119,11 +10270,26 @@ Example: Reply to Pamela Nguyen */
 /* Label for the tags field. Should be the same as WP core. */
 "postSettings.tags.label" = "Tags";
 
+/* Label for the tag suggestions section. */
+"postSettings.tags.suggestions" = "Suggested Tags";
+
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Visibility";
 
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Post Stats";
+
+/* Button to add a new tag. %1$@ is the tag name. */
+"postTags.addTag" = "Add tag";
+
+/* Placeholder text for the tag search field */
+"postTags.searchOrAdd.placeholder" = "Search or add tags";
+
+/* Message shown when no tags are selected */
+"postTags.selectionEmpty" = "No tags are selected";
+
+/* Title for the tags screen */
+"postTags.title" = "Tags";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Cancel";
@@ -10203,6 +10369,15 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "Close";
 
+/* Button to confirm discarding changes */
+"prepublishing.discardChanges.button" = "Discard Changes";
+
+/* Message for the discard changes confirmation dialog */
+"prepublishing.discardChanges.message" = "You have unsaved changes to the post settings. Are you sure you want to discard them?";
+
+/* Title for the discard changes confirmation dialog */
+"prepublishing.discardChanges.title" = "Discard Changes?";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
@@ -10221,8 +10396,14 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "prepublishing.publishDateImmediately" = "Immediately";
 
+/* The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?' */
+"prepublishing.publishingSectionTitle" = "Ready to Publish?";
+
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "Publishing to";
+
+/* Button to confirm discarding changes */
+"prepublishing.saveChanges.button" = "Save Changes";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Schedule";
@@ -10284,6 +10465,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Tags";
+
+/* Navigation title */
+"prepublishing.title" = "Publishing";
 
 /* Details label for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadMediaManyItemsRemaining" = "%@ items remaining";
@@ -10359,6 +10543,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Message of error prompt shown when no internet connection is available */
 "reachability-utils.alert.utils" = "The internet connection appears to be offline.";
+
+/* Navigation title */
+"reader.article.summary" = "Summary";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "The blog %@ will no longer appear in your reader. Tap to undo.";
@@ -10640,6 +10827,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.showBlog" = "Go to Blog";
+
+/* Context menu action */
+"reader.postContextMenu.summarize" = "Summarise";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "View in Browser";
@@ -11516,11 +11706,11 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "Total Subscribers";
 
+/* Menu item to disable the new stats */
+"stats.menu.disableNewStats" = "Disable New Stats";
+
 /* Menu item to send feedback about new stats experience */
 "stats.menu.sendFeedback" = "Send Feedback";
-
-/* Menu item to switch back to classic stats experience */
-"stats.menu.switchToClassic" = "Switch to Classic Stats";
 
 /* Menu item to enable new stats experience */
 "stats.menu.tryNewStats" = "Try New Stats";
@@ -11903,9 +12093,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Reader for iOS Support";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"tags.add.button" = "Add tag: %1$@";
-
 /* Description for empty state when there are no tags */
 "tags.empty.description" = "Tags help organise your content and make it easier for readers to find related posts.";
 
@@ -11923,9 +12110,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Placeholder text for the tag search field */
 "tags.search.placeholder" = "Search tags";
-
-/* Message shown when no tags are selected */
-"tags.selected.empty" = "No tags are selected";
 
 /* Title for the tags screen */
 "tags.title" = "Tags";

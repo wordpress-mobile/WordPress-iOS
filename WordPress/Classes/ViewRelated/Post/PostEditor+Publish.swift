@@ -107,7 +107,8 @@ extension PublishingEditor {
     }
 
     private func showPublishingConfirmation(for action: PostEditorAction, analyticsStat: WPAnalyticsStat?) {
-        PrepublishingViewController.show(for: post, from: self) { [weak self] result in
+        let originalFeaturedImageID = post.featuredImage?.mediaID
+        PublishPostViewController.show(for: post, from: self) { [weak self] result in
             guard let self else { return }
             switch result {
             case .published:
@@ -119,7 +120,11 @@ extension PublishingEditor {
 
                 let presentBloggingReminders = JetpackNotificationMigrationService.shared.shouldPresentNotifications()
                 self.dismissOrPopView(presentBloggingReminders: presentBloggingReminders)
-            case .cancelled:
+            case .cancelled(let isSaved):
+                if isSaved {
+                    wpAssert(self is PostEditor)
+                    (self as? PostEditor)?.didSavePostSettings(originalFeaturedImageID: originalFeaturedImageID)
+                }
                 WPAnalytics.track(.editorPostPublishDismissed)
             }
         }

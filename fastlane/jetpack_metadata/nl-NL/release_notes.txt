@@ -1,7 +1,16 @@
-We hebben een aantal doordachte verbeteringen aangebracht om je Jetpack-ervaring nog soepeler te maken.
-
-We hebben ondersteuning toegevoegd voor iOS 26, zodat je kunt profiteren van alle nieuwste functies die je apparaat te bieden heeft. Alles ziet er mooi uit en voelt precies goed.
-
-De Reader heeft wat aandacht gekregen met visuele updates voor het artikelscherm, waardoor het voor de ogen gemakkelijker wordt wanneer je je favoriete inhoud bijhoudt.
-
-We hebben ook enkele verbeteringen achter de schermen aangebracht aan knoppen en navigatie in de app. Je zult merken dat dingen gepolijst en consistenter aanvoelen, vooral in de editor-, instellingen- en statistiekenschermen.
+Je kan nu een samenvatting, een berichtsamenvatting en automatisch gegenereerde tags voor je berichten maken met behulp van Apple Intelligence. Het is ook eenvoudiger om je tags te kiezen in berichtinstellingen. Dat is pas slim.
+Over statistieken gesproken, er zijn verschillende nieuwe verbeteringen op dit gebied van de app.
+- We hebben een Vandaag-kaart toegevoegd aan het scherm Nieuwe statistieken.
+- Je homepage verschijnt nu in de lijst met toppagina's.
+- Je top 10 en 50 artikelen hebben nu hun eigen speciale sectie. Een plek voor elk bericht en elk bericht op de juiste plek.
+- Je toppagina's worden goed weergegeven wanneer je een groot aantal items hebt.
+- De lay-out van de nieuwe statistieken wordt aangepast aan verschillende schermformaten. Zelfs echt, echt grote.
+- Het scherm onthoudt je voorkeursinstellingen wanneer je een aangepast datumbereik kiest.
+- Je kan het tabblad Verkeer omlaag trekken om het scherm te vernieuwen.
+We hebben ook een paar visuele fixes voor iOS gemaakt op gebieden zoals de site-aanmaakflow, het mediaselectiescherm en het Stats-scherm. En terwijl we bezig waren, hebben we ook verschillende bugs geplet.
+- We hebben een zeldzame crash opgelost die soms voorkomt in statistieken en abonnees. (Maar niet meer.)
+- Artikelweergaven zien er in de Reader uit zoals het hoort wanneer bepaalde thema's zijn ingeschakeld.
+- Lezerartikelen worden correct weergegeven op apparaten met Display Zoom ingeschakeld.
+- De knop 'Media toevoegen' blijft zichtbaar in de mediabibliotheek. Geen verdwijntrucs meer.
+- Je kan zoeken in Reader-abonnementen zonder de app te bevriezen.
+- De werkbalk in Reader-artikelen verdwijnt niet meer en verschijnt van tijd tot tijd opnieuw. Nu zie je het, nu zie je het … nog steeds, gokken we.

@@ -17,7 +17,6 @@ struct MetricsOverviewTabView: View {
     var onMetricSelected: ((SiteMetric) -> Void)?
 
     @ScaledMetric(relativeTo: .title) private var minTabWidth: CGFloat = 100
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -37,7 +36,7 @@ struct MetricsOverviewTabView: View {
 
     private func makeItemView(for item: MetricData, onTap: @escaping () -> Void) -> some View {
         MetricItemView(data: item, isSelected: selectedMetric == item.metric, onTap: onTap)
-            .frame(minWidth: minTabWidth + (horizontalSizeClass == .compact ? 0 : 20))
+            .frame(minWidth: minTabWidth)
             .id(item.metric)
     }
 
@@ -77,8 +76,8 @@ private struct MetricItemView: View {
                     .padding(.leading, Constants.step2)
                     .padding(.trailing, Constants.step1)
                 tabContent
-                    .padding(.top, Constants.step1 + 3)
-                    .padding(.bottom, Constants.step2 + 2)
+                    .padding(.top, Constants.step1 + 1)
+                    .padding(.bottom, Constants.step2)
                     .padding(.leading, Constants.step3)
                     .animation(.spring, value: isSelected)
             }
@@ -89,7 +88,7 @@ private struct MetricItemView: View {
     // MARK: - Private Views
 
     private var tabContent: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(alignment: .leading, spacing: -2) {
             headerView
                 .unredacted()
             metricsView

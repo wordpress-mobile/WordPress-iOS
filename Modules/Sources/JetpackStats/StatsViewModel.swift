@@ -9,7 +9,9 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     @Published var dateRange: StatsDateRange {
         didSet {
             updateViewModelsDateRange()
-            saveSelectedDateRangePreset()
+            if !isNavigationStackLocked {
+                saveSelectedDateRangePreset()
+            }
             if !dateRange.isAdjacent(to: oldValue) {
                 clearNavigationStack()
             }
@@ -17,6 +19,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     }
 
     private var isNavigationStackLocked = false
+
     @Published private(set) var cards: [any TrafficCardViewModel] = []
     @Published private(set) var dateRangeNavigationStack: [StatsDateRange] = []
 
@@ -25,72 +28,81 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     let context: StatsContext
 
     private let userDefaults: UserDefaults
-    private let configurationKey = "JetpackStatsTrafficConfiguration"
-    private let dateRangePresetKey = "JetpackStatsSelectedDateRangePreset"
+    private static let configurationKey = "JetpackStatsTrafficConfiguration"
+    private static let dateRangePresetKey = "JetpackStatsSelectedDateRangePreset"
+    private static let versionKey = "JetpackStatsVersionKey"
 
     init(context: StatsContext, userDefaults: UserDefaults = .standard) {
         self.context = context
         self.userDefaults = userDefaults
 
-        // Try to load the saved preset, otherwise use the initial date range
-        if let savedPreset = Self.loadDateRangePreset(from: userDefaults, key: dateRangePresetKey) {
-            self.dateRange = context.calendar.makeDateRange(for: savedPreset)
-        } else {
-            self.dateRange = context.calendar.makeDateRange(for: .last7Days)
-        }
+        Self.performMigrations(userDefaults: userDefaults, context: context)
 
-        self.trafficCardConfiguration = Self.loadConfiguration(
-            from: userDefaults,
-            key: configurationKey,
-            context: context
-        )
+        let preset = Self.loadDateRangePreset(from: userDefaults)
+        self.dateRange = context.calendar.makeDateRange(for: preset ?? .last7Days)
+
+        let configuraiton = Self.getConfiguration(from: userDefaults)
+        self.trafficCardConfiguration = configuraiton ?? Self.makeDefaultConfiguration(context: context)
+
         configureCards()
     }
 
-    func saveConfiguration() {
-        guard let data = try? JSONEncoder().encode(trafficCardConfiguration) else { return }
-        userDefaults.set(data, forKey: configurationKey)
+    private static func performMigrations(userDefaults: UserDefaults, context: StatsContext) {
+        if userDefaults.integer(forKey: Self.versionKey) == 0 {
+            userDefaults.set(1, forKey: Self.versionKey)
+
+            if var configuration = Self.getConfiguration(from: userDefaults) {
+                let metrics = Set(context.service.supportedMetrics)
+                let index = (UIDevice.current.userInterfaceIdiom == .pad && !configuration.cards.isEmpty) ? 1 : 0
+                configuration.cards.insert(.today(.init(supportedMetrics: metrics)), at: index)
+                Self.saveConfiguration(configuration, in: userDefaults)
+            }
+        }
+    }
+
+    private func saveConfiguration() {
+        Self.saveConfiguration(trafficCardConfiguration, in: userDefaults)
     }
 
     func resetToDefault() {
         trafficCardConfiguration = makeDefaultConfiguration()
-        userDefaults.removeObject(forKey: configurationKey)
+        userDefaults.removeObject(forKey: Self.configurationKey)
     }
 
-    private static func loadConfiguration(from userDefaults: UserDefaults, key: String, context: StatsContext) -> TrafficCardConfiguration {
-        guard let data = userDefaults.data(forKey: key),
-              let configuration = try? JSONDecoder().decode(TrafficCardConfiguration.self, from: data) else {
-            return makeDefaultConfiguration(context: context)
-        }
-        return configuration
+    private static func saveConfiguration(_ configuration: TrafficCardConfiguration, in userDefaults: UserDefaults) {
+        guard let data = try? JSONEncoder().encode(configuration) else { return }
+        userDefaults.set(data, forKey: Self.configurationKey)
+    }
+
+    private static func getConfiguration(from userDefaults: UserDefaults) -> TrafficCardConfiguration? {
+        guard let data = userDefaults.data(forKey: Self.configurationKey) else { return nil}
+        return try? JSONDecoder().decode(TrafficCardConfiguration.self, from: data)
     }
 
     private static func makeDefaultConfiguration(context: StatsContext) -> TrafficCardConfiguration {
-        // Get available metrics from service, excluding downloads
         let availableMetrics = context.service.supportedMetrics
 
-        var cards: [TrafficCardConfiguration.Card] = [
-            .chart(ChartCardConfiguration(metrics: availableMetrics))
-        ]
-
-        if UIDevice.current.userInterfaceIdiom == .pad { // Has more space
-            cards += [
-                .topList(TopListCardConfiguration(item: .postsAndPages, metric: .views)),
-                .topList(TopListCardConfiguration(item: .referrers, metric: .views)),
-                .topList(TopListCardConfiguration(item: .searchTerms, metric: .views)),
-                .topList(TopListCardConfiguration(item: .locations, metric: .views)),
-                .topList(TopListCardConfiguration(item: .externalLinks, metric: .views)),
-                .topList(TopListCardConfiguration(item: .authors, metric: .views)),
-            ]
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            // The iPad vesrion has more space, to it's OK to add more advanced cards.
+            return TrafficCardConfiguration(cards: [
+                .chart(.init(metrics: availableMetrics)),
+                .today(.init(supportedMetrics: Set(availableMetrics))),
+                .topList(.init(item: .postsAndPages, metric: .views)),
+                .topList(.init(item: .referrers, metric: .views)),
+                .topList(.init(item: .searchTerms, metric: .views)),
+                .topList(.init(item: .locations, metric: .views)),
+                .topList(.init(item: .externalLinks, metric: .views)),
+                .topList(.init(item: .authors, metric: .views)),
+            ])
         } else {
-            cards += [
-                .topList(TopListCardConfiguration(item: .postsAndPages, metric: .views)),
-                .topList(TopListCardConfiguration(item: .referrers, metric: .views)),
-                .topList(TopListCardConfiguration(item: .locations, metric: .views))
-            ]
+            return TrafficCardConfiguration(cards: [
+                .today(.init(supportedMetrics: Set(availableMetrics))),
+                .chart(.init(metrics: availableMetrics)),
+                .topList(.init(item: .postsAndPages, metric: .views)),
+                .topList(.init(item: .referrers, metric: .views)),
+                .topList(.init(item: .locations, metric: .views))
+            ])
         }
-
-        return TrafficCardConfiguration(cards: cards)
     }
 
     private func makeDefaultConfiguration() -> TrafficCardConfiguration {
@@ -98,15 +110,19 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     }
 
     private func configureCards() {
-        cards = trafficCardConfiguration.cards.compactMap { card in
-            createViewModel(for: card)
-        }
+        cards = trafficCardConfiguration.cards.map(createViewModel)
     }
 
-    private func createViewModel(for card: TrafficCardConfiguration.Card) -> TrafficCardViewModel? {
-        let viewModel: TrafficCardViewModel?
+    private func createViewModel(for card: TrafficCardConfiguration.Card) -> TrafficCardViewModel {
+        let viewModel: TrafficCardViewModel
 
         switch card {
+        case .today(let configuration):
+            viewModel = TodayCardViewModel(
+                configuration: configuration,
+                dateRange: dateRange,
+                context: context
+            )
         case .chart(let configuration):
             viewModel = ChartCardViewModel(
                 configuration: configuration,
@@ -123,7 +139,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
             )
         }
 
-        viewModel?.configurationDelegate = self
+        viewModel.configurationDelegate = self
         return viewModel
     }
 
@@ -161,36 +177,41 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
     // MARK: - Adding Cards
 
-    func addCard(type: AddCardType) {
+    func addCard(type: CardType) {
         let card = makeCard(type: type)
         trafficCardConfiguration.cards.append(card)
         saveConfiguration()
 
         // Track card added event
-        context.tracker?.send(.cardAdded, properties: ["card_type": cardType(for: card)])
+        context.tracker?.send(.cardAdded, properties: ["card_type": type.rawValue])
 
         // Create and append the view model
-        if let viewModel = createViewModel(for: card) {
-            cards.append(viewModel)
+        let viewModel = createViewModel(for: card)
+        cards.append(viewModel)
 
-            // Enable editing after a short delay to allow the card to be added and scrolled to
-            Task {
-                try? await Task.sleep(for: .milliseconds(500))
-                scrollToCardSubject.send(viewModel.id)
-                try? await Task.sleep(for: .milliseconds(500))
-                viewModel.isEditing = true
-            }
+        // Enable editing after a short delay to allow the card to be added and scrolled to
+        Task {
+            try? await Task.sleep(for: .milliseconds(500))
+            scrollToCardSubject.send(viewModel.id)
+            try? await Task.sleep(for: .milliseconds(500))
+            viewModel.isEditing = true
         }
     }
 
-    private func makeCard(type: AddCardType) -> TrafficCardConfiguration.Card {
+    private func makeCard(type: CardType) -> TrafficCardConfiguration.Card {
         switch type {
+        case .today:
+            let supported = Set(context.service.supportedMetrics)
+            let metrics = [SiteMetric.views, .visitors, .likes, .comments]
+                .filter(supported.contains)
+            let configuration = TodayCardConfiguration(metrics: metrics)
+            return .today(configuration)
         case .chart:
             let configuration = ChartCardConfiguration(metrics: context.service.supportedMetrics)
-            return TrafficCardConfiguration.Card.chart(configuration)
+            return .chart(configuration)
         case .topList:
             let configuration = TopListCardConfiguration(item: .postsAndPages, metric: .views)
-            return TrafficCardConfiguration.Card.topList(configuration)
+            return .topList(configuration)
         }
     }
 
@@ -215,7 +236,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
     func deleteCard(_ card: any TrafficCardViewModel) {
         // Track card removed event
-        context.tracker?.send(.cardRemoved, properties: ["card_type": cardType(for: card)])
+        context.tracker?.send(.cardRemoved, properties: ["card_type": card.cardType.rawValue])
 
         // Find and remove the card from configuration using the protocol's id property
         trafficCardConfiguration.cards.removeAll { $0.id == card.id }
@@ -271,14 +292,14 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
     private func saveSelectedDateRangePreset() {
         if let preset = dateRange.preset {
-            userDefaults.set(preset.rawValue, forKey: dateRangePresetKey)
+            userDefaults.set(preset.rawValue, forKey: Self.dateRangePresetKey)
         } else {
-            userDefaults.removeObject(forKey: dateRangePresetKey)
+            // Do nothing – remember last used preset-based period
         }
     }
 
-    private static func loadDateRangePreset(from userDefaults: UserDefaults, key: String) -> DateIntervalPreset? {
-        guard let rawValue = userDefaults.string(forKey: key),
+    private static func loadDateRangePreset(from userDefaults: UserDefaults) -> DateIntervalPreset? {
+        guard let rawValue = userDefaults.string(forKey: Self.dateRangePresetKey),
               let preset = DateIntervalPreset(rawValue: rawValue) else {
             return nil
         }
@@ -293,26 +314,9 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         resetToDefault()
 
         // Reset date range preset
-        userDefaults.removeObject(forKey: dateRangePresetKey)
+        userDefaults.removeObject(forKey: Self.dateRangePresetKey)
 
         // Reset date range to default
         dateRange = context.calendar.makeDateRange(for: .last7Days)
-    }
-
-    // MARK: - Helper Methods
-
-    private func cardType(for card: TrafficCardConfiguration.Card) -> String {
-        switch card {
-        case .chart: return "chart"
-        case .topList: return "top_list"
-        }
-    }
-
-    private func cardType(for viewModel: any TrafficCardViewModel) -> String {
-        switch viewModel {
-        case is ChartCardViewModel: return "chart"
-        case is TopListViewModel: return "top_list"
-        default: return "unknown"
-        }
     }
 }

@@ -1,5 +1,6 @@
-ביצענו כמה שיפורים משמעותיים כדי להפוך את החוויה שלך ב-WordPress לטובה עוד יותר.
-
-We added support for iOS 26, so you can take advantage of all the latest features your device has to offer. Everything looks and feels just right.
-
-We also made some behind-the-scenes improvements to buttons and navigation throughout the app. You'll notice things feel more polished and consistent, especially in the Editor, Settings, and Stats screens.
+כעת אפשר ליצור תקציר של הפוסטים ולקבל הצעות אוטומטיות לתגיות באמצעות Apple Intelligence. גם קל יותר לבחור תגיות בהגדרות 'פוסטים'. באמת חוכמה גדולה.
+ביצענו כמה תיקונים חזותיים ב-iOS באזורים כמו תהליך יצירת האתר, מסך בחירת המדיה והמסך 'נתונים סטטיסטיים'.
+כבר היינו בסביבה, אז גם מחצנו כמה באגים.
+- מאמרים ב-Reader מעובדים כראוי במכשירים שבהם האפשרות Display Zoom מופעלת.
+- הכפתור 'להוסיף מדיה' לא נעלם בספריית המדיה. סיימנו עם תרגיל ההיעלמות הזה.
+- אפשר לחפש ב'מינויים ב-Reader' בלי לגרום לאפליקציה לקפוא.

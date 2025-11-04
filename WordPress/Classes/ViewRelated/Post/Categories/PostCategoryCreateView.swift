@@ -20,7 +20,7 @@ struct PostCategoryCreateView: View {
         }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button(SharedStrings.Button.cancel) {
+                Button.make(role: .cancel) {
                     dismiss()
                 }
             }
@@ -28,7 +28,7 @@ struct PostCategoryCreateView: View {
                 if isSaving {
                     ProgressView()
                 } else {
-                    Button(SharedStrings.Button.save, action: buttonSaveTapped)
+                    Button.make(role: .confirm, action: buttonSaveTapped)
                         .disabled(title.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
             }

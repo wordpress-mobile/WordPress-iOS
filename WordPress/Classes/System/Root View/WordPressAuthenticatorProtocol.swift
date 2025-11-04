@@ -28,7 +28,7 @@ extension WordPressAuthenticator: WordPressAuthenticatorProtocol {
             return false
         }
 
-        return RemoteFeatureFlag.dotComWebLogin.enabled()
+        return true
     }
 
     private static func continueWithDotCom(_ viewController: UIViewController) -> Bool {

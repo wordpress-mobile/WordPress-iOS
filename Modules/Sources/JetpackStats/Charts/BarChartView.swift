@@ -10,6 +10,7 @@ struct BarChartView: View {
     @State private var tappedDataPoint: DataPoint?
 
     @Environment(\.context) var context
+    @Environment(\.colorScheme) var colorScheme
 
     private var valueFormatter: StatsValueFormatter {
         StatsValueFormatter(metric: data.metric)
@@ -60,7 +61,7 @@ struct BarChartView: View {
                 LinearGradient(
                     colors: [
                         data.metric.primaryColor,
-                        data.metric.primaryColor.opacity(0.5)
+                        lighten(data.metric.primaryColor)
                     ],
                     startPoint: .top,
                     endPoint: .bottom
@@ -68,6 +69,14 @@ struct BarChartView: View {
             )
             .cornerRadius(6)
             .opacity(getOpacityForCurrentPeriodBar(for: point))
+        }
+    }
+
+    private func lighten(_ color: Color) -> Color {
+        if #available(iOS 18, *) {
+            color.mix(with: Color(.systemBackground), by: colorScheme == .light ? 0.5 : 0.25)
+        } else {
+            color.opacity(0.5)
         }
     }
 

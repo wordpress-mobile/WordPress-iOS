@@ -3,6 +3,8 @@ import SwiftUI
 /// A view that displays paginated data using ForEach with automatic loading triggers.
 public struct DataViewPaginatedForEach<Response: DataViewPaginatedResponseProtocol, Content: View>: View {
     @ObservedObject private var response: Response
+    /// Control which items are displayed on screen.
+    private let filter: ((Response.Element) -> Bool)?
     private let content: (Response.Element) -> Content
 
     /// Creates a paginated ForEach view.
@@ -12,14 +14,22 @@ public struct DataViewPaginatedForEach<Response: DataViewPaginatedResponseProtoc
     ///   - content: A view builder that creates the content for each item.
     public init(
         response: Response,
+        filter: ((Response.Element) -> Bool)? = nil,
         @ViewBuilder content: @escaping (Response.Element) -> Content
     ) {
         self.response = response
         self.content = content
+        self.filter = filter
     }
 
     public var body: some View {
-        ForEach(response.items) { item in
+        let items = if let filter {
+            response.items.filter(filter)
+        } else {
+            response.items
+        }
+
+        ForEach(items) { item in
             content(item)
                 .onAppear {
                     response.onRowAppeared(item)

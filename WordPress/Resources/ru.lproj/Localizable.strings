@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-09-16 14:54:08+0000 */
+/* Translation-Revision-Date: 2025-10-07 17:54:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ru */
@@ -959,9 +959,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Блог";
 
-/* Create new Blog Post button title */
-"Blog post" = "Запись блога";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Ведение блога";
 
@@ -1071,8 +1068,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Cancel Insight management action sheet.
    Cancel registering a domain
    Cancel removing a plugin
-   Cancel site creation
-   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -1298,8 +1293,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Period Stats 'Clicks' header */
 "Clicks" = "Щелчки";
 
-/* Action button to close the editor
-   Dismisses the current screen */
+/* Action button to close the editor */
 "Close" = "Закрыть";
 
 /* Close account action label */
@@ -5300,9 +5294,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Сайт не найден";
 
-/* Create new Site Page button title */
-"Site page" = "Страница сайта";
-
 /* Site timezone offset from UTC. The first %@ is plus or minus. %d is the number of hours. The last %@ is minutes, where applicable. Examples: `Site timezone (UTC+10:30)`, `Site timezone (UTC-8)`. */
 "Site timezone (UTC%@%d%@)" = "Часовой пояс сайта (UTC%1$@%2$d%3$@)";
 
@@ -7707,11 +7698,14 @@ Example: Reply to Pamela Nguyen */
 /* Toggle Title for the privacy compliance popover. */
 "compliance.analytics.popover.toggle" = "Аналитика";
 
-/* Create new Blog Post from Audio button title */
-"createFAB.postFromAudio" = "Публикация из аудио";
-
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "Создать запись или страницу";
+
+/* Create Sheet button title */
+"createSheet.page" = "Стр.";
+
+/* Create Sheet button title */
+"createSheet.post" = "Запись";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Настройте вашу консоль и выберите отчёты, которые хотите видеть. Сфокусируйтесь на данных, которые вам наиболее важны.";
@@ -8123,6 +8117,30 @@ Example: Reply to Pamela Nguyen */
 /* A footer retry button */
 "general.pagingFooterView.retry" = "Повторить";
 
+/* Generated content length (needs to be short) */
+"generation.length.long" = "Длинный";
+
+/* Generated content length (needs to be short) */
+"generation.length.medium" = "Средний";
+
+/* Generated content length (needs to be short) */
+"generation.length.short" = "Короткий";
+
+/* AI generation style */
+"generation.style.conversational" = "Беседа";
+
+/* AI generation style */
+"generation.style.engaging" = "Привлекательный";
+
+/* AI generation style */
+"generation.style.formal" = "Формальный";
+
+/* AI generation style */
+"generation.style.professional" = "Деловой";
+
+/* AI generation style */
+"generation.style.witty" = "Остроумный";
+
 /* A generic title for an error */
 "generic.error.title" = "Ошибка";
 
@@ -8236,6 +8254,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Message shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.message" = "Чтобы создавать отрывки с помощью ИИ, включите Apple Intelligence в настройках. В этой функции применяется обработка данных на устройстве с целью защиты конфиденциальности.";
+
+/* Button to open Apple Intelligence settings */
+"intelligence.unavailableView.appleIntelligenceDisabled.openSettings" = "Открыть настройки";
+
+/* Title shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.title" = "Требуется Apple Intelligence";
+
+/* Message shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.message" = "Apple Intelligence недоступно на этом устройстве";
+
+/* Title shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.title" = "Apple Intelligence недоступно";
+
+/* Description shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.description" = "ИИ-модель в процессе скачивания или подготовки. Повторите попытку через несколько минут.";
+
+/* Title shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.title" = "Подготовка модели...";
 
 /* Cancel dialog confirmation title */
 "inviteSubscribers.cancelConfirmationTitle" = "Вы уверены, что хотите отказаться от новых подписчиков?";
@@ -8648,7 +8687,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for metric selection */
 "jetpackStats.addChart.selectMetric" = "Выбрать метрики";
 
-/* Top list option description */
+/* Today chart title */
+"jetpackStats.addChart.today" = "Сегодня";
+
+/* Today option description
+   Top list option description */
 "jetpackStats.addChart.topListDescription" = "Просмотрите свой самый популярный контент";
 
 /* Top list option title */
@@ -8978,6 +9021,12 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title */
 "jetpackStats.postDetails.title" = "Статистика по записям";
 
+/* Section title */
+"jetpackStats.postDetails.top10" = "10 лучших";
+
+/* Section title */
+"jetpackStats.postDetails.top50" = "50 лучших";
+
 /* Must be short!Label for total email opens metric */
 "jetpackStats.postDetails.totalOpens" = "Всего открытий";
 
@@ -9079,6 +9128,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Stats screen title */
 "jetpackStats.title" = "Статистика";
+
+/* Today card title */
+"jetpackStats.todayCard.title" = "Сегодня";
 
 /* Title for items with highest bounce rate */
 "jetpackStats.topList.highestBounceRate" = "Наибольшая частота отклонений";
@@ -9188,8 +9240,14 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "Сетка с соотношением сторон";
 
+/* Navigation bar button item */
+"mediaLibrary.buttonAddMedia" = "Добавить медиафайл";
+
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "Удалить";
+
+/* Navigation bar button item */
+"mediaLibrary.buttonFilter" = "Фильтр";
 
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Выбрать";
@@ -9248,6 +9306,45 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "Квадратная сетка";
 
+/* Detail message for buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.detail" = "Больше места для фотографий в высоком разрешении, видео и других медиафайлов";
+
+/* Message about buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.message" = "Купить дополнительный объём хранилища";
+
+/* Message shown when all media items are attached */
+"mediaLibrary.storageDetails.cleanup.allAttached" = "Все элементы в библиотеке медиафайлов прикреплены.";
+
+/* Message shown while loading unattached media count */
+"mediaLibrary.storageDetails.cleanup.loading" = "Проверяем, нет ли неприкреплённых медиафайлов...";
+
+/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
+"mediaLibrary.storageDetails.cleanup.message" = "Неприкреплённых медиафайлов: %1$d Удалите их, чтобы освободить место.";
+
+/* Title for cleanup section */
+"mediaLibrary.storageDetails.cleanup.title" = "Удалить неиспользуемые элементы";
+
+/* Success message shown after upgrading plan */
+"mediaLibrary.storageDetails.purchase.plan.success" = "Уровень тарифного плана вашего сайта повышен!";
+
+/* Success message shown after purchasing storage add-on */
+"mediaLibrary.storageDetails.purchase.storage.success" = "Объём хранилища библиотеки медиафайлов вашего сайта увеличен!";
+
+/* Title for the storage details screen */
+"mediaLibrary.storageDetails.title" = "Хранилище медиафайлов";
+
+/* Detail message for upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.detail" = "Перейдите на тарифный план более высокого уровня, чтобы увеличить доступный объём хранилища.";
+
+/* Message about upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.message" = "Повысить уровень тарифного плана";
+
+/* Storage usage message showing used space and total space. %1$@ is used space, %2$@ is total space. */
+"mediaLibrary.storageDetails.usage" = "Использовано %1$@ из %2$@";
+
+/* Message shown while calculating storage usage */
+"mediaLibrary.storageDetails.usage.calculating" = "Подсчёт…";
+
 /* Media screen navigation title */
 "mediaLibrary.title" = "Медиа";
 
@@ -9301,6 +9398,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Записать видео";
+
+/* The menu item of viewing media library usage */
+"mediaPicker.viewUsage" = "Просмотреть использование";
 
 /* Navigation title for media preview. Example: 1 of 3 */
 "mediaPreview.NofM" = "%1$@ из %2$@";
@@ -10020,6 +10120,48 @@ Example: Reply to Pamela Nguyen */
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "Символов: %1$d";
 
+/* Button to generate an excerpt using AI */
+"postSettings.excerpt.generateButton" = "Сгенерировать";
+
+/* Character count display. %d is replaced with the number of characters. */
+"postSettings.excerpt.generator.characterCount" = "Символов: %d";
+
+/* Button to suggest (generate) more options */
+"postSettings.excerpt.generator.generateMore" = "Предложить ещё варианты";
+
+/* Label for the length picker section */
+"postSettings.excerpt.generator.length" = "Длина";
+
+/* Accessibility label for the length adjustment slider */
+"postSettings.excerpt.generator.lengthSlider" = "Слайдер длины";
+
+/* Button to make excerpts longer */
+"postSettings.excerpt.generator.longer" = "Длиннее";
+
+/* Label for excerpt option number. %d is replaced with the option number. */
+"postSettings.excerpt.generator.option" = "Вариант %d";
+
+/* Title shown when ready to generate excerpts */
+"postSettings.excerpt.generator.ready" = "Готово к генерации";
+
+/* Description shown when ready to generate excerpts */
+"postSettings.excerpt.generator.readyDescription" = "Коснитесь, чтобы создать варианты отрывков при помощи ИИ";
+
+/* Button to make excerpts shorter */
+"postSettings.excerpt.generator.shorter" = "Короче";
+
+/* Title for the style picker section */
+"postSettings.excerpt.generator.style" = "Стиль письма";
+
+/* Label for the style picker section */
+"postSettings.excerpt.generator.styleLabel" = "Стиль";
+
+/* Accessibility label for the style picker */
+"postSettings.excerpt.generator.stylePicker" = "Стиль";
+
+/* Title for the excerpt generator popover */
+"postSettings.excerpt.generator.title" = "Создать отрывок";
+
 /* Section header for Excerpt in Post Settings */
 "postSettings.excerpt.header" = "Отрывок";
 
@@ -10098,6 +10240,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for the publish date field in Post Settings */
 "postSettings.publishDate.label" = "Дата";
 
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"postSettings.publishDateImmediately" = "Сразу";
+
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Общие";
 
@@ -10110,6 +10255,9 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Введите слаг";
 
+/* Label for the preview button in Post Settings */
+"postSettings.socialSharing.header" = "Поделиться в соцсетях";
+
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "Прикреплено";
 
@@ -10119,11 +10267,23 @@ Example: Reply to Pamela Nguyen */
 /* Label for the tags field. Should be the same as WP core. */
 "postSettings.tags.label" = "Метки";
 
+/* Label for the tag suggestions section. */
+"postSettings.tags.suggestions" = "Рекомендуемые метки";
+
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "Видимость";
 
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Статистика по записям";
+
+/* Button to add a new tag. %1$@ is the tag name. */
+"postTags.addTag" = "Добавить метку";
+
+/* Placeholder text for the tag search field */
+"postTags.searchOrAdd.placeholder" = "Искать или добавить метки";
+
+/* Title for the tags screen */
+"postTags.title" = "Метки";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Отмена";
@@ -10203,6 +10363,15 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "Закрыть";
 
+/* Button to confirm discarding changes */
+"prepublishing.discardChanges.button" = "Отменить изменения";
+
+/* Message for the discard changes confirmation dialog */
+"prepublishing.discardChanges.message" = "У вас есть несохранённые изменения настроек записи. Вы действительно хотите их отменить?";
+
+/* Title for the discard changes confirmation dialog */
+"prepublishing.discardChanges.title" = "Отменить изменения?";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
@@ -10221,8 +10390,14 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "prepublishing.publishDateImmediately" = "Немедленно";
 
+/* The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?' */
+"prepublishing.publishingSectionTitle" = "Готовы к публикации?";
+
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "Публикация на";
+
+/* Button to confirm discarding changes */
+"prepublishing.saveChanges.button" = "Сохранить изменения";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Расписание";
@@ -10284,6 +10459,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Теги";
+
+/* Navigation title */
+"prepublishing.title" = "Публикация";
 
 /* Details label for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadMediaManyItemsRemaining" = "Осталось элементов: %@";
@@ -10359,6 +10537,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Message of error prompt shown when no internet connection is available */
 "reachability-utils.alert.utils" = "Похоже, нет подключения к Интернету.";
+
+/* Navigation title */
+"reader.article.summary" = "Обзор";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "Блог %@ больше не будет отображаться в приложении «Чтиво». Нажмите, чтобы отменить действие.";
@@ -10640,6 +10821,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.showBlog" = "Перейти в блог";
+
+/* Context menu action */
+"reader.postContextMenu.summarize" = "Подвести итог";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Просмотреть в браузере";
@@ -11516,11 +11700,11 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "Всего подписчиков";
 
+/* Menu item to disable the new stats */
+"stats.menu.disableNewStats" = "Отключить новую статистику";
+
 /* Menu item to send feedback about new stats experience */
 "stats.menu.sendFeedback" = "Отправить отзыв";
-
-/* Menu item to switch back to classic stats experience */
-"stats.menu.switchToClassic" = "Вернуться к классической статистике";
 
 /* Menu item to enable new stats experience */
 "stats.menu.tryNewStats" = "Встречайте обновлённую статистику";
@@ -11903,9 +12087,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Поддержка «Читалки» в iOS";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"tags.add.button" = "Добавить метку: %1$@";
-
 /* Description for empty state when there are no tags */
 "tags.empty.description" = "Метки помогают упорядочивать контент и облегчают читателям поиск похожих записей.";
 
@@ -11923,9 +12104,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Placeholder text for the tag search field */
 "tags.search.placeholder" = "Поиск меток";
-
-/* Message shown when no tags are selected */
-"tags.selected.empty" = "Нет выбранных меток";
 
 /* Title for the tags screen */
 "tags.title" = "Метки";

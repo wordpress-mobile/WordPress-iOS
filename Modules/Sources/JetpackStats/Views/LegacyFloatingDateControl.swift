@@ -19,14 +19,13 @@ struct LegacyFloatingDateControl: View {
             Spacer(minLength: 8)
             navigationControls
         }
-        .modifier(MinimumBottomSafeArea(minPadding: 16))
+        .modifier(MinimumBottomSafeArea(minPadding: 8))
         .dynamicTypeSize(...DynamicTypeSize.xLarge)
         .padding(.horizontal, 24)
         .background {
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color(uiColor: .systemBackground).opacity(0.1),
-                    Color(uiColor: .systemBackground).opacity(0.8),
+                    Color(uiColor: .systemBackground).opacity(0),
                     Color(uiColor: .systemBackground).opacity(1)
                 ]),
                 startPoint: .top,
@@ -51,14 +50,14 @@ struct LegacyFloatingDateControl: View {
             )
         } label: {
             dateRangeButtonContent
-                .contentShape(Rectangle())
                 .frame(height: buttonHeight)
-                .floatingStyle()
+                .contentShape(Rectangle())
         }
         .tint(Color.primary)
         .menuOrder(.fixed)
         .buttonStyle(.plain)
         .popoverTip(StatsDateRangeTip(), arrowEdge: .bottom)
+        .floatingStyle()
     }
 
     private var dateRangeButtonContent: some View {
@@ -79,11 +78,7 @@ struct LegacyFloatingDateControl: View {
     }
 
     private var currentRangeText: String {
-        if let preset = dateRange.preset, !preset.prefersDateIntervalFormatting {
-            return preset.localizedString
-        }
-        return context.formatters.dateRange
-            .string(from: dateRange.dateInterval)
+        context.formatters.dateRange.string(from: dateRange)
     }
 
     // MARK: - Navigation Controls
@@ -128,16 +123,21 @@ private struct FloatingStyle: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        content
-            .background(Color(.systemBackground).opacity(0.2))
-            .background(Material.thin)
-            .overlay {
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(Color(.separator).opacity(0.2), lineWidth: 1)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .shadow(color: Constants.Colors.shadowColor, radius: 8, x: 0, y: 4)
-            .shadow(color: Constants.Colors.shadowColor.opacity(0.5), radius: 4, x: 0, y: 2)
+        if #available(iOS 26, *) {
+            content
+                .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+        } else {
+            content
+                .background(Color(.systemBackground).opacity(0.2))
+                .background(Material.thin)
+                .overlay {
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .stroke(Color(.separator).opacity(0.2), lineWidth: 1)
+                }
+                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                .shadow(color: Constants.Colors.shadowColor, radius: 8, x: 0, y: 4)
+                .shadow(color: Constants.Colors.shadowColor.opacity(0.5), radius: 4, x: 0, y: 2)
+        }
     }
 }
 

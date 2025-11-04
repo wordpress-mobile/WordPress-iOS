@@ -1,6 +1,5 @@
 import Foundation
 import WordPressAPI
-import WordPressAPIInternal
 
 extension Dictionary where Key == UserAvatarSize, Value == WpResponseString {
 

@@ -1,5 +1,6 @@
-Kami melakukan beberapa peningkatan yang cermat untuk membuat pengalaman WordPress Anda lebih lancar.
-
-Kami menambahkan dukungan untuk iOS 26, sehingga Anda dapat memanfaatkan semua fitur terbaru yang ditawarkan perangkat Anda. Semuanya tampak dan terasa tepat.
-
-Kami juga melakukan beberapa perbaikan di balik layar untuk tombol dan navigasi di seluruh aplikasi. Anda akan melihat semuanya terasa lebih rapi dan konsisten, terutama di layar Editor, Pengaturan, dan Statistik.
+Sekarang, Anda bisa membuat kutipan untuk pos dan mendapatkan saran tag secara otomatis dengan Apple Intelligence. Memilih tag di Pengaturan Pos juga lebih mudah. Ini baru cerdas.
+Kami memperbaiki sejumlah aspek visual di iOS di area-area seperti alur pembuatan situs, layar pemilihan media, dan layar Statistik.
+Kami juga membasmi beberapa bug.
+- Artikel Pembaca kini ditampilkan dengan benar di perangkat yang mengaktifkan Zoom Tampilan.
+- Tombol “Tambah Media” terus terlihat di pustaka media. Tiada lagi yang tiba-tiba lenyap.
+- Aplikasi tidak lagi macet saat Anda mencari di Langganan Pembaca.

@@ -88,8 +88,6 @@
    Cancel Insight management action sheet.
    Cancel registering a domain
    Cancel removing a plugin
-   Cancel site creation
-   Cancel site creation.
    Cancel the crop
    Cancel updating User's Role
    Cancel. Action.
@@ -113,8 +111,7 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Klikovi";
 
-/* Action button to close the editor
-   Dismisses the current screen */
+/* Action button to close the editor */
 "Close" = "Zatvori";
 
 /* Header for a comment's content, shown when editing a comment.

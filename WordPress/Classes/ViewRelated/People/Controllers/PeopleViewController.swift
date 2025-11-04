@@ -16,7 +16,7 @@ class PeopleViewController: UITableViewController {
     ///
     private var blog: Blog?
 
-    /// Mode: Users / Followers
+    /// Mode: Users
     ///
     private var filter = Filter.users {
         didSet {
@@ -70,15 +70,7 @@ class PeopleViewController: UITableViewController {
     /// Sort Descriptor
     ///
     private var sortDescriptors: [NSSortDescriptor] {
-        // Note:
-        // Followers must be sorted out by creationDate!
-        //
-        switch filter {
-        case .followers:
-            return [NSSortDescriptor(key: "creationDate", ascending: true, selector: #selector(NSDate.compare(_:)))]
-        default:
-            return [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
-        }
+        [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
     }
 
     private var viewContext: NSManagedObjectContext {
@@ -192,14 +184,6 @@ class PeopleViewController: UITableViewController {
                 return
             }
             navigationController?.pushViewController(viewController, animated: true)
-        case .followers:
-            let url = URL(string: "https://wordpress.com/subscribers/\(blogId)/\(personAtIndexPath(indexPath).ID)")
-            let configuration = WebViewControllerConfiguration(url: url)
-            configuration.authenticateWithDefaultAccount()
-            configuration.secureInteraction = true
-            let viewController = WebKitViewController(configuration: configuration)
-            let navWrapper = UINavigationController(rootViewController: viewController)
-            navigationController?.present(navWrapper, animated: true)
         }
     }
 
@@ -282,19 +266,12 @@ extension PeopleViewController {
     enum Filter: String, CaseIterable, FilterTabBarItem {
 
         case users = "users"
-        case followers = "followers"
         case viewers = "viewers"
-
-        static var defaultFilters: [Filter] {
-            return [.users, .followers]
-        }
 
         var title: String {
             switch self {
             case .users:
                 return NSLocalizedString("Users", comment: "Blog Users")
-            case .followers:
-                return NSLocalizedString("users.list.title.subscribers", value: "Subscribers", comment: "Site Subscribers")
             case .viewers:
                 return NSLocalizedString("Viewers", comment: "Blog Viewers")
             }
@@ -304,8 +281,6 @@ extension PeopleViewController {
             switch self {
             case .users:
                 return .user
-            case .followers:
-                return .follower
             case .viewers:
                 return .viewer
             }
@@ -313,12 +288,8 @@ extension PeopleViewController {
 
         var screenMode: PersonViewController.ScreenMode {
             switch self {
-            case .users:
-                return .User
-            case .followers:
-                return .Follower
-            case .viewers:
-                return .Viewer
+            case .users: .user
+            case .viewers: .viewer
             }
         }
     }
@@ -402,8 +373,6 @@ private extension PeopleViewController {
         }
 
         switch filter {
-        case .followers:
-            service.loadFollowersPage(offset, success: success)
         case .users:
             loadUsersPage(offset, success: success)
         case .viewers:
@@ -576,20 +545,6 @@ private extension PeopleViewController {
             return
         }
         WPAnalytics.track(.peopleFilterChanged, properties: [:], blog: blog)
-    }
-}
-
-extension PeopleViewController {
-    class func controllerWithBlog(_ blog: Blog, selectedFilter: Filter) -> PeopleViewController? {
-        let storyboard = UIStoryboard(name: "People", bundle: .keystone)
-        guard let viewController = storyboard.instantiateInitialViewController() as? PeopleViewController else {
-            return nil
-        }
-
-        viewController.defaultFilter = selectedFilter
-        viewController.blog = blog
-
-        return viewController
     }
 }
 

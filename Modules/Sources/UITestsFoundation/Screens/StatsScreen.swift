@@ -51,4 +51,10 @@ public class StatsScreen: ScreenObject {
 
         return self
     }
+
+    public func waitUntilDataLoaded() -> Self {
+        _ = app.otherElements["chart_card_chart_view"]
+            .waitForExistence(timeout: 30)
+        return self
+    }
 }

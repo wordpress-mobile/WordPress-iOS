@@ -13,6 +13,7 @@ class StatsHostingViewController: UIViewController {
         let context: StatsContext
         if isDemo {
             context = StatsContext.demo
+                .delaysDisabled(UITestConfigurator.isEnabled(.disableAnimations))
         } else {
             guard let blog, let blogContext = StatsContext(blog: blog) else {
                 return nil
@@ -25,6 +26,11 @@ class StatsHostingViewController: UIViewController {
             router: StatsRouter(viewController: parentViewController),
             showTabs: false
         )
+            .transaction {
+                if UITestConfigurator.isEnabled(.disableAnimations) {
+                    $0.disablesAnimations = true
+                }
+            }
         return UIHostingController(rootView: statsView)
     }
 

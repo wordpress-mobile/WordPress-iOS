@@ -4,31 +4,28 @@ struct PulseAnimationModifier: ViewModifier {
     let isEnabled: Bool
 
     func body(content: Content) -> some View {
-        if isEnabled {
-            content
-                .mask {
-                    PulsingMask()
+        content
+            .overlay {
+                if isEnabled {
+                    PulsingOverlay()
+                        .padding(-8) // Temporary workaround to cover charts properly
                 }
-        } else {
-            content
-        }
+            }
     }
 }
 
-private struct PulsingMask: View {
-    @State private var opacity: Double = 0.5
+private struct PulsingOverlay: View {
+    @State private var opacity: Double = 0.1
 
     var body: some View {
         Constants.Colors.secondaryBackground
             .opacity(opacity)
             .onAppear {
-                withAnimation(
-                    .easeInOut(duration: 1.5)
-                    .repeatForever(autoreverses: true)
-                ) {
-                    opacity = 0.9
+                withAnimation(.easeInOut(duration: 1.5) .repeatForever(autoreverses: true)) {
+                    opacity = 0.6
                 }
             }
+            .allowsHitTesting(false)
     }
 }
 

@@ -16,6 +16,7 @@
 @dynamic height;
 @dynamic filename;
 @dynamic filesize;
+@dynamic formattedSize;
 @dynamic creationDate;
 @dynamic blog;
 @dynamic posts;

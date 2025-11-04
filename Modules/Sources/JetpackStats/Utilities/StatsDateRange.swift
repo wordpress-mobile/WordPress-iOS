@@ -44,6 +44,12 @@ struct StatsDateRange: Equatable, Sendable {
         refreshEffectiveComparisonPeriodInterval()
     }
 
+    func updating(preset: DateIntervalPreset) -> StatsDateRange {
+        var copy = self
+        copy.update(preset: preset)
+        return copy
+    }
+
     mutating func update(comparisonPeriod: DateRangeComparisonPeriod) {
         self.comparison = comparisonPeriod
         refreshEffectiveComparisonPeriodInterval()

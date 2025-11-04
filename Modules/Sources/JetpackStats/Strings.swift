@@ -229,13 +229,19 @@ enum Strings {
         static let section = AppLocalizedString("jetpackStats.csv.section", value: "Section", comment: "CSV header for section column")
     }
 
-    enum AddChart {
-        static let chartOption = AppLocalizedString("jetpackStats.addChart.chartOption", value: "Chart", comment: "Chart option title")
+    enum Cards {
+        static let chart = AppLocalizedString("jetpackStats.addChart.chartOption", value: "Chart", comment: "Chart option title")
         static let chartDescription = AppLocalizedString("jetpackStats.addChart.chartDescription", value: "Visualize trends over time", comment: "Chart option description")
-        static let topListOption = AppLocalizedString("jetpackStats.addChart.topListOption", value: "Top List", comment: "Top list option title")
+        static let topList = AppLocalizedString("jetpackStats.addChart.topListOption", value: "Top List", comment: "Top list option title")
         static let topListDescription = AppLocalizedString("jetpackStats.addChart.topListDescription", value: "See your top performing content", comment: "Top list option description")
+        static let today = AppLocalizedString("jetpackStats.addChart.today", value: "Today", comment: "Today chart title")
+        static let todayDescription = AppLocalizedString("jetpackStats.addChart.topListDescription", value: "See today's metrics", comment: "Today option description")
         static let selectMetric = AppLocalizedString("jetpackStats.addChart.selectMetric", value: "Select Metrics", comment: "Title for metric selection")
         static let selectDataType = AppLocalizedString("jetpackStats.addChart.selectDataType", value: "Select Data Type", comment: "Title for data type selection")
+    }
+
+    enum Today {
+        static let title = AppLocalizedString("jetpackStats.todayCard.title", value: "Today", comment: "Today card title")
     }
 
     enum Accessibility {

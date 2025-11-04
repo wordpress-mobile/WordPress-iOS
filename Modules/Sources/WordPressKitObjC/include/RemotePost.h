@@ -29,6 +29,7 @@ extern NSString * const PostStatusDeleted;
 @property (nonatomic, strong) NSString *excerpt;
 @property (nonatomic, strong) NSString *slug;
 @property (nonatomic, strong) NSString *suggestedSlug;
+@property (nonatomic, strong) NSString *permalinkTemplateURL;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSNumber *parentID;
@@ -45,6 +46,8 @@ extern NSString * const PostStatusDeleted;
 */
 @property (nonatomic, strong) RemotePostAutosave *autosave;
 
+@property (nonatomic, strong) NSString *commentsStatus;
+@property (nonatomic, strong) NSString *pingsStatus;
 @property (nonatomic, strong) NSNumber *commentCount;
 @property (nonatomic, strong) NSNumber *likeCount;
 

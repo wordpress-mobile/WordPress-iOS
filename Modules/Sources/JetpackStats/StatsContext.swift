@@ -35,11 +35,21 @@ public struct StatsContext: Sendable {
 
     public static let demo: StatsContext = {
         var context = StatsContext(timeZone: .current, siteID: 1, service: MockStatsService())
-        #if DEBUG
+#if DEBUG
         context.tracker = MockStatsTracker.shared
-        #endif
+#endif
         return context
     }()
+
+    /// Disables delays on the mock service.
+    public func delaysDisabled(_ isDisabled: Bool = true) -> StatsContext {
+        if let service = self.service as? MockStatsService {
+            Task {
+                await service.disableDelays()
+            }
+        }
+        return self
+    }
 
     /// Memoized formatted pre-configured to work with the reporting time zone.
     final class StatsFormatters: Sendable {

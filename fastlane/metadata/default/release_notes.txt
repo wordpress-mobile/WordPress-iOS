@@ -1,5 +1,6 @@
-We made some thoughtful improvements to make your WordPress experience even smoother.
-
-We added support for iOS 26, so you can take advantage of all the latest features your device has to offer. Everything looks and feels just right.
-
-We also made some behind-the-scenes improvements to buttons and navigation throughout the app. You'll notice things feel more polished and consistent, especially in the Editor, Settings, and Stats screens.
+You can now create an excerpt for your posts and get auto-suggested tags using Apple Intelligence. It’s also easier to pick your tags in Post Settings. Now that’s smart.
+We made a few visual fixes for iOS in areas like the site creation flow, the media selection screen, and the Stats screen.
+While we were at it, we also squashed a few bugs.
+- Reader articles render properly on devices with Display Zoom enabled.
+- The “Add Media” button stays visible in the media library. No more disappearing act.
+- You can search in Reader Subscriptions without freezing the app.

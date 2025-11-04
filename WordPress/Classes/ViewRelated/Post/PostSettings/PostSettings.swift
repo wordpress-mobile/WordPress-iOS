@@ -21,11 +21,15 @@ struct PostSettings: Hashable {
     var categoryIDs: Set<Int> = []
     var tags: String = ""
     var featuredImageID: Int?
+    var metadata: PostMetadata
 
     // MARK: - Post-specific
     var postFormat: String?
     var isStickyPost = false
     var sharing: PostSocialSharingSettings?
+    var accessLevel: JetpackPostAccessLevel?
+    var allowComments = true
+    var allowPings = true
 
     // MARK: - Page-specific
     var parentPageID: Int?
@@ -50,6 +54,8 @@ struct PostSettings: Hashable {
 
         featuredImageID = post.featuredImage?.mediaID?.intValue
 
+        metadata = PostMetadata(post)
+
         switch post {
         case let post as Post:
             postFormat = post.postFormat
@@ -59,6 +65,9 @@ struct PostSettings: Hashable {
                 $0.categoryID?.intValue
             })
             sharing = PostSocialSharingSettings.make(for: post)
+            accessLevel = metadata.accessLevel ?? .everybody
+            allowComments = post.allowComments
+            allowPings = post.allowPings
         case let page as Page:
             parentPageID = page.parentID?.intValue
         default:
@@ -101,6 +110,16 @@ struct PostSettings: Hashable {
             post.featuredImage = nil
         }
 
+        var postMetadataContainer = PostMetadataContainer(post)
+        if PostMetadata(from: postMetadataContainer) != metadata {
+            metadata.encode(in: &postMetadataContainer)
+            do {
+                post.rawMetadata = try postMetadataContainer.encode()
+            } catch {
+                wpAssertionFailure("failed to encode metadata")
+            }
+        }
+
         switch post {
         case let post as Post:
             // Update tags
@@ -130,6 +149,14 @@ struct PostSettings: Hashable {
             // Update sticky post setting
             if post.isStickyPost != isStickyPost {
                 post.isStickyPost = isStickyPost
+            }
+
+            // Update discussion settings
+            if post.allowComments != allowComments {
+                post.allowComments = allowComments
+            }
+            if post.allowPings != allowPings {
+                post.allowPings = allowPings
             }
 
             if let sharing {

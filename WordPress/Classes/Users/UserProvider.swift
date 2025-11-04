@@ -58,7 +58,7 @@ actor MockUserProvider: UserServiceProtocol {
         await userDataStore.listStream(query: .all)
     }
 
-    func isCurrentUserCapableOf(_ capability: String) async -> Bool {
+    func isCurrentUserCapableOf(_ capability: UserCapability) async -> Bool {
         true
     }
 

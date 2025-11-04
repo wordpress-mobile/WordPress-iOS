@@ -4,7 +4,7 @@ import WordPressAPI
 public protocol UserServiceProtocol: Actor {
     func fetchUsers() async throws
 
-    func isCurrentUserCapableOf(_ capability: String) async -> Bool
+    func isCurrentUserCapableOf(_ capability: UserCapability) async -> Bool
 
     func setNewPassword(id: UserId, newPassword: String) async throws
 

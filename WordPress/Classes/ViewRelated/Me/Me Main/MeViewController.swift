@@ -4,6 +4,8 @@ import WordPressData
 import WordPressShared
 import AutomatticAbout
 import GravatarUI
+import WordPressAPI
+import Support
 
 public class MeViewController: UITableViewController {
     var handler: ImmuTableViewHandler!
@@ -304,8 +306,13 @@ public class MeViewController: UITableViewController {
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
-            let controller = SupportTableViewController(style: .insetGrouped)
-            self.showOrPushController(controller)
+            if FeatureFlag.newSupport.enabled == true {
+                let controller = RootSupportViewController(dataProvider: SupportDataProvider.shared)
+                self.showOrPushController(controller)
+            } else {
+                let controller = SupportTableViewController(style: .insetGrouped)
+                self.showOrPushController(controller)
+            }
         }
     }
 

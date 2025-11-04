@@ -5,13 +5,23 @@ import WordPressData
 import WordPressShared
 import WordPressUI
 
+enum PublishingSheetResult {
+    /// The sheet published the post (new behavior)
+    case published
+    /// The user cancelled publishing.
+    ///
+    /// - parameter isSaved: If `true`, the changes to the settings made in
+    /// the publishing sheet were saved.
+    case cancelled(isSaved: Bool = false)
+}
+
 /// A screen shown just before publishing the post and allows you to change
 /// the post settings along with some publishing options like the publish date.
 final class PublishPostViewController: UIHostingController<PublishPostView> {
     private let viewModel: PostSettingsViewModel
     private let uploadsViewModel: PostMediaUploadsViewModel
 
-    var onCompletion: ((PrepublishingSheetResult) -> Void)?
+    var onCompletion: ((PublishingSheetResult) -> Void)?
 
     init(post: AbstractPost, isStandalone: Bool) {
         let viewModel = PostSettingsViewModel(
@@ -28,12 +38,31 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
         super.init(rootView: view)
     }
 
+    static func show(for revision: AbstractPost, isStandalone: Bool = false, from presentingViewController: UIViewController, completion: @escaping (PublishingSheetResult) -> Void) {
+        // End editing to avoid issues with accessibility
+        presentingViewController.view.endEditing(true)
+
+        let publishVC = PublishPostViewController(post: revision, isStandalone: isStandalone)
+        publishVC.onCompletion = completion
+        // - warning: Has to be UIKit because some of the  `PostSettingsView` rows rely on it.
+        let navigationVC = UINavigationController(rootViewController: publishVC)
+        navigationVC.sheetPresentationController?.detents = [
+            .custom(identifier: .medium, resolver: { context in 526 }),
+            .large()
+        ]
+        presentingViewController.present(navigationVC, animated: true)
+    }
+
     required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        viewModel.onEditorPostSaved = { [weak self] in
+            self?.onCompletion?(.cancelled(isSaved: true))
+        }
 
         viewModel.onPostPublished = { [weak self] in
             self?.onCompletion?(.published)
@@ -58,22 +87,20 @@ struct PublishPostView: View {
 
     var body: some View {
         Form {
-            Section {
-                if let state = uploadsViewModel.uploadingSnackbarState {
-                    NavigationLink {
-                        PostMediaUploadsView(viewModel: uploadsViewModel)
-                    } label: {
-                        PostMediaUploadsSnackbarView(state: state)
-                    }
+            if let state = uploadsViewModel.uploadingSnackbarState {
+                NavigationLink {
+                    PostMediaUploadsView(viewModel: uploadsViewModel)
+                } label: {
+                    PostMediaUploadsSnackbarView(state: state)
                 }
-                BlogListSiteView(site: .init(blog: viewModel.post.blog))
-            } header: {
-                SectionHeader(Strings.readyToPublish)
             }
             PostSettingsFormContentView(viewModel: viewModel)
         }
         .environment(\.defaultMinListHeaderHeight, 0) // Reduces top inset a bit
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            viewModel.onAppear()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 buttonCancel
@@ -91,7 +118,6 @@ struct PublishPostView: View {
                     }
             }
             ToolbarItemGroup(placement: .topBarTrailing) {
-                buttonSchedule
                 buttonPublish
             }
         }
@@ -127,15 +153,6 @@ struct PublishPostView: View {
     }
 
     @ViewBuilder
-    private var buttonSchedule: some View {
-        NavigationLink {
-            PostSettingsPublishDatePicker(viewModel: viewModel)
-        } label: {
-            Image(systemName: "calendar")
-        }
-    }
-
-    @ViewBuilder
     private var buttonPublish: some View {
         if viewModel.isSaving {
             ProgressView()
@@ -150,6 +167,7 @@ struct PublishPostView: View {
             .buttonBorderShape(.capsule)
             .tint(isDisabled ? Color(.opaqueSeparator) : AppColor.primary)
             .disabled(isDisabled)
+            .accessibilityIdentifier("publish")
         }
     }
 }
@@ -205,11 +223,5 @@ enum PrepublishingSheetStrings {
         "prepublishing.saveChanges.button",
         value: "Save Changes",
         comment: "Button to confirm discarding changes"
-    )
-
-    static let readyToPublish = NSLocalizedString(
-        "prepublishing.publishingSectionTitle",
-        value: "Ready to Publish?",
-        comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
     )
 }

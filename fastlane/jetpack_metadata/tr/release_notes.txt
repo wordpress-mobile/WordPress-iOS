@@ -1,7 +1,16 @@
-Jetpack deneyiminizi daha da sorunsuz hale getirmek için bazı özenli iyileştirmeler yaptık.
-
-iOS 26 için destek ekledik, böylece cihazınızın sunduğu en son özelliklerden tümünden yararlanabilirsiniz. Her şey doğru görünüyor ve hissettirir.
-
-Okuyucu, makale ekranında yapılan görsel güncellemelerle biraz iyileştirildi ve favori içeriğinizi okumak artık daha kolay.
-
-Ayrıca uygulama genelinde düğmeler ve gezinme konusunda arka planda bazı iyileştirmeler yaptık. Özellikle Düzenleyici, Ayarlar ve İstatistikler ekranlarında her şeyin daha şık ve tutarlı olduğunu fark edeceksiniz.
+Artık Apple Intelligence kullanarak gönderileriniz için bir alıntı, bir gönderi özeti ve otomatik olarak oluşturulan etiketler oluşturabilirsiniz. Gönderi Ayarlarından etiketlerinizi seçmek de daha kolaydır. İşte bu akıllıca.
+İstatistiklerden bahsetmişken, uygulamanın bu bölümünde birkaç yeni gelişme var.
+- Yeni İstatistikler ekranına bir Bugün kartı ekledik.
+- Ana sayfanız artık en iyi sayfalar listesinde görünüyor.
+- En iyi 10 ve 50 öğenizin artık kendi özel bölümü var. Her şey için bir yer var ve her şey kendi yerinde.
+- Çok sayıda öğeniz olduğunda en iyi sayfalarınız düzgün görünür.
+- Yeni İstatistikler düzeni farklı ekran boyutlarına uyacak şekilde değişir. Gerçekten büyük olanlar bile.
+- Özel bir tarih aralığı seçtiğinizde, ekran tercih ettiğiniz ayarları hatırlayacaktır.
+- Trafik sekmesi ekranı yenilemek için aşağı çekmenizi sağlar.
+Ayrıca site oluşturma akışı, ortam seçim ekranı ve İstatistikler ekranı gibi alanlarda iOS için birkaç görsel düzeltme yaptık. Ve hazır buradayken, bir kaç hatayı da giderdik.
+- İstatistikler ve Aboneler'de bazen görünen nadir bir çökme sorununu düzelttik. (Ama artık değil).
+- Makale görünümleri belirli temalar etkinleştirildiğinde Okuyucu'da olması gerektiği gibi görünür.
+- Okuyucu makaleleri, Görüntüleme Yakınlaştırma etkin olan cihazlarda düzgün şekilde işlenir.
+- "Ortam Ekle" düğmesi ortam kütüphanesinde görünür kalır. Artık ortadan kaybolmak yok.
+- Uygulamayı dondurmadan Okuyucu Aboneliklerinde arama yapabilirsiniz.
+- Okuyucu makalelerindeki araç çubuğu artık zaman zaman kaybolup yeniden görünmez. Eskiden "bir vardı, bir yoktu"… Artık hep var.

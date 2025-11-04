@@ -30,17 +30,29 @@ extension RemotePostCreateParameters {
             categoryIDs = (post.categories ?? []).compactMap {
                 $0.categoryID?.intValue
             }
-            metadata = Set(PostHelper.remoteMetadata(for: post).compactMap { value -> RemotePostMetadataItem? in
-                guard let dictionary = value as? [String: Any] else {
-                    wpAssertionFailure("Unexpected value", userInfo: [
-                        "value": value
-                    ])
-                    return nil
-                }
+            metadata = Set(Self.generateRemoteMetadata(for: post).compactMap { dictionary -> RemotePostMetadataItem? in
                 return PostHelper.mapDictionaryToMetadataItems(dictionary)
             })
+            discussion = RemotePostDiscussionSettings(
+                allowComments: post.allowComments,
+                allowPings: post.allowPings
+            )
         default:
             break
         }
+    }
+}
+
+private extension RemotePostCreateParameters {
+    /// Generates remote metadata for the given post.
+    ///
+    /// - note: It includes _only_ the keys known to the app and that you as a
+    /// user can change from the app.
+    static func generateRemoteMetadata(for post: Post) -> [[String: Any]] {
+        // Start with existing metadata from PostHelper
+        var output = PostHelper.remoteMetadata(for: post) as? [[String: Any]] ?? []
+        // Add metadata mananged using `PostMetadata`
+        output += PostMetadata.entries(in: PostMetadataContainer(post))
+        return output
     }
 }

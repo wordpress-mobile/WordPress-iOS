@@ -3,7 +3,6 @@ import Combine
 import WordPressCore
 import WordPressShared
 import WordPressAPI
-import WordPressAPIInternal
 import WordPressKit
 
 /// A `MediaServiceRemote` implementation that uses the WordPress core REST API (`/wp-json/wp/v2/media`).
@@ -12,14 +11,6 @@ class MediaServiceRemoteCoreREST: NSObject, MediaServiceRemote {
 
     init(client: WordPressClient) {
         self.client = client
-    }
-
-    func unattachedMediaItemCount() async throws -> Int? {
-        try await client.api.media
-            .listWithViewContext(params: .init(parent: [0]))
-            .headerMap
-            .wpTotal()
-            .flatMap(Int.init)
     }
 
     func getMediaWithID(_ mediaID: NSNumber, success: ((RemoteMedia?) -> Void)?, failure: (((any Error)?) -> Void)?) {
@@ -39,8 +30,8 @@ class MediaServiceRemoteCoreREST: NSObject, MediaServiceRemote {
         success: ((RemoteMedia?) -> Void)?,
         failure: (((any Error)?) -> Void)?
     ) {
-        guard let localURL = media.localURL else {
-            wpAssertionFailure("local url missing in the media")
+        guard let params = MediaCreateParams(media: media) else {
+            wpAssertionFailure("Invalid Media Object (local url is likely missing)")
             failure?(URLError(.fileDoesNotExist))
             return
         }
@@ -60,7 +51,7 @@ class MediaServiceRemoteCoreREST: NSObject, MediaServiceRemote {
                     .assign(to: \.completedUnitCount, on: mainThreadProgress)
                 defer { cancellable.cancel() }
 
-                let media = try await client.api.uploadMedia(params: .init(media: media), fromLocalFileURL: localURL, fulfilling: progress).data
+                let media = try await client.api.uploadMedia(params: params, fulfilling: progress).data
                 success?(.init(media: media))
             } catch {
                 failure?(error)
@@ -186,7 +177,13 @@ private extension RemoteMedia {
 }
 
 private extension MediaCreateParams {
-    init(media: RemoteMedia) {
+    init?(media: RemoteMedia) {
+
+        guard let localURL = media.localURL else {
+            wpAssertionFailure("local url missing in the media")
+            return nil
+        }
+
         self.init(
             date: nil,
             dateGmt: media.date,
@@ -200,7 +197,8 @@ private extension MediaCreateParams {
             altText: media.alt,
             caption: media.caption,
             description: media.descriptionText,
-            postId: media.postID?.int64Value
+            postId: media.postID?.int64Value,
+            filePath: localURL.path()
         )
     }
 }

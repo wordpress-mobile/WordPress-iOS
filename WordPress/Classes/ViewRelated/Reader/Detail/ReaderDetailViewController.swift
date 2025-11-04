@@ -179,7 +179,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             scrollView.pinEdges(.top)
 
             headerContainerView.clipsToBounds = true
-            headerContainerView.backgroundColor = .systemBackground
         }
 
         // Fixes swipe to go back not working when leftBarButtonItem is set
@@ -469,10 +468,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// Apply view styles
     @MainActor private func applyStyles() {
-        webView.pinEdges(.horizontal, to: view, insets: UIEdgeInsets(.horizontal, 16), priority: .init(950))
         NSLayoutConstraint.activate([
-            webView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            webView.widthAnchor.constraint(lessThanOrEqualToConstant: UIFontMetrics(forTextStyle: .body).scaledValue(for: Constants.preferredArticleWidth))
+            webView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor, constant: -Constants.margin),
+            webView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor, constant: Constants.margin)
         ])
 
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -483,6 +481,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         webView.displaySetting = displaySetting
 
         view.backgroundColor = displaySetting.color.background
+
+        headerContainerView.backgroundColor = displaySetting.color.background
     }
 
     private func applyDisplaySetting() {
@@ -493,6 +493,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
             // Main background view
             view.backgroundColor = displaySetting.color.background
+
+            headerContainerView.backgroundColor = displaySetting.color.background
 
             // Header view
             header.displaySetting = displaySetting
@@ -876,6 +878,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private enum Constants {
         static let preferredArticleWidth: CGFloat = 680
+        static let margin: CGFloat = UIDevice.isPad() ? 0 : 8
     }
 
     // MARK: - Managed object observer
@@ -906,10 +909,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 extension ReaderDetailViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentOffset = scrollView.contentOffset.y
-        // Using `safeAreaLayoutGuide.layoutFrame.height` because it doesn't
-        // change when we extend the scroll view size by hiding the toolbar
-        if (currentOffset + view.safeAreaLayoutGuide.layoutFrame.height) > likesContainerView.frame.minY {
+
+        if let frame = likesContainerView.frame(in: view), frame.origin.y < view.bounds.height {
             toolbarHiddenDebouncer.send(false) // Reached bottom (controls, comments, etc)
+        } else if currentOffset > scrollView.contentSize.height - view.bounds.height {
+            toolbarHiddenDebouncer.send(false) // Close enough to the bottom
         } else if currentOffset > lastContentOffset && currentOffset > 0 {
             toolbarHiddenDebouncer.send(true) // Scrolling down
         } else if currentOffset < lastContentOffset {

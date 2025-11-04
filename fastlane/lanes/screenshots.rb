@@ -9,10 +9,9 @@ require 'fileutils'
 # - https://size-charts.com/topics/screen-size-charts/apple-ipad-size-chart/
 #
 SCREENSHOT_SIMULATORS = [
-  'iPhone Xs Max', # 6.5in - 2688x1242 @ 458 ppi
-  'iPhone 8 Plus', # 5.5in - 1920x1080 @ 401 ppi -- !!! FIXME: `canvas_size` in `fastlane/screenshots.json` does not match ([1242, 2208])
-  'iPad Pro (12.9-inch) (2nd generation)', # 12.9in - 2732x2048 @ 264 ppi
-  'iPad Pro (12.9-inch) (5th generation)' # 12.9in - 2732x2048 @ 264 ppi
+  'iPhone 17 Pro Max', # 6.5in - 2688x1242 @ 458 ppi
+  'iPhone 17',
+  'iPad Pro 11-inch (M4)'
 ].freeze
 
 #################################################
@@ -39,7 +38,7 @@ platform :ios do
   # That way, it uses incremental builds instead of clean builds (faster iterations), and only generates screenshots for one language
   # (which is usually enough to check that the design and screens being captured look correct while iterating).
   #
-  desc 'Generate localised screenshots'
+  desc 'Generate localized screenshots'
   lane :screenshots do |options|
     FileUtils.rm_rf(DERIVED_DATA_PATH) unless options[:skip_clean]
 
@@ -67,6 +66,9 @@ platform :ios do
 
     UI.message "--- Generating screenshots for the following languages: #{languages}"
 
+    # It ensures `override_status_bar` works correctly
+    ENV['SNAPSHOT_SIMULATOR_WAIT_FOR_BOOT_TIMEOUT'] = '20'
+
     create_missing_simulators_for_screenshots
     dark_mode_values.each do |dark_mode_enabled|
       capture_ios_screenshots(
@@ -77,12 +79,18 @@ platform :ios do
         output_directory: output_directory,
         languages: languages,
         dark_mode: dark_mode_enabled,
-        override_status_bar: true,
 
-        reinstall_app: true,
-        erase_simulator: true,
+        # It's been broken since early 2024 and everyone uses this workaround
+        # https://github.com/fastlane/fastlane/pull/21954
+        override_status_bar: true,
+        override_status_bar_arguments: "--time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --operatorName '' --cellularBars 4 --batteryState charged --batteryLevel 100",
+
+        reinstall_app: false,
+        erase_simulator: false,
         localize_simulator: true,
         concurrent_simulators: false,
+        headless: false,
+        skip_package_dependencies_resolution: true,
 
         devices: SCREENSHOT_SIMULATORS
       )
@@ -93,7 +101,7 @@ platform :ios do
   #
   # Generates both light and dark mode, for each of the Mag16 locale, and a fixed set of device sizes (2 iPhones, 2 iPads).
   #
-  desc 'Generate localised Jetpack screenshots'
+  desc 'Generate localized Jetpack screenshots'
   lane :jetpack_screenshots do |options|
     screenshots(
       scheme: 'JetpackScreenshotGeneration',
@@ -110,7 +118,7 @@ platform :ios do
   #
   # - Raw screenshots are expected to be in the `screenshots/`
   # - Localized metadata for the screenshots are expected to be in `appstoreres/metadata`
-  # - Generated promo screenshots will be generated in `fastlane//promo_screenshots`
+  # - Generated promo screenshots will be generated in `fastlane/promo_screenshots`
   #
   desc 'Creates promo screenshots'
   lane :create_promo_screenshots do |options|
@@ -118,7 +126,7 @@ platform :ios do
     promo_screenshots(
       orig_folder: 'screenshots',
       metadata_folder: 'appstoreres/metadata',
-      output_folder: File.join(Dir.pwd, '/promo_screenshots'),
+      output_folder: WORDPRESS_PROMO_SCREENSHOTS_PATH,
       force: options[:force]
     )
   end
@@ -138,7 +146,7 @@ platform :ios do
       orig_folder: 'jetpack_screenshots',
       metadata_folder: 'appstoreres/jetpack_metadata',
       config_file: 'jetpack_screenshots.json',
-      output_folder: File.join(Dir.pwd, '/jetpack_promo_screenshots'),
+      output_folder: JETPACK_PROMO_SCREENSHOTS_PATH,
       force: options[:force]
     )
   end

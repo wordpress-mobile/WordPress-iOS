@@ -454,9 +454,9 @@ platform :ios do
   # @option [Boolean] with_screenshots (default: false) If true, will also upload the latest screenshot files to ASC
   #
   desc 'Updates the App Store Connect localized metadata'
-  lane :update_metadata_on_app_store_connect do |options|
-    update_wordpress_metadata_on_app_store_connect(options)
-    update_jetpack_metadata_on_app_store_connect(options)
+  lane :update_metadata_on_app_store_connect do |with_screenshots: false|
+    update_wordpress_metadata_on_app_store_connect(with_screenshots: with_screenshots)
+    update_jetpack_metadata_on_app_store_connect(with_screenshots: with_screenshots)
   end
 
   # Uploads the localized metadata for WordPress (from `fastlane/metadata/`) to App Store Connect
@@ -464,17 +464,16 @@ platform :ios do
   # @option [Boolean] with_screenshots (default: false) If true, will also upload the latest screenshot files to ASC
   #
   desc 'Uploads the WordPress metadata to App Store Connect, localized, and optionally including screenshots.'
-  lane :update_wordpress_metadata_on_app_store_connect do |options|
+  lane :update_wordpress_metadata_on_app_store_connect do |with_screenshots: false|
     # Skip screenshots by default. The naming is "with" to make it clear that
     # callers need to opt-in to adding screenshots. The naming of the deliver
     # parameter, on the other hand, uses the skip verb.
-    with_screenshots = options.fetch(:with_screenshots, false)
     skip_screenshots = with_screenshots == false
 
     upload_to_app_store(
       **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
       app_identifier: WORDPRESS_BUNDLE_IDENTIFIER,
-      screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'promo-screenshots'),
+      screenshots_path: WORDPRESS_PROMO_SCREENSHOTS_PATH,
       skip_screenshots: skip_screenshots
     )
   end
@@ -484,18 +483,17 @@ platform :ios do
   # @option [Boolean] with_screenshots (default: false) If true, will also upload the latest screenshot files to ASC
   #
   desc 'Uploads the Jetpack metadata to App Store Connect, localized, and optionally including screenshots.'
-  lane :update_jetpack_metadata_on_app_store_connect do |options|
+  lane :update_jetpack_metadata_on_app_store_connect do |with_screenshots: false|
     # Skip screenshots by default. The naming is "with" to make it clear that
     # callers need to opt-in to adding screenshots. The naming of the deliver
     # parameter, on the other hand, uses the skip verb.
-    with_screenshots = options.fetch(:with_screenshots, false)
     skip_screenshots = with_screenshots == false
 
     upload_to_app_store(
       **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
       app_identifier: JETPACK_BUNDLE_IDENTIFIER,
       metadata_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata'),
-      screenshots_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_promo_screenshots'),
+      screenshots_path: JETPACK_PROMO_SCREENSHOTS_PATH,
       skip_screenshots: skip_screenshots
     )
   end

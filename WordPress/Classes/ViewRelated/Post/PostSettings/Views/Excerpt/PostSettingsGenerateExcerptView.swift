@@ -69,8 +69,7 @@ struct PostSettingsGenerateExcerptView: View {
     }
 
     private var progressView: some View {
-        ProgressView()
-            .scaleEffect(x: 0.9, y: 0.9)
+        SparkleProgressView()
             .padding()
             .padding(.leading, 2)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -179,7 +178,7 @@ struct PostSettingsGenerateExcerptView: View {
                     .foregroundStyle(.secondary)
             }
             .tint(AppColor.primary)
-            .onChange(of: length) { _ in
+            .onChange(of: length) {
                 didChangeGenerationParameters()
             }
         }
@@ -208,7 +207,7 @@ struct PostSettingsGenerateExcerptView: View {
             .pickerStyle(.menu)
             .fixedSize()
             .tint(Color.primary)
-            .onChange(of: style) { _ in
+            .onChange(of: style) {
                 didChangeGenerationParameters()
             }
         }
@@ -274,7 +273,8 @@ struct PostSettingsGenerateExcerptView: View {
             isGenerating = false
         }
 
-        let prompt = isLoadMore ? LanguageModelHelper.generateMoreOptionsPrompt : LanguageModelHelper.makeGenerateExcerptPrompt(content: postContent, length: length, style: style)
+        let content = IntelligenceService().extractRelevantText(from: postContent)
+        let prompt = isLoadMore ? LanguageModelHelper.generateMoreOptionsPrompt : LanguageModelHelper.makeGenerateExcerptPrompt(content: content, length: length, style: style)
         let stream = session.streamResponse(to: prompt, generating: ExcerptGenerationResult.self)
 
         for try await result in stream {

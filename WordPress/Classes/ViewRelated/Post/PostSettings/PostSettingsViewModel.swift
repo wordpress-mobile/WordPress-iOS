@@ -23,6 +23,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     @Published private(set) var hasChanges = false
     @Published private(set) var displayedCategories: [String] = []
     @Published private(set) var displayedTags: [String] = []
+    @Published private(set) var suggestedTags: [String] = []
     @Published private(set) var parentPageText: String?
     @Published private(set) var socialSharingState: SocialSharingSectionState?
 
@@ -48,10 +49,19 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         settings.author?.avatarURL
     }
 
+    var emailToSubscribers: Bool {
+        get { !settings.metadata.isJetpackNewsletterEmailDisabled }
+        set { settings.metadata.isJetpackNewsletterEmailDisabled = !newValue }
+    }
+
     var publishDateText: String? {
         guard let date = settings.publishDate else {
             return nil
         }
+        return Self.formattedDate(date, in: timeZone)
+    }
+
+    static func formattedDate(_ date: Date, in timeZone: TimeZone) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
@@ -112,8 +122,14 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         case connected
     }
 
+    enum Row {
+        case jetpackAccessLevel
+        case jetpackNewsletterEmailOptions
+    }
+
     private let originalSettings: PostSettings
     private let preferences: UserPersistentRepository
+    private var isSuggestedTagsRefreshNeeded = true
     private var cancellables = Set<AnyCancellable>()
 
     var onDismiss: (() -> Void)?
@@ -162,6 +178,45 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         refreshSocialSharingState()
 
         WPAnalytics.track(.postSettingsShown)
+    }
+
+    func onAppear() {
+        refreshSuggestedTags()
+    }
+
+    func shouldShow(_ row: Row) -> Bool {
+        switch row {
+        case .jetpackAccessLevel:
+            post.blog.supports(.wpComRESTAPI)
+        case .jetpackNewsletterEmailOptions:
+            post.blog.supports(.wpComRESTAPI) && context == .publishing
+        }
+    }
+
+    private func refreshSuggestedTags() {
+        guard isSuggestedTagsRefreshNeeded else {
+            return
+        }
+        isSuggestedTagsRefreshNeeded = false
+
+        let task = Task { @MainActor [weak self, post] in
+            do {
+                let tags = try await TagSuggestionsService().getSuggestedTags(for: post)
+                guard let self else { return }
+                if !tags.isEmpty {
+                    withAnimation {
+                        self.suggestedTags = tags
+                    }
+                }
+                self.track(.intelligenceSuggestedTagsGenerated, properties: ["count": tags.count])
+            } catch {
+                guard let self else { return }
+                self.track(.intelligenceGenerationFailed, properties: ["description": (error as NSError).debugDescription])
+            }
+        }
+        cancellables.insert(AnyCancellable {
+            task.cancel()
+        })
     }
 
     // MARK: - Refresh
@@ -218,6 +273,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             didSaveChanges()
             wpAssert(onEditorPostSaved != nil, "configuration missing")
             onEditorPostSaved?()
+            onDismiss?()
             return
         }
 
@@ -231,7 +287,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         do {
             let settings = getSettingsToSave(for: self.settings)
             let coordinator = PostCoordinator.shared
-            if coordinator.isSyncAllowed(for: post) {
+            if coordinator.isSyncAllowed(for: post) && post.status == settings.status {
                 let revision = post.createRevision()
                 settings.apply(to: revision)
                 coordinator.setNeedsSync(for: revision)
@@ -274,7 +330,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             do {
                 let coordinator = PostCoordinator.shared
                 let changes = settings.makeUpdateParameters(from: post)
-                try await coordinator.publish_v2(post.original(), parameters: changes)
+                try await coordinator.publish(post.original(), parameters: changes)
                 onPostPublished?()
             } catch {
                 isSaving = false
@@ -301,6 +357,18 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             settings.status = .publishPrivate
         }
         settings.password = selection.password.isEmpty ? nil : selection.password
+    }
+
+    func didSelectSuggestedTag(_ tag: String) {
+        suggestedTags.removeAll(where: { $0 == tag })
+        settings.tags.append(",\(tag)")
+
+        track(.intelligenceSuggestedTagSelected)
+    }
+
+    func didSelectTags(_ tags: String) {
+        settings.tags = tags
+        isSuggestedTagsRefreshNeeded = true
     }
 
     // MARK: - Social Sharing
@@ -407,13 +475,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         viewController?.navigationController?.pushViewController(categoriesVC, animated: true)
     }
 
-    func showTagsPicker() {
-        let tagsVC = TagsViewController(blog: post.blog, selectedTags: settings.tags) { [weak self] newTagsString in
-            self?.settings.tags = newTagsString
-        }
-        viewController?.navigationController?.pushViewController(tagsVC, animated: true)
-    }
-
     // MARK: - Analytics
 
     private func trackChanges(from old: PostSettings, to new: PostSettings) {
@@ -434,7 +495,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         }
         if old.featuredImageID != new.featuredImageID {
             let action = new.featuredImageID == nil ? "removed" : "changed"
-            WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": source, "action": action])
+            track(.editorPostFeaturedImageChanged, properties: ["action": action])
         }
         if old.excerpt != new.excerpt {
             track(.editorPostExcerptChanged)
@@ -452,8 +513,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         }
     }
 
-    private func track(_ event: WPAnalyticsEvent) {
-        WPAnalytics.track(event, properties: ["via": source])
+    private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:]) {
+        var properties = properties
+        properties["via"] = source
+        WPAnalytics.track(event, properties: properties)
     }
 
     private var source: String {

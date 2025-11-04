@@ -5,6 +5,7 @@ struct TrafficTabView: View {
 
     @State private var isShowingCustomRangePicker = false
     @State private var isShowingAddCardSheet = false
+    @State private var isShowingColumns = false
 
     @Environment(\.context) var context
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -38,7 +39,18 @@ struct TrafficTabView: View {
             .background(Constants.Colors.background)
             .animation(.spring, value: viewModel.cards.map(\.id))
             .listStyle(.plain)
+            .refreshable {
+                for card in viewModel.cards {
+                    card.dateRange = viewModel.dateRange
+                }
+                try? await Task.sleep(for: .seconds(1))
+            }
         }
+        .onGeometryChange(for: Bool.self, of: { proxy in
+            proxy.size.width > 680
+        }, action: {
+            isShowingColumns = $0
+        })
         .toolbar {
             if horizontalSizeClass == .regular {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -58,7 +70,7 @@ struct TrafficTabView: View {
 
     @ViewBuilder
     private var cards: some View {
-        if horizontalSizeClass == .regular {
+        if isShowingColumns {
             var cards = viewModel.cards
             if let first = cards.first as? ChartCardViewModel {
                 let _ = cards.removeFirst()
@@ -88,35 +100,6 @@ struct TrafficTabView: View {
     }
 
     @ViewBuilder
-    private func makeItem(for viewModel: TrafficCardViewModel) -> some View {
-        switch viewModel {
-        case let viewModel as ChartCardViewModel:
-            ChartCard(viewModel: viewModel)
-                .onDateRangeSelected { dateRange in
-                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    self.viewModel.pushDateRange(dateRange)
-                }
-                .backButton(title: getBackButtonTitle()) {
-                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    self.viewModel.popDateRange()
-                }
-        case let viewModel as TopListViewModel:
-            TopListCard(viewModel: viewModel)
-        default:
-            let _ = assertionFailure("Unsupported type: \(viewModel)")
-            EmptyView()
-        }
-    }
-
-    private func getBackButtonTitle() -> String? {
-        guard let range = viewModel.dateRangeNavigationStack.last else {
-            return nil
-        }
-        let formatter = StatsDateRangeFormatter(timeZone: context.timeZone)
-        return formatter.string(from: range.dateInterval)
-    }
-
-    @ViewBuilder
     private func cardView(for card: TrafficCardViewModel) -> some View {
         makeItem(for: card)
             .id(card.id)
@@ -124,12 +107,92 @@ struct TrafficTabView: View {
                 insertion: .push(from: .bottom).combined(with: .opacity),
                 removal: .scale.combined(with: .opacity)
             ))
+            .overlay(alignment: .top) {
+                // Display it on top of the first `.chart` card if present
+                if let other = viewModel.cards.prefix(2).first(where: { $0.cardType == .chart }) {
+                    if card.id == other.id {
+                        popButton
+                    }
+                } else if card.id == viewModel.cards.first?.id {
+                    // Or the first available card
+                    popButton
+                }
+            }
+    }
+
+    @ViewBuilder
+    private func makeItem(for viewModel: TrafficCardViewModel) -> some View {
+        switch viewModel {
+        case let viewModel as ChartCardViewModel:
+            ChartCard(viewModel: viewModel)
+                .onDateRangeSelected(pushDateRange)
+        case let viewModel as TopListViewModel:
+            TopListCard(viewModel: viewModel)
+        case let viewModel as TodayCardViewModel:
+            let isToday = self.viewModel.dateRange.preset == .today
+            Button {
+                guard !isToday else { return }
+                context.tracker?.send(.todayCardTapped)
+                pushDateRange(self.viewModel.dateRange.updating(preset: .today))
+            } label: {
+                TodayCard(viewModel: viewModel)
+                    .chevronHidden(isToday)
+            }
+             .buttonStyle(.plain)
+        default:
+            let _ = assertionFailure("Unsupported type: \(viewModel)")
+            EmptyView()
+        }
+    }
+
+    // MARK: - Push/Pop
+
+    private func pushDateRange(_ dateRange: StatsDateRange) {
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        withAnimation(.spring) {
+            self.viewModel.pushDateRange(dateRange)
+        }
+    }
+
+    private func popDateRange() {
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        withAnimation(.spring) {
+            self.viewModel.popDateRange()
+        }
+    }
+
+    @ViewBuilder
+    private var popButton: some View {
+        if let range = viewModel.dateRangeNavigationStack.last {
+            let button = Button {
+                popDateRange()
+            } label: {
+                HStack(spacing: 5) {
+                    Image(systemName: "chevron.backward")
+                    Text(context.formatters.dateRange.string(from: range))
+                }
+                .padding(.vertical, 2)
+                .font(.subheadline.weight(.medium))
+            }
+                .transition(.scale(0.8).combined(with: .opacity).combined(with: .offset(y: 12)))
+                .dynamicTypeSize(...DynamicTypeSize.xLarge)
+            if #available(iOS 26, *) {
+                button
+                    .buttonStyle(.glass)
+                    .padding(.top, -8)
+            } else {
+                button
+                    .buttonStyle(.bordered)
+                    .buttonBorderShape(.capsule)
+                    .foregroundStyle(Color.primary)
+                    .padding(.top, 6)
+            }
+        }
     }
 
     // MARK: - Misc
 
     private var buttonAddChart: some View {
-        // Add Chart Button
         Button(action: {
             isShowingAddCardSheet = true
         }) {
@@ -160,7 +223,6 @@ struct TrafficTabView: View {
             .padding(.horizontal, Constants.step4)
             .padding(.top, Constants.step2)
             .padding(.bottom, Constants.step1)
-            .dynamicTypeSize(...DynamicTypeSize.xLarge)
     }
 }
 

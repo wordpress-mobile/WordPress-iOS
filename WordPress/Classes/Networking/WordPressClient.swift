@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 import WordPressAPI
-import WordPressAPIInternal
+import WordPressAPIInternal // Required for `WpAuthenticationProvider`
 import WordPressCore
 import WordPressData
 import WordPressShared
@@ -53,6 +53,7 @@ extension WordPressClient {
     }
 }
 
+// TODO: Remove this
 extension PluginWpOrgDirectorySlug: @retroactive ExpressibleByStringLiteral {
     public typealias StringLiteralType = String
 
@@ -98,7 +99,7 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
         return authentication
     }
 
-    func auth() -> WordPressAPIInternal.WpAuthentication {
+    func auth() -> WpAuthentication {
         lock.lock()
         defer {
             lock.unlock()
@@ -133,7 +134,7 @@ private class AppNotifier: @unchecked Sendable, WpAppNotifier {
         self.coreDataStack = coreDataStack
     }
 
-    func requestedWithInvalidAuthentication() async {
+    func requestedWithInvalidAuthentication(requestUrl: String) async {
         let blogId = site.blogId(in: coreDataStack)
         NotificationCenter.default.post(name: WordPressClient.requestedWithInvalidAuthenticationNotification, object: blogId)
     }

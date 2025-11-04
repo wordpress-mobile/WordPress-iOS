@@ -36,7 +36,7 @@ public actor UserService: UserServiceProtocol {
         }
     }
 
-    public func isCurrentUserCapableOf(_ capability: String) async -> Bool {
+    public func isCurrentUserCapableOf(_ capability: UserCapability) async -> Bool {
         await currentUser?.capabilities.keys.contains(capability) == true
     }
 
@@ -79,7 +79,7 @@ private extension DisplayUser {
             return nil
         }
 
-        self.init(
+        self = DisplayUser(
             id: user.id,
             handle: user.slug,
             username: user.username,

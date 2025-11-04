@@ -25,7 +25,7 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     private let editorCloseButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["Close"]
+        $0.navigationBars["Gutenberg Editor Navigation Bar"].buttons["editor-close-button"]
     }
 
     private let editorNavigationBarGetter: (XCUIApplication) -> XCUIElement = {
