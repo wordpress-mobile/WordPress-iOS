@@ -59,7 +59,8 @@ private actor ConcreteMediaUploadBackgroundTaskScheduler: MediaUploadBackgroundT
     private var coreDataChangesObserver: NSObjectProtocol?
 
     private init() {
-        let taskId = Bundle.main.bundleIdentifier! + ".mediaUpload"
+        // `Bundle.main.bundleIdentifier` should never be nil, but we'll use a hard-coded fallback just in case.
+        let taskId = (Bundle.main.bundleIdentifier ?? "org.wordpress") + ".mediaUpload"
 
         wpAssert(
             (Bundle.main.infoDictionary?["BGTaskSchedulerPermittedIdentifiers"] as? [String])?.contains(taskId) == true,
