@@ -453,6 +453,11 @@ class MediaCoordinator: NSObject {
         WPAppAnalytics.track(event, properties: properties, blog: media.blog)
     }
 
+    @MainActor
+    func submitBackgroundUploadTask() async {
+        await mediaLibraryProgressCoordinator.submitBackgroundUploadTask()
+    }
+
     // MARK: - Progress
 
     /// - returns: The current progress for the specified media object.
