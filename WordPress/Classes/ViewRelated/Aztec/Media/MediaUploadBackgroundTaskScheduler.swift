@@ -18,9 +18,10 @@ func mediaUploadBackgroundTaskScheduler() -> MediaUploadBackgroundTaskScheduler?
     }
 }
 
-@available(iOS 26.0, *)
 /// Utilize `BGContinuedProcessingTask` to show the uploading media activity.
-private actor ConcreteMediaUploadBackgroundTaskScheduler: MediaUploadBackgroundTaskScheduler {
+@available(iOS 26.0, *)
+@MainActor
+private class ConcreteMediaUploadBackgroundTaskScheduler: MediaUploadBackgroundTaskScheduler {
     struct Item {
         // Please note: all media query needs to be done in the main context, due to the current upload media implementation.
         var media: TaggedManagedObjectID<Media>
@@ -68,20 +69,17 @@ private actor ConcreteMediaUploadBackgroundTaskScheduler: MediaUploadBackgroundT
         )
 
         self.taskId = taskId
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: self.taskId, using: nil) { [weak self] task in
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: self.taskId, using: DispatchQueue.main) { [weak self] task in
             guard let task = task as? BGContinuedProcessingTask else {
                 wpAssertionFailure("Unexpected task instance")
                 return
             }
 
-            Task {
-                await self?.taskCreated(task)
-            }
+            self?.taskCreated(task)
         }
-
     }
 
-    func scheduleTask(for media: TaggedManagedObjectID<Media>, progress: Progress) async {
+    func scheduleTask(for media: TaggedManagedObjectID<Media>, progress: Progress) {
         observeCoreDataChanges()
 
         let item = Item(media: media, progress: progress)
@@ -126,8 +124,8 @@ private actor ConcreteMediaUploadBackgroundTaskScheduler: MediaUploadBackgroundT
             }
 
             if !mediaObjectIDs.isEmpty {
-                Task {
-                    await self?.handleMediaObjectsUpdates(updated: mediaObjectIDs)
+                Task { @MainActor in
+                    self?.handleMediaObjectsUpdates(updated: mediaObjectIDs)
                 }
             }
         }
@@ -136,9 +134,7 @@ private actor ConcreteMediaUploadBackgroundTaskScheduler: MediaUploadBackgroundT
     private func taskCreated(_ task: BGContinuedProcessingTask) {
         task.progress.totalUnitCount = 100
         task.expirationHandler = { [weak self] in
-            Task {
-                await self?.handleExpiration()
-            }
+            self?.handleExpiration()
         }
 
         var accepted = BGTaskState.Accepted(task: task)
@@ -157,23 +153,20 @@ private actor ConcreteMediaUploadBackgroundTaskScheduler: MediaUploadBackgroundT
     private func observe(_ item: Item, accepted: inout BGTaskState.Accepted) {
         accepted.items.append(item)
 
-        let progress = item.progress.publisher(for: \.fractionCompleted).sink { [weak self] _ in
-            Task {
-                await self?.handleProgressUpdates()
+        let progress = item.progress
+            .publisher(for: \.fractionCompleted)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.handleProgressUpdates()
             }
-        }
         accepted.observers.append(progress)
 
-        Task { @MainActor in
-            guard let media = try? ContextManager.shared.mainContext.existingObject(with: item.media) else { return }
+        guard let media = try? ContextManager.shared.mainContext.existingObject(with: item.media) else { return }
 
-            let completion = media.publisher(for: \.remoteStatusNumber).sink { [weak self] _ in
-                Task {
-                    await self?.handleStatusUpdates()
-                }
-            }
-            await self.addObserver(completion)
+        let completion = media.publisher(for: \.remoteStatusNumber).sink { [weak self] _ in
+            self?.handleStatusUpdates()
         }
+        accepted.observers.append(completion)
     }
 
     private func addObserver(_ cancellable: AnyCancellable) {
@@ -184,55 +177,49 @@ private actor ConcreteMediaUploadBackgroundTaskScheduler: MediaUploadBackgroundT
 
     private func handleExpiration() {
         if case let .accepted(accepted) = state {
-            Task { @MainActor in
-                let context = ContextManager.shared.mainContext
-                for item in accepted.items {
-                    guard let media = try? context.existingObject(with: item.media) else { continue }
-                    MediaCoordinator.shared.cancelUpload(of: media)
-                }
+            let context = ContextManager.shared.mainContext
+            for item in accepted.items {
+                guard let media = try? context.existingObject(with: item.media) else { continue }
+                MediaCoordinator.shared.cancelUpload(of: media)
             }
         }
 
         setTaskCompleted(success: false)
     }
 
-    private func handleProgressUpdates() async {
+    private func handleProgressUpdates() {
         guard case let .accepted(accepted) = state else { return }
 
-        let progresses = await MainActor.run {
-            let context = ContextManager.shared.mainContext
-            return accepted.items
-                .filter { item in
-                    (try? context.existingObject(with: item.media)) != nil
-                }
-                .map(\.progress)
-        }
+        let context = ContextManager.shared.mainContext
+        let progresses = accepted.items
+            .filter { item in
+                (try? context.existingObject(with: item.media)) != nil
+            }
+            .map(\.progress)
 
         let fractionCompleted = progresses.map(\.fractionCompleted).reduce(0, +) / Double(progresses.count)
         accepted.task.progress.completedUnitCount = Int64(fractionCompleted * Double(accepted.task.progress.totalUnitCount))
     }
 
-    private func handleMediaObjectsUpdates(updated: Set<TaggedManagedObjectID<Media>>) async {
+    private func handleMediaObjectsUpdates(updated: Set<TaggedManagedObjectID<Media>>) {
         guard case let .accepted(accepted) = state else { return }
 
         let needsUpdate = accepted.items.contains(where: { updated.contains($0.media) })
         if needsUpdate {
-            await handleStatusUpdates()
+            handleStatusUpdates()
         }
     }
 
-    private func handleStatusUpdates() async {
-        await updateMessaging()
-        await updateResult()
+    private func handleStatusUpdates() {
+        updateMessaging()
+        updateResult()
     }
 
-    private func updateMessaging() async {
+    private func updateMessaging() {
         guard case let .accepted(accepted) = self.state else { return }
 
-        let statuses = await MainActor.run {
-            let context = ContextManager.shared.mainContext
-            return accepted.items.compactMap { try? context.existingObject(with: $0.media).uploadStatus }
-        }
+        let context = ContextManager.shared.mainContext
+        let statuses = accepted.items.compactMap { try? context.existingObject(with: $0.media).uploadStatus }
 
         let failed = statuses.count { $0 == .failure }
         let success = statuses.count { $0 == .success}
@@ -252,13 +239,11 @@ private actor ConcreteMediaUploadBackgroundTaskScheduler: MediaUploadBackgroundT
         accepted.task.updateTitle(Strings.uploadingMediaTitle, subtitle: ListFormatter.localizedString(byJoining: subtitle))
     }
 
-    private func updateResult() async {
+    private func updateResult() {
         guard case let .accepted(accepted) = self.state else { return }
 
-        let mediaStatuses = await MainActor.run {
-            let context = ContextManager.shared.mainContext
-            return accepted.items.compactMap { try? context.existingObject(with: $0.media).uploadStatus }
-        }
+        let context = ContextManager.shared.mainContext
+        let mediaStatuses = accepted.items.compactMap { try? context.existingObject(with: $0.media).uploadStatus }
 
         let completed = mediaStatuses.allSatisfy { $0 == .success || $0 == .failure }
         guard completed else {
