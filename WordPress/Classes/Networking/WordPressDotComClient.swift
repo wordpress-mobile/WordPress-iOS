@@ -4,6 +4,7 @@ import AVFoundation
 import WordPressAPI
 import WordPressAPIInternal
 import Combine
+import OSLog
 
 actor WordPressDotComClient: MediaHostProtocol {
 
@@ -18,7 +19,9 @@ actor WordPressDotComClient: MediaHostProtocol {
         self.delegate = WpApiClientDelegate(
             authProvider: .dynamic(dynamicAuthenticationProvider: self.authProvider),
             requestExecutor: WpRequestExecutor(urlSession: session),
-            middlewarePipeline: WpApiMiddlewarePipeline(middlewares: []),
+            middlewarePipeline: WpApiMiddlewarePipeline(middlewares: [
+                WpComTrafficDebugger()
+            ]),
             appNotifier: WpComNotifier()
         )
 
@@ -145,5 +148,29 @@ final class WpComNotifier: WpAppNotifier {
 
     func requestedWithInvalidAuthentication(requestUrl: String) async {
         NotificationCenter.default.post(name: Self.notificationName, object: nil)
+    }
+}
+
+final class WpComTrafficDebugger: Middleware {
+    func process(
+        requestExecutor: any WordPressAPIInternal.RequestExecutor,
+        response: WordPressAPIInternal.WpNetworkResponse,
+        request: WordPressAPIInternal.WpNetworkRequest,
+        context: WordPressAPIInternal.RequestContext?
+    ) async throws -> WordPressAPIInternal.WpNetworkResponse {
+        Logger.networking.debug("[\(request.method())] \(request.url())")
+        return response
+    }
+}
+
+extension RequestMethod: @retroactive CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .get: "GET"
+        case .post: "POST"
+        case .put: "PUT"
+        case .delete: "DELETE"
+        case .head: "HEAD"
+        }
     }
 }
