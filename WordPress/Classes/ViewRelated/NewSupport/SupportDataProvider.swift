@@ -5,6 +5,7 @@ import SwiftUI
 import WordPressAPI
 import WordPressAPIInternal // Needed for `SupportUserIdentity`
 import WordPressCore
+import WordPressCoreProtocols
 import WordPressData
 import WordPressShared
 import CocoaLumberjack
@@ -20,7 +21,9 @@ extension SupportDataProvider {
             wpcomClient: WordPressDotComClient()
         ),
         supportConversationDataProvider: WpSupportConversationDataProvider(
-            wpcomClient: WordPressDotComClient()),
+            wpcomClient: WordPressDotComClient()
+        ),
+        diagnosticsDataProvider: WpDiagnosticsDataProvider(),
         delegate: WpSupportDelegate()
     )
 }
@@ -316,6 +319,16 @@ actor WpSupportConversationDataProvider: SupportConversationDataProvider {
             .asConversation()
 
         return conversation
+    }
+}
+
+actor WpDiagnosticsDataProvider: DiagnosticsDataProvider {
+    func fetchDiskCacheUsage() async throws -> WordPressCoreProtocols.DiskCacheUsage {
+        try await DiskCache.shared.diskUsage()
+    }
+
+    func clearDiskCache(progress: @escaping @Sendable (WordPressCoreProtocols.CacheDeletionProgress) async throws -> Void) async throws {
+        try await DiskCache.shared.removeAll(progress: progress)
     }
 }
 

@@ -1,35 +1,39 @@
 import Foundation
+import WordPressCoreProtocols
 
 /// A super-basic on-disk cache for `Codable` objects.
 ///
-public actor DiskCache {
+public actor DiskCache: DiskCacheProtocol {
 
-    public struct DiskCacheUsage: Sendable, Equatable {
-        public let fileCount: Int
-        public let byteCount: Int64
-
-        public var diskUsage: Measurement<UnitInformationStorage> {
-            Measurement(value: Double(byteCount), unit: .bytes)
-        }
-
-        public var formattedDiskUsage: String {
-            return diskUsage.formatted(.byteCount(style: .file, allowedUnits: [.mb, .gb], spellsOutZero: true))
-        }
-
-        public var isEmpty: Bool {
-            fileCount == 0
-        }
-    }
+    public static let shared = DiskCache()
 
     private let cacheRoot: URL = URL.cachesDirectory
 
     public init() {}
 
-    public func read<T>(_ type: T.Type, forKey key: String) throws -> T? where T: Decodable {
+    public func read<T>(
+        _ type: T.Type,
+        forKey key: String,
+        notOlderThan interval: TimeInterval? = nil
+    ) throws -> T? where T: Decodable {
         let path = self.path(forKey: key)
 
         guard FileManager.default.fileExists(at: path) else {
             return nil
+        }
+
+        if let interval {
+            let attributes = try FileManager.default.attributesOfItem(atPath: path.path())
+
+            // If we can't find the creation date, assume the cache object is invalid because we can't guarantee
+            // the developer's intent will be respected.
+            guard let creationDate = attributes[.creationDate] as? Date else {
+                return nil
+            }
+
+            if creationDate.addingTimeInterval(interval) > Date.now {
+                return nil
+            }
         }
 
         let data = try Data(contentsOf: path)
@@ -52,16 +56,16 @@ public actor DiskCache {
         try FileManager.default.removeItem(at: self.path(forKey: key))
     }
 
-    public func removeAll(progress: (@Sendable (Int, Int) async throws -> Void)? = nil) async throws {
+    public func removeAll(progress: (@Sendable (CacheDeletionProgress) async throws -> Void)? = nil) async throws {
         let files = try await fetchCacheEntries()
 
         let count = files.count
 
-        try await progress?(0, count)
+        try await progress?(CacheDeletionProgress(filesDeleted: 0, totalFileCount: count))
 
         for file in files.enumerated() {
             try FileManager.default.removeItem(at: file.element)
-            try await progress?(file.offset + 1, count)
+            try await progress?(CacheDeletionProgress(filesDeleted: file.offset + 1, totalFileCount: count))
         }
     }
 

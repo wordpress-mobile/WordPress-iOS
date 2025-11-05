@@ -1,24 +1,5 @@
 import Foundation
-
-public protocol CachedAndFetchedResult<T>: Sendable {
-    associatedtype T
-
-    var cachedResult: @Sendable () async throws -> T? { get }
-    var fetchedResult: @Sendable () async throws -> T { get }
-}
-
-/// A type that isn't actually cached (like Preview data providers)
-public struct UncachedResult<T>: CachedAndFetchedResult {
-    public let cachedResult: @Sendable () async throws -> T?
-    public let fetchedResult: @Sendable () async throws -> T
-
-    public init(
-        fetchedResult: @Sendable @escaping () async throws -> T
-    ) {
-        self.cachedResult = { nil }
-        self.fetchedResult = fetchedResult
-    }
-}
+import WordPressCoreProtocols
 
 /// Represents a double-returning promise – initially for a cached result that may be empty, and eventually for an expensive fetched result (usually from a server).
 ///
@@ -47,7 +28,7 @@ public struct DiskCachedAndFetchedResult<T>: CachedAndFetchedResult where T: Cod
 
     public func fetchAndCache() async throws -> T {
         let result = try await userProvidedFetchBlock()
-        try await DiskCache().store(result, forKey: self.cacheKey)
+        try await DiskCache.shared.store(result, forKey: self.cacheKey)
         return result
     }
 

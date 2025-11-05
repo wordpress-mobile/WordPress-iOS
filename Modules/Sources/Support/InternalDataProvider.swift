@@ -1,5 +1,5 @@
 import Foundation
-import WordPressCore
+import WordPressCoreProtocols
 
 // This file is all module-internal and provides sample data for UI development
 
@@ -8,7 +8,8 @@ extension SupportDataProvider {
         applicationLogProvider: InternalLogDataProvider(),
         botConversationDataProvider: InternalBotConversationDataProvider(),
         userDataProvider: InternalUserDataProvider(),
-        supportConversationDataProvider: InternalSupportConversationDataProvider()
+        supportConversationDataProvider: InternalSupportConversationDataProvider(),
+        diagnosticsDataProvider: InternalDiagnosticsDataProvider()
     )
 
     static let applicationLog = ApplicationLog(path: URL(filePath: #filePath), createdAt: Date(), modifiedAt: Date())
@@ -387,5 +388,27 @@ actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
 
     private func cache(_ value: Conversation) {
         self.conversations[value.id] = value
+    }
+}
+
+actor InternalDiagnosticsDataProvider: DiagnosticsDataProvider {
+
+    func fetchDiskCacheUsage() async throws -> WordPressCoreProtocols.DiskCacheUsage {
+        DiskCacheUsage(fileCount: 64, byteCount: 623_423_562)
+    }
+
+    func clearDiskCache(progress: @Sendable (CacheDeletionProgress) async throws -> Void) async throws {
+        let totalFiles = 12
+
+        // Initial progress (0%)
+        try await progress(CacheDeletionProgress(filesDeleted: 0, totalFileCount: totalFiles))
+
+        for i in 1...totalFiles {
+            // Pretend each file takes a short time to delete
+            try await Task.sleep(for: .milliseconds(150))
+
+            // Report incremental progress
+            try await progress(CacheDeletionProgress(filesDeleted: i, totalFileCount: totalFiles))
+        }
     }
 }

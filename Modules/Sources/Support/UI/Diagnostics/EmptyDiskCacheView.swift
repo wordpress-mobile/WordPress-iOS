@@ -1,5 +1,5 @@
 import SwiftUI
-import WordPressCore
+import WordPressCoreProtocols
 
 struct EmptyDiskCacheView: View {
 
@@ -8,7 +8,7 @@ struct EmptyDiskCacheView: View {
 
     enum ViewState: Equatable {
         case loading
-        case loaded(usage: DiskCache.DiskCacheUsage)
+        case loaded(usage: DiskCacheUsage)
         case clearing(progress: Double, result: String)
         case error(Error)
 
@@ -50,8 +50,6 @@ struct EmptyDiskCacheView: View {
 
     @State
     var state: ViewState = .loading
-
-    private let cache = DiskCache()
 
     var body: some View {
         // Clear Disk Cache card
@@ -112,7 +110,7 @@ struct EmptyDiskCacheView: View {
 
     private func fetchDiskCacheUsage() async {
         do {
-            let usage = try await cache.diskUsage()
+            let usage = try await dataProvider.fetchDiskCacheUsage()
             await MainActor.run {
                 self.state = .loaded(usage: usage)
             }
@@ -134,18 +132,12 @@ struct EmptyDiskCacheView: View {
         self.state = .clearing(progress: 0, result: "")
 
         do {
-            try await cache.removeAll { count, total in
-                let progress: Double
-
-                if count > 0 && total > 0 {
-                    progress = Double(count) / Double(total)
-                } else {
-                    progress = 0
-                }
-
-                await MainActor.run {
-                    withAnimation {
-                        self.state = .clearing(progress: progress, result: "Working")
+            try await Task.runForAtLeast(.seconds(1.5)) {
+                try await dataProvider.clearDiskCache { progress in
+                    await MainActor.run {
+                        withAnimation {
+                            self.state = .clearing(progress: progress.progress, result: "Working")
+                        }
                     }
                 }
             }
@@ -166,5 +158,5 @@ struct EmptyDiskCacheView: View {
 }
 
 #Preview {
-    EmptyDiskCacheView()
+    EmptyDiskCacheView().environmentObject(SupportDataProvider.testing)
 }

@@ -1,5 +1,5 @@
 import SwiftUI
-import WordPressCore
+import WordPressCoreProtocols
 
 public struct DiagnosticsView: View {
 
