@@ -279,35 +279,6 @@ struct MessageRowView: View {
     }
 }
 
-struct AttachmentListView: View {
-    let attachments: [Attachment]
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            ForEach(attachments, id: \.id) { attachment in
-                HStack {
-                    Image(systemName: "paperclip")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-
-                    Text(String(format: Localization.attachment, attachment.id))
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-
-                    Spacer()
-
-                    Button(Localization.view) {
-                        // Handle attachment viewing
-                    }
-                    .font(.caption)
-                }
-                .padding(.vertical, 2)
-            }
-        }
-        .padding(.top, 4)
-    }
-}
-
 #Preview {
     NavigationStack {
         SupportConversationView(

@@ -92,9 +92,42 @@ public struct Message: Identifiable, Sendable, Codable {
 }
 
 public struct Attachment: Identifiable, Sendable, Codable {
-    public let id: UInt64
 
-    public init(id: UInt64) {
+    public struct Dimensions: Sendable, Codable {
+        let width: UInt64
+        let height: UInt64
+
+        public init(width: UInt64, height: UInt64) {
+            self.width = width
+            self.height = height
+        }
+    }
+
+    public let id: UInt64
+    public let filename: String
+    public let contentType: String
+    public let fileSize: UInt64
+    public let url: URL
+
+    public let dimensions: Dimensions?
+
+    public init(
+        id: UInt64,
+        filename: String,
+        contentType: String,
+        fileSize: UInt64,
+        url: URL,
+        dimensions: Dimensions? = nil
+    ) {
         self.id = id
+        self.filename = filename
+        self.contentType = contentType
+        self.fileSize = fileSize
+        self.url = url
+        self.dimensions = dimensions
+    }
+
+    var isImage: Bool {
+        contentType.hasPrefix("image/")
     }
 }

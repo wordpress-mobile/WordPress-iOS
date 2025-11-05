@@ -451,7 +451,7 @@ extension SupportMessage {
             createdAt: self.createdAt,
             authorName: user.displayName,
             authorIsUser: true,
-            attachments: self.attachments.map { $0.asAttachment() }
+            attachments: self.attachments.compactMap { $0.asAttachment() }
         )
         case .supportAgent(let agent): Message(
             id: self.id,
@@ -459,16 +459,25 @@ extension SupportMessage {
             createdAt: self.createdAt,
             authorName: agent.name,
             authorIsUser: false,
-            attachments: self.attachments.map { $0.asAttachment() }
+            attachments: self.attachments.compactMap { $0.asAttachment() }
         )
         }
     }
 }
 
 extension SupportAttachment {
-    func asAttachment() -> Attachment {
-        Attachment(
-            id: self.id
+    func asAttachment() -> Attachment? {
+        guard let url = URL(string: self.url) else {
+            return nil
+        }
+
+        return Attachment(
+            id: self.id,
+            filename: self.filename,
+            contentType: self.contentType,
+            fileSize: self.size,
+            url: url,
+            dimensions: nil
         )
     }
 }

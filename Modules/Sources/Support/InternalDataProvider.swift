@@ -199,7 +199,15 @@ extension SupportDataProvider {
                 createdAt: Date().addingTimeInterval(-1800),
                 authorName: "Test User",
                 authorIsUser: true,
-                attachments: []
+                attachments: [
+                    Attachment(
+                        id: 1234,
+                        filename: "sample-1234.jpg",
+                        contentType: "application/jpeg",
+                        fileSize: 1234,
+                        url: URL(string: "https://picsum.photos/seed/1/800/600")!
+                    )
+                ]
             ),
             Message(
                 id: 6,
