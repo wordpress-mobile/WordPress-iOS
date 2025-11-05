@@ -1,40 +1,7 @@
 import SwiftUI
 import AsyncImageKit
-
-struct ImageGalleryView: View {
-
-    @Environment(\.dismiss) private var dismiss
-
-    private let attachments: [Attachment]
-    private let selectedAttachment: Attachment
-
-    init(attachments: [Attachment], selectedAttachment: Attachment) {
-        self.attachments = attachments.filter { $0.isImage }
-        self.selectedAttachment = selectedAttachment
-    }
-
-    var body: some View {
-        ZStack {
-            Color.black.ignoresSafeArea()
-
-            TabView {
-                ForEach(attachments) { attachment in
-                    SingleImageView(url: attachment.url)
-                        .tag(attachment.id)
-                        .foregroundStyle(.white)
-                }
-            }
-            .tabViewStyle(.page(indexDisplayMode: .always))
-            .indexViewStyle(.page(backgroundDisplayMode: .always))
-        }.toolbar {
-            ToolbarItem {
-                Button("Done") {
-                    dismiss()
-                }
-            }
-        }
-    }
-}
+import PDFKit
+import AVKit
 
 struct SingleImageView: View {
 
@@ -63,6 +30,41 @@ struct SingleImageView: View {
     }
 }
 
+struct SingleVideoView: View {
+    private let player: AVPlayer
+
+    init(url: URL) {
+        self.player = AVPlayer(url: url)
+    }
+
+    var body: some View {
+        VideoPlayer(player: player)
+            .ignoresSafeArea()
+            .onAppear {
+                self.player.play()
+            }
+    }
+}
+
+struct SinglePDFView: UIViewRepresentable {
+    let url: URL // Or Data for in-memory PDFs
+
+    func makeUIView(context: Context) -> PDFView {
+        let pdfView = PDFView()
+        if let document = PDFDocument(url: url) {
+            pdfView.document = document
+        }
+        return pdfView
+    }
+
+    func updateUIView(_ uiView: PDFView, context: Context) {
+        // Update the view if the URL or other properties change
+        if let document = PDFDocument(url: url) {
+            uiView.document = document
+        }
+    }
+}
+
 struct AttachmentListView: View {
     let attachments: [Attachment]
 
@@ -73,16 +75,25 @@ struct AttachmentListView: View {
     ]
 
     private var imageAttachments: [Attachment] {
-        attachments.filter { $0.isImage }
+        attachments.filter { $0.isImage || $0.isVideo }
+    }
+
+    private var otherAttachments: [Attachment] {
+        attachments.filter { !$0.isImage && !$0.isVideo }
     }
 
     var body: some View {
-        LazyVGrid(columns: columns, spacing: 16) {
-            ForEach(imageAttachments, id: \.id) { attachment in
-                AttachmentThumbnailView(attachment: attachment)
+        VStack(alignment: .leading) {
+            LazyVGrid(columns: columns, spacing: 16) {
+                ForEach(imageAttachments) { attachment in
+                    AttachmentThumbnailView(attachment: attachment)
+                }
+            }
+
+            ForEach(otherAttachments) { attachment in
+                AttachmentRowView(attachment: attachment)
             }
         }
-        .padding(.top, 8)
     }
 }
 
@@ -91,7 +102,13 @@ struct AttachmentThumbnailView: View {
 
     var body: some View {
         NavigationLink {
-            SingleImageView(url: attachment.url)
+            if attachment.isImage {
+                SingleImageView(url: attachment.url)
+            }
+
+            if attachment.isVideo {
+                SingleVideoView(url: attachment.url)
+            }
         } label: {
             ZStack {
                 if attachment.isImage {
@@ -104,28 +121,58 @@ struct AttachmentThumbnailView: View {
                             ProgressView()
                         }
                     }
-                } else {
-                    Color.gray.opacity(0.2)
-                        .overlay {
-                            VStack(spacing: 4) {
-                                Image(systemName: "doc")
-                                    .font(.title2)
-                                    .foregroundColor(.secondary)
-                                Text(attachment.filename)
-                                    .font(.caption2)
-                                    .foregroundColor(.secondary)
+                }
+
+                if attachment.isVideo {
+                    CachedAsyncVideoPreview(url: attachment.url) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .overlay {
+                                Image(systemName: "play.circle")
+                                    .foregroundStyle(Color.white)
                             }
+
+                    } placeholder: {
+                        Color.gray.opacity(0.2).overlay {
+                            ProgressView()
                         }
+                    }
                 }
             }
             .frame(width: 80, height: 80)
             .clipShape(RoundedRectangle(cornerRadius: 8))
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.gray.opacity(0.3), lineWidth: 0.5)
-            )
         }
         .buttonStyle(.plain)
+    }
+}
+
+struct AttachmentRowView: View {
+
+    let attachment: Attachment
+
+    var body: some View {
+        NavigationLink {
+            if attachment.isPdf {
+                SinglePDFView(url: attachment.url)
+                    .navigationTitle(attachment.filename)
+            }
+        } label: {
+            HStack(alignment: .firstTextBaseline) {
+                Image(systemName: attachment.icon)
+                    .foregroundColor(.secondary)
+                    .font(.body)
+                    .frame(width: 40, height: 40)
+                Text(attachment.filename)
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+                Spacer()
+            }
+            .background(Color(UIColor.secondarySystemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .padding(.bottom, 4)
+        }
     }
 }
 
@@ -134,6 +181,10 @@ typealias ImageUrl = String
 extension ImageUrl: @retroactive Identifiable {
     public var id: String {
         self
+    }
+
+    var filename: String {
+        self.url.lastPathComponent
     }
 
     var url: URL {
@@ -151,13 +202,33 @@ extension ImageUrl: @retroactive Identifiable {
         "https://picsum.photos/seed/5/800/600",
     ].map { ImageUrl($0) }.map { Attachment(
         id: .random(in: 0...UInt64.max),
-        filename: $0.url.lastPathComponent,
+        filename: $0.filename,
         contentType: "image/jpeg",
         fileSize: 123456,
         url: $0.url
     )  }
 
+    let documents = [
+        "https://www.rd.usda.gov/sites/default/files/pdf-sample_0.pdf"
+    ].map { ImageUrl($0) }.map { Attachment(
+        id: .random(in: 0...UInt64.max),
+        filename: $0.filename,
+        contentType: "application/pdf",
+        fileSize: 45678,
+        url: $0.url
+    )}
+
+    let videos = [
+        "https://a8c.zendesk.com/attachments/token/Le9xjU6B0nfYjtActesrzRrcm/?name=file_example_MP4_1920_18MG.mp4"
+    ].map { ImageUrl($0) }.map { Attachment(
+        id: .random(in: 0...UInt64.max),
+        filename: "file_example_MP4_1920_18MG.mp4",
+        contentType: "video/mp4",
+        fileSize: 99842342,
+        url: $0.url
+    )}
+
     NavigationStack {
-        AttachmentListView(attachments: images)
+        AttachmentListView(attachments: images + documents + videos)
     }
 }
