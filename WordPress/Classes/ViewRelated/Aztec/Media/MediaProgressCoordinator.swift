@@ -76,8 +76,7 @@ public class MediaProgressCoordinator: NSObject {
 
     /// Utilize BGContinuedProcessingTask to show upload progress and extend the allowed background time for the upload.
     /// Note: This function needs to be called before the app goes to the background.
-    @MainActor
-    func submitBackgroundUploadTask() async {
+    func submitBackgroundUploadTask() {
         guard let scheduler = mediaUploadBackgroundTaskScheduler() else { return }
 
         for (mediaID, progress) in mediaInProgress {
@@ -85,7 +84,7 @@ public class MediaProgressCoordinator: NSObject {
                 continue
             }
             if media.remoteStatus == .pushing || media.remoteStatus == .processing {
-                await scheduler.scheduleTask(for: TaggedManagedObjectID(media), progress: progress)
+                scheduler.scheduleTask(for: TaggedManagedObjectID(media), progress: progress)
             }
         }
     }

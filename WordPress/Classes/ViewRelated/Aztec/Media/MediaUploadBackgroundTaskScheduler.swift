@@ -6,7 +6,10 @@ import WordPressShared
 // This protocol is used to hide the `@available(iOS 26.0, *)` check.
 protocol MediaUploadBackgroundTaskScheduler {
 
-    func scheduleTask(for media: TaggedManagedObjectID<Media>, progress: Progress) async
+    /// Create a `BGContinuedProcessingTask` to get extra background time for the media uploading.
+    ///
+    /// Note: This method must be called from the main thread.
+    func scheduleTask(for media: TaggedManagedObjectID<Media>, progress: Progress)
 
 }
 
@@ -19,8 +22,10 @@ func mediaUploadBackgroundTaskScheduler() -> MediaUploadBackgroundTaskScheduler?
 }
 
 /// Utilize `BGContinuedProcessingTask` to show the uploading media activity.
+///
+/// Due to how media uploading is implemented currently, we need to read the uploading state from the main thread.
+/// For better code readability, this type is implemented in the same way where everything runs on the main thread.
 @available(iOS 26.0, *)
-@MainActor
 private class ConcreteMediaUploadBackgroundTaskScheduler: MediaUploadBackgroundTaskScheduler {
     struct Item {
         // Please note: all media query needs to be done in the main context, due to the current upload media implementation.
@@ -80,6 +85,8 @@ private class ConcreteMediaUploadBackgroundTaskScheduler: MediaUploadBackgroundT
     }
 
     func scheduleTask(for media: TaggedManagedObjectID<Media>, progress: Progress) {
+        wpAssert(Thread.isMainThread)
+
         observeCoreDataChanges()
 
         let item = Item(media: media, progress: progress)
@@ -148,6 +155,10 @@ private class ConcreteMediaUploadBackgroundTaskScheduler: MediaUploadBackgroundT
         }
 
         self.state = .accepted(accepted)
+
+        // Immediately update the `BGContinuedProcessingTask` instance with the current media uploading status.
+        self.handleProgressUpdates()
+        self.handleStatusUpdates()
     }
 
     private func observe(_ item: Item, accepted: inout BGTaskState.Accepted) {

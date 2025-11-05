@@ -193,9 +193,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     public func applicationWillResignActive(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
-        Task {
-            await MediaCoordinator.shared.submitBackgroundUploadTask()
-        }
+        MediaCoordinator.shared.submitBackgroundUploadTask()
     }
 
     public func applicationDidBecomeActive(_ application: UIApplication) {
