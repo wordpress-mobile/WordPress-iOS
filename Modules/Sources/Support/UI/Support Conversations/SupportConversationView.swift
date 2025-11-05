@@ -17,6 +17,20 @@ public struct SupportConversationView: View {
 
             return true
         }
+
+        var conversation: Conversation? {
+            switch self {
+            case .start: nil
+            case .loading: nil
+            case .partiallyLoaded(let conversation, _): conversation
+            case .loaded(let conversation): conversation
+            case .error: nil
+            }
+        }
+
+        var canAcceptReply: Bool {
+            conversation?.canAcceptReply ?? false
+        }
     }
 
     @EnvironmentObject
@@ -28,6 +42,9 @@ public struct SupportConversationView: View {
     @State
     private var isReplying: Bool = false
 
+    @Namespace
+    var bottom
+
     private let conversationSummary: ConversationSummary
 
     private let currentUser: SupportUser
@@ -38,11 +55,12 @@ public struct SupportConversationView: View {
             return false
         }
 
-        if case .loaded = state {
-            return true
+        // Only allow replying once the conversation is fully loaded
+        guard case .loaded(let conversation) = state else {
+            return false
         }
 
-        return false
+        return conversation.canAcceptReply
     }
 
     public init(
@@ -71,13 +89,15 @@ public struct SupportConversationView: View {
         .navigationTitle(self.conversationSummary.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItemGroup(placement: .primaryAction) {
-                Button {
-                    self.isReplying = true
-                } label: {
-                    Image(systemName: "arrowshape.turn.up.left")
+            if self.state.canAcceptReply {
+                ToolbarItemGroup(placement: .primaryAction) {
+                    Button {
+                        self.isReplying = true
+                    } label: {
+                        Image(systemName: "arrowshape.turn.up.left")
+                    }
+                    .disabled(!canReply)
                 }
-                .disabled(!canReply)
             }
         }
         .overlay {
@@ -120,19 +140,31 @@ public struct SupportConversationView: View {
                             message: message
                         )
                     }
-                    Button {
-                        self.isReplying = true
-                    } label: {
-                        Spacer()
-                        HStack(alignment: .firstTextBaseline) {
-                            Image(systemName: "arrowshape.turn.up.left")
-                            Text(Localization.reply)
-                        }.padding(.vertical, 8)
-                        Spacer()
+
+                    if conversation.canAcceptReply {
+                        Button {
+                            self.isReplying = true
+                        } label: {
+                            Spacer()
+                            HStack(alignment: .firstTextBaseline) {
+                                Image(systemName: "arrowshape.turn.up.left")
+                                Text(Localization.reply)
+                            }.padding(.vertical, 8)
+                            Spacer()
+                        }
+                        .padding()
+                        .buttonStyle(BorderedProminentButtonStyle())
+                        .disabled(!canReply)
+                    } else {
+                        Text("End of conversation. No further replies are possible.")
+                            .font(.caption)
+                            .foregroundStyle(Color.secondary)
+                            .padding(.top)
                     }
-                    .padding()
-                    .buttonStyle(BorderedProminentButtonStyle())
-                    .disabled(!canReply)
+
+                    Divider()
+                        .opacity(0)
+                        .id(self.bottom)
                 }
             }
             .background(Color(UIColor.systemGroupedBackground))
@@ -150,12 +182,10 @@ public struct SupportConversationView: View {
     private func conversationHeader(_ conversation: Conversation) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Label(
-                    messageCountString(conversation),
-                    systemImage: "bubble.left.and.bubble.right"
-                )
-                .font(.caption)
-                .foregroundColor(.secondary)
+                ChipView(
+                    string: conversation.status.title,
+                    color: conversation.status.color
+                ).controlSize(.small)
 
                 Spacer()
 
@@ -171,14 +201,12 @@ public struct SupportConversationView: View {
 
     @MainActor
     private func scrollToBottom(proxy: ScrollViewProxy) {
-        guard case .loaded(let conversation) = state else {
+        guard case .loaded = state else {
             return
         }
 
-        if let lastMessage = conversation.messages.last {
-            withAnimation(.easeInOut(duration: 0.3)) {
-                proxy.scrollTo(lastMessage.id, anchor: .bottom)
-            }
+        withAnimation(.easeInOut(duration: 0.3)) {
+            proxy.scrollTo(self.bottom, anchor: .bottom)
         }
     }
 

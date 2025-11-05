@@ -441,6 +441,7 @@ extension SupportConversationSummary {
             id: self.id,
             title: self.title,
             description: self.description,
+            status: conversationStatus(from: self.status),
             lastMessageSentAt: self.updatedAt
         )
     }
@@ -453,6 +454,7 @@ extension SupportConversation {
             title: self.title,
             description: self.description,
             lastMessageSentAt: self.updatedAt,
+            status: conversationStatus(from: self.status),
             messages: self.messages.map { $0.asMessage() }
         )
     }
@@ -511,5 +513,17 @@ fileprivate func summarize(_ text: String) async -> String {
         } else {
             return text
         }
+    }
+}
+
+fileprivate func conversationStatus(from string: String) -> Support.ConversationStatus {
+    switch string {
+    case "open": .waitingForSupport
+    case "closed": .closed
+    case "pending": .waitingForUser
+    case "solved": .resolved
+    case "new": .waitingForSupport
+    case "hold": .waitingForSupport
+    default: .unknown
     }
 }

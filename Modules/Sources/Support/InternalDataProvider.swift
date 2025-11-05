@@ -110,48 +110,56 @@ extension SupportDataProvider {
             id: 1,
             title: "Login Issues with Two-Factor Authentication",
             description: "I'm having trouble logging into my account. The two-factor authentication code isn't working properly and I keep getting locked out.",
+            status: .waitingForSupport,
             lastMessageSentAt: Date().addingTimeInterval(-300) // 5 minutes ago
         ),
         ConversationSummary(
             id: 2,
             title: "Billing Question - Duplicate Charges",
             description: "I noticed duplicate charges on my credit card statement for this month's subscription. Can you help me understand what happened?",
+            status: .waitingForUser,
             lastMessageSentAt: Date().addingTimeInterval(-3600) // 1 hour ago
         ),
         ConversationSummary(
             id: 3,
             title: "Feature Request: Dark Mode Support",
             description: "Would it be possible to add dark mode support to the mobile app? Many users in our team have been requesting this feature.",
+            status: .resolved,
             lastMessageSentAt: Date().addingTimeInterval(-86400) // 1 day ago
         ),
         ConversationSummary(
             id: 4,
             title: "Data Export Not Working",
             description: "I'm trying to export my data but the process keeps failing at 50%. Is there a known issue with large datasets?",
+            status: .resolved,
             lastMessageSentAt: Date().addingTimeInterval(-172800) // 2 days ago
         ),
         ConversationSummary(
             id: 5,
             title: "Account Migration Assistance",
             description: "I need help migrating my old account to the new system. I have several years of data that I don't want to lose.",
+            status: .resolved,
             lastMessageSentAt: Date().addingTimeInterval(-259200) // 3 days ago
         ),
         ConversationSummary(
             id: 6,
             title: "API Rate Limiting Questions",
             description: "Our application is hitting rate limits frequently. Can we discuss increasing our API quota or optimizing our usage patterns?",
+            status: .closed,
             lastMessageSentAt: Date().addingTimeInterval(-604800) // 1 week ago
         ),
         ConversationSummary(
             id: 7,
             title: "Security Concern - Suspicious Activity",
             description: "I received an email about suspicious activity on my account. I want to make sure my account is secure and review recent access logs.",
+            status: .closed,
             lastMessageSentAt: Date().addingTimeInterval(-1209600) // 2 weeks ago
         ),
         ConversationSummary(
             id: 8,
             title: "Integration Help with Webhook Setup",
             description: "I'm having trouble setting up webhooks for our CRM integration. The endpoints aren't receiving the expected payload format.",
+            status: .closed,
             lastMessageSentAt: Date().addingTimeInterval(-1814400) // 3 weeks ago
         )
     ]
@@ -161,6 +169,7 @@ extension SupportDataProvider {
         title: "Issue with app crashes",
         description: "The app keeps crashing when I try to upload photos. This has been happening for the past week and is very frustrating.",
         lastMessageSentAt: Date().addingTimeInterval(-2400),
+        status: .closed,
         messages: [
             Message(
                 id: 1,
@@ -385,6 +394,7 @@ actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
             title: subject,
             description: message,
             lastMessageSentAt: Date(),
+            status: .waitingForSupport,
             messages: [Message(
                 id: 1234,
                 content: message,

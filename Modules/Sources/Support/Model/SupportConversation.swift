@@ -1,10 +1,41 @@
 import Foundation
+import SwiftUI
+
+public enum ConversationStatus: Sendable, Codable {
+    case waitingForSupport
+    case waitingForUser
+    case resolved
+    case closed
+    case unknown // Handles future server updates
+
+    var title: String {
+        switch self {
+        case .waitingForSupport: "Waiting for support"
+        case .waitingForUser: "Waiting for you"
+        case .resolved: "Solved"
+        case .closed: "Closed"
+        case .unknown: "Unknown"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .waitingForSupport: Color.blue
+        case .waitingForUser: Color.orange
+        case .resolved: Color.green
+        case .closed: Color.gray
+        case .unknown: Color.orange
+        }
+    }
+}
 
 public struct ConversationSummary: Identifiable, Hashable, Sendable, Codable, Equatable {
+
     public let id: UInt64
     public let title: String
     public let description: String
     public let attributedDescription: AttributedString
+    public let status: ConversationStatus
 
     /// The `description` with any markdown formatting stripped out
     public let plainTextDescription: String
@@ -14,6 +45,7 @@ public struct ConversationSummary: Identifiable, Hashable, Sendable, Codable, Eq
         id: UInt64,
         title: String,
         description: String,
+        status: ConversationStatus,
         lastMessageSentAt: Date
     ) {
         self.id = id
@@ -21,6 +53,7 @@ public struct ConversationSummary: Identifiable, Hashable, Sendable, Codable, Eq
         self.description = description
         self.attributedDescription = convertMarkdownTextToAttributedString(description)
         self.plainTextDescription = NSAttributedString(attributedDescription).string
+        self.status = status
         self.lastMessageSentAt = lastMessageSentAt
     }
 }
@@ -30,6 +63,7 @@ public struct Conversation: Identifiable, Sendable, Codable, Equatable {
     public let title: String
     public let description: String
     public let lastMessageSentAt: Date
+    public let status: ConversationStatus
     public let messages: [Message]
 
     public init(
@@ -37,12 +71,14 @@ public struct Conversation: Identifiable, Sendable, Codable, Equatable {
         title: String,
         description: String,
         lastMessageSentAt: Date,
+        status: ConversationStatus,
         messages: [Message]
     ) {
         self.id = id
         self.title = title
         self.description = description
         self.lastMessageSentAt = lastMessageSentAt
+        self.status = status
         self.messages = messages
     }
 
@@ -52,8 +88,16 @@ public struct Conversation: Identifiable, Sendable, Codable, Equatable {
             title: self.title,
             description: self.description,
             lastMessageSentAt: message.createdAt,
+            status: self.status,
             messages: self.messages + [message]
         )
+    }
+
+    /// Will the server accept a reply to this conversation?
+    ///
+    /// Unrelated to whether the user is eligible for support.
+    var canAcceptReply: Bool {
+        status != .closed
     }
 }
 
@@ -129,5 +173,25 @@ public struct Attachment: Identifiable, Sendable, Codable, Equatable {
 
     var isImage: Bool {
         contentType.hasPrefix("image/")
+    }
+
+    var isVideo: Bool {
+        contentType.hasPrefix("video/")
+    }
+
+    var isPdf: Bool {
+        contentType == "application/pdf"
+    }
+
+    var icon: String {
+        if isVideo {
+            return "film"
+        }
+
+        if isPdf {
+            return "text.document"
+        }
+
+        return "doc"
     }
 }

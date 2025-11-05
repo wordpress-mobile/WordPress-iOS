@@ -147,10 +147,56 @@ public struct SupportConversationListView: View {
 
 // MARK: - Email Row View
 struct EmailRowView: View {
+
+    @Environment(\.sizeCategory)
+    private var sizeCategory
+
     let conversation: ConversationSummary
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading) {
+            VStack {
+                header
+
+                HStack {
+                    TimelineView(.periodic(from: .now, by: 1.0)) { context in
+                        Text(formatTimestamp(conversation.lastMessageSentAt))
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    Spacer()
+                }
+            }.padding(.bottom, 2)
+
+            Text(conversation.plainTextDescription)
+                .font(.body)
+                .foregroundColor(.secondary)
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+        }
+    }
+
+    @ViewBuilder
+    var header: some View {
+        if self.sizeCategory.isAccessibilityCategory {
+            VStack {
+                HStack {
+                    Text(conversation.title)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                        .lineLimit(2)
+                    Spacer()
+                }
+
+                HStack {
+                    ChipView(
+                        string: conversation.status.title,
+                        color: conversation.status.color
+                    ).controlSize(.mini)
+                    Spacer()
+                }
+            }
+        } else {
             HStack {
                 Text(conversation.title)
                     .font(.headline)
@@ -159,21 +205,12 @@ struct EmailRowView: View {
 
                 Spacer()
 
-                HStack(spacing: 4) {
-                    Text(formatTimestamp(conversation.lastMessageSentAt))
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-            }.padding(.bottom, 4)
-
-            Text(conversation.plainTextDescription)
-                .font(.body)
-                .foregroundColor(.secondary)
-                .lineLimit(2)
-                .multilineTextAlignment(.leading)
+                ChipView(
+                    string: conversation.status.title,
+                    color: conversation.status.color
+                ).controlSize(.mini)
+            }
         }
-        .padding()
-        .background(Color.clear)
     }
 
     private func formatTimestamp(_ date: Date) -> String {
