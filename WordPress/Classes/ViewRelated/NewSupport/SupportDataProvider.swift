@@ -1,4 +1,5 @@
 import Foundation
+import FoundationModels
 import AsyncImageKit
 import Support
 import SwiftUI
@@ -158,9 +159,12 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
             try await self.wpcomClient
                 .api
                 .supportBots
-                .getBotConversationList(botId: self.botId, params: ListBotConversationsParams())
+                .getBotConversationList(
+                    botId: self.botId,
+                    params: ListBotConversationsParams(summaryMethod: .firstMessage)
+                )
                 .data
-                .map { $0.asSupportConversation() }
+                .asyncMap { try await $0.asSupportConversation() }
         }, cacheKey: "bot-conversation-list")
     }
 
@@ -178,7 +182,7 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
                 .getBotConversation(botId: self.botId, chatId: ChatId(id), params: params)
                 .data
 
-            return conversation.asSupportConversation()
+            return try await conversation.asSupportConversation()
         }, cacheKey: "bot-conversation-\(id)")
     }
 
@@ -213,7 +217,7 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
             .createBotConversation(botId: self.botId, params: params)
             .data
 
-        return response.asSupportConversation()
+        return try await response.asSupportConversation()
     }
 
     private func add(message: String, to conversation: Support.BotConversation) async throws -> Support.BotConversation {
@@ -231,7 +235,7 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
                 params: params
             ).data
 
-        return response.asSupportConversation()
+        return try await response.asSupportConversation()
     }
 }
 
@@ -291,7 +295,8 @@ actor WpSupportConversationDataProvider: SupportConversationDataProvider {
         let params = CreateSupportTicketParams(
             subject: subject,
             message: message,
-            application: "jetpack"
+            application: "jetpack",
+            attachments: attachments.map { $0.path() }
         )
 
         return try await self.wpcomClient.api
@@ -372,26 +377,37 @@ extension SupportUser {
 }
 
 extension WordPressAPIInternal.BotConversationSummary {
-    func asSupportConversation() -> Support.BotConversation {
-        var summary = self.summaryMessage.content
+    func asSupportConversation() async throws -> Support.BotConversation {
 
-        if let preview = summary.components(separatedBy: .newlines).first?.prefix(64) {
-            summary = String(preview)
-        }
+        let summary = try await cacheOnDisk(key: "conversation-title-\(self.chatId)", computation: {
+            await summarize(self.summaryMessage.content)
+        })
 
         return BotConversation(
             id: self.chatId,
             title: summary,
+            createdAt: self.createdAt,
             messages: []
         )
     }
 }
 
 extension WordPressAPIInternal.BotConversation {
-    func asSupportConversation() -> Support.BotConversation {
-        BotConversation(
+    func asSupportConversation() async throws -> Support.BotConversation {
+        let title: String
+
+        if let firstMessageText = self.messages.first?.content {
+            title = try await cacheOnDisk(key: "conversation-title-\(self.chatId)") {
+                await summarize(firstMessageText)
+            }
+        } else {
+            title = "New Bot Chat"
+        }
+
+        return BotConversation(
             id: self.chatId,
-            title: self.messages.first?.content ?? "New Bot Chat",
+            title: title,
+            createdAt: self.createdAt,
             messages: self.messages.map { $0.asSupportMessage() }
         )
     }
@@ -419,7 +435,7 @@ extension WordPressAPIInternal.BotMessage {
     }
 }
 
-extension WordPressAPIInternal.SupportConversationSummary {
+extension SupportConversationSummary {
     func asConversationSummary() -> Support.ConversationSummary {
         Support.ConversationSummary(
             id: self.id,
@@ -479,5 +495,21 @@ extension SupportAttachment {
             url: url,
             dimensions: nil
         )
+    }
+}
+
+fileprivate func summarize(_ text: String) async -> String {
+    if #available(iOS 26.0, *) {
+        do {
+            return try await IntelligenceService().summarizeSupportTicket(content: text)
+        } catch {
+            return text
+        }
+    } else {
+        if let preview = text.components(separatedBy: .newlines).first?.prefix(64) {
+            return String(preview)
+        } else {
+            return text
+        }
     }
 }

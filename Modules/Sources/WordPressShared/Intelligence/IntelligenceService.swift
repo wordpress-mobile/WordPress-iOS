@@ -122,6 +122,34 @@ public actor IntelligenceService {
         return session.streamResponse(to: prompt)
     }
 
+    public func summarizeSupportTicket(content: String) async throws -> String {
+        let instructions = """
+        You are helping a user by summarizing their support request down to a single sentence
+        with fewer than 10 words.
+
+        The summary should be clear, informative, and written in a neutral tone.
+
+        Do not include anything other than the summary in the response.
+        """
+
+        let session = LanguageModelSession(
+            model: .init(guardrails: .permissiveContentTransformations),
+            instructions: instructions
+        )
+
+        let prompt = """
+        Give me an appropriate conversation title for the following opening message of the conversation:
+
+        \(content)
+        """
+
+        return try await session.respond(
+            to: prompt,
+            generating: SuggestedConversationTitle.self,
+            options: GenerationOptions(temperature: 1.0)
+        ).content.title
+    }
+
     public nonisolated func extractRelevantText(from post: String, ratio: CGFloat = 0.6) -> String {
         let extract = try? IntelligenceUtilities.extractRelevantText(from: post)
         let postSizeLimit = Double(IntelligenceService.contextSizeLimit) * ratio
@@ -141,4 +169,11 @@ private extension Array where Element: Hashable {
 private struct SuggestedTagsResult {
     @Guide(description: "Newly generated tags following the identified format")
     var tags: [String]
+}
+
+@available(iOS 26, *)
+@Generable
+private struct SuggestedConversationTitle {
+    @Guide(description: "The conversation title")
+    var title: String
 }
