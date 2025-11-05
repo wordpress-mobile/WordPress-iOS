@@ -46,12 +46,14 @@ public struct SupportForm: View {
     @State private var applicationLogs: [ApplicationLog]
 
     @State private var selectedPhotos: [URL] = []
+    @State private var uploadLimitExceeded = false
 
     /// UI State
     @State private var showLoadingIndicator = false
     @State private var shouldShowErrorAlert = false
     @State private var shouldShowSuccessAlert = false
     @State private var errorMessage = ""
+    @State private var isDisplayingCancellationConfirmation: Bool = false
 
     /// Callback for when form is dismissed
     public var onDismiss: (() -> Void)?
@@ -101,7 +103,9 @@ public struct SupportForm: View {
 
             // Screenshots Section
             ScreenshotPicker(
-                attachedImageUrls: $selectedPhotos
+                attachedImageUrls: $selectedPhotos,
+                maximumUploadSize: self.dataProvider.maximumUploadSize,
+                uploadLimitExceeded: self.$uploadLimitExceeded
             )
 
             // Application Logs Section

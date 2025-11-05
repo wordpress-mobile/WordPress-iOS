@@ -3,7 +3,23 @@ import PhotosUI
 
 struct ScreenshotPicker: View {
 
-    private let maxScreenshots = 5
+    enum ViewState: Sendable {
+        case ready
+        case loading
+        case error(Error)
+
+        var isLoadingMoreImages: Bool {
+            guard case .loading = self else { return false }
+            return true
+        }
+
+        var error: Error? {
+            guard case .error(let error) = self else { return nil }
+            return error
+        }
+    }
+
+    private let maxScreenshots = 10
 
     @State
     private var selectedPhotos: [PhotosPickerItem] = []
@@ -12,54 +28,35 @@ struct ScreenshotPicker: View {
     private var attachedImages: [UIImage] = []
 
     @State
-    private var error: Error?
+    private var state: ViewState = .ready
 
     @Binding
     var attachedImageUrls: [URL]
 
+    @State
+    private var currentUploadSize: CGFloat = 0
+
+    let maximumUploadSize: CGFloat?
+
+    @Binding
+    var uploadLimitExceeded: Bool
+
     var body: some View {
         Section {
-            VStack(alignment: .leading, spacing: 12) {
-                Text(Localization.screenshotsDescription)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+            Text(Localization.screenshotsDescription)
+                .font(.body)
+                .foregroundColor(.secondary)
 
-                // Screenshots display
-                if !attachedImages.isEmpty {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        LazyHStack(spacing: 12) {
-                            ForEach(Array(attachedImages.enumerated()), id: \.offset) { index, image in
-                                ZStack(alignment: .topTrailing) {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 80, height: 80)
-                                        .clipped()
-                                        .cornerRadius(8)
-
-                                    // Remove button
-                                    Button {
-                                        // attachedImages will be updated by changing `selectedPhotos`, but not immediately. This line is here to make the UI feel snappy
-                                        attachedImages.remove(at: index)
-                                        selectedPhotos.remove(at: index)
-                                    } label: {
-                                        Image(systemName: "xmark.circle.fill")
-                                            .foregroundColor(.red)
-                                            .background(Color.white, in: Circle())
-                                    }
-                                    .padding(4)
-                                }
-                            }
-                        }
-                        .padding(.horizontal, 2)
-                    }
-                }
-
-                if let error {
+                if let error = self.state.error {
                     ErrorView(
                         title: "Unable to load screenshot",
                         message: error.localizedDescription
-                    ).frame(maxWidth: .infinity)
+                    )
+                }
+
+                if !attachedImages.isEmpty {
+                    imageGallery
+                    maxSizeIndicator
                 }
 
                 // Add screenshots button
@@ -67,23 +64,31 @@ struct ScreenshotPicker: View {
                     selection: $selectedPhotos,
                     maxSelectionCount: maxScreenshots,
                     matching: .images
-                ) { [imageCount = attachedImages.count] in
+                ) { [imageCount = attachedImages.count, isLoading = self.state.isLoadingMoreImages, uploadLimitExceeded = self.uploadLimitExceeded] in
                     HStack {
-                        Image(systemName: "camera.fill")
+                        if isLoading {
+                            ProgressView()
+                                .tint(Color.accentColor)
+                        } else {
+                            Image(systemName: "camera.fill")
+                        }
+
                         Text(imageCount == 0 ? Localization.addScreenshots : Localization.addMoreScreenshots)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.accentColor.opacity(0.1))
-                    .foregroundColor(Color.accentColor)
+                    .foregroundStyle(uploadLimitExceeded ? Color.gray : Color.accentColor)
                     .cornerRadius(8)
                 }
                 .onChange(of: selectedPhotos) { _, newItems in
                     Task {
+                        self.state = .loading
                         await loadSelectedPhotos(newItems)
+                        self.state = .ready
                     }
                 }
-            }
+                .disabled(uploadLimitExceeded)
         } header: {
             HStack {
                 Text(Localization.screenshots)
@@ -92,6 +97,58 @@ struct ScreenshotPicker: View {
                     .foregroundColor(.secondary)
             }
         }
+        .listRowSeparator(.hidden)
+        .selectionDisabled()
+    }
+
+    @ViewBuilder
+    var imageGallery: some View {
+        // Screenshots display
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 12) {
+                ForEach(Array(attachedImages.enumerated()), id: \.offset) { index, image in
+                    ZStack(alignment: .topTrailing) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 80, height: 80)
+                            .clipped()
+                            .cornerRadius(8)
+
+                        // Remove button
+                        Button {
+                            // attachedImages will be updated by changing `selectedPhotos`, but not immediately. This line is here to make the UI feel snappy
+                            attachedImages.remove(at: index)
+                            selectedPhotos.remove(at: index)
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.red)
+                                .background(Color.white, in: Circle())
+                        }
+                        .padding(4)
+                    }
+                }
+            }
+            .padding(.horizontal, 2)
+        }
+    }
+
+    @ViewBuilder
+    var maxSizeIndicator: some View {
+        if let maximumUploadSize {
+            VStack(alignment: .leading) {
+                ProgressView(value: currentUploadSize, total: maximumUploadSize)
+                    .tint(uploadLimitExceeded ? Color.red : Color.accentColor)
+
+                Text("Attachment Limit: \(format(bytes: currentUploadSize)) / \(format(bytes: maximumUploadSize))")
+                    .font(.caption2)
+                    .foregroundStyle(Color.secondary)
+            }
+        }
+    }
+
+    private func format(bytes: CGFloat) -> String {
+        ByteCountFormatter().string(fromByteCount: Int64(bytes))
     }
 
     /// Loads selected photos from PhotosPicker
@@ -99,6 +156,7 @@ struct ScreenshotPicker: View {
     func loadSelectedPhotos(_ items: [PhotosPickerItem]) async {
         var newImages: [UIImage] = []
         var newUrls: [URL] = []
+        var totalSize: CGFloat = 0
 
         do {
             for item in items {
@@ -106,6 +164,8 @@ struct ScreenshotPicker: View {
                     if let image = UIImage(data: data) {
                         newImages.append(image)
                     }
+
+                    totalSize += CGFloat(data.count)
                 }
 
                 if let file = try await item.loadTransferable(type: ScreenshotFile.self) {
@@ -113,11 +173,16 @@ struct ScreenshotPicker: View {
                 }
             }
 
-            attachedImages = newImages
-            attachedImageUrls = newUrls
+            self.attachedImages = newImages
+            self.attachedImageUrls = newUrls
+
+            withAnimation {
+                self.currentUploadSize = totalSize
+                self.uploadLimitExceeded = totalSize > maximumUploadSize ?? .infinity
+            }
         } catch {
             withAnimation {
-                self.error = error
+                self.state = .error(error)
             }
         }
     }
@@ -159,7 +224,11 @@ struct ScreenshotFile: Transferable {
 
         var body: some View {
             Form {
-                ScreenshotPicker(attachedImageUrls: $selectedPhotoUrls)
+                ScreenshotPicker(
+                    attachedImageUrls: $selectedPhotoUrls,
+                    maximumUploadSize: 10_000_000,
+                    uploadLimitExceeded: .constant(false)
+                )
             }
             .environmentObject(SupportDataProvider.testing)
         }

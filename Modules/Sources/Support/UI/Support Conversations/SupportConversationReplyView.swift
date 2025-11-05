@@ -97,7 +97,9 @@ public struct SupportConversationReplyView: View {
                 }
 
                 ScreenshotPicker(
-                    attachedImageUrls: self.$selectedPhotos
+                    attachedImageUrls: self.$selectedPhotos,
+                    maximumUploadSize: self.dataProvider.maximumUploadSize,
+                    uploadLimitExceeded: self.$uploadLimitExceeded
                 )
 
                 ApplicationLogPicker(

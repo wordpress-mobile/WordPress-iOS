@@ -341,6 +341,8 @@ actor InternalUserDataProvider: CurrentUserDataProvider {
 }
 
 actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
+    let maximumUploadSize: UInt64 = 5_000_000 // 5MB
+
     private var conversations: [UInt64: Conversation] = [:]
 
     nonisolated func loadSupportConversations() throws -> any CachedAndFetchedResult<[ConversationSummary]> {

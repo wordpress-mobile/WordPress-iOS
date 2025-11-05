@@ -260,6 +260,8 @@ actor WpCurrentUserDataProvider: CurrentUserDataProvider {
 
 actor WpSupportConversationDataProvider: SupportConversationDataProvider {
 
+    let maximumUploadSize: UInt64 = 30_000_000 // 30MB
+
     private let wpcomClient: WordPressDotComClient
 
     init(wpcomClient: WordPressDotComClient) {

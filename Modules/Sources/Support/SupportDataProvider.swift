@@ -146,6 +146,10 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         }
     }
 
+    var maximumUploadSize: CGFloat {
+        CGFloat(self.supportConversationDataProvider.maximumUploadSize)
+    }
+
     // Application Logs
     public func fetchApplicationLogs() async throws -> [ApplicationLog] {
         try await self.applicationLogProvider.fetchApplicationLogs()
@@ -258,6 +262,8 @@ public protocol BotConversationDataProvider: Actor {
 }
 
 public protocol SupportConversationDataProvider: Actor {
+    nonisolated var maximumUploadSize: UInt64 { get }
+
     nonisolated func loadSupportConversations() throws -> any CachedAndFetchedResult<[ConversationSummary]>
     nonisolated func loadSupportConversation(id: UInt64) throws -> any CachedAndFetchedResult<Conversation>
 
