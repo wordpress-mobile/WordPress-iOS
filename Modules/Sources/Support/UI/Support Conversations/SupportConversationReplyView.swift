@@ -3,20 +3,43 @@ import PhotosUI
 
 public struct SupportConversationReplyView: View {
 
+    private let enableRichTextForm: Bool = false
+
     enum ViewState: Equatable {
         case editing
         case sending(Task<Void, Never>)
         case sent(Task<Void, Never>)
-        case error(Error)
+        case error(String)
 
-        static func == (lhs: Self, rhs: Self) -> Bool {
-            switch (lhs, rhs) {
-            case (.editing, .editing): return true
-            case (.sending, .sending): return true
-            case (.sent, .sent): return true
-            case (.error(let lhsError), .error(let rhsError)): return lhsError.localizedDescription == rhsError.localizedDescription
-            default: return false
+        var isSendingMessage: Bool {
+            guard case .sending = self else { return false }
+            return true
+        }
+
+        var messageWasSent: Bool {
+            guard case .sent = self else { return false }
+            return true
+        }
+
+        var isError: Bool {
+            guard case .error = self else { return false }
+            return true
+        }
+
+        var error: String {
+            guard case .error(let string) = self else {
+                return ""
             }
+
+            return string
+        }
+
+        var cancelButtonShouldBeDisabled: Bool {
+            if case .sending = self {
+                return true
+            }
+
+            return false
         }
     }
 
@@ -39,11 +62,14 @@ public struct SupportConversationReplyView: View {
     @State
     private var state: ViewState = .editing
 
+    @State
+    private var isDisplayingCancellationConfirmation: Bool = false
+
     @FocusState
     private var isTextFieldFocused: Bool
 
-    @State
-    private var selectedPhotos: [URL] = []
+    @State private var selectedPhotos: [URL] = []
+    @State private var uploadLimitExceeded: Bool = false
 
     @State
     private var includeApplicationLogs: Bool = false
@@ -54,7 +80,7 @@ public struct SupportConversationReplyView: View {
     }
 
     private var canSendMessage: Bool {
-        !textIsEmpty && state == .editing
+        !textIsEmpty && state == .editing && !uploadLimitExceeded
     }
 
     public init(conversation: Conversation, currentUser: SupportUser, conversationDidUpdate: @escaping (Conversation) -> Void) {
@@ -79,6 +105,8 @@ public struct SupportConversationReplyView: View {
                 )
             }
         }
+        .scrollDismissesKeyboard(.interactively)
+        .interactiveDismissDisabled(!self.textIsEmpty) // Don't allow swiping down to dismiss if the user would lose data
         .navigationTitle(Localization.reply)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -86,57 +114,85 @@ public struct SupportConversationReplyView: View {
                 Button(Localization.cancel) {
                     dismiss()
                 }
-                .disabled({
-                    if case .sending = state {
-                        return true
-                    }
-                    return false
-                }())
+                .disabled(self.state.cancelButtonShouldBeDisabled)
             }
 
             ToolbarItem(placement: .confirmationAction) {
                 Button {
                     self.sendReply()
                 } label: {
-                    if case .sending = state {
-                        HStack {
-                            ProgressView()
-                                .scaleEffect(0.8)
-                            Text(Localization.sending)
-                        }
-                    } else {
-                        Text(Localization.send)
-                    }
+                    Text(Localization.send)
                 }
                 .disabled(!canSendMessage)
             }
         }
         .overlay {
-            switch self.state {
-            case .error(let error):
+            ZStack {
+                ProgressView("Sending Message")
+                    .padding()
+                    .background(Color(UIColor.systemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .shadow(radius: 8)
+                    .opacity(state.isSendingMessage ? 1.0 : 0.0)
+                    .offset(x: 0, y: state.isSendingMessage ? 0 : 20)
+
                 ErrorView(
                     title: Localization.unableToSendMessage,
-                    message: error.localizedDescription
+                    message: state.error
                 )
-            case .sent:
-                ContentUnavailableView(
-                    Localization.messageSent,
-                    systemImage: "checkmark.circle",
-                    description: nil
-                ).onTapGesture {
+                .padding()
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .shadow(radius: 8)
+                .opacity(state.isError ? 1.0 : 0.0)
+                .offset(x: 0, y: state.isError ? 0 : 20)
+                .onTapGesture {
+                    self.state = .editing
+                }
+
+                VStack {
+                    HStack {
+                        Image(systemName: "checkmark.circle")
+                            .font(.system(size: 48))
+                            .foregroundStyle(Color.gray)
+                            .padding(.top, -4)
+                            .padding(.bottom, 4)
+                    }
+                    Text(Localization.messageSent).font(.title2).bold()
+                }
+                .padding()
+                .background(Color(UIColor.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .shadow(radius: 8)
+                .opacity(state.messageWasSent ? 1.0 : 0.0)
+                .offset(x: 0, y: state.messageWasSent ? 0 : 20)
+                .onTapGesture {
                     self.dismiss()
                 }
-            default: EmptyView()
             }
         }
         .onAppear {
             isTextFieldFocused = true
         }
+        .alert(
+            "Confirm Cancellation",
+            isPresented: $isDisplayingCancellationConfirmation,
+            actions: {
+                Button("Discard Changes", role: .destructive) {
+                    self.dismiss()
+                }
+
+                Button("Continue Writing", role: .cancel) {
+                    self.isDisplayingCancellationConfirmation = false
+                }
+            }, message: {
+                Text("Are you sure you want to cancel this message? You'll lose any data you've entered")
+            }
+        )
     }
 
     @ViewBuilder
     var textEditor: some View {
-        if #available(iOS 26.0, *) {
+        if #available(iOS 26.0, *), enableRichTextForm {
             TextEditor(text: $richText)
                 .focused($isTextFieldFocused)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -152,7 +208,7 @@ public struct SupportConversationReplyView: View {
     }
 
     private func getText() throws -> String {
-        if #available(iOS 26.0, *) {
+        if #available(iOS 26.0, *), enableRichTextForm {
             return self.richText.toHtml()
         } else {
             return self.plainText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -162,7 +218,13 @@ public struct SupportConversationReplyView: View {
     private func sendReply() {
         guard !textIsEmpty else { return }
 
-        let task = Task {
+        withAnimation {
+            state = .sending(self.sendingTask)
+        }
+    }
+
+    var sendingTask: Task<Void, Never> {
+        Task {
             do {
                 let text = try getText()
 
@@ -180,24 +242,16 @@ public struct SupportConversationReplyView: View {
                         // Display the sent message for 2 seconds, then auto-dismiss
                         try? await Task.sleep(for: .seconds(2))
 
-                        await MainActor.run {
-                            dismiss()
-                        }
+                        dismiss()
                     })
                 }
             } catch {
-                state = .error(error)
+                state = .error(error.localizedDescription)
 
-                // Reset to editing state after showing error for a moment
-                try? await Task.sleep(nanoseconds: 2_000_000_000) // 2 seconds
                 if case .error = state {
                     state = .editing
                 }
             }
-        }
-
-        withAnimation {
-            state = .sending(task)
         }
     }
 
@@ -211,9 +265,15 @@ public struct SupportConversationReplyView: View {
 // MARK: - Application Log Row Component
 
 #Preview {
+
+    @Previewable @State
+    var isPresented: Bool = true
+
     NavigationStack {
-        Text("Hello World")
-    }.sheet(isPresented: .constant(true)) {
+        Text("Hello World").onTapGesture {
+            isPresented = true
+        }
+    }.sheet(isPresented: $isPresented) {
         NavigationStack {
             SupportConversationReplyView(
                 conversation: SupportDataProvider.supportConversation,

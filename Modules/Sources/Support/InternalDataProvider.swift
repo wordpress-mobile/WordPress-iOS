@@ -22,6 +22,7 @@ extension SupportDataProvider {
     static let botConversation = BotConversation(
         id: 1234,
         title: "App Crashing on Launch",
+        createdAt: Date().addingTimeInterval(-3600), // 1 hour ago
         messages: [
             BotMessage(
                 id: 1001,
@@ -85,6 +86,7 @@ extension SupportDataProvider {
         BotConversation(
             id: 5678,
             title: "App Crashing on Launch",
+            createdAt: Date().addingTimeInterval(-60), // 1 minute ago
             messages: botConversation.messages + [
                 BotMessage(
                     id: 1009,

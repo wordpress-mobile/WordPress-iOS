@@ -151,33 +151,23 @@ struct RootSupportView: View {
 
             // Don't treat a `nil` value as a cache miss – they might not be logged into WP.com
             let cachedIdentity = try await result.cachedResult()
-            await MainActor.run {
-                self.state = .partiallyLoaded(user: cachedIdentity)
-            }
+            self.state = .partiallyLoaded(user: cachedIdentity)
 
             // If we fail to fetch the user's identity, we'll assume they're logged out
             let fetchedIdentity = try? await result.fetchedResult()
 
-            await MainActor.run {
-                self.state = .loaded(user: fetchedIdentity)
-            }
+            self.state = .loaded(user: fetchedIdentity)
         } catch {
-            await MainActor.run {
-                self.state = .error(error)
-            }
+            self.state = .error(error)
         }
     }
 
     @Sendable private func reloadIdentity() async {
         do {
             let fetchedIdentity = try await self.dataProvider.loadSupportIdentity().fetchedResult()
-            await MainActor.run {
-                self.state = .loaded(user: fetchedIdentity)
-            }
+            self.state = .loaded(user: fetchedIdentity)
         } catch {
-            await MainActor.run {
-                self.state = .error(error)
-            }
+            self.state = .error(error)
         }
     }
 }

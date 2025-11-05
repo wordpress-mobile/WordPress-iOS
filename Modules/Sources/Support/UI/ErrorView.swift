@@ -59,6 +59,43 @@ public struct ErrorView: View {
     }
 }
 
+public struct FullScreenErrorView: View {
+
+    let title: String
+    let message: String
+    let systemImage: String
+    let retryAction: (() -> Void)?
+
+    public init(
+        title: String = "Something went wrong",
+        message: String = "Please try again later",
+        systemImage: String = "exclamationmark.triangle.fill",
+        retryAction: (() -> Void)? = nil
+    ) {
+        self.title = title
+        self.message = message
+        self.systemImage = systemImage
+        self.retryAction = retryAction
+    }
+
+    public var body: some View {
+        VStack {
+            Spacer()
+            HStack {
+                Spacer()
+                ErrorView(
+                    title: self.title,
+                    message: self.message,
+                    systemImage: self.systemImage,
+                    retryAction: self.retryAction
+                )
+                Spacer()
+            }
+            Spacer()
+        }
+    }
+}
+
 #Preview {
     VStack(spacing: 20) {
         // Basic error view

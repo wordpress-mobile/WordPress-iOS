@@ -1,12 +1,14 @@
 import SwiftUI
+import AsyncImageKit
 
 public struct SupportConversationView: View {
 
-    enum ViewState {
-        case loading
-        case partiallyLoaded(Conversation)
+    enum ViewState: Equatable {
+        case start
+        case loading(cacheLoadTask: Task<Void, Never>)
+        case partiallyLoaded(Conversation, fetchTask: Task<Void, Never>)
         case loaded(Conversation)
-        case error(Error)
+        case error(String)
 
         var isPartiallyLoaded: Bool {
             guard case .partiallyLoaded = self else {
@@ -21,7 +23,7 @@ public struct SupportConversationView: View {
     private var dataProvider: SupportDataProvider
 
     @State
-    private var state: ViewState
+    private var state: ViewState = .start
 
     @State
     private var isReplying: Bool = false
@@ -47,7 +49,6 @@ public struct SupportConversationView: View {
         conversation: ConversationSummary,
         currentUser: SupportUser
     ) {
-        self.state = .loading
         self.currentUser = currentUser
         self.conversationSummary = conversation
     }
@@ -55,19 +56,18 @@ public struct SupportConversationView: View {
     public var body: some View {
         VStack(spacing: 0) {
             switch self.state {
-            case .loading:
-                ProgressView(Localization.loadingMessages)
-            case .partiallyLoaded(let conversation):
-                self.conversationView(conversation)
-            case .loaded(let conversation):
+            case .start, .loading:
+                FullScreenProgressView(Localization.loadingMessages)
+            case .partiallyLoaded(let conversation, _), .loaded(let conversation):
                 self.conversationView(conversation)
             case .error(let error):
-                ErrorView(
+                FullScreenErrorView(
                     title: Localization.unableToDisplayConversation,
-                    message: error.localizedDescription
+                    message: error
                 )
             }
         }
+        .task(self.loadConversation)
         .navigationTitle(self.conversationSummary.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -91,7 +91,7 @@ public struct SupportConversationView: View {
                         currentUser: currentUser,
                         conversationDidUpdate: { conversation in
                             withAnimation {
-                                self.state = .loaded(conversation)
+                                self.state = .partiallyLoaded(conversation, fetchTask: self.fetchTask)
                             }
                         }
                     )
@@ -102,8 +102,6 @@ public struct SupportConversationView: View {
         .onAppear {
             self.dataProvider.userDid(.viewSupportTicket(ticketId: conversationSummary.id))
         }
-        .task(self.loadConversation)
-        .refreshable(action: self.reloadConversation)
     }
 
     @ViewBuilder
@@ -144,6 +142,7 @@ public struct SupportConversationView: View {
             .onChange(of: conversation.messages.count) {
                 scrollToBottom(proxy: proxy)
             }
+            .refreshable(action: self.reloadConversation)
         }
     }
 
@@ -170,6 +169,7 @@ public struct SupportConversationView: View {
         .padding()
     }
 
+    @MainActor
     private func scrollToBottom(proxy: ScrollViewProxy) {
         guard case .loaded(let conversation) = state else {
             return
@@ -197,43 +197,47 @@ public struct SupportConversationView: View {
         return formatter.localizedString(for: date, relativeTo: Date())
     }
 
+    @MainActor
     private func loadConversation() async {
-        do {
-            let conversationId = self.conversationSummary.id
-
-            let fetch = try self.dataProvider.loadSupportConversation(id: conversationId)
-
-            if let cached = try await fetch.cachedResult() {
-                await MainActor.run {
-                    self.state = .partiallyLoaded(cached)
-                }
-            }
-
-            let conversation = try await fetch.fetchedResult()
-            await MainActor.run {
-                self.state = .loaded(conversation)
-            }
-        } catch {
-            self.state = .error(error)
+        guard case .start = state else {
+            return
         }
+
+        self.state = .loading(cacheLoadTask: self.cacheTask)
     }
 
+    @MainActor
     private func reloadConversation() async {
         guard case .loaded(let conversation) = state else {
             return
         }
 
-        do {
-            await MainActor.run {
-                self.state = .partiallyLoaded(conversation)
+        self.state = .partiallyLoaded(conversation, fetchTask: fetchTask)
+    }
+
+    private var cacheTask: Task<Void, Never> {
+        Task {
+            do {
+                let id = self.conversationSummary.id
+                if let conversation = try await self.dataProvider.loadSupportConversation(id: id).cachedResult() {
+                    self.state = .partiallyLoaded(conversation, fetchTask: self.fetchTask)
+                } else {
+                    await self.fetchTask.value
+                }
+            } catch {
+                self.state = .error(error.localizedDescription)
             }
+        }
+    }
 
-            let conversation = try await self.dataProvider.loadSupportConversation(id: conversation.id).fetchedResult()
-
-            self.state = .loaded(conversation)
-        } catch {
-            await MainActor.run {
-                self.state = .error(error)
+    private var fetchTask: Task<Void, Never> {
+        Task {
+            do {
+                let id = self.conversationSummary.id
+                let conversation = try await self.dataProvider.loadSupportConversation(id: id).fetchedResult()
+                self.state = .loaded(conversation)
+            } catch {
+                self.state = .error(error.localizedDescription)
             }
         }
     }

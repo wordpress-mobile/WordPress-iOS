@@ -2,15 +2,16 @@ import SwiftUI
 
 public struct ConversationListView: View {
 
-    enum ViewState {
-        case loading
-        case partiallyLoaded([BotConversation])
+    enum ViewState: Equatable {
+        case start
+        case loading(Task<Void, Never>)
+        case partiallyLoaded([BotConversation], fetchTask: Task<Void, Never>)
         case loaded([BotConversation], ViewSubstate?)
-        case loadingConversationsError(Error)
+        case loadingConversationsError(String)
 
         var conversations: [BotConversation]? {
             return switch self {
-            case .partiallyLoaded(let conversations): conversations
+            case .partiallyLoaded(let conversations, _): conversations
             case .loaded(let conversations, _): conversations
             default: nil
             }
@@ -68,16 +69,16 @@ public struct ConversationListView: View {
         }
     }
 
-    enum ViewSubstate {
+    enum ViewSubstate: Equatable {
         case deletingConversations(Task<Void, Never>)
-        case deletingConversationsError(Error)
+        case deletingConversationsError(String)
     }
 
     @EnvironmentObject
     private var dataProvider: SupportDataProvider
 
     @State
-    var state: ViewState = .loading
+    var state: ViewState = .start
 
     @State
     var selectedConversations = Set<String>()
@@ -91,14 +92,14 @@ public struct ConversationListView: View {
     public var body: some View {
         VStack {
             switch self.state {
-            case .loading:
-                ProgressView("Loading Bot Conversations")
-            case .partiallyLoaded(let conversations): self.conversationList(conversations)
-            case .loaded(let conversations, _): self.conversationList(conversations)
+            case .start, .loading:
+                FullScreenProgressView("Loading Bot Conversations")
+            case .partiallyLoaded(let conversations, _), .loaded(let conversations, _):
+                self.conversationList(conversations)
             case .loadingConversationsError(let error):
-                ErrorView(
+                FullScreenErrorView(
                     title: "Unable to load conversations",
-                    message: error.localizedDescription
+                    message: error
                 )
             }
         }
@@ -148,42 +149,47 @@ public struct ConversationListView: View {
     }
 
     private func loadConversations() async {
-        do {
-            let fetch = try await dataProvider.loadConversations()
-
-            if let cachedConversations = try await fetch.cachedResult() {
-                await MainActor.run {
-                    self.state = .partiallyLoaded(cachedConversations)
-                }
-            }
-
-            let fetchedConversations = try await fetch.fetchedResult()
-
-            await MainActor.run {
-                self.state = .loaded(fetchedConversations, .none)
-            }
-
-        } catch {
-            debugPrint("🚩 Load conversations error: \(error.localizedDescription)")
-            await MainActor.run {
-                self.state = .loadingConversationsError(error)
-            }
+        guard case .start = state else {
+            return
         }
+
+        self.state = .loading(self.cacheTask)
     }
 
     private func reloadConversations() async {
-        do {
-            let conversationList = try await self.dataProvider.loadConversations().fetchedResult()
-            await MainActor.run {
-                self.state = .loaded(conversationList, .none)
-            }
-        } catch {
-            await MainActor.run {
-                self.state = .loadingConversationsError(error)
+        guard case .loaded(let conversations, _) = state else {
+            return
+        }
+
+        self.state = .partiallyLoaded(conversations, fetchTask: self.fetchTask)
+    }
+
+    private var cacheTask: Task<Void, Never> {
+        Task {
+            do {
+                if let cachedResult = try await dataProvider.loadConversations().cachedResult() {
+                    self.state = .partiallyLoaded(cachedResult, fetchTask: self.fetchTask)
+                } else {
+                    await self.fetchTask.value
+                }
+            } catch {
+                self.state = .loadingConversationsError(error.localizedDescription)
             }
         }
     }
 
+    private var fetchTask: Task<Void, Never> {
+        Task {
+            do {
+                let fetchedConversations = try await dataProvider.loadConversations().fetchedResult()
+                self.state = .loaded(fetchedConversations, .none)
+            } catch {
+                self.state = .loadingConversationsError(error.localizedDescription)
+            }
+        }
+    }
+
+    @MainActor
     private func deleteConversations(at indexSet: IndexSet) {
         guard let conversationIds = self.state.conversations?.map({ $0.id }) else {
             return
@@ -192,14 +198,12 @@ public struct ConversationListView: View {
         self.state = self.state.addSubstate(.deletingConversations(Task {
             do {
                 try await self.dataProvider.delete(conversationIds: conversationIds)
-                await MainActor.run {
-                    self.state = self.state.clearSubstate()
-                }
+                self.state = self.state.clearSubstate()
             }
             catch {
-                await MainActor.run {
-                    self.state = self.state.updateSubstate(.deletingConversationsError(error))
-                }
+                self.state = self.state.updateSubstate(
+                    .deletingConversationsError(error.localizedDescription)
+                )
             }
         }))
     }
@@ -212,24 +216,13 @@ struct ConversationRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(conversation.title)
-                .font(.headline)
+                .font(.body)
+                .padding(.bottom, 4)
 
-            if let lastMessage = conversation.messages.last {
-                Text(lastMessage.text)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
-
-                Text(lastMessage.formattedTime)
-                    .font(.caption)
-                    .foregroundColor(.gray)
-            } else {
-                Text("No messages")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            }
+            Text(conversation.formattedCreationDate)
+                .font(.caption)
+                .foregroundColor(.secondary)
         }
-        .padding(.vertical, 4)
     }
 }
 
@@ -237,10 +230,6 @@ struct ConversationRow: View {
 
     NavigationStack {
         ConversationListView(
-            currentUser: SupportDataProvider.supportUser
-        )
-        ConversationView(
-            conversation: SupportDataProvider.botConversation,
             currentUser: SupportDataProvider.supportUser
         )
     }

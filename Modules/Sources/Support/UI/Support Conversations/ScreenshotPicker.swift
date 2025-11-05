@@ -95,6 +95,7 @@ struct ScreenshotPicker: View {
     }
 
     /// Loads selected photos from PhotosPicker
+    @MainActor
     func loadSelectedPhotos(_ items: [PhotosPickerItem]) async {
         var newImages: [UIImage] = []
         var newUrls: [URL] = []
@@ -112,15 +113,11 @@ struct ScreenshotPicker: View {
                 }
             }
 
-            await MainActor.run {
-                attachedImages = newImages
-                attachedImageUrls = newUrls
-            }
+            attachedImages = newImages
+            attachedImageUrls = newUrls
         } catch {
-            await MainActor.run {
-                withAnimation {
-                    self.error = error
-                }
+            withAnimation {
+                self.error = error
             }
         }
     }

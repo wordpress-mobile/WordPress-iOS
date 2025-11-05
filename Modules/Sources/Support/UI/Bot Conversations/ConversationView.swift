@@ -3,50 +3,40 @@ import SwiftUI
 public struct ConversationView: View {
 
     enum ViewState: Equatable {
-        case start
-        case loadingMessages
-        case loadingMessagesError(Error)
-        case partiallyLoaded(conversation: BotConversation)
+        case start(conversation: BotConversation?)
+        case loadingMessages(conversation: BotConversation?, Task<Void, Never>)
+        case loadingMessagesError(conversation: BotConversation?, String)
+        case partiallyLoaded(conversation: BotConversation, fetchTask: Task<Void, Never>)
         case loaded(conversation: BotConversation, substate: ViewSubstate?)
         case startingNewConversation(substate: ViewSubstate?)
-        case conversationNotFound
-
-        static func == (lhs: ConversationView.ViewState, rhs: ConversationView.ViewState) -> Bool {
-            return switch (lhs, rhs) {
-            case (.start, .start):
-                true
-            case (.loadingMessages, .loadingMessages):
-                true
-            case (.loadingMessagesError, .loadingMessagesError):
-                true
-            case (.partiallyLoaded, .partiallyLoaded):
-                true
-            case (.loaded(_, let lhsSubstate), .loaded(_, let rhsSubstate)):
-                lhsSubstate == rhsSubstate
-            case (.startingNewConversation(let lhsSubstate), .startingNewConversation(let rhsSubstate)):
-                lhsSubstate == rhsSubstate
-            case (.conversationNotFound, .conversationNotFound):
-                true
-            default:
-                false
-            }
-        }
-
-        var conversationTitle: String {
-            self.conversation?.title ?? "New Conversation"
-        }
 
         var conversation: BotConversation? {
             return switch self {
-            case .partiallyLoaded(let conversation): conversation
-            case .loaded(conversation: let conversation, _): conversation
+            case .start(let conversation):
+                conversation
+            case .loadingMessages(let conversation, _):
+                conversation
+            case .partiallyLoaded(let conversation, _):
+                conversation
+            case .loaded(conversation: let conversation, _):
+                conversation
+            case .loadingMessagesError(let conversation, _):
+                conversation
             default: nil
             }
         }
 
+        var conversationId: UInt64? {
+            self.conversation?.id
+        }
+
+        var conversationTitle: String {
+            self.conversation?.title ?? "New Support Conversation"
+        }
+
         var messages: [BotMessage] {
             switch self {
-            case .partiallyLoaded(let conversation): conversation.messages
+            case .partiallyLoaded(let conversation, _): conversation.messages
             case .loaded(conversation: let conversation, _): conversation.messages
             default: []
             }
@@ -54,7 +44,7 @@ public struct ConversationView: View {
 
         var userWantsHumanSupport: Bool {
             switch self {
-            case .partiallyLoaded(let conversation): conversation.userWantsHumanSupport
+            case .partiallyLoaded(let conversation, _): conversation.userWantsHumanSupport
             case .loaded(conversation: let conversation, _): conversation.userWantsHumanSupport
             default: false
             }
@@ -171,7 +161,7 @@ public struct ConversationView: View {
 
                 return .loaded(
                     conversation: currentConversation,
-                    substate: .sendingMessageError(error)
+                    substate: .sendingMessageError(error.localizedDescription)
                 )
             } else {
                 guard self.substate != nil else {
@@ -179,7 +169,7 @@ public struct ConversationView: View {
                 }
 
                 return .startingNewConversation(
-                    substate: .sendingMessageError(error)
+                    substate: .sendingMessageError(error.localizedDescription)
                 )
             }
         }
@@ -195,11 +185,7 @@ public struct ConversationView: View {
 
     enum ViewSubstate: Equatable {
         case sendingMessage(message: String, thinking: Bool, Task<Void, Never>)
-        case sendingMessageError(Error)
-
-        static func == (lhs: ConversationView.ViewSubstate, rhs: ConversationView.ViewSubstate) -> Bool {
-            false // Force SwiftUI to re-evaluate everything anytime the ViewSubstate changes
-        }
+        case sendingMessageError(String)
 
         var isThinking: Bool {
             if case .sendingMessage(_, let thinking, _) = self {
@@ -225,7 +211,7 @@ public struct ConversationView: View {
     var currentUser: SupportUser
 
     @State
-    var state: ViewState = .start
+    var state: ViewState
 
     @State
     private var showThinkingView = false
@@ -233,16 +219,47 @@ public struct ConversationView: View {
     @Namespace
     var bottom
 
-    private let conversationId: UInt64?
-
-    private var loadingTask: Task<Void, Error>?
-
     public init(conversation: BotConversation?, currentUser: SupportUser) {
-        self.conversationId = conversation?.id
+        self.state = .start(conversation: conversation)
         self.currentUser = currentUser
     }
 
     public var body: some View {
+        VStack {
+            switch self.state {
+            case .start, .loadingMessages:
+                FullScreenProgressView("Loading Messages")
+            case .partiallyLoaded(let conversation, _), .loaded(let conversation, _):
+                self.conversationView(messages: conversation.messages)
+            case .loadingMessagesError(_, let message):
+                FullScreenErrorView(
+                    title: "Unable to Load Messages",
+                    message: message
+                )
+            case .startingNewConversation:
+                self.conversationView(messages: [])
+            }
+        }
+        .navigationTitle(self.state.conversationTitle)
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
+        .overlay {
+            OverlayProgressView(shouldBeVisible: state.isPartiallyLoaded)
+        }
+        .onAppear {
+            if let conversationId = self.state.conversationId {
+                self.dataProvider.userDid(.viewSupportBotConversation(conversationId: conversationId))
+            } else {
+                self.dataProvider.userDid(.startSupportBotConversation)
+            }
+        }
+        .task(self.loadExistingConversation)
+        .refreshable(action: self.reloadConversation)
+    }
+
+    @ViewBuilder
+    func conversationView(messages: [BotMessage]) -> some View {
         ZStack {
             ScrollViewReader { proxy in
                 List() {
@@ -253,7 +270,7 @@ public struct ConversationView: View {
                     loadingMessagesError
 
                     Section {
-                        ForEach(self.state.messages) { message in
+                        ForEach(messages) { message in
                             MessageView(message: message).id(message.id)
                         }
 
@@ -267,7 +284,7 @@ public struct ConversationView: View {
 
                     switchToHumanSupport
 
-                    Text("").padding(.bottom, 0)
+                    Text("").padding(.bottom, 4)
                         .listRowInsets(.zero)
                         .listRowBackground(Color.clear)
                         .listRowSpacing(0)
@@ -279,11 +296,10 @@ public struct ConversationView: View {
                         scrollToBottom(using: proxy, animated: false)
                     }
                 }
+                .onAppear {
+                    scrollToBottom(using: proxy, animated: false)
+                }
             }
-            .navigationTitle(self.state.conversationTitle)
-            #if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-            #endif
             VStack {
                 Spacer()
                 CompositionView(
@@ -292,18 +308,6 @@ public struct ConversationView: View {
                 )
             }
         }
-        .overlay {
-            OverlayProgressView(shouldBeVisible: state.isPartiallyLoaded)
-        }
-        .onAppear {
-            if let conversationId {
-                self.dataProvider.userDid(.viewSupportBotConversation(conversationId: conversationId))
-            } else {
-                self.dataProvider.userDid(.startSupportBotConversation)
-            }
-        }
-        .task(self.loadExistingConversation)
-        .refreshable(action: self.reloadConversation)
     }
 
     @ViewBuilder
@@ -343,10 +347,10 @@ public struct ConversationView: View {
 
     @ViewBuilder
     var loadingMessagesError: some View {
-        if case .loadingMessagesError(let error) = self.state {
+        if case .loadingMessagesError(_, let error) = self.state {
             ErrorView(
                 title: "Unable to load messages",
-                message: error.localizedDescription
+                message: error
             )
             .transition(.asymmetric(
                 insertion: .move(edge: .top).combined(with: .opacity),
@@ -361,7 +365,7 @@ public struct ConversationView: View {
             if case .sendingMessageError(let error) = substate {
                 ErrorView(
                     title: "Unable to send message",
-                    message: error.localizedDescription
+                    message: error
                 )
                 .transition(.asymmetric(
                     insertion: .move(edge: .top).combined(with: .opacity),
@@ -414,33 +418,10 @@ public struct ConversationView: View {
     }
 
     private func loadExistingConversation() async {
-        self.state = .loadingMessages
-
-        do {
-            guard let conversationId = self.conversationId else {
-                await MainActor.run {
-                    self.state = .startingNewConversation(substate: nil)
-                }
-                return
-            }
-
-            let fetch = try await self.dataProvider.loadConversation(id: conversationId)
-
-            if let cachedConversation = try await fetch.cachedResult() {
-                await MainActor.run {
-                    self.state = .partiallyLoaded(conversation: cachedConversation)
-                }
-            }
-
-            let conversation = try await fetch.fetchedResult()
-
-            await MainActor.run {
-                self.state = .loaded(conversation: conversation, substate: nil)
-            }
-        } catch {
-            await MainActor.run {
-                self.state = .loadingMessagesError(error)
-            }
+        if let conversation = self.state.conversation {
+            self.state = .loadingMessages(conversation: conversation, cacheTask)
+        } else {
+            self.state = .startingNewConversation(substate: nil)
         }
     }
 
@@ -448,9 +429,43 @@ public struct ConversationView: View {
         guard case .loaded(let conversation, _) = self.state else {
             return
         }
-        self.state = .partiallyLoaded(conversation: conversation)
+        self.state = .partiallyLoaded(conversation: conversation, fetchTask: self.fetchTask)
     }
 
+    private var cacheTask: Task<Void, Never> {
+        Task {
+            guard let conversation = self.state.conversation else {
+                return
+            }
+
+            do {
+                if let cachedResult = try await self.dataProvider.loadConversation(id: conversation.id).cachedResult() {
+                    self.state = .partiallyLoaded(conversation: cachedResult, fetchTask: self.fetchTask)
+                } else {
+                    await self.fetchTask.value
+                }
+            } catch {
+                self.state = .loadingMessagesError(conversation: conversation, error.localizedDescription)
+            }
+        }
+    }
+
+    private var fetchTask: Task<Void, Never> {
+        Task {
+            guard let conversation = self.state.conversation else {
+                return
+            }
+
+            do {
+                let result = try await self.dataProvider.loadConversation(id: conversation.id).fetchedResult()
+                self.state = .loaded(conversation: result, substate: .none)
+            } catch {
+                self.state = .loadingMessagesError(conversation: conversation, error.localizedDescription)
+            }
+        }
+    }
+
+    @MainActor
     private func sendMessage(_ message: String) {
         self.state = self.state.transitioningToSendingMessage(message: message, task: Task {
             do {
@@ -474,15 +489,11 @@ public struct ConversationView: View {
                 // If we somehow got a response before the thinking view shows up, don't show it
                 thinkingTask.cancel()
 
-                await MainActor.run {
-                    self.state = self.state.transitioningToMessageSent(
-                        updatedConversation: updatedConversation
-                    )
-                }
+                self.state = self.state.transitioningToMessageSent(
+                    updatedConversation: updatedConversation
+                )
             } catch {
-                await MainActor.run {
-                    self.state = self.state.transitioningToMessageSendError(error)
-                }
+                self.state = self.state.transitioningToMessageSendError(error)
             }
         })
     }

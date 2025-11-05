@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ConversationSummary: Identifiable, Hashable, Sendable, Codable {
+public struct ConversationSummary: Identifiable, Hashable, Sendable, Codable, Equatable {
     public let id: UInt64
     public let title: String
     public let description: String
@@ -25,7 +25,7 @@ public struct ConversationSummary: Identifiable, Hashable, Sendable, Codable {
     }
 }
 
-public struct Conversation: Identifiable, Sendable, Codable {
+public struct Conversation: Identifiable, Sendable, Codable, Equatable {
     public let id: UInt64
     public let title: String
     public let description: String
@@ -57,7 +57,7 @@ public struct Conversation: Identifiable, Sendable, Codable {
     }
 }
 
-public struct Message: Identifiable, Sendable, Codable {
+public struct Message: Identifiable, Sendable, Codable, Equatable {
     public let id: UInt64
     public let content: String
 
@@ -91,9 +91,9 @@ public struct Message: Identifiable, Sendable, Codable {
     }
 }
 
-public struct Attachment: Identifiable, Sendable, Codable {
+public struct Attachment: Identifiable, Sendable, Codable, Equatable {
 
-    public struct Dimensions: Sendable, Codable {
+    public struct Dimensions: Sendable, Codable, Equatable {
         let width: UInt64
         let height: UInt64
 

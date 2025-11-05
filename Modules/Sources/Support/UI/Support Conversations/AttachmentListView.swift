@@ -1,4 +1,5 @@
 import SwiftUI
+import AsyncImageKit
 
 struct ImageGalleryView: View {
 
@@ -18,7 +19,7 @@ struct ImageGalleryView: View {
 
             TabView {
                 ForEach(attachments) { attachment in
-                    SingleImageView(attachment: attachment)
+                    SingleImageView(url: attachment.url)
                         .tag(attachment.id)
                         .foregroundStyle(.white)
                 }
@@ -36,7 +37,8 @@ struct ImageGalleryView: View {
 }
 
 struct SingleImageView: View {
-    let attachment: Attachment
+
+    let url: URL
 
     @GestureState private var currentZoom = 1.0
 
@@ -47,7 +49,7 @@ struct SingleImageView: View {
     }
 
     var body: some View {
-        AsyncImage(url: attachment.url) { image in
+        CachedAsyncImage(url: url) { image in
             image
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -57,6 +59,7 @@ struct SingleImageView: View {
         } placeholder: {
             ProgressView("Loading Image")
         }
+        .navigationTitle(url.lastPathComponent)
     }
 }
 
@@ -70,38 +73,25 @@ struct AttachmentListView: View {
     ]
 
     private var imageAttachments: [Attachment] {
-        attachments.filter { $0.contentType.hasPrefix("image/") }
+        attachments.filter { $0.isImage }
     }
 
     var body: some View {
         LazyVGrid(columns: columns, spacing: 16) {
-            ForEach(attachments, id: \.id) { attachment in
-                AttachmentThumbnailView(attachment: attachment) {
-                    if attachment.contentType.hasPrefix("image/") {
-                        selectedAttachment = attachment
-                    }
-                }
+            ForEach(imageAttachments, id: \.id) { attachment in
+                AttachmentThumbnailView(attachment: attachment)
             }
         }
         .padding(.top, 8)
-        .fullScreenCover(item: $selectedAttachment) { attachment in
-            NavigationStack {
-                ImageGalleryView(
-                    attachments: imageAttachments,
-                    selectedAttachment: attachment
-                )
-            }
-        }
     }
 }
 
 struct AttachmentThumbnailView: View {
     let attachment: Attachment
-    let onTap: () -> Void
 
     var body: some View {
-        Button {
-            onTap()
+        NavigationLink {
+            SingleImageView(url: attachment.url)
         } label: {
             ZStack {
                 if attachment.isImage {
@@ -167,5 +157,7 @@ extension ImageUrl: @retroactive Identifiable {
         url: $0.url
     )  }
 
-    AttachmentListView(attachments: images)
+    NavigationStack {
+        AttachmentListView(attachments: images)
+    }
 }

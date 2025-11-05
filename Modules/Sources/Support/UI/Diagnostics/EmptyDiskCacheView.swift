@@ -111,13 +111,9 @@ struct EmptyDiskCacheView: View {
     private func fetchDiskCacheUsage() async {
         do {
             let usage = try await dataProvider.fetchDiskCacheUsage()
-            await MainActor.run {
-                self.state = .loaded(usage: usage)
-            }
+            self.state = .loaded(usage: usage)
         } catch {
-            await MainActor.run {
-                self.state = .error(error)
-            }
+            self.state = .error(error)
         }
     }
 
@@ -142,16 +138,12 @@ struct EmptyDiskCacheView: View {
                 }
             }
 
-            await MainActor.run {
-                withAnimation {
-                    self.state = .clearing(progress: 1.0, result: "Complete")
-                }
+            withAnimation {
+                self.state = .clearing(progress: 1.0, result: "Complete")
             }
         } catch {
-            await MainActor.run {
-                withAnimation {
-                    self.state = .error(error)
-                }
+            withAnimation {
+                self.state = .error(error)
             }
         }
     }

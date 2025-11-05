@@ -3,7 +3,7 @@ import SwiftUI
 import CoreTransferable
 import UniformTypeIdentifiers
 
-public struct ApplicationLog: Identifiable, Sendable {
+public struct ApplicationLog: Identifiable, Sendable, Equatable {
     public let path: URL
     public let createdAt: Date
     public let modifiedAt: Date

@@ -2,10 +2,10 @@ import SwiftUI
 
 struct ApplicationLogPicker: View {
 
-    enum ViewState {
+    enum ViewState: Equatable {
         case loading
         case loaded([ApplicationLog])
-        case error(Error)
+        case error(String)
     }
 
     @EnvironmentObject
@@ -50,7 +50,7 @@ struct ApplicationLogPicker: View {
                 case .error(let error):
                     ErrorView(
                         title: Localization.unableToLoadApplicationLogs,
-                        message: error.localizedDescription
+                        message: error
                     )
                 }
             }
@@ -64,7 +64,7 @@ struct ApplicationLogPicker: View {
             let logs = try await dataProvider.fetchApplicationLogs()
             self.state = .loaded(logs)
         } catch {
-            self.state = .error(error)
+            self.state = .error(error.localizedDescription)
         }
     }
 

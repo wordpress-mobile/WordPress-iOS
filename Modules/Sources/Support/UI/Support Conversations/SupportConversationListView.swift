@@ -1,27 +1,14 @@
 import SwiftUI
 
+@MainActor
 public struct SupportConversationListView: View {
 
     enum ViewState: Equatable {
-        case loading
-        case partiallyLoaded([ConversationSummary])
+        case start
+        case loading(Task<Void, Never>)
+        case partiallyLoaded([ConversationSummary], Task<Void, Never>)
         case loaded([ConversationSummary])
-        case error(Error)
-
-        static func == (lhs: ViewState, rhs: ViewState) -> Bool {
-            switch (lhs, rhs) {
-            case (.loading, .loading):
-                return true
-            case (.partiallyLoaded(let lhsConversations), .partiallyLoaded(let rhsConversations)):
-                return lhsConversations == rhsConversations
-            case (.loaded(let lhsConversations), .loaded(let rhsConversations)):
-                return lhsConversations == rhsConversations
-            case (.error, .error):
-                return true
-            default:
-                return false
-            }
-        }
+        case error(String)
 
         var isPartiallyLoaded: Bool {
             guard case .partiallyLoaded = self else {
@@ -36,7 +23,7 @@ public struct SupportConversationListView: View {
     private var dataProvider: SupportDataProvider
 
     @State
-    private var state: ViewState = .loading
+    private var state: ViewState = .start
 
     @State
     private var isComposingNewMessage: Bool = false
@@ -50,14 +37,14 @@ public struct SupportConversationListView: View {
     public var body: some View {
         Group {
             switch self.state {
-            case .loading:
-                ProgressView(Localization.loadingConversations)
-            case .partiallyLoaded(let conversations), .loaded(let conversations):
+            case .start, .loading:
+                FullScreenProgressView(Localization.loadingConversations)
+            case .partiallyLoaded(let conversations, _), .loaded(let conversations):
                 self.conversationsList(conversations)
             case .error(let error):
-                ErrorView(
+                FullScreenErrorView(
                     title: Localization.errorLoadingSupportConversations,
-                    message: error.localizedDescription
+                    message: error
                 )
             }
         }
@@ -75,7 +62,9 @@ public struct SupportConversationListView: View {
         }
         .sheet(isPresented: self.$isComposingNewMessage, content: {
             NavigationStack {
-                SupportForm(supportIdentity: self.currentUser)
+                SupportForm(supportIdentity: self.currentUser) {
+                    self.reloadConversations()
+                }
             }.environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
         })
         .overlay {
@@ -108,38 +97,49 @@ public struct SupportConversationListView: View {
         .listRowSeparator(.hidden)
     }
 
-    private func loadConversations() async {
-        do {
-            let fetch = try dataProvider.loadSupportConversations()
+    @MainActor
+    private func loadConversations() {
+        guard case .start = self.state else {
+            return
+        }
 
-            if let cachedResults = try await fetch.cachedResult() {
-                await MainActor.run {
-                    self.state = .partiallyLoaded(cachedResults)
+        self.state = .loading(self.cacheTask)
+    }
+
+    @MainActor
+    private func reloadConversations() {
+        guard case .loaded(let conversations) = state else {
+            return
+        }
+
+        self.state = .partiallyLoaded(conversations, self.fetchTask)
+    }
+
+    private var cacheTask: Task<Void, Never> {
+        Task {
+            do {
+                let fetch = try dataProvider.loadSupportConversations()
+
+                if let cachedResults = try await fetch.cachedResult() {
+                    self.state = .partiallyLoaded(cachedResults, self.fetchTask)
                 }
-            }
 
-            let fetchedResults = try await fetch.fetchedResult()
-
-            await MainActor.run {
+                let fetchedResults = try await fetch.fetchedResult()
                 self.state = .loaded(fetchedResults)
-            }
-        } catch {
-            await MainActor.run {
-                self.state = .error(error)
+            } catch {
+                self.state = .error(error.localizedDescription)
             }
         }
     }
 
-    private func reloadConversations() async {
-        do {
-            let conversations = try await dataProvider.loadSupportConversations().fetchedResult()
-
-            await MainActor.run {
+    private var fetchTask: Task<Void, Never> {
+        Task {
+            do {
+                let fetch = try dataProvider.loadSupportConversations()
+                let conversations = try await fetch.fetchedResult()
                 self.state = .loaded(conversations)
-            }
-        } catch {
-            await MainActor.run {
-                self.state = .error(error)
+            } catch {
+                self.state = .error(error.localizedDescription)
             }
         }
     }
