@@ -241,7 +241,7 @@ final class SplitViewRootPresenter: RootViewPresenter {
         return siteContent?.blog
     }
 
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any]) {
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsRowKind?, userInfo: [String: Any]) {
         if splitVC.isCollapsed {
             tabBarVC.showBlogDetails(for: blog, then: subsection, userInfo: userInfo)
         } else {

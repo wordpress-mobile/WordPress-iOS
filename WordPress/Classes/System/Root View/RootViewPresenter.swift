@@ -9,7 +9,7 @@ protocol RootViewPresenter: AnyObject {
 
     func currentlyVisibleBlog() -> Blog?
     func showMySitesTab()
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any])
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsRowKind?, userInfo: [String: Any])
 
     func showReader(path: ReaderNavigationPath?)
 
@@ -28,7 +28,7 @@ extension RootViewPresenter {
         showBlogDetails(for: blog, then: nil, userInfo: [:])
     }
 
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection) {
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsRowKind) {
         showBlogDetails(for: blog, then: subsection, userInfo: [:])
     }
 
@@ -47,7 +47,7 @@ extension RootViewPresenter {
         }
         var userInfo: [AnyHashable: Any] = [:]
         if let source {
-            userInfo[BlogDetailsViewController.userInfoSourceKey()] = NSNumber(value: source.rawValue)
+            userInfo[BlogDetailsUserInfoKeys.source] = NSNumber(value: source.rawValue)
         }
         showBlogDetails(for: blog, then: .stats)
     }

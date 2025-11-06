@@ -6,56 +6,7 @@ import WordPressUI
 import WordPressAPI
 import WordPressCore
 
-extension Array where Element: BlogDetailsSection {
-    fileprivate func findSectionIndex(of category: BlogDetailsSectionCategory) -> Int? {
-        return firstIndex(where: { $0.category == category })
-    }
-}
-
-extension BlogDetailsSubsection {
-    func sectionCategory(for blog: Blog) -> BlogDetailsSectionCategory {
-        switch self {
-        case .domainCredit:
-            return .domainCredit
-        case .activity, .jetpackSettings, .siteMonitoring:
-            return .jetpack
-        case .stats where blog.shouldShowJetpackSection:
-            return .jetpack
-        case .stats where !blog.shouldShowJetpackSection:
-            return .general
-        case .pages, .posts, .media, .comments:
-            return .content
-        case .themes, .customize:
-            return .personalize
-        case .me, .sharing, .people, .plugins:
-            return .configure
-        case .home:
-            return .home
-        default:
-            fatalError()
-        }
-    }
-}
-
 extension BlogDetailsViewController {
-    @objc public func findSectionIndex(sections: [BlogDetailsSection], category: BlogDetailsSectionCategory) -> Int {
-        return sections.findSectionIndex(of: category) ?? NSNotFound
-    }
-
-    @objc public func sectionCategory(subsection: BlogDetailsSubsection, blog: Blog) -> BlogDetailsSectionCategory {
-        return subsection.sectionCategory(for: blog)
-    }
-
-    @objc public func defaultSubsection() -> BlogDetailsSubsection {
-        if !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
-            return .posts
-        }
-        if isDashboardEnabled() {
-            return .home
-        }
-        return .stats
-    }
-
     @objc public func shouldAddJetpackSection() -> Bool {
         guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             return false
