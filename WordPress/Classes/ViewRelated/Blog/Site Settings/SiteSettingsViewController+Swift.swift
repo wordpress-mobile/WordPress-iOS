@@ -351,7 +351,7 @@ extension SiteSettingsViewController {
         let name: String
 
         if let languageId = blog.settings?.languageID.intValue {
-            name = WordPressComLanguageDatabase().nameForLanguageWithId(languageId)
+            name = WordPressComLanguageDatabase.shared.nameForLanguageWithId(languageId)
         } else {
             // Since the settings can be nil, we need to handle the scenario... but it
             // really should not be possible to reach this line.

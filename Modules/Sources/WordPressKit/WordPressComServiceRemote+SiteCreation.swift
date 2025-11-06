@@ -11,7 +11,7 @@ public struct SiteCreationRequest: Encodable {
     public let tagline: String?
     public let siteURLString: String
     public let isPublic: Bool
-    public let languageIdentifier: String
+    public let languageIdentifier: Int
     public let shouldValidate: Bool
     public let clientIdentifier: String
     public let clientSecret: String
@@ -27,7 +27,7 @@ public struct SiteCreationRequest: Encodable {
                 tagline: String?,
                 siteURLString: String,
                 isPublic: Bool,
-                languageIdentifier: String,
+                languageIdentifier: Int,
                 shouldValidate: Bool,
                 clientIdentifier: String,
                 clientSecret: String,

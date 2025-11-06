@@ -45,7 +45,7 @@ extension EditorConfiguration {
             .setShouldUseThemeStyles(GutenbergSettings().isThemeStylesEnabled(for: blog))
             // Limited to Jetpack-connected sites until editor assets endpoint is available in WordPress core
             .setShouldUsePlugins(Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword))
-            .setLocale(WordPressComLanguageDatabase().deviceLanguage.slug)
+            .setLocale(WordPressComLanguageDatabase.shared.deviceLanguage.slug)
 
         if let blogUrl = blog.url {
             builder = builder.setSiteUrl(blogUrl)

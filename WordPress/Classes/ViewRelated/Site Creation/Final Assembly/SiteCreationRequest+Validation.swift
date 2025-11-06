@@ -43,7 +43,7 @@ extension SiteCreationRequest {
                   tagline: tagline,
                   siteURLString: siteURLString,
                   isPublic: true,
-                  languageIdentifier: WordPressComLanguageDatabase().deviceLanguageIdNumber().stringValue,
+                  languageIdentifier: WordPressComLanguageDatabase.shared.deviceLanguage.id,
                   shouldValidate: true,
                   clientIdentifier: clientIdentifier,
                   clientSecret: clientSecret,

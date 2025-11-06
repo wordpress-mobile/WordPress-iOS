@@ -102,5 +102,5 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
 
     // MARK: - Private Properties
     fileprivate var blog: Blog!
-    fileprivate let languageDatabase = WordPressComLanguageDatabase()
+    fileprivate let languageDatabase = WordPressComLanguageDatabase.shared
 }

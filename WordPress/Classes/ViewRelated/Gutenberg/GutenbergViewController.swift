@@ -1081,7 +1081,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     func gutenbergLocale() -> String? {
-        return WordPressComLanguageDatabase().deviceLanguage.slug
+        return WordPressComLanguageDatabase.shared.deviceLanguage.slug
     }
 
     func gutenbergTranslations() -> [String: [String]]? {

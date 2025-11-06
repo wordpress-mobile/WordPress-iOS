@@ -161,7 +161,7 @@ extension BlogDetailsViewController {
         let cardIsHidden = repository.bool(forKey: SotWConstants.hideCardPreferenceKey)
 
         // ensure that the device language is in English.
-        let usesEnglish = WordPressComLanguageDatabase().deviceLanguageSlugString() == "en"
+        let usesEnglish = WordPressComLanguageDatabase.shared.deviceLanguage.slug == "en"
 
         // ensure that the card is not displayed before Dec. 11, 2023 where the event takes place.
         let dateComponents = Date().dateAndTimeComponents()

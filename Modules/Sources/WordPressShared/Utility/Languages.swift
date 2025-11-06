@@ -2,40 +2,48 @@ import Foundation
 
 /// This helper class allows us to map WordPress.com LanguageID's into human readable language strings.
 ///
-public class WordPressComLanguageDatabase: NSObject {
+public struct WordPressComLanguageDatabase {
+
+    public static let shared = WordPressComLanguageDatabase()
+
     // MARK: - Public Properties
 
     /// Languages considered 'popular'
     ///
-    public let popular: [Language]
+    public let popular: [WPComLanguage]
 
     /// Every supported language
     ///
-    public let all: [Language]
+    public let all: [WPComLanguage]
 
-    /// Returns both, Popular and All languages, grouped
-    ///
-    public let grouped: [[Language]]
+    /// Allow mocking the device language code for testing purposes
+    private let _deviceLanguageCode: String?
 
     // MARK: - Public Methods
 
     /// Designated Initializer: will load the languages contained within the `Languages.json` file.
     ///
-    public override init() {
+    private init() {
         // Parse the json file
-        let path = Bundle.wordPressSharedBundle.path(forResource: filename, ofType: "json")
-        let raw = try! Data(contentsOf: URL(fileURLWithPath: path!))
-        let parsed = try! JSONSerialization.jsonObject(with: raw, options: [.mutableContainers, .mutableLeaves]) as? NSDictionary
+        let path = Bundle.wordPressSharedBundle.path(forResource: "Languages", ofType: "json")
+        let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
+        let bundle = try! JSONDecoder().decode(WPComLanguageBundle.self, from: data)
 
-        // Parse All + Popular: All doesn't contain Popular. Otherwise the json would have dupe data. Right?
-        let parsedAll = Language.fromArray(parsed![Keys.all] as! [[String: Any]])
-        let parsedPopular = Language.fromArray(parsed![Keys.popular] as! [[String: Any]])
-        let merged = parsedAll + parsedPopular
+        self.popular = bundle.popular
+        self.all = bundle.all
+        self._deviceLanguageCode = nil
+    }
 
-        // Done!
-        popular = parsedPopular
-        all = merged.sorted { $0.name < $1.name }
-        grouped = [popular] + [all]
+    /// Specifically marked internal for used by test code
+    internal init(deviceLanguageCode: String) {
+        // Parse the json file
+        let path = Bundle.wordPressSharedBundle.path(forResource: "Languages", ofType: "json")
+        let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
+        let bundle = try! JSONDecoder().decode(WPComLanguageBundle.self, from: data)
+
+        self.popular = bundle.popular
+        self.all = bundle.all
+        self._deviceLanguageCode = deviceLanguageCode.lowercased()
     }
 
     /// Returns the Human Readable name for a given Language Identifier
@@ -44,7 +52,7 @@ public class WordPressComLanguageDatabase: NSObject {
     ///
     /// - Returns: A string containing the language name, or an empty string, in case it wasn't found.
     ///
-    @objc public func nameForLanguageWithId(_ languageId: Int) -> String {
+    public func nameForLanguageWithId(_ languageId: Int) -> String {
         return find(id: languageId)?.name ?? ""
     }
 
@@ -54,34 +62,14 @@ public class WordPressComLanguageDatabase: NSObject {
     ///
     /// - Returns: The language with the matching Identifier, or nil, in case it wasn't found.
     ///
-    public func find(id: Int) -> Language? {
+    public func find(id: Int) -> WPComLanguage? {
         return all.first(where: { $0.id == id })
-    }
-
-    /// Returns the current device language as the corresponding WordPress.com language ID.
-    /// If the language is not supported, it returns 1 (English).
-    ///
-    /// This is a wrapper for Objective-C, Swift code should use deviceLanguage directly.
-    ///
-    @objc(deviceLanguageId)
-    public func deviceLanguageIdNumber() -> NSNumber {
-        return NSNumber(value: deviceLanguage.id)
-    }
-
-    /// Returns the slug string for the current device language.
-    /// If the language is not supported, it returns "en" (English).
-    ///
-    /// This is a wrapper for Objective-C, Swift code should use deviceLanguage directly.
-    ///
-    @objc(deviceLanguageSlug)
-    public func deviceLanguageSlugString() -> String {
-        return deviceLanguage.slug
     }
 
     /// Returns the current device language as the corresponding WordPress.com language.
     /// If the language is not supported, it returns English.
     ///
-    public var deviceLanguage: Language {
+    public var deviceLanguage: WPComLanguage {
         let variants = LanguageTagVariants(string: deviceLanguageCode)
         for variant in variants {
             if let match = self.languageWithSlug(variant) {
@@ -93,82 +81,29 @@ public class WordPressComLanguageDatabase: NSObject {
 
     /// Searches for a WordPress.com language that matches a language tag.
     ///
-    fileprivate func languageWithSlug(_ slug: String) -> Language? {
+    fileprivate func languageWithSlug(_ slug: String) -> WPComLanguage? {
         let search = languageCodeReplacements[slug] ?? slug
-
-        // Use lazy evaluation so we stop filtering as soon as we got the first match
-        return all.lazy.filter({ $0.slug == search }).first
-    }
-
-    /// Overrides the device language. For testing purposes only.
-    ///
-    @objc func _overrideDeviceLanguageCode(_ code: String) {
-        deviceLanguageCode = code.lowercased()
-    }
-
-    // MARK: - Public Nested Classes
-
-    /// Represents a Language supported by WordPress.com
-    ///
-    public class Language: Equatable {
-        /// Language Unique Identifier
-        ///
-        public let id: Int
-
-        /// Human readable Language name
-        ///
-        public let name: String
-
-        /// Language's Slug String
-        ///
-        public let slug: String
-
-        /// Localized description for the current language
-        ///
-        public var description: String {
-            return (Locale.current as NSLocale).displayName(forKey: NSLocale.Key.identifier, value: slug) ?? name
-        }
-
-        /// Designated initializer. Will fail if any of the required properties is missing
-        ///
-        init?(dict: [String: Any]) {
-            guard let unwrappedId = (dict[Keys.identifier] as? NSNumber)?.intValue,
-                  let unwrappedSlug = dict[Keys.slug] as? String,
-                  let unwrappedName = dict[Keys.name] as? String else {
-                id = Int.min
-                name = String()
-                slug = String()
-                return nil
-            }
-
-            id = unwrappedId
-            name = unwrappedName
-            slug = unwrappedSlug
-        }
-
-        /// Given an array of raw languages, will return a parsed array.
-        ///
-        public static func fromArray(_ array: [[String: Any]] ) -> [Language] {
-            return array.compactMap {
-                return Language(dict: $0)
-            }
-        }
-
-        public static func == (lhs: Language, rhs: Language) -> Bool {
-            return lhs.id == rhs.id
-        }
+        return all.first { $0.slug == search }
     }
 
     // MARK: - Private Variables
 
     /// The device's current preferred language, or English if there's no preferred language.
     ///
-    fileprivate lazy var deviceLanguageCode: String = {
-        return NSLocale.preferredLanguages.first?.lowercased() ?? "en"
-    }()
+    /// Specifically marked internal for used by test code
+    internal var deviceLanguageCode: String {
 
-    // MARK: - Private Constants
-    fileprivate let filename = "Languages"
+        // Return the mocked language code, if set
+        if let _deviceLanguageCode {
+            return _deviceLanguageCode
+        }
+
+        guard let preferredLanguage = Locale.preferredLanguages.first else {
+            return "en"
+        }
+
+        return preferredLanguage.lowercased()
+    }
 
     // (@koke 2016-04-29) I'm not sure how correct this mapping is, but it matches
     // what we do for the app translations, so they will at least be consistent
@@ -176,18 +111,6 @@ public class WordPressComLanguageDatabase: NSObject {
         "zh-hans": "zh-cn",
         "zh-hant": "zh-tw"
     ]
-
-    // MARK: - Private Nested Structures
-
-    /// Keys used to parse the raw languages.
-    ///
-    fileprivate struct Keys {
-        static let popular = "popular"
-        static let all = "all"
-        static let identifier = "i"
-        static let slug = "s"
-        static let name = "n"
-    }
 }
 
 /// Provides a sequence of language tags from the specified string, from more to less specific
@@ -208,5 +131,50 @@ private struct LanguageTagVariants: Sequence {
 
             return current
         }
+    }
+}
+
+// MARK: - Public Nested Classes
+
+public struct WPComLanguageBundle: Codable {
+    let popular: [WPComLanguage]
+    let others: [WPComLanguage]
+
+    enum CodingKeys: String, CodingKey {
+        case popular = "popular"
+        case others = "all"
+    }
+
+    var all: [WPComLanguage] {
+        (popular + others).sorted { $0.name < $1.name }
+    }
+}
+
+/// Represents a Language supported by WordPress.com
+///
+public struct WPComLanguage: Codable, Equatable {
+
+    enum CodingKeys: String, CodingKey {
+        case id = "i"
+        case name = "n"
+        case slug = "s"
+    }
+
+    /// Language Unique Identifier
+    ///
+    public let id: Int
+
+    /// Human readable Language name
+    ///
+    public let name: String
+
+    /// Language's Slug String
+    ///
+    public let slug: String
+
+    /// Localized description for the current language
+    ///
+    public var description: String {
+        return (Locale.current as NSLocale).displayName(forKey: NSLocale.Key.identifier, value: slug) ?? name
     }
 }

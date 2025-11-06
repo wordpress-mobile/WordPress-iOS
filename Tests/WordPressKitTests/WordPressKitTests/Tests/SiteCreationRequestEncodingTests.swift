@@ -9,7 +9,7 @@ final class SiteCreationRequestEncodingTests: XCTestCase {
     static let expectedTagline = "This is a site I like"
     static let expectedBlogName = "Cool Restaurant"
     static let expectedPublicValue = true
-    static let expectedLanguageId = "TEST-ENGLISH"
+    static let expectedLanguageId = 1
     static let expectedValidateValue = true
     static let expectedClientId = "TEST-ID"
     static let expectedClientSecret = "TEST-SECRET"
@@ -246,7 +246,7 @@ extension SiteCreationRequestEncodingTests {
         XCTAssertNotNil(actualPublicValue)
         XCTAssertEqual(expectedPublicValue, actualPublicValue!)
 
-        let actualLanguageId = jsonDictionary["lang_id"] as? String
+        let actualLanguageId = jsonDictionary["lang_id"] as? Int
         XCTAssertNotNil(actualLanguageId)
 
         let actualValidateValue = jsonDictionary["validate"] as? Bool

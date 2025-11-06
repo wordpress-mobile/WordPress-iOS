@@ -117,7 +117,7 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
 
     // MARK: - Private properties
 
-    fileprivate typealias Language = WordPressComLanguageDatabase.Language
+    fileprivate typealias Language = WPComLanguage
 
     private let selectedLanguage: Language?
 
@@ -127,7 +127,7 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
         return controller
     }()
 
-    private let database = WordPressComLanguageDatabase()
+    private let database = WordPressComLanguageDatabase.shared
 }
 
 private struct LanguageSelectorRow: ImmuTableRow {
