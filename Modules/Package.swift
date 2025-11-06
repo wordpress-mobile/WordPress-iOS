@@ -184,6 +184,7 @@ let package = Package(
                 "DesignSystem",
                 "WordPressShared",
                 "WordPressLegacy",
+                .product(name: "ColorStudio", package: "color-studio"),
                 .product(name: "Reachability", package: "Reachability"),
             ],
             resources: [.process("Resources")],
