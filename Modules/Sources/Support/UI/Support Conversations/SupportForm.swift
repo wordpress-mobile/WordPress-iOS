@@ -4,6 +4,8 @@ import PhotosUI
 
 public struct SupportForm: View {
 
+    private let enableRichTextForm: Bool = false
+
     @EnvironmentObject
     private var dataProvider: SupportDataProvider
 
@@ -243,7 +245,7 @@ private extension SupportForm {
 
     @ViewBuilder
     var textEditor: some View {
-        if #available(iOS 26.0, *) {
+        if #available(iOS 26.0, *), self.enableRichTextForm {
             TextEditor(text: $attributedProblemDescription)
                 .focused($focusedField, equals: .problemDescription)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -298,7 +300,7 @@ private extension SupportForm {
     }
 
     private func getText() throws -> String {
-        if #available(iOS 26.0, *) {
+        if #available(iOS 26.0, *), self.enableRichTextForm {
             return self.attributedProblemDescription.toHtml()
         } else {
             return self.plainTextProblemDescription.trimmingCharacters(in: .whitespacesAndNewlines)
