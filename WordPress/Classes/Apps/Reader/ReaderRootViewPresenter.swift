@@ -18,7 +18,7 @@ final class ReaderRootViewPresenter: RootViewPresenter {
         // TODO: (reader) optional?
     }
 
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any]) {
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsRowKind?, userInfo: [String: Any]) {
         // TODO: (reader) optional?
     }
 

@@ -137,7 +137,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
 // MARK: - DashboardQuickActionsCardCell (BlogDetailsPresentationDelegate)
 
 extension DashboardQuickActionsCardCell: BlogDetailsPresentationDelegate {
-    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection) {
+    func showBlogDetailsSubsection(_ subsection: BlogDetailsRowKind) {
         self.blogDetailsViewController?.showDetailView(for: subsection)
     }
 

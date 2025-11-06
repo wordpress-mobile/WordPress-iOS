@@ -900,12 +900,12 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
     /// - Parameters:
     ///         - subsection: The specific subsection to show.
     ///
-    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any] = [:]) {
+    func showBlogDetailsSubsection(_ subsection: BlogDetailsRowKind, userInfo: [String: Any] = [:]) {
         blogDetailsViewController?.showDetailView(for: subsection, userInfo: userInfo)
     }
 
     func showBlogDetailsMeSubsection() -> MeViewController? {
-        blogDetailsViewController?.showDetailViewForMeSubsection(userInfo: [:])
+        blogDetailsViewController?.showDetailViewForMe(userInfo: [:])
     }
 
     // TODO: Refactor presentation from routes

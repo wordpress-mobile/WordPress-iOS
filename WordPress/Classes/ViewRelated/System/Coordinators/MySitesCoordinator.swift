@@ -67,7 +67,7 @@ public class MySitesCoordinator: NSObject {
 
     // MARK: - Blog Details
 
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any]) {
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsRowKind?, userInfo: [String: Any]) {
         showRootViewController()
 
         mySiteViewController.blog = blog

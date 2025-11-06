@@ -20,7 +20,7 @@ class StaticScreensTabBarWrapper: RootViewPresenter {
         tabBarController.currentlySelectedScreen()
     }
 
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any]) {
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsRowKind?, userInfo: [String: Any]) {
         tabBarController.showBlogDetails(for: blog, then: subsection, userInfo: userInfo)
     }
 
