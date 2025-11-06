@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "D6F49D5C-3B89-4ED4-BE33-0A53AD094239",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "performanceAntipatternCheckerEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "WordPressSharedTests",
+        "name" : "WordPressSharedTests"
+      }
+    }
+  ],
+  "version" : 1
+}
