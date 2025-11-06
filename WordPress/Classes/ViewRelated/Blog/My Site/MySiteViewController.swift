@@ -358,7 +358,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         let configuration = EditorConfiguration(blog: blog)
         GutenbergKit.EditorViewController.warmup(configuration: configuration)
 
-        RawBlockEditorSettingsService(blog: blog).prefetchSettings()
+        if let dotOrgRestAPI = WordPressOrgRestApi(blog: blog) {
+            RawBlockEditorSettingsService(dotOrgRestAPI: dotOrgRestAPI, blog: blog)
+                .prefetchSettings()
+        }
     }
 
     // MARK: - Main Blog

@@ -145,7 +145,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     func setHTML(_ html: String) {}
     func getHTML() -> String { post.content ?? "" }
 
-    private let blockEditorSettingsService: RawBlockEditorSettingsService
+    private let blockEditorSettingsService: RawBlockEditorSettingsService?
 
     // MARK: - Initializers
     required convenience init(
@@ -183,7 +183,11 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         let editorConfiguration = EditorConfiguration(blog: post.blog)
         self.editorViewController = GutenbergKit.EditorViewController(configuration: editorConfiguration)
 
-        self.blockEditorSettingsService = RawBlockEditorSettingsService(blog: post.blog)
+        if let dotOrgRestAPI = WordPressOrgRestApi(blog: post.blog) {
+            self.blockEditorSettingsService = RawBlockEditorSettingsService(dotOrgRestAPI: dotOrgRestAPI, blog: post.blog)
+        } else {
+            self.blockEditorSettingsService = nil
+        }
 
         super.init(nibName: nil, bundle: nil)
 
@@ -474,12 +478,13 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // MARK: - Editor Setup
     private func fetchEditorDependencies() async throws -> EditorDependencies {
-        let settings: String?
-        do {
-            settings = try await blockEditorSettingsService.getSettingsString(allowingCachedResponse: true)
-        } catch {
-            DDLogError("Failed to fetch editor settings: \(error)")
-            settings = nil
+        var settings: String?
+        if let blockEditorSettingsService {
+            do {
+                settings = try await blockEditorSettingsService.getSettingsString(allowingCachedResponse: true)
+            } catch {
+                DDLogError("Failed to fetch editor settings: \(error)")
+            }
         }
 
         let loaded = await loadAuthenticationCookiesAsync()
