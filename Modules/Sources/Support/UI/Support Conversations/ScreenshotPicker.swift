@@ -63,7 +63,10 @@ struct ScreenshotPicker: View {
                 PhotosPicker(
                     selection: $selectedPhotos,
                     maxSelectionCount: maxScreenshots,
-                    matching: .images
+                    matching: .any(of: [
+                        .screenshots,
+                        .screenRecordings
+                    ])
                 ) { [imageCount = attachedImages.count, isLoading = self.state.isLoadingMoreImages, uploadLimitExceeded = self.uploadLimitExceeded] in
                     HStack {
                         if isLoading {
