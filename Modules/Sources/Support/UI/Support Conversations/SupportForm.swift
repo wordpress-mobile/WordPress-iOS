@@ -124,7 +124,7 @@ public struct SupportForm: View {
         .navigationTitle(Localization.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem {
+            ToolbarItem(placement: .cancellationAction) {
                 Button(Localization.cancel, role: .cancel) {
                     if self.userHasUnsavedChanges {
                         self.isDisplayingCancellationConfirmation = true
