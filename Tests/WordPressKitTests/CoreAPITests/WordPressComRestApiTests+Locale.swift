@@ -1,7 +1,7 @@
 import XCTest
 import OHHTTPStubs
 import OHHTTPStubsSwift
-
+import WordPressShared
 @testable import WordPressKit
 
 extension WordPressComRestApiTests {
@@ -16,7 +16,7 @@ extension WordPressComRestApiTests {
         let api = WordPressComRestApi()
         let _ = await api.perform(.get, URLString: "/path/path")
 
-        let preferredLanguageIdentifier = WordPressComLanguageDatabase().deviceLanguage.slug
+        let preferredLanguageIdentifier = WordPressComLanguageDatabase.shared.deviceLanguage.slug
         XCTAssertEqual(request?.url?.query, "locale=\(preferredLanguageIdentifier)")
     }
 
@@ -35,7 +35,7 @@ extension WordPressComRestApiTests {
         let api = WordPressComRestApi()
         let _ = await api.perform(.get, URLString: path, parameters: params)
 
-        let preferredLanguageIdentifier = WordPressComLanguageDatabase().deviceLanguage.slug
+        let preferredLanguageIdentifier = WordPressComLanguageDatabase.shared.deviceLanguage.slug
         let query = try XCTUnwrap(request?.url?.query?.split(separator: "&"))
         XCTAssertEqual(Set(query), Set(["locale=\(preferredLanguageIdentifier)", "someKey=value"]))
     }
@@ -90,7 +90,7 @@ extension WordPressComRestApiTests {
 
         let api = WordPressComRestApi(localeKey: "foo")
 
-        let preferredLanguageIdentifier = WordPressComLanguageDatabase().deviceLanguage.slug
+        let preferredLanguageIdentifier = WordPressComLanguageDatabase.shared.deviceLanguage.slug
         let _ = await api.perform(.get, URLString: "/path/path")
         XCTAssertEqual(request?.url?.query, "foo=\(preferredLanguageIdentifier)")
     }

@@ -20,7 +20,7 @@ final class SiteCreationServiceTests: RemoteTestCase, RESTTestable {
             tagline: "This is a site I like",
             siteURLString: expectedUrlString,
             isPublic: true,
-            languageIdentifier: "TEST-ENGLISH",
+            languageIdentifier: 1,
             shouldValidate: true,
             clientIdentifier: "TEST-ID",
             clientSecret: "TEST-SECRET",
