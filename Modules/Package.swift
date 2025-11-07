@@ -215,6 +215,7 @@ let package = Package(
                 "WordPressKitModels",
                 "WordPressKitObjCUtils",
                 "NSObject-SafeExpectations",
+                "WordPressShared",
                 "wpxmlrpc",
             ],
             swiftSettings: [.swiftLanguageMode(.v5)]

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 // MARK: - WordPressComRestApiError
 
@@ -320,7 +321,7 @@ open class WordPressComRestApi: NSObject {
         var builder = HTTPRequestBuilder(url: url)
 
         if appendsPreferredLanguageLocale {
-            let preferredLanguageIdentifier = WordPressComLanguageDatabase().deviceLanguage.slug
+            let preferredLanguageIdentifier = WordPressComLanguageDatabase.shared.deviceLanguage.slug
             builder = builder.query(defaults: [URLQueryItem(name: localeKey, value: preferredLanguageIdentifier)])
         }
 
