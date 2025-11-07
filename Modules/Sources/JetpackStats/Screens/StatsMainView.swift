@@ -36,7 +36,7 @@ public struct StatsMainView: View {
                 .onAppear {
                     context.tracker?.send(.statsMainScreenShown)
                 }
-                .onChange(of: selectedTab) { newValue in
+                .onChange(of: selectedTab) { oldValue, newValue in
                     trackTabChange(from: selectedTab, to: newValue)
                 }
         } else {

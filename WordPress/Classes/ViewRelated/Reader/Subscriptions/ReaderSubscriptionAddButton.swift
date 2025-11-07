@@ -60,7 +60,7 @@ struct ReaderSubscriptionAddView: View {
         .onAppear {
             isFocused = true
         }
-        .onChange(of: siteURL) { _ in
+        .onChange(of: siteURL) {
             displayedError = nil
         }
         .frame(idealWidth: 420)

@@ -275,7 +275,7 @@ struct ReaderDetailHeaderView: View {
                     .onAppear {
                         onContentSizeChanged?()
                     }
-                    .onChange(of: proxy.size) { _ in
+                    .onChange(of: proxy.size) {
                         onContentSizeChanged?()
                     }
             }
@@ -378,7 +378,7 @@ struct ReaderDetailHeaderView: View {
                 // The host view does not react properly after the collection view finished its layout.
                 // This informs any size changes to the host view so that it can readjust correctly.
                 Color.clear
-                    .onChange(of: geometry.size) { _ in
+                    .onChange(of: geometry.size) {
                         onContentSizeChanged?()
                     }
             })

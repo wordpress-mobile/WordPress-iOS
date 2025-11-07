@@ -116,7 +116,7 @@ struct CustomDateRangePicker: View {
     private var dateSelectionSection: some View {
         HStack(alignment: .bottom, spacing: 0) {
             datePickerColumn(label: Strings.DatePicker.from.uppercased(), selection: $startDate, alignment: .leading)
-                .onChange(of: startDate) { newValue in
+                .onChange(of: startDate) { oldValue, newValue in
                     // If start date is after end date, adjust end date to be one day after start
                     if newValue > endDate {
                         endDate = calendar.date(byAdding: .day, value: 1, to: newValue) ?? newValue
@@ -126,7 +126,7 @@ struct CustomDateRangePicker: View {
             Spacer(minLength: 32)
 
             datePickerColumn(label: Strings.DatePicker.to.uppercased(), selection: $endDate, alignment: .trailing)
-                .onChange(of: endDate) { newValue in
+                .onChange(of: endDate) { oldValue, newValue in
                     // If end date is before start date, adjust start date to be one day before end
                     if newValue < startDate {
                         startDate = calendar.date(byAdding: .day, value: -1, to: newValue) ?? newValue

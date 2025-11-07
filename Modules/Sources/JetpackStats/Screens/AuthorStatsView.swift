@@ -55,8 +55,8 @@ struct AuthorStatsView: View {
         }
         .background(Constants.Colors.background)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
-        .onChange(of: dateRange) { newRange in
-            viewModel.dateRange = newRange
+        .onChange(of: dateRange) { oldValue, newValue in
+            viewModel.dateRange = newValue
         }
         .onAppear {
             context.tracker?.send(.authorStatsScreenShown)

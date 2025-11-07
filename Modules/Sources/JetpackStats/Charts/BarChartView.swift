@@ -42,7 +42,7 @@ struct BarChartView: View {
         .accessibilityElement()
         .accessibilityLabel(Strings.Accessibility.chartContainer)
         .accessibilityHint(Strings.Accessibility.viewChartData)
-        .onChange(of: ObjectIdentifier(data)) { _ in
+        .onChange(of: ObjectIdentifier(data)) {
             tappedDataPoint = nil
         }
     }
@@ -287,7 +287,12 @@ struct BarChartView: View {
     }
 
     private func getSelectedDataPoints(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) -> SelectedDataPoints? {
-        let origin = geometry[proxy.plotAreaFrame].origin
+
+        guard let frame = proxy.plotFrame else {
+            return nil
+        }
+
+        let origin = geometry[frame].origin
         let location = CGPoint(
             x: location.x - origin.x,
             y: location.y - origin.y

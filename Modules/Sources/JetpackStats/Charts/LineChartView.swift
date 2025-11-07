@@ -35,7 +35,7 @@ struct LineChartView: View {
         .chartXSelection(value: $selectedDate)
         .animation(.spring, value: ObjectIdentifier(data))
         .onChange(of: selectedDate) {
-            selectedDataPoints = SelectedDataPoints.compute(for: $0, data: data)
+            selectedDataPoints = SelectedDataPoints.compute(for: $1, data: data)
         }
         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .accessibilityElement()

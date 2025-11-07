@@ -39,7 +39,7 @@ struct TopListCardCustomizationView: View {
                 }
             }
         }
-        .onChange(of: selectedItem) { newValue in
+        .onChange(of: selectedItem) { oldValue, newValue in
             if let newValue {
                 updateConfiguration(with: newValue)
             }

@@ -27,13 +27,13 @@ struct RelatedPostsSettingsView: View {
         }
         .toggleStyle(SwitchToggleStyle(tint: Color(UIAppColor.jetpackGreen)))
         .onChange(of: settings.relatedPostsEnabled) {
-            save(field: "show_related_posts", value: $0)
+            save(field: "show_related_posts", value: $1)
         }
         .onChange(of: settings.relatedPostsShowHeadline) {
-            save(field: "show_related_posts_header", value: $0)
+            save(field: "show_related_posts_header", value: $1)
         }
         .onChange(of: settings.relatedPostsShowThumbnails) {
-            save(field: "show_related_posts_thumbnail", value: $0)
+            save(field: "show_related_posts_thumbnail", value: $1)
         }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)

@@ -142,7 +142,7 @@ private struct BloganuaryOverlayView: View {
                     .onAppear {
                         scrollViewHeight = geo.size.height
                     }
-                    .onChange(of: viewModel.orientation) { _ in
+                    .onChange(of: viewModel.orientation) {
                         // since onAppear is only called once, assign the value again every time the orientation changes.
                         scrollViewHeight = geo.size.height
                     }

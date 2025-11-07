@@ -21,8 +21,8 @@ struct WebServerLogsView: View {
         .onAppear {
             loadLogs(searchCriteria: searchCriteria)
         }
-        .onChange(of: searchCriteria) { value in
-            loadLogs(searchCriteria: value, reset: true)
+        .onChange(of: searchCriteria) { oldValue, newValue in
+            loadLogs(searchCriteria: newValue, reset: true)
         }
     }
 

@@ -141,7 +141,7 @@ public struct SupportConversationView: View {
             .onAppear {
                 scrollToBottom(proxy: proxy)
             }
-            .onChange(of: conversation.messages.count) { _, _ in
+            .onChange(of: conversation.messages.count) {
                 scrollToBottom(proxy: proxy)
             }
         }
