@@ -24,7 +24,7 @@ private struct Section {
     }
 }
 
-@objc final class BlogDetailsTableViewModel: NSObject {
+@objc public final class BlogDetailsTableViewModel: NSObject {
     private var blog: Blog
     private weak var tableView: UITableView?
     private weak var viewController: BlogDetailsViewController?
@@ -54,13 +54,13 @@ private struct Section {
 
     var useSiteMenuStyle = false
 
-    @objc init(blog: Blog, viewController: BlogDetailsViewController) {
+    @objc public init(blog: Blog, viewController: BlogDetailsViewController) {
         self.blog = blog
         self.viewController = viewController
         super.init()
     }
 
-    @objc func configure(tableView: UITableView) {
+    @objc public func configure(tableView: UITableView) {
         self.tableView = tableView
 
         // Register standard cells
@@ -82,13 +82,13 @@ private struct Section {
         tableView.dataSource = self
     }
 
-    @objc func viewWillAppear() {
+    @objc public func viewWillAppear() {
         if !isSplitViewDisplayed {
             restorableSelectedRow = nil
         }
     }
 
-    @objc func configureTableViewData() {
+    @objc public func configureTableViewData() {
         guard let viewController else { return }
 
         var newSections: [Section] = []
@@ -168,7 +168,7 @@ private struct Section {
         return CGRectContainsRect(tableView.bounds, cellRect) ? .none : .middle
     }
 
-    @objc func reloadTableViewPreservingSelection(_ tableView: UITableView) {
+    @objc public func reloadTableViewPreservingSelection(_ tableView: UITableView) {
         tableView.reloadData()
 
         if isSplitViewDisplayed, let indexPath = restorableSelectedIndexPath {
@@ -177,7 +177,7 @@ private struct Section {
         }
     }
 
-    @objc func showInitialDetailsForBlog() {
+    @objc public func showInitialDetailsForBlog() {
         guard isSplitViewDisplayed else { return }
 
         let row = defaultSubsection()
@@ -228,11 +228,11 @@ private struct Section {
 }
 
 extension BlogDetailsTableViewModel: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
+    public func numberOfSections(in tableView: UITableView) -> Int {
         sections.count
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard section < sections.count else { return 0 }
 
         switch sections[section].category {
@@ -245,7 +245,7 @@ extension BlogDetailsTableViewModel: UITableViewDataSource {
         }
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard indexPath.section < sections.count else {
             return UITableViewCell()
         }
@@ -278,7 +278,7 @@ extension BlogDetailsTableViewModel: UITableViewDataSource {
         return cell
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard section < sections.count else { return nil }
         return sections[section].title
     }
@@ -303,7 +303,7 @@ extension BlogDetailsTableViewModel: UITableViewDataSource {
 }
 
 extension BlogDetailsTableViewModel: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section < sections.count else { return }
         let section = sections[indexPath.section]
 
@@ -323,12 +323,12 @@ extension BlogDetailsTableViewModel: UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         let isNewSelection = (indexPath != tableView.indexPathForSelectedRow)
         return isNewSelection ? indexPath : nil
     }
 
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         guard section < sections.count else { return 0 }
         let detailSection = sections[section]
         let isLastSection = section == sections.count - 1
@@ -343,7 +343,7 @@ extension BlogDetailsTableViewModel: UITableViewDelegate {
         return 0
     }
 
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard section < sections.count else { return 0 }
         let detailSection = sections[section]
         let hasTitle = !(detailSection.title?.isEmpty ?? true)
@@ -355,7 +355,7 @@ extension BlogDetailsTableViewModel: UITableViewDelegate {
         return hasTitle ? 40.0 : 20.0
     }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard useSiteMenuStyle else { return nil }
 
         guard let title = self.tableView(tableView, titleForHeaderInSection: section) else { return nil }
@@ -375,7 +375,7 @@ extension BlogDetailsTableViewModel: UITableViewDelegate {
         return headerView
     }
 
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard section < sections.count,
               let footerTitle = sections[section].footerTitle,
               !footerTitle.isEmpty else {
