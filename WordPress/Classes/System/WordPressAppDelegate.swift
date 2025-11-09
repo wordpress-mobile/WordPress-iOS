@@ -528,11 +528,6 @@ extension WordPressAppDelegate {
     /// Updates the remote feature flags using an authenticated remote if a token is provided or an account exists
     /// Otherwise an anonymous remote will be used
     func updateFeatureFlags(authToken: String? = nil, completion: (() -> Void)? = nil) {
-        // Enable certain feature flags on test builds.
-        if BuildConfiguration.current.isInternal {
-            FeatureFlagOverrideStore().override(RemoteFeatureFlag.dotComWebLogin, withValue: true)
-        }
-
         /// - warning: must be called before the `update(using:then:)`.
         if remoteFeatureFlagStore.isFreshInstall {
             FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: true)

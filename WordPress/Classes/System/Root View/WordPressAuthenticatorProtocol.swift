@@ -21,18 +21,8 @@ extension WordPressAuthenticator: WordPressAuthenticatorProtocol {
         )
     }
 
-    static var dotComWebLoginEnabled: Bool {
-        // Some UI tests go through the native login flow. They should be updated once the web sign in flow is fully
-        // rolled out. We'll disable web login for UI tests for now.
-        if UITestConfigurator.isUITesting() {
-            return false
-        }
-
-        return true
-    }
-
     private static func continueWithDotCom(_ viewController: UIViewController) -> Bool {
-        guard Self.dotComWebLoginEnabled, let navigationController = viewController.navigationController else {
+        guard let navigationController = viewController.navigationController else {
             return false
         }
 
