@@ -37,14 +37,13 @@ class ReaderTests_01: ReaderTests {
             .verifyPostContentEquals(.expectedPostContent)
     }
 
-    // This test is flaky on CI, but passing consistently locally
-    // func testDiscover() throws {
-    //     try openStream(.discover)
-    //         .selectTag()
-    //         .verifyTagLoaded()
-    //         .followTag()
-    //         .verifyTagFollowed()
-    // }
+     func testDiscover() throws {
+         try openStream(.discover)
+             .selectTag()
+             .verifyTagLoaded()
+             .followTag()
+             .verifyTagFollowed()
+     }
 }
 
 class ReaderTests_02: ReaderTests {
