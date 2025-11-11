@@ -126,17 +126,16 @@ def build_code_current
   BUILD_CODE_FORMATTER.build_code(version: version)
 end
 
-# Returns the build code of the app for the code freeze. It is the release version name plus sets the build number to 0
+# Returns the initial build code for a code freeze (e.g., "1.2.3.0" for release version "1.2.3")
+# Takes the release version and formats it as a four-part build code with the build number set to 0
 #
-def build_code_code_freeze
-  # Read the current build code from the .xcconfig file and parse it into an AppVersion object
-  # The AppVersion is used because WP/JPiOS uses the four part (1.2.3.4) build code format, so the version
-  # calculator can be used to calculate the next four-part version
-  release_version_current = VERSION_FORMATTER.parse(PUBLIC_VERSION_FILE.read_release_version)
-  # Calculate the next release version, which will be used as the basis of the new build code
-  build_code_code_freeze = VERSION_CALCULATOR.next_release_version(version: release_version_current)
-  # Return the formatted build code
-  BUILD_CODE_FORMATTER.build_code(version: build_code_code_freeze)
+def build_code_code_freeze(version_short: nil)
+  # Use provided version or read the current release version from the .xcconfig file
+  version_short ||= PUBLIC_VERSION_FILE.read_release_version
+  # Parse the release version string (e.g., "1.2.3") into an AppVersion object
+  release_version_current = VERSION_FORMATTER.parse(version_short)
+  # Format as four-part build code (e.g., "1.2.3.0")
+  BUILD_CODE_FORMATTER.build_code(version: release_version_current)
 end
 
 # Returns the build code of the app for the code freeze. It is the hotfix version name plus sets the build number to 0
