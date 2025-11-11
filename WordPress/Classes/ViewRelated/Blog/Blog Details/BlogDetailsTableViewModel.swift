@@ -433,7 +433,7 @@ private extension BlogDetailsTableViewModel {
         }
 
         cell.textLabel?.text = row.title
-        cell.accessibilityIdentifier = row.accessibilityIdentifier
+        cell.accessibilityIdentifier = row.accessibilityIdentifier ?? identifier
         cell.detailTextLabel?.text = row.detail
         cell.imageView?.image = row.image
         cell.imageView?.tintColor = row.imageColor
