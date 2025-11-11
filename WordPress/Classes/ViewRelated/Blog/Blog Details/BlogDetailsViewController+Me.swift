@@ -5,7 +5,7 @@ import Gravatar
 
 extension BlogDetailsViewController {
 
-    @objc public func downloadGravatarImage(forceRefresh: Bool = false) {
+    public func downloadGravatarImage(forceRefresh: Bool = false) {
         guard let email = blog.account?.email else {
             return
         }
@@ -16,11 +16,11 @@ extension BlogDetailsViewController {
                 return
             }
 
-            self?.tableViewModel.gravatarIcon = gravatarIcon
+            self?.tableViewModel?.gravatarIcon = gravatarIcon
         }
     }
 
-    @objc public func observeGravatarImageUpdate() {
+    public func observeGravatarImageUpdate() {
         NotificationCenter.default.addObserver(self, selector: #selector(refreshAvatar(_:)), name: .GravatarQEAvatarUpdateNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateGravatarImage(_:)), name: .GravatarImageUpdateNotification, object: nil)
     }
@@ -41,7 +41,7 @@ extension BlogDetailsViewController {
         }
 
         ImageCache.shared.setImage(image, forKey: url.absoluteString)
-        tableViewModel.gravatarIcon = gravatarIcon
+        tableViewModel?.gravatarIcon = gravatarIcon
     }
 
     private enum Metrics {

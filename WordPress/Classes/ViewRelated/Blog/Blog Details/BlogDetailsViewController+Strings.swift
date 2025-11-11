@@ -1,14 +1,5 @@
 import Foundation
 
-@objc(BlogDetailsViewControllerStrings)
-public class objc_BlogDetailsViewController_Strings: NSObject {
-
-    @objc public class func contentSectionTitle() -> String { BlogDetailsViewController.Strings.contentSectionTitle }
-    @objc public class func trafficSectionTitle() -> String { BlogDetailsViewController.Strings.trafficSectionTitle }
-    @objc public class func maintenanceSectionTitle() -> String { BlogDetailsViewController.Strings.maintenanceSectionTitle }
-    @objc public class func socialRowTitle() -> String { BlogDetailsViewController.Strings.socialRowTitle }
-    @objc public class func siteMonitoringRowTitle() -> String { BlogDetailsViewController.Strings.siteMonitoringRowTitle }
-}
 
 extension BlogDetailsViewController {
 

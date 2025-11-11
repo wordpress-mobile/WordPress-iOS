@@ -9,7 +9,7 @@ protocol SiteMenuViewControllerDelegate: AnyObject {
 /// The site menu for the split view navigation.
 final class SiteMenuViewController: UIViewController {
     let blog: Blog
-    private let blogDetailsVC = SiteMenuListViewController()
+    private let blogDetailsVC: SiteMenuListViewController
 
     weak var delegate: SiteMenuViewControllerDelegate?
 
@@ -19,6 +19,7 @@ final class SiteMenuViewController: UIViewController {
 
     init(blog: Blog) {
         self.blog = blog
+        blogDetailsVC = SiteMenuListViewController(blog: blog)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -88,7 +89,7 @@ final class SiteMenuViewController: UIViewController {
 private final class SiteMenuListViewController: BlogDetailsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableViewModel.useSiteMenuStyle = true
+        self.tableViewModel?.useSiteMenuStyle = true
     }
 }
 

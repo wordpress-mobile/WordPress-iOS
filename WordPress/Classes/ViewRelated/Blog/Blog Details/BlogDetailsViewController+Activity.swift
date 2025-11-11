@@ -71,7 +71,7 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
         return displayURL
     }
 
-    @objc public func createUserActivity() {
+    public func createUserActivity() {
         registerUserActivity()
     }
 }

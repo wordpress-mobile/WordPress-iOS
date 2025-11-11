@@ -673,10 +673,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func makeBlogDetailsViewController(for blog: Blog) -> BlogDetailsViewController {
-        let blogDetailsViewController = BlogDetailsViewController()
-        blogDetailsViewController.blog = blog
-
-        return blogDetailsViewController
+        BlogDetailsViewController(blog: blog)
     }
 
     private func showSitePicker(for blog: Blog) {
@@ -726,7 +723,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         case .siteMenu:
             blogDetailsViewController?.blog = blog
             blogDetailsViewController?.configureTableViewData()
-            blogDetailsViewController?.tableView.reloadData()
+            blogDetailsViewController?.tableView?.reloadData()
             blogDetailsViewController?.preloadMetadata()
             blogDetailsViewController?.showInitialDetailsForBlog()
         case .dashboard:

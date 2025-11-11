@@ -168,12 +168,18 @@ private struct Section {
         return CGRectContainsRect(tableView.bounds, cellRect) ? .none : .middle
     }
 
-    @objc public func reloadTableViewPreservingSelection(_ tableView: UITableView) {
+    @objc public func reloadTableViewPreservingSelection() {
+        guard let tableView else { return }
+
+        let previousSelection = tableView.indexPathForSelectedRow
         tableView.reloadData()
 
         if isSplitViewDisplayed, let indexPath = restorableSelectedIndexPath {
             tableView.selectRow(at: indexPath, animated: false, scrollPosition: optimumScrollPosition(for: indexPath))
-            sections[indexPath.section].rows[indexPath.row].action?([:])
+
+            if previousSelection != indexPath {
+                sections[indexPath.section].rows[indexPath.row].action?([:])
+            }
         }
     }
 
@@ -987,7 +993,7 @@ extension Row {
             image: nil,
             showsSelectionState: false,
             action: { [weak viewController] _ in
-                viewController?.tableView.deselectSelectedRowWithAnimation(true)
+                viewController?.tableView?.deselectSelectedRowWithAnimation(true)
                 viewController?.showRemoveSiteAlert()
             }
         )
@@ -1250,7 +1256,7 @@ extension Row {
             showsSelectionState: false,
             action: { [weak viewController] _ in
                 viewController?.showViewAdmin()
-                viewController?.tableView.deselectSelectedRowWithAnimation(true)
+                viewController?.tableView?.deselectSelectedRowWithAnimation(true)
             }
         )
     }

@@ -7,7 +7,6 @@
 
 #import "BlogService.h"
 #import "BlogSyncFacade.h"
-#import "BlogDetailsViewController.h"
 
 #import "CommentService.h"
 #import "CommentsViewController.h"
