@@ -4,6 +4,7 @@ import SVProgressHUD
 import WordPressAPI
 import WordPressCore
 import WordPressData
+import WordPressShared
 
 struct MediaStorageDetailsView: View {
     @State private var purchase: WebPurchase?
@@ -54,6 +55,7 @@ struct MediaStorageDetailsView: View {
             }
             .sheet(item: $purchase) { purchase in
                 WebPurchaseView(url: purchase.url, customTitle: purchase.title) { _ in
+                    WPAnalytics.track(.mediaStorageDetailsPurchaseCompleted, properties: ["type": purchase.purchaseType])
                     SVProgressHUD.showSuccess(withStatus: purchase.successMessage)
 
                     self.purchase = nil
@@ -67,6 +69,7 @@ struct MediaStorageDetailsView: View {
                 }
             }
             .task {
+                WPAnalytics.track(.mediaStorageDetailsViewed)
                 await viewModel.refresh()
             }
         }
@@ -77,10 +80,12 @@ struct MediaStorageDetailsView: View {
         switch action.kind {
         case .buyStorage:
             ActionSection(action: action) {
+                WPAnalytics.track(.mediaStorageDetailsActionTapped, properties: ["action": "storage"])
                 self.purchase = .storage(blog: viewModel.blog)
             }
         case .upgradePlan:
             ActionSection(action: action) {
+                WPAnalytics.track(.mediaStorageDetailsActionTapped, properties: ["action": "upgrade-plan"])
                 self.purchase = .upgradePlan(blog: viewModel.blog)
             }
         }
@@ -158,6 +163,7 @@ private struct WebPurchase: Identifiable {
     var url: URL
     var title: String
     var successMessage: String
+    var purchaseType: String
 
     var id: URL {
         url
@@ -169,7 +175,8 @@ private struct WebPurchase: Identifiable {
                 .appending(path: blog.primaryDomainAddress)
                 .appending(queryItems: [.init(name: "product", value: "storage")]),
             title: Strings.buyStorageTitle,
-            successMessage: Strings.storageUpgradeSuccessMessage
+            successMessage: Strings.storageUpgradeSuccessMessage,
+            purchaseType: "storage"
         )
     }
 
@@ -177,7 +184,8 @@ private struct WebPurchase: Identifiable {
         WebPurchase(
             url: URL(string: "https://wordpress.com/plans/yearly/")!.appending(path: blog.primaryDomainAddress),
             title: Strings.upgradePlanTitle,
-            successMessage: Strings.planUpgradeSuccessMessage
+            successMessage: Strings.planUpgradeSuccessMessage,
+            purchaseType: "upgrade-plan"
         )
     }
 }
