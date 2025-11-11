@@ -24,7 +24,6 @@ public enum FeatureFlag: Int, CaseIterable {
     case readerGutenbergCommentComposer
     case pluginManagementOverhaul
     case newStats
-    case mediaQuotaView
     case intelligence
     case newSupport
     case nativeBlockInserter
@@ -80,8 +79,6 @@ public enum FeatureFlag: Int, CaseIterable {
             return false
         case .newStats:
             return false
-        case .mediaQuotaView:
-            return false
         case .intelligence:
             let languageCode = Locale.current.language.languageCode?.identifier
             return (languageCode ?? "en").hasPrefix("en")
@@ -130,7 +127,6 @@ extension FeatureFlag {
         case .pluginManagementOverhaul: "Plugin Management Overhaul"
         case .readerGutenbergCommentComposer: "Gutenberg Comment Composer"
         case .newStats: "New Stats"
-        case .mediaQuotaView: "Media Quota"
         case .intelligence: "Intelligence"
         case .newSupport: "New Support"
         case .nativeBlockInserter: "Native Block Inserter"
