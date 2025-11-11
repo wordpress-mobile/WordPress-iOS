@@ -143,7 +143,7 @@ public class ReaderScreen: ScreenObject {
     private func waitForLoadingToFinish() {
         let doesNotExistPredicate = NSPredicate(format: "exists == FALSE")
         let expectation = XCTNSPredicateExpectation(predicate: doesNotExistPredicate, object: ghostLoading)
-        let _ = XCTWaiter.wait(for: [expectation], timeout: 5.0)
+        _ = XCTWaiter.wait(for: [expectation], timeout: 5.0)
     }
 
     @discardableResult
