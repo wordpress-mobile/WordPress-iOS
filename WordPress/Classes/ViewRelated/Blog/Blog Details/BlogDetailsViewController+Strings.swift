@@ -1,6 +1,5 @@
 import Foundation
 
-
 extension BlogDetailsViewController {
 
     enum Strings {
