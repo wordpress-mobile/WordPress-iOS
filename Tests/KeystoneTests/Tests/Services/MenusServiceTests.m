@@ -2,7 +2,6 @@
 #import "MenusService.h"
 #import "Blog.h"
 #import "Menu.h"
-#import "MenuLocation.h"
 #import "MenuItem.h"
 #import "WordPressTest-Swift.h"
 
