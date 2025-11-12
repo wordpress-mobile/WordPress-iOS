@@ -13,6 +13,8 @@
 # 1 - Job should not be skipped
 # 15 - Error in script parameters
 
+exit 1
+
 COMMON_PATTERNS=(
   "*.md"
   "*.po"
