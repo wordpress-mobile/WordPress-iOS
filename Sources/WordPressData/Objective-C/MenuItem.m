@@ -1,7 +1,7 @@
 #import "MenuItem.h"
 #import "Menu.h"
-#import "PostType.h"
 #import "Blog.h"
+#import "WordPressData-Swift.h"
 
 NSString * const MenuItemTypePage = @"page";
 NSString * const MenuItemTypeCustom = @"custom";

@@ -1186,7 +1186,6 @@
 				"Objective-C/include/PostHelper.h",
 				"Objective-C/include/PostService.h",
 				"Objective-C/include/PostServiceOptions.h",
-				"Objective-C/include/PostType.h",
 				"Objective-C/include/ReaderGapMarker.h",
 				"Objective-C/include/ReaderPost.h",
 				"Objective-C/include/SourcePostAttribution.h",
