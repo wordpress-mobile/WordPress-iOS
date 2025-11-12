@@ -272,7 +272,7 @@ class ReaderDetailCoordinator {
         }
 
         var path: String?
-        if post.sourceAttribution.attributionType == SourcePostAttributionTypePost {
+        if post.sourceAttribution.attributionType == SourcePostAttribution.post {
             path = post.sourceAttribution.permalink
         } else {
             path = post.sourceAttribution.blogURL

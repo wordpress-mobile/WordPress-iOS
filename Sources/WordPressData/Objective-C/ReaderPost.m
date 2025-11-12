@@ -1,5 +1,4 @@
 #import "ReaderPost.h"
-#import "SourcePostAttribution.h"
 #import "WPAccount.h"
 #import "WordPressData-Swift.h"
 
@@ -223,13 +222,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 + (NSString *)attributionTypeFromTaxonomies:(NSArray *)taxonomies
 {
     if ([taxonomies containsObject:SourceAttributionSiteTaxonomy]) {
-        return SourcePostAttributionTypeSite;
+        return SourcePostAttribution.site;
     }
 
     if ([taxonomies containsObject:SourceAttributionImageTaxonomy] ||
         [taxonomies containsObject:SourceAttributionQuoteTaxonomy] ||
         [taxonomies containsObject:SourceAttributionStandardTaxonomy] ) {
-        return SourcePostAttributionTypePost;
+        return SourcePostAttribution.post;
     }
 
     return nil;
@@ -358,9 +357,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 - (SourceAttributionStyle)sourceAttributionStyle
 {
-    if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypePost]) {
+    if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttribution.post]) {
         return SourceAttributionStylePost;
-    } else if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypeSite]) {
+    } else if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttribution.site]) {
         return SourceAttributionStyleSite;
     } else {
         return SourceAttributionStyleNone;
