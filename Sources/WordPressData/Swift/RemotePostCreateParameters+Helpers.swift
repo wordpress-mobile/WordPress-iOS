@@ -28,8 +28,8 @@ extension RemotePostCreateParameters {
             format = post.postFormat
             isSticky = post.isStickyPost
             tags = AbstractPost.makeTags(from: post.tags ?? "")
-            categoryIDs = (post.categories ?? []).compactMap {
-                $0.categoryID?.intValue
+            categoryIDs = (post.categories ?? []).map {
+                $0.categoryID.intValue
             }
             metadata = Set(Self.generateRemoteMetadata(for: post).compactMap { dictionary -> RemotePostMetadataItem? in
                 return PostHelper.mapDictionaryToMetadataItems(dictionary)

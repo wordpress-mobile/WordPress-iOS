@@ -840,7 +840,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 - (void)showDefaultCategorySelector
 {
-    NSNumber *defaultCategoryID = self.blog.settings.defaultCategoryID ?: @(PostCategoryUncategorized);
+    NSNumber *defaultCategoryID = self.blog.settings.defaultCategoryID ?: PostCategory.uncategorizedId;
     PostCategory *postCategory = [PostCategory lookupWithBlogObjectID:self.blog.objectID
                                                            categoryID:defaultCategoryID
                                                             inContext:[[ContextManager sharedInstance] mainContext]];

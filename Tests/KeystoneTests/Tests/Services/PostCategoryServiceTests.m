@@ -1,6 +1,5 @@
 #import <XCTest/XCTest.h>
 #import "Blog.h"
-#import "PostCategory.h"
 #import "PostCategoryService.h"
 #import "WordPressTest-Swift.h"
 

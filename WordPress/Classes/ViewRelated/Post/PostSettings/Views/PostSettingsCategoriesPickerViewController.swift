@@ -11,10 +11,7 @@ final class PostSettingsCategoriesPickerViewController: PostCategoriesViewContro
 
         // Get currently selected categories
         let selectedCategories = blog.categories?.filter { category in
-            if let categoryID = category.categoryID?.intValue {
-                return selectedCategoryIDs.contains(categoryID)
-            }
-            return false
+            selectedCategoryIDs.contains(category.categoryID.intValue)
         } ?? []
 
         super.init(blog: blog, currentSelection: Array(selectedCategories), selectionMode: .post)
@@ -33,7 +30,7 @@ extension PostSettingsCategoriesPickerViewController: PostCategoriesViewControll
     func postCategoriesViewController(_ controller: PostCategoriesViewController, didUpdateSelectedCategories categories: NSSet) {
         // Convert NSSet of PostCategory objects to Set<Int> of category IDs
         let newSelectedIDs = Set(categories.compactMap { category in
-            (category as? PostCategory)?.categoryID?.intValue
+            (category as? PostCategory)?.categoryID.intValue
         })
         _onCategoriesChanged(newSelectedIDs)
     }

@@ -63,8 +63,8 @@ struct PostSettings: Hashable {
             postFormat = post.postFormat
             isStickyPost = post.isStickyPost
             tags = post.tags ?? ""
-            categoryIDs = Set((post.categories ?? []).compactMap {
-                $0.categoryID?.intValue
+            categoryIDs = Set((post.categories ?? []).map {
+                $0.categoryID.intValue
             })
             sharing = PostSocialSharingSettings.make(for: post)
             accessLevel = metadata.accessLevel ?? .everybody
@@ -134,15 +134,12 @@ struct PostSettings: Hashable {
             }
 
             // Update categories
-            let currentCategoryIDs = Set((post.categories ?? []).compactMap { $0.categoryID?.intValue })
+            let currentCategoryIDs = Set((post.categories ?? []).map { $0.categoryID.intValue })
             if currentCategoryIDs != categoryIDs {
                 // Find category objects for the IDs
                 let allCategories = post.blog.categories ?? []
                 let selectedCategories = allCategories.filter { category in
-                    if let categoryID = category.categoryID?.intValue {
-                        return categoryIDs.contains(categoryID)
-                    }
-                    return false
+                    categoryIDs.contains(category.categoryID.intValue)
                 }
                 post.categories = Set(selectedCategories)
             }
@@ -228,9 +225,7 @@ extension PostSettings {
         }
         var categories: [Int: String] = [:]
         for category in post.blog.categories ?? [] {
-            if let id = category.categoryID?.intValue, let name = category.categoryName {
-                categories[id] = name
-            }
+            categories[category.categoryID.intValue] = category.categoryName
         }
         return categoryIDs.compactMap { categories[$0] }
             .sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
