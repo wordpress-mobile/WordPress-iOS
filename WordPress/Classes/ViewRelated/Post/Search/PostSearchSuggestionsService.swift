@@ -100,7 +100,7 @@ actor PostSearchSuggestionsService {
         let tags = try? await coreData.performQuery { [blogID] context in
             let blog = try context.existingObject(with: blogID)
             return (blog.tags ?? []).compactMap {
-                $0.name.map(PostSearchTagToken.init)
+                PostSearchTagToken(tag: $0.name)
             }
         }
         self.cachedTags = tags
