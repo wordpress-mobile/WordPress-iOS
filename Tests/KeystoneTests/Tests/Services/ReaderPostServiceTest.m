@@ -1,7 +1,6 @@
 
 #import <XCTest/XCTest.h>
 
-#import "WPAccount.h"
 #import "ReaderTopicService.h"
 #import "ReaderPost.h"
 #import "ReaderPostService.h"

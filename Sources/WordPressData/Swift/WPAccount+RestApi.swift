@@ -3,53 +3,6 @@ import WordPressShared
 
 extension WPAccount {
 
-    /// A `WordPressRestComApi` object if the account is a WordPress.com account. Otherwise, `nil`.
-    ///
-    /// Warning: The getter has various side effects when there is no previous value set, including triggering the signup flow!
-    ///
-    /// This used to be defined in the Objective-C layer, but we moved it here in a Swift extension in an attempt to decouple the model code from it.
-    /// This was done in the context of https://github.com/wordpress-mobile/WordPress-iOS/pull/24165 .
-    @objc public var wordPressComRestApi: WordPressComRestApi? {
-        if let api = _private_wordPressComRestApi {
-            return api
-        }
-
-        guard let authToken, !authToken.isEmpty else {
-            NotificationCenter.default.post(
-                name: .wpAccountRequiresShowingSigninForWPComFixingAuthToken,
-                object: self
-            )
-            return nil
-        }
-
-        let api = makeWordPressComRestApi(authToken: authToken)
-        self._private_wordPressComRestApi = api
-        return api
-    }
-
-    private func makeWordPressComRestApi(authToken: String) -> WordPressComRestApi {
-        let api = WordPressComRestApi.defaultApi(
-            oAuthToken: authToken,
-            userAgent: WPUserAgent.wordPress(),
-            localeKey: WordPressComRestApi.LocaleKeyDefault
-        )
-
-        let accountID = TaggedManagedObjectID(self)
-        let context = managedObjectContext
-        wpAssert(context != nil)
-
-        api.setInvalidTokenHandler {
-            // We use a static function here because it's not safe to access `self` in this closure.
-            // The `WPAccount` instance can be bound to any context object. There is no guarantee that the thread
-            // from which this closure is called is the same as the one in the context object.
-            context?.perform {
-                WPAccount.handleInvalidToken(accountID: accountID, context: context)
-            }
-        }
-
-        return api
-    }
-
     /// Returns an instance of the WPCOM REST API suitable for v2 endpoints.
     /// If the user is not authenticated, this will be anonymous.
     ///

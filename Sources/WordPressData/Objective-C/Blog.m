@@ -1,5 +1,4 @@
 #import "Blog.h"
-#import "WPAccount.h"
 @import WordPressShared;
 #import "WordPressData-Swift.h"
 

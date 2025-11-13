@@ -1,6 +1,5 @@
 #import "Theme.h"
 #import "Blog.h"
-#import "WPAccount.h"
 
 @import WordPressShared;
 
