@@ -118,13 +118,4 @@
     _private_wordPressComRestApi = nil;
 }
 
-- (BOOL)hasAtomicSite {
-    for (Blog *blog in self.blogs) {
-        if ([blog isAtomic]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
 @end

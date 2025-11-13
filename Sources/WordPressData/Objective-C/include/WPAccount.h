@@ -58,7 +58,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeBlogsObject:(Blog *)value;
 - (void)addBlogs:(NSSet *)values;
 - (void)removeBlogs:(NSSet *)values;
-- (BOOL)hasAtomicSite;
 
 @end
 
