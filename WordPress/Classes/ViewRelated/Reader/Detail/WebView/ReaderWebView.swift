@@ -13,6 +13,16 @@ class ReaderWebView: WKWebView {
     /// From: https://www.w3schools.com/tags/att_src.asp
     private let elements = ["audio", "embed", "iframe", "img", "input", "script", "source", "track", "video"]
 
+    /// Google recently started requiring an HTTP referrer, otherwise it'll just show an error.
+    ///
+    /// We'll set the referrer to https://wordpress.com/reader since that's what Google would get if the user were using WordPress.com. If needed, we
+    /// could also set this to the specific site, which might be valuable for content owners to get more accurate information (they could see that example.com
+    /// embedded the video, instead of just "some site that uses WordPress"). That's less ideal for privacy, so that's why we're starting here.
+    ///
+    /// Documentation: https://developers.google.com/youtube/terms/required-minimum-functionality#set-the-referer
+    /// See also: https://stackoverflow.com/q/79802987/496295
+    private let baseURL = URL(string: "https://wordpress.com/reader")!
+
     let jsToRemoveSrcSet = "document.querySelectorAll('img, img-placeholder').forEach((el) => {el.removeAttribute('srcset')})"
 
     var postURL: URL? = nil
@@ -47,7 +57,7 @@ class ReaderWebView: WKWebView {
 
         let content = formattedContent(addPlaceholder(string), additionalJavaScript: additionalJavaScript)
 
-        super.loadHTMLString(content, baseURL: Bundle.wordPressSharedBundle.bundleURL)
+        super.loadHTMLString(content, baseURL: baseURL)
     }
 
     /// Given a HTML content, returns it formatted.
