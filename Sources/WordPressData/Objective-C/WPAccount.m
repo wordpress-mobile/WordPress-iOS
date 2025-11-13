@@ -127,38 +127,4 @@
     return NO;
 }
 
-#pragma mark - Static methods
-
-+ (NSString *)tokenForUsername:(NSString *)username isJetpack:(BOOL)isJetpack error:(NSError **)outError
-{
-    if (isJetpack) {
-        [WPAccount migrateAuthKeyForUsername:username];
-    }
-
-    NSError *error = nil;
-    NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:username
-                                                     andServiceName:[WPAccount authKeychainServiceName]
-                                                        accessGroup:nil
-                                                              error:&error];
-    if (error) {
-        DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
-
-        if (outError) {
-            *outError = error;
-        }
-        return nil;
-    }
-
-    return authToken;
-}
-
-+ (void)migrateAuthKeyForUsername:(NSString *)username
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        SharedDataIssueSolver *sharedDataIssueSolver = [SharedDataIssueSolver instance];
-        [sharedDataIssueSolver migrateAuthKeyFor:username];
-    });
-}
-
 @end

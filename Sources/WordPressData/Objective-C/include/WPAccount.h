@@ -58,7 +58,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeBlogsObject:(Blog *)value;
 - (void)addBlogs:(NSSet *)values;
 - (void)removeBlogs:(NSSet *)values;
-+ (NSString * _Nullable)tokenForUsername:(NSString *)username isJetpack:(BOOL)isJetpack error:(NSError ** _Nullable)error;
 - (BOOL)hasAtomicSite;
 
 @end
