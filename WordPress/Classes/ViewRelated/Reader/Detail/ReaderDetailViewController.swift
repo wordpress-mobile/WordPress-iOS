@@ -844,7 +844,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         let controller = ReaderDetailViewController.loadFromStoryboard()
         let coordinator = ReaderDetailCoordinator(view: controller)
-        coordinator.postURL = url
+        coordinator.set(
+            postID: NSNumber(value: simplePost.postID),
+            siteID: NSNumber(value: simplePost.siteID),
+            isFeed: false
+        )
         coordinator.remoteSimplePost = simplePost
         controller.coordinator = coordinator
 
