@@ -14,8 +14,6 @@ FOUNDATION_EXPORT const unsigned char WordPressDataVersionString[];
 #import <WordPressData/CoreDataStack.h>
 #import <WordPressData/LocalCoreDataService.h>
 #import <WordPressData/Media.h>
-#import <WordPressData/Menu.h>
-#import <WordPressData/MenuItem.h>
 #import <WordPressData/PostContentProvider.h>
 #import <WordPressData/PostHelper.h>
 #import <WordPressData/PostService.h>

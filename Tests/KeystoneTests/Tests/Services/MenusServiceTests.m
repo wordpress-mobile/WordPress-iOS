@@ -1,8 +1,6 @@
 #import <XCTest/XCTest.h>
 #import "MenusService.h"
 #import "Blog.h"
-#import "Menu.h"
-#import "MenuItem.h"
 #import "WordPressTest-Swift.h"
 
 @import OCMock;
@@ -129,11 +127,11 @@
     item.itemID = @1;
     item.contentID = @1;
     item.details = @"item details";
-    item.linkTarget = MenuItemLinkTargetBlank;
+    item.linkTarget = MenuItem.linkTargetBlank;
     item.linkTitle = @"Item";
     item.name = @"name";
-    item.type = MenuItemTypePage;
-    item.typeFamily = MenuItemTypePage;
+    item.type = MenuItemType.page;
+    item.typeFamily = MenuItemType.page;
     item.typeLabel = @"Page";
     item.urlStr = @"http://wordpress.com/";
     item.classes = @[@"special_class", @"extra_special_class"];

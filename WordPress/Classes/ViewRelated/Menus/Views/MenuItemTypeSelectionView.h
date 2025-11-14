@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL selected;
 
 /**
- The itemType the view represents, such as MenuItemTypePage.
+ The itemType the view represents, such as MenuItemType.page.
  */
 @property (nonatomic, strong) NSString *itemType;
 

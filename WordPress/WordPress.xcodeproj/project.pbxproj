@@ -1177,8 +1177,6 @@
 				"Objective-C/include/CoreDataStack.h",
 				"Objective-C/include/LocalCoreDataService.h",
 				"Objective-C/include/Media.h",
-				"Objective-C/include/Menu.h",
-				"Objective-C/include/MenuItem.h",
 				"Objective-C/include/PostContentProvider.h",
 				"Objective-C/include/PostHelper.h",
 				"Objective-C/include/PostService.h",

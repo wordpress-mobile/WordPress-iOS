@@ -84,13 +84,13 @@
 
 - (void)addDefaultItemTypesForBlog:(Blog *)blog
 {
-    MenuItemTypeSelectionView *firstTypeView = [self addTypeView:MenuItemTypePage blog:blog];
+    MenuItemTypeSelectionView *firstTypeView = [self addTypeView:MenuItemType.page blog:blog];
     firstTypeView.designIgnoresDrawingTopBorder = YES;
 
-    [self addTypeView:MenuItemTypeCustom blog:blog];
-    [self addTypeView:MenuItemTypeCategory blog:blog];
-    [self addTypeView:MenuItemTypeTag blog:blog];
-    [self addTypeView:MenuItemTypePost blog:blog];
+    [self addTypeView:MenuItemType.custom blog:blog];
+    [self addTypeView:MenuItemType.category blog:blog];
+    [self addTypeView:MenuItemType.tag blog:blog];
+    [self addTypeView:MenuItemType.post blog:blog];
 }
 
 - (void)addCustomBlogPostTypesIfNeeded:(Blog *)blog

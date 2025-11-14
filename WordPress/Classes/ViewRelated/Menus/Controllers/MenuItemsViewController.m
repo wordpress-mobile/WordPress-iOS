@@ -831,7 +831,7 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
         // Create a new item.
         MenuItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:[MenuItem entityName] inManagedObjectContext:self.menu.managedObjectContext];
         newItem.name = [MenuItem defaultItemNameLocalized];
-        newItem.type = MenuItemTypePage;
+        newItem.type = MenuItemType.page;
 
         // Insert the new item into the menu's ordered items.
         BOOL requiresOffsetInsertionOrder = NO;

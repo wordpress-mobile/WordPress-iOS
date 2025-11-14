@@ -72,7 +72,7 @@ static CGFloat const LinkTextBarHeight = 48.0;
 
 - (NSString *)sourceItemType
 {
-    return MenuItemTypeCustom;
+    return MenuItemType.custom;
 }
 
 - (void)setItem:(MenuItem *)item
@@ -82,14 +82,14 @@ static CGFloat const LinkTextBarHeight = 48.0;
     self.textBar.textField.text = item.urlStr ?: @"";
 
     if ([self itemTypeMatchesSourceItemType]) {
-        self.checkButtonView.checked = item.linkTarget && [item.linkTarget isEqualToString:MenuItemLinkTargetBlank];
+        self.checkButtonView.checked = item.linkTarget && [item.linkTarget isEqualToString:MenuItem.linkTargetBlank];
     }
 }
 
 - (void)updateItemLinkTargetOption
 {
     if (self.checkButtonView.checked) {
-        self.item.linkTarget = MenuItemLinkTargetBlank;
+        self.item.linkTarget = MenuItem.linkTargetBlank;
     } else {
         self.item.linkTarget = nil;
     }

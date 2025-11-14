@@ -117,7 +117,7 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
             self.textField.text = menu.name;
             self.textFieldDesignIcon.hidden = NO;
             [self updateTextFieldDesignIconPositioning];
-            self.trashButton.hidden = menu.menuID.integerValue == MenuDefaultID;
+            self.trashButton.hidden = menu.menuID.integerValue == Menu.defaultID;
         } else {
             self.textField.text = NSLocalizedString(@"No Menu Selected", @"Menus name field text when no menu is selected.");
             self.textField.enabled = NO;

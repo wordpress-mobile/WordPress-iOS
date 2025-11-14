@@ -13,7 +13,7 @@
 
 - (NSString *)sourceItemType
 {
-    return MenuItemTypePage;
+    return MenuItemType.page;
 }
 
 - (NSFetchRequest *)fetchRequest

@@ -365,7 +365,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
         // Add a new empty item.
         MenuItem *item = [NSEntityDescription insertNewObjectForEntityForName:[MenuItem entityName] inManagedObjectContext:self.blog.managedObjectContext];
         item.name = [MenuItem defaultItemNameLocalized];
-        item.type = MenuItemTypePage;
+        item.type = MenuItemType.page;
         item.menu = menu;
 
         [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];

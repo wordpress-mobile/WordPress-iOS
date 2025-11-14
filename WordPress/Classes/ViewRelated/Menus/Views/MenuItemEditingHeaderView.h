@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) MenuItem *item;
 
 /**
- The itemType the header should display such as MenuItemTypePage.
+ The itemType the header should display such as MenuItemType.page.
  */
 @property (nonatomic, strong) NSString *itemType;
 

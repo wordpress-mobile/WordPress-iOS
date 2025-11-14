@@ -73,13 +73,13 @@ class MenuItemTests: CoreDataTestCase {
         itemE.parent = itemD
         itemF.parent = itemD
 
-        let lastDescendant = itemA.lastDescendant(inOrderedItems: orderedItems)
+        let lastDescendant = itemA.lastDescendant(in: orderedItems)
         XCTAssertEqual(lastDescendant, itemB)
 
-        let descendantOfItemC = itemC.lastDescendant(inOrderedItems: orderedItems)
+        let descendantOfItemC = itemC.lastDescendant(in: orderedItems)
         XCTAssertEqual(descendantOfItemC, nil)
 
-        let descendantOfItemD = itemD.lastDescendant(inOrderedItems: orderedItems)
+        let descendantOfItemD = itemD.lastDescendant(in: orderedItems)
         XCTAssertEqual(descendantOfItemD, itemF)
     }
 
@@ -115,13 +115,13 @@ class MenuItemTests: CoreDataTestCase {
         itemE.parent = itemD
         itemF.parent = itemD
 
-        let precedingSiblingForItemA = itemA.precedingSibling(inOrderedItems: orderedItems)
+        let precedingSiblingForItemA = itemA.precedingSibling(in: orderedItems)
         XCTAssertNil(precedingSiblingForItemA)
 
-        let precedingSiblingForItemD = itemD.precedingSibling(inOrderedItems: orderedItems)
+        let precedingSiblingForItemD = itemD.precedingSibling(in: orderedItems)
         XCTAssertEqual(precedingSiblingForItemD, itemA)
 
-        let precedingSiblingForItemF = itemF.precedingSibling(inOrderedItems: orderedItems)
+        let precedingSiblingForItemF = itemF.precedingSibling(in: orderedItems)
         XCTAssertEqual(precedingSiblingForItemF, itemE)
     }
 

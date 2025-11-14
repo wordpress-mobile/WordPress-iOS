@@ -5,7 +5,6 @@
 #import "MenuItemCategoriesViewController.h"
 #import "MenuItemTagsViewController.h"
 #import "MenuItemPostsViewController.h"
-#import "Menu.h"
 @import WordPressData;
 
 static CGFloat const SourceHeaderViewHeight = 60.0;
@@ -95,13 +94,13 @@ static CGFloat const SourceHeaderViewHeight = 60.0;
 
     BOOL sourceViewSetupRequired = NO;
     if (!sourceViewController) {
-        if ([itemType isEqualToString:MenuItemTypePage]) {
+        if ([itemType isEqualToString:MenuItemType.page]) {
             sourceViewController = [[MenuItemPagesViewController alloc] init];
-        } else if ([itemType isEqualToString:MenuItemTypeCustom]) {
+        } else if ([itemType isEqualToString:MenuItemType.custom]) {
             sourceViewController = [[MenuItemLinkViewController alloc] init];
-        } else if ([itemType isEqualToString:MenuItemTypeCategory]) {
+        } else if ([itemType isEqualToString:MenuItemType.category]) {
             sourceViewController = [[MenuItemCategoriesViewController alloc] init];
-        } else if ([itemType isEqualToString:MenuItemTypeTag]) {
+        } else if ([itemType isEqualToString:MenuItemType.tag]) {
             sourceViewController = [[MenuItemTagsViewController alloc] init];
         } else {
             // Default to a post view that will load posts of postType == itemType.

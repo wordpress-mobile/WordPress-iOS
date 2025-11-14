@@ -31,7 +31,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 
 - (NSString *)sourceItemType
 {
-    return MenuItemTypeTag;
+    return MenuItemType.tag;
 }
 
 - (NSFetchRequest *)fetchRequest

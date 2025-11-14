@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) id <MenuItemTypeViewControllerDelegate> delegate;
 
 /**
- The itemType to display as selected in the UI, such as MenuItemTypePage.
+ The itemType to display as selected in the UI, such as MenuItemType.page.
  */
 @property (nonatomic, strong) NSString *selectedItemType;
 

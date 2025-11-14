@@ -10,13 +10,13 @@ CGFloat const MenusDesignItemIconSize = 18.0;
 {
     UIImage *image = nil;
 
-    if ([itemType isEqualToString:MenuItemTypePage]) {
+    if ([itemType isEqualToString:MenuItemType.page]) {
         image = [UIImage gridiconOfType:GridiconTypePages];
-    } else if ([itemType isEqualToString:MenuItemTypeCustom]) {
+    } else if ([itemType isEqualToString:MenuItemType.custom]) {
         image = [UIImage gridiconOfType:GridiconTypeLink];
-    } else if ([itemType isEqualToString:MenuItemTypeCategory]) {
+    } else if ([itemType isEqualToString:MenuItemType.category]) {
         image = [UIImage gridiconOfType:GridiconTypeFolder];
-    } else if ([itemType isEqualToString:MenuItemTypeTag]) {
+    } else if ([itemType isEqualToString:MenuItemType.tag]) {
         image = [UIImage gridiconOfType:GridiconTypeTag];
     }
 

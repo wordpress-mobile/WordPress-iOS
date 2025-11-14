@@ -23,7 +23,7 @@ static NSString * const CategorySortKey = @"categoryName";
 
 - (NSString *)sourceItemType
 {
-    return MenuItemTypeCategory;
+    return MenuItemType.category;
 }
 
 - (NSFetchRequest *)fetchRequest
