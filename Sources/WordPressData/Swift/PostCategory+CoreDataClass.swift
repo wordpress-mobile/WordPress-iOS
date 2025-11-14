@@ -12,8 +12,3 @@ public class PostCategory: NSManagedObject {
         return 1
     }
 }
-
-// MARK: - Constants
-
-public let PostCategoryEntityName = "Category"
-public let PostCategoryNameKey = "categoryName"
