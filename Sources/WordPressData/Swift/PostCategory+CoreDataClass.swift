@@ -8,7 +8,5 @@ public class PostCategory: NSManagedObject {
         return "Category"
     }
 
-    @objc public static var uncategorizedId: NSNumber {
-        return 1
-    }
+    @objc public static let uncategorized: NSNumber = 1
 }
