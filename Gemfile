@@ -15,6 +15,9 @@ gem 'fastlane-plugin-sentry'
 #
 # gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: ''
 gem 'fastlane-plugin-wpmreleasetoolkit', '~> 13.7'
+# Installed to work around Ruby SSL errors.
+# See: https://github.com/ruby/openssl/issues/949#issuecomment-3397222253
+gem 'openssl'
 gem 'rake'
 gem 'rubocop', '~> 1.81'
 gem 'rubocop-rake', '~> 0.7'
