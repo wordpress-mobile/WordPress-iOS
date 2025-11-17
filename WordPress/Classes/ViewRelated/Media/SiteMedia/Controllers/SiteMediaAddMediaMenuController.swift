@@ -37,9 +37,14 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
         }
         if blog.isHostedAtWPcom, blog.isQuotaAvailable {
             children += [
-                UIAction(title: Strings.viewUsage, subtitle: blog.quotaUsageShortDescription, image: UIImage(systemName: "opticaldiscdrive"), handler: { _ in
+                UIAction(
+                    title: Strings.viewUsage,
+                    subtitle: blog.quotaUsageShortDescription,
+                    image: UIImage(systemName: "opticaldiscdrive")
+                ) { [weak self, weak viewController] _ in
+                    guard let self, let viewController else { return }
                     self.showQuotaView(from: viewController)
-                })
+                }
             ]
         }
         return UIMenu(options: [.displayInline], children: children)
