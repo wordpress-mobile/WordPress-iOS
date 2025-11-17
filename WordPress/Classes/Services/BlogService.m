@@ -493,7 +493,12 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 {
     Blog *blog = [self findBlogWithDotComID:remoteBlog.blogID inAccount:account];
 
-    if (!blog && remoteBlog.jetpack) {
+    // Previously the `remoteBlog.jetpack` property was used to check if the `blog` is connected to Jetpack.
+    // However, the `jetpack` property indicated whether the Jetpack plugin is installed, and we should check the
+    // `jetpack_connection` property instead.
+    // See this calypso code for reference:
+    // https://github.com/Automattic/wp-calypso/blob/61a1eb0968da82e62d992f8d081a4ab3075c7719/client/dashboard/utils/site-types.ts#L3
+    if (!blog && remoteBlog.jetpackConnection) {
         blog = [self migrateRemoteJetpackBlog:remoteBlog forAccount:account inContext:context];
     }
 
