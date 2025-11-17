@@ -382,7 +382,7 @@ MagicLinkFlow const MagicLinkFlowSignup = @"signup";
     // and couldn't be accessed, we don't want to show this site in the app. These sites are filtered out by the
     // `site_activity=active` parameter.
     //
-    // For reference, this paramter is hard-coded in "My Sites" in calyspo:
+    // For reference, this paramter is hard-coded in "My Sites" in calypso:
     // https://github.com/Automattic/wp-calypso/blob/64806d21520e5489b30fbabf04e2f427a3ad392c/packages/api-core/src/me-sites/fetchers.ts#L30
     if (parameters[@"site_activity"] == nil) {
         NSMutableDictionary *updated = [NSMutableDictionary dictionaryWithDictionary:parameters];
