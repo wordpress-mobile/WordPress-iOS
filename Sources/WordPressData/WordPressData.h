@@ -19,7 +19,6 @@ FOUNDATION_EXPORT const unsigned char WordPressDataVersionString[];
 #import <WordPressData/PostService.h>
 #import <WordPressData/PostServiceOptions.h>
 #import <WordPressData/ReaderPost.h>
-#import <WordPressData/Theme.h>
 #import <WordPressData/WPAccount.h>
 
 FOUNDATION_EXTERN void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue);

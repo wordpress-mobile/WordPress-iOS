@@ -1,20 +1,21 @@
 extension Theme {
 
-    public func customizeUrl() -> String {
-        let path = "customize.php?theme=\(themePathForCustomization)&hide_close=true"
+    public func customizeUrl() -> String? {
+        guard let themePathForCustomization else { return nil }
 
-        return blog.adminUrl(withPath: path)
+        let path = "customize.php?theme=\(themePathForCustomization)&hide_close=true"
+        return blog?.adminUrl(withPath: path)
     }
 
-    private var themePathForCustomization: String {
-        guard blog.supports(.customThemes) else {
+    private var themePathForCustomization: String? {
+        guard let blog, blog.supports(.customThemes) else {
             return stylesheet
         }
 
         if custom {
             return themeId
         } else {
-            return ThemeIdHelper.themeIdWithWPComSuffix(themeId)
+            return themeId.flatMap(ThemeIdHelper.themeIdWithWPComSuffix)
         }
     }
 }

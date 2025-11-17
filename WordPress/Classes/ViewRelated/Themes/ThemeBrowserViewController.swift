@@ -928,14 +928,14 @@ public protocol ThemePresenter: AnyObject {
         modalStyle: UIModalPresentationStyle = .pageSheet,
         onClose: (() -> Void)? = nil
     ) {
-        guard let theme, let url = url.flatMap(URL.init(string:)) else {
+        guard let theme, let blog = theme.blog, let url = url.flatMap(URL.init(string:)) else {
             return
         }
 
         suspendedSearch = searchName
         presentingTheme = theme
         let configuration = WebViewControllerConfiguration(url: url)
-        configuration.authenticate(blog: theme.blog)
+        configuration.authenticate(blog: blog)
         configuration.secureInteraction = true
         configuration.customTitle = theme.name
         configuration.navigationDelegate = customizerNavigationDelegate
