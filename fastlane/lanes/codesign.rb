@@ -105,6 +105,7 @@ platform :ios do
   # @option [Boolean] readonly (default: true) Whether to only fetch existing certificates and profiles, without generating new ones.
   #
   lane :update_certs_and_profiles_app_store do |readonly: true|
+    update_certs_and_profiles_app_store_reader(readonly: readonly)
     update_certs_and_profiles_jetpack_app_store(readonly: readonly)
     update_certs_and_profiles_wordpress_app_store(readonly: readonly)
   end
