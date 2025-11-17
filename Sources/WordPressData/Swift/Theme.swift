@@ -7,16 +7,15 @@ public class Theme: NSManagedObject {
     private static let adminUrlCustomize = "customize.php?theme=%@&hide_close=true"
     private static let urlDemoParameters = "?demo=true&iframe=true&theme_preview=true"
     private static let urlSupport = "https://wordpress.com/themes/%@/support/?preview=true&iframe=true"
-    private static let urlDetails = "https://wordpress.com/themes/%@/%@/?preview=true&iframe=true"
 
     public func detailsUrl() -> String? {
         if custom {
             return themeUrl
         }
-        if let homeUrl = blog?.homeURL?.hostname() {
-            return String(format: Theme.urlDetails, homeUrl, themeId ?? "")
-        }
-        return nil
+
+        guard let themeId, let homeUrl = blog?.homeURL?.hostname() else { return nil }
+
+        return String(format: "https://wordpress.com/themes/%@/%@", themeId, homeUrl)
     }
 
     public func supportUrl() -> String {
