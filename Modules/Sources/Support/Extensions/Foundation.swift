@@ -94,11 +94,6 @@ extension Task where Failure == Error {
         }
     }
 
-    enum RunForAtLeastResult<T>: Sendable where T: Sendable {
-        case result(T)
-        case wait
-    }
-
     static func runForAtLeast<C>(
         _ duration: C.Instant.Duration,
         operation: @escaping @Sendable () async throws -> Success,

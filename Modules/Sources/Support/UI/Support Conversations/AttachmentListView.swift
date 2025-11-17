@@ -112,7 +112,7 @@ struct AttachmentThumbnailView: View {
         } label: {
             ZStack {
                 if attachment.isImage {
-                    AsyncImage(url: attachment.url) { image in
+                    CachedAsyncImage(url: attachment.url) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
