@@ -17,6 +17,7 @@
             "is_following": false,
             "is_private": false,
             "jetpack": false,
+            "jetpack_connection": false,
             "lang": "en",
             "logo": {
                 "id": 0,
@@ -102,6 +103,7 @@
             "is_following": false,
             "is_private": false,
             "jetpack": true,
+            "jetpack_connection": true,
             "lang": "en",
             "logo": {
                 "id": 0,
