@@ -25,6 +25,7 @@ extension SupportDataProvider {
             wpcomClient: WordPressDotComClient()
         ),
         diagnosticsDataProvider: WpDiagnosticsDataProvider(),
+        mediaHost: WordPressDotComClient(),
         delegate: WpSupportDelegate()
     )
 }

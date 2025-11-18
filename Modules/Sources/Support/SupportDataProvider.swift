@@ -1,4 +1,5 @@
 import Foundation
+import AsyncImageKit
 import WordPressCoreProtocols
 
 public enum SupportFormAction {
@@ -33,6 +34,7 @@ public final class SupportDataProvider: ObservableObject, Sendable {
     private let userDataProvider: CurrentUserDataProvider
     private let supportConversationDataProvider: SupportConversationDataProvider
     private let diagnosticsDataProvider: DiagnosticsDataProvider
+    let mediaHost: MediaHostProtocol
 
     private weak var supportDelegate: SupportDelegate?
 
@@ -42,6 +44,7 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         userDataProvider: CurrentUserDataProvider,
         supportConversationDataProvider: SupportConversationDataProvider,
         diagnosticsDataProvider: DiagnosticsDataProvider,
+        mediaHost: MediaHostProtocol,
         delegate: SupportDelegate? = nil
     ) {
         self.applicationLogProvider = applicationLogProvider
@@ -49,6 +52,7 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         self.userDataProvider = userDataProvider
         self.supportConversationDataProvider = supportConversationDataProvider
         self.diagnosticsDataProvider = diagnosticsDataProvider
+        self.mediaHost = mediaHost
         self.supportDelegate = delegate
     }
 

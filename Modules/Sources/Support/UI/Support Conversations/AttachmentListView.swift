@@ -31,18 +31,41 @@ struct SingleImageView: View {
 }
 
 struct SingleVideoView: View {
-    private let player: AVPlayer
 
-    init(url: URL) {
-        self.player = AVPlayer(url: url)
+    @State
+    private var player: AVPlayer? = nil
+
+    private let url: URL
+    private let host: MediaHostProtocol?
+
+    init(url: URL, host: MediaHostProtocol? = nil) {
+        self.url = url
+        self.host = host
     }
 
     var body: some View {
-        VideoPlayer(player: player)
-            .ignoresSafeArea()
-            .onAppear {
-                self.player.play()
+        Group {
+            if let player {
+                VideoPlayer(player: player)
+                    .ignoresSafeArea()
+                    .onAppear {
+                        player.play()
+                    }
+            } else {
+                FullScreenProgressView("Loading Video")
             }
+        }.task {
+            if let host {
+                do {
+                    let asset = try await host.authenticatedAsset(for: url)
+                    self.player = AVPlayer(playerItem: AVPlayerItem(asset: asset))
+                } catch {
+                    debugPrint(error.localizedDescription)
+                }
+            } else {
+                self.player = AVPlayer(url: url)
+            }
+        }
     }
 }
 
@@ -98,6 +121,10 @@ struct AttachmentListView: View {
 }
 
 struct AttachmentThumbnailView: View {
+
+    @EnvironmentObject
+    private var supportDataProvider: SupportDataProvider
+
     let attachment: Attachment
 
     var body: some View {
@@ -107,12 +134,12 @@ struct AttachmentThumbnailView: View {
             }
 
             if attachment.isVideo {
-                SingleVideoView(url: attachment.url)
+                SingleVideoView(url: attachment.url, host: supportDataProvider.mediaHost)
             }
         } label: {
             ZStack {
                 if attachment.isImage {
-                    CachedAsyncImage(url: attachment.url) { image in
+                    CachedAsyncImage(url: attachment.url, host: supportDataProvider.mediaHost, mutability: .immutable) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
@@ -120,24 +147,28 @@ struct AttachmentThumbnailView: View {
                         Color.gray.opacity(0.2).overlay {
                             ProgressView()
                         }
+
                     }
                 }
 
                 if attachment.isVideo {
-                    CachedAsyncVideoPreview(url: attachment.url) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .overlay {
-                                Image(systemName: "play.circle")
-                                    .foregroundStyle(Color.white)
+                    CachedAsyncImage(
+                        videoUrl: attachment.url,
+                        host: supportDataProvider.mediaHost,
+                        mutability: .immutable
+                    ) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .overlay {
+                                    Image(systemName: "play.circle")
+                                        .foregroundStyle(Color.white)
+                                }
+                        } placeholder: {
+                            Color.gray.opacity(0.2).overlay {
+                                ProgressView()
                             }
-
-                    } placeholder: {
-                        Color.gray.opacity(0.2).overlay {
-                            ProgressView()
                         }
-                    }
                 }
             }
             .frame(width: 80, height: 80)

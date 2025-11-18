@@ -1,4 +1,6 @@
 import Foundation
+import AVFoundation
+import AsyncImageKit
 import WordPressCoreProtocols
 
 // This file is all module-internal and provides sample data for UI development
@@ -9,7 +11,8 @@ extension SupportDataProvider {
         botConversationDataProvider: InternalBotConversationDataProvider(),
         userDataProvider: InternalUserDataProvider(),
         supportConversationDataProvider: InternalSupportConversationDataProvider(),
-        diagnosticsDataProvider: InternalDiagnosticsDataProvider()
+        diagnosticsDataProvider: InternalDiagnosticsDataProvider(),
+        mediaHost: InternalMediaHost()
     )
 
     static let applicationLog = ApplicationLog(path: URL(filePath: #filePath), createdAt: Date(), modifiedAt: Date())
@@ -432,5 +435,15 @@ actor InternalDiagnosticsDataProvider: DiagnosticsDataProvider {
             // Report incremental progress
             try await progress(CacheDeletionProgress(filesDeleted: i, totalFileCount: totalFiles))
         }
+    }
+}
+
+actor InternalMediaHost: MediaHostProtocol {
+    func authenticatedRequest(for url: URL) async throws -> URLRequest {
+        URLRequest(url: url)
+    }
+
+    func authenticatedAsset(for url: URL) async throws -> AVURLAsset {
+        AVURLAsset(url: url)
     }
 }
