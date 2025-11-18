@@ -284,10 +284,10 @@ platform :ios do
     base_ref_for_hotfix = if git_tag_exists(tag: previous_version, remote: true)
                             previous_version
                           elsif Fastlane::Helper::GitHelper.branch_exists_on_remote?(branch_name: previous_release_branch)
-                            UI.message("ℹ️  Tag #{previous_version} not found. Using release branch #{previous_release_branch} as the base for hotfix instead.")
+                            UI.message("ℹ️  Tag '#{previous_version}' not found on the remote. Using release branch '#{previous_release_branch}' as the base for hotfix instead.")
                             previous_release_branch
                           else
-                            UI.user_error!("Neither tag #{previous_version} nor branch #{previous_release_branch} exists! A hotfix branch cannot be created.")
+                            UI.user_error!("Neither tag '#{previous_version}' nor branch '#{previous_release_branch}' exists on the remote! A hotfix branch cannot be created.")
                           end
 
     # Check versions
