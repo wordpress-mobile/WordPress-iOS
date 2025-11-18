@@ -254,14 +254,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return self.author;
 }
 
-- (NSURL *)featuredImageURL
-{
-    if ([self.featuredImage length]) {
-        return [NSURL URLWithString:self.featuredImage];
-    }
-    return nil;
-}
-
 - (BOOL)contentIncludesFeaturedImage
 {
     NSURL *featuredImageURL = [self featuredImageURL];

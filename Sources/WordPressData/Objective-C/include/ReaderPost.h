@@ -53,7 +53,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSDate *sortDate;
 @property (nonatomic, strong) NSString *summary;
 @property (nonatomic, strong) NSSet *comments;
-@property (nonatomic, readonly, strong) NSURL *featuredImageURL;
 @property (nonatomic, strong) NSString *tags;
 @property (nonatomic, strong) ReaderAbstractTopic *topic;
 @property (nonatomic, strong) NSSet<ReaderCard *> *card;
