@@ -279,56 +279,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return ([content rangeOfString:featuredImage].location != NSNotFound);
 }
 
-#pragma mark - PostContentProvider protocol
-
-- (NSString *)blogNameForDisplay
-{
-    if (self.blogName.length > 0) {
-        return self.blogName;
-    }
-    return [[NSURL URLWithString:self.blogURL] host];
-}
-
-- (NSString *)titleForDisplay
-{
-    NSString *title = [[self.postTitle trim] stringByDecodingXMLCharacters];
-    if (!title) {
-        title = @"";
-    }
-    return title;
-}
-
-- (NSArray <NSString *> *)tagsForDisplay
-{
-    if (self.tags.length <= 0) {
-        return @[];
-    }
-
-    NSArray *tags = [self.tags componentsSeparatedByString:@", "];
-
-    return [tags sortedArrayUsingSelector:@selector(localizedCompare:)];
-}
-
-- (NSString *)authorForDisplay
-{
-    return [self authorString];
-}
-
-- (NSDate *)dateForDisplay
-{
-    return [self dateCreated];
-}
-
-- (NSString *)contentPreviewForDisplay
-{
-    return self.summary;
-}
-
-- (NSURL *)featuredImageURLForDisplay
-{
-    return [self featuredImageURL];
-}
-
 - (NSString *)likeCountForDisplay
 {
     NSString *likeStr = NSLocalizedString(@"Like", @"Text for the 'like' button. Tapping marks a post in the reader as 'liked'.");
