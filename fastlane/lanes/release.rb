@@ -304,20 +304,20 @@ platform :ios do
     UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
 
     # Check tags
-    UI.user_error!("Version #{new_version} already exists! Abort!") if git_tag_exists(tag: new_version)
+    UI.user_error!("Version '#{new_version}' already exists on the remote! Abort!") if git_tag_exists(tag: new_version, remote: true)
 
     # Create the hotfix branch
-    UI.message "Creating hotfix branch from #{base_ref_for_hotfix}..."
+    UI.message("Creating hotfix branch from '#{base_ref_for_hotfix}'...")
     Fastlane::Helper::GitHelper.create_branch(compute_release_branch_name(options: options, version: new_version), from: base_ref_for_hotfix)
-    UI.success "Done! New hotfix branch is: #{git_branch}"
+    UI.success("Done! New hotfix branch is: '#{git_branch}'")
 
     # Bump the hotfix version and build code and write it to the `xcconfig` file
-    UI.message 'Bumping hotfix version and build code...'
+    UI.message('Bumping hotfix version and build code...')
     PUBLIC_VERSION_FILE.write(
       version_short: new_version,
       version_long: build_code_hotfix
     )
-    UI.success "Done! New Release Version: #{release_version_current}. New Build Code: #{build_code_current}"
+    UI.success("Done! New Release Version: '#{release_version_current}'. New Build Code: '#{build_code_current}'")
 
     commit_version_and_build_files
 
