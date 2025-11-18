@@ -146,18 +146,18 @@ extension Comment: PostContentProvider {
         return !title.isEmpty ? title.stringByDecodingXMLCharacters() : NSLocalizedString("(No Title)", comment: "Empty Post Title")
     }
 
-    @objc public func authorForDisplay() -> String {
+    @objc public func authorForDisplay() -> String? {
         let displayAuthor = authorName().stringByDecodingXMLCharacters().trim()
         return !displayAuthor.isEmpty ? displayAuthor : gravatarEmailForDisplay()
     }
 
     // Used in Comment details (non-threaded)
-    public func contentForDisplay() -> String {
+    public func contentForDisplay() -> String? {
         return decodedContent()
     }
 
     // Used in Comments list (non-threaded)
-    public func contentPreviewForDisplay() -> String {
+    public func contentPreviewForDisplay() -> String? {
         return decodedContent()
     }
 
@@ -165,9 +165,9 @@ extension Comment: PostContentProvider {
         return !authorAvatarURL.isEmpty ? URL(string: authorAvatarURL) : nil
     }
 
-    public func gravatarEmailForDisplay() -> String {
+    public func gravatarEmailForDisplay() -> String? {
         let displayEmail = author_email.trim()
-        return !displayEmail.isEmpty ? displayEmail : String()
+        return !displayEmail.isEmpty ? displayEmail : nil
     }
 
     public func dateForDisplay() -> Date? {
