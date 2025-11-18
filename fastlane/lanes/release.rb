@@ -281,7 +281,7 @@ platform :ios do
     previous_release_branch = compute_release_branch_name(options: options, version: previous_version)
 
     # Determine the base for the hotfix branch: either a tag or a release branch
-    base_ref_for_hotfix = if git_tag_exists(tag: previous_version)
+    base_ref_for_hotfix = if git_tag_exists(tag: previous_version, remote: true)
                             previous_version
                           elsif Fastlane::Helper::GitHelper.branch_exists_on_remote?(branch_name: previous_release_branch)
                             UI.message("ℹ️  Tag #{previous_version} not found. Using release branch #{previous_release_branch} as the base for hotfix instead.")
