@@ -1,4 +1,6 @@
 import UIKit
+import CryptoKit
+import AVFoundation
 
 /// The system that downloads and caches images, and prepares them for display.
 @ImageDownloaderActor
@@ -27,21 +29,43 @@ public final class ImageDownloader {
         self.cache = cache
     }
 
-    public func image(from url: URL, host: MediaHostProtocol? = nil, options: ImageRequestOptions = .init()) async throws -> UIImage {
+    public func image(
+        from url: URL,
+        host: MediaHostProtocol? = nil,
+        options: ImageRequestOptions = ImageRequestOptions()
+    ) async throws -> UIImage {
         try await image(for: ImageRequest(url: url, host: host, options: options))
     }
 
     public func image(for request: ImageRequest) async throws -> UIImage {
         let options = request.options
         let key = makeKey(for: request.source.url, size: options.size)
-        if options.isMemoryCacheEnabled, let image = cache[key] {
+
+        if let cachedImage = try self.fetch(key, options: request.options) {
+            return cachedImage
+        }
+
+        if case .video(let url, let mediaHost) = request.source {
+            let asset: AVAsset = try await mediaHost?.authenticatedAsset(for: url) ?? AVURLAsset(url: url)
+            let generator = AVAssetImageGenerator(asset: asset)
+
+            if let size = options.size {
+                generator.maximumSize = CGSize(width: size.width, height: size.height)
+            }
+
+            let result = try await generator.image(at: .zero)
+            let image = UIImage(cgImage: result.image)
+
+            try store(image, for: key, options: options)
+
             return image
         }
+
         let data = try await data(for: request)
         let image = try await ImageDecoder.makeImage(from: data, size: options.size.map(CGSize.init))
-        if options.isMemoryCacheEnabled {
-            cache[key] = image
-        }
+
+        try store(image, for: key, options: options)
+
         return image
     }
 
@@ -63,6 +87,8 @@ public final class ImageDownloader {
             return request
         case .urlRequest(let urlRequest):
             return urlRequest
+        case .video:
+            preconditionFailure("Cannot make URLRequest for video – use AVFoundation APIs instead")
         }
     }
 
@@ -151,6 +177,53 @@ public final class ImageDownloader {
             throw ImageDownloaderError.unacceptableStatusCode(response.statusCode)
         }
     }
+
+    // MARK: Manual caching
+    private func fetch(_ key: String, options: ImageRequestOptions) throws -> UIImage? {
+
+        if options.isMemoryCacheEnabled, let image = cache[key] {
+            return image
+        }
+
+        guard options.isDiskCacheEnabled else {
+            return nil
+        }
+
+        let path = path(for: key)
+
+        guard FileManager.default.fileExists(atPath: path.path()) else {
+            return nil
+        }
+
+        let pngData = try Data(contentsOf: path)
+        return UIImage(data: pngData)
+    }
+
+    private func store(_ image: UIImage, for key: String, options: ImageRequestOptions) throws {
+
+        if options.isMemoryCacheEnabled {
+            cache[key] = image
+        }
+
+        // If the image is immutable, store it in the disk cache "forever"
+        guard options.isDiskCacheEnabled, options.mutability == .immutable else {
+            return
+        }
+
+        guard let data = image.pngData() else {
+            return
+        }
+
+        let path = self.path(for: key)
+
+        try FileManager.default.createDirectory(at: path.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try data.write(to: path)
+    }
+
+    private func path(for key: String) -> URL {
+        let hash = SHA256.hash(data: Data(key.utf8)).map { String(format: "%02x", $0) }.joined()
+        return URL.cachesDirectory.appending(path: "image-cache").appending(path: hash)
+    }
 }
 
 @ImageDownloaderActor
@@ -196,4 +269,5 @@ private extension URLSession {
 
 public protocol MediaHostProtocol: Sendable {
     @MainActor func authenticatedRequest(for url: URL) async throws -> URLRequest
+    @MainActor func authenticatedAsset(for url: URL) async throws -> AVURLAsset
 }

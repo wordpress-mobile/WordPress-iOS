@@ -23,7 +23,7 @@ public struct SiteIconView: View {
     @ViewBuilder
     private var contents: some View {
         if let imageURL = viewModel.imageURL {
-            CachedAsyncImage(url: imageURL, host: viewModel.host) { phase in
+            CachedAsyncImage(url: imageURL, host: viewModel.host, content: { phase in
                 switch phase {
                 case .success(let image):
                     image.resizable().aspectRatio(contentMode: .fit)
@@ -32,7 +32,7 @@ public struct SiteIconView: View {
                 default:
                     backgroundColor
                 }
-            }
+            })
         } else {
             noIconView
         }

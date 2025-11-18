@@ -41,6 +41,9 @@ struct AvatarView<S: Shape>: View {
     private let diameter: CGFloat
     @ScaledMetric private var scale = 1
 
+    @Environment(\.displayScale)
+    private var screenScale: CGFloat
+
     init(
         avatarShape: S = Circle(),
         style: Style,
@@ -79,7 +82,7 @@ struct AvatarView<S: Shape>: View {
 
     private func avatar(url: URL?) -> some View {
         let processedURL: URL?
-        let size = Int(ceil(diameter * UIScreen.main.scale))
+        let size = Int(ceil(diameter * screenScale))
         if let url, let gravatar = AvatarURL(url: url, options: .init(preferredSize: .pixels(size))) {
             processedURL = gravatar.url
         } else {

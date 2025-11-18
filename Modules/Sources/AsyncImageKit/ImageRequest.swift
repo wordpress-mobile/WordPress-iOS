@@ -4,11 +4,21 @@ public final class ImageRequest: Sendable {
     public enum Source: Sendable {
         case url(URL, MediaHostProtocol?)
         case urlRequest(URLRequest)
+        case video(URL, MediaHostProtocol?)
 
         var url: URL? {
             switch self {
             case .url(let url, _): url
             case .urlRequest(let request): request.url
+            case .video(let url, _): url
+            }
+        }
+
+        var host: MediaHostProtocol? {
+            switch self {
+            case .url(_, let host): host
+            case .urlRequest: nil
+            case .video(_, let host): host
             }
         }
     }
@@ -25,6 +35,34 @@ public final class ImageRequest: Sendable {
         self.source = .urlRequest(urlRequest)
         self.options = options
     }
+
+    public init(videoUrl: URL, host: MediaHostProtocol? = nil, options: ImageRequestOptions = ImageRequestOptions()) {
+        self.source = .video(videoUrl, host)
+        self.options = options
+    }
+}
+
+/// Defines the mutability characteristics of a resource for caching purposes.
+///
+/// This affects how aggressively the resource is cached:
+/// - `.mutable`: Resources are cached in memory and URLSession's disk cache (with eviction policies)
+/// - `.immutable`: Resources are additionally cached persistently on disk (never evicted automatically)
+public enum ResourceMutability: Sendable {
+    /// Items that might change over time while keeping the same URL.
+    ///
+    /// These resources are cached in memory and URLSession's disk cache, but not persistently.
+    /// The cache may be evicted based on system policies.
+    ///
+    /// **Example**: Site Icons, Gravatars - the same URL might return different images as users update their profiles
+    case mutable
+
+    /// Items that will never be modified after creation.
+    ///
+    /// These resources are cached persistently on disk in addition to in-memory caching.
+    /// Once downloaded, they remain cached indefinitely since the content at the URL will never change.
+    ///
+    /// **Example**: Support ticket attachments - these URLs point to immutable content
+    case immutable
 }
 
 public struct ImageRequestOptions: Hashable, Sendable {
@@ -38,14 +76,25 @@ public struct ImageRequestOptions: Hashable, Sendable {
     /// with a relatively high disk capacity. By default, `true`.
     public var isDiskCacheEnabled = true
 
+    /// Indicates how this asset should be cached based on whether the content can change.
+    ///
+    /// Use `.mutable` (default) for resources that might change over time (like user avatars).
+    /// Use `.immutable` for resources that never change (like support attachments) to enable
+    /// persistent disk caching that survives app restarts and system cache evictions.
+    ///
+    /// - Note: Only applies when `isDiskCacheEnabled` is `true`
+    public let mutability: ResourceMutability
+
     public init(
         size: ImageSize? = nil,
         isMemoryCacheEnabled: Bool = true,
-        isDiskCacheEnabled: Bool = true
+        isDiskCacheEnabled: Bool = true,
+        mutability: ResourceMutability = .mutable
     ) {
         self.size = size
         self.isMemoryCacheEnabled = isMemoryCacheEnabled
         self.isDiskCacheEnabled = isDiskCacheEnabled
+        self.mutability = mutability
     }
 }
 

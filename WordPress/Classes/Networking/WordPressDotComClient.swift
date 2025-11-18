@@ -1,24 +1,36 @@
 import Foundation
+import AsyncImageKit
+import AVFoundation
 import WordPressAPI
 import WordPressAPIInternal
 import Combine
 
-actor WordPressDotComClient {
+actor WordPressDotComClient: MediaHostProtocol {
 
+    private let authProvider: AutoUpdatingWPComAuthenticationProvider
+    private let delegate: WpApiClientDelegate
     let api: WPComApiClient
 
     init() {
         let session = URLSession(configuration: .ephemeral)
 
-        let provider = AutoUpdatingWPComAuthenticationProvider(coreDataStack: ContextManager.shared)
-        let delegate = WpApiClientDelegate(
-            authProvider: .dynamic(dynamicAuthenticationProvider: provider),
+        self.authProvider = AutoUpdatingWPComAuthenticationProvider(coreDataStack: ContextManager.shared)
+        self.delegate = WpApiClientDelegate(
+            authProvider: .dynamic(dynamicAuthenticationProvider: self.authProvider),
             requestExecutor: WpRequestExecutor(urlSession: session),
             middlewarePipeline: WpApiMiddlewarePipeline(middlewares: []),
             appNotifier: WpComNotifier()
         )
 
         self.api = WPComApiClient(delegate: delegate)
+    }
+
+    func authenticatedRequest(for url: URL) async throws -> URLRequest {
+        self.authProvider.authorize(URLRequest(url: url))
+    }
+
+    func authenticatedAsset(for url: URL) async throws -> AVURLAsset {
+        self.authProvider.authorize(AVURLAsset(url: url))
     }
 }
 
@@ -55,6 +67,47 @@ final class AutoUpdatingWPComAuthenticationProvider: @unchecked Sendable, WpDyna
         self.authentication = authentication
 
         return authentication
+    }
+
+    private var authorizationHeaderValue: String? {
+        switch self.authentication {
+        case .authorizationHeader(let headerValue):
+            headerValue
+        case .bearer(let token):
+            "Bearer \(token)"
+        default: nil
+        }
+    }
+
+    func authorize(_ request: URLRequest) -> URLRequest {
+        var mutableRequest = request
+
+        // Don't authorize requests for other domains
+        guard request.url?.host() == "public-api.wordpress.com" else {
+            return request
+        }
+
+        mutableRequest.setValue(self.authorizationHeaderValue, forHTTPHeaderField: "Authorization")
+
+        return mutableRequest
+    }
+
+    func authorize(_ asset: AVURLAsset) -> AVURLAsset {
+
+        // Don't authorize requests for other domains
+        guard asset.url.host() == "public-api.wordpress.com" else {
+            return asset
+        }
+
+        guard let headerValue = self.authorizationHeaderValue else {
+            return asset
+        }
+
+        let headers: [String: String] = ["Authorization": headerValue]
+
+        return AVURLAsset(url: asset.url, options: [
+            "AVURLAssetHTTPHeaderFieldsKey": headers
+        ])
     }
 
     private static func readAuthentication(on stack: CoreDataStack) -> WpAuthentication {

@@ -1,4 +1,5 @@
 import Foundation
+import AVFoundation
 import AsyncImageKit
 
 /// Defines a media host for request authentication purposes.
@@ -96,5 +97,9 @@ public enum MediaHost: Equatable, Sendable, MediaHostProtocol {
 
     public func authenticatedRequest(for url: URL) async throws -> URLRequest {
         try await MediaRequestAuthenticator().authenticatedRequest(for: url, host: self)
+    }
+
+    public func authenticatedAsset(for url: URL) async throws -> AVURLAsset {
+        try await MediaRequestAuthenticator().authenticatedAsset(for: url, host: self)
     }
 }

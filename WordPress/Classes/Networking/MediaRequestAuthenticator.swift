@@ -1,5 +1,6 @@
 import Foundation
 import AsyncImageKit
+import AVFoundation
 import WordPressData
 
 fileprivate let photonHost = "i0.wp.com"
@@ -103,6 +104,24 @@ struct MediaRequestAuthenticator {
                     onFailure: fail)
             }
         }
+    }
+
+    func authenticatedAsset(for url: URL, host: MediaHost) async throws -> AVURLAsset {
+        switch host {
+        case .publicSite: AVURLAsset(url: url)
+        case .publicWPComSite: AVURLAsset(url: url)
+        case .privateSelfHostedSite: AVURLAsset(url: url)
+        case .privateWPComSite(let authToken): authenticatedAsset(for: url, authToken: authToken)
+        case .privateAtomicWPComSite(_, _, let authToken): authenticatedAsset(for: url, authToken: authToken)
+        }
+    }
+
+    private func authenticatedAsset(for url: URL, authToken: String) -> AVURLAsset {
+        let headers: [String: String] = ["Authorization": "Bearer \(authToken)"]
+
+        return AVURLAsset(url: url, options: [
+            "AVURLAssetHTTPHeaderFieldsKey": headers
+        ])
     }
 
     // MARK: - Request Authentication: Specific Scenarios
