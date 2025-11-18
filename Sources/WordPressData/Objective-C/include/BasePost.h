@@ -27,9 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable) NSString *pathForDisplayImage;
 
-//date conversion
-@property (nonatomic, strong, nullable) NSDate * dateCreated;
-
 // Returns true if title or content is non empty
 - (BOOL)hasContent;
 

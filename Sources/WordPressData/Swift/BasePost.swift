@@ -74,4 +74,13 @@ extension BasePost {
 
         return nil
     }
+
+    @objc public var dateCreated: Date? {
+        get {
+            date_created_gmt
+        }
+        set {
+            date_created_gmt = newValue
+        }
+    }
 }

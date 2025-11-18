@@ -1,5 +1,6 @@
 #import "BasePost.h"
 #import "Media.h"
+#import "WordPressData-Swift.h"
 
 @import WordPressShared;
 
@@ -19,16 +20,6 @@
 @dynamic wp_slug;
 @dynamic suggested_slug;
 @dynamic pathForDisplayImage;
-
-- (NSDate *)dateCreated
-{
-    return self.date_created_gmt;
-}
-
-- (void)setDateCreated:(NSDate *)localDate
-{
-    self.date_created_gmt = localDate;
-}
 
 - (BOOL)hasContent
 {
