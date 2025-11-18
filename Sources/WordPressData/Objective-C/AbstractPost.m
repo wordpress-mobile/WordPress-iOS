@@ -25,6 +25,7 @@
 @dynamic order;
 @dynamic rawMetadata;
 @dynamic rawOtherTerms;
+@dynamic permalinkTemplateURL;
 @synthesize voiceContent;
 
 #pragma mark - Life Cycle Methods
