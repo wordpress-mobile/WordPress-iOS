@@ -143,7 +143,7 @@ private final class ReaderCrossPostView: UIView {
         }
         let template = meta.commentURL.isEmpty ? Strings.siteTemplate : Strings.commentTemplate
 
-        let authorName: NSString = post.authorForDisplay() as NSString
+        let authorName: NSString = (post.authorForDisplay() ?? "") as NSString
         let siteName = subdomainNameFromPath(post.blogURL)
         let originName = subdomainNameFromPath(meta.siteURL)
 

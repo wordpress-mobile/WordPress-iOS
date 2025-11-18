@@ -1,16 +1,16 @@
 #import <Foundation/Foundation.h>
 
 @protocol PostContentProvider <NSObject>
-- (NSString *)titleForDisplay;
-- (NSString *)authorForDisplay;
-- (NSString *)contentForDisplay;
-- (NSString *)contentPreviewForDisplay;
-- (NSURL *)avatarURLForDisplay; // Some providers use a hardcoded URL or blavatar URL
-- (NSString *)gravatarEmailForDisplay;
-- (NSDate *)dateForDisplay;
+- (nullable NSString *)titleForDisplay;
+- (nullable NSString *)authorForDisplay;
+- (nullable NSString *)contentForDisplay;
+- (nullable NSString *)contentPreviewForDisplay;
+- (nullable NSURL *)avatarURLForDisplay; // Some providers use a hardcoded URL or blavatar URL
+- (nullable NSString *)gravatarEmailForDisplay;
+- (nullable NSDate *)dateForDisplay;
 @optional
-- (NSString *)blogNameForDisplay;
-- (NSURL *)featuredImageURLForDisplay;
-- (NSURL *)authorURL;
-- (NSArray <NSString *> *)tagsForDisplay;
+- (nullable NSString *)blogNameForDisplay;
+- (nullable NSURL *)featuredImageURLForDisplay;
+- (nullable NSURL *)authorURL;
+- (nullable NSArray <NSString *> *)tagsForDisplay;
 @end

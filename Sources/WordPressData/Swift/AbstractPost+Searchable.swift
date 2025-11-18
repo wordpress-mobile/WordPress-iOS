@@ -58,9 +58,9 @@ fileprivate extension AbstractPost {
         if let postTitle {
             // Try to generate some keywords from the title...
             keywords = postTitle.components(separatedBy: " ").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
-        } else if !contentPreviewForDisplay().isEmpty {
+        } else if let content = contentPreviewForDisplay(), !content.isEmpty {
             // ...otherwise try to generate some keywords from the content preview
-            keywords = contentPreviewForDisplay().components(separatedBy: " ").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+            keywords = content.components(separatedBy: " ").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
         }
         return keywords
     }

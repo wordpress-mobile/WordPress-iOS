@@ -291,7 +291,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
-            self?.webView.loadHTMLString(post.contentForDisplay())
+            if let content = post.contentForDisplay() {
+                self?.webView.loadHTMLString(content)
+            }
         }
 
         navigateToCommentIfNecessary()

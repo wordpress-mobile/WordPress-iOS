@@ -28,7 +28,7 @@ extension ReaderPost: @retroactive SearchableItemConvertable {
         var title = titleForDisplay() ?? ""
         if title.isEmpty {
             // If titleForDisplay() happens to be empty, try using the content preview instead...
-            title = contentPreviewForDisplay()
+            title = contentPreviewForDisplay() ?? ""
         }
         return title
     }
@@ -58,9 +58,9 @@ fileprivate extension ReaderPost {
         if let postTitle {
             // Try to generate some keywords from the title...
             keywords = postTitle.components(separatedBy: " ").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
-        } else if !contentPreviewForDisplay().isEmpty {
+        } else if let content = contentPreviewForDisplay(), !content.isEmpty {
             // ...otherwise try to generate some keywords from the content preview
-            keywords = contentPreviewForDisplay().components(separatedBy: " ").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+            keywords = content.components(separatedBy: " ").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
         }
         return keywords
     }

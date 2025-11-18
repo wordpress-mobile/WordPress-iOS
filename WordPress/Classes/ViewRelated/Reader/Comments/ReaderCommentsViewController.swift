@@ -141,7 +141,7 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
             return nil
         }
         return CommentTableHeaderView(
-            title: post.titleForDisplay(),
+            title: post.titleForDisplay() ?? "",
             subtitle: .commentThread,
             showsDisclosureIndicator: allowsPushingPostDetails
         ) { [weak self] in
