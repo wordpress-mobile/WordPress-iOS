@@ -79,8 +79,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
 
-@property (nonatomic, assign, readonly) BOOL hasFailedMedia;
-
 /**
  *  @brief      Call this method to know whether this post has a revision or not.
  *
@@ -91,7 +89,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 #pragma mark - Conveniece Methods
 - (BOOL)shouldPublishImmediately;
 - (NSString *)authorNameForDisplay;
-- (NSString *)blavatarForDisplay;
 - (NSString *)dateStringForDisplay;
 - (BOOL)isPrivateAtWPCom;
 

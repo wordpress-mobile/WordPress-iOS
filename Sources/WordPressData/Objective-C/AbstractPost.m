@@ -200,21 +200,6 @@
     return NO;
 }
 
-- (BOOL)hasFailedMedia
-{
-    if ([self.media count] == 0) {
-        return NO;
-    }
-
-    for (Media *media in self.media) {
-        if (media.remoteStatus ==  MediaRemoteStatusFailed) {
-            return YES;
-        }
-    }
-
-    return NO;
-}
-
 - (BOOL)hasCategories
 {
     return NO;
@@ -276,29 +261,9 @@
     return [self.author makePlainText];
 }
 
-- (NSURL *)avatarURLForDisplay
-{
-    return [NSURL URLWithString:self.blog.icon];
-}
-
-- (NSString *)blogNameForDisplay
-{
-    return [self.blog.settings.name makePlainText];
-}
-
 - (NSURL *)blogURL
 {
     return [NSURL URLWithString:self.blog.url];
-}
-
-- (NSString *)blogURLForDisplay
-{
-    return self.blog.displayURL;
-}
-
-- (NSString *)blavatarForDisplay
-{
-    return self.blog.icon;
 }
 
 - (NSString *)contentPreviewForDisplay
@@ -321,11 +286,6 @@
 - (BOOL)isPrivateAtWPCom
 {
     return self.blog.isPrivateAtWPCom;
-}
-
-- (BOOL)isUploading
-{
-    return self.remoteStatus == AbstractPostRemoteStatusPushing;
 }
 
 #pragma mark - Post

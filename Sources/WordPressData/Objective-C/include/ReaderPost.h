@@ -89,7 +89,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 - (NSString *)sourceAuthorNameForDisplay;
 - (NSURL *)sourceAvatarURLForDisplay;
 - (NSString *)sourceBlogNameForDisplay;
-- (BOOL)isSourceAttributionWPCom;
 - (NSDictionary *)railcarDictionary;
 
 @end
