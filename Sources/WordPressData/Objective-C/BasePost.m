@@ -30,57 +30,11 @@
     self.date_created_gmt = localDate;
 }
 
-#pragma mark - PostContentProvider protocol
-
-- (NSString *)titleForDisplay
-{
-    NSString *title = [self.postTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if (title == nil || ([title length] == 0)) {
-        title = NSLocalizedString(@"(no title)", @"");
-    }
-    return [title stringByDecodingXMLCharacters];
-}
-
-- (NSString *)authorForDisplay
-{
-    return [self.author stringByDecodingXMLCharacters];
-}
-
-- (NSString *)blogNameForDisplay
-{
-    return @"";
-}
-
-- (NSString *)contentForDisplay
-{
-    return self.content;
-}
-
-- (NSString *)contentPreviewForDisplay
-{
-    return self.content;
-}
-
-- (NSString *)gravatarEmailForDisplay
-{
-    return nil;
-}
-
-- (NSURL *)avatarURLForDisplay
-{
-    return nil;
-}
-
-- (NSDate *)dateForDisplay
-{
-    return [self dateCreated];
-}
-
 - (BOOL)hasContent
 {
     BOOL titleIsEmpty = self.postTitle ? self.postTitle.isEmpty : YES;
     BOOL contentIsEmpty = [self isContentEmpty];
-    
+
     return !titleIsEmpty || !contentIsEmpty;
 }
 

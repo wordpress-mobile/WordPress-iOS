@@ -1,10 +1,9 @@
 #import <Foundation/Foundation.h>
 #import <WordPressData/Blog.h>
-#import <WordPressData/PostContentProvider.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BasePost : NSManagedObject<PostContentProvider>
+@interface BasePost : NSManagedObject
 
 // Attributes
 @property (nonatomic, strong, nullable) NSNumber * postID;
