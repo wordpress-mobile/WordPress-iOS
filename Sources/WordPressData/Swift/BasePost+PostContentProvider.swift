@@ -1,7 +1,7 @@
 import Foundation
 import WordPressShared
 
-@objc extension BasePost: PostContentProvider {
+@objc extension BasePost {
 
     public func titleForDisplay() -> String? {
         let title = postTitle?.trimmingCharacters(in: .whitespaces)

@@ -139,7 +139,7 @@ private extension Comment {
 
 }
 
-extension Comment: PostContentProvider {
+extension Comment {
 
     public func titleForDisplay() -> String {
         let title = post?.postTitle ?? postTitle
