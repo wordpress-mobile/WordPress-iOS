@@ -13,7 +13,7 @@ extension ReaderPost {
 
 @objc extension ReaderPost {
 
-    public override func blogNameForDisplay() -> String? {
+    public func blogNameForDisplay() -> String? {
         if let blogName, !blogName.isEmpty {
             return blogName
         }
@@ -28,7 +28,7 @@ extension ReaderPost {
         return title
     }
 
-    public override func tagsForDisplay() -> [String]? {
+    public func tagsForDisplay() -> [String]? {
         guard let tags, !tags.isEmpty else {
             return []
         }
@@ -37,11 +37,11 @@ extension ReaderPost {
         return tagArray.sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
     }
 
-    public override func authorForDisplay() -> String? {
+    public func authorForDisplay() -> String? {
         return authorString()
     }
 
-    public override func dateForDisplay() -> Date? {
+    public func dateForDisplay() -> Date? {
         return dateCreated
     }
 
@@ -49,7 +49,7 @@ extension ReaderPost {
         return summary
     }
 
-    public override func featuredImageURLForDisplay() -> URL? {
+    public func featuredImageURLForDisplay() -> URL? {
         return featuredImageURL
     }
 

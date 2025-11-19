@@ -153,7 +153,7 @@ public extension AbstractPost {
         }
     }
 
-    @objc override func featuredImageURLForDisplay() -> URL? {
+    @objc func featuredImageURLForDisplay() -> URL? {
         return featuredImageURL
     }
 

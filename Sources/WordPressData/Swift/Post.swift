@@ -204,8 +204,12 @@ public class Post: AbstractPost {
         tags?.trim().isEmpty == false
     }
 
-    override public func authorForDisplay() -> String? {
+    public func authorForDisplay() -> String? {
         author ?? blog.account?.displayName
+    }
+
+    public func dateForDisplay() -> Date? {
+        return dateCreated
     }
 
     // MARK: - BasePost

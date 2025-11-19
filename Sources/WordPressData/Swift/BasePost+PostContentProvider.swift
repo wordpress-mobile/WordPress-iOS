@@ -11,14 +11,6 @@ import WordPressShared
         return title.stringByDecodingXMLCharacters()
     }
 
-    public func authorForDisplay() -> String? {
-        return author?.stringByDecodingXMLCharacters()
-    }
-
-    public func blogNameForDisplay() -> String? {
-        return ""
-    }
-
     public func contentForDisplay() -> String? {
         return content
     }
@@ -27,27 +19,4 @@ import WordPressShared
         return content
     }
 
-    public func gravatarEmailForDisplay() -> String? {
-        return nil
-    }
-
-    public func avatarURLForDisplay() -> URL? {
-        return nil
-    }
-
-    public func dateForDisplay() -> Date? {
-        return dateCreated
-    }
-
-    public func featuredImageURLForDisplay() -> URL? {
-        return nil
-    }
-
-    public func authorURL() -> URL? {
-        return nil
-    }
-
-    public func tagsForDisplay() -> [String]? {
-        return nil
-    }
 }
