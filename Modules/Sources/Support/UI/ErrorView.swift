@@ -64,35 +64,23 @@ public struct FullScreenErrorView: View {
     let title: String
     let message: String
     let systemImage: String
-    let retryAction: (() -> Void)?
 
     public init(
         title: String = "Something went wrong",
         message: String = "Please try again later",
-        systemImage: String = "exclamationmark.triangle.fill",
-        retryAction: (() -> Void)? = nil
+        systemImage: String = "exclamationmark.triangle.fill"
     ) {
         self.title = title
         self.message = message
         self.systemImage = systemImage
-        self.retryAction = retryAction
     }
 
     public var body: some View {
-        VStack {
-            Spacer()
-            HStack {
-                Spacer()
-                ErrorView(
-                    title: self.title,
-                    message: self.message,
-                    systemImage: self.systemImage,
-                    retryAction: self.retryAction
-                )
-                Spacer()
-            }
-            Spacer()
-        }
+        ContentUnavailableView(
+            self.title,
+            systemImage: self.systemImage,
+            description: Text(self.message)
+        )
     }
 }
 
@@ -119,4 +107,12 @@ public struct FullScreenErrorView: View {
         )
     }
     .background(.gray.opacity(0.1))
+}
+
+#Preview("Full Screen Error View") {
+    FullScreenErrorView(
+        title: "Network Error",
+        message: "Unable to connect to the server. Check your internet connection and try again.",
+        systemImage: "wifi.exclamationmark"
+    )
 }
