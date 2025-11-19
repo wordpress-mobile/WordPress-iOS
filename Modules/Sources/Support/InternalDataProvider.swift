@@ -418,8 +418,14 @@ actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
 
 actor InternalDiagnosticsDataProvider: DiagnosticsDataProvider {
 
+    private var didClear: Bool = false
+
     func fetchDiskCacheUsage() async throws -> WordPressCoreProtocols.DiskCacheUsage {
-        DiskCacheUsage(fileCount: 64, byteCount: 623_423_562)
+        if didClear {
+            DiskCacheUsage(fileCount: 0, byteCount: 0)
+        } else {
+            DiskCacheUsage(fileCount: 64, byteCount: 623_423_562)
+        }
     }
 
     func clearDiskCache(progress: @Sendable (CacheDeletionProgress) async throws -> Void) async throws {
@@ -435,6 +441,8 @@ actor InternalDiagnosticsDataProvider: DiagnosticsDataProvider {
             // Report incremental progress
             try await progress(CacheDeletionProgress(filesDeleted: i, totalFileCount: totalFiles))
         }
+
+        self.didClear = true
     }
 }
 

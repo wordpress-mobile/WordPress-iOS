@@ -7,6 +7,24 @@ extension Date {
     }
 }
 
+extension String {
+    func applyingNumericMorphology(for number: Int) -> String {
+        var attr = AttributedString(self)
+        var morphology = Morphology()
+        morphology.number = switch number {
+        case 0: .zero
+        case 1: .singular
+        case 2: .pluralTwo
+        case 3...7: .pluralFew
+        case 7...: .pluralMany
+        default: .plural
+        }
+        attr.inflect = InflectionRule(morphology: morphology)
+
+        return attr.inflected().characters.reduce(into: "") { $0.append($1) }
+    }
+}
+
 extension AttributedString {
     func toHtml() -> String {
         NSAttributedString(self).toHtml()
