@@ -261,11 +261,6 @@
     return [NSURL URLWithString:self.blog.url];
 }
 
-- (NSString *)contentPreviewForDisplay
-{
-    return self.mt_excerpt;
-}
-
 - (BOOL)isPrivateAtWPCom
 {
     return self.blog.isPrivateAtWPCom;

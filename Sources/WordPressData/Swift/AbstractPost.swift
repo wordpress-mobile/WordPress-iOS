@@ -250,4 +250,8 @@ public extension AbstractPost {
         }
         return self.dateCreated?.toMediumString()
     }
+
+    override func contentPreviewForDisplay() -> String? {
+        mt_excerpt
+    }
 }
