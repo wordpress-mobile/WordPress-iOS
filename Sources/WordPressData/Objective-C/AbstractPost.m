@@ -256,11 +256,6 @@
     return [self originalIsDraft] && [self dateCreatedIsNilOrEqualToDateModified];
 }
 
-- (NSString *)authorNameForDisplay
-{
-    return [self.author makePlainText];
-}
-
 - (NSURL *)blogURL
 {
     return [NSURL URLWithString:self.blog.url];

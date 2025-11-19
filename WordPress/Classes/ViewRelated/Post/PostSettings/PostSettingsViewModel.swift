@@ -46,7 +46,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var authorDisplayName: String {
-        settings.author?.displayName ?? post.authorNameForDisplay()
+        settings.author?.displayName ?? post.author?.makePlainText() ?? ""
     }
 
     var authorAvatarURL: URL? {
