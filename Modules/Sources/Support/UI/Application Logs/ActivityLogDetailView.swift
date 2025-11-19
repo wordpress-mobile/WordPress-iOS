@@ -83,7 +83,7 @@ struct ActivityLogDetailView: View {
 
     @ViewBuilder
     var loadingView: some View {
-        ProgressView("Loading log content...").padding()
+        ProgressView(Localization.loadingLogContent).padding()
     }
 
     @ViewBuilder

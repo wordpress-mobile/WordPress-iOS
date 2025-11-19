@@ -130,7 +130,7 @@ public struct SupportConversationReplyView: View {
         }
         .overlay {
             ZStack {
-                ProgressView("Sending Message")
+                ProgressView(Localization.sendingMessage)
                     .padding()
                     .background(Color(UIColor.systemBackground))
                     .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))

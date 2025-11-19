@@ -40,7 +40,7 @@ struct OverlayProgressView: View {
                 ProgressView()
                     .progressViewStyle(.circular)
 
-                Text("Loading latest content")
+                Text(Localization.loadingLatestContent)
                     .font(.callout)
                     .foregroundStyle(.primary)
             }
@@ -55,7 +55,7 @@ struct OverlayProgressView: View {
             .opacity(state.isVisible ? 1 : 0)
             .offset(y: state.isVisible ? 0 : -12)
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("Loading latest content")
+            .accessibilityLabel(Localization.loadingLatestContent)
             .accessibilityAddTraits(.isStaticText)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding(.top, 24)

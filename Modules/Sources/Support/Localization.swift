@@ -206,6 +206,11 @@ enum Localization {
         value: "Sending",
         comment: "Progress text while sending a message"
     )
+    static let sendingMessage = NSLocalizedString(
+        "com.jetpack.support.sendingMessage",
+        value: "Sending Message",
+        comment: "Progress message shown while sending a message"
+    )
     static let unableToSendMessage = NSLocalizedString(
         "com.jetpack.support.unableToSendMessage",
         value: "Unable to send Message",
@@ -304,6 +309,14 @@ enum Localization {
         "com.jetpack.support.applicationLogsTitle",
         value: "Application Logs",
         comment: "Navigation title for application logs screen"
+    )
+
+    // MARK: - ActivityLogDetailView.swift
+
+    static let loadingLogContent = NSLocalizedString(
+        "com.jetpack.support.loadingLogContent",
+        value: "Loading log content...",
+        comment: "Progress message while loading application log content"
     )
     static let confirmDeleteAllLogs = NSLocalizedString(
         "com.jetpack.support.confirmDeleteAllLogs",
@@ -416,6 +429,16 @@ enum Localization {
         value: "Start a new conversation using the button above",
         comment: "Description encouraging user to start a new conversation"
     )
+    static let loadingBotConversations = NSLocalizedString(
+        "com.jetpack.support.loadingBotConversations",
+        value: "Loading Bot Conversations",
+        comment: "Progress message while loading bot conversations"
+    )
+    static let unableToLoadConversations = NSLocalizedString(
+        "com.jetpack.support.unableToLoadConversations",
+        value: "Unable to load conversations",
+        comment: "Error title when bot conversations fail to load"
+    )
 
     // MARK: - ConversationView.swift
 
@@ -423,6 +446,16 @@ enum Localization {
         "com.jetpack.support.openSupportTicket",
         value: "Open a Support Ticket",
         comment: "Button to open a support ticket"
+    )
+    static let loadingBotConversationMessages = NSLocalizedString(
+        "com.jetpack.support.loadingBotConversationMessages",
+        value: "Loading Messages",
+        comment: "Progress message while loading conversation messages"
+    )
+    static let unableToLoadMessages = NSLocalizedString(
+        "com.jetpack.support.unableToLoadMessages",
+        value: "Unable to Load Messages",
+        comment: "Error title when messages fail to load"
     )
 
     // MARK: - ConversationBotIntro.swift
@@ -468,5 +501,31 @@ enum Localization {
         "com.jetpack.support.tryAgain",
         value: "Try Again",
         comment: "Button to retry a failed operation"
+    )
+
+    // MARK: - AttachmentListView.swift
+
+    static let loadingImage = NSLocalizedString(
+        "com.jetpack.support.loadingImage",
+        value: "Loading Image",
+        comment: "Progress message while loading an image attachment"
+    )
+    static let loadingVideo = NSLocalizedString(
+        "com.jetpack.support.loadingVideo",
+        value: "Loading Video",
+        comment: "Progress message while loading a video attachment"
+    )
+    static let unableToDisplayVideo = NSLocalizedString(
+        "com.jetpack.support.unableToDisplayVideo",
+        value: "Unable to display video",
+        comment: "Error title when video cannot be loaded or played"
+    )
+
+    // MARK: - OverlayProgressView.swift
+
+    static let loadingLatestContent = NSLocalizedString(
+        "com.jetpack.support.loadingLatestContent",
+        value: "Loading latest content",
+        comment: "Progress message shown in overlay while refreshing content"
     )
 }

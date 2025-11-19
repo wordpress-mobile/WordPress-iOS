@@ -228,12 +228,12 @@ public struct ConversationView: View {
         VStack {
             switch self.state {
             case .start, .loadingMessages:
-                FullScreenProgressView("Loading Messages")
+                FullScreenProgressView(Localization.loadingBotConversationMessages)
             case .partiallyLoaded(let conversation, _), .loaded(let conversation, _):
                 self.conversationView(messages: conversation.messages)
             case .loadingMessagesError(_, let message):
                 FullScreenErrorView(
-                    title: "Unable to Load Messages",
+                    title: Localization.unableToLoadMessages,
                     message: message
                 )
             case .startingNewConversation:

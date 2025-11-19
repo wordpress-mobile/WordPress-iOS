@@ -24,7 +24,7 @@ struct SingleImageView: View {
                 .scaledToFit()
                 .gesture(magnification)
         } placeholder: {
-            ProgressView("Loading Image")
+            ProgressView(Localization.loadingImage)
         }
         .navigationTitle(url.lastPathComponent)
     }
@@ -52,7 +52,7 @@ struct SingleVideoView: View {
                         player.play()
                     }
             } else {
-                FullScreenProgressView("Loading Video")
+                FullScreenProgressView(Localization.loadingVideo)
             }
         }.task {
             if let host {
