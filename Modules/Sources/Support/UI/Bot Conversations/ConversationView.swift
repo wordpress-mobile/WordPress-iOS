@@ -400,7 +400,7 @@ public struct ConversationView: View {
                 supportIdentity: self.currentUser
             ).environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
         } label: {
-            Text("Open a Support Ticket")
+            Text(Localization.openSupportTicket)
                 .font(.headline)
                 .padding(.vertical)
                 .frame(maxWidth: .infinity)

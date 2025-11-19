@@ -143,7 +143,7 @@ struct ScreenshotPicker: View {
                 ProgressView(value: currentUploadSize, total: maximumUploadSize)
                     .tint(uploadLimitExceeded ? Color.red : Color.accentColor)
 
-                Text("Attachment Limit: \(format(bytes: currentUploadSize)) / \(format(bytes: maximumUploadSize))")
+                Text(String.localizedStringWithFormat(Localization.attachmentLimit, format(bytes: currentUploadSize), format(bytes: maximumUploadSize)))
                     .font(.caption2)
                     .foregroundStyle(Color.secondary)
             }

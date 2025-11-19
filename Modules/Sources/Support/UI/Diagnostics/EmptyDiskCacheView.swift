@@ -54,15 +54,15 @@ struct EmptyDiskCacheView: View {
     var body: some View {
         // Clear Disk Cache card
         DiagnosticCard(
-            title: "Clear Disk Cache",
-            subtitle: "Remove temporary files to free up space or resolve problems.",
+            title: Localization.clearDiskCache,
+            subtitle: Localization.clearDiskCacheDescription,
             systemImage: "externaldrive.badge.xmark"
         ) {
             VStack(alignment: .leading, spacing: 12) {
                 Button {
                     Task { await clearDiskCache() }
                 } label: {
-                    Label(self.state.isClearingCache ? "Clearing…" : "Clear Disk Cache", systemImage: self.state.isClearingCache ? "hourglass" : "trash")
+                    Label(self.state.isClearingCache ? Localization.clearing : Localization.clearDiskCache, systemImage: self.state.isClearingCache ? "hourglass" : "trash")
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(self.state.buttonIsDisabled)
@@ -71,14 +71,14 @@ struct EmptyDiskCacheView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     switch self.state {
                     case .loading:
-                        ProgressView("Loading Disk Usage")
+                        ProgressView(Localization.loadingDiskUsage)
                     case .loaded(let usage):
                         if usage.isEmpty {
-                            Text("Cache is empty")
+                            Text(Localization.cacheIsEmpty)
                                 .font(.footnote)
                                 .foregroundStyle(.secondary)
                         } else {
-                            Text("^[\(usage.fileCount) cache files](inflect: true) (\(usage.formattedDiskUsage))")
+                            Text(String.localizedStringWithFormat(Localization.cacheFiles, usage.fileCount, usage.formattedDiskUsage))
                                 .font(.footnote)
                                 .foregroundStyle(.secondary)
                         }
@@ -132,14 +132,14 @@ struct EmptyDiskCacheView: View {
                 try await dataProvider.clearDiskCache { progress in
                     await MainActor.run {
                         withAnimation {
-                            self.state = .clearing(progress: progress.progress, result: "Working")
+                            self.state = .clearing(progress: progress.progress, result: Localization.working)
                         }
                     }
                 }
             }
 
             withAnimation {
-                self.state = .clearing(progress: 1.0, result: "Complete")
+                self.state = .clearing(progress: 1.0, result: Localization.complete)
             }
         } catch {
             withAnimation {

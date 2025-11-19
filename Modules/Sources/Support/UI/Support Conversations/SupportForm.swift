@@ -136,18 +136,18 @@ public struct SupportForm: View {
             }
         }
         .alert(
-            "Confirm Cancellation",
+            Localization.confirmCancellation,
             isPresented: $isDisplayingCancellationConfirmation,
             actions: {
-                Button("Discard Changes", role: .destructive) {
+                Button(Localization.discardChanges, role: .destructive) {
                     self.dismiss()
                 }
 
-                Button("Continue Writing", role: .cancel) {
+                Button(Localization.continueWriting, role: .cancel) {
                     self.isDisplayingCancellationConfirmation = false
                 }
             }, message: {
-                Text("Are you sure you want to cancel this message? You'll lose any data you've entered")
+                Text(Localization.confirmCancelMessage)
             }
         )
         .alert(Localization.errorTitle, isPresented: $shouldShowErrorAlert) {
@@ -200,7 +200,7 @@ private extension SupportForm {
     var contactInformationSection: some View {
         Section {
             VStack(alignment: .leading) {
-                Text("We'll email you at this address.")
+                Text(Localization.emailNotice)
                     .font(.caption)
                     .foregroundColor(.secondary)
 

@@ -156,7 +156,7 @@ public struct SupportConversationView: View {
                         .buttonStyle(BorderedProminentButtonStyle())
                         .disabled(!canReply)
                     } else {
-                        Text("End of conversation. No further replies are possible.")
+                        Text(Localization.conversationEnded)
                             .font(.caption)
                             .foregroundStyle(Color.secondary)
                             .padding(.top)

@@ -1,8 +1,15 @@
 import SwiftUI
 
-enum SharingOption: String, CaseIterable {
-    case supportTicket = "New Support Ticket"
-    case exportFile = "Export as File"
+enum SharingOption: CaseIterable {
+    case supportTicket
+    case exportFile
+
+    var title: String {
+        switch self {
+        case .supportTicket: Localization.newSupportTicket
+        case .exportFile: Localization.exportAsFile
+        }
+    }
 
     var systemImage: String {
         switch self {
@@ -13,8 +20,8 @@ enum SharingOption: String, CaseIterable {
 
     var description: String {
         return switch self {
-        case .supportTicket: "Send logs directly to support team"
-        case .exportFile: "Save as a file to share or store"
+        case .supportTicket: Localization.sendLogsToSupport
+        case .exportFile: Localization.saveAsFile
         }
     }
 }
@@ -55,7 +62,7 @@ struct ActivityLogSharingView: View {
                     case .exportFile:
                         ShareLink(item: applicationLog.path) {
                             Spacer()
-                            Text("Share")
+                            Text(Localization.share)
                             Spacer()
                         }
                         .buttonStyle(.borderedProminent)
@@ -65,7 +72,7 @@ struct ActivityLogSharingView: View {
                     case .supportTicket:
                         NavigationLink(destination: self.destination) {
                             Spacer()
-                            Text("Share")
+                            Text(Localization.share)
                             Spacer()
                         }
                         .buttonStyle(.borderedProminent)
@@ -76,11 +83,11 @@ struct ActivityLogSharingView: View {
                 .padding(.horizontal)
             }
             .padding(.vertical)
-            .navigationTitle("Share Activity Log")
+            .navigationTitle(Localization.shareActivityLog)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Cancel") {
+                    Button(Localization.cancel) {
                         dismiss()
                     }
                 }
@@ -102,7 +109,7 @@ struct SharingOptionRow: View {
                 .frame(width: 32, height: 32)
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(option.rawValue)
+                Text(option.title)
                     .font(.headline)
                     .foregroundColor(.primary)
 
@@ -142,7 +149,7 @@ struct SharingOptionRow: View {
             Color.clear
                 .sheet(isPresented: $isPresented) {
                     ActivityLogSharingView(applicationLog: SupportDataProvider.applicationLog) {
-                        AnyView(erasing: Text("Sharing with support!"))
+                        AnyView(erasing: Text(Localization.sharingWithSupport))
                     }.presentationDetents([.medium])
                 }
         }

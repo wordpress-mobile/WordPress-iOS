@@ -9,7 +9,7 @@ struct ThinkingView: View {
                 .foregroundColor(.gray)
 
             // Thinking text with shimmer effect
-            Text("Thinking...")
+            Text(Localization.thinking)
                 .font(.system(size: 16, weight: .medium))
         }
         .padding(.horizontal, 12)

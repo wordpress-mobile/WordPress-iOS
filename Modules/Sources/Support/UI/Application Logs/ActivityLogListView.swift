@@ -36,12 +36,12 @@ public struct ActivityLogListView: View {
                 listView(logFiles: logFiles, deletionState: deletionState)
             case .error(let error):
                 ErrorView(
-                    title: "Error loading logs",
+                    title: Localization.errorLoadingLogs,
                     message: error.localizedDescription
                 )
             }
         }
-        .navigationTitle("Application Logs")
+        .navigationTitle(Localization.applicationLogsTitle)
         .overlay {
             if case .loaded(_, let deletionState) = self.state {
                 switch deletionState {
@@ -49,24 +49,24 @@ public struct ActivityLogListView: View {
                 case .deleting: ProgressView()
                 case .confirm: EmptyView() // Do nothing
                 case .deletionError(let error): ErrorView(
-                    title: "Unable to delete logs",
+                    title: Localization.unableToDeleteLogs,
                     message: error.localizedDescription
                 )
                 }
             }
         }
-        .alert("Are you sure you want to delete all logs?", isPresented: self.$isConfirmingDeletion, actions: {
+        .alert(Localization.confirmDeleteAllLogs, isPresented: self.$isConfirmingDeletion, actions: {
 
-            Button ("Delete all Logs", role: .destructive) {
+            Button (Localization.deleteAllLogs, role: .destructive) {
                 self.deleteAllLogFiles()
             }
 
-            Button("Cancel", role: .cancel) {
+            Button(Localization.cancel, role: .cancel) {
                 // Alert will be dismissed on its own
             }
 
         }, message: {
-            Text("You won't be able to get them back.")
+            Text(Localization.cannotRecoverLogs)
         })
         .onAppear {
             self.dataProvider.userDid(.viewApplicationLogList)
@@ -96,27 +96,27 @@ public struct ActivityLogListView: View {
                         }
                     }.onDelete(perform: self.deleteLogFiles)
                 } header: {
-                    Text("Log files by created date")
+                    Text(Localization.logFilesByDate)
                 } footer: {
-                    Text("Up to seven days worth of logs are saved.")
+                    Text(Localization.logRetentionNotice)
                 }
 
-                Button("Clear All Activity Logs") {
+                Button(Localization.clearAllActivityLogs) {
                     self.isConfirmingDeletion = true
                 }
             }
         } else {
             ContentUnavailableView {
-                Label("No Logs Found", systemImage: "doc.text")
+                Label(Localization.noLogsFound, systemImage: "doc.text")
             } description: {
-                Text("There are no activity logs available")
+                Text(Localization.noLogsAvailable)
             }
         }
     }
 
     @ViewBuilder
     var loadingView: some View {
-        ProgressView("Loading logs...")
+        ProgressView(Localization.loadingLogs)
     }
 
     func deleteLogFiles(_ indexSet: IndexSet) {

@@ -103,7 +103,7 @@ public struct ConversationListView: View {
                 )
             }
         }
-        .navigationTitle("Conversations")
+        .navigationTitle(Localization.conversations)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 NavigationLink {
@@ -132,9 +132,9 @@ public struct ConversationListView: View {
     private func conversationList(_ conversations: [BotConversation]) -> some View {
         if case .loaded = self.state, conversations.isEmpty {
             ContentUnavailableView {
-                Label("No Conversations", systemImage: "message")
+                Label(Localization.noConversations, systemImage: "message")
             } description: {
-                Text("Start a new conversation using the button above")
+                Text(Localization.startNewConversation)
             }
         } else {
             List(conversations) { conversation in

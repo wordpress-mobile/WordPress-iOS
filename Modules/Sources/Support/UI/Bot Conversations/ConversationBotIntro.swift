@@ -13,7 +13,7 @@ struct ConversationBotIntro: View {
             VStack(alignment: .leading, spacing: 16) {
                 // Greeting with wave emoji
                 HStack {
-                    Text("Howdy \(currentUser.username)!")
+                    Text(String.localizedStringWithFormat(Localization.botGreeting, currentUser.username))
                         .font(.title2)
                         .fontWeight(.semibold)
 
@@ -22,7 +22,7 @@ struct ConversationBotIntro: View {
                 }
 
                 // Description text
-                Text("I'm your personal AI assistant. I can help with any questions about your site or account.")
+                Text(Localization.botIntroduction)
                     .font(.body)
                     .foregroundColor(.secondary)
                     .lineLimit(nil)

@@ -42,7 +42,7 @@ public struct ErrorView: View {
 
             // Retry button (if action provided)
             if let retryAction {
-                Button("Try Again") {
+                Button(Localization.tryAgain) {
                     retryAction()
                 }
                 .buttonStyle(.borderedProminent)
