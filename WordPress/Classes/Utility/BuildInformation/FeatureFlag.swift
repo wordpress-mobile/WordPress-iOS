@@ -85,7 +85,7 @@ public enum FeatureFlag: Int, CaseIterable {
         case .newSupport:
             return false
         case .nativeBlockInserter:
-            return false
+            return true
         }
     }
 
