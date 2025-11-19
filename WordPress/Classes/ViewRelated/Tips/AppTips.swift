@@ -53,7 +53,7 @@ enum AppTips {
     }
 
     struct NewStatsTip: Tip {
-        let id = "new_stats_tip"
+        let id = "new_stats_tip_2"
 
         var title: Text {
             Text(NSLocalizedString("tips.newStats.title", value: "Try New Stats", comment: "Tip for new stats feature"))
