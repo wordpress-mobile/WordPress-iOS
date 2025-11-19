@@ -28,7 +28,7 @@ final class PostListItemViewModel {
 
 private func makeAccessibilityLabel(for post: Post, statusViewModel: PostCardStatusViewModel) -> String? {
     let titleAndDateChunk: String = {
-        return String(format: Strings.Accessibility.titleAndDateChunkFormat, post.titleForDisplay(), post.dateStringForDisplay())
+        return String(format: Strings.Accessibility.titleAndDateChunkFormat, post.titleForDisplay(), post.dateStringForDisplay() ?? "")
     }()
 
     let authorChunk: String? = {

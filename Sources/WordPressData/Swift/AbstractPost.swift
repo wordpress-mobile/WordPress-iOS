@@ -239,4 +239,15 @@ public extension AbstractPost {
             revision.deleteRevision()
         }
     }
+
+    func dateStringForDisplay() -> String? {
+        if self.originalIsDraft() || self.status == .pending {
+            return dateModified?.toMediumString()
+        } else if self.isScheduled() {
+            return self.dateCreated?.mediumStringWithTime()
+        } else if self.shouldPublishImmediately() {
+            return NSLocalizedString("Publish Immediately", comment: "A short phrase indicating a post is due to be immedately published.")
+        }
+        return self.dateCreated?.toMediumString()
+    }
 }
