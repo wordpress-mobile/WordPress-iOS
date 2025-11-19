@@ -331,11 +331,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return (self.sourceAttribution.blogID) ? YES : NO;
 }
 
-- (NSURL *)avatarURLForDisplay
-{
-    return [NSURL URLWithString:self.authorAvatarURL];
-}
-
 - (NSDictionary *)railcarDictionary
 {
     if (!self.railcar) {

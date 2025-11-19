@@ -52,4 +52,8 @@ extension ReaderPost {
     public override func featuredImageURLForDisplay() -> URL? {
         return featuredImageURL
     }
+
+    public func avatarURLForDisplay() -> URL? {
+        authorAvatarURL.flatMap(URL.init(string:))
+    }
 }
