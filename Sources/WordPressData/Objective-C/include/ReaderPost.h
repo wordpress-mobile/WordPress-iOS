@@ -81,7 +81,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 
 + (instancetype)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic context:(NSManagedObjectContext *) managedObjectContext;
 
-- (BOOL)isCrossPost;
 - (BOOL)isP2Type;
 - (NSString *)authorString;
 - (BOOL)contentIncludesFeaturedImage;

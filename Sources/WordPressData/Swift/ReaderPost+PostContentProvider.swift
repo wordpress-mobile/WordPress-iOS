@@ -2,6 +2,9 @@ import Foundation
 import WordPressShared
 
 extension ReaderPost {
+    public var isCrossPost: Bool {
+        crossPostMeta != nil
+    }
 
     @objc public override var featuredImageURL: URL? {
         if !self.featuredImage.isEmpty {

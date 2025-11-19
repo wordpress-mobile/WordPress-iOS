@@ -234,11 +234,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return nil;
 }
 
-- (BOOL)isCrossPost
-{
-    return self.crossPostMeta != nil;
-}
-
 - (BOOL)isP2Type
 {
     NSInteger orgID = [self.organizationID intValue];

@@ -1329,7 +1329,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        if post.isCross() {
+        if post.isCrossPost {
             let cell = tableConfiguration.crossPostCell(tableView)
             cell.isCompact = isCompact
             cell.isSeparatorHidden = !showsSeparator

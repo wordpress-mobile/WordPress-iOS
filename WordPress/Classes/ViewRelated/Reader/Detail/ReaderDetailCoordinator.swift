@@ -554,7 +554,7 @@ class ReaderDetailCoordinator {
         let characterSet = CharacterSet(charactersIn: "/")
 
         guard let post,
-              post.isCross(),
+              post.isCrossPost,
               let crossPostMeta = post.crossPostMeta,
               let crossPostURL = URL(string: crossPostMeta.postURL.trimmingCharacters(in: characterSet)),
               let selectedURL = URL(string: url.absoluteString.trimmingCharacters(in: characterSet)) else {

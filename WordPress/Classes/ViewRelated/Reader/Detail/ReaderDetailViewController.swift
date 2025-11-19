@@ -871,7 +871,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             post.sourceAttribution.postID != nil &&
             post.sourceAttribution.blogID != nil {
             return ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
-        } else if post.isCross() {
+        } else if post.isCrossPost {
             return ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
         } else {
             let controller = ReaderDetailViewController.loadFromStoryboard()
