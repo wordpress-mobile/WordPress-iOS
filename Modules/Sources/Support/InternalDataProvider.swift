@@ -448,10 +448,18 @@ actor InternalDiagnosticsDataProvider: DiagnosticsDataProvider {
 
 actor InternalMediaHost: MediaHostProtocol {
     func authenticatedRequest(for url: URL) async throws -> URLRequest {
-        URLRequest(url: url)
+        if Bool.random() {
+            throw CocoaError(.coderInvalidValue)
+        }
+
+        return URLRequest(url: url)
     }
 
     func authenticatedAsset(for url: URL) async throws -> AVURLAsset {
-        AVURLAsset(url: url)
+        if Bool.random() {
+            throw CocoaError(.coderInvalidValue)
+        }
+
+        return AVURLAsset(url: url)
     }
 }

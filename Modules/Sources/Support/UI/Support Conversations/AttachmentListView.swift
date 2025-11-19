@@ -35,6 +35,9 @@ struct SingleVideoView: View {
     @State
     private var player: AVPlayer? = nil
 
+    @State
+    private var error: Error? = nil
+
     private let url: URL
     private let host: MediaHostProtocol?
 
@@ -51,6 +54,12 @@ struct SingleVideoView: View {
                     .onAppear {
                         player.play()
                     }
+            } else if let error {
+                FullScreenErrorView(
+                    title: Localization.unableToDisplayVideo,
+                    message: error.localizedDescription,
+                    systemImage: "film"
+                )
             } else {
                 FullScreenProgressView(Localization.loadingVideo)
             }
@@ -60,7 +69,7 @@ struct SingleVideoView: View {
                     let asset = try await host.authenticatedAsset(for: url)
                     self.player = AVPlayer(playerItem: AVPlayerItem(asset: asset))
                 } catch {
-                    debugPrint(error.localizedDescription)
+                    self.error = error
                 }
             } else {
                 self.player = AVPlayer(url: url)
@@ -250,7 +259,7 @@ extension ImageUrl: @retroactive Identifiable {
     )}
 
     let videos = [
-        "https://a8c.zendesk.com/attachments/token/Le9xjU6B0nfYjtActesrzRrcm/?name=file_example_MP4_1920_18MG.mp4"
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
     ].map { ImageUrl($0) }.map { Attachment(
         id: .random(in: 0...UInt64.max),
         filename: "file_example_MP4_1920_18MG.mp4",
@@ -261,5 +270,5 @@ extension ImageUrl: @retroactive Identifiable {
 
     NavigationStack {
         AttachmentListView(attachments: images + documents + videos)
-    }
+    }.environmentObject(SupportDataProvider.testing)
 }

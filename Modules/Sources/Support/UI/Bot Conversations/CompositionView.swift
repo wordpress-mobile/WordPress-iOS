@@ -89,7 +89,6 @@ struct CompositionView: View {
         VStack {
             Spacer()
             CompositionView(isDisabled: false) { message in
-                debugPrint(message)
                 // Do nothing
             }
         }
@@ -105,7 +104,7 @@ struct CompositionView: View {
             VStack {
                 Spacer()
                 CompositionView(isDisabled: false) { message in
-                    // Do nothing
+                    // You'd do something with the message if this weren't a preview
                 }
             }
         }

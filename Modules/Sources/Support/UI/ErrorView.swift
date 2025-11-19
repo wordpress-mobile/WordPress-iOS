@@ -95,7 +95,7 @@ public struct FullScreenErrorView: View {
             message: "Unable to connect to the server. Check your internet connection and try again.",
             systemImage: "wifi.exclamationmark",
             retryAction: {
-                print("Retry tapped")
+                // You'd do something here if this wasn't a preview
             }
         )
 
