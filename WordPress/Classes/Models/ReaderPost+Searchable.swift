@@ -25,7 +25,7 @@ extension ReaderPost: @retroactive SearchableItemConvertable {
     }
 
     public var searchTitle: String? {
-        var title = titleForDisplay() ?? ""
+        var title = titleForDisplay()
         if title.isEmpty {
             // If titleForDisplay() happens to be empty, try using the content preview instead...
             title = contentPreviewForDisplay() ?? ""

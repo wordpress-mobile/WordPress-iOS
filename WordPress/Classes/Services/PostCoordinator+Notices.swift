@@ -5,7 +5,7 @@ import WordPressShared
 extension PostCoordinator {
     static func makeUploadSuccessNotice(for post: AbstractPost, previousStatus: AbstractPost.Status? = nil) -> Notice {
         var message: String {
-            let title = post.titleForDisplay() ?? ""
+            let title = post.titleForDisplay()
             if !title.isEmpty {
                 return title
             }
@@ -26,7 +26,7 @@ extension PostCoordinator {
     private static func makeUploadSuccessNotificationInfo(for post: AbstractPost, isUpdated: Bool) -> NoticeNotificationInfo {
         let status = Strings.publishSuccessTitle(for: post, isUpdated: isUpdated)
         var title: String {
-            let title = post.titleForDisplay() ?? ""
+            let title = post.titleForDisplay()
             guard !title.isEmpty else {
                 return status
             }

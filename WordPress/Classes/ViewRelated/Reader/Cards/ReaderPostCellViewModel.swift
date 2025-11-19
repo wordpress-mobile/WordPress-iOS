@@ -37,7 +37,7 @@ final class ReaderPostCellViewModel {
             self.author = post.blogNameForDisplay() ?? ""
         }
         self.time = post.dateForDisplay()?.toShortString() ?? ""
-        self.title = post.titleForDisplay() ?? ""
+        self.title = post.titleForDisplay()
         self.details = post.contentPreviewForDisplay() ?? ""
         self.isSeen = post.isSeenSupported ? post.isSeen : nil
         self.imageURL = post.featuredImageURLForDisplay() ?? post.pathForDisplayImage.flatMap(URL.init)

@@ -925,7 +925,7 @@ private enum Strings {
 
         static func message(for post: AbstractPost) -> String {
             let format = NSLocalizedString("postList.trash.alertMessage", value: "Are you sure you want to trash \"%@\"? Any changes that weren't sent previously to the server will be lost.", comment: "Message of the trash post or page confirmation alert.")
-            return String(format: format, post.titleForDisplay() ?? "–")
+            return String(format: format, post.titleForDisplay())
         }
     }
 
@@ -934,7 +934,7 @@ private enum Strings {
 
         static func message(for post: AbstractPost) -> String {
             let format = NSLocalizedString("postList.deletePermanently.alertMessage", value: "Are you sure you want to permanently delete \"%@\"?", comment: "Message of the confirmation alert when deleting a page from the trash.")
-            return String(format: format, post.titleForDisplay() ?? "–")
+            return String(format: format, post.titleForDisplay())
         }
     }
 }

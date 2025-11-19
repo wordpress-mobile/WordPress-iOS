@@ -153,13 +153,12 @@ class LinkSettingsViewController: UITableViewController {
         }
         let selectPostViewController = SelectPostViewController(blog: blog, isSelectedPost: { [weak self] in $0.permaLink == self?.linkSettings.url }, callback: { [weak self] (post) in
             guard let strongSelf = self,
-                    let url = post.permaLink,
-                    let title = post.titleForDisplay() else {
+                    let url = post.permaLink else {
                 return
             }
             strongSelf.linkSettings.url = url
             if strongSelf.linkSettings.text.isEmpty {
-                strongSelf.linkSettings.text = title
+                strongSelf.linkSettings.text = post.titleForDisplay()
             }
             strongSelf.navigationController?.popViewController(animated: true)
             strongSelf.reloadViewModel()

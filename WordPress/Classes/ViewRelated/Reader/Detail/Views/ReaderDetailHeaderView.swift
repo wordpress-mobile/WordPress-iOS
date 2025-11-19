@@ -170,7 +170,7 @@ class ReaderDetailHeaderViewModel: ObservableObject {
             // context: https://github.com/wordpress-mobile/WordPress-iOS/pull/21674#issuecomment-1747202728
             self.showsAuthorName = self.authorName != self.siteName && !self.authorName.isEmpty
 
-            self.postTitle = post.titleForDisplay() ?? nil
+            self.postTitle = post.titleForDisplay()
             self.likeCount = post.likeCount?.intValue
             self.commentCount = post.commentCount?.intValue
             self.tags = post.tagsForDisplay() ?? []

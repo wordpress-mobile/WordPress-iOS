@@ -128,7 +128,7 @@ private final class ReaderCrossPostView: UIView {
 
     func configure(with post: ReaderPost) {
         headerLabel.attributedText = makeHeaderString(for: post)
-        postTitleLabel.attributedText = NSAttributedString(string: post.titleForDisplay() ?? "", attributes: postTitleAttributes)
+        postTitleLabel.attributedText = NSAttributedString(string: post.titleForDisplay(), attributes: postTitleAttributes)
 
         avatarView.setPlaceholder(UIImage(named: "post-blavatar-placeholder"))
         if let avatarURL = post.avatarURLForDisplay() {

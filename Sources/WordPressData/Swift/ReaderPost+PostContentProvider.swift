@@ -20,7 +20,7 @@ extension ReaderPost {
         return URL(string: blogURL ?? "")?.host
     }
 
-    public override func titleForDisplay() -> String? {
+    public override func titleForDisplay() -> String {
         let title = postTitle?.trimmingCharacters(in: .whitespaces).stringByDecodingXMLCharacters()
         guard let title, !title.isEmpty else {
             return ""

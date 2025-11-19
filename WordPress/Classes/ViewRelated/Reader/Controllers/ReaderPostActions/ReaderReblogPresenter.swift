@@ -147,8 +147,8 @@ private extension Post {
         if let summary = readerPost.summary {
             var citation: String?
             // add the optional citation
-            if let permaLink = readerPost.permaLink, let title = readerPost.titleForDisplay() {
-                citation = ReaderReblogFormatter.hyperLink(url: permaLink, text: title)
+            if let permaLink = readerPost.permaLink {
+                citation = ReaderReblogFormatter.hyperLink(url: permaLink, text: readerPost.titleForDisplay())
             }
             content = self.blog.isGutenbergEnabled ? ReaderReblogFormatter.gutenbergQuote(text: summary, citation: citation) :
                 ReaderReblogFormatter.aztecQuote(text: summary, citation: citation)

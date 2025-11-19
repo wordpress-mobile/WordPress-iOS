@@ -26,11 +26,10 @@ struct ResolveConflictView: View {
         Form {
             Section {
                 VStack(alignment: .leading, spacing: 12) {
-                    if let title = post.latest().titleForDisplay() {
-                        Text("\"\(title)\"")
-                            .font(.headline)
-                            .lineLimit(2)
-                    }
+                    let title = post.latest().titleForDisplay()
+                    Text("\"\(title)\"")
+                        .font(.headline)
+                        .lineLimit(2)
                     Text(Strings.description)
                 }
                 ForEach(versions) { version in

@@ -34,7 +34,7 @@ final class PostStatsViewController: UIViewController {
             return
         }
         let info = PostStatsView.PostInfo(
-            title: post.titleForDisplay() ?? "",
+            title: post.titleForDisplay(),
             postID: String(postID),
             postURL: post.permaLink.flatMap(URL.init),
             date: post.dateCreated
