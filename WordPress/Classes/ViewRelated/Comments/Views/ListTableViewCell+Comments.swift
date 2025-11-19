@@ -19,7 +19,7 @@ extension ListTableViewCell {
         }
 
         // title text
-        attributedTitleText = attributedTitle(for: comment.authorForDisplay() ?? "", postTitle: comment.titleForDisplay() ?? "")
+        attributedTitleText = attributedTitle(for: comment.authorForDisplay(), postTitle: comment.titleForDisplay())
 
         // snippet text
         snippetText = comment.contentPreviewForDisplay()

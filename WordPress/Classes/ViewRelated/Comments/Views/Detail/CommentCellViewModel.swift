@@ -37,7 +37,7 @@ final class CommentCellViewModel: NSObject {
         var isReplyEnabled: Bool
 
         init(comment: Comment) {
-            self.title = comment.authorForDisplay() ?? ""
+            self.title = comment.authorForDisplay()
             self.dateCreated = comment.dateCreated
             self.isLiked = comment.isLiked
             self.likeCount = Int(comment.likeCount)
@@ -55,7 +55,7 @@ final class CommentCellViewModel: NSObject {
                 self = .url(imageURL)
             } else {
                 let email = comment.gravatarEmailForDisplay()
-                guard let email, !email.isEmpty else {
+                guard !email.isEmpty else {
                     return nil
                 }
                 self = .email(email)

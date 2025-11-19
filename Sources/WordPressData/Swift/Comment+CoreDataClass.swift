@@ -146,7 +146,7 @@ extension Comment {
         return !title.isEmpty ? title.stringByDecodingXMLCharacters() : NSLocalizedString("(No Title)", comment: "Empty Post Title")
     }
 
-    @objc public func authorForDisplay() -> String? {
+    @objc public func authorForDisplay() -> String {
         let displayAuthor = authorName().stringByDecodingXMLCharacters().trim()
         return !displayAuthor.isEmpty ? displayAuthor : gravatarEmailForDisplay()
     }
@@ -165,9 +165,9 @@ extension Comment {
         return !authorAvatarURL.isEmpty ? URL(string: authorAvatarURL) : nil
     }
 
-    public func gravatarEmailForDisplay() -> String? {
+    public func gravatarEmailForDisplay() -> String {
         let displayEmail = author_email.trim()
-        return !displayEmail.isEmpty ? displayEmail : nil
+        return !displayEmail.isEmpty ? displayEmail : ""
     }
 
     public func dateForDisplay() -> Date? {
