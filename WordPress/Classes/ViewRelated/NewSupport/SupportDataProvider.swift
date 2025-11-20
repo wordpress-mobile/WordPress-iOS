@@ -404,7 +404,11 @@ extension WordPressAPIInternal.BotConversation {
                 await summarize(firstMessageText)
             }
         } else {
-            title = "New Bot Chat"
+            title = NSLocalizedString(
+                "com.jetpack.support.new-bot-chat",
+                value: "New Bot Chat",
+                comment: "The title of a new bot chat in the support area of the app"
+            )
         }
 
         return BotConversation(
