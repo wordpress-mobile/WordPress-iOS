@@ -259,24 +259,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return ([content rangeOfString:featuredImage].location != NSNotFound);
 }
 
-- (NSString *)sourceAuthorNameForDisplay
-{
-    return self.sourceAttribution.authorName;
-}
-
-- (NSURL *)sourceAvatarURLForDisplay
-{
-    if (!self.sourceAttribution) {
-        return nil;
-    }
-    return [NSURL URLWithString:self.sourceAttribution.avatarURL];
-}
-
-- (NSString *)sourceBlogNameForDisplay
-{
-    return self.sourceAttribution.blogName;
-}
-
 - (NSDictionary *)railcarDictionary
 {
     if (!self.railcar) {

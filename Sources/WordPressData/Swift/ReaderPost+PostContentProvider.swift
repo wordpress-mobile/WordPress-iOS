@@ -68,6 +68,11 @@ extension ReaderPost {
     public func avatarURLForDisplay() -> URL? {
         authorAvatarURL.flatMap(URL.init(string:))
     }
+
+    public func sourceAuthorNameForDisplay() -> String? {
+        sourceAttribution?.authorName
+    }
+
     public func sourceAttributionStyle() -> SourceAttributionStyle {
         guard let sourceAttribution else {
             return .none
@@ -80,6 +85,14 @@ extension ReaderPost {
         }
 
         return .none
+    }
+
+    public func sourceAvatarURLForDisplay() -> URL? {
+        sourceAttribution?.avatarURL.flatMap(URL.init(string:))
+    }
+
+    public func sourceBlogNameForDisplay() -> String? {
+        return sourceAttribution?.blogName
     }
 
 }
