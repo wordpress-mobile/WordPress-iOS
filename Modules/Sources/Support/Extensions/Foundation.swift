@@ -5,6 +5,10 @@ extension Date {
         let calendar = Calendar.autoupdatingCurrent
         return calendar.isDateInToday(self)
     }
+
+    var hasPast: Bool {
+        Date.now > self
+    }
 }
 
 extension String {
