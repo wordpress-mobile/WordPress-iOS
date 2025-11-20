@@ -259,17 +259,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return ([content rangeOfString:featuredImage].location != NSNotFound);
 }
 
-- (SourceAttributionStyle)sourceAttributionStyle
-{
-    if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttribution.post]) {
-        return SourceAttributionStylePost;
-    } else if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttribution.site]) {
-        return SourceAttributionStyleSite;
-    } else {
-        return SourceAttributionStyleNone;
-    }
-}
-
 - (NSString *)sourceAuthorNameForDisplay
 {
     return self.sourceAttribution.authorName;

@@ -68,4 +68,18 @@ extension ReaderPost {
     public func avatarURLForDisplay() -> URL? {
         authorAvatarURL.flatMap(URL.init(string:))
     }
+    public func sourceAttributionStyle() -> SourceAttributionStyle {
+        guard let sourceAttribution else {
+            return .none
+        }
+
+        if sourceAttribution.attributionType == SourcePostAttribution.post {
+            return .post
+        } else if sourceAttribution.attributionType == SourcePostAttribution.site {
+            return .site
+        }
+
+        return .none
+    }
+
 }
