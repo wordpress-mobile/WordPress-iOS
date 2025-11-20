@@ -46,7 +46,11 @@ extension ReaderPost {
     }
 
     public func authorForDisplay() -> String? {
-        return authorString()
+        if let name = self.authorDisplayName, !name.isEmpty {
+            return name
+        }
+
+        return author
     }
 
     public func dateForDisplay() -> Date? {
