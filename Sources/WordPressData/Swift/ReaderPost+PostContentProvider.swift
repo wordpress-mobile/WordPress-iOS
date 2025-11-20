@@ -6,6 +6,11 @@ extension ReaderPost {
         crossPostMeta != nil
     }
 
+    public var isP2Type: Bool {
+        guard let id = organizationID?.intValue, let type = SiteOrganizationType(rawValue: id) else { return false }
+        return type == .p2 || type == .automattic
+    }
+
     @objc public override var featuredImageURL: URL? {
         if !self.featuredImage.isEmpty {
             return URL(string: self.featuredImage)

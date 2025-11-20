@@ -234,12 +234,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return nil;
 }
 
-- (BOOL)isP2Type
-{
-    NSInteger orgID = [self.organizationID intValue];
-    return orgID == SiteOrganizationTypeP2 || orgID == SiteOrganizationTypeAutomattic;
-}
-
 - (NSString *)authorString
 {
     if ([self.authorDisplayName length] > 0) {

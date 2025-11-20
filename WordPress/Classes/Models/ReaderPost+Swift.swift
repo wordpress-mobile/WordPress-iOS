@@ -13,7 +13,7 @@ extension ReaderPost {
         if canSubscribeComments {
             return true
         }
-        if isP2Type() {
+        if isP2Type {
             return !((topic as? ReaderSiteTopic)?.emailSubscription?.sendComments ?? false)
         }
         return false

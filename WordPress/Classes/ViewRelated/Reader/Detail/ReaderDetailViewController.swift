@@ -274,7 +274,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             webView.postURL = postURL
         }
 
-        webView.isP2 = post.isP2Type()
+        webView.isP2 = post.isP2Type
 
         if post.content?.hasSuffix("[…]") == true {
             let viewMoreView = ReaderReadMoreView(post: post)
