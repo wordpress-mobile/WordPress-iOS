@@ -7,6 +7,7 @@ import WordPressData
 import WordPressShared
 import ShareExtensionCore
 import SVProgressHUD
+import PulseUI
 import WordPressFlux
 import DesignSystem
 import WordPressUI
@@ -550,6 +551,11 @@ private extension AppSettingsViewController {
             action: pushDebugMenu()
         )
 
+        let loggerRow = NavigationItemRow(title: Strings.logger, icon: UIImage(systemName: "record.circle")) { [weak self] _ in
+            let mainVC = PulseUI.MainViewController()
+            self?.present(mainVC, animated: true)
+        }
+
         let designSystem = NavigationItemRow(
             title: NSLocalizedString("Design System", comment: "Navigates to design system gallery only available in development builds"),
             icon: UIImage(systemName: "paintpalette"),
@@ -584,6 +590,10 @@ private extension AppSettingsViewController {
         if BuildConfiguration.current.isInternal {
             rows.append(debugRow)
             rows.append(designSystem)
+        }
+
+        if FeatureFlag.pulse.enabled {
+            rows.append(loggerRow)
         }
 
         if let presenter = RootViewCoordinator.shared.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
@@ -635,6 +645,12 @@ extension AppSettingsViewController {
             "application-settings.experimental-features",
             value: "Experimental Features",
             comment: "The list item of experimental features that users can choose to enable"
+        )
+
+        static let logger = NSLocalizedString(
+            "applicationSettings.logger",
+            value: "Logger",
+            comment: "A item in the menu"
         )
     }
 }
