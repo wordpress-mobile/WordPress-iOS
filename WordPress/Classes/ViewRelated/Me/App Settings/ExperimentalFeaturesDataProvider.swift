@@ -61,7 +61,7 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
 
         if feature.key == FeatureFlag.pulse.key && newValue {
             let alert = UIAlertController(title: Strings.pulseAlertTitle, message: Strings.pulseAlertMessage, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: Strings.pulseAlertCancel, style: .cancel, handler: { _ in
+            alert.addAction(UIAlertAction(title: SharedStrings.Button.cancel, style: .cancel, handler: { _ in
                 self.flagStore.override(self.flag(for: feature), withValue: false)
             }))
             alert.addAction(UIAlertAction(title: Strings.pulseAlertConfirm, style: .default, handler: { _ in
@@ -97,9 +97,8 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
         static let editorFeedbackAccept = NSLocalizedString("experimentalFeatures.editorFeedbackAccept", value: "Send feedback", comment: "Accept button title for the alert asking for feedback")
         static let editorNote = NSLocalizedString("experimentalFeatures.editorNote", value: "Experimental Block Editor will become the default in a future release and the ability to disable it will be removed.", comment: "Communicates the future removal of the option to disable the experimental editor, displayed beneath the experimental features list")
 
-        static let pulseAlertTitle = NSLocalizedString("experimentalFeatures.pulse.alert.title", value: "Enable Pulse Logging?", comment: "Alert title when enabling Pulse logging feature")
-        static let pulseAlertMessage = NSLocalizedString("experimentalFeatures.pulse.alert.message", value: "This will enable extensive local logging for debugging purposes and add a new Logger row in App Settings. This is not recommended unless you know what you're doing. The app will restart to apply changes.", comment: "Alert message explaining Pulse logging feature and warning users")
-        static let pulseAlertConfirm = NSLocalizedString("experimentalFeatures.pulse.alert.confirm", value: "Apply & Restart", comment: "Button to confirm enabling Pulse logging and restart the app")
-        static let pulseAlertCancel = NSLocalizedString("experimentalFeatures.pulse.alert.cancel", value: "Cancel", comment: "Button to cancel enabling Pulse logging")
+        static let pulseAlertTitle = NSLocalizedString("experimentalFeatures.extensiveLogging.alert.title", value: "Enable Extensive Logging?", comment: "Alert title when enabling Pulse logging feature")
+        static let pulseAlertMessage = NSLocalizedString("experimentalFeatures.extensiveLogging.alert.message", value: "This will enable extensive local logging for debugging purposes and add a new Logger row in App Settings. This is not recommended unless you know what you're doing. The app will restart to apply changes.", comment: "Alert message explaining Pulse logging feature and warning users")
+        static let pulseAlertConfirm = NSLocalizedString("experimentalFeatures.extensiveLogging.alert.confirm", value: "Apply & Restart", comment: "Button to confirm enabling Pulse logging and restart the app")
     }
 }
