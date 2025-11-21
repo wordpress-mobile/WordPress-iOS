@@ -133,7 +133,7 @@ extension FeatureFlag {
         case .intelligence: "Intelligence"
         case .newSupport: "New Support"
         case .nativeBlockInserter: "Native Block Inserter"
-        case .pulse: "In-App Logger"
+        case .pulse: "Extensive Logging"
         }
     }
 }
