@@ -552,6 +552,7 @@ private extension AppSettingsViewController {
         )
 
         let loggerRow = NavigationItemRow(title: Strings.logger, icon: UIImage(systemName: "record.circle")) { [weak self] _ in
+            UserDefaults.standard.set(false, forKey: "pulse-disable-support-prompts")
             let mainVC = PulseUI.MainViewController()
             self?.present(mainVC, animated: true)
         }
