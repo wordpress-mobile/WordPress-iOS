@@ -1,5 +1,5 @@
 {
-  "originHash" : "c040183dbb87d4f7ca1aa256a2faed284172acf4e4d9f8173ef207b01b5d415d",
+  "originHash" : "59de63b94ce4574b3d48daf7de838b9ef1ed2aa2d691b4b29b2744a372eaf408",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -239,6 +239,15 @@
       "state" : {
         "revision" : "6125ce7fb51b114ba71b761d18cfd5557923bd4d",
         "version" : "5.1.4"
+      }
+    },
+    {
+      "identity" : "pulseloghandler",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kean/PulseLogHandler",
+      "state" : {
+        "revision" : "477e9ef76615f0b76b43bb502af432fe6750b704",
+        "version" : "5.1.0"
       }
     },
     {

@@ -5,6 +5,9 @@ import AutomatticTracks
 import BuildSettingsKit
 import CocoaLumberjackSwift
 import DesignSystem
+import Logging
+import Pulse
+import PulseLogHandler
 import Reachability
 import SFHFKeychainUtils
 import SVProgressHUD
@@ -80,6 +83,9 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DesignSystem.FontManager.registerCustomFonts()
         AssertionLoggerDependencyContainer.logger = AssertionLogger()
         UITestConfigurator.prepareApplicationForUITests(in: application, window: window)
+        if FeatureFlag.pulse.enabled {
+            LoggingSystem.bootstrap(PersistentLogHandler.init)
+        }
 
         AppAppearance.overrideAppearance()
         MemoryCache.shared.register()
@@ -115,6 +121,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
+        Logger(label: "App")
+            .info("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
         ABTest.start()
 
