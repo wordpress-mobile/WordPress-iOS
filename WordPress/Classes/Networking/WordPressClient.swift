@@ -40,7 +40,10 @@ extension WordPressClient {
             urlSession: session,
             apiUrlResolver: resolver,
             authenticationProvider: provider,
-            appNotifier: notifier
+            middlewarePipeline: MiddlewarePipeline(middlewares: [
+                PulseMiddleware()
+            ]),
+            appNotifier: notifier,
         )
         self.init(api: api, rootUrl: apiRootURL)
     }
