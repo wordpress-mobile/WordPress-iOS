@@ -21,18 +21,4 @@
 @dynamic suggested_slug;
 @dynamic pathForDisplayImage;
 
-- (BOOL)hasContent
-{
-    BOOL titleIsEmpty = self.postTitle ? self.postTitle.isEmpty : YES;
-    BOOL contentIsEmpty = [self isContentEmpty];
-
-    return !titleIsEmpty || !contentIsEmpty;
-}
-
-- (BOOL)isContentEmpty
-{
-    BOOL isContentAnEmptyGBParagraph = [self.content isEqualToString:@"<!-- wp:paragraph -->\n<p></p>\n<!-- /wp:paragraph -->"];
-    return  self.content ? (self.content.isEmpty || isContentAnEmptyGBParagraph) : YES;
-}
-
 @end

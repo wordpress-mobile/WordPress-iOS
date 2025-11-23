@@ -27,12 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable) NSString *pathForDisplayImage;
 
-// Returns true if title or content is non empty
-- (BOOL)hasContent;
-
-// True if the content field is empty, independent of the title field.
-- (BOOL)isContentEmpty;
-
 @end
 
 NS_ASSUME_NONNULL_END
