@@ -35,14 +35,6 @@
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
-
-#pragma mark - Getters/Setters
-
-- (void)setDateCreated:(NSDate *)localDate
-{
-    self.date_created_gmt = localDate;
-}
-
 #pragma mark -
 #pragma mark Revision management
 
