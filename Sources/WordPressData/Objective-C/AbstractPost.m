@@ -38,22 +38,6 @@
 
 #pragma mark - Getters/Setters
 
-- (void)setRemoteStatusNumber:(NSNumber *)remoteStatusNumber
-{
-    NSString *key = @"remoteStatusNumber";
-    [self willChangeValueForKey:key];
-    [self setPrimitiveValue:remoteStatusNumber forKey:key];
-    [self didChangeValueForKey:key];
-}
-
-- (void)setDate_created_gmt:(NSDate *)date_created_gmt
-{
-    NSString *key = @"date_created_gmt";
-    [self willChangeValueForKey:key];
-    [self setPrimitiveValue:date_created_gmt forKey:key];
-    [self didChangeValueForKey:key];
-}
-
 - (void)setDateCreated:(NSDate *)localDate
 {
     self.date_created_gmt = localDate;
