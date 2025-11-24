@@ -38,16 +38,6 @@
 #pragma mark -
 #pragma mark Revision management
 
-- (BOOL)isRevision
-{
-    return (![self isOriginal]);
-}
-
-- (BOOL)isOriginal
-{
-    return ([self original] == nil);
-}
-
 - (AbstractPost *)latest
 {
     return [self hasRevision] ? [[self revision] latest] : self;

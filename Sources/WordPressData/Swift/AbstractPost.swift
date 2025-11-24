@@ -308,4 +308,15 @@ public extension AbstractPost {
         }
         clone(from: revision)
     }
+
+    @objc
+    func isRevision() -> Bool {
+        !isOriginal()
+    }
+
+    @objc
+    func isOriginal() -> Bool {
+        original == nil
+    }
+
 }

@@ -62,9 +62,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 @property (nonatomic, strong, nullable) NSString *voiceContent;
 
-// Revision management
-- (BOOL)isRevision;
-- (BOOL)isOriginal;
 
 /// Returns the latest revision of a post.
 ///
