@@ -38,18 +38,6 @@
 #pragma mark -
 #pragma mark Revision management
 
-- (void)deleteRevision
-{
-    if (self.revision) {
-        [self.managedObjectContext performBlockAndWait :^{
-            [self.managedObjectContext deleteObject:self.revision];
-            [self willChangeValueForKey:@"revision"];
-            [self setPrimitiveValue:nil forKey:@"revision"];
-            [self didChangeValueForKey:@"revision"];
-        }];
-    }
-}
-
 - (void)applyRevision
 {
     if ([self isOriginal]) {

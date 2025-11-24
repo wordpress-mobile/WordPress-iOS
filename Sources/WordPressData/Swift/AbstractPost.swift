@@ -286,4 +286,18 @@ public extension AbstractPost {
         post.setValue(nil, forKey: "revision")
         return post
     }
+
+    @objc
+    func deleteRevision() {
+        guard let revision, let context = managedObjectContext else {
+            return
+        }
+
+        context.performAndWait {
+            context.delete(revision)
+            willChangeValue(forKey: "revision")
+            setPrimitiveValue(nil, forKey: "revision")
+            didChangeValue(forKey: "revision")
+        }
+    }
 }
