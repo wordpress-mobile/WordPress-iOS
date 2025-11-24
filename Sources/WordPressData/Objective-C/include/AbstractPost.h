@@ -71,12 +71,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
 
-/**
- *  @brief      Call this method to know whether this post has a revision or not.
- *
- *  @returns    YES if this post has a revision, NO otherwise.
- */
-- (BOOL)hasRevision;
 
 #pragma mark - Conveniece Methods
 - (BOOL)shouldPublishImmediately;

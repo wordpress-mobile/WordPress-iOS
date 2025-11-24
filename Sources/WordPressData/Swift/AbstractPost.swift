@@ -319,4 +319,8 @@ public extension AbstractPost {
         original == nil
     }
 
+    @objc
+    func hasRevision() -> Bool {
+        revision != nil
+    }
 }

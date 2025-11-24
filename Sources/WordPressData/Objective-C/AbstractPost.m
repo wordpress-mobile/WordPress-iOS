@@ -112,11 +112,6 @@
     return NO;
 }
 
-- (BOOL)hasRevision
-{
-    return self.revision != nil;
-}
-
 - (BOOL)hasRemote
 {
     return ((self.postID != nil) && ([self.postID longLongValue] > 0));
