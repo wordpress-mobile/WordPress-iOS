@@ -63,7 +63,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (nonatomic, strong, nullable) NSString *voiceContent;
 
 // Revision management
-- (AbstractPost *)createRevision;
 - (void)deleteRevision;
 - (void)applyRevision;
 - (BOOL)isRevision;

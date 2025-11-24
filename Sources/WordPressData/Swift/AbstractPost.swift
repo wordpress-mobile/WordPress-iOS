@@ -273,4 +273,17 @@ public extension AbstractPost {
             }
         }
     }
+
+    @objc
+    func createRevision() -> AbstractPost {
+        precondition(managedObjectContext != nil)
+        precondition(revision == nil, "This post must not already have a revision")
+
+        let post = Self(context: managedObjectContext!)
+        post.clone(from: self)
+        post.remoteStatus = .localRevision
+        post.setValue(self, forKey: "original")
+        post.setValue(nil, forKey: "revision")
+        return post
+    }
 }

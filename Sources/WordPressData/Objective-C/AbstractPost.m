@@ -38,18 +38,6 @@
 #pragma mark -
 #pragma mark Revision management
 
-- (AbstractPost *)createRevision
-{
-    NSParameterAssert(self.revision == nil);
-
-    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
-    [post cloneFrom:self];
-    post.remoteStatus = AbstractPostRemoteStatusLocalRevision;
-    [post setValue:self forKey:@"original"];
-    [post setValue:nil forKey:@"revision"];
-    return post;
-}
-
 - (void)deleteRevision
 {
     if (self.revision) {
