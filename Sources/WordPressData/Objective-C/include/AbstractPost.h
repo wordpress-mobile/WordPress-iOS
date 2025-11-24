@@ -75,11 +75,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 #pragma mark - Unsaved Changes
 
-/**
- Returns YES if the original post is a draft
- */
-- (BOOL)originalIsDraft;
-
 // Does the post exist on the blog?
 - (BOOL)hasRemote;
 

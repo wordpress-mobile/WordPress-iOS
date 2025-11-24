@@ -114,16 +114,6 @@
 
 #pragma mark - Convenience methods
 
-- (BOOL)originalIsDraft
-{
-    if ([self.status isEqualToString:PostStatusDraft]) {
-        return YES;
-    } else if (self.isRevision && [self.original.status isEqualToString:PostStatusDraft]) {
-        return YES;
-    }
-    return NO;
-}
-
 - (BOOL)shouldPublishImmediately
 {
     /// - warning: Yes, this is WordPress logic and it matches the behavior on

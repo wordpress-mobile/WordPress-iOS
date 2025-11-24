@@ -346,4 +346,15 @@ public extension AbstractPost {
     func isPublished() -> Bool {
         status == .publish
     }
+
+    /// Returns YES if the original post is a draft
+    @objc
+    func originalIsDraft() -> Bool {
+        if status == .draft {
+            return true
+        } else if isRevision(), original?.status == .draft {
+            return true
+        }
+        return false
+    }
 }
