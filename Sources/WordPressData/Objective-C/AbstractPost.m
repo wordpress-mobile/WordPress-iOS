@@ -70,11 +70,6 @@
 
 #pragma mark - Convenience methods
 
-- (NSURL *)blogURL
-{
-    return [NSURL URLWithString:self.blog.url];
-}
-
 - (BOOL)isPrivateAtWPCom
 {
     return self.blog.isPrivateAtWPCom;
