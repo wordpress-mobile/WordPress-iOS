@@ -68,13 +68,6 @@
     return NO;
 }
 
-#pragma mark - Convenience methods
-
-- (BOOL)isPrivateAtWPCom
-{
-    return self.blog.isPrivateAtWPCom;
-}
-
 #pragma mark - Post
 
 - (void)updatePathForDisplayImageBasedOnContent

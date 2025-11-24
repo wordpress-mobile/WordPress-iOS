@@ -65,11 +65,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
 
-
-#pragma mark - Conveniece Methods
-- (BOOL)isPrivateAtWPCom;
-
-
 #pragma mark - Unsaved Changes
 
 // Save changes to disk
