@@ -1313,3 +1313,14 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
         )
     }
 }
+
+extension ReaderDetailViewController: ContentIdentifiable {
+    var contentIdentifier: String? {
+        // Only ever try to resolve this based on the site ID and post ID – the post object is fetched later
+        if let siteId = self.coordinator?.siteID?.intValue, let postId = self.coordinator?.postID?.intValue {
+            return "https://wordpress.com/reader/feeds/\(siteId)/posts/\(postId)"
+        }
+
+        return nil
+    }
+}

@@ -1637,6 +1637,24 @@ extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate 
     }
 }
 
+extension ReaderStreamViewController: ContentIdentifiable {
+    var contentIdentifier: String? {
+        if let siteId = self.siteID {
+            return "https://wordpress.com/reader/feeds/\(siteId)/"
+        }
+
+        if let tagSlug = self.tagSlug {
+            return "https://wordpress.com/tag/\(tagSlug)"
+        }
+
+        if let readerTopic {
+            return readerTopic.path
+        }
+
+        return nil
+    }
+}
+
 private enum Strings {
     static let postRemoved = NSLocalizedString("reader.savedPostRemovedNotificationTitle", value: "Saved post removed", comment: "Notification title for when saved post is removed")
 }

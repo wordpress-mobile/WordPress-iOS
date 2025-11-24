@@ -199,6 +199,9 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     /// column (split view) or pushing to the navigation stack.
     private func show(_ viewController: UIViewController, isLargeTitle: Bool = false) {
         if let splitViewController {
+            guard !self.contentIsAlreadyDisplayed(viewController, in: splitViewController, for: .secondary) else {
+                return
+            }
             (viewController as? ReaderStreamViewController)?.isNotificationsBarButtonEnabled = true
 
             let navigationVC = UINavigationController(rootViewController: viewController)
@@ -207,6 +210,11 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
             }
             splitViewController.setViewController(navigationVC, for: .secondary)
         } else {
+            // Don't push a view controller on top of another with the same content
+            guard !self.contentIsAlreadyDisplayed(viewController, in: mainNavigationController) else {
+                return
+            }
+
             mainNavigationController.safePushViewController(viewController, animated: true)
         }
     }
@@ -215,12 +223,57 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     /// the `.secondary` column (split view) or to the main navigation stack.
     private func push(_ viewController: UIViewController) {
         if let splitViewController {
+            // Don't push a view controller on top of another with the same content
+            guard !contentIsAlreadyDisplayed(viewController, in: splitViewController, for: .secondary) else {
+                return
+            }
             let navigationVC = splitViewController.viewController(for: .secondary) as? UINavigationController
             wpAssert(navigationVC != nil)
             navigationVC?.safePushViewController(viewController, animated: true)
         } else {
+            // Don't push a view controller on top of another with the same content
+            guard !self.contentIsAlreadyDisplayed(viewController, in: mainNavigationController) else {
+                return
+            }
+
             mainNavigationController.safePushViewController(viewController, animated: true)
         }
+    }
+
+    private func contentIsAlreadyDisplayed(_ viewController: UIViewController, in nav: UINavigationController) -> Bool {
+        if let current = nav.topViewController as? ContentIdentifiable {
+            if let new = viewController as? ContentIdentifiable {
+                if new.contentIdentifier == current.contentIdentifier {
+                    return true
+                }
+            }
+        }
+
+        return false
+    }
+
+    private func contentIsAlreadyDisplayed(
+        _ viewController: UIViewController,
+        in split: UISplitViewController,
+        for column: UISplitViewController.Column
+    ) -> Bool {
+        guard let top = split.viewController(for: column) else {
+            return false
+        }
+
+        if let nav = top as? UINavigationController {
+            return contentIsAlreadyDisplayed(viewController, in: nav)
+        }
+
+        if let current = top as? ContentIdentifiable {
+            if let new = viewController as? ContentIdentifiable {
+                if new.contentIdentifier == current.contentIdentifier {
+                    return true
+                }
+            }
+        }
+
+        return false
     }
 
     // MARK: - Deep Links (ReaderNavigationPath)
