@@ -320,6 +320,11 @@ public extension AbstractPost {
     }
 
     @objc
+    func latest() -> AbstractPost {
+        revision?.latest() ?? self
+    }
+
+    @objc
     func hasRevision() -> Bool {
         revision != nil
     }

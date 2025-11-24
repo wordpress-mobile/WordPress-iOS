@@ -38,11 +38,6 @@
 #pragma mark -
 #pragma mark Revision management
 
-- (AbstractPost *)latest
-{
-    return [self hasRevision] ? [[self revision] latest] : self;
-}
-
 - (AbstractPost *)revision
 {
     [self willAccessValueForKey:@"revision"];

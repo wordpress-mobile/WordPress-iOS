@@ -62,10 +62,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 @property (nonatomic, strong, nullable) NSString *voiceContent;
 
-
-/// Returns the latest revision of a post.
-///
-- (AbstractPost *)latest;
 - (BOOL)hasPhoto;
 - (BOOL)hasVideo;
 - (BOOL)hasCategories;
