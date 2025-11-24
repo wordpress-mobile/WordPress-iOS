@@ -76,9 +76,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  */
 - (void)updatePathForDisplayImageBasedOnContent;
 
-- (void)setParsedOtherTerms:(NSDictionary<NSString *, NSArray<NSString *> *> *)data;
-- (NSDictionary<NSString *, NSArray<NSString *> *> *)parseOtherTerms;
-
 @end
 
 @interface AbstractPost (CoreDataGeneratedAccessors)

@@ -393,4 +393,18 @@ public extension AbstractPost {
     func hasRemote() -> Bool {
         (postID?.int64Value ?? 0) > 0
     }
+
+    @objc
+    var parsedOtherTerms: [String: [String]] {
+        get {
+            guard let rawOtherTerms else {
+                return [:]
+            }
+
+            return (try? JSONSerialization.jsonObject(with: rawOtherTerms) as? [String: [String]]) ?? [:]
+        }
+        set {
+            rawOtherTerms = try? JSONSerialization.data(withJSONObject: newValue)
+        }
+    }
 }

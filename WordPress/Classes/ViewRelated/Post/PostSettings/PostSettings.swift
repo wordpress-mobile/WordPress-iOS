@@ -54,7 +54,7 @@ struct PostSettings: Hashable {
         }
 
         featuredImageID = post.featuredImage?.mediaID?.intValue
-        otherTerms = post.parseOtherTerms()
+        otherTerms = post.parsedOtherTerms
 
         metadata = PostMetadata(post)
 
@@ -112,8 +112,8 @@ struct PostSettings: Hashable {
             post.featuredImage = nil
         }
 
-        if !RemotePost.compare(otherTerms: post.parseOtherTerms(), withAnother: otherTerms) {
-            post.setParsedOtherTerms(otherTerms)
+        if !RemotePost.compare(otherTerms: post.parsedOtherTerms, withAnother: otherTerms) {
+            post.parsedOtherTerms = otherTerms
         }
 
         var postMetadataContainer = PostMetadataContainer(post)
