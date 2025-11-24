@@ -62,8 +62,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 @property (nonatomic, strong, nullable) NSString *voiceContent;
 
-- (BOOL)hasPhoto;
-- (BOOL)hasVideo;
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
 

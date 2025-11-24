@@ -58,40 +58,6 @@
 
 #pragma mark - Helpers
 
-- (BOOL)hasPhoto
-{
-    if ([self.media count] == 0) {
-        return NO;
-    }
-
-    if (self.featuredImage != nil) {
-        return YES;
-    }
-
-    for (Media *media in self.media) {
-        if (media.mediaType == MediaTypeImage) {
-            return YES;
-        }
-    }
-
-    return NO;
-}
-
-- (BOOL)hasVideo
-{
-    if ([self.media count] == 0) {
-        return NO;
-    }
-
-    for (Media *media in self.media) {
-        if (media.mediaType ==  MediaTypeVideo) {
-            return YES;
-        }
-    }
-
-    return NO;
-}
-
 - (BOOL)hasCategories
 {
     return NO;

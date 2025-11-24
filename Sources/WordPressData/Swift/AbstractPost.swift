@@ -365,4 +365,26 @@ public extension AbstractPost {
         // uses it to represent a "no publish date selected" scenario.
         originalIsDraft() && (date_created_gmt == nil || date_created_gmt == dateModified)
     }
+
+    @objc
+    func hasPhoto() -> Bool {
+        if media.isEmpty {
+            return false
+        }
+
+        if featuredImage != nil {
+            return true
+        }
+
+        return media.contains { $0.mediaType == .image }
+    }
+
+    @objc
+    func hasVideo() -> Bool {
+        if media.isEmpty {
+            return false
+        }
+
+        return media.contains { $0.mediaType == .video }
+    }
 }
