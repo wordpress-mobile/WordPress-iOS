@@ -387,4 +387,10 @@ public extension AbstractPost {
 
         return media.contains { $0.mediaType == .video }
     }
+
+    /// Does the post exist on the blog?
+    @objc
+    func hasRemote() -> Bool {
+        (postID?.int64Value ?? 0) > 0
+    }
 }

@@ -68,11 +68,6 @@
     return NO;
 }
 
-- (BOOL)hasRemote
-{
-    return ((self.postID != nil) && ([self.postID longLongValue] > 0));
-}
-
 #pragma mark - Convenience methods
 
 - (NSURL *)blogURL

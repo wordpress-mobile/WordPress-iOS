@@ -72,9 +72,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 #pragma mark - Unsaved Changes
 
-// Does the post exist on the blog?
-- (BOOL)hasRemote;
-
 // Save changes to disk
 - (void)save;
 
