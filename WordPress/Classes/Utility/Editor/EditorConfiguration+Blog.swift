@@ -46,6 +46,7 @@ extension EditorConfiguration {
             // Limited to Jetpack-connected sites until editor assets endpoint is available in WordPress core
             .setShouldUsePlugins(Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword))
             .setLocale(WordPressComLanguageDatabase.shared.deviceLanguage.slug)
+            .setEnableNetworkLogging(true)
 
         if let blogUrl = blog.url {
             builder = builder.setSiteUrl(blogUrl)
