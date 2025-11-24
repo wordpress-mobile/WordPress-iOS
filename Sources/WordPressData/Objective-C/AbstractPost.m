@@ -38,13 +38,6 @@
 #pragma mark -
 #pragma mark Revision management
 
-- (void)applyRevision
-{
-    if ([self isOriginal]) {
-        [self cloneFrom:self.revision];
-    }
-}
-
 - (BOOL)isRevision
 {
     return (![self isOriginal]);

@@ -300,4 +300,12 @@ public extension AbstractPost {
             didChangeValue(forKey: "revision")
         }
     }
+
+    @objc
+    func applyRevision() {
+        guard isOriginal(), let revision else {
+            return
+        }
+        clone(from: revision)
+    }
 }
