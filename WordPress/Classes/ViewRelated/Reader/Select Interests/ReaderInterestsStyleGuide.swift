@@ -15,11 +15,11 @@ class ReaderInterestsStyleGuide {
 
         static let latest = Metrics(
             interestsLabelMargin: 16.0,
-            cellCornerRadius: 5.0,
+            cellCornerRadius: 8.0,
             cellSpacing: 8.0,
             cellHeight: 34.0,
             maxCellWidthMultiplier: 0.8,
-            borderWidth: 1.0,
+            borderWidth: 0.5,
             borderColor: .separator
         )
     }

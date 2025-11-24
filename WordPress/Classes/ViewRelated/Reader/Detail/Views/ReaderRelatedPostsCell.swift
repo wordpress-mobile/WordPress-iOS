@@ -19,7 +19,7 @@ class ReaderRelatedPostsCell: UITableViewCell, NibReusable {
         featuredImageView.contentMode = .scaleAspectFill
         featuredImageView.backgroundColor = .placeholderText
 
-        titleLabel.numberOfLines = 0
+        titleLabel.numberOfLines = 3
         titleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         titleLabel.textColor = .label
 
@@ -61,6 +61,6 @@ class ReaderRelatedPostsCell: UITableViewCell, NibReusable {
     }
 
     private enum Constants {
-        static let cornerRadius: CGFloat = 4
+        static let cornerRadius: CGFloat = 6
     }
 }
