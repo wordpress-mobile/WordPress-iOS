@@ -471,8 +471,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Apply view styles
     @MainActor private func applyStyles() {
         NSLayoutConstraint.activate([
-            webView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor, constant: -Constants.margin),
-            webView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor, constant: Constants.margin)
+            webView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor, constant: 0),
+            webView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor, constant: 0)
         ])
 
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -884,7 +884,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private enum Constants {
         static let preferredArticleWidth: CGFloat = 680
-        static let margin: CGFloat = UIDevice.isPad() ? 0 : 8
     }
 
     // MARK: - Managed object observer

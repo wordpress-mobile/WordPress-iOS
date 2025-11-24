@@ -1,5 +1,6 @@
 26.6
 -----
+* [*] Fix horizontal insets in Reader article view [#25010]
 
 
 26.5
