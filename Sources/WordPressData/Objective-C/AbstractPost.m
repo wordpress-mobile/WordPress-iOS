@@ -28,13 +28,6 @@
 @dynamic permalinkTemplateURL;
 @synthesize voiceContent;
 
-#pragma mark - Life Cycle Methods
-
-- (void)save
-{
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
-
 #pragma mark -
 #pragma mark Revision management
 
