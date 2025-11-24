@@ -407,4 +407,35 @@ public extension AbstractPost {
             rawOtherTerms = try? JSONSerialization.data(withJSONObject: newValue)
         }
     }
+
+    /// Updates the path for the display image by looking at the post content and trying to find an good image to use.
+    /// If no appropiated image is found the path is set to nil.
+    @objc
+    func updatePathForDisplayImageBasedOnContent() {
+        guard let content else {
+            return
+        }
+
+        if let result = DisplayableImageHelper.searchPostContentForImage(toDisplay: content), !result.isEmpty {
+            pathForDisplayImage = result
+            return
+        }
+
+        guard let allMedia = blog.media, !allMedia.isEmpty else { return }
+
+        let mediaIDs = DisplayableImageHelper.searchPostContentForAttachmentIds(inGalleries: content) as? Set<NSNumber> ?? []
+        for media in allMedia {
+            guard let media = media as? Media else { continue }
+
+            guard let mediaID = media.mediaID,
+                  mediaIDs.contains(mediaID) else {
+                continue
+            }
+
+            if let remoteURL = media.remoteURL {
+                pathForDisplayImage = remoteURL
+                break
+            }
+        }
+    }
 }
