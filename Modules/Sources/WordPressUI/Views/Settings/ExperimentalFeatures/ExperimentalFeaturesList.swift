@@ -5,8 +5,8 @@ public struct ExperimentalFeaturesList: View {
     @ObservedObject
     var viewModel: ExperimentalFeaturesViewModel
 
-    @AppStorage("superExperimentalFeaturesEnabled")
-    private var superExperimentalFeaturesEnabled = false
+    @AppStorage("isDeveloperModeEnabled")
+    private var isDeveloperModeEnabled = false
 
     @State private var tapCount = 0
 
@@ -18,7 +18,7 @@ public struct ExperimentalFeaturesList: View {
         viewModel.items.filter { !$0.isSuperExperimental }
     }
 
-    private var superExperimentalFeatures: [Feature] {
+    private var developerFeatures: [Feature] {
         viewModel.items.filter { $0.isSuperExperimental }
     }
 
@@ -40,7 +40,7 @@ public struct ExperimentalFeaturesList: View {
                         }
                     }
 
-                    if !superExperimentalFeaturesEnabled {
+                    if !isDeveloperModeEnabled {
                         HStack {
                             Spacer()
                             boltButton
@@ -51,13 +51,13 @@ public struct ExperimentalFeaturesList: View {
                 .padding(.top, 8)
             }
 
-            if superExperimentalFeaturesEnabled && !superExperimentalFeatures.isEmpty {
+            if isDeveloperModeEnabled && !developerFeatures.isEmpty {
                 Section {
-                    ForEach(superExperimentalFeatures) { item in
+                    ForEach(developerFeatures) { item in
                         Toggle(item.name, isOn: viewModel.binding(for: item))
                     }
                 } header: {
-                    Text(Strings.superExperimentalSectionTitle)
+                    Text(Strings.developerToolsSectionTitle)
                 }
             }
         }
@@ -86,7 +86,7 @@ public struct ExperimentalFeaturesList: View {
 
         if tapCount >= 5 {
             withAnimation {
-                superExperimentalFeaturesEnabled = true
+                isDeveloperModeEnabled = true
             }
         }
     }
@@ -118,10 +118,10 @@ public struct ExperimentalFeaturesList: View {
             comment: "The title for the experimental features list"
         )
 
-        static let superExperimentalSectionTitle = NSLocalizedString(
-            "experimentalFeaturesList.superExperimental.section.title",
-            value: "Super Experimental Features",
-            comment: "Section title for super experimental features"
+        static let developerToolsSectionTitle = NSLocalizedString(
+            "experimentalFeaturesList.developTools.section.title",
+            value: "Developer Tools",
+            comment: "Section title for developer tools"
         )
     }
 }
