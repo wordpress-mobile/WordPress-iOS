@@ -114,11 +114,6 @@
 
 #pragma mark - Convenience methods
 
-- (BOOL)isPublished
-{
-    return [self.status isEqualToString:PostStatusPublish];
-}
-
 - (BOOL)originalIsDraft
 {
     if ([self.status isEqualToString:PostStatusDraft]) {

@@ -340,4 +340,10 @@ public extension AbstractPost {
     func isDraft() -> Bool {
         status == .draft
     }
+
+    /// Returns YES if the post is a published.
+    @objc
+    func isPublished() -> Bool {
+        status == .publish
+    }
 }
