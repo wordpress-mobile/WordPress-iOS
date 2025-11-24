@@ -69,19 +69,6 @@
     }
 }
 
-- (AbstractPost *)updatePostFrom:(AbstractPost *)revision
-{
-    for (NSString *key in [[[revision entity] attributesByName] allKeys]) {
-        if ([key isEqualToString:@"postTitle"] ||
-            [key isEqualToString:@"content"]) {
-            [self setValue:[revision valueForKey:key] forKey:key];
-        } else if ([key isEqualToString:@"dateModified"]) {
-            [self setValue:[NSDate date] forKey:key];
-        }
-    }
-    return self;
-}
-
 - (BOOL)isRevision
 {
     return (![self isOriginal]);

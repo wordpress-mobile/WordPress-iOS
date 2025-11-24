@@ -66,7 +66,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (AbstractPost *)createRevision;
 - (void)deleteRevision;
 - (void)applyRevision;
-- (AbstractPost *)updatePostFrom:(AbstractPost *)revision;
 - (BOOL)isRevision;
 - (BOOL)isOriginal;
 
