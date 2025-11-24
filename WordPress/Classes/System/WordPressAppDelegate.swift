@@ -456,6 +456,12 @@ extension WordPressAppDelegate {
             return
         }
 
+        // Don't try to resolve `apps.wordpress.com` URLs
+        if url.host == "apps.wordpress.com" {
+            UniversalLinkRouter.shared.handle(url: url)
+            return
+        }
+
         trackDeepLink(for: url) { url in
             DispatchQueue.main.async {
                 UniversalLinkRouter.shared.handle(url: url)
