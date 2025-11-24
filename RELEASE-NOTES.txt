@@ -1,6 +1,5 @@
 26.6
 -----
-* [*] Fix horizontal insets in Reader article view [#25010]
 
 
 26.5
@@ -11,6 +10,7 @@
 * [*] Add "Access" section to "Post Settings" [#24942]
 * [*] Add "Discussion" to "Post Settings" [#24948]
 * [*] Add "File Size" to Site Media Details [#24947]
+* [*] Fix an issue with posts duplicated in Discover [#25015]
 * [*] Add "Email to Subscribers" row to "Publishing" sheet [#24946]
 * [*] Add permalink preview in the slug editor and make other improvements [#24949]
 * [*] Add two accessible font sizes to Reader display settings [#25013]
@@ -18,6 +18,7 @@
 * [*] Update "Categories" picker to indicate multiple selection [#24952]
 * [*] Fix overly long related post titles in Reader [#25011]
 * [*] Increase number of lines for post tiles in Reader to three [#25019]
+* [*] Fix horizontal insets in Reader article view [#25010]
 
 26.4
 -----

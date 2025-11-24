@@ -81,7 +81,7 @@ class ReaderCardService {
                     }
 
                     updatedCards.enumerated().forEach { index, remoteCard in
-                        let card = ReaderCard(context: context, from: remoteCard)
+                        let card = ReaderCard.createOrReuse(context: context, from: remoteCard)
 
                         // Assign each interest an endpoint
                         card?
