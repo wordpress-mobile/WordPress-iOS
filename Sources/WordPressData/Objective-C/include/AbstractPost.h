@@ -76,11 +76,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 #pragma mark - Unsaved Changes
 
 /**
- Returns YES if the post is has a `future` post status
- */
-- (BOOL)isScheduled;
-
-/**
  Returns YES if the post is a draft
  */
 - (BOOL)isDraft;

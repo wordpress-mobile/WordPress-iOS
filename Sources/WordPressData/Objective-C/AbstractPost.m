@@ -114,12 +114,6 @@
 
 #pragma mark - Convenience methods
 
-// If the post has a scheduled status.
-- (BOOL)isScheduled
-{
-    return ([self.status isEqualToString:PostStatusScheduled]);
-}
-
 - (BOOL)isDraft
 {
     return [self.status isEqualToString:PostStatusDraft];

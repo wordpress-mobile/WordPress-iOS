@@ -328,4 +328,10 @@ public extension AbstractPost {
     func hasRevision() -> Bool {
         revision != nil
     }
+
+    /// Returns YES if the post is has a `future` post status
+    @objc
+    func isScheduled() -> Bool {
+        status == .scheduled
+    }
 }
