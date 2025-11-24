@@ -38,26 +38,6 @@
 #pragma mark -
 #pragma mark Revision management
 
-- (AbstractPost *)cloneFrom:(AbstractPost *)source
-{
-    for (NSString *key in [[[source entity] attributesByName] allKeys]) {
-        if (![key isEqualToString:@"permalink"]) {
-            [self setValue:[source valueForKey:key] forKey:key];
-        }
-    }
-    for (NSString *key in [[[source entity] relationshipsByName] allKeys]) {
-        if ([key isEqualToString:@"original"] || [key isEqualToString:@"revision"]) {
-            continue;
-        } else if ([key isEqualToString:@"comments"]) {
-            [self setComments:[source comments]];
-        } else {
-            [self setValue: [source valueForKey:key] forKey: key];
-        }
-    }
-
-    return self;
-}
-
 - (AbstractPost *)createRevision
 {
     NSParameterAssert(self.revision == nil);

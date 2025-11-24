@@ -73,7 +73,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 /// Returns the latest revision of a post.
 ///
 - (AbstractPost *)latest;
-- (AbstractPost *)cloneFrom:(AbstractPost *)source;
 - (BOOL)hasPhoto;
 - (BOOL)hasVideo;
 - (BOOL)hasCategories;

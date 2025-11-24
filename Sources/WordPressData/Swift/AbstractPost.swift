@@ -254,4 +254,23 @@ public extension AbstractPost {
     override func contentPreviewForDisplay() -> String? {
         mt_excerpt
     }
+
+    @objc(cloneFrom:)
+    func clone(from source: AbstractPost) {
+        for key in source.entity.attributesByName.keys {
+            if key != "permalink" {
+                setValue(source.value(forKey: key), forKey: key)
+            }
+        }
+
+        for key in source.entity.relationshipsByName.keys {
+            if key == "original" || key == "revision" {
+                continue
+            } else if key == "comments" {
+                comments = source.comments
+            } else {
+                setValue(source.value(forKey: key), forKey: key)
+            }
+        }
+    }
 }
