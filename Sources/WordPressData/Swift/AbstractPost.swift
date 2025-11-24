@@ -334,4 +334,10 @@ public extension AbstractPost {
     func isScheduled() -> Bool {
         status == .scheduled
     }
+
+    /// Returns YES if the post is a draft
+    @objc
+    func isDraft() -> Bool {
+        status == .draft
+    }
 }

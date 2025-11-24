@@ -76,11 +76,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 #pragma mark - Unsaved Changes
 
 /**
- Returns YES if the post is a draft
- */
-- (BOOL)isDraft;
-
-/**
  Returns YES if the post is a published.
  */
 - (BOOL)isPublished;
