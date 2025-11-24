@@ -357,4 +357,12 @@ public extension AbstractPost {
         }
         return false
     }
+
+    @objc
+    func shouldPublishImmediately() -> Bool {
+        // - warning: Yes, this is WordPress logic and it matches the behavior on
+        // the web. If `dateCreated` is the same as `dateModified`, the system
+        // uses it to represent a "no publish date selected" scenario.
+        originalIsDraft() && (date_created_gmt == nil || date_created_gmt == dateModified)
+    }
 }

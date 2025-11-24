@@ -58,11 +58,6 @@
 
 #pragma mark - Helpers
 
-- (BOOL)dateCreatedIsNilOrEqualToDateModified
-{
-    return self.date_created_gmt == nil || [self.date_created_gmt isEqualToDate:self.dateModified];
-}
-
 - (BOOL)hasPhoto
 {
     if ([self.media count] == 0) {
@@ -113,14 +108,6 @@
 }
 
 #pragma mark - Convenience methods
-
-- (BOOL)shouldPublishImmediately
-{
-    /// - warning: Yes, this is WordPress logic and it matches the behavior on
-    /// the web. If `dateCreated` is the same as `dateModified`, the system
-    /// uses it to represent a "no publish date selected" scenario.
-    return [self originalIsDraft] && [self dateCreatedIsNilOrEqualToDateModified];
-}
 
 - (NSURL *)blogURL
 {

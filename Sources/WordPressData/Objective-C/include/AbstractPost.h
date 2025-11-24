@@ -69,7 +69,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 
 #pragma mark - Conveniece Methods
-- (BOOL)shouldPublishImmediately;
 - (BOOL)isPrivateAtWPCom;
 
 
