@@ -14,7 +14,7 @@ protocol ReaderDetailView: AnyObject {
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost])
     func showLoading()
     func showError(subtitle: String?)
-    func showErrorWithWebAction()
+    func showErrorWithWebAction(error: String?)
     func scroll(to: String)
     func updateHeader()
     func updateLikesView(with viewModel: ReaderDetailLikesViewModel)
@@ -399,8 +399,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     /// Shown an error with a button to open the post on the browser
-    func showErrorWithWebAction() {
-        displayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle)
+    func showErrorWithWebAction(error: String?) {
+        displayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle, subtitle: error)
     }
 
     /// Scroll the content to a given #hash
@@ -1122,9 +1122,10 @@ private extension ReaderDetailViewController {
         showLoadingView()
     }
 
-    func displayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
+    func displayLoadingViewWithWebAction(title: String, subtitle: String? = nil, accessoryView: UIView? = nil) {
         noResultsViewController.configure(title: title,
                                           buttonTitle: LoadingText.errorLoadingPostURLButtonTitle,
+                                          subtitle: subtitle,
                                           accessoryView: accessoryView)
         showLoadingView()
     }

@@ -347,7 +347,7 @@ class ReaderDetailCoordinator {
                                         self?.post = post
                                         self?.renderPostAndBumpStats()
                                     }, failure: { [weak self] error in
-                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction()
+                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction(error: error?.localizedDescription)
                                         self?.reportPostLoadFailure()
                                     })
     }
@@ -363,7 +363,7 @@ class ReaderDetailCoordinator {
                                         self?.renderPostAndBumpStats()
                                     }, failure: { [weak self] error in
                                         DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
-                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction()
+                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction(error: error?.localizedDescription)
                                         self?.reportPostLoadFailure()
                                     })
     }
