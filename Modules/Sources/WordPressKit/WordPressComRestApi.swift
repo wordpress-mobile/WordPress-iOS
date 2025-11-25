@@ -111,14 +111,17 @@ open class WordPressComRestApi: NSObject {
      */
     @objc open var appendsPreferredLanguageLocale = true
 
+    // swiftlint:disable:next weak_delegate
+    private let notifyingDelegate: URLSessionTaskDelegate?
+
     // MARK: WordPressComRestApi
 
-    @objc convenience public init(oAuthToken: String? = nil, userAgent: String? = nil) {
-        self.init(oAuthToken: oAuthToken, userAgent: userAgent, backgroundUploads: false, backgroundSessionIdentifier: WordPressComRestApi.defaultBackgroundSessionIdentifier)
+    @objc convenience public init(oAuthToken: String? = nil, userAgent: String? = nil, notifyingDelegate: URLSessionTaskDelegate? = nil) {
+        self.init(oAuthToken: oAuthToken, userAgent: userAgent, backgroundUploads: false, backgroundSessionIdentifier: WordPressComRestApi.defaultBackgroundSessionIdentifier, notifyingDelegate: notifyingDelegate)
     }
 
-    @objc convenience public init(oAuthToken: String? = nil, userAgent: String? = nil, baseURL: URL = WordPressComRestApi.apiBaseURL) {
-        self.init(oAuthToken: oAuthToken, userAgent: userAgent, backgroundUploads: false, backgroundSessionIdentifier: WordPressComRestApi.defaultBackgroundSessionIdentifier, baseURL: baseURL)
+    @objc convenience public init(oAuthToken: String? = nil, userAgent: String? = nil, baseURL: URL = WordPressComRestApi.apiBaseURL, notifyingDelegate: URLSessionTaskDelegate? = nil) {
+        self.init(oAuthToken: oAuthToken, userAgent: userAgent, backgroundUploads: false, backgroundSessionIdentifier: WordPressComRestApi.defaultBackgroundSessionIdentifier, baseURL: baseURL, notifyingDelegate: notifyingDelegate)
     }
 
     /// Creates a new API object to connect to the WordPress Rest API.
@@ -143,7 +146,8 @@ open class WordPressComRestApi: NSObject {
                 sharedContainerIdentifier: String? = nil,
                 localeKey: String = WordPressComRestApi.LocaleKeyDefault,
                 baseURL: URL = WordPressComRestApi.apiBaseURL,
-                useEphemeralSession: Bool = false) {
+                useEphemeralSession: Bool = false,
+                notifyingDelegate: URLSessionTaskDelegate? = nil) {
         self.oAuthToken = oAuthToken
         self.userAgent = userAgent
         self.backgroundUploads = backgroundUploads
@@ -152,6 +156,7 @@ open class WordPressComRestApi: NSObject {
         self.localeKey = localeKey
         self.baseURL = baseURL
         self.useEphemeralSession = useEphemeralSession
+        self.notifyingDelegate = notifyingDelegate
 
         super.init()
     }
@@ -433,7 +438,13 @@ open class WordPressComRestApi: NSObject {
         session: URLSession? = nil
     ) async -> APIResult<T> {
         await (session ?? self.urlSession)
-            .perform(request: request, taskCreated: taskCreated, fulfilling: progress, errorType: WordPressComRestApiEndpointError.self)
+            .perform(
+                request: request,
+                taskCreated: taskCreated,
+                fulfilling: progress,
+                errorType: WordPressComRestApiEndpointError.self,
+                notifyingDelegate: self.notifyingDelegate
+            )
             .mapSuccess { response -> HTTPAPIResponse<T> in
                 let object = try decoder(response.body)
 
@@ -587,14 +598,14 @@ extension WordPressComRestApi {
 
     /// Returns an API object without an OAuth token defined & with the userAgent set for the WordPress App user agent
     ///
-    @objc class public func anonymousApi(userAgent: String) -> WordPressComRestApi {
-        return WordPressComRestApi(oAuthToken: nil, userAgent: userAgent)
+    @objc class public func anonymousApi(userAgent: String, notifyingDelegate: URLSessionTaskDelegate?) -> WordPressComRestApi {
+        return WordPressComRestApi(oAuthToken: nil, userAgent: userAgent, notifyingDelegate: notifyingDelegate)
     }
 
     /// Returns an API object without an OAuth token defined & with both the userAgent & localeKey set for the WordPress App user agent
     ///
-    @objc class public func anonymousApi(userAgent: String, localeKey: String) -> WordPressComRestApi {
-        return WordPressComRestApi(oAuthToken: nil, userAgent: userAgent, localeKey: localeKey)
+    @objc class public func anonymousApi(userAgent: String, localeKey: String, notifyingDelegate: URLSessionTaskDelegate?) -> WordPressComRestApi {
+        return WordPressComRestApi(oAuthToken: nil, userAgent: userAgent, localeKey: localeKey, notifyingDelegate: notifyingDelegate)
     }
 }
 

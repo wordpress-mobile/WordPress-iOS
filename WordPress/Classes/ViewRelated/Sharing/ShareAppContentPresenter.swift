@@ -37,7 +37,12 @@ class ShareAppContentPresenter {
 
     /// Instantiates the presenter. When the provided account is nil, the presenter will default to anonymous API.
     init(remote: ShareAppContentServiceRemote? = nil, account: WPAccount? = nil) {
-        self.api = account?.wordPressComRestV2Api ?? .anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
+        self.api = account?.wordPressComRestV2Api
+            ?? .anonymousApi(
+                userAgent: WPUserAgent.wordPress(),
+                localeKey: WordPressComRestApi.LocaleKeyV2,
+                notifyingDelegate: PulseNetworkLogger()
+            )
         self.remote = remote ?? ShareAppContentServiceRemote(wordPressComRestApi: api)
     }
 

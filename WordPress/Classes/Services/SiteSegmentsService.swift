@@ -21,7 +21,11 @@ final class SiteCreationSegmentsService: SiteSegmentsService {
     init(coreDataStack: CoreDataStack) {
         let api = coreDataStack.performQuery({ context in
             try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.wordPressComRestV2Api
-        }) ?? WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
+        }) ?? WordPressComRestApi.anonymousApi(
+            userAgent: WPUserAgent.wordPress(),
+            localeKey: WordPressComRestApi.LocaleKeyV2,
+            notifyingDelegate: PulseNetworkLogger()
+        )
 
         self.remoteService = WordPressComServiceRemote(wordPressComRestApi: api)
     }

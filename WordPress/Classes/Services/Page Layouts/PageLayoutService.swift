@@ -27,7 +27,11 @@ class PageLayoutService {
             api = restAPI
             dotComID = blogID
         } else {
-            api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
+            api = WordPressComRestApi.anonymousApi(
+                userAgent: WPUserAgent.wordPress(),
+                localeKey: WordPressComRestApi.LocaleKeyV2,
+                notifyingDelegate: PulseNetworkLogger()
+            )
             dotComID = nil
         }
 

@@ -213,8 +213,11 @@ class BloggingPromptsService {
                 return (
                     blogInContext?.dotComID,
                     remote,
-                    api ?? WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(),
-                                                            localeKey: WordPressComRestApi.LocaleKeyV2)
+                    api ?? WordPressComRestApi.anonymousApi(
+                        userAgent: WPUserAgent.wordPress(),
+                        localeKey: WordPressComRestApi.LocaleKeyV2,
+                        notifyingDelegate: PulseNetworkLogger()
+                    )
                 )
             }
 

@@ -2,14 +2,19 @@ import Foundation
 import WordPressKit
 import WordPressShared
 
+public var wordPressComRestApiNotifyingDelegate: URLSessionTaskDelegate? = nil
+
 extension WordPressComRestApi {
     @objc public static func defaultApi(oAuthToken: String? = nil,
                                         userAgent: String? = nil,
                                         localeKey: String = WordPressComRestApi.LocaleKeyDefault) -> WordPressComRestApi {
-        return WordPressComRestApi(oAuthToken: oAuthToken,
-                                   userAgent: userAgent,
-                                   localeKey: localeKey,
-                                   baseURL: AppEnvironment.current.wordPressComApiBase)
+        WordPressComRestApi(
+            oAuthToken: oAuthToken,
+            userAgent: userAgent,
+            localeKey: localeKey,
+            baseURL: AppEnvironment.current.wordPressComApiBase,
+            notifyingDelegate: wordPressComRestApiNotifyingDelegate
+        )
     }
 
     /// Returns the default API the default WP.com account using the given context

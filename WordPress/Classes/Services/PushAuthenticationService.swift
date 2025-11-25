@@ -55,7 +55,7 @@ class PushAuthenticationService {
         }
 
         if api == nil {
-            api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
+            api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), notifyingDelegate: PulseNetworkLogger())
         }
 
         return api!

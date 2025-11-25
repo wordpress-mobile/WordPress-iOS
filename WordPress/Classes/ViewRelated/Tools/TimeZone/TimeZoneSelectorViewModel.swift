@@ -12,7 +12,8 @@ struct DefaultTimeZoneService: TimeZoneServiceProtocol {
     func timezones() async throws -> [TimeZoneGroup] {
         let api = WordPressComRestApi.anonymousApi(
             userAgent: WPUserAgent.wordPress(),
-            localeKey: WordPressComRestApi.LocaleKeyV2
+            localeKey: WordPressComRestApi.LocaleKeyV2,
+            notifyingDelegate: PulseNetworkLogger()
         )
         let remote = TimeZoneServiceRemote(wordPressComRestApi: api)
         return try await remote.timezones()

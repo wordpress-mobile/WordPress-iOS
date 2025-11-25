@@ -41,6 +41,7 @@ import WordPressShared
         // return anonymous api when no credentials are available.
         // reference: https://github.com/wordpress-mobile/WordPress-iOS/commit/4507481
         guard api.hasCredentials() else {
+            // TODO: Add logger here
             return WordPressComRestApi(oAuthToken: nil,
                                        userAgent: WPUserAgent.wordPress(),
                                        localeKey: WordPressComRestApi.LocaleKeyDefault)

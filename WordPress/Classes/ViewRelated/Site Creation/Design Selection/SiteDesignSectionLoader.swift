@@ -36,7 +36,8 @@ struct SiteDesignSectionLoader {
 
         let restAPI = WordPressComRestApi.anonymousApi(
             userAgent: WPUserAgent.wordPress(),
-            localeKey: WordPressComRestApi.LocaleKeyV2
+            localeKey: WordPressComRestApi.LocaleKeyV2,
+            notifyingDelegate: PulseNetworkLogger()
         )
 
         let request = SiteDesignRequest(

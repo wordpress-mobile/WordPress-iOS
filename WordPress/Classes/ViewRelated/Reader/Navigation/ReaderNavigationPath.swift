@@ -17,7 +17,12 @@ enum ReaderNavigationPath: Hashable {
 
 extension ReaderNavigationPath {
     static func makeWithTagName(_ name: String) -> ReaderNavigationPath {
-        let remote = ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress()))
+        let remote = ReaderTopicServiceRemote(
+            wordPressComRestApi: WordPressComRestApi.anonymousApi(
+                userAgent: WPUserAgent.wordPress(),
+                notifyingDelegate: PulseNetworkLogger()
+            )
+        )
         let slug = remote.slug(forTopicName: name) ?? name.lowercased()
         return ReaderNavigationPath.tag(slug)
     }
