@@ -40,10 +40,6 @@ NSString * const ParamKeyMetaValue = @"site,feed";
     if (algorithm) {
         params[ParamsKeyAlgorithm] = algorithm;
     }
-    // TODO: refactor (add a new parameter
-    if ([endpoint.path hasSuffix:@"/freshly-pressed"]) {
-        [params removeAllObjects];
-    }
 
     [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
 }
