@@ -54,9 +54,7 @@ public class ReaderCard: NSManagedObject {
         case .post:
             post = ReaderPost.createOrReplace(fromRemotePost: remoteCard.post, for: nil, context: context)
         case .interests:
-            topics = NSOrderedSet(array: remoteCard.interests?.prefix(5).map {
-                ReaderTagTopic.createOrUpdateIfNeeded(from: $0, context: context)
-            } ?? [])
+            return nil // Disabled in v26.6
         case .sites:
             sites = NSOrderedSet(array: remoteCard.sites?.prefix(3).map {
                 ReaderSiteTopic.createIfNeeded(from: $0, context: context)

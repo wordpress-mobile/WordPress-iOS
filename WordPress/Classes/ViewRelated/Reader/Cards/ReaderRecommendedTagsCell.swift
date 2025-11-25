@@ -3,6 +3,7 @@ import UIKit
 import WordPressData
 import WordPressUI
 
+/// - warning: The tags no longer gets shown since v26.6.
 final class ReaderRecommendedTagsCell: UITableViewCell {
     private let scrollView = UIScrollView()
     private let tagsStackView = UIStackView(axis: .horizontal, spacing: 8, insets: UIEdgeInsets(.vertical, 16), [])
