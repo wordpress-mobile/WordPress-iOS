@@ -86,13 +86,18 @@ extension BasePost {
 
     /// Returns true if title or content is non empty
     public func hasContent() -> Bool {
-        let titleIsEmpty = self.postTitle != nil ? self.postTitle!.isEmpty : true
-        return !titleIsEmpty || !isContentEmpty()
+        if let postTitle, !postTitle.isEmpty {
+            return true
+        }
+
+        return !isContentEmpty()
     }
 
     /// True if the content field is empty, independent of the title field.
     public func isContentEmpty() -> Bool {
-        let isContentAnEmptyGBParagraph = self.content == "<!-- wp:paragraph -->\n<p></p>\n<!-- /wp:paragraph -->"
-        return self.content != nil ? (self.content!.isEmpty || isContentAnEmptyGBParagraph) : true
+        guard let content else { return true }
+
+        let emptyGBParagraph = "<!-- wp:paragraph -->\n<p></p>\n<!-- /wp:paragraph -->"
+        return content.isEmpty || content == emptyGBParagraph
     }
 }
