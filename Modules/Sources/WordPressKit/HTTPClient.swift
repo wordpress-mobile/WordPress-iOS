@@ -59,7 +59,8 @@ extension URLSession {
         acceptableStatusCodes: [ClosedRange<Int>] = [200...299],
         taskCreated: ((Int) -> Void)? = nil,
         fulfilling parentProgress: Progress? = nil,
-        errorType: E.Type = E.self
+        errorType: E.Type = E.self,
+        notifyingDelegate: URLSessionTaskDelegate? = nil,
     ) async -> WordPressAPIResult<HTTPAPIResponse<Data>, E> {
         if configuration.identifier != nil {
             assert(delegate is BackgroundURLSessionDelegate, "Unexpected `URLSession` delegate type. See the `backgroundSession(configuration:)`")
@@ -74,6 +75,15 @@ extension URLSession {
         return await withTaskCancellationHandler {
             await withCheckedContinuation { continuation in
                 let completion: @Sendable (Data?, URLResponse?, Error?) -> Void = { data, response, error in
+                    Task {
+                        guard let task = await taskHolder.task as? URLSessionDataTask else { return }
+
+                        if let data {
+                            (notifyingDelegate as? URLSessionDataDelegate)?.urlSession?(self, dataTask: task, didReceive: data)
+                        }
+                        notifyingDelegate?.urlSession?(self, task: task, didCompleteWithError: error)
+                    }
+
                     let result: WordPressAPIResult<HTTPAPIResponse<Data>, E> = Self.parseResponse(
                         data: data,
                         response: response,
@@ -93,6 +103,7 @@ extension URLSession {
                     return
                 }
 
+                task.delegate = notifyingDelegate
                 task.resume()
                 taskCreated?(task.taskIdentifier)
                 Task { await taskHolder.assign(task) }
