@@ -12,8 +12,8 @@ extension ReaderPost {
     }
 
     @objc public override var featuredImageURL: URL? {
-        if !self.featuredImage.isEmpty {
-            return URL(string: self.featuredImage)
+        if let featuredImage, !featuredImage.isEmpty {
+            return URL(string: featuredImage)
         }
         return nil
     }
