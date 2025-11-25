@@ -2,6 +2,7 @@
 -----
 * [*] Fix horizontal insets in Reader article view [#25010]
 
+
 26.5
 -----
 * [*] Add "Status" field to the "Post Settings" screen to make it easier to move posts from one state to another [#24939]
@@ -16,6 +17,7 @@
 * [*] Add "Taxonomies" to Site Settings [#24955]
 * [*] Update "Categories" picker to indicate multiple selection [#24952]
 * [*] Fix overly long related post titles in Reader [#25011]
+* [*] Increase number of lines for post tiles in Reader to three [#25019]
 
 26.4
 -----
