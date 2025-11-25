@@ -330,7 +330,7 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
         didCallShowError = true
     }
 
-    func showErrorWithWebAction() {
+    func showErrorWithWebAction(error: String?) {
         didCallShowErrorWithWebAction = true
     }
 
