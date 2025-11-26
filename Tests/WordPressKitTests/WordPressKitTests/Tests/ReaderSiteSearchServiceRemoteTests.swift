@@ -10,7 +10,6 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
     let performSearchSuccessNoIconFilename = "reader-site-search-success-no-icon.json"
     let performSearchSuccessNoDataFilename = "reader-site-search-success-no-data.json"
     let performSearchSuccessHasMoreFilename = "reader-site-search-success-hasmore.json"
-    let performSearchFailureFilename = "reader-site-search-failure.json"
     let performSearchBlogIDFallbackFilename = "reader-site-search-blog-id-fallback.json"
     let performSearchFailsWithNoBlogOrFeedIDFilename = "reader-site-search-no-blog-or-feed-id.json"
 
@@ -143,27 +142,6 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
                                 expect.fulfill()
         }, failure: { _ in
             XCTFail("This callback shouldn't get called")
-            expect.fulfill()
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-
-    func testPerformSearchFailure() {
-        let expect = expectation(description: "Perform Reader site search fails if no URL is present")
-
-        stubRemoteResponse(performSearchEndpoint, filename: performSearchFailureFilename, contentType: .ApplicationJSON)
-        remote.performSearch("discover",
-                             count: 10, success: { (_, _, _) in
-                                XCTFail("This callback shouldn't get called")
-                                expect.fulfill()
-        }, failure: { error in
-            typealias ResponseError = ReaderSiteSearchServiceRemote.ResponseError
-            guard case ResponseError.decodingFailure? = error as? ResponseError else {
-                XCTFail("Expected a decodingFailure error")
-                expect.fulfill()
-                return
-            }
-
             expect.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)

@@ -29,7 +29,7 @@ public class ReaderSiteSearchServiceRemote: ServiceRemoteWordPressComREST {
             "offset": offset as AnyObject,
             "exclude_followed": false as AnyObject,
             "sort": "relevance" as AnyObject,
-            "meta": "site" as AnyObject,
+            "meta": "site,feed" as AnyObject,
             "q": query as AnyObject
         ]
 
