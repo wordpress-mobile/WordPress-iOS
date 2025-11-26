@@ -17,16 +17,14 @@ final class CreateButtonCoordinator: NSObject {
     var button: UIButton = {
         let button: UIButton
         if #available(iOS 26, *) {
-            var configuration = UIButton.Configuration.prominentClearGlass()
+            var configuration = UIButton.Configuration.prominentGlass()
             configuration.image = UIImage(systemName: "plus")
             configuration.contentInsets = .init(top: 12, leading: 12, bottom: 12, trailing: 12)
             configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(
                 font: .systemFont(ofSize: 20, weight: .semibold)
             )
-            configuration.baseForegroundColor = .systemBackground
-            configuration.baseBackgroundColor = .label.withAlphaComponent(0.8)
-
             button = UIButton(configuration: configuration, primaryAction: nil)
+            button.tintColor = .label.withAlphaComponent(0.9)
         } else {
             button = FloatingActionButton(image: .gridicon(.plus))
         }
