@@ -245,15 +245,14 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     }
 
     private func contentIsAlreadyDisplayed(_ viewController: UIViewController, in nav: UINavigationController) -> Bool {
-        if let current = nav.topViewController as? ContentIdentifiable {
-            if let new = viewController as? ContentIdentifiable {
-                if new.contentIdentifier == current.contentIdentifier {
-                    return true
-                }
-            }
+        guard
+            let current = nav.topViewController as? ContentIdentifiable,
+            let new = viewController as? ContentIdentifiable
+        else {
+            return false
         }
 
-        return false
+        return current.contentIdentifier == new.contentIdentifier
     }
 
     private func contentIsAlreadyDisplayed(

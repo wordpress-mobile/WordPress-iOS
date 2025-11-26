@@ -46,6 +46,7 @@ extension ReaderPostServiceRemote {
             "url": url.absoluteString
         ]) { data, response in
             guard
+                // If the numbers aren't positive integers the response is invalid
                 let responseDict = data as? [String: UInt64],
                 let siteId = responseDict["site_id"],
                 let postId = responseDict["post_id"]
