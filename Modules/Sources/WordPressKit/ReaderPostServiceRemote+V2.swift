@@ -1,8 +1,13 @@
 import Foundation
 
-public struct ResolvedReaderPost {
+public struct ResolvedReaderPost: Decodable {
     public let postId: UInt64
     public let siteId: UInt64
+
+    enum CodingKeys: String, CodingKey {
+        case postId = "post_id"
+        case siteId = "site_id"
+    }
 }
 
 extension ReaderPostServiceRemote {
@@ -41,23 +46,15 @@ extension ReaderPostServiceRemote {
         success: @escaping (ResolvedReaderPost) -> Void,
         failure: @escaping (Error) -> Void
     ) {
+        let path = "/wpcom/v2/mobile/resolve-reader-url"
 
-        wordPressComRESTAPI.get("/wpcom/v2/mobile/resolve-reader-url", parameters: [
-            "url": url.absoluteString
-        ]) { data, response in
-            guard
-                // If the numbers aren't positive integers the response is invalid
-                let responseDict = data as? [String: UInt64],
-                let siteId = responseDict["site_id"],
-                let postId = responseDict["post_id"]
-            else {
-                failure(CocoaError(.coderInvalidValue))
-                return
-            }
-
-            success(ResolvedReaderPost(postId: postId, siteId: siteId))
-        } failure: { error, response in
-            failure(error)
+        Task { @MainActor [wordPressComRestApi] in
+            await wordPressComRestApi.perform(.get, URLString: path, parameters: [
+                "url": url.absoluteString,
+            ], type: ResolvedReaderPost.self)
+                .map { $0.body }
+                .eraseToError()
+                .execute(onSuccess: success, onFailure: failure)
         }
     }
 
