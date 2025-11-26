@@ -31,9 +31,8 @@ class ReaderCardTests: CoreDataTestCase {
             let card = ReaderCard(context: self.mainContext, from: remoteCard)
             let topics = card?.topicsArray
 
-            expect(topics?.count).to(equal(2))
-            expect(topics?.filter { $0.title == "Activism" }).toNot(beNil())
-            expect(topics?.filter { $0.slug == "activism" }).toNot(beNil())
+            // THEN return 0 as these were disabled in 26.5
+            expect(topics).to(beNil())
             expectation.fulfill()
         }
 
