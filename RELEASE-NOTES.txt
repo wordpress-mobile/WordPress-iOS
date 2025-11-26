@@ -15,6 +15,7 @@
 * [*] Add permalink preview in the slug editor and make other improvements [#24949]
 * [*] Add two accessible font sizes to Reader display settings [#25013]
 * [*] Fix an issue with Reader failing to parse some search results [#25022]
+* [*] Fix search for RSS feeds in Reader [#25023]
 * [*] Add "Taxonomies" to Site Settings [#24955]
 * [*] Update "Categories" picker to indicate multiple selection [#24952]
 * [*] Fix overly long related post titles in Reader [#25011]

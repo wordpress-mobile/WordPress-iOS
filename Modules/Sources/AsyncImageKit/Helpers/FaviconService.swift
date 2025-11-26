@@ -74,7 +74,7 @@ private final class FaviconCache: @unchecked Sendable {
 }
 
 private let regex: NSRegularExpression? = {
-    let pattern = "<link[^>]*rel=\"apple-touch-icon\"[^>]*href=\"([^\"]+)\"[^>]*>"
+    let pattern = "<link[^>]*rel=\"apple-touch-icon(?:-precomposed)\"[^>]*href=\"([^\"]+)\"[^>]*>"
     return try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
 }()
 
