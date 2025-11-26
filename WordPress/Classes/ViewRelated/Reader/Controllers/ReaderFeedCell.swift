@@ -15,23 +15,24 @@ struct ReaderFeedCell: View {
                     .font(.body)
                     .lineLimit(1)
 
-                Text(subtitle)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
+                if let subtitle {
+                    Text(subtitle)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                }
             }
         }
     }
 
     var title: String {
-        let title = feed.title.stringByDecodingXMLCharacters()
-        if !title.isEmpty {
+        if let title = feed.title?.stringByDecodingXMLCharacters(), !title.isEmpty {
             return title
         }
-        return feed.urlForDisplay
+        return feed.urlForDisplay ?? "–"
     }
 
-    var subtitle: String {
+    var subtitle: String? {
         if let description = feed.feedDescription, !description.isEmpty {
             return description.stringByDecodingXMLCharacters()
         }
@@ -51,7 +52,10 @@ extension SiteIconViewModel {
 private extension ReaderFeed {
     /// Strips the protocol and query from the URL.
     ///
-    var urlForDisplay: String {
+    var urlForDisplay: String? {
+        guard let url else {
+            return nil
+        }
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
             let host = components.host else {
             return url.absoluteString

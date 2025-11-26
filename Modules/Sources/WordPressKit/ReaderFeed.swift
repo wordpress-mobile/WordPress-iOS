@@ -5,8 +5,8 @@ import Foundation
 /// (read/feed?q=query)
 ///
 public struct ReaderFeed: Decodable {
-    public let url: URL
-    public let title: String
+    public let url: URL?
+    public let title: String?
     public let feedDescription: String?
     public let feedID: String?
     public let blogID: String?
@@ -28,9 +28,11 @@ public struct ReaderFeed: Decodable {
         case site
     }
 
-    private enum SiteKeys: CodingKey {
+    private enum SiteKeys: String, CodingKey {
         case description
         case icon
+        case url = "URL"
+        case name
     }
 
     private enum IconKeys: CodingKey {
@@ -44,8 +46,8 @@ public struct ReaderFeed: Decodable {
         // - We want to decode whatever we can get, and not fail if neither of those exist
         let rootContainer = try decoder.container(keyedBy: CodingKeys.self)
 
-        url = try rootContainer.decode(URL.self, forKey: .url)
-        title = try rootContainer.decode(String.self, forKey: .title)
+        var feedURL = try? rootContainer.decodeIfPresent(URL.self, forKey: .url)
+        var title = try? rootContainer.decodeIfPresent(String.self, forKey: .title)
         feedID = try? rootContainer.decode(String.self, forKey: .feedID)
         blogID = try? rootContainer.decode(String.self, forKey: .blogID)
 
@@ -60,9 +62,20 @@ public struct ReaderFeed: Decodable {
 
             let iconContainer = try siteContainer.nestedContainer(keyedBy: IconKeys.self, forKey: .icon)
             blavatarURL = try? iconContainer.decode(URL.self, forKey: .img)
+
+            // Fixes CMM-1002: in some cases, the backend fails to embed certain fields
+            // directly in the feed object
+            if feedURL == nil {
+                feedURL = try? siteContainer.decodeIfPresent(URL.self, forKey: .url)
+            }
+            if title == nil {
+                title = try? siteContainer.decodeIfPresent(String.self, forKey: .name)
+            }
         } catch {
         }
 
+        self.url = feedURL
+        self.title = title
         self.feedDescription = feedDescription
         self.blavatarURL = blavatarURL
     }
@@ -70,6 +83,6 @@ public struct ReaderFeed: Decodable {
 
 extension ReaderFeed: CustomStringConvertible {
     public var description: String {
-        return "<Feed | URL: \(url), title: \(title), feedID: \(String(describing: feedID)), blogID: \(String(describing: blogID))>"
+        return "<Feed | URL: \(String(describing: url)), title: \(String(describing: title)), feedID: \(String(describing: feedID)), blogID: \(String(describing: blogID))>"
     }
 }

@@ -25,13 +25,10 @@ class ReaderSiteSearchViewController: UITableViewController {
             reloadData()
         }
     }
-    fileprivate var totalFeedCount: Int = 0
 
     var searchQuery: String? = nil {
         didSet {
             feeds = []
-            totalFeedCount = 0
-
             syncHelper.syncContentWithUserInteraction(false)
         }
     }
@@ -77,9 +74,8 @@ class ReaderSiteSearchViewController: UITableViewController {
         let service = ReaderSiteSearchService(coreDataStack: ContextManager.shared)
         service.performSearch(with: query,
                               page: page,
-                              success: { [weak self] (feeds, hasMore, totalFeeds) in
+                              success: { [weak self] feeds, hasMore, _ in
                                 self?.feeds.append(contentsOf: feeds)
-                                self?.totalFeedCount = totalFeeds
                                 self?.reloadData(hasMoreResults: hasMore)
                                 success?(hasMore)
             }, failure: { [weak self] error in
