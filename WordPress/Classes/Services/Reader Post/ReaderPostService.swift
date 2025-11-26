@@ -4,6 +4,20 @@ import WordPressKit
 
 extension ReaderPostService {
 
+    // MARK: – WP.com URL resolution
+
+    /// Ask the server for details about a Reader Post.
+    ///
+    /// It's impossible to resolve a post URL into anything that the API can understand client-side. So we can ask the server to do it for us.
+    func resolvePostUrl(
+        _ url: URL,
+        success: @escaping (ResolvedReaderPost) -> Void,
+        failure: @escaping(Error) -> Void
+    ) {
+        let remoteService = ReaderPostServiceRemote(wordPressComRestApi: apiForRequest())
+        remoteService.resolveUrl(url, success: success, failure: failure)
+    }
+
     // MARK: - Fetch Unblocked Posts
 
     /// Fetches a list of posts from the API and filters out the posts that belong to a blocked author.

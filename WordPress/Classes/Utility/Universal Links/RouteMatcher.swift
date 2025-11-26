@@ -25,7 +25,7 @@ class RouteMatcher {
     func routesMatching(_ url: URL) -> [MatchedRoute] {
         let pathComponents = url.pathComponents
 
-        return routes.compactMap({ route in
+        return routes.compactMap({ route -> MatchedRoute? in
             let values = valuesDictionary(forURL: url)
 
             // If the paths are the same, we definitely have a match
@@ -40,22 +40,14 @@ class RouteMatcher {
                 return nil
             }
 
-            guard let placeholderValues = placeholderDictionary(forKeyComponents: routeComponents,
-                                                                valueComponents: pathComponents) else {
-                                                                    return nil
-            }
-
-            let allValues = values.merging(placeholderValues,
-                                           uniquingKeysWith: { (current, _) in current })
-
-            // If it's a wpcomPost reader route, then check if it's a valid wpcom url.
-            // Need to check since we have no guarantee that it's a valid wpcom url,
-            // other than the path having 4 components.
-            if let readerRoute = route as? ReaderRoute,
-               readerRoute == .wpcomPost,
-               !readerRoute.isValidWpcomUrl(allValues) {
+            guard let placeholderValues = placeholderDictionary(
+                forKeyComponents: routeComponents,
+                valueComponents: pathComponents
+            ) else {
                 return nil
             }
+
+            let allValues = values.merging(placeholderValues, uniquingKeysWith: { (current, _) in current })
 
             return route.matched(with: allValues)
         })

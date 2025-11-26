@@ -113,9 +113,7 @@ extension ReaderRoute: NavigationAction {
                 presenter.showReader(path: .post(postID: postID, siteID: blogID))
             }
         case .wpcomPost:
-            if let urlString = values[MatchedRouteURLComponentKey.url.rawValue],
-               let url = URL(string: urlString),
-               isValidWpcomUrl(values) {
+            if let urlString = values[MatchedRouteURLComponentKey.url.rawValue], let url = URL(string: urlString) {
                 presenter.showReader(path: .postURL(url))
             }
         }
@@ -141,27 +139,6 @@ extension ReaderRoute: NavigationAction {
         }
 
         return (blogID, postID)
-    }
-
-    func isValidWpcomUrl(_ values: [String: String]) -> Bool {
-        let year = Int(values["post_year"] ?? "") ?? 0
-        let month = Int(values["post_month"] ?? "") ?? 0
-        let day = Int(values["post_day"] ?? "") ?? 0
-
-        // we assume no posts were made in the 1800's or earlier
-        func isYear(_ year: Int) -> Bool {
-            year > 1900
-        }
-
-        func isMonth(_ month: Int) ->  Bool {
-            (1...12).contains(month)
-        }
-
-        func isDay(_ day: Int) -> Bool {
-            (1...31).contains(day)
-        }
-
-        return isYear(year) && isMonth(month) && isDay(day)
     }
 }
 

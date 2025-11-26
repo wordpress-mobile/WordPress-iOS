@@ -14,7 +14,7 @@ protocol ReaderDetailView: AnyObject {
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost])
     func showLoading()
     func showError(subtitle: String?)
-    func showErrorWithWebAction(error: String?)
+    func showErrorWithWebAction(error: Error?)
     func scroll(to: String)
     func updateHeader()
     func updateLikesView(with viewModel: ReaderDetailLikesViewModel)
@@ -108,6 +108,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     @objc var post: ReaderPost? {
         return coordinator?.post
     }
+
+    /// The URL to a post can change – we might set it when we instantiate the controller, but then when we fetch the details from the server, we know
+    /// that `https://wordpress.com/reader/{site_id}/posts/{post_id}` is actually `https://example.com/foo/bar`. We need to keep
+    /// an unchanging reference to the URL so that we can identify the content this view is presenting before we fetch the post from the server.
+    private var originalUrl: URL? = nil
 
     /// The related posts for the post being shown
     var relatedPosts: [RelatedPostsSection] = []
@@ -399,8 +404,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     /// Shown an error with a button to open the post on the browser
-    func showErrorWithWebAction(error: String?) {
-        displayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle, subtitle: error)
+    func showErrorWithWebAction(error: Error?) {
+        displayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle, error: error)
     }
 
     /// Scroll the content to a given #hash
@@ -832,7 +837,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         let coordinator = ReaderDetailCoordinator(view: controller)
         coordinator.postURL = url
         controller.coordinator = coordinator
-
+        controller.originalUrl = url
         return controller
     }
 
@@ -1121,11 +1126,13 @@ private extension ReaderDetailViewController {
         showLoadingView()
     }
 
-    func displayLoadingViewWithWebAction(title: String, subtitle: String? = nil, accessoryView: UIView? = nil) {
-        noResultsViewController.configure(title: title,
-                                          buttonTitle: LoadingText.errorLoadingPostURLButtonTitle,
-                                          subtitle: subtitle,
-                                          accessoryView: accessoryView)
+    func displayLoadingViewWithWebAction(title: String, error: Error? = nil, accessoryView: UIView? = nil) {
+        noResultsViewController.configure(
+            title: title,
+            buttonTitle: LoadingText.errorLoadingPostURLButtonTitle,
+            subtitle: error?.localizedDescription,
+            accessoryView: accessoryView
+        )
         showLoadingView()
     }
 
@@ -1319,6 +1326,10 @@ extension ReaderDetailViewController: ContentIdentifiable {
         // Only ever try to resolve this based on the site ID and post ID – the post object is fetched later
         if let siteId = self.coordinator?.siteID?.intValue, let postId = self.coordinator?.postID?.intValue {
             return "https://wordpress.com/reader/feeds/\(siteId)/posts/\(postId)"
+        }
+
+        if let originalUrl {
+            return originalUrl.absoluteString
         }
 
         return nil

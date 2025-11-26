@@ -1,5 +1,10 @@
 import Foundation
 
+public struct ResolvedReaderPost: Decodable {
+    public let postId: UInt64
+    public let siteId: UInt64
+}
+
 extension ReaderPostServiceRemote {
     /// Returns a collection of RemoteReaderPost
     /// This method returns the best available content for the given topics.
@@ -29,6 +34,30 @@ extension ReaderPostServiceRemote {
             WPKitLogError("Error fetching reader posts: \(error)")
             failure(error)
         })
+    }
+
+    public func resolveUrl(
+        _ url: URL,
+        success: @escaping (ResolvedReaderPost) -> Void,
+        failure: @escaping (Error) -> Void
+    ) {
+
+        wordPressComRESTAPI.get("/wpcom/v2/mobile/resolve-reader-url", parameters: [
+            "url": url.absoluteString
+        ]) { data, response in
+            guard
+                let responseDict = data as? [String: UInt64],
+                let siteId = responseDict["site_id"],
+                let postId = responseDict["post_id"]
+            else {
+                failure(CocoaError(.coderInvalidValue))
+                return
+            }
+
+            success(ResolvedReaderPost(postId: postId, siteId: siteId))
+        } failure: { error, response in
+            failure(error)
+        }
     }
 
     private func postsEndpoint(for topics: [String], page: String? = nil) -> String? {
