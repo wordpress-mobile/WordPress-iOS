@@ -11,7 +11,7 @@ class ReaderCardTests: CoreDataTestCase {
         let expectation = self.expectation(description: "Create a Reader Card of type post")
 
         remoteCard(ofType: .post) { remoteCard in
-            let card = ReaderCard(context: self.mainContext, from: remoteCard)
+            let card = ReaderCard.createOrReuse(context: self.mainContext, from: remoteCard)
 
             expect(card?.post).toNot(beNil())
             expect(card?.post?.postTitle).to(equal("Pats, Please"))
@@ -28,7 +28,7 @@ class ReaderCardTests: CoreDataTestCase {
         let expectation = self.expectation(description: "Create a Reader Card of type interests")
 
         remoteCard(ofType: .interests) { remoteCard in
-            let card = ReaderCard(context: self.mainContext, from: remoteCard)
+            let card = ReaderCard.createOrReuse(context: self.mainContext, from: remoteCard)
             let topics = card?.topicsArray
 
             // THEN return 0 as these were disabled in 26.5
@@ -45,7 +45,7 @@ class ReaderCardTests: CoreDataTestCase {
         let expectation = self.expectation(description: "Create a Reader Card of type sites")
 
         remoteCard(ofType: .sites) { remoteCard in
-            let card = ReaderCard(context: self.mainContext, from: remoteCard)
+            let card = ReaderCard.createOrReuse(context: self.mainContext, from: remoteCard)
             let topics = card?.sitesArray
 
             expect(topics?.count).to(equal(1))
@@ -63,7 +63,7 @@ class ReaderCardTests: CoreDataTestCase {
         let expectation = self.expectation(description: "Don't create a Reader Card")
 
         remoteCard(ofType: .unknown) { remoteCard in
-            let card = ReaderCard(context: self.mainContext, from: remoteCard)
+            let card = ReaderCard.createOrReuse(context: self.mainContext, from: remoteCard)
 
             expect(card).to(beNil())
             expectation.fulfill()
