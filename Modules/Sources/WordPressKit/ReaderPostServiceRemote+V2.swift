@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ResolvedReaderPost: Decodable {
+public struct ResolvedReaderPost {
     public let postId: UInt64
     public let siteId: UInt64
 }

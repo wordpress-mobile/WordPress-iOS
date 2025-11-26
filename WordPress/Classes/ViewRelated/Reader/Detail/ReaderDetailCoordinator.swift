@@ -357,16 +357,16 @@ class ReaderDetailCoordinator {
     /// Use this method to fetch a ReaderPost from a URL.
     /// - Parameter url: a post URL
     private func fetch(_ url: URL) {
-        readerPostService.resolvePostUrl(url) { resolvedPost in
-            self.fetch(
+        readerPostService.resolvePostUrl(url) { [weak self] resolvedPost in
+            self?.fetch(
                 postID: NSNumber(value: resolvedPost.postId),
                 siteID: NSNumber(value: resolvedPost.siteId),
                 isFeed: false
             )
-        } failure: { error in
+        } failure: { [weak self] error in
             DDLogError("Error fetching post for detail: \(String(describing: error.localizedDescription))")
-            self.showError(error: error)
-            self.reportPostLoadFailure()
+            self?.showError(error: error)
+            self?.reportPostLoadFailure()
         }
     }
 

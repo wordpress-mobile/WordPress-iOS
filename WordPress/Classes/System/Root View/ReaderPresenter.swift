@@ -200,6 +200,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     private func show(_ viewController: UIViewController, isLargeTitle: Bool = false) {
         if let splitViewController {
             guard !self.contentIsAlreadyDisplayed(viewController, in: splitViewController, for: .secondary) else {
+                DDLogInfo("View controller for \(viewController.contentIdentifier) already presented – skipping show")
                 return
             }
             (viewController as? ReaderStreamViewController)?.isNotificationsBarButtonEnabled = true
@@ -212,6 +213,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         } else {
             // Don't push a view controller on top of another with the same content
             guard !self.contentIsAlreadyDisplayed(viewController, in: mainNavigationController) else {
+                DDLogInfo("View controller for \(viewController.contentIdentifier) already presented – skipping show")
                 return
             }
 
@@ -225,6 +227,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         if let splitViewController {
             // Don't push a view controller on top of another with the same content
             guard !contentIsAlreadyDisplayed(viewController, in: splitViewController, for: .secondary) else {
+                DDLogInfo("View controller for \(viewController.contentIdentifier) already presented – skipping push")
                 return
             }
             let navigationVC = splitViewController.viewController(for: .secondary) as? UINavigationController
@@ -233,6 +236,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         } else {
             // Don't push a view controller on top of another with the same content
             guard !self.contentIsAlreadyDisplayed(viewController, in: mainNavigationController) else {
+                DDLogInfo("View controller for \(viewController.contentIdentifier) already presented – skipping push")
                 return
             }
 
@@ -262,18 +266,14 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         }
 
         if let nav = top as? UINavigationController {
-            return contentIsAlreadyDisplayed(viewController, in: nav)
+            return self.contentIsAlreadyDisplayed(viewController, in: nav)
         }
 
-        if let current = top as? ContentIdentifiable {
-            if let new = viewController as? ContentIdentifiable {
-                if new.contentIdentifier == current.contentIdentifier {
-                    return true
-                }
-            }
+        guard let current = top as? ContentIdentifiable, let new = viewController as? ContentIdentifiable else {
+            return false
         }
 
-        return false
+        return current.contentIdentifier == new.contentIdentifier
     }
 
     // MARK: - Deep Links (ReaderNavigationPath)
@@ -322,5 +322,13 @@ private extension UINavigationController {
             return wpAssertionFailure("pushing the same view controller more than once", userInfo: ["viewController": "\(viewController)"])
         }
         pushViewController(viewController, animated: animated)
+    }
+}
+
+fileprivate extension UIViewController {
+    /// Helper for logging – if a user hits a bug where we're not showing the content they expect, this should help debug it.
+    /// Using a non-nil value makes the log lines easier to write.
+    var contentIdentifier: String {
+        (self as? ContentIdentifiable)?.contentIdentifier ?? "(unknown)"
     }
 }
