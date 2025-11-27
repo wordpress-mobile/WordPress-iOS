@@ -20,35 +20,41 @@ enum ReaderRoute {
 
 extension ReaderRoute: Route {
     var path: String {
+        // Guaranteed to be safe force-unwrap if `alternatePaths` is exhaustive and returns at least one value
+        // for every variant
+        alternatePaths.first!
+    }
+
+    var alternatePaths: [RoutePath] {
         switch self {
         case .root:
-            return "/read"
+            return ["/read", "/reader"]
         case .discover:
-            return "/discover"
+            return ["/discover"]
         case .search:
-            return "/read/search"
+            return ["/read/search", "/reader/search"]
         case .a8c:
-            return "/read/a8c"
+            return ["/read/a8c", "/reader/a8c"]
         case .p2:
-            return "/read/p2"
+            return ["/read/p2", "/reader/p2"]
         case .likes:
-            return "/activities/likes"
+            return ["/activities/likes"]
         case .manageFollowing:
-            return "/following/manage"
+            return ["/following/manage"]
         case .list:
-            return "/read/list/:username/:list_name"
+            return ["/read/list/:username/:list_name", "/reader/list/:username/:list_name"]
         case .tag:
-            return "/tag/:tag_name"
+            return ["/tag/:tag_name"]
         case .feed:
-            return "/read/feeds/:feed_id"
+            return ["/read/feeds/:feed_id", "/reader/feeds/:feed_id"]
         case .blog:
-            return "/read/blogs/:blog_id"
+            return ["/read/blogs/:blog_id", "/reader/blogs/:blog_id"]
         case .feedsPost:
-            return "/read/feeds/:feed_id/posts/:post_id"
+            return ["/read/feeds/:feed_id/posts/:post_id", "/reader/feeds/:feed_id/posts/:post_id"]
         case .blogsPost:
-            return "/read/blogs/:blog_id/posts/:post_id"
+            return ["/read/blogs/:blog_id/posts/:post_id", "/reader/blogs/:blog_id/posts/:post_id"]
         case .wpcomPost:
-            return "/:post_year/:post_month/:post_day/:post_name"
+            return ["/:post_year/:post_month/:post_day/:post_name"]
         }
     }
 
