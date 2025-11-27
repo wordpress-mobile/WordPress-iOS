@@ -104,11 +104,11 @@ extension ReaderRoute: NavigationAction {
             }
         case .feed:
             if let feedIDValue = values["feed_id"], let feedID = Int(feedIDValue) {
-                presenter.showReaderStream(with: feedID, isFeed: true)
+                presenter.showReader(path: .site(siteID: feedID, isFeed: true))
             }
         case .blog:
             if let blogIDValue = values["blog_id"], let blogID = Int(blogIDValue) {
-                presenter.showReaderStream(with: blogID, isFeed: false)
+                presenter.showReader(path: .site(siteID: blogID, isFeed: false))
             }
         case .feedsPost:
             if let (feedID, postID) = feedAndPostID(from: values) {
@@ -166,30 +166,5 @@ private extension RootViewPresenter {
         if let topic = ReaderListTopic.named(listName, forUser: user, in: context) {
             showReader(path: .topic(topic))
         }
-    }
-
-    /// - warning: This method performs the navigation asyncronously after
-    /// fetching the information about the stream from the backend.
-    func showReaderStream(with siteID: Int, isFeed: Bool) {
-        getSiteTopic(siteID: NSNumber(value: siteID), isFeed: isFeed) { [weak self] topic in
-            guard let topic else { return }
-            self?.showReader(path: .topic(topic))
-        }
-    }
-
-    private func getSiteTopic(siteID: NSNumber, isFeed: Bool, completion: @escaping (ReaderSiteTopic?) -> Void) {
-        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.siteTopicForSite(withID: siteID, isFeed: isFeed, success: { objectID, isFollowing in
-            guard let objectID,
-                  let topic = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderSiteTopic else {
-                DDLogError("Reader: Error retriving site topic - invalid Site Id")
-                completion(nil)
-                return
-            }
-            completion(topic)
-        }, failure: { error in
-            DDLogError("Reader: Error retriving site topic - \(error?.localizedDescription ?? "unknown failure reason")")
-            completion(nil)
-        })
     }
 }

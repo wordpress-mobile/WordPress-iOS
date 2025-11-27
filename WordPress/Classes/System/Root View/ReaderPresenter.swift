@@ -301,6 +301,9 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case let .tag(slug):
             viewModel.selection = nil
             show(ReaderStreamViewController.controllerWithTagSlug(slug))
+        case let .site(siteID, isFeed):
+            viewModel.selection = nil
+            show(ReaderStreamViewController.controllerWithSiteID(NSNumber(value: siteID), isFeed: isFeed))
         }
     }
 
