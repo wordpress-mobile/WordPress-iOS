@@ -462,6 +462,15 @@ extension WordPressAppDelegate {
             return
         }
 
+        // WordPress.com News links (i.e. http://en.blog.wordpress.com/2025/11/24/managed-vs-shared-wordpress-hosting/),
+        // which can be parsed by the app, redirect to links (i.e. https://wordpress.com/blog/2025/11/24/managed-vs-shared-wordpress-hosting/)
+        // that are not parsable by the app.
+        // Since we can handle post links in blog.wordpress.com, we don't need to resolve them.
+        if url.host?.hasSuffix("blog.wordpress.com") == true, UniversalLinkRouter.shared.canHandle(url: url) {
+            UniversalLinkRouter.shared.handle(url: url)
+            return
+        }
+
         trackDeepLink(for: url) { url in
             DispatchQueue.main.async {
                 UniversalLinkRouter.shared.handle(url: url)
