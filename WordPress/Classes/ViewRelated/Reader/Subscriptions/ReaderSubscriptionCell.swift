@@ -27,7 +27,7 @@ struct ReaderSubscriptionCell: View {
 
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(alignment: .firstTextBaseline, spacing: 8) {
-                        Text(site.title)
+                        Text(site.preferredDisplayTitle)
                             .font(.body.weight(.medium))
                     }
                     Text(details)

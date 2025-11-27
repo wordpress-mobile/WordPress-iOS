@@ -3,6 +3,15 @@ import Foundation
 
 public extension ReaderSiteTopic {
 
+    /// The preferred display title for the site.
+    /// Returns the site title if not empty, otherwise returns the site host, or "–" if unavailable.
+    var preferredDisplayTitle: String {
+        if !title.isEmpty {
+            return title
+        }
+        return URL(string: siteURL)?.host ?? "–"
+    }
+
     /// Find a site topic by its site id
     ///
     /// - Parameter siteID: The site id of the topic
