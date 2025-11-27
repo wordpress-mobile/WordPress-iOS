@@ -456,52 +456,13 @@ extension WordPressAppDelegate {
             return
         }
 
-        // Don't try to resolve `apps.wordpress.com` URLs
-        if url.host == "apps.wordpress.com" {
-            UniversalLinkRouter.shared.handle(url: url)
-            return
-        }
-
-        // WordPress.com News links (i.e. http://en.blog.wordpress.com/2025/11/24/managed-vs-shared-wordpress-hosting/),
-        // which can be parsed by the app, redirect to links (i.e. https://wordpress.com/blog/2025/11/24/managed-vs-shared-wordpress-hosting/)
-        // that are not parsable by the app.
-        // Since we can handle post links in blog.wordpress.com, we don't need to resolve them.
-        if url.host?.hasSuffix("blog.wordpress.com") == true, UniversalLinkRouter.shared.canHandle(url: url) {
-            UniversalLinkRouter.shared.handle(url: url)
-            return
-        }
-
-        trackDeepLink(for: url) { url in
-            DispatchQueue.main.async {
-                UniversalLinkRouter.shared.handle(url: url)
-            }
-        }
+        UniversalLinkRouter.shared.handle(url: url)
     }
 
     @objc func configureWordPressComApi() {
         if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url"), let url = URL(string: baseUrl) {
             AppEnvironment.replaceEnvironment(wordPressComApiBase: url)
         }
-    }
-}
-
-// MARK: - Deep Link Handling
-
-extension WordPressAppDelegate {
-
-    private func trackDeepLink(for url: URL, completion: @escaping ((URL) -> Void)) {
-        let task = URLSession.shared.dataTask(with: url) { _, response, error in
-            guard let url = response?.url else {
-                wpAssertionFailure(
-                    "Received a deep link response without URL attached.",
-                    userInfo: ["response": response ?? "no response"]
-                )
-                return
-            }
-
-            completion(url)
-        }
-        task.resume()
     }
 }
 
