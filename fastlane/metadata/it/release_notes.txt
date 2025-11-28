@@ -1,6 +1,0 @@
-Ora puoi creare un estratto per i tuoi articoli e ottenere tag suggeriti automaticamente usando Apple Intelligence. È anche più facile scegliere i tag nelle Impostazioni articolo. Questo sì che è intelligente.
-Abbiamo apportato alcune correzioni visive per iOS in aree come il flusso di creazione del sito, la schermata di selezione dei media e la schermata Statistiche.
-Già che c'eravamo, abbiamo anche risolto qualche bug.
-- Gli articoli del Reader vengono visualizzati correttamente sui dispositivi con Display Zoom abilitato.
-- Il pulsante "Aggiungi media" rimane visibile nella libreria multimediale. Niente più sparizioni.
-- Puoi cercare in Iscrizioni Reader senza che l'app si blocchi.

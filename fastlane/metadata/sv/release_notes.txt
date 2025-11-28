@@ -1,6 +1,0 @@
-Du kan nu skapa ett utdrag för dina inlägg och få automatiskt föreslagna etiketter med hjälp av Apple Intelligence. Det är också enklare att välja dina etiketter i inläggsinställningarna. Det är smart.
-Vi har gjort några visuella korrigeringar för iOS inom områden som flödet för webbplatsskapande, skärmen för mediaval och statistikskärmen.
-Och medan vi ändå höll på åtgärdade vi även ett antal buggar.
-- Läsarartiklar återges korrekt på enheter med Visningszoom aktiverat.
-- Knappen ”Lägg till media” förblir synlig i mediebiblioteket. Inget mer försvinnande.
-- Du kan söka i läsarprenumerationer utan att appen hänger sig.
