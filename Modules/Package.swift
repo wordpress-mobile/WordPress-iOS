@@ -256,7 +256,11 @@ let package = Package(
         .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared"), .target(name: "WordPressTesting")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressUIUnitTests", dependencies: [.target(name: "WordPressUI")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),
-        .testTarget(name: "WordPressIntelligenceTests", dependencies: [.target(name: "WordPressIntelligence")])
+        .testTarget(
+            name: "WordPressIntelligenceTests",
+            dependencies: [.target(name: "WordPressIntelligence")],
+            resources: [.process("Resources")]
+        )
     ]
 )
 

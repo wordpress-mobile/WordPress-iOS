@@ -22,6 +22,24 @@ final class MediaItemViewController: UITableViewController {
 
     private let headerView = MediaItemHeaderView()
     private lazy var headerMaxHeightConstraint = headerView.heightAnchor.constraint(lessThanOrEqualToConstant: 320)
+    private var _textGenerationController: AnyObject?
+
+    @available(iOS 26, *)
+    private var textGenerationController: MediaTextGenerationController {
+        if _textGenerationController == nil {
+            _textGenerationController = MediaTextGenerationController(media: media) { [weak self] type, generatedText in
+                guard let self else { return }
+                switch type {
+                case .altText:
+                    self.mediaMetadata.alt = generatedText
+                case .caption:
+                    self.mediaMetadata.caption = generatedText
+                }
+                self.reloadViewModel()
+            }
+        }
+        return _textGenerationController as! MediaTextGenerationController
+    }
 
     init(media: Media) {
         self.media = media
@@ -327,11 +345,14 @@ final class MediaItemViewController: UITableViewController {
     private func editCaption() -> ((ImmuTableRow) -> ()) {
         return { [weak self] row in
             let editableRow = row as! EditableTextRow
-            self?.pushSettingsController(for: editableRow, hint: Strings.Hints.imageCaption,
+            let controller = self?.pushSettingsController(for: editableRow, hint: Strings.Hints.imageCaption,
                                         onValueChanged: { value in
                 self?.mediaMetadata.caption = value
                 self?.reloadViewModel()
             })
+            if #available(iOS 26, *), let self, let controller {
+                self.textGenerationController.configure(controller, for: .caption)
+            }
         }
     }
 
@@ -349,15 +370,19 @@ final class MediaItemViewController: UITableViewController {
     private func editAlt() -> ((ImmuTableRow) -> ()) {
         return { [weak self] row in
             let editableRow = row as! EditableTextRow
-            self?.pushSettingsController(for: editableRow, hint: Strings.Hints.imageAlt,
+            let controller = self?.pushSettingsController(for: editableRow, hint: Strings.Hints.imageAlt,
                                          onValueChanged: { value in
                                             self?.mediaMetadata.alt = value
                                             self?.reloadViewModel()
             })
+            if #available(iOS 26, *), let self, let controller {
+                self.textGenerationController.configure(controller, for: .altText)
+            }
         }
     }
 
-    private func pushSettingsController(for row: EditableTextRow, hint: String? = nil, onValueChanged: @escaping SettingsTextChanged) {
+    @discardableResult
+    private func pushSettingsController(for row: EditableTextRow, hint: String? = nil, onValueChanged: @escaping SettingsTextChanged) -> SettingsTextViewController {
         let title = row.title
         let value = row.value
         let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
@@ -366,6 +391,7 @@ final class MediaItemViewController: UITableViewController {
         controller.onValueChanged = onValueChanged
 
         navigationController?.pushViewController(controller, animated: true)
+        return controller
     }
 
     // MARK: - Sharing Logic
@@ -417,7 +443,7 @@ extension MediaItemViewController {
 /// Provides some extra formatting for a Media asset's metadata, used
 /// to present it in the MediaItemViewController
 ///
-private struct MediaMetadataPresenter {
+struct MediaMetadataPresenter {
     let media: Media
 
     /// A String containing the pixel size of the asset (width X height)
