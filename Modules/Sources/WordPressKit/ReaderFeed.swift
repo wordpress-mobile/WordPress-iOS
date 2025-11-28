@@ -52,30 +52,25 @@ public struct ReaderFeed: Decodable {
     /// Site data from meta.data.site
     private var site: SiteData?
 
-    private enum CodingKeys: CodingKey {
-        case meta
-    }
-
-    private enum MetaKeys: CodingKey {
-        case data
-    }
-
-    private enum DataKeys: CodingKey {
-        case site
-        case feed
-    }
-
     public init(from decoder: Decoder) throws {
-        let root = try decoder.container(keyedBy: CodingKeys.self)
-        if let meta = try? root.nestedContainer(keyedBy: MetaKeys.self, forKey: .meta),
-           let data = try? meta.nestedContainer(keyedBy: DataKeys.self, forKey: .data) {
-            self.feed = try? data.decode(FeedData.self, forKey: .feed)
-            self.site = try? data.decode(SiteData.self, forKey: .site)
-        }
+        let parsed = try ReaderFeedJSON(from: decoder)
+        self.feed = parsed.meta?.data?.feed
+        self.site = parsed.meta?.data?.site
     }
 }
 
-// MARK: - Feed Data
+private struct ReaderFeedJSON: Decodable {
+    struct Meta: Decodable {
+        struct Data: Decodable {
+            var feed: FeedData?
+            var site: SiteData?
+        }
+
+        var data: Data?
+    }
+
+    var meta: Meta?
+}
 
 /// Represents feed-specific data from meta.data.feed
 private struct FeedData: Decodable {
@@ -94,9 +89,18 @@ private struct FeedData: Decodable {
         case description = "description"
         case imageURL = "image"
     }
-}
 
-// MARK: - Site Data
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        feedID = try? container.decodeIfPresent(String.self, forKey: .feedID)
+        blogID = try? container.decodeIfPresent(String.self, forKey: .blogID)
+        name = try? container.decodeIfPresent(String.self, forKey: .name)
+        url = try? container.decodeIfPresent(URL.self, forKey: .url)
+        description = try? container.decodeIfPresent(String.self, forKey: .description)
+        imageURL = try? container.decodeIfPresent(URL.self, forKey: .imageURL)
+    }
+}
 
 /// Represents site-specific data from meta.data.site
 private struct SiteData: Decodable {
