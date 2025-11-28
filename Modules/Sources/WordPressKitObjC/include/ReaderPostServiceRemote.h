@@ -52,17 +52,6 @@
           failure:(void (^)(NSError *error))failure;
 
 /**
- Fetches a specific post from the specified URL
-
- @param postURL The URL of the post to fetch
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)fetchPostAtURL:(NSURL *)postURL
-               success:(void (^)(RemoteReaderPost *post))success
-               failure:(void (^)(NSError *error))failure;
-
-/**
  Mark a post as liked by the user.
 
  @param postID The ID of the post.

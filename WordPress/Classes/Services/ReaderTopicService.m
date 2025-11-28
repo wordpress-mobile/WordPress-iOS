@@ -136,31 +136,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-- (void)deleteNonMenuTopics
-{
-    [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
-        request.predicate = [NSPredicate predicateWithFormat:@"showInMenu = false AND inUse = false"];
-
-        NSError *error;
-        NSArray *results = [context executeFetchRequest:request error:&error];
-        if (error) {
-            DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
-            return;
-        }
-
-        for (ReaderAbstractTopic *topic in results) {
-            // Do not purge site topics that are followed. We want these to stay so they appear immediately when managing followed sites.
-            if ([topic isKindOfClass:[ReaderSiteTopic class]] && topic.following) {
-                continue;
-            }
-            DDLogInfo(@"Deleting topic: %@", topic.title);
-            [self preserveSavedPostsFromTopic:topic];
-            [context deleteObject:topic];
-        }
-    }];
-}
-
 - (void)clearInUseFlags
 {
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
