@@ -1,16 +1,15 @@
-You can now create an excerpt, a post summary, and auto-generated tags for your posts using Apple Intelligence. It’s also easier to pick your tags in Post Settings. Now that’s smart.
-Speaking of Stats, there are several new improvements in this area of the app.
-- We added a Today card to the New Stats screen.
-- Your homepage now appears in the list of top pages.
-- Your top 10 and 50 items now have their own special section. A place for everything, and everything in its place.
-- Your top pages show up properly when you have a large number of items.
-- The New Stats layout changes to fit different screen sizes. Even really, really big ones.
-- The screen will remember your preferred settings when you pick a custom date range.
-- The Traffic tab lets you pull down to refresh the screen.
-We also made a few visual fixes for iOS in areas like the site creation flow, the media selection screen, and the Stats screen. And while we were at it, we squashed several bugs, too.
-- We fixed a rare crash that sometimes appears in Stats and Subscribers. (But not anymore.)
-- Article views look as they should in the Reader when certain themes are enabled.
-- Reader articles render properly on devices with Display Zoom enabled.
-- The “Add Media” button stays visible in the media library. No more disappearing act.
-- You can search in Reader Subscriptions without freezing the app.
-- The toolbar in Reader articles no longer disappears and reappears from time to time. Now you see it, now you… still see it, we guess.
+Heads up, content creators—we’ve been hard at work making some big changes to the Post Settings screen.
+
+- We added a “Status” field that helps you quickly move posts between draft, pending, private, scheduled, and published states.
+- We brought back the “Publish Date” area for draft and pending posts. That way you can pick a publish date ahead of time without officially scheduling the post.
+- The password field uses a different font (Menlo, if you’re interested) so it’s easier to read similar-looking characters.
+- Give your followers the VIP treatment by setting post access levels for all subscribers, paid subscribers, and the general public.
+- Toggle post comments and pingbacks on or off using the “Discussion” settings.
+
+While we were at it, we made several other helpful updates in various areas of the app.
+
+- On the “Publishing” screen, you can toggle “Email to Subscribers” to automatically notify your subscribers when a post is published. Start the presses.
+- The slug editor has a permalink preview to show what a post’s final URL will look like.
+- We added “Taxonomies” to Site Settings so you can manage your content groups at the site level.
+- Thanks to some design fixes in the “Categories” picker, it’s more obvious that you can pick multiple categories for a post.
+- File sizes are now visible in the Site Media Details area. No more guesswork.
