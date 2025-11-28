@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:29+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: hu */
 
 /* Empty Post Title */
@@ -64,7 +64,6 @@
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Mégse";
@@ -110,12 +109,6 @@
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Vezérlőpult";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "Törlés";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Törlés...";
 
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Kikapcsolva";
@@ -361,9 +354,6 @@
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Oldalak";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "Szülő kategória";
-
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Login dialog password placeholder
@@ -590,7 +580,6 @@
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "Cím";
@@ -629,9 +618,6 @@
 
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Sikertelen feltöltés";
-
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "Feltöltve";
 
 /* \"Uploading\" Status text */
 "Uploading" = "Feltöltés";

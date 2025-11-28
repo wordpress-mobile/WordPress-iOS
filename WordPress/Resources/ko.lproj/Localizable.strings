@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2025-10-10 09:54:08+0000 */
+/* Translation-Revision-Date: 2025-11-27 06:45:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -581,8 +581,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "마지막 부분입니다! 인증 앱의 확인 코드를 입력하세요.";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "대체 텍스트";
 
 /* No comment provided by engineer. */
@@ -725,9 +724,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "사이트에서 젯팩 연결을 해제하시겠어요?";
-
-/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "이 항목을 영구적으로 삭제하시겠습니까?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "%2$@에서 %1$@을(를) 제거하시겠습니까?";
@@ -1082,7 +1078,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "취소";
@@ -1110,8 +1105,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "결정할 수 없나요? 언제든지 테마를 변경할 수 있습니다.";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "캡션";
 
 /* Alert title. */
@@ -1777,8 +1771,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "기본";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "기본 카테고리";
 
 /* Label for selecting the default post format
@@ -1787,9 +1780,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "새 글의 기본값";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "삭제";
 
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "메뉴 삭제";
@@ -1808,14 +1798,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "메뉴 지우기";
 
-/* Text displayed in HUD after successfully deleting a media item */
-"Deleted!" = "삭제되었습니다.";
-
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "사이트를 삭제하는 중…";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "삭제 중...";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "거부하기";
@@ -1823,8 +1807,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Describe the purpose of the image. Leave empty if decorative." = "이미지의 용도를 설명합니다. 장식용이면 비워둡니다.";
 
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "설명";
 
 /* Shortened version of the main title to be used in back navigation. */
@@ -1842,9 +1825,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
 "Didn't mean to create a new account? Go back to re-enter your email address." = "새 계정을 만들 계획이 없으신가요? 뒤로 이동하여 이메일 주소를 다시 입력하세요.";
-
-/* Label for the dimensions in pixels for a media asset (image / video) */
-"Dimensions" = "크기";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "비활성화";
@@ -2121,7 +2101,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "이 GIF를 편집하면 애니메이션이 제거됩니다.";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "에디터";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
@@ -2463,11 +2443,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "File block settings" = "파일 블록 설정";
 
-/* Label for the file name for a media asset (image / video) */
+/* No comment provided by engineer. */
 "File name" = "파일 이름";
-
-/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
-"File type" = "파일 형식";
 
 /* No comment provided by engineer. */
 "File type not supported as a media file." = "파일 유형이 미디어 파일로 지원되지 않습니다.";
@@ -2781,6 +2758,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "저는 사진 작가 Cameron Karsten의 작업에서 많은 영감을 받았습니다. 다음 작업에서 이러한 기법을 시도해볼 생각합니다.";
 
+/* Text on the support form to refer to what area the user has problem with. */
+"I need help with" = "도움말이 필요한 영역";
+
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP 주소";
 
@@ -2826,9 +2806,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint for image caption on image settings. */
 "Image Caption" = "이미지 캡션";
 
-/* Hint for image description on image settings. */
-"Image Description" = "이미지 설명";
-
 /* Hint for image link on image settings. */
 "Image Link" = "이미지 링크";
 
@@ -2840,9 +2817,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Image file not found." = "이미지 파일을 찾을 수 없습니다.";
-
-/* Hint for image title on image settings. */
-"Image title" = "이미지 제목";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "이 사이트의 주제를 간략히 소개하세요.";
@@ -3205,6 +3179,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "완료되면 알려주세요!";
 
+/* Message info on the support screen. */
+"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "사이트 주소(URL)를 알려주고 문제를 최대한 자세히 설명해 주시면 곧 연락드리겠습니다.";
+
+/* Title to let the user know what do we want on the support screen. */
+"Let’s get this sorted" = "상황 정리";
+
 /* Lifestyle site intent topic */
 "Lifestyle" = "라이프스타일";
 
@@ -3405,6 +3385,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "메인 내비게이션";
+
+/* Explanation for the option to enable theme styles */
+"Make the block editor look like your theme." = "블록 편집기를 테마와 비슷한 모양으로 만드세요.";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "이미지, gif 파일, 비디오 또는 임베드된 미디어를 페이지에 추가하여 콘텐츠를 돋보이게 만드세요.";
@@ -3747,9 +3730,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "계정을 찾지 못함";
-
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "카테고리 없음";
 
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "연결 없음";
@@ -4191,9 +4171,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Settings: Comments Paging preferences */
 "Paging" = "페이징";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "상위 카테고리";
-
 /* Parenting site intent topic */
 "Parenting" = "육아";
 
@@ -4411,9 +4388,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "게시물";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "게시글 카테고리";
 
 /* Name of the button to open the post settings */
 "Post Settings" = "글 설정";
@@ -4722,9 +4696,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "사진을 사이트에 업로드하기 전에 사진에서 위치 메타데이터를 제거합니다.";
-
-/* First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "팔로워를 제거하면 회원님의 사이트에서 업데이트를 받지 못하게 됩니다. 팔로워 본인이 선택한 경우에는 회원님의 사이트를 방문하여 다시 팔로우할 수 있습니다.";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "현재 블록이 교체하기";
@@ -5561,6 +5532,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "태그라인";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "태그";
 
@@ -5657,6 +5629,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "눌러서 외부 브라우저에서 그라바타 웹사이트 방문";
+
+/* Label for viewing the custom taxonomies */
+"Taxonomies" = "분류";
 
 /* Technology site intent topic */
 "Technology" = "기술";
@@ -5946,9 +5921,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when the user scanned an expired log in code. */
 "This log in code has expired. Please tap the Scan Again button to rescan the code." = "이 로그인 코드는 만료되었습니다. 다시 스캔 버튼을 눌러 코드를 다시 스캔하세요.";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "이 미디어 항목은 삭제되었습니다.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "해결되지 않는 결제 승인 거부가 있는 경우 이 계정을 종료할 수 없습니다.";
 
@@ -6017,7 +5989,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "제목";
@@ -6111,8 +6082,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "블록 변형…";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "휴지통";
 
@@ -6209,9 +6179,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "새 초대 링크를 만들 수 없습니다.";
 
-/* Text displayed in HUD if there was an error attempting to delete a media item. */
-"Unable to delete media item." = "미디어 항목을 삭제할 수 없습니다.";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to disable invite links." = "초대 링크를 비활성화할 수 없습니다.";
 
@@ -6242,9 +6209,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "지금 이 콘텐츠를 로드할 수 없습니다.";
 
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "비디오를 로드할 수 없습니다.";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "비디오를 재생할 수 없음";
 
@@ -6253,9 +6217,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "사이트를 복원할 수 없음";
-
-/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
-"Unable to save media item." = "미디어 항목을 저장할 수 없습니다.";
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "링크를 공유할 수 없음";
@@ -6412,9 +6373,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "업로드 실패";
 
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "업로드됨";
-
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "1개 임시글, %ld개 파일 업로드됨";
 
@@ -6456,6 +6414,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "로그인 비밀번호 사용";
+
+/* Option to enable theme styles in the block editor */
+"Use theme styles" = "테마 스타일 사용";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -6906,7 +6867,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "국가별 조회 수가 표시된 세계 지도";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "그래도 이 사용자를 삭제하시겠습니까?";
 
 /* Button title. Opens the editor to write a new post.
@@ -7377,14 +7338,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "애플리케이션 비밀번호를 사용하면 독립 호스트 사이트에 더욱 안전하게 연결할 수 있고 %@을(를) 비롯한 기능을 지원할 수 있습니다.";
 
+/* Feature name for managing application passwords in the app */
+"applicationPasswordRequired.feature.applicationPasswords" = "애플리케이션 비밀번호 관리";
+
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "블록 에디터";
+
+/* Feature name for managing terms and taxonomies in the app */
+"applicationPasswordRequired.feature.customTaxonomies" = "분류 관리";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "플러그인 관리";
 
-/* Feature name for managing application passwords in the app
-   Feature name for managing users in the app */
+/* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "사용자 관리";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -7614,6 +7580,288 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "임시글 저장";
 
+/* Button to add more screenshots */
+"com.jetpack.support.addMoreScreenshots" = "스크린샷 더 추가";
+
+/* Button to add screenshots */
+"com.jetpack.support.addScreenshots" = "스크린샷 추가";
+
+/* Header for application logs section */
+"com.jetpack.support.applicationLogs" = "애플리케이션 로그";
+
+/* Description explaining why including logs is helpful */
+"com.jetpack.support.applicationLogsDescription" = "로그를 포함하면 팀에서 문제를 조사하는 데 도움이 될 수 있습니다. 로그에 최근 앱 활동이 포함될 수 있습니다.";
+
+/* Navigation title for application logs screen */
+"com.jetpack.support.applicationLogsTitle" = "애플리케이션 로그";
+
+/* Format string for attachment identifier */
+"com.jetpack.support.attachment" = "첨부 파일 %@";
+
+/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
+"com.jetpack.support.attachmentLimit" = "첨부 파일 한도: %1$@\/%2$@";
+
+/* Bot greeting message. %1$@ is the user's name */
+"com.jetpack.support.botGreeting" = "%1$@ 님, 안녕하세요!";
+
+/* Bot introduction message explaining its purpose */
+"com.jetpack.support.botIntroduction" = "저는 개인 AI 도우미입니다. 사이트 또는 계정에 대한 질문에 도움을 드릴 수 있습니다.";
+
+/* Format string for cache file count and size. %1$d is the number of files, %2$@ is the formatted size. The system will pluralize 'files' based on the number – please specify it as the largest plural value */
+"com.jetpack.support.cacheFiles" = "캐시된 파일 %1$d개(%2$@)";
+
+/* Message shown when cache has no files */
+"com.jetpack.support.cacheIsEmpty" = "캐시가 비어 있음";
+
+/* Button to cancel current action */
+"com.jetpack.support.cancel" = "취소";
+
+/* Warning message that deleted logs cannot be recovered */
+"com.jetpack.support.cannotRecoverLogs" = "다시 가져올 수 없습니다.";
+
+/* Button to clear all activity logs */
+"com.jetpack.support.clearAllActivityLogs" = "모든 활동 로그 지우기";
+
+/* Button to clear disk cache */
+"com.jetpack.support.clearDiskCache" = "디스크 캐시 지우기";
+
+/* Description explaining the purpose of clearing disk cache */
+"com.jetpack.support.clearDiskCacheDescription" = "임시 파일을 제거하여 공간을 확보하거나 문제를 해결하세요.";
+
+/* Progress text while clearing cache */
+"com.jetpack.support.clearing" = "지우는 중...";
+
+/* Message shown when cache clearing is complete */
+"com.jetpack.support.complete" = "완료";
+
+/* Confirmation message when canceling a draft */
+"com.jetpack.support.confirmCancelMessage" = "이 메시지를 취소하시겠습니까? 입력한 모든 데이터가 손실됩니다.";
+
+/* Title for alert confirming cancellation */
+"com.jetpack.support.confirmCancellation" = "취소 확정";
+
+/* Confirmation dialog title when deleting all logs */
+"com.jetpack.support.confirmDeleteAllLogs" = "모든 로그를 삭제하시겠습니까?";
+
+/* Section title for contact information */
+"com.jetpack.support.contactInformation" = "연락처 정보";
+
+/* Button to continue editing a message */
+"com.jetpack.support.continueWriting" = "계속 작성";
+
+/* Message shown at end of closed support conversation */
+"com.jetpack.support.conversationEnded" = "대화의 끝입니다. 더는 답글을 달 수 없습니다.";
+
+/* Navigation title for bot conversations list */
+"com.jetpack.support.conversations" = "대화";
+
+/* Button to delete all log files */
+"com.jetpack.support.deleteAllLogs" = "모든 로그 삭제";
+
+/* Description text for diagnostics screen */
+"com.jetpack.support.diagnosticsDescription" = "일반적인 유지보수 및 문제 해결 작업을 실행하세요.";
+
+/* Navigation title for diagnostics screen */
+"com.jetpack.support.diagnosticsTitle" = "진단";
+
+/* Button to discard changes in a draft message */
+"com.jetpack.support.discardChanges" = "변경 사항 취소";
+
+/* Notice explaining where support will send email responses */
+"com.jetpack.support.emailNotice" = "이 주소로 이메일을 보내드리겠습니다.";
+
+/* Error title when logs fail to load */
+"com.jetpack.support.errorLoadingLogs" = "로그 로드 중 오류 발생";
+
+/* Error message when support conversations fail to load */
+"com.jetpack.support.errorLoadingSupportConversations" = "지원 대화 로드 중 오류 발생";
+
+/* Title for error alerts */
+"com.jetpack.support.errorTitle" = "오류";
+
+/* Option to export log as a file */
+"com.jetpack.support.exportAsFile" = "파일로 내보내기";
+
+/* Button to dismiss alerts. */
+"com.jetpack.support.gotIt" = "확인";
+
+/* Text on the support form to refer to what area the user has problem with. */
+"com.jetpack.support.iNeedHelp" = "도움말이 필요한 영역";
+
+/* Toggle label to include application logs in the support request */
+"com.jetpack.support.includeApplicationLogs" = "애플리케이션 로그 포함";
+
+/* Section title for issue details */
+"com.jetpack.support.issueDetails" = "문제 상세 정보";
+
+/* Format string for when conversation was last updated */
+"com.jetpack.support.lastUpdated" = "마지막 업데이트 %@";
+
+/* Progress message while loading conversation messages */
+"com.jetpack.support.loadingBotConversationMessages" = "메시지 로드 중";
+
+/* Progress message while loading bot conversations */
+"com.jetpack.support.loadingBotConversations" = "봇 대화 로드 중";
+
+/* Progress text while loading support conversations */
+"com.jetpack.support.loadingConversations" = "대화 로드 중";
+
+/* Progress message while loading disk usage information */
+"com.jetpack.support.loadingDiskUsage" = "디스크 사용량 로드 중";
+
+/* Progress message while loading an image attachment */
+"com.jetpack.support.loadingImage" = "이미지 로드 중";
+
+/* Progress message shown in overlay while refreshing content */
+"com.jetpack.support.loadingLatestContent" = "마지막 콘텐츠 로드 중";
+
+/* Progress message while loading application log content */
+"com.jetpack.support.loadingLogContent" = "콘텐츠 로드 중...";
+
+/* Progress message while loading log files */
+"com.jetpack.support.loadingLogs" = "로그 로드 중...";
+
+/* Progress text while loading conversation messages */
+"com.jetpack.support.loadingMessages" = "메시지 로드 중";
+
+/* Progress message while loading a video attachment */
+"com.jetpack.support.loadingVideo" = "비디오 로드 중";
+
+/* Section header for log files sorted by date */
+"com.jetpack.support.logFilesByDate" = "생성 날짜별 로그 파일";
+
+/* Text indicating which log files will be included in the support request */
+"com.jetpack.support.logFilesToUpload" = "다음과 같은 로그 파일이 업로드됩니다.";
+
+/* Footer text explaining log retention policy */
+"com.jetpack.support.logRetentionNotice" = "최대 7일 상당의 로그가 저장됩니다.";
+
+/* Section header for message text input */
+"com.jetpack.support.message" = "메시지";
+
+/* Success message when reply is sent successfully */
+"com.jetpack.support.messageSent" = "메시지 발송됨";
+
+/* Format string for number of messages in conversation */
+"com.jetpack.support.messagesCount" = "메시지 %d개";
+
+/* The title of a new bot chat in the support area of the app */
+"com.jetpack.support.new-bot-chat" = "새 봇 채팅";
+
+/* Option to create a new support ticket */
+"com.jetpack.support.newSupportTicket" = "새 지원 티켓";
+
+/* Label shown when there are no bot conversations */
+"com.jetpack.support.noConversations" = "대화 없음";
+
+/* Description shown when no log files are available */
+"com.jetpack.support.noLogsAvailable" = "사용 가능한 활동 로그가 없음";
+
+/* Label shown when no log files are available */
+"com.jetpack.support.noLogsFound" = "로그를 찾을 수 없음";
+
+/* Button to open a support ticket */
+"com.jetpack.support.openSupportTicket" = "지원 티켓 접수";
+
+/* Text indicating a field is optional */
+"com.jetpack.support.optional" = "(선택 사항)";
+
+/* Navigation title for replying to a support conversation */
+"com.jetpack.support.reply" = "답글";
+
+/* Description for saving log as a file */
+"com.jetpack.support.saveAsFile" = "공유 또는 저장할 파일로 저장";
+
+/* Label for screenshots section */
+"com.jetpack.support.screenshots" = "스크린샷";
+
+/* Description for screenshots section */
+"com.jetpack.support.screenshotsDescription" = "스크린샷을 추가하면 문제를 더 빨리 이해하고 해결하는 데 도움이 될 수 있습니다.";
+
+/* Button to send a message or reply */
+"com.jetpack.support.send" = "보내기";
+
+/* Description for sending logs to support */
+"com.jetpack.support.sendLogsToSupport" = "지원팀에 직접 로그 보내기";
+
+/* Progress text while sending a message */
+"com.jetpack.support.sending" = "보내는 중";
+
+/* Progress message shown while sending a message */
+"com.jetpack.support.sendingMessage" = "메시지 보내는 중";
+
+/* Button to share content */
+"com.jetpack.support.share" = "공유";
+
+/* Navigation title for sharing activity log */
+"com.jetpack.support.shareActivityLog" = "활동 로그 공유";
+
+/* Message shown when sharing log with support */
+"com.jetpack.support.sharingWithSupport" = "지원팀과 공유 중입니다!";
+
+/* Site Address title on the support form */
+"com.jetpack.support.siteAddress" = "사이트 주소";
+
+/* Placeholder for site address field */
+"com.jetpack.support.siteAddressPlaceholder" = "https:\/\/yoursite.com";
+
+/* Description encouraging user to start a new conversation */
+"com.jetpack.support.startNewConversation" = "위의 버튼을 사용하여 새 대화 시작";
+
+/* Subject title on the support form */
+"com.jetpack.support.subject" = "주제";
+
+/* Placeholder for subject field */
+"com.jetpack.support.subjectPlaceholder" = "간략한 문제 요약";
+
+/* Button title to submit a support request. */
+"com.jetpack.support.submitRequest" = "지원 요청 제출";
+
+/* Navigation title for the support conversations list */
+"com.jetpack.support.supportConversations" = "지원 대화";
+
+/* Title for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSent" = "요청이 발송되었습니다!";
+
+/* Message for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSentMessage" = "지원 요청이 발송되었습니다. 최대한 빨리 이메일로 회신하겠습니다.";
+
+/* Progress message shown while bot is thinking */
+"com.jetpack.support.thinking" = "생각 중...";
+
+/* Title of the view for contacting support. */
+"com.jetpack.support.title" = "지원 문의";
+
+/* Button to retry a failed operation */
+"com.jetpack.support.tryAgain" = "다시 시도";
+
+/* Error title when log deletion fails */
+"com.jetpack.support.unableToDeleteLogs" = "로그를 삭제할 수 없음";
+
+/* Error message when conversation cannot be displayed */
+"com.jetpack.support.unableToDisplayConversation" = "대화를 표시할 수 없음";
+
+/* Error title when video cannot be loaded or played */
+"com.jetpack.support.unableToDisplayVideo" = "비디오를 표시할 수 없음";
+
+/* Error message when application logs cannot be loaded */
+"com.jetpack.support.unableToLoadApplicationLogs" = "애플리케이션 로그를 로드할 수 없음";
+
+/* Error title when bot conversations fail to load */
+"com.jetpack.support.unableToLoadConversations" = "대화를 로드할 수 없음";
+
+/* Error title when messages fail to load */
+"com.jetpack.support.unableToLoadMessages" = "메시지를 로드할 수 없음";
+
+/* Error title when message sending fails */
+"com.jetpack.support.unableToSendMessage" = "메시지를 보낼 수 없음";
+
+/* Button to view an attachment */
+"com.jetpack.support.view" = "보기";
+
+/* Progress message shown during cache clearing operation */
+"com.jetpack.support.working" = "작업 중";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "댓글";
 
@@ -7706,6 +7954,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Create Sheet button title */
 "createSheet.post" = "글";
+
+/* Create Sheet button title */
+"createSheet.postFromAudio" = "오디오에서 글 작성하기";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "나만의 사용자 정의 알림판을 만들고 보고 싶은 보고서를 선택하세요. 가장 중요한 데이터에 집중하세요.";
@@ -7876,6 +8127,9 @@ Example: Reply to Pamela Nguyen */
 /* Weekly Roundup debug menu item */
 "debugMenu.weeklyRoundup" = "주간 총정리";
 
+/* Title for selecting a default category for a post */
+"defaultCategory.title" = "기본 카테고리";
+
 /* Error tilte */
 "discussionSettings.saveErrorTitle" = "설정 저장 실패";
 
@@ -8015,10 +8269,10 @@ Example: Reply to Pamela Nguyen */
 "double-tap to change unit" = "두 번 눌러 단위 변경하기";
 
 /* Message for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.message" = "이 태그를 삭제하시겠습니까?";
+"edit.tag.delete.confirmation.message" = "이 템플릿을 삭제하시겠습니까?";
 
-/* Title for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.title" = "태그 삭제";
+/* Title for delete a term confirmation dialog */
+"edit.tag.delete.confirmation.title" = "삭제";
 
 /* Placeholder text for tag description field */
 "edit.tag.description.placeholder" = "설명 추가...";
@@ -8033,7 +8287,37 @@ Example: Reply to Pamela Nguyen */
 "edit.tag.section.description" = "설명";
 
 /* Section header for tag name in edit tag view */
-"edit.tag.section.tag" = "태그";
+"edit.tag.section.tag" = "이름";
+
+/* Context menu action to insert a block */
+"editor.blockInserter.insertBlock" = "블록 삽입";
+
+/* Placeholder text for block search field */
+"editor.blockInserter.search" = "검색";
+
+/* Button title to collapse and show fewer blocks */
+"editor.blockInserter.showLess" = "간략히 표시";
+
+/* Button title to expand and show more blocks */
+"editor.blockInserter.showMore" = "자세히 표시";
+
+/* Error message when media insertion fails */
+"editor.media.failedToInsert" = "미디어 삽입 실패";
+
+/* Category name for section showing all patterns */
+"editor.patterns.all" = "모두";
+
+/* Context menu action to insert a pattern */
+"editor.patterns.insertPattern" = "패턴 삽입";
+
+/* Title shown when no patterns match the search */
+"editor.patterns.noPatternsFound" = "패턴을 찾을 수 없음";
+
+/* Navigation title for patterns view */
+"editor.patterns.title" = "패턴";
+
+/* Category name for patterns without a category */
+"editor.patterns.uncategorized" = "미분류";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "예: 1122334455";
@@ -8587,6 +8871,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "블로그 작성";
+
+/* Description for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.description" = "누구나 이 글을 볼 수 있음";
+
+/* Title for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.title" = "모든 사람";
+
+/* Description for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.description" = "유료 구독자만 이 글을 볼 수 있음";
+
+/* Title for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.title" = "유료 구독자";
+
+/* Description for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.description" = "글이 무료 구독자를 포함한 모든 구독자에게 표시됨";
+
+/* Title for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.title" = "모든 구독자";
 
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "통계 및 알림을 사용하려면 %@(으)로 로그인해야 합니다.";
@@ -9177,6 +9479,12 @@ Example: Reply to Pamela Nguyen */
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "이 비공개 블로그를 볼 권한이 없습니다.";
 
+/* Default empty state message format when there are no terms. %1$@ is the taxonomy name. */
+"localizedLabels.defaultNoTerms.format" = "%1$@ 없음";
+
+/* Default search placeholder format. %1$@ is the taxonomy name. */
+"localizedLabels.defaultSearch.format" = "%1$@ 검색";
+
 /* Button to dismiss the re-authentication view */
 "login.appPasswordReAuth.cancelButton" = "취소";
 
@@ -9312,17 +9620,23 @@ Example: Reply to Pamela Nguyen */
 /* Message about buying storage add-on */
 "mediaLibrary.storageDetails.buyStorage.message" = "스토리지 애드온 구입";
 
-/* Message shown when all media items are attached */
-"mediaLibrary.storageDetails.cleanup.allAttached" = "미디어 라이브러리의 모든 아이템이 첨부됩니다.";
+/* Label for audio media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.audio" = "오디오";
 
-/* Message shown while loading unattached media count */
-"mediaLibrary.storageDetails.cleanup.loading" = "첨부되지 않은 미디어 아이템이 있는지 확인 중...";
+/* Label for document media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.document" = "문서";
 
-/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
-"mediaLibrary.storageDetails.cleanup.message" = "%1$d 아이템이 첨부되지 않았습니다. 제거하고 공간을 확보하세요.";
+/* Label for image media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.image" = "이미지";
 
-/* Title for cleanup section */
-"mediaLibrary.storageDetails.cleanup.title" = "사용하지 않는 아이템 제거";
+/* Label for other/unknown media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.other" = "기타";
+
+/* Label for PowerPoint/presentation media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.powerpoint" = "프레젠테이션";
+
+/* Label for video media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.video" = "비디오";
 
 /* Success message shown after upgrading plan */
 "mediaLibrary.storageDetails.purchase.plan.success" = "사이트 요금제가 업데이트되었습니다!";
@@ -9708,6 +10022,12 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "내가 작성한 페이지";
 
+/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
+"parentCategory.noCategory" = "카테고리 없음";
+
+/* Title for selecting parent category of a category */
+"parentCategory.title" = "상위 카테고리";
+
 /* Title for the parent page picker screen */
 "parentPagePicker.title" = "상위 페이지";
 
@@ -9866,6 +10186,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the post author selection screen */
 "postAuthorPicker.title" = "글쓴이";
+
+/* Title for selecting categories for a post or a page */
+"postCategories.title" = "카테고리";
+
+/* Toggle label for allowing comments on post */
+"postDiscussion.allowComments.label" = "댓글 허용";
+
+/* Toggle label for allowing pings/trackbacks on post */
+"postDiscussion.allowPings.label" = "핑백 허용";
+
+/* Footer text when comments are disabled */
+"postDiscussion.comments.disabled.footer" = "방문자가 새 댓글 또는 답글을 추가할 수 없습니다. 기존 댓글이 계속 표시됩니다.";
+
+/* Footer text when comments are enabled */
+"postDiscussion.comments.enabled.footer" = "방문자가 새 댓글과 답글을 추가할 수 있습니다.";
+
+/* Link text for learning more about pingbacks and trackbacks */
+"postDiscussion.pingbacks.learnMore.text" = "핑백 및 트랙백에 대해 더 알아보기";
+
+/* Navigation title for post discussion settings */
+"postDiscussion.title" = "토론";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "변경사항 폐기";
@@ -10098,6 +10439,9 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "제목이 없습니다";
 
+/* Section header for Access settings in Post Settings */
+"postSettings.access.header" = "접근";
+
 /* Label for the author field in Post Settings */
 "postSettings.author.label" = "글쓴이";
 
@@ -10116,6 +10460,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "postSettings.discardChanges.title" = "변경 사항을 취소할까요?";
+
+/* Status text when discussion (comments) is disabled */
+"postSettings.discussion.closed" = "닫힘";
+
+/* Label for the discussion settings field in Post Settings */
+"postSettings.discussion.label" = "토론";
+
+/* Status text when discussion (comments) is enabled */
+"postSettings.discussion.open" = "열기";
+
+/* Label for the checkbox that lets you send a post to newsletter subscribers */
+"postSettings.emailToSubscribers.label" = "구독자에게 이메일 보내기";
 
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d개 문자";
@@ -10219,6 +10575,21 @@ Example: Reply to Pamela Nguyen */
 /* Cell title for the Top Level option case */
 "postSettings.parentPage.topLevel" = "최상위";
 
+/* Accessibility label for hide password button */
+"postSettings.passwordEntry.hidePassword" = "비밀번호 숨기기";
+
+/* Instructions for password entry */
+"postSettings.passwordEntry.instructions" = "이 글을 보호할 비밀번호를 입력하세요. 비밀번호가 있는 사용자만 볼 수 있습니다.";
+
+/* Navigation title for password entry screen */
+"postSettings.passwordEntry.navigationTitle" = "비밀번호 입력";
+
+/* Placeholder for password field */
+"postSettings.passwordEntry.placeholder" = "비밀번호 입력";
+
+/* Accessibility label for show password button */
+"postSettings.passwordEntry.showPassword" = "비밀번호 표시";
+
 /* Label for the pending review toggle in Post Settings */
 "postSettings.pendingReview.label" = "검토 대기 중";
 
@@ -10246,17 +10617,59 @@ Example: Reply to Pamela Nguyen */
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "일반";
 
+/* Description text explaining what the slug editor does */
+"postSettings.slug.customizeDescription" = "퍼머링크의 마지막 부분을 사용자 정의하세요.";
+
 /* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "postSettings.slug.hint" = "슬러그는 글 제목의 URL 친화적인 버전입니다.";
 
 /* Label for the slug field. Should be the same as WP core. */
 "postSettings.slug.label" = "슬러그";
 
+/* Button text to learn more about permalinks */
+"postSettings.slug.learnMore" = "더 알아보기";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.navigationTitle" = "슬러그";
+
+/* Notice shown when the post doesn't have a remote and permalink template is missing */
+"postSettings.slug.permalinkDraftNotice" = "임시글이 서버에 저장되면 제안된 퍼머링크가 표시됩니다.";
+
+/* Label for the permalink preview */
+"postSettings.slug.permalinkLabel" = "퍼머링크";
+
+/* Section title for the permalink preview */
+"postSettings.slug.permalinkSection" = "퍼머링크";
+
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "슬러그 입력";
 
 /* Label for the preview button in Post Settings */
 "postSettings.socialSharing.header" = "소셜 공유";
+
+/* Label for the status field in Post Settings */
+"postSettings.status.label" = "상태";
+
+/* Navigation title for status picker */
+"postSettings.statusPicker.navigationTitle" = "상태 및 표시 여부";
+
+/* Label showing the current password */
+"postSettings.statusPicker.passwordLabel" = "비밀번호";
+
+/* Toggle label for password protection */
+"postSettings.statusPicker.passwordProtected" = "비밀번호로 보호됨";
+
+/* Subtitle for password protected toggle */
+"postSettings.statusPicker.passwordProtectedSubtitle" = "비밀번호를 아는 사람에게만 표시";
+
+/* Label for schedule date row */
+"postSettings.statusPicker.scheduleDate" = "날짜";
+
+/* Toggle label for sticky posts */
+"postSettings.statusPicker.sticky" = "붙박이";
+
+/* Subtitle for sticky toggle */
+"postSettings.statusPicker.stickySubtitle" = "이 글을 블로그 상단에 고정";
 
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "붙박이";
@@ -10276,17 +10689,56 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "게시물 통계";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"postTags.addTag" = "태그 추가";
+/* Post status title */
+"postStatus.deleted.details" = "영구적으로 삭제됨";
 
-/* Placeholder text for the tag search field */
-"postTags.searchOrAdd.placeholder" = "태그 검색 또는 추가";
+/* Post status title */
+"postStatus.deleted.title" = "삭제됨";
 
-/* Message shown when no tags are selected */
-"postTags.selectionEmpty" = "선택한 태그 없음";
+/* Post status details */
+"postStatus.draft.details" = "발행 준비 안 됨";
 
-/* Title for the tags screen */
-"postTags.title" = "태그";
+/* Post status title */
+"postStatus.draft.title" = "임시글";
+
+/* Post status details */
+"postStatus.pending.details" = "발행 전 검토 대기 중";
+
+/* Post status title */
+"postStatus.pending.title" = "대기 중";
+
+/* Post status details */
+"postStatus.private.details" = "사이트 관리자와 편집자에게만 표시";
+
+/* Post status title */
+"postStatus.private.title" = "비공개";
+
+/* Post status details */
+"postStatus.published.details" = "모든 사람에게 표시";
+
+/* Post status title */
+"postStatus.published.title" = "발행됨";
+
+/* Post status details */
+"postStatus.scheduled.details" = "선택한 날짜에 자동으로 발행";
+
+/* Post status title */
+"postStatus.scheduled.title" = "예약됨";
+
+/* Post status title */
+"postStatus.trash.details" = "휴지통으로 이동되었지만, 아직 삭제 안 됨";
+
+/* Post status title */
+"postStatus.trash.title" = "삭제됨";
+
+/* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.addTag" = "%1$@ 추가";
+
+/* Placeholder text for the taxonomy search field. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.searchOrAdd.placeholder" = "%1$@ 검색 또는 추가";
+
+/* Message shown when no taxonomy terms are selected. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.selectionEmpty" = "%1$@이 선택되지 않았습니다.";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "취소";
@@ -10362,9 +10814,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "카테고리";
-
-/* Voiceover accessibility label informing the user that this button dismiss the current view */
-"prepublishing.close" = "닫기";
 
 /* Button to confirm discarding changes */
 "prepublishing.discardChanges.button" = "변경 사항 취소";
@@ -10453,12 +10902,17 @@ Example: 27 social shares remaining in the next 30 days */
 /* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
 "prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "경고";
 
-/* The label displayed for a table row that displays the sharing message for the post.
-Tapping on this row allows the user to edit the sharing message. */
+/* Table section title */
 "prepublishing.socialAccounts.message.label" = "메시지";
+
+/* Placeholder text for the message field in Social Sharing */
+"prepublishing.socialAccounts.messagePlaceholder" = "간단한 메시지를 작성하여 글과 함께 소셜 미디어에서 공유";
 
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "소셜";
+
+/* Table section title */
+"prepublishing.socialAccounts.servicesSectionTitle" = "서비스";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "태그";
@@ -11405,6 +11859,18 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "도메인 선택";
 
+/* Default text for adding a new item when no label is provided */
+"siteCustomTaxonomies.defaultAddNew" = "추가";
+
+/* Description for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.description" = "분류는 표준 카테고리와 태그 이상으로 콘텐츠 구성에 도움이 됩니다.";
+
+/* Title for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.title" = "사용자 정의 분류 없음";
+
+/* Navigation title for the custom taxonomies screen */
+"siteCustomTaxonomies.navigationTitle" = "분류";
+
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "siteMedia.accessibilityLabelAudio" = "오디오, %@";
 
@@ -11423,8 +11889,77 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "미디어를 선택합니다.";
 
+/* Label for the alt for a media asset (image) */
+"siteMedia.details.altText" = "대체 텍스트";
+
+/* Verb. Button title. Tapping cancels an action. */
+"siteMedia.details.cancel" = "취소";
+
+/* Noun. Label for the caption for a media asset (image / video) */
+"siteMedia.details.caption" = "캡션";
+
+/* Title for button that permanently deletes a media item (photo / video) */
+"siteMedia.details.delete" = "삭제";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"siteMedia.details.deleteConfirmation" = "이 항목을 영구적으로 삭제하시겠습니까?";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"siteMedia.details.deleted" = "삭제되었습니다.";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"siteMedia.details.deleting" = "삭제 중...";
+
+/* Label for the description for a media asset (image / video) */
+"siteMedia.details.description" = "설명";
+
+/* Label for the dimensions in pixels for a media asset (image / video) */
+"siteMedia.details.dimensions" = "규격";
+
+/* Label for the file name for a media asset (image / video) */
+"siteMedia.details.fileName" = "파일 이름";
+
+/* Label for the file size for a media asset (image / video) */
+"siteMedia.details.fileSize" = "파일 크기";
+
+/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
+"siteMedia.details.fileType" = "파일 형식";
+
+/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
+"siteMedia.details.mediaDeleted" = "이 미디어 항목은 삭제되었습니다.";
+
+/* Noun. Label for the title of a media asset (image / video) */
+"siteMedia.details.title" = "제목";
+
+/* Accessibility label for trash buttons in nav bars */
+"siteMedia.details.trash" = "휴지통";
+
+/* Text displayed in HUD if there was an error attempting to delete a media item. */
+"siteMedia.details.unableToDeleteMedia" = "미디어 항목을 삭제할 수 없습니다.";
+
+/* Error shown when the app fails to load a video from the user's media library. */
+"siteMedia.details.unableToLoadVideo" = "비디오를 로드할 수 없습니다.";
+
+/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
+"siteMedia.details.unableToSaveMedia" = "미디어 항목을 저장할 수 없습니다.";
+
+/* Label for the date a media asset (image / video) was uploaded */
+"siteMedia.details.uploaded" = "업로드됨";
+
 /* Title for the URL field */
 "siteMedia.details.url" = "URL";
+
+/* Hint for image alt on image settings. */
+"siteMedia.hints.imageAlt" = "이미지 대체";
+
+/* Hint for image caption on image settings. */
+"siteMedia.hints.imageCaption" = "이미지 캡션";
+
+/* Hint for image description on image settings. */
+"siteMedia.hints.imageDescription" = "이미지 설명";
+
+/* Hint for image title on image settings. */
+"siteMedia.hints.imageTitle" = "이미지 제목";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "미디어를 눌러 전체 화면에서 보기";
@@ -11522,6 +12057,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "개인정보";
+
+/* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
+"siteTaxonomy.addNew.format" = "%1$@ 추가";
 
 /* Hint for users when hidden privacy setting is set */
 "siteVisibility.hidden.hint" = "사이트가 완성될 때까지 “Coming Soon” 알림 뒤로 사이트를 숨겨둡니다.";
@@ -12090,7 +12628,8 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "IOS용 리더 지원";
 
-/* Description for empty state when there are no tags */
+/* Description for empty state when there are no tags
+   Description for empty state when there are no tags. %1$@ is the taxonomy name. */
 "tags.empty.description" = "태그를 사용하면 회원님이 콘텐츠를 구성하고 독자가 관련 글을 더 쉽게 찾는 데 도움이 됩니다.";
 
 /* Title for empty state when there are no tags */
@@ -12167,9 +12706,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "읽지 않음";
-
-/* Site's Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.subscriber" = "사이트 구독자";
 
 /* Sites's User Profile. Displayed when the name is empty! */
 "user.details.title.user" = "사이트 사용자";
@@ -12255,9 +12791,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The heading at the top of the user list */
 "userlist.title" = "사용자";
-
-/* Site Subscribers */
-"users.list.title.subscribers" = "구독자";
 
 /* Screen title */
 "users.title" = "사용자";
