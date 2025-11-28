@@ -83,4 +83,21 @@ extension BasePost {
             date_created_gmt = newValue
         }
     }
+
+    /// Returns true if title or content is non empty
+    public func hasContent() -> Bool {
+        if let postTitle, !postTitle.isEmpty {
+            return true
+        }
+
+        return !isContentEmpty()
+    }
+
+    /// True if the content field is empty, independent of the title field.
+    public func isContentEmpty() -> Bool {
+        guard let content else { return true }
+
+        let emptyGBParagraph = "<!-- wp:paragraph -->\n<p></p>\n<!-- /wp:paragraph -->"
+        return content.isEmpty || content == emptyGBParagraph
+    }
 }

@@ -43,27 +43,47 @@ public class ReaderCard: NSManagedObject {
         sites?.array as? [ReaderSiteTopic] ?? []
     }
 
-    public convenience init?(context: NSManagedObjectContext, from remoteCard: RemoteReaderCard) {
+    public static func createOrReuse(context: NSManagedObjectContext, from remoteCard: RemoteReaderCard) -> ReaderCard? {
         guard remoteCard.type != .unknown else {
             return nil
         }
 
-        self.init(context: context)
-
         switch remoteCard.type {
         case .post:
-            post = ReaderPost.createOrReplace(fromRemotePost: remoteCard.post, for: nil, context: context)
+            let post = ReaderPost.createOrReplace(fromRemotePost: remoteCard.post, for: nil, context: context)
+
+            // Check if a card already exists with this post to prevent duplicates
+            if let existingCard = findExistingCard(with: post, context: context) {
+                return existingCard
+            }
+
+            let card = ReaderCard(context: context)
+            card.post = post
+            return card
+
         case .interests:
-            topics = NSOrderedSet(array: remoteCard.interests?.prefix(5).map {
-                ReaderTagTopic.createOrUpdateIfNeeded(from: $0, context: context)
-            } ?? [])
+            return nil // Disabled in v26.5
         case .sites:
-            sites = NSOrderedSet(array: remoteCard.sites?.prefix(3).map {
+            let card = ReaderCard(context: context)
+            card.sites = NSOrderedSet(array: remoteCard.sites?.prefix(3).map {
                 ReaderSiteTopic.createIfNeeded(from: $0, context: context)
             } ?? [])
+            return card
 
         default:
-            break
+            return nil
         }
+    }
+
+    private static func findExistingCard(with post: ReaderPost?, context: NSManagedObjectContext) -> ReaderCard? {
+        guard let post else {
+            return nil
+        }
+
+        let fetchRequest = ReaderCard.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "post = %@", post)
+        fetchRequest.fetchLimit = 1
+
+        return try? context.fetch(fetchRequest).first
     }
 }

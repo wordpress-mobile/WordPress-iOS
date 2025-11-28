@@ -1,6 +1,0 @@
-Artık Apple Intelligence kullanarak gönderileriniz için bir alıntı oluşturabilir ve ak otomatik olarak önerilen etiketler alabilirsiniz. Gönderi Ayarlarından etiketlerinizi seçmek de daha kolaydır. İşte bu akıllıca.
-Site oluşturma akışı, ortam seçim ekranı ve İstatistikler ekranı gibi alanlarda iOS için birkaç görsel düzeltme yaptık.
-Ve hazır buradayken, bir kaç hatayı da giderdik.
-- Okuyucu makaleleri, Görüntüleme Yakınlaştırma etkin olan cihazlarda düzgün şekilde işlenir.
-- "Ortam Ekle" düğmesi ortam kütüphanesinde görünür kalır. Artık ortadan kaybolmak yok.
-- Uygulamayı dondurmadan Okuyucu Aboneliklerinde arama yapabilirsiniz.

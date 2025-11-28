@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2025-03-26 18:26:36+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: pt_BR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -578,8 +578,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Quase pronto! Informe o código de verificação do seu aplicativo de autenticação.";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "Texto alternativo";
 
 /* No comment provided by engineer. */
@@ -722,9 +721,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Tem certeza de que deseja desconectar o Jetpack do seu site?";
-
-/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "Tem certeza de que deseja excluir permanentemente este item?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Tem certeza de que deseja remover %1$@ de %2$@?";
@@ -1079,7 +1075,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Cancelar";
@@ -1107,8 +1102,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Não consegue decidir? Você pode mudar o tema a qualquer momento.";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "Legenda";
 
 /* Alert title. */
@@ -1771,8 +1765,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Padrão";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "Categoria padrão";
 
 /* Label for selecting the default post format
@@ -1781,9 +1774,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Padrões para novos posts";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "Excluir";
 
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Excluir menu";
@@ -1802,14 +1792,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Excluir menu";
 
-/* Text displayed in HUD after successfully deleting a media item */
-"Deleted!" = "Excluido!";
-
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "Apagando o site...";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Excluindo...";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Negar";
@@ -1817,8 +1801,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Describe the purpose of the image. Leave empty if decorative." = "Descreva o objetivo da imagem. Deixe vazio caso a imagem seja decorativa.";
 
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "Descrição";
 
 /* Shortened version of the main title to be used in back navigation. */
@@ -1836,9 +1819,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
 "Didn't mean to create a new account? Go back to re-enter your email address." = "Não queria criar uma conta nova? Volte para redigitar seu endereço de e-mail.";
-
-/* Label for the dimensions in pixels for a media asset (image / video) */
-"Dimensions" = "Dimensões";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "Desativar";
@@ -2115,7 +2095,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editar o gif removerá sua animação.";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "Editor";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
@@ -2454,11 +2434,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "File block settings" = "Configurações do bloco Arquivo";
 
-/* Label for the file name for a media asset (image / video) */
+/* No comment provided by engineer. */
 "File name" = "Nome do arquivo";
-
-/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
-"File type" = "Tipo de arquivo";
 
 /* No comment provided by engineer. */
 "File type not supported as a media file." = "O tipo de arquivo não é suportado como um arquivo de mídia.";
@@ -2817,9 +2794,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint for image caption on image settings. */
 "Image Caption" = "Legenda da imagem";
 
-/* Hint for image description on image settings. */
-"Image Description" = "Descrição da imagem";
-
 /* Hint for image link on image settings. */
 "Image Link" = "Link da imagem";
 
@@ -2831,9 +2805,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Image file not found." = "Arquivo de imagem não encontrado.";
-
-/* Hint for image title on image settings. */
-"Image title" = "Título da imagem";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Em poucas palavras, explique sobre o que é este site.";
@@ -3736,9 +3707,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "Nenhuma conta encontrada";
 
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "Nenhuma categoria";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Sem conexão";
 
@@ -4179,9 +4147,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Settings: Comments Paging preferences */
 "Paging" = "Paginação";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "Categoria mãe";
-
 /* Parenting site intent topic */
 "Parenting" = "Criação de filhos";
 
@@ -4399,9 +4364,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Post";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "Categorias de post";
 
 /* Name of the button to open the post settings */
 "Post Settings" = "Configurações do post";
@@ -4710,9 +4672,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Remove os metadados de localização das fotos antes de enviá-las para seu site.";
-
-/* First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Caso remova os seguidores, eles não receberão atualizações do seu site. Se eles quiserem, ainda poderão acessar seu site e voltar a segui-lo.";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Substituir o bloco atual";
@@ -5546,6 +5505,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "Descrição";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "Tags";
 
@@ -5931,9 +5891,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when the user scanned an expired log in code. */
 "This log in code has expired. Please tap the Scan Again button to rescan the code." = "Esse código de login expirou. Toque no botão de verificação novamente para reanalisar o código.";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "Este item da biblioteca foi removido.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "A conta não pode ser encerrada pois possui estornos não resolvidos.";
 
@@ -6002,7 +5959,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "Título";
@@ -6096,8 +6052,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Transformar bloco...";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "Lixeira";
 
@@ -6194,9 +6149,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Não foi possível criar novos links de convite.";
 
-/* Text displayed in HUD if there was an error attempting to delete a media item. */
-"Unable to delete media item." = "Incapaz de excluir item de mídia.";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to disable invite links." = "Não foi possível desativar os links de convite.";
 
@@ -6227,9 +6179,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "Não foi possível carregar esse conteúdo no momento.";
 
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "Não foi possível carregar o vídeo.";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Não foi possível reproduzir o vídeo";
 
@@ -6238,9 +6187,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Não foi possível restaurar o site";
-
-/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
-"Unable to save media item." = "Incapaz de salvar item de média.";
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Não foi possível compartilhar o link";
@@ -6396,9 +6342,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Falha ao carregar";
-
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "Enviado";
 
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "1 rascunho de post e %ld arquivos enviados";
@@ -6888,7 +6831,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Mapa do mundo mostrando visualizações por país.";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Ainda gostaria de remover esta pessoa?";
 
 /* Button title. Opens the editor to write a new post.
@@ -7262,8 +7205,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Gerenciamento de plugins";
 
-/* Feature name for managing application passwords in the app
-   Feature name for managing users in the app */
+/* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Gestão de usuários";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -9231,9 +9173,6 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Categorias";
 
-/* Voiceover accessibility label informing the user that this button dismiss the current view */
-"prepublishing.close" = "Fechar";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
@@ -9306,8 +9245,7 @@ Example: 27 social shares remaining in the next 30 days */
 /* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
 "prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Aviso";
 
-/* The label displayed for a table row that displays the sharing message for the post.
-Tapping on this row allows the user to edit the sharing message. */
+/* Table section title */
 "prepublishing.socialAccounts.message.label" = "Mensagem";
 
 /* The navigation title for the pre-publishing social accounts screen. */
@@ -10715,9 +10653,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "não lida";
 
-/* Site's Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.subscriber" = "Assinante do site";
-
 /* Sites's User Profile. Displayed when the name is empty! */
 "user.details.title.user" = "Usuário do site";
 
@@ -10802,9 +10737,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The heading at the top of the user list */
 "userlist.title" = "Usuários";
-
-/* Site Subscribers */
-"users.list.title.subscribers" = "Assinantes";
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Dispensar";

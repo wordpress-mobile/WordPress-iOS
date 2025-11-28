@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2025-10-07 15:54:10+0000 */
+/* Translation-Revision-Date: 2025-11-25 11:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -581,8 +581,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Nästan klart! Skriv in verifieringskoden från din autentiserings-app.";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "Alt-text";
 
 /* No comment provided by engineer. */
@@ -725,9 +724,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Är du säker på att du vill koppla bort Jetpack från webbplatsen?";
-
-/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "Är du säker på att du vill ta bort detta objekt permanent?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Är du säker på att du vill ta bort %1$@ från %2$@?";
@@ -1082,7 +1078,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Avbryt";
@@ -1110,8 +1105,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Kan du inte bestämma dig? Du kan byta tema när som helst.";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "Bildtext";
 
 /* Alert title. */
@@ -1777,8 +1771,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Standard";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "Standardkategori";
 
 /* Label for selecting the default post format
@@ -1787,9 +1780,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Standard för nya inlägg";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "Kasta i papperskorgen";
 
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Radera meny";
@@ -1808,14 +1798,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Ta bort meny";
 
-/* Text displayed in HUD after successfully deleting a media item */
-"Deleted!" = "Raderat!";
-
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "Tar bort webbplats …";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Tar bort …";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Neka";
@@ -1823,8 +1807,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Describe the purpose of the image. Leave empty if decorative." = "Beskriv syftet med bilden. Lämna tomt om det är dekorativt.";
 
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "Beskrivning";
 
 /* Shortened version of the main title to be used in back navigation. */
@@ -1842,9 +1825,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
 "Didn't mean to create a new account? Go back to re-enter your email address." = "Vill du inte registrera ett nytt konto? Gå tillbaka för att mata in e-postadressen igen.";
-
-/* Label for the dimensions in pixels for a media asset (image / video) */
-"Dimensions" = "Storlekar";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "Inaktivera";
@@ -2121,7 +2101,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Om du redigerar den här GIF-bilden tas animeringen bort.";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "Redigerare";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
@@ -2463,11 +2443,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "File block settings" = "Inställningar för filblock";
 
-/* Label for the file name for a media asset (image / video) */
+/* No comment provided by engineer. */
 "File name" = "Filnamn";
-
-/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
-"File type" = "Filtyp";
 
 /* No comment provided by engineer. */
 "File type not supported as a media file." = "Filtypen stöds inte som en mediafil.";
@@ -2781,6 +2758,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Jag är så inspirerad av fotografen Cameron Karstens arbete. Jag kommer att prova dessa tekniker nästa gång";
 
+/* Text on the support form to refer to what area the user has problem with. */
+"I need help with" = "Jag behöver hjälp med";
+
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP-adress";
 
@@ -2826,9 +2806,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint for image caption on image settings. */
 "Image Caption" = "Bildtext";
 
-/* Hint for image description on image settings. */
-"Image Description" = "Bildbeskrivning";
-
 /* Hint for image link on image settings. */
 "Image Link" = "Bildlänk";
 
@@ -2840,9 +2817,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Image file not found." = "Bildfilen hittades inte.";
-
-/* Hint for image title on image settings. */
-"Image title" = "Bildrubrik";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Med några ord, berätta vad denna webbplats handlar om.";
@@ -3205,6 +3179,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Berätta för mig när det är klart!";
 
+/* Message info on the support screen. */
+"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Meddela oss din webbplatsadress (URL) och berätta så mycket du kan om problemet, så kommer vi att kontakta dig snart.";
+
+/* Title to let the user know what do we want on the support screen. */
+"Let’s get this sorted" = "Låt oss ordna detta";
+
 /* Lifestyle site intent topic */
 "Lifestyle" = "Livsstil";
 
@@ -3405,6 +3385,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Huvudnavigering";
+
+/* Explanation for the option to enable theme styles */
+"Make the block editor look like your theme." = "Gör blockredigeraren att se ut som ditt tema.";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Förstärk ditt innehåll genom att lägga till bilder, gif-illustrationer, videoklipp och inbäddade media i ditt sidinnehåll.";
@@ -3747,9 +3730,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "Inga konton hittades";
-
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "Ingen kategori";
 
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Ingen anslutning";
@@ -4191,9 +4171,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Settings: Comments Paging preferences */
 "Paging" = "Paginering";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "Överordnad kategori";
-
 /* Parenting site intent topic */
 "Parenting" = "Föräldraskap";
 
@@ -4411,9 +4388,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Skicka";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "Inläggskategorier";
 
 /* Name of the button to open the post settings */
 "Post Settings" = "Inläggsinställningar";
@@ -4722,9 +4696,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Rensar bort metadata om plats från foton innan de laddas upp till din webbplats.";
-
-/* First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Borttagning av följare gör att de slutar ta emot uppdateringar från din webbplats. Om de vill, kan de fortfarande besöka din webbplats och följa den igen.";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Ersätt aktuellt block";
@@ -5561,6 +5532,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "Slogan";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "Etiketter";
 
@@ -5657,6 +5629,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "Tryck för att besöka webbplatsen för Gravatar i en extern webbläsare";
+
+/* Label for viewing the custom taxonomies */
+"Taxonomies" = "Taxonomier";
 
 /* Technology site intent topic */
 "Technology" = "Teknologi";
@@ -5946,9 +5921,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when the user scanned an expired log in code. */
 "This log in code has expired. Please tap the Scan Again button to rescan the code." = "Denna inloggningskod gäller inte längre. Tryck på knappen ”skanna igen” för att skanna på nytt.";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "Detta medieobjekt har raderats.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Detta användarkonto kan inte avslutas eftersom det fortfarande finns någon oavslutad chargeback.";
 
@@ -6017,7 +5989,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "Rubrik";
@@ -6111,8 +6082,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Omvandla block …";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "Släng";
 
@@ -6209,9 +6179,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Det gick inte att skapa nya inbjudningslänkar.";
 
-/* Text displayed in HUD if there was an error attempting to delete a media item. */
-"Unable to delete media item." = "Kan inte radera medieobjekt.";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to disable invite links." = "Det gick inte att inaktivera inbjudningslänken.";
 
@@ -6242,9 +6209,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "Det går inte att ladda detta inlägg just nu.";
 
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "Det går inte att ladda in videoklippet.";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Det går inte att spela video";
 
@@ -6253,9 +6217,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Kan inte återställa din webbplats";
-
-/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
-"Unable to save media item." = "Kan inte spara medieobjket.";
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Kan inte dela länken";
@@ -6412,9 +6373,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Uppladdning misslyckades";
 
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "Uppladdad";
-
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "Har laddat upp utkast för 1 inlägg, %ld filer";
 
@@ -6456,6 +6414,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Använd lösenord för att logga in";
+
+/* Option to enable theme styles in the block editor */
+"Use theme styles" = "Använd temastilar";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -6906,7 +6867,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Världskarta med antal visningar per land.";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Vill du fortfarande ta bort den här personen?";
 
 /* Button title. Opens the editor to write a new post.
@@ -7377,14 +7338,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Applikationslösenord är ett säkrare sätt att ansluta till din webbplats som drivs på egen server och möjliggör stöd för funktioner som %@.";
 
+/* Feature name for managing application passwords in the app */
+"applicationPasswordRequired.feature.applicationPasswords" = "Applikationslösenordshantering";
+
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Blockredigerare";
+
+/* Feature name for managing terms and taxonomies in the app */
+"applicationPasswordRequired.feature.customTaxonomies" = "Taxonomihantering";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Hantering av tillägg";
 
-/* Feature name for managing application passwords in the app
-   Feature name for managing users in the app */
+/* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Användarhantering";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -7613,6 +7579,285 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Spara utkast";
+
+/* Button to add more screenshots */
+"com.jetpack.support.addMoreScreenshots" = "Lägg till fler skärmdumpar";
+
+/* Button to add screenshots */
+"com.jetpack.support.addScreenshots" = "Lägg till skärmdumpar";
+
+/* Header for application logs section */
+"com.jetpack.support.applicationLogs" = "Applikationsloggar";
+
+/* Description explaining why including logs is helpful */
+"com.jetpack.support.applicationLogsDescription" = "Att inkludera loggar kan hjälpa vårt team att undersöka problem. Loggar kan innehålla den senaste appaktiviteten.";
+
+/* Navigation title for application logs screen */
+"com.jetpack.support.applicationLogsTitle" = "Applikationsloggar";
+
+/* Format string for attachment identifier */
+"com.jetpack.support.attachment" = "Bilaga %@";
+
+/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
+"com.jetpack.support.attachmentLimit" = "Gräns för bilagor: %1$@ \/ %2$@";
+
+/* Bot greeting message. %1$@ is the user's name */
+"com.jetpack.support.botGreeting" = "Hej %1$@!";
+
+/* Bot introduction message explaining its purpose */
+"com.jetpack.support.botIntroduction" = "Jag är din personliga AI-assistent. Jag kan hjälpa till med frågor om din webbplats eller ditt konto.";
+
+/* Format string for cache file count and size. %1$d is the number of files, %2$@ is the formatted size. The system will pluralize 'files' based on the number – please specify it as the largest plural value */
+"com.jetpack.support.cacheFiles" = "%1$d cachelagrade filer (%2$@)";
+
+/* Message shown when cache has no files */
+"com.jetpack.support.cacheIsEmpty" = "Cachelagringen är tom";
+
+/* Button to cancel current action */
+"com.jetpack.support.cancel" = "Avbryt";
+
+/* Warning message that deleted logs cannot be recovered */
+"com.jetpack.support.cannotRecoverLogs" = "Du kommer inte att kunna få tillbaka dem.";
+
+/* Button to clear all activity logs */
+"com.jetpack.support.clearAllActivityLogs" = "Rensa alla aktivitetsloggar";
+
+/* Button to clear disk cache */
+"com.jetpack.support.clearDiskCache" = "Rensa diskcache";
+
+/* Description explaining the purpose of clearing disk cache */
+"com.jetpack.support.clearDiskCacheDescription" = "Ta bort tillfälliga filer för att frigöra utrymme eller lösa problem.";
+
+/* Progress text while clearing cache */
+"com.jetpack.support.clearing" = "Rensar…";
+
+/* Message shown when cache clearing is complete */
+"com.jetpack.support.complete" = "Slutförd";
+
+/* Confirmation message when canceling a draft */
+"com.jetpack.support.confirmCancelMessage" = "Är du säker på att du vill avbryta detta meddelande? Du kommer att förlora alla data du har angett";
+
+/* Title for alert confirming cancellation */
+"com.jetpack.support.confirmCancellation" = "Bekräfta avslut";
+
+/* Confirmation dialog title when deleting all logs */
+"com.jetpack.support.confirmDeleteAllLogs" = "Är du säker på att du vill ta bort alla loggar?";
+
+/* Section title for contact information */
+"com.jetpack.support.contactInformation" = "Kontaktinformation";
+
+/* Button to continue editing a message */
+"com.jetpack.support.continueWriting" = "Fortsätt skriva";
+
+/* Message shown at end of closed support conversation */
+"com.jetpack.support.conversationEnded" = "Slut på konversation. Inga ytterligare svar är möjliga.";
+
+/* Navigation title for bot conversations list */
+"com.jetpack.support.conversations" = "Konversationer";
+
+/* Button to delete all log files */
+"com.jetpack.support.deleteAllLogs" = "Ta bort alla loggar";
+
+/* Description text for diagnostics screen */
+"com.jetpack.support.diagnosticsDescription" = "Kör vanliga underhålls- och felsökningsåtgärder.";
+
+/* Navigation title for diagnostics screen */
+"com.jetpack.support.diagnosticsTitle" = "Diagnostik";
+
+/* Button to discard changes in a draft message */
+"com.jetpack.support.discardChanges" = "Ignorera ändringarna";
+
+/* Notice explaining where support will send email responses */
+"com.jetpack.support.emailNotice" = "Vi skickar ett e-postmeddelande till den här adressen.";
+
+/* Error title when logs fail to load */
+"com.jetpack.support.errorLoadingLogs" = "Fel vid inläsning av loggar";
+
+/* Error message when support conversations fail to load */
+"com.jetpack.support.errorLoadingSupportConversations" = "Fel vid inläsning av supportkonversationer";
+
+/* Title for error alerts */
+"com.jetpack.support.errorTitle" = "Fel";
+
+/* Option to export log as a file */
+"com.jetpack.support.exportAsFile" = "Exportera som fil";
+
+/* Button to dismiss alerts. */
+"com.jetpack.support.gotIt" = "Jag förstår";
+
+/* Text on the support form to refer to what area the user has problem with. */
+"com.jetpack.support.iNeedHelp" = "Jag behöver hjälp med";
+
+/* Toggle label to include application logs in the support request */
+"com.jetpack.support.includeApplicationLogs" = "Inkludera applikationsloggar";
+
+/* Section title for issue details */
+"com.jetpack.support.issueDetails" = "Probleminformation";
+
+/* Format string for when conversation was last updated */
+"com.jetpack.support.lastUpdated" = "Senaste uppdatering %@";
+
+/* Progress message while loading conversation messages */
+"com.jetpack.support.loadingBotConversationMessages" = "Läser in meddelanden";
+
+/* Progress message while loading bot conversations */
+"com.jetpack.support.loadingBotConversations" = "Läser in robotkonversationer";
+
+/* Progress text while loading support conversations */
+"com.jetpack.support.loadingConversations" = "Laddar in konversationer";
+
+/* Progress message while loading disk usage information */
+"com.jetpack.support.loadingDiskUsage" = "Läser in diskanvändning";
+
+/* Progress message while loading an image attachment */
+"com.jetpack.support.loadingImage" = "Laddar in bild";
+
+/* Progress message shown in overlay while refreshing content */
+"com.jetpack.support.loadingLatestContent" = "Läser in senaste innehåll";
+
+/* Progress message while loading application log content */
+"com.jetpack.support.loadingLogContent" = "Läser in logginnehåll...";
+
+/* Progress message while loading log files */
+"com.jetpack.support.loadingLogs" = "Laddar in loggar …";
+
+/* Progress text while loading conversation messages */
+"com.jetpack.support.loadingMessages" = "Laddar in meddelanden";
+
+/* Progress message while loading a video attachment */
+"com.jetpack.support.loadingVideo" = "Laddar in videoklipp";
+
+/* Section header for log files sorted by date */
+"com.jetpack.support.logFilesByDate" = "Loggfiler efter skapandedatum";
+
+/* Text indicating which log files will be included in the support request */
+"com.jetpack.support.logFilesToUpload" = "Följande loggfiler kommer att laddas upp:";
+
+/* Footer text explaining log retention policy */
+"com.jetpack.support.logRetentionNotice" = "Upp till sju dagar med loggar sparas.";
+
+/* Section header for message text input */
+"com.jetpack.support.message" = "Meddelande";
+
+/* Success message when reply is sent successfully */
+"com.jetpack.support.messageSent" = "Meddelande skickat";
+
+/* Format string for number of messages in conversation */
+"com.jetpack.support.messagesCount" = "%d meddelanden";
+
+/* The title of a new bot chat in the support area of the app */
+"com.jetpack.support.new-bot-chat" = "Ny robotchatt";
+
+/* Option to create a new support ticket */
+"com.jetpack.support.newSupportTicket" = "Nytt supportärende";
+
+/* Label shown when there are no bot conversations */
+"com.jetpack.support.noConversations" = "Inga konversationer";
+
+/* Description shown when no log files are available */
+"com.jetpack.support.noLogsAvailable" = "Det finns inga aktivitetsloggar tillgängliga";
+
+/* Label shown when no log files are available */
+"com.jetpack.support.noLogsFound" = "Inga loggar hittades";
+
+/* Button to open a support ticket */
+"com.jetpack.support.openSupportTicket" = "Öppna ett supportärende";
+
+/* Text indicating a field is optional */
+"com.jetpack.support.optional" = "(Valfritt)";
+
+/* Navigation title for replying to a support conversation */
+"com.jetpack.support.reply" = "Svara";
+
+/* Description for saving log as a file */
+"com.jetpack.support.saveAsFile" = "Spara som en fil för att dela eller lagra";
+
+/* Label for screenshots section */
+"com.jetpack.support.screenshots" = "Skärmdumpar";
+
+/* Description for screenshots section */
+"com.jetpack.support.screenshotsDescription" = "Att lägga till skärmbilder kan hjälpa oss att förstå och lösa ditt problem snabbare.";
+
+/* Button to send a message or reply */
+"com.jetpack.support.send" = "Skicka";
+
+/* Description for sending logs to support */
+"com.jetpack.support.sendLogsToSupport" = "Skicka loggar direkt till supportteamet";
+
+/* Progress text while sending a message */
+"com.jetpack.support.sending" = "Skickar";
+
+/* Progress message shown while sending a message */
+"com.jetpack.support.sendingMessage" = "Skickar meddelande";
+
+/* Button to share content */
+"com.jetpack.support.share" = "Dela";
+
+/* Navigation title for sharing activity log */
+"com.jetpack.support.shareActivityLog" = "Dela aktivitetslogg";
+
+/* Message shown when sharing log with support */
+"com.jetpack.support.sharingWithSupport" = "Delar med support!";
+
+/* Site Address title on the support form */
+"com.jetpack.support.siteAddress" = "Webbplatsadress";
+
+/* Description encouraging user to start a new conversation */
+"com.jetpack.support.startNewConversation" = "Starta en ny konversation med hjälp av knappen ovan";
+
+/* Subject title on the support form */
+"com.jetpack.support.subject" = "Ämne";
+
+/* Placeholder for subject field */
+"com.jetpack.support.subjectPlaceholder" = "Kort sammanfattning av ditt problem";
+
+/* Button title to submit a support request. */
+"com.jetpack.support.submitRequest" = "Skicka supportförfrågan";
+
+/* Navigation title for the support conversations list */
+"com.jetpack.support.supportConversations" = "Supportkonversationer";
+
+/* Title for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSent" = "Förfrågan skickad!";
+
+/* Message for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSentMessage" = "Din supportförfrågan har skickats. Vi kommer att svara via e-post så snart vi kan.";
+
+/* Progress message shown while bot is thinking */
+"com.jetpack.support.thinking" = "Tänker …";
+
+/* Title of the view for contacting support. */
+"com.jetpack.support.title" = "Kontakta support";
+
+/* Button to retry a failed operation */
+"com.jetpack.support.tryAgain" = "Försök igen";
+
+/* Error title when log deletion fails */
+"com.jetpack.support.unableToDeleteLogs" = "Kan inte ta bort loggar";
+
+/* Error message when conversation cannot be displayed */
+"com.jetpack.support.unableToDisplayConversation" = "Det gick inte att visa konversationen";
+
+/* Error title when video cannot be loaded or played */
+"com.jetpack.support.unableToDisplayVideo" = "Det gick inte att spela upp videoklippet";
+
+/* Error message when application logs cannot be loaded */
+"com.jetpack.support.unableToLoadApplicationLogs" = "Det gick inte att läsa in applikationsloggarna";
+
+/* Error title when bot conversations fail to load */
+"com.jetpack.support.unableToLoadConversations" = "Det gick inte att läsa in konversationerna";
+
+/* Error title when messages fail to load */
+"com.jetpack.support.unableToLoadMessages" = "Det gick inte att läsa in meddelandena";
+
+/* Error title when message sending fails */
+"com.jetpack.support.unableToSendMessage" = "Kan inte skicka meddelande";
+
+/* Button to view an attachment */
+"com.jetpack.support.view" = "Visa";
+
+/* Progress message shown during cache clearing operation */
+"com.jetpack.support.working" = "Arbetar";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "kommentera";
@@ -7879,6 +8124,9 @@ Example: Reply to Pamela Nguyen */
 /* Weekly Roundup debug menu item */
 "debugMenu.weeklyRoundup" = "Veckosammanfattning";
 
+/* Title for selecting a default category for a post */
+"defaultCategory.title" = "Standardkategori";
+
 /* Error tilte */
 "discussionSettings.saveErrorTitle" = "Misslyckades att spara inställningar";
 
@@ -8018,10 +8266,10 @@ Example: Reply to Pamela Nguyen */
 "double-tap to change unit" = "dubbeltryck för att ändra enhet";
 
 /* Message for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.message" = "Är du säker på att du vill ta bort den här etiketten?";
+"edit.tag.delete.confirmation.message" = "Är du säker på att du vill ta bort det här?";
 
-/* Title for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.title" = "Ta bort etikett";
+/* Title for delete a term confirmation dialog */
+"edit.tag.delete.confirmation.title" = "Ta bort";
 
 /* Placeholder text for tag description field */
 "edit.tag.description.placeholder" = "Lägg till en beskrivning …";
@@ -8036,7 +8284,37 @@ Example: Reply to Pamela Nguyen */
 "edit.tag.section.description" = "Beskrivning";
 
 /* Section header for tag name in edit tag view */
-"edit.tag.section.tag" = "Etikett";
+"edit.tag.section.tag" = "Namn";
+
+/* Context menu action to insert a block */
+"editor.blockInserter.insertBlock" = "Infoga block";
+
+/* Placeholder text for block search field */
+"editor.blockInserter.search" = "Sök";
+
+/* Button title to collapse and show fewer blocks */
+"editor.blockInserter.showLess" = "Visa färre";
+
+/* Button title to expand and show more blocks */
+"editor.blockInserter.showMore" = "Visa fler";
+
+/* Error message when media insertion fails */
+"editor.media.failedToInsert" = "Misslyckades att infoga media";
+
+/* Category name for section showing all patterns */
+"editor.patterns.all" = "Alla";
+
+/* Context menu action to insert a pattern */
+"editor.patterns.insertPattern" = "Infoga mönster";
+
+/* Title shown when no patterns match the search */
+"editor.patterns.noPatternsFound" = "Inga mönster hittades";
+
+/* Navigation title for patterns view */
+"editor.patterns.title" = "Mönster";
+
+/* Category name for patterns without a category */
+"editor.patterns.uncategorized" = "Okategoriserat";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "till exempel 1122334455";
@@ -8590,6 +8868,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Skriv en blogg";
+
+/* Description for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.description" = "Vem som helst kan visa detta inlägg";
+
+/* Title for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.title" = "Vem som helst";
+
+/* Description for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.description" = "Endast betalande prenumeranter kan visa detta inlägg";
+
+/* Title for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.title" = "Betalande prenumeranter";
+
+/* Description for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.description" = "Inlägget är synligt för alla prenumeranter, inklusive gratisprenumeranter";
+
+/* Title for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.title" = "Alla prenumeranter";
 
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Du behöver logga in med %@ för att använda statistik och aviseringar.";
@@ -9180,6 +9476,12 @@ Example: Reply to Pamela Nguyen */
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "Du har inte behörighet att visa den här privata bloggen.";
 
+/* Default empty state message format when there are no terms. %1$@ is the taxonomy name. */
+"localizedLabels.defaultNoTerms.format" = "Ingen %1$@";
+
+/* Default search placeholder format. %1$@ is the taxonomy name. */
+"localizedLabels.defaultSearch.format" = "Sök %1$@";
+
 /* Button to dismiss the re-authentication view */
 "login.appPasswordReAuth.cancelButton" = "Avbryt";
 
@@ -9315,17 +9617,23 @@ Example: Reply to Pamela Nguyen */
 /* Message about buying storage add-on */
 "mediaLibrary.storageDetails.buyStorage.message" = "Köp lagringsutrymmesutökning";
 
-/* Message shown when all media items are attached */
-"mediaLibrary.storageDetails.cleanup.allAttached" = "Alla objekt i mediebiblioteket är bifogade.";
+/* Label for audio media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.audio" = "Ljud";
 
-/* Message shown while loading unattached media count */
-"mediaLibrary.storageDetails.cleanup.loading" = "Tar reda på om det finns några ej bifogade mediaobjekt...";
+/* Label for document media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.document" = "Dokument";
 
-/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
-"mediaLibrary.storageDetails.cleanup.message" = "%1$d objekt bifogat Ta bort dem för att frigöra lite utrymme.";
+/* Label for image media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.image" = "Bilder";
 
-/* Title for cleanup section */
-"mediaLibrary.storageDetails.cleanup.title" = "Ta bort oanvända objekt";
+/* Label for other/unknown media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.other" = "Annat";
+
+/* Label for PowerPoint/presentation media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.powerpoint" = "Presentationer";
+
+/* Label for video media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.video" = "Videoklipp";
 
 /* Success message shown after upgrading plan */
 "mediaLibrary.storageDetails.purchase.plan.success" = "Ditt webbplatspaket har uppgraderats!";
@@ -9711,6 +10019,12 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Sidor av mig";
 
+/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
+"parentCategory.noCategory" = "Ingen kategori";
+
+/* Title for selecting parent category of a category */
+"parentCategory.title" = "Överordnad kategori";
+
 /* Title for the parent page picker screen */
 "parentPagePicker.title" = "Överordnad sida";
 
@@ -9869,6 +10183,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the post author selection screen */
 "postAuthorPicker.title" = "Författare";
+
+/* Title for selecting categories for a post or a page */
+"postCategories.title" = "Kategorier";
+
+/* Toggle label for allowing comments on post */
+"postDiscussion.allowComments.label" = "Tillåt kommentarer";
+
+/* Toggle label for allowing pings/trackbacks on post */
+"postDiscussion.allowPings.label" = "Tillåt pingbacks";
+
+/* Footer text when comments are disabled */
+"postDiscussion.comments.disabled.footer" = "Besökare kan inte lägga till nya kommentarer eller svar. Befintliga kommentarer förblir synliga.";
+
+/* Footer text when comments are enabled */
+"postDiscussion.comments.enabled.footer" = "Besökare kan lägga till nya kommentarer och svar.";
+
+/* Link text for learning more about pingbacks and trackbacks */
+"postDiscussion.pingbacks.learnMore.text" = "Lär dig mer om pingbacks och trackbacks";
+
+/* Navigation title for post discussion settings */
+"postDiscussion.title" = "Diskussion";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Kasta ändringar";
@@ -10101,6 +10436,9 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Utan rubrik";
 
+/* Section header for Access settings in Post Settings */
+"postSettings.access.header" = "Åtkomst";
+
 /* Label for the author field in Post Settings */
 "postSettings.author.label" = "Författare";
 
@@ -10119,6 +10457,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "postSettings.discardChanges.title" = "Kasta ändringar?";
+
+/* Status text when discussion (comments) is disabled */
+"postSettings.discussion.closed" = "Stängd";
+
+/* Label for the discussion settings field in Post Settings */
+"postSettings.discussion.label" = "Diskussion";
+
+/* Status text when discussion (comments) is enabled */
+"postSettings.discussion.open" = "Öppen";
+
+/* Label for the checkbox that lets you send a post to newsletter subscribers */
+"postSettings.emailToSubscribers.label" = "E-post till prenumeranter";
 
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d tecken";
@@ -10222,6 +10572,21 @@ Example: Reply to Pamela Nguyen */
 /* Cell title for the Top Level option case */
 "postSettings.parentPage.topLevel" = "Toppnivå";
 
+/* Accessibility label for hide password button */
+"postSettings.passwordEntry.hidePassword" = "Dölj lösenord";
+
+/* Instructions for password entry */
+"postSettings.passwordEntry.instructions" = "Ange ett lösenord för att skydda detta inlägg Endast användare med lösenordet kommer att kunna se det.";
+
+/* Navigation title for password entry screen */
+"postSettings.passwordEntry.navigationTitle" = "Ange lösenord";
+
+/* Placeholder for password field */
+"postSettings.passwordEntry.placeholder" = "Ange lösenord";
+
+/* Accessibility label for show password button */
+"postSettings.passwordEntry.showPassword" = "Visa lösenord";
+
 /* Label for the pending review toggle in Post Settings */
 "postSettings.pendingReview.label" = "Inväntar granskning";
 
@@ -10249,17 +10614,59 @@ Example: Reply to Pamela Nguyen */
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Allmänt";
 
+/* Description text explaining what the slug editor does */
+"postSettings.slug.customizeDescription" = "Anpassa den sista delen av permalänken.";
+
 /* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "postSettings.slug.hint" = "En slug är den URL-vänliga versionen av inläggets titel.";
 
 /* Label for the slug field. Should be the same as WP core. */
 "postSettings.slug.label" = "Slug";
 
+/* Button text to learn more about permalinks */
+"postSettings.slug.learnMore" = "Lär dig mer";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.navigationTitle" = "Slug";
+
+/* Notice shown when the post doesn't have a remote and permalink template is missing */
+"postSettings.slug.permalinkDraftNotice" = "Den föreslagna permalänken visas när utkastet sparas på servern";
+
+/* Label for the permalink preview */
+"postSettings.slug.permalinkLabel" = "Permalänk";
+
+/* Section title for the permalink preview */
+"postSettings.slug.permalinkSection" = "Permalänk";
+
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Ange slug";
 
 /* Label for the preview button in Post Settings */
 "postSettings.socialSharing.header" = "Social delning";
+
+/* Label for the status field in Post Settings */
+"postSettings.status.label" = "Status";
+
+/* Navigation title for status picker */
+"postSettings.statusPicker.navigationTitle" = "Status och synlighet";
+
+/* Label showing the current password */
+"postSettings.statusPicker.passwordLabel" = "Lösenord";
+
+/* Toggle label for password protection */
+"postSettings.statusPicker.passwordProtected" = "Lösenordsskyddat";
+
+/* Subtitle for password protected toggle */
+"postSettings.statusPicker.passwordProtectedSubtitle" = "Visas endast för dem som känner till lösenordet";
+
+/* Label for schedule date row */
+"postSettings.statusPicker.scheduleDate" = "Datum";
+
+/* Toggle label for sticky posts */
+"postSettings.statusPicker.sticky" = "Klistrat";
+
+/* Subtitle for sticky toggle */
+"postSettings.statusPicker.stickySubtitle" = "Fäst detta inlägg högst upp på bloggen";
 
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "Klistrat";
@@ -10279,17 +10686,56 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Inläggsstatistik";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"postTags.addTag" = "Lägg till etikett";
+/* Post status title */
+"postStatus.deleted.details" = "Permanent borttagen";
 
-/* Placeholder text for the tag search field */
-"postTags.searchOrAdd.placeholder" = "Sök eller lägg till etiketter";
+/* Post status title */
+"postStatus.deleted.title" = "Borttaget";
 
-/* Message shown when no tags are selected */
-"postTags.selectionEmpty" = "Inga etiketter är valda";
+/* Post status details */
+"postStatus.draft.details" = "Inte redo för publicering";
 
-/* Title for the tags screen */
-"postTags.title" = "Etiketter";
+/* Post status title */
+"postStatus.draft.title" = "Utkast";
+
+/* Post status details */
+"postStatus.pending.details" = "Väntar på granskning innan publicering";
+
+/* Post status title */
+"postStatus.pending.title" = "Väntar";
+
+/* Post status details */
+"postStatus.private.details" = "Endast synligt för webbplatsadministratörer och redigerare.";
+
+/* Post status title */
+"postStatus.private.title" = "Privat";
+
+/* Post status details */
+"postStatus.published.details" = "Synligt för alla";
+
+/* Post status title */
+"postStatus.published.title" = "Publicerat";
+
+/* Post status details */
+"postStatus.scheduled.details" = "Publicera automatiskt på ett valt datum";
+
+/* Post status title */
+"postStatus.scheduled.title" = "Schemalagt";
+
+/* Post status title */
+"postStatus.trash.details" = "Borttaget men inte borttaget permanent än";
+
+/* Post status title */
+"postStatus.trash.title" = "Borttaget";
+
+/* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.addTag" = "Lägg till %1$@";
+
+/* Placeholder text for the taxonomy search field. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.searchOrAdd.placeholder" = "Sök eller lägg till %1$@";
+
+/* Message shown when no taxonomy terms are selected. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.selectionEmpty" = "Ingen %1$@ är vald";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Avbryt";
@@ -10365,9 +10811,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Kategorier";
-
-/* Voiceover accessibility label informing the user that this button dismiss the current view */
-"prepublishing.close" = "Stäng";
 
 /* Button to confirm discarding changes */
 "prepublishing.discardChanges.button" = "Ignorera ändringarna";
@@ -10456,12 +10899,17 @@ Example: 27 social shares remaining in the next 30 days */
 /* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
 "prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Varning";
 
-/* The label displayed for a table row that displays the sharing message for the post.
-Tapping on this row allows the user to edit the sharing message. */
+/* Table section title */
 "prepublishing.socialAccounts.message.label" = "Meddelande";
+
+/* Placeholder text for the message field in Social Sharing */
+"prepublishing.socialAccounts.messagePlaceholder" = "Skriv ett kort meddelande att dela på sociala medier tillsammans med inlägget";
 
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "Socialt";
+
+/* Table section title */
+"prepublishing.socialAccounts.servicesSectionTitle" = "Tjänster";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketter";
@@ -11408,6 +11856,18 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "Välj domän";
 
+/* Default text for adding a new item when no label is provided */
+"siteCustomTaxonomies.defaultAddNew" = "Lägg till";
+
+/* Description for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.description" = "Taxonomier hjälper dig att organisera innehåll utöver standardkategorier och etiketter.";
+
+/* Title for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.title" = "Inga anpassade taxonomier";
+
+/* Navigation title for the custom taxonomies screen */
+"siteCustomTaxonomies.navigationTitle" = "Taxonomier";
+
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "siteMedia.accessibilityLabelAudio" = "Ljud, %@";
 
@@ -11426,8 +11886,77 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Välj media.";
 
+/* Label for the alt for a media asset (image) */
+"siteMedia.details.altText" = "Alternativ text";
+
+/* Verb. Button title. Tapping cancels an action. */
+"siteMedia.details.cancel" = "Avbryt";
+
+/* Noun. Label for the caption for a media asset (image / video) */
+"siteMedia.details.caption" = "Bildtext";
+
+/* Title for button that permanently deletes a media item (photo / video) */
+"siteMedia.details.delete" = "Ta bort";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"siteMedia.details.deleteConfirmation" = "Är du säker på att du vill ta bort det här objektet permanent?";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"siteMedia.details.deleted" = "Borttaget!";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"siteMedia.details.deleting" = "Tar bort …";
+
+/* Label for the description for a media asset (image / video) */
+"siteMedia.details.description" = "Beskrivning";
+
+/* Label for the dimensions in pixels for a media asset (image / video) */
+"siteMedia.details.dimensions" = "Dimensioner";
+
+/* Label for the file name for a media asset (image / video) */
+"siteMedia.details.fileName" = "Filnamn";
+
+/* Label for the file size for a media asset (image / video) */
+"siteMedia.details.fileSize" = "Filstorlek";
+
+/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
+"siteMedia.details.fileType" = "Filtyp";
+
+/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
+"siteMedia.details.mediaDeleted" = "Detta medieobjekt har tagits bort.";
+
+/* Noun. Label for the title of a media asset (image / video) */
+"siteMedia.details.title" = "Rubrik";
+
+/* Accessibility label for trash buttons in nav bars */
+"siteMedia.details.trash" = "Papperskorg";
+
+/* Text displayed in HUD if there was an error attempting to delete a media item. */
+"siteMedia.details.unableToDeleteMedia" = "Kan inte ta bort mediaobjekt.";
+
+/* Error shown when the app fails to load a video from the user's media library. */
+"siteMedia.details.unableToLoadVideo" = "Kan inte ladda videoklipp.";
+
+/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
+"siteMedia.details.unableToSaveMedia" = "Kan inte spara mediaobjekt.";
+
+/* Label for the date a media asset (image / video) was uploaded */
+"siteMedia.details.uploaded" = "Uppladdat";
+
 /* Title for the URL field */
 "siteMedia.details.url" = "-URL";
+
+/* Hint for image alt on image settings. */
+"siteMedia.hints.imageAlt" = "Alt-text för bild";
+
+/* Hint for image caption on image settings. */
+"siteMedia.hints.imageCaption" = "Bildtext";
+
+/* Hint for image description on image settings. */
+"siteMedia.hints.imageDescription" = "Bildbeskrivning";
+
+/* Hint for image title on image settings. */
+"siteMedia.hints.imageTitle" = "Bildrubrik";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Tryck för att visa media i helskärm";
@@ -11525,6 +12054,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Integritet";
+
+/* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
+"siteTaxonomy.addNew.format" = "Lägg till %1$@";
 
 /* Hint for users when hidden privacy setting is set */
 "siteVisibility.hidden.hint" = "Din webbplats döljs för besökare bakom ett \"Kommer snart\"-meddelande tills den är klar att visas.";
@@ -12093,7 +12625,8 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Läsare för iOS-support";
 
-/* Description for empty state when there are no tags */
+/* Description for empty state when there are no tags
+   Description for empty state when there are no tags. %1$@ is the taxonomy name. */
 "tags.empty.description" = "Etiketter hjälper till att organisera ditt innehåll och gör det lättare för läsare att hitta relaterade inlägg.";
 
 /* Title for empty state when there are no tags */
@@ -12170,9 +12703,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "ej läst";
-
-/* Site's Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.subscriber" = "Webbplatsens prenumerant";
 
 /* Sites's User Profile. Displayed when the name is empty! */
 "user.details.title.user" = "Webbplatsens användare";
@@ -12258,9 +12788,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The heading at the top of the user list */
 "userlist.title" = "Användare";
-
-/* Site Subscribers */
-"users.list.title.subscribers" = "Prenumeranter";
 
 /* Screen title */
 "users.title" = "Användare";

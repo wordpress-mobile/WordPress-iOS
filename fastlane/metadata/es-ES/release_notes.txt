@@ -1,6 +1,0 @@
-Ahora puedes crear un extracto de tus publicaciones y obtener etiquetas sugeridas automáticamente con Apple Intelligence. También es más fácil seleccionar tus etiquetas en la configuración de publicaciones. Eso sí que es inteligente.
-Hemos realizado algunas correcciones visuales para iOS en áreas como el flujo de creación de sitios, la pantalla de selección de medios y la pantalla de estadísticas.
-Y ya que estábamos, también hemos solucionado algunos errores.
-- Los artículos del lector se muestran correctamente en dispositivos con el zoom de pantalla activado.
-- El botón «Añadir medios» permanece visible en la biblioteca multimedia. Se acabaron las desapariciones.
-- Puedes buscar en las suscripciones del lector sin que se cuelgue la aplicación.

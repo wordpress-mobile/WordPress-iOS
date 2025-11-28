@@ -38,85 +38,6 @@
 #pragma mark -
 #pragma mark Revision management
 
-- (AbstractPost *)cloneFrom:(AbstractPost *)source
-{
-    for (NSString *key in [[[source entity] attributesByName] allKeys]) {
-        if (![key isEqualToString:@"permalink"]) {
-            [self setValue:[source valueForKey:key] forKey:key];
-        }
-    }
-    for (NSString *key in [[[source entity] relationshipsByName] allKeys]) {
-        if ([key isEqualToString:@"original"] || [key isEqualToString:@"revision"]) {
-            continue;
-        } else if ([key isEqualToString:@"comments"]) {
-            [self setComments:[source comments]];
-        } else {
-            [self setValue: [source valueForKey:key] forKey: key];
-        }
-    }
-
-    return self;
-}
-
-- (AbstractPost *)createRevision
-{
-    NSParameterAssert(self.revision == nil);
-
-    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
-    [post cloneFrom:self];
-    post.remoteStatus = AbstractPostRemoteStatusLocalRevision;
-    [post setValue:self forKey:@"original"];
-    [post setValue:nil forKey:@"revision"];
-    return post;
-}
-
-- (void)deleteRevision
-{
-    if (self.revision) {
-        [self.managedObjectContext performBlockAndWait :^{
-            [self.managedObjectContext deleteObject:self.revision];
-            [self willChangeValueForKey:@"revision"];
-            [self setPrimitiveValue:nil forKey:@"revision"];
-            [self didChangeValueForKey:@"revision"];
-        }];
-    }
-}
-
-- (void)applyRevision
-{
-    if ([self isOriginal]) {
-        [self cloneFrom:self.revision];
-    }
-}
-
-- (AbstractPost *)updatePostFrom:(AbstractPost *)revision
-{
-    for (NSString *key in [[[revision entity] attributesByName] allKeys]) {
-        if ([key isEqualToString:@"postTitle"] ||
-            [key isEqualToString:@"content"]) {
-            [self setValue:[revision valueForKey:key] forKey:key];
-        } else if ([key isEqualToString:@"dateModified"]) {
-            [self setValue:[NSDate date] forKey:key];
-        }
-    }
-    return self;
-}
-
-- (BOOL)isRevision
-{
-    return (![self isOriginal]);
-}
-
-- (BOOL)isOriginal
-{
-    return ([self original] == nil);
-}
-
-- (AbstractPost *)latest
-{
-    return [self hasRevision] ? [[self revision] latest] : self;
-}
-
 - (AbstractPost *)revision
 {
     [self willAccessValueForKey:@"revision"];
@@ -184,11 +105,6 @@
 - (BOOL)hasTags
 {
     return NO;
-}
-
-- (BOOL)hasRevision
-{
-    return self.revision != nil;
 }
 
 - (BOOL)hasRemote

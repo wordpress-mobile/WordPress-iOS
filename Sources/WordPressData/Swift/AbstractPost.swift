@@ -254,4 +254,78 @@ public extension AbstractPost {
     override func contentPreviewForDisplay() -> String? {
         mt_excerpt
     }
+
+    @objc(cloneFrom:)
+    func clone(from source: AbstractPost) {
+        for key in source.entity.attributesByName.keys {
+            if key != "permalink" {
+                setValue(source.value(forKey: key), forKey: key)
+            }
+        }
+
+        for key in source.entity.relationshipsByName.keys {
+            if key == "original" || key == "revision" {
+                continue
+            } else if key == "comments" {
+                comments = source.comments
+            } else {
+                setValue(source.value(forKey: key), forKey: key)
+            }
+        }
+    }
+
+    @objc
+    func createRevision() -> AbstractPost {
+        precondition(managedObjectContext != nil)
+        precondition(revision == nil, "This post must not already have a revision")
+
+        let post = Self(context: managedObjectContext!)
+        post.clone(from: self)
+        post.remoteStatus = .localRevision
+        post.setValue(self, forKey: "original")
+        post.setValue(nil, forKey: "revision")
+        return post
+    }
+
+    @objc
+    func deleteRevision() {
+        guard let revision, let context = managedObjectContext else {
+            return
+        }
+
+        context.performAndWait {
+            context.delete(revision)
+            willChangeValue(forKey: "revision")
+            setPrimitiveValue(nil, forKey: "revision")
+            didChangeValue(forKey: "revision")
+        }
+    }
+
+    @objc
+    func applyRevision() {
+        guard isOriginal(), let revision else {
+            return
+        }
+        clone(from: revision)
+    }
+
+    @objc
+    func isRevision() -> Bool {
+        !isOriginal()
+    }
+
+    @objc
+    func isOriginal() -> Bool {
+        original == nil
+    }
+
+    @objc
+    func latest() -> AbstractPost {
+        revision?.latest() ?? self
+    }
+
+    @objc
+    func hasRevision() -> Bool {
+        revision != nil
+    }
 }

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2025-10-03 07:05:33+0000 */
+/* Translation-Revision-Date: 2025-11-24 11:33:04+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: ro */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -507,7 +507,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Address line %@" = "Linie adresă %@";
 
 /* Title for the advanced section in site settings screen */
-"Advanced" = "Avansat";
+"Advanced" = "Avansate";
 
 /* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
 "After %@" = "După %@";
@@ -581,8 +581,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Aproape gata! Te rog să introduci codul de verificare din aplicația Authenticator.";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "Text alternativ";
 
 /* No comment provided by engineer. */
@@ -725,9 +724,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Sigur vrei să deconectezi Jetpack de pe site?";
-
-/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "Sigur vrei să ștergi definitiv acest element?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Sigur vrei să înlături %1$@ din %2$@?";
@@ -1082,7 +1078,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Anulare";
@@ -1110,8 +1105,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Nu te poți decide? Poți să schimbi tema oricând.";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "Text asociat";
 
 /* Alert title. */
@@ -1777,8 +1771,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Implicit";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "Categorie implicită";
 
 /* Label for selecting the default post format
@@ -1787,9 +1780,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Implicite pentru articole noi";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "Ștergre";
 
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Șterge meniul";
@@ -1808,14 +1798,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Șterge meniul";
 
-/* Text displayed in HUD after successfully deleting a media item */
-"Deleted!" = "Șters!";
-
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "Șterg site-ul...";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Șterg...";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Refuză";
@@ -1823,8 +1807,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Describe the purpose of the image. Leave empty if decorative." = "Descrie scopul imaginii. Lasă gol dacă imaginea este doar decorativă.";
 
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "Descriere";
 
 /* Shortened version of the main title to be used in back navigation. */
@@ -1842,9 +1825,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
 "Didn't mean to create a new account? Go back to re-enter your email address." = "Nu ai vrut să creezi un cont nou? Mergi înapoi și reintrodu adresa ta de email.";
-
-/* Label for the dimensions in pixels for a media asset (image / video) */
-"Dimensions" = "Dimensiuni";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "Dezactivează";
@@ -2121,7 +2101,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editarea acestui GIF îi va înlătura animația.";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "Editor";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
@@ -2463,11 +2443,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "File block settings" = "Setări bloc fișier";
 
-/* Label for the file name for a media asset (image / video) */
+/* No comment provided by engineer. */
 "File name" = "Nume fișier";
-
-/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
-"File type" = "Tip de fișier";
 
 /* No comment provided by engineer. */
 "File type not supported as a media file." = "Tipul de fișier nu este acceptat ca fișier media.";
@@ -2781,6 +2758,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "M-au inspirat foarte mult lucrările fotografului Cameron Karsten. Voi încerca aceste tehnici pe viitor";
 
+/* Text on the support form to refer to what area the user has problem with. */
+"I need help with" = "Am nevoie de ajutor cu";
+
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "Adresă IP";
 
@@ -2826,9 +2806,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint for image caption on image settings. */
 "Image Caption" = "Text asociat imagine";
 
-/* Hint for image description on image settings. */
-"Image Description" = "Descriere imagine";
-
 /* Hint for image link on image settings. */
 "Image Link" = "Legătură imagine";
 
@@ -2840,9 +2817,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Image file not found." = "Nu am găsit fișierul imagine.";
-
-/* Hint for image title on image settings. */
-"Image title" = "Titlu imagine";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Descrie în câteva cuvinte acest site.";
@@ -3205,6 +3179,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Anunță-mă când este gata!";
 
+/* Message info on the support screen. */
+"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Dă-ne adresa site-ului tău (URL) și spune-ne cât mai multe despre problemă și te vom contacta în curând.";
+
+/* Title to let the user know what do we want on the support screen. */
+"Let’s get this sorted" = "Hai să rezolvăm asta";
+
 /* Lifestyle site intent topic */
 "Lifestyle" = "Stil de viață";
 
@@ -3405,6 +3385,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigare principală";
+
+/* Explanation for the option to enable theme styles */
+"Make the block editor look like your theme." = "Îți faci editorul de blocuri să arate ca tema ta.";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Îți scoți conținutul în evidență prin adăugarea de imagini, imagini GIF, videouri și elemente media înglobate în paginile tale.";
@@ -3747,9 +3730,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "Nu am găsit niciun cont";
-
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "Nicio categorie";
 
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Nu ai conexiune";
@@ -4191,9 +4171,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Settings: Comments Paging preferences */
 "Paging" = "Paginare";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "Categorie părinte";
-
 /* Parenting site intent topic */
 "Parenting" = "Creșterea și educarea copiilor";
 
@@ -4411,9 +4388,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Articol";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "Categorii de articole";
 
 /* Name of the button to open the post settings */
 "Post Settings" = "Setări articole";
@@ -4722,9 +4696,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Înlătură metadatele locației din fotografii înainte de a le încărca pe site-ul tău.";
-
-/* First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Dacă înlături urmăritorii, ei nu vor mai primi actualizări de la site-ul tău. Dacă vor, pot să-ți viziteze site-ul și să-l urmărească din nou.";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Înlocuiește blocul curent";
@@ -5561,6 +5532,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "Slogan";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "Etichete";
 
@@ -5657,6 +5629,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "Atinge pentru a vizita site-ul Gravatar într-un navigator extern";
+
+/* Label for viewing the custom taxonomies */
+"Taxonomies" = "Taxonomii";
 
 /* Technology site intent topic */
 "Technology" = "Tehnologie";
@@ -5946,9 +5921,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when the user scanned an expired log in code. */
 "This log in code has expired. Please tap the Scan Again button to rescan the code." = "Acest cod de autentificare a expirat. Te rog atinge butonul Scanează din nou pentru a scana din nou codul.";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "Acest element media a fost șters.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Acest cont de utilizator nu poate fi închis dacă există restituiri nerezolvate.";
 
@@ -6017,7 +5989,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "Titlu";
@@ -6111,8 +6082,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Transformă blocul...";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "Coș de gunoi";
 
@@ -6209,9 +6179,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Nu pot să creez legături noi la invitații.";
 
-/* Text displayed in HUD if there was an error attempting to delete a media item. */
-"Unable to delete media item." = "Nu pot șterge elementul media.";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to disable invite links." = "Nu pot să dezactivez legăturile la invitații.";
 
@@ -6242,20 +6209,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "Nu pot să încarc acest conținut chiar acum.";
 
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "Nu pot încărca videoul.";
-
 /* Dialog box title for when the user is canceling an upload. */
-"Unable to play video" = "Nu pot rula videoul";
+"Unable to play video" = "Nu pot să rulez videoul";
 
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Nu pot să găsesc site-ul WordPress la acel URL. Atinge „Ai nevoi de mai mult ajutor?” pentru a vedea Întrebări frecvente.";
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Nu pot să restaurez site-ul";
-
-/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
-"Unable to save media item." = "Nu pot salva elementul media.";
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Nu pot să partajez legătura";
@@ -6412,9 +6373,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Încărcarea a eșuat";
 
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "Încărcat";
-
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "S-a încărcat o ciornă de articol, %ld fișiere";
 
@@ -6456,6 +6414,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Folosește parola pentru autentificare";
+
+/* Option to enable theme styles in the block editor */
+"Use theme styles" = "Folosește stilurile temei";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -6906,7 +6867,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Harta lumii care arată vizualizările pe țară.";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Mai vrei să înlături această persoană?";
 
 /* Button title. Opens the editor to write a new post.
@@ -7377,14 +7338,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Parolele aplicației sunt o modalitate mai sigură de a-ți conecta site-ul auto-găzduit și de a activa suportul pentru funcționalități, cum ar fi %@.";
 
+/* Feature name for managing application passwords in the app */
+"applicationPasswordRequired.feature.applicationPasswords" = "Administrare parole pentru aplicații";
+
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Editor de blocuri";
+
+/* Feature name for managing terms and taxonomies in the app */
+"applicationPasswordRequired.feature.customTaxonomies" = "Administrare taxonomii";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Administrare module";
 
-/* Feature name for managing application passwords in the app
-   Feature name for managing users in the app */
+/* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Administrare utilizatori";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -7613,6 +7579,288 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Salvează ciorna";
+
+/* Button to add more screenshots */
+"com.jetpack.support.addMoreScreenshots" = "Adaugă mai multe capturi ecran";
+
+/* Button to add screenshots */
+"com.jetpack.support.addScreenshots" = "Adaugă capturi ecran";
+
+/* Header for application logs section */
+"com.jetpack.support.applicationLogs" = "Jurnale aplicație";
+
+/* Description explaining why including logs is helpful */
+"com.jetpack.support.applicationLogsDescription" = "Includerea jurnalelor poate ajuta echipa noastră să investigheze problemele. Jurnalele pot să conțină activități recente din aplicație.";
+
+/* Navigation title for application logs screen */
+"com.jetpack.support.applicationLogsTitle" = "Jurnale aplicație";
+
+/* Format string for attachment identifier */
+"com.jetpack.support.attachment" = "Atașament %@";
+
+/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
+"com.jetpack.support.attachmentLimit" = "Limită pentru atașamente: %1$@\/%2$@";
+
+/* Bot greeting message. %1$@ is the user's name */
+"com.jetpack.support.botGreeting" = "Bună %1$@!";
+
+/* Bot introduction message explaining its purpose */
+"com.jetpack.support.botIntroduction" = "Sunt asistentul tău personal AI. Pot să te ajut cu orice fel de întrebări despre site-ul sau contul tău.";
+
+/* Format string for cache file count and size. %1$d is the number of files, %2$@ is the formatted size. The system will pluralize 'files' based on the number – please specify it as the largest plural value */
+"com.jetpack.support.cacheFiles" = "%1$d fișiere memorate în cache (%2$@)";
+
+/* Message shown when cache has no files */
+"com.jetpack.support.cacheIsEmpty" = "Cache-ul este gol";
+
+/* Button to cancel current action */
+"com.jetpack.support.cancel" = "Anulează";
+
+/* Warning message that deleted logs cannot be recovered */
+"com.jetpack.support.cannotRecoverLogs" = "Nu vei mai putea să le recuperezi.";
+
+/* Button to clear all activity logs */
+"com.jetpack.support.clearAllActivityLogs" = "Șterge toate jurnalele de activități";
+
+/* Button to clear disk cache */
+"com.jetpack.support.clearDiskCache" = "Șterge cache-ul pe disc";
+
+/* Description explaining the purpose of clearing disk cache */
+"com.jetpack.support.clearDiskCacheDescription" = "Înlătură fișierele temporare pentru a elibera spațiu sau rezolva problemele.";
+
+/* Progress text while clearing cache */
+"com.jetpack.support.clearing" = "Șterg...";
+
+/* Message shown when cache clearing is complete */
+"com.jetpack.support.complete" = "Finalizată";
+
+/* Confirmation message when canceling a draft */
+"com.jetpack.support.confirmCancelMessage" = "Sigur vrei să anulezi acest mesaj? Vei pierde toate datele pe care le-ai introdus";
+
+/* Title for alert confirming cancellation */
+"com.jetpack.support.confirmCancellation" = "Confirmă anularea";
+
+/* Confirmation dialog title when deleting all logs */
+"com.jetpack.support.confirmDeleteAllLogs" = "Sigur vrei să ștergi toate jurnalele?";
+
+/* Section title for contact information */
+"com.jetpack.support.contactInformation" = "Informații de contact";
+
+/* Button to continue editing a message */
+"com.jetpack.support.continueWriting" = "Continuă să scrii";
+
+/* Message shown at end of closed support conversation */
+"com.jetpack.support.conversationEnded" = "Sfârșitul conversației. Nu mai sunt posibile alte răspunsuri.";
+
+/* Navigation title for bot conversations list */
+"com.jetpack.support.conversations" = "Conversații";
+
+/* Button to delete all log files */
+"com.jetpack.support.deleteAllLogs" = "Șterge toate jurnalele";
+
+/* Description text for diagnostics screen */
+"com.jetpack.support.diagnosticsDescription" = "Rulează sarcini obișnuite de mentenanță și depanare.";
+
+/* Navigation title for diagnostics screen */
+"com.jetpack.support.diagnosticsTitle" = "Diagnosticare";
+
+/* Button to discard changes in a draft message */
+"com.jetpack.support.discardChanges" = "Renunță la modificări";
+
+/* Notice explaining where support will send email responses */
+"com.jetpack.support.emailNotice" = "Îți vom trimite un email la această adresă.";
+
+/* Error title when logs fail to load */
+"com.jetpack.support.errorLoadingLogs" = "Eroare la încărcarea jurnalelor";
+
+/* Error message when support conversations fail to load */
+"com.jetpack.support.errorLoadingSupportConversations" = "Eroare la încărcarea conversațiilor cu suportul";
+
+/* Title for error alerts */
+"com.jetpack.support.errorTitle" = "Eroare";
+
+/* Option to export log as a file */
+"com.jetpack.support.exportAsFile" = "Exportă ca fișier";
+
+/* Button to dismiss alerts. */
+"com.jetpack.support.gotIt" = "Am înțeles";
+
+/* Text on the support form to refer to what area the user has problem with. */
+"com.jetpack.support.iNeedHelp" = "Am nevoie de ajutor cu";
+
+/* Toggle label to include application logs in the support request */
+"com.jetpack.support.includeApplicationLogs" = "Include jurnalele aplicației";
+
+/* Section title for issue details */
+"com.jetpack.support.issueDetails" = "Detalii problemă";
+
+/* Format string for when conversation was last updated */
+"com.jetpack.support.lastUpdated" = "Ultima actualizare %@";
+
+/* Progress message while loading conversation messages */
+"com.jetpack.support.loadingBotConversationMessages" = "Încarc mesajele";
+
+/* Progress message while loading bot conversations */
+"com.jetpack.support.loadingBotConversations" = "Încarc conversațiile cu botul";
+
+/* Progress text while loading support conversations */
+"com.jetpack.support.loadingConversations" = "Încarc conversațiile";
+
+/* Progress message while loading disk usage information */
+"com.jetpack.support.loadingDiskUsage" = "Încarc utilizarea discului";
+
+/* Progress message while loading an image attachment */
+"com.jetpack.support.loadingImage" = "Încarc imaginea";
+
+/* Progress message shown in overlay while refreshing content */
+"com.jetpack.support.loadingLatestContent" = "Încarc ultimul conținut";
+
+/* Progress message while loading application log content */
+"com.jetpack.support.loadingLogContent" = "Încarc conținutul jurnalului...";
+
+/* Progress message while loading log files */
+"com.jetpack.support.loadingLogs" = "Încarc jurnale...";
+
+/* Progress text while loading conversation messages */
+"com.jetpack.support.loadingMessages" = "Încarc mesajele";
+
+/* Progress message while loading a video attachment */
+"com.jetpack.support.loadingVideo" = "Încarc videoul";
+
+/* Section header for log files sorted by date */
+"com.jetpack.support.logFilesByDate" = "Fișiere jurnal după data creării";
+
+/* Text indicating which log files will be included in the support request */
+"com.jetpack.support.logFilesToUpload" = "Vor fi încărcate următoarele fișiere jurnal:";
+
+/* Footer text explaining log retention policy */
+"com.jetpack.support.logRetentionNotice" = "Jurnalele sunt salvate pentru o perioadă de până la șapte zile.";
+
+/* Section header for message text input */
+"com.jetpack.support.message" = "Mesaj";
+
+/* Success message when reply is sent successfully */
+"com.jetpack.support.messageSent" = "Am trimis mesajul";
+
+/* Format string for number of messages in conversation */
+"com.jetpack.support.messagesCount" = "%d mesaje";
+
+/* The title of a new bot chat in the support area of the app */
+"com.jetpack.support.new-bot-chat" = "Chatbot nou";
+
+/* Option to create a new support ticket */
+"com.jetpack.support.newSupportTicket" = "Tichet nou pentru suport";
+
+/* Label shown when there are no bot conversations */
+"com.jetpack.support.noConversations" = "Nicio conversație";
+
+/* Description shown when no log files are available */
+"com.jetpack.support.noLogsAvailable" = "Nu sunt disponibile jurnale de activități";
+
+/* Label shown when no log files are available */
+"com.jetpack.support.noLogsFound" = "Nu am găsit niciun jurnal";
+
+/* Button to open a support ticket */
+"com.jetpack.support.openSupportTicket" = "Deschide un tichet pentru suport";
+
+/* Text indicating a field is optional */
+"com.jetpack.support.optional" = "(opțional)";
+
+/* Navigation title for replying to a support conversation */
+"com.jetpack.support.reply" = "Răspunde";
+
+/* Description for saving log as a file */
+"com.jetpack.support.saveAsFile" = "Salvează ca un fișier pentru partajare sau stocare";
+
+/* Label for screenshots section */
+"com.jetpack.support.screenshots" = "Capturi ecran";
+
+/* Description for screenshots section */
+"com.jetpack.support.screenshotsDescription" = "Adăugarea unor capturi ecran ne poate ajuta să înțelegem și să rezolvăm mai repede problema.";
+
+/* Button to send a message or reply */
+"com.jetpack.support.send" = "Trimite";
+
+/* Description for sending logs to support */
+"com.jetpack.support.sendLogsToSupport" = "Trimite jurnalele direct echipei pentru suport";
+
+/* Progress text while sending a message */
+"com.jetpack.support.sending" = "Trimit";
+
+/* Progress message shown while sending a message */
+"com.jetpack.support.sendingMessage" = "Trimit mesajul";
+
+/* Button to share content */
+"com.jetpack.support.share" = "Partajează";
+
+/* Navigation title for sharing activity log */
+"com.jetpack.support.shareActivityLog" = "Partajează jurnalul de activități";
+
+/* Message shown when sharing log with support */
+"com.jetpack.support.sharingWithSupport" = "Partajează cu suportul!";
+
+/* Site Address title on the support form */
+"com.jetpack.support.siteAddress" = "Adresă site";
+
+/* Placeholder for site address field */
+"com.jetpack.support.siteAddressPlaceholder" = "https:\/\/yoursite.com";
+
+/* Description encouraging user to start a new conversation */
+"com.jetpack.support.startNewConversation" = "Începe o conversație nouă folosind butonul de mai sus";
+
+/* Subject title on the support form */
+"com.jetpack.support.subject" = "Subiect";
+
+/* Placeholder for subject field */
+"com.jetpack.support.subjectPlaceholder" = "Un scurt rezumat al problemei";
+
+/* Button title to submit a support request. */
+"com.jetpack.support.submitRequest" = "Trimite cererea pentru suport";
+
+/* Navigation title for the support conversations list */
+"com.jetpack.support.supportConversations" = "Conversații cu suportul";
+
+/* Title for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSent" = "Am trimis cererea!";
+
+/* Message for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSentMessage" = "Cererea ta pentru suport a fost trimisă cu succes. Îți vom răspunde prin email cât mai repede posibil.";
+
+/* Progress message shown while bot is thinking */
+"com.jetpack.support.thinking" = "Gândesc...";
+
+/* Title of the view for contacting support. */
+"com.jetpack.support.title" = "Contactează suportul";
+
+/* Button to retry a failed operation */
+"com.jetpack.support.tryAgain" = "Încearcă din nou";
+
+/* Error title when log deletion fails */
+"com.jetpack.support.unableToDeleteLogs" = "Nu pot să șterg jurnalele";
+
+/* Error message when conversation cannot be displayed */
+"com.jetpack.support.unableToDisplayConversation" = "Nu pot să afișez conversația";
+
+/* Error title when video cannot be loaded or played */
+"com.jetpack.support.unableToDisplayVideo" = "Nu pot să afișez videoul";
+
+/* Error message when application logs cannot be loaded */
+"com.jetpack.support.unableToLoadApplicationLogs" = "Nu pot să încarc jurnalele aplicației";
+
+/* Error title when bot conversations fail to load */
+"com.jetpack.support.unableToLoadConversations" = "Nu pot să încarc conversații";
+
+/* Error title when messages fail to load */
+"com.jetpack.support.unableToLoadMessages" = "Nu pot să încarc mesaje";
+
+/* Error title when message sending fails */
+"com.jetpack.support.unableToSendMessage" = "Nu pot să trimit mesajul";
+
+/* Button to view an attachment */
+"com.jetpack.support.view" = "Vezi";
+
+/* Progress message shown during cache clearing operation */
+"com.jetpack.support.working" = "Lucrez";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "comentariu";
@@ -7879,6 +8127,9 @@ Example: Reply to Pamela Nguyen */
 /* Weekly Roundup debug menu item */
 "debugMenu.weeklyRoundup" = "Rezumat săptămânal";
 
+/* Title for selecting a default category for a post */
+"defaultCategory.title" = "Categorie implicită";
+
 /* Error tilte */
 "discussionSettings.saveErrorTitle" = "Salvarea setărilor a eșuat";
 
@@ -8018,10 +8269,10 @@ Example: Reply to Pamela Nguyen */
 "double-tap to change unit" = "atinge de două ori pentru a schimba unitatea";
 
 /* Message for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.message" = "Sigur vrei să ștergi această etichetă?";
+"edit.tag.delete.confirmation.message" = "Sigur vrei să ștergi asta?";
 
-/* Title for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.title" = "Șterge eticheta";
+/* Title for delete a term confirmation dialog */
+"edit.tag.delete.confirmation.title" = "Șterge";
 
 /* Placeholder text for tag description field */
 "edit.tag.description.placeholder" = "Adaugă o descriere...";
@@ -8036,7 +8287,37 @@ Example: Reply to Pamela Nguyen */
 "edit.tag.section.description" = "Descriere";
 
 /* Section header for tag name in edit tag view */
-"edit.tag.section.tag" = "Etichetă";
+"edit.tag.section.tag" = "Nume";
+
+/* Context menu action to insert a block */
+"editor.blockInserter.insertBlock" = "Inserează un bloc";
+
+/* Placeholder text for block search field */
+"editor.blockInserter.search" = "Căutare";
+
+/* Button title to collapse and show fewer blocks */
+"editor.blockInserter.showLess" = "Arată mai puțin";
+
+/* Button title to expand and show more blocks */
+"editor.blockInserter.showMore" = "Arată mai multe";
+
+/* Error message when media insertion fails */
+"editor.media.failedToInsert" = "Inserarea elementului media a eșuat";
+
+/* Category name for section showing all patterns */
+"editor.patterns.all" = "Toate";
+
+/* Context menu action to insert a pattern */
+"editor.patterns.insertPattern" = "Inserează un model";
+
+/* Title shown when no patterns match the search */
+"editor.patterns.noPatternsFound" = "Nu am găsit niciun model";
+
+/* Navigation title for patterns view */
+"editor.patterns.title" = "Modele";
+
+/* Category name for patterns without a category */
+"editor.patterns.uncategorized" = "Fără categorie";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "de exemplu, 1122334455";
@@ -8590,6 +8871,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Scrii un blog";
+
+/* Description for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.description" = "Oricine poate să vadă acest articol";
+
+/* Title for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.title" = "Oricine";
+
+/* Description for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.description" = "Numai abonații care plătesc pot să vadă acest articol";
+
+/* Title for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.title" = "Abonați care plătesc";
+
+/* Description for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.description" = "Articolul este vizibil pentru toți abonații, inclusiv pentru cei care nu plătesc";
+
+/* Title for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.title" = "Toți abonații";
 
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Pentru a folosi Statistici și Notificări, trebuie să te autentifici cu %@.";
@@ -9180,6 +9479,12 @@ Example: Reply to Pamela Nguyen */
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "Nu ai permisiunea să vezi acest blog privat.";
 
+/* Default empty state message format when there are no terms. %1$@ is the taxonomy name. */
+"localizedLabels.defaultNoTerms.format" = "Niciun %1$@";
+
+/* Default search placeholder format. %1$@ is the taxonomy name. */
+"localizedLabels.defaultSearch.format" = "Caută %1$@";
+
 /* Button to dismiss the re-authentication view */
 "login.appPasswordReAuth.cancelButton" = "Anulează";
 
@@ -9315,17 +9620,23 @@ Example: Reply to Pamela Nguyen */
 /* Message about buying storage add-on */
 "mediaLibrary.storageDetails.buyStorage.message" = "Cumpără un supliment pentru stocare";
 
-/* Message shown when all media items are attached */
-"mediaLibrary.storageDetails.cleanup.allAttached" = "Toate elementele din biblioteca Media sunt atașate.";
+/* Label for audio media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.audio" = "Audio";
 
-/* Message shown while loading unattached media count */
-"mediaLibrary.storageDetails.cleanup.loading" = "Cercetez dacă există elemente media neatașate...";
+/* Label for document media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.document" = "Documente";
 
-/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
-"mediaLibrary.storageDetails.cleanup.message" = "%1$d elemente nu sunt atașate. Înlătură-le pentru a elibera spațiu.";
+/* Label for image media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.image" = "Imagini";
 
-/* Title for cleanup section */
-"mediaLibrary.storageDetails.cleanup.title" = "Înlătură elementele nefolosite";
+/* Label for other/unknown media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.other" = "Altele";
+
+/* Label for PowerPoint/presentation media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.powerpoint" = "Prezentări";
+
+/* Label for video media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.video" = "Videouri";
 
 /* Success message shown after upgrading plan */
 "mediaLibrary.storageDetails.purchase.plan.success" = "Planul site-ului tău a fost actualizat!";
@@ -9711,6 +10022,12 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Paginile mele";
 
+/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
+"parentCategory.noCategory" = "Fără categorie";
+
+/* Title for selecting parent category of a category */
+"parentCategory.title" = "Categorie părinte";
+
 /* Title for the parent page picker screen */
 "parentPagePicker.title" = "Pagină părinte";
 
@@ -9869,6 +10186,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the post author selection screen */
 "postAuthorPicker.title" = "Autor";
+
+/* Title for selecting categories for a post or a page */
+"postCategories.title" = "Categorii";
+
+/* Toggle label for allowing comments on post */
+"postDiscussion.allowComments.label" = "Permite comentarii";
+
+/* Toggle label for allowing pings/trackbacks on post */
+"postDiscussion.allowPings.label" = "Permite pingback-uri";
+
+/* Footer text when comments are disabled */
+"postDiscussion.comments.disabled.footer" = "Vizitatorii nu pot să adauge comentarii sau răspunsuri noi. Comentariile existente rămân vizibile.";
+
+/* Footer text when comments are enabled */
+"postDiscussion.comments.enabled.footer" = "Vizitatorii pot să adauge comentarii și răspunsuri noi.";
+
+/* Link text for learning more about pingbacks and trackbacks */
+"postDiscussion.pingbacks.learnMore.text" = "Învață mai multe despre pingback-uri și trackback-uri";
+
+/* Navigation title for post discussion settings */
+"postDiscussion.title" = "Discuție";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Renunță la modificări";
@@ -10101,6 +10439,9 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Fără titlu";
 
+/* Section header for Access settings in Post Settings */
+"postSettings.access.header" = "Acces";
+
 /* Label for the author field in Post Settings */
 "postSettings.author.label" = "Autor";
 
@@ -10119,6 +10460,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "postSettings.discardChanges.title" = "Renunți la modificări?";
+
+/* Status text when discussion (comments) is disabled */
+"postSettings.discussion.closed" = "Închise";
+
+/* Label for the discussion settings field in Post Settings */
+"postSettings.discussion.label" = "Discuții";
+
+/* Status text when discussion (comments) is enabled */
+"postSettings.discussion.open" = "Deschise";
+
+/* Label for the checkbox that lets you send a post to newsletter subscribers */
+"postSettings.emailToSubscribers.label" = "Trimite emailuri abonaților";
 
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d caractere";
@@ -10222,6 +10575,21 @@ Example: Reply to Pamela Nguyen */
 /* Cell title for the Top Level option case */
 "postSettings.parentPage.topLevel" = "Nivel superior";
 
+/* Accessibility label for hide password button */
+"postSettings.passwordEntry.hidePassword" = "Ascunde parola";
+
+/* Instructions for password entry */
+"postSettings.passwordEntry.instructions" = "Introdu o parolă pentru a proteja acest articol. Numai utilizatorii care au parola îl vor putea vizualiza.";
+
+/* Navigation title for password entry screen */
+"postSettings.passwordEntry.navigationTitle" = "Introdu parola";
+
+/* Placeholder for password field */
+"postSettings.passwordEntry.placeholder" = "Introdu parola";
+
+/* Accessibility label for show password button */
+"postSettings.passwordEntry.showPassword" = "Arată parola";
+
 /* Label for the pending review toggle in Post Settings */
 "postSettings.pendingReview.label" = "Recenzie în așteptare";
 
@@ -10249,17 +10617,59 @@ Example: Reply to Pamela Nguyen */
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Generale";
 
+/* Description text explaining what the slug editor does */
+"postSettings.slug.customizeDescription" = "Personalizează ultima parte a legăturii permanente.";
+
 /* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "postSettings.slug.hint" = "Descriptorul este versiunea prietenoasă a URL-ului pentru titlul articolului.";
 
 /* Label for the slug field. Should be the same as WP core. */
 "postSettings.slug.label" = "Descriptor";
 
+/* Button text to learn more about permalinks */
+"postSettings.slug.learnMore" = "Învață mai multe";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.navigationTitle" = "Descriptor";
+
+/* Notice shown when the post doesn't have a remote and permalink template is missing */
+"postSettings.slug.permalinkDraftNotice" = "Legătura permanentă sugerată va apărea când ciorna este salvată pe server";
+
+/* Label for the permalink preview */
+"postSettings.slug.permalinkLabel" = "Legătură permanentă";
+
+/* Section title for the permalink preview */
+"postSettings.slug.permalinkSection" = "Legătură permanentă";
+
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Introdu descriptorul";
 
 /* Label for the preview button in Post Settings */
 "postSettings.socialSharing.header" = "Partajare pe media socială";
+
+/* Label for the status field in Post Settings */
+"postSettings.status.label" = "Stare";
+
+/* Navigation title for status picker */
+"postSettings.statusPicker.navigationTitle" = "Stare și vizibilitate";
+
+/* Label showing the current password */
+"postSettings.statusPicker.passwordLabel" = "Parolă";
+
+/* Toggle label for password protection */
+"postSettings.statusPicker.passwordProtected" = "Protejat cu parolă";
+
+/* Subtitle for password protected toggle */
+"postSettings.statusPicker.passwordProtectedSubtitle" = "Este vizibil numai pentru cei care știu parola";
+
+/* Label for schedule date row */
+"postSettings.statusPicker.scheduleDate" = "Dată";
+
+/* Toggle label for sticky posts */
+"postSettings.statusPicker.sticky" = "Fix";
+
+/* Subtitle for sticky toggle */
+"postSettings.statusPicker.stickySubtitle" = "Fixează acest articol în partea de sus a blogului";
 
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "Reprezentativ";
@@ -10279,17 +10689,56 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Statistici articol";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"postTags.addTag" = "Adaugă etichetă";
+/* Post status title */
+"postStatus.deleted.details" = "Șters definitiv";
 
-/* Placeholder text for the tag search field */
-"postTags.searchOrAdd.placeholder" = "Caută sau adaugă etichete";
+/* Post status title */
+"postStatus.deleted.title" = "Șters";
 
-/* Message shown when no tags are selected */
-"postTags.selectionEmpty" = "Nu ai selectat nicio etichetă";
+/* Post status details */
+"postStatus.draft.details" = "Nu este gata pentru publicare";
 
-/* Title for the tags screen */
-"postTags.title" = "Etichete";
+/* Post status title */
+"postStatus.draft.title" = "Ciornă";
+
+/* Post status details */
+"postStatus.pending.details" = "Așteaptă verificarea înainte de publicare";
+
+/* Post status title */
+"postStatus.pending.title" = "În așteptare";
+
+/* Post status details */
+"postStatus.private.details" = "Vizibil numai pentru administratorii și editorii site-ului";
+
+/* Post status title */
+"postStatus.private.title" = "Privat";
+
+/* Post status details */
+"postStatus.published.details" = "Vizibil pentru toată lumea";
+
+/* Post status title */
+"postStatus.published.title" = "Publicat";
+
+/* Post status details */
+"postStatus.scheduled.details" = "Publică automat la o dată stabilită";
+
+/* Post status title */
+"postStatus.scheduled.title" = "Programat";
+
+/* Post status title */
+"postStatus.trash.details" = "Aruncat la gunoi dar nu a fost încă șters";
+
+/* Post status title */
+"postStatus.trash.title" = "Aruncat la gunoi";
+
+/* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.addTag" = "Adaugă %1$@";
+
+/* Placeholder text for the taxonomy search field. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.searchOrAdd.placeholder" = "Caută sau adaugă %1$@";
+
+/* Message shown when no taxonomy terms are selected. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.selectionEmpty" = "Nu ai selectat nicio %1$@";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Anulează";
@@ -10365,9 +10814,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Categorii";
-
-/* Voiceover accessibility label informing the user that this button dismiss the current view */
-"prepublishing.close" = "Închide";
 
 /* Button to confirm discarding changes */
 "prepublishing.discardChanges.button" = "Renunță la modificări";
@@ -10456,12 +10902,17 @@ Example: 27 social shares remaining in the next 30 days */
 /* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
 "prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Avertizare";
 
-/* The label displayed for a table row that displays the sharing message for the post.
-Tapping on this row allows the user to edit the sharing message. */
+/* Table section title */
 "prepublishing.socialAccounts.message.label" = "Mesaj";
+
+/* Placeholder text for the message field in Social Sharing */
+"prepublishing.socialAccounts.messagePlaceholder" = "Scrie un mesaj scurt pe care să-l partajezi pe media socială împreună cu articolul";
 
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "Social";
+
+/* Table section title */
+"prepublishing.socialAccounts.servicesSectionTitle" = "Servicii";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etichete";
@@ -11408,6 +11859,18 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "Selectează domeniul";
 
+/* Default text for adding a new item when no label is provided */
+"siteCustomTaxonomies.defaultAddNew" = "Adaugă";
+
+/* Description for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.description" = "Taxonomiile te ajută să organizezi conținutul în plus față de categoriile și etichetele standard.";
+
+/* Title for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.title" = "Nu există taxonomii personalizate";
+
+/* Navigation title for the custom taxonomies screen */
+"siteCustomTaxonomies.navigationTitle" = "Taxonomii";
+
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "siteMedia.accessibilityLabelAudio" = "Audio, %@";
 
@@ -11424,10 +11887,79 @@ Feel free to replace it with other bracket types that you think looks better for
 "siteMedia.accessibilityUnknownCreationDate" = "Dată creare necunoscută";
 
 /* Accessibility hint for actions when displaying media items. */
-"siteMedia.cellAccessibilityHint" = "Selectează media.";
+"siteMedia.cellAccessibilityHint" = "Selectează elemente Media.";
+
+/* Label for the alt for a media asset (image) */
+"siteMedia.details.altText" = "Text alternativ";
+
+/* Verb. Button title. Tapping cancels an action. */
+"siteMedia.details.cancel" = "Anulează";
+
+/* Noun. Label for the caption for a media asset (image / video) */
+"siteMedia.details.caption" = "Text asociat";
+
+/* Title for button that permanently deletes a media item (photo / video) */
+"siteMedia.details.delete" = "Șterge";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"siteMedia.details.deleteConfirmation" = "Sigur vrei să ștergi definitiv acest element?";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"siteMedia.details.deleted" = "Șters!";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"siteMedia.details.deleting" = "Șterg...";
+
+/* Label for the description for a media asset (image / video) */
+"siteMedia.details.description" = "Descriere";
+
+/* Label for the dimensions in pixels for a media asset (image / video) */
+"siteMedia.details.dimensions" = "Dimensiuni";
+
+/* Label for the file name for a media asset (image / video) */
+"siteMedia.details.fileName" = "Nume fișier";
+
+/* Label for the file size for a media asset (image / video) */
+"siteMedia.details.fileSize" = "Dimensiune fișier";
+
+/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
+"siteMedia.details.fileType" = "Tip de fișier";
+
+/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
+"siteMedia.details.mediaDeleted" = "Acest element media a fost șters.";
+
+/* Noun. Label for the title of a media asset (image / video) */
+"siteMedia.details.title" = "Titlu";
+
+/* Accessibility label for trash buttons in nav bars */
+"siteMedia.details.trash" = "Aruncă la gunoi";
+
+/* Text displayed in HUD if there was an error attempting to delete a media item. */
+"siteMedia.details.unableToDeleteMedia" = "Nu pot să șterg elementul Media.";
+
+/* Error shown when the app fails to load a video from the user's media library. */
+"siteMedia.details.unableToLoadVideo" = "Nu pot să încarc videoul.";
+
+/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
+"siteMedia.details.unableToSaveMedia" = "Nu pot să salvez elementul Media.";
+
+/* Label for the date a media asset (image / video) was uploaded */
+"siteMedia.details.uploaded" = "Încărcată";
 
 /* Title for the URL field */
 "siteMedia.details.url" = "URL";
+
+/* Hint for image alt on image settings. */
+"siteMedia.hints.imageAlt" = "Text alternativ imagine";
+
+/* Hint for image caption on image settings. */
+"siteMedia.hints.imageCaption" = "Text asociat imagine";
+
+/* Hint for image description on image settings. */
+"siteMedia.hints.imageDescription" = "Descriere imagine";
+
+/* Hint for image title on image settings. */
+"siteMedia.hints.imageTitle" = "Titlu imagine";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Atinge pentru a vizualiza elementul media pe ecran complet";
@@ -11525,6 +12057,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Confidențialitate";
+
+/* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
+"siteTaxonomy.addNew.format" = "Adaugă %1$@";
 
 /* Hint for users when hidden privacy setting is set */
 "siteVisibility.hidden.hint" = "Până când va fi pregătit pentru vizualizare, site-ul tău este ascuns pentru vizitatori în spatele unei notificări „În curând”.";
@@ -12093,7 +12628,8 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Suport Cititor pentru iOS";
 
-/* Description for empty state when there are no tags */
+/* Description for empty state when there are no tags
+   Description for empty state when there are no tags. %1$@ is the taxonomy name. */
 "tags.empty.description" = "Etichetele ajută la organizarea conținutului și facilitează cititorilor găsirea unor articole similare.";
 
 /* Title for empty state when there are no tags */
@@ -12170,9 +12706,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "necitite";
-
-/* Site's Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.subscriber" = "Abonat la site";
 
 /* Sites's User Profile. Displayed when the name is empty! */
 "user.details.title.user" = "Utilizator pe site";
@@ -12258,9 +12791,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The heading at the top of the user list */
 "userlist.title" = "Utilizatori";
-
-/* Site Subscribers */
-"users.list.title.subscribers" = "Abonați";
 
 /* Screen title */
 "users.title" = "Utilizatori";

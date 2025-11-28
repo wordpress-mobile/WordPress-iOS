@@ -10,12 +10,22 @@
 * [*] Add "Access" section to "Post Settings" [#24942]
 * [*] Add "Discussion" to "Post Settings" [#24948]
 * [*] Add "File Size" to Site Media Details [#24947]
+* [*] Fix an issue with posts duplicated in Discover [#25015]
 * [*] Add "Email to Subscribers" row to "Publishing" sheet [#24946]
 * [*] Add permalink preview in the slug editor and make other improvements [#24949]
+* [*] Add two accessible font sizes to Reader display settings [#25013]
+* [*] Fix an issue with Reader failing to parse some search results [#25022]
+* [*] Fix search for RSS feeds in Reader [#25023]
 * [*] Add "Taxonomies" to Site Settings [#24955]
 * [*] Update "Categories" picker to indicate multiple selection [#24952]
 * [*] Fix a bug where the app can't access some Jetpack connected sites [#24976]
 * [*] Add support for editing custom taxonomy terms from "Post Settings" [#24964]
+* [*] Fix a bug where the app can't access some Jetpack connected sites [#24976]
+* [*] Add support for editing custom taxonomy terms from "Post Settings" [#24964]
+* [*] Fix overly long related post titles in Reader [#25011]
+* [*] Increase number of lines for post tiles in Reader to three [#25019]
+* [*] Fix horizontal insets in Reader article view [#25010]
+* [*] Fixed several reader bugs causing posts to load strangely, or not at all [#25016]
 
 26.4
 -----

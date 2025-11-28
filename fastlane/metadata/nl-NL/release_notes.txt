@@ -1,6 +1,15 @@
-Je kunt nu een samenvatting maken voor je berichten en automatisch voorgestelde tags krijgen met behulp van Apple Intelligence. Het is ook gemakkelijker om je tags te kiezen in de instellingen voor berichten. Dat is nog eens slim.
-We hebben een paar visuele oplossingen voor iOS in gebieden, zoals de site aanmaak workflow, het media selectiescherm en het statistieken scherm.
-Terwijl we toch bezig waren, hebben we ook een paar bugs geplet.
-- Reader artikelen worden goed weergegeven op apparaten met scherm zoom ingeschakeld.
-- De knop "Media toevoegen" blijft zichtbaar in de mediabibliotheek. Geen verdwijntruc meer.
-- Je kunt zoeken in Reader abonnementen zonder dat de app bevriest.
+Let op, contentmakers—we hebben hard gewerkt aan een paar grote wijzigingen in het scherm Berichtinstellingen.
+
+- We hebben een veld „Status” toegevoegd dat je helpt om berichten snel te verplaatsen tussen concept, in behandeling, privé, gepland en gepubliceerd.
+- We hebben het gebied „Publicatiedatum” teruggebracht voor concept- en in-behandeling-berichten. Zo kun je vooraf een publicatiedatum kiezen zonder het bericht officieel in te plannen.
+- Het wachtwoordveld gebruikt een ander lettertype (Menlo, als je nieuwsgierig bent), zodat vergelijkbare karakters makkelijker te lezen zijn.
+- Geef je volgers een VIP behandeling door toegangsniveaus voor berichten in te stellen voor alle abonnees, betaalde abonnees en het algemene publiek.
+- Schakel berichtreacties en pingbacks aan of uit met de instellingen „Discussie”.
+
+Terwijl we toch bezig waren, hebben we nog een aantal andere handige updates gedaan in verschillende delen van de app.
+
+- Op het scherm „Publiceren” kun je „E-mail naar abonnees” aanzetten om je abonnees automatisch te laten weten wanneer een bericht is gepubliceerd. Laat de persen draaien.
+- De slug-editor heeft een permalinkvoorbeeld dat laat zien hoe de uiteindelijke URL van een bericht eruit zal zien.
+- We hebben „Taxonomieën” toegevoegd aan site-instellingen zodat je je inhoudsgroepen op siteniveau kunt beheren.
+- Dankzij een paar ontwerpaanpassingen in de keuzelijst „Categorieën” is het duidelijker dat je meerdere categorieën voor een bericht kunt kiezen.
+- Bestandsgroottes zijn nu zichtbaar in het gebied site-mediadetails. Geen giswerk meer.

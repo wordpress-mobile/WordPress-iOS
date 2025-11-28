@@ -3,8 +3,16 @@
 <!--Warning: Auto-generated file, do not edit.-->
 <plist version="1.0">
   <dict>
+    <key>BOl9KQ</key>
+    <string>Има  ${count}, съвпадащи с ‘${site}’.</string>
+    <key>ILcGmf</key>
+    <string>Сайт</string>
+    <key>cyajMn</key>
+    <string>Сайт</string>
     <key>gpCwrM</key>
     <string>Select Site</string>
+    <key>s4dJhx</key>
+    <string>Само да потвърдим, искате ‘${site}’?</string>
     <key>tVvJ9c</key>
     <string>Select Site Intent</string>
   </dict>

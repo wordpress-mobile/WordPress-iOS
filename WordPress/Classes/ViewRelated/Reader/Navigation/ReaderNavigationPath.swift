@@ -13,6 +13,7 @@ enum ReaderNavigationPath: Hashable {
     case postURL(URL)
     case topic(ReaderAbstractTopic)
     case tag(String)
+    case site(siteID: Int, isFeed: Bool)
 }
 
 extension ReaderNavigationPath {

@@ -456,37 +456,13 @@ extension WordPressAppDelegate {
             return
         }
 
-        trackDeepLink(for: url) { url in
-            DispatchQueue.main.async {
-                UniversalLinkRouter.shared.handle(url: url)
-            }
-        }
+        UniversalLinkRouter.shared.handle(url: url)
     }
 
     @objc func configureWordPressComApi() {
         if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url"), let url = URL(string: baseUrl) {
             AppEnvironment.replaceEnvironment(wordPressComApiBase: url)
         }
-    }
-}
-
-// MARK: - Deep Link Handling
-
-extension WordPressAppDelegate {
-
-    private func trackDeepLink(for url: URL, completion: @escaping ((URL) -> Void)) {
-        let task = URLSession.shared.dataTask(with: url) { _, response, error in
-            guard let url = response?.url else {
-                wpAssertionFailure(
-                    "Received a deep link response without URL attached.",
-                    userInfo: ["response": response ?? "no response"]
-                )
-                return
-            }
-
-            completion(url)
-        }
-        task.resume()
     }
 }
 

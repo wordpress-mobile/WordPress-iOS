@@ -347,7 +347,7 @@ class ReaderDetailCoordinator {
                                         self?.post = post
                                         self?.renderPostAndBumpStats()
                                     }, failure: { [weak self] error in
-                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction()
+                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction(error: error)
                                         self?.reportPostLoadFailure()
                                     })
     }
@@ -357,15 +357,17 @@ class ReaderDetailCoordinator {
     /// Use this method to fetch a ReaderPost from a URL.
     /// - Parameter url: a post URL
     private func fetch(_ url: URL) {
-        readerPostService.fetchPost(at: url,
-                                    success: { [weak self] post in
-                                        self?.post = post
-                                        self?.renderPostAndBumpStats()
-                                    }, failure: { [weak self] error in
-                                        DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
-                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction()
-                                        self?.reportPostLoadFailure()
-                                    })
+        readerPostService.resolvePostUrl(url) { [weak self] resolvedPost in
+            self?.fetch(
+                postID: NSNumber(value: resolvedPost.postId),
+                siteID: NSNumber(value: resolvedPost.siteId),
+                isFeed: false
+            )
+        } failure: { [weak self] error in
+            DDLogError("Error fetching post for detail: \(String(describing: error.localizedDescription))")
+            self?.showError(error: error)
+            self?.reportPostLoadFailure()
+        }
     }
 
     private func showError(error: Error?) {
@@ -476,8 +478,6 @@ class ReaderDetailCoordinator {
             presentWebViewController(url)
         } else if readerLinkRouter.canHandle(url: url) {
             readerLinkRouter.handle(url: url, shouldTrack: false, source: .inApp(presenter: viewController))
-        } else if url.isWordPressDotComPost {
-            presentReaderDetail(url)
         } else if url.isLinkProtocol {
             readerLinkRouter.handle(url: url, shouldTrack: false, source: .inApp(presenter: viewController))
         } else {
@@ -523,30 +523,6 @@ class ReaderDetailCoordinator {
                                         self?.view?.updateHeader()
                                         completion()
                                      })
-    }
-
-    /// Given a URL presents it in a new Reader detail screen
-    ///
-    private func presentReaderDetail(_ url: URL) {
-
-        // In cross post Notifications, if the user tapped the link to the original post in the Notification body,
-        // use the original post's info to display reader detail.
-        // The API endpoint used by controllerWithPostID returns subscription flags for the post.
-        // The API endpoint used by controllerWithPostURL does not return this information.
-        // These flags are needed to display the `Follow conversation by email` option.
-        // So if we can call controllerWithPostID, do so. Otherwise, fallback to controllerWithPostURL.
-        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/17158
-
-        let readerDetail: ReaderDetailViewController = {
-            if let post,
-               selectedUrlIsCrossPost(url) {
-                return ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
-            }
-
-            return ReaderDetailViewController.controllerWithPostURL(url)
-        }()
-
-        viewController?.navigationController?.pushViewController(readerDetail, animated: true)
     }
 
     private func selectedUrlIsCrossPost(_ url: URL) -> Bool {

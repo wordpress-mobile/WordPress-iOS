@@ -62,29 +62,11 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 @property (nonatomic, strong, nullable) NSString *voiceContent;
 
-// Revision management
-- (AbstractPost *)createRevision;
-- (void)deleteRevision;
-- (void)applyRevision;
-- (AbstractPost *)updatePostFrom:(AbstractPost *)revision;
-- (BOOL)isRevision;
-- (BOOL)isOriginal;
-
-/// Returns the latest revision of a post.
-///
-- (AbstractPost *)latest;
-- (AbstractPost *)cloneFrom:(AbstractPost *)source;
 - (BOOL)hasPhoto;
 - (BOOL)hasVideo;
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
 
-/**
- *  @brief      Call this method to know whether this post has a revision or not.
- *
- *  @returns    YES if this post has a revision, NO otherwise.
- */
-- (BOOL)hasRevision;
 
 #pragma mark - Conveniece Methods
 - (BOOL)shouldPublishImmediately;

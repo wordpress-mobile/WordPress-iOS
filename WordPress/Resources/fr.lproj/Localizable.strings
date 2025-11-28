@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2025-10-07 11:54:09+0000 */
+/* Translation-Revision-Date: 2025-11-25 11:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: fr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -581,8 +581,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "On y est presque ! Veuillez saisir le code de vérification de votre app d’authentification.";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "Texte alternatif";
 
 /* No comment provided by engineer. */
@@ -722,9 +721,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Confirmez-vous vouloir déconnecter Jetpack de votre site ?";
-
-/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "Confirmez-vous vouloir supprimer définitivement cet élément ?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Confirmez-vous vouloir supprimer %1$@ de %2$@ ?";
@@ -1076,7 +1072,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Annuler";
@@ -1104,8 +1099,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Vous n’arrivez pas à choisir ? Vous pouvez modifier le thème à tout moment.";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "Légende";
 
 /* Alert title. */
@@ -1771,8 +1765,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Par défaut";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "Catégorie par défaut";
 
 /* Label for selecting the default post format
@@ -1781,9 +1774,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Paramètres par défaut pour les nouveaux articles";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "Effacer";
 
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Supprimer le menu";
@@ -1802,14 +1792,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Supprimer le menu";
 
-/* Text displayed in HUD after successfully deleting a media item */
-"Deleted!" = "Supprimer !";
-
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "Suppression du site...";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Effacement... ";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Refuser";
@@ -1817,8 +1801,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Describe the purpose of the image. Leave empty if decorative." = "Décrivez le rôle de cette image. N’indiquez rien si l’image est purement décorative.";
 
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "Description";
 
 /* Shortened version of the main title to be used in back navigation. */
@@ -1836,9 +1819,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
 "Didn't mean to create a new account? Go back to re-enter your email address." = "Vous ne voulez pas créer de nouveau compte ? Revenez en arrière et ressaisissez votre adresse e-mail.";
-
-/* Label for the dimensions in pixels for a media asset (image / video) */
-"Dimensions" = "Dimensions";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "Désactiver";
@@ -2115,7 +2095,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "La modification de ce GIF supprimera son animation.";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "Éditeur";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
@@ -2457,11 +2437,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "File block settings" = "Réglages du bloc fichier";
 
-/* Label for the file name for a media asset (image / video) */
+/* No comment provided by engineer. */
 "File name" = "Nom de fichier";
-
-/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
-"File type" = "Type de fichier";
 
 /* No comment provided by engineer. */
 "File type not supported as a media file." = "Type de fichier non pris en charge comme fichier média.";
@@ -2772,6 +2749,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Le travail du photographe Cameron Karsten m’inspire tellement. Je vais essayer ces techniques lors de mon prochain";
 
+/* Text on the support form to refer to what area the user has problem with. */
+"I need help with" = "J’ai besoin d’aide concernant";
+
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "Adresse IP";
 
@@ -2817,9 +2797,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint for image caption on image settings. */
 "Image Caption" = "Légende de l’image";
 
-/* Hint for image description on image settings. */
-"Image Description" = "Description de l’image";
-
 /* Hint for image link on image settings. */
 "Image Link" = "Lien de l’image";
 
@@ -2831,9 +2808,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Image file not found." = "Fichier image introuvable.";
-
-/* Hint for image title on image settings. */
-"Image title" = "Titre de l’image";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Décrivez votre site en quelques mots.";
@@ -3196,6 +3170,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Indiquez-moi lorsque l’opération est terminée !";
 
+/* Message info on the support screen. */
+"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Indiquez-nous l’adresse de votre site (URL) et dites-nous tout ce que vous pouvez sur ce problème. Nous vous recontacterons au plus vite.";
+
+/* Title to let the user know what do we want on the support screen. */
+"Let’s get this sorted" = "Voyons comment nous pouvons régler votre problème";
+
 /* Lifestyle site intent topic */
 "Lifestyle" = "Style de vie";
 
@@ -3396,6 +3376,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigation principale";
+
+/* Explanation for the option to enable theme styles */
+"Make the block editor look like your theme." = "Faire ressembler l’éditeur de blocs à votre thème.";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Faites ressortir votre contenu en ajoutant des images, des gifs, des vidéos ou des médias embarqués à vos pages.";
@@ -3738,9 +3721,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "Aucun compte trouvé";
-
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "Pas de catégorie";
 
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Pas de connexion";
@@ -4182,9 +4162,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Settings: Comments Paging preferences */
 "Paging" = "Pagination";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "Catégorie mère";
-
 /* Parenting site intent topic */
 "Parenting" = "Parentalité";
 
@@ -4402,9 +4379,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Article ";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "Catégories d'articles";
 
 /* Name of the button to open the post settings */
 "Post Settings" = "Réglages d’article";
@@ -4713,9 +4687,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Retirer les métadonnées de localisation des photos avant des les téléverser sur votre site.";
-
-/* First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Les abonnés que vous supprimez ne recevront plus les mises à jour de votre site. Mais ils pourront toujours consulter le site et s’y réabonner s’ils le souhaitent.";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Remplacer le bloc actuel";
@@ -5552,6 +5523,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "Description";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "Étiquettes";
 
@@ -5937,9 +5909,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when the user scanned an expired log in code. */
 "This log in code has expired. Please tap the Scan Again button to rescan the code." = "Ce code de connexion a expiré. Appuyez sur Scanner à nouveau pour rescanner le code.";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "Ce média a été supprimé.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Ce compte utilisateur ne peut pas être clôturé s’il y a des contestations de paiement non résolues.";
 
@@ -6008,7 +5977,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "Titre";
@@ -6102,8 +6070,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Transformer le bloc…";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "Déplacer vers la corbeille";
 
@@ -6200,9 +6167,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Impossible de créer de nouveaux liens d’invitation.";
 
-/* Text displayed in HUD if there was an error attempting to delete a media item. */
-"Unable to delete media item." = "Impossible de supprimer le média.";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to disable invite links." = "Impossible de désactiver les liens d’invitation.";
 
@@ -6233,9 +6197,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "Impossible de charger cette page pour le moment. ";
 
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "Impossible de charger la vidéo.";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Impossible de lancer la vidéo";
 
@@ -6244,9 +6205,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Impossible de restaurer votre site";
-
-/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
-"Unable to save media item." = "Impossible d’enregistrer le média.";
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Impossible de partager le lien";
@@ -6403,9 +6361,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Le téléversement a échoué";
 
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "Téléversé";
-
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "Un article brouillon et %ld fichiers téléversés";
 
@@ -6447,6 +6402,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Utilisez le mot de passe pour la connexion";
+
+/* Option to enable theme styles in the block editor */
+"Use theme styles" = "Utiliser les styles de thème";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -6894,7 +6852,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "La carte du monde affiche les vues par pays.";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Voulez-vous toujours supprimer cette personne ?";
 
 /* Button title. Opens the editor to write a new post.
@@ -7353,14 +7311,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Les mots de passe d’application sont un moyen plus sûr de vous connecter à votre site auto-hébergé et activer des fonctionnalités telles que %@.";
 
+/* Feature name for managing application passwords in the app */
+"applicationPasswordRequired.feature.applicationPasswords" = "Gestion des mots de passe d’applications";
+
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Éditeur de blocs";
+
+/* Feature name for managing terms and taxonomies in the app */
+"applicationPasswordRequired.feature.customTaxonomies" = "Gestion des taxonomies";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Gestion des extensions";
 
-/* Feature name for managing application passwords in the app
-   Feature name for managing users in the app */
+/* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Gestion des utilisateurs";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -7583,6 +7546,276 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Enregistrer le brouillon";
+
+/* Button to add more screenshots */
+"com.jetpack.support.addMoreScreenshots" = "Ajouter d’autres captures d’écran";
+
+/* Button to add screenshots */
+"com.jetpack.support.addScreenshots" = "Ajouter des captures d’écran";
+
+/* Header for application logs section */
+"com.jetpack.support.applicationLogs" = "Journaux d’application";
+
+/* Description explaining why including logs is helpful */
+"com.jetpack.support.applicationLogsDescription" = "Inclure des journaux peut aider notre équipe à examiner les problèmes. Les journaux peuvent contenir une activité récente de l’application.";
+
+/* Navigation title for application logs screen */
+"com.jetpack.support.applicationLogsTitle" = "Journaux d’application";
+
+/* Format string for attachment identifier */
+"com.jetpack.support.attachment" = "Pièce jointe %@";
+
+/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
+"com.jetpack.support.attachmentLimit" = "Limite de pièces jointes : %1$@ \/ %2$@";
+
+/* Bot greeting message. %1$@ is the user's name */
+"com.jetpack.support.botGreeting" = "Salutations %1$@ !";
+
+/* Bot introduction message explaining its purpose */
+"com.jetpack.support.botIntroduction" = "Je suis votre assistant IA personnel. Je peux vous aider à répondre à toute question concernant votre site ou votre compte.";
+
+/* Format string for cache file count and size. %1$d is the number of files, %2$@ is the formatted size. The system will pluralize 'files' based on the number – please specify it as the largest plural value */
+"com.jetpack.support.cacheFiles" = "%1$d fichiers mis en cache (%2$@)";
+
+/* Message shown when cache has no files */
+"com.jetpack.support.cacheIsEmpty" = "Le cache est vide";
+
+/* Button to cancel current action */
+"com.jetpack.support.cancel" = "Annuler";
+
+/* Warning message that deleted logs cannot be recovered */
+"com.jetpack.support.cannotRecoverLogs" = "Vous ne pourrez pas les récupérer.";
+
+/* Button to clear all activity logs */
+"com.jetpack.support.clearAllActivityLogs" = "Effacer tous les journaux d’activités";
+
+/* Button to clear disk cache */
+"com.jetpack.support.clearDiskCache" = "Vider le cache du disque";
+
+/* Description explaining the purpose of clearing disk cache */
+"com.jetpack.support.clearDiskCacheDescription" = "Supprimez les fichiers temporaires pour libérer de l’espace ou résoudre les problèmes.";
+
+/* Progress text while clearing cache */
+"com.jetpack.support.clearing" = "Nettoyage…";
+
+/* Message shown when cache clearing is complete */
+"com.jetpack.support.complete" = "Terminé";
+
+/* Confirmation message when canceling a draft */
+"com.jetpack.support.confirmCancelMessage" = "Voulez-vous vraiment annuler ce message ? Vous perdrez toutes les données que vous avez saisies";
+
+/* Title for alert confirming cancellation */
+"com.jetpack.support.confirmCancellation" = "Confirmer l’annulation";
+
+/* Confirmation dialog title when deleting all logs */
+"com.jetpack.support.confirmDeleteAllLogs" = "Voulez-vous vraiment supprimer tous les journaux ?";
+
+/* Section title for contact information */
+"com.jetpack.support.contactInformation" = "Coordonnées";
+
+/* Button to continue editing a message */
+"com.jetpack.support.continueWriting" = "Continuer d’écrire";
+
+/* Message shown at end of closed support conversation */
+"com.jetpack.support.conversationEnded" = "Fin de la conversation. Aucune autre réponse n’est possible.";
+
+/* Button to delete all log files */
+"com.jetpack.support.deleteAllLogs" = "Effacer tous les journaux";
+
+/* Description text for diagnostics screen */
+"com.jetpack.support.diagnosticsDescription" = "Exécutez des tâches de maintenance et de résolution de problème courantes.";
+
+/* Button to discard changes in a draft message */
+"com.jetpack.support.discardChanges" = "Abandonner les modifications";
+
+/* Notice explaining where support will send email responses */
+"com.jetpack.support.emailNotice" = "Nous vous enverrons un e-mail à cette adresse.";
+
+/* Error title when logs fail to load */
+"com.jetpack.support.errorLoadingLogs" = "Erreur lors du chargement des journaux";
+
+/* Error message when support conversations fail to load */
+"com.jetpack.support.errorLoadingSupportConversations" = "Erreur lors du chargement des conversations d’assistance";
+
+/* Title for error alerts */
+"com.jetpack.support.errorTitle" = "Erreur";
+
+/* Option to export log as a file */
+"com.jetpack.support.exportAsFile" = "Exporter en tant que fichier";
+
+/* Button to dismiss alerts. */
+"com.jetpack.support.gotIt" = "J’ai compris";
+
+/* Text on the support form to refer to what area the user has problem with. */
+"com.jetpack.support.iNeedHelp" = "J’ai besoin d’aide concernant";
+
+/* Toggle label to include application logs in the support request */
+"com.jetpack.support.includeApplicationLogs" = "Inclure les journaux d’application";
+
+/* Section title for issue details */
+"com.jetpack.support.issueDetails" = "Détails du problème";
+
+/* Format string for when conversation was last updated */
+"com.jetpack.support.lastUpdated" = "Dernière mise à jour %@";
+
+/* Progress message while loading conversation messages */
+"com.jetpack.support.loadingBotConversationMessages" = "Chargement des messages";
+
+/* Progress message while loading bot conversations */
+"com.jetpack.support.loadingBotConversations" = "Chargement des conversations de bots";
+
+/* Progress text while loading support conversations */
+"com.jetpack.support.loadingConversations" = "Chargement des conversations";
+
+/* Progress message while loading disk usage information */
+"com.jetpack.support.loadingDiskUsage" = "Chargement de l’utilisation du disque";
+
+/* Progress message while loading an image attachment */
+"com.jetpack.support.loadingImage" = "Chargement de l’image";
+
+/* Progress message shown in overlay while refreshing content */
+"com.jetpack.support.loadingLatestContent" = "Chargement du dernier contenu";
+
+/* Progress message while loading application log content */
+"com.jetpack.support.loadingLogContent" = "Chargement du contenu du journal…";
+
+/* Progress message while loading log files */
+"com.jetpack.support.loadingLogs" = "Chargement des journaux…";
+
+/* Progress text while loading conversation messages */
+"com.jetpack.support.loadingMessages" = "Chargement des messages";
+
+/* Progress message while loading a video attachment */
+"com.jetpack.support.loadingVideo" = "Chargement de la vidéo";
+
+/* Section header for log files sorted by date */
+"com.jetpack.support.logFilesByDate" = "Fichiers journaux par date de création";
+
+/* Text indicating which log files will be included in the support request */
+"com.jetpack.support.logFilesToUpload" = "Les fichiers journaux suivants seront chargés :";
+
+/* Footer text explaining log retention policy */
+"com.jetpack.support.logRetentionNotice" = "Conserve jusqu’à sept jours de rapports de bugs.";
+
+/* Success message when reply is sent successfully */
+"com.jetpack.support.messageSent" = "Message envoyé";
+
+/* Format string for number of messages in conversation */
+"com.jetpack.support.messagesCount" = "%d messages";
+
+/* The title of a new bot chat in the support area of the app */
+"com.jetpack.support.new-bot-chat" = "Nouveau chat bot";
+
+/* Option to create a new support ticket */
+"com.jetpack.support.newSupportTicket" = "Nouveau ticket d’assistance";
+
+/* Label shown when there are no bot conversations */
+"com.jetpack.support.noConversations" = "Aucune conversation";
+
+/* Description shown when no log files are available */
+"com.jetpack.support.noLogsAvailable" = "Il n’y a aucun journal d’activités disponible";
+
+/* Label shown when no log files are available */
+"com.jetpack.support.noLogsFound" = "Aucun journal trouvé";
+
+/* Button to open a support ticket */
+"com.jetpack.support.openSupportTicket" = "Ouvrir un ticket d’assistance";
+
+/* Text indicating a field is optional */
+"com.jetpack.support.optional" = "(Facultatif)";
+
+/* Navigation title for replying to a support conversation */
+"com.jetpack.support.reply" = "Répondre";
+
+/* Description for saving log as a file */
+"com.jetpack.support.saveAsFile" = "Enregistrer en tant que fichier à partager ou à stocker";
+
+/* Label for screenshots section */
+"com.jetpack.support.screenshots" = "Captures d’écran";
+
+/* Description for screenshots section */
+"com.jetpack.support.screenshotsDescription" = "L’ajout de captures d’écran peut nous aider à comprendre et résoudre votre problème plus rapidement.";
+
+/* Button to send a message or reply */
+"com.jetpack.support.send" = "Envoyer";
+
+/* Description for sending logs to support */
+"com.jetpack.support.sendLogsToSupport" = "Envoyer les journaux directement à l’équipe d’assistance";
+
+/* Progress text while sending a message */
+"com.jetpack.support.sending" = "Envoi en cours";
+
+/* Progress message shown while sending a message */
+"com.jetpack.support.sendingMessage" = "Envoyer un message";
+
+/* Button to share content */
+"com.jetpack.support.share" = "Partager";
+
+/* Navigation title for sharing activity log */
+"com.jetpack.support.shareActivityLog" = "Partager le journal d’activités";
+
+/* Message shown when sharing log with support */
+"com.jetpack.support.sharingWithSupport" = "Partage avec l’assistance !";
+
+/* Site Address title on the support form */
+"com.jetpack.support.siteAddress" = "Adresse du site";
+
+/* Description encouraging user to start a new conversation */
+"com.jetpack.support.startNewConversation" = "Commencer une nouvelle conversation en utilisant le bouton ci-dessus";
+
+/* Subject title on the support form */
+"com.jetpack.support.subject" = "Objet";
+
+/* Placeholder for subject field */
+"com.jetpack.support.subjectPlaceholder" = "Bref résumé de votre problème";
+
+/* Button title to submit a support request. */
+"com.jetpack.support.submitRequest" = "Envoyer la demande d’aide";
+
+/* Navigation title for the support conversations list */
+"com.jetpack.support.supportConversations" = "Conversations d’assistance";
+
+/* Title for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSent" = "Demande envoyée !";
+
+/* Message for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSentMessage" = "Votre demande d’assistance a bien été envoyée. Nous vous enverrons une réponse par e-mail dès que possible.";
+
+/* Progress message shown while bot is thinking */
+"com.jetpack.support.thinking" = "En cours de réflexion…";
+
+/* Title of the view for contacting support. */
+"com.jetpack.support.title" = "Contacter l’assistance";
+
+/* Button to retry a failed operation */
+"com.jetpack.support.tryAgain" = "Réessayer";
+
+/* Error title when log deletion fails */
+"com.jetpack.support.unableToDeleteLogs" = "Impossible de supprimer les journaux";
+
+/* Error message when conversation cannot be displayed */
+"com.jetpack.support.unableToDisplayConversation" = "Impossible d’afficher la conversation";
+
+/* Error title when video cannot be loaded or played */
+"com.jetpack.support.unableToDisplayVideo" = "Impossible d’afficher la vidéo";
+
+/* Error message when application logs cannot be loaded */
+"com.jetpack.support.unableToLoadApplicationLogs" = "Impossible de charger les journaux d’application";
+
+/* Error title when bot conversations fail to load */
+"com.jetpack.support.unableToLoadConversations" = "Impossible de charger les conversations";
+
+/* Error title when messages fail to load */
+"com.jetpack.support.unableToLoadMessages" = "Impossible de charger les messages";
+
+/* Error title when message sending fails */
+"com.jetpack.support.unableToSendMessage" = "Impossible d’envoyer le message";
+
+/* Button to view an attachment */
+"com.jetpack.support.view" = "Voir";
+
+/* Progress message shown during cache clearing operation */
+"com.jetpack.support.working" = "En cours";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "commentaire";
@@ -7840,6 +8073,9 @@ Example: Reply to Pamela Nguyen */
 /* Weekly Roundup debug menu item */
 "debugMenu.weeklyRoundup" = "Résumé hebdomadaire";
 
+/* Title for selecting a default category for a post */
+"defaultCategory.title" = "Catégorie par défaut";
+
 /* Error tilte */
 "discussionSettings.saveErrorTitle" = "Échec de l’enregistrement des réglages";
 
@@ -7979,10 +8215,10 @@ Example: Reply to Pamela Nguyen */
 "double-tap to change unit" = "appuyer deux fois pour modifier l’unité";
 
 /* Message for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.message" = "Voulez-vous vraiment supprimer cette étiquette ?";
+"edit.tag.delete.confirmation.message" = "Voulez-vous vraiment le supprimer ?";
 
-/* Title for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.title" = "Supprimer l’étiquette";
+/* Title for delete a term confirmation dialog */
+"edit.tag.delete.confirmation.title" = "Supprimer";
 
 /* Placeholder text for tag description field */
 "edit.tag.description.placeholder" = "Ajoutez une description…";
@@ -7994,7 +8230,37 @@ Example: Reply to Pamela Nguyen */
 "edit.tag.new.title" = "Nouvelle étiquette";
 
 /* Section header for tag name in edit tag view */
-"edit.tag.section.tag" = "Étiquette";
+"edit.tag.section.tag" = "Nom";
+
+/* Context menu action to insert a block */
+"editor.blockInserter.insertBlock" = "Insérer le bloc";
+
+/* Placeholder text for block search field */
+"editor.blockInserter.search" = "Rechercher";
+
+/* Button title to collapse and show fewer blocks */
+"editor.blockInserter.showLess" = "Afficher moins";
+
+/* Button title to expand and show more blocks */
+"editor.blockInserter.showMore" = "Voir plus";
+
+/* Error message when media insertion fails */
+"editor.media.failedToInsert" = "Échec d’insertion du média";
+
+/* Category name for section showing all patterns */
+"editor.patterns.all" = "Tout";
+
+/* Context menu action to insert a pattern */
+"editor.patterns.insertPattern" = "Insérer la composition";
+
+/* Title shown when no patterns match the search */
+"editor.patterns.noPatternsFound" = "Aucune composition trouvée";
+
+/* Navigation title for patterns view */
+"editor.patterns.title" = "Compositions";
+
+/* Category name for patterns without a category */
+"editor.patterns.uncategorized" = "Sans catégorie";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "ex. 1122334455";
@@ -8546,6 +8812,24 @@ Example: Reply to Pamela Nguyen */
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Tenir un blog";
 
+/* Description for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.description" = "Tout le monde peut voir cet article";
+
+/* Title for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.title" = "Tout le monde";
+
+/* Description for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.description" = "Seuls les abonnés payants peuvent voir cet article";
+
+/* Title for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.title" = "Abonnés payants";
+
+/* Description for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.description" = "L’article est visible par tous les abonnés, y compris les abonnés gratuits";
+
+/* Title for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.title" = "Tous les abonnés";
+
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Vous devez vous connecter avec %@ pour utiliser Stats et Notifications.";
 
@@ -8721,6 +9005,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 months date range */
 "jetpackStats.calendar.last12Months" = "12 derniers mois";
 
+/* Last 12 weeks (84 days) date range */
+"jetpackStats.calendar.last12Weeks" = "Douze dernières semaines";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "28 derniers jours";
 
@@ -8880,6 +9167,9 @@ Example: Reply to Pamela Nguyen */
 /* Compare with same period last year option */
 "jetpackStats.datePicker.lastYear" = "Année dernière";
 
+/* Menu item for more date period options */
+"jetpackStats.datePicker.more" = "Plus…";
+
 /* Compare with preceding period option */
 "jetpackStats.datePicker.precedingPeriod" = "Période précédente";
 
@@ -8894,6 +9184,12 @@ Example: Reply to Pamela Nguyen */
 
 /* To date label */
 "jetpackStats.datePicker.to" = "À";
+
+/* Message explaining how to use the date range control */
+"jetpackStats.dateRangeTip.message" = "Affichez les derniers jours, semaines, mois ou années, ou sélectionnez des plages de dates personnalisées.";
+
+/* Title for stats date range control tip */
+"jetpackStats.dateRangeTip.title" = "Naviguez dans le temps";
 
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Sous-liens";
@@ -9096,6 +9392,12 @@ Example: Reply to Pamela Nguyen */
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "Vous n’avez pas le droit de voir ce blog privé.";
 
+/* Default empty state message format when there are no terms. %1$@ is the taxonomy name. */
+"localizedLabels.defaultNoTerms.format" = "Pas de %1$@";
+
+/* Default search placeholder format. %1$@ is the taxonomy name. */
+"localizedLabels.defaultSearch.format" = "Rechercher %1$@";
+
 /* Button to dismiss the re-authentication view */
 "login.appPasswordReAuth.cancelButton" = "Annuler";
 
@@ -9228,17 +9530,14 @@ Example: Reply to Pamela Nguyen */
 /* Message about buying storage add-on */
 "mediaLibrary.storageDetails.buyStorage.message" = "Acheter un module de stockage";
 
-/* Message shown when all media items are attached */
-"mediaLibrary.storageDetails.cleanup.allAttached" = "Tous les éléments de la médiathèque sont attachés.";
+/* Label for other/unknown media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.other" = "Autre";
 
-/* Message shown while loading unattached media count */
-"mediaLibrary.storageDetails.cleanup.loading" = "Découvrir s’il y a des éléments multimédias non attachés…";
+/* Label for PowerPoint/presentation media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.powerpoint" = "Présentations";
 
-/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
-"mediaLibrary.storageDetails.cleanup.message" = "%1$d élément non attaché. Supprimez-les pour libérer de l’espace.";
-
-/* Title for cleanup section */
-"mediaLibrary.storageDetails.cleanup.title" = "Supprimer les éléments inutilisés";
+/* Label for video media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.video" = "Vidéos";
 
 /* Success message shown after upgrading plan */
 "mediaLibrary.storageDetails.purchase.plan.success" = "Le plan de votre site a été mis à niveau !";
@@ -9621,6 +9920,12 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Mes pages";
 
+/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
+"parentCategory.noCategory" = "Pas de catégorie";
+
+/* Title for selecting parent category of a category */
+"parentCategory.title" = "Catégorie parente";
+
 /* Title for the parent page picker screen */
 "parentPagePicker.title" = "Page parente";
 
@@ -9779,6 +10084,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the post author selection screen */
 "postAuthorPicker.title" = "Auteur";
+
+/* Title for selecting categories for a post or a page */
+"postCategories.title" = "Catégories";
+
+/* Toggle label for allowing comments on post */
+"postDiscussion.allowComments.label" = "Autoriser les commentaires";
+
+/* Toggle label for allowing pings/trackbacks on post */
+"postDiscussion.allowPings.label" = "Autoriser les pings";
+
+/* Footer text when comments are disabled */
+"postDiscussion.comments.disabled.footer" = "Les visiteurs ne peuvent pas ajouter de commentaires ou de réponses. Les commentaires existants restent visibles.";
+
+/* Footer text when comments are enabled */
+"postDiscussion.comments.enabled.footer" = "Les visiteurs peuvent ajouter des commentaires ou des réponses.";
+
+/* Link text for learning more about pingbacks and trackbacks */
+"postDiscussion.pingbacks.learnMore.text" = "En savoir plus sur les pings et les rétroliens";
+
+/* Navigation title for post discussion settings */
+"postDiscussion.title" = "Commentaires";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Abandonner les modifications";
@@ -10011,6 +10337,9 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Sans titre";
 
+/* Section header for Access settings in Post Settings */
+"postSettings.access.header" = "Accès";
+
 /* Label for the author field in Post Settings */
 "postSettings.author.label" = "Auteur";
 
@@ -10029,6 +10358,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "postSettings.discardChanges.title" = "Abandonner les modifications ?";
+
+/* Status text when discussion (comments) is disabled */
+"postSettings.discussion.closed" = "Fermé";
+
+/* Label for the discussion settings field in Post Settings */
+"postSettings.discussion.label" = "Commentaires";
+
+/* Status text when discussion (comments) is enabled */
+"postSettings.discussion.open" = "Ouvert";
+
+/* Label for the checkbox that lets you send a post to newsletter subscribers */
+"postSettings.emailToSubscribers.label" = "E-mail aux abonnés";
 
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d caractères";
@@ -10120,6 +10461,21 @@ Example: Reply to Pamela Nguyen */
 /* Cell title for the Top Level option case */
 "postSettings.parentPage.topLevel" = "Niveau supérieur";
 
+/* Accessibility label for hide password button */
+"postSettings.passwordEntry.hidePassword" = "Masquer le mot de passe";
+
+/* Instructions for password entry */
+"postSettings.passwordEntry.instructions" = "Saisissez un mot de passe pour protéger cette publication. Seuls les utilisateurs avec le mot de passe pourront l’afficher.";
+
+/* Navigation title for password entry screen */
+"postSettings.passwordEntry.navigationTitle" = "Saisir le mot de passe";
+
+/* Placeholder for password field */
+"postSettings.passwordEntry.placeholder" = "Saisir le mot de passe";
+
+/* Accessibility label for show password button */
+"postSettings.passwordEntry.showPassword" = "Afficher le mot de passe";
+
 /* Label for the permalink field in Post Settings */
 "postSettings.permalink.label" = "Permalien";
 
@@ -10138,14 +10494,50 @@ Example: Reply to Pamela Nguyen */
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Tous publics";
 
+/* Description text explaining what the slug editor does */
+"postSettings.slug.customizeDescription" = "Personnalisez la dernière partie du permalien.";
+
 /* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "postSettings.slug.hint" = "Le slug est la version du titre de l’article compatible avec les URL.";
+
+/* Button text to learn more about permalinks */
+"postSettings.slug.learnMore" = "Lire la suite";
+
+/* Notice shown when the post doesn't have a remote and permalink template is missing */
+"postSettings.slug.permalinkDraftNotice" = "Le permalien suggéré apparaîtra lorsque le brouillon sera enregistré sur le serveur";
+
+/* Label for the permalink preview */
+"postSettings.slug.permalinkLabel" = "Permalien";
+
+/* Section title for the permalink preview */
+"postSettings.slug.permalinkSection" = "Permalien";
 
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Saisir un slug";
 
 /* Label for the preview button in Post Settings */
 "postSettings.socialSharing.header" = "Partage sur les réseaux sociaux";
+
+/* Label for the status field in Post Settings */
+"postSettings.status.label" = "État";
+
+/* Navigation title for status picker */
+"postSettings.statusPicker.navigationTitle" = "État et visibilité";
+
+/* Label showing the current password */
+"postSettings.statusPicker.passwordLabel" = "Mot de passe";
+
+/* Toggle label for password protection */
+"postSettings.statusPicker.passwordProtected" = "Protégé par un mot de passe";
+
+/* Subtitle for password protected toggle */
+"postSettings.statusPicker.passwordProtectedSubtitle" = "Uniquement visible par ceux qui connaissent le mot de passe";
+
+/* Toggle label for sticky posts */
+"postSettings.statusPicker.sticky" = "Épinglé";
+
+/* Subtitle for sticky toggle */
+"postSettings.statusPicker.stickySubtitle" = "Épingler cet article en haut du blog";
 
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "Épinglé";
@@ -10165,14 +10557,53 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Statistiques de l’article";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"postTags.addTag" = "Ajouter une étiquette";
+/* Post status title */
+"postStatus.deleted.details" = "Supprimé définitivement";
 
-/* Placeholder text for the tag search field */
-"postTags.searchOrAdd.placeholder" = "Rechercher ou ajouter des étiquettes";
+/* Post status title */
+"postStatus.deleted.title" = "Supprimé";
 
-/* Title for the tags screen */
-"postTags.title" = "Étiquettes";
+/* Post status details */
+"postStatus.draft.details" = "Pas encore prêt à publier du contenu";
+
+/* Post status title */
+"postStatus.draft.title" = "Brouillon";
+
+/* Post status details */
+"postStatus.pending.details" = "En attente de relecture avant publication";
+
+/* Post status title */
+"postStatus.pending.title" = "En attente";
+
+/* Post status title */
+"postStatus.private.title" = "Privé";
+
+/* Post status details */
+"postStatus.published.details" = "Visible pour tout le monde";
+
+/* Post status title */
+"postStatus.published.title" = "Publié";
+
+/* Post status details */
+"postStatus.scheduled.details" = "Publier automatiquement à une date choisie";
+
+/* Post status title */
+"postStatus.scheduled.title" = "Planifié";
+
+/* Post status title */
+"postStatus.trash.details" = "Déplacé vers la corbeille, mais pas encore supprimé";
+
+/* Post status title */
+"postStatus.trash.title" = "Déplacé vers la corbeille";
+
+/* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.addTag" = "Ajouter %1$@";
+
+/* Placeholder text for the taxonomy search field. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.searchOrAdd.placeholder" = "Rechercher ou ajouter %1$@";
+
+/* Message shown when no taxonomy terms are selected. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.selectionEmpty" = "Aucun(e) %1$@ sélectionné(e)";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Annuler";
@@ -10248,9 +10679,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Catégories";
-
-/* Voiceover accessibility label informing the user that this button dismiss the current view */
-"prepublishing.close" = "Fermer";
 
 /* Button to confirm discarding changes */
 "prepublishing.discardChanges.button" = "Abandonner les modifications";
@@ -10336,9 +10764,11 @@ Example: 27 social shares remaining in the next 30 days */
 /* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
 "prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Attention";
 
-/* The label displayed for a table row that displays the sharing message for the post.
-Tapping on this row allows the user to edit the sharing message. */
+/* Table section title */
 "prepublishing.socialAccounts.message.label" = "Message";
+
+/* Placeholder text for the message field in Social Sharing */
+"prepublishing.socialAccounts.messagePlaceholder" = "Rédiger un bref message à partager sur les réseaux sociaux en même temps que l’article";
 
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "Réseaux sociaux";
@@ -11276,6 +11706,15 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "Sélectionner un domaine";
 
+/* Default text for adding a new item when no label is provided */
+"siteCustomTaxonomies.defaultAddNew" = "Ajouter";
+
+/* Description for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.description" = "Les taxonomies vous aident à organiser votre contenu au-delà des catégories et étiquettes standard.";
+
+/* Title for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.title" = "Aucune taxonomie personnalisée";
+
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "siteMedia.accessibilityLabelAudio" = "Audio, %@";
 
@@ -11294,8 +11733,71 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Sélectionnez un média.";
 
+/* Label for the alt for a media asset (image) */
+"siteMedia.details.altText" = "Texte alternatif";
+
+/* Verb. Button title. Tapping cancels an action. */
+"siteMedia.details.cancel" = "Annuler";
+
+/* Noun. Label for the caption for a media asset (image / video) */
+"siteMedia.details.caption" = "Légende";
+
+/* Title for button that permanently deletes a media item (photo / video) */
+"siteMedia.details.delete" = "Supprimer";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"siteMedia.details.deleteConfirmation" = "Voulez-vous vraiment supprimer définitivement cet élément ?";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"siteMedia.details.deleted" = "Supprimé !";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"siteMedia.details.deleting" = "Suppression…";
+
+/* Label for the file name for a media asset (image / video) */
+"siteMedia.details.fileName" = "Nom du fichier";
+
+/* Label for the file size for a media asset (image / video) */
+"siteMedia.details.fileSize" = "Taille du fichier";
+
+/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
+"siteMedia.details.fileType" = "Type de fichier";
+
+/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
+"siteMedia.details.mediaDeleted" = "Cet élément multimédia a été supprimé.";
+
+/* Noun. Label for the title of a media asset (image / video) */
+"siteMedia.details.title" = "Titre";
+
+/* Accessibility label for trash buttons in nav bars */
+"siteMedia.details.trash" = "Corbeille";
+
+/* Text displayed in HUD if there was an error attempting to delete a media item. */
+"siteMedia.details.unableToDeleteMedia" = "Impossible de supprimer l’élément multimédia.";
+
+/* Error shown when the app fails to load a video from the user's media library. */
+"siteMedia.details.unableToLoadVideo" = "Impossible de charger la vidéo.";
+
+/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
+"siteMedia.details.unableToSaveMedia" = "Impossible d’enregistrer l’élément multimédia.";
+
+/* Label for the date a media asset (image / video) was uploaded */
+"siteMedia.details.uploaded" = "Chargé";
+
 /* Title for the URL field */
 "siteMedia.details.url" = "URL";
+
+/* Hint for image alt on image settings. */
+"siteMedia.hints.imageAlt" = "Image alternative";
+
+/* Hint for image caption on image settings. */
+"siteMedia.hints.imageCaption" = "Légende de l’image";
+
+/* Hint for image description on image settings. */
+"siteMedia.hints.imageDescription" = "Description de l’image";
+
+/* Hint for image title on image settings. */
+"siteMedia.hints.imageTitle" = "Titre de l’image";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Appuyer pour voir le média en plein écran";
@@ -11384,6 +11886,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Confidentialité";
+
+/* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
+"siteTaxonomy.addNew.format" = "Ajouter %1$@";
 
 /* Hint for users when hidden privacy setting is set */
 "siteVisibility.hidden.hint" = "Votre site est masqué derrière une mention « Bientôt disponible » jusqu’à ce qu’il soit prêt.";
@@ -11952,7 +12457,8 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Assistance Lecteur pour iOS";
 
-/* Description for empty state when there are no tags */
+/* Description for empty state when there are no tags
+   Description for empty state when there are no tags. %1$@ is the taxonomy name. */
 "tags.empty.description" = "Les étiquettes aident à organiser votre contenu et permettent aux lecteurs de trouver plus facilement des articles similaires.";
 
 /* Title for empty state when there are no tags */
@@ -12006,6 +12512,12 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Tip for site picker */
 "tips.sitePickerTip.title" = "Vos sites";
 
+/* Message explaining how to use the date range control */
+"tips.statsDateRange.message" = "Utilisez le calendrier pour sélectionner des jours, des semaines, des mois ou des années, ou choisissez des plages de dates personnalisées pour afficher vos statistiques.";
+
+/* Title for stats date range control tip */
+"tips.statsDateRange.title" = "Naviguez dans le temps";
+
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "meilleurs conseils";
 
@@ -12023,9 +12535,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "non lues";
-
-/* Site's Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.subscriber" = "Abonné du site";
 
 /* Sites's User Profile. Displayed when the name is empty! */
 "user.details.title.user" = "Utilisateur du site";
@@ -12111,9 +12620,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The heading at the top of the user list */
 "userlist.title" = "Utilisateurs";
-
-/* Site Subscribers */
-"users.list.title.subscribers" = "Abonnés";
 
 /* Screen title */
 "users.title" = "Utilisateurs";

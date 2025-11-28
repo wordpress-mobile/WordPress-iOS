@@ -8,12 +8,31 @@ import UIKit
 /// Path: /me/account/:username
 ///
 protocol Route {
-    var path: String { get }
+    var path: RoutePath { get }
+    var alternatePaths: [RoutePath] { get }
     var section: DeepLinkSection? { get }
     var source: DeepLinkSource { get }
     var action: NavigationAction { get }
     var shouldTrack: Bool { get }
     var jetpackPowered: Bool { get }
+}
+
+extension Route {
+    var alternatePaths: [RoutePath] {
+        []
+    }
+
+    var allPaths: [RoutePath] {
+        [path] + alternatePaths
+    }
+}
+
+typealias RoutePath = String
+
+extension RoutePath {
+    var components: [String] {
+        return (self as NSString).pathComponents
+    }
 }
 
 extension Route {
@@ -75,11 +94,6 @@ struct FailureNavigationAction: NavigationAction {
 // MARK: - Route helper methods
 
 extension Route {
-    /// Returns the path components of a route's path.
-    var components: [String] {
-        return (path as NSString).pathComponents
-    }
-
     func isEqual(to route: Route) -> Bool {
         return path == route.path
     }
