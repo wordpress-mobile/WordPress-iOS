@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: nb_NO */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -407,8 +407,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Nesten fremme! Skriv inn verifiseringskoden fra autentiseringsappen din.";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "Alt-tekst";
 
 /* String displayed before offering alternative login methods */
@@ -499,9 +498,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Er du sikker på at du vil koble fra Jetpack fra denne siden?";
-
-/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "Er du sikker på at du vil slette dette objektet permanent?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Er du sikker på at du vil fjerne %1$@ fra %2$@?";
@@ -744,7 +740,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Avbryt";
@@ -766,8 +761,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Avbryter...";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "Bildetekst";
 
 /* Alert title. */
@@ -1183,8 +1177,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Standard";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "Standardkategori";
 
 /* Label for selecting the default post format
@@ -1193,9 +1186,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Standard for nye innlegg";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "Slett";
 
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Slett meny";
@@ -1211,20 +1201,13 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "Feil under sletting av siden";
 
-/* Text displayed in HUD after successfully deleting a media item */
-"Deleted!" = "Slettet!";
-
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "Sletter side...";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Sletter...";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Nekte";
 
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "Beskrivelse";
 
 /* Shortened version of the main title to be used in back navigation. */
@@ -1236,9 +1219,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Details button that appears in the Theme Browser Header
    Theme Details action title */
 "Details" = "Detaljer";
-
-/* Label for the dimensions in pixels for a media asset (image / video) */
-"Dimensions" = "Dimensjoner";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "Slå av";
@@ -1410,7 +1390,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Edit video" = "Rediger video";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "Redigerer";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
@@ -1638,11 +1618,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Period Stats 'File Downloads' header */
 "File Downloads" = "Filnedlastinger";
 
-/* Label for the file name for a media asset (image / video) */
+/* No comment provided by engineer. */
 "File name" = "Filnavn";
-
-/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
-"File type" = "Filtype";
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Finn ut mer";
@@ -1836,9 +1813,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint for image caption on image settings. */
 "Image Caption" = "Biltetekst";
 
-/* Hint for image description on image settings. */
-"Image Description" = "Bildebeskrivelse";
-
 /* Hint for image link on image settings. */
 "Image Link" = "Bildelenke";
 
@@ -1847,9 +1821,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "Bildetekst. %s";
-
-/* Hint for image title on image settings. */
-"Image title" = "Bildetittel";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Forklar hva siden er om med noen få ord.";
@@ -2445,9 +2416,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "Ingen brukerkonti funnet";
 
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "Ingen kategori";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Ingen forbindelse";
 
@@ -2777,9 +2745,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Settings: Comments Paging preferences */
 "Paging" = "Sider";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "Foreldrekategori";
-
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Login dialog password placeholder
@@ -2952,9 +2917,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Publiser";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "Innleggskategorier";
 
 /* Name of the button to open the post settings */
 "Post Settings" = "Innleggsinnstillinger";
@@ -3840,6 +3802,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Tagline" = "Slagord";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "Stikkord";
 
@@ -4081,9 +4044,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Denne informasjonen hjelper oss med å forbedre produktere våre, gjøre markedsføring mer relevant, personliggjøre din WordPress.com-opplevelse og mer, som detaljert i våre retningslinjer for personvern.";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "Dette medieobjektet har blitt slettet.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Dette vil inkluderes i tweeter når folk deler ved hjelp av Twitter-knappen.";
@@ -4116,7 +4076,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "Tittel";
@@ -4189,8 +4148,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Transform block…" = "Omform blokk...";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "Slett";
 
@@ -4254,9 +4212,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Synkronosering feilet";
 
-/* Text displayed in HUD if there was an error attempting to delete a media item. */
-"Unable to delete media item." = "Kunne ikke slette medieobjekt.";
-
 /* No comment provided by engineer. */
 "Unable to embed media" = "Kunne ikke bygge inn media";
 
@@ -4275,14 +4230,8 @@ translators: %s: Block name e.g. \"Image block\" */
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "Kunne ikke laste inn dette innholdet akkurat nå.";
 
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "Kunne ikke laste inn video.";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Kunne ikke spille av video";
-
-/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
-"Unable to save media item." = "Kunne ikke lagre medieobjekt.";
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Kunne ikke oppdatere abonnementspriser. Det er et problem med denne bloggen.";
@@ -4399,9 +4348,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Opplasting feilet";
-
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "Lastet opp";
 
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "Lastet opp 1 kladd, %ld filer";
@@ -4672,7 +4618,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Verdenskart som viser visninger etter land.";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Vil du fortsatt fjerne denne personen?";
 
 /* Button title. Opens the editor to write a new post.

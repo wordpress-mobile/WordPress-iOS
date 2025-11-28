@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2025-10-07 13:54:10+0000 */
+/* Translation-Revision-Date: 2025-11-25 20:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: tr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -338,6 +338,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Link to About screen for Jetpack for iOS */
 "About Jetpack for iOS" = "İOS için Jetpack hakkında";
 
+/* Link to About screen for Jetpack for iOS */
+"About Reader for iOS" = "iOS için okuyucu hakkında";
+
 /* Link to About screen for WordPress for iOS */
 "About WordPress" = "WordPress hakkında";
 
@@ -578,8 +581,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Neredeyse bitiyor! Lütfen doğrulama uygulamanızdan alacağınız kodu yazın.";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "Alternatif metin";
 
 /* No comment provided by engineer. */
@@ -722,9 +724,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Jetpack ile site bağlantısını kesmek istediğinize emin misiniz?";
-
-/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "Bu ögeyi kalıcı olarak silmek istediğinize emin misiniz?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "%2$@ sitesinden %1$@ eklentisini kaldırmak istediğinize emin misiniz?";
@@ -1079,7 +1078,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "İptal";
@@ -1107,8 +1105,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Karar veremiyor musunuz? Temayı istediğiniz zaman değiştirebilirsiniz.";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "Alt yazı";
 
 /* Alert title. */
@@ -1774,8 +1771,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Varsayılan";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "Varsayılan kategori";
 
 /* Label for selecting the default post format
@@ -1784,9 +1780,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Yeni yazı varsayılanları";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "Sil";
 
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Menüyü sil";
@@ -1805,14 +1798,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Menüyü sil";
 
-/* Text displayed in HUD after successfully deleting a media item */
-"Deleted!" = "Silindi!";
-
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "Site siliniyor…";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Siliniyor...";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Reddet";
@@ -1820,8 +1807,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Describe the purpose of the image. Leave empty if decorative." = "Görselin amacını açıklayın. Süs amaçlıysa boş bırakın.";
 
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "Açıklama";
 
 /* Shortened version of the main title to be used in back navigation. */
@@ -1839,9 +1825,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
 "Didn't mean to create a new account? Go back to re-enter your email address." = "Yeni bir hesap açmak istemediniz mi? E-posta adresinizi yeniden yazmak için geri dönün.";
-
-/* Label for the dimensions in pixels for a media asset (image / video) */
-"Dimensions" = "Boyutlar";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "Etkisizleştir";
@@ -2118,7 +2101,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Bu GIF düzenlendiğinde canlandırma kaldırılır.";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "Düzenleyici";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
@@ -2460,11 +2443,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "File block settings" = "Dosya blok ayarları";
 
-/* Label for the file name for a media asset (image / video) */
+/* No comment provided by engineer. */
 "File name" = "Dosya adı";
-
-/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
-"File type" = "Dosya türü";
 
 /* No comment provided by engineer. */
 "File type not supported as a media file." = "Dosya türü bir ortam dosyası olarak desteklenmiyor.";
@@ -2778,6 +2758,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Fotoğrafçı Cameron Karsten'in çalışmalarından çok ilham alıyorum. Bu teknikleri bir sonraki adımda deneyeceğim";
 
+/* Text on the support form to refer to what area the user has problem with. */
+"I need help with" = "Şu konuda yardıma ihtiyacım var";
+
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP adresi";
 
@@ -2823,9 +2806,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint for image caption on image settings. */
 "Image Caption" = "Görsel alt yazısı";
 
-/* Hint for image description on image settings. */
-"Image Description" = "Görsel açıklaması";
-
 /* Hint for image link on image settings. */
 "Image Link" = "Görsel bağlantısı";
 
@@ -2837,9 +2817,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Image file not found." = "Görsel dosyası bulunamadı.";
-
-/* Hint for image title on image settings. */
-"Image title" = "Görsel başlığı";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Bir kaç sözcük ile bu sitenin ne ile ilgili olduğunu anlatın.";
@@ -3202,6 +3179,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Bittiğinde bana haber ver!";
 
+/* Message info on the support screen. */
+"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Site adresinizi (URL) bize bildirin ve sorunla ilgili bize mümkün olduğunca çok şey anlatın, yakında sizinle iletişime geçeceğiz.";
+
+/* Title to let the user know what do we want on the support screen. */
+"Let’s get this sorted" = "Bunu sıralayalım";
+
 /* Lifestyle site intent topic */
 "Lifestyle" = "Yaşam tarzı";
 
@@ -3402,6 +3385,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Ana gezinme";
+
+/* Explanation for the option to enable theme styles */
+"Make the block editor look like your theme." = "Blok düzenleyiciyi temanız gibi gösterin.";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Sayfalarınıza görsel, gif, video ve gömülü ortam ekleyerek içeriğinizin öne çıkmasını sağlayın.";
@@ -3744,9 +3730,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "Herhangi bir hesap bulunamadı";
-
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "Kategori yok";
 
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Bağlantı yok";
@@ -4188,9 +4171,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Settings: Comments Paging preferences */
 "Paging" = "Sayfalama";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "Üst kategori";
-
 /* Parenting site intent topic */
 "Parenting" = "Ebeveynlik";
 
@@ -4408,9 +4388,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Yazı";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "Yazı kategorileri";
 
 /* Name of the button to open the post settings */
 "Post Settings" = "Yazı ayarları";
@@ -4719,9 +4696,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Siteye yüklenmeden önce fotoğraflardaki konum üst verilerini kaldırır.";
-
-/* First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Takipçileri takipten çıkarırsanız sitenizden güncelleme alamazlar. İsterlerse sitenizi yine ziyaret edip takip edebilirler.";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Geçerli bloğu değiştir";
@@ -5558,6 +5532,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "Slogan";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "Etiketler";
 
@@ -5654,6 +5629,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "Gravatar sitesini bir dış tarayıcı ile açmak için dokunun";
+
+/* Label for viewing the custom taxonomies */
+"Taxonomies" = "Sınıflandırmalar";
 
 /* Technology site intent topic */
 "Technology" = "Teknoloji";
@@ -5943,9 +5921,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when the user scanned an expired log in code. */
 "This log in code has expired. Please tap the Scan Again button to rescan the code." = "Bu oturum açma kodunun süresi dolmulş. Lütfen Yeniden tara düğmesine tıklayarak kodu yeniden taratın.";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "Bu ortam ögesi silindi.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Çözümlenmemiş bir geri ödemesi varsa bu kullanıcı hesabı kapatılamaz.";
 
@@ -6014,7 +5989,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "Başlık";
@@ -6108,8 +6082,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Bloğu dönüştür…";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "Çöp";
 
@@ -6206,9 +6179,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Yeni davet bağlantıları oluşturulamadı.";
 
-/* Text displayed in HUD if there was an error attempting to delete a media item. */
-"Unable to delete media item." = "Ortam ögesi silinemedi.";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to disable invite links." = "Davet bağlantıları etkisizleştirilemedi.";
 
@@ -6239,9 +6209,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "Bu içerik şu an yüklenemiyor.";
 
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "Video yüklenemedi.";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Video oynatılamıyor";
 
@@ -6250,9 +6217,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Siteniz geri yüklenemedi";
-
-/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
-"Unable to save media item." = "Ortam ögesi kaydedilemedi.";
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Bağlantı paylaşılamadı";
@@ -6409,9 +6373,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Yüklenemedi";
 
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "Yüklendi";
-
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "1 taslak yazı ve %ld dosya yüklendi";
 
@@ -6453,6 +6414,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Oturum açmak için parolayı kullanın";
+
+/* Option to enable theme styles in the block editor */
+"Use theme styles" = "Tema stillerini kullan";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -6903,7 +6867,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Ülkelere göre görünümlerini gösteren Dünya haritası.";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Bu kişiyi hala kaldırmak istiyor musunuz?";
 
 /* Button title. Opens the editor to write a new post.
@@ -7374,14 +7338,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Uygulama şifreleri, kullanıcı tarafından barındırılan sitelerinizi bağlamanız ve %@ gibi özellikler için destek sağlamanın daha güvenli bir yoludur.";
 
+/* Feature name for managing application passwords in the app */
+"applicationPasswordRequired.feature.applicationPasswords" = "Uygulama Şifreleri Yönetimi";
+
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Blok Düzenleyici";
+
+/* Feature name for managing terms and taxonomies in the app */
+"applicationPasswordRequired.feature.customTaxonomies" = "Sınıflandırma Yönetimi";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Eklenti Yönetimi";
 
-/* Feature name for managing application passwords in the app
-   Feature name for managing users in the app */
+/* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "Kullanıcı Yönetimi";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -7611,6 +7580,285 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Taslağı Kaydet";
 
+/* Button to add more screenshots */
+"com.jetpack.support.addMoreScreenshots" = "Daha Fazla Ekran Görüntüsü Ekle";
+
+/* Button to add screenshots */
+"com.jetpack.support.addScreenshots" = "Ekran Görüntüleri Ekle";
+
+/* Header for application logs section */
+"com.jetpack.support.applicationLogs" = "Uygulama Günlükleri";
+
+/* Description explaining why including logs is helpful */
+"com.jetpack.support.applicationLogsDescription" = "Günlükleri dahil etmek, ekibimizin sorunları araştırmasına yardımcı olabilir. Günlükler son uygulama etkinliğini içerebilir.";
+
+/* Navigation title for application logs screen */
+"com.jetpack.support.applicationLogsTitle" = "Uygulama Günlükleri";
+
+/* Format string for attachment identifier */
+"com.jetpack.support.attachment" = "Ek %@";
+
+/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
+"com.jetpack.support.attachmentLimit" = "Ek Sınırı: %1$@\/%2$@";
+
+/* Bot greeting message. %1$@ is the user's name */
+"com.jetpack.support.botGreeting" = "Selam %1$@!";
+
+/* Bot introduction message explaining its purpose */
+"com.jetpack.support.botIntroduction" = "Ben sizin kişisel yapay zeka asistanınızım. Siteniz veya hesabınız hakkındaki tüm sorularınızda yardımcı olabilirim.";
+
+/* Format string for cache file count and size. %1$d is the number of files, %2$@ is the formatted size. The system will pluralize 'files' based on the number – please specify it as the largest plural value */
+"com.jetpack.support.cacheFiles" = "%1$d önbelleğe alınan dosya (%2$@)";
+
+/* Message shown when cache has no files */
+"com.jetpack.support.cacheIsEmpty" = "Önbellek boş";
+
+/* Button to cancel current action */
+"com.jetpack.support.cancel" = "İptal Et";
+
+/* Warning message that deleted logs cannot be recovered */
+"com.jetpack.support.cannotRecoverLogs" = "Bunları geri getiremeyeceksiniz.";
+
+/* Button to clear all activity logs */
+"com.jetpack.support.clearAllActivityLogs" = "Tüm Etkinlik Günlüklerini Temizle";
+
+/* Button to clear disk cache */
+"com.jetpack.support.clearDiskCache" = "Disk Önbelleğini Temizle";
+
+/* Description explaining the purpose of clearing disk cache */
+"com.jetpack.support.clearDiskCacheDescription" = "Yer açmak veya sorunları çözmek için geçici dosyaları kaldırın.";
+
+/* Progress text while clearing cache */
+"com.jetpack.support.clearing" = "Temizleniyor…";
+
+/* Message shown when cache clearing is complete */
+"com.jetpack.support.complete" = "Tamamla";
+
+/* Confirmation message when canceling a draft */
+"com.jetpack.support.confirmCancelMessage" = "Bu mesajı iptal etmek istediğinizden emin misiniz? Girdiğiniz tüm verileri kaybedeceksiniz";
+
+/* Title for alert confirming cancellation */
+"com.jetpack.support.confirmCancellation" = "İptali Onayla";
+
+/* Confirmation dialog title when deleting all logs */
+"com.jetpack.support.confirmDeleteAllLogs" = "Tüm günlükleri silmek istediğinizden emin misiniz?";
+
+/* Section title for contact information */
+"com.jetpack.support.contactInformation" = "İletişim Bilgisi";
+
+/* Button to continue editing a message */
+"com.jetpack.support.continueWriting" = "Yazmaya Devam Edin";
+
+/* Message shown at end of closed support conversation */
+"com.jetpack.support.conversationEnded" = "Sohbetin sonu. Başka yanıt mümkün değil.";
+
+/* Navigation title for bot conversations list */
+"com.jetpack.support.conversations" = "Sohbetler";
+
+/* Button to delete all log files */
+"com.jetpack.support.deleteAllLogs" = "Tüm Günlükleri Sil";
+
+/* Description text for diagnostics screen */
+"com.jetpack.support.diagnosticsDescription" = "Yaygın bakım ve sorun giderme işlemlerini yürütün.";
+
+/* Navigation title for diagnostics screen */
+"com.jetpack.support.diagnosticsTitle" = "Tanı";
+
+/* Button to discard changes in a draft message */
+"com.jetpack.support.discardChanges" = "Değişiklikleri İptal Et";
+
+/* Notice explaining where support will send email responses */
+"com.jetpack.support.emailNotice" = "Size bu adresten e-posta göndereceğiz.";
+
+/* Error title when logs fail to load */
+"com.jetpack.support.errorLoadingLogs" = "Günlükler yüklenirken hata oluştu";
+
+/* Error message when support conversations fail to load */
+"com.jetpack.support.errorLoadingSupportConversations" = "Destek sohbetleri yüklenirken hata oluştu";
+
+/* Title for error alerts */
+"com.jetpack.support.errorTitle" = "Hata";
+
+/* Option to export log as a file */
+"com.jetpack.support.exportAsFile" = "Dosya olarak dışa aktar";
+
+/* Button to dismiss alerts. */
+"com.jetpack.support.gotIt" = "Anladım";
+
+/* Text on the support form to refer to what area the user has problem with. */
+"com.jetpack.support.iNeedHelp" = "Şu konuda yardıma ihtiyacım var";
+
+/* Toggle label to include application logs in the support request */
+"com.jetpack.support.includeApplicationLogs" = "Uygulama günlüklerini dahil et";
+
+/* Section title for issue details */
+"com.jetpack.support.issueDetails" = "Sorun Ayrıntıları";
+
+/* Format string for when conversation was last updated */
+"com.jetpack.support.lastUpdated" = "Son güncellenme: %@";
+
+/* Progress message while loading conversation messages */
+"com.jetpack.support.loadingBotConversationMessages" = "Mesajlar Yükleniyor";
+
+/* Progress message while loading bot conversations */
+"com.jetpack.support.loadingBotConversations" = "Robot Sohbetleri Yükleniyor";
+
+/* Progress text while loading support conversations */
+"com.jetpack.support.loadingConversations" = "Sohbetler Yükleniyor";
+
+/* Progress message while loading disk usage information */
+"com.jetpack.support.loadingDiskUsage" = "Disk Kullanımı Yükleniyor";
+
+/* Progress message while loading an image attachment */
+"com.jetpack.support.loadingImage" = "Görsel Yükleniyor";
+
+/* Progress message shown in overlay while refreshing content */
+"com.jetpack.support.loadingLatestContent" = "En son içerik yükleniyor";
+
+/* Progress message while loading application log content */
+"com.jetpack.support.loadingLogContent" = "Günlük içeriği yükleniyor...";
+
+/* Progress message while loading log files */
+"com.jetpack.support.loadingLogs" = "Günlükler yükleniyor...";
+
+/* Progress text while loading conversation messages */
+"com.jetpack.support.loadingMessages" = "Mesajlar Yükleniyor";
+
+/* Progress message while loading a video attachment */
+"com.jetpack.support.loadingVideo" = "Video Yükleniyor";
+
+/* Section header for log files sorted by date */
+"com.jetpack.support.logFilesByDate" = "Oluşturma tarihine göre günlük dosyaları";
+
+/* Text indicating which log files will be included in the support request */
+"com.jetpack.support.logFilesToUpload" = "Şu günlük dosyaları karşıya yüklenecek:";
+
+/* Footer text explaining log retention policy */
+"com.jetpack.support.logRetentionNotice" = "Yedi güne kadar olan günlükler kaydedilir.";
+
+/* Section header for message text input */
+"com.jetpack.support.message" = "Mesaj";
+
+/* Success message when reply is sent successfully */
+"com.jetpack.support.messageSent" = "Mesaj Gönderildi";
+
+/* Format string for number of messages in conversation */
+"com.jetpack.support.messagesCount" = "%d Mesaj";
+
+/* The title of a new bot chat in the support area of the app */
+"com.jetpack.support.new-bot-chat" = "Yeni Robot Sohbeti";
+
+/* Option to create a new support ticket */
+"com.jetpack.support.newSupportTicket" = "Yeni Destek Bileti";
+
+/* Label shown when there are no bot conversations */
+"com.jetpack.support.noConversations" = "Sohbet Yok";
+
+/* Description shown when no log files are available */
+"com.jetpack.support.noLogsAvailable" = "Kullanılabilir etkinlik günlüğü yok";
+
+/* Label shown when no log files are available */
+"com.jetpack.support.noLogsFound" = "Günlük Bulunamadı";
+
+/* Button to open a support ticket */
+"com.jetpack.support.openSupportTicket" = "Bir Destek Bileti Aç";
+
+/* Text indicating a field is optional */
+"com.jetpack.support.optional" = "(İsteğe bağlı)";
+
+/* Navigation title for replying to a support conversation */
+"com.jetpack.support.reply" = "Yanıtla";
+
+/* Description for saving log as a file */
+"com.jetpack.support.saveAsFile" = "Paylaşılacak veya depolanacak bir dosya olarak kaydet";
+
+/* Label for screenshots section */
+"com.jetpack.support.screenshots" = "Ekran görüntüleri";
+
+/* Description for screenshots section */
+"com.jetpack.support.screenshotsDescription" = "Ekran görüntüsü eklemek, sorununuzu daha hızlı anlamamıza ve çözmemize yardımcı olabilir.";
+
+/* Button to send a message or reply */
+"com.jetpack.support.send" = "Gönder";
+
+/* Description for sending logs to support */
+"com.jetpack.support.sendLogsToSupport" = "Kayıtları doğrudan destek ekibine gönderin";
+
+/* Progress text while sending a message */
+"com.jetpack.support.sending" = "Gönderiliyor";
+
+/* Progress message shown while sending a message */
+"com.jetpack.support.sendingMessage" = "Mesaj Gönderiliyor";
+
+/* Button to share content */
+"com.jetpack.support.share" = "Paylaş";
+
+/* Navigation title for sharing activity log */
+"com.jetpack.support.shareActivityLog" = "Etkinlik Günlüğünü Paylaş";
+
+/* Message shown when sharing log with support */
+"com.jetpack.support.sharingWithSupport" = "Destekle paylaşılıyor!";
+
+/* Site Address title on the support form */
+"com.jetpack.support.siteAddress" = "Site Adresi";
+
+/* Description encouraging user to start a new conversation */
+"com.jetpack.support.startNewConversation" = "Yukarıdaki düğmeyi kullanarak yeni bir sohbet başlatın";
+
+/* Subject title on the support form */
+"com.jetpack.support.subject" = "Konu";
+
+/* Placeholder for subject field */
+"com.jetpack.support.subjectPlaceholder" = "Sorununuzun kısa bir özeti";
+
+/* Button title to submit a support request. */
+"com.jetpack.support.submitRequest" = "Destek Talebi Gönder";
+
+/* Navigation title for the support conversations list */
+"com.jetpack.support.supportConversations" = "Destek Sohbetleri";
+
+/* Title for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSent" = "Talep gönderildi!";
+
+/* Message for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSentMessage" = "Destek talebiniz başarıyla gönderildi. Mümkün olan en kısa sürede e-posta yoluyla yanıt vereceğiz.";
+
+/* Progress message shown while bot is thinking */
+"com.jetpack.support.thinking" = "Düşünüyor...";
+
+/* Title of the view for contacting support. */
+"com.jetpack.support.title" = "Desteğe Başvurun";
+
+/* Button to retry a failed operation */
+"com.jetpack.support.tryAgain" = "Yeniden Dene";
+
+/* Error title when log deletion fails */
+"com.jetpack.support.unableToDeleteLogs" = "Günlükler silinemedi";
+
+/* Error message when conversation cannot be displayed */
+"com.jetpack.support.unableToDisplayConversation" = "Sohbet görüntülenemiyor";
+
+/* Error title when video cannot be loaded or played */
+"com.jetpack.support.unableToDisplayVideo" = "Video görüntülenemiyor";
+
+/* Error message when application logs cannot be loaded */
+"com.jetpack.support.unableToLoadApplicationLogs" = "Uygulama günlükleri yüklenemiyor";
+
+/* Error title when bot conversations fail to load */
+"com.jetpack.support.unableToLoadConversations" = "Sohbetler yüklenemiyor";
+
+/* Error title when messages fail to load */
+"com.jetpack.support.unableToLoadMessages" = "Mesajlar Yüklenemiyor";
+
+/* Error title when message sending fails */
+"com.jetpack.support.unableToSendMessage" = "Mesaj gönderilemiyor";
+
+/* Button to view an attachment */
+"com.jetpack.support.view" = "Görüntüle";
+
+/* Progress message shown during cache clearing operation */
+"com.jetpack.support.working" = "Çalışılıyor";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "yorum";
 
@@ -7703,6 +7951,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Create Sheet button title */
 "createSheet.post" = "Gönderi";
+
+/* Create Sheet button title */
+"createSheet.postFromAudio" = "Sesten Gönderi Oluştur";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Kendi özelleştirilmiş panonuzu oluşturun ve görmek istediğiniz raporları seçin. Sizi en çok ilgilendiren verilere odaklanın.";
@@ -7873,6 +8124,9 @@ Example: Reply to Pamela Nguyen */
 /* Weekly Roundup debug menu item */
 "debugMenu.weeklyRoundup" = "Haftalık özet";
 
+/* Title for selecting a default category for a post */
+"defaultCategory.title" = "Varsayılan kategori";
+
 /* Error tilte */
 "discussionSettings.saveErrorTitle" = "Ayarlar kaydedilemedi";
 
@@ -8012,10 +8266,10 @@ Example: Reply to Pamela Nguyen */
 "double-tap to change unit" = "birimi değiştirmek için çift dokunun";
 
 /* Message for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.message" = "Bu etiketi silmek istediğinizden emin misiniz?";
+"edit.tag.delete.confirmation.message" = "Bunu silmek istediğinizden emin misiniz?";
 
-/* Title for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.title" = "Etiketi Silin";
+/* Title for delete a term confirmation dialog */
+"edit.tag.delete.confirmation.title" = "Sil";
 
 /* Placeholder text for tag description field */
 "edit.tag.description.placeholder" = "Açıklama ekleyin...";
@@ -8030,7 +8284,37 @@ Example: Reply to Pamela Nguyen */
 "edit.tag.section.description" = "Açıklama";
 
 /* Section header for tag name in edit tag view */
-"edit.tag.section.tag" = "Etiket";
+"edit.tag.section.tag" = "Ad";
+
+/* Context menu action to insert a block */
+"editor.blockInserter.insertBlock" = "Blok Ekleyin";
+
+/* Placeholder text for block search field */
+"editor.blockInserter.search" = "Arama";
+
+/* Button title to collapse and show fewer blocks */
+"editor.blockInserter.showLess" = "Daha Az Göster";
+
+/* Button title to expand and show more blocks */
+"editor.blockInserter.showMore" = "Daha Fazla Göster";
+
+/* Error message when media insertion fails */
+"editor.media.failedToInsert" = "Ortam eklenemedi";
+
+/* Category name for section showing all patterns */
+"editor.patterns.all" = "Tümü";
+
+/* Context menu action to insert a pattern */
+"editor.patterns.insertPattern" = "Model Ekle";
+
+/* Title shown when no patterns match the search */
+"editor.patterns.noPatternsFound" = "Model Bulunamadı";
+
+/* Navigation title for patterns view */
+"editor.patterns.title" = "Desenler";
+
+/* Category name for patterns without a category */
+"editor.patterns.uncategorized" = "Sınıflandırılmamış";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "Örnek: 1122334455";
@@ -8585,6 +8869,24 @@ Example: Reply to Pamela Nguyen */
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Blog yazın";
 
+/* Description for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.description" = "Bu gönderiyi herkes görüntüleyebilir";
+
+/* Title for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.title" = "Herkes";
+
+/* Description for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.description" = "Bu gönderiyi yalnızca ücretli aboneler görüntüleyebilir";
+
+/* Title for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.title" = "Ücretli Aboneler";
+
+/* Description for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.description" = "Gönderi, ücretsiz olanlar dahil tüm aboneler tarafından görülebilir";
+
+/* Title for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.title" = "Tüm Aboneler";
+
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "İstatistikler ve Bildirimler'i kullanmak için %@ ile oturum açmanız gerekir.";
 
@@ -8599,6 +8901,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for chart container */
 "jetpackStats.accessibility.chartContainer" = "İstatistik çizelgesi";
+
+/* Chart trend accessibility label. %1$@ is metric name, %2$@ is trend description. */
+"jetpackStats.accessibility.chartTrend" = "%1$@ %2$@";
 
 /* Chart data point accessibility label. %1$@ is metric name, %2$@ is value, %3$@ is date. */
 "jetpackStats.accessibility.chartValue" = "%1$@: %3$@ tarihinde %2$@";
@@ -8919,6 +9224,12 @@ Example: Reply to Pamela Nguyen */
 /* CSV header for title column */
 "jetpackStats.csv.title" = "Başlık";
 
+/* CSV header for type column */
+"jetpackStats.csv.type" = "Tip";
+
+/* CSV header for URL column */
+"jetpackStats.csv.url" = "Web adresi";
+
 /* CSV header for video URL column */
 "jetpackStats.csv.videoURL" = "Video URL'si";
 
@@ -8999,6 +9310,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Must be short! Label for email open rate metric */
 "jetpackStats.postDetails.openRate" = "Açma Oranı";
+
+/* Shows when the post was published. %1$@ is the formatted date. */
+"jetpackStats.postDetails.published" = "Yayınlanma %1$@";
 
 /* Title for recent weeks activity heatmap */
 "jetpackStats.postDetails.recentWeeks" = "Son Haftalar";
@@ -9162,6 +9476,12 @@ Example: Reply to Pamela Nguyen */
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "Bu özel blogu görüntülemek için izniniz yok.";
 
+/* Default empty state message format when there are no terms. %1$@ is the taxonomy name. */
+"localizedLabels.defaultNoTerms.format" = "%1$@ yok";
+
+/* Default search placeholder format. %1$@ is the taxonomy name. */
+"localizedLabels.defaultSearch.format" = "%1$@ Arayın";
+
 /* Button to dismiss the re-authentication view */
 "login.appPasswordReAuth.cancelButton" = "İptal Et";
 
@@ -9297,17 +9617,23 @@ Example: Reply to Pamela Nguyen */
 /* Message about buying storage add-on */
 "mediaLibrary.storageDetails.buyStorage.message" = "Depolama eklentisi satın alın";
 
-/* Message shown when all media items are attached */
-"mediaLibrary.storageDetails.cleanup.allAttached" = "Ortam Kütüphanesindeki tüm öğeler ekli.";
+/* Label for audio media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.audio" = "Ses";
 
-/* Message shown while loading unattached media count */
-"mediaLibrary.storageDetails.cleanup.loading" = "Eklenmemiş ortam öğesi olup olmadığı öğreniliyor...";
+/* Label for document media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.document" = "Belgeler";
 
-/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
-"mediaLibrary.storageDetails.cleanup.message" = "%1$d öğe kaldırıldı Yer açmak için çıkarın.";
+/* Label for image media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.image" = "Görseller";
 
-/* Title for cleanup section */
-"mediaLibrary.storageDetails.cleanup.title" = "Kullanılmayan öğeleri kaldır";
+/* Label for other/unknown media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.other" = "Diğer";
+
+/* Label for PowerPoint/presentation media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.powerpoint" = "Sunumlar";
+
+/* Label for video media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.video" = "Videolar";
 
 /* Success message shown after upgrading plan */
 "mediaLibrary.storageDetails.purchase.plan.success" = "Site paketiniz yükseltildi!";
@@ -9693,6 +10019,12 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Benim sayfalarım";
 
+/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
+"parentCategory.noCategory" = "Kategori yok";
+
+/* Title for selecting parent category of a category */
+"parentCategory.title" = "Üst Kategori";
+
 /* Title for the parent page picker screen */
 "parentPagePicker.title" = "Üst Sayfa";
 
@@ -9851,6 +10183,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the post author selection screen */
 "postAuthorPicker.title" = "Yazar";
+
+/* Title for selecting categories for a post or a page */
+"postCategories.title" = "Kategoriler";
+
+/* Toggle label for allowing comments on post */
+"postDiscussion.allowComments.label" = "Yorumlara İzin Ver";
+
+/* Toggle label for allowing pings/trackbacks on post */
+"postDiscussion.allowPings.label" = "Pingback'lere İzin Ver";
+
+/* Footer text when comments are disabled */
+"postDiscussion.comments.disabled.footer" = "Ziyaretçiler yeni yorum veya cevap ekleyemezler. Mevcut yorumlar görünür kalır.";
+
+/* Footer text when comments are enabled */
+"postDiscussion.comments.enabled.footer" = "Ziyaretçiler yeni yorum ve cevap ekleyebilir.";
+
+/* Link text for learning more about pingbacks and trackbacks */
+"postDiscussion.pingbacks.learnMore.text" = "Pingback'ler ve geri izlemeler hakkında daha fazla bilgi edinin";
+
+/* Navigation title for post discussion settings */
+"postDiscussion.title" = "Tartışma";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Değişiklikleri İptal Et";
@@ -10083,6 +10436,9 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Başlıksız";
 
+/* Section header for Access settings in Post Settings */
+"postSettings.access.header" = "Erişim";
+
 /* Label for the author field in Post Settings */
 "postSettings.author.label" = "Yazar";
 
@@ -10101,6 +10457,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "postSettings.discardChanges.title" = "Değişiklikler İptal Edilsin Mi?";
+
+/* Status text when discussion (comments) is disabled */
+"postSettings.discussion.closed" = "Kapalı";
+
+/* Label for the discussion settings field in Post Settings */
+"postSettings.discussion.label" = "Tartışma";
+
+/* Status text when discussion (comments) is enabled */
+"postSettings.discussion.open" = "Açık";
+
+/* Label for the checkbox that lets you send a post to newsletter subscribers */
+"postSettings.emailToSubscribers.label" = "Abonelere e-posta gönder";
 
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d karakter";
@@ -10204,6 +10572,21 @@ Example: Reply to Pamela Nguyen */
 /* Cell title for the Top Level option case */
 "postSettings.parentPage.topLevel" = "Üst seviye";
 
+/* Accessibility label for hide password button */
+"postSettings.passwordEntry.hidePassword" = "Şifreyi gizle";
+
+/* Instructions for password entry */
+"postSettings.passwordEntry.instructions" = "Bu gönderiyi korumak için bir şifre girin. Yalnızca şifreye sahip kullanıcılar bunu görüntüleyebilecek.";
+
+/* Navigation title for password entry screen */
+"postSettings.passwordEntry.navigationTitle" = "Şifre Girin";
+
+/* Placeholder for password field */
+"postSettings.passwordEntry.placeholder" = "Şifre girin";
+
+/* Accessibility label for show password button */
+"postSettings.passwordEntry.showPassword" = "Şifreyi göster";
+
 /* Label for the pending review toggle in Post Settings */
 "postSettings.pendingReview.label" = "İnceleme Bekliyor";
 
@@ -10231,17 +10614,59 @@ Example: Reply to Pamela Nguyen */
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Genel";
 
+/* Description text explaining what the slug editor does */
+"postSettings.slug.customizeDescription" = "Kalıcı bağlantının son kısmını özelleştirin.";
+
 /* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "postSettings.slug.hint" = "Kısaltma, gönderi başlığının URL dostu versiyonudur.";
 
 /* Label for the slug field. Should be the same as WP core. */
 "postSettings.slug.label" = "Kısaltma";
 
+/* Button text to learn more about permalinks */
+"postSettings.slug.learnMore" = "Daha fazla bilgi edinin";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.navigationTitle" = "Kısaltma";
+
+/* Notice shown when the post doesn't have a remote and permalink template is missing */
+"postSettings.slug.permalinkDraftNotice" = "Taslak sunucuya kaydedildiğinde önerilen kalıcı bağlantı görünür";
+
+/* Label for the permalink preview */
+"postSettings.slug.permalinkLabel" = "Kalıcı Bağlantı";
+
+/* Section title for the permalink preview */
+"postSettings.slug.permalinkSection" = "Kalıcı Bağlantı";
+
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Kısaltma gir";
 
 /* Label for the preview button in Post Settings */
 "postSettings.socialSharing.header" = "Sosyal Paylaşım";
+
+/* Label for the status field in Post Settings */
+"postSettings.status.label" = "Durum";
+
+/* Navigation title for status picker */
+"postSettings.statusPicker.navigationTitle" = "Durum ve Görünürlük";
+
+/* Label showing the current password */
+"postSettings.statusPicker.passwordLabel" = "Şifre";
+
+/* Toggle label for password protection */
+"postSettings.statusPicker.passwordProtected" = "Şifre Korumalı";
+
+/* Subtitle for password protected toggle */
+"postSettings.statusPicker.passwordProtectedSubtitle" = "Sadece şifreyi bilenlere görünür";
+
+/* Label for schedule date row */
+"postSettings.statusPicker.scheduleDate" = "Tarih";
+
+/* Toggle label for sticky posts */
+"postSettings.statusPicker.sticky" = "Yapışkan";
+
+/* Subtitle for sticky toggle */
+"postSettings.statusPicker.stickySubtitle" = "Bu gönderiyi blogun üstüne sabitleyin";
 
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "Yapışkan";
@@ -10261,17 +10686,53 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Gönderi İstatistikleri";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"postTags.addTag" = "Etiket ekle";
+/* Post status title */
+"postStatus.deleted.details" = "Kalıcı olarak silindi";
 
-/* Placeholder text for the tag search field */
-"postTags.searchOrAdd.placeholder" = "Etiketleri ara veya ekle";
+/* Post status title */
+"postStatus.deleted.title" = "Silindi";
 
-/* Message shown when no tags are selected */
-"postTags.selectionEmpty" = "Hiç etiket seçilmedi";
+/* Post status details */
+"postStatus.draft.details" = "Yayımlanmaya hazır değil";
 
-/* Title for the tags screen */
-"postTags.title" = "Etiketler";
+/* Post status title */
+"postStatus.draft.title" = "Taslak";
+
+/* Post status details */
+"postStatus.pending.details" = "Yayımlamadan önce inceleme bekliyor";
+
+/* Post status title */
+"postStatus.pending.title" = "Beklemede";
+
+/* Post status title */
+"postStatus.private.title" = "Gizli";
+
+/* Post status details */
+"postStatus.published.details" = "Herkes tarafından görülebilir";
+
+/* Post status title */
+"postStatus.published.title" = "Yayımlandı";
+
+/* Post status details */
+"postStatus.scheduled.details" = "Seçilen bir tarihte otomatik olarak yayımla";
+
+/* Post status title */
+"postStatus.scheduled.title" = "Zamanlandı";
+
+/* Post status title */
+"postStatus.trash.details" = "Çöpe atıldı ancak henüz silinmedi";
+
+/* Post status title */
+"postStatus.trash.title" = "Çöpe atıldı";
+
+/* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.addTag" = "%1$@ ekle";
+
+/* Placeholder text for the taxonomy search field. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.searchOrAdd.placeholder" = "%1$@ arayın veya ekleyin";
+
+/* Message shown when no taxonomy terms are selected. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.selectionEmpty" = "Hiçbir %1$@ seçilmedi";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "İptal Et";
@@ -10347,9 +10808,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Kategoriler";
-
-/* Voiceover accessibility label informing the user that this button dismiss the current view */
-"prepublishing.close" = "Kapat";
 
 /* Button to confirm discarding changes */
 "prepublishing.discardChanges.button" = "Değişiklikleri İptal Et";
@@ -10438,12 +10896,17 @@ Example: 27 social shares remaining in the next 30 days */
 /* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
 "prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Uyarı";
 
-/* The label displayed for a table row that displays the sharing message for the post.
-Tapping on this row allows the user to edit the sharing message. */
+/* Table section title */
 "prepublishing.socialAccounts.message.label" = "İleti";
+
+/* Placeholder text for the message field in Social Sharing */
+"prepublishing.socialAccounts.messagePlaceholder" = "Gönderinin yanında sosyal medyada paylaşmak için kısa bir mesaj yazın";
 
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "Sosyal ağ";
+
+/* Table section title */
+"prepublishing.socialAccounts.servicesSectionTitle" = "Hizmetler";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketler";
@@ -11052,6 +11515,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "reader.welcome.subtitle" = "En büyük blog topluluğuna katılın";
 
 /* Reader app primary navigation tab bar */
+"readerApp.tabBar.discover" = "Keşfet";
+
+/* Reader app primary navigation tab bar */
 "readerApp.tabBar.me" = "Ben";
 
 /* Reader app primary navigation tab bar */
@@ -11387,6 +11853,18 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "Etki alanı seçin";
 
+/* Default text for adding a new item when no label is provided */
+"siteCustomTaxonomies.defaultAddNew" = "Ekle";
+
+/* Description for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.description" = "Sınıflandırmalar, standart kategoriler ve etiketler dışındaki içerikleri düzenlemenize yardımcı olur.";
+
+/* Title for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.title" = "Özel sınıflandırma yok";
+
+/* Navigation title for the custom taxonomies screen */
+"siteCustomTaxonomies.navigationTitle" = "Sınıflandırmalar";
+
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "siteMedia.accessibilityLabelAudio" = "Ses, %@";
 
@@ -11405,8 +11883,77 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Ortam dosyası seçin.";
 
+/* Label for the alt for a media asset (image) */
+"siteMedia.details.altText" = "Alternatif Metin";
+
+/* Verb. Button title. Tapping cancels an action. */
+"siteMedia.details.cancel" = "İptal Et";
+
+/* Noun. Label for the caption for a media asset (image / video) */
+"siteMedia.details.caption" = "Altyazı";
+
+/* Title for button that permanently deletes a media item (photo / video) */
+"siteMedia.details.delete" = "Sil";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"siteMedia.details.deleteConfirmation" = "Bu ögeyi kalıcı olarak silmek istediğinizden emin misiniz?";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"siteMedia.details.deleted" = "Silindi!";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"siteMedia.details.deleting" = "Siliniyor...";
+
+/* Label for the description for a media asset (image / video) */
+"siteMedia.details.description" = "Açıklama";
+
+/* Label for the dimensions in pixels for a media asset (image / video) */
+"siteMedia.details.dimensions" = "Boyutlar";
+
+/* Label for the file name for a media asset (image / video) */
+"siteMedia.details.fileName" = "Dosya Adı";
+
+/* Label for the file size for a media asset (image / video) */
+"siteMedia.details.fileSize" = "Dosya Boyutu";
+
+/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
+"siteMedia.details.fileType" = "Dosya Türü";
+
+/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
+"siteMedia.details.mediaDeleted" = "Bu ortam öğesi silinmiş.";
+
+/* Noun. Label for the title of a media asset (image / video) */
+"siteMedia.details.title" = "Başlık";
+
+/* Accessibility label for trash buttons in nav bars */
+"siteMedia.details.trash" = "Çöp";
+
+/* Text displayed in HUD if there was an error attempting to delete a media item. */
+"siteMedia.details.unableToDeleteMedia" = "Ortam öğesi silinemiyor.";
+
+/* Error shown when the app fails to load a video from the user's media library. */
+"siteMedia.details.unableToLoadVideo" = "Video yüklenemedi.";
+
+/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
+"siteMedia.details.unableToSaveMedia" = "Ortam öğesi kaydedilemedi.";
+
+/* Label for the date a media asset (image / video) was uploaded */
+"siteMedia.details.uploaded" = "Karşıya Yüklendi";
+
 /* Title for the URL field */
 "siteMedia.details.url" = "URL";
+
+/* Hint for image alt on image settings. */
+"siteMedia.hints.imageAlt" = "Görsel Alternatif Metni";
+
+/* Hint for image caption on image settings. */
+"siteMedia.hints.imageCaption" = "Görsel Yazısı";
+
+/* Hint for image description on image settings. */
+"siteMedia.hints.imageDescription" = "Görsel Açıklaması";
+
+/* Hint for image title on image settings. */
+"siteMedia.hints.imageTitle" = "Görsel başlığı";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Ortamı tam ekranda görüntülemek için dokunun";
@@ -11504,6 +12051,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Gizlilik";
+
+/* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
+"siteTaxonomy.addNew.format" = "%1$@ ekle";
 
 /* Hint for users when hidden privacy setting is set */
 "siteVisibility.hidden.hint" = "Siteniz görüntülenmeye hazır oluncaya kadar “Yakında” uyarısıyla birlikte ziyaretçilerden gizlenir.";
@@ -12069,7 +12619,11 @@ Feel free to replace it with other bracket types that you think looks better for
 /* View title for Help & Support page. */
 "support.title" = "Yardım";
 
-/* Description for empty state when there are no tags */
+/* Subject of new Zendesk ticket. */
+"support.zendesk.readerAppTicketSubject" = "iOS için okuyucu desteği";
+
+/* Description for empty state when there are no tags
+   Description for empty state when there are no tags. %1$@ is the taxonomy name. */
 "tags.empty.description" = "Etiketler içeriğinizi düzenlemenize ve okurların ilgili gönderileri bulmasını kolaylaştırmanıza yardımcı olur.";
 
 /* Title for empty state when there are no tags */
@@ -12146,9 +12700,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "okunmamış";
-
-/* Site's Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.subscriber" = "Sitenin Abonesi";
 
 /* Sites's User Profile. Displayed when the name is empty! */
 "user.details.title.user" = "Sitenin Kullanıcısı";
@@ -12234,9 +12785,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The heading at the top of the user list */
 "userlist.title" = "Kullanıcılar";
-
-/* Site Subscribers */
-"users.list.title.subscribers" = "Aboneler";
 
 /* Screen title */
 "users.title" = "Kullanıcılar";

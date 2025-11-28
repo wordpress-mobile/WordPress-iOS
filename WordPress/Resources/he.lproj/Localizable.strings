@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2025-10-08 13:54:09+0000 */
+/* Translation-Revision-Date: 2025-11-25 14:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: he_IL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -581,8 +581,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "כמעט סיימת! יש להזין את קוד האימות מאפליקציית האימות.";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "טקסט חלופי";
 
 /* No comment provided by engineer. */
@@ -725,9 +724,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "האם ברצונך לנתק את Jetpack מהאתר?";
-
-/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "האם אכן ברצונך למחוק פריט זה לצמיתות?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "האם ברצונך להסיר את %1$@ מ-%2$@?";
@@ -1082,7 +1078,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "בטל";
@@ -1110,8 +1105,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "לא הצלחת להחליט? תהיה לך אפשרות לשנות את ערכת העיצוב בכל עת.";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "כיתוב";
 
 /* Alert title. */
@@ -1777,8 +1771,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "ברירת מחדל";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "קטגוריית ברירת מחדל";
 
 /* Label for selecting the default post format
@@ -1787,9 +1780,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "ברירות מחדל עבור פוסטים חדשים";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "מחק";
 
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "מחיקת תפריט";
@@ -1808,14 +1798,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "מחיקת תפריט";
 
-/* Text displayed in HUD after successfully deleting a media item */
-"Deleted!" = "הפריט נמחק!";
-
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "מוחק אתר…";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "מוחק...";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "דחייה";
@@ -1823,8 +1807,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Describe the purpose of the image. Leave empty if decorative." = "לתאר את מטרת התמונה. אם התמונה נועדה לקישוט בלבד, יש להשאיר את השדה ריק.";
 
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "תיאור";
 
 /* Shortened version of the main title to be used in back navigation. */
@@ -1842,9 +1825,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
 "Didn't mean to create a new account? Go back to re-enter your email address." = "לא התכוונת ליצור חשבון חדש? יש לחזור אחורה כדי להזין מחדש את כתובת האימייל שלך.";
-
-/* Label for the dimensions in pixels for a media asset (image / video) */
-"Dimensions" = "מידות";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "להשבית";
@@ -2121,7 +2101,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "עריכה קובץ ה-GIF תסיר את ההנפשה שלו.";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "עורך";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
@@ -2463,11 +2443,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "File block settings" = "הגדרות של בלוק הקובץ";
 
-/* Label for the file name for a media asset (image / video) */
+/* No comment provided by engineer. */
 "File name" = "שם קובץ";
-
-/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
-"File type" = "סוג קובץ";
 
 /* No comment provided by engineer. */
 "File type not supported as a media file." = "סוג הקובץ לא נתמך כקובץ מדיה.";
@@ -2781,6 +2758,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "העבודות של הצלם קמרון קרסטן הן השראה עצומה עבורי. את הטכניקות האלה אביא לידי ביטוי בפעם הבאה שאצור";
 
+/* Text on the support form to refer to what area the user has problem with. */
+"I need help with" = "דרושה לי עזרה לגבי";
+
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "כתובת IP";
 
@@ -2826,9 +2806,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint for image caption on image settings. */
 "Image Caption" = "כיתוב התמונה";
 
-/* Hint for image description on image settings. */
-"Image Description" = "תיאור תמונה";
-
 /* Hint for image link on image settings. */
 "Image Link" = "קישור תמונה";
 
@@ -2840,9 +2817,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Image file not found." = "לא נמצא קובץ תמונה.";
-
-/* Hint for image title on image settings. */
-"Image title" = "כותרת התמונה";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "במספר מילים, הסבר במה עוסק האתר.";
@@ -3205,6 +3179,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "הודיעו לי כאשר הפעולה מסתיימת!";
 
+/* Message info on the support screen. */
+"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "אנחנו מבקשים לדעת את כתובת האתר שלך (כתובת ה-URL) וכמה שיותר פרטים לגבי הבעיה. לאחר שליחת הבקשה, ניצור קשר בהקדם.";
+
+/* Title to let the user know what do we want on the support screen. */
+"Let’s get this sorted" = "ננסה לתקן את הבעיה עכשיו";
+
 /* Lifestyle site intent topic */
 "Lifestyle" = "לייף סטייל";
 
@@ -3405,6 +3385,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "ניווט ראשי";
+
+/* Explanation for the option to enable theme styles */
+"Make the block editor look like your theme." = "להציג את עורך הבלוקים בסגנון שדומה לתבנית שלך.";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "כדאי להבליט את התוכן על ידי הוספה של תמונות, הנפשות GIF, סרטונים ומדיה מוטמעת בעמודים שלך.";
@@ -3747,9 +3730,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "לא נמצאו חשבונות";
-
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "אין קטגוריה";
 
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "אין חיבור";
@@ -4191,9 +4171,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Settings: Comments Paging preferences */
 "Paging" = "עימוד";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "קטגוריית אב";
-
 /* Parenting site intent topic */
 "Parenting" = "הורות";
 
@@ -4408,9 +4385,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "פוסט";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "קטגוריות";
 
 /* Name of the button to open the post settings */
 "Post Settings" = "הגדרות פוסט";
@@ -4719,9 +4693,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "הפעולה מסירה מטא-נתונים של מיקום מהתמונות שלך לפני ההעלאה לאתר.";
-
-/* First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "הסרת עוקבים תפסיק את שליחת העדכונים אליהם מהאתר שלך. אם העוקבים יבחרו לעשות זאת, הם עדיין יוכלו לבקר באתר שלך ולעקוב אחריו שוב.";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "יש להחליף את הבלוק הנוכחי";
@@ -5558,6 +5529,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "תיאור האתר";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "תגיות";
 
@@ -5654,6 +5626,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "יש להקיש כדי לעבור לאתר של Gravatar בדפדפן חיצוני";
+
+/* Label for viewing the custom taxonomies */
+"Taxonomies" = "טקסונומיות";
 
 /* Technology site intent topic */
 "Technology" = "טכנולוגיה";
@@ -5943,9 +5918,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when the user scanned an expired log in code. */
 "This log in code has expired. Please tap the Scan Again button to rescan the code." = "פג תוקפו של קוד ההתחברות. יש ללחוץ על הכפתור 'לסרוק שוב' כדי לסרוק שוב את הקוד.";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "פריט המדיה נמחק.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "לא ניתן לסגור את חשבון המשתמש כל עוד יש לו חיובים שלא שולמו.";
 
@@ -6014,7 +5986,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "כותרת";
@@ -6108,8 +6079,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "לשנות בלוק...";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "לאשפה";
 
@@ -6206,9 +6176,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "לא ניתן ליצור קישורי הזמנה חדשים.";
 
-/* Text displayed in HUD if there was an error attempting to delete a media item. */
-"Unable to delete media item." = "לא ניתן למחוק פריט מדיה.";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to disable invite links." = "לא ניתן להשבית את קישורי ההזמנה.";
 
@@ -6239,9 +6206,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "אין אפשרות לטעון את התוכן כרגע.";
 
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "לא ניתן לטעון את הווידאו.";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "אין אפשרות לנגן את הווידאו";
 
@@ -6250,9 +6214,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "לא ניתן לשחזר את האתר שלך";
-
-/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
-"Unable to save media item." = "לא ניתן לשמור פריט מדיה.";
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "לא ניתן לשתף את הקישור";
@@ -6409,9 +6370,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "העלאה נכשלה";
 
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "הועלה";
-
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "הועלה פוסט טיוטה אחד, %ld קבצים";
 
@@ -6453,6 +6411,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "להשתמש בסיסמה כדי להתחבר";
+
+/* Option to enable theme styles in the block editor */
+"Use theme styles" = "להשתמש בסגנונות של התבנית";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -6900,7 +6861,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "מפת העולם שמציגה צפיות לפי מדינה.";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "האם עדיין תרצה להסיר את המשתמש הזה?";
 
 /* Button title. Opens the editor to write a new post.
@@ -7371,11 +7332,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "סיסמאות אפליקציה הן דרך מאובטחת יותר להתחבר לאתר באחסון עצמי, והן מאפשרות תמיכה באפשרויות כמו %@.";
 
+/* Feature name for managing application passwords in the app */
+"applicationPasswordRequired.feature.applicationPasswords" = "ניהול סיסמות אפליקציה";
+
+/* Feature name for the block editor in application password required prompt */
+"applicationPasswordRequired.feature.blockEditor" = "עורך הבלוקים";
+
+/* Feature name for managing terms and taxonomies in the app */
+"applicationPasswordRequired.feature.customTaxonomies" = "ניהול טקסונומיות";
+
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "ניהול תוספים";
 
-/* Feature name for managing application passwords in the app
-   Feature name for managing users in the app */
+/* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "ניהול משתמשים";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -7598,6 +7567,285 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "לשמור טיוטה";
+
+/* Button to add more screenshots */
+"com.jetpack.support.addMoreScreenshots" = "להוסיף עוד צילומי מסך";
+
+/* Button to add screenshots */
+"com.jetpack.support.addScreenshots" = "להוסיף צילומי מסך";
+
+/* Header for application logs section */
+"com.jetpack.support.applicationLogs" = "יומני אפליקציה";
+
+/* Description explaining why including logs is helpful */
+"com.jetpack.support.applicationLogsDescription" = "הוספה של יומני פעילות יכולה לעזור לצוות שלנו לחקור בעיות. יומני הפעילות עשויים להכיל פעולות שבוצעו באפליקציה לאחרונה.";
+
+/* Navigation title for application logs screen */
+"com.jetpack.support.applicationLogsTitle" = "יומני אפליקציה";
+
+/* Format string for attachment identifier */
+"com.jetpack.support.attachment" = "קובץ מצורף %@";
+
+/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
+"com.jetpack.support.attachmentLimit" = "מגבלה לקובץ המצורף: %1$@ \/ %2$@";
+
+/* Bot greeting message. %1$@ is the user's name */
+"com.jetpack.support.botGreeting" = "אהלן, %1$@!";
+
+/* Bot introduction message explaining its purpose */
+"com.jetpack.support.botIntroduction" = "אני עוזר הבינה המלאכותית האישי שלך. אני יכול לענות על שאלות לגבי האתר והחשבון שלך.";
+
+/* Format string for cache file count and size. %1$d is the number of files, %2$@ is the formatted size. The system will pluralize 'files' based on the number – please specify it as the largest plural value */
+"com.jetpack.support.cacheFiles" = "⁦%1$d⁩ קבצים מאוחסנים במטמון (%2$@)";
+
+/* Message shown when cache has no files */
+"com.jetpack.support.cacheIsEmpty" = "המטמון ריק";
+
+/* Button to cancel current action */
+"com.jetpack.support.cancel" = "לבטל";
+
+/* Warning message that deleted logs cannot be recovered */
+"com.jetpack.support.cannotRecoverLogs" = "לא תהיה לך אפשרות לשחזר אותם.";
+
+/* Button to clear all activity logs */
+"com.jetpack.support.clearAllActivityLogs" = "למחוק את כל יומני הפעילות";
+
+/* Button to clear disk cache */
+"com.jetpack.support.clearDiskCache" = "למחקו את המטמון של הדיסק";
+
+/* Description explaining the purpose of clearing disk cache */
+"com.jetpack.support.clearDiskCacheDescription" = "ניתן להסיר קבצים זמניים כדי לפנות שטח אחסון או לפתור את הבעיות.";
+
+/* Progress text while clearing cache */
+"com.jetpack.support.clearing" = "מוחק...";
+
+/* Message shown when cache clearing is complete */
+"com.jetpack.support.complete" = "הושלם";
+
+/* Confirmation message when canceling a draft */
+"com.jetpack.support.confirmCancelMessage" = "האם ברצונך לבטל את ההודעה הזאת? כל הנתונים שהזנת יאבדו";
+
+/* Title for alert confirming cancellation */
+"com.jetpack.support.confirmCancellation" = "אשר ביטול";
+
+/* Confirmation dialog title when deleting all logs */
+"com.jetpack.support.confirmDeleteAllLogs" = "האם ברצונך למחוק את כל יומני הפעילות?";
+
+/* Section title for contact information */
+"com.jetpack.support.contactInformation" = "פרטים ליצירת קשר";
+
+/* Button to continue editing a message */
+"com.jetpack.support.continueWriting" = "להמשיך לכתוב";
+
+/* Message shown at end of closed support conversation */
+"com.jetpack.support.conversationEnded" = "השיחה הסתיימה. אין אפשרות לתשובות נוספות.";
+
+/* Navigation title for bot conversations list */
+"com.jetpack.support.conversations" = "שיחות";
+
+/* Button to delete all log files */
+"com.jetpack.support.deleteAllLogs" = "למחוק את כל יומני הפעילות";
+
+/* Description text for diagnostics screen */
+"com.jetpack.support.diagnosticsDescription" = "להפעיל משימות נפוצות של תחזוקה ופתרון בעיות.";
+
+/* Navigation title for diagnostics screen */
+"com.jetpack.support.diagnosticsTitle" = "אבחונים";
+
+/* Button to discard changes in a draft message */
+"com.jetpack.support.discardChanges" = "לבטל את השינויים";
+
+/* Notice explaining where support will send email responses */
+"com.jetpack.support.emailNotice" = "אנו נשלח לך תכתובות לכתובת האימייל הזאת.";
+
+/* Error title when logs fail to load */
+"com.jetpack.support.errorLoadingLogs" = "שגיאה בטעינה של יומני הפעילות";
+
+/* Error message when support conversations fail to load */
+"com.jetpack.support.errorLoadingSupportConversations" = "שגיאה בטעינה של השיחות עם התמיכה";
+
+/* Title for error alerts */
+"com.jetpack.support.errorTitle" = "שגיאה";
+
+/* Option to export log as a file */
+"com.jetpack.support.exportAsFile" = "לייצא כקובץ";
+
+/* Button to dismiss alerts. */
+"com.jetpack.support.gotIt" = "הבנתי";
+
+/* Text on the support form to refer to what area the user has problem with. */
+"com.jetpack.support.iNeedHelp" = "דרושה לי עזרה לגבי";
+
+/* Toggle label to include application logs in the support request */
+"com.jetpack.support.includeApplicationLogs" = "לכלול את יומני האפליקציה";
+
+/* Section title for issue details */
+"com.jetpack.support.issueDetails" = "פרטי הבעיה";
+
+/* Format string for when conversation was last updated */
+"com.jetpack.support.lastUpdated" = "עדכון אחרון: %@";
+
+/* Progress message while loading conversation messages */
+"com.jetpack.support.loadingBotConversationMessages" = "טוען הודעות";
+
+/* Progress message while loading bot conversations */
+"com.jetpack.support.loadingBotConversations" = "טוען שיחות עם הבוט";
+
+/* Progress text while loading support conversations */
+"com.jetpack.support.loadingConversations" = "טוען שיחות";
+
+/* Progress message while loading disk usage information */
+"com.jetpack.support.loadingDiskUsage" = "טוען שימוש בדיסק";
+
+/* Progress message while loading an image attachment */
+"com.jetpack.support.loadingImage" = "טוען את התמונה";
+
+/* Progress message shown in overlay while refreshing content */
+"com.jetpack.support.loadingLatestContent" = "טוען את התכנים האחרונים";
+
+/* Progress message while loading application log content */
+"com.jetpack.support.loadingLogContent" = "טוען את התכנים של יומן הפעילות...";
+
+/* Progress message while loading log files */
+"com.jetpack.support.loadingLogs" = "טוען את יומני הרישום...";
+
+/* Progress text while loading conversation messages */
+"com.jetpack.support.loadingMessages" = "טוען הודעות";
+
+/* Progress message while loading a video attachment */
+"com.jetpack.support.loadingVideo" = "טוען את הווידאו";
+
+/* Section header for log files sorted by date */
+"com.jetpack.support.logFilesByDate" = "קובצי יומן לפי תאריך יצירה";
+
+/* Text indicating which log files will be included in the support request */
+"com.jetpack.support.logFilesToUpload" = "קובצי היומן הבאים יועלו:";
+
+/* Footer text explaining log retention policy */
+"com.jetpack.support.logRetentionNotice" = "אנחנו שומרים קובצי יומן עד שבעה ימים אחורה.";
+
+/* Section header for message text input */
+"com.jetpack.support.message" = "הודעה";
+
+/* Success message when reply is sent successfully */
+"com.jetpack.support.messageSent" = "הודעה נשלחה";
+
+/* Format string for number of messages in conversation */
+"com.jetpack.support.messagesCount" = "%d הודעות";
+
+/* The title of a new bot chat in the support area of the app */
+"com.jetpack.support.new-bot-chat" = "צ'אט חדש עם הבוט";
+
+/* Option to create a new support ticket */
+"com.jetpack.support.newSupportTicket" = "פנייה חדשה לתמיכה";
+
+/* Label shown when there are no bot conversations */
+"com.jetpack.support.noConversations" = "אין שיחות";
+
+/* Description shown when no log files are available */
+"com.jetpack.support.noLogsAvailable" = "אין יומני פעילות זמינים";
+
+/* Label shown when no log files are available */
+"com.jetpack.support.noLogsFound" = "לא נמצאו יומני פעילות";
+
+/* Button to open a support ticket */
+"com.jetpack.support.openSupportTicket" = "לפתוח פנייה לתמיכה";
+
+/* Text indicating a field is optional */
+"com.jetpack.support.optional" = "(אופציונלי)";
+
+/* Navigation title for replying to a support conversation */
+"com.jetpack.support.reply" = "להגיב";
+
+/* Description for saving log as a file */
+"com.jetpack.support.saveAsFile" = "לשמור כקובץ לשיתוף או לאחסון";
+
+/* Label for screenshots section */
+"com.jetpack.support.screenshots" = "צילומי מסך";
+
+/* Description for screenshots section */
+"com.jetpack.support.screenshotsDescription" = "הוספה של צילומי מסך תעזר לצוות שלנו לפתור את הבעיה מהר יותר.";
+
+/* Button to send a message or reply */
+"com.jetpack.support.send" = "לשלוח";
+
+/* Description for sending logs to support */
+"com.jetpack.support.sendLogsToSupport" = "לשלוח יומנים ישירות לצוות התמיכה";
+
+/* Progress text while sending a message */
+"com.jetpack.support.sending" = "שולח";
+
+/* Progress message shown while sending a message */
+"com.jetpack.support.sendingMessage" = "שולח את ההודעה";
+
+/* Button to share content */
+"com.jetpack.support.share" = "לשתף";
+
+/* Navigation title for sharing activity log */
+"com.jetpack.support.shareActivityLog" = "לשתף את יומן הפעילות";
+
+/* Message shown when sharing log with support */
+"com.jetpack.support.sharingWithSupport" = "משתף עם התמיכה!";
+
+/* Site Address title on the support form */
+"com.jetpack.support.siteAddress" = "כתובת האתר";
+
+/* Description encouraging user to start a new conversation */
+"com.jetpack.support.startNewConversation" = "אפשר להתחיל שיחה חדשה באמצעות הכפתור שלמעלה";
+
+/* Subject title on the support form */
+"com.jetpack.support.subject" = "נושא";
+
+/* Placeholder for subject field */
+"com.jetpack.support.subjectPlaceholder" = "סיכום קצר של הבעיה";
+
+/* Button title to submit a support request. */
+"com.jetpack.support.submitRequest" = "לשלוח בקשת תמיכה";
+
+/* Navigation title for the support conversations list */
+"com.jetpack.support.supportConversations" = "שיחות עם התמיכה";
+
+/* Title for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSent" = "הבקשה נשלחה!";
+
+/* Message for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSentMessage" = "בקשת התמיכה שלך נשלחה בהצלחה. אנחנו נשלח מענה באימייל בהקדם האפשרי.";
+
+/* Progress message shown while bot is thinking */
+"com.jetpack.support.thinking" = "מנסה למצוא תשובה...";
+
+/* Title of the view for contacting support. */
+"com.jetpack.support.title" = "לפנות לתמיכה";
+
+/* Button to retry a failed operation */
+"com.jetpack.support.tryAgain" = "יש לנסות שוב";
+
+/* Error title when log deletion fails */
+"com.jetpack.support.unableToDeleteLogs" = "לא ניתן למחוק את יומני הפעילות";
+
+/* Error message when conversation cannot be displayed */
+"com.jetpack.support.unableToDisplayConversation" = "אין אפשרות להציג את השיחה";
+
+/* Error title when video cannot be loaded or played */
+"com.jetpack.support.unableToDisplayVideo" = "אין אפשרות להציג את הווידאו";
+
+/* Error message when application logs cannot be loaded */
+"com.jetpack.support.unableToLoadApplicationLogs" = "אין אפשרות לטעון את יומני האפליקציה";
+
+/* Error title when bot conversations fail to load */
+"com.jetpack.support.unableToLoadConversations" = "אין אפשרות לטעון את השיחה";
+
+/* Error title when messages fail to load */
+"com.jetpack.support.unableToLoadMessages" = "אין אפשרות לטעון את ההודעה";
+
+/* Error title when message sending fails */
+"com.jetpack.support.unableToSendMessage" = "לא ניתן לשלוח את ההודעה";
+
+/* Button to view an attachment */
+"com.jetpack.support.view" = "להציג";
+
+/* Progress message shown during cache clearing operation */
+"com.jetpack.support.working" = "בעבודה";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "תגובה";
@@ -7861,6 +8109,9 @@ Example: Reply to Pamela Nguyen */
 /* Weekly Roundup debug menu item */
 "debugMenu.weeklyRoundup" = "סיכום שבועי";
 
+/* Title for selecting a default category for a post */
+"defaultCategory.title" = "קטגוריית ברירת מחדל";
+
 /* Error tilte */
 "discussionSettings.saveErrorTitle" = "שמירת ההגדרות נכשלה";
 
@@ -8000,10 +8251,10 @@ Example: Reply to Pamela Nguyen */
 "double-tap to change unit" = "יש להקיש פעמיים כדי לשנות את היחידה";
 
 /* Message for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.message" = "האם ברצונך למחוק את התגית הזאת?";
+"edit.tag.delete.confirmation.message" = "האם ברצונך למחוק את הפרטים האלה?";
 
-/* Title for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.title" = "למחוק תגית";
+/* Title for delete a term confirmation dialog */
+"edit.tag.delete.confirmation.title" = "למחוק";
 
 /* Placeholder text for tag description field */
 "edit.tag.description.placeholder" = "להוסיף תיאור...";
@@ -8018,7 +8269,37 @@ Example: Reply to Pamela Nguyen */
 "edit.tag.section.description" = "תיאור";
 
 /* Section header for tag name in edit tag view */
-"edit.tag.section.tag" = "תגית";
+"edit.tag.section.tag" = "שם";
+
+/* Context menu action to insert a block */
+"editor.blockInserter.insertBlock" = "להוסיף בלוק";
+
+/* Placeholder text for block search field */
+"editor.blockInserter.search" = "לחפש";
+
+/* Button title to collapse and show fewer blocks */
+"editor.blockInserter.showLess" = "להציג פחות";
+
+/* Button title to expand and show more blocks */
+"editor.blockInserter.showMore" = "להציג עוד";
+
+/* Error message when media insertion fails */
+"editor.media.failedToInsert" = "ההוספה של המדיה נכשלה";
+
+/* Category name for section showing all patterns */
+"editor.patterns.all" = "הכול";
+
+/* Context menu action to insert a pattern */
+"editor.patterns.insertPattern" = "להוסיף מקבץ בלוקים";
+
+/* Title shown when no patterns match the search */
+"editor.patterns.noPatternsFound" = "לא נמצאו מקבצי בלוקים";
+
+/* Navigation title for patterns view */
+"editor.patterns.title" = "מקבצי בלוקים";
+
+/* Category name for patterns without a category */
+"editor.patterns.uncategorized" = "לא מסווג";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "לדוגמה 1122334455";
@@ -8572,6 +8853,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "לכתוב בלוג";
+
+/* Description for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.description" = "כל אחד יכול להציג את הפוסט הנוכחי";
+
+/* Title for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.title" = "כולם";
+
+/* Description for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.description" = "רק מנויים בתשלום יכולים להציג את הפוסט הנוכחי";
+
+/* Title for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.title" = "מנויים משלמים";
+
+/* Description for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.description" = "הבלוק זמין לכל המנויים, כולל מנויים בחינם";
+
+/* Title for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.title" = "כל המנויים";
 
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "עליך להתחבר באמצעות %@ כדי להשתמש ב'נתונים סטטיסטיים' וב'הודעות'.";
@@ -9162,6 +9461,12 @@ Example: Reply to Pamela Nguyen */
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "אין לך הרשאה להציג את הבלוג הפרטי הזה.";
 
+/* Default empty state message format when there are no terms. %1$@ is the taxonomy name. */
+"localizedLabels.defaultNoTerms.format" = "ללא %1$@";
+
+/* Default search placeholder format. %1$@ is the taxonomy name. */
+"localizedLabels.defaultSearch.format" = "לחפש את %1$@";
+
 /* Button to dismiss the re-authentication view */
 "login.appPasswordReAuth.cancelButton" = "ביטול";
 
@@ -9262,6 +9567,9 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.filterAudio" = "אודיו";
 
 /* The name of the media filter */
+"mediaLibrary.filterDefault" = "ברירת מחדל (הכול)";
+
+/* The name of the media filter */
 "mediaLibrary.filterDocuments" = "מסמכים";
 
 /* The name of the media filter */
@@ -9294,17 +9602,23 @@ Example: Reply to Pamela Nguyen */
 /* Message about buying storage add-on */
 "mediaLibrary.storageDetails.buyStorage.message" = "לרכוש הרחבת אחסון";
 
-/* Message shown when all media items are attached */
-"mediaLibrary.storageDetails.cleanup.allAttached" = "כל הפריטים בספריית המדיה מצורפים.";
+/* Label for audio media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.audio" = "אודיו";
 
-/* Message shown while loading unattached media count */
-"mediaLibrary.storageDetails.cleanup.loading" = "בודק אם יש פריטי מדיה לא מצורפים...";
+/* Label for document media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.document" = "מסמכים";
 
-/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
-"mediaLibrary.storageDetails.cleanup.message" = "פריט ⁦%1$d⁩ הוסר. יש להסיר אותם כדי לפנות מקום.";
+/* Label for image media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.image" = "תמונות";
 
-/* Title for cleanup section */
-"mediaLibrary.storageDetails.cleanup.title" = "להסיר פריטים שאינם בשימוש";
+/* Label for other/unknown media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.other" = "אחר";
+
+/* Label for PowerPoint/presentation media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.powerpoint" = "מצגות";
+
+/* Label for video media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.video" = "סרטוני וידאו";
 
 /* Success message shown after upgrading plan */
 "mediaLibrary.storageDetails.purchase.plan.success" = "תוכנית האתר שלך שודרגה!";
@@ -9690,6 +10004,12 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Pages by me";
 
+/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
+"parentCategory.noCategory" = "אין קטגוריה";
+
+/* Title for selecting parent category of a category */
+"parentCategory.title" = "קטגוריית אם";
+
 /* Title for the parent page picker screen */
 "parentPagePicker.title" = "עמוד הורה";
 
@@ -9848,6 +10168,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the post author selection screen */
 "postAuthorPicker.title" = "מחבר";
+
+/* Title for selecting categories for a post or a page */
+"postCategories.title" = "קטגוריות";
+
+/* Toggle label for allowing comments on post */
+"postDiscussion.allowComments.label" = "פתוח לתגובות";
+
+/* Toggle label for allowing pings/trackbacks on post */
+"postDiscussion.allowPings.label" = "לאפשר תגובות פינגבק";
+
+/* Footer text when comments are disabled */
+"postDiscussion.comments.disabled.footer" = "מבקרים לא יוכלו להוסיף תגובות או תשובות חדשות. תגובות קיימות יישארו גלויות.";
+
+/* Footer text when comments are enabled */
+"postDiscussion.comments.enabled.footer" = "מבקרים יוכלו להוסיף תגובות ותשובות חדשות.";
+
+/* Link text for learning more about pingbacks and trackbacks */
+"postDiscussion.pingbacks.learnMore.text" = "מידע נוסף בנושא תגובות פינגבאק (Pingback) וטראקבק (Trackback)";
+
+/* Navigation title for post discussion settings */
+"postDiscussion.title" = "דיון";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "לבטל את השינויים";
@@ -10080,6 +10421,9 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "ללא כותרת";
 
+/* Section header for Access settings in Post Settings */
+"postSettings.access.header" = "גישה";
+
 /* Label for the author field in Post Settings */
 "postSettings.author.label" = "מחבר";
 
@@ -10098,6 +10442,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "postSettings.discardChanges.title" = "האם לבטל את השינויים?";
+
+/* Status text when discussion (comments) is disabled */
+"postSettings.discussion.closed" = "סגור";
+
+/* Label for the discussion settings field in Post Settings */
+"postSettings.discussion.label" = "דיון";
+
+/* Status text when discussion (comments) is enabled */
+"postSettings.discussion.open" = "פתוח";
+
+/* Label for the checkbox that lets you send a post to newsletter subscribers */
+"postSettings.emailToSubscribers.label" = "לשלוח אימייל למינויים";
 
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "⁦%1$d⁩ תווים";
@@ -10198,6 +10554,21 @@ Example: Reply to Pamela Nguyen */
 /* Cell title for the Top Level option case */
 "postSettings.parentPage.topLevel" = "עליון";
 
+/* Accessibility label for hide password button */
+"postSettings.passwordEntry.hidePassword" = "להסתיר סיסמה";
+
+/* Instructions for password entry */
+"postSettings.passwordEntry.instructions" = "להזין סיסמה כדי להגן על פוסט זה. רק למשתמשים שיודעים את הסיסמה תהיה אפשרות להציג את הפוסט.";
+
+/* Navigation title for password entry screen */
+"postSettings.passwordEntry.navigationTitle" = "להזין סיסמה";
+
+/* Placeholder for password field */
+"postSettings.passwordEntry.placeholder" = "להזין סיסמה";
+
+/* Accessibility label for show password button */
+"postSettings.passwordEntry.showPassword" = "להציג סיסמה";
+
 /* Label for the pending review toggle in Post Settings */
 "postSettings.pendingReview.label" = "ביקורת ממתינה לאישור";
 
@@ -10225,17 +10596,59 @@ Example: Reply to Pamela Nguyen */
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "כללי";
 
+/* Description text explaining what the slug editor does */
+"postSettings.slug.customizeDescription" = "להתאים אישית את החלק האחרון של הקישור הקבוע.";
+
 /* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "postSettings.slug.hint" = "המזהה לכתובת היא גרסה ידידותית לכתובת URL של כותרת הפוסט.";
 
 /* Label for the slug field. Should be the same as WP core. */
 "postSettings.slug.label" = "מזהה לכתובת";
 
+/* Button text to learn more about permalinks */
+"postSettings.slug.learnMore" = "למידע נוסף";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.navigationTitle" = "מזהה לכתובת";
+
+/* Notice shown when the post doesn't have a remote and permalink template is missing */
+"postSettings.slug.permalinkDraftNotice" = "הקישור הקבוע המוצע יופיע כאשר הטיוטה נשמרת בשרת";
+
+/* Label for the permalink preview */
+"postSettings.slug.permalinkLabel" = "קישור קבוע";
+
+/* Section title for the permalink preview */
+"postSettings.slug.permalinkSection" = "קישור קבוע";
+
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "הזנת מזהה לכתובת";
 
 /* Label for the preview button in Post Settings */
 "postSettings.socialSharing.header" = "שיתוף ברשתות חברתיות";
+
+/* Label for the status field in Post Settings */
+"postSettings.status.label" = "מצב";
+
+/* Navigation title for status picker */
+"postSettings.statusPicker.navigationTitle" = "מצב ונראות";
+
+/* Label showing the current password */
+"postSettings.statusPicker.passwordLabel" = "סיסמה";
+
+/* Toggle label for password protection */
+"postSettings.statusPicker.passwordProtected" = "מוגן בסיסמה";
+
+/* Subtitle for password protected toggle */
+"postSettings.statusPicker.passwordProtectedSubtitle" = "להציג רק לאנשים שיודעים את הסיסמה";
+
+/* Label for schedule date row */
+"postSettings.statusPicker.scheduleDate" = "תאריך";
+
+/* Toggle label for sticky posts */
+"postSettings.statusPicker.sticky" = "דביק";
+
+/* Subtitle for sticky toggle */
+"postSettings.statusPicker.stickySubtitle" = "להצמיד פוסט זה בחלק העליון של הבלוג";
 
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "דביק";
@@ -10252,14 +10665,56 @@ Example: Reply to Pamela Nguyen */
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "נראות";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"postTags.addTag" = "להוסיף תגית";
+/* Navigation bar title of the Post Stats screen */
+"postStats.title" = "נתונים סטטיסטיים של הפוסט";
 
-/* Placeholder text for the tag search field */
-"postTags.searchOrAdd.placeholder" = "לחפש או להוסיף תגית";
+/* Post status title */
+"postStatus.deleted.details" = "נמחק לצמיתות";
 
-/* Title for the tags screen */
-"postTags.title" = "תגיות";
+/* Post status title */
+"postStatus.deleted.title" = "נמחק";
+
+/* Post status details */
+"postStatus.draft.details" = "לא מוכן לפרסום";
+
+/* Post status title */
+"postStatus.draft.title" = "טיוטה";
+
+/* Post status details */
+"postStatus.pending.details" = "בהמתנה לביקורת לפני הפרסום";
+
+/* Post status title */
+"postStatus.pending.title" = "בהמתנה";
+
+/* Post status title */
+"postStatus.private.title" = "פרטי";
+
+/* Post status details */
+"postStatus.published.details" = "זמין לכולם";
+
+/* Post status title */
+"postStatus.published.title" = "פורסם";
+
+/* Post status details */
+"postStatus.scheduled.details" = "פרסום אוטומטי בתאריך שנבחר";
+
+/* Post status title */
+"postStatus.scheduled.title" = "מתוזמן לפרסום";
+
+/* Post status title */
+"postStatus.trash.details" = "הפריט הועבר לפח אבל עדיין לא נמחק";
+
+/* Post status title */
+"postStatus.trash.title" = "הועבר לפח";
+
+/* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.addTag" = "להוסיף %1$@";
+
+/* Placeholder text for the taxonomy search field. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.searchOrAdd.placeholder" = "לחפש או להוסיף את %1$@";
+
+/* Message shown when no taxonomy terms are selected. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.selectionEmpty" = "לא נבחרו פריטים של %1$@";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "ביטול";
@@ -10335,9 +10790,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "קטגוריות";
-
-/* Voiceover accessibility label informing the user that this button dismiss the current view */
-"prepublishing.close" = "לסגור";
 
 /* Button to confirm discarding changes */
 "prepublishing.discardChanges.button" = "לבטל את השינויים";
@@ -10423,12 +10875,17 @@ Example: 27 social shares remaining in the next 30 days */
 /* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
 "prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "אזהרה";
 
-/* The label displayed for a table row that displays the sharing message for the post.
-Tapping on this row allows the user to edit the sharing message. */
+/* Table section title */
 "prepublishing.socialAccounts.message.label" = "הודעה";
+
+/* Placeholder text for the message field in Social Sharing */
+"prepublishing.socialAccounts.messagePlaceholder" = "לכתוב הודעה קצרה שתשותף ברשתות החברתיות לצד הפוסט";
 
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "רשתות חברתיות";
+
+/* Table section title */
+"prepublishing.socialAccounts.servicesSectionTitle" = "שירותים";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "תגיות";
@@ -11360,6 +11817,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "לבחור דומיין";
 
+/* Default text for adding a new item when no label is provided */
+"siteCustomTaxonomies.defaultAddNew" = "להוסיף";
+
+/* Description for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.description" = "טקסונומיות מסייעות לך לארגן תוכן מעבר לקטגוריות ולתגיות הסטנדרטיות.";
+
+/* Title for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.title" = "לא קיימות טקסונומיות מותאמות אישית";
+
+/* Navigation title for the custom taxonomies screen */
+"siteCustomTaxonomies.navigationTitle" = "טקסונומיות";
+
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "siteMedia.accessibilityLabelAudio" = "אודיו, %@";
 
@@ -11378,8 +11847,77 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "יש לבחור מדיה.";
 
+/* Label for the alt for a media asset (image) */
+"siteMedia.details.altText" = "טקסט חלופי";
+
+/* Verb. Button title. Tapping cancels an action. */
+"siteMedia.details.cancel" = "לבטל";
+
+/* Noun. Label for the caption for a media asset (image / video) */
+"siteMedia.details.caption" = "כיתוב";
+
+/* Title for button that permanently deletes a media item (photo / video) */
+"siteMedia.details.delete" = "למחוק";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"siteMedia.details.deleteConfirmation" = "בחרת למחוק פריט זה לצמיתות – האם ההחלטה סופית?";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"siteMedia.details.deleted" = "הפריט נמחק!";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"siteMedia.details.deleting" = "מוחק...";
+
+/* Label for the description for a media asset (image / video) */
+"siteMedia.details.description" = "תיאור";
+
+/* Label for the dimensions in pixels for a media asset (image / video) */
+"siteMedia.details.dimensions" = "ממדים";
+
+/* Label for the file name for a media asset (image / video) */
+"siteMedia.details.fileName" = "שם הקובץ";
+
+/* Label for the file size for a media asset (image / video) */
+"siteMedia.details.fileSize" = "גודל הקובץ";
+
+/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
+"siteMedia.details.fileType" = "סוג קובץ";
+
+/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
+"siteMedia.details.mediaDeleted" = "פריט המדיה נמחק.";
+
+/* Noun. Label for the title of a media asset (image / video) */
+"siteMedia.details.title" = "כותרת";
+
+/* Accessibility label for trash buttons in nav bars */
+"siteMedia.details.trash" = "פח";
+
+/* Text displayed in HUD if there was an error attempting to delete a media item. */
+"siteMedia.details.unableToDeleteMedia" = "לא ניתן למחוק פריט מדיה.";
+
+/* Error shown when the app fails to load a video from the user's media library. */
+"siteMedia.details.unableToLoadVideo" = "לא ניתן לטעון את הווידאו.";
+
+/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
+"siteMedia.details.unableToSaveMedia" = "לא ניתן לשמור פריט מדיה.";
+
+/* Label for the date a media asset (image / video) was uploaded */
+"siteMedia.details.uploaded" = "הועלה";
+
 /* Title for the URL field */
 "siteMedia.details.url" = "כתובת URL";
+
+/* Hint for image alt on image settings. */
+"siteMedia.hints.imageAlt" = "טקסט חלופי לתמונה";
+
+/* Hint for image caption on image settings. */
+"siteMedia.hints.imageCaption" = "כיתוב התמונה";
+
+/* Hint for image description on image settings. */
+"siteMedia.hints.imageDescription" = "תיאור תמונה";
+
+/* Hint for image title on image settings. */
+"siteMedia.hints.imageTitle" = "כותרת התמונה";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "יש להקיש כדי להציג מדיה במסך מלא";
@@ -11477,6 +12015,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "פרטיות";
+
+/* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
+"siteTaxonomy.addNew.format" = "להוסיף %1$@";
 
 /* Hint for users when hidden privacy setting is set */
 "siteVisibility.hidden.hint" = "האתר מוסתר ממבקרים, אשר רואים רק הודעת 'בקרוב' עד שהאתר יהיה מוכן לצפייה.";
@@ -12042,7 +12583,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Reader לתמיכה ב-iOS";
 
-/* Description for empty state when there are no tags */
+/* Description for empty state when there are no tags
+   Description for empty state when there are no tags. %1$@ is the taxonomy name. */
 "tags.empty.description" = "תגיות עוזרות לארגן את התוכן שלך ולעזור לקוראים למצוא פוסטים קשורים בקלות.";
 
 /* Title for empty state when there are no tags */
@@ -12119,9 +12661,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "לא נקרא";
-
-/* Site's Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.subscriber" = "מנוי של האתר";
 
 /* Sites's User Profile. Displayed when the name is empty! */
 "user.details.title.user" = "משתמש של האתר";
@@ -12207,9 +12746,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The heading at the top of the user list */
 "userlist.title" = "משתמשים";
-
-/* Site Subscribers */
-"users.list.title.subscribers" = "מנויים";
 
 /* Screen title */
 "users.title" = "משתמשים";

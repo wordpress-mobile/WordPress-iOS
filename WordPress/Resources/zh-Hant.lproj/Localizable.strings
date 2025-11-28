@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2025-10-07 09:54:10+0000 */
+/* Translation-Revision-Date: 2025-11-25 10:54:12+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: zh_TW */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -581,8 +581,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "快完成了！請輸入驗證器應用程式上的驗證碼。";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "替代文字";
 
 /* No comment provided by engineer. */
@@ -725,9 +724,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "你確定要中斷Jetpack？";
-
-/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "確定要永久刪除這些項目？";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "確定要從 %2$@ 移除 %1$@？";
@@ -1082,7 +1078,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "取消";
@@ -1110,8 +1105,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "下不了決定嗎？ 你可以隨時變更佈景主題。";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "媒體說明文字";
 
 /* Alert title. */
@@ -1777,8 +1771,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "預設";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "預設類別";
 
 /* Label for selecting the default post format
@@ -1787,9 +1780,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "新文章預設值";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "刪除";
 
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "刪除選單";
@@ -1808,14 +1798,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "刪除選單";
 
-/* Text displayed in HUD after successfully deleting a media item */
-"Deleted!" = "已刪除！";
-
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "正在刪除網站…";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "正在刪除…";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "拒絕";
@@ -1823,8 +1807,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Describe the purpose of the image. Leave empty if decorative." = "請說明圖片用途。 如果是為了裝飾，請保留空白。";
 
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "敘述";
 
 /* Shortened version of the main title to be used in back navigation. */
@@ -1842,9 +1825,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
 "Didn't mean to create a new account? Go back to re-enter your email address." = "並不是想要建立新帳號嗎？ 返回並重新輸入電子郵件地址。";
-
-/* Label for the dimensions in pixels for a media asset (image / video) */
-"Dimensions" = "尺寸";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "停用";
@@ -2118,7 +2098,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "編輯此 GIF 會移除動畫。";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "編輯器";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
@@ -2460,11 +2440,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "File block settings" = "檔案區塊設定";
 
-/* Label for the file name for a media asset (image / video) */
+/* No comment provided by engineer. */
 "File name" = "檔案名稱";
-
-/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
-"File type" = "檔案類型";
 
 /* No comment provided by engineer. */
 "File type not supported as a media file." = "媒體檔案不支援的檔案類型。";
@@ -2778,6 +2755,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "攝影師 Cameron Karsten 的作品讓我深受啟發。 我下次會嘗試這些技巧";
 
+/* Text on the support form to refer to what area the user has problem with. */
+"I need help with" = "我需要協助處理";
+
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP 位址";
 
@@ -2823,9 +2803,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint for image caption on image settings. */
 "Image Caption" = "圖片說明";
 
-/* Hint for image description on image settings. */
-"Image Description" = "圖片內容說明";
-
 /* Hint for image link on image settings. */
 "Image Link" = "圖片連結";
 
@@ -2837,9 +2814,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Image file not found." = "找不到圖片檔案。";
-
-/* Hint for image title on image settings. */
-"Image title" = "圖片標題";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "請用簡單幾字描述此網站的內容。";
@@ -3202,6 +3176,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "完成時通知我！";
 
+/* Message info on the support screen. */
+"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "請告訴我們你的網站位址 (URL)，並盡可能詳盡描述你的問題，我們會盡速與你聯絡。";
+
+/* Title to let the user know what do we want on the support screen. */
+"Let’s get this sorted" = "讓我們準備好所需資訊";
+
 /* Lifestyle site intent topic */
 "Lifestyle" = "生活風格";
 
@@ -3402,6 +3382,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "主導覽";
+
+/* Explanation for the option to enable theme styles */
+"Make the block editor look like your theme." = "讓區塊編輯器看起來像你的佈景主題。";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "為頁面新增圖片、GIF、影片和嵌入式媒體，讓你的內容脫穎而出。";
@@ -3744,9 +3727,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "找不到帳號";
-
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "無類別";
 
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "沒有連線";
@@ -4188,9 +4168,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Settings: Comments Paging preferences */
 "Paging" = "分頁";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "上層分類";
-
 /* Parenting site intent topic */
 "Parenting" = "育兒";
 
@@ -4405,9 +4382,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "張貼";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "文章類別";
 
 /* Name of the button to open the post settings */
 "Post Settings" = "文章設定";
@@ -4716,9 +4690,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "將相片上傳至網站前，請先從相片移除位置中繼資料。";
-
-/* First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "移除追蹤者，使其停止接收網站的更新內容。 如果他們願意，仍可造訪你的網站並再次追蹤。";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "取代目前區塊";
@@ -5555,6 +5526,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "標語";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "標籤";
 
@@ -5651,6 +5623,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "點選即可透過外部瀏覽器造訪 Gravatar 網站";
+
+/* Label for viewing the custom taxonomies */
+"Taxonomies" = "分類法";
 
 /* Technology site intent topic */
 "Technology" = "科技";
@@ -5940,9 +5915,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when the user scanned an expired log in code. */
 "This log in code has expired. Please tap the Scan Again button to rescan the code." = "此登入碼已過期。 請點選「重新掃描」按鈕以重新掃描代碼。";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "此媒體項目已刪除。";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "如果有未解決的退款，將無法關閉此使用者帳號。";
 
@@ -6011,7 +5983,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "標題";
@@ -6105,8 +6076,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "轉換區塊…";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "移至回收桶";
 
@@ -6203,9 +6173,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "無法新建邀請連結。";
 
-/* Text displayed in HUD if there was an error attempting to delete a media item. */
-"Unable to delete media item." = "無法刪除媒體項目。";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to disable invite links." = "無法停用邀請連結。";
 
@@ -6236,9 +6203,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "目前無法載入此內容。";
 
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "無法載入影片。";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "無法播放影片";
 
@@ -6247,9 +6211,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "無法還原網站";
-
-/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
-"Unable to save media item." = "無法儲存媒體項目。";
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "無法分享連結";
@@ -6406,9 +6367,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "上傳失敗";
 
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "已上傳";
-
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "已上傳 1 篇文章草稿、%ld 個檔案";
 
@@ -6450,6 +6408,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "使用密碼登入";
+
+/* Option to enable theme styles in the block editor */
+"Use theme styles" = "使用佈景主題樣式";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -6897,7 +6858,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "依國家顯示世界地圖的檢視次數。";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "仍要移除這位使用者嗎？";
 
 /* Button title. Opens the editor to write a new post.
@@ -7368,14 +7329,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "應用程式密碼可提供更安全的自助託管網站連結方式，還支援「%@」等功能。";
 
+/* Feature name for managing application passwords in the app */
+"applicationPasswordRequired.feature.applicationPasswords" = "應用程式密碼管理";
+
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "區塊編輯器";
+
+/* Feature name for managing terms and taxonomies in the app */
+"applicationPasswordRequired.feature.customTaxonomies" = "分類法管理";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "外掛程式管理";
 
-/* Feature name for managing application passwords in the app
-   Feature name for managing users in the app */
+/* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "使用者管理";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -7598,6 +7564,285 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "儲存草稿";
+
+/* Button to add more screenshots */
+"com.jetpack.support.addMoreScreenshots" = "新增更多螢幕截圖";
+
+/* Button to add screenshots */
+"com.jetpack.support.addScreenshots" = "新增螢幕截圖";
+
+/* Header for application logs section */
+"com.jetpack.support.applicationLogs" = "應用程式記錄檔";
+
+/* Description explaining why including logs is helpful */
+"com.jetpack.support.applicationLogsDescription" = "若包含記錄，就能協助我們的團隊調查問題。 記錄檔可能包含最近的應用程式活動。";
+
+/* Navigation title for application logs screen */
+"com.jetpack.support.applicationLogsTitle" = "應用程式記錄檔";
+
+/* Format string for attachment identifier */
+"com.jetpack.support.attachment" = "附件 %@";
+
+/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
+"com.jetpack.support.attachmentLimit" = "附件大小上限：%1$@\/%2$@";
+
+/* Bot greeting message. %1$@ is the user's name */
+"com.jetpack.support.botGreeting" = "%1$@，您好！";
+
+/* Bot introduction message explaining its purpose */
+"com.jetpack.support.botIntroduction" = "我是你的個人 AI 助理。 如果你有任何關於網站或帳號的問題，我都能提供協助。";
+
+/* Format string for cache file count and size. %1$d is the number of files, %2$@ is the formatted size. The system will pluralize 'files' based on the number – please specify it as the largest plural value */
+"com.jetpack.support.cacheFiles" = "%1$d 個快取檔案 (%2$@)";
+
+/* Message shown when cache has no files */
+"com.jetpack.support.cacheIsEmpty" = "快取沒有內容";
+
+/* Button to cancel current action */
+"com.jetpack.support.cancel" = "取消";
+
+/* Warning message that deleted logs cannot be recovered */
+"com.jetpack.support.cannotRecoverLogs" = "檔案一經刪除將無法恢復。";
+
+/* Button to clear all activity logs */
+"com.jetpack.support.clearAllActivityLogs" = "清除所有活動記錄";
+
+/* Button to clear disk cache */
+"com.jetpack.support.clearDiskCache" = "清除磁碟快取";
+
+/* Description explaining the purpose of clearing disk cache */
+"com.jetpack.support.clearDiskCacheDescription" = "移除暫存檔案，以騰出空間或解決問題。";
+
+/* Progress text while clearing cache */
+"com.jetpack.support.clearing" = "正在清除...";
+
+/* Message shown when cache clearing is complete */
+"com.jetpack.support.complete" = "完成";
+
+/* Confirmation message when canceling a draft */
+"com.jetpack.support.confirmCancelMessage" = "你確定要取消此訊息？ 您輸入的任何資料都會遺失";
+
+/* Title for alert confirming cancellation */
+"com.jetpack.support.confirmCancellation" = "確認取消";
+
+/* Confirmation dialog title when deleting all logs */
+"com.jetpack.support.confirmDeleteAllLogs" = "你確定要刪除所有記錄嗎？";
+
+/* Section title for contact information */
+"com.jetpack.support.contactInformation" = "聯絡資訊";
+
+/* Button to continue editing a message */
+"com.jetpack.support.continueWriting" = "繼續撰寫";
+
+/* Message shown at end of closed support conversation */
+"com.jetpack.support.conversationEnded" = "對談結束。 無法進一步回覆。";
+
+/* Navigation title for bot conversations list */
+"com.jetpack.support.conversations" = "對談";
+
+/* Button to delete all log files */
+"com.jetpack.support.deleteAllLogs" = "刪除所有記錄";
+
+/* Description text for diagnostics screen */
+"com.jetpack.support.diagnosticsDescription" = "執行一般維護和疑難排解工作項目。";
+
+/* Navigation title for diagnostics screen */
+"com.jetpack.support.diagnosticsTitle" = "診斷";
+
+/* Button to discard changes in a draft message */
+"com.jetpack.support.discardChanges" = "捨棄變更";
+
+/* Notice explaining where support will send email responses */
+"com.jetpack.support.emailNotice" = "我們會傳送電子郵件到這個地址。";
+
+/* Error title when logs fail to load */
+"com.jetpack.support.errorLoadingLogs" = "載入記錄檔時發生錯誤";
+
+/* Error message when support conversations fail to load */
+"com.jetpack.support.errorLoadingSupportConversations" = "載入支援對談時發生錯誤";
+
+/* Title for error alerts */
+"com.jetpack.support.errorTitle" = "錯誤";
+
+/* Option to export log as a file */
+"com.jetpack.support.exportAsFile" = "匯出為檔案";
+
+/* Button to dismiss alerts. */
+"com.jetpack.support.gotIt" = "收到";
+
+/* Text on the support form to refer to what area the user has problem with. */
+"com.jetpack.support.iNeedHelp" = "我需要協助處理";
+
+/* Toggle label to include application logs in the support request */
+"com.jetpack.support.includeApplicationLogs" = "包含應用程式記錄檔";
+
+/* Section title for issue details */
+"com.jetpack.support.issueDetails" = "問題詳細資料";
+
+/* Format string for when conversation was last updated */
+"com.jetpack.support.lastUpdated" = "最近更新：%@";
+
+/* Progress message while loading conversation messages */
+"com.jetpack.support.loadingBotConversationMessages" = "正在載入訊息";
+
+/* Progress message while loading bot conversations */
+"com.jetpack.support.loadingBotConversations" = "正在載入 Bot 對談";
+
+/* Progress text while loading support conversations */
+"com.jetpack.support.loadingConversations" = "正在載入對談";
+
+/* Progress message while loading disk usage information */
+"com.jetpack.support.loadingDiskUsage" = "正在載入磁碟使用量";
+
+/* Progress message while loading an image attachment */
+"com.jetpack.support.loadingImage" = "正在載入圖片";
+
+/* Progress message shown in overlay while refreshing content */
+"com.jetpack.support.loadingLatestContent" = "正在載入最新內容";
+
+/* Progress message while loading application log content */
+"com.jetpack.support.loadingLogContent" = "正在載入記錄檔內容...";
+
+/* Progress message while loading log files */
+"com.jetpack.support.loadingLogs" = "正在載入記錄檔...";
+
+/* Progress text while loading conversation messages */
+"com.jetpack.support.loadingMessages" = "正在載入訊息";
+
+/* Progress message while loading a video attachment */
+"com.jetpack.support.loadingVideo" = "正在載入影片";
+
+/* Section header for log files sorted by date */
+"com.jetpack.support.logFilesByDate" = "依建立日期排列記錄檔案";
+
+/* Text indicating which log files will be included in the support request */
+"com.jetpack.support.logFilesToUpload" = "將會上傳下列記錄檔：";
+
+/* Footer text explaining log retention policy */
+"com.jetpack.support.logRetentionNotice" = "可儲存最多七天的記錄。";
+
+/* Section header for message text input */
+"com.jetpack.support.message" = "訊息";
+
+/* Success message when reply is sent successfully */
+"com.jetpack.support.messageSent" = "已傳送的訊息";
+
+/* Format string for number of messages in conversation */
+"com.jetpack.support.messagesCount" = "%d 則訊息";
+
+/* The title of a new bot chat in the support area of the app */
+"com.jetpack.support.new-bot-chat" = "新的 Bot 對談";
+
+/* Option to create a new support ticket */
+"com.jetpack.support.newSupportTicket" = "新的客服支援單";
+
+/* Label shown when there are no bot conversations */
+"com.jetpack.support.noConversations" = "沒有對談";
+
+/* Description shown when no log files are available */
+"com.jetpack.support.noLogsAvailable" = "沒有可用的活動記錄";
+
+/* Label shown when no log files are available */
+"com.jetpack.support.noLogsFound" = "找不到記錄";
+
+/* Button to open a support ticket */
+"com.jetpack.support.openSupportTicket" = "開立客服支援單";
+
+/* Text indicating a field is optional */
+"com.jetpack.support.optional" = "(非必要)";
+
+/* Navigation title for replying to a support conversation */
+"com.jetpack.support.reply" = "回覆";
+
+/* Description for saving log as a file */
+"com.jetpack.support.saveAsFile" = "儲存為可分享或儲存的檔案";
+
+/* Label for screenshots section */
+"com.jetpack.support.screenshots" = "螢幕截圖";
+
+/* Description for screenshots section */
+"com.jetpack.support.screenshotsDescription" = "若新增螢幕截圖，就能協助我們迅速瞭解並加快問題解決速度。";
+
+/* Button to send a message or reply */
+"com.jetpack.support.send" = "傳送";
+
+/* Description for sending logs to support */
+"com.jetpack.support.sendLogsToSupport" = "將記錄直送支援團隊";
+
+/* Progress text while sending a message */
+"com.jetpack.support.sending" = "正在傳送";
+
+/* Progress message shown while sending a message */
+"com.jetpack.support.sendingMessage" = "傳送訊息";
+
+/* Button to share content */
+"com.jetpack.support.share" = "分享";
+
+/* Navigation title for sharing activity log */
+"com.jetpack.support.shareActivityLog" = "分享活動記錄";
+
+/* Message shown when sharing log with support */
+"com.jetpack.support.sharingWithSupport" = "與支援團隊分享！";
+
+/* Site Address title on the support form */
+"com.jetpack.support.siteAddress" = "網站位址";
+
+/* Description encouraging user to start a new conversation */
+"com.jetpack.support.startNewConversation" = "使用上方按鈕開始新的對談";
+
+/* Subject title on the support form */
+"com.jetpack.support.subject" = "主旨";
+
+/* Placeholder for subject field */
+"com.jetpack.support.subjectPlaceholder" = "問題的簡短摘要";
+
+/* Button title to submit a support request. */
+"com.jetpack.support.submitRequest" = "提交支援請求";
+
+/* Navigation title for the support conversations list */
+"com.jetpack.support.supportConversations" = "支援對談";
+
+/* Title for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSent" = "已傳送要求！";
+
+/* Message for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSentMessage" = "已成功傳送你的支援申請。 會盡快透過電子郵件回覆你。";
+
+/* Progress message shown while bot is thinking */
+"com.jetpack.support.thinking" = "正在思考...";
+
+/* Title of the view for contacting support. */
+"com.jetpack.support.title" = "聯絡支援團隊";
+
+/* Button to retry a failed operation */
+"com.jetpack.support.tryAgain" = "請再試一次";
+
+/* Error title when log deletion fails */
+"com.jetpack.support.unableToDeleteLogs" = "無法刪除記錄檔";
+
+/* Error message when conversation cannot be displayed */
+"com.jetpack.support.unableToDisplayConversation" = "無法顯示對談";
+
+/* Error title when video cannot be loaded or played */
+"com.jetpack.support.unableToDisplayVideo" = "無法顯示影片";
+
+/* Error message when application logs cannot be loaded */
+"com.jetpack.support.unableToLoadApplicationLogs" = "無法載入應用程式記錄";
+
+/* Error title when bot conversations fail to load */
+"com.jetpack.support.unableToLoadConversations" = "無法載入對談";
+
+/* Error title when messages fail to load */
+"com.jetpack.support.unableToLoadMessages" = "無法載入訊息";
+
+/* Error title when message sending fails */
+"com.jetpack.support.unableToSendMessage" = "無法傳送訊息";
+
+/* Button to view an attachment */
+"com.jetpack.support.view" = "檢視";
+
+/* Progress message shown during cache clearing operation */
+"com.jetpack.support.working" = "處理中";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "留言";
@@ -7861,6 +8106,9 @@ Example: Reply to Pamela Nguyen */
 /* Weekly Roundup debug menu item */
 "debugMenu.weeklyRoundup" = "每週綜合整理";
 
+/* Title for selecting a default category for a post */
+"defaultCategory.title" = "預設分類";
+
 /* Error tilte */
 "discussionSettings.saveErrorTitle" = "無法儲存設定";
 
@@ -8000,10 +8248,10 @@ Example: Reply to Pamela Nguyen */
 "double-tap to change unit" = "點兩下即可變更單位";
 
 /* Message for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.message" = "你確定要刪除這個標籤嗎？";
+"edit.tag.delete.confirmation.message" = "你確定要刪除嗎？";
 
-/* Title for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.title" = "刪除標籤";
+/* Title for delete a term confirmation dialog */
+"edit.tag.delete.confirmation.title" = "刪除";
 
 /* Placeholder text for tag description field */
 "edit.tag.description.placeholder" = "新增說明...";
@@ -8018,7 +8266,37 @@ Example: Reply to Pamela Nguyen */
 "edit.tag.section.description" = "說明";
 
 /* Section header for tag name in edit tag view */
-"edit.tag.section.tag" = "標籤";
+"edit.tag.section.tag" = "名稱";
+
+/* Context menu action to insert a block */
+"editor.blockInserter.insertBlock" = "插入區塊";
+
+/* Placeholder text for block search field */
+"editor.blockInserter.search" = "搜尋";
+
+/* Button title to collapse and show fewer blocks */
+"editor.blockInserter.showLess" = "顯示較少項目";
+
+/* Button title to expand and show more blocks */
+"editor.blockInserter.showMore" = "顯示更多項目";
+
+/* Error message when media insertion fails */
+"editor.media.failedToInsert" = "無法插入媒體檔";
+
+/* Category name for section showing all patterns */
+"editor.patterns.all" = "全部";
+
+/* Context menu action to insert a pattern */
+"editor.patterns.insertPattern" = "插入版面配置";
+
+/* Title shown when no patterns match the search */
+"editor.patterns.noPatternsFound" = "找不到版面配置";
+
+/* Navigation title for patterns view */
+"editor.patterns.title" = "版面配置";
+
+/* Category name for patterns without a category */
+"editor.patterns.uncategorized" = "未分類";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "例如：1122334455";
@@ -8572,6 +8850,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "撰寫網誌";
+
+/* Description for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.description" = "任何人都可以檢視這篇文章";
+
+/* Title for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.title" = "所有人";
+
+/* Description for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.description" = "只有付費訂閱者才能檢視這篇文章";
+
+/* Title for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.title" = "付費訂閱者";
+
+/* Description for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.description" = "所有訂閱者 (包括免費讀者) 都看得到這篇文章";
+
+/* Title for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.title" = "所有訂閱者";
 
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "如需使用統計與通知，請以 %@ 登入。";
@@ -9162,6 +9458,12 @@ Example: Reply to Pamela Nguyen */
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "你沒有檢視此私人網誌的權限。";
 
+/* Default empty state message format when there are no terms. %1$@ is the taxonomy name. */
+"localizedLabels.defaultNoTerms.format" = "沒有「%1$@」";
+
+/* Default search placeholder format. %1$@ is the taxonomy name. */
+"localizedLabels.defaultSearch.format" = "搜尋「%1$@」";
+
 /* Button to dismiss the re-authentication view */
 "login.appPasswordReAuth.cancelButton" = "取消";
 
@@ -9297,17 +9599,23 @@ Example: Reply to Pamela Nguyen */
 /* Message about buying storage add-on */
 "mediaLibrary.storageDetails.buyStorage.message" = "購買儲存空間附加元件";
 
-/* Message shown when all media items are attached */
-"mediaLibrary.storageDetails.cleanup.allAttached" = "已附加媒體庫中的所有項目。";
+/* Label for audio media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.audio" = "音訊";
 
-/* Message shown while loading unattached media count */
-"mediaLibrary.storageDetails.cleanup.loading" = "正在尋找是否有任何未附加的媒體項目…";
+/* Label for document media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.document" = "文件";
 
-/* Message about unattached media that can be cleaned up. %1$d is the count of unattached media. */
-"mediaLibrary.storageDetails.cleanup.message" = "%1$d 個未附加的項目。 移除這些項目以釋放儲存空間。";
+/* Label for image media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.image" = "圖片";
 
-/* Title for cleanup section */
-"mediaLibrary.storageDetails.cleanup.title" = "移除未使用的項目";
+/* Label for other/unknown media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.other" = "其他";
+
+/* Label for PowerPoint/presentation media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.powerpoint" = "簡報";
+
+/* Label for video media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.video" = "影片";
 
 /* Success message shown after upgrading plan */
 "mediaLibrary.storageDetails.purchase.plan.success" = "你的網站方案已升級！";
@@ -9693,6 +10001,12 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "我的頁面";
 
+/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
+"parentCategory.noCategory" = "無類別";
+
+/* Title for selecting parent category of a category */
+"parentCategory.title" = "上層分類";
+
 /* Title for the parent page picker screen */
 "parentPagePicker.title" = "上層頁面";
 
@@ -9851,6 +10165,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the post author selection screen */
 "postAuthorPicker.title" = "作者";
+
+/* Title for selecting categories for a post or a page */
+"postCategories.title" = "分類";
+
+/* Toggle label for allowing comments on post */
+"postDiscussion.allowComments.label" = "允許留言";
+
+/* Toggle label for allowing pings/trackbacks on post */
+"postDiscussion.allowPings.label" = "允許引用通知";
+
+/* Footer text when comments are disabled */
+"postDiscussion.comments.disabled.footer" = "訪客無法新增新的留言或回覆。 現有留言維持可見。";
+
+/* Footer text when comments are enabled */
+"postDiscussion.comments.enabled.footer" = "訪客可以新增新的留言與回覆。";
+
+/* Link text for learning more about pingbacks and trackbacks */
+"postDiscussion.pingbacks.learnMore.text" = "深入了解引用通知和通告";
+
+/* Navigation title for post discussion settings */
+"postDiscussion.title" = "討論";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "捨棄變更";
@@ -10083,6 +10418,9 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "無標題";
 
+/* Section header for Access settings in Post Settings */
+"postSettings.access.header" = "存取";
+
 /* Label for the author field in Post Settings */
 "postSettings.author.label" = "作者";
 
@@ -10101,6 +10439,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "postSettings.discardChanges.title" = "要捨棄變更嗎？";
+
+/* Status text when discussion (comments) is disabled */
+"postSettings.discussion.closed" = "已關閉";
+
+/* Label for the discussion settings field in Post Settings */
+"postSettings.discussion.label" = "討論";
+
+/* Status text when discussion (comments) is enabled */
+"postSettings.discussion.open" = "開啟";
+
+/* Label for the checkbox that lets you send a post to newsletter subscribers */
+"postSettings.emailToSubscribers.label" = "傳送電子郵件給訂閱者";
 
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d 個字元";
@@ -10201,6 +10551,21 @@ Example: Reply to Pamela Nguyen */
 /* Cell title for the Top Level option case */
 "postSettings.parentPage.topLevel" = "最上層";
 
+/* Accessibility label for hide password button */
+"postSettings.passwordEntry.hidePassword" = "隱藏密碼";
+
+/* Instructions for password entry */
+"postSettings.passwordEntry.instructions" = "輸入密碼保護這篇文章。 只有擁有密碼的使用者才能檢視。";
+
+/* Navigation title for password entry screen */
+"postSettings.passwordEntry.navigationTitle" = "輸入密碼";
+
+/* Placeholder for password field */
+"postSettings.passwordEntry.placeholder" = "輸入密碼";
+
+/* Accessibility label for show password button */
+"postSettings.passwordEntry.showPassword" = "顯示密碼";
+
 /* Label for the permalink field in Post Settings */
 "postSettings.permalink.label" = "永久連結";
 
@@ -10225,17 +10590,59 @@ Example: Reply to Pamela Nguyen */
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "一般";
 
+/* Description text explaining what the slug editor does */
+"postSettings.slug.customizeDescription" = "自訂永久連結的最後一部分。";
+
 /* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "postSettings.slug.hint" = "代稱是使 URL 更易讀好記的文章標題版本。";
 
 /* Label for the slug field. Should be the same as WP core. */
 "postSettings.slug.label" = "代稱";
 
+/* Button text to learn more about permalinks */
+"postSettings.slug.learnMore" = "深入了解";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.navigationTitle" = "代稱";
+
+/* Notice shown when the post doesn't have a remote and permalink template is missing */
+"postSettings.slug.permalinkDraftNotice" = "將草稿儲存於伺服器時，畫面會顯示建議的永久連結";
+
+/* Label for the permalink preview */
+"postSettings.slug.permalinkLabel" = "永久連結";
+
+/* Section title for the permalink preview */
+"postSettings.slug.permalinkSection" = "永久連結";
+
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "輸入代稱";
 
 /* Label for the preview button in Post Settings */
 "postSettings.socialSharing.header" = "社群分享";
+
+/* Label for the status field in Post Settings */
+"postSettings.status.label" = "狀態";
+
+/* Navigation title for status picker */
+"postSettings.statusPicker.navigationTitle" = "狀態及可見度";
+
+/* Label showing the current password */
+"postSettings.statusPicker.passwordLabel" = "密碼";
+
+/* Toggle label for password protection */
+"postSettings.statusPicker.passwordProtected" = "受密碼保護";
+
+/* Subtitle for password protected toggle */
+"postSettings.statusPicker.passwordProtectedSubtitle" = "只有知道密碼的人才看得到";
+
+/* Label for schedule date row */
+"postSettings.statusPicker.scheduleDate" = "日期";
+
+/* Toggle label for sticky posts */
+"postSettings.statusPicker.sticky" = "置頂";
+
+/* Subtitle for sticky toggle */
+"postSettings.statusPicker.stickySubtitle" = "將這則文章釘選至部落格頂端";
 
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "置頂";
@@ -10255,14 +10662,53 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "文章統計資料";
 
-/* Button to add a new tag. %1$@ is the tag name. */
-"postTags.addTag" = "新增標籤";
+/* Post status title */
+"postStatus.deleted.details" = "已永久刪除";
 
-/* Placeholder text for the tag search field */
-"postTags.searchOrAdd.placeholder" = "搜尋或新增標籤";
+/* Post status title */
+"postStatus.deleted.title" = "已刪除";
 
-/* Title for the tags screen */
-"postTags.title" = "標籤";
+/* Post status details */
+"postStatus.draft.details" = "還沒準備好發表";
+
+/* Post status title */
+"postStatus.draft.title" = "草稿";
+
+/* Post status details */
+"postStatus.pending.details" = "待發表審核";
+
+/* Post status title */
+"postStatus.pending.title" = "待確認";
+
+/* Post status title */
+"postStatus.private.title" = "私人";
+
+/* Post status details */
+"postStatus.published.details" = "所有人都能檢視";
+
+/* Post status title */
+"postStatus.published.title" = "已發表";
+
+/* Post status details */
+"postStatus.scheduled.details" = "在所選日期自動發表";
+
+/* Post status title */
+"postStatus.scheduled.title" = "已排程";
+
+/* Post status title */
+"postStatus.trash.details" = "已移至垃圾桶但尚未刪除";
+
+/* Post status title */
+"postStatus.trash.title" = "已移至垃圾桶";
+
+/* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.addTag" = "新增「%1$@」";
+
+/* Placeholder text for the taxonomy search field. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.searchOrAdd.placeholder" = "搜尋或新增「%1$@」";
+
+/* Message shown when no taxonomy terms are selected. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.selectionEmpty" = "未選取「%1$@」";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "取消";
@@ -10338,9 +10784,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "類別";
-
-/* Voiceover accessibility label informing the user that this button dismiss the current view */
-"prepublishing.close" = "關閉";
 
 /* Button to confirm discarding changes */
 "prepublishing.discardChanges.button" = "捨棄變更";
@@ -10426,12 +10869,17 @@ Example: 27 social shares remaining in the next 30 days */
 /* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
 "prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "警告";
 
-/* The label displayed for a table row that displays the sharing message for the post.
-Tapping on this row allows the user to edit the sharing message. */
+/* Table section title */
 "prepublishing.socialAccounts.message.label" = "訊息";
+
+/* Placeholder text for the message field in Social Sharing */
+"prepublishing.socialAccounts.messagePlaceholder" = "撰寫簡短訊息，連同文章一併分享至社群媒體";
 
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "社群";
+
+/* Table section title */
+"prepublishing.socialAccounts.servicesSectionTitle" = "服務";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "標籤";
@@ -11360,6 +11808,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "選取網域";
 
+/* Default text for adding a new item when no label is provided */
+"siteCustomTaxonomies.defaultAddNew" = "新增";
+
+/* Description for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.description" = "可透過分類法，整理標準分類和標籤以外的內容。";
+
+/* Title for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.title" = "無自訂的分類法";
+
+/* Navigation title for the custom taxonomies screen */
+"siteCustomTaxonomies.navigationTitle" = "分類法";
+
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "siteMedia.accessibilityLabelAudio" = "音訊，於 %@ 建立";
 
@@ -11378,8 +11838,77 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "選取媒體。";
 
+/* Label for the alt for a media asset (image) */
+"siteMedia.details.altText" = "替代文字";
+
+/* Verb. Button title. Tapping cancels an action. */
+"siteMedia.details.cancel" = "取消";
+
+/* Noun. Label for the caption for a media asset (image / video) */
+"siteMedia.details.caption" = "說明";
+
+/* Title for button that permanently deletes a media item (photo / video) */
+"siteMedia.details.delete" = "刪除";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"siteMedia.details.deleteConfirmation" = "你確定要永久刪除這個項目嗎？";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"siteMedia.details.deleted" = "已刪除！";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"siteMedia.details.deleting" = "正在刪除...";
+
+/* Label for the description for a media asset (image / video) */
+"siteMedia.details.description" = "說明";
+
+/* Label for the dimensions in pixels for a media asset (image / video) */
+"siteMedia.details.dimensions" = "尺寸";
+
+/* Label for the file name for a media asset (image / video) */
+"siteMedia.details.fileName" = "檔案名稱";
+
+/* Label for the file size for a media asset (image / video) */
+"siteMedia.details.fileSize" = "檔案大小";
+
+/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
+"siteMedia.details.fileType" = "檔案類型";
+
+/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
+"siteMedia.details.mediaDeleted" = "此媒體項目已刪除。";
+
+/* Noun. Label for the title of a media asset (image / video) */
+"siteMedia.details.title" = "標題";
+
+/* Accessibility label for trash buttons in nav bars */
+"siteMedia.details.trash" = "移至垃圾桶";
+
+/* Text displayed in HUD if there was an error attempting to delete a media item. */
+"siteMedia.details.unableToDeleteMedia" = "無法刪除媒體項目。";
+
+/* Error shown when the app fails to load a video from the user's media library. */
+"siteMedia.details.unableToLoadVideo" = "無法載入影片。";
+
+/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
+"siteMedia.details.unableToSaveMedia" = "無法儲存媒體項目。";
+
+/* Label for the date a media asset (image / video) was uploaded */
+"siteMedia.details.uploaded" = "已上傳";
+
 /* Title for the URL field */
 "siteMedia.details.url" = "URL";
+
+/* Hint for image alt on image settings. */
+"siteMedia.hints.imageAlt" = "圖片替代文字";
+
+/* Hint for image caption on image settings. */
+"siteMedia.hints.imageCaption" = "圖片說明";
+
+/* Hint for image description on image settings. */
+"siteMedia.hints.imageDescription" = "圖片內容說明";
+
+/* Hint for image title on image settings. */
+"siteMedia.hints.imageTitle" = "圖片標題";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "點選即可在全螢幕中檢視媒體";
@@ -11477,6 +12006,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "隱私權";
+
+/* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
+"siteTaxonomy.addNew.format" = "新增「%1$@」";
 
 /* Hint for users when hidden privacy setting is set */
 "siteVisibility.hidden.hint" = "除非網站準備好供訪客瀏覽，否則訪客看不到網站，只看得到「即將推出」通知。";
@@ -12039,7 +12571,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* View title for Help & Support page. */
 "support.title" = "說明";
 
-/* Description for empty state when there are no tags */
+/* Description for empty state when there are no tags
+   Description for empty state when there are no tags. %1$@ is the taxonomy name. */
 "tags.empty.description" = "可運用標籤整理內容，方便讀者尋找相關文章。";
 
 /* Title for empty state when there are no tags */
@@ -12116,9 +12649,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "未讀";
-
-/* Site's Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.subscriber" = "網站的訂閱者";
 
 /* Sites's User Profile. Displayed when the name is empty! */
 "user.details.title.user" = "網站的使用者";
@@ -12204,9 +12734,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The heading at the top of the user list */
 "userlist.title" = "使用者";
-
-/* Site Subscribers */
-"users.list.title.subscribers" = "訂閱者";
 
 /* Screen title */
 "users.title" = "使用者";

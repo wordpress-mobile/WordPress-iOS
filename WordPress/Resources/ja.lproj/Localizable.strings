@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2025-09-16 09:54:09+0000 */
+/* Translation-Revision-Date: 2025-11-25 10:54:12+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: ja_JP */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -581,8 +581,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "もう少しで完了です。認証アプリから認証コードを入力してください。";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "代替テキスト";
 
 /* No comment provided by engineer. */
@@ -725,9 +724,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "このサイトから Jetpack の連携を解除してもよいですか ?";
-
-/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "この項目を完全に削除してもよいですか ?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "%2$@ から %1$@ を削除してもよいですか ?";
@@ -1082,7 +1078,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "キャンセル";
@@ -1110,8 +1105,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "決められませんか ? テーマはいつでも変更できます。";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "キャプション";
 
 /* Alert title. */
@@ -1777,8 +1771,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "デフォルト";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "デフォルトカテゴリー";
 
 /* Label for selecting the default post format
@@ -1787,9 +1780,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "新しい投稿のデフォルト";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "削除";
 
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "メニューを削除";
@@ -1808,14 +1798,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "メニューを削除";
 
-/* Text displayed in HUD after successfully deleting a media item */
-"Deleted!" = "削除しました。";
-
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "サイトを削除中…";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "削除しています…";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "非承認";
@@ -1823,8 +1807,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Describe the purpose of the image. Leave empty if decorative." = "画像の目的を説明します。 デザインである場合は、空欄のままにします。";
 
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "説明";
 
 /* Shortened version of the main title to be used in back navigation. */
@@ -1842,9 +1825,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
 "Didn't mean to create a new account? Go back to re-enter your email address." = "新しいアカウントを作成しない場合は、 戻ってメールアドレスを再度入力してください。";
-
-/* Label for the dimensions in pixels for a media asset (image / video) */
-"Dimensions" = "サイズ";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "無効化";
@@ -2121,7 +2101,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "この GIF を編集するとアニメーションが削除されます。";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "編集者";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
@@ -2463,11 +2443,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "File block settings" = "ファイルブロック設定";
 
-/* Label for the file name for a media asset (image / video) */
+/* No comment provided by engineer. */
 "File name" = "ファイル名";
-
-/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
-"File type" = "ファイルの種類";
 
 /* No comment provided by engineer. */
 "File type not supported as a media file." = "メディアファイルとしてサポートされていないファイルタイプです。";
@@ -2781,6 +2758,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "写真家の Cameron Karsten 氏の作品にはとても感銘を受けました。 この技術を今度試すつもりです";
 
+/* Text on the support form to refer to what area the user has problem with. */
+"I need help with" = "サポートが必要な領域";
+
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "IP アドレス";
 
@@ -2826,9 +2806,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint for image caption on image settings. */
 "Image Caption" = "画像のキャプション";
 
-/* Hint for image description on image settings. */
-"Image Description" = "画像の説明";
-
 /* Hint for image link on image settings. */
 "Image Link" = "画像リンク";
 
@@ -2840,9 +2817,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Image file not found." = "画像ファイルが見つかりませんでした。";
-
-/* Hint for image title on image settings. */
-"Image title" = "画像タイトル";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "このサイトを短い文章で説明してください。";
@@ -3205,6 +3179,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "完了時間を知らせてください !";
 
+/* Message info on the support screen. */
+"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "サイトアドレス (URL) をお知らせいただき、問題について可能な限り詳しくご説明ください。折り返しご連絡いたします。";
+
+/* Title to let the user know what do we want on the support screen. */
+"Let’s get this sorted" = "問題を解決しましょう";
+
 /* Lifestyle site intent topic */
 "Lifestyle" = "ライフスタイル";
 
@@ -3405,6 +3385,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "メインナビゲーション";
+
+/* Explanation for the option to enable theme styles */
+"Make the block editor look like your theme." = "ブロックエディターをテーマと同じ見た目にします。";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "画像、gif、動画、埋め込みメディアをページに追加することで、コンテンツを差別化しましょう。";
@@ -3747,9 +3730,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "アカウントが見つかりません";
-
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "カテゴリーなし";
 
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "接続できません";
@@ -4191,9 +4171,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Settings: Comments Paging preferences */
 "Paging" = "ページング";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "親カテゴリー";
-
 /* Parenting site intent topic */
 "Parenting" = "育児";
 
@@ -4408,9 +4385,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "投稿";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "投稿カテゴリー";
 
 /* Name of the button to open the post settings */
 "Post Settings" = "投稿設定";
@@ -4719,9 +4693,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "サイトにアップロードする前に、写真から位置情報メタデータを削除します。";
-
-/* First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "フォロワーを削除すると、そのフォロワーにはお客様のサイトの更新情報が送信されなくなります。 そのフォロワーがお客様のサイトを再び訪問し、再度お客様のサイトをフォローすることもできます。";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "現在のブロックを置き換え";
@@ -5558,6 +5529,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "キャッチフレーズ";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "タグ";
 
@@ -5654,6 +5626,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "タップして外部ブラウザーで Gravatar のサイトにアクセス";
+
+/* Label for viewing the custom taxonomies */
+"Taxonomies" = "タクソノミー";
 
 /* Technology site intent topic */
 "Technology" = "テクノロジー";
@@ -5943,9 +5918,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when the user scanned an expired log in code. */
 "This log in code has expired. Please tap the Scan Again button to rescan the code." = "このログインコードの有効期限は切れています。 「再スキャン」ボタンをタップしてコードをもう一度スキャンしてください。";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "このメディアファイルは削除されています。";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "未解決のチャージバックがある場合、このユーザーアカウントを閉鎖できません。";
 
@@ -6014,7 +5986,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "タイトル";
@@ -6108,8 +6079,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "ブロックを変換…";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "ゴミ箱";
 
@@ -6206,9 +6176,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "新規招待リストを作成できません。";
 
-/* Text displayed in HUD if there was an error attempting to delete a media item. */
-"Unable to delete media item." = "メディアファイルを削除できません。";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to disable invite links." = "招待リンクを無効にできません。";
 
@@ -6239,9 +6206,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "現在このページを読み込めません。";
 
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "動画を読み込めません。";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "動画を再生できません";
 
@@ -6250,9 +6214,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "サイトを復元できません";
-
-/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
-"Unable to save media item." = "メディアファイルを保存できません。";
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "リンクを共有できません";
@@ -6409,9 +6370,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "アップロードに失敗しました";
 
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "アップロード完了";
-
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "1件の下書き投稿、%ld個のファイルがアップロードされました";
 
@@ -6453,6 +6411,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "パスワードを使用してログイン";
+
+/* Option to enable theme styles in the block editor */
+"Use theme styles" = "テーマスタイルを使用";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -6900,7 +6861,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "国別表示数の世界地図。";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "本当にこの人を削除しますか ?";
 
 /* Button title. Opens the editor to write a new post.
@@ -7371,14 +7332,19 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "アプリケーションパスワードを使用するとインストール型のサイトにより安全に接続でき、%@ などの機能がサポートされます。";
 
+/* Feature name for managing application passwords in the app */
+"applicationPasswordRequired.feature.applicationPasswords" = "アプリケーションパスワード";
+
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "ブロックエディター";
+
+/* Feature name for managing terms and taxonomies in the app */
+"applicationPasswordRequired.feature.customTaxonomies" = "タクソノミー管理";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "プラグイン管理";
 
-/* Feature name for managing application passwords in the app
-   Feature name for managing users in the app */
+/* Feature name for managing users in the app */
 "applicationPasswordRequired.feature.users" = "ユーザー管理";
 
 /* Title for the button to authenticate with Application Passwords */
@@ -7599,6 +7565,285 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "下書きを保存";
 
+/* Button to add more screenshots */
+"com.jetpack.support.addMoreScreenshots" = "スクリーンショットをさらに追加";
+
+/* Button to add screenshots */
+"com.jetpack.support.addScreenshots" = "スクリーンショットを追加";
+
+/* Header for application logs section */
+"com.jetpack.support.applicationLogs" = "アプリケーションログ";
+
+/* Description explaining why including logs is helpful */
+"com.jetpack.support.applicationLogsDescription" = "ログを添付すると問題の調査に役立ちます。 ログには最近のアプリのアクティビティが含まれている可能性があります。";
+
+/* Navigation title for application logs screen */
+"com.jetpack.support.applicationLogsTitle" = "アプリケーションログ";
+
+/* Format string for attachment identifier */
+"com.jetpack.support.attachment" = "添付ファイル%@";
+
+/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
+"com.jetpack.support.attachmentLimit" = "添付ファイルの上限: %1$@ \/ %2$@";
+
+/* Bot greeting message. %1$@ is the user's name */
+"com.jetpack.support.botGreeting" = "%1$@さん、こんにちは！";
+
+/* Bot introduction message explaining its purpose */
+"com.jetpack.support.botIntroduction" = "あなたのパーソナル AI アシスタントです。 サイトやアカウントについての質問にお答えします。";
+
+/* Format string for cache file count and size. %1$d is the number of files, %2$@ is the formatted size. The system will pluralize 'files' based on the number – please specify it as the largest plural value */
+"com.jetpack.support.cacheFiles" = "%1$d件のキャッシュされたファイル (%2$@)";
+
+/* Message shown when cache has no files */
+"com.jetpack.support.cacheIsEmpty" = "キャッシュが空です";
+
+/* Button to cancel current action */
+"com.jetpack.support.cancel" = "キャンセル";
+
+/* Warning message that deleted logs cannot be recovered */
+"com.jetpack.support.cannotRecoverLogs" = "元に戻すことはできません。";
+
+/* Button to clear all activity logs */
+"com.jetpack.support.clearAllActivityLogs" = "すべてのアクティビティログを消去";
+
+/* Button to clear disk cache */
+"com.jetpack.support.clearDiskCache" = "ディスクキャッシュをを消去";
+
+/* Description explaining the purpose of clearing disk cache */
+"com.jetpack.support.clearDiskCacheDescription" = "一時ファイルを削除して空き容量を増やすか、問題を解決してください。";
+
+/* Progress text while clearing cache */
+"com.jetpack.support.clearing" = "消去中...";
+
+/* Message shown when cache clearing is complete */
+"com.jetpack.support.complete" = "完了";
+
+/* Confirmation message when canceling a draft */
+"com.jetpack.support.confirmCancelMessage" = "このメッセージをキャンセルしてもよいですか ? 入力したデータはすべて失われます";
+
+/* Title for alert confirming cancellation */
+"com.jetpack.support.confirmCancellation" = "キャンセルを実行";
+
+/* Confirmation dialog title when deleting all logs */
+"com.jetpack.support.confirmDeleteAllLogs" = "すべてのログを削除してもよいですか ?";
+
+/* Section title for contact information */
+"com.jetpack.support.contactInformation" = "連絡先情報";
+
+/* Button to continue editing a message */
+"com.jetpack.support.continueWriting" = "執筆を続行";
+
+/* Message shown at end of closed support conversation */
+"com.jetpack.support.conversationEnded" = "以上で会話を終了します。 これ以上返信することはできません。";
+
+/* Navigation title for bot conversations list */
+"com.jetpack.support.conversations" = "会話";
+
+/* Button to delete all log files */
+"com.jetpack.support.deleteAllLogs" = "すべてのログを削除";
+
+/* Description text for diagnostics screen */
+"com.jetpack.support.diagnosticsDescription" = "一般的なメンテナンスとトラブルシューティングのタスクを実行します。";
+
+/* Navigation title for diagnostics screen */
+"com.jetpack.support.diagnosticsTitle" = "診断";
+
+/* Button to discard changes in a draft message */
+"com.jetpack.support.discardChanges" = "変更を破棄";
+
+/* Notice explaining where support will send email responses */
+"com.jetpack.support.emailNotice" = "このアドレスにメールでお知らせします。";
+
+/* Error title when logs fail to load */
+"com.jetpack.support.errorLoadingLogs" = "ログの読み込みエラー";
+
+/* Error message when support conversations fail to load */
+"com.jetpack.support.errorLoadingSupportConversations" = "サポート会話の読み込みエラー";
+
+/* Title for error alerts */
+"com.jetpack.support.errorTitle" = "エラー";
+
+/* Option to export log as a file */
+"com.jetpack.support.exportAsFile" = "ファイルとしてエクスポート";
+
+/* Button to dismiss alerts. */
+"com.jetpack.support.gotIt" = "OK";
+
+/* Text on the support form to refer to what area the user has problem with. */
+"com.jetpack.support.iNeedHelp" = "サポートが必要な領域";
+
+/* Toggle label to include application logs in the support request */
+"com.jetpack.support.includeApplicationLogs" = "アプリケーションログを含める";
+
+/* Section title for issue details */
+"com.jetpack.support.issueDetails" = "問題の詳細";
+
+/* Format string for when conversation was last updated */
+"com.jetpack.support.lastUpdated" = "最終更新日時: %@";
+
+/* Progress message while loading conversation messages */
+"com.jetpack.support.loadingBotConversationMessages" = "メッセージを読み込んでいます";
+
+/* Progress message while loading bot conversations */
+"com.jetpack.support.loadingBotConversations" = "ボットの会話を読み込んでいます";
+
+/* Progress text while loading support conversations */
+"com.jetpack.support.loadingConversations" = "会話を読み込んでいます";
+
+/* Progress message while loading disk usage information */
+"com.jetpack.support.loadingDiskUsage" = "ディスク使用量を読み込んでいます";
+
+/* Progress message while loading an image attachment */
+"com.jetpack.support.loadingImage" = "画像を読み込んでいます";
+
+/* Progress message shown in overlay while refreshing content */
+"com.jetpack.support.loadingLatestContent" = "最新のコンテンツを読み込んでいます";
+
+/* Progress message while loading application log content */
+"com.jetpack.support.loadingLogContent" = "ログのコンテンツを読み込んでいます...";
+
+/* Progress message while loading log files */
+"com.jetpack.support.loadingLogs" = "ログを読み込んでいます...";
+
+/* Progress text while loading conversation messages */
+"com.jetpack.support.loadingMessages" = "メッセージを読み込んでいます";
+
+/* Progress message while loading a video attachment */
+"com.jetpack.support.loadingVideo" = "動画を読み込んでいます";
+
+/* Section header for log files sorted by date */
+"com.jetpack.support.logFilesByDate" = "ログファイル (作成日順)";
+
+/* Text indicating which log files will be included in the support request */
+"com.jetpack.support.logFilesToUpload" = "次のログファイルがアップロードされます:";
+
+/* Footer text explaining log retention policy */
+"com.jetpack.support.logRetentionNotice" = "最大7日間分のログが保存されます。";
+
+/* Section header for message text input */
+"com.jetpack.support.message" = "メッセージ";
+
+/* Success message when reply is sent successfully */
+"com.jetpack.support.messageSent" = "メッセージを送信しました";
+
+/* Format string for number of messages in conversation */
+"com.jetpack.support.messagesCount" = "%d件のメッセージ";
+
+/* The title of a new bot chat in the support area of the app */
+"com.jetpack.support.new-bot-chat" = "ボットの新しいチャット";
+
+/* Option to create a new support ticket */
+"com.jetpack.support.newSupportTicket" = "新しいサポートチケット";
+
+/* Label shown when there are no bot conversations */
+"com.jetpack.support.noConversations" = "会話がありません";
+
+/* Description shown when no log files are available */
+"com.jetpack.support.noLogsAvailable" = "表示できるアクティビティログがありません";
+
+/* Label shown when no log files are available */
+"com.jetpack.support.noLogsFound" = "ログが見つかりません";
+
+/* Button to open a support ticket */
+"com.jetpack.support.openSupportTicket" = "サポートチケットを開く";
+
+/* Text indicating a field is optional */
+"com.jetpack.support.optional" = "(オプション)";
+
+/* Navigation title for replying to a support conversation */
+"com.jetpack.support.reply" = "返信";
+
+/* Description for saving log as a file */
+"com.jetpack.support.saveAsFile" = "ファイル形式で保存して共有または保存";
+
+/* Label for screenshots section */
+"com.jetpack.support.screenshots" = "スクリーンショット";
+
+/* Description for screenshots section */
+"com.jetpack.support.screenshotsDescription" = "スクリーンショットを添付すると、問題の把握と解決がスムーズになります。";
+
+/* Button to send a message or reply */
+"com.jetpack.support.send" = "送信";
+
+/* Description for sending logs to support */
+"com.jetpack.support.sendLogsToSupport" = "サポートチームにログを直接送信";
+
+/* Progress text while sending a message */
+"com.jetpack.support.sending" = "送信中";
+
+/* Progress message shown while sending a message */
+"com.jetpack.support.sendingMessage" = "メッセージを送信しています";
+
+/* Button to share content */
+"com.jetpack.support.share" = "共有";
+
+/* Navigation title for sharing activity log */
+"com.jetpack.support.shareActivityLog" = "アクティビティログを共有";
+
+/* Message shown when sharing log with support */
+"com.jetpack.support.sharingWithSupport" = "サポートと共有しています";
+
+/* Site Address title on the support form */
+"com.jetpack.support.siteAddress" = "サイトのアドレス";
+
+/* Description encouraging user to start a new conversation */
+"com.jetpack.support.startNewConversation" = "上のボタンを使用して新しい会話を開始します";
+
+/* Subject title on the support form */
+"com.jetpack.support.subject" = "件名";
+
+/* Placeholder for subject field */
+"com.jetpack.support.subjectPlaceholder" = "問題の簡単な概要";
+
+/* Button title to submit a support request. */
+"com.jetpack.support.submitRequest" = "サポートリクエストを送信";
+
+/* Navigation title for the support conversations list */
+"com.jetpack.support.supportConversations" = "サポートの会話";
+
+/* Title for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSent" = "リクエストを送信しました。";
+
+/* Message for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSentMessage" = "サポートリクエストは正常に送信されました。 できるだけ早くメールで返信いたします。";
+
+/* Progress message shown while bot is thinking */
+"com.jetpack.support.thinking" = "考えています...";
+
+/* Title of the view for contacting support. */
+"com.jetpack.support.title" = "サポートに連絡";
+
+/* Button to retry a failed operation */
+"com.jetpack.support.tryAgain" = "もう一度試す";
+
+/* Error title when log deletion fails */
+"com.jetpack.support.unableToDeleteLogs" = "ログを削除できません";
+
+/* Error message when conversation cannot be displayed */
+"com.jetpack.support.unableToDisplayConversation" = "会話を表示できません";
+
+/* Error title when video cannot be loaded or played */
+"com.jetpack.support.unableToDisplayVideo" = "動画を表示できません";
+
+/* Error message when application logs cannot be loaded */
+"com.jetpack.support.unableToLoadApplicationLogs" = "アプリケーションログを読み込めません";
+
+/* Error title when bot conversations fail to load */
+"com.jetpack.support.unableToLoadConversations" = "会話を読み込めません";
+
+/* Error title when messages fail to load */
+"com.jetpack.support.unableToLoadMessages" = "メッセージを読み込めません";
+
+/* Error title when message sending fails */
+"com.jetpack.support.unableToSendMessage" = "メッセージを送信できません";
+
+/* Button to view an attachment */
+"com.jetpack.support.view" = "表示";
+
+/* Progress message shown during cache clearing operation */
+"com.jetpack.support.working" = "処理しています";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "コメント";
 
@@ -7685,6 +7930,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility hint for create floating action button */
 "createPostSheet.createPostHint" = "投稿またはページを作成";
+
+/* Create Sheet button title */
+"createSheet.page" = "ページ";
+
+/* Create Sheet button title */
+"createSheet.post" = "投稿";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "カスタマイズされたダッシュボードを作成して、表示するレポートを選択します。 最も重視するデータに集中できます。";
@@ -7852,6 +8103,9 @@ Example: Reply to Pamela Nguyen */
 /* Weekly Roundup debug menu item */
 "debugMenu.weeklyRoundup" = "1週間のまとめ";
 
+/* Title for selecting a default category for a post */
+"defaultCategory.title" = "デフォルトカテゴリー";
+
 /* Error tilte */
 "discussionSettings.saveErrorTitle" = "設定の保存に失敗しました";
 
@@ -7991,10 +8245,10 @@ Example: Reply to Pamela Nguyen */
 "double-tap to change unit" = "ダブルタップして単位を変更";
 
 /* Message for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.message" = "このタグを削除してもよいですか ?";
+"edit.tag.delete.confirmation.message" = "これを削除してもよろしいですか ?";
 
-/* Title for delete tag confirmation dialog */
-"edit.tag.delete.confirmation.title" = "タグを削除";
+/* Title for delete a term confirmation dialog */
+"edit.tag.delete.confirmation.title" = "削除";
 
 /* Placeholder text for tag description field */
 "edit.tag.description.placeholder" = "説明を追加…";
@@ -8009,7 +8263,37 @@ Example: Reply to Pamela Nguyen */
 "edit.tag.section.description" = "説明";
 
 /* Section header for tag name in edit tag view */
-"edit.tag.section.tag" = "タグ";
+"edit.tag.section.tag" = "名前";
+
+/* Context menu action to insert a block */
+"editor.blockInserter.insertBlock" = "ブロックを挿入";
+
+/* Placeholder text for block search field */
+"editor.blockInserter.search" = "検索";
+
+/* Button title to collapse and show fewer blocks */
+"editor.blockInserter.showLess" = "簡易表示";
+
+/* Button title to expand and show more blocks */
+"editor.blockInserter.showMore" = "さらに表示";
+
+/* Error message when media insertion fails */
+"editor.media.failedToInsert" = "メディアの挿入に失敗しました";
+
+/* Category name for section showing all patterns */
+"editor.patterns.all" = "すべて";
+
+/* Context menu action to insert a pattern */
+"editor.patterns.insertPattern" = "パターンを挿入";
+
+/* Title shown when no patterns match the search */
+"editor.patterns.noPatternsFound" = "パターンが見つかりませんでした";
+
+/* Navigation title for patterns view */
+"editor.patterns.title" = "パターン";
+
+/* Category name for patterns without a category */
+"editor.patterns.uncategorized" = "未分類";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "例「1122334455」";
@@ -8092,6 +8376,30 @@ Example: Reply to Pamela Nguyen */
 
 /* A footer retry button */
 "general.pagingFooterView.retry" = "再試行";
+
+/* Generated content length (needs to be short) */
+"generation.length.long" = "長い";
+
+/* Generated content length (needs to be short) */
+"generation.length.medium" = "中";
+
+/* Generated content length (needs to be short) */
+"generation.length.short" = "短い";
+
+/* AI generation style */
+"generation.style.conversational" = "会話的";
+
+/* AI generation style */
+"generation.style.engaging" = "やり取りしやすい";
+
+/* AI generation style */
+"generation.style.formal" = "フォーマル";
+
+/* AI generation style */
+"generation.style.professional" = "プロフェッショナル";
+
+/* AI generation style */
+"generation.style.witty" = "機知に富んでいる";
 
 /* A generic title for an error */
 "generic.error.title" = "エラー";
@@ -8206,6 +8514,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Message shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.message" = "AIで抜粋を生成するには、「設定」で Apple Intelligence を有効にします。 この機能は、デバイス上の処理を使ってプライバシーを保護します。";
+
+/* Button to open Apple Intelligence settings */
+"intelligence.unavailableView.appleIntelligenceDisabled.openSettings" = "設定を開く";
+
+/* Title shown when Apple Intelligence is disabled */
+"intelligence.unavailableView.appleIntelligenceDisabled.title" = "Apple Intelligence が必要です";
+
+/* Message shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.message" = "Apple Intelligence はこの端末では利用できません";
+
+/* Title shown when Apple Intelligence is unavailable */
+"intelligence.unavailableView.appleIntelligenceUnvailable.title" = "Apple Intelligence を利用できません";
+
+/* Description shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.description" = "AI モデルはダウンロード中または準備中です。 しばらくしてから再度お試しください。";
+
+/* Title shown when the AI model is not ready */
+"intelligence.unavailableView.preparingModel.title" = "モデルを準備中…";
 
 /* Cancel dialog confirmation title */
 "inviteSubscribers.cancelConfirmationTitle" = "新しい購読者を破棄してもよいですか ?";
@@ -8519,6 +8848,24 @@ Example: Reply to Pamela Nguyen */
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "ブログに投稿";
 
+/* Description for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.description" = "この投稿は誰でも閲覧できます";
+
+/* Title for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.title" = "全員";
+
+/* Description for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.description" = "有料購読者のみがこの投稿を閲覧可能";
+
+/* Title for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.title" = "有料購読者";
+
+/* Description for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.description" = "この投稿は無料購読者を含むすべての購読者に表示されます";
+
+/* Title for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.title" = "すべての購読者";
+
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "「統計と通知」を使用するには、%@ でログインする必要があります。";
 
@@ -8614,6 +8961,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for metric selection */
 "jetpackStats.addChart.selectMetric" = "メトリクスを選択";
+
+/* Today chart title */
+"jetpackStats.addChart.today" = "今日";
 
 /* Today option description
    Top list option description */
@@ -8931,6 +9281,12 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title */
 "jetpackStats.postDetails.title" = "投稿統計情報";
 
+/* Section title */
+"jetpackStats.postDetails.top10" = "上位10";
+
+/* Section title */
+"jetpackStats.postDetails.top50" = "上位50";
+
 /* Must be short!Label for total email opens metric */
 "jetpackStats.postDetails.totalOpens" = "合計開封数";
 
@@ -9033,6 +9389,9 @@ Example: Reply to Pamela Nguyen */
 /* Stats screen title */
 "jetpackStats.title" = "統計";
 
+/* Today card title */
+"jetpackStats.todayCard.title" = "今日";
+
 /* Title for items with highest bounce rate */
 "jetpackStats.topList.highestBounceRate" = "バウンスレートが最高";
 
@@ -9077,6 +9436,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "この非公開ブログの閲覧権限がありません。";
+
+/* Default empty state message format when there are no terms. %1$@ is the taxonomy name. */
+"localizedLabels.defaultNoTerms.format" = "%1$@はありません";
+
+/* Default search placeholder format. %1$@ is the taxonomy name. */
+"localizedLabels.defaultSearch.format" = "%1$@を検索";
 
 /* Button to dismiss the re-authentication view */
 "login.appPasswordReAuth.cancelButton" = "キャンセル";
@@ -9138,8 +9503,14 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "縦横比グリッド";
 
+/* Navigation bar button item */
+"mediaLibrary.buttonAddMedia" = "メディアを追加";
+
 /* Context menu button */
 "mediaLibrary.buttonDelete" = "削除";
+
+/* Navigation bar button item */
+"mediaLibrary.buttonFilter" = "フィルター";
 
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "選択";
@@ -9198,6 +9569,51 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "正方形グリッド";
 
+/* Detail message for buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.detail" = "高画質の写真、動画、その他のメディア向けの容量を確保できます。";
+
+/* Message about buying storage add-on */
+"mediaLibrary.storageDetails.buyStorage.message" = "ストレージアドオンを購入";
+
+/* Label for audio media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.audio" = "音声ファイル";
+
+/* Label for document media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.document" = "文書";
+
+/* Label for image media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.image" = "画像";
+
+/* Label for other/unknown media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.other" = "その他";
+
+/* Label for PowerPoint/presentation media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.powerpoint" = "プレゼンテーション";
+
+/* Label for video media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.video" = "動画";
+
+/* Success message shown after upgrading plan */
+"mediaLibrary.storageDetails.purchase.plan.success" = "サイトプランがアップグレードされました。";
+
+/* Success message shown after purchasing storage add-on */
+"mediaLibrary.storageDetails.purchase.storage.success" = "サイトのメディアライブラリのストレージが増えました。";
+
+/* Title for the storage details screen */
+"mediaLibrary.storageDetails.title" = "メディアライブラリのストレージ";
+
+/* Detail message for upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.detail" = "ストレージ容量を増やすには、プランをアップグレードしてください。";
+
+/* Message about upgrading plan */
+"mediaLibrary.storageDetails.upgradePlan.message" = "プランをアップグレード";
+
+/* Storage usage message showing used space and total space. %1$@ is used space, %2$@ is total space. */
+"mediaLibrary.storageDetails.usage" = "%1$@ \/ %2$@ を利用中";
+
+/* Message shown while calculating storage usage */
+"mediaLibrary.storageDetails.usage.calculating" = "計算中...";
+
 /* Media screen navigation title */
 "mediaLibrary.title" = "メディア";
 
@@ -9251,6 +9667,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "動画を撮影";
+
+/* The menu item of viewing media library usage */
+"mediaPicker.viewUsage" = "使用量を表示";
 
 /* Navigation title for media preview. Example: 1 of 3 */
 "mediaPreview.NofM" = "%1$@ \/ %2$@";
@@ -9558,6 +9977,12 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "自分のページ";
 
+/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
+"parentCategory.noCategory" = "カテゴリーなし";
+
+/* Title for selecting parent category of a category */
+"parentCategory.title" = "親カテゴリー";
+
 /* Title for the parent page picker screen */
 "parentPagePicker.title" = "親ページ";
 
@@ -9716,6 +10141,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the post author selection screen */
 "postAuthorPicker.title" = "投稿者";
+
+/* Title for selecting categories for a post or a page */
+"postCategories.title" = "カテゴリー";
+
+/* Toggle label for allowing comments on post */
+"postDiscussion.allowComments.label" = "コメントを許可";
+
+/* Toggle label for allowing pings/trackbacks on post */
+"postDiscussion.allowPings.label" = "ピンバックを許可";
+
+/* Footer text when comments are disabled */
+"postDiscussion.comments.disabled.footer" = "訪問者は新しいコメントや返信を追加できません。 既存のコメントは引き続き表示されます。";
+
+/* Footer text when comments are enabled */
+"postDiscussion.comments.enabled.footer" = "訪問者は新しいコメントや返信を追加できます。";
+
+/* Link text for learning more about pingbacks and trackbacks */
+"postDiscussion.pingbacks.learnMore.text" = "ピンバックとトラックバックについてさらに詳しく";
+
+/* Navigation title for post discussion settings */
+"postDiscussion.title" = "ディスカッション";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "変更を破棄";
@@ -9948,6 +10394,9 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "無題";
 
+/* Section header for Access settings in Post Settings */
+"postSettings.access.header" = "アクセス";
+
 /* Label for the author field in Post Settings */
 "postSettings.author.label" = "投稿者";
 
@@ -9967,8 +10416,62 @@ Example: Reply to Pamela Nguyen */
 /* Title for the discard changes confirmation dialog */
 "postSettings.discardChanges.title" = "変更を破棄しますか ?";
 
+/* Status text when discussion (comments) is disabled */
+"postSettings.discussion.closed" = "クローズド";
+
+/* Label for the discussion settings field in Post Settings */
+"postSettings.discussion.label" = "ディスカッション";
+
+/* Status text when discussion (comments) is enabled */
+"postSettings.discussion.open" = "オープン";
+
+/* Label for the checkbox that lets you send a post to newsletter subscribers */
+"postSettings.emailToSubscribers.label" = "購読者へのメール";
+
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d文字";
+
+/* Button to generate an excerpt using AI */
+"postSettings.excerpt.generateButton" = "生成";
+
+/* Character count display. %d is replaced with the number of characters. */
+"postSettings.excerpt.generator.characterCount" = "%d文字";
+
+/* Button to suggest (generate) more options */
+"postSettings.excerpt.generator.generateMore" = "その他のオプションを提案";
+
+/* Label for the length picker section */
+"postSettings.excerpt.generator.length" = "長さ";
+
+/* Accessibility label for the length adjustment slider */
+"postSettings.excerpt.generator.lengthSlider" = "長さスライダー";
+
+/* Button to make excerpts longer */
+"postSettings.excerpt.generator.longer" = "長い";
+
+/* Label for excerpt option number. %d is replaced with the option number. */
+"postSettings.excerpt.generator.option" = "オプション %d";
+
+/* Title shown when ready to generate excerpts */
+"postSettings.excerpt.generator.ready" = "生成準備完了";
+
+/* Description shown when ready to generate excerpts */
+"postSettings.excerpt.generator.readyDescription" = "タップして AI を活用した抜粋オプションを作成";
+
+/* Button to make excerpts shorter */
+"postSettings.excerpt.generator.shorter" = "短い";
+
+/* Title for the style picker section */
+"postSettings.excerpt.generator.style" = "文体";
+
+/* Label for the style picker section */
+"postSettings.excerpt.generator.styleLabel" = "スタイル";
+
+/* Accessibility label for the style picker */
+"postSettings.excerpt.generator.stylePicker" = "スタイル";
+
+/* Title for the excerpt generator popover */
+"postSettings.excerpt.generator.title" = "抜粋を生成";
 
 /* Section header for Excerpt in Post Settings */
 "postSettings.excerpt.header" = "抜粋";
@@ -10024,6 +10527,21 @@ Example: Reply to Pamela Nguyen */
 /* Cell title for the Top Level option case */
 "postSettings.parentPage.topLevel" = "トップレベル";
 
+/* Accessibility label for hide password button */
+"postSettings.passwordEntry.hidePassword" = "パスワードを隠す";
+
+/* Instructions for password entry */
+"postSettings.passwordEntry.instructions" = "この投稿を保護するためのパスワードを入力してください パスワードを持つユーザーのみが閲覧できます。";
+
+/* Navigation title for password entry screen */
+"postSettings.passwordEntry.navigationTitle" = "パスワードを入力";
+
+/* Placeholder for password field */
+"postSettings.passwordEntry.placeholder" = "パスワードを入力";
+
+/* Accessibility label for show password button */
+"postSettings.passwordEntry.showPassword" = "パスワードを表示";
+
 /* Label for the permalink field in Post Settings */
 "postSettings.permalink.label" = "パーマリンク";
 
@@ -10039,8 +10557,14 @@ Example: Reply to Pamela Nguyen */
 /* Label for the publish date field in Post Settings */
 "postSettings.publishDate.label" = "日付";
 
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"postSettings.publishDateImmediately" = "すぐに";
+
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "一般";
+
+/* Description text explaining what the slug editor does */
+"postSettings.slug.customizeDescription" = "パーマリンクの最後の部分をカスタマイズします。";
 
 /* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "postSettings.slug.hint" = "スラッグは URL に適した形式の投稿タイトルです。";
@@ -10048,8 +10572,50 @@ Example: Reply to Pamela Nguyen */
 /* Label for the slug field. Should be the same as WP core. */
 "postSettings.slug.label" = "スラッグ";
 
+/* Button text to learn more about permalinks */
+"postSettings.slug.learnMore" = "さらに詳しく";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.navigationTitle" = "スラッグ";
+
+/* Notice shown when the post doesn't have a remote and permalink template is missing */
+"postSettings.slug.permalinkDraftNotice" = "下書きをサーバーに保存すると、パーマリンクの候補が表示されます";
+
+/* Label for the permalink preview */
+"postSettings.slug.permalinkLabel" = "パーマリンク";
+
+/* Section title for the permalink preview */
+"postSettings.slug.permalinkSection" = "パーマリンク";
+
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "スラッグを入力";
+
+/* Label for the preview button in Post Settings */
+"postSettings.socialSharing.header" = "ソーシャル共有";
+
+/* Label for the status field in Post Settings */
+"postSettings.status.label" = "ステータス";
+
+/* Navigation title for status picker */
+"postSettings.statusPicker.navigationTitle" = "ステータスと公開状態";
+
+/* Label showing the current password */
+"postSettings.statusPicker.passwordLabel" = "パスワード";
+
+/* Toggle label for password protection */
+"postSettings.statusPicker.passwordProtected" = "パスワード保護";
+
+/* Subtitle for password protected toggle */
+"postSettings.statusPicker.passwordProtectedSubtitle" = "パスワードを知っている人のみ閲覧可能";
+
+/* Label for schedule date row */
+"postSettings.statusPicker.scheduleDate" = "日付";
+
+/* Toggle label for sticky posts */
+"postSettings.statusPicker.sticky" = "先頭固定表示";
+
+/* Subtitle for sticky toggle */
+"postSettings.statusPicker.stickySubtitle" = "この投稿をブログの上部に固定";
 
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "先頭固定表示";
@@ -10060,11 +10626,62 @@ Example: Reply to Pamela Nguyen */
 /* Label for the tags field. Should be the same as WP core. */
 "postSettings.tags.label" = "タグ";
 
+/* Label for the tag suggestions section. */
+"postSettings.tags.suggestions" = "おすすめのタグ";
+
 /* Label for the visibility field in Post Settings */
 "postSettings.visibility.label" = "表示設定";
 
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "投稿統計情報";
+
+/* Post status title */
+"postStatus.deleted.details" = "完全に削除しました";
+
+/* Post status title */
+"postStatus.deleted.title" = "削除済み";
+
+/* Post status details */
+"postStatus.draft.details" = "公開の準備ができていない";
+
+/* Post status title */
+"postStatus.draft.title" = "下書き";
+
+/* Post status details */
+"postStatus.pending.details" = "公開前のレビュー待ちです";
+
+/* Post status title */
+"postStatus.pending.title" = "保留中";
+
+/* Post status title */
+"postStatus.private.title" = "非公開";
+
+/* Post status details */
+"postStatus.published.details" = "すべての人に表示";
+
+/* Post status title */
+"postStatus.published.title" = "公開済み";
+
+/* Post status details */
+"postStatus.scheduled.details" = "選択した日付に自動で公開";
+
+/* Post status title */
+"postStatus.scheduled.title" = "予約済み";
+
+/* Post status title */
+"postStatus.trash.details" = "ゴミ箱に移動しましたが、まだ削除されていません";
+
+/* Post status title */
+"postStatus.trash.title" = "ゴミ箱に移動";
+
+/* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.addTag" = "%1$@を追加";
+
+/* Placeholder text for the taxonomy search field. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.searchOrAdd.placeholder" = "%1$@を検索または追加";
+
+/* Message shown when no taxonomy terms are selected. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.selectionEmpty" = "%1$@が選択されていません";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "キャンセル";
@@ -10141,8 +10758,14 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "カテゴリー";
 
-/* Voiceover accessibility label informing the user that this button dismiss the current view */
-"prepublishing.close" = "閉じる";
+/* Button to confirm discarding changes */
+"prepublishing.discardChanges.button" = "変更を破棄";
+
+/* Message for the discard changes confirmation dialog */
+"prepublishing.discardChanges.message" = "投稿設定に対する変更が保存されていません。 これらを破棄してもよいですか ?";
+
+/* Title for the discard changes confirmation dialog */
+"prepublishing.discardChanges.title" = "変更を破棄しますか ?";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack ソーシャル";
@@ -10159,8 +10782,14 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "prepublishing.publishDateImmediately" = "すぐに";
 
+/* The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?' */
+"prepublishing.publishingSectionTitle" = "公開する準備はできていますか ?";
+
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "公開先";
+
+/* Button to confirm discarding changes */
+"prepublishing.saveChanges.button" = "変更を保存";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "予約";
@@ -10213,15 +10842,23 @@ Example: 27 social shares remaining in the next 30 days */
 /* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
 "prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "警告";
 
-/* The label displayed for a table row that displays the sharing message for the post.
-Tapping on this row allows the user to edit the sharing message. */
+/* Table section title */
 "prepublishing.socialAccounts.message.label" = "メッセージ";
+
+/* Placeholder text for the message field in Social Sharing */
+"prepublishing.socialAccounts.messagePlaceholder" = "投稿に添える短いメッセージを書いてソーシャルメディアで共有します";
 
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "ソーシャル";
 
+/* Table section title */
+"prepublishing.socialAccounts.servicesSectionTitle" = "サービス";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "タグ";
+
+/* Navigation title */
+"prepublishing.title" = "公開";
 
 /* Details label for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadMediaManyItemsRemaining" = "残り%@件のアイテム";
@@ -10297,6 +10934,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Message of error prompt shown when no internet connection is available */
 "reachability-utils.alert.utils" = "インターネットに接続されていないようです。";
+
+/* Navigation title */
+"reader.article.summary" = "概要";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "ブログ %@ がリーダーに表示されなくなります。 タップして元に戻します。";
@@ -10578,6 +11218,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.showBlog" = "「ブログ」に移動";
+
+/* Context menu action */
+"reader.postContextMenu.summarize" = "まとめる";
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "ブラウザで表示";
@@ -11135,6 +11778,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "ドメインを選択";
 
+/* Default text for adding a new item when no label is provided */
+"siteCustomTaxonomies.defaultAddNew" = "追加";
+
+/* Title for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.title" = "カスタムタクソノミーはありません";
+
+/* Navigation title for the custom taxonomies screen */
+"siteCustomTaxonomies.navigationTitle" = "タクソノミー";
+
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "siteMedia.accessibilityLabelAudio" = "音声ファイル (%@)";
 
@@ -11153,8 +11805,77 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "メディアを選択します。";
 
+/* Label for the alt for a media asset (image) */
+"siteMedia.details.altText" = "代替テキスト";
+
+/* Verb. Button title. Tapping cancels an action. */
+"siteMedia.details.cancel" = "キャンセル";
+
+/* Noun. Label for the caption for a media asset (image / video) */
+"siteMedia.details.caption" = "キャプション";
+
+/* Title for button that permanently deletes a media item (photo / video) */
+"siteMedia.details.delete" = "削除";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"siteMedia.details.deleteConfirmation" = "この項目を完全に削除してもよいですか ?";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"siteMedia.details.deleted" = "削除しました。";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"siteMedia.details.deleting" = "削除しています…";
+
+/* Label for the description for a media asset (image / video) */
+"siteMedia.details.description" = "説明";
+
+/* Label for the dimensions in pixels for a media asset (image / video) */
+"siteMedia.details.dimensions" = "サイズ";
+
+/* Label for the file name for a media asset (image / video) */
+"siteMedia.details.fileName" = "ファイル名";
+
+/* Label for the file size for a media asset (image / video) */
+"siteMedia.details.fileSize" = "ファイルサイズ";
+
+/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
+"siteMedia.details.fileType" = "ファイルの種類";
+
+/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
+"siteMedia.details.mediaDeleted" = "このメディアファイルは削除されています。";
+
+/* Noun. Label for the title of a media asset (image / video) */
+"siteMedia.details.title" = "タイトル";
+
+/* Accessibility label for trash buttons in nav bars */
+"siteMedia.details.trash" = "ゴミ箱";
+
+/* Text displayed in HUD if there was an error attempting to delete a media item. */
+"siteMedia.details.unableToDeleteMedia" = "メディアファイルを削除できません。";
+
+/* Error shown when the app fails to load a video from the user's media library. */
+"siteMedia.details.unableToLoadVideo" = "動画を読み込めません。";
+
+/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
+"siteMedia.details.unableToSaveMedia" = "メディアファイルを保存できません。";
+
+/* Label for the date a media asset (image / video) was uploaded */
+"siteMedia.details.uploaded" = "アップロード済み";
+
 /* Title for the URL field */
 "siteMedia.details.url" = "URL";
+
+/* Hint for image alt on image settings. */
+"siteMedia.hints.imageAlt" = "画像代替テキスト";
+
+/* Hint for image caption on image settings. */
+"siteMedia.hints.imageCaption" = "画像のキャプション";
+
+/* Hint for image description on image settings. */
+"siteMedia.hints.imageDescription" = "画像の説明";
+
+/* Hint for image title on image settings. */
+"siteMedia.hints.imageTitle" = "画像タイトル";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "タップしてメディアをフルスクリーンで表示";
@@ -11252,6 +11973,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "プライバシー";
+
+/* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
+"siteTaxonomy.addNew.format" = "%1$@を追加";
 
 /* Hint for users when hidden privacy setting is set */
 "siteVisibility.hidden.hint" = "閲覧の準備が整うまでは「まもなく公開予定」の通知が表示され、訪問者はサイトを閲覧できないようになっています。";
@@ -11432,6 +12156,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "購読者総数";
+
+/* Menu item to disable the new stats */
+"stats.menu.disableNewStats" = "新しい統計情報を無効化";
 
 /* Menu item to send feedback about new stats experience */
 "stats.menu.sendFeedback" = "フィードバックを送る";
@@ -11811,7 +12538,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Subject of new Zendesk ticket. */
 "support.zendesk.readerAppTicketSubject" = "Reader for iOS のサポート";
 
-/* Description for empty state when there are no tags */
+/* Description for empty state when there are no tags
+   Description for empty state when there are no tags. %1$@ is the taxonomy name. */
 "tags.empty.description" = "タグを使用するとコンテンツを整理でき、読者が関連記事を探しやすくなります。";
 
 /* Title for empty state when there are no tags */
@@ -11888,9 +12616,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "未読";
-
-/* Site's Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.subscriber" = "サイトの購読者";
 
 /* Sites's User Profile. Displayed when the name is empty! */
 "user.details.title.user" = "サイトのユーザー";
@@ -11976,9 +12701,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The heading at the top of the user list */
 "userlist.title" = "ユーザー";
-
-/* Site Subscribers */
-"users.list.title.subscribers" = "購読者";
 
 /* Screen title */
 "users.title" = "ユーザー";

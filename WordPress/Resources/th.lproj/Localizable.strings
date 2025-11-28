@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: th */
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
@@ -83,8 +83,7 @@
 /* Settings: Comments Enabled */
 "Allow Comments" = "อนุญาตความเห็น";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "Alt Text";
 
 /* The title of the app appearance settings screen */
@@ -187,7 +186,6 @@
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "ยกเลิก";
@@ -195,8 +193,7 @@
 /* Dialog box title for when the user is canceling an upload. */
 "Cancel media uploads" = "ยกเลิกการอัปโหลดไฟล์สื่อ";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "คำอธิบาย";
 
 /* Alert title. */
@@ -310,8 +307,7 @@
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "หน้าควบคุม";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "หมวดหมู่ค่าเริ่มต้น";
 
 /* Label for selecting the default post format
@@ -321,14 +317,10 @@
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "ค่าเริ่มต้นสำหรับเรื่องใหม่";
 
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "ลบ";
-
 /* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "ลบอย่างถาวร";
 
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "คำขยายความ";
 
 /* Details button that appears in the Theme Browser Header
@@ -396,7 +388,7 @@
 /* Accessibility label for button to edit a comment from a notification */
 "Edit comment" = "แก้ไขความเห็น";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "ตัวแก้ไข";
 
 /* Accessibility label for the Email text field.
@@ -823,9 +815,6 @@
    Settings: Comments Paging preferences */
 "Paging" = "การใส่เลขหน้า";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "หมวดหมู่หลัก";
-
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Login dialog password placeholder
@@ -876,9 +865,6 @@
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "เรื่อง";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "หมวดหมู่เรื่อง";
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
@@ -1160,6 +1146,7 @@
 "Tagline" = "คำอธิบาย";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "ป้ายกำกับ";
 
@@ -1249,7 +1236,6 @@
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "หัวข้อ";
@@ -1265,8 +1251,7 @@
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "กระทู้";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "ถังขยะ";
 
@@ -1345,9 +1330,6 @@
 
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "การอัปโหลดล้มเหลว";
-
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "อัปโหลดแล้ว";
 
 /* \"Uploading\" Status text */
 "Uploading" = "กำลังอัปโหลด";

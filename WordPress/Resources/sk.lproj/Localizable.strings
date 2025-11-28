@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2025-01-08 15:01:32+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: sk */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -247,8 +247,7 @@
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Už to skoro je hotové! Prosím zadajte overovací kód z aplikácie overovania.";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "Alt Text";
 
 /* String displayed before offering alternative login methods */
@@ -323,9 +322,6 @@
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Určite chcete odpojiť Jetpack z webovej stránky?";
-
-/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "Naozaj chcete túto položku natrvalo odstrániť?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Určite chcete odstrániť %1$@ z %2$@?";
@@ -472,7 +468,6 @@
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Zrušiť";
@@ -491,8 +486,7 @@
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Ruší sa...";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "Titulok";
 
 /* Alert title. */
@@ -797,8 +791,7 @@
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Predvolené";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "Predvolená kategória";
 
 /* Label for selecting the default post format
@@ -807,9 +800,6 @@
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Základné pre nové príspevky";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "Odstrániť";
 
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Zmazať menu";
@@ -825,25 +815,15 @@
 /* Title of alert when site deletion fails */
 "Delete Site Error" = "Chyba pri mazaní stránky";
 
-/* Text displayed in HUD after successfully deleting a media item */
-"Deleted!" = "Zmazané!";
-
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "Mazanie webu...";
 
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Vymazáva sa...";
-
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "Popis";
 
 /* Details button that appears in the Theme Browser Header
    Theme Details action title */
 "Details" = "Detaily";
-
-/* Label for the dimensions in pixels for a media asset (image / video) */
-"Dimensions" = "Rozmery";
 
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Zablokované";
@@ -942,7 +922,7 @@
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Upraviť tlačidlo zdieľania";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "Editor";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
@@ -1109,11 +1089,8 @@
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Stránka sa načítava...";
 
-/* Label for the file name for a media asset (image / video) */
+/* No comment provided by engineer. */
 "File name" = "Názov súboru";
-
-/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
-"File type" = "Typ súboru";
 
 /* Register Domain - Domain contact information field First name
    User's First Name */
@@ -1274,17 +1251,11 @@
 /* Hint for image caption on image settings. */
 "Image Caption" = "Titulok obrázka";
 
-/* Hint for image description on image settings. */
-"Image Description" = "Popis obrázku";
-
 /* Hint for image link on image settings. */
 "Image Link" = "Odkaz obrázku";
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Veľkosť obrázka";
-
-/* Hint for image title on image settings. */
-"Image title" = "Nadpis obrázka";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Pár slovami povedzte niečo o tejto stránke.";
@@ -1752,9 +1723,6 @@
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "Neboli nájdené žiadne účty";
 
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "Žiadna kategória";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Žiadne pripojenie";
 
@@ -1992,9 +1960,6 @@
    Settings: Comments Paging preferences */
 "Paging" = "Stránkovanie";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "Nadradená kategória";
-
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Login dialog password placeholder
@@ -2097,9 +2062,6 @@
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Článok";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "Kategórie článku";
 
 /* Name of the button to open the post settings */
 "Post Settings" = "Nastavenia článku";
@@ -2742,6 +2704,7 @@
 "Tagline" = "Slogan";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "Značky";
 
@@ -2905,9 +2868,6 @@
 /* Informational text for the privacy policy link */
 "This information helps us improve our products, make marketing to you more relevant, personalize your WordPress.com experience, and more as detailed in our privacy policy." = "Tieto informácie nám pomáhajú zlepšiť naše produkty, urobiť marketing relevantnejším, personalizovať vašu skúsenosť s WordPress.com, viac nájdete v našich zásadách ochrany osobných údajov.";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "Táto mediálna položka bola odstránená.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Toto bude zahrnuté v tweetoch, ktoré budú ľudia zdieľať pomocou Twitter tlačidla.";
@@ -2940,7 +2900,6 @@
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "Nadpis";
@@ -2984,8 +2943,7 @@
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Prenos";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "Kôš";
 
@@ -3043,23 +3001,14 @@
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Nie je možné synchronizovať";
 
-/* Text displayed in HUD if there was an error attempting to delete a media item. */
-"Unable to delete media item." = "Nedá sa zmazať mediálny súbor.";
-
 /* Text displayed in HUD if there was an error attempting to load a media image. */
 "Unable to load the image. Please choose a different one or try again later." = "Nepodarilo sa načítať obrázok. Prosím vyberte iný alebo pokus zopakujte neskôr.";
-
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "Nie je možné načítať video.";
 
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Nepodarilo sa prehrať video";
 
 /* No comment provided by engineer. */
 "Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Nenašla sa webová stránka WordPress na tejto URL adrese. Ťuknite \"Potrebujete pomoc?\" na zobrazenie FAQ.";
-
-/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
-"Unable to save media item." = "Nedá sa uložiť mediálny súbor.";
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Nie je možné aktualizovať nastavenia domovskej stránky";
@@ -3146,9 +3095,6 @@
 
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Nahrávanie zlyhalo";
-
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "Nahraté";
 
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "Nahraný 1 koncept príspevku, %ld súborov";
@@ -3392,7 +3338,7 @@
 /* Link to a WordPress.org page for the plugin */
 "WordPress.org Plugin Page" = "WordPress.org Plugin stránka";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Stále si prajete odstrániť tohto používateľa?";
 
 /* Button title. Opens the editor to write a new post.

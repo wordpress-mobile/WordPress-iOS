@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 22:00:55+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: hr */
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
@@ -102,7 +102,6 @@
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Otkaži";
@@ -159,14 +158,7 @@
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Nadzorna ploča";
 
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "Obriši";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Brišem...";
-
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "Opis";
 
 /* Details button that appears in the Theme Browser Header
@@ -218,7 +210,7 @@
 /* No comment provided by engineer. */
 "Edit focal point" = "ažuriraj žarišno mjesto";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "Uređivač";
 
 /* Accessibility label for the email address text field.
@@ -415,9 +407,6 @@
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Stranice";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "Matična Kategorija";
-
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Login dialog password placeholder
@@ -565,6 +554,7 @@
 "Support" = "Podrška";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "Tagovi";
 
@@ -590,7 +580,6 @@
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "Naslov";
@@ -648,9 +637,6 @@
 /* Describes a status of a plugin
    Updating label title */
 "Updating" = "Ažuriranje ";
-
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "Preneseno";
 
 /* \"Uploading\" Status text */
 "Uploading" = "Prenosim";
