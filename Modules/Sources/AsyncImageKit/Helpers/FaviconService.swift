@@ -32,7 +32,7 @@ public actor FaviconService {
         let task = tasks[siteURL] ?? FaviconTask { [session] in
             let (data, response) = try await session.data(from: siteURL)
             try validate(response: response)
-            return await makeFavicon(from: data, siteURL: siteURL)
+            return FaviconService.makeFavicon(from: data, siteURL: siteURL)
         }
         let subscriptionID = UUID()
         task.subscriptions.insert(subscriptionID)
@@ -55,6 +55,20 @@ public actor FaviconService {
         task.task.cancel()
         tasks[key] = nil
     }
+
+    /// Parses HTML data to extract the apple-touch-icon URL or falls back to /favicon.icon
+    public static func makeFavicon(from data: Data, siteURL: URL) -> URL {
+        let html = String(data: data, encoding: .utf8) ?? ""
+        let range = NSRange(location: 0, length: html.utf16.count)
+        if let match = regex?.firstMatch(in: html, options: [], range: range),
+           let matchRange = Range(match.range(at: 1), in: html),
+            let faviconURL = URL(string: String(html[matchRange]), relativeTo: siteURL) {
+            return faviconURL
+        }
+        // Fallback to standard favicon path. It has low quality, but
+        // it's better than nothing.
+        return siteURL.appendingPathComponent("favicon.icon")
+    }
 }
 
 public enum FaviconError: Error, Sendable {
@@ -74,22 +88,9 @@ private final class FaviconCache: @unchecked Sendable {
 }
 
 private let regex: NSRegularExpression? = {
-    let pattern = "<link[^>]*rel=\"apple-touch-icon(?:-precomposed)\"[^>]*href=\"([^\"]+)\"[^>]*>"
+    let pattern = "<link[^>]*rel=\"apple-touch-icon(?:-precomposed)?\"[^>]*href=\"([^\"]+)\"[^>]*>"
     return try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
 }()
-
-private func makeFavicon(from data: Data, siteURL: URL) async -> URL {
-    let html = String(data: data, encoding: .utf8) ?? ""
-    let range = NSRange(location: 0, length: html.utf16.count)
-    if let match = regex?.firstMatch(in: html, options: [], range: range),
-       let matchRange = Range(match.range(at: 1), in: html),
-        let faviconURL = URL(string: String(html[matchRange]), relativeTo: siteURL) {
-        return faviconURL
-    }
-    // Fallback to standard favicon path. It has low quality, but
-    // it's better than nothing.
-    return siteURL.appendingPathComponent("favicon.icon")
-}
 
 private func validate(response: URLResponse) throws {
     guard let response = response as? HTTPURLResponse else {
