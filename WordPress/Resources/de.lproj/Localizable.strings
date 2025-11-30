@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-11-26 09:54:09+0000 */
+/* Translation-Revision-Date: 2025-11-30 02:01:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: de */
@@ -11007,9 +11007,6 @@ Example: 27 social shares remaining in the next 30 days */
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "reader.blog.search.loading.error" = "Es gab ein Problem beim Laden der Blogs";
 
-/* A brief prompt when the user is searching for blogs in the Reader. */
-"reader.blog.search.loading.title" = "Blogs werden abgerufen …";
-
 /* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "reader.blog.search.no.results.message.format" = "Es wurden keine Blogs gefunden, die %@ in deiner Sprache entsprechen.";
 
@@ -11350,6 +11347,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility label for a list of tags in the preview section. */
 "reader.preferences.preview.tagsList.a11y" = "Beispielschlagwörter";
+
+/* Accessibility label for the Extra Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraExtraLarge" = "Überaus groß";
+
+/* Accessibility label for the Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraLarge" = "Extrem groß";
 
 /* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
 "reader.preferences.size.extraLarge" = "Extra Groß";

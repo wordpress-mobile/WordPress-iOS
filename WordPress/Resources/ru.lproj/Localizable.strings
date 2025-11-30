@@ -11004,9 +11004,6 @@ Example: 27 social shares remaining in the next 30 days */
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "reader.blog.search.loading.error" = "Проблема при загрузке блогов";
 
-/* A brief prompt when the user is searching for blogs in the Reader. */
-"reader.blog.search.loading.title" = "Получение блогов…";
-
 /* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "reader.blog.search.no.results.message.format" = "Не найдено записей по запросу %@ на вашем языке.";
 

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-11-16 10:15:08+0000 */
+/* Translation-Revision-Date: 2025-11-29 18:21:06+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: sq_AL */
@@ -2749,6 +2749,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Jam kaq i frymëzuar nga vepra e gdhendësit Çome Çomanga. Do t’i provoj këto teknika në veprën time të ardhshme";
 
+/* Text on the support form to refer to what area the user has problem with. */
+"I need help with" = "Më duhet ndihmë për";
+
 /* Describes the IP address section in the comment detail screen. */
 "IP address" = "Adresë IP";
 
@@ -3167,6 +3170,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the button that will dismiss this view. */
 "Let me know when finished!" = "Bëmani të ditur kur të mbarojë!";
 
+/* Message info on the support screen. */
+"Let us know your site address (URL) and tell us as much as you can about the problem, and we will be in touch soon." = "Na tregoni adresën (URL) e sajtit tuaj dhe do t’ju themi aq sa mundemi rreth problemit dhe do të lidhemi së shpejti bashkë.";
+
+/* Title to let the user know what do we want on the support screen. */
+"Let’s get this sorted" = "Le ta ujdisim";
+
 /* Lifestyle site intent topic */
 "Lifestyle" = "Stil Jetese";
 
@@ -3367,6 +3376,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Lëvizjet Kryesore";
+
+/* Explanation for the option to enable theme styles */
+"Make the block editor look like your theme." = "Bëjeni përpunuesin me blloqe të duket si tema juaj.";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Nxirreni në pah lëndën tuaj duke shtuar te faqet tuaja figura, gif-e, video, dhe media të trupëzuar.";
@@ -5603,6 +5615,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
 "Tap to visit the Gravatar website in an external browser" = "Prekeni, që të vizitoni sajtin Gravatar që nga një shfletues i jashtëm";
 
+/* Label for viewing the custom taxonomies */
+"Taxonomies" = "Klasifikime";
+
 /* Technology site intent topic */
 "Technology" = "Teknologji";
 
@@ -6384,6 +6399,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The button title text for logging in with WP.com password instead of magic link. */
 "Use password to sign in" = "Përdorni fjalëkalimin për hyrje";
+
+/* Option to enable theme styles in the block editor */
+"Use theme styles" = "Përdorni stile teme";
 
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
@@ -7302,8 +7320,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for the prompt to upgrade to Application Passwords. The first argument is the name of the feature that requires Application Passwords. */
 "applicationPasswordRequired.description" = "Fjalëkalimet e aplikacioneve janë një rrugë më e sigurt për t’u lidhur me sajtin tuaj të vetëstrehuar dhe lejojnë mbulim veçorisht të tilla si %@.";
 
+/* Feature name for managing application passwords in the app */
+"applicationPasswordRequired.feature.applicationPasswords" = "Administrim Fjalëkalimesh Aplikacionesh";
+
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Përpunues Me Blloqe";
+
+/* Feature name for managing terms and taxonomies in the app */
+"applicationPasswordRequired.feature.customTaxonomies" = "Administrim Klasifikimesh";
 
 /* Feature name for managing plugins in the app */
 "applicationPasswordRequired.feature.plugins" = "Administrim Shtojcash";
@@ -7537,6 +7561,288 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Post Editor / Button in the 'More' menu */
 "classicEditor.moreMenu.saveDraft" = "Ruaje Skicën";
+
+/* Button to add more screenshots */
+"com.jetpack.support.addMoreScreenshots" = "Shtoni Më Tepër Foto Ekrani";
+
+/* Button to add screenshots */
+"com.jetpack.support.addScreenshots" = "Shtoni Foto Ekrani";
+
+/* Header for application logs section */
+"com.jetpack.support.applicationLogs" = "Regjistra Aplikacionesh";
+
+/* Description explaining why including logs is helpful */
+"com.jetpack.support.applicationLogsDescription" = "Përfshirja e regjistrave mund ta ndihmojë ekipin tonë të hetojë probleme. Regjistrat mund të përmbajnë veprimtari aplikacioni së fundi.";
+
+/* Navigation title for application logs screen */
+"com.jetpack.support.applicationLogsTitle" = "Regjistra Aplikacionesh";
+
+/* Format string for attachment identifier */
+"com.jetpack.support.attachment" = "Bashkëngjitje %@";
+
+/* Format string for attachment size limit. %1$@ is current size, %2$@ is maximum size */
+"com.jetpack.support.attachmentLimit" = "Kufi Bashkëngjitjesh:: %1$@ \/ %2$@";
+
+/* Bot greeting message. %1$@ is the user's name */
+"com.jetpack.support.botGreeting" = "Njatjeta %1$@!";
+
+/* Bot introduction message explaining its purpose */
+"com.jetpack.support.botIntroduction" = "Jam asistenti juaj IA personal. Mund t’ju ndihmoj me çfarëdo pyetjesh rreth sajtit apo llogarisë tuaj.";
+
+/* Format string for cache file count and size. %1$d is the number of files, %2$@ is the formatted size. The system will pluralize 'files' based on the number – please specify it as the largest plural value */
+"com.jetpack.support.cacheFiles" = "%1$d kartela të ruajtura në fshehtinë (%2$@)";
+
+/* Message shown when cache has no files */
+"com.jetpack.support.cacheIsEmpty" = "Fshehtina është e zbrazët";
+
+/* Button to cancel current action */
+"com.jetpack.support.cancel" = "Anuloje";
+
+/* Warning message that deleted logs cannot be recovered */
+"com.jetpack.support.cannotRecoverLogs" = "S’do të jeni në gjendje t’i riktheni.";
+
+/* Button to clear all activity logs */
+"com.jetpack.support.clearAllActivityLogs" = "Spastro Krejt Regjistrat e Veprimtarisë";
+
+/* Button to clear disk cache */
+"com.jetpack.support.clearDiskCache" = "Spastro Fshehtinë Disku";
+
+/* Description explaining the purpose of clearing disk cache */
+"com.jetpack.support.clearDiskCacheDescription" = "Hiq kartela të përkohshme, për të liruar hapësirë, ose për të zgjidhur probleme.";
+
+/* Progress text while clearing cache */
+"com.jetpack.support.clearing" = "Po spastrohet…";
+
+/* Message shown when cache clearing is complete */
+"com.jetpack.support.complete" = "U plotësua";
+
+/* Confirmation message when canceling a draft */
+"com.jetpack.support.confirmCancelMessage" = "Jeni i sigurt se doni të anulohet ky mesazh? Do të humbni çfarëdo të dhënash që keni dhënë";
+
+/* Title for alert confirming cancellation */
+"com.jetpack.support.confirmCancellation" = "Ripohoni Anulimin";
+
+/* Confirmation dialog title when deleting all logs */
+"com.jetpack.support.confirmDeleteAllLogs" = "Jeni i sigurt se doni të fshihen krejt regjistrat?";
+
+/* Section title for contact information */
+"com.jetpack.support.contactInformation" = "Hollësi Kontakti";
+
+/* Button to continue editing a message */
+"com.jetpack.support.continueWriting" = "Vazhdoni Shkrimin";
+
+/* Message shown at end of closed support conversation */
+"com.jetpack.support.conversationEnded" = "Fund i bisedës. S’ka të mundshme përgjigje të mëtejshme.";
+
+/* Navigation title for bot conversations list */
+"com.jetpack.support.conversations" = "Biseda";
+
+/* Button to delete all log files */
+"com.jetpack.support.deleteAllLogs" = "Fshiji krejt Regjistrat";
+
+/* Description text for diagnostics screen */
+"com.jetpack.support.diagnosticsDescription" = "Xhironi punë të rëndomta mirëmbajtjeje dhe diagnostikimi.";
+
+/* Navigation title for diagnostics screen */
+"com.jetpack.support.diagnosticsTitle" = "Diagnostikime";
+
+/* Button to discard changes in a draft message */
+"com.jetpack.support.discardChanges" = "Hidhi Tej Ndryshimet";
+
+/* Notice explaining where support will send email responses */
+"com.jetpack.support.emailNotice" = "Do t’ju dërgojmë email në këtë adresë.";
+
+/* Error title when logs fail to load */
+"com.jetpack.support.errorLoadingLogs" = "Gabim në ngarkim regjistrash";
+
+/* Error message when support conversations fail to load */
+"com.jetpack.support.errorLoadingSupportConversations" = "Gabim gjatë ngarkimit të bisedave të asistencës";
+
+/* Title for error alerts */
+"com.jetpack.support.errorTitle" = "Gabim";
+
+/* Option to export log as a file */
+"com.jetpack.support.exportAsFile" = "Eksportoje si Kartelë";
+
+/* Button to dismiss alerts. */
+"com.jetpack.support.gotIt" = "E mora vesh";
+
+/* Text on the support form to refer to what area the user has problem with. */
+"com.jetpack.support.iNeedHelp" = "Më duhet ndihmë për";
+
+/* Toggle label to include application logs in the support request */
+"com.jetpack.support.includeApplicationLogs" = "Përfshi regjistra aplikacioni";
+
+/* Section title for issue details */
+"com.jetpack.support.issueDetails" = "Hollësi Problemi";
+
+/* Format string for when conversation was last updated */
+"com.jetpack.support.lastUpdated" = "Përditësuar së fundi më %@";
+
+/* Progress message while loading conversation messages */
+"com.jetpack.support.loadingBotConversationMessages" = "Po Ngarkohen Mesazhe";
+
+/* Progress message while loading bot conversations */
+"com.jetpack.support.loadingBotConversations" = "Po Ngarkohen Biseda Me Robotë";
+
+/* Progress text while loading support conversations */
+"com.jetpack.support.loadingConversations" = "Po Ngarkohen Biseda";
+
+/* Progress message while loading disk usage information */
+"com.jetpack.support.loadingDiskUsage" = "Po Ngarkohet Përdorim Disku";
+
+/* Progress message while loading an image attachment */
+"com.jetpack.support.loadingImage" = "Po Ngarkohet Figurë";
+
+/* Progress message shown in overlay while refreshing content */
+"com.jetpack.support.loadingLatestContent" = "Po ngarkohet lënda më e re";
+
+/* Progress message while loading application log content */
+"com.jetpack.support.loadingLogContent" = "Po ngarkohet lëndë regjistri…";
+
+/* Progress message while loading log files */
+"com.jetpack.support.loadingLogs" = "Po ngarkohen regjistra…";
+
+/* Progress text while loading conversation messages */
+"com.jetpack.support.loadingMessages" = "Po Ngarkohen Mesazhe";
+
+/* Progress message while loading a video attachment */
+"com.jetpack.support.loadingVideo" = "Po Ngarkohet Video";
+
+/* Section header for log files sorted by date */
+"com.jetpack.support.logFilesByDate" = "Kartela regjistër sipas datash krijimi";
+
+/* Text indicating which log files will be included in the support request */
+"com.jetpack.support.logFilesToUpload" = "Do të ngarkohen kartelat vijuese:";
+
+/* Footer text explaining log retention policy */
+"com.jetpack.support.logRetentionNotice" = "Ruhen regjistrime deri për shtatë ditë.";
+
+/* Section header for message text input */
+"com.jetpack.support.message" = "Mesazh";
+
+/* Success message when reply is sent successfully */
+"com.jetpack.support.messageSent" = "Mesazhi u Dërgua";
+
+/* Format string for number of messages in conversation */
+"com.jetpack.support.messagesCount" = "%d Mesazhe";
+
+/* The title of a new bot chat in the support area of the app */
+"com.jetpack.support.new-bot-chat" = "Fjalosje e Re Me Robot";
+
+/* Option to create a new support ticket */
+"com.jetpack.support.newSupportTicket" = "Çështje e Re Asistence";
+
+/* Label shown when there are no bot conversations */
+"com.jetpack.support.noConversations" = "Pa Biseda";
+
+/* Description shown when no log files are available */
+"com.jetpack.support.noLogsAvailable" = "S’ka regjistra veprimtarie";
+
+/* Label shown when no log files are available */
+"com.jetpack.support.noLogsFound" = "S’u Gjetën Regjistra";
+
+/* Button to open a support ticket */
+"com.jetpack.support.openSupportTicket" = "Hapni një Çështje Asistence";
+
+/* Text indicating a field is optional */
+"com.jetpack.support.optional" = "(Opsionale)";
+
+/* Navigation title for replying to a support conversation */
+"com.jetpack.support.reply" = "Përgjigju";
+
+/* Description for saving log as a file */
+"com.jetpack.support.saveAsFile" = "Ruajeni si një kartelë, për ta ndarë me të tjerët, ose depozituar diku";
+
+/* Label for screenshots section */
+"com.jetpack.support.screenshots" = "Foto ekrani";
+
+/* Description for screenshots section */
+"com.jetpack.support.screenshotsDescription" = "Shtimi i fotove të ekrani mund të na ndihmojë të kuptojmë dhe zgjidhim më shpejt problemin tuaj.";
+
+/* Button to send a message or reply */
+"com.jetpack.support.send" = "Dërgoje";
+
+/* Description for sending logs to support */
+"com.jetpack.support.sendLogsToSupport" = "Dërgoni regjistrim drejt e te ekipi i asistencës";
+
+/* Progress text while sending a message */
+"com.jetpack.support.sending" = "Po dërgohet";
+
+/* Progress message shown while sending a message */
+"com.jetpack.support.sendingMessage" = "Po Dërgohet Mesazhi";
+
+/* Button to share content */
+"com.jetpack.support.share" = "Ndajeni me të tjerët";
+
+/* Navigation title for sharing activity log */
+"com.jetpack.support.shareActivityLog" = "Ndani Regjistër Veprimtarie";
+
+/* Message shown when sharing log with support */
+"com.jetpack.support.sharingWithSupport" = "Po ndahet me asistencën!";
+
+/* Site Address title on the support form */
+"com.jetpack.support.siteAddress" = "Adresë Sajti";
+
+/* Placeholder for site address field */
+"com.jetpack.support.siteAddressPlaceholder" = "https:\/\/sajtijuaj.com";
+
+/* Description encouraging user to start a new conversation */
+"com.jetpack.support.startNewConversation" = "Filloni një bisedë të re duke përdorur butonin më sipër";
+
+/* Subject title on the support form */
+"com.jetpack.support.subject" = "Subjekt";
+
+/* Placeholder for subject field */
+"com.jetpack.support.subjectPlaceholder" = "Përmbledhje e shkurtër e çështjes suaj";
+
+/* Button title to submit a support request. */
+"com.jetpack.support.submitRequest" = "Parashtroni Kërkesë Asistence";
+
+/* Navigation title for the support conversations list */
+"com.jetpack.support.supportConversations" = "Biseda Me Asistencën";
+
+/* Title for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSent" = "Kërkesa u Dërgua!";
+
+/* Message for the alert after the support request is created. */
+"com.jetpack.support.supportRequestSentMessage" = "Kërkesa juaj për asistencë është dërguar me sukses. Do të përgjigjemi përmes email-i sa më shpejt që të kemi mundësi.";
+
+/* Progress message shown while bot is thinking */
+"com.jetpack.support.thinking" = "Po vras mendjen…";
+
+/* Title of the view for contacting support. */
+"com.jetpack.support.title" = "Lidhuni me Asistencën";
+
+/* Button to retry a failed operation */
+"com.jetpack.support.tryAgain" = "Riprovoni";
+
+/* Error title when log deletion fails */
+"com.jetpack.support.unableToDeleteLogs" = "S’arrihet të fshihen regjistra";
+
+/* Error message when conversation cannot be displayed */
+"com.jetpack.support.unableToDisplayConversation" = "S’arrihet të shfaqet biseda";
+
+/* Error title when video cannot be loaded or played */
+"com.jetpack.support.unableToDisplayVideo" = "S’arrihet të shfaqet video";
+
+/* Error message when application logs cannot be loaded */
+"com.jetpack.support.unableToLoadApplicationLogs" = "Sarrihet të ngarkohen regjistra aplikacioni";
+
+/* Error title when bot conversations fail to load */
+"com.jetpack.support.unableToLoadConversations" = "S’arrihet të ngarkohen biseda";
+
+/* Error title when messages fail to load */
+"com.jetpack.support.unableToLoadMessages" = "S’arrihet të Ngarkohen Mesazhe";
+
+/* Error title when message sending fails */
+"com.jetpack.support.unableToSendMessage" = "S’arrihet të dërgohet Mesazh";
+
+/* Button to view an attachment */
+"com.jetpack.support.view" = "Shiheni";
+
+/* Progress message shown during cache clearing operation */
+"com.jetpack.support.working" = "Po kryhet";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "koment";
@@ -7800,6 +8106,9 @@ Example: Reply to Pamela Nguyen */
 /* Weekly Roundup debug menu item */
 "debugMenu.weeklyRoundup" = "Përmbledhje Javore";
 
+/* Title for selecting a default category for a post */
+"defaultCategory.title" = "Kategori Parazgjedhje";
+
 /* Error tilte */
 "discussionSettings.saveErrorTitle" = "S’u arrit të ruhen rregullime";
 
@@ -7938,6 +8247,12 @@ Example: Reply to Pamela Nguyen */
 /* No comment provided by engineer. */
 "double-tap to change unit" = "që të ndryshoni njësinë, prekeni dy herë";
 
+/* Message for delete tag confirmation dialog */
+"edit.tag.delete.confirmation.message" = "Jeni i sigurt se doni të fshihet kjo?";
+
+/* Title for delete a term confirmation dialog */
+"edit.tag.delete.confirmation.title" = "Fshije";
+
 /* Placeholder text for tag description field */
 "edit.tag.description.placeholder" = "Shtoni një përshkrim…";
 
@@ -7949,6 +8264,39 @@ Example: Reply to Pamela Nguyen */
 
 /* Section header for tag description in edit tag view */
 "edit.tag.section.description" = "Përshkrim";
+
+/* Section header for tag name in edit tag view */
+"edit.tag.section.tag" = "Emër";
+
+/* Context menu action to insert a block */
+"editor.blockInserter.insertBlock" = "Futni Bllok";
+
+/* Placeholder text for block search field */
+"editor.blockInserter.search" = "Kërko";
+
+/* Button title to collapse and show fewer blocks */
+"editor.blockInserter.showLess" = "Shfaq Më Pak";
+
+/* Button title to expand and show more blocks */
+"editor.blockInserter.showMore" = "Shfaq Më Tepër";
+
+/* Error message when media insertion fails */
+"editor.media.failedToInsert" = "S’u arrit të futej media";
+
+/* Category name for section showing all patterns */
+"editor.patterns.all" = "Krejt";
+
+/* Context menu action to insert a pattern */
+"editor.patterns.insertPattern" = "Futni Model";
+
+/* Title shown when no patterns match the search */
+"editor.patterns.noPatternsFound" = "S’u Gjetën Modele";
+
+/* Navigation title for patterns view */
+"editor.patterns.title" = "Modele";
+
+/* Category name for patterns without a category */
+"editor.patterns.uncategorized" = "Pa kategori";
 
 /* Register Domain - Address information field Number placeholder */
 "eg. 1122334455" = "p.sh., 1122334455";
@@ -8497,6 +8845,24 @@ Example: Reply to Pamela Nguyen */
 /* Write a blog prompt for the jetpack prologue */
 "jetpack.prologue.prompt.writeBlog" = "Shkruani një blog";
 
+/* Description for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.description" = "Këtë postim mund ta shohë cilido";
+
+/* Title for post access level that allows everyone to view the post */
+"jetpackPostAccessLevel.everybody.title" = "Cilido";
+
+/* Description for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.description" = "Këtë postim mund ta shohin vetëm pajtimtarë me pagesë";
+
+/* Title for post access level that allows only paid subscribers to view the post */
+"jetpackPostAccessLevel.paidSubscribers.title" = "Pajtimtarë Me Pagesë";
+
+/* Description for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.description" = "Postimi është i dukshëm për krejt pajtimtarët, përfshi ata me pajtim pa pagesë";
+
+/* Title for post access level that allows only subscribers to view the post */
+"jetpackPostAccessLevel.subscribers.title" = "Krejt Pajtimtarët";
+
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Që të përdorni Statistika dhe Njoftime, duhet të bëni hyrjen me %@.";
 
@@ -8602,6 +8968,9 @@ Example: Reply to Pamela Nguyen */
 /* Today option description
    Top list option description */
 "jetpackStats.addChart.topListDescription" = "Shihni lëndën tuaj që ecën më mirë nga gjithçka tjetër";
+
+/* Top list option title */
+"jetpackStats.addChart.topListOption" = "Lista e Kryesueseve";
 
 /* Plural item count for archive sections. %1$d is the number. */
 "jetpackStats.archiveSections.itemCount.plural" = "%1$d objekte";
@@ -8750,6 +9119,9 @@ Example: Reply to Pamela Nguyen */
 /* Section title for detailed data */
 "jetpackStats.chartData.detailedData" = "Të Dhëna të Hollësishme";
 
+/* Label for previous value */
+"jetpackStats.chartData.previous" = "I mëparshmi";
+
 /* Title for chart data screen */
 "jetpackStats.chartData.title" = "Të dhëna Grafiku";
 
@@ -8866,6 +9238,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Explanation of how stats are reported in site time zone */
 "jetpackStats.datePicker.siteTimeZoneDescription" = "Statistika raportohen dhe shfaqen në zonën kohore të sajtit tuaj. Nëse një vizitor vjen te sajti juaj të Martën në zonën e vet kohore, por në zonën kohore të sajtit tuaj është e Hënë, vizita regjistrohet si e të Hënës.";
+
+/* To date label */
+"jetpackStats.datePicker.to" = "Deri më";
 
 /* Message explaining how to use the date range control */
 "jetpackStats.dateRangeTip.message" = "Shihni ditë, javë, muaj, vite së fundi, ose përzgjidhni intervale vetjakë datash.";
@@ -9074,6 +9449,12 @@ Example: Reply to Pamela Nguyen */
 /* Error message that informs likes from a private blog cannot be fetched. */
 "likesListViewController.likesList.privateBlogErrorMessage" = "S’keni leje të shihni këtë blog privat.";
 
+/* Default empty state message format when there are no terms. %1$@ is the taxonomy name. */
+"localizedLabels.defaultNoTerms.format" = "Pa %1$@";
+
+/* Default search placeholder format. %1$@ is the taxonomy name. */
+"localizedLabels.defaultSearch.format" = "Kërkoni për %1$@";
+
 /* Button to dismiss the re-authentication view */
 "login.appPasswordReAuth.cancelButton" = "Anuloje";
 
@@ -9208,6 +9589,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Message about buying storage add-on */
 "mediaLibrary.storageDetails.buyStorage.message" = "Blini shtesë depozitimi";
+
+/* Label for audio media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.audio" = "Audio";
+
+/* Label for document media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.document" = "Dokumente";
+
+/* Label for image media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.image" = "Figura";
+
+/* Label for other/unknown media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.other" = "Të tjera";
+
+/* Label for PowerPoint/presentation media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.powerpoint" = "Paraqitje";
+
+/* Label for video media type in storage breakdown */
+"mediaLibrary.storageDetails.mediaType.video" = "Video";
 
 /* Success message shown after upgrading plan */
 "mediaLibrary.storageDetails.purchase.plan.success" = "Plani juaj për sajtin u përmirësua!";
@@ -9590,6 +9989,12 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Faqe nga unë";
 
+/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
+"parentCategory.noCategory" = "Pa Kategori";
+
+/* Title for selecting parent category of a category */
+"parentCategory.title" = "Kategoria Mëmë";
+
 /* Title for the parent page picker screen */
 "parentPagePicker.title" = "Faqe Mëmë";
 
@@ -9745,6 +10150,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the post author selection screen */
 "postAuthorPicker.title" = "Autor";
+
+/* Title for selecting categories for a post or a page */
+"postCategories.title" = "Kategori";
+
+/* Toggle label for allowing comments on post */
+"postDiscussion.allowComments.label" = "Lejo Komente";
+
+/* Toggle label for allowing pings/trackbacks on post */
+"postDiscussion.allowPings.label" = "Lejo Pingback-e";
+
+/* Footer text when comments are disabled */
+"postDiscussion.comments.disabled.footer" = "Vizitorët s’mund të shtojnë komente apo përgjigje të reja. Komentet ekzistuese mbeten të dukshëm.";
+
+/* Footer text when comments are enabled */
+"postDiscussion.comments.enabled.footer" = "Vizitorët mund të shtojnë komente dhe përgjigje të reja.";
+
+/* Link text for learning more about pingbacks and trackbacks */
+"postDiscussion.pingbacks.learnMore.text" = "Mësoni më tepër rreth pingback-ësh & pasgjurmimesh";
+
+/* Navigation title for post discussion settings */
+"postDiscussion.title" = "Diskutim";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Hidhi Tej Ndryshimet";
@@ -9977,6 +10403,9 @@ Example: Reply to Pamela Nguyen */
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Pa titull";
 
+/* Section header for Access settings in Post Settings */
+"postSettings.access.header" = "Hyrje";
+
 /* Label for the author field in Post Settings */
 "postSettings.author.label" = "Autor";
 
@@ -9995,6 +10424,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "postSettings.discardChanges.title" = "Të Hidhen Tej Ndryshimet?";
+
+/* Status text when discussion (comments) is disabled */
+"postSettings.discussion.closed" = "Mbyllur";
+
+/* Label for the discussion settings field in Post Settings */
+"postSettings.discussion.label" = "Diskutim";
+
+/* Status text when discussion (comments) is enabled */
+"postSettings.discussion.open" = "I hapur";
+
+/* Label for the checkbox that lets you send a post to newsletter subscribers */
+"postSettings.emailToSubscribers.label" = "Dërgojua Me Email Pajtimtarëve";
 
 /* Character count for excerpt. %1$d is the number of characters. */
 "postSettings.excerpt.characterCount" = "%1$d shenja";
@@ -10098,6 +10539,21 @@ Example: Reply to Pamela Nguyen */
 /* Cell title for the Top Level option case */
 "postSettings.parentPage.topLevel" = "Shkalla e epërme";
 
+/* Accessibility label for hide password button */
+"postSettings.passwordEntry.hidePassword" = "Fshihe fjalëkalimin";
+
+/* Instructions for password entry */
+"postSettings.passwordEntry.instructions" = "Jepni një fjalëkalim për të mbrojtur këtë postim. Vetëm përdoruesit me fjalëkalimin do të jenë në gjendje ta shohin.";
+
+/* Navigation title for password entry screen */
+"postSettings.passwordEntry.navigationTitle" = "Jepni Fjalëkalimin";
+
+/* Placeholder for password field */
+"postSettings.passwordEntry.placeholder" = "Jepni fjalëkalimin";
+
+/* Accessibility label for show password button */
+"postSettings.passwordEntry.showPassword" = "Shfaqe fjalëkalimin";
+
 /* Label for the pending review toggle in Post Settings */
 "postSettings.pendingReview.label" = "Në Pritje të Shqyrtimit";
 
@@ -10125,17 +10581,59 @@ Example: Reply to Pamela Nguyen */
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Të përgjithshme";
 
+/* Description text explaining what the slug editor does */
+"postSettings.slug.customizeDescription" = "Përshtatni pjesën e fundit të Permalidhjes.";
+
 /* Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "postSettings.slug.hint" = "Identifikuesi është versioni në trajtë URL-je i titullit të postimit.";
 
 /* Label for the slug field. Should be the same as WP core. */
 "postSettings.slug.label" = "Identifikues";
 
+/* Button text to learn more about permalinks */
+"postSettings.slug.learnMore" = "Mësoni më tepër";
+
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.navigationTitle" = "Identifikues";
+
+/* Notice shown when the post doesn't have a remote and permalink template is missing */
+"postSettings.slug.permalinkDraftNotice" = "Permalidhja e sugjeruar do të duket kur skica të jetë ruajtur te shërbyesi";
+
+/* Label for the permalink preview */
+"postSettings.slug.permalinkLabel" = "Permalidhje";
+
+/* Section title for the permalink preview */
+"postSettings.slug.permalinkSection" = "Permalidhje";
+
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Jepni identifikuesin";
 
 /* Label for the preview button in Post Settings */
 "postSettings.socialSharing.header" = "Ndarje Me të Tjerë Në Rrjete Shoqërorë";
+
+/* Label for the status field in Post Settings */
+"postSettings.status.label" = "Gjendje";
+
+/* Navigation title for status picker */
+"postSettings.statusPicker.navigationTitle" = "Gjendje & Dukshmëri";
+
+/* Label showing the current password */
+"postSettings.statusPicker.passwordLabel" = "Fjalëkalim";
+
+/* Toggle label for password protection */
+"postSettings.statusPicker.passwordProtected" = "Mbrojtur Me Fjalëkalim";
+
+/* Subtitle for password protected toggle */
+"postSettings.statusPicker.passwordProtectedSubtitle" = "I dukshëm vetëm për ata që e dinë fjalëkalimin";
+
+/* Label for schedule date row */
+"postSettings.statusPicker.scheduleDate" = "Datë";
+
+/* Toggle label for sticky posts */
+"postSettings.statusPicker.sticky" = "Ngjitës";
+
+/* Subtitle for sticky toggle */
+"postSettings.statusPicker.stickySubtitle" = "Fiksoje këtë postim në krye të blogut";
 
 /* Label for the sticky post toggle. Sticky posts are displayed at the top of the blog. */
 "postSettings.stickyPost.label" = "Ngjitës";
@@ -10154,6 +10652,57 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Statistika Postimi";
+
+/* Post status title */
+"postStatus.deleted.details" = "Fshirë përgjithmonë";
+
+/* Post status title */
+"postStatus.deleted.title" = "Fshirë";
+
+/* Post status details */
+"postStatus.draft.details" = "Jo gati për botim";
+
+/* Post status title */
+"postStatus.draft.title" = "Skicë";
+
+/* Post status details */
+"postStatus.pending.details" = "Në pritje të shqyrtimit, para botimit";
+
+/* Post status title */
+"postStatus.pending.title" = "Pezull";
+
+/* Post status details */
+"postStatus.private.details" = "E dukshme vetëm për përgjegjës sajti dhe redaktorë";
+
+/* Post status title */
+"postStatus.private.title" = "Privat";
+
+/* Post status details */
+"postStatus.published.details" = "I dukshëm për këdo";
+
+/* Post status title */
+"postStatus.published.title" = "I botuar";
+
+/* Post status details */
+"postStatus.scheduled.details" = "Botoje automatikisht në një datë të zgjedhur";
+
+/* Post status title */
+"postStatus.scheduled.title" = "Vënë në plan për botim";
+
+/* Post status title */
+"postStatus.trash.details" = "Shpënë te hedhurinat, por ende i pafshirë";
+
+/* Post status title */
+"postStatus.trash.title" = "Shpënë te hedhurinat";
+
+/* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.addTag" = "Shtoni %1$@";
+
+/* Placeholder text for the taxonomy search field. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.searchOrAdd.placeholder" = "Kërkoni ose shtoni %1$@";
+
+/* Message shown when no taxonomy terms are selected. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
+"postTags.selectionEmpty" = "S’u përzgjodhën %1$@";
 
 /* Button cancel */
 "postVisibilityPicker.cancel" = "Anuloje";
@@ -10320,11 +10869,20 @@ Example: 27 social shares remaining in the next 30 days */
 /* Table section title */
 "prepublishing.socialAccounts.message.label" = "Mesazh";
 
+/* Placeholder text for the message field in Social Sharing */
+"prepublishing.socialAccounts.messagePlaceholder" = "Shkruani një mesazh të shkurtër për ta ndarë me të tjerë në media shoqërore në krah të postimit";
+
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "Shoqërore";
 
+/* Table section title */
+"prepublishing.socialAccounts.servicesSectionTitle" = "Shërbime";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketa";
+
+/* Navigation title */
+"prepublishing.title" = "Botim";
 
 /* Details label for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadMediaManyItemsRemaining" = "Edhe %@ objekte";
@@ -10412,9 +10970,6 @@ Example: 27 social shares remaining in the next 30 days */
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "reader.blog.search.loading.error" = "Problem me ngarkim blogjesh";
-
-/* A brief prompt when the user is searching for blogs in the Reader. */
-"reader.blog.search.loading.title" = "Po sillen blogje…";
 
 /* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "reader.blog.search.no.results.message.format" = "S’u gjetën blogje në gjuhën tuaj me përkime ndaj %@.";
@@ -10756,6 +11311,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility label for a list of tags in the preview section. */
 "reader.preferences.preview.tagsList.a11y" = "Etiketa shembuj";
+
+/* Accessibility label for the Extra Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraExtraLarge" = "Tejet Tejet Tejet të Mëdha";
+
+/* Accessibility label for the Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraLarge" = "Tejet Tejet të Mëdha";
 
 /* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
 "reader.preferences.size.extraLarge" = "Shumë të Mëdha";
@@ -11265,6 +11826,18 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Button to progress to the next step after selecting domain in Site Creation */
 "siteCreation.domains.buttons.selectDomain" = "Përzgjidhni përkatësi";
 
+/* Default text for adding a new item when no label is provided */
+"siteCustomTaxonomies.defaultAddNew" = "Shtoni";
+
+/* Description for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.description" = "Klasifikimet ju ndihmojnë të sistemoni lëndën, tej kategorive dhe etiketave standarde.";
+
+/* Title for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.title" = "Pa klasifikime të përshtatura";
+
+/* Navigation title for the custom taxonomies screen */
+"siteCustomTaxonomies.navigationTitle" = "Klasifikime";
+
 /* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
 "siteMedia.accessibilityLabelAudio" = "Audio, %@";
 
@@ -11283,8 +11856,77 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Përzgjidhni media.";
 
+/* Label for the alt for a media asset (image) */
+"siteMedia.details.altText" = "Tekst Alternativ";
+
+/* Verb. Button title. Tapping cancels an action. */
+"siteMedia.details.cancel" = "Anuloje";
+
+/* Noun. Label for the caption for a media asset (image / video) */
+"siteMedia.details.caption" = "Legjendë";
+
+/* Title for button that permanently deletes a media item (photo / video) */
+"siteMedia.details.delete" = "Fshije";
+
+/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
+"siteMedia.details.deleteConfirmation" = "Jeni i sigurt se doni të fshihet përgjithmonë ky objekt?";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"siteMedia.details.deleted" = "Fshirë!";
+
+/* Text displayed in HUD while a media item is being deleted. */
+"siteMedia.details.deleting" = "Po fshihet…";
+
+/* Label for the description for a media asset (image / video) */
+"siteMedia.details.description" = "Përshkrim";
+
+/* Label for the dimensions in pixels for a media asset (image / video) */
+"siteMedia.details.dimensions" = "Përmasa";
+
+/* Label for the file name for a media asset (image / video) */
+"siteMedia.details.fileName" = "Emër Kartele";
+
+/* Label for the file size for a media asset (image / video) */
+"siteMedia.details.fileSize" = "Madhësi Kartele";
+
+/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
+"siteMedia.details.fileType" = "Lloj Kartele";
+
+/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
+"siteMedia.details.mediaDeleted" = "Ky objekt media është fshirë.";
+
+/* Noun. Label for the title of a media asset (image / video) */
+"siteMedia.details.title" = "Titull";
+
+/* Accessibility label for trash buttons in nav bars */
+"siteMedia.details.trash" = "Shpjere te hedhurinat";
+
+/* Text displayed in HUD if there was an error attempting to delete a media item. */
+"siteMedia.details.unableToDeleteMedia" = "S’arrihet të fshihet objekt media.";
+
+/* Error shown when the app fails to load a video from the user's media library. */
+"siteMedia.details.unableToLoadVideo" = "S’arrihet të ngarkohet videoja.";
+
+/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
+"siteMedia.details.unableToSaveMedia" = "S’arrihet të ruhet objekt media.";
+
+/* Label for the date a media asset (image / video) was uploaded */
+"siteMedia.details.uploaded" = "U ngarkuan";
+
 /* Title for the URL field */
 "siteMedia.details.url" = "URL";
+
+/* Hint for image alt on image settings. */
+"siteMedia.hints.imageAlt" = "Tekst Alternativ Figure";
+
+/* Hint for image caption on image settings. */
+"siteMedia.hints.imageCaption" = "Legjendë Figure";
+
+/* Hint for image description on image settings. */
+"siteMedia.hints.imageDescription" = "Përshkrim Figure";
+
+/* Hint for image title on image settings. */
+"siteMedia.hints.imageTitle" = "Titull figure";
 
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Prekni që të shihni median sa krejt ekrani";
@@ -11382,6 +12024,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privatësi";
+
+/* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
+"siteTaxonomy.addNew.format" = "Shtoni %1$@";
 
 /* Hint for users when hidden privacy setting is set */
 "siteVisibility.hidden.hint" = "Sajti juaj u është fshehur vizitorëve pas një shënimi “S’Afërmi”, deri sa të jetë gati për t’u parë.";
