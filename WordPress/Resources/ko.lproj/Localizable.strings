@@ -11007,9 +11007,6 @@ Example: 27 social shares remaining in the next 30 days */
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "reader.blog.search.loading.error" = "블로그 로드 중 문제 발생";
 
-/* A brief prompt when the user is searching for blogs in the Reader. */
-"reader.blog.search.loading.title" = "블로그 가져오는 중...";
-
 /* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "reader.blog.search.no.results.message.format" = "사용자 언어로 된 %@에 일치하는 블로그를 찾을 수 없습니다.";
 

@@ -10992,9 +10992,6 @@ Example: 27 social shares remaining in the next 30 days */
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
 "reader.blog.search.loading.error" = "加载博客时出现问题";
 
-/* A brief prompt when the user is searching for blogs in the Reader. */
-"reader.blog.search.loading.title" = "正在获取博客…";
-
 /* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
 "reader.blog.search.no.results.message.format" = "在您的语言中未找到与 %@ 匹配的博客。";
 
