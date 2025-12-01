@@ -15,10 +15,10 @@ struct PageEditorPresenter {
         }
 
         // No editing posts until the conflict has been resolved.
-        if let error = PostCoordinator.shared.syncError(for: page.original()),
+        if let error = PostCoordinator.shared.syncError(for: page.rootOriginal()),
            let saveError = error as? PostRepository.PostSaveError,
            case .conflict(let latest) = saveError {
-            let page = page.original()
+            let page = page.rootOriginal()
             PostCoordinator.shared.showResolveConflictView(post: page, remoteRevision: latest, source: .pageList)
             return false
         }

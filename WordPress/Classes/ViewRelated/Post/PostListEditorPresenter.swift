@@ -22,10 +22,10 @@ struct PostListEditorPresenter {
         }
 
         // No editing posts until the conflict has been resolved.
-        if let error = PostCoordinator.shared.syncError(for: post.original()),
+        if let error = PostCoordinator.shared.syncError(for: post.rootOriginal()),
            let saveError = error as? PostRepository.PostSaveError,
            case .conflict(let latest) = saveError {
-            let post = post.original()
+            let post = post.rootOriginal()
             PostCoordinator.shared.showResolveConflictView(post: post, remoteRevision: latest, source: .postList)
             return
         }

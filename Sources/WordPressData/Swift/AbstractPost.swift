@@ -5,8 +5,8 @@ import WordPressShared
 public extension AbstractPost {
     /// Returns the original post by navigating the entire list of revisions
     /// until it reaches the head.
-    func original() -> AbstractPost {
-        original?.original() ?? self
+    func rootOriginal() -> AbstractPost {
+        original?.rootOriginal() ?? self
     }
 
     /// Returns `true` if the post was never uploaded to the remote and has
@@ -127,7 +127,7 @@ public extension AbstractPost {
         [
             "post_type": analyticsPostType ?? "",
             "status": status?.rawValue ?? "",
-            "original_status": original().status?.rawValue ?? "unknown",
+            "original_status": rootOriginal().status?.rawValue ?? "unknown",
             "password_protected": PostVisibility(post: self) == .protected
         ]
     }
@@ -226,7 +226,7 @@ public extension AbstractPost {
         guard let previous = revision.original else {
             return wpAssertionFailure("missing original")
         }
-        let original = revision.original()
+        let original = revision.rootOriginal()
         previous.deleteRevision()
         if previous == original, !previous.hasRemote() {
             context.delete(original)

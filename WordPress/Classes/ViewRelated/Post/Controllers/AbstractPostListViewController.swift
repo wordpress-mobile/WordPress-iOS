@@ -233,7 +233,7 @@ class AbstractPostListViewController: UIViewController,
             guard let post = cell?.post else {
                 return false
             }
-            return updatedObjects.contains(post) || updatedObjects.contains(post.original())
+            return updatedObjects.contains(post) || updatedObjects.contains(post.rootOriginal())
         }
         if !updatedIndexPaths.isEmpty {
             tableView.beginUpdates()
@@ -689,7 +689,7 @@ class AbstractPostListViewController: UIViewController,
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
         WPAnalytics.track(.postListTrashAction, withProperties: propertiesForAnalytics())
 
-        let post = post.original()
+        let post = post.rootOriginal()
 
         func performAction() {
             Task {
@@ -715,7 +715,7 @@ class AbstractPostListViewController: UIViewController,
     func delete(_ post: AbstractPost, completion: @escaping () -> Void) {
         WPAnalytics.track(.postListDeleteAction, properties: propertiesForAnalytics())
 
-        let post = post.original()
+        let post = post.rootOriginal()
 
         let alert = UIAlertController(title: Strings.Delete.actionTitle, message: Strings.Delete.message(for: post.latest()), preferredStyle: .alert)
         alert.addCancelActionWithTitle(Strings.cancelText) { _ in
@@ -732,7 +732,7 @@ class AbstractPostListViewController: UIViewController,
 
     func retry(_ post: AbstractPost) {
         WPAnalytics.track(.postListRetryAction, properties: propertiesForAnalytics())
-        PostCoordinator.shared.retrySync(for: post.original())
+        PostCoordinator.shared.retrySync(for: post.rootOriginal())
     }
 
     func stats(for post: AbstractPost) {
