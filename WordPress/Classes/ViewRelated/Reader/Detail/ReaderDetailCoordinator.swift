@@ -442,7 +442,12 @@ class ReaderDetailCoordinator {
     /// Show a list with posts containing this tag
     ///
     private func showTag() {
-        guard let post, let primaryTagSlug = post.primaryTagSlug else {
+        guard let post else {
+            wpAssertionFailure("post is nil")
+            return
+        }
+        guard let primaryTagSlug = post.primaryTagSlug else {
+            wpAssertionFailure("post.primaryTagSlug is nil")
             return
         }
 
