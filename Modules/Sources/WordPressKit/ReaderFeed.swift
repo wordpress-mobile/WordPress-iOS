@@ -4,87 +4,132 @@ import Foundation
 /// Encapsulates details of a single feed returned by the Reader feed search API
 /// (read/feed?q=query)
 ///
+/// The API returns different structures depending on the site type:
+/// - WordPress.com sites: Data at root level (URL, title, blog_ID)
+/// - Jetpack sites: Data in meta.data.feed
+/// - External RSS feeds: Data in meta.data.feed, blog_ID is "0"
+///
 public struct ReaderFeed: Decodable {
-    public let url: URL?
-    public let title: String?
-    public let feedDescription: String?
-    public let feedID: String?
-    public let blogID: String?
-    public let blavatarURL: URL?
-
-    private enum CodingKeys: String, CodingKey {
-        case url = "URL"
-        case title = "title"
-        case feedID = "feed_ID"
-        case blogID = "blog_ID"
-        case meta = "meta"
+    public var feedID: String? {
+        let id = feed?.feedID ?? site?.feedID.map(String.init)
+        return id?.nonEmptyID
     }
 
-    private enum MetaKeys: CodingKey {
-        case data
+    public var blogID: String? {
+        let id = feed?.blogID ?? site?.id.map(String.init)
+        return id?.nonEmptyID
     }
 
-    private enum DataKeys: CodingKey {
-        case site
-        case feed
+    /// Site/Feed URL with fallback: data.site → data.feed
+    /// Prioritizes site URL over feed URL for canonical representation
+    public var url: URL? {
+        site?.url ?? feed?.url
     }
+
+    /// Site/Feed title with fallback: data.site → data.feed
+    /// Prioritizes site name over feed name
+    public var title: String? {
+        site?.name ?? feed?.name
+    }
+
+    /// Feed description with fallback: data.site → data.feed
+    public var description: String? {
+        site?.description ?? feed?.description
+    }
+
+    /// Site icon/avatar URL, prioritizing data.site.icon.img over data.feed.image
+    public var iconURL: URL? {
+        site?.iconURL ?? feed?.imageURL
+    }
+
+    // MARK: - Decodable
+
+    /// Feed data from meta.data.feed
+    private var feed: FeedData?
+
+    /// Site data from meta.data.site
+    private var site: SiteData?
 
     public init(from decoder: Decoder) throws {
-        // We have to manually decode the feed from the JSON, for a couple of reasons:
-        // - Some feeds have no `icon` dictionary
-        // - Some feeds have no `data` dictionary
-        // - We want to decode whatever we can get, and not fail if neither of those exist
-        let rootContainer = try decoder.container(keyedBy: CodingKeys.self)
+        let parsed = try ReaderFeedJSON(from: decoder)
+        self.feed = parsed.meta?.data?.feed
+        self.site = parsed.meta?.data?.site
 
-        var feedURL = try? rootContainer.decodeIfPresent(URL.self, forKey: .url)
-        var title = try? rootContainer.decodeIfPresent(String.self, forKey: .title)
-        feedID = try? rootContainer.decode(String.self, forKey: .feedID)
-        blogID = try? rootContainer.decode(String.self, forKey: .blogID)
-
-        var feedDescription: String?
-        var blavatarURL: URL?
-
-        // Try to parse both site and feed data from meta.data
-        do {
-            let metaContainer = try rootContainer.nestedContainer(keyedBy: MetaKeys.self, forKey: .meta)
-            let dataContainer = try metaContainer.nestedContainer(keyedBy: DataKeys.self, forKey: .data)
-
-            let siteData = try? dataContainer.decode(SiteOrFeedData.self, forKey: .site)
-            let feedData = try? dataContainer.decode(SiteOrFeedData.self, forKey: .feed)
-
-            // Use data from either source, preferring site data when both are available
-            feedDescription = siteData?.description ?? feedData?.description
-            blavatarURL = siteData?.iconURL ?? feedData?.iconURL
-
-            // Fixes CMM-1002: in some cases, the backend fails to embed certain fields
-            // directly in the feed object
-            if feedURL == nil {
-                feedURL = siteData?.url ?? feedData?.url
-            }
-            if title == nil {
-                title = siteData?.title ?? feedData?.title
-            }
-        } catch {
+        // If feed data not found, try parsing inline data from root (WordPress.com format)
+        if self.feed == nil, let inlineData = try? InlineData(from: decoder) {
+            self.feed = FeedData(from: inlineData)
         }
-
-        self.url = feedURL
-        self.title = title
-        self.feedDescription = feedDescription
-        self.blavatarURL = blavatarURL
     }
 }
 
-private struct SiteOrFeedData: Decodable {
-    var title: String?
-    var description: String?
-    var iconURL: URL?
-    var url: URL?
+private struct ReaderFeedJSON: Decodable {
+    struct Meta: Decodable {
+        struct Data: Decodable {
+            var feed: FeedData?
+            var site: SiteData?
+        }
 
-    enum CodingKeys: String, CodingKey {
-        case description
-        case icon
+        var data: Data?
+    }
+
+    var meta: Meta?
+}
+
+/// Represents feed-specific data from meta.data.feed
+private struct FeedData: Decodable {
+    let feedID: String?
+    let blogID: String?
+    let name: String?
+    let url: URL?
+    let description: String?
+    let imageURL: URL?
+
+    private enum CodingKeys: String, CodingKey {
+        case feedID = "feed_ID"
+        case blogID = "blog_ID"
+        case name = "name"
         case url = "URL"
-        case name
+        case description = "description"
+        case imageURL = "image"
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        feedID = try? container.decodeIfPresent(String.self, forKey: .feedID)
+        blogID = try? container.decodeIfPresent(String.self, forKey: .blogID)
+        name = try? container.decodeIfPresent(String.self, forKey: .name)
+        url = try? container.decodeIfPresent(URL.self, forKey: .url)
+        description = try? container.decodeIfPresent(String.self, forKey: .description)
+        imageURL = try? container.decodeIfPresent(URL.self, forKey: .imageURL)
+    }
+
+    init(from inlineData: InlineData) {
+        self.feedID = inlineData.feedID
+        self.blogID = inlineData.blogID
+        self.name = inlineData.title
+        self.url = inlineData.url
+        self.description = nil
+        self.imageURL = nil
+    }
+}
+
+/// Represents site-specific data from meta.data.site
+private struct SiteData: Decodable {
+    let feedID: Int?
+    let id: Int?
+    let name: String?
+    let url: URL?
+    let description: String?
+    let iconURL: URL?
+
+    private enum CodingKeys: String, CodingKey {
+        case feedID = "feed_ID"
+        case id = "ID"
+        case name = "name"
+        case url = "URL"
+        case description = "description"
+        case icon = "icon"
     }
 
     private enum IconKeys: CodingKey {
@@ -94,19 +139,43 @@ private struct SiteOrFeedData: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        title = try? container.decodeIfPresent(String.self, forKey: .name)
-        description = try? container.decodeIfPresent(String.self, forKey: .description)
+        feedID = try? container.decodeIfPresent(Int.self, forKey: .feedID)
+        id = try? container.decodeIfPresent(Int.self, forKey: .id)
+        name = try? container.decodeIfPresent(String.self, forKey: .name)
         url = try? container.decodeIfPresent(URL.self, forKey: .url)
+        description = try? container.decodeIfPresent(String.self, forKey: .description)
 
-        // Try to decode the icon URL from the nested icon dictionary
+        // Decode icon.img if icon dictionary exists
         if let iconContainer = try? container.nestedContainer(keyedBy: IconKeys.self, forKey: .icon) {
             iconURL = try? iconContainer.decode(URL.self, forKey: .img)
+        } else {
+            iconURL = nil
         }
     }
 }
 
-extension ReaderFeed: CustomStringConvertible {
-    public var description: String {
-        return "<Feed | URL: \(String(describing: url)), title: \(String(describing: title)), feedID: \(String(describing: feedID)), blogID: \(String(describing: blogID))>"
+/// Represents inline feed data (WordPress.com sites)
+/// Used when feed data appears at root level instead of nested in meta.data.feed.
+/// In practice, it should never be necessary. It's a fallback.
+private struct InlineData: Decodable {
+    let feedID: String?
+    let blogID: String?
+    let title: String?
+    let url: URL?
+
+    private enum CodingKeys: String, CodingKey {
+        case feedID = "feed_ID"
+        case blogID = "blog_ID"
+        case title = "title"
+        case url = "URL"
+    }
+}
+
+private extension String {
+    var nonEmptyID: String? {
+        guard !isEmpty && self != "0" else {
+            return nil
+        }
+        return self
     }
 }

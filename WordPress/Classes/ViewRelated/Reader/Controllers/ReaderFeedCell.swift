@@ -30,7 +30,7 @@ struct ReaderFeedCell: View {
     }
 
     private func loadFaviconIfNeeded() async {
-        guard feed.blavatarURL == nil, let url = feed.url else {
+        guard feed.iconURL == nil, let url = feed.url else {
             return
         }
 
@@ -49,7 +49,7 @@ struct ReaderFeedCell: View {
     }
 
     var subtitle: String? {
-        if let description = feed.feedDescription, !description.isEmpty {
+        if let description = feed.description, !description.isEmpty {
             return description.stringByDecodingXMLCharacters()
         }
         return feed.urlForDisplay
@@ -59,7 +59,7 @@ struct ReaderFeedCell: View {
 extension SiteIconViewModel {
     init(feed: ReaderFeed, faviconURL: URL? = nil, size: Size = .regular) {
         self.init(size: size)
-        if let iconURL = feed.blavatarURL {
+        if let iconURL = feed.iconURL {
             self.imageURL = SiteIconViewModel.optimizedURL(for: iconURL.absoluteString, imageSize: size.size)
         } else if let faviconURL {
             self.imageURL = faviconURL
