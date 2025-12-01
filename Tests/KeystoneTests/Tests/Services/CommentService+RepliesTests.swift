@@ -269,11 +269,11 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         }
 
         // All comments are visible
-        XCTAssertEqual(post.comments.count, 24)
-        XCTAssertEqual(post.comments.filter({ ($0 as! Comment).visibleOnReader }).count, 24)
+        XCTAssertEqual(post.comments?.count, 24)
+        XCTAssertEqual(post.comments?.filter({ ($0 as! Comment).visibleOnReader }).count, 24)
 
         // Mark a comment as spam
-        let spamComment = try XCTUnwrap(post.comments.first { ($0 as! Comment).commentID == 428668 }) as! Comment
+        let spamComment = try XCTUnwrap(post.comments?.first { ($0 as! Comment).commentID == 428668 }) as! Comment
         spamComment.status = CommentStatusType.spam.description
         contextManager.saveContextAndWait(mainContext)
 
@@ -282,8 +282,8 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         }
 
         // The spam comment and its two replies are no longer visible
-        XCTAssertEqual(post.comments.count, 24)
-        XCTAssertEqual(post.comments.filter({ ($0 as! Comment).visibleOnReader }).count, 21)
+        XCTAssertEqual(post.comments?.count, 24)
+        XCTAssertEqual(post.comments?.filter({ ($0 as! Comment).visibleOnReader }).count, 21)
     }
 }
 
