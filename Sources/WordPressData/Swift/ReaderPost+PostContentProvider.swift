@@ -7,7 +7,8 @@ extension ReaderPost {
     }
 
     public var isP2Type: Bool {
-        guard let id = organizationID?.intValue, let type = SiteOrganizationType(rawValue: id) else { return false }
+        let id = organizationID.intValue
+        guard let type = SiteOrganizationType(rawValue: id) else { return false }
         return type == .p2 || type == .automattic
     }
 

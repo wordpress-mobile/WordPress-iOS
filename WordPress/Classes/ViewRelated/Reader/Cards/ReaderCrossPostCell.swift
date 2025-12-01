@@ -138,13 +138,13 @@ private final class ReaderCrossPostView: UIView {
     }
 
     private func makeHeaderString(for post: ReaderPost) -> NSAttributedString? {
-        guard let meta = post.crossPostMeta else {
+        guard let meta = post.crossPostMeta, let blogURL = post.blogURL else {
             return nil
         }
         let template = meta.commentURL.isEmpty ? Strings.siteTemplate : Strings.commentTemplate
 
         let authorName: NSString = (post.authorForDisplay() ?? "") as NSString
-        let siteName = subdomainNameFromPath(post.blogURL)
+        let siteName = subdomainNameFromPath(blogURL)
         let originName = subdomainNameFromPath(meta.siteURL)
 
         let subtitle = NSString(format: template as NSString, authorName, originName, siteName) as String

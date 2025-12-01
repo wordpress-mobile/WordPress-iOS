@@ -219,7 +219,8 @@ struct ReaderNotificationKeys {
         guard
             let siteID = post.siteID,
             let postID = post.postID,
-            let host = NSURL(string: post.blogURL)?.host else {
+            let blogURL = post.blogURL,
+            let host = URL(string: blogURL)?.host() else {
             return
         }
 
