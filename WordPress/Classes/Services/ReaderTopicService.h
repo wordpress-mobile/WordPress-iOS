@@ -32,12 +32,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)fetchReaderMenuWithSuccess:(void (^)(void))success failure:(void (^)(NSError * _Nullable error))failure;
 
 /**
- Deletes all topics that do not appear in the menu from core data and saves the context.
- Use to clean-up previewed topics that are lingering in core data.
- */
-- (void)deleteNonMenuTopics;
-
-/**
  Deletes all search topics from core data and saves the context.
  Use to clean-up searches when they are finished.
  */
