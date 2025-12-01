@@ -684,7 +684,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         return WPMediaType(rawValue: mediaType)
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didLogNetworkRequest request: NetworkRequest) {
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogNetworkRequest request: RecordedNetworkRequest) {
 
         guard let url = URL(string: request.url) else {
             return
