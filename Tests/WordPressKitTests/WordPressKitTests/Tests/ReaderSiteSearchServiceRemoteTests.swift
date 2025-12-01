@@ -164,7 +164,7 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
                                 }
 
                                 XCTAssertEqual(feed.title, "The Daily Post")
-                                XCTAssertNil(feed.feedID)
+                                XCTAssertEqual(feed.feedID, "27030")
                                 XCTAssertEqual(feed.blogID, "489937")
                                 XCTAssertEqual(feed.url, URL(string: "https://dailypost.wordpress.com")!)
                                 XCTAssertEqual(feed.description, "The Art and Craft of Blogging")

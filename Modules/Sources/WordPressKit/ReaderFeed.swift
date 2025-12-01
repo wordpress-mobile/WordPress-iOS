@@ -10,9 +10,14 @@ import Foundation
 /// - External RSS feeds: Data in meta.data.feed, blog_ID is "0"
 ///
 public struct ReaderFeed: Decodable {
-    /// Feed ID from meta.data.feed
     public var feedID: String? {
-        feed?.feedID
+        let id = feed?.feedID ?? site?.feedID.map(String.init)
+        return id?.nonEmptyID
+    }
+
+    public var blogID: String? {
+        let id = feed?.blogID ?? site?.id.map(String.init)
+        return id?.nonEmptyID
     }
 
     /// Site/Feed URL with fallback: data.site → data.feed
@@ -32,13 +37,6 @@ public struct ReaderFeed: Decodable {
         site?.description ?? feed?.description
     }
 
-    /// Blog ID with fallback: data.feed.blog_ID → data.site.ID
-    /// Returns nil if "0" (external RSS feeds)
-    public var blogID: String? {
-        let id = feed?.blogID ?? site?.id.map(String.init)
-        return (id == "0") ? nil : id
-    }
-
     /// Site icon/avatar URL, prioritizing data.site.icon.img over data.feed.image
     public var iconURL: URL? {
         site?.iconURL ?? feed?.imageURL
@@ -56,6 +54,11 @@ public struct ReaderFeed: Decodable {
         let parsed = try ReaderFeedJSON(from: decoder)
         self.feed = parsed.meta?.data?.feed
         self.site = parsed.meta?.data?.site
+
+        // If feed data not found, try parsing inline data from root (WordPress.com format)
+        if self.feed == nil, let inlineData = try? InlineData(from: decoder) {
+            self.feed = FeedData(from: inlineData)
+        }
     }
 }
 
@@ -100,10 +103,20 @@ private struct FeedData: Decodable {
         description = try? container.decodeIfPresent(String.self, forKey: .description)
         imageURL = try? container.decodeIfPresent(URL.self, forKey: .imageURL)
     }
+
+    init(from inlineData: InlineData) {
+        self.feedID = inlineData.feedID
+        self.blogID = inlineData.blogID
+        self.name = inlineData.title
+        self.url = inlineData.url
+        self.description = nil
+        self.imageURL = nil
+    }
 }
 
 /// Represents site-specific data from meta.data.site
 private struct SiteData: Decodable {
+    let feedID: Int?
     let id: Int?
     let name: String?
     let url: URL?
@@ -111,6 +124,7 @@ private struct SiteData: Decodable {
     let iconURL: URL?
 
     private enum CodingKeys: String, CodingKey {
+        case feedID = "feed_ID"
         case id = "ID"
         case name = "name"
         case url = "URL"
@@ -125,6 +139,7 @@ private struct SiteData: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
+        feedID = try? container.decodeIfPresent(Int.self, forKey: .feedID)
         id = try? container.decodeIfPresent(Int.self, forKey: .id)
         name = try? container.decodeIfPresent(String.self, forKey: .name)
         url = try? container.decodeIfPresent(URL.self, forKey: .url)
@@ -136,5 +151,31 @@ private struct SiteData: Decodable {
         } else {
             iconURL = nil
         }
+    }
+}
+
+/// Represents inline feed data (WordPress.com sites)
+/// Used when feed data appears at root level instead of nested in meta.data.feed.
+/// In practice, it should never be necessary. It's a fallback.
+private struct InlineData: Decodable {
+    let feedID: String?
+    let blogID: String?
+    let title: String?
+    let url: URL?
+
+    private enum CodingKeys: String, CodingKey {
+        case feedID = "feed_ID"
+        case blogID = "blog_ID"
+        case title = "title"
+        case url = "URL"
+    }
+}
+
+private extension String {
+    var nonEmptyID: String? {
+        guard !isEmpty && self != "0" else {
+            return nil
+        }
+        return self
     }
 }
