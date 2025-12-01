@@ -1,0 +1,39 @@
+{
+  "feeds": [
+    {
+      "subscribe_URL": "http://daringfireball.net/feeds/main",
+      "feed_ID": "20787116",
+      "meta": {
+        "links": {
+          "feed": "https://public-api.wordpress.com/rest/v1.1/read/feed/20787116"
+        },
+        "data": {
+          "feed": {
+            "blog_ID": "0",
+            "feed_ID": "20787116",
+            "blog_owner": null,
+            "name": "Daring Fireball",
+            "URL": "https://daringfireball.net/",
+            "feed_URL": "http://daringfireball.net/feeds/main",
+            "subscribers_count": 408,
+            "is_following": false,
+            "last_update": "2025-11-27T00:31:44+00:00",
+            "last_checked": "2025-11-27T15:47:03+00:00",
+            "marked_for_refresh": false,
+            "next_refresh_time": null,
+            "organization_id": 0,
+            "subscription_id": null,
+            "unseen_count": 0,
+            "meta": {
+              "links": {
+                "self": "https://public-api.wordpress.com/rest/v1.1/read/feed/20787116"
+              }
+            },
+            "resolved_feed_url": "https://daringfireball.net/feeds/main",
+            "description": "By John Gruber"
+          }
+        }
+      }
+    }
+  ]
+}

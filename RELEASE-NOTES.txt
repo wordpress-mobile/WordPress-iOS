@@ -25,6 +25,7 @@
 * [*] Fix overly long related post titles in Reader [#25011]
 * [*] Increase number of lines for post tiles in Reader to three [#25019]
 * [*] Fix horizontal insets in Reader article view [#25010]
+* [*] Fix an issue with duplicated subscriptions for Jetpack-connected sites [#25026]
 * [*] Fixed several reader bugs causing posts to load strangely, or not at all [#25016]
 
 26.4

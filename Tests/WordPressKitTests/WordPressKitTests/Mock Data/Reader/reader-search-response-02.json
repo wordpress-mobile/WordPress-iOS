@@ -1,0 +1,151 @@
+{
+  "feeds": [
+    {
+      "URL": "http://veselin.blog",
+      "subscribe_URL": "http://veselin.blog",
+      "blog_ID": "125098293",
+      "title": "Veselin.blog",
+      "railcar": {
+        "railcar": "KkQSHUkMCD@Z",
+        "fetch_algo": "reader/manage/search:0",
+        "fetch_position": 0,
+        "rec_blog_id": 125098293,
+        "fetch_lang": "en",
+        "fetch_query": "Veselin.blog"
+      },
+      "meta": {
+        "links": {
+          "feed": "https://public-api.wordpress.com/rest/v1.1/read/feed/152023972",
+          "site": "https://public-api.wordpress.com/rest/v1.1/read/sites/125098293"
+        },
+        "data": {
+          "feed": {
+            "blog_ID": "125098293",
+            "feed_ID": "152023972",
+            "blog_owner": {
+              "ID": 217470,
+              "name": "Veselin"
+            },
+            "name": "Veselin.blog",
+            "URL": "http://veselin.blog/",
+            "feed_URL": "http://veselin.blog",
+            "subscribers_count": 534,
+            "is_following": true,
+            "last_update": "2025-11-26T22:19:29+00:00",
+            "last_checked": "2025-11-26T22:19:33+00:00",
+            "marked_for_refresh": false,
+            "next_refresh_time": null,
+            "organization_id": 0,
+            "subscription_id": "824304679",
+            "unseen_count": 0,
+            "meta": {
+              "links": {
+                "self": "https://public-api.wordpress.com/rest/v1.1/read/feed/152023972",
+                "site": "https://public-api.wordpress.com/rest/v1.1/read/sites/125098293"
+              }
+            },
+            "image": "https://veselinblogblog.files.wordpress.com/2024/04/cropped-avatar-18.jpg?w=32",
+            "description": "Cats, good books, AI, and religious walking in the city of Sofia"
+          },
+          "site": {
+            "ID": 125098293,
+            "name": "Veselin.blog",
+            "description": "Cats, good books, AI, and religious walking in the city of Sofia",
+            "URL": "http://veselin.blog",
+            "jetpack": false,
+            "jetpack_connection": false,
+            "post_count": 791,
+            "subscribers_count": 534,
+            "lang": "en",
+            "icon": {
+              "img": "https://veselinblogblog.wordpress.com/wp-content/uploads/2024/04/cropped-avatar-18.jpg?w=96",
+              "ico": "https://veselinblogblog.wordpress.com/wp-content/uploads/2024/04/cropped-avatar-18.jpg?w=96"
+            },
+            "logo": {
+              "id": 0,
+              "sizes": [],
+              "url": ""
+            },
+            "visible": true,
+            "is_private": false,
+            "is_coming_soon": false,
+            "is_following": true,
+            "organization_id": 0,
+            "meta": {
+              "links": {
+                "self": "https://public-api.wordpress.com/rest/v1.1/read/sites/125098293",
+                "help": "https://public-api.wordpress.com/rest/v1.1/read/sites/125098293/help",
+                "posts": "https://public-api.wordpress.com/rest/v1.1/read/sites/125098293/posts/",
+                "comments": "https://public-api.wordpress.com/rest/v1.1/sites/125098293/comments/",
+                "xmlrpc": "https://veselinblogblog.wordpress.com/xmlrpc.php"
+              }
+            },
+            "launch_status": false,
+            "site_migration": {
+              "is_complete": false,
+              "in_progress": false
+            },
+            "is_fse_active": false,
+            "is_fse_eligible": false,
+            "is_core_site_editor_enabled": false,
+            "is_wpcom_atomic": false,
+            "is_wpcom_staging_site": false,
+            "is_deleted": false,
+            "is_a4a_client": false,
+            "is_a4a_dev_site": false,
+            "is_wpcom_flex": false,
+            "capabilities": {
+              "edit_pages": false,
+              "edit_posts": false,
+              "edit_others_posts": false,
+              "edit_theme_options": false,
+              "list_users": false,
+              "manage_categories": false,
+              "manage_options": false,
+              "publish_posts": false,
+              "upload_files": false,
+              "view_stats": false
+            },
+            "is_multi_author": false,
+            "feed_ID": 152023972,
+            "feed_URL": "http://veselin.blog",
+            "header_image": false,
+            "owner": {
+              "ID": 217470,
+              "login": "dzver",
+              "name": "Veselin",
+              "first_name": "Veselin",
+              "last_name": "Nikolov",
+              "nice_name": "dzver",
+              "URL": "https://veselin.blog",
+              "avatar_URL": "https://2.gravatar.com/avatar/5f0ee9d86c04bc37653bb6adfeba93e6d5b57f2356d32c06fd2de25ad4adfbe6?s=96&d=identicon&r=G",
+              "profile_URL": "https://gravatar.com/dzver",
+              "ip_address": false,
+              "site_visible": true,
+              "has_avatar": true
+            },
+            "subscription": {
+              "delivery_methods": {
+                "email": {
+                  "send_posts": true,
+                  "send_comments": false,
+                  "post_delivery_frequency": "instantly",
+                  "date_subscribed": "2025-11-27 19:08:50"
+                },
+                "notification": {
+                  "send_posts": false
+                }
+              }
+            },
+            "is_blocked": false,
+            "unseen_count": 0
+          }
+        }
+      },
+      "feed_ID": "152023972",
+      "subscribers_count": 532
+    }
+  ],
+  "total": 1,
+  "algorithm": "reader/manage/search:0"
+}

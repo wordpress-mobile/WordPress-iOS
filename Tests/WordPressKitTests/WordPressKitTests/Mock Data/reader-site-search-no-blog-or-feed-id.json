@@ -19,7 +19,6 @@
         },
         "data": {
           "site": {
-            "ID": 489937,
             "name": "The Daily Post",
             "description": "The Art and Craft of Blogging",
             "URL": "https://dailypost.wordpress.com",
@@ -60,7 +59,6 @@
               "view_stats": false
             },
             "is_multi_author": true,
-            "feed_ID": 27030,
             "feed_URL": "http://dailypost.wordpress.com",
             "header_image": false,
             "owner": {
