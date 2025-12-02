@@ -517,7 +517,7 @@ private extension BlogDetailsTableViewModel {
         rows.append(Row.media(viewController: viewController))
         rows.append(Row.comments(viewController: viewController))
 
-        let title = isSplitViewDisplayed ? nil : BlogDetailsViewController.Strings.contentSectionTitle
+        let title = isSplitViewDisplayed ? nil : Strings.contentSectionTitle
         return Section(title: title, rows: rows, category: .content)
     }
 
@@ -553,7 +553,7 @@ private extension BlogDetailsTableViewModel {
         }
 
         let title = if blog.supports(.jetpackSettings) {
-            NSLocalizedString("Jetpack", comment: "Section title for the publish table section in the blog details screen")
+            Strings.jetpackSection
         } else {
             ""
         }
@@ -591,7 +591,7 @@ private extension BlogDetailsTableViewModel {
 
         rows.append(Row.comments(viewController: viewController))
 
-        let title = NSLocalizedString("Publish", comment: "Section title for the publish table section in the blog details screen")
+        let title = Strings.publishSection
         return Section(title: title, rows: rows, category: .content)
     }
 
@@ -606,7 +606,7 @@ private extension BlogDetailsTableViewModel {
             rows.append(Row.menus(viewController: viewController))
         }
 
-        let title = NSLocalizedString("Personalize", comment: "Section title for the personalize table section in the blog details screen.")
+        let title = Strings.personalizeSection
         return Section(title: title, rows: rows, category: .personalize)
     }
 
@@ -651,13 +651,13 @@ private extension BlogDetailsTableViewModel {
             rows.append(Row.domains(viewController: viewController))
         }
 
-        let title = NSLocalizedString("Configure", comment: "Section title for the configure table section in the blog details screen")
+        let title = Strings.configureSection
         return Section(title: title, rows: rows, category: .configure)
     }
 
     func buildExternalSection() -> Section {
         guard let viewController else {
-            return Section(title: "External", rows: [], category: .external)
+            return Section(title: Strings.externalSection, rows: [], category: .external)
         }
 
         var rows: [Row] = []
@@ -668,7 +668,7 @@ private extension BlogDetailsTableViewModel {
             rows.append(Row.admin(viewController: viewController, blog: blog))
         }
 
-        let title = NSLocalizedString("External", comment: "Section title for the external table section in the blog details screen")
+        let title = Strings.externalSection
         return Section(title: title, rows: rows, category: .external)
     }
 
@@ -697,7 +697,7 @@ private extension BlogDetailsTableViewModel {
             return nil
         }
 
-        let title = BlogDetailsViewController.Strings.trafficSectionTitle
+        let title = Strings.trafficSectionTitle
         return Section(title: title, rows: rows, category: .traffic)
     }
 
@@ -764,7 +764,7 @@ private extension BlogDetailsTableViewModel {
         }
 
         // Build sections with proper titles
-        let sectionTitle = BlogDetailsViewController.Strings.maintenanceSectionTitle
+        let sectionTitle = Strings.maintenanceSectionTitle
         var shouldAddSectionTitle = true
 
         if !firstSectionRows.isEmpty {
@@ -920,7 +920,7 @@ extension Row {
     static func home(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .home,
-            title: NSLocalizedString("Home", comment: "Noun. Links to a blog's dashboard screen."),
+            title: Strings.home,
             accessibilityIdentifier: "Home Row",
             image: UIImage(named: "site-menu-home"),
             action: { [weak viewController] _ in
@@ -932,7 +932,7 @@ extension Row {
     static func posts(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .posts,
-            title: NSLocalizedString("Posts", comment: "Noun. Title. Links to the blog's Posts screen."),
+            title: Strings.posts,
             accessibilityIdentifier: "Blog Post Row",
             image: (UIImage(named: "site-menu-posts"))?.imageFlippedForRightToLeftLayoutDirection(),
             action: { [weak viewController] userInfo in
@@ -947,7 +947,7 @@ extension Row {
     static func pages(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .pages,
-            title: NSLocalizedString("Pages", comment: "Noun. Title. Links to the blog's Pages screen."),
+            title: Strings.pages,
             accessibilityIdentifier: "Site Pages Row",
             image: UIImage(named: "site-menu-pages"),
             action: { [weak viewController] userInfo in
@@ -962,7 +962,7 @@ extension Row {
     static func media(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .media,
-            title: NSLocalizedString("Media", comment: "Noun. Title. Links to the blog's Media library."),
+            title: Strings.media,
             accessibilityIdentifier: "Media Row",
             image: UIImage(named: "site-menu-media"),
             action: { [weak viewController] userInfo in
@@ -975,7 +975,7 @@ extension Row {
     static func comments(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .comments,
-            title: NSLocalizedString("Comments", comment: "Noun. Title. Links to the blog's Comments screen."),
+            title: Strings.comments,
             image: (UIImage(named: "site-menu-comments"))?.imageFlippedForRightToLeftLayoutDirection(),
             action: { [weak viewController] userInfo in
                 // When called from showDetailView, use .link as source (matching Objective-C behavior)
@@ -989,7 +989,7 @@ extension Row {
     static func removeSite(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .removeSite,
-            title: NSLocalizedString("Remove Site", comment: "Button to remove a site from the app"),
+            title: Strings.removeSite,
             image: nil,
             showsSelectionState: false,
             action: { [weak viewController] _ in
@@ -1002,7 +1002,7 @@ extension Row {
     static func stats(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .stats,
-            title: NSLocalizedString("Stats", comment: "Noun. Abbv. of Statistics. Links to a blog's Stats screen."),
+            title: Strings.stats,
             accessibilityIdentifier: "Stats Row",
             image: UIImage(named: "site-menu-stats"),
             action: { [weak viewController] userInfo in
@@ -1016,7 +1016,7 @@ extension Row {
     static func activityLog(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .activity,
-            title: NSLocalizedString("Activity Log", comment: "Noun. Links to a blog's Activity screen."),
+            title: Strings.activityLog,
             accessibilityIdentifier: "Activity Log Row",
             image: UIImage(named: "site-menu-activity"),
             action: { [weak viewController] _ in
@@ -1028,7 +1028,7 @@ extension Row {
     static func activity(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .activity,
-            title: NSLocalizedString("Activity", comment: "Noun. Links to a blog's Activity screen."),
+            title: Strings.activity,
             image: UIImage(named: "site-menu-activity"),
             action: { [weak viewController] _ in
                 viewController?.showActivity()
@@ -1039,7 +1039,7 @@ extension Row {
     static func backup(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .backup,
-            title: NSLocalizedString("Backup", comment: "Noun. Links to a blog's Jetpack Backups screen."),
+            title: Strings.backup,
             accessibilityIdentifier: "Backup Row",
             image: UIImage.gridicon(.cloudOutline),
             action: { [weak viewController] _ in
@@ -1051,7 +1051,7 @@ extension Row {
     static func scan(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .scan,
-            title: NSLocalizedString("Scan", comment: "Noun. Links to a blog's Jetpack Scan screen."),
+            title: Strings.scan,
             accessibilityIdentifier: "Scan Row",
             image: UIImage(named: "jetpack-scan-menu-icon"),
             action: { [weak viewController] _ in
@@ -1063,7 +1063,7 @@ extension Row {
     static func jetpackSettings(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .jetpackSettings,
-            title: NSLocalizedString("Jetpack Settings", comment: "Noun. Title. Links to the blog's Settings screen."),
+            title: Strings.jetpackSettings,
             accessibilityIdentifier: "Jetpack Settings Row",
             image: UIImage(named: "site-menu-settings"),
             action: { [weak viewController] _ in
@@ -1077,7 +1077,7 @@ extension Row {
         let blazeIcon = UIImage(named: "icon-blaze")?.resized(to: iconSize, format: .scaleAspectFit)
         return Row(
             kind: .blaze,
-            title: NSLocalizedString("Blaze", comment: "Noun. Links to a blog's Blaze screen."),
+            title: Strings.blaze,
             accessibilityIdentifier: "Blaze Row",
             image: blazeIcon?.imageFlippedForRightToLeftLayoutDirection(),
             imageColor: nil,
@@ -1091,7 +1091,7 @@ extension Row {
     static func themes(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .themes,
-            title: NSLocalizedString("Themes", comment: "Themes option in the blog details"),
+            title: Strings.themes,
             image: UIImage(named: "site-menu-themes"),
             action: { [weak viewController] _ in
                 viewController?.showThemes()
@@ -1102,7 +1102,7 @@ extension Row {
     static func menus(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .menu,
-            title: NSLocalizedString("Menus", comment: "Menus option in the blog details"),
+            title: Strings.menus,
             image: UIImage.gridicon(.menus).imageFlippedForRightToLeftLayoutDirection(),
             action: { [weak viewController] _ in
                 viewController?.showMenus()
@@ -1113,7 +1113,7 @@ extension Row {
     static func me(icon: UIImage?, viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .me,
-            title: NSLocalizedString("Me", comment: "Noun. Title. Links to the Me screen."),
+            title: Strings.me,
             image: icon ?? UIImage.gridicon(.userCircle),
             action: { [weak viewController] _ in
                 viewController?.showMe()
@@ -1123,8 +1123,8 @@ extension Row {
 
     static func sharing(viewController: BlogDetailsViewController?) -> Row {
         let sharingTitle = AppConfiguration.isWordPress
-            ? NSLocalizedString("Sharing", comment: "Noun. Title. Links to a blog's sharing options.")
-            : BlogDetailsViewController.Strings.socialRowTitle
+            ? Strings.sharing
+            : Strings.socialRowTitle
         return Row(
             kind: .sharing,
             title: sharingTitle,
@@ -1140,8 +1140,8 @@ extension Row {
 
     static func people(viewController: BlogDetailsViewController?) -> Row {
         let title = viewController?.shouldShowSubscribersRow == true
-            ? BlogDetailsViewController.Strings.users
-            : NSLocalizedString("People", comment: "Noun. Title. Links to the people management feature.")
+            ? Strings.users
+            : Strings.people
         return Row(
             kind: .people,
             title: title,
@@ -1156,7 +1156,7 @@ extension Row {
     static func subscribers(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .subscribers,
-            title: BlogDetailsViewController.Strings.subscribers,
+            title: Strings.subscribers,
             image: UIImage(named: "wpl-mail"),
             action: { [weak viewController] _ in
                 MainActor.assumeIsolated {
@@ -1174,7 +1174,7 @@ extension Row {
     static func users(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .people,
-            title: NSLocalizedString("Users", comment: "Noun. Title. Links to the user management feature."),
+            title: Strings.users,
             accessibilityIdentifier: "Users Row",
             image: UIImage(named: "site-menu-people"),
             action: { [weak viewController] _ in
@@ -1186,7 +1186,7 @@ extension Row {
     static func plugins(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .plugins,
-            title: NSLocalizedString("Plugins", comment: "Noun. Title. Links to the plugin management feature."),
+            title: Strings.plugins,
             image: UIImage(named: "site-menu-plugins"),
             action: { [weak viewController] userInfo in
                 let showManagement = (userInfo[BlogDetailsUserInfoKeys.showManagePlugins] as? NSNumber)?.boolValue ?? false
@@ -1202,7 +1202,7 @@ extension Row {
     static func siteSettings(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .siteSettings,
-            title: NSLocalizedString("Site Settings", comment: "Noun. Title. Links to the blog's Settings screen."),
+            title: Strings.siteSettings,
             accessibilityIdentifier: "Settings Row",
             image: UIImage(named: "site-menu-settings"),
             action: { [weak viewController] _ in
@@ -1214,7 +1214,7 @@ extension Row {
     static func domains(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .domain,
-            title: NSLocalizedString("Domains", comment: "Noun. Title. Links to the Domains screen."),
+            title: Strings.domains,
             accessibilityIdentifier: "Domains Row",
             image: UIImage(named: "site-menu-domains"),
             action: { [weak viewController] _ in
@@ -1226,7 +1226,7 @@ extension Row {
     static func viewSite(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .viewSite,
-            title: NSLocalizedString("View Site", comment: "Action title. Opens the user's site in an in-app browser"),
+            title: Strings.viewSite,
             image: UIImage.gridicon(.globe),
             showsSelectionState: false,
             action: { [weak viewController] _ in
@@ -1236,12 +1236,7 @@ extension Row {
     }
 
     static func admin(viewController: BlogDetailsViewController?, blog: Blog) -> Row {
-        let adminTitle: String
-        if blog.isHostedAtWPcom {
-            adminTitle = NSLocalizedString("Dashboard", comment: "Action title. Noun. Opens the user's WordPress.com dashboard in an external browser.")
-        } else {
-            adminTitle = NSLocalizedString("WP Admin", comment: "Action title. Noun. Opens the user's WordPress Admin in an external browser.")
-        }
+        let adminTitle = blog.isHostedAtWPcom ? Strings.dashboard : Strings.wpAdmin
 
         let iconSize = CGSize(width: 17.0, height: 17.0)
         let accessoryImage = UIImage.gridicon(.external, size: iconSize).imageFlippedForRightToLeftLayoutDirection()
@@ -1264,7 +1259,7 @@ extension Row {
     static func social(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .sharing,
-            title: BlogDetailsViewController.Strings.socialRowTitle,
+            title: Strings.socialRowTitle,
             image: UIImage(named: "site-menu-social"),
             action: { [weak viewController] userInfo in
                 // When called from showDetailView, use .link as source (matching Objective-C behavior)
@@ -1278,7 +1273,7 @@ extension Row {
     static func siteMonitoring(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .siteMonitoring,
-            title: BlogDetailsViewController.Strings.siteMonitoringRowTitle,
+            title: Strings.siteMonitoringRowTitle,
             accessibilityIdentifier: "Site Monitoring Row",
             image: UIImage(named: "tool"),
             action: { [weak viewController] userInfo in
@@ -1291,7 +1286,7 @@ extension Row {
     static func applicationPasswords(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .applicationPasswords,
-            title: NSLocalizedString("Application Passwords", comment: "Link to Application Passwords section"),
+            title: Strings.applicationPasswords,
             accessibilityIdentifier: "Application Passwords Row",
             image: UIImage(systemName: "key"),
             action: { [weak viewController] _ in
@@ -1299,6 +1294,194 @@ extension Row {
             }
         )
     }
+}
+
+private enum Strings {
+    static let home = NSLocalizedString(
+        "mySite.menu.home",
+        value: "Home",
+        comment: "Noun. Links to a blog's dashboard screen."
+    )
+    static let posts = NSLocalizedString(
+        "mySite.menu.posts",
+        value: "Posts",
+        comment: "Noun. Title. Links to the blog's Posts screen."
+    )
+    static let pages = NSLocalizedString(
+        "mySite.menu.pages",
+        value: "Pages",
+        comment: "Noun. Title. Links to the blog's Pages screen."
+    )
+    static let media = NSLocalizedString(
+        "mySite.menu.media",
+        value: "Media",
+        comment: "Noun. Title. Links to the blog's Media library."
+    )
+    static let comments = NSLocalizedString(
+        "mySite.menu.comments",
+        value: "Comments",
+        comment: "Noun. Title. Links to the blog's Comments screen."
+    )
+    static let removeSite = NSLocalizedString(
+        "mySite.menu.removeSite",
+        value: "Remove Site",
+        comment: "Button to remove a site from the app"
+    )
+    static let stats = NSLocalizedString(
+        "mySite.menu.stats",
+        value: "Stats",
+        comment: "Noun. Abbv. of Statistics. Links to a blog's Stats screen."
+    )
+    static let activityLog = NSLocalizedString(
+        "mySite.menu.activityLog",
+        value: "Activity Log",
+        comment: "Noun. Links to a blog's Activity screen."
+    )
+    static let activity = NSLocalizedString(
+        "mySite.menu.activity",
+        value: "Activity",
+        comment: "Noun. Links to a blog's Activity screen."
+    )
+    static let backup = NSLocalizedString(
+        "mySite.menu.backup",
+        value: "Backup",
+        comment: "Noun. Links to a blog's Jetpack Backups screen."
+    )
+    static let scan = NSLocalizedString(
+        "mySite.menu.scan",
+        value: "Scan",
+        comment: "Noun. Links to a blog's Jetpack Scan screen."
+    )
+    static let jetpackSettings = NSLocalizedString(
+        "mySite.menu.jetpackSettings",
+        value: "Jetpack Settings",
+        comment: "Noun. Title. Links to the blog's Settings screen."
+    )
+    static let blaze = NSLocalizedString(
+        "mySite.menu.blaze",
+        value: "Blaze",
+        comment: "Noun. Links to a blog's Blaze screen."
+    )
+    static let themes = NSLocalizedString(
+        "mySite.menu.themes",
+        value: "Themes",
+        comment: "Themes option in the blog details"
+    )
+    static let menus = NSLocalizedString(
+        "mySite.menu.menus",
+        value: "Menus",
+        comment: "Menus option in the blog details"
+    )
+    static let me = NSLocalizedString(
+        "mySite.menu.me",
+        value: "Me",
+        comment: "Noun. Title. Links to the Me screen."
+    )
+    static let sharing = NSLocalizedString(
+        "mySite.menu.sharing",
+        value: "Sharing",
+        comment: "Noun. Title. Links to a blog's sharing options."
+    )
+    static let people = NSLocalizedString(
+        "mySite.menu.people",
+        value: "People",
+        comment: "Noun. Title. Links to the people management feature."
+    )
+    static let users = NSLocalizedString(
+        "mySite.menu.users",
+        value: "Users",
+        comment: "Noun. Title. Links to the user management feature."
+    )
+    static let plugins = NSLocalizedString(
+        "mySite.menu.plugins",
+        value: "Plugins",
+        comment: "Noun. Title. Links to the plugin management feature."
+    )
+    static let siteSettings = NSLocalizedString(
+        "mySite.menu.siteSettings",
+        value: "Site Settings",
+        comment: "Noun. Title. Links to the blog's Settings screen."
+    )
+    static let domains = NSLocalizedString(
+        "mySite.menu.domains",
+        value: "Domains",
+        comment: "Noun. Title. Links to the Domains screen."
+    )
+    static let viewSite = NSLocalizedString(
+        "mySite.menu.viewSite",
+        value: "View Site",
+        comment: "Action title. Opens the user's site in an in-app browser"
+    )
+    static let dashboard = NSLocalizedString(
+        "mySite.menu.dashboard",
+        value: "Dashboard",
+        comment: "Action title. Noun. Opens the user's WordPress.com dashboard in an external browser."
+    )
+    static let wpAdmin = NSLocalizedString(
+        "mySite.menu.wpAdmin",
+        value: "WP Admin",
+        comment: "Action title. Noun. Opens the user's WordPress Admin in an external browser."
+    )
+    static let applicationPasswords = NSLocalizedString(
+        "mySite.menu.applicationPasswords",
+        value: "Application Passwords",
+        comment: "Link to Application Passwords section"
+    )
+    static let jetpackSection = NSLocalizedString(
+        "mySite.menu.jetpackSection",
+        value: "Jetpack",
+        comment: "Section title for the jetpack table section in the blog details screen"
+    )
+    static let publishSection = NSLocalizedString(
+        "mySite.menu.publishSection",
+        value: "Publish",
+        comment: "Section title for the publish table section in the blog details screen"
+    )
+    static let personalizeSection = NSLocalizedString(
+        "mySite.menu.personalizeSection",
+        value: "Personalize",
+        comment: "Section title for the personalize table section in the blog details screen"
+    )
+    static let configureSection = NSLocalizedString(
+        "mySite.menu.configureSection",
+        value: "Configure",
+        comment: "Section title for the configure table section in the blog details screen"
+    )
+    static let externalSection = NSLocalizedString(
+        "mySite.menu.externalSection",
+        value: "External",
+        comment: "Section title for the external table section in the blog details screen"
+    )
+    static let contentSectionTitle = NSLocalizedString(
+        "mySite.menu.content.section.title",
+        value: "Content",
+        comment: "Section title for the content table section in the blog details screen"
+    )
+    static let trafficSectionTitle = NSLocalizedString(
+        "mySite.menu.traffic.section.title",
+        value: "Traffic",
+        comment: "Section title for the traffic table section in the blog details screen"
+    )
+    static let maintenanceSectionTitle = NSLocalizedString(
+        "mySite.menu.maintenance.section.title",
+        value: "Maintenance",
+        comment: "Section title for the maintenance table section in the blog details screen"
+    )
+    static let socialRowTitle = NSLocalizedString(
+        "mySite.menu.social.row.title",
+        value: "Social",
+        comment: "Title for the social row in the blog details screen"
+    )
+    static let siteMonitoringRowTitle = NSLocalizedString(
+        "mySite.menu.site-monitoring.row.title",
+        value: "Site Monitoring",
+        comment: "Title for the site monitoring row in the blog details screen"
+    )
+    static let subscribers = NSLocalizedString(
+        "mySite.menu.subscribers",
+        value: "Subscribers",
+        comment: "Title for the menu item"
+    )
 }
 
 private enum CellIdentifiers {
