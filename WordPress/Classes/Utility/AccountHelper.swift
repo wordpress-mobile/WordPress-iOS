@@ -111,9 +111,6 @@ import WordPressData
         // This is best-effort for now – eventually all of this should be async
         Task {
             do {
-                // Delete all cached block editor settings
-                try await BlockEditorCache.shared.deleteAll()
-
                 // Delete everything in the disk cache
                 try await DiskCache().removeAll()
             } catch {

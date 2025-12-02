@@ -89,7 +89,7 @@ extension CommentGutenbergEditorViewController: GutenbergKit.EditorViewControlle
         // Do nothing
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didLogMessage message: String, level: GutenbergKit.LogLevel) {
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogMessage message: String, level: GutenbergKit.EditorLogLevel) {
         // Do nothing
     }
 
@@ -106,6 +106,10 @@ extension CommentGutenbergEditorViewController: GutenbergKit.EditorViewControlle
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didCloseModalDialog dialogType: String) {
+        // Do nothing
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogNetworkRequest request: GutenbergKit.RecordedNetworkRequest) {
         // Do nothing
     }
 }

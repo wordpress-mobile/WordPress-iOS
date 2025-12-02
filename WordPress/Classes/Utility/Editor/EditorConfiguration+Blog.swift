@@ -54,6 +54,16 @@ extension EditorConfiguration {
         if let siteApiRoot {
             builder = builder.setSiteApiRoot(siteApiRoot)
 
+            if var editorSettingsEndpoint = URL(string: siteApiRoot) {
+                editorSettingsEndpoint.appendPathComponent("wp-block-editor/v1")
+                if let namespace = siteApiNamespace.first {
+                    editorSettingsEndpoint.appendPathComponent(namespace)
+                }
+
+                editorSettingsEndpoint.appendPathComponent("settings")
+                builder = builder.setEditorSettingsEndpoint(editorSettingsEndpoint)
+            }
+
             if var editorAssetsEndpoint = URL(string: siteApiRoot) {
                 editorAssetsEndpoint.appendPathComponent("wpcom/v2/")
                 if let namespace = siteApiNamespace.first {

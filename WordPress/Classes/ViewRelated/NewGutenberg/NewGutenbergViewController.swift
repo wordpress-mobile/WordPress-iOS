@@ -53,7 +53,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     struct EditorDependencies {
-        let settings: String?
         let didLoadCookies: Bool
     }
 
@@ -100,14 +99,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     let navigationBarManager: PostEditorNavigationBarManager
 
-    // MARK: - Private variables
-
-    // TODO: reimplemet
-//    internal private(set) var contentInfo: ContentInfo?
-    lazy var editorSettingsService: BlockEditorSettingsService? = {
-        BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.shared)
-    }()
-
     // MARK: - GutenbergKit
 
     private var editorViewController: GutenbergKit.EditorViewController
@@ -146,8 +137,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
     func setHTML(_ html: String) {}
     func getHTML() -> String { post.content ?? "" }
-
-    private let blockEditorSettingsService: RawBlockEditorSettingsService
 
     // MARK: - Initializers
     required convenience init(
@@ -189,8 +178,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             configuration: editorConfiguration,
             mediaPicker: MediaPickerController(blog: post.blog)
         )
-
-        self.blockEditorSettingsService = RawBlockEditorSettingsService(blog: post.blog)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -269,7 +256,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
                     case .loadingDependencies: preconditionFailure("Dependencies should not still be loading")
                     case .loadingCancelled: preconditionFailure("Dependency loading should not be cancelled")
                     case .dependencyError(let error): self.showEditorError(error)
-                    case .dependenciesReady(let dependencies): try await self.startEditor(settings: dependencies.settings)
+                    case .dependenciesReady: try await self.startEditor()
                     case .started: preconditionFailure("The editor should not already be started")
                 }
             } catch {
@@ -385,23 +372,18 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         }
 
         self.editorState = .loadingDependencies(Task {
-            do {
-                let dependencies = try await fetchEditorDependencies()
-                self.editorState = .dependenciesReady(dependencies)
-            } catch {
-                self.editorState = .dependencyError(error)
-            }
+            let dependencies = await fetchEditorDependencies()
+            self.editorState = .dependenciesReady(dependencies)
         })
     }
 
     @MainActor
-    func startEditor(settings: String?) async throws {
+    func startEditor() async throws {
         guard case .dependenciesReady = self.editorState else {
             preconditionFailure("`startEditor` should only be called when the editor is in the `.dependenciesReady` state.")
         }
 
         let updatedConfiguration = self.editorViewController.configuration.toBuilder()
-            .apply(settings) { $0.setEditorSettings($1) }
             .setTitle(post.postTitle ?? "")
             .setContent(post.content ?? "")
             .setNativeInserterEnabled(FeatureFlag.nativeBlockInserter.enabled)
@@ -481,18 +463,11 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
 
     // MARK: - Editor Setup
-    private func fetchEditorDependencies() async throws -> EditorDependencies {
-        let settings: String?
-        do {
-            settings = try await blockEditorSettingsService.getSettingsString(allowingCachedResponse: true)
-        } catch {
-            DDLogError("Failed to fetch editor settings: \(error)")
-            settings = nil
-        }
 
+    // TODO: refactor
+    private func fetchEditorDependencies() async -> EditorDependencies {
         let loaded = await loadAuthenticationCookiesAsync()
-
-        return EditorDependencies(settings: settings, didLoadCookies: loaded)
+        return EditorDependencies(didLoadCookies: loaded)
     }
 
     private func loadAuthenticationCookiesAsync() async -> Bool {
@@ -573,7 +548,11 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didLogMessage message: String, level: GutenbergKit.LogLevel) {
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogMessage message: String, level: GutenbergKit.EditorLogLevel) {
+        // Do nothing
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogNetworkRequest request: GutenbergKit.RecordedNetworkRequest) {
         // Do nothing
     }
 
