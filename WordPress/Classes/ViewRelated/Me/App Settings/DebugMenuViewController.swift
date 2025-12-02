@@ -8,6 +8,8 @@ import TipKit
 
 struct DebugMenuView: View {
     @StateObject private var viewModel = DebugMenuViewModel()
+    @State private var isShowingWebViewURLDialog = false
+    @State private var webViewURL = ""
 
     fileprivate var navigation: NavigationContext
 
@@ -16,11 +18,24 @@ struct DebugMenuView: View {
             Section { main }
             Section(Strings.sectionSettings) { settings }
             Section(Strings.sectionTipKit) { tipKit }
+            Section(Strings.sectionWebView) { webView }
             Section(Strings.sectionLogging) { logging }
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
                 (Text(Image(systemName: "bolt.fill")).foregroundColor(.yellow) + Text(" " + Strings.title)).font(.headline)
+            }
+        }
+        .alert(Strings.webViewDialogTitle, isPresented: $isShowingWebViewURLDialog) {
+            TextField("https://example.com", text: $webViewURL)
+                .keyboardType(.URL)
+                .textContentType(.URL)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+            Button(SharedStrings.Button.cancel, role: .cancel) {
+            }
+            Button(SharedStrings.Button.view) {
+                presentAuthenticatedWebView()
             }
         }
     }
@@ -68,6 +83,13 @@ struct DebugMenuView: View {
         }
     }
 
+    @ViewBuilder private var webView: some View {
+        Button(Strings.webViewRow) {
+            webViewURL = Blog.lastUsed(in: ContextManager.shared.mainContext)?.url ?? ""
+            isShowingWebViewURLDialog = true
+        }
+    }
+
     @ViewBuilder private var logging: some View {
         Button(Strings.sendLogMessage) {
             WordPressAppDelegate.crashLogging?.logMessage("Debug Log Message \(UUID().uuidString)")
@@ -93,6 +115,25 @@ struct DebugMenuView: View {
             }.buttonStyle(.plain)
         }
         Toggle(Strings.alwaysSendLogs, isOn: $viewModel.isForcedCrashLoggingEnabled)
+    }
+
+    private func presentAuthenticatedWebView() {
+        guard let url = URL(string: webViewURL) else {
+            preconditionFailure("Invalid URL")
+            return
+        }
+
+        guard let currentBlog = Blog.lastUsed(in: ContextManager.shared.mainContext) else {
+            preconditionFailure("Can't get current blog")
+            return
+        }
+
+        let webViewController = WebViewControllerFactory.controller(
+            url: url,
+            blog: currentBlog,
+            source: "debug_menu"
+        )
+        navigation.push(webViewController)
     }
 
     private var readerSettings: some View {
@@ -201,6 +242,7 @@ private enum Strings {
     static let sectionSettings = NSLocalizedString("debugMenu.section.settings", value: "Settings", comment: "Debug Menu section title")
     static let sectionLogging = NSLocalizedString("debugMenu.section.logging", value: "Logging", comment: "Debug Menu section title")
     static let sectionTipKit = NSLocalizedString("debugMenu.section.tipKit", value: "TipKit", comment: "Debug Menu section title")
+    static let sectionWebView = NSLocalizedString("debugMenu.section.webView", value: "Web View", comment: "Debug Menu section title")
     static let sandboxStoreCookieSecretRow = NSLocalizedString("Sandbox Store", comment: "Title of a row displayed on the debug screen used to configure the sandbox store use in the App.")
     static let sendTestCrash = NSLocalizedString("Send Test Crash", comment: "Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly")
     static let sendLogMessage = NSLocalizedString("Send Log Message", comment: "Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly")
@@ -214,6 +256,8 @@ private enum Strings {
     static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
     static let weeklyRoundup = NSLocalizedString("debugMenu.weeklyRoundup", value: "Weekly Roundup", comment: "Weekly Roundup debug menu item")
     static let booleanUserDefaults = NSLocalizedString("debugMenu.booleanUserDefaults", value: "Boolean User Defaults", comment: "Boolean User Defaults debug menu item")
+    static let webViewRow = NSLocalizedString("debugMenu.webView.row", value: "Browse as loggedin account", comment: "Debug menu item to present an authenticated web view for the currently displayed site")
+    static let webViewDialogTitle = NSLocalizedString("debugMenu.webView.dialogTitle", value: "Enter URL", comment: "Title for web view URL input dialog")
 
     static let showAllTips = NSLocalizedString("debugMenu.showAllTips", value: "Show All Tips", comment: "Debug Menu action for TipKit")
     static let hideAllTips = NSLocalizedString("debugMenu.hideAllTips", value: "Hide All Tips", comment: "Debug Menu action for TipKit")
