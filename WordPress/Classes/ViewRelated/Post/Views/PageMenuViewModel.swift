@@ -112,12 +112,12 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             return AbstractPostButtonSection(buttons: [])
         }
 
-        let action: AbstractPostButton = page.rootOriginal().status == .trash ? .delete : .trash
+        let action: AbstractPostButton = page.getOriginal().status == .trash ? .delete : .trash
         return AbstractPostButtonSection(buttons: [action])
     }
 
     private func createUploadStatusSection() -> AbstractPostButtonSection {
-        guard let error = PostCoordinator.shared.syncError(for: page.rootOriginal()) else {
+        guard let error = PostCoordinator.shared.syncError(for: page.getOriginal()) else {
             return AbstractPostButtonSection(buttons: [])
         }
         return AbstractPostButtonSection(title: error.localizedDescription, buttons: [.retry])

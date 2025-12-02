@@ -102,12 +102,12 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     }
 
     private func createTrashSection() -> AbstractPostButtonSection {
-        let action: AbstractPostButton = post.rootOriginal().status == .trash ? .delete : .trash
+        let action: AbstractPostButton = post.getOriginal().status == .trash ? .delete : .trash
         return AbstractPostButtonSection(buttons: [action])
     }
 
     private func createUploadStatusSection() -> AbstractPostButtonSection {
-        guard let error = PostCoordinator.shared.syncError(for: post.rootOriginal()) else {
+        guard let error = PostCoordinator.shared.syncError(for: post.getOriginal()) else {
             return AbstractPostButtonSection(buttons: [])
         }
         return AbstractPostButtonSection(title: error.localizedDescription, buttons: [.retry])

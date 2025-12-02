@@ -240,7 +240,7 @@ class EditPostViewController: UIViewController {
                 return
             }
             self.afterDismiss?()
-            guard let post = self.post?.rootOriginal(),
+            guard let post = self.post?.getOriginal(),
                   post.isPublished(),
                   !self.editingExistingPost,
                   let controller = presentingController else {
@@ -294,7 +294,7 @@ extension EditPostViewController {
         if let restorationDate, Date().timeIntervalSince(restorationDate) < 0.5 {
             return // Appears to be crashing repeatedly
         }
-        let postURL = post.rootOriginal().objectID.uriRepresentation().absoluteString
+        let postURL = post.getOriginal().objectID.uriRepresentation().absoluteString
         UserDefaults.standard.set(postURL, forKey: restorationBlogURLKey)
     }
 
