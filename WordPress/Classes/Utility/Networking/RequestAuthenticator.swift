@@ -332,7 +332,7 @@ extension RequestAuthenticator {
             return true
         }
 
-        if case let .dotCom(_, _, authenticationType: .atomic(loginURL)) = credentials, normalized.absoluteString == loginURL {
+        if case let .dotCom(_, _, .atomic(loginURL)) = credentials, normalized.absoluteString == loginURL {
             return true
         }
 
