@@ -312,15 +312,31 @@ class RequestAuthenticator: NSObject {
 }
 
 private extension RequestAuthenticator {
-    static let wordPressComLoginUrl = URL(string: "https://wordpress.com/wp-login.php")!
+    static let wordPressComLoginUrls: Set<URL> = [
+        URL(string: "https://wordpress.com/wp-login.php")!,
+        URL(string: "https://wordpress.com/log-in")!
+    ]
 }
 
 extension RequestAuthenticator {
     func isLogin(url: URL) -> Bool {
+        // For some reason, the in-app browser may open Safari when tapping certain links.
+        // The "login URLs" are displayed within the in-app browser, which includes atomic site login (wp-login.php)
+        // and WordPress.com sign-in web pages.
+
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         components?.queryItems = nil
+        guard let normalized = components?.url else { return false }
 
-        return components?.url == RequestAuthenticator.wordPressComLoginUrl
+        if RequestAuthenticator.wordPressComLoginUrls.contains(normalized) {
+            return true
+        }
+
+        if case let .dotCom(_, _, authenticationType: .atomic(loginURL)) = credentials, normalized.absoluteString == loginURL {
+            return true
+        }
+
+        return false
     }
 }
 
