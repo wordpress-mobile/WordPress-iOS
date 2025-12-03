@@ -88,7 +88,7 @@ class RequestAuthenticator: NSObject {
     ///     - completion: this will be called with either the request for
     ///     authentication, or a request for the original URL.
     ///
-    @objc func request(url: URL, cookieJar: CookieJar, completion: @escaping (URLRequest) -> Void) {
+    func request(url: URL, cookieJar: CookieJar, completion: @escaping (URLRequest) -> Void) {
         switch self.credentials {
         case .dotCom(let username, let authToken, let authenticationType):
             requestForWPCom(
