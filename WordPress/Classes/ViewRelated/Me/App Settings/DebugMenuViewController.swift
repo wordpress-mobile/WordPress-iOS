@@ -10,6 +10,7 @@ struct DebugMenuView: View {
     @StateObject private var viewModel = DebugMenuViewModel()
     @State private var isShowingWebViewURLDialog = false
     @State private var webViewURL = ""
+    @State private var isAuthenticatedMode = true
 
     fileprivate var navigation: NavigationContext
 
@@ -35,7 +36,11 @@ struct DebugMenuView: View {
             Button(SharedStrings.Button.cancel, role: .cancel) {
             }
             Button(SharedStrings.Button.view) {
-                presentAuthenticatedWebView()
+                if isAuthenticatedMode {
+                    presentAuthenticatedWebView()
+                } else {
+                    presentUnauthenticatedWebView()
+                }
             }
         }
     }
@@ -86,6 +91,12 @@ struct DebugMenuView: View {
     @ViewBuilder private var webView: some View {
         Button(Strings.webViewRow) {
             webViewURL = Blog.lastUsed(in: ContextManager.shared.mainContext)?.url ?? ""
+            isAuthenticatedMode = true
+            isShowingWebViewURLDialog = true
+        }
+        Button(Strings.unauthenticatedWebViewRow) {
+            webViewURL = ""
+            isAuthenticatedMode = false
             isShowingWebViewURLDialog = true
         }
     }
@@ -133,6 +144,16 @@ struct DebugMenuView: View {
             blog: currentBlog,
             source: "debug_menu"
         )
+        navigation.push(webViewController)
+    }
+
+    private func presentUnauthenticatedWebView() {
+        guard let url = URL(string: webViewURL) else {
+            preconditionFailure("Invalid URL")
+            return
+        }
+
+        let webViewController = WebViewControllerFactory.controller(url: url, source: "debug_menu")
         navigation.push(webViewController)
     }
 
@@ -257,6 +278,7 @@ private enum Strings {
     static let weeklyRoundup = NSLocalizedString("debugMenu.weeklyRoundup", value: "Weekly Roundup", comment: "Weekly Roundup debug menu item")
     static let booleanUserDefaults = NSLocalizedString("debugMenu.booleanUserDefaults", value: "Boolean User Defaults", comment: "Boolean User Defaults debug menu item")
     static let webViewRow = NSLocalizedString("debugMenu.webView.row", value: "Browse as loggedin account", comment: "Debug menu item to present an authenticated web view for the currently displayed site")
+    static let unauthenticatedWebViewRow = NSLocalizedString("debugMenu.webView.unauthenticatedRow", value: "Open a web browser", comment: "Debug menu item to present an unauthenticated web view")
     static let webViewDialogTitle = NSLocalizedString("debugMenu.webView.dialogTitle", value: "Enter URL", comment: "Title for web view URL input dialog")
 
     static let showAllTips = NSLocalizedString("debugMenu.showAllTips", value: "Show All Tips", comment: "Debug Menu action for TipKit")
