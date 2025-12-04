@@ -345,6 +345,7 @@ private extension ApplicationPasswordRepository {
         } else if let dotComId, let dotComAuthToken {
             let site = WordPressSite.dotCom(siteId: dotComId.intValue, authToken: dotComAuthToken)
             let client = WordPressClient(site: site)
+            let client = WordPressClientFactory.shared.instance(for: site)
             siteUsername = try await client.api.users.retrieveMeWithEditContext().data.username
             try await coreDataStack.performAndSave { context in
                 let blog = try context.existingObject(with: blogId)

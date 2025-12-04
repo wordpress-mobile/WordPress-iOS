@@ -90,6 +90,8 @@ import WordPressData
         service.removeDefaultWordPressComAccount()
 
         deleteAccountData()
+
+        WordPressClientFactory.shared.reset()
     }
 
     static func deleteAccountData() {

@@ -6,12 +6,39 @@ import WordPressCore
 import WordPressData
 import WordPressShared
 
+public final class WordPressClientFactory: @unchecked Sendable {
+    public static let shared = WordPressClientFactory()
+
+    private let lock = NSLock()
+    private var instanes = [WordPressSite: WordPressClient]()
+    private init() {}
+
+    public func instance(for site: WordPressSite) -> WordPressClient {
+        lock.withLock {
+            let client: WordPressClient
+            if let existingClient = instanes[site] {
+                client = existingClient
+            } else {
+                client = WordPressClient(site: site)
+                instanes[site] = client
+            }
+            return client
+        }
+    }
+
+    public func reset() {
+        lock.withLock {
+            instanes.removeAll()
+        }
+    }
+}
+
 extension WordPressClient {
     static var requestedWithInvalidAuthenticationNotification: Foundation.Notification.Name {
         .init("WordPressClient.requestedWithInvalidAuthenticationNotification")
     }
 
-    init(site: WordPressSite) {
+    fileprivate convenience init(site: WordPressSite) {
         // Currently, the app supports both account passwords and application passwords.
         // When a site is initially signed in with an account password, WordPress login cookies are stored
         // in `URLSession.shared`. After switching the site to application password authentication,

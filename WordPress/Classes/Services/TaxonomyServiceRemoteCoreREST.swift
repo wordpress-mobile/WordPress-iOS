@@ -10,7 +10,7 @@ import WordPressAPI
     @objc public convenience init?(blog: Blog) {
         guard let site = try? WordPressSite(blog: blog) else { return nil }
 
-        self.init(client: .init(site: site))
+        self.init(client: WordPressClientFactory.shared.instance(for: site))
     }
 
     init(client: WordPressClient) {
