@@ -5,6 +5,7 @@ import WordPressData
 import WordPressShared
 import WordPressAPI
 import WordPressCore
+import PostsUI
 
 // MARK: - BlogDetailsViewController (Misc)
 
@@ -74,6 +75,14 @@ extension BlogDetailsViewController {
 
     public func showPostList(from source: BlogDetailsNavigationSource) {
         trackEvent(.openedPosts, from: source)
+
+        if FeatureFlag.newPosts.enabled, blog.isSelfHosted, let site = try? WordPressSite(blog: blog) {
+            let view = PostsListView(client: WordPressClientFactory.shared.instance(for: site))
+            let viewController = UIHostingController(rootView: view)
+            presentationDelegate?.presentBlogDetailsViewController(viewController)
+            return
+        }
+
         let controller = PostListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         presentationDelegate?.presentBlogDetailsViewController(controller)

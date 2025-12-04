@@ -14,3 +14,11 @@ public protocol DataStore: Actor {
     /// The `AsyncStream` should not finish as long as the `DataStore` remains alive and valid.
     func listStream(query: Query) -> AsyncStream<Result<[T], Error>>
 }
+
+public extension DataStore where Query == Void {
+
+    func listStream() -> AsyncStream<Result<[T], Error>> {
+        listStream(query: ())
+    }
+
+}
