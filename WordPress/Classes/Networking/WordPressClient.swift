@@ -53,23 +53,20 @@ extension WordPressClient {
         let provider = WpAuthenticationProvider.dynamic(
             dynamicAuthenticationProvider: AutoUpdateAuthenticationProvider(site: site, coreDataStack: ContextManager.shared)
         )
+        let siteURL: URL
         let apiRootURL: ParsedUrl
         let resolver: ApiUrlResolver
         switch site {
-        case let .dotCom(siteId, _):
+        case let .dotCom(url, siteId, _):
+            siteURL = url
             apiRootURL = try! ParsedUrl.parse(input: AppEnvironment.current.wordPressComApiBase.absoluteString)
             resolver = WpComDotOrgApiUrlResolver(siteId: "\(siteId)", baseUrl: .custom(apiRootURL))
-        case let .selfHosted(_, url, _, _):
-            apiRootURL = url
-            resolver = WpOrgSiteApiUrlResolver(apiRootUrl: url)
+        case let .selfHosted(_, url, apiRoot, _, _):
+            siteURL = url
+            apiRootURL = apiRoot
+            resolver = WpOrgSiteApiUrlResolver(apiRootUrl: apiRoot)
         }
-        let api = WordPressAPI(
-            urlSession: session,
-            apiUrlResolver: resolver,
-            authenticationProvider: provider,
-            appNotifier: notifier
-        )
-        self.init(api: api, rootUrl: apiRootURL)
+        self.init(urlSession: session, siteURL: siteURL, apiUrlResolver: resolver, authenticationProvider: provider, appNotifier: notifier)
     }
 
     func installJetpack() async throws -> PluginWithEditContext {
@@ -100,9 +97,9 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
         self.site = site
         self.coreDataStack = coreDataStack
         self.authentication = switch site {
-        case let .dotCom(_, authToken):
+        case let .dotCom(_, _, authToken):
             .bearer(token: authToken)
-        case let .selfHosted(_, _, username, authToken):
+        case let .selfHosted(_, _, _, username, authToken):
             .init(username: username, password: authToken)
         }
 
@@ -170,13 +167,13 @@ private class AppNotifier: @unchecked Sendable, WpAppNotifier {
 private extension WordPressSite {
     func authentication(in context: NSManagedObjectContext) -> WpAuthentication {
         switch self {
-        case let .dotCom(siteId, _):
+        case let .dotCom(_, siteId, _):
             guard let blog = try? Blog.lookup(withID: siteId, in: context),
                   let token = blog.authToken else {
                 return WpAuthentication.none
             }
             return WpAuthentication.bearer(token: token)
-        case let .selfHosted(blogId, _, _, _):
+        case let .selfHosted(blogId, _, _, _, _):
             guard let blog = try? context.existingObject(with: blogId),
                   let username = try? blog.getUsername(),
                   let password = try? blog.getApplicationToken()

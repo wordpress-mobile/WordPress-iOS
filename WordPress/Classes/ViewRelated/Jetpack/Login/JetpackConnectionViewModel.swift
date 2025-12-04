@@ -188,7 +188,7 @@ class JetpackConnectionService {
         }
 
         guard let site = try? WordPressSite(blog: blog),
-              case let .selfHosted(_, apiRootURL, username, password) = site
+              case let .selfHosted(_, _, apiRootURL, username, password) = site
         else {
             return nil
         }
