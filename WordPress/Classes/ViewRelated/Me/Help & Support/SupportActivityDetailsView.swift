@@ -13,10 +13,7 @@ struct SupportActivityDetailsView: View {
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 0) {
-                ForEach(Array(viewModel.logLines.enumerated()), id: \.offset) { _, line in
-                    Text(line)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
+                logLinesContent
             }
             .font(.subheadline)
             .padding()
@@ -31,6 +28,14 @@ struct SupportActivityDetailsView: View {
                     Image(systemName: "square.and.arrow.up")
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private var logLinesContent: some View {
+        ForEach(Array(viewModel.logLines.enumerated()), id: \.offset) { _, line in
+            Text(line)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
