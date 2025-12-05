@@ -8,14 +8,14 @@ struct ActivityLogDetailView: View {
 
     enum ViewState: Equatable {
         case loading
-        case loaded(String, isSharing: Bool)
+        case loaded([String], isSharing: Bool)
         case error(Error)
 
         static func == (lhs: ActivityLogDetailView.ViewState, rhs: ActivityLogDetailView.ViewState) -> Bool {
             return switch (lhs, rhs) {
             case (.loading, .loading): true
-            case (.loaded(let lhscontent, let lhsisSharing), .loaded(let rhscontent, let rhsisSharing)):
-                lhscontent == rhscontent && lhsisSharing == rhsisSharing
+            case (.loaded(let lhsLines, let lhsisSharing), .loaded(let rhsLines, let rhsisSharing)):
+                lhsLines == rhsLines && lhsisSharing == rhsisSharing
             case (.error, .error): true
             default: false
             }
@@ -38,8 +38,8 @@ struct ActivityLogDetailView: View {
             switch self.state {
             case .loading:
                 self.loadingView
-            case .loaded(let content, _):
-                self.loadedView(content: content)
+            case .loaded(let lines, _):
+                self.loadedView(lines: lines)
             case .error(let error):
                 self.errorView(error: error)
             }
@@ -54,11 +54,11 @@ struct ActivityLogDetailView: View {
             }
         }
         .sheet(isPresented: self.$isDisplayingShareSheet, onDismiss: {
-            guard case .loaded(let content, _) = self.state else {
+            guard case .loaded(let lines, _) = self.state else {
                 return
             }
 
-            self.state = .loaded(content, isSharing: false)
+            self.state = .loaded(lines, isSharing: false)
         }, content: {
             ActivityLogSharingView(applicationLog: applicationLog) {
                 AnyView(erasing: Text("TODO: A new support request with the application log attached"))
@@ -87,15 +87,21 @@ struct ActivityLogDetailView: View {
     }
 
     @ViewBuilder
-    func loadedView(content: String) -> some View {
+    func loadedView(lines: [String]) -> some View {
         ScrollView {
-            VStack(alignment: .leading) {
-                TextEditor(text: .constant(content))
-                    .font(.system(.body, design: .monospaced))
-                    .fixedSize(horizontal: false, vertical: true)
-                    .scrollDisabled(true)
-                    .padding()
+            LazyVStack(alignment: .leading, spacing: 0) {
+                logLinesContent(lines: lines)
             }
+            .font(.system(.body, design: .monospaced))
+            .padding()
+        }
+    }
+
+    @ViewBuilder
+    private func logLinesContent(lines: [String]) -> some View {
+        ForEach(Array(lines.enumerated()), id: \.offset) { _, line in
+            Text(line)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
@@ -110,19 +116,22 @@ struct ActivityLogDetailView: View {
     private func loadLogContent() async {
         do {
             let content = try await self.dataProvider.readApplicationLog(applicationLog)
+            let lines = content
+                .split(separator: "\n", omittingEmptySubsequences: false)
+                .map(String.init)
 
-            self.state = .loaded(content, isSharing: false)
+            self.state = .loaded(lines, isSharing: false)
         } catch {
             self.state = .error(error)
         }
     }
 
     private func startSharing() {
-        guard case .loaded(let content, _) = self.state else {
+        guard case .loaded(let lines, _) = self.state else {
             return
         }
 
-        state = .loaded(content, isSharing: true)
+        state = .loaded(lines, isSharing: true)
     }
 }
 
