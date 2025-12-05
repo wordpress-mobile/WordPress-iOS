@@ -54,7 +54,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/wpxmlrpc", from: "0.9.0"),
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "2b3b7528afed90a1aebcb8e8367538af223ca627"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "09ff8ead10a6deae832a08ebc861f713ea65ddd3"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20251101"),
         .package(
