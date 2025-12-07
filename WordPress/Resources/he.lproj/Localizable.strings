@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-11-25 14:54:11+0000 */
+/* Translation-Revision-Date: 2025-12-02 13:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: he_IL */
@@ -11314,6 +11314,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility label for a list of tags in the preview section. */
 "reader.preferences.preview.tagsList.a11y" = "תגיות לדוגמה";
+
+/* Accessibility label for the Extra Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraExtraLarge" = "גדול במיוחד";
+
+/* Accessibility label for the Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraLarge" = "גדול במיוחד";
 
 /* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
 "reader.preferences.size.extraLarge" = "גדול מאוד";

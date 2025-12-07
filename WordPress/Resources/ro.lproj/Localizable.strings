@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-11-24 11:33:04+0000 */
+/* Translation-Revision-Date: 2025-12-07 10:52:11+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ro */
@@ -11347,6 +11347,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility label for a list of tags in the preview section. */
 "reader.preferences.preview.tagsList.a11y" = "Exemple de etichete";
+
+/* Accessibility label for the Extra Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraExtraLarge" = "Foarte, foarte, foarte mare";
+
+/* Accessibility label for the Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraLarge" = "Foarte, foarte mare";
 
 /* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
 "reader.preferences.size.extraLarge" = "Foarte mare";
