@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-11-24 16:54:10+0000 */
+/* Translation-Revision-Date: 2025-12-03 15:54:10+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ar */
@@ -10539,6 +10539,9 @@ Example: Reply to Pamela Nguyen */
 /* Title of alert when trying to save a deleted page */
 "postSettings.pageDeleted.title" = "تم حذف الصفحة";
 
+/* Label for the parent page field */
+"postSettings.parentPage.label" = "الصفحة الأصلية";
+
 /* Cell title for the Top Level option case */
 "postSettings.parentPage.topLevel" = "أعلى مستوى";
 
@@ -10556,6 +10559,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for show password button */
 "postSettings.passwordEntry.showPassword" = "عرض كلمة المرور";
+
+/* Label for the pending review toggle in Post Settings */
+"postSettings.pendingReview.label" = "قيد المراجعة";
 
 /* Label for the permalink field in Post Settings */
 "postSettings.permalink.label" = "رابط دائم";
@@ -11305,6 +11311,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility label for a list of tags in the preview section. */
 "reader.preferences.preview.tagsList.a11y" = "مثال للوسوم";
+
+/* Accessibility label for the Extra Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraExtraLarge" = "كبير جدًا جدًا جدًا";
+
+/* Accessibility label for the Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraLarge" = "كبير جدًا جدًا";
 
 /* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
 "reader.preferences.size.extraLarge" = "كبير جدًا";

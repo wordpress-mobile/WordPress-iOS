@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-11-25 20:54:10+0000 */
+/* Translation-Revision-Date: 2025-12-02 20:20:58+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: tr */
@@ -7802,6 +7802,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Site Address title on the support form */
 "com.jetpack.support.siteAddress" = "Site Adresi";
 
+/* Placeholder for site address field */
+"com.jetpack.support.siteAddressPlaceholder" = "https:\/\/siteniz.com";
+
 /* Description encouraging user to start a new conversation */
 "com.jetpack.support.startNewConversation" = "Yukarıdaki düğmeyi kullanarak yeni bir sohbet başlatın";
 
@@ -11341,6 +11344,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility label for a list of tags in the preview section. */
 "reader.preferences.preview.tagsList.a11y" = "Örnek etiketler";
+
+/* Accessibility label for the Extra Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraExtraLarge" = "Ekstra Ekstra Ekstra Büyük";
+
+/* Accessibility label for the Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraLarge" = "Ekstra Ekstra Büyük";
 
 /* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
 "reader.preferences.size.extraLarge" = "Ekstra Büyük";
