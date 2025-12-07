@@ -1,0 +1,22 @@
+İçerik üreticilerinin dikkatine; Gönderi Ayarları ekranında bazı büyük değişiklikler yapmak için sıkı bir şekilde çalıştık.
+
+- Gönderileri taslak, beklemede, özel, zamanlanmış ve yayımlanmış durumlar arasında hızla taşımanıza yardımcı olan bir "Durum" alanı ekledik.
+- Taslak ve beklemede gönderiler için "Yayımlama Tarihi" alanını geri getirdik. Bu şekilde, gönderiyi resmen zamanlamadan önceden bir yayımlama tarihi seçebilirsiniz.
+- Şifre alanında farklı bir yazı tipi (eğer ilgileniyorsanız Menlo) kullanıldığından, benzer görünümlü karakterleri okumak daha kolaydır.
+- Tüm aboneler, ücretli aboneler ve genel kamuoyu için gönderi erişim düzeyleri belirleyerek takipçilerinize VIP muamelesi yapın.
+- "Tartışma" ayarlarını kullanarak gönderi yorumlarını ve geri bildirimleri açın/kapatın
+
+Bu esnada uygulamanın çeşitli alanlarında birkaç faydalı güncelleme daha yaptık.
+
+- "Yayımlama" ekranında, bir gönderi yayımlandığında abonelerinizi otomatik olarak bilgilendirmek için "Abonelere e-posta gönder" seçeneğini açabilirsiniz. Baskıları başlatın.
+- Kısaltma düzenleyicide, bir gönderinin son URL'sinin nasıl görüneceğini gösteren bir kalıcı bağlantı önizlemesi vardır.
+- Site düzeyinde içerik gruplarını yönetebilmeniz için Site Ayarları'na "Sınıflandırmalar" eklendik.
+- "Kategoriler" seçicisindeki bazı tasarım düzeltmeleri sayesinde, bir gönderi için birden fazla kategori seçebileceğiniz daha açıktır.
+- Dosya boyutları artık Site Ortam Ayrıntıları alanında görünür. Artık tahmin yürütmek yok.
+
+Yayımlayandan çok okuyucu musunuz? Endişelenmeyin, Okuyucuda da değişiklikler yaptık.
+
+- Benzer gönderi başlıkları çok uzun olduğunda, bunun yerine daha kısa bir sürüm görürsünüz.
+- Gönderi başlıkları artık yalnızca iki yerine üç satırdan oluşabilir ve size %50 daha fazla içerik iyiliği sağlar.
+- Makaleler biraz daha geniş yatay kenar boşluklarına sahiptir.
+- Makalelerin yüklenme şeklini etkileyen birkaç sorunu giderdik.
