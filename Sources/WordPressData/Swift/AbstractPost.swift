@@ -44,7 +44,6 @@ public extension AbstractPost {
         statuses.contains(status ?? .draft)
     }
 
-    @objc
     var remoteStatus: AbstractPostRemoteStatus {
         get {
             guard let remoteStatusNumber = remoteStatusNumber?.uintValue,
@@ -72,7 +71,6 @@ public extension AbstractPost {
     ///
     /// - returns: The localized title for the specified status, or the status if a title was not found.
     ///
-    @objc
     static func title(forStatus status: String) -> String {
         switch status {
         case PostStatusDraft:
@@ -274,7 +272,6 @@ public extension AbstractPost {
         }
     }
 
-    @objc
     func createRevision() -> AbstractPost {
         precondition(managedObjectContext != nil)
         precondition(revision == nil, "This post must not already have a revision")
@@ -287,7 +284,6 @@ public extension AbstractPost {
         return post
     }
 
-    @objc
     func deleteRevision() {
         guard let revision, let context = managedObjectContext else {
             return
@@ -301,7 +297,6 @@ public extension AbstractPost {
         }
     }
 
-    @objc
     func applyRevision() {
         guard isOriginal(), let revision else {
             return
@@ -309,46 +304,38 @@ public extension AbstractPost {
         clone(from: revision)
     }
 
-    @objc
     func isRevision() -> Bool {
         !isOriginal()
     }
 
-    @objc
     func isOriginal() -> Bool {
         original == nil
     }
 
-    @objc
     func latest() -> AbstractPost {
         revision?.latest() ?? self
     }
 
-    @objc
     func hasRevision() -> Bool {
         revision != nil
     }
 
     /// Returns YES if the post is has a `future` post status
-    @objc
     func isScheduled() -> Bool {
         status == .scheduled
     }
 
     /// Returns YES if the post is a draft
-    @objc
     func isDraft() -> Bool {
         status == .draft
     }
 
     /// Returns YES if the post is a published.
-    @objc
     func isPublished() -> Bool {
         status == .publish
     }
 
     /// Returns YES if the original post is a draft
-    @objc
     func originalIsDraft() -> Bool {
         if status == .draft {
             return true
@@ -358,7 +345,6 @@ public extension AbstractPost {
         return false
     }
 
-    @objc
     func shouldPublishImmediately() -> Bool {
         // - warning: Yes, this is WordPress logic and it matches the behavior on
         // the web. If `dateCreated` is the same as `dateModified`, the system
@@ -367,7 +353,6 @@ public extension AbstractPost {
     }
 
     /// Does the post exist on the blog?
-    @objc
     func hasRemote() -> Bool {
         (postID?.int64Value ?? 0) > 0
     }
