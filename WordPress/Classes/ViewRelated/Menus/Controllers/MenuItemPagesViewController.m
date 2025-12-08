@@ -1,6 +1,6 @@
 #import "MenuItemPagesViewController.h"
 #import "WordPress-Swift.h"
-@import WordPressData;
+#import "MenuPostServiceOptions.h"
 
 @interface MenuItemAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>
 @end
@@ -31,9 +31,9 @@
     return [Page class];
 }
 
-- (PostServiceSyncOptions *)syncOptions
+- (MenuPostServiceSyncOptions *)syncOptions
 {
-    PostServiceSyncOptions *options = [super syncOptions];
+    MenuPostServiceSyncOptions *options = [super syncOptions];
     options.order = PostServiceResultsOrderAscending;
     options.orderBy = PostServiceResultsOrderingByTitle;
     return options;

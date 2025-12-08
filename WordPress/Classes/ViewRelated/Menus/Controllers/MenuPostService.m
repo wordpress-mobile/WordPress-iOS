@@ -1,24 +1,16 @@
 #import "Blog.h"
-#import "PostService.h"
-#import "PostServiceOptions.h"
-#import "Media.h"
-#import "WordPressData-Swift.h"
+#import "MenuPostService.h"
+#import "MenuPostServiceOptions.h"
 #import "PostHelper.h"
 @import WordPressKit;
 @import WordPressShared;
+@import WordPressData;
 
-PostServiceType const PostServiceTypePost = @"post";
-PostServiceType const PostServiceTypePage = @"page";
-PostServiceType const PostServiceTypeAny = @"any";
 NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
 const NSUInteger PostServiceDefaultNumberToSync = 40;
 
-@interface PostService ()
-
-@end
-
-@implementation PostService
+@implementation MenuPostService
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context {
     return [self initWithManagedObjectContext:context
@@ -46,7 +38,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 }
 
 - (void)syncPostsOfType:(PostServiceType)postType
-            withOptions:(PostServiceSyncOptions *)options
+            withOptions:(MenuPostServiceSyncOptions *)options
                 forBlog:(Blog *)blog
                 success:(PostServiceSyncSuccess)success
                 failure:(PostServiceSyncFailure)failure
@@ -61,7 +53,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 }
 
 - (void)syncPostsOfType:(PostServiceType)postType
-            withOptions:(PostServiceSyncOptions *)options
+            withOptions:(MenuPostServiceSyncOptions *)options
                 forBlog:(Blog *)blog
             loadedPosts:(NSMutableArray <RemotePost *>*)loadedPosts
                 syncAll:(BOOL)syncAll
@@ -128,7 +120,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 #pragma mark - Helpers
 
 - (NSDictionary *)remoteSyncParametersDictionaryForRemote:(nonnull id <PostServiceRemote>)remote
-                                              withOptions:(nonnull PostServiceSyncOptions *)options
+                                              withOptions:(nonnull MenuPostServiceSyncOptions *)options
 {
     return [remote dictionaryWithRemoteOptions:options];
 }

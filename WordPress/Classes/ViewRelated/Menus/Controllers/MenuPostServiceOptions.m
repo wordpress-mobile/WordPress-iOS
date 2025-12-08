@@ -1,6 +1,6 @@
-#import "PostServiceOptions.h"
+#import "MenuPostServiceOptions.h"
 
-@implementation PostServiceSyncOptions
+@implementation MenuPostServiceSyncOptions
 
 - (instancetype)init
 {
