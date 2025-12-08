@@ -76,7 +76,6 @@ private struct Section {
         tableView.register(MigrationSuccessCell.self, forCellReuseIdentifier: CellIdentifiers.migrationSuccess)
         tableView.register(JetpackBrandingMenuCardCell.self, forCellReuseIdentifier: CellIdentifiers.jetpackBrandingCard)
         tableView.register(JetpackRemoteInstallTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.jetpackInstall)
-        tableView.register(SotWTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.sotWCard)
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -92,10 +91,6 @@ private struct Section {
         guard let viewController else { return }
 
         var newSections: [Section] = []
-
-        if viewController.shouldShowSotW2023Card() {
-            newSections.append(Section(rows: [], category: .sotW2023Card))
-        }
 
         if viewController.shouldShowJetpackInstallCard() {
             newSections.append(Section(rows: [], category: .jetpackInstallCard))
@@ -242,7 +237,7 @@ extension BlogDetailsTableViewModel: UITableViewDataSource {
         guard section < sections.count else { return 0 }
 
         switch sections[section].category {
-        case .sotW2023Card, .jetpackInstallCard, .migrationSuccess, .jetpackBrandingCard:
+        case .jetpackInstallCard, .migrationSuccess, .jetpackBrandingCard:
             // The "card" sections do not set the `rows` property. It's hard-coded to show specific types of cards.
             wpAssert(sections[section].rows.count == 0)
             return 1
@@ -260,8 +255,6 @@ extension BlogDetailsTableViewModel: UITableViewDataSource {
         let cell: UITableViewCell
 
         switch section.category {
-        case .sotW2023Card:
-            cell = configureSotWCell(tableView: tableView)
         case .jetpackInstallCard:
             cell = configureJetpackInstallCell(tableView: tableView)
         case .migrationSuccess:
@@ -440,21 +433,6 @@ private extension BlogDetailsTableViewModel {
 
         if let accessoryView = row.accessoryView {
             cell.accessoryView = accessoryView
-        }
-
-        return cell
-    }
-
-    func configureSotWCell(tableView: UITableView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CellIdentifiers.sotWCard
-        ) as? SotWTableViewCell else {
-            return UITableViewCell()
-        }
-
-        cell.configure { [weak viewController] in
-            viewController?.configureTableViewData()
-            viewController?.reloadTableViewPreservingSelection()
         }
 
         return cell
@@ -838,7 +816,6 @@ private enum SectionCategory {
     case migrationSuccess
     case jetpackBrandingCard
     case jetpackInstallCard
-    case sotW2023Card
     case content
     case traffic
     case maintenance
@@ -1494,5 +1471,4 @@ private enum CellIdentifiers {
     static let migrationSuccess = "BlogDetailsMigrationSuccessCellIdentifier"
     static let jetpackBrandingCard = "BlogDetailsJetpackBrandingCardCellIdentifier"
     static let jetpackInstall = "BlogDetailsJetpackInstallCardCellIdentifier"
-    static let sotWCard = "BlogDetailsSotWCardCellIdentifier"
 }

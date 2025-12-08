@@ -586,11 +586,6 @@ import WordPressShared
     case freeToPaidPlansDashboardCardMenuTapped
     case freeToPaidPlansDashboardCardHidden
 
-    // SoTW 2023 Nudge
-    case sotw2023NudgePostEventCardShown
-    case sotw2023NudgePostEventCardCTATapped
-    case sotw2023NudgePostEventCardHideTapped
-
     // Voice to Content (aka "Post from Audio")
     case voiceToContentSheetShown
     case voiceToContentButtonStartRecordingTapped
@@ -1695,14 +1690,6 @@ import WordPressShared
             return "free_to_paid_plan_dashboard_card_tapped"
         case .freeToPaidPlansDashboardCardMenuTapped:
             return "free_to_paid_plan_dashboard_card_menu_tapped"
-
-        // SoTW 2023 Nudge
-        case .sotw2023NudgePostEventCardShown:
-            return "sotw_2023_nudge_post_event_card_shown"
-        case .sotw2023NudgePostEventCardCTATapped:
-            return "sotw_2023_nudge_post_event_card_cta_tapped"
-        case .sotw2023NudgePostEventCardHideTapped:
-            return "sotw_2023_nudge_post_event_card_hide_tapped"
 
         // Voice to Content (aka "Post from Audio")
         case .voiceToContentSheetShown:
