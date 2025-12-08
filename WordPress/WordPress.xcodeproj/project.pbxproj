@@ -1178,8 +1178,6 @@
 				"Objective-C/include/LocalCoreDataService.h",
 				"Objective-C/include/Media.h",
 				"Objective-C/include/PostHelper.h",
-				"Objective-C/include/PostService.h",
-				"Objective-C/include/PostServiceOptions.h",
 				"Objective-C/include/ReaderPost.h",
 				"Objective-C/include/WPAccount.h",
 				WordPressData.h,

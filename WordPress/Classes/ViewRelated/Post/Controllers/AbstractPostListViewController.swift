@@ -508,7 +508,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     @objc func numberOfPostsPerSync() -> UInt {
-        return PostServiceDefaultNumberToSync
+        return 40
     }
 
     // MARK: - WPContentSyncHelperDelegate

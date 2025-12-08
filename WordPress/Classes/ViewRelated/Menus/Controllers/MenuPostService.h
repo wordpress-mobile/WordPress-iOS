@@ -18,7 +18,6 @@ typedef void(^PostServiceSyncFailure)(NSError * _Nullable error);
 
 extern const NSUInteger PostServiceDefaultNumberToSync;
 
-
 @interface MenuPostService : LocalCoreDataService
 
 // This is public so it can be accessed from Swift extensions.
