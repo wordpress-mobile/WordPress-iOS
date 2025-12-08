@@ -49,7 +49,7 @@ class PreviewWebKitViewController: WebKitViewController {
 
         self.post = post
 
-        canPublish = post.isDraft()
+        canPublish = post.status == .draft
 
         guard let url = PreviewNonceHandler.nonceURL(post: post, previewURL: previewURL) else {
             super.init(configuration: WebViewControllerConfiguration(url: Constants.blankURL))

@@ -241,7 +241,7 @@ public extension AbstractPost {
     func dateStringForDisplay() -> String? {
         if self.originalIsDraft() || self.status == .pending {
             return dateModified?.toMediumString()
-        } else if self.isScheduled() {
+        } else if self.status == .scheduled {
             return self.dateCreated?.mediumStringWithTime()
         } else if self.shouldPublishImmediately() {
             return NSLocalizedString("Publish Immediately", comment: "A short phrase indicating a post is due to be immedately published.")
@@ -318,21 +318,6 @@ public extension AbstractPost {
 
     func hasRevision() -> Bool {
         revision != nil
-    }
-
-    /// Returns YES if the post is has a `future` post status
-    func isScheduled() -> Bool {
-        status == .scheduled
-    }
-
-    /// Returns YES if the post is a draft
-    func isDraft() -> Bool {
-        status == .draft
-    }
-
-    /// Returns YES if the post is a published.
-    func isPublished() -> Bool {
-        status == .publish
     }
 
     /// Returns YES if the original post is a draft
