@@ -1,5 +1,6 @@
 26.6
 -----
+* [*] Fix previewing posts on WordPress.com atomic sites [#25045]
 
 
 26.5
