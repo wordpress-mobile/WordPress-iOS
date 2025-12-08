@@ -6,11 +6,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@class PostServiceSyncOptions;
+@class MenuPostServiceSyncOptions;
 
 @protocol MenuItemSourcePostAbstractViewSubclass <NSObject>
 - (Class)entityClass;
-- (PostServiceSyncOptions *)syncOptions;
+- (MenuPostServiceSyncOptions *)syncOptions;
 @end
 
 NS_ASSUME_NONNULL_END

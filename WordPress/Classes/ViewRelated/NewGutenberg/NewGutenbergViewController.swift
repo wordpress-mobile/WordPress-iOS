@@ -994,7 +994,7 @@ extension NewGutenbergViewController {
 
     private func makeMoreMenuSecondaryActions() -> [UIAction] {
         var actions: [UIAction] = []
-        if post.original().isStatus(in: [.draft, .pending]) {
+        if post.getOriginal().isStatus(in: [.draft, .pending]) {
             actions.append(UIAction(title: Strings.saveDraft, image: UIImage(systemName: "doc"), attributes: (editorHasChanges && editorHasContent) ? [] : [.disabled]) { [weak self] _ in
                 self?.buttonSaveDraftTapped()
             })

@@ -103,7 +103,7 @@ class PostCoordinator: NSObject {
     /// Uploads the changes made to the post to the server.
     @discardableResult @MainActor
     func save(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil) async throws -> AbstractPost {
-        let post = post.original()
+        let post = post.getOriginal()
 
         await pauseSyncing(for: post)
         defer { resumeSyncing(for: post) }
@@ -150,7 +150,7 @@ class PostCoordinator: NSObject {
     private func update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
         wpAssert(post.isOriginal())
 
-        let post = post.original()
+        let post = post.getOriginal()
         do {
             try await PostRepository(coreDataStack: coreDataStack).update(post, changes: changes)
         } catch {
@@ -244,7 +244,7 @@ class PostCoordinator: NSObject {
     /// Sets the post state to "updating" and performs the given changes.
     private func performChanges(_ changes: RemotePostUpdateParameters, for post: AbstractPost) {
         Task { @MainActor in
-            let post = post.original()
+            let post = post.getOriginal()
             setUpdating(true, for: post)
             defer { setUpdating(false, for: post) }
 
@@ -261,7 +261,7 @@ class PostCoordinator: NSObject {
 
     /// Returns `true` if post has any revisions that need to be synced.
     func isSyncNeeded(for post: AbstractPost) -> Bool {
-        post.original().getLatestRevisionNeedingSync() != nil
+        post.getOriginal().getLatestRevisionNeedingSync() != nil
     }
 
     /// Sets a flag to sync the given revision and schedules the next sync.
@@ -269,14 +269,14 @@ class PostCoordinator: NSObject {
     /// - warning: Should only be used for draft posts.
     func setNeedsSync(for revision: AbstractPost) {
         wpAssert(revision.isRevision(), "Must be used only on revisions")
-        wpAssert(isSyncAllowed(for: revision.original()), "Sync is not supported for this post")
+        wpAssert(isSyncAllowed(for: revision.getOriginal()), "Sync is not supported for this post")
 
         if !revision.isSyncNeeded {
             revision.remoteStatus = .syncNeeded
             revision.confirmedChangesTimestamp = Date()
             ContextManager.shared.saveContextAndWait(coreDataStack.mainContext)
         }
-        startSync(for: revision.original())
+        startSync(for: revision.getOriginal())
     }
 
     func retrySync(for post: AbstractPost) {
@@ -300,7 +300,7 @@ class PostCoordinator: NSObject {
         request.predicate = NSPredicate(format: "remoteStatusNumber == %i", AbstractPostRemoteStatus.syncNeeded.rawValue)
         do {
             let revisions = try coreDataStack.mainContext.fetch(request)
-            let originals = Set(revisions.map { $0.original() })
+            let originals = Set(revisions.map { $0.getOriginal() })
             for post in originals {
                 startSync(for: post)
             }
@@ -862,12 +862,12 @@ class PostCoordinator: NSObject {
     // MARK: - State
 
     func isUpdating(_ post: AbstractPost) -> Bool {
-        pendingPostIDs.contains(post.original().objectID)
+        pendingPostIDs.contains(post.getOriginal().objectID)
     }
 
     @MainActor
     private func setUpdating(_ isUpdating: Bool, for post: AbstractPost) {
-        let post = post.original()
+        let post = post.getOriginal()
         if isUpdating {
             pendingPostIDs.insert(post.objectID)
         } else {

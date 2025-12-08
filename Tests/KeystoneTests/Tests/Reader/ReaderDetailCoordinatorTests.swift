@@ -202,7 +202,6 @@ private class ReaderPostServiceMock: ReaderPostService {
     var didCallFetchPostWithPostID: UInt?
     var didCallFetchPostWithSiteID: UInt?
     var didCallFetchPostWithIsFeed: Bool?
-    var didCallFetchWithURL: URL?
 
     /// The post that should be returned by the mock
     var returnPost: ReaderPost?
@@ -229,15 +228,6 @@ private class ReaderPostServiceMock: ReaderPostService {
         }
 
         success(returnPost)
-    }
-
-    override func fetchPost(at postURL: URL!, success: ((ReaderPost?) -> Void)!, failure: ((Error?) -> Void)!) {
-        didCallFetchWithURL = postURL
-
-        guard !forceError else {
-            failure(nil)
-            return
-        }
     }
 }
 

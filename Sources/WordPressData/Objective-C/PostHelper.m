@@ -7,6 +7,10 @@
 @import WordPressShared;
 @import NSObject_SafeExpectations;
 
+PostServiceType const PostServiceTypePost = @"post";
+PostServiceType const PostServiceTypePage = @"page";
+PostServiceType const PostServiceTypeAny = @"any";
+
 @implementation PostHelper
 
 + (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext {

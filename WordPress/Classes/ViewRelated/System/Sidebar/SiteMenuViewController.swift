@@ -9,7 +9,7 @@ protocol SiteMenuViewControllerDelegate: AnyObject {
 /// The site menu for the split view navigation.
 final class SiteMenuViewController: UIViewController {
     let blog: Blog
-    private let blogDetailsVC = SiteMenuListViewController()
+    private let blogDetailsVC: SiteMenuListViewController
 
     weak var delegate: SiteMenuViewControllerDelegate?
 
@@ -19,6 +19,7 @@ final class SiteMenuViewController: UIViewController {
 
     init(blog: Blog) {
         self.blog = blog
+        blogDetailsVC = SiteMenuListViewController(blog: blog)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -79,57 +80,16 @@ final class SiteMenuViewController: UIViewController {
         tipObserver = nil
     }
 
-    func showSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any]) {
+    func showSubsection(_ subsection: BlogDetailsRowKind, userInfo: [String: Any]) {
         blogDetailsVC.showDetailView(for: subsection, userInfo: userInfo)
     }
 }
 
 // Updates the `BlogDetailsViewController` style to match the native sidebar style.
 private final class SiteMenuListViewController: BlogDetailsViewController {
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let title = super.tableView(tableView, titleForHeaderInSection: section)
-        return title == nil ? 0 : 48
-    }
-
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let title = super.tableView(tableView, titleForHeaderInSection: section) else {
-            return nil
-        }
-        let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: .headline)
-        label.text = title
-
-        let headerView = UIView()
-        headerView.addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20),
-            label.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -8),
-            label.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: 20)
-        ])
-        return headerView
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = super.tableView(tableView, cellForRowAt: indexPath)
-
-        cell.textLabel?.font = .preferredFont(forTextStyle: .body)
-        cell.backgroundColor = .clear
-        cell.selectedBackgroundView = {
-            let backgroundView = UIView()
-            backgroundView.backgroundColor = .secondarySystemFill
-            backgroundView.layer.cornerRadius = DesignConstants.radius(.large)
-            backgroundView.layer.cornerCurve = .continuous
-
-            let container = UIView()
-            container.addSubview(backgroundView)
-            backgroundView.pinEdges(insets: UIEdgeInsets(.horizontal, 16))
-            return container
-        }()
-        cell.focusStyle = .custom
-        cell.focusEffect = nil
-
-        return cell
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.tableViewModel?.useSiteMenuStyle = true
     }
 }
 

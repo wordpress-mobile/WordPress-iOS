@@ -196,7 +196,7 @@ extension PublishingEditor {
             return discardAndDismiss()
         }
 
-        if post.original().isStatus(in: [.draft, .pending]) {
+        if post.getOriginal().isStatus(in: [.draft, .pending]) {
             // The "Discard Changes" behavior is problematic due to the way
             // the editor and `PostCoordinator` often update the content
             // in the background without the user interaction.
@@ -246,7 +246,7 @@ extension PublishingEditor {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.view.accessibilityIdentifier = "post-has-changes-alert"
         alert.addCancelActionWithTitle(Strings.closeConfirmationAlertCancel)
-        let discardTitle = post.original().isNewDraft ? Strings.closeConfirmationAlertDelete : Strings.closeConfirmationAlertDiscardChanges
+        let discardTitle = post.getOriginal().isNewDraft ? Strings.closeConfirmationAlertDelete : Strings.closeConfirmationAlertDiscardChanges
         alert.addDestructiveActionWithTitle(discardTitle) { _ in
             self.discardAndDismiss()
         }

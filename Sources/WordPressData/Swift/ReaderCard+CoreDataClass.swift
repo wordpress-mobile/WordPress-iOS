@@ -50,7 +50,12 @@ public class ReaderCard: NSManagedObject {
 
         switch remoteCard.type {
         case .post:
-            let post = ReaderPost.createOrReplace(fromRemotePost: remoteCard.post, for: nil, context: context)
+            let post: ReaderPost
+            if let remotePost = remoteCard.post {
+                post = ReaderPost.createOrReplace(fromRemotePost: remotePost, for: nil, context: context)
+            } else {
+                return nil
+            }
 
             // Check if a card already exists with this post to prevent duplicates
             if let existingCard = findExistingCard(with: post, context: context) {

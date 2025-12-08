@@ -128,7 +128,7 @@ extension MySitesRoute: NavigationAction {
             presenter.showBlogDetails(for: blog, then: .plugins)
         case .managePlugins:
             presenter.showBlogDetails(for: blog, then: .plugins, userInfo: [
-                BlogDetailsViewController.userInfoShowManagemenetScreenKey(): true
+                BlogDetailsUserInfoKeys.showManagePlugins: true
             ])
         case .siteMonitoring:
             presenter.showSiteMonitoring(for: blog, selectedTab: .metrics)
@@ -143,13 +143,13 @@ extension MySitesRoute: NavigationAction {
 private extension RootViewPresenter {
     func showMediaPicker(for blog: Blog) {
         showBlogDetails(for: blog, then: .media, userInfo: [
-            BlogDetailsViewController.userInfoShowPickerKey(): true
+            BlogDetailsUserInfoKeys.showPicker: true
         ])
     }
 
     func showSiteMonitoring(for blog: Blog, selectedTab: SiteMonitoringTab) {
         showBlogDetails(for: blog, then: .siteMonitoring, userInfo: [
-            BlogDetailsViewController.userInfoSiteMonitoringTabKey(): selectedTab.rawValue
+            BlogDetailsUserInfoKeys.siteMonitoringTab: selectedTab.rawValue
         ])
     }
 }

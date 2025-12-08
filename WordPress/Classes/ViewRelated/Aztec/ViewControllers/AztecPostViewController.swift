@@ -1143,7 +1143,7 @@ private extension AztecPostViewController {
             alert.title = textCounterTitle
         }
 
-        if post.original().isStatus(in: [.draft, .pending]) && editorHasChanges {
+        if post.getOriginal().isStatus(in: [.draft, .pending]) && editorHasChanges {
             alert.addDefaultActionWithTitle(MoreSheetAlert.saveDraft) { _ in
                 self.buttonSaveDraftTapped()
             }

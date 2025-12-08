@@ -1,8 +1,12 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import <WordPressData/PostService.h>
 
-@class AbstractPost, RemotePost;
+@class AbstractPost, RemotePost, Post, Blog;
+
+typedef NSString * PostServiceType NS_TYPED_ENUM;
+extern PostServiceType const PostServiceTypePost;
+extern PostServiceType const PostServiceTypePage;
+extern PostServiceType const PostServiceTypeAny;
 
 NS_ASSUME_NONNULL_BEGIN
 

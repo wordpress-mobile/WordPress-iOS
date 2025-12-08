@@ -141,16 +141,6 @@ public class SotWTableViewCell: UITableViewCell {
 
 extension BlogDetailsViewController {
 
-    @objc public func sotw2023SectionViewModel() -> BlogDetailsSection {
-        let row = BlogDetailsRow()
-        row.callback = {}
-        let section = BlogDetailsSection(title: nil,
-                                         rows: [row],
-                                         footerTitle: nil,
-                                         category: .sotW2023Card)
-        return section
-    }
-
     @objc public func shouldShowSotW2023Card() -> Bool {
         guard AppConfiguration.isWordPress && RemoteFeatureFlag.wordPressSotWCard.enabled() else {
             return false

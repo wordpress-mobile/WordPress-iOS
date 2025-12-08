@@ -162,11 +162,11 @@ class ReaderDetailCoordinator {
     }
 
     func fetchLikes(for post: ReaderPost) {
-        guard let postID = post.postID else { return }
+        guard let postID = post.postID, let siteID = post.siteID else { return }
 
         // Fetch a full page of Likes but only return the `maxAvatarsDisplayed` number.
         // That way the first page will already be cached if the user displays the full Likes list.
-        postService.getLikesFor(postID: postID, siteID: post.siteID, success: { [weak self] users, totalLikes, _ in
+        postService.getLikesFor(postID: postID, siteID: siteID, success: { [weak self] users, totalLikes, _ in
             guard let self else { return }
 
             var filteredUsers = users
@@ -201,7 +201,7 @@ class ReaderDetailCoordinator {
         guard let post, let likesAvatarURLs else { return }
 
         let viewModel = ReaderDetailLikesViewModel(
-            likeCount: post.likeCount.intValue,
+            likeCount: post.likeCount?.intValue ?? 0,
             avatarURLs: likesAvatarURLs,
             selfLikeAvatarURL: post.isLiked ? try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.avatarURL : nil
         )
@@ -261,21 +261,21 @@ class ReaderDetailCoordinator {
     /// Show more about a specific site in Discovery
     ///
     func showMore() {
-        guard let post, post.sourceAttribution != nil else {
+        guard let post, let sourceAttribution = post.sourceAttribution else {
             return
         }
 
-        if let blogID = post.sourceAttribution.blogID {
+        if let blogID = sourceAttribution.blogID {
             let controller = ReaderStreamViewController.controllerWithSiteID(blogID, isFeed: false)
             viewController?.navigationController?.pushViewController(controller, animated: true)
             return
         }
 
-        var path: String?
-        if post.sourceAttribution.attributionType == SourcePostAttribution.post {
-            path = post.sourceAttribution.permalink
+        let path: String?
+        if sourceAttribution.attributionType == SourcePostAttribution.post {
+            path = sourceAttribution.permalink
         } else {
-            path = post.sourceAttribution.blogURL
+            path = sourceAttribution.blogURL
         }
 
         if let path, let linkURL = URL(string: path) {
@@ -423,11 +423,11 @@ class ReaderDetailCoordinator {
     /// Shows the current post site posts in a new screen
     ///
     private func previewSite() {
-        guard let post else {
+        guard let post, let siteID = post.siteID else {
             return
         }
 
-        let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
+        let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: post.isExternal)
         viewController?.navigationController?.pushViewController(controller, animated: true)
 
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL as AnyObject?, forKey: "URL")
@@ -443,10 +443,15 @@ class ReaderDetailCoordinator {
     ///
     private func showTag() {
         guard let post else {
+            wpAssertionFailure("post is nil")
+            return
+        }
+        guard let primaryTagSlug = post.primaryTagSlug else {
+            wpAssertionFailure("post.primaryTagSlug is nil")
             return
         }
 
-        let controller = ReaderStreamViewController.controllerWithTagSlug(post.primaryTagSlug)
+        let controller = ReaderStreamViewController.controllerWithTagSlug(primaryTagSlug)
         viewController?.navigationController?.pushViewController(controller, animated: true)
 
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug as AnyObject?, forKey: "tag")
@@ -580,7 +585,7 @@ class ReaderDetailCoordinator {
         guard let post else {
             return
         }
-        let controller = ReaderDetailLikesListController(post: post, totalLikes: post.likeCount.intValue)
+        let controller = ReaderDetailLikesListController(post: post, totalLikes: post.likeCount?.intValue ?? 0)
         viewController?.navigationController?.pushViewController(controller, animated: true)
     }
 

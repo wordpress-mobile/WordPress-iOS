@@ -1,6 +1,16 @@
 import WordPressData
 import WordPressKit
 
+final class PostService {
+    let managedObjectContext: NSManagedObjectContext
+    let postServiceRemoteFactory: PostServiceRemoteFactory
+
+    init(managedObjectContext: NSManagedObjectContext, postServiceRemoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory()) {
+        self.managedObjectContext = managedObjectContext
+        self.postServiceRemoteFactory = postServiceRemoteFactory
+    }
+}
+
 extension PostService {
 
     /**

@@ -49,7 +49,7 @@ class SiteSplitViewContent: SiteMenuViewControllerDelegate, SplitViewDisplayable
         }
     }
 
-    func showSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any]) {
+    func showSubsection(_ subsection: BlogDetailsRowKind, userInfo: [String: Any]) {
         siteMenuVC.showSubsection(subsection, userInfo: userInfo)
     }
 }

@@ -96,7 +96,7 @@ extension PostEditor {
 
 extension PostEditor where Self: UIViewController {
     func onViewDidLoad() {
-        if post.original().status == .trash {
+        if post.getOriginal().status == .trash {
             showPostTrashedOverlay()
         } else {
             showAutosaveAvailableAlertIfNeeded()
@@ -117,7 +117,7 @@ extension PostEditor where Self: UIViewController {
                 self?.postConflictResolved(notification)
             }.store(in: &cancellables)
 
-        let originalPostID = post.original().objectID
+        let originalPostID = post.getOriginal().objectID
         NotificationCenter.default
             .publisher(for: NSManagedObjectContext.didChangeObjectsNotification, object: post.managedObjectContext)
             .sink { [weak self] in self?.didChangeObjects($0, originalPostID: originalPostID) }
@@ -159,8 +159,8 @@ extension PostEditor where Self: UIViewController {
         // Defensive code to make sure that in rare scenarios where the user changes
         // status from post settings but doesn't save, and the app gets terminated,
         // the app doesn't end up saving posts with uncommited status changes.
-        if post.status != post.original().status {
-            post.status = post.original().status
+        if post.status != post.getOriginal().status {
+            post.status = post.getOriginal().status
         }
         if !editorHasChanges {
             AbstractPost.deleteLatestRevision(post, in: context)

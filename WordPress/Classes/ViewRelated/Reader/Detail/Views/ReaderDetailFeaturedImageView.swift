@@ -196,7 +196,7 @@ final class ReaderDetailFeaturedImageView: UIView {
         guard
             !isLoading,
             let post = self.post,
-            let imageURL = URL(string: post.featuredImage),
+            let imageURL = post.featuredImageURL,
             Self.shouldDisplayFeaturedImage(with: post)
         else {
             reset()
@@ -255,7 +255,7 @@ final class ReaderDetailFeaturedImageView: UIView {
     }
 
     static func shouldDisplayFeaturedImage(with post: ReaderPost) -> Bool {
-        let imageURL = URL(string: post.featuredImage)
+        let imageURL = post.featuredImageURL
         return imageURL != nil && !post.contentIncludesFeaturedImage()
     }
 

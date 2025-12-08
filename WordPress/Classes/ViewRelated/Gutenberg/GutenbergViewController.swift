@@ -853,7 +853,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             focusTitleIfNeeded()
             mediaInserterHelper.refreshMediaStatus()
 
-            let original = post.original()
+            let original = post.getOriginal()
             if let content = original.voiceContent {
                 original.voiceContent = nil
                 gutenberg.onContentUpdate(content: content)

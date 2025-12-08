@@ -329,8 +329,8 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
             return wpAssertionFailure("post missing")
         }
         var linkURL = url
-        if let components = URLComponents(string: url.absoluteString), components.host == nil {
-            linkURL = components.url(relativeTo: URL(string: post.blogURL)) ?? linkURL
+        if let components = URLComponents(string: url.absoluteString), components.host == nil, let blogURL = post.blogURL {
+            linkURL = components.url(relativeTo: URL(string: blogURL)) ?? linkURL
         }
         let configuration = WebViewControllerConfiguration(url: linkURL)
         configuration.authenticateWithDefaultAccount()

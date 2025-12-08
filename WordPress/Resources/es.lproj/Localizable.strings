@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-11-27 04:51:42+0000 */
+/* Translation-Revision-Date: 2025-12-01 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: es */
@@ -11347,6 +11347,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Accessibility label for a list of tags in the preview section. */
 "reader.preferences.preview.tagsList.a11y" = "Etiquetas de ejemplo";
+
+/* Accessibility label for the Extra Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraExtraLarge" = "Triple extra grande";
+
+/* Accessibility label for the Extra Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraExtraLarge" = "Doble extra grande";
 
 /* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
 "reader.preferences.size.extraLarge" = "Muy grande";

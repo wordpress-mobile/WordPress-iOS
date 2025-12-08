@@ -74,7 +74,7 @@ private extension RevisionsTableViewController {
         refreshControl.addTarget(self, action: #selector(refreshRevisions), for: .valueChanged)
         self.refreshControl = refreshControl
 
-        if post?.original().isStatus(in: [.draft, .pending]) == false {
+        if post?.getOriginal().isStatus(in: [.draft, .pending]) == false {
             tableView.tableFooterView = tableViewFooter
         }
 

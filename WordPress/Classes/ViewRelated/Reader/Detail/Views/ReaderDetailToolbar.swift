@@ -130,7 +130,7 @@ class ReaderDetailToolbar {
     private func makeCommentButton() -> UIBarButtonItem? {
         guard shouldShowCommentActionButton else { return nil }
 
-        let count = post?.commentCount.intValue ?? 0
+        let count = post?.commentCount?.intValue ?? 0
 
         let customButton = makeCustomButton(
             image: WPStyleGuide.ReaderDetail.commentToolbarIcon,

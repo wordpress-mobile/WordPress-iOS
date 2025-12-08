@@ -129,13 +129,13 @@ class LikesListController: NSObject {
     ///
     init?(tableView: UITableView, post: ReaderPost, delegate: LikesListControllerDelegate? = nil) {
 
-        guard let postID = post.postID else {
+        guard let postID = post.postID, let siteID = post.siteID else {
             return nil
         }
 
         content = .post(id: postID)
         readerPost = post
-        siteID = post.siteID
+        self.siteID = siteID
         self.tableView = tableView
         self.delegate = delegate
 

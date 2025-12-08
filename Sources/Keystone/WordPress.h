@@ -12,7 +12,6 @@ FOUNDATION_EXPORT const unsigned char WordPressVersionString[];
 
 #import <WordPress/BlogService.h>
 #import <WordPress/BlogSyncFacade.h>
-#import <WordPress/BlogDetailsViewController.h>
 
 #import <WordPress/CommentService.h>
 #import <WordPress/CommentsViewController.h>

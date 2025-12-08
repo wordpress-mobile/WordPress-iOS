@@ -38,11 +38,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)deleteAllSearchTopics;
 
 /**
- Deletes all topics that do not appear in the menu from core data and saves the context.
- Use to clean-up previewed topics that are lingering in core data.
- */
-- (void)deleteNonMenuTopics;
-
 /**
  Globally sets the `inUse` flag to fall for all posts.
  */

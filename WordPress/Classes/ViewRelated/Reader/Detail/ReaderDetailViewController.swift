@@ -582,7 +582,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         guard isNewFeaturedImageEnabled else {
             return
         }
-        guard let post, let imageURL = URL(string: post.featuredImage),
+        guard let post, let imageURL = post.featuredImageURL,
               !post.contentIncludesFeaturedImage() else {
             return
         }
@@ -872,12 +872,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// - Parameter post: a Reader Post
     /// - Returns: A `ReaderDetailViewController` instance
     @objc class func controllerWithPost(_ post: ReaderPost) -> ReaderDetailViewController {
-        if post.sourceAttributionStyle() == .post &&
-            post.sourceAttribution.postID != nil &&
-            post.sourceAttribution.blogID != nil {
-            return ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
-        } else if post.isCrossPost {
-            return ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
+        if post.sourceAttributionStyle() == .post,
+           let sourceAttribution = post.sourceAttribution,
+           let postID = sourceAttribution.postID,
+           let blogID = sourceAttribution.blogID {
+            return ReaderDetailViewController.controllerWithPostID(postID, siteID: blogID)
+        } else if post.isCrossPost, let crossPostMeta = post.crossPostMeta {
+            return ReaderDetailViewController.controllerWithPostID(crossPostMeta.postID, siteID: crossPostMeta.siteID)
         } else {
             let controller = ReaderDetailViewController.loadFromStoryboard()
             let coordinator = ReaderDetailCoordinator(view: controller)

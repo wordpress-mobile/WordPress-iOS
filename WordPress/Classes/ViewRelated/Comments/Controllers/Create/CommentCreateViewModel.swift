@@ -34,7 +34,7 @@ final class CommentCreateViewModel {
         wpAssert(siteID != 0, "missing required parameter siteID")
         self._save = save
 
-        self.suggestionsViewModel = SuggestionsListViewModel.make(siteID: post.siteID)
+        self.suggestionsViewModel = SuggestionsListViewModel.make(siteID: self.siteID)
         self.suggestionsViewModel?.enableProminentSuggestions(postAuthorID: post.authorID)
     }
 

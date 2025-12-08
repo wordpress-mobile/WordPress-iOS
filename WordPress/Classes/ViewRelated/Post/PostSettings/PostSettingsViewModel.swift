@@ -92,7 +92,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var isDraftOrPending: Bool {
-        post.original().isStatus(in: [.draft, .pending])
+        post.getOriginal().isStatus(in: [.draft, .pending])
     }
 
     var isPost: Bool {
@@ -352,7 +352,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             do {
                 let coordinator = PostCoordinator.shared
                 let changes = settings.makeUpdateParameters(from: post)
-                try await coordinator.publish(post.original(), parameters: changes)
+                try await coordinator.publish(post.getOriginal(), parameters: changes)
                 onPostPublished?()
             } catch {
                 isSaving = false
@@ -370,7 +370,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
         switch selection.type {
         case .public, .protected:
-            if post.original().status == .scheduled {
+            if post.getOriginal().status == .scheduled {
                 // Keep it scheduled
             } else {
                 settings.status = .publish

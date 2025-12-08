@@ -1128,7 +1128,6 @@
 				Utility/Sharing/WPActivityDefaults.h,
 				Utility/UIAlertControllerProxy.h,
 				Utility/WPError.h,
-				"ViewRelated/Blog/Blog Details/BlogDetailsViewController.h",
 				ViewRelated/Blog/Sharing/SharingViewController.h,
 				"ViewRelated/Blog/Site Settings/SettingTableViewCell.h",
 				"ViewRelated/Blog/Site Settings/SiteSettingsViewController.h",
@@ -1178,8 +1177,6 @@
 				"Objective-C/include/LocalCoreDataService.h",
 				"Objective-C/include/Media.h",
 				"Objective-C/include/PostHelper.h",
-				"Objective-C/include/PostService.h",
-				"Objective-C/include/PostServiceOptions.h",
 				"Objective-C/include/ReaderPost.h",
 				"Objective-C/include/WPAccount.h",
 				WordPressData.h,
@@ -1243,6 +1240,18 @@
 			target = 932225A61C7CE50300443B02 /* WordPressShareExtension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		0C798C582ED8DD2E0012F3E2 /* Exceptions for "WordPressKitTests" folder in "Compile Sources" phase from "WordPressKitTests" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 4A8280F92E5FE9B60037E180 /* Sources */;
+			membershipExceptions = (
+				"WordPressKitTests/Mock Data/Reader/reader-search-response-01.json",
+				"WordPressKitTests/Mock Data/Reader/reader-search-response-02.json",
+				"WordPressKitTests/Mock Data/Reader/reader-search-response-03.json",
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0C1CB0CD2D95C63C00494A8C /* Sources */ = {
@@ -1363,6 +1372,9 @@
 		};
 		4A8280FE2E5FE9B60037E180 /* WordPressKitTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0C798C582ED8DD2E0012F3E2 /* Exceptions for "WordPressKitTests" folder in "Compile Sources" phase from "WordPressKitTests" target */,
+			);
 			path = WordPressKitTests;
 			sourceTree = "<group>";
 		};

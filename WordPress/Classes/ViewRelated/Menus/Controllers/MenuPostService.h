@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
-#import <WordPressData/LocalCoreDataService.h>
+
+@import WordPressData;
 
 @class AbstractPost;
 @class Blog;
@@ -8,21 +9,16 @@
 @class RemotePost;
 @class RemoteUser;
 @class PostServiceRemoteFactory;
-@class PostServiceSyncOptions;
+@class MenuPostServiceSyncOptions;
 
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void(^PostServiceSyncSuccess)(NSArray<AbstractPost *> * _Nullable posts);
 typedef void(^PostServiceSyncFailure)(NSError * _Nullable error);
 
-typedef NSString * PostServiceType NS_TYPED_ENUM;
-extern PostServiceType const PostServiceTypePost;
-extern PostServiceType const PostServiceTypePage;
-extern PostServiceType const PostServiceTypeAny;
 extern const NSUInteger PostServiceDefaultNumberToSync;
 
-
-@interface PostService : LocalCoreDataService
+@interface MenuPostService : LocalCoreDataService
 
 // This is public so it can be accessed from Swift extensions.
 @property (nonnull, strong, nonatomic) PostServiceRemoteFactory *postServiceRemoteFactory;
@@ -59,7 +55,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
  @param failure A failure block
  */
 - (void)syncPostsOfType:(PostServiceType)postType
-            withOptions:(PostServiceSyncOptions *)options
+            withOptions:(MenuPostServiceSyncOptions *)options
                 forBlog:(Blog *)blog
                 success:(PostServiceSyncSuccess)success
                 failure:(PostServiceSyncFailure)failure;
