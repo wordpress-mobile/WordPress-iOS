@@ -368,3 +368,25 @@ private struct MediaUploadingAlert {
     static let title = NSLocalizedString("Uploading media", comment: "Title for alert when trying to save/exit a post before media upload process is complete.")
     static let message = NSLocalizedString("You are currently uploading media. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
 }
+
+private extension AbstractPost {
+    func hasPhoto() -> Bool {
+        if media.isEmpty {
+            return false
+        }
+
+        if featuredImage != nil {
+            return true
+        }
+
+        return media.contains { $0.mediaType == .image }
+    }
+
+    func hasVideo() -> Bool {
+        if media.isEmpty {
+            return false
+        }
+
+        return media.contains { $0.mediaType == .video }
+    }
+}

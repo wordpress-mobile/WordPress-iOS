@@ -366,28 +366,6 @@ public extension AbstractPost {
         originalIsDraft() && (date_created_gmt == nil || date_created_gmt == dateModified)
     }
 
-    @objc
-    func hasPhoto() -> Bool {
-        if media.isEmpty {
-            return false
-        }
-
-        if featuredImage != nil {
-            return true
-        }
-
-        return media.contains { $0.mediaType == .image }
-    }
-
-    @objc
-    func hasVideo() -> Bool {
-        if media.isEmpty {
-            return false
-        }
-
-        return media.contains { $0.mediaType == .video }
-    }
-
     /// Does the post exist on the blog?
     @objc
     func hasRemote() -> Bool {
