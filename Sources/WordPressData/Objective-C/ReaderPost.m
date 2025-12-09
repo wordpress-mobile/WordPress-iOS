@@ -65,31 +65,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 @synthesize rendered;
 
-- (BOOL)contentIncludesFeaturedImage
-{
-    NSURL *featuredImageURL = [self featuredImageURL];
-    NSString *featuredImage = [featuredImageURL absoluteString];
-    if (!featuredImage) {
-        return NO;
-    }
-
-    // Remove any query string params if needed (e.g. resize values)
-    NSUInteger questionMarkLocation = [featuredImage rangeOfString:@"?" options:NSBackwardsSearch].location;
-    if (questionMarkLocation != NSNotFound) {
-        featuredImage = [featuredImage substringToIndex:questionMarkLocation];
-    }
-
-    // One URL might be http and the other https, so don't include the protocol in the check.
-    NSString *scheme = [featuredImageURL scheme];
-    if ([scheme length]) {
-        NSInteger index = [scheme length] + 3; // protocol + ://
-        featuredImage = [featuredImage substringFromIndex:index];
-    }
-
-    NSString *content = [self contentForDisplay];
-    return ([content rangeOfString:featuredImage].location != NSNotFound);
-}
-
 - (NSDictionary *)railcarDictionary
 {
     if (!self.railcar) {

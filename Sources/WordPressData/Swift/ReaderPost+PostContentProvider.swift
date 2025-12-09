@@ -96,4 +96,31 @@ extension ReaderPost {
         return sourceAttribution?.blogName
     }
 
+    @objc
+    public func contentIncludesFeaturedImage() -> Bool {
+        guard let imageURL = featuredImageURL else {
+            return false
+        }
+
+        var featuredImage = imageURL.absoluteString
+
+        // Remove any query string params if needed (e.g. resize values)
+        if let questionMarkRange = featuredImage.range(of: "?", options: .backwards) {
+            featuredImage = String(featuredImage[..<questionMarkRange.lowerBound])
+        }
+
+        // One URL might be http and the other https, so don't include the protocol in the check.
+        if let scheme = imageURL.scheme, !scheme.isEmpty {
+            let length = scheme.count + 3 // protocol + ://
+            let startIndex = featuredImage.index(featuredImage.startIndex, offsetBy: length)
+            featuredImage = String(featuredImage[startIndex...])
+        }
+
+        guard let content = contentForDisplay(), !content.isEmpty else {
+            return false
+        }
+
+        return content.contains(featuredImage)
+    }
+
 }

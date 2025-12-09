@@ -78,7 +78,6 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 // When true indicates a post should not be deleted/cleaned-up as its currently being used.
 @property (nonatomic) BOOL inUse;
 
-- (BOOL)contentIncludesFeaturedImage;
 - (nullable NSDictionary *)railcarDictionary;
 
 @end
