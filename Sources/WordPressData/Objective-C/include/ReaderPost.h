@@ -17,9 +17,6 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 @class RemoteReaderPost;
 @class ReaderCard;
 
-extern NSString * const ReaderPostStoredCommentIDKey;
-extern NSString * const ReaderPostStoredCommentTextKey;
-
 @interface ReaderPost : BasePost
 
 @property (nonatomic, strong, nullable) NSString *authorDisplayName;
@@ -80,8 +77,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 
 // When true indicates a post should not be deleted/cleaned-up as its currently being used.
 @property (nonatomic) BOOL inUse;
-
-+ (instancetype)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(nullable ReaderAbstractTopic *)topic context:(NSManagedObjectContext *) managedObjectContext;
 
 - (BOOL)contentIncludesFeaturedImage;
 - (nullable NSDictionary *)railcarDictionary;

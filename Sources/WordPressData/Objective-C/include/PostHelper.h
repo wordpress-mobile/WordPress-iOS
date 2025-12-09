@@ -1,14 +1,14 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class AbstractPost, RemotePost, Post, Blog;
+@class AbstractPost, RemotePost, Post, Blog, ReaderPost, ReaderAbstractTopic, RemoteReaderPost;
+
+NS_ASSUME_NONNULL_BEGIN
 
 typedef NSString * PostServiceType NS_TYPED_ENUM;
 extern PostServiceType const PostServiceTypePost;
 extern PostServiceType const PostServiceTypePage;
 extern PostServiceType const PostServiceTypeAny;
-
-NS_ASSUME_NONNULL_BEGIN
 
 @interface PostHelper: NSObject
 
@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
                 forBlog:(Blog *)blog
           purgeExisting:(BOOL)purge
               inContext:(NSManagedObjectContext *)context;
+
++ (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(nullable ReaderAbstractTopic *)topic context:(NSManagedObjectContext *) managedObjectContext;
 
 @end
 

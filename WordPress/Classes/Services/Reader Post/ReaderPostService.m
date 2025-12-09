@@ -1130,7 +1130,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 {
     NSParameterAssert(context != nil);
     NSParameterAssert(topic == nil || topic.managedObjectContext == context);
-    return [ReaderPost createOrReplaceFromRemotePost:remotePost forTopic:topic context:context];
+    return [PostHelper createOrReplaceFromRemotePost:remotePost forTopic:topic context:context];
 }
 
 #pragma mark Internal
