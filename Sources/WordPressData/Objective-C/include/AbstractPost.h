@@ -5,7 +5,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class Media;
-@class Comment;
 
 typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
     AbstractPostRemoteStatusPushing,    // Uploading post
@@ -32,7 +31,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (nonatomic, strong) NSSet<Media *> *media;
 @property (weak, readonly) AbstractPost *original;
 @property (weak, readonly) AbstractPost *revision;
-@property (nonatomic, strong) NSSet *comments;
 @property (nonatomic, strong, nullable) Media *featuredImage;
 @property (nonatomic, assign) NSInteger order;
 @property (nonatomic, strong, nullable) NSString * permalinkTemplateURL;
@@ -73,11 +71,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (void)removeMediaObject:(Media *)value;
 - (void)addMedia:(NSSet *)values;
 - (void)removeMedia:(NSSet *)values;
-
-- (void)addCommentsObject:(Comment *)value;
-- (void)removeCommentsObject:(Comment *)value;
-- (void)addComments:(NSSet *)values;
-- (void)removeComments:(NSSet *)values;
 
 @end
 

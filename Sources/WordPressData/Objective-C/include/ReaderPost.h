@@ -51,7 +51,6 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 // Normalizes the date to sort by depending on the flavor of post.
 @property (nonatomic, strong, nullable) NSDate *sortDate;
 @property (nonatomic, strong, nullable) NSString *summary;
-@property (nonatomic, strong, nullable) NSSet *comments;
 @property (nonatomic, strong, nullable) NSString *tags;
 @property (nonatomic, strong, nullable) ReaderAbstractTopic *topic;
 @property (nonatomic, strong, nullable) NSSet<ReaderCard *> *card;
@@ -77,15 +76,6 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 
 // When true indicates a post should not be deleted/cleaned-up as its currently being used.
 @property (nonatomic) BOOL inUse;
-
-@end
-
-@interface ReaderPost (CoreDataGeneratedAccessors)
-
-- (void)addCommentsObject:(Comment *)value;
-- (void)removeCommentsObject:(Comment *)value;
-- (void)addComments:(NSSet *)values;
-- (void)removeComments:(NSSet *)values;
 
 @end
 

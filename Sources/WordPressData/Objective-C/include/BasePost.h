@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <WordPressData/Blog.h>
 
+@class Comment;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BasePost : NSManagedObject
@@ -19,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSString * wp_slug;
 @property (nonatomic, strong, nullable) NSString * suggested_slug;
 @property (nonatomic, strong, nullable) NSNumber * remoteStatusNumber;
+@property (nonatomic, strong, nullable) NSSet *comments;
 
 // Helpers
 /**
@@ -26,6 +29,15 @@ NS_ASSUME_NONNULL_BEGIN
  Not part of the post's canoncial data.
  */
 @property (nonatomic, strong, nullable) NSString *pathForDisplayImage;
+
+@end
+
+@interface BasePost (CoreDataGeneratedAccessors)
+
+- (void)addCommentsObject:(Comment *)value;
+- (void)removeCommentsObject:(Comment *)value;
+- (void)addComments:(NSSet *)values;
+- (void)removeComments:(NSSet *)values;
 
 @end
 
