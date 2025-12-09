@@ -1921,6 +1921,11 @@ extension WPAnalytics {
     /// - Parameter properties: a `Hash` that represents the properties
     ///
     static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]) {
+        // Try to catch issues during development where an invalid JSON object is used as event properties.
+        #if DEBUG
+        precondition(JSONSerialization.isValidJSONObject(properties))
+        #endif
+
         var mergedProperties: [AnyHashable: Any] = event.defaultProperties ?? [:]
         mergedProperties.merge(properties) { (_, new) in new }
 
