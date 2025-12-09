@@ -123,4 +123,13 @@ extension ReaderPost {
         return content.contains(featuredImage)
     }
 
+    @objc
+    public func railcarDictionary() -> [String: Any]? {
+        guard let jsonData = railcar?.data(using: .utf8) else {
+            return nil
+        }
+
+        return try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any]
+    }
+
 }

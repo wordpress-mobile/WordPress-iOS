@@ -65,21 +65,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 @synthesize rendered;
 
-- (NSDictionary *)railcarDictionary
-{
-    if (!self.railcar) {
-        return nil;
-    }
-
-    NSData *jsonData = [self.railcar dataUsingEncoding:NSUTF8StringEncoding];
-    NSError *error;
-    id jsonObj = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-    if ([jsonObj isKindOfClass:[NSDictionary class]]) {
-        return (NSDictionary *)jsonObj;
-    }
-    return nil;
-}
-
 - (void)didSave {
     [super didSave];
 
