@@ -1,6 +1,30 @@
 import Foundation
 import WordPressShared
 
+@objc public enum SourceAttributionStyle: Int {
+    case none
+    case post
+    case site
+}
+
+@objc(ReaderPost)
+public class ReaderPost: BasePost {
+
+    /// Used for tracking when a post is rendered (displayed), and bumping the train tracks rendered event.
+    @objc public var rendered: Bool = false
+
+    public override func didSave() {
+        super.didSave()
+
+        // A ReaderCard can have either a post, or a list of topics, but not both.
+        // Since this card has a post, we can confidently set `topics` to NULL.
+        if responds(to: #selector(getter: card)), let managedObjectContext, let firstCard = card?.first {
+            firstCard.topics = nil
+            ContextManager.shared.save(managedObjectContext)
+        }
+    }
+}
+
 extension ReaderPost {
     public var isCrossPost: Bool {
         crossPostMeta != nil
