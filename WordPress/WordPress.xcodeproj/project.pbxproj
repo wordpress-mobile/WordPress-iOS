@@ -1170,7 +1170,6 @@
 		3F7AE0D02D9B30A200AB4892 /* Exceptions for "WordPressData" folder in "WordPressData" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			publicHeaders = (
-				"Objective-C/include/BasePost.h",
 				"Objective-C/include/Blog.h",
 				"Objective-C/include/CoreDataStack.h",
 				"Objective-C/include/LocalCoreDataService.h",

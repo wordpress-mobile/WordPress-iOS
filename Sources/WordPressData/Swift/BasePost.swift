@@ -1,5 +1,9 @@
 import CoreData
 
+@objc(BasePost)
+public class BasePost: NSManagedObject {
+}
+
 extension BasePost {
     /// The default value of `BasePost.postID` as defined in the Core Data model.
     static let defaultPostIDValue: Int = -1
