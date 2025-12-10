@@ -1,5 +1,4 @@
 #import "PostHelper.h"
-#import "AbstractPost.h"
 #import "WordPressData-Swift.h"
 
 @import WordPressKit;

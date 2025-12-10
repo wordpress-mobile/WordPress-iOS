@@ -2,7 +2,6 @@
 #import <CoreData/CoreData.h>
 #import <XCTest/XCTest.h>
 #import "Blog.h"
-#import "AbstractPost.h"
 
 @interface CoreDataMigrationTests : XCTestCase
 

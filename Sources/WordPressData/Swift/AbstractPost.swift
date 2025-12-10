@@ -2,6 +2,45 @@ import Foundation
 import WordPressKit
 import WordPressShared
 
+@objc public enum AbstractPostRemoteStatus: UInt {
+    case pushing
+    case failed
+    case local
+    case sync
+    case pushingMedia
+    case autoSaved
+    case localRevision
+    case syncNeeded
+}
+
+@objc(AbstractPost)
+public class AbstractPost: BasePost {
+
+    @objc public var voiceContent: String?
+
+    @objc public var revision: AbstractPost? {
+        willAccessValue(forKey: "revision")
+        let revision = primitiveValue(forKey: "revision") as? AbstractPost
+        didAccessValue(forKey: "revision")
+        return revision
+    }
+
+    @objc public var original: AbstractPost? {
+        willAccessValue(forKey: "original")
+        let original = primitiveValue(forKey: "original") as? AbstractPost
+        didAccessValue(forKey: "original")
+        return original
+    }
+
+    @objc public func hasCategories() -> Bool {
+        return false
+    }
+
+    @objc public func hasTags() -> Bool {
+        return false
+    }
+}
+
 public extension AbstractPost {
     /// Returns the original post by navigating the entire list of revisions
     /// until it reaches the head.
