@@ -2,7 +2,7 @@ import Foundation
 import WordPressKit
 import WordPressShared
 
-@objc public enum AbstractPostRemoteStatus: UInt {
+public enum AbstractPostRemoteStatus: UInt {
     case pushing
     case failed
     case local
@@ -16,7 +16,7 @@ import WordPressShared
 @objc(AbstractPost)
 public class AbstractPost: BasePost {
 
-    @objc public var voiceContent: String?
+    public var voiceContent: String?
 
     @objc public var revision: AbstractPost? {
         willAccessValue(forKey: "revision")
@@ -25,19 +25,23 @@ public class AbstractPost: BasePost {
         return revision
     }
 
-    @objc public var original: AbstractPost? {
+    public var original: AbstractPost? {
         willAccessValue(forKey: "original")
         let original = primitiveValue(forKey: "original") as? AbstractPost
         didAccessValue(forKey: "original")
         return original
     }
 
-    @objc public func hasCategories() -> Bool {
+    public func hasCategories() -> Bool {
         return false
     }
 
-    @objc public func hasTags() -> Bool {
+    public func hasTags() -> Bool {
         return false
+    }
+
+    override public func contentPreviewForDisplay() -> String? {
+        mt_excerpt
     }
 }
 
@@ -156,7 +160,7 @@ public extension AbstractPost {
         }
     }
 
-    @objc func containsGutenbergBlocks() -> Bool {
+    func containsGutenbergBlocks() -> Bool {
         return content?.contains("<!-- wp:") ?? false
     }
 
@@ -190,7 +194,7 @@ public extension AbstractPost {
         }
     }
 
-    @objc func featuredImageURLForDisplay() -> URL? {
+    func featuredImageURLForDisplay() -> URL? {
         return featuredImageURL
     }
 
@@ -288,11 +292,6 @@ public extension AbstractPost {
         return self.dateCreated?.toMediumString()
     }
 
-    override func contentPreviewForDisplay() -> String? {
-        mt_excerpt
-    }
-
-    @objc(cloneFrom:)
     func clone(from source: AbstractPost) {
         for key in source.entity.attributesByName.keys {
             if key != "permalink" {

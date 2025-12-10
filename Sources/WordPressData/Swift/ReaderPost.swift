@@ -1,7 +1,7 @@
 import Foundation
 import WordPressShared
 
-@objc public enum SourceAttributionStyle: Int {
+public enum SourceAttributionStyle: Int {
     case none
     case post
     case site
@@ -11,7 +11,7 @@ import WordPressShared
 public class ReaderPost: BasePost {
 
     /// Used for tracking when a post is rendered (displayed), and bumping the train tracks rendered event.
-    @objc public var rendered: Bool = false
+    public var rendered: Bool = false
 
     public override func didSave() {
         super.didSave()
@@ -22,6 +22,17 @@ public class ReaderPost: BasePost {
             firstCard.topics = nil
             ContextManager.shared.save(managedObjectContext)
         }
+    }
+
+    override public var featuredImageURL: URL? {
+        if let featuredImage, !featuredImage.isEmpty {
+            return URL(string: featuredImage)
+        }
+        return nil
+    }
+
+    override public func contentPreviewForDisplay() -> String? {
+        return summary
     }
 }
 
@@ -35,16 +46,9 @@ extension ReaderPost {
         guard let type = SiteOrganizationType(rawValue: id) else { return false }
         return type == .p2 || type == .automattic
     }
-
-    @objc public override var featuredImageURL: URL? {
-        if let featuredImage, !featuredImage.isEmpty {
-            return URL(string: featuredImage)
-        }
-        return nil
-    }
 }
 
-@objc extension ReaderPost {
+extension ReaderPost {
 
     public func blogNameForDisplay() -> String? {
         if let blogName, !blogName.isEmpty {
@@ -82,10 +86,6 @@ extension ReaderPost {
         return dateCreated
     }
 
-    public override func contentPreviewForDisplay() -> String? {
-        return summary
-    }
-
     public func featuredImageURLForDisplay() -> URL? {
         return featuredImageURL
     }
@@ -120,7 +120,6 @@ extension ReaderPost {
         return sourceAttribution?.blogName
     }
 
-    @objc
     public func contentIncludesFeaturedImage() -> Bool {
         guard let imageURL = featuredImageURL else {
             return false

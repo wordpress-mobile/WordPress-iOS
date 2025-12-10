@@ -15,8 +15,4 @@ import WordPressShared
         return content
     }
 
-    public func contentPreviewForDisplay() -> String? {
-        return content
-    }
-
 }

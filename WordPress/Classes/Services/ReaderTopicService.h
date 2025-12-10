@@ -38,7 +38,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)deleteAllSearchTopics;
 
 /**
-/**
  Globally sets the `inUse` flag to fall for all posts.
  */
 - (void)clearInUseFlags;
