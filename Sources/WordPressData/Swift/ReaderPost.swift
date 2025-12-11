@@ -31,7 +31,7 @@ public class ReaderPost: BasePost {
         return nil
     }
 
-    override public func contentPreviewForDisplay() -> String? {
+    public func contentPreviewForDisplay() -> String? {
         return summary
     }
 }

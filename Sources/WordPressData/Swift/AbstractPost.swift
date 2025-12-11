@@ -40,7 +40,7 @@ public class AbstractPost: BasePost {
         return false
     }
 
-    override public func contentPreviewForDisplay() -> String? {
+    public func contentPreviewForDisplay() -> String? {
         mt_excerpt
     }
 }

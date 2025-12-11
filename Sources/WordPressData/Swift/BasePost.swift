@@ -101,8 +101,4 @@ public class BasePost: NSManagedObject {
         let emptyGBParagraph = "<!-- wp:paragraph -->\n<p></p>\n<!-- /wp:paragraph -->"
         return content.isEmpty || content == emptyGBParagraph
     }
-
-    public func contentPreviewForDisplay() -> String? {
-        return content
-    }
 }
