@@ -4,15 +4,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
-    MediaRemoteStatusSync,          /* Post synced. */
-    MediaRemoteStatusFailed,        /* Upload failed. */
-    MediaRemoteStatusLocal,         /* Only local version. */
-    MediaRemoteStatusPushing,       /* Uploading post. */
-    MediaRemoteStatusProcessing,    /* Intermediate status before uploading. */
-    MediaRemoteStatusStub,          /* We only have the mediaID information from the server */
-};
-
 @interface Media :  NSManagedObject
 
 // Managed properties
@@ -51,8 +42,6 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
 @property (nonatomic, strong, nullable) NSSet *featuredOnPosts;
 
 // Helper properties
-
-@property (nonatomic, assign) MediaRemoteStatus remoteStatus;
 
 /**
  Local file URL for the Media's asset. e.g. an image, video, gif or other file.

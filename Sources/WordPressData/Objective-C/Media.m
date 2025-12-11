@@ -49,36 +49,6 @@
     return extension;
 }
 
-#pragma mark - Remote Status
-
-- (MediaRemoteStatus)remoteStatus
-{
-    return (MediaRemoteStatus)[[self remoteStatusNumber] intValue];
-}
-
-- (void)setRemoteStatus:(MediaRemoteStatus)aStatus
-{
-    [self setRemoteStatusNumber:@(aStatus)];
-}
-
-- (NSString *)remoteStatusText
-{
-    switch (self.remoteStatus) {
-        case MediaRemoteStatusPushing:
-            return NSLocalizedString(@"Uploading", @"Status for Media object that is being uploaded.");
-        case MediaRemoteStatusFailed:
-            return NSLocalizedString(@"Failed", @"Status for Media object that is failed upload or export.");
-        case MediaRemoteStatusSync:
-            return NSLocalizedString(@"Uploaded", @"Status for Media object that is uploaded and sync with server.");
-        case MediaRemoteStatusProcessing:
-            return NSLocalizedString(@"Pending", @"Status for Media object that is being processed locally.");
-        case MediaRemoteStatusLocal:
-            return NSLocalizedString(@"Local", @"Status for Media object that is only exists locally.");
-        case MediaRemoteStatusStub:
-            return NSLocalizedString(@"Stub", @"Status for Media object that is only has the mediaID locally.");
-    }
-}
-
 #pragma mark - Absolute URLs
 
 - (NSURL *)absoluteThumbnailLocalURL;

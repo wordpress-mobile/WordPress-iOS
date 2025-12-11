@@ -40,6 +40,16 @@ public enum MediaType: UInt {
     }
 }
 
+@objc
+public enum MediaRemoteStatus: UInt {
+    case sync
+    case failed
+    case local
+    case pushing
+    case processing
+    case stub
+}
+
 public extension Media {
     // MARK: - AutoUpload Failure Count
 
@@ -122,6 +132,18 @@ public extension Media {
 
     private func getMediaType(for type: UTType?) -> MediaType {
         type.map(MediaType.init) ?? .document
+    }
+
+    // MARK: - Remote Status
+
+    @objc
+    var remoteStatus: MediaRemoteStatus {
+        get {
+            (remoteStatusNumber?.uintValue).flatMap(MediaRemoteStatus.init(rawValue:)) ?? .local
+        }
+        set {
+            remoteStatusNumber = NSNumber(value: newValue.rawValue)
+        }
     }
 
     // MARK: - Media Link
