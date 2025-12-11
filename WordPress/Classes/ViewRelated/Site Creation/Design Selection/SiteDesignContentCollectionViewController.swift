@@ -180,6 +180,14 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchSiteDesigns()
+
+        // Disable the button temporarily during the transition animation.
+        navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationItem.rightBarButtonItem?.isEnabled = true
     }
 
     private func fetchSiteDesigns() {
