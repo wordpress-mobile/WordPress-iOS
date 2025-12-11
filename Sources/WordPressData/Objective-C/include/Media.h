@@ -13,14 +13,6 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
     MediaRemoteStatusStub,          /* We only have the mediaID information from the server */
 };
 
-typedef NS_ENUM(NSUInteger, MediaType) {
-    MediaTypeImage,
-    MediaTypeVideo,
-    MediaTypeDocument,
-    MediaTypePowerpoint,
-    MediaTypeAudio
-};
-
 @interface Media :  NSManagedObject
 
 // Managed properties
@@ -60,7 +52,6 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 
 // Helper properties
 
-@property (nonatomic, assign) MediaType mediaType;
 @property (nonatomic, assign) MediaRemoteStatus remoteStatus;
 
 /**
@@ -80,8 +71,6 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, readonly) BOOL hasRemote;
 
 // Helper methods
-
-+ (NSString *)stringFromMediaType:(MediaType)mediaType;
 
 - (nullable NSString *)fileExtension;
 

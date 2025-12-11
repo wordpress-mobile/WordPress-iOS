@@ -114,7 +114,7 @@ private extension MediaRepository {
 extension MediaServiceRemote {
 
     func getMediaLibraryCount(forMediaTypes types: [MediaType]) async throws -> Int {
-        try await getMediaLibraryCount(forMediaTypes: types.map(Media.string(from:)))
+        try await getMediaLibraryCount(forMediaTypes: types.map(\.stringValue))
     }
 
     func getMediaLibraryCount(forMediaTypes mediaTypes: [String]) async throws -> Int {

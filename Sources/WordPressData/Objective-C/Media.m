@@ -35,29 +35,6 @@
 
 #pragma mark -
 
-+ (NSString *)stringFromMediaType:(MediaType)mediaType
-{
-    switch (mediaType) {
-        case MediaTypeImage:
-            return @"image";
-            break;
-        case MediaTypeVideo:
-            return @"video";
-            break;
-        case MediaTypePowerpoint:
-            return @"powerpoint";
-            break;
-        case MediaTypeDocument:
-            return @"document";
-            break;
-        case MediaTypeAudio:
-            return @"audio";
-            break;
-    }
-}
-
-#pragma mark -
-
 - (NSString *)fileExtension
 {
     NSString *extension = [self.filename pathExtension];
@@ -70,30 +47,6 @@
     }
     extension = [self.remoteURL pathExtension];
     return extension;
-}
-
-#pragma mark - Media Types
-
-- (MediaType)mediaType
-{
-    if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypeImage]]) {
-        return MediaTypeImage;
-    } else if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypeVideo]]) {
-        return MediaTypeVideo;
-    } else if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypePowerpoint]]) {
-        return MediaTypePowerpoint;
-    } else if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypeDocument]]) {
-        return MediaTypeDocument;
-    } else if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypeAudio]]) {
-        return MediaTypeAudio;
-    }
-
-    return MediaTypeDocument;
-}
-
-- (void)setMediaType:(MediaType)mediaType
-{
-    self.mediaTypeString = [[self class] stringFromMediaType:mediaType];    
 }
 
 #pragma mark - Remote Status
