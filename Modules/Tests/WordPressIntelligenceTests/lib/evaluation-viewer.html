@@ -1,0 +1,2808 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Evaluation Report Viewer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            /* Text Colors */
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-tertiary: #999;
+
+            /* Background Colors */
+            --bg-primary: #fff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #fafafa;
+            --bg-card: #fff;
+            --bg-panel: #1a1a1a;
+
+            /* Border Colors */
+            --border-primary: #ddd;
+            --border-secondary: #eee;
+
+            /* Badge Colors (same in light/dark) */
+            --color-excellent: #218838;
+            --color-good: #28a745;
+            --color-warning: #fd7e14;
+            --color-poor: #dc3545;
+
+            /* Status Colors */
+            --color-pass: #34c759;
+            --color-fail: #ff3b30;
+            --color-warn: #ff9500;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-primary: #e0e0e0;
+                --text-secondary: #999;
+                --text-tertiary: #666;
+
+                --bg-primary: #1a1a1a;
+                --bg-secondary: #2a2a2a;
+                --bg-tertiary: #1e1e1e;
+                --bg-card: #1a1a1a;
+                --bg-panel: #1e1e1e;
+
+                --border-primary: #444;
+                --border-secondary: #333;
+            }
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        /* Sticky Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        h1 {
+            font-size: 18px;
+            margin-bottom: 2px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .metadata {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Stats Cards */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 12px;
+            text-align: center;
+            border-right: 1px solid var(--border-primary);
+            border-radius: 0;
+        }
+
+        .stat-card:last-child {
+            border-right: none;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Split View Container */
+        .split-view {
+            display: flex;
+            height: calc(100vh - 100px);
+            min-height: 600px;
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border-primary);
+        }
+
+        /* Table Panel (Left) */
+        .table-panel {
+            flex: 0 0 60%;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-primary);
+        }
+
+        .table-container {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f5f5f5;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            color: #333;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            th {
+                background: #2a2a2a;
+                border-bottom-color: #444;
+                color: #e0e0e0;
+            }
+        }
+
+        th:hover {
+            background: #eee;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            th:hover {
+                background: #333;
+            }
+        }
+
+        th.sorted-asc::after {
+            content: ' ▲';
+            color: #666;
+        }
+
+        th.sorted-desc::after {
+            content: ' ▼';
+            color: #666;
+        }
+
+        .test-row {
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .test-row {
+                border-bottom-color: #333;
+            }
+        }
+
+        .test-row:hover {
+            background: #f9f9f9;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .test-row:hover {
+                background: #252525;
+            }
+        }
+
+        .test-row.selected {
+            background: #e8f4fd;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .test-row.selected {
+                background: #1a3a52;
+            }
+        }
+
+        .test-row.passed {
+            border-left: 3px solid #28a745;
+        }
+
+        .test-row.failed {
+            border-left: 3px solid #dc3545;
+        }
+
+        .test-row.needsImprovement {
+            border-left: 3px solid #ffc107;
+        }
+
+        td {
+            padding: 10px 12px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            td {
+                color: #e0e0e0;
+            }
+        }
+
+        .test-name {
+            font-weight: 500;
+            min-width: 300px;
+            max-width: 500px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .status-cell {
+            width: 180px;
+        }
+
+        .score-cell {
+            text-align: center;
+            width: 95px;
+        }
+
+        .duration-cell {
+            text-align: center;
+            width: 90px;
+        }
+
+        .delta-cell {
+            text-align: center;
+            width: 140px;
+            min-width: 140px;
+        }
+
+        /* Detail Panel (Right) */
+        .detail-panel {
+            flex: 0 0 40%;
+            overflow-y: auto;
+            padding: 20px;
+            background: #fafafa;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .detail-panel {
+                background: #1e1e1e;
+            }
+        }
+
+        .detail-panel.empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 15px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .detail-panel.empty {
+                color: #999;
+            }
+        }
+
+        /* Baseline Row Styling */
+        .test-row.baseline {
+            background: rgba(147, 112, 219, 0.15);
+            border-left: 3px solid rgba(147, 112, 219, 0.6);
+            font-size: 13px;
+            opacity: 0.85;
+        }
+
+        .test-row.baseline td {
+            padding-top: 6px;
+            padding-bottom: 8px;
+        }
+
+        .baseline-label {
+            color: rgba(147, 112, 219, 0.9);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .test-row.baseline:hover {
+            background: rgba(147, 112, 219, 0.12);
+        }
+
+        .test-row.baseline .test-name::before {
+            content: "📊 ";
+            margin-right: 4px;
+        }
+
+        .test-row.baseline .test-name::after {
+            content: " (Baseline)";
+            font-size: 11px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+            margin-left: 6px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .test-row.baseline {
+                background: rgba(147, 112, 219, 0.20);
+                border-left-color: rgba(147, 112, 219, 0.8);
+            }
+
+            .test-row.baseline:hover {
+                background: rgba(147, 112, 219, 0.25);
+            }
+
+            .baseline-label {
+                color: rgba(147, 112, 219, 1);
+            }
+        }
+
+        /* Detail Sections */
+        .detail-section {
+            margin-bottom: 32px;
+        }
+
+        .detail-section h3 {
+            font-size: 13px;
+            margin-bottom: 12px;
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding-bottom: 4px;
+        }
+
+        /* Section Headers - Clean and Minimal */
+        .detail-section {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header {
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .subsection {
+            margin-bottom: 16px;
+        }
+
+        .subsection h4 {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        /* Collapsible Sections */
+        .collapsible-header {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .collapsible-header:hover {
+            color: #007bff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .collapsible-header:hover {
+                color: #4a9eff;
+            }
+        }
+
+        .collapse-icon {
+            display: inline-block;
+            transition: transform 0.2s;
+            font-size: 12px;
+        }
+
+        .collapsible-header.collapsed .collapse-icon {
+            transform: rotate(-90deg);
+        }
+
+        .collapsible-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            max-height: 1000px;
+        }
+
+        .collapsible-content.collapsed {
+            max-height: 0;
+        }
+
+        /* Criteria Grid */
+        .criteria-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 24px;
+        }
+
+        .criteria-item {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .criteria-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .criteria-value {
+            font-size: 13px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .criteria-value {
+                color: #e0e0e0;
+            }
+        }
+
+        /* Content Box with Syntax Highlighting */
+        .content-box {
+            padding: 14px 0;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            color: #333;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .content-box {
+                border-color: #444;
+                color: #e0e0e0;
+            }
+        }
+
+        .code-block {
+            font-family: monospace;
+            font-size: 12px;
+            color: #333;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .code-block {
+                color: #e0e0e0;
+            }
+        }
+
+        .html-tag { color: #00f; }
+        .html-attr { color: #0080ff; }
+        .html-string { color: #080; }
+        .html-comment { color: #080; font-style: italic; }
+
+        @media (prefers-color-scheme: dark) {
+            .html-tag { color: #569cd6; }
+            .html-attr { color: #9cdcfe; }
+            .html-string { color: #ce9178; }
+            .html-comment { color: #6a9955; }
+        }
+
+        /* Score Summary */
+        .score-summary {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 16px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .score-summary {
+                border-color: #444;
+            }
+        }
+
+        .score-item-large {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .score-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .score-label {
+                color: #999;
+            }
+        }
+
+        /* Color-Coded Score Badges */
+        .score-badge {
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            border-radius: 4px;
+        }
+
+        .score-badge.score-excellent {
+            background: #218838;
+            color: white;
+        }
+
+        .score-badge.score-good {
+            background: #28a745;
+            color: white;
+        }
+
+        .score-badge.score-warning {
+            background: #fd7e14;
+            color: white;
+        }
+
+        .score-badge.score-poor {
+            background: #dc3545;
+            color: white;
+        }
+
+        /* Score Range Display */
+        .score-range {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .score-range {
+                color: #e0e0e0;
+            }
+        }
+
+        /* Criterion Scores */
+        .criterion-scores {
+            padding: 14px 0;
+            margin: 12px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .criterion-scores {
+                border-color: #444;
+            }
+        }
+
+        .criterion-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+
+        .criterion-row:last-child {
+            padding-bottom: 0;
+        }
+
+        .criterion-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            flex: 1;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .criterion-label {
+                color: #e0e0e0;
+            }
+        }
+
+        .criterion-score-badge {
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 3px;
+            min-width: 32px;
+            text-align: center;
+        }
+
+        .criterion-score-badge.score-excellent {
+            background: #218838;
+            color: white;
+        }
+
+        .criterion-score-badge.score-good {
+            background: #28a745;
+            color: white;
+        }
+
+        .criterion-score-badge.score-warning {
+            background: #fd7e14;
+            color: white;
+        }
+
+        .criterion-score-badge.score-poor {
+            background: #dc3545;
+            color: white;
+        }
+
+        /* Item Cards (Excerpts/Tags/Summary) */
+        .item-card {
+            padding: 16px 0;
+            margin-bottom: 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .item-card {
+                border-bottom-color: #444;
+            }
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .item-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .item-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .excerpt-text, .summary-text {
+            font-size: 13px;
+            line-height: 1.7;
+            margin: 12px 0;
+            padding: 12px 0;
+            padding-left: 14px;
+            border-left: 2px solid #007bff;
+            color: #333;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .excerpt-text, .summary-text {
+                border-left-color: #4a9eff;
+                color: #e0e0e0;
+            }
+        }
+
+        /* Feedback Box */
+        .feedback-box {
+            margin-top: 10px;
+            padding: 8px 0;
+            padding-left: 12px;
+            border-left: 2px solid #666;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .feedback-box {
+                border-left-color: #666;
+            }
+        }
+
+        .feedback-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .feedback-label {
+                color: #999;
+            }
+        }
+
+        .feedback-text {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .feedback-text {
+                color: #e0e0e0;
+            }
+        }
+
+        /* Badges */
+        .badge {
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+            text-transform: uppercase;
+            border-radius: 4px;
+        }
+
+        .badge-pass {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-fail {
+            background: #dc3545;
+            color: white;
+        }
+
+        .badge-warn {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .word-count {
+            font-size: 11px;
+            color: #666;
+            padding: 2px 4px;
+            font-family: monospace;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .word-count {
+                color: #999;
+            }
+        }
+
+        /* Tag Display Badge */
+        .tags-container {
+            margin: 10px 0;
+        }
+
+        .tag-badge-display {
+            background: #007bff;
+            color: white;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        /* Diversity Card */
+        .diversity-card {
+            padding: 16px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .diversity-card {
+                border-color: #444;
+            }
+        }
+
+        /* Score Distribution Indicators */
+        .score-indicators {
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-left: 6px;
+            opacity: 0.8;
+            cursor: help;
+        }
+
+        .score-indicators .dot-passed {
+            color: #28a745;
+        }
+
+        .score-indicators .dot-warning {
+            color: #ffc107;
+        }
+
+        .score-indicators .dot-failed {
+            color: #dc3545;
+        }
+
+        .diversity-score-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .diversity-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .diversity-label {
+                color: #e0e0e0;
+            }
+        }
+
+        /* Test Suite Tabs */
+        .test-suite-tabs {
+            display: flex;
+            gap: 4px;
+            margin: 20px 0 0 0;
+            padding: 0 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .tab-button {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .tab-button:hover:not(:disabled) {
+            color: #333;
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .tab-button.active {
+            color: #007aff;
+            border-bottom-color: #007aff;
+        }
+
+        .tab-button:disabled {
+            color: #ccc;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .tab-button .tab-icon {
+            margin-right: 6px;
+        }
+
+        .tab-button .tab-count {
+            margin-left: 6px;
+            padding: 2px 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        .tab-button.active .tab-count {
+            background: rgba(0, 122, 255, 0.15);
+            color: #007aff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .test-suite-tabs {
+                border-bottom-color: #444;
+            }
+
+            .tab-button {
+                color: #999;
+            }
+
+            .tab-button:hover:not(:disabled) {
+                color: #e0e0e0;
+                background: rgba(255, 255, 255, 0.05);
+            }
+
+            .tab-button.active {
+                color: #0a84ff;
+                border-bottom-color: #0a84ff;
+            }
+
+            .tab-button:disabled {
+                color: #555;
+            }
+
+            .tab-button .tab-count {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .tab-button.active .tab-count {
+                background: rgba(10, 132, 255, 0.2);
+                color: #0a84ff;
+            }
+        }
+
+        /* Compact Toolbar Header */
+        header {
+            background: var(--bg-primary);
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        .header-bar.primary {
+        }
+
+        .header-title-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .test-type-selector {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 8px;
+            height: 30px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .header-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .header-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-indicator.has-failures {
+            color: #ff3b30;
+        }
+
+        .status-indicator.all-pass {
+            color: #34c759;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .average-score {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: rgba(0, 122, 255, 0.1);
+            color: #007aff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .average-score {
+                background: rgba(0, 122, 255, 0.2);
+                color: #0a84ff;
+            }
+        }
+
+        .header-spacer {
+            flex: 1;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            header {
+                border-bottom-color: #444;
+            }
+
+            .header-bar.primary {
+            }
+
+            .test-type-selector {
+                border-color: #555;
+            }
+        }
+
+        /* Filter Controls */
+        .filter-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-input, .filter-select {
+            padding: 6px 10px;
+            height: 30px;
+            border: 1px solid var(--border-primary);
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .filter-input {
+            width: 150px;
+        }
+
+        .filter-input-small {
+            width: 90px;
+        }
+
+        .filter-select {
+            width: 130px;
+        }
+
+        .compare-button {
+            padding: 6px 12px;
+            height: 30px;
+            font-size: 12px;
+            font-weight: 500;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            border: 1px solid #007aff;
+            border-radius: 4px;
+            background: var(--bg-primary);
+            color: #007aff;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            box-sizing: border-box;
+            transition: all 0.15s;
+        }
+
+        .compare-button:hover {
+            background: rgba(0, 122, 255, 0.1);
+        }
+
+        .clear-button {
+            padding: 6px 12px;
+            height: 30px;
+            font-size: 11px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: all 0.15s;
+        }
+
+        .clear-button:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-input:focus, .filter-select:focus {
+            border-color: #007bff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .filter-input:focus, .filter-select:focus {
+                border-color: #4a9eff;
+            }
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            height: 30px;
+            font-size: 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .filter-checkbox input[type="checkbox"] {
+            cursor: pointer;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .compare-button {
+                border-color: #0a84ff;
+                color: #0a84ff;
+            }
+
+            .compare-button:hover {
+                background: rgba(10, 132, 255, 0.15);
+            }
+
+            .clear-button {
+                border-color: #555;
+            }
+
+            .clear-button:hover {
+                background: rgba(255, 255, 255, 0.05);
+            }
+        }
+
+        /* Comparison Controls */
+        .comparison-indicator {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 6px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 3px;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .comparison-indicator.improved {
+            color: var(--color-good);
+            background: rgba(52, 199, 89, 0.1);
+        }
+
+        .comparison-indicator.regressed {
+            color: var(--color-poor);
+            background: rgba(255, 59, 48, 0.1);
+        }
+
+        .comparison-indicator.unchanged {
+            color: var(--text-secondary);
+            background: rgba(128, 128, 128, 0.1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .comparison-indicator {
+                background: rgba(255, 255, 255, 0.05);
+            }
+
+            .comparison-indicator.improved {
+                background: rgba(52, 199, 89, 0.15);
+            }
+
+            .comparison-indicator.regressed {
+                background: rgba(255, 59, 48, 0.15);
+            }
+
+            .comparison-indicator.unchanged {
+                background: rgba(128, 128, 128, 0.15);
+            }
+        }
+
+        /* File Picker Controls */
+        .file-picker-controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .file-picker-label {
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        input[type="file"] {
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 100px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state h2 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+        }
+
+        /* Comparison Indicator in Header */
+        .comparison-indicator-header {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px;
+            background: rgba(0, 122, 255, 0.1);
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--text-primary);
+            border: 1px solid rgba(0, 122, 255, 0.3);
+        }
+
+        .comparison-indicator-header .close-btn {
+            cursor: pointer;
+            padding: 2px 4px;
+            margin-left: 4px;
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1;
+            border: none;
+            background: none;
+        }
+
+        .comparison-indicator-header .close-btn:hover {
+            color: var(--text-primary);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .comparison-indicator-header {
+                background: rgba(10, 132, 255, 0.15);
+                border-color: rgba(10, 132, 255, 0.4);
+            }
+        }
+
+        /* Detail Panel Tabs */
+        .detail-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--border-primary);
+            margin-bottom: 16px;
+            position: sticky;
+            top: -20px;
+            background: var(--bg-tertiary);
+            z-index: 10;
+            padding-top: 20px;
+            margin-top: -20px;
+        }
+
+        .detail-tab {
+            padding: 8px 16px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .detail-tab:hover {
+            color: var(--text-primary);
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .detail-tab.active {
+            color: #007aff;
+            border-bottom-color: #007aff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .detail-tab:hover {
+                background: rgba(255, 255, 255, 0.05);
+            }
+
+            .detail-tab.active {
+                color: #0a84ff;
+                border-bottom-color: #0a84ff;
+            }
+        }
+
+        .detail-tab-content {
+            display: none;
+        }
+
+        .detail-tab-content.active {
+            display: block;
+        }
+
+        /* Drag and Drop Overlay */
+        .drop-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 123, 255, 0.1);
+            border: 3px dashed #007bff;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .drop-overlay.active {
+            display: flex;
+        }
+
+        .drop-message {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 18px;
+            font-weight: 600;
+            color: #007bff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .drop-overlay {
+                background: rgba(74, 158, 255, 0.15);
+                border-color: #4a9eff;
+            }
+
+            .drop-message {
+                background: #2a2a2a;
+                color: #4a9eff;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header style="display:none;" id="headerContainer">
+            <!-- Primary bar: Test type, count, status -->
+            <div class="header-bar primary">
+                <div class="header-title-group">
+                    <select class="test-type-selector" id="testTypeSelector" onchange="TabController.switchTab(this.value)">
+                        <option value="excerpt-generation">📝 Excerpt Generation</option>
+                        <option value="tag-suggestion" disabled>🏷️ Tag Suggestions</option>
+                        <option value="post-summary" disabled>📄 Post Summary</option>
+                    </select>
+                </div>
+                <div class="header-meta">
+                    <span class="header-meta-item" id="testCount">0 tests</span>
+                    <span class="header-meta-item average-score" id="averageScore"></span>
+                    <span class="header-meta-item" id="comparisonSummary" style="display:none;"></span>
+                    <span class="header-meta-item status-indicator" id="statusIndicator"></span>
+                </div>
+                <div class="header-spacer"></div>
+            </div>
+
+            <!-- Toolbar: Search and filters -->
+            <div class="header-bar" id="filterControls" style="display:none;">
+                <input type="text" id="searchInput" placeholder="Search tests..." class="filter-input" style="flex: 1; max-width: 300px;">
+                <select id="languageFilter" class="filter-select">
+                    <option value="">All Languages</option>
+                    <option value="english">English</option>
+                    <option value="spanish">Spanish</option>
+                    <option value="french">French</option>
+                    <option value="german">German</option>
+                    <option value="italian">Italian</option>
+                    <option value="portuguese">Portuguese</option>
+                    <option value="japanese">Japanese</option>
+                    <option value="chinese">Chinese</option>
+                </select>
+                <select id="comparisonFilter" class="filter-select">
+                    <option value="">All Tests</option>
+                    <option value="improved">Improved</option>
+                    <option value="degraded">Needs Work</option>
+                    <option value="unchanged">Unchanged</option>
+                </select>
+                <div class="header-spacer"></div>
+                <!-- Comparison indicator (shown when comparing) -->
+                <div id="comparisonIndicator" class="comparison-indicator-header" style="display:none;">
+                    <span id="comparisonText">Comparing with baseline</span>
+                    <button class="close-btn" onclick="BaselineManager.clearBaseline()">✕</button>
+                </div>
+                <!-- Compare button (shown when not comparing) -->
+                <label class="file-picker-label" id="compareButtonContainer">
+                    <input type="file" id="baselineInput" accept=".json" style="display: none;">
+                    <button type="button" class="compare-button" onclick="document.getElementById('baselineInput').click();">⇄ Compare</button>
+                </label>
+            </div>
+        </header>
+
+        <div id="mainContent" style="display:none;">
+            <div class="split-view">
+                <div class="table-panel">
+                    <div class="table-container">
+                        <table id="resultsTable">
+                            <thead>
+                                <tr>
+                                    <th onclick="TableController.sortTable('name')">Test Name</th>
+                                    <th onclick="TableController.sortTable('status')">Status</th>
+                                    <th onclick="TableController.sortTable('avg')">Score</th>
+                                    <th id="deltaColumn" style="display:none;" onclick="TableController.sortTable('delta')">Δ Baseline</th>
+                                    <th onclick="TableController.sortTable('duration')">Duration</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="detail-panel empty" id="detailPanel">
+                    Select a test to view details
+                </div>
+            </div>
+        </div>
+
+        <div id="emptyState" class="empty-state">
+            <h2>No Report Loaded</h2>
+            <p>Select an evaluation JSON file to begin</p>
+        </div>
+    </div>
+
+    <div id="dropOverlay" class="drop-overlay">
+        <div class="drop-message">
+            Drop baseline JSON file here to compare
+        </div>
+    </div>
+
+    <script>
+        // ===== Embedded Data (injected during build) =====
+        const EMBEDDED_DATA = null; // Will be replaced with evaluation results during build
+        // Note: EMBEDDED_BASELINE may also be injected if comparison is requested
+
+        // ===== Constants =====
+        const CONSTANTS = {
+            SCORE_THRESHOLDS: {
+                EXCELLENT: 9.0,
+                GOOD: 7.0,
+                WARNING: 6.0
+            },
+            DURATION_THRESHOLDS: {
+                EXCELLENT: 3.0,
+                GOOD: 5.0,
+                WARNING: 8.0
+            },
+            DELTA_THRESHOLD: 0.1,
+            CSS_CLASSES: {
+                SCORE: {
+                    EXCELLENT: 'score-excellent',
+                    GOOD: 'score-good',
+                    WARNING: 'score-warning',
+                    POOR: 'score-poor'
+                }
+            },
+            TEST_TYPES: {
+                TAG_SUGGESTION: 'tag-suggestion',
+                POST_SUMMARY: 'post-summary',
+                EXCERPT_GENERATION: 'excerpt-generation'
+            }
+        };
+
+        // ===== DOM Cache =====
+        const DOM = {
+            elements: {},
+
+            init() {
+                this.elements = {
+                    reportTitle: document.getElementById('reportTitle'),
+                    reportMetadata: document.getElementById('reportMetadata'),
+                    statsContainer: document.getElementById('statsContainer'),
+                    tableBody: document.getElementById('tableBody'),
+                    detailPanel: document.getElementById('detailPanel'),
+                    baselineStatus: document.getElementById('baselineStatus'),
+                    baselineInput: document.getElementById('baselineInput'),
+                    comparisonFilter: document.getElementById('comparisonFilter'),
+                    comparisonInfo: document.getElementById('comparisonInfo'),
+                    comparisonIndicator: document.getElementById('comparisonIndicator'),
+                    comparisonText: document.getElementById('comparisonText'),
+                    comparisonSummary: document.getElementById('comparisonSummary'),
+                    compareButtonContainer: document.getElementById('compareButtonContainer'),
+                    deltaColumn: document.getElementById('deltaColumn'),
+                    searchInput: document.getElementById('searchInput'),
+                    languageFilter: document.getElementById('languageFilter'),
+                    filterControls: document.getElementById('filterControls'),
+                    mainContent: document.getElementById('mainContent'),
+                    dropOverlay: document.getElementById('dropOverlay'),
+                    emptyState: document.getElementById('emptyState')
+                };
+            },
+
+            get(name) {
+                return this.elements[name];
+            }
+        };
+
+        // ===== Utilities =====
+        const Utils = {
+            getColorClassForScore(score) {
+                const { EXCELLENT, GOOD, WARNING } = CONSTANTS.SCORE_THRESHOLDS;
+                if (score >= EXCELLENT) return CONSTANTS.CSS_CLASSES.SCORE.EXCELLENT;
+                if (score >= GOOD) return CONSTANTS.CSS_CLASSES.SCORE.GOOD;
+                if (score >= WARNING) return CONSTANTS.CSS_CLASSES.SCORE.WARNING;
+                return CONSTANTS.CSS_CLASSES.SCORE.POOR;
+            },
+
+            getColorClassForDuration(duration) {
+                const { EXCELLENT, GOOD, WARNING } = CONSTANTS.DURATION_THRESHOLDS;
+                if (duration < EXCELLENT) return CONSTANTS.CSS_CLASSES.SCORE.EXCELLENT;
+                if (duration < GOOD) return CONSTANTS.CSS_CLASSES.SCORE.GOOD;
+                if (duration < WARNING) return CONSTANTS.CSS_CLASSES.SCORE.WARNING;
+                return CONSTANTS.CSS_CLASSES.SCORE.POOR;
+            },
+
+            calculateComparisonStatus(currentScore, baselineScore) {
+                const delta = currentScore - baselineScore;
+                if (Math.abs(delta) < CONSTANTS.DELTA_THRESHOLD) return 'unchanged';
+                return delta > 0 ? 'improved' : 'degraded';
+            },
+
+            escapeHTML(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        };
+
+        // ===== Module 1: AppState (State Management) =====
+        const AppState = {
+            // Reports stored by test type
+            reports: {
+                'excerpt-generation': null,
+                'tag-suggestion': null,
+                'post-summary': null
+            },
+            // Baselines stored by test type
+            baselines: {
+                'excerpt-generation': null,
+                'tag-suggestion': null,
+                'post-summary': null
+            },
+            activeTestType: 'excerpt-generation',
+            currentReport: null,  // Alias for active report
+            currentBaseline: null,  // Alias for active baseline
+            baselineReports: [],
+            selectedTestIndex: null,
+            filters: {
+                search: '',
+                language: '',
+                comparisonStatus: ''
+            },
+            sortConfig: { column: 'avg', order: 'desc' }
+        };
+
+        // ===== Module 2: DataLoader (File Loading) =====
+        const DataLoader = {
+            async loadReportFromFile(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            if (!data.summary || !data.results || !data.metadata) {
+                                throw new Error('Invalid report structure: missing required fields (summary, results, metadata)');
+                            }
+                            resolve(data);
+                        } catch (err) {
+                            reject(new Error('Failed to parse JSON: ' + err.message));
+                        }
+                    };
+                    reader.onerror = () => reject(new Error('Failed to read file'));
+                    reader.readAsText(file);
+                });
+            }
+        };
+
+        // ===== RowBuilder (Table Row Construction) =====
+        const RowBuilder = {
+            createRow(result, idx, isBaseline = false, comparisonData = null) {
+                const testType = AppState.currentReport.metadata.testType || CONSTANTS.TEST_TYPES.EXCERPT_GENERATION;
+                const row = document.createElement('tr');
+
+                // Extract data
+                const avgScore = result.averageScore || 0;
+                const lowestScore = result.lowestScore || 0;
+                const highestScore = result.highestScore || 0;
+                const duration = result.duration || 0;
+                const status = result.status || 'unknown';
+                const testName = result.testName || 'Unknown';
+
+                // Calculate comparison if applicable
+                let delta = 0;
+                let comparisonStatus = isBaseline ? 'baseline' : 'none';
+                let deltaHTML = '';
+
+                if (comparisonData && !isBaseline) {
+                    delta = avgScore - comparisonData.averageScore;
+                    comparisonStatus = Utils.calculateComparisonStatus(avgScore, comparisonData.averageScore);
+
+                    // Generate delta cell content
+                    const diffPercent = comparisonData.averageScore !== 0 ?
+                        ((delta / comparisonData.averageScore) * 100).toFixed(1) : '0';
+
+                    if (Math.abs(delta) < CONSTANTS.DELTA_THRESHOLD) {
+                        deltaHTML = `<span class="comparison-indicator unchanged">= ${avgScore.toFixed(1)}</span>`;
+                    } else if (delta > 0) {
+                        deltaHTML = `<span class="comparison-indicator improved">↑ +${delta.toFixed(1)} (+${diffPercent}%)</span>`;
+                    } else {
+                        deltaHTML = `<span class="comparison-indicator regressed">↓ ${delta.toFixed(1)} (${diffPercent}%)</span>`;
+                    }
+                } else if (isBaseline) {
+                    deltaHTML = '<span class="baseline-label">BASELINE</span>';
+                } else if (AppState.currentBaseline && !comparisonData) {
+                    // Baseline exists but this test not found in baseline
+                    deltaHTML = '<span style="color: var(--text-tertiary); font-size: 11px; font-style: italic;">Missing</span>';
+                } else {
+                    deltaHTML = '<span style="color: var(--text-tertiary); font-size: 11px;">—</span>';
+                }
+
+                // Build row
+                row.className = isBaseline ? `test-row baseline ${status}` : `test-row ${status}`;
+                row.dataset.idx = idx;
+                row.dataset.avg = avgScore;
+                row.dataset.min = lowestScore;
+                row.dataset.duration = duration;
+                row.dataset.isBaseline = isBaseline;
+                row.dataset.delta = delta;
+                row.dataset.comparisonStatus = comparisonStatus;
+                row.onclick = () => TableController.selectTest(idx, isBaseline);
+
+                // Score display logic
+                const scoreDisplay = this.getScoreDisplay(testType, avgScore, lowestScore, highestScore);
+
+                // Generate score indicators for excerpt generation
+                const scoreIndicators = testType === CONSTANTS.TEST_TYPES.EXCERPT_GENERATION && !isBaseline
+                    ? this.getScoreIndicators(result)
+                    : '';
+
+                row.innerHTML = `
+                    <td class="test-name">${Utils.escapeHTML(testName)}</td>
+                    <td class="status-cell">${Renderer.getStatusBadge(status)}${scoreIndicators}</td>
+                    <td class="score-cell">${scoreDisplay}</td>
+                    <td class="delta-cell" style="display:none;">${deltaHTML}</td>
+                    <td class="duration-cell">${Renderer.getDurationBadge(duration)}</td>
+                `;
+
+                return row;
+            },
+
+            getScoreDisplay(testType, avgScore, lowestScore, highestScore) {
+                if (testType === CONSTANTS.TEST_TYPES.EXCERPT_GENERATION &&
+                    highestScore > 0 &&
+                    lowestScore !== highestScore) {
+                    return `<span class="score-range">${lowestScore.toFixed(1)}-${highestScore.toFixed(1)}</span>`;
+                }
+                return Renderer.getScoreBadge(avgScore);
+            },
+
+            getScoreIndicators(result) {
+                // For excerpt generation, show distribution of pass/warning/fail for 3 excerpts
+                const excerpts = result.excerpts || [];
+                if (excerpts.length === 0) return '';
+
+                const passThreshold = CONSTANTS.SCORE_THRESHOLDS.GOOD;
+                const warnThreshold = CONSTANTS.SCORE_THRESHOLDS.WARNING;
+
+                let dotsHTML = '';
+                const scores = excerpts.map(e => e.overall || 0);
+                const tooltipText = scores.map((s, i) => `#${i+1}: ${s.toFixed(1)}`).join(', ');
+
+                scores.forEach(score => {
+                    if (score >= passThreshold) {
+                        dotsHTML += '<span class="dot-passed">●</span>';
+                    } else if (score >= warnThreshold) {
+                        dotsHTML += '<span class="dot-warning">●</span>';
+                    } else {
+                        dotsHTML += '<span class="dot-failed">●</span>';
+                    }
+                });
+
+                return `<span class="score-indicators" title="${tooltipText}">${dotsHTML}</span>`;
+            }
+        };
+
+        // ===== Module 3: Renderer (Dynamic HTML Generation) =====
+        const Renderer = {
+            getScoreBadge(score) {
+                const colorClass = Utils.getColorClassForScore(score);
+                return `<span class="score-badge ${colorClass}">${score.toFixed(1)}</span>`;
+            },
+
+            getStatusBadge(status) {
+                const badges = {
+                    'passed': '<span class="badge badge-pass">PASS</span>',
+                    'failed': '<span class="badge badge-fail">FAIL</span>',
+                    'needsImprovement': '<span class="badge badge-warn">NEEDS WORK</span>'
+                };
+                return badges[status] || '<span class="badge">UNKNOWN</span>';
+            },
+
+            getDurationBadge(duration) {
+                const colorClass = Utils.getColorClassForDuration(duration);
+                return `<span class="score-badge ${colorClass}">${duration.toFixed(2)}s</span>`;
+            },
+
+            renderStats(summary, metadata) {
+                const testType = metadata.testType || 'excerpt-generation';
+                const title = testType === 'tag-suggestion' ? '🏷️ Tag Suggestion Evaluation' :
+                             testType === 'post-summary' ? '📝 Post Summary Evaluation' :
+                             '🖥️ Excerpt Generation Evaluation';
+
+                DOM.get('reportTitle').textContent = title;
+
+                const timestamp = metadata.timestamp || '';
+                const model = metadata.claude_model || '';
+                const platform = metadata.test_platform || '';
+                DOM.get('reportMetadata').innerHTML = `${timestamp} · Model: ${model} · Platform: ${platform}`;
+                DOM.get('reportMetadata').style.display = 'block';
+
+                const statsHTML = `
+                    <div class="stat-card">
+                        <div class="stat-label">Total Tests</div>
+                        <div class="stat-value">${summary.total || 0}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Pass Rate</div>
+                        <div class="stat-value" style="color: #34c759;">${((summary.passRate || 0) * 100).toFixed(1)}%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Average Score</div>
+                        <div class="stat-value">${(summary.averageScore || 0).toFixed(1)}/10</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Passed</div>
+                        <div class="stat-value" style="color: #34c759;">${summary.passed || 0}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Failed</div>
+                        <div class="stat-value" style="color: #ff3b30;">${summary.failed || 0}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Needs Work</div>
+                        <div class="stat-value" style="color: #ff9500;">${summary.needsImprovement || 0}</div>
+                    </div>
+                `;
+
+                DOM.get('statsContainer').innerHTML = statsHTML;
+                DOM.get('statsContainer').style.display = 'grid';
+            },
+
+            renderTable(results) {
+                const tbody = DOM.get('tableBody');
+                tbody.innerHTML = '';
+
+                // Build baseline map
+                const baselineMap = this.buildBaselineMap();
+
+                // Render only current rows (no baseline rows)
+                results.forEach((result, idx) => {
+                    const testName = result.testName || 'Unknown';
+                    const baselineData = baselineMap[testName];
+
+                    // Render current row with baseline comparison if available
+                    const currentRow = RowBuilder.createRow(
+                        result,
+                        idx,
+                        false,
+                        baselineData?.result
+                    );
+                    tbody.appendChild(currentRow);
+                });
+            },
+
+            buildBaselineMap() {
+                const map = {};
+                if (AppState.currentBaseline) {
+                    AppState.currentBaseline.results.forEach((result, idx) => {
+                        map[result.testName] = { result, idx };
+                    });
+                }
+                return map;
+            },
+
+            renderDetailPanel(result) {
+                const testType = AppState.currentReport.metadata.testType || 'excerpt-generation';
+
+                // Check if we have baseline comparison
+                const hasBaseline = AppState.currentBaseline !== null;
+                let baselineResult = null;
+
+                if (hasBaseline) {
+                    // Find matching baseline result by test name
+                    const testName = result.testName;
+                    baselineResult = AppState.currentBaseline.results.find(r => r.testName === testName);
+                }
+
+                let html = '';
+
+                // If comparing with baseline, show tabs
+                if (hasBaseline && baselineResult) {
+                    html += `
+                        <div class="detail-tabs">
+                            <button class="detail-tab active" onclick="Renderer.switchTab('current')">Current</button>
+                            <button class="detail-tab" onclick="Renderer.switchTab('baseline')">Baseline</button>
+                        </div>
+                        <div class="detail-tab-content active" id="currentTabContent">
+                            ${this.renderTestDetails(result, testType)}
+                        </div>
+                        <div class="detail-tab-content" id="baselineTabContent">
+                            ${this.renderTestDetails(baselineResult, testType)}
+                        </div>
+                    `;
+                } else if (hasBaseline && !baselineResult) {
+                    // Has baseline but this test not found
+                    html += `
+                        <div class="detail-tabs">
+                            <button class="detail-tab active" onclick="Renderer.switchTab('current')">Current</button>
+                            <button class="detail-tab" disabled style="opacity: 0.5;">Baseline (Missing)</button>
+                        </div>
+                        <div class="detail-tab-content active" id="currentTabContent">
+                            ${this.renderTestDetails(result, testType)}
+                        </div>
+                    `;
+                } else {
+                    // No baseline, just show current
+                    html += this.renderTestDetails(result, testType);
+                }
+
+                DOM.get('detailPanel').innerHTML = html;
+                DOM.get('detailPanel').classList.remove('empty');
+            },
+
+            switchTab(tab) {
+                // Update tab buttons
+                document.querySelectorAll('.detail-tab').forEach(btn => btn.classList.remove('active'));
+                document.querySelector(`.detail-tab:nth-child(${tab === 'current' ? 1 : 2})`).classList.add('active');
+
+                // Update content
+                document.querySelectorAll('.detail-tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tab}TabContent`).classList.add('active');
+            },
+
+            renderTestDetails(result, testType) {
+                const testInput = result.input || {};
+                let html = '';
+
+                // EVALUATION SECTION (at top for visibility)
+                html += `
+                    <div class="detail-section">
+                        <h3 class="section-header">Evaluation Results</h3>
+                        <div class="score-summary">
+                            <div class="score-item-large">
+                                <div class="score-label">Average Score</div>
+                                ${this.getScoreBadge(result.averageScore || 0)}
+                            </div>
+                            <div class="score-item-large">
+                                <div class="score-label">Minimum Score</div>
+                                ${this.getScoreBadge(result.lowestScore || 0)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // INPUT SECTION
+                html += '<div class="detail-section">';
+                html += '<h3 class="section-header">Test Input</h3>';
+                html += this.renderTestCriteria(testInput, testType);
+                html += this.renderOriginalContent(testInput.originalContent || testInput.postContent || 'N/A');
+                html += '</div>';
+
+                // OUTPUT SECTION
+                html += '<div class="detail-section">';
+                html += '<h3 class="section-header">Generated Output</h3>';
+                if (testType === 'tag-suggestion') {
+                    html += this.renderTags(result.tags || []);
+                } else if (testType === 'post-summary') {
+                    html += this.renderSummary(result.summary);
+                } else {
+                    html += this.renderExcerpts(result.excerpts || [], result.diversity);
+                }
+                html += '</div>';
+
+                return html;
+            },
+
+            renderTestCriteria(testInput, testType) {
+                let html = '<div class="subsection"><h4>Parameters</h4><div class="criteria-grid">';
+
+                if (testType === 'tag-suggestion') {
+                    const criteria = [
+                        ['language', 'Language'],
+                        ['maxTags', 'Max Tags']
+                    ];
+                    criteria.forEach(([key, label]) => {
+                        const value = testInput[key];
+                        if (value !== undefined) {
+                            html += `
+                                <div class="criteria-item">
+                                    <div class="criteria-label">${label}</div>
+                                    <div class="criteria-value">${Utils.escapeHTML(String(value))}</div>
+                                </div>
+                            `;
+                        }
+                    });
+                } else if (testType === 'post-summary') {
+                    const criteria = [
+                        ['language', 'Language'],
+                        ['maxLength', 'Max Length']
+                    ];
+                    criteria.forEach(([key, label]) => {
+                        const value = testInput[key];
+                        if (value !== undefined) {
+                            html += `
+                                <div class="criteria-item">
+                                    <div class="criteria-label">${label}</div>
+                                    <div class="criteria-value">${Utils.escapeHTML(String(value))}</div>
+                                </div>
+                            `;
+                        }
+                    });
+                } else {
+                    const criteria = [
+                        ['language', 'Language'],
+                        ['style', 'Style'],
+                        ['length', 'Length']
+                    ];
+                    criteria.forEach(([key, label]) => {
+                        const value = testInput[key];
+                        if (value !== undefined) {
+                            html += `
+                                <div class="criteria-item">
+                                    <div class="criteria-label">${label}</div>
+                                    <div class="criteria-value">${Utils.escapeHTML(String(value))}</div>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+
+                html += '</div></div>';
+                return html;
+            },
+
+            renderOriginalContent(content) {
+                const isHTML = content.includes('<') && content.includes('>');
+                const escaped = Utils.escapeHTML(content);
+                const highlighted = isHTML ? this.highlightHTMLCode(escaped) : escaped;
+                const cssClass = isHTML ? 'content-box code-block' : 'content-box';
+
+                return `
+                    <div class="subsection">
+                        <h4 class="collapsible-header" onclick="Renderer.toggleCollapse(this)">
+                            <span class="collapse-icon">▼</span>
+                            Post Content
+                        </h4>
+                        <div class="collapsible-content">
+                            <div class="${cssClass}">${highlighted}</div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            renderExcerpts(excerpts, diversity) {
+                let html = '';
+
+                excerpts.forEach(excerpt => {
+                    html += `
+                        <div class="item-card">
+                            <div class="item-header">
+                                <div class="item-title">
+                                    <strong>Excerpt ${excerpt.number}</strong>
+                                    ${this.getStatusBadge(excerpt.status)}
+                                </div>
+                                <div class="item-meta">
+                                    <span class="word-count">${excerpt.wordCount || 0} words</span>
+                                    ${this.getScoreBadge(excerpt.overall || 0)}
+                                </div>
+                            </div>
+                            <div class="excerpt-text">${Utils.escapeHTML(excerpt.text || '')}</div>
+                            ${this.renderCriterionScores(excerpt.scores || {}, 'excerpt-generation')}
+                            ${excerpt.scores && excerpt.scores.feedback ? `
+                                <div class="feedback-box">
+                                    <div class="feedback-label">Feedback</div>
+                                    <div class="feedback-text">${Utils.escapeHTML(excerpt.scores.feedback)}</div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+
+                if (diversity) {
+                    html += `
+                        <div class="diversity-card">
+                            <div class="diversity-score-row">
+                                <div class="diversity-label">Diversity Score</div>
+                                ${this.getScoreBadge(diversity.score || 0)}
+                            </div>
+                            ${diversity.feedback ? `
+                                <div class="feedback-box">
+                                    <div class="feedback-label">Diversity Feedback</div>
+                                    <div class="feedback-text">${Utils.escapeHTML(diversity.feedback)}</div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }
+
+                return html;
+            },
+
+            renderTags(tags) {
+                let html = '';
+
+                tags.forEach(tag => {
+                    html += `
+                        <div class="item-card">
+                            <div class="item-header">
+                                <div class="item-title">
+                                    <strong>Tag Set ${tag.number}</strong>
+                                    ${this.getStatusBadge(tag.status)}
+                                </div>
+                                <div class="item-meta">
+                                    ${this.getScoreBadge(tag.overall || 0)}
+                                </div>
+                            </div>
+                            <div class="tags-container">
+                                ${(tag.tags || []).map(t => `<span class="tag-badge-display">${Utils.escapeHTML(t)}</span>`).join(' ')}
+                            </div>
+                            ${this.renderCriterionScores(tag.scores || {}, 'tag-suggestion')}
+                            ${tag.scores && tag.scores.feedback ? `
+                                <div class="feedback-box">
+                                    <div class="feedback-label">Feedback</div>
+                                    <div class="feedback-text">${Utils.escapeHTML(tag.scores.feedback)}</div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+
+                return html;
+            },
+
+            renderSummary(summary) {
+                if (!summary) return '';
+
+                return `
+                    <div class="item-card">
+                        <div class="item-header">
+                            <div class="item-title">
+                                ${this.getStatusBadge(summary.status)}
+                            </div>
+                            <div class="item-meta">
+                                ${this.getScoreBadge(summary.overall || 0)}
+                            </div>
+                        </div>
+                        <div class="summary-text">${Utils.escapeHTML(summary.text || '')}</div>
+                        ${this.renderCriterionScores(summary.scores || {}, 'post-summary')}
+                        ${summary.scores && summary.scores.feedback ? `
+                            <div class="feedback-box">
+                                <div class="feedback-label">Feedback</div>
+                                <div class="feedback-text">${Utils.escapeHTML(summary.scores.feedback)}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            },
+
+            renderCriterionScores(scores, testType) {
+                const criteriaMap = {
+                    'tag-suggestion': [
+                        ['relevance', 'Relevance'],
+                        ['languageMatch', 'Language Match'],
+                        ['formatConsistency', 'Format Consistency'],
+                        ['seoQuality', 'SEO Quality'],
+                        ['uniqueness', 'Uniqueness'],
+                        ['specificity', 'Specificity']
+                    ],
+                    'post-summary': [
+                        ['conciseness', 'Conciseness'],
+                        ['accuracy', 'Accuracy'],
+                        ['languageMatch', 'Language Match'],
+                        ['clarity', 'Clarity'],
+                        ['completeness', 'Completeness'],
+                        ['neutralTone', 'Neutral Tone'],
+                        ['coherence', 'Coherence']
+                    ],
+                    'excerpt-generation': [
+                        ['languageMatch', 'Language Match'],
+                        ['grammar', 'Grammar'],
+                        ['relevance', 'Relevance'],
+                        ['hookQuality', 'Hook Quality'],
+                        ['keyInformationPreservation', 'Key Information'],
+                        ['lengthAppropriate', 'Length'],
+                        ['styleMatch', 'Style Match'],
+                        ['standalone', 'Standalone'],
+                        ['engagement', 'Engagement']
+                    ]
+                };
+
+                const criteria = criteriaMap[testType] || criteriaMap['excerpt-generation'];
+                let html = '<div class="criterion-scores">';
+
+                criteria.forEach(([key, label]) => {
+                    const score = scores[key];
+                    if (score && score > 0) {
+                        const colorClass = score >= 9.0 ? 'score-excellent' :
+                                          score >= 7.0 ? 'score-good' :
+                                          score >= 6.0 ? 'score-warning' : 'score-poor';
+                        html += `
+                            <div class="criterion-row">
+                                <div class="criterion-label">${label}</div>
+                                <div class="criterion-score-badge ${colorClass}">${score.toFixed(1)}</div>
+                            </div>
+                        `;
+                    }
+                });
+
+                html += '</div>';
+                return html;
+            },
+
+            highlightHTMLCode(code) {
+                let highlighted = code;
+                highlighted = highlighted.replace(/(&lt;\/?)([\w-]+)/g, '$1<span class="html-tag">$2</span>');
+                highlighted = highlighted.replace(/(\w+)(=|&quot;)/g, '<span class="html-attr">$1</span>$2');
+                highlighted = highlighted.replace(/(&quot;.*?&quot;)/g, '<span class="html-string">$1</span>');
+                highlighted = highlighted.replace(/(&lt;!--.*?--&gt;)/g, '<span class="html-comment">$1</span>');
+                return highlighted;
+            },
+
+            toggleCollapse(header) {
+                header.classList.toggle('collapsed');
+                const content = header.nextElementSibling;
+                if (content) {
+                    content.classList.toggle('collapsed');
+                }
+            }
+        };
+
+        // ===== Module 3.5: BaselineManager (Baseline Loading & Comparison) =====
+        const BaselineManager = {
+            /**
+             * Apply baseline comparison with the provided data
+             * @param {Object} baselineData - The baseline evaluation data
+             * @param {string} displayName - Name to display in UI (e.g., file name or "Embedded Baseline")
+             * @param {string} source - Source of baseline: 'embedded', 'file', or 'drop'
+             */
+            applyBaseline(baselineData, displayName, source = 'file') {
+                // Clear existing comparison
+                ComparisonEngine.clearComparisonIndicators();
+
+                // Set new baseline
+                AppState.baselineReports = [{ name: displayName, data: baselineData }];
+                AppState.currentBaseline = baselineData;
+
+                // Re-render table to show baseline rows
+                Renderer.renderTable(AppState.currentReport.results);
+
+                // Apply comparison indicators (delta column)
+                ComparisonEngine.updateComparisonIndicators(baselineData);
+
+                // Show delta column
+                this.toggleDeltaColumn(true);
+
+                // Update allRows reference after re-render
+                TableController.refreshRowCache();
+
+                // Update UI status
+                this.updateStatusUI(baselineData, displayName, source);
+
+                // Update header with comparison summary
+                this.updateHeaderComparison();
+
+                // Re-select current test to refresh detail panel with baseline
+                if (AppState.selectedTestIndex !== null) {
+                    TableController.selectTest(AppState.selectedTestIndex);
+                }
+
+                // Refresh detail panel for currently selected row
+                const selectedRow = document.querySelector('.test-row.selected');
+                if (selectedRow) {
+                    const testIndex = parseInt(selectedRow.dataset.testIndex, 10);
+                    if (!isNaN(testIndex) && AppState.currentReport.results[testIndex]) {
+                        Renderer.renderDetailPanel(AppState.currentReport.results[testIndex]);
+                    }
+                }
+
+                console.log(`Baseline comparison applied (${source}):`, displayName);
+            },
+
+            /**
+             * Update the status UI element with baseline information
+             */
+            updateStatusUI(baselineData, displayName, source) {
+                // Show comparison indicator in header
+                const indicator = DOM.get('comparisonIndicator');
+                const textEl = DOM.get('comparisonText');
+                const compareBtn = DOM.get('compareButtonContainer');
+
+                if (source === 'embedded' && baselineData.metadata && baselineData.metadata.timestamp) {
+                    const baselineDate = new Date(baselineData.metadata.timestamp).toLocaleDateString();
+                    textEl.textContent = `Comparing with ${baselineDate}`;
+                } else {
+                    textEl.textContent = `Comparing with baseline`;
+                }
+
+                indicator.style.display = 'inline-flex';
+                compareBtn.style.display = 'none';
+            },
+
+            /**
+             * Update header with comparison statistics
+             */
+            updateHeaderComparison() {
+                const summaryEl = DOM.get('comparisonSummary');
+                if (!AppState.currentBaseline || !AppState.currentReport) {
+                    summaryEl.style.display = 'none';
+                    return;
+                }
+
+                // Calculate comparison statistics and average scores
+                let improved = 0;
+                let regressed = 0;
+                let unchanged = 0;
+                let currentTotal = 0;
+                let baselineTotal = 0;
+                let matchCount = 0;
+
+                AppState.currentReport.results.forEach(current => {
+                    const baseline = AppState.currentBaseline.results.find(b => b.testName === current.testName);
+                    if (baseline) {
+                        const currentAvg = current.averageScore || 0;
+                        const baselineAvg = baseline.averageScore || 0;
+                        const delta = currentAvg - baselineAvg;
+
+                        currentTotal += currentAvg;
+                        baselineTotal += baselineAvg;
+                        matchCount++;
+
+                        if (Math.abs(delta) < 0.01) {
+                            unchanged++;
+                        } else if (delta > 0) {
+                            improved++;
+                        } else {
+                            regressed++;
+                        }
+                    }
+                });
+
+                // Calculate averages
+                const currentAverage = matchCount > 0 ? (currentTotal / matchCount) : 0;
+                const baselineAverage = matchCount > 0 ? (baselineTotal / matchCount) : 0;
+                const delta = currentAverage - baselineAverage;
+                const deltaPercent = baselineAverage > 0 ? (delta / baselineAverage * 100) : 0;
+
+                // Determine delta color
+                const deltaColor = Math.abs(delta) < 0.01 ? 'var(--text-tertiary)' :
+                                   delta > 0 ? 'var(--color-good)' : 'var(--color-fail)';
+                const deltaSign = delta > 0 ? '+' : '';
+                const arrow = Math.abs(delta) < 0.01 ? '=' : delta > 0 ? '↑' : '↓';
+
+                // Build summary HTML with scores and clickable stats
+                const parts = [];
+
+                // Show "Score" label
+                parts.push(`<span style="color: var(--text-tertiary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-right: 10px;">Score</span>`);
+
+                // Show baseline → current with delta
+                parts.push(`<span style="color: var(--text-secondary); font-weight: 500;">${baselineAverage.toFixed(2)}</span>`);
+                parts.push(`<span style="color: var(--text-tertiary); margin: 0 10px;">→</span>`);
+                parts.push(`<span style="color: ${deltaColor}; font-weight: 600;">${currentAverage.toFixed(2)}</span>`);
+                parts.push(`<span style="color: ${deltaColor}; font-weight: 500; margin-left: 12px;">(${arrow}${deltaSign}${delta.toFixed(2)}, ${deltaSign}${deltaPercent.toFixed(1)}%)</span>`);
+
+                // Add clickable counts with spacing before them
+                const counts = [];
+                if (improved > 0) {
+                    counts.push(`<span style="color: var(--color-good); cursor: pointer; font-weight: 500;" onclick="AppState.filters.comparisonStatus='improved'; document.getElementById('comparisonFilter').value='improved'; TableController.applyFilters();">↑${improved}</span>`);
+                }
+                if (regressed > 0) {
+                    counts.push(`<span style="color: var(--color-fail); cursor: pointer; font-weight: 500;" onclick="AppState.filters.comparisonStatus='degraded'; document.getElementById('comparisonFilter').value='degraded'; TableController.applyFilters();">↓${regressed}</span>`);
+                }
+                if (unchanged > 0) {
+                    counts.push(`<span style="color: var(--text-tertiary); cursor: pointer;" onclick="AppState.filters.comparisonStatus='unchanged'; document.getElementById('comparisonFilter').value='unchanged'; TableController.applyFilters();">=</span><span style="color: var(--text-tertiary);">${unchanged}</span>`);
+                }
+                parts.push(`<span style="margin-left: 20px;">${counts.join('<span style="color: var(--text-tertiary); margin: 0 10px;">/</span>')}</span>`);
+
+                summaryEl.innerHTML = parts.join('');
+                summaryEl.style.display = 'inline-block';
+            },
+
+            /**
+             * Clear the current baseline comparison
+             */
+            clearBaseline() {
+                ComparisonEngine.clearComparisonIndicators();
+                AppState.baselineReports = [];
+                AppState.currentBaseline = null;
+
+                // Re-render table without baseline rows
+                Renderer.renderTable(AppState.currentReport.results);
+
+                // Hide delta column
+                this.toggleDeltaColumn(false);
+
+                // Update allRows reference after re-render
+                TableController.allRows = Array.from(document.querySelectorAll('.test-row'));
+
+                // Hide comparison indicator, show compare button
+                DOM.get('comparisonIndicator').style.display = 'none';
+                DOM.get('compareButtonContainer').style.display = '';
+                DOM.get('comparisonSummary').style.display = 'none';
+
+                // Reset comparison filter
+                document.getElementById('comparisonFilter').value = '';
+                AppState.filters.comparisonStatus = '';
+                TableController.applyFilters();
+
+                console.log('Baseline comparison cleared');
+            },
+
+            /**
+             * Load baseline from file and apply comparison
+             */
+            async loadBaselineFromFile(file) {
+                const statusEl = DOM.get('baselineStatus');
+                statusEl.textContent = 'Loading...';
+                statusEl.style.color = 'var(--text-secondary)';
+
+                try {
+                    const data = await DataLoader.loadReportFromFile(file);
+                    this.applyBaseline(data, file.name, 'file');
+                } catch (err) {
+                    statusEl.textContent = `✗ Error: ${err.message}`;
+                    statusEl.style.color = 'var(--color-fail)';
+                    console.error('Error loading baseline:', err);
+                    throw err;
+                }
+            },
+
+            /**
+             * Toggle visibility of the delta column
+             * @param {boolean} show - True to show, false to hide
+             */
+            toggleDeltaColumn(show) {
+                const deltaColumn = DOM.get('deltaColumn');
+                const deltaCells = document.querySelectorAll('.delta-cell');
+
+                if (show) {
+                    deltaColumn.style.display = '';
+                    deltaCells.forEach(cell => cell.style.display = '');
+                } else {
+                    deltaColumn.style.display = 'none';
+                    deltaCells.forEach(cell => cell.style.display = 'none');
+                }
+            }
+        };
+
+        // ===== Module 4: TableController (Filtering & Sorting) =====
+        const TableController = {
+            allRows: [],
+
+            refreshRowCache() {
+                this.allRows = Array.from(document.querySelectorAll('.test-row'));
+            },
+
+            selectTest(idx, isBaseline = false) {
+                document.querySelectorAll('.test-row').forEach(row => row.classList.remove('selected'));
+
+                // Find the specific row (baseline or current)
+                const row = document.querySelector(`.test-row[data-idx="${idx}"][data-is-baseline="${isBaseline}"]`);
+                if (row) row.classList.add('selected');
+
+                // Load result from appropriate data source
+                const result = isBaseline
+                    ? AppState.currentBaseline.results[idx]
+                    : AppState.currentReport.results[idx];
+
+                Renderer.renderDetailPanel(result);
+
+                AppState.selectedTestIndex = idx;
+            },
+
+            sortTable(column) {
+                const tbody = DOM.get('tableBody');
+                const rows = Array.from(tbody.querySelectorAll('.test-row'));
+
+                if (AppState.sortConfig.column === column) {
+                    AppState.sortConfig.order = AppState.sortConfig.order === 'asc' ? 'desc' : 'asc';
+                } else {
+                    AppState.sortConfig.column = column;
+                    AppState.sortConfig.order = 'desc';
+                }
+
+                rows.sort((a, b) => {
+                    let aVal, bVal;
+
+                    switch (column) {
+                        case 'name':
+                            aVal = a.querySelector('.test-name').textContent;
+                            bVal = b.querySelector('.test-name').textContent;
+                            return AppState.sortConfig.order === 'asc' ?
+                                aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+
+                        case 'status':
+                            const statusOrder = {'passed': 1, 'needsImprovement': 2, 'failed': 3};
+                            aVal = statusOrder[a.classList[1]] || 999;
+                            bVal = statusOrder[b.classList[1]] || 999;
+                            break;
+
+                        case 'avg':
+                            aVal = parseFloat(a.dataset.avg);
+                            bVal = parseFloat(b.dataset.avg);
+                            break;
+
+                        case 'min':
+                            aVal = parseFloat(a.dataset.min);
+                            bVal = parseFloat(b.dataset.min);
+                            break;
+
+                        case 'duration':
+                            aVal = parseFloat(a.dataset.duration);
+                            bVal = parseFloat(b.dataset.duration);
+                            break;
+
+                        case 'delta':
+                            aVal = parseFloat(a.dataset.delta || 0);
+                            bVal = parseFloat(b.dataset.delta || 0);
+                            break;
+                    }
+
+                    return AppState.sortConfig.order === 'asc' ? aVal - bVal : bVal - aVal;
+                });
+
+                rows.forEach(row => tbody.appendChild(row));
+
+                document.querySelectorAll('th').forEach(th => th.className = '');
+                const headers = ['name', 'status', 'avg', 'min', 'delta', 'duration'];
+                const idx = headers.indexOf(column);
+                if (idx >= 0) {
+                    document.querySelectorAll('th')[idx].className = 'sorted-' + AppState.sortConfig.order;
+                }
+
+                this.refreshRowCache();
+            },
+
+            applyFilters() {
+                const search = AppState.filters.search.toLowerCase();
+                const language = AppState.filters.language.toLowerCase();
+                const comparisonStatus = AppState.filters.comparisonStatus;
+
+                this.allRows.forEach(row => {
+                    const testName = row.querySelector('.test-name').textContent.toLowerCase();
+                    const rowComparisonStatus = row.dataset.comparisonStatus;
+
+                    let visible = true;
+
+                    if (search && !testName.includes(search)) visible = false;
+                    if (language && !testName.includes(language)) visible = false;
+                    if (comparisonStatus && rowComparisonStatus !== comparisonStatus) visible = false;
+
+                    row.style.display = visible ? '' : 'none';
+                });
+            }
+        };
+
+        // ===== Module 5: ComparisonEngine =====
+        const ComparisonEngine = {
+            updateComparisonIndicators(baselineData) {
+                console.log('Updating comparison indicators...');
+
+                // Show delta column and comparison info
+                DOM.get('deltaColumn').style.display = '';
+                document.querySelectorAll('.delta-cell').forEach(cell => cell.style.display = '');
+
+                // Update comparison info header
+                const currentTimestamp = AppState.currentReport.metadata.timestamp;
+                const baselineTimestamp = baselineData.metadata.timestamp;
+                const currentDate = new Date(currentTimestamp).toLocaleString();
+                const baselineDate = new Date(baselineTimestamp).toLocaleString();
+
+                // Comparison UI is now handled by BaselineManager's header indicator
+                console.log('Comparison UI updated');
+            },
+
+            clearComparisonIndicators() {
+                DOM.get('deltaColumn').style.display = 'none';
+                document.querySelectorAll('.delta-cell').forEach(cell => cell.style.display = 'none');
+                // comparisonInfo removed - now using header indicator instead
+            }
+        };
+
+        // ===== Module 5.5: TabController (Test Suite Switching) =====
+        const TabController = {
+            /**
+             * Switch to a different test suite tab
+             */
+            switchTab(testType) {
+                // Check if report exists for this test type
+                if (!AppState.reports[testType]) {
+                    console.log(`No report loaded for test type: ${testType}`);
+                    return;
+                }
+
+                // Update active test type
+                AppState.activeTestType = testType;
+                AppState.currentReport = AppState.reports[testType];
+                AppState.currentBaseline = AppState.baselines[testType];
+
+                // Update header
+                const testCount = AppState.currentReport.summary.total || 0;
+                document.getElementById('testCount').textContent = `${testCount} test${testCount !== 1 ? 's' : ''}`;
+
+                const statusEl = document.getElementById('statusIndicator');
+                const summary = AppState.currentReport.summary;
+                const failed = summary.failed || 0;
+                const needsWork = summary.needsImprovement || 0;
+
+                if (failed > 0) {
+                    statusEl.className = 'status-indicator has-failures';
+                    statusEl.innerHTML = `<span class="status-dot"></span>${failed} failed`;
+                } else if (needsWork > 0) {
+                    statusEl.className = 'status-indicator';
+                    statusEl.style.color = '#ff9500';
+                    statusEl.innerHTML = `<span class="status-dot"></span>${needsWork} needs work`;
+                } else {
+                    statusEl.className = 'status-indicator all-pass';
+                    statusEl.innerHTML = `<span class="status-dot"></span>All passed`;
+                }
+
+                // Re-render the view
+                Renderer.renderTable(AppState.currentReport.results);
+                TableController.allRows = Array.from(document.querySelectorAll('.test-row'));
+
+                // Auto-select first test
+                if (AppState.currentReport.results.length > 0) {
+                    TableController.selectTest(0);
+                }
+
+                // Apply comparison if baseline exists for this test type
+                if (AppState.currentBaseline) {
+                    ComparisonEngine.updateComparisonIndicators(AppState.currentBaseline);
+                    BaselineManager.toggleDeltaColumn(true);
+                } else {
+                    BaselineManager.toggleDeltaColumn(false);
+                }
+
+                console.log(`Switched to ${testType} tab`);
+            },
+
+            /**
+             * Update tab button states
+             */
+            updateTabUI(activeType) {
+                const tabs = {
+                    'excerpt-generation': 'tabExcerpts',
+                    'tag-suggestion': 'tabTags',
+                    'post-summary': 'tabSummary'
+                };
+
+                // Update active state
+                Object.entries(tabs).forEach(([type, tabId]) => {
+                    const tabButton = document.getElementById(tabId);
+                    if (type === activeType) {
+                        tabButton.classList.add('active');
+                    } else {
+                        tabButton.classList.remove('active');
+                    }
+                });
+            },
+
+            /**
+             * Update tab counts and enabled states
+             */
+            updateTabStates() {
+                const tabs = [
+                    { type: 'excerpt-generation', buttonId: 'tabExcerpts', countId: 'countExcerpts' },
+                    { type: 'tag-suggestion', buttonId: 'tabTags', countId: 'countTags' },
+                    { type: 'post-summary', buttonId: 'tabSummary', countId: 'countSummary' }
+                ];
+
+                tabs.forEach(tab => {
+                    const report = AppState.reports[tab.type];
+                    const button = document.getElementById(tab.buttonId);
+                    const countSpan = document.getElementById(tab.countId);
+
+                    if (report) {
+                        button.disabled = false;
+                        countSpan.textContent = report.results.length;
+                    } else {
+                        button.disabled = (tab.type !== AppState.activeTestType);
+                        countSpan.textContent = '0';
+                    }
+                });
+            },
+
+            /**
+             * Show or hide the tabs bar
+             */
+            showTabs(show) {
+                const tabsContainer = document.getElementById('testSuiteTabs');
+                tabsContainer.style.display = show ? 'flex' : 'none';
+            }
+        };
+
+        // ===== Module 6: Initialization & Event Handlers =====
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize DOM cache
+            DOM.init();
+
+            // Helper function to update header status
+            function updateHeaderStatus(data) {
+                const testType = data.metadata.testType || 'excerpt-generation';
+                const summary = data.summary;
+
+                // Update test type selector
+                document.getElementById('testTypeSelector').value = testType;
+
+                // Update test count
+                const testCount = summary.total || 0;
+                document.getElementById('testCount').textContent = `${testCount} test${testCount !== 1 ? 's' : ''}`;
+
+                // Update average score
+                const avgScore = summary.averageScore || 0;
+                document.getElementById('averageScore').textContent = `Avg: ${avgScore.toFixed(1)}`;
+
+                // Update status indicator
+                const statusEl = document.getElementById('statusIndicator');
+                const failed = summary.failed || 0;
+                const needsWork = summary.needsImprovement || 0;
+
+                if (failed > 0) {
+                    statusEl.className = 'status-indicator has-failures';
+                    statusEl.innerHTML = `<span class="status-dot"></span>${failed} failed`;
+                } else if (needsWork > 0) {
+                    statusEl.className = 'status-indicator';
+                    statusEl.style.color = '#ff9500';
+                    statusEl.innerHTML = `<span class="status-dot"></span>${needsWork} needs work`;
+                } else {
+                    statusEl.className = 'status-indicator all-pass';
+                    statusEl.innerHTML = `<span class="status-dot"></span>All passed`;
+                }
+            }
+
+            // Helper function to load and render report data
+            function loadAndRenderReport(data) {
+                // Detect test type from metadata
+                const testType = data.metadata.testType || 'excerpt-generation';
+
+                // Store report in appropriate slot
+                AppState.reports[testType] = data;
+                AppState.activeTestType = testType;
+                AppState.currentReport = data;
+
+                // Show UI elements
+                DOM.get('emptyState').style.display = 'none';
+                DOM.get('mainContent').style.display = 'block';
+                document.getElementById('headerContainer').style.display = 'block';
+                DOM.get('filterControls').style.display = 'flex';
+
+                // Update header
+                updateHeaderStatus(data);
+
+                // Render table
+                Renderer.renderTable(data.results);
+                TableController.refreshRowCache();
+
+                if (data.results.length > 0) {
+                    TableController.selectTest(0);
+                }
+
+                TableController.sortTable('avg');
+
+                // Log baseline folder location to console
+                if (data.metadata && data.metadata.outputDirectory) {
+                    const outputDir = data.metadata.outputDirectory;
+                    const parentDir = outputDir.split('/').slice(0, -1).join('/');
+                    console.log('%c📁 Baseline Files Location', 'font-size: 14px; font-weight: bold; color: #007bff;');
+                    console.log(`Parent directory: ${parentDir}`);
+                    console.log(`Look for directories named "evaluation-YYYY-MM-DD-HHMMSS" to find baseline JSON files.`);
+                    console.log(''); // Empty line for spacing
+                }
+            }
+
+            // Auto-load embedded data if present
+            if (EMBEDDED_DATA !== null) {
+                try {
+                    loadAndRenderReport(EMBEDDED_DATA);
+
+                    // Check for embedded baseline and apply comparison
+                    if (typeof EMBEDDED_BASELINE !== 'undefined' && EMBEDDED_BASELINE !== null) {
+                        console.log('Embedded baseline detected, applying comparison...');
+                        BaselineManager.applyBaseline(EMBEDDED_BASELINE, 'Embedded Baseline', 'embedded');
+                    }
+                } catch (err) {
+                    console.error('Error loading embedded data:', err);
+                }
+            }
+
+            // Baseline file picker - automatically compares when baseline is selected
+            DOM.get('baselineInput').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                await BaselineManager.loadBaselineFromFile(file);
+            });
+
+            // Drag and drop support for baseline files
+            const dropOverlay = DOM.get('dropOverlay');
+
+            document.body.addEventListener('dragenter', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (e.dataTransfer.types.includes('Files')) {
+                    dropOverlay.classList.add('active');
+                }
+            });
+
+            document.body.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
+            document.body.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (e.target === document.body || e.target === dropOverlay) {
+                    dropOverlay.classList.remove('active');
+                }
+            });
+
+            document.body.addEventListener('drop', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropOverlay.classList.remove('active');
+
+                const files = Array.from(e.dataTransfer.files);
+                const jsonFile = files.find(f => f.name.endsWith('.json'));
+
+                if (jsonFile) {
+                    await BaselineManager.loadBaselineFromFile(jsonFile);
+                } else {
+                    console.log('No JSON file found in dropped files');
+                }
+            });
+
+            DOM.get('searchInput').addEventListener('input', (e) => {
+                AppState.filters.search = e.target.value;
+                TableController.applyFilters();
+            });
+
+            DOM.get('languageFilter').addEventListener('change', (e) => {
+                AppState.filters.language = e.target.value;
+                TableController.applyFilters();
+            });
+
+            document.getElementById('comparisonFilter').addEventListener('change', (e) => {
+                AppState.filters.comparisonStatus = e.target.value;
+                TableController.applyFilters();
+            });
+        });
+    </script>
+</body>
+</html>
