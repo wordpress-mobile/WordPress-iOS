@@ -5,7 +5,7 @@ import NaturalLanguage
 @testable import WordPressIntelligence
 
 @Suite(.serialized)
-struct TagSuggestionTests {
+struct TagSuggestionGeneratorTests {
     // MARK: - Standard Test Cases
 
     @available(iOS 26, *)
@@ -165,7 +165,7 @@ struct TagSuggestionTests {
         skip: ValidationOptions = [],
         maxDuration: Duration? = .seconds(10)
     ) async throws -> ([String], Duration) {
-        let generator = TagSuggestion()
+        let generator = TagSuggestionGenerator()
 
         let (tags, duration) = try await TestHelpers.measure {
             try await generator.generate(

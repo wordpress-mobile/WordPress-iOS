@@ -7,7 +7,7 @@ import WordPressShared
 /// Generates relevant tags based on post content and existing site tags,
 /// matching the language and formatting pattern of existing tags.
 @available(iOS 26, *)
-public struct TagSuggestion {
+public struct TagSuggestionGenerator {
     public var options: GenerationOptions
 
     public init(options: GenerationOptions = GenerationOptions(temperature: 0.2)) {
@@ -50,7 +50,7 @@ public struct TagSuggestion {
         - SITE_TAGS: case-sensitive comma-separated list of the existing tags used elsewhere on the site (not always relevant to the post)
         - EXISTING_POST_TAGS: tags already added to the post
 
-        \(PromptHelper.makeLocaleInstructions())
+        \(IntelligenceService.makeLocaleInstructions())
 
         **Steps**
         - 1. Identify the specific formatting pattern used (e.g., lowercase with underscores, capitalized words with spaces, etc)

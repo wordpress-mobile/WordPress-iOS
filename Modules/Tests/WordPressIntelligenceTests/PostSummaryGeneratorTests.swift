@@ -5,7 +5,7 @@ import NaturalLanguage
 @testable import WordPressIntelligence
 
 @Suite(.serialized)
-struct PostSummaryTests {
+struct PostSummaryGeneratorTests {
     // MARK: - Standard Test Cases
 
     @available(iOS 26, *)
@@ -126,7 +126,7 @@ struct PostSummaryTests {
         skip: ValidationOptions = [],
         maxDuration: Duration? = .seconds(10)
     ) async throws -> (String, Duration) {
-        let generator = PostSummary()
+        let generator = PostSummaryGenerator()
 
         let (summary, duration) = try await TestHelpers.measure {
             try await generator.generate(content: parameters.data.content)

@@ -1,11 +1,7 @@
 import Foundation
 import FoundationModels
 
-/// Service for AI-powered content generation and analysis features.
-///
-/// This service provides tag suggestions, post summaries, excerpt generation,
-/// and other intelligence features using Foundation Models (iOS 26+).
-public actor IntelligenceService {
+public enum IntelligenceService {
     /// Maximum context size for language model sessions (in tokens).
     ///
     /// A single token corresponds to three or four characters in languages like
@@ -36,33 +32,21 @@ public actor IntelligenceService {
         }
     }
 
-    public init() {}
-
-    // MARK: - Public API
-
-    /// Suggests tags for a WordPress post.
-    @available(iOS 26, *)
-    public func suggestTags(post: String, siteTags: [String] = [], postTags: [String] = []) async throws -> [String] {
-        try await TagSuggestion().generate(post: post, siteTags: siteTags, postTags: postTags)
-    }
-
-    /// Summarizes a support ticket to a short title.
-    @available(iOS 26, *)
-    public func summarizeSupportTicket(content: String) async throws -> String {
-        try await SupportTicketSummary.execute(content: content)
-    }
-
-    /// Extracts relevant text from post content (removes HTML, limits size).
-    public nonisolated func extractRelevantText(from post: String, ratio: CGFloat = 0.6) -> String {
-        Self.extractRelevantText(from: post, ratio: ratio)
-    }
-
-    // MARK: - Shared Utilities
-
     /// Extracts relevant text from post content, removing HTML and limiting size.
-    public nonisolated static func extractRelevantText(from post: String, ratio: CGFloat = 0.6) -> String {
+    public static func extractRelevantText(from post: String, ratio: CGFloat = 0.6) -> String {
         let extract = try? ContentExtractor.extractRelevantText(from: post)
         let postSizeLimit = Double(IntelligenceService.contextSizeLimit) * ratio
         return String((extract ?? post).prefix(Int(postSizeLimit)))
+    }
+
+    // As documented in https://developer.apple.com/documentation/foundationmodels/supporting-languages-and-locales-with-foundation-models?changes=_10_5#Use-Instructions-to-set-the-locale-and-language
+    static func makeLocaleInstructions(for locale: Locale = Locale.current) -> String {
+        if Locale.Language(identifier: "en_US").isEquivalent(to: locale.language) {
+            // Skip the locale phrase for U.S. English.
+            return ""
+        } else {
+            // Specify the person's locale with the exact phrase format.
+            return "The person's locale is \(locale.identifier)."
+        }
     }
 }

@@ -1,5 +1,6 @@
 import SwiftUI
 import WordPressUI
+import WordPressIntelligence
 import WordPressShared
 import DesignSystem
 

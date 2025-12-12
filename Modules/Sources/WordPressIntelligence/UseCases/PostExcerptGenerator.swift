@@ -7,7 +7,7 @@ import FoundationModels
 /// length and writing style. Supports session-based usage (for UI with continuity)
 /// and one-shot generation (for tests and background tasks).
 @available(iOS 26, *)
-public struct ExcerptGeneration {
+public struct PostExcerptGenerator {
     public var length: ContentLength
     public var style: WritingStyle
     public var options: GenerationOptions
@@ -51,7 +51,7 @@ public struct ExcerptGeneration {
         - TARGET_LENGTH: MANDATORY sentence count (primary) and word count (secondary) for each excerpt
         - GENERATION_STYLE: the writing style to follow
 
-        \(PromptHelper.makeLocaleInstructions())
+        \(IntelligenceService.makeLocaleInstructions())
 
         **CRITICAL Requirements (MUST be followed exactly)**
         1. ⚠️ LANGUAGE: Generate excerpts in the SAME language as POST_CONTENT. NO translation. NO defaulting to English. Match input language EXACTLY.

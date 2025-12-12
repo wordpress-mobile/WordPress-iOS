@@ -3,6 +3,7 @@ import WordPressUI
 import DesignSystem
 import FoundationModels
 import WordPressShared
+import WordPressIntelligence
 
 @available(iOS 26, *)
 struct PostSettingsGenerateExcerptView: View {
@@ -12,10 +13,10 @@ struct PostSettingsGenerateExcerptView: View {
     @Environment(\.dismiss) private var dismiss
 
     @AppStorage("jetpack_ai_generated_excerpt_style")
-    private var style: IntelligenceService.ExcerptGeneration.Style = .engaging
+    private var style: WritingStyle = .engaging
 
     @AppStorage("jetpack_ai_generated_excerpt_length")
-    private var length: IntelligenceService.ExcerptGeneration.Length = .medium
+    private var length: ContentLength = .medium
 
     @State private var results: [ExcerptGenerationResult.PartiallyGenerated] = []
     @State private var isGenerating = false
@@ -163,9 +164,9 @@ struct PostSettingsGenerateExcerptView: View {
             Slider(
                 value: Binding(
                     get: { Double(length.rawValue) },
-                    set: { length = IntelligenceService.ExcerptGeneration.Length(rawValue: Int($0)) ?? .medium }
+                    set: { length = ContentLength(rawValue: Int($0)) ?? .medium }
                 ),
-                in: 0...Double(IntelligenceService.ExcerptGeneration.Length.allCases.count - 1),
+                in: 0...Double(ContentLength.allCases.count - 1),
                 step: 1
             ) {
                 Text(Strings.lengthSliderAccessibilityLabel)
@@ -200,7 +201,7 @@ struct PostSettingsGenerateExcerptView: View {
             Spacer(minLength: 8)
 
             Picker(Strings.stylePickerAccessibilityLabel, selection: $style) {
-                ForEach(IntelligenceService.ExcerptGeneration.Style.allCases, id: \.self) { style in
+                ForEach(WritingStyle.allCases, id: \.self) { style in
                     Text(style.displayName)
                         .tag(style)
                 }
@@ -231,7 +232,7 @@ struct PostSettingsGenerateExcerptView: View {
 
         generationTask = Task {
             do {
-                let generator = IntelligenceService.ExcerptGeneration(length: length, style: style)
+                let generator = PostExcerptGenerator(length: length, style: style)
                 let session = generator.makeSession()
                 self.session = session
                 try await actuallyGenerateExcerpts(in: session)
@@ -272,9 +273,9 @@ struct PostSettingsGenerateExcerptView: View {
             isGenerating = false
         }
 
-        let generator = IntelligenceService.ExcerptGeneration(length: length, style: style)
-        let content = IntelligenceService().extractRelevantText(from: postContent)
-        let prompt = isLoadMore ? IntelligenceService.ExcerptGeneration.loadMorePrompt : generator.makePrompt(content: content)
+        let generator = PostExcerptGenerator(length: length, style: style)
+        let content = IntelligenceService.extractRelevantText(from: postContent)
+        let prompt = isLoadMore ? PostExcerptGenerator.loadMorePrompt : generator.makePrompt(content: content)
         let stream = session.streamResponse(to: prompt, generating: ExcerptGenerationResult.self)
 
         for try await result in stream {

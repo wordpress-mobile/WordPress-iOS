@@ -111,7 +111,7 @@ enum TestHelpers {
     static func printExcerptResults(
         _ title: String,
         excerpts: [String],
-        generator: ExcerptGeneration,
+        generator: PostExcerptGenerator,
         expectedLanguage: NLLanguage,
         duration: Duration
     ) {

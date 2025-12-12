@@ -1,6 +1,7 @@
 import SwiftUI
 import WordPressUI
 import WordPressData
+import WordPressIntelligence
 
 @available(iOS 26, *)
 struct ReaderSummarizePostView: View {
@@ -71,7 +72,7 @@ struct ReaderSummarizePostView: View {
 
             do {
                 let content = post.content ?? ""
-                let result = try await IntelligenceService().summarizePost(content: content)
+                let result = try await PostSummaryGenerator().generate(content: content)
 
                 guard !Task.isCancelled else { return }
                 withAnimation(.smooth) {

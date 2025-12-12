@@ -5,7 +5,7 @@ import NaturalLanguage
 @testable import WordPressIntelligence
 
 @Suite(.serialized)
-struct ExcerptGenerationTests {
+struct PostExcerptGeneratorTests {
     // MARK: - Standard Test Cases
 
     @available(iOS 26, *)
@@ -50,7 +50,7 @@ struct ExcerptGenerationTests {
             length: .short,
             style: .conversational
         )
-        let generator = ExcerptGeneration(length: parameters.length, style: parameters.style)
+        let generator = PostExcerptGenerator(length: parameters.length, style: parameters.style)
 
         do {
             _ = try await generator.generate(for: parameters.data.content)
@@ -72,7 +72,7 @@ struct ExcerptGenerationTests {
             length: .short,
             style: .engaging
         )
-        let generator = ExcerptGeneration(length: parameters.length, style: parameters.style)
+        let generator = PostExcerptGenerator(length: parameters.length, style: parameters.style)
 
         // Empty content should either throw an error or return empty excerpts
         do {
@@ -238,7 +238,7 @@ struct ExcerptGenerationTests {
         skip: ValidationOptions = [],
         maxDuration: Duration? = .seconds(10)
     ) async throws -> ([String], Duration) {
-        let generator = ExcerptGeneration(length: parameters.length, style: parameters.style)
+        let generator = PostExcerptGenerator(length: parameters.length, style: parameters.style)
 
         let (excerpts, duration) = try await TestHelpers.measure {
             try await generator.generate(for: parameters.data.content)

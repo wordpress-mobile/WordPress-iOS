@@ -12,7 +12,7 @@ import FoundationModels
 /// let result = try await summary.generate(content: postContent)
 /// ```
 @available(iOS 26, *)
-public struct PostSummary {
+public struct PostSummaryGenerator {
     public var options: GenerationOptions
 
     public init(options: GenerationOptions = GenerationOptions(temperature: 0.3)) {
@@ -47,7 +47,7 @@ public struct PostSummary {
         Generate a concise summary that captures the main points and key information.
         The summary should be clear, informative, and written in a neutral tone.
 
-        \(PromptHelper.makeLocaleInstructions())
+        \(IntelligenceService.makeLocaleInstructions())
 
         Do not include anything other than the summary in the response.
         """
@@ -76,6 +76,6 @@ extension IntelligenceService {
     /// - Returns: A concise summary
     /// - Throws: If summarization fails
     public func summarize(content: String) async throws -> String {
-        try await PostSummary().generate(content: content)
+        try await PostSummaryGenerator().generate(content: content)
     }
 }

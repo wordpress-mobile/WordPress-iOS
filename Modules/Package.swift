@@ -354,6 +354,7 @@ enum XcodeSupport {
             "ShareExtensionCore",
             "Support",
             "WordPressFlux",
+            "WordPressIntelligence",
             "WordPressShared",
             "WordPressLegacy",
             "WordPressReader",
