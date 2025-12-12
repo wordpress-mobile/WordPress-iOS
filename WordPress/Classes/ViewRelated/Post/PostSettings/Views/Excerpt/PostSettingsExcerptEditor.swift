@@ -42,7 +42,7 @@ struct PostSettingsExcerptEditor: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                if FeatureFlag.intelligence.enabled && !postContent.isEmpty && LanguageModelHelper.isSupported {
+                if FeatureFlag.intelligence.enabled && !postContent.isEmpty && IntelligenceService.isSupported {
                     if #available(iOS 26, *) {
                         PostSettingsGenerateExcerptButton(
                             content: postContent,

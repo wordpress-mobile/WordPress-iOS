@@ -1,5 +1,5 @@
 import Testing
-@testable import WordPressShared
+@testable import WordPressIntelligence
 
 struct IntelligenceServiceTests {
     @available(iOS 26, *)
@@ -7,7 +7,7 @@ struct IntelligenceServiceTests {
     func suggestTags() async throws {
         let tags = try await IntelligenceService()
             .suggestTags(
-                post: IntelligenceUtilities.post,
+                post: ContentExtractor.post,
                 siteTags: ["cooking", "healthy-foods"]
             )
         print(tags)
