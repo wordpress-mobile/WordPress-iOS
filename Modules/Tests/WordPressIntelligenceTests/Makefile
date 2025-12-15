@@ -1,4 +1,4 @@
-.PHONY: help eval eval-quick eval-tags eval-summary rebuild rebuild-improve rebuild-regress rebuild-subtle rebuild-dramatic open clean
+.PHONY: help eval eval-quick eval-tags eval-summary open clean
 
 # =============================================================================
 # Evaluation Targets - Run full evaluations with Claude scoring
@@ -21,25 +21,6 @@ eval-tags:
 
 eval-summary:
 	@./lib/evaluate.py --test-type summary
-
-# =============================================================================
-# HTML Report Development - Fast iteration without re-running tests
-# =============================================================================
-
-rebuild:
-	@./lib/quick-rebuild-report.sh
-
-rebuild-improve:
-	@./lib/quick-rebuild-report.sh --improve
-
-rebuild-regress:
-	@./lib/quick-rebuild-report.sh --regress
-
-rebuild-subtle:
-	@./lib/quick-rebuild-report.sh --improve --variation 0.3
-
-rebuild-dramatic:
-	@./lib/quick-rebuild-report.sh --regress --variation 2.0
 
 # =============================================================================
 # Utilities
@@ -77,21 +58,12 @@ help:
 	@echo "  make eval-tags         Run tag suggestion tests"
 	@echo "  make eval-summary      Run post summary tests"
 	@echo ""
-	@echo "━━━ HTML Report Development (No test runs) ━━━"
-	@echo ""
-	@echo "  make rebuild           Rebuild report (no baseline)"
-	@echo "  make rebuild-improve   Rebuild with mock improvements"
-	@echo "  make rebuild-regress   Rebuild with mock regressions"
-	@echo "  make rebuild-subtle    Rebuild with subtle changes (±0.3)"
-	@echo "  make rebuild-dramatic  Rebuild with dramatic changes (±2.0)"
-	@echo ""
 	@echo "━━━ Utilities ━━━"
 	@echo ""
 	@echo "  make open              Open latest HTML report"
 	@echo "  make clean             Clean all generated files"
 	@echo "  make help              Show this help"
 	@echo ""
-	@echo "For HTML development workflow: lib/DEVELOPMENT.md"
 	@echo "For evaluation CLI options: ./lib/evaluate.py --help"
 	@echo ""
 
