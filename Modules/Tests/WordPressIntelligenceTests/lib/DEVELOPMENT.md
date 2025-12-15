@@ -211,7 +211,7 @@ lib/
 
 Run an evaluation first:
 ```bash
-./evaluate-with-claude.sh --only-testing "PostExcerptGeneratorTests/excerptGenerationEnglish(parameters:)"
+./evaluate.py --only-testing "PostExcerptGeneratorTests/excerptGenerationEnglish(parameters:)"
 ```
 
 ### HTML not updating
@@ -245,9 +245,9 @@ Only run the full pipeline when you need fresh evaluation data:
 
 ```bash
 # Full evaluation with Claude scoring (~30-60 seconds)
-./evaluate-with-claude.sh
+./evaluate.py
 
 # With baseline comparison
-./evaluate-with-claude.sh
+./evaluate.py
 # Then manually load baseline in HTML viewer
 ```

@@ -71,7 +71,7 @@ LATEST_EVAL=$(ls -td "${OUTPUT_DIR}"/evaluation-* 2>/dev/null | head -1)
 
 if [ -z "$LATEST_EVAL" ]; then
     echo -e "${YELLOW}Error: No evaluation directories found in ${OUTPUT_DIR}${NC}"
-    echo "Run an evaluation first: ./evaluate-with-claude.sh"
+    echo "Run an evaluation first: ./evaluate.py"
     exit 1
 fi
 

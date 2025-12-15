@@ -10,17 +10,17 @@ TESTS ?= excerpts tags summary
 eval:
 	@for test_type in $(TESTS); do \
 		echo "Running evaluation for $$test_type..."; \
-		./lib/evaluate-with-claude.sh --test-type $$test_type || exit 1; \
+		./lib/evaluate.py --test-type $$test_type || exit 1; \
 	done
 
 eval-quick:
-	@./lib/evaluate-with-claude.sh --only-testing "PostExcerptGeneratorTests/excerptGenerationEnglish(parameters:)"
+	@./lib/evaluate.py --only-testing "PostExcerptGeneratorTests/excerptGenerationEnglish(parameters:)"
 
 eval-tags:
-	@./lib/evaluate-with-claude.sh --test-type tags
+	@./lib/evaluate.py --test-type tags
 
 eval-summary:
-	@./lib/evaluate-with-claude.sh --test-type summary
+	@./lib/evaluate.py --test-type summary
 
 # =============================================================================
 # HTML Report Development - Fast iteration without re-running tests
@@ -92,7 +92,7 @@ help:
 	@echo "  make help              Show this help"
 	@echo ""
 	@echo "For HTML development workflow: lib/DEVELOPMENT.md"
-	@echo "For evaluation CLI options: ./lib/evaluate-with-claude.sh --help"
+	@echo "For evaluation CLI options: ./lib/evaluate.py --help"
 	@echo ""
 
 .DEFAULT_GOAL := help
