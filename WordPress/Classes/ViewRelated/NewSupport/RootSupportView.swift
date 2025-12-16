@@ -179,9 +179,9 @@ struct SupportAreaRow: View {
     let detail: String
 
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
             Image(systemName: imageName)
-                .frame(width: 24, height: 24)
+                .frame(width: 24)
                 .foregroundColor(.accentColor)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
