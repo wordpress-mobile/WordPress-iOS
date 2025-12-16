@@ -90,7 +90,7 @@ class TagsViewModel: ObservableObject {
                 let page = pageIndex ?? 0
                 let remoteTags = try await self.tagsService.getTags(
                     page: page,
-                    recentlyUsed: self.isBrowseMode
+                    recentlyUsed: !self.isBrowseMode
                 )
 
                 let hasMore = remoteTags.count == 100
