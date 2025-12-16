@@ -159,7 +159,14 @@ class TagsViewModel: ObservableObject {
         // Create a new tag in the background, which is consistent with the web editor.
         Task {
             do {
-                _ = try await tagsService.createTag(name: name, description: "")
+                let newTag = try await tagsService.createTag(name: name, description: "")
+                // The original input `name` was used as a temporary tag before sending the API request.
+                // Replace it with the actual tag returned by the API.
+                if newTag.name != name, let index = selectedTags.firstIndex(of: name) {
+                    selectedTagsSet.remove(lowercasedName)
+                    selectedTagsSet.insert(newTag.name.lowercased())
+                    selectedTags[index] = newTag.name
+                }
             } catch {
                 removeSelectedTag(name)
             }
