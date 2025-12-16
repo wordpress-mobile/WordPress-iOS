@@ -77,7 +77,7 @@ struct RootSupportView: View {
     @ViewBuilder
     private var communitySupportLink: some View {
         NavigationLink {
-            let url = URL(string: "https://apps.wordpress.com/support/")!
+            let url = URL(string: "https://apps.wordpress.com/support/mobile/")!
             WebKitView(configuration: WebViewControllerConfiguration(url: url))
         } label: {
             SupportAreaRow(
