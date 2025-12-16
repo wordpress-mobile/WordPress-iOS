@@ -96,7 +96,7 @@ struct RootSupportView: View {
         } label: {
             SupportAreaRow(
                 imageName: "bubble.left.and.text.bubble.right",
-                title: "Ask the bots",
+                title: "Ask the Bots",
                 detail: "Get quick answers to common questions."
             )
         }
