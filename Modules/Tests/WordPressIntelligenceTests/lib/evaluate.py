@@ -101,7 +101,7 @@ def run_swift_tests(
     cmd = [
         'xcodebuild', 'test',
         '-scheme', 'Modules-Package',
-        '-destination', f'platform=iOS Simulator,name={simulator_name},OS=26.0',
+        '-destination', f'platform=iOS Simulator,name={simulator_name},OS=26.2',
         '-only-testing', test_target,
         '-resultBundlePath', str(xcresult_path),
     ]
@@ -375,8 +375,8 @@ def main():
     )
     parser.add_argument(
         '--simulator',
-        default='iPhone 16 Pro',
-        help='Simulator name (default: iPhone 16 Pro)'
+        default='iPhone 17 Pro',
+        help='Simulator name (default: iPhone 17 Pro)'
     )
     parser.add_argument(
         '--only-testing',
