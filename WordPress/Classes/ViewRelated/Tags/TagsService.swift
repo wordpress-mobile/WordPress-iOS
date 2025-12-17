@@ -79,11 +79,6 @@ class TagsService: TaxonomyServiceProtocol {
             throw TagsServiceError.noRemoteService
         }
 
-        if let existing = try await searchTags(with: name)
-            .first(where: { $0.name.compare(name, options: .caseInsensitive) == .orderedSame }) {
-            return existing
-        }
-
         let tag = RemotePostTag()
         tag.name = name
         tag.tagDescription = description
