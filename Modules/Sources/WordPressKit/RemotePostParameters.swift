@@ -350,10 +350,10 @@ struct RemotePostUpdateParametersWordPressComEncoder: Encodable {
 
         // Terms (including tags)
         var terms = [String: [String]]()
-        if let tags = parameters.tags, !tags.isEmpty {
+        if let tags = parameters.tags {
             terms[RemotePostWordPressComCodingKeys.postTags] = tags
         }
-        if let otherTerms = parameters.otherTerms, !otherTerms.isEmpty {
+        if let otherTerms = parameters.otherTerms {
             terms.merge(otherTerms) { old, _ in old }
         }
         if !terms.isEmpty {
@@ -476,10 +476,10 @@ struct RemotePostUpdateParametersXMLRPCEncoder: Encodable {
 
         // Terms (including tags)
         var terms = [String: [String]]()
-        if let tags = parameters.tags, !tags.isEmpty {
+        if let tags = parameters.tags {
             terms[RemotePostXMLRPCCodingKeys.taxonomyTag] = tags
         }
-        if let otherTerms = parameters.otherTerms, !otherTerms.isEmpty {
+        if let otherTerms = parameters.otherTerms {
             terms.merge(otherTerms) { old, _ in old }
         }
         if !terms.isEmpty {
