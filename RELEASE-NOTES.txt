@@ -1,7 +1,7 @@
 26.6
 -----
+* [**] [Intelligence] Expand AI-based features to more locales [#25034]
 * [*] Fix previewing posts on WordPress.com atomic sites [#25045]
-
 
 26.5
 -----

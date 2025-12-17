@@ -20,6 +20,7 @@ let package = Package(
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
         .library(name: "WordPressUI", targets: ["WordPressUI"]),
+        .library(name: "WordPressIntelligence", targets: ["WordPressIntelligence"]),
         .library(name: "WordPressReader", targets: ["WordPressReader"]),
         .library(name: "WordPressCore", targets: ["WordPressCore"]),
         .library(name: "WordPressCoreProtocols", targets: ["WordPressCoreProtocols"]),
@@ -163,6 +164,10 @@ let package = Package(
             // This package should never have dependencies – it exists to expose protocols implemented in WordPressCore
             // to UI code, because `wordpress-rs` doesn't work nicely with previews.
         ]),
+        .target(name: "WordPressIntelligence", dependencies: [
+            "WordPressShared",
+            .product(name: "SwiftSoup", package: "SwiftSoup"),
+        ]),
         .target(name: "WordPressLegacy", dependencies: ["DesignSystem", "WordPressShared"]),
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(
@@ -251,6 +256,7 @@ let package = Package(
         .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared"), .target(name: "WordPressTesting")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressUIUnitTests", dependencies: [.target(name: "WordPressUI")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),
+        .testTarget(name: "WordPressIntelligenceTests", dependencies: [.target(name: "WordPressIntelligence")])
     ]
 )
 
@@ -348,6 +354,7 @@ enum XcodeSupport {
             "ShareExtensionCore",
             "Support",
             "WordPressFlux",
+            "WordPressIntelligence",
             "WordPressShared",
             "WordPressLegacy",
             "WordPressReader",

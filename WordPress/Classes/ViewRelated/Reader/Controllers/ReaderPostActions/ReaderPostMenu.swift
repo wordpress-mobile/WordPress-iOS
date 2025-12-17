@@ -4,6 +4,7 @@ import SafariServices
 import SwiftUI
 import WordPressData
 import WordPressShared
+import WordPressIntelligence
 
 struct ReaderPostMenu {
     let post: ReaderPost

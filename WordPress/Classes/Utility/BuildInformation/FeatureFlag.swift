@@ -1,5 +1,6 @@
 import BuildSettingsKit
 import Foundation
+import FoundationModels
 
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
@@ -80,8 +81,10 @@ public enum FeatureFlag: Int, CaseIterable {
         case .newStats:
             return false
         case .intelligence:
-            let languageCode = Locale.current.language.languageCode?.identifier
-            return (languageCode ?? "en").hasPrefix("en")
+            guard #available(iOS 26, *) else {
+                return false
+            }
+            return SystemLanguageModel.default.supportsLocale()
         case .newSupport:
             return false
         case .nativeBlockInserter:

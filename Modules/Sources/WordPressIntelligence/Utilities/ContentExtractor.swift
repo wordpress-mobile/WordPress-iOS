@@ -1,7 +1,7 @@
 import Foundation
 import SwiftSoup
 
-public struct IntelligenceUtilities {
+public enum ContentExtractor {
     /// Extracts semantically meaningful content from HTML for LLM processing.
    ///
    /// Optimized for language models by:

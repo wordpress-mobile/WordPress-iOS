@@ -1,9 +1,9 @@
 import Testing
-@testable import WordPressShared
+@testable import WordPressIntelligence
 
-struct IntelligenceUtilitiesTests {
+struct ContentExtractorTests {
     @Test func extractRelevantText() throws {
-        let text = try IntelligenceUtilities.extractRelevantText(from: IntelligenceUtilities.post)
+        let text = try ContentExtractor.extractRelevantText(from: ContentExtractor.post)
 
         #expect(text == """
         <h1>The Art of Making Perfect Sourdough Bread at Home</h1>
@@ -52,7 +52,7 @@ struct IntelligenceUtilitiesTests {
 
     /// Blockquote contain nested block and the implementation should account for that.
     @Test func blockquotes() throws {
-        let text = try IntelligenceUtilities.extractRelevantText(from: """
+        let text = try ContentExtractor.extractRelevantText(from: """
         <!-- wp:paragraph -->
         <p>Welcome to <strong><em>WordPress</em></strong>! This is your first post. Edit or delete it to take the first step in your blogging journey.</p>
         <!-- /wp:paragraph -->
@@ -71,13 +71,13 @@ struct IntelligenceUtilitiesTests {
     }
 
     @Test func extractRelevantTextFromPlainText() throws {
-        let text = try IntelligenceUtilities.extractRelevantText(from: "This is a plain text post")
+        let text = try ContentExtractor.extractRelevantText(from: "This is a plain text post")
 
         #expect(text == "This is a plain text post")
     }
 }
 
-extension IntelligenceUtilities {
+extension ContentExtractor {
     static let post = """
     <!-- wp:heading {"level":1} -->
     <h1>The Art of Making Perfect Sourdough Bread at Home</h1>
