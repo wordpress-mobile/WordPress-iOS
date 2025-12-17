@@ -90,7 +90,7 @@ class TagsViewModel: ObservableObject {
                 let page = pageIndex ?? 0
                 let remoteTags = try await self.tagsService.getTags(
                     page: page,
-                    recentlyUsed: self.isBrowseMode
+                    recentlyUsed: !self.isBrowseMode
                 )
 
                 let hasMore = remoteTags.count == 100
@@ -159,7 +159,21 @@ class TagsViewModel: ObservableObject {
         // Create a new tag in the background, which is consistent with the web editor.
         Task {
             do {
-                _ = try await tagsService.createTag(name: name, description: "")
+                let newTag: AnyTermWithViewContext
+                if let existing = try await tagsService.searchTags(with: name)
+                    .first(where: { $0.name.compare(name, options: .caseInsensitive) == .orderedSame }) {
+                    newTag = existing
+                } else {
+                    newTag = try await tagsService.createTag(name: name, description: "")
+                }
+
+                // The original input `name` was used as a temporary tag before sending the API request.
+                // Replace it with the actual tag returned by the API.
+                if newTag.name != name, let index = selectedTags.firstIndex(of: name) {
+                    selectedTagsSet.remove(lowercasedName)
+                    selectedTagsSet.insert(newTag.name.lowercased())
+                    selectedTags[index] = newTag.name
+                }
             } catch {
                 removeSelectedTag(name)
             }
