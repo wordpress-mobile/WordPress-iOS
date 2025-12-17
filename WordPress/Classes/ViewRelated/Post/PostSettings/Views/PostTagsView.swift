@@ -328,6 +328,8 @@ private struct AddTagsTextField: UIViewRepresentable {
 
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
             view.onSubmit()
+            self.view.text = ""
+            textField.text = ""
             return false
         }
     }
