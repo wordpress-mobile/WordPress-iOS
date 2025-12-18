@@ -17,7 +17,7 @@ import WordPressShared
 public struct ImageAltTextGenerator {
     public var options: GenerationOptions
 
-    public init(options: GenerationOptions = GenerationOptions(temperature: 0.7)) {
+    public init(options: GenerationOptions = GenerationOptions(temperature: 0.3)) {
         self.options = options
     }
 
@@ -125,10 +125,12 @@ public struct ImageAltTextGenerator {
     public static var instructions: String {
         """
         You are helping a WordPress user generate alt text for an image.
-        Alt text should be concise, descriptive, and accessible for screen readers.
+        Alt text should be descriptive and accessible for screen readers.
 
         **Parameters**
-        - IMAGE_ANALYSIS: Visual analysis of the actual image content (MOST IMPORTANT)
+        - IMAGE_ANALYSIS: Structured JSON with comprehensive visual analysis (MOST IMPORTANT)
+          The JSON includes: sceneClassification, faces (with position, size, features), humans, animals,
+          text content, orientation, regions of interest, barcodes, and document detection
         - FILENAME: the image filename
         - FILE_TYPE: the file type/extension
         - DIMENSIONS: the image dimensions
@@ -137,12 +139,36 @@ public struct ImageAltTextGenerator {
         - DESCRIPTION: the image description (if available)
 
         **Requirements**
-        - Generate concise alt text (1-2 sentences, max 125 characters)
-        - Prioritize IMAGE_ANALYSIS when describing what's in the image
-        - Focus on what the image depicts, not decorative elements
+        - For simple images: 1-2 sentences describing the main subject and action
+        - For complex images (charts, infographics, screenshots): 2-3 sentences explaining key information
+        - Parse the JSON IMAGE_ANALYSIS to understand:
+          * Scene/subject: Use sceneClassification labels with highest confidence
+          * People: Check faces/humans data for count, position (left/center/right), and shot type (closeup/medium/distant)
+          * Spatial layout: Use position and orientation data to describe composition
+          * Text: If text is prominent, include key text content verbatim
+          * Documents/Screenshots: Mention if containsDocument is true
+        - Prioritize information based on:
+          1. Primary subject (faces, humans, animals, main scene)
+          2. Actions or relationships between subjects
+          3. Setting/context from scene classification
+          4. Important text content (if present)
+        - Use specific, concrete descriptions based on the data
         - Use simple, clear language
-        - Do not include phrases like "image of" or "picture of"
-        - Only output the alt text, nothing else
+        - Do not include "image of", "picture of", or "photo of"
+        - Do not describe decorative or insignificant details
+        - For portraits: Include shot type (closeup/medium) and position if relevant
+        - For screenshots: Mention it's a screenshot and describe the key visible element
+        - For images with text: Include the most important text content
+
+        **Examples**
+        Good: "Person smiling in closeup portrait with outdoor background"
+        Good: "Three people standing left to right in conference room"
+        Good: "Screenshot of WordPress editor with Publish button highlighted"
+        Good: "Bar chart showing 45% increase in website traffic during Q3"
+        Bad: "A person" (too vague, missing details from analysis)
+        Bad: "Image of a chart" (avoid "image of", describe what the chart shows)
+
+        Only output the alt text, nothing else.
         """
     }
 
