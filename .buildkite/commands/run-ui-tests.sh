@@ -19,7 +19,7 @@ else
 fi
 
 echo "--- 📦 Downloading Build Artifacts"
-download_artifact build-products-jetpack.tar
+buildkite-agent artifact download build-products-jetpack.tar .
 tar -xf build-products-jetpack.tar
 
 # Only the gems are needed here, given we run the tests on a pre-built binary
