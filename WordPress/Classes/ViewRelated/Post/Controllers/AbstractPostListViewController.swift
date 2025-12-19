@@ -494,11 +494,20 @@ class AbstractPostListViewController: UIViewController,
         let coreDataStack = ContextManager.shared
         let blogID = TaggedManagedObjectID(blog)
         let number = numberOfLoadedElement.intValue
+        let descending = !filter.sortAscending
+        let orderBy: PostServiceResultsOrdering = switch filter.sortField {
+            case .dateCreated:
+                .byDate
+            case .dateModified:
+                .byModified
+            }
 
         let repository = PostRepository(coreDataStack: coreDataStack)
         let result = try await repository.paginate(
             type: postType == .post ? Post.self : Page.self,
             statuses: filter.statuses,
+            orderBy: orderBy,
+            descending: descending,
             authorUserID: author,
             offset: isFirstPage ? 0 : fetchResultsController.fetchedObjects?.count ?? 0,
             number: number,
