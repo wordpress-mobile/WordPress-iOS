@@ -27,10 +27,6 @@ class AbstractPostListViewController: UIViewController,
         return postTypeToSync() == .page ? 0 : type(of: self).postsFetchRequestBatchSize
     }
 
-    private var fetchLimit: Int {
-        return postTypeToSync() == .page ? 0 : Int(numberOfPostsPerSync())
-    }
-
     private var numberOfLoadedElement: NSNumber {
         return postTypeToSync() == .page ? NSNumber(value: type(of: self).pagesNumberOfLoadedElement) : NSNumber(value: numberOfPostsPerSync())
     }
@@ -329,7 +325,6 @@ class AbstractPostListViewController: UIViewController,
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
         fetchRequest.fetchBatchSize = fetchBatchSize
-        fetchRequest.fetchLimit = fetchLimit
         return fetchRequest
     }
 
@@ -340,32 +335,9 @@ class AbstractPostListViewController: UIViewController,
     func updateAndPerformFetchRequest() {
         wpAssert(Thread.isMainThread, "AbstractPostListViewController Error: NSFetchedResultsController accessed in BG")
 
-        var predicate = predicateForFetchRequest()
-        let sortDescriptors = sortDescriptorsForFetchRequest()
         let fetchRequest = fetchResultsController.fetchRequest
-
-        let filter = filterSettings.currentPostListFilter()
-
-        if let oldestPostDate = filter.oldestPostDate {
-
-            // Filter posts by any posts newer than the filter's oldestPostDate.
-            // Also include any posts that don't have a date set, such as local posts created without a connection.
-            let datePredicate = NSPredicate(format: "(date_created_gmt = NULL) OR (date_created_gmt >= %@)", oldestPostDate as CVarArg)
-
-            predicate = NSCompoundPredicate.init(andPredicateWithSubpredicates: [predicate, datePredicate])
-        }
-
-        // Set up the fetchLimit based on filtering
-        if filter.oldestPostDate != nil {
-            // If filtering by the oldestPostDate, the fetchLimit should be disabled.
-            fetchRequest.fetchLimit = 0
-        } else {
-            // If not filtering by the oldestPostDate, set the fetchLimit to the default number of posts.
-            fetchRequest.fetchLimit = fetchLimit
-        }
-
-        fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = sortDescriptors
+        fetchRequest.predicate = predicateForFetchRequest()
+        fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
 
         do {
             try fetchResultsController.performFetch()
@@ -497,11 +469,6 @@ class AbstractPostListViewController: UIViewController,
             wpAssertionFailure("This method should not be called with no posts.")
             return
         }
-        // Reset the filter to only show the latest sync point, based on the oldest post date in the posts just synced.
-        // Note: Getting oldest date manually as the API may return results out of order if there are
-        // differing time offsets in the created dates.
-        let oldestPost = posts.min { ($0.date_created_gmt ?? .distantPast) < ($1.date_created_gmt ?? .distantPast) }
-        filter.oldestPostDate = oldestPost?.date_created_gmt
         filter.hasMore = hasMore
 
         updateAndPerformFetchRequestRefreshingResults()
